@@ -10,3 +10,13 @@
 - `func_020953ac`: no candidate matched locally
 - `func_02095398`: no candidate matched locally
 - `func_0209509c`: dropped when combining the TU
+
+## Not done in M1-T381
+- `func_02095308`
+- `func_0209500c`
+- `func_02095350`
+- `func_020951b0`
+- `func_02095230`
+- `func_02095370`
+- `func_02095204`
+- `func_020953c4`
