@@ -54,3 +54,4 @@ int Unk0e675c_Unk_0e684c(u32 arg0)
   value = func_0204fde0();
   return value + arg0 * 4;
 }
+

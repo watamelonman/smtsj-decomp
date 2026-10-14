@@ -10,3 +10,8 @@
 ## Not done in M1-T225
 - `func_020e679c`
 - `func_020e67f4`
+
+## Not done in M1-T226
+- `func_020e6874`
+- `func_020e68f0`
+- `func_020e6948`
