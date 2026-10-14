@@ -54,3 +54,13 @@
 - `func_020e8374`
 - `func_020e85a0`
 - `func_020e8b54`
+- `func_020e8dd0`: decompiler-derived
+- `func_020e8dfc`: decompiler-derived
+- `func_020e9fa4`: decompiler-derived
+
+## Not done in M1-T903
+- `func_020e8d90`
+- `func_020e8e28`
+- `func_020e8ce8`
+- `func_020e9748`
+- `func_020e93d8`
