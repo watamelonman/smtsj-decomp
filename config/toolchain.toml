@@ -2,7 +2,7 @@
 mwcc_dir = "tools/mwccarm/2.0/sp1p5"   # SJ: >=sp1p5 (func_02058bb8 exact on sp1p5..sp2p4, not base/sp1/sp1p2; lib TU). Game-code upper bound unpinned
 wine = "tools/wibo"                     # zeldaret default on Linux; or "wine"
 dsd = "./dsd"
-cflags = "-O4,p -proc arm946e -enum int -lang c99 -Cpp_exceptions off -gccinc -nolink -msgstyle gcc -sym on"   # SJ: no -interworking (game tail calls are plain `b`, 1393 in 0x0202cad4-0x0204bb9c; -interworking emits ldr ip/bx ip)
+cflags = "-O4,p -proc arm946e -enum int -lang c99 -Cpp_exceptions off -interworking -gccinc -nolink -msgstyle gcc -sym on"   # SJ game: tail calls are ldr ip/bx ip (71 in game zones, 1 plain b) => -interworking
 decompme_compiler = "mwcc_30_131"       # decomp.me id that zeldaret pairs with 2.0/sp1p5
 
 [tools]
