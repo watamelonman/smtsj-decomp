@@ -21,3 +21,13 @@
 - `func_0202dfa0`
 - `func_0202dfb8`
 - `func_0202dfd0`
+- `func_0202dd9c`: decompiler-derived
+
+## Not done in M1-T255
+- `func_0202dfe8`
+- `func_0202ddd8`
+- `func_0202dcfc`
+- `func_0202deb0`
+- `func_0202de6c`
+- `func_0202ded4`
+- `func_0202ddf4`

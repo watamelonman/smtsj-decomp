@@ -2,6 +2,13 @@
  * unit_0202dcfc: initialiser for an object owned by the unit_02095560 system
  * (callers func_020956a8/func_020956c8/func_02095d5c).
  */
+typedef signed int s32;
+typedef unsigned short u16;
+typedef signed short s16;
+typedef signed char s8;
+typedef unsigned long long u64;
+typedef signed long long s64;
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 typedef unsigned int u32;
 typedef unsigned char u8;
 
@@ -68,3 +75,18 @@ void Unk02dcfc_Unk_02de58(int arg0)
   return;
 }
 
+
+
+int func_0205e5b4();
+int func_020a2c00();
+/* decompiler-derived */
+void func_0202dd9c(int arg0)
+{
+  int tmp1;
+  *(u32 *)(arg0 + 0x18) = 0xb;
+  *(u32 *)(arg0 + 0x44) = 1;
+  tmp1 = func_0205e5b4();
+  *(u32 *)(arg0 + 0x48) = (u32)(tmp1 != -1);
+  func_020a2c00(arg0 + 0x4c);
+  return;
+}
