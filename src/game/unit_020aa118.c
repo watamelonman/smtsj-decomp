@@ -48,3 +48,22 @@ u32 * func_020afb64(u32 arg0)
   *v1 = arg0;
   return v1;
 }
+
+
+int func_0204fde0();
+int func_020af780();
+int func_020af7f8();
+/* decompiler-derived */
+void func_020af824(void)
+{
+  u8 *v1;
+  v1 = (u8 *)func_020af780();
+  if (v1 != (u8 *)0x0) {
+    func_020af7f8(*v1,v1[1]);
+    func_0204fde0();
+    return;
+  }
+  func_020af7f8(0,0);
+  func_0204fde0();
+  return;
+}
