@@ -264,3 +264,51 @@ void ScanVisor_Unk_0a2a38(u32 arg0)
   func_020a49d8(tmp1 + 0x24c,arg0,1);
   return;
 }
+
+
+int func_020fda2c();
+/* decompiler-derived */
+void func_020a28f4(u32 arg0)
+{
+  int *v1;
+  v1 = (int *)ScanVisor_Get_data_02176b04();
+  if (v1 == (int *)0x0) {
+    return;
+  }
+  if (*v1 != 1) {
+    return;
+  }
+  func_020fda2c(arg0);
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020a2a60(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  tmp1 = ScanVisor_Get_data_02176b04();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_020a49d8(tmp1 + 0x24c,arg0,arg1);
+  return;
+}
+
+
+/* decompiler-derived */
+int * func_020a42c4(int arg0)
+{
+  int *v1;
+  int tmp2;
+  v1 = (int *)(arg0 + 0x20);
+  tmp2 = 0;
+  do {
+    if (*v1 == 0) {
+      return v1;
+    }
+    tmp2 = tmp2 + 1;
+    v1 = v1 + 0xd;
+  } while (tmp2 < 7);
+  return (int *)0x0;
+}
