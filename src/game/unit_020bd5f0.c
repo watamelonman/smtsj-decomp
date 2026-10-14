@@ -40,3 +40,4 @@ int Unk0bd5f0_Unk_0c7588(u16 *arg0,u16 *arg1)
   }
   return value;
 }
+
