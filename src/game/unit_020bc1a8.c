@@ -54,3 +54,4 @@ u32 func_020bcc34(int arg0)
   } while (tmp1 < 0x29);
   return 0;
 }
+
