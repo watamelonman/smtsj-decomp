@@ -10,3 +10,13 @@
 
 ## Hard list
 - `func_02098980`: objdiff < 100%
+- `func_02098990`: decompiler-derived
+- `func_02099300`: decompiler-derived
+- `func_02098918`: decompiler-derived
+
+## Not done in M1-T632
+- `func_02098714`
+- `func_020989dc`
+- `func_02098ae0`
+- `func_020989a4`
+- `func_02098aa8`
