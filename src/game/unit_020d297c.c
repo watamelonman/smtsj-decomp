@@ -49,3 +49,54 @@ int Unk0d297c_Unk_0d32f8(int *arg0)
 {
   return *arg0 + arg0[3] * 2;
 }
+
+
+
+/* decompiler-derived */
+void func_020d3250(u32 *arg0,u32 arg1,u32 arg2)
+{
+  *arg0 = arg1;
+  arg0[1] = arg2;
+  arg0[3] = 0;
+  arg0[4] = 0;
+  return;
+}
+
+
+/* decompiler-derived */
+u16 func_020d32ac(int *arg0)
+{
+  return *(u16 *)(*arg0 + arg0[1] * 2);
+}
+
+
+/* decompiler-derived */
+void func_020d31e8(u32 *arg0)
+{
+  arg0[1] = 0;
+  *arg0 = 0;
+  arg0[3] = 0;
+  arg0[4] = 0;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020d3290(int *arg0,u16 arg1)
+{
+  if (arg0[1] < arg0[2]) {
+    *(u16 *)(*arg0 + arg0[1] * 2) = arg1;
+  }
+  return;
+}
+
+int func_02053000();
+int func_020d322c();
+/* decompiler-derived */
+void func_020d33ac(int arg0)
+{
+  func_020d322c();
+  func_02053000(*(u32 *)(arg0 + 0x18));
+  *(u32 *)(arg0 + 0x18) = 0;
+  return;
+}
