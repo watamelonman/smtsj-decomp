@@ -10,3 +10,9 @@
 ## Not done in M1-T202
 - `func_020e5638`
 - `func_020e5484`
+- `func_020e54d4`: decompiler-derived
+
+## Not done in M1-T203
+- `func_020e55fc`
+- `func_020e5580`
+- `func_020e5664`
