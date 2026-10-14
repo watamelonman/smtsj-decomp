@@ -26,3 +26,13 @@
 - `func_0210afd8`
 - `func_0210b030`
 - `func_0210ae84`
+
+## Not done in M1-T764
+- `func_0210af8c`
+- `func_0210aed0`
+- `func_0210b484`
+- `func_0210acac`
+- `func_0210b42c`
+- `func_0210ad00`
+- `func_0210a0dc`
+- `func_0210b080`

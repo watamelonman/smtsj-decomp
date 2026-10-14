@@ -227,3 +227,4 @@ void Unk10a034_Unk_10af0c(int arg0)
   *(u32 *)(*(int *)(arg0 + 4) + 0x18) = 0x1c;
   return;
 }
+
