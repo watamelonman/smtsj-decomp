@@ -57,7 +57,8 @@ def main():
     L += [f"build build/arm9.o: mwld {lcf} {objs_file} | {' '.join(link_inputs)}",
           "build build/build/rom_config.yaml: rom_config build/arm9.o",
           "build build/rom.nds: rom_build build/build/rom_config.yaml",
-          f"build objdiff.json: objdiff {' '.join(cfgs)}",
+          # regenerate after base objects exist, else --skip-absent-objects drops their base_path
+          f"build objdiff.json: objdiff {' '.join(cfgs)} | {' '.join(base_objs)}",
           f"default build/rom.nds objdiff.json {' '.join(base_objs)}"]
     (ROOT / "build.ninja").write_text("\n".join(L) + "\n")
 

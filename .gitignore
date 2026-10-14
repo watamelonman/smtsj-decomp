@@ -7,5 +7,6 @@
 /build.ninja
 /objdiff.json
 *.nds
-.forge/
-build/
+.ninja_log
+.ninja_deps
+__pycache__/
