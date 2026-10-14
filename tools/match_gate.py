@@ -32,7 +32,7 @@ def changed_c(base):
 def c_functions(path):
     names = []
     for line in open(path, encoding="utf-8", errors="replace"):
-        if line.startswith((" ", "\t", "#", "}", "/")) or "INCLUDE_ASM" in line:
+        if line.startswith((" ", "\t", "#", "}", "/", "static inline", "inline")) or "INCLUDE_ASM" in line:
             continue
         m = FUNC_DEF.match(line.rstrip())
         if m and m.group(1) not in ("if", "while", "for", "switch", "return"):
