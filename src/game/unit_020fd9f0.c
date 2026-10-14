@@ -66,3 +66,36 @@ void func_020fe33c(int arg0)
   *(u32 *)(arg0 + 0x24) = 0;
   return;
 }
+
+
+
+/* decompiler-derived */
+void func_020fdb80(int arg0)
+{
+  *(u32 *)(arg0 + 0xc) = 0xffffffe5;
+  *(u32 *)(arg0 + 0x14) = 1;
+  *(u32 *)(arg0 + 0x28) = 1;
+  *(u32 *)(arg0 + 0x2c) = 1;
+  *(u32 *)(arg0 + 0x30) = 0;
+  *(u32 *)(arg0 + 0x34) = 0;
+  *(u32 *)(arg0 + 0x38) = 0;
+  *(u32 *)(arg0 + 0x3c) = 0;
+  *(u32 *)(arg0 + 0x24) = 0;
+  *(u32 *)(arg0 + 0x40) = 0;
+  return;
+}
+
+int func_02057524();
+int func_02057ddc();
+int func_02057e18();
+int func_02057e58();
+/* decompiler-derived */
+void func_020fe278(void)
+{
+  func_02057e18(0x1f);
+  func_02057ddc(0xffffffff);
+  func_02057e58(2,0x30,10);
+  func_02057eb8(2);
+  func_02057524(4);
+  return;
+}
