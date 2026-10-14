@@ -102,8 +102,7 @@ def main():
         for k, v in info.items():
             f.write(f'{k} = {v!r}\n'.replace("'", '"'))
         f.write("# fingerprints:\n" + "".join(f"#   {l}: {s!r}\n" for l, s in hits))
-    print("wrote config/target.toml; edit config/checksums.sha1 to list the BUILT artifact paths "
-          "with these hashes (e.g. `<sha1>  build/SLUS_217.82`).")
+    print("wrote config/target.toml (configure.py generates config/checksums.sha1 from extract/)")
 
 
 if __name__ == "__main__":
