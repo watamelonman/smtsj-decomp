@@ -20,3 +20,13 @@
 - `func_020e2dec`
 - `func_020e51f4`
 - `func_020e1664`
+- `func_020e533c`: decompiler-derived
+
+## Not done in M1-T1044
+- `func_020e51cc`
+- `func_020e536c`
+- `func_020e5214`
+- `func_020e2f54`
+- `func_020e5198`
+- `func_020e5090`
+- `func_020e544c`

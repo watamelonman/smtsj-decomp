@@ -126,3 +126,19 @@ u32 Unk0e1648_Unk_0e4fd0(int arg0,u32 arg1)
   }
   return 0;
 }
+
+
+int func_020e5090();
+int func_020e544c();
+/* decompiler-derived */
+void func_020e533c(int arg0)
+{
+  int tmp1;
+  tmp1 = func_020e544c();
+  if (tmp1 != 0) {
+    func_020e5090(*(u32 *)(arg0 + 0xea0),2);
+    return;
+  }
+  func_020e5090(*(u32 *)(arg0 + 0xea0),3);
+  return;
+}
