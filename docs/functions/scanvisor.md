@@ -44,3 +44,13 @@
 - `func_020a2884`
 - `func_020a4a44`
 - `func_020a2920`
+- `func_020a2ae8`: decompiler-derived
+- `func_020a29e8`: decompiler-derived
+- `func_020a2b7c`: decompiler-derived
+- `func_020a4544`: decompiler-derived
+- `func_020a27a8`: decompiler-derived
+
+## Not done in M1-T988
+- `func_020a2950`
+- `func_020a379c`
+- `func_020a4284`

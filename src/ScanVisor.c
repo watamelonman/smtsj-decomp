@@ -312,3 +312,86 @@ int * func_020a42c4(int arg0)
   } while (tmp2 < 7);
   return (int *)0x0;
 }
+
+
+int func_020a8b00();
+/* decompiler-derived */
+void func_020a2ae8(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  tmp1 = ScanVisor_Get_data_02176b04();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_020a8b00(tmp1 + 0x428,arg0,arg1);
+  return;
+}
+
+int func_020c9cbc();
+/* decompiler-derived */
+void func_020a29e8(u32 arg0,u32 arg1,u32 arg2)
+{
+  int tmp1;
+  tmp1 = ScanVisor_Get_data_02176b04();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_020c9cbc(tmp1 + 0x78,arg0,arg1,arg2);
+  return;
+}
+
+int func_020a2b58();
+int func_020a8c40();
+/* decompiler-derived */
+void func_020a2b7c(void)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = ScanVisor_Get_data_02176b04();
+  if (tmp1 == 0) {
+    return;
+  }
+  tmp2 = func_020a2b58();
+  if (tmp2 == 0) {
+    return;
+  }
+  func_020a8c40(tmp1 + 0x428);
+  ScanVisor_ClearUnkField198(tmp1 + 0x24c);
+  return;
+}
+
+int func_020a4370();
+/* decompiler-derived */
+void func_020a4544(int arg0)
+{
+  int tmp1;
+  int *v2;
+  v2 = (int *)(arg0 + 0x20);
+  tmp1 = 0;
+  do {
+    if (*v2 != 0) {
+      func_020a4370(v2);
+    }
+    tmp1 = tmp1 + 1;
+    v2 = v2 + 0xd;
+  } while (tmp1 < 7);
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020a27a8(int arg0)
+{
+  int tmp1;
+  tmp1 = ScanVisor_Get_data_02176b04();
+  if (tmp1 == 0) {
+    return;
+  }
+  if (arg0 == 0) {
+    *(u32 *)(tmp1 + 0x2c) = 0x51;
+    *(u32 *)(tmp1 + 0x34) = 0;
+    return;
+  }
+  *(u32 *)(tmp1 + 0x2c) = 0;
+  return;
+}
