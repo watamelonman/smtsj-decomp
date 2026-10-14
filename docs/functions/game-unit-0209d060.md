@@ -10,3 +10,6 @@
 - `func_0209d170`
 - `func_0209d13c`
 - `func_0209d084`
+
+## Not done in M1-T307
+- `func_0209d1cc`
