@@ -18,3 +18,6 @@
 - `func_020e6188`: no candidate matched locally
 - `func_020e619c`: no candidate matched locally
 - `func_020e613c`: no candidate matched locally
+
+## Not done in M1-T377
+- `func_020e5fb8`
