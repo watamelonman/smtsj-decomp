@@ -14,3 +14,13 @@
 - `ScanVisor_Unk_0a3620`: decompiler-derived
 - `ScanVisor_Unk_0a465c`: decompiler-derived
 - `ScanVisor_Unk_0a4a30`: decompiler-derived
+- `func_020a4644`: decompiler-derived
+- `func_020a2a1c`: decompiler-derived
+- `func_020a2ab0`: decompiler-derived
+- `func_020a2acc`: decompiler-derived
+- `func_020a27e0`: decompiler-derived
+- `func_020a2800`: decompiler-derived
+
+## Not done in M1-T985
+- `func_020a4a18`
+- `func_020a2980`
