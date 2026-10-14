@@ -268,3 +268,60 @@ void Unk116598_Unk_117cd4(void)
   value = func_02117a68();
   *data_02176e68 = value;
 }
+
+
+int func_0202e788();
+int func_02116c20();
+/* decompiler-derived */
+u32 func_02117050(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp2 = 0;
+  tmp1 = func_0202e788();
+  tmp1 = func_02116c20(*(u16 *)(tmp1 + 0x35c),arg0,arg1,1);
+  if (tmp1 == 1) {
+    tmp2 = 2;
+  }
+  return tmp2;
+}
+
+int func_02057524();
+int func_02057534();
+int func_021176c0();
+/* decompiler-derived */
+void func_02117620(int arg0)
+{
+  if (*(int *)(arg0 + 0x18) != 0) {
+    return;
+  }
+  if (*(int *)(arg0 + 0xc) != 1 && *(int *)(arg0 + 0xc) != 2) {
+    return;
+  }
+  if (*(int *)(arg0 + 4) == 0) {
+    return;
+  }
+  func_02057524(*(u32 *)(arg0 + 0x14));
+  func_021176c0(*(u32 *)(arg0 + 8),*(u8 *)(arg0 + 0x13),0x16);
+  func_02057534();
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02117670(int arg0)
+{
+  if (*(int *)(arg0 + 0x18) != 0) {
+    return;
+  }
+  if (*(int *)(arg0 + 0xc) != 1 && *(int *)(arg0 + 0xc) != 3) {
+    return;
+  }
+  if (*(int *)(arg0 + 4) == 0) {
+    return;
+  }
+  func_02057524(*(u32 *)(arg0 + 0x14));
+  func_021176c0(*(u32 *)(arg0 + 8),*(u8 *)(arg0 + 0x13),0x16);
+  func_02057534();
+  return;
+}
