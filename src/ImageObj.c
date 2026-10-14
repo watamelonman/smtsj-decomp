@@ -87,3 +87,71 @@ void ImageObj_Unk_0772f8(void)
   func_02077ddc();
   *data_0217231c = 0;
 }
+
+
+
+/* decompiler-derived */
+int func_02079028(void)
+{
+  int tmp1;
+  tmp1 = ImageObj_Get_data_0217231c();
+  return *(int *)(tmp1 + 0x14) == 4;
+}
+
+
+/* decompiler-derived */
+void func_020773bc(void)
+{
+  int tmp1;
+  tmp1 = *data_0217231c;
+  if (tmp1 != 0) {
+    *(u32 *)(tmp1 + 0xc0) = 1;
+    *(u32 *)(tmp1 + 0xc4) = 1;
+  }
+  return;
+}
+
+int func_020791a8();
+/* decompiler-derived */
+void func_0207782c(u32 arg0,u32 arg1)
+{
+  func_020791a8(0,arg0,arg1,0);
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02077860(u32 arg0,int arg1)
+{
+  func_020791a8(1,arg0,arg1 + 1,0);
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02077894(u32 arg0,int arg1)
+{
+  func_020791a8(2,arg0,arg1 + 3,0);
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020778b4(u32 arg0,int arg1)
+{
+  func_020791a8(2,arg0,arg1 + 3,1);
+  return;
+}
+
+int func_02061424();
+/* decompiler-derived */
+void func_02079184(int arg0)
+{
+  int tmp1;
+  tmp1 = ImageObj_Get_data_0217231c();
+  if (*(int *)(tmp1 + arg0 * 4 + 4) == 0) {
+    return;
+  }
+  func_02061424();
+  return;
+}
