@@ -25,3 +25,57 @@ void Unk0fedd4_Unk_0fedd4(void)
 {
   func_0205b82c(0xd1);
 }
+
+
+extern u32 data_02176e28[];
+int func_02061424();
+/* decompiler-derived */
+void func_020fee18(void)
+{
+  if (*data_02176e28 == 0) {
+    return;
+  }
+  func_02061424();
+  return;
+}
+
+int func_0205ddb4();
+int func_020629c4();
+/* decompiler-derived */
+void func_020fef78(int *arg0)
+{
+  if (*arg0 != 0) {
+    func_020629c4(arg0[1]);
+    arg0[1] = 0;
+  }
+  if (arg0[2] != 0) {
+    func_0205ddb4();
+    arg0[2] = 0;
+  }
+  *data_02176e28 = 0;
+  return;
+}
+
+extern u8 data_021510f4[];
+int func_0205dcd4();
+int func_020629ac();
+/* decompiler-derived */
+void func_020fefc8(int *arg0,int arg1)
+{
+  int tmp1;
+  *arg0 = arg1;
+  arg0[1] = 0;
+  arg0[3] = 0;
+  arg0[4] = 0;
+  arg0[5] = 0;
+  arg0[6] = -1;
+  arg0[7] = 0;
+  arg0[8] = 0;
+  if (*arg0 != 0) {
+    tmp1 = func_020629ac(5,2,1,1);
+    arg0[1] = tmp1;
+  }
+  tmp1 = func_0205dcd4(((int)data_021510f4),1);
+  arg0[2] = tmp1;
+  return;
+}
