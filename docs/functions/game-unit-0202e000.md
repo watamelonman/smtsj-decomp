@@ -18,3 +18,13 @@
 - `func_0202e578`: no candidate matched locally
 - `func_0202e590`: no candidate matched locally
 - `func_0202e228`: objdiff < 100%
+- `func_0202e144`: decompiler-derived
+
+## Not done in M1-T652
+- `func_0202e070`
+- `func_0202e904`
+- `func_0202e0cc`
+- `func_0202e440`
+- `func_0202e114`
+- `func_0202e1f8`
+- `func_0202e000`

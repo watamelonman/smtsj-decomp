@@ -79,3 +79,23 @@ int Unk02e000_Unk_02e8f0(void)
 {
   return *(int *)(((int)data_0215dd24) + 4) + 0x90;
 }
+
+
+int func_0202e180();
+int func_0202e23c();
+int func_0202e5a8();
+int func_0202e5c4();
+/* decompiler-derived */
+void func_0202e144(void)
+{
+  int tmp1;
+  func_0202e180();
+  func_0202e23c();
+  func_0202e5a8();
+  tmp1 = 0;
+  do {
+    func_0202e5c4(tmp1);
+    tmp1 = tmp1 + 1;
+  } while (tmp1 < 2);
+  return;
+}
