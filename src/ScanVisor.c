@@ -469,3 +469,4 @@ void func_020a273c(u32 arg0)
   func_020a2950(arg0);
   return;
 }
+

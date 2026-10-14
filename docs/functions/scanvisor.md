@@ -64,3 +64,13 @@
 - `func_020a4950`
 - `func_020a4994`
 - `func_020a3760`
+
+## Not done in M1-T990
+- `func_020a4910`
+- `func_020a49d8`
+- `func_020a3ac0`
+- `func_020a4600`
+- `func_020a2bb8`
+- `func_020a4578`
+- `func_020a4864`
+- `func_020a48b4`
