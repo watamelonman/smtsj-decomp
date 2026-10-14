@@ -5,3 +5,13 @@
 - `GetGameState`: return the global game-state pointer `gGameState`.
 - `Unk02f2a8_Call_02057660`: call `func_02057660(2, 0)` (SDK range).
 - `GameState_GetUnkField74f4`: read the u16 at +0x74F4 of the game state.
+
+## Not done in M1-T1105
+- `func_02034db8`
+- `func_02035ec4`
+- `func_02030478`
+- `func_02030578`
+- `func_02034398`
+- `func_02034954`
+- `func_02034b08`
+- `func_02033890`
