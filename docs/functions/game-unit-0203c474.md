@@ -16,3 +16,8 @@
 - `func_0203c56c` (28 B): decompiler-derived (Ghidra output, cleaned)
 - `func_0203c588` (28 B): decompiler-derived (Ghidra output, cleaned)
 - `func_0203c4a0` (40 B): decompiler-derived (Ghidra output, cleaned)
+- `func_0203c474` (44 B): decompiler-derived (Ghidra output, cleaned)
+- `func_0203c638` (108 B): decompiler-derived (Ghidra output, cleaned)
+
+## Hard list
+- `func_0203c608`: no candidate matched locally
