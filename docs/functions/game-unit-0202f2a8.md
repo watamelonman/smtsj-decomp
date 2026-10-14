@@ -15,3 +15,13 @@
 - `func_02034954`
 - `func_02034b08`
 - `func_02033890`
+
+## Not done in M1-T1106
+- `func_02033ac8`
+- `func_02032df4`
+- `func_02034a44`
+- `func_02034a68`
+- `func_02034a8c`
+- `func_02034ab0`
+- `func_02035c90`
+- `func_02035ab8`

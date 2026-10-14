@@ -29,3 +29,4 @@ void Unk02f2a8_Call_02057660(void) { func_02057660(2, 0); }
 
 u16 GameState_GetUnkField74f4(void) { return gGameState->UnkField74f4; }
 
+
