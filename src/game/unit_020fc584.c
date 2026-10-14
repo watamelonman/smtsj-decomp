@@ -72,3 +72,34 @@ void func_020fcfb0(void)
   func_02057524(4);
   return;
 }
+
+
+int func_020fc6e4();
+/* decompiler-derived */
+void func_020fc824(void)
+{
+  int tmp1;
+  tmp1 = func_020fc6e4();
+  if (tmp1 == 0) {
+    return;
+  }
+  tmp1 = func_020fc8ac();
+  *(u32 *)(tmp1 + 0x28) = 0;
+  *(u32 *)(tmp1 + 0x20) = *(u32 *)(tmp1 + 0x24);
+  return;
+}
+
+int func_020fc8bc();
+/* decompiler-derived */
+void func_020fc674(u32 arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_020fc8ac();
+  if (tmp1 != 0) {
+    return;
+  }
+  tmp2 = func_020fc8bc(arg0);
+  *data_02176e14 = tmp2;
+  return;
+}
