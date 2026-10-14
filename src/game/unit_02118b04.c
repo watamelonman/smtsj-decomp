@@ -85,3 +85,4 @@ void func_02119434(u32 arg0,u32 arg1)
   func_02008848(arg0,0,0xf);
   return;
 }
+
