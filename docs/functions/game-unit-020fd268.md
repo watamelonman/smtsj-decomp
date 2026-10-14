@@ -10,3 +10,12 @@
 - `func_020fd364`
 - `func_020fd428`
 - `func_020fd3c4`
+- `func_020fd574`: decompiler-derived
+- `func_020fd540`: decompiler-derived
+- `func_020fd3f0`: decompiler-derived
+
+## Not done in M1-T274
+- `func_020fd450`
+- `func_020fd2fc`
+- `func_020fd4c4`
+- `func_020fd268`
