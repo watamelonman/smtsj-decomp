@@ -17,6 +17,7 @@ python3 tools/checksum.py                               # modules + ROM (CRC byt
 REFORGE_SYMBOLS=config/arm9/symbols.txt GHIDRA_LOADBASE=$(python3 -c "import tomllib;print(tomllib.load(open('config/target.toml','rb'))['arm9_load'])") \
   nice -n 10 tools/ghidra_analyze.sh extract/arm9/arm9.bin ARM:LE:32:v5t || echo "ghidra skipped"
 [ -f build/ghidra/functions.json ] && python3 tools/propose_tus.py
-echo ">> review config/arm9/delinks.proposed.txt, paste chosen entries into delinks.txt, then:"
+[ -f build/ghidra/functions.json ] && python3 tools/segment_tus.py   # whole-gap TU map -> config/arm9/delinks.segmented.txt
+echo ">> review config/arm9/delinks.segmented.txt (or .proposed.txt), paste chosen entries into delinks.txt, then:"
 echo "   ./configure.py && ninja && python3 tools/checksum.py && ./objdiff-cli report generate -o build/report.json"
 echo "   cp build/report.json build/report.base.json && python3 tools/make_cards.py"
