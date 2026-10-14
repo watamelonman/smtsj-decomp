@@ -231,3 +231,4 @@ u32 func_020bb104(void)
   }
   return 1;
 }
+

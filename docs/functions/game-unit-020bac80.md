@@ -26,3 +26,10 @@
 - `func_020bb144`
 - `func_020bae9c`
 - `func_020baf04`
+
+## Not done in M1-T406
+- `func_020bafa4`
+- `func_020bb00c`
+- `func_020bac80`
+- `func_020bad40`
+- `func_020bb18c`
