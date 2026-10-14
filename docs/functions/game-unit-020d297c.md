@@ -20,3 +20,13 @@
 - `func_020d2a8c`
 - `func_020d2aec`
 - `func_020d2e64`
+- `func_020d2f18`: decompiler-derived
+- `func_020d2f3c`: decompiler-derived
+- `func_020d2f98`: decompiler-derived
+- `func_020d2b70`: decompiler-derived
+- `func_020d2c1c`: decompiler-derived
+- `func_020d2e88`: decompiler-derived
+- `func_020d32c0`: decompiler-derived
+
+## Not done in M1-T569
+- `func_020d322c`
