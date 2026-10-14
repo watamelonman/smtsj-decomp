@@ -36,3 +36,17 @@ void Unk1241ec_Unk_1241ec(void)
   func_020fee68(0,0x2b);
   func_020fee84(5);
 }
+
+
+extern u32 data_02176e84[];
+int func_02061424();
+/* decompiler-derived */
+void func_02124258(void)
+{
+  if (*data_02176e84 == 0) {
+    return;
+  }
+  func_02061424();
+  *data_02176e84 = 0;
+  return;
+}
