@@ -103,3 +103,38 @@ void func_020981bc(u32 arg0,u32 arg1)
   func_02097b84(tmp1,arg1);
   return;
 }
+
+
+int func_020979d8();
+/* decompiler-derived */
+u32 func_020979fc(int arg0)
+{
+  if (arg0 != 0) {
+    *(u16 *)(arg0 + 0x34) = 0;
+    func_020979d8();
+    return 1;
+  }
+  return 0;
+}
+
+int func_020970d4();
+/* decompiler-derived */
+void func_02097f00(u32 arg0)
+{
+  func_020970d4();
+  func_0209816c(0,arg0);
+  func_0209816c(1,arg0);
+  func_0209816c(2,arg0);
+  return;
+}
+
+int func_02097120();
+/* decompiler-derived */
+void func_02097f34(u32 arg0)
+{
+  func_02097120();
+  func_020981bc(0,arg0);
+  func_020981bc(1,arg0);
+  func_020981bc(2,arg0);
+  return;
+}
