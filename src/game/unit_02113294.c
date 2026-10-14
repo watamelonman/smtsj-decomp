@@ -65,3 +65,28 @@ void func_02115124(int arg0)
   func_021150e8(*(u8 *)(arg0 + 8) + 1,*(u32 *)(arg0 + 0x10) & 0xffff);
   return;
 }
+
+
+int func_021144e4();
+int func_02114588();
+int func_02114604();
+int func_021146a4();
+int func_021148ec();
+int func_02114a1c();
+/* decompiler-derived */
+void func_02114488(char *arg0)
+{
+  if (*arg0 == '\0') {
+    return;
+  }
+  if (*(int *)(arg0 + -4) != 6) {
+    Unk_LoadPalette_020de678(*(u32 *)(arg0 + 0x28));
+  }
+  func_021144e4(arg0);
+  func_02114588(arg0);
+  func_02114604(arg0);
+  func_021146a4(arg0);
+  func_021148ec(arg0);
+  func_02114a1c(arg0);
+  return;
+}
