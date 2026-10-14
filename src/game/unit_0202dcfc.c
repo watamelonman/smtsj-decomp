@@ -67,3 +67,4 @@ void func_0202de58(int arg0)
   *(u32 *)(arg0 + 0x54) = 1;
   return;
 }
+
