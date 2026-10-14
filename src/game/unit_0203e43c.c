@@ -50,3 +50,93 @@ void Unk03e43c_Unk_03fa3c(char arg0)
   value = func_0202e788();
   *(char *)(value + 0x360) = arg0 * '\n';
 }
+
+
+int func_02020974();
+int func_02051610();
+int func_020516d0();
+/* decompiler-derived */
+int func_0203e5a4(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = func_02051610(arg1);
+  if (tmp1 != 0) {
+    tmp2 = func_02020974(tmp1,arg0);
+    if (tmp2 != 0) {
+      return tmp1;
+    }
+    func_020516d0(tmp1);
+  }
+  return 0;
+}
+
+int func_020207d0();
+/* decompiler-derived */
+int func_0203e5dc(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = func_02051610(arg1);
+  if (tmp1 != 0) {
+    tmp2 = func_020207d0(tmp1,arg0);
+    if (tmp2 != 0) {
+      return tmp1;
+    }
+    func_020516d0(tmp1);
+  }
+  return 0;
+}
+
+int func_02020ac0();
+/* decompiler-derived */
+int func_0203e614(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = func_02051610(arg1);
+  if (tmp1 != 0) {
+    tmp2 = func_02020ac0(tmp1,arg0);
+    if (tmp2 != 0) {
+      return tmp1;
+    }
+    func_020516d0(tmp1);
+  }
+  return 0;
+}
+
+int func_02020a74();
+/* decompiler-derived */
+int func_0203e64c(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = func_02051610(arg1);
+  if (tmp1 != 0) {
+    tmp2 = func_02020a74(tmp1,arg0);
+    if (tmp2 != 0) {
+      return tmp1;
+    }
+    func_020516d0(tmp1);
+  }
+  return 0;
+}
+
+extern u8 data_0215e85c[];
+/* decompiler-derived */
+void func_0203e794(int arg0,int arg1)
+{
+  int tmp1;
+  int tmp2;
+  int tmp3;
+  tmp2 = 0;
+  tmp3 = ((int)data_0215e85c) + arg1 * 0x20;
+  do {
+    tmp1 = arg0 + tmp2;
+    tmp2 = tmp2 + 2;
+    *(u8 *)(tmp3 + 2) = *(u8 *)(tmp1 + 0x28);
+    *(u8 *)(tmp3 + 3) = *(u8 *)(tmp1 + 0x29);
+    tmp3 = tmp3 + 2;
+  } while (tmp2 < 0x20);
+  return;
+}
