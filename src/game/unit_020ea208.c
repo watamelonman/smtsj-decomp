@@ -176,3 +176,54 @@ u32 func_020eada8(void)
   }
   return 0;
 }
+
+
+
+/* decompiler-derived */
+u32 func_020eade4(void)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = Unk0ea208_Get_data_02176ddc();
+  if (tmp1 == 0) {
+    return 0;
+  }
+  if (*(int *)(tmp1 + 0x1cc) != 0) {
+    tmp2 = func_020445f4(0x27,2);
+    tmp2 = func_0204fed8(tmp2,2);
+    return tmp2;
+  }
+  return 0;
+}
+
+int func_020eb178();
+/* decompiler-derived */
+void func_020eb264(int arg0)
+{
+  int tmp1;
+  int *v2;
+  Unk0ea208_Unk_0eac80();
+  v2 = (int *)(arg0 + 0x70);
+  tmp1 = 0;
+  do {
+    if (*v2 != 0) {
+      func_020eb178(v2);
+    }
+    tmp1 = tmp1 + 1;
+    v2 = v2 + 0xe;
+  } while (tmp1 < 6);
+  Unk0ea208_Unk_0eaca0();
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020eae40(u32 arg0,u32 arg1,u32 arg2,u32 arg3)
+{
+  Unk065e88_SetUnkFieldsc_10();
+  Unk065e88_SetUnkField28(arg0,arg3);
+  Unk065e88_SetUnkField24(arg0,10);
+  Unk065e88_SetUnkField30(arg0,4);
+  Unk065e88_SetUnkField3c(arg0,2);
+  return;
+}

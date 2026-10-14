@@ -30,3 +30,13 @@
 - `func_020eb2a4`
 - `func_020ea828`
 - `func_020ea390`
+- `func_020eade4`: decompiler-derived
+- `func_020eb264`: decompiler-derived
+- `func_020eae40`: decompiler-derived
+
+## Not done in M1-T772
+- `func_020eac40`
+- `func_020ead64`
+- `func_020ea4d8`
+- `func_020ea524`
+- `func_020ea598`
