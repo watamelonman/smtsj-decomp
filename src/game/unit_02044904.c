@@ -254,3 +254,24 @@ u32 func_02046108(u16 *arg0)
   }
   return 2;
 }
+
+
+int func_020a5c14();
+/* decompiler-derived */
+u32 func_0204599c(u32 *arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  int tmp3;
+  tmp2 = 0;
+  tmp3 = 0;
+  do {
+    if ((*arg0 != 0) &&
+       (tmp1 = func_020a5c14(*arg0 & 0xffff,arg0[1],arg0[2]), tmp1 != 0)) {
+      tmp2 = 1;
+    }
+    tmp3 = tmp3 + 1;
+    arg0 = arg0 + 3;
+  } while (tmp3 < 6);
+  return tmp2;
+}
