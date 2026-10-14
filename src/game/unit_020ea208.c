@@ -120,3 +120,59 @@ void Unk0ea208_Unk_0eae20(u32 *arg0)
   arg0[6] = 0;
   arg0[7] = 0;
 }
+
+
+
+/* decompiler-derived */
+int * func_020eb2cc(int arg0)
+{
+  int *v1;
+  int tmp2;
+  v1 = (int *)(arg0 + 0x70);
+  tmp2 = 0;
+  do {
+    if (*v1 == 0) {
+      return v1;
+    }
+    tmp2 = tmp2 + 1;
+    v1 = v1 + 0xe;
+  } while (tmp2 < 6);
+  return (int *)0x0;
+}
+
+int func_020eb0a8();
+/* decompiler-derived */
+void func_020eb230(int arg0)
+{
+  int tmp1;
+  int *v2;
+  v2 = (int *)(arg0 + 0x70);
+  tmp1 = 0;
+  do {
+    if (*v2 != 0) {
+      func_020eb0a8(v2);
+    }
+    tmp1 = tmp1 + 1;
+    v2 = v2 + 0xe;
+  } while (tmp1 < 6);
+  return;
+}
+
+int func_020445f4();
+int func_0204fed8();
+/* decompiler-derived */
+u32 func_020eada8(void)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = Unk0ea208_Get_data_02176ddc();
+  if (tmp1 == 0) {
+    return 0;
+  }
+  if (*(int *)(tmp1 + 0x1cc) != 0) {
+    tmp2 = func_020445f4(0x27,0);
+    tmp2 = func_0204fed8(tmp2,3);
+    return tmp2;
+  }
+  return 0;
+}
