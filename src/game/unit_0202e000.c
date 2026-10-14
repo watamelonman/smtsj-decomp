@@ -98,3 +98,25 @@ void Unk02e000_Unk_02e144(void)
     value = value + 1;
   } while (value < 2);
 }
+
+
+
+/* decompiler-derived */
+int func_0202e75c(int arg0)
+{
+  return arg0 * 0x48 + *(int *)(((int)data_0215dd24) + 4);
+}
+
+
+/* decompiler-derived */
+int func_0202e884(void)
+{
+  return *(int *)(((int)data_0215dd24) + 4) + 0x65d0;
+}
+
+
+/* decompiler-derived */
+int func_0202e89c(int arg0)
+{
+  return *(int *)(((int)data_0215dd24) + 4) + 0x5d26 + arg0 * 4;
+}

@@ -28,3 +28,13 @@
 - `func_0202e114`
 - `func_0202e1f8`
 - `func_0202e000`
+- `func_0202e75c`: decompiler-derived
+- `func_0202e884`: decompiler-derived
+- `func_0202e89c`: decompiler-derived
+
+## Not done in M1-T651
+- `func_0202e5c4`
+- `func_0202e090`
+- `func_0202e5a8`
+- `func_0202e740`
+- `func_0202e7a4`
