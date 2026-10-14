@@ -182,3 +182,27 @@ u16 Unk0d297c_Unk_0d32c0(int *arg0)
   }
   return 0;
 }
+
+
+int func_02008848();
+/* decompiler-derived */
+void func_020d3330(int arg0)
+{
+  func_02008848(*(u32 *)(arg0 + 0x18),0,*(int *)(arg0 + 0x20) << 2);
+  *(u32 *)(arg0 + 0x1c) = 0;
+  return;
+}
+
+int func_02052fe0();
+/* decompiler-derived */
+void func_020d3200(u32 *arg0,int arg1)
+{
+  u32 tmp1;
+  arg0[1] = 0;
+  arg0[2] = arg1;
+  tmp1 = func_02052fe0(arg1 << 1);
+  *arg0 = tmp1;
+  arg0[3] = 0;
+  arg0[4] = 0;
+  return;
+}

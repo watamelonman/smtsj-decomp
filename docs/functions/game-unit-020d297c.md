@@ -30,3 +30,13 @@
 
 ## Not done in M1-T569
 - `func_020d322c`
+- `func_020d3330`: decompiler-derived
+- `func_020d3200`: decompiler-derived
+
+## Not done in M1-T570
+- `func_020d3308`
+- `func_020d3264`
+- `func_020d3004`
+- `func_020d2aa4`
+- `func_020d2f60`
+- `func_020d2b10`
