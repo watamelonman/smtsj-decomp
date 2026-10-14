@@ -21,3 +21,13 @@
 
 ## Not done in M1-T377
 - `func_020e5fb8`
+- `func_020e622c`: decompiler-derived
+- `func_020e631c`: decompiler-derived
+- `func_020e639c`: decompiler-derived
+- `func_020e641c`: decompiler-derived
+
+## Not done in M1-T375
+- `func_020e620c`
+- `func_020e626c`
+- `func_020e61e8`
+- `func_020e62a4`

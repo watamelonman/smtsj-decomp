@@ -110,3 +110,49 @@ void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1)
   func_020e61e8(value,arg0,arg1);
 }
 
+
+
+int func_0209502c();
+int func_020e613c();
+/* decompiler-derived */
+void func_020e622c(u32 arg0,u32 arg1,u32 arg2)
+{
+  u32 tmp1;
+  tmp1 = func_020e613c(arg1,arg2);
+  func_0209502c(arg0,tmp1,1);
+  return;
+}
+
+int func_0209500c();
+int func_020e6160();
+/* decompiler-derived */
+void func_020e631c(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  tmp1 = func_020e6160();
+  func_0209500c(tmp1,arg1 & 1);
+  func_0209500c(tmp1 + 1,(int)(arg1 & 2) >> 1);
+  return;
+}
+
+int func_020e6174();
+/* decompiler-derived */
+void func_020e639c(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  tmp1 = func_020e6174();
+  func_0209500c(tmp1,arg1 & 1);
+  func_0209500c(tmp1 + 1,(int)(arg1 & 2) >> 1);
+  return;
+}
+
+int func_020e6188();
+/* decompiler-derived */
+void func_020e641c(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  tmp1 = func_020e6188();
+  func_0209500c(tmp1,arg1 & 1);
+  func_0209500c(tmp1 + 1,(int)(arg1 & 2) >> 1);
+  return;
+}
