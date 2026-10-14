@@ -31,3 +31,13 @@
 - `func_020e626c`
 - `func_020e61e8`
 - `func_020e62a4`
+- `func_020e649c`: decompiler-derived
+
+## Not done in M1-T376
+- `func_020e6100`
+- `func_020e62e0`
+- `func_020e6360`
+- `func_020e63e0`
+- `func_020e6460`
+- `func_020e64e0`
+- `func_020e60b4`
