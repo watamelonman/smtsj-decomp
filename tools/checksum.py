@@ -27,6 +27,7 @@ def sha1(p, mask=()):
 
 
 def main():
+    import wtenv; wtenv.ensure()
     if not SUMS.exists() or not SUMS.read_text().strip():
         print("checksum: config/checksums.sha1 missing/empty; run tools/identify.py on your dump first")
         return 1

@@ -1,8 +1,8 @@
 /dsd
 /objdiff-cli
 /tools/wibo
-/tools/mwccarm/
-/extract/
+/tools/mwccarm
+/extract
 /build/
 /build.ninja
 /objdiff.json

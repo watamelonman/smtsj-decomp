@@ -27,7 +27,7 @@ NUM = re.compile(r'\b(0x[0-9a-fA-F]+|\d+)[uUlL]*\b')
 
 
 def added_lines(base):
-    out = subprocess.run(["git", "diff", "-U0", f"{base}...HEAD", "--", "src", "include"],
+    out = subprocess.run(["git", "diff", "-U0", f"{base}...HEAD", "--", "src", "libs", "include"],
                          capture_output=True, text=True, check=True).stdout
     path, ln = None, 0
     for line in out.splitlines():

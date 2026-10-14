@@ -16,11 +16,11 @@ import json, os, re, subprocess, sys
 
 BUILD = os.environ.get("FORGE_BUILD_CMD", "ninja")
 OBJDIFF = os.environ.get("OBJDIFF_CLI", "./objdiff-cli" if os.path.exists("objdiff-cli") else "objdiff-cli")
-FUNC_DEF = re.compile(r'^[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*\([^;]*\)\s*\{?\s*$')
+FUNC_DEF = re.compile(r'^[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*\([^;{]*\)\s*(\{.*)?$')
 
 
 def changed_c(base):
-    out = subprocess.run(["git", "diff", "--name-only", f"{base}...HEAD", "--", "src"],
+    out = subprocess.run(["git", "diff", "--name-only", f"{base}...HEAD", "--", "src", "libs"],
                          capture_output=True, text=True, check=True).stdout
     return [p for p in out.split() if p.endswith((".c", ".cpp")) and os.path.exists(p)]
 
@@ -37,6 +37,10 @@ def c_functions(path):
 
 
 def main():
+    import wtenv; wtenv.ensure()
+    global OBJDIFF
+    if OBJDIFF == "objdiff-cli" and os.path.exists("objdiff-cli"):
+        OBJDIFF = "./objdiff-cli"
     base = os.environ.get("FORGE_BASE", "HEAD~1")
     r = subprocess.run(BUILD, shell=True, capture_output=True, text=True)
     if r.returncode:
