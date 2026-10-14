@@ -8,3 +8,13 @@
 - `Unk0f3db4_Unk_0f3db4` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0f3db4_Unk_0f44d0` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0f3db4_Unk_0f4490` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020f4510`: decompiler-derived
+
+## Not done in M1-T504
+- `func_020f4538`
+- `func_020f4160`
+- `func_020f44b0`
+- `func_020f44e4`
+- `func_020f4398`
+- `func_020f4448`
+- `func_020f4070`

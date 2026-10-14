@@ -71,3 +71,14 @@ void Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
   value = func_020f3ec8();
   Unk0f3db4_Unk_0f44a8(*(u8 *)(value + arg1));
 }
+
+
+
+/* decompiler-derived */
+void func_020f4510(u32 arg0,int arg1)
+{
+  int tmp1;
+  tmp1 = func_020f3ec8();
+  Unk0f3db4_Unk_0f4528(*(u8 *)(tmp1 + arg1));
+  return;
+}
