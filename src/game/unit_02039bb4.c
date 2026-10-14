@@ -76,3 +76,69 @@ u32 Unk039bb4_Unk_03a298(int arg0)
         0x18);
   return 1;
 }
+
+
+void func_0203ab84(void);
+/* forwards to `func_0203ab84` */
+void func_02039d04(void) { func_0203ab84(); }
+
+
+/* decompiler-derived */
+u32 func_0203a1c8(int arg0)
+{
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a2f8(int arg0)
+{
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a7f8(int arg0)
+{
+  func_0203a334(arg0,0);
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a81c(int arg0)
+{
+  func_0203a334(arg0,1);
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a840(int arg0)
+{
+  func_0203a334(arg0,2);
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a864(int arg0)
+{
+  func_0203a334(arg0,3);
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a9c8(int arg0)
+{
+  func_0203a334(arg0,4);
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
