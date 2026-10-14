@@ -58,3 +58,38 @@ void Unk09a268_Unk_09a870(u32 arg0,u32 arg1)
 {
   func_0209a4a0(arg0,5,arg1);
 }
+
+
+extern u8 data_0213be64[];
+/* decompiler-derived */
+int func_0209c484(int arg0)
+{
+  return arg0 * 0x1c + ((int)data_0213be64);
+}
+
+int func_02034398();
+/* decompiler-derived */
+u32 func_0209a844(u32 arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_02034398();
+  if (*(int *)(tmp1 + 0x3e0) != 0) {
+    tmp2 = func_0209a48c(arg0,5);
+    return tmp2;
+  }
+  return 1;
+}
+
+int func_02057524();
+int func_02057534();
+/* decompiler-derived */
+void func_0209b3cc(int arg0)
+{
+  func_02057524(0);
+  if (*(int *)(arg0 + 0x2c) == 0) {
+    Unk_LoadPalette_020de678(*(u32 *)(arg0 + 0xc));
+  }
+  func_02057534();
+  return;
+}
