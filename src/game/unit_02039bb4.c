@@ -230,3 +230,90 @@ u32 func_02039ee8(int arg0)
   *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
   return 1;
 }
+
+
+
+/* decompiler-derived */
+u32 func_02039f4c(int arg0)
+{
+  int tmp1;
+  tmp1 = *(int *)(arg0 + 0x18) + 1;
+  *(int *)(arg0 + 0x18) = tmp1;
+  func_02039d3c(arg0,*(u32 *)(*(int *)(arg0 + 0xbc) + tmp1 * 4));
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_02039ff8(int arg0)
+{
+  func_02039d10(arg0,*(u32 *)
+                         (*(int *)(arg0 + 0xd8) +
+                         (u32)*(u16 *)
+                                (*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2) * 4));
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a030(int arg0)
+{
+  func_02039d3c(arg0,*(u32 *)
+                         (*(int *)(arg0 + 0xdc) +
+                         (u32)*(u16 *)
+                                (*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2) * 4));
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a068(int arg0)
+{
+  func_02039d68(arg0,*(int *)(arg0 + 0xc0) +
+                        (u32)*(u16 *)
+                               (*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2));
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a158(int arg0)
+{
+  u32 tmp1;
+  tmp1 = func_02039dc0();
+  *(u32 *)
+   (*(int *)(arg0 + 0xd8) +
+   (u32)*(u16 *)(*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2) * 4) = tmp1;
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+int func_02039e50();
+/* decompiler-derived */
+u32 func_0203a190(int arg0)
+{
+  u32 tmp1;
+  tmp1 = func_02039e50();
+  *(u32 *)
+   (*(int *)(arg0 + 0xdc) +
+   (u32)*(u16 *)(*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2) * 4) = tmp1;
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_0203a2c0(int arg0)
+{
+  func_02039d94(arg0,*(u32 *)(arg0 + 0x18));
+  *(u32 *)(arg0 + 0x18) =
+       *(u32 *)
+        (*(int *)(arg0 + 0xb4) +
+         (u32)*(u16 *)(*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2) * 0x20 +
+        0x18);
+  return 1;
+}

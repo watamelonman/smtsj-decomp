@@ -24,3 +24,13 @@
 - `func_0203a26c`: decompiler-derived
 - `func_02039f1c`: decompiler-derived
 - `func_02039ee8`: decompiler-derived
+- `func_02039f4c`: decompiler-derived
+- `func_02039ff8`: decompiler-derived
+- `func_0203a030`: decompiler-derived
+- `func_0203a068`: decompiler-derived
+- `func_0203a158`: decompiler-derived
+- `func_0203a190`: decompiler-derived
+- `func_0203a2c0`: decompiler-derived
+
+## Not done in M1-T677
+- `func_02039f80`
