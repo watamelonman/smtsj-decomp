@@ -8,7 +8,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 extern u8 data_02140ac8[];
 extern u32 data_0215dd24[];
+int func_0202e0cc();
 void func_0202e788(void);
+int func_0205a9d0();
 
 void func_0202e3e0(void);
 u32 func_0202e0c0(void);
@@ -16,6 +18,10 @@ void func_0202e798(void);
 void func_0202e0f4(u32 arg0);
 u32 func_0202e104(void);
 u32 func_0202e170(void);
+void func_0202e0ac(void);
+int func_0202e774(void);
+int func_0202e8b8(void);
+int func_0202e8f0(void);
 
 /* empty callback */
 void func_0202e3e0(void) { }
@@ -46,4 +52,32 @@ u32 func_0202e104(void)
 u32 func_0202e170(void)
 {
   return *(u32 *)(((int)data_0215dd24) + 4);
+}
+
+/* decompiler-derived */
+void func_0202e0ac(void)
+{
+  func_0205a9d0(0xa0);
+  func_0202e0cc();
+  return;
+}
+
+/* decompiler-derived */
+int func_0202e774(void)
+{
+  return *(int *)(((int)data_0215dd24) + 4) + 0x98;
+}
+
+/* decompiler-derived */
+int func_0202e8b8(void)
+{
+  int tmp1;
+  tmp1 = func_0202e774();
+  return tmp1 + 0xafc;
+}
+
+/* decompiler-derived */
+int func_0202e8f0(void)
+{
+  return *(int *)(((int)data_0215dd24) + 4) + 0x90;
 }
