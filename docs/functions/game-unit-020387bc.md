@@ -10,3 +10,13 @@
 - `func_02038f18`
 - `func_02038dc4`
 - `func_02038f48`
+- `func_02038edc`: decompiler-derived
+- `func_02038f7c`: decompiler-derived
+- `func_02038c74`: decompiler-derived
+- `func_02038df8`: decompiler-derived
+- `func_0203883c`: decompiler-derived
+- `func_02038cf8`: decompiler-derived
+- `func_02038e7c`: decompiler-derived
+
+## Not done in M1-T469
+- `func_020387bc`
