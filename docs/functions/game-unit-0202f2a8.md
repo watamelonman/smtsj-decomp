@@ -45,3 +45,13 @@
 - `func_0202fc10`
 - `func_02031408`
 - `func_0203538c`
+
+## Not done in M1-T1109
+- `func_0202f8ac`
+- `func_02034d5c`
+- `func_020360d8`
+- `func_0202f330`
+- `func_02034244`
+- `func_02035a70`
+- `func_02035c14`
+- `func_020333b4`
