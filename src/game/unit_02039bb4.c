@@ -142,3 +142,91 @@ u32 func_0203a9c8(int arg0)
   *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
   return 1;
 }
+
+
+
+/* decompiler-derived */
+u32 func_0203a30c(int arg0)
+{
+  *(u32 *)(arg0 + 0x18) =
+       *(u32 *)
+        (*(int *)(arg0 + 0xb8) +
+         (u32)*(u16 *)(*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2) * 0x20 +
+        0x18);
+  return 1;
+}
+
+
+/* decompiler-derived */
+void func_02039d10(int arg0,u32 arg1)
+{
+  *(u8 *)(arg0 + *(int *)(arg0 + 0x1c) + 0x20) = 0;
+  *(u32 *)(arg0 + *(int *)(arg0 + 0x1c) * 4 + 0x3c) = arg1;
+  *(int *)(arg0 + 0x1c) = *(int *)(arg0 + 0x1c) + 1;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02039d3c(int arg0,u32 arg1)
+{
+  *(u8 *)(arg0 + *(int *)(arg0 + 0x1c) + 0x20) = 1;
+  *(u32 *)(arg0 + *(int *)(arg0 + 0x1c) * 4 + 0x3c) = arg1;
+  *(int *)(arg0 + 0x1c) = *(int *)(arg0 + 0x1c) + 1;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02039d68(int arg0,u32 arg1)
+{
+  *(u8 *)(arg0 + *(int *)(arg0 + 0x1c) + 0x20) = 5;
+  *(u32 *)(arg0 + *(int *)(arg0 + 0x1c) * 4 + 0x3c) = arg1;
+  *(int *)(arg0 + 0x1c) = *(int *)(arg0 + 0x1c) + 1;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02039d94(int arg0,u32 arg1)
+{
+  *(u8 *)(arg0 + *(int *)(arg0 + 0x1c) + 0x20) = 4;
+  *(u32 *)(arg0 + *(int *)(arg0 + 0x1c) * 4 + 0x3c) = arg1;
+  *(int *)(arg0 + 0x1c) = *(int *)(arg0 + 0x1c) + 1;
+  return;
+}
+
+int func_02039dc0();
+/* decompiler-derived */
+u32 func_0203a26c(int arg0)
+{
+  int tmp1;
+  if (*(int *)(arg0 + 0x1c) != 0) {
+    tmp1 = func_02039dc0(arg0);
+    *(int *)(arg0 + 0x18) = tmp1 + 1;
+    return 1;
+  }
+  return 0;
+}
+
+
+/* decompiler-derived */
+u32 func_02039f1c(int arg0)
+{
+  func_02039d10(arg0,*(u16 *)(*(int *)(arg0 + 0xbc) + *(int *)(arg0 + 0x18) * 4 + 2)
+               );
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}
+
+
+/* decompiler-derived */
+u32 func_02039ee8(int arg0)
+{
+  int tmp1;
+  tmp1 = *(int *)(arg0 + 0x18) + 1;
+  *(int *)(arg0 + 0x18) = tmp1;
+  func_02039d10(arg0,*(u32 *)(*(int *)(arg0 + 0xbc) + tmp1 * 4));
+  *(int *)(arg0 + 0x18) = *(int *)(arg0 + 0x18) + 1;
+  return 1;
+}

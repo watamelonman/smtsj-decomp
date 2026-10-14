@@ -16,3 +16,11 @@
 - `func_0203a840`: decompiler-derived
 - `func_0203a864`: decompiler-derived
 - `func_0203a9c8`: decompiler-derived
+- `func_0203a30c`: decompiler-derived
+- `func_02039d10`: decompiler-derived
+- `func_02039d3c`: decompiler-derived
+- `func_02039d68`: decompiler-derived
+- `func_02039d94`: decompiler-derived
+- `func_0203a26c`: decompiler-derived
+- `func_02039f1c`: decompiler-derived
+- `func_02039ee8`: decompiler-derived
