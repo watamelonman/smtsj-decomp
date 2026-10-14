@@ -20,3 +20,13 @@
 - `func_0209a12c`
 - `func_0209a23c`
 - `func_0209a090`
+
+## Not done in M1-T555
+- `func_0209a0c0`
+- `func_0209a1a0`
+- `func_02099780`
+- `func_0209a158`
+- `func_020998f0`
+- `func_02099cc4`
+- `func_020999d4`
+- `func_02099abc`

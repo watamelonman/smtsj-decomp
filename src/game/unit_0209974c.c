@@ -107,3 +107,4 @@ void Unk09974c_Unk_09974c(int *arg0)
   arg0[4] = 0;
   func_02008848(arg0,0,0x48);
 }
+
