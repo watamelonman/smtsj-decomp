@@ -11,7 +11,14 @@ BUILD = os.environ.get("FORGE_BUILD_CMD", "ninja")
 SUMS = pathlib.Path("config/checksums.sha1")
 
 
-def sha1(p):
+def sha1(p, mask=()):
+    """SHA-1 of a file; byte ranges in `mask` (inclusive) are hashed as zeros. Used only for
+    the DS header CRCs that need the ARM7 BIOS (see configure.py)."""
+    if mask:
+        data = bytearray(open(p, "rb").read())
+        for a, b in mask:
+            data[a:b + 1] = bytes(b - a + 1)
+        return hashlib.sha1(data).hexdigest()
     h = hashlib.sha1()
     with open(p, "rb") as f:
         for chunk in iter(lambda: f.read(1 << 20), b""):
@@ -31,11 +38,13 @@ def main():
     for line in SUMS.read_text().splitlines():
         if not line.strip() or line.startswith("#"):
             continue
-        want, path = line.split(None, 1)
-        path = path.strip().lstrip("*")
+        parts = line.split()
+        want, path = parts[0], parts[1].lstrip("*")
+        mask = [tuple(int(x, 16) for x in r.split("-")) for r in parts[2][5:].split(",")] \
+            if len(parts) > 2 and parts[2].startswith("mask=") else []
         if not os.path.exists(path):
             print(f"checksum: {path} not built"); bad += 1; continue
-        got = sha1(path)
+        got = sha1(path, mask)
         if got != want.lower():
             print(f"checksum: {path} sha1 {got} != expected {want}"); bad += 1
     if not bad:

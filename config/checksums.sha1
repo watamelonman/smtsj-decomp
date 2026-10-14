@@ -1,0 +1,6 @@
+7b5745e40a07bba86d60954c20d62a99728d2538  build/build/arm9.bin
+7d261cd3c799999293d48ad61d066655cf1329a4  build/build/itcm.bin
+e27978157d1678ab74b7d84c34ce875d09986281  build/build/dtcm.bin
+0ec7bc43c92a5568679ab66b9c4ad04f48e3a20b  build/build/arm9_ov000.bin
+9778486c67c74550d754cc25797664ee7af6cc39  build/build/arm9_ov001.bin
+4ea3607a2a24ddbcafb21ea7f1c864bd4b0c8845  build/rom.nds  mask=0x6c-0x6d,0x15e-0x15f

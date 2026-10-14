@@ -1,15 +1,16 @@
 #!/usr/bin/env bash
-# Headless Ghidra pass: import the original executable, auto-analyse, export function data.
+# Headless Ghidra pass (verified on Ghidra 12.1.4 + OpenJDK 21, Strange Journey arm9).
 #   tools/ghidra_analyze.sh <binary> [processor]
-# Needs GHIDRA_HOME (Ghidra 11.x+). PS2: install the ghidra-emotionengine-reloaded extension
-# (processor MIPS-R5900 / "r5900"); NDS: ARM:LE:32:v5t, loaded at the arm9 base from
-# config (or the NTRGhidra loader extension for whole-ROM import).
+# Env: GHIDRA_HOME (default /opt/ghidra/ghidra_*), GHIDRA_LOADBASE (raw binaries),
+#      GHIDRA_MAXMEM (default 2G; the box is shared), REFORGE_SYMBOLS (dsd symbols.txt).
 set -euo pipefail
 BIN=${1:?binary}; PROC=${2:-${GHIDRA_PROCESSOR:-}}
-: "${GHIDRA_HOME:?set GHIDRA_HOME to your Ghidra install}"
+GHIDRA_HOME=${GHIDRA_HOME:-$(ls -d /opt/ghidra/ghidra_* 2>/dev/null | tail -1)}
+[ -x "$GHIDRA_HOME/support/analyzeHeadless" ] || { echo "set GHIDRA_HOME"; exit 1; }
 mkdir -p build/ghidra/proj
-args=(build/ghidra/proj reforge -import "$BIN" -overwrite
-      -scriptPath tools/ghidra -postScript ExportFunctions.py)
+args=(build/ghidra/proj reforge -import "$BIN" -overwrite -max-cpu "${GHIDRA_CPUS:-2}"
+      -scriptPath tools/ghidra -preScript ReForgeSymbols.java -postScript ReForgeExport.java -log build/ghidra/analyze.log)
 [ -n "$PROC" ] && args+=(-processor "$PROC")
 [ -n "${GHIDRA_LOADBASE:-}" ] && args+=(-loader BinaryLoader -loader-baseAddr "$GHIDRA_LOADBASE")
-REFORGE_OUT=build/ghidra "$GHIDRA_HOME/support/analyzeHeadless" "${args[@]}"
+# analyzeHeadless reads GHIDRA_HEADLESS_MAXMEM (Ghidra 11/12 support/analyzeHeadless)
+GHIDRA_HEADLESS_MAXMEM=${GHIDRA_MAXMEM:-2G} REFORGE_OUT=build/ghidra "$GHIDRA_HOME/support/analyzeHeadless" "${args[@]}"

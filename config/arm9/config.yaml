@@ -1,0 +1,41 @@
+rom_config: ../../extract/config.yaml
+build_path: ../../build
+delinks_path: ../../build/delinks
+enable_dsprot: true
+main_module:
+  name: main
+  object: ../../build/build/arm9.bin
+  hash: c2666d6a8c6f73bf
+  delinks: delinks.txt
+  symbols: symbols.txt
+  relocations: relocs.txt
+autoloads:
+  - kind: Itcm
+    name: itcm
+    object: ../../build/build/itcm.bin
+    hash: 6a423347a83ad32e
+    delinks: itcm/delinks.txt
+    symbols: itcm/symbols.txt
+    relocations: itcm/relocs.txt
+  - kind: Dtcm
+    name: dtcm
+    object: ../../build/build/dtcm.bin
+    hash: 47c37bba0e995f0e
+    delinks: dtcm/delinks.txt
+    symbols: dtcm/symbols.txt
+    relocations: dtcm/relocs.txt
+overlays:
+  - id: 0
+    name: ov000
+    object: ../../build/build/arm9_ov000.bin
+    hash: a032fa03c933a6c7
+    delinks: overlays/ov000/delinks.txt
+    symbols: overlays/ov000/symbols.txt
+    relocations: overlays/ov000/relocs.txt
+  - id: 1
+    name: ov001
+    object: ../../build/build/arm9_ov001.bin
+    hash: c2328ac346730563
+    delinks: overlays/ov001/delinks.txt
+    symbols: overlays/ov001/symbols.txt
+    relocations: overlays/ov001/relocs.txt

@@ -1,0 +1,10 @@
+platform = "nds"
+title = "MGTNDSNA"
+gamecode = "BMTE"
+arm9_load = "0x2000000"
+arm9_size = 784648
+# fingerprints:
+#   NitroSDK version string: '[SDK+NINTENDO:BACKUP]'
+#   middleware SDK tag: '[SDK+NINTENDO:BACKUP]'
+rom_sha1 = "179428d69edee7b1df83e2fc6e20d0ec0cc855b7"
+rom_path = "/workspace/roms/SMTSJ.nds"

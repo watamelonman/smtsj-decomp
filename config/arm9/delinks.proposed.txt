@@ -1,0 +1,40 @@
+# PROPOSED by tools/propose_tus.py - review before copying into delinks.txt
+
+src/BattleTask.c:
+    .text       start:0x0204870c end:0x02048ed8
+
+src/ImageObj.c:
+    .text       start:0x020773dc end:0x020774b4
+
+src/ScanVisor.c:
+    .text       start:0x020a3630 end:0x020a3760
+
+src/CampStatus.c:
+    .text       start:0x020dc6c0 end:0x020dca50
+
+src/SaveLoadTask.c:
+    .text       start:0x020df99c end:0x020dfd9c
+
+src/ImageBg.c:
+    .text       start:0x020e55fc end:0x020e5664
+
+src/CaveArea.c:
+    .text       start:0x020ed1a8 end:0x020ed26c
+
+src/CaveNpc.c:
+    .text       start:0x021000d0 end:0x021001cc
+
+src/UniteEvent.c:
+    .text       start:0x0210bc2c end:0x0210e324
+
+src/StaffRoll.c:
+    .text       start:0x02118974 end:0x02118b14
+
+src/BattleShowingTask.c:
+    .text       start:0x0211a140 end:0x0211a474
+
+src/BattleShowing_LvupStatusTask.c:
+    .text       start:0x0211c24c end:0x0211c4c4
+
+src/ImageBgDual3D.c:
+    .text       start:0x02125c68 end:0x02125cbc
