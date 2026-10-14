@@ -230,3 +230,27 @@ u32 Unk044904_Unk_046448(u16 *arg0)
   }
   return 1;
 }
+
+
+int func_020450b8();
+int func_02045138();
+int func_0204527c();
+int func_020aa118();
+int func_020f8098();
+/* decompiler-derived */
+u32 func_02046108(u16 *arg0)
+{
+  u32 tmp1;
+  int tmp2;
+  Unk044904_Unk_044fd8();
+  func_020aa118();
+  func_02045138();
+  func_0204527c();
+  func_020450b8();
+  tmp1 = Unk044904_Unk_045080();
+  tmp2 = func_020f8098(tmp1,0,0);
+  if (tmp2 != 0) {
+    *arg0 = 2;
+  }
+  return 2;
+}
