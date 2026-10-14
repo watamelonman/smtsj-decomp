@@ -10,3 +10,9 @@
 
 ## Not done in M1-T296
 - `func_0203c718`
+- `func_0203c6a4`: decompiler-derived
+
+## Not done in M1-T297
+- `func_0203c954`
+- `func_0203c9c0`
+- `func_0203c748`
