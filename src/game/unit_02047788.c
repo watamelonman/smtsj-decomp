@@ -28,3 +28,4 @@ int func_0204781c(void)
   tmp1 = func_0209d13c();
   return tmp1 != 0;
 }
+
