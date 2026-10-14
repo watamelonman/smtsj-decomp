@@ -19,6 +19,7 @@ int func_020e849c();
 int func_020e8d90();
 int func_020e8e8c();
 int func_020e9c00();
+int func_020ea5e4();
 
 void func_020e93d4(void);
 void func_020e8e60(void);
@@ -36,6 +37,14 @@ int func_020e8488(void);
 void func_020e9c94(u32 arg0,u32 arg1);
 u32 func_020e84e4(void);
 void func_020e84fc(void);
+u16 func_020e8514(void);
+void func_020e8b7c(void);
+void func_020e8b94(void);
+u32 func_020e8bac(void);
+void func_020e8c50(u32 arg0);
+u32 func_020e8c68(void);
+void func_020e8db8(void);
+u32 func_020e8f20(void);
 
 /* empty callback */
 void func_020e93d4(void) { }
@@ -141,4 +150,108 @@ void func_020e84fc(void)
   func_020e849c();
   func_02099d14();
   return;
+}
+
+/* decompiler-derived */
+u16 func_020e8514(void)
+{
+  u16 tmp1;
+  int tmp2;
+  tmp2 = func_020ea5e4();
+  if (tmp2 == 0) {
+    tmp1 = 0;
+  }
+  else {
+    tmp1 = *(u16 *)(tmp2 + 0x20);
+  }
+  return tmp1;
+}
+
+/* decompiler-derived */
+void func_020e8b7c(void)
+{
+  int tmp1;
+  tmp1 = func_020e9038();
+  if (tmp1 != 0) {
+    *(u32 *)(tmp1 + 0x18) = 1;
+  }
+  return;
+}
+
+/* decompiler-derived */
+void func_020e8b94(void)
+{
+  int tmp1;
+  tmp1 = func_020e9038();
+  if (tmp1 != 0) {
+    *(u32 *)(tmp1 + 0x18) = 0;
+  }
+  return;
+}
+
+/* decompiler-derived */
+u32 func_020e8bac(void)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_020e9038();
+  if (tmp1 == 0) {
+    tmp2 = 0;
+  }
+  else {
+    tmp2 = *(u32 *)(tmp1 + 0x18);
+  }
+  return tmp2;
+}
+
+/* decompiler-derived */
+void func_020e8c50(u32 arg0)
+{
+  int tmp1;
+  tmp1 = func_020e9038();
+  if (tmp1 != 0) {
+    *(u32 *)(tmp1 + 0x24) = arg0;
+  }
+  return;
+}
+
+/* decompiler-derived */
+u32 func_020e8c68(void)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_020e9038();
+  if (tmp1 == 0) {
+    tmp2 = 0;
+  }
+  else {
+    tmp2 = *(u32 *)(tmp1 + 0x24);
+  }
+  return tmp2;
+}
+
+/* decompiler-derived */
+void func_020e8db8(void)
+{
+  int tmp1;
+  tmp1 = func_020e9038();
+  if (tmp1 != 0) {
+    *(u32 *)(tmp1 + 0x184) = 1;
+  }
+  return;
+}
+
+/* decompiler-derived */
+u32 func_020e8f20(void)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_020e9038();
+  if (tmp1 == 0) {
+    tmp2 = 0x1b;
+  }
+  else {
+    tmp2 = *(u32 *)(tmp1 + 0x180);
+  }
+  return tmp2;
 }
