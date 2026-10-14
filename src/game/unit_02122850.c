@@ -45,3 +45,4 @@ void Unk122850_Unk_122978(int *arg0)
   func_0205bb68();
   *data_02176e80 = 0;
 }
+
