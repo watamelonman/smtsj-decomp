@@ -1,0 +1,106 @@
+# Hard list: functions skipped by the 2026-10-14 hand-matching batch
+
+Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
+
+- `func_0202e788` (M1-T649): left out of the card
+- `func_0202e8e0` (M1-T649): left out of the card
+- `func_020bbed4` (M1-T136): card skipped
+- `func_020953ac` (M1-T380): left out of the card
+- `func_02095398` (M1-T380): left out of the card
+- `func_0209509c` (M1-T380): left out of the card
+- `func_02098980` (M1-T631): left out of the card
+- `func_020d1454` (M1-T957): left out of the card
+- `func_0203e2f8` (M1-T019): card skipped
+- `func_020d3138` (M1-T567): left out of the card
+- card M1-T984: skipped (TU already has a hand-written file; needs merging by hand)
+- `func_020f8478` (M1-T150): left out of the card
+- `func_020cccb4` (M1-T866): left out of the card
+- `func_0209a48c` (M1-T1009): left out of the card
+- `func_020a1140` (M1-T447): left out of the card
+- `func_020feef0` (M1-T167): left out of the card
+- `func_020fee84` (M1-T167): left out of the card
+- `func_020fee98` (M1-T167): left out of the card
+- `func_020feeac` (M1-T167): left out of the card
+- `func_020feec0` (M1-T167): left out of the card
+- `func_020e6160` (M1-T373): left out of the card
+- `func_020e6174` (M1-T373): left out of the card
+- `func_020e6188` (M1-T373): left out of the card
+- `func_020e619c` (M1-T373): left out of the card
+- card M1-T692: skipped (TU already has a hand-written file; needs merging by hand)
+- card M1-T800: skipped (TU already has a hand-written file; needs merging by hand)
+- `func_02119640` (M1-T563): left out of the card
+- `func_020998c0` (M1-T553): left out of the card
+- card M1-T536: skipped (TU already has a hand-written file; needs merging by hand)
+- `func_020d6d48` (M1-T1122): left out of the card
+- `func_020d6d5c` (M1-T1122): left out of the card
+- `func_020d6d70` (M1-T1122): left out of the card
+- `func_020d6d84` (M1-T1122): left out of the card
+- `func_020db37c` (M1-T1122): left out of the card
+- `func_020dcb44` (M1-T1122): left out of the card
+- card M1-T1018: skipped (TU already has a hand-written file; needs merging by hand)
+- `func_020caea8` (M1-T107): card skipped
+- `func_020bc598` (M1-T545): left out of the card
+- `func_020bc5ac` (M1-T545): left out of the card
+- `func_020bc5c0` (M1-T545): left out of the card
+- `func_020bc6d4` (M1-T545): left out of the card
+- `func_020bc6e8` (M1-T545): left out of the card
+- `func_020bc4e0` (M1-T545): left out of the card
+- `func_020a8608` (M1-T790): left out of the card
+- card M1-T801: skipped (TU already has a hand-written file; needs merging by hand)
+- `func_02044b68` (M1-T878): left out of the card
+- card M1-T253: skipped (TU already has a hand-written file; needs merging by hand)
+- `func_0205b36c` (M1-T425): left out of the card
+- `func_0205af2c` (M1-T425): left out of the card
+- `func_0202e8cc` (M1-T650): left out of the card
+- `func_0202e578` (M1-T650): left out of the card
+- `func_0202e590` (M1-T650): left out of the card
+- `func_0202e228` (M1-T650): left out of the card
+- `func_020e2d6c` (M1-T1042): left out of the card
+- `func_020bd3fc` (M1-T434): left out of the card
+- `func_020bd5d4` (M1-T434): left out of the card
+- `func_020aa118` (M1-T1076): left out of the card
+- `func_020aa24c` (M1-T1076): left out of the card
+- `func_020ab4d4` (M1-T1076): left out of the card
+- `func_020afb40` (M1-T1076): left out of the card
+- `func_020eb6cc` (M1-T769): left out of the card
+- `func_020ea85c` (M1-T769): left out of the card
+- `func_020eac24` (M1-T769): left out of the card
+- `func_020a21f8` (M1-T627): left out of the card
+- `func_020a1728` (M1-T627): left out of the card
+- `func_020a1ba0` (M1-T627): left out of the card
+- `func_020a22c8` (M1-T627): left out of the card
+- `func_0203e878` (M1-T1086): left out of the card
+- `func_0203e920` (M1-T1086): left out of the card
+- `func_0203fa08` (M1-T1086): left out of the card
+- `func_02124284` (M1-T227): left out of the card
+- `func_0212429c` (M1-T227): left out of the card
+- `func_021242b4` (M1-T227): left out of the card
+- `func_021242cc` (M1-T227): left out of the card
+- `func_021242e4` (M1-T227): left out of the card
+- `func_020e66d8` (M1-T146): left out of the card
+- `func_020e6594` (M1-T146): left out of the card
+- `func_020e65b0` (M1-T146): left out of the card
+- `func_020cb0d0` (M1-T166): card skipped
+- `func_020cb12c` (M1-T166): card skipped
+- `func_020b0d48` (M1-T223): card skipped
+- card M1-T254: skipped (TU already has a hand-written file; needs merging by hand)
+- `func_0202d15c` (M1-T575): left out of the card
+- `func_0202dc44` (M1-T575): left out of the card
+- `func_0202d348` (M1-T575): left out of the card
+- `func_0202d36c` (M1-T575): left out of the card
+- `func_020f7c90` (M1-T621): left out of the card
+- `func_020f7ca8` (M1-T621): left out of the card
+- `func_020f780c` (M1-T621): left out of the card
+- `func_020f7c64` (M1-T621): left out of the card
+- `func_020f7210` (M1-T621): left out of the card
+- `func_021229b0` (M1-T110): card skipped
+- `func_0203c608` (M1-T118): left out of the card
+- `func_02094734` (M1-T492): left out of the card
+- `func_02096f0c` (M1-T559): left out of the card
+- `func_02096f28` (M1-T559): left out of the card
+- `func_020e8244` (M1-T900): left out of the card
+- `func_0206aed4` (M1-T994): left out of the card
+- `func_0206aeec` (M1-T994): left out of the card
+- `func_0206c8c8` (M1-T994): left out of the card
+- `func_0206c0d4` (M1-T994): left out of the card
+- `func_020e613c` (M1-T374): left out of the card
