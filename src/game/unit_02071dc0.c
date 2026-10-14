@@ -48,3 +48,4 @@ void func_02072200(void)
   func_02071e24();
   return;
 }
+
