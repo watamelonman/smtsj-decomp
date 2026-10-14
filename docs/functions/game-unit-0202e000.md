@@ -48,3 +48,13 @@
 - `func_0202e4dc`
 - `func_0202e840`
 - `func_0202e924`
+
+## Not done in M1-T654
+- `func_0202ebb8`
+- `func_0202ee18`
+- `func_0202e9c8`
+- `func_0202e7f4`
+- `func_0202ebfc`
+- `func_0202ecac`
+- `func_0202ed5c`
+- `func_0202ea68`
