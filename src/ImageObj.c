@@ -232,3 +232,26 @@ int func_02077688(void)
   } while (tmp3 < 3);
   return *(int *)(tmp1 + 0x10) == 0;
 }
+
+
+
+/* decompiler-derived */
+void func_020779a0(u32 *arg0,u32 arg1)
+{
+  arg0[3] = 0;
+  *arg0 = arg1;
+  arg0[5] = 400;
+  arg0[6] = 400;
+  arg0[7] = 0;
+  arg0[8] = 0;
+  arg0[9] = 0;
+  arg0[10] = 0;
+  arg0[0xb] = 0;
+  arg0[0xd] = 2;
+  *(u8 *)(arg0 + 0xe) = 0;
+  arg0[0x12] = 1;
+  arg0[0x13] = 0;
+  arg0[0x1b] = 0;
+  arg0[0x15] = 0xffffffff;
+  return;
+}

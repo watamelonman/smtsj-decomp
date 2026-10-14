@@ -38,3 +38,13 @@
 - `func_02077640`
 - `func_02077708`
 - `func_02077554`
+- `func_020779a0`: decompiler-derived
+
+## Not done in M1-T926
+- `func_020777e0`
+- `func_02077a4c`
+- `func_020779f4`
+- `func_02077ea4`
+- `func_02077f30`
+- `func_02077e0c`
+- `func_02077c30`
