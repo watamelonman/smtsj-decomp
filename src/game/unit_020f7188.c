@@ -20,3 +20,38 @@ void Unk0f7188_Nop_0f7ae0(void) { }
 
 /* empty callback */
 void Unk0f7188_Nop_0f7ae4(void) { }
+
+
+int func_020f7ca8();
+/* decompiler-derived */
+void func_020f7cc0(u32 arg0)
+{
+  switch(arg0) {
+  case 0:
+    goto LAB_020f7cfc;
+  case 1:
+    goto LAB_020f7cfc;
+  case 2:
+    break;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    break;
+  case 6:
+    break;
+  case 7:
+    goto LAB_020f7cfc;
+  case 8:
+    goto LAB_020f7cfc;
+  case 9:
+    break;
+  case 10:
+LAB_020f7cfc:
+    func_020f7ca8(1);
+    return;
+  }
+  func_020f7ca8(0);
+  return;
+}
