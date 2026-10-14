@@ -3,8 +3,18 @@ title = "MGTNDSNA"
 gamecode = "BMTE"
 arm9_load = "0x2000000"
 arm9_size = 784648
-# fingerprints:
-#   NitroSDK version string: '[SDK+NINTENDO:BACKUP]'
-#   middleware SDK tag: '[SDK+NINTENDO:BACKUP]'
+nitro_sdk = "4.2 relstep 30009 (0x04027539)"
 rom_sha1 = "179428d69edee7b1df83e2fc6e20d0ec0cc855b7"
 rom_path = "/workspace/roms/SMTSJ.nds"
+# fingerprints:
+#   Nintendo SDK library tag: '[SDK+NINTENDO:BACKUP]'
+#   middleware SDK tag: '[SDK+NINTENDO:BACKUP]'
+#   middleware (decompressed arm9): '[SDK+NINTENDO:BACKUP]'
+#   middleware (decompressed arm9): '[SDK+Actimagine:Mobiclip SDK V1.1.0]'
+#   middleware (decompressed arm9): 'ADXT/NITRO Ver.10.66 Build:Nov  6 2008 17:46:59\n'
+#   middleware (decompressed arm9): 'NITROCI/NITRO Ver.1.04 Build:Nov  6 2008 17:47:01\n'
+#   middleware (decompressed arm9): 'NITRORNA/NITRO Ver.1.06 Build:Nov  6 2008 17:47:03\n'
+#   middleware (decompressed arm9): 'STD/NITRO Ver.0.83 Build:Nov  6 2008 17:47:07\n'
+#   middleware (decompressed arm9): 'MFCI/NITRO Ver.1.23 Build:Nov  6 2008 17:47:04\n'
+#   middleware (decompressed arm9): 'AHX/NITRO Ver.1.86 Build:Nov  6 2008 17:47:05\n'
+#   middleware (decompressed arm9): 'ADXCS/NITRO Ver.1.25 Build:Nov  6 2008 17:47:06\n'

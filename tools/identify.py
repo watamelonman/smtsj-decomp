@@ -16,7 +16,7 @@ FINGERPRINTS = [
     (rb"GCC: \(GNU\) 3\.2[^\x00]*", "ps2", "ee-gcc3.2"),
     (rb"\(SN Systems?\)|SN Systems|ProDG", "ps2", "SN Systems ProDG (ee-gcc based snc/gcc)"),
     (rb"Metrowerks|CodeWarrior|MWCC|__MW_", "any", "Metrowerks CodeWarrior (MWCCPS2 / mwccarm)"),
-    (rb"\[SDK\+NINTENDO:[^\]]+\]", "nds", "NitroSDK version string"),
+    (rb"\[SDK\+NINTENDO:[^\]]+\]", "nds", "Nintendo SDK library tag"),
     (rb"\[SDK\+[A-Z]+:[^\]]+\]", "nds", "middleware SDK tag"),
     (rb"Libsd|libpad|sceSif|sceCd", "ps2", "Sony EE libraries (sce*)"),
     (rb"RenderWare|RwEngine|rwID", "ps2", "RenderWare middleware"),
@@ -74,6 +74,17 @@ def main():
         guess = "ee-gcc (sd)" if sd > 3 * sq else "MWCCPS2 (sq)" if sq > 3 * sd else "mixed/unclear"
         print(f"  callee-save spills: sd={sd} sq={sq} -> {guess}")
         info["save_style"] = guess
+    y = pathlib.Path("extract/arm9/arm9.yaml")   # written by `dsd rom extract`
+    if plat == "nds" and y.exists():
+        m = re.search(r"sdk_version:\s*(\d+)", y.read_text())
+        if m:
+            v = int(m.group(1))
+            info["nitro_sdk"] = f"{v >> 24}.{(v >> 16) & 0xff} relstep {v & 0xffff} ({v:#010x})"
+            print(f"  NitroSDK (arm9 build info): {info['nitro_sdk']}")
+        unp = pathlib.Path("extract/arm9/arm9.bin").read_bytes()
+        for rx in (rb"\[SDK\+[^\]]{3,60}\]", rb"[A-Z0-9]+/NITRO Ver\.[0-9.]+ Build:[^\x00]{0,24}"):
+            for mm in list(dict.fromkeys(re.findall(rx, unp)))[:8]:
+                hits.append(("middleware (decompressed arm9)", mm.decode("latin1")))
     for label, s in hits:
         print(f"  {label}: {s!r}")
     if not hits:
@@ -82,6 +93,11 @@ def main():
     sums = [f"{sha1(img)}  {img.name}"] + ([f"{sha1(scan)}  {scan.name}"] if a.elf else [])
     print("sha1:", *sums, sep="\n  ")
     print("Compare these with the Redump/No-Intro record before trusting the dump.")
+    old = pathlib.Path("config/target.toml")
+    if old.exists():   # keep keys added by hand or by setup (rom_path, rom_sha1, ...)
+        import tomllib
+        for k, v in tomllib.loads(old.read_text()).items():
+            info.setdefault(k, v)
     with open("config/target.toml", "w") as f:
         for k, v in info.items():
             f.write(f'{k} = {v!r}\n'.replace("'", '"'))

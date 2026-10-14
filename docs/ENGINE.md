@@ -40,8 +40,21 @@ a few small functions; 2.0/sp1p5 is only the zeldaret default.
 Optional: zeldaret also fetch encounter/sjiswrap for Shift-JIS string literals in source; add it
 if the game's source uses Japanese strings.
 
-## Verified vs assumed
-- Verified: tool self-tests; dsd command names/flags from its README (2026-10).
-- Assumed/untested: configure.py's ninja rules and the mwldarm flags are modelled on
-  zeldaret/ph and mariopartyDS but have not been run; `dsd lcf` output-file flags may differ by
-  dsd version (check `dsd lcf --help`).
+## Verified vs assumed (Strange Journey BMTE, 2026-10-13, on the shared box)
+- Verified end to end: verify_rom (No-Intro match) -> download_tools -> `dsd rom extract`
+  (decompress + DS Protect decrypt) -> identify (NitroSDK 4.2 from arm9 build info) ->
+  `dsd init --output-path config` -> configure.py -> ninja (delink, lcf, mwldarm, rom config,
+  rom build) -> checksum: arm9/itcm/dtcm/ov000/ov001 byte-identical; full ROM identical
+  except the 4 BIOS-dependent CRC bytes (0x6C-0x6D secure-area CRC, 0x15E-0x15F header CRC).
+  Add your own `arm7_bios.bin` (as zeldaret does) to make the full ROM match.
+- Verified: headless Ghidra 12.1.4 (OpenJDK 21, 2 GB heap, 2 CPUs, ~2 min) with
+  ReForgeSymbols (pre) + ReForgeExport (post); propose_tus -> 13 anchor TUs -> configure ->
+  checksum still identical -> objdiff report -> make_cards (13 cards).
+- Verified: match gate on a probe TU (correct C passes at 100%, wrong field offset fails at
+  99.5%); flipping a TU to `complete` links the compiled C and the image still matches.
+- Compiler: three tiny functions matched with 2.0/sp1p5. The same probes rule out mwccarm
+  1.2 (`push {r3, lr}` padding) but give identical output on every 2.0 release, so the exact
+  2.0 service pack is NOT yet pinned. Settle it with a 50-200 byte function compiled under
+  2.0/base, sp1, sp1p2, sp1p5, sp1p6, sp1p7, sp2, sp2p2, sp2p3, sp2p4.
+- Not yet: overlays/ITCM in Ghidra (only main arm9 is imported), C++ name mangling, `.data`/
+  `.rodata`/`.bss` ranges for TUs, decomp.me upload, dsd `check modules/symbols` rules.
