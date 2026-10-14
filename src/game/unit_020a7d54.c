@@ -124,3 +124,55 @@ void Unk0a7d54_Unk_0a8b44(int arg0)
   *(u32 *)(arg0 + 0x10) = 0;
   return;
 }
+
+
+int func_020a0da4();
+int func_020a0dd8();
+int func_020a8b70();
+/* decompiler-derived */
+void func_020a8c40(u32 arg0)
+{
+  int tmp1;
+  tmp1 = func_020a0dd8(0x1d);
+  if (tmp1 != 0) {
+    func_020a0da4(0x52);
+  }
+  func_020a8b70(arg0);
+  return;
+}
+
+int func_020a7ee8();
+/* decompiler-derived */
+void func_020a84cc(int arg0)
+{
+  int tmp1;
+  int *v2;
+  v2 = (int *)(arg0 + 0x48);
+  tmp1 = 0;
+  do {
+    if (*v2 != 0) {
+      func_020a7ee8(v2);
+    }
+    tmp1 = tmp1 + 1;
+    v2 = v2 + 10;
+  } while (tmp1 < 0x20);
+  return;
+}
+
+int func_020a82f0();
+/* decompiler-derived */
+void func_020a8500(int arg0)
+{
+  int tmp1;
+  int *v2;
+  v2 = (int *)(arg0 + 0x48);
+  tmp1 = 0;
+  do {
+    if (*v2 != 0) {
+      func_020a82f0(v2);
+    }
+    tmp1 = tmp1 + 1;
+    v2 = v2 + 10;
+  } while (tmp1 < 0x20);
+  return;
+}
