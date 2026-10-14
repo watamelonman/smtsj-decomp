@@ -42,3 +42,4 @@ void func_020a23f4(u32 arg0)
   func_020a2d0c(arg0);
   return;
 }
+
