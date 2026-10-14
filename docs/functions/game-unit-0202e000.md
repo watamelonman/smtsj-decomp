@@ -38,3 +38,13 @@
 - `func_0202e5a8`
 - `func_0202e740`
 - `func_0202e7a4`
+
+## Not done in M1-T653
+- `func_0202e7c0`
+- `func_0202e180`
+- `func_0202e034`
+- `func_0202eb0c`
+- `func_0202e1b8`
+- `func_0202e4dc`
+- `func_0202e840`
+- `func_0202e924`
