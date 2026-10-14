@@ -45,3 +45,4 @@ void func_0206e680(void)
   *data_02170cc8 = 0;
   return;
 }
+
