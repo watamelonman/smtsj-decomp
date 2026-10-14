@@ -54,3 +54,13 @@
 - `func_020a2950`
 - `func_020a379c`
 - `func_020a4284`
+- `func_020a284c`: decompiler-derived
+- `func_020a28b0`: decompiler-derived
+- `func_020a2660`: decompiler-derived
+- `func_020a273c`: decompiler-derived
+
+## Not done in M1-T989
+- `func_020a45c0`
+- `func_020a4950`
+- `func_020a4994`
+- `func_020a3760`
