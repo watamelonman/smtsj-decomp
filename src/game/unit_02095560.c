@@ -157,3 +157,39 @@ void Unk095560_Unk_096170(void)
   Unk02d15c_Unk_02d81c();
   func_02065ca8();
 }
+
+
+
+/* decompiler-derived */
+u32 func_02095a2c(u32 arg0)
+{
+  int tmp1;
+  func_020956e8();
+  tmp1 = func_02095950(1,arg0);
+  if (tmp1 != 0) {
+    func_020958c8(tmp1);
+    func_0202d15c();
+    return 1;
+  }
+  return 0;
+}
+
+int func_0202dc44();
+int func_0209560c();
+/* decompiler-derived */
+u32 func_02095660(void)
+{
+  u32 *v1;
+  int tmp2;
+  int tmp3;
+  tmp3 = 2;
+  do {
+    v1 = (u32 *)Unk094fe0_Unk_094fec(tmp3);
+    tmp2 = func_0202dc44(tmp3);
+    func_0209560c(tmp3);
+    *v1 = 0xffffffff;
+    tmp3 = tmp3 + 1;
+    *(u32 *)(tmp2 + 0x50) = 0xffffffff;
+  } while (tmp3 < 8);
+  return 1;
+}
