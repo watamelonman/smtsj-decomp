@@ -10,3 +10,12 @@
 - `func_0211f06c`
 - `func_0211ef74`
 - `func_0211efb0`
+- `func_0211ec7c`: decompiler-derived
+- `func_0211f004`: decompiler-derived
+
+## Not done in M1-T317
+- `func_0211eccc`
+- `func_0211eea8`
+- `func_0211eda0`
+- `func_0211ed28`
+- `func_0211ee10`

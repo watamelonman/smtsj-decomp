@@ -56,3 +56,45 @@ void Unk11ec7c_Unk_11ef2c(int arg0)
   *(u32 *)(arg0 + 0x20) = 0;
   return;
 }
+
+
+int func_02044534();
+int func_02053000();
+/* decompiler-derived */
+void func_0211ec7c(int arg0)
+{
+  func_02053000(*(u32 *)(arg0 + 0x26c));
+  *(u32 *)(arg0 + 0x26c) = 0;
+  func_02053000(*(u32 *)(arg0 + 0xa8));
+  *(u32 *)(arg0 + 0xa8) = 0;
+  func_02053000(*(u32 *)(arg0 + 0xb0));
+  *(u32 *)(arg0 + 0xb0) = 0;
+  if (*(int *)(arg0 + 0x274) == 0) {
+    return;
+  }
+  func_02044534(0x24);
+  return;
+}
+
+extern u8 data_02151fb4[];
+int func_02008848();
+int func_0205dcd4();
+int func_020629ac();
+/* decompiler-derived */
+void func_0211f004(int *arg0)
+{
+  int tmp1;
+  if (*arg0 == 1) {
+    return;
+  }
+  func_02008848(arg0,0,0x28);
+  *arg0 = 1;
+  arg0[3] = 0;
+  arg0[4] = 0;
+  func_0202e0cc();
+  tmp1 = func_0205dcd4(((int)data_02151fb4),1);
+  arg0[1] = tmp1;
+  tmp1 = func_020629ac(5,1,1,1);
+  arg0[2] = tmp1;
+  return;
+}
