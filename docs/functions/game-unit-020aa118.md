@@ -10,3 +10,13 @@
 - `func_020aa24c`: no candidate matched locally
 - `func_020ab4d4`: no candidate matched locally
 - `func_020afb40`: no candidate matched locally
+- `func_020afb64`: decompiler-derived
+
+## Not done in M1-T1077
+- `func_020aa224`
+- `func_020ab34c`
+- `func_020af7cc`
+- `func_020af7f8`
+- `func_020aa264`
+- `func_020af8d8`
+- `func_020ab8f8`

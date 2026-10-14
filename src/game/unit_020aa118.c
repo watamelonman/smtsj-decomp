@@ -35,3 +35,16 @@ int Unk0aa118_Unk_0ab4b8(void)
   value = Unk044904_Unk_04509c();
   return *(int *)(value + 0x18) != 0;
 }
+
+
+int func_02008848();
+int func_02052fe0();
+/* decompiler-derived */
+u32 * func_020afb64(u32 arg0)
+{
+  u32 *v1;
+  v1 = (u32 *)func_02052fe0(0x94);
+  func_02008848(v1,0,0x94);
+  *v1 = arg0;
+  return v1;
+}
