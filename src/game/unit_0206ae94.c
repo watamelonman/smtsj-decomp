@@ -53,3 +53,4 @@ void Unk06ae94_Unk_06aeb4(u32 arg0)
   }
   func_02052d58();
 }
+

@@ -10,3 +10,13 @@
 - `func_0206aeec`: no candidate matched locally
 - `func_0206c8c8`: no candidate matched locally
 - `func_0206c0d4`: no candidate matched locally
+
+## Not done in M1-T995
+- `func_0206c0b0`
+- `func_0206ca30`
+- `func_0206c0f4`
+- `func_0206c8f8`
+- `func_0206b0ac`
+- `func_0206d4e8`
+- `func_0206ca64`
+- `func_0206b8e4`
