@@ -30,3 +30,33 @@ void func_020a6150(void)
   *(u8 *)(tmp1 + 0x39) = 0;
   return;
 }
+
+
+int func_020a1854();
+int func_020a59f4();
+/* decompiler-derived */
+int func_020a5c14(u32 arg0,u32 arg1,u32 arg2)
+{
+  u32 tmp1;
+  int tmp2;
+  tmp1 = func_020a1854();
+  tmp2 = func_020a59f4(tmp1,arg1,arg2);
+  return tmp2 != 0;
+}
+
+int func_0205c41c();
+int func_0205ca88();
+/* decompiler-derived */
+void func_020a611c(void)
+{
+  u32 *v1;
+  int tmp2;
+  v1 = (u32 *)func_020a5e28();
+  if (v1 == (u32 *)0x0) {
+    return;
+  }
+  tmp2 = func_0205ca88(*v1);
+  func_0205c41c(*v1,tmp2 + -1);
+  *(u8 *)(v1 + 0xe) = 0;
+  return;
+}
