@@ -5,7 +5,7 @@
 set -euo pipefail
 ROM=$(realpath "${1:?path to YOUR OWN .nds dump}")
 python3 tools/verify_rom.py "$ROM"                      # No-Intro check; stops on mismatch
-[ -x ./dsd ] && [ -d tools/mwccarm ] && [ -x tools/wibo ] || python3 tools/download_tools.py
+if ! { [ -x ./dsd ] && [ -d tools/mwccarm ] && [ -x tools/wibo ]; }; then python3 tools/download_tools.py; fi
 ./dsd rom extract --rom "$ROM" --output-path extract    # decompresses arm9/overlays, decrypts DS Protect
 python3 tools/identify.py "$ROM"                        # gamecode, NitroSDK version (from extract), middleware
 grep -q '^rom_path' config/target.toml || echo "rom_path = \"$ROM\"" >> config/target.toml

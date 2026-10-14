@@ -5,7 +5,7 @@
 #      GHIDRA_MAXMEM (default 2G; the box is shared), REFORGE_SYMBOLS (dsd symbols.txt).
 set -euo pipefail
 BIN=${1:?binary}; PROC=${2:-${GHIDRA_PROCESSOR:-}}
-GHIDRA_HOME=${GHIDRA_HOME:-$(ls -d /opt/ghidra/ghidra_* 2>/dev/null | tail -1)}
+GHIDRA_HOME=${GHIDRA_HOME:-$(find /opt/ghidra -maxdepth 1 -name "ghidra_*" -type d 2>/dev/null | sort | tail -1)}
 [ -x "$GHIDRA_HOME/support/analyzeHeadless" ] || { echo "set GHIDRA_HOME"; exit 1; }
 mkdir -p build/ghidra/proj
 args=(build/ghidra/proj reforge -import "$BIN" -overwrite -max-cpu "${GHIDRA_CPUS:-2}"
