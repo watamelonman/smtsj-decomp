@@ -74,3 +74,50 @@ void Unk122e1c_Unk_12332c(Unk122e1cWork *work)
 {
   func_0205caa8(work->UnkField0014,1);
 }
+
+
+int func_020fee98();
+/* decompiler-derived */
+void func_02123024(int arg0)
+{
+  func_020fee98();
+  *(u32 *)(arg0 + 0x114) = 0;
+  *(u8 *)(arg0 + 0x61) = 0;
+  *(u8 *)(arg0 + 0x60) = 1;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02123048(int arg0)
+{
+  func_020fee98();
+  *(u32 *)(arg0 + 0x114) = 0;
+  *(u8 *)(arg0 + 0x61) = 0;
+  *(u8 *)(arg0 + 0x60) = 2;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_021232f8(int arg0)
+{
+  func_020fee98();
+  *(u32 *)(arg0 + 0x114) = 0;
+  *(u8 *)(arg0 + 0x61) = 0;
+  *(u8 *)(arg0 + 0x60) = 6;
+  return;
+}
+
+int func_020feec0();
+/* decompiler-derived */
+void func_021232c8(int arg0)
+{
+  func_020feec0();
+  Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x14));
+  *(u32 *)(arg0 + 0x114) = 0;
+  *(u32 *)(arg0 + 0xb8) = 0xffffffa4;
+  *(u32 *)(arg0 + 0x6c) = 0xffffffa4;
+  *(u8 *)(arg0 + 0x60) = 0;
+  return;
+}
