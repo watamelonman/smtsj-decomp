@@ -59,3 +59,28 @@ void Unk0de678_Unk_0dee2c(int arg0)
 {
   Unk0e651c_Unk_0e666c(arg0 + 0x5f1);
 }
+
+
+
+/* decompiler-derived */
+void func_020df584(void)
+{
+  *(u32 *)(((int)data_021508d4) + 0x2c) = 1;
+  return;
+}
+
+int func_0205bb68();
+int func_020a2414();
+int func_020fc6a0();
+/* decompiler-derived */
+void func_020df0a4(void)
+{
+  func_020a2414();
+  func_02044534(0x1e);
+  Unk065e88_Unk_065eac();
+  Unk0de678_Unk_0df5a8();
+  func_020fc6a0();
+  func_0205bb68();
+  Unk095560_Unk_096130();
+  return;
+}
