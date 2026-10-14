@@ -30,3 +30,8 @@
 - `func_02097e6c`
 - `func_02097ad0`
 - `func_02098050`
+
+## Not done in M1-T476
+- `func_02097a20`
+- `func_02097f68`
+- `func_02097c18`
