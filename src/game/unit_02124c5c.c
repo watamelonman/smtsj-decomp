@@ -15,3 +15,4 @@ void func_02124cb0(void)
   func_02124ce8(2);
   return;
 }
+

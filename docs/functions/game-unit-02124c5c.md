@@ -10,3 +10,9 @@
 - `func_02124d8c`
 - `func_02124cc4`
 - `func_02124dac`
+
+## Not done in M1-T051
+- `func_02124dd8`
+- `func_02124e04`
+- `func_02124c5c`
+- `func_02124ce8`
