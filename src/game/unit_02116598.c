@@ -266,3 +266,16 @@ void func_021172bc(void)
   func_02061424();
   return;
 }
+
+
+int func_02117a68();
+/* decompiler-derived */
+void func_02117cd4(void)
+{
+  u32 tmp1;
+  func_02117790();
+  func_02117294();
+  tmp1 = func_02117a68();
+  *data_02176e68 = tmp1;
+  return;
+}
