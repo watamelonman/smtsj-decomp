@@ -39,3 +39,16 @@ void Unk0a163c_Unk_0a1834(u32 arg0)
   value = func_020445f4(0x12,0);
   func_0204fed8(value,arg0);
 }
+
+
+int func_02053000();
+int func_020a1a24();
+/* decompiler-derived */
+u32 func_020a1ae0(u32 *arg0)
+{
+  func_020a1a24();
+  func_02053000(arg0[1]);
+  arg0[1] = 0;
+  *arg0 = 0;
+  return 1;
+}
