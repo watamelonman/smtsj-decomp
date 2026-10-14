@@ -50,3 +50,4 @@ void Unk0f470c_Unk_0f4c20(u32 arg0)
   value2 = func_020ea630(8);
   func_020d1d94(value2,0xffffffff);
 }
+

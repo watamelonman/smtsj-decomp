@@ -10,3 +10,7 @@
 - `func_020f4928`
 - `func_020f4b80`
 - `func_020f49f4`
+
+## Not done in M1-T372
+- `func_020f4878`
+- `func_020f4790`
