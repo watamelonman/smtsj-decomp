@@ -188,3 +188,56 @@ void ExpGauge_Update(ExpGauge *g) {
         func_0205c6e0(g->levelUpAnim);
     }
 }
+
+
+int func_020445f4();
+int func_0204fed8();
+/* decompiler-derived */
+void func_0211c4c4(u32 arg0)
+{
+  u32 tmp1;
+  tmp1 = func_020445f4(0x29);
+  func_0204fed8(tmp1,arg0);
+  return;
+}
+
+int func_02044534();
+int func_0211a380();
+/* decompiler-derived */
+void func_0211b684(void)
+{
+  func_0211a380();
+  func_02044534(0x17);
+  func_02044534(0x21);
+  func_02044534(0x29);
+  return;
+}
+
+extern u32 data_02176e74[];
+int func_02053000();
+int func_020a1ae0();
+/* decompiler-derived */
+void func_0211ce80(int arg0)
+{
+  func_02053000(*(u32 *)(arg0 + 4));
+  *(u32 *)(arg0 + 4) = 0;
+  func_020a1ae0(arg0 + 0x10);
+  *data_02176e74 = 0;
+  return;
+}
+
+int func_0205c3dc();
+/* decompiler-derived */
+void func_0211a01c(int arg0)
+{
+  if (*(int *)(arg0 + 0x18) != 0) {
+    func_0205c3dc();
+    *(u32 *)(arg0 + 0x18) = 0;
+  }
+  if (*(int *)(arg0 + 0x1c) == 0) {
+    return;
+  }
+  func_0205c3dc();
+  *(u32 *)(arg0 + 0x1c) = 0;
+  return;
+}
