@@ -52,3 +52,4 @@ void CaveArea_Unk_0ed26c(int arg0)
   *(u32 *)(arg0 + 0x124) = 0;
   return;
 }
+
