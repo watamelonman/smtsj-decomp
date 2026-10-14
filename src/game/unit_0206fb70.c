@@ -23,3 +23,4 @@ void func_0206fb70(int arg0,int arg1,int arg2,int arg3)
   func_0200219c((arg3 - arg2) * 0x1000,(arg1 - arg0) * 0x1000);
   return;
 }
+
