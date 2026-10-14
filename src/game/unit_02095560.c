@@ -69,3 +69,25 @@ void Unk095560_Unk_095764(u32 arg0)
 {
   func_020445d0(0x1b,arg0);
 }
+
+
+int func_020775ec();
+int func_02077640();
+/* decompiler-derived */
+void func_0209615c(void)
+{
+  func_020775ec();
+  func_02077640();
+  func_02065ca8();
+  return;
+}
+
+int func_02077750();
+int func_020e5550();
+/* decompiler-derived */
+void func_020958a8(u32 arg0,u32 arg1)
+{
+  func_020e5550();
+  func_02077750(arg0,arg1);
+  return;
+}
