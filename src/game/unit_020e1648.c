@@ -142,3 +142,20 @@ void func_020e533c(int arg0)
   func_020e5090(*(u32 *)(arg0 + 0xea0),3);
   return;
 }
+
+
+extern u8 data_02176c80[];
+int func_0202e0cc();
+int func_020fc84c();
+/* decompiler-derived */
+void func_020e16f0(u8 *arg0)
+{
+  *(u8 **)(((int)data_02176c80) + 4) = arg0;
+  func_0202e0cc();
+  func_020fc84c(0);
+  *(u32 *)(arg0 + 0xee4) = 0;
+  arg0[1] = 0;
+  *arg0 = 1;
+  arg0[0xeec] = 0xff;
+  return;
+}
