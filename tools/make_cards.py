@@ -19,6 +19,7 @@ def main():
     ap.add_argument("--milestone", type=int, default=1)
     ap.add_argument("--max-funcs", type=int, default=8)
     ap.add_argument("--limit", type=int, default=50)
+    ap.add_argument("--skip-libs", action="store_true", help="no cards for libs/ units (SDK/middleware)")
     ap.add_argument("--hard-pct", type=float, default=0.0,
                     help="also list functions whose last attempt stalled below this % in build/hard.txt")
     a = ap.parse_args()
@@ -39,14 +40,19 @@ def main():
         if not todo:
             continue
         todo.sort(key=lambda f: int(f.get("size", 0)))
-        unit = re.sub(r'^(src/|asm/)', '', u["name"])
-        unit = re.sub(r'\.(c|cpp)$', '', unit)
+        upath = re.sub(r'\.(c|cpp)$', '', re.sub(r'^asm/', 'src/', u["name"]))
+        if not upath.startswith(("src/", "libs/")):
+            upath = "src/" + upath
+        unit = re.sub(r'^src/', '', upath)
+        is_lib = upath.startswith("libs/")
+        if is_lib and a.skip_libs:
+            continue
         prev = None
         for i in range(0, len(todo), a.max_funcs):
             if made >= a.limit:
                 break
             n += 1; made += 1
-            cid = f"M{a.milestone}-T{n:03d}"
+            cid = f"M{a.milestone + (1 if is_lib else 0)}-T{n:03d}"
             chunk = todo[i:i + a.max_funcs]
             lines = []
             for f in chunk:
@@ -54,7 +60,9 @@ def main():
                 hint = f" (Ghidra: `{g['suggested']}`)" if g.get("suggested") else ""
                 lines.append(f"- [ ] `{f['name']}` size {f.get('size', '?')}, now "
                              f"{float(f.get('fuzzy_match_percent', 0)):.1f}%{hint}")
-            GOAL = (f"Write `src/{unit}.c` (create it) with readable C for these functions so that\n"
+            GOAL = (("Library code (SDK/middleware): first look for the matching public/known source\n"
+                     "(e.g. NitroSDK/MSL code reconstructed in pret/pokeplatinum, zeldaret) before writing new C.\n")
+                    if is_lib else "") + (f"Write `{upath}.c` (create it) with readable C for these functions so that\n"
                     "objdiff shows them identical to the delinked original. The TU is linked from the\n"
                     "delink until a human marks it `complete` in config/arm9/delinks.txt."
                     if pathlib.Path("config/arm9/delinks.txt").exists() else
@@ -63,11 +71,11 @@ def main():
             slug = re.sub(r'[^a-z0-9]+', '-', unit.lower()).strip('-')[:40]
             body = f"""+++
 id = "{cid}"
-title = "Match {unit} ({len(chunk)} functions)"
-milestone = {a.milestone}
+title = "Match {upath.removeprefix('src/')} ({len(chunk)} functions)"
+milestone = {a.milestone + (1 if is_lib else 0)}
 deps = {json.dumps([prev] if prev else [])}
 agent = "any"
-owns = ["src/{unit}.c", "src/{unit}.cpp", "include/{unit}.h", "docs/functions/{slug}.md"]
+owns = ["{upath}.c", "{upath}.cpp", "include/{unit}.h", "docs/functions/{slug}.md"]
 docs = ["docs/functions/{slug}.md"]
 tests_required = false
 may_edit_tests = false

@@ -1,5 +1,5 @@
 # Fill in per game (docs/ENGINE.md). tools/download_tools.py fetches everything below.
-mwcc_dir = "tools/mwccarm/2.0/sp1p5"   # zeldaret ph/st + mariopartyDS default; confirm per game
+mwcc_dir = "tools/mwccarm/2.0/sp1p5"   # SJ: >=sp1p5 (func_02058bb8 exact on sp1p5..sp2p4, not base/sp1/sp1p2; lib TU). Game-code upper bound unpinned
 wine = "tools/wibo"                     # zeldaret default on Linux; or "wine"
 dsd = "./dsd"
 cflags = "-O4,p -proc arm946e -enum int -lang c99 -Cpp_exceptions off -interworking -gccinc -nolink -msgstyle gcc -sym on"
@@ -7,7 +7,7 @@ decompme_compiler = "mwcc_30_131"       # decomp.me id that zeldaret pairs with 
 
 [tools]
 dsd = "v0.12.1"        # latest 2026-10; zeldaret/ph pins v0.11.0, mariopartyDS v0.7.0
-objdiff = "v3.4.0"     # zeldaret/ph pin
+objdiff = "v3.8.2"     # v3.4.0 (zeldaret pin) panicked in arm.rs on Strange Journey units
 wibo = "1.2.0"         # latest; zeldaret/ph pins 0.6.16 (asset name differs: plain `wibo`)
 mwccarm_url = "https://decomp.aetias.com/files/mwccarm.zip"
 mwccarm_sha256 = "6f7b16098d2b1bc9b45b278f6e6e24327c4da9b3ebf7924be1afd4a721d83976"  # fetched 2026-10-13

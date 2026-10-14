@@ -15,7 +15,7 @@ import hashlib, json, pathlib, subprocess, tomllib
 ROOT = pathlib.Path(__file__).resolve().parent
 CFG = "config/arm9/config.yaml"
 MASK = [(0x6C, 0x6D), (0x15E, 0x15F)]  # secure-area CRC16, header CRC16
-LDFLAGS = "-proc arm946e -dead -nostdlib -interworking -map closure,unused -msgstyle gcc"
+LDFLAGS = "-proc arm946e -nodead -nostdlib -interworking -map closure,unused -msgstyle gcc"
 
 
 def sha1(p):

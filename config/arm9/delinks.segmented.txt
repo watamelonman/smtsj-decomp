@@ -1,0 +1,1354 @@
+# PROPOSED by tools/segment_tus.py (.text only) - review before use
+
+libs/NitroSDK/sdk_02000068.c:
+    .text       start:0x02000068 end:0x020003d0
+
+libs/NitroSDK/sdk_020003d0.c:
+    .text       start:0x020003d0 end:0x020005f0
+
+libs/NitroSDK/sdk_020005f0.c:
+    .text       start:0x020005f0 end:0x02000800
+
+libs/NitroSDK/sdk_02000800.c:
+    .text       start:0x02000800 end:0x02000b9c
+
+libs/NitroSDK/sdk_02000b9c.c:
+    .text       start:0x02000b9c end:0x02000c04
+
+src/game/unit_02000c04.c:
+    .text       start:0x02000c04 end:0x02000d60
+
+libs/NitroSDK/sdk_02000d60.c:
+    .text       start:0x02000d60 end:0x0200101c
+
+libs/NitroSDK/sdk_0200101c.c:
+    .text       start:0x0200101c end:0x020026a0
+
+libs/NitroSDK/sdk_020026a0.c:
+    .text       start:0x020026a0 end:0x020029f8
+
+libs/NitroSDK/sdk_020029f8.c:
+    .text       start:0x020029f8 end:0x02003568
+
+libs/NitroSDK/sdk_02003568.c:
+    .text       start:0x02003568 end:0x0200377c
+
+libs/NitroSDK/sdk_0200377c.c:
+    .text       start:0x0200377c end:0x020039a4
+
+libs/NitroSDK/sdk_020039a4.c:
+    .text       start:0x020039a4 end:0x02003bb4
+
+libs/NitroSDK/sdk_02003bb4.c:
+    .text       start:0x02003bb4 end:0x02003e3c
+
+libs/NitroSDK/sdk_02003e3c.c:
+    .text       start:0x02003e3c end:0x0200454c
+
+libs/NitroSDK/sdk_0200454c.c:
+    .text       start:0x0200454c end:0x02004760
+
+libs/NitroSDK/sdk_02004760.c:
+    .text       start:0x02004760 end:0x0200496c
+
+libs/NitroSDK/sdk_0200496c.c:
+    .text       start:0x0200496c end:0x02004bac
+
+libs/NitroSDK/sdk_02004bac.c:
+    .text       start:0x02004bac end:0x02004dec
+
+libs/NitroSDK/sdk_02004dec.c:
+    .text       start:0x02004dec end:0x0200500c
+
+libs/NitroSDK/sdk_0200500c.c:
+    .text       start:0x0200500c end:0x02005238
+
+libs/NitroSDK/sdk_02005238.c:
+    .text       start:0x02005238 end:0x020054d0
+
+libs/NitroSDK/sdk_020054d0.c:
+    .text       start:0x020054d0 end:0x02005a08
+
+libs/NitroSDK/sdk_02005a08.c:
+    .text       start:0x02005a08 end:0x02005c80
+
+libs/NitroSDK/sdk_02005c80.c:
+    .text       start:0x02005c80 end:0x02007444
+
+libs/NitroSDK/sdk_02007444.c:
+    .text       start:0x02007444 end:0x020086a0
+
+libs/NitroSDK/sdk_020086a0.c:
+    .text       start:0x020086a0 end:0x02008904
+
+libs/NitroSDK/sdk_02008904.c:
+    .text       start:0x02008904 end:0x02008b9c
+
+libs/NitroSDK/sdk_02008b9c.c:
+    .text       start:0x02008b9c end:0x02008dd4
+
+libs/NitroSDK/sdk_02008dd4.c:
+    .text       start:0x02008dd4 end:0x020090c4
+
+libs/NitroSDK/sdk_020090c4.c:
+    .text       start:0x020090c4 end:0x0200a528
+
+libs/NitroSDK/sdk_0200a528.c:
+    .text       start:0x0200a528 end:0x0200d084
+
+libs/NitroSDK/sdk_0200d084.c:
+    .text       start:0x0200d084 end:0x0200d380
+
+libs/NitroSDK/sdk_0200d380.c:
+    .text       start:0x0200d380 end:0x0200d9c0
+
+libs/NitroSDK/sdk_0200d9c0.c:
+    .text       start:0x0200d9c0 end:0x0200e860
+
+libs/NitroSDK/sdk_0200e860.c:
+    .text       start:0x0200e860 end:0x0200f064
+
+libs/NitroSDK/sdk_0200f064.c:
+    .text       start:0x0200f064 end:0x02010680
+
+libs/NitroSDK/sdk_02010680.c:
+    .text       start:0x02010680 end:0x02010f98
+
+libs/NitroSDK/sdk_02010f98.c:
+    .text       start:0x02010f98 end:0x020116a8
+
+libs/NitroSDK/sdk_020116a8.c:
+    .text       start:0x020116a8 end:0x020118f8
+
+libs/NitroSDK/sdk_020118f8.c:
+    .text       start:0x020118f8 end:0x02012080
+
+libs/NitroSDK/sdk_02012080.c:
+    .text       start:0x02012080 end:0x02012aa4
+
+libs/MSL/msl_02012aa4.c:
+    .text       start:0x02012aa4 end:0x0201703c
+
+libs/MSL/msl_0201703c.c:
+    .text       start:0x0201703c end:0x02017850
+
+libs/MSL/msl_02017850.c:
+    .text       start:0x02017850 end:0x0201e34c
+
+libs/MSL/msl_0201e34c.c:
+    .text       start:0x0201e34c end:0x0201e434
+
+libs/NitroSDK/sdk_0201e434.c:
+    .text       start:0x0201e434 end:0x0201e9e8
+
+libs/NitroSDK/sdk_0201e9e8.c:
+    .text       start:0x0201e9e8 end:0x0201ed5c
+
+libs/NitroSDK/sdk_0201ed5c.c:
+    .text       start:0x0201ed5c end:0x0201efd4
+
+libs/NitroSDK/sdk_0201efd4.c:
+    .text       start:0x0201efd4 end:0x0201f1dc
+
+libs/NitroSDK/sdk_0201f1dc.c:
+    .text       start:0x0201f1dc end:0x0201f3e8
+
+libs/NitroSDK/sdk_0201f3e8.c:
+    .text       start:0x0201f3e8 end:0x0201fb28
+
+libs/NitroSDK/sdk_0201fb28.c:
+    .text       start:0x0201fb28 end:0x02020744
+
+libs/NitroSDK/sdk_02020744.c:
+    .text       start:0x02020744 end:0x020207dc
+
+libs/unknown/lib_020207dc.c:
+    .text       start:0x020207dc end:0x0202162c
+
+libs/unknown/lib_0202162c.c:
+    .text       start:0x0202162c end:0x02021920
+
+libs/unknown/lib_02021920.c:
+    .text       start:0x02021920 end:0x02021a10
+
+libs/NitroSDK/sdk_02021a10.c:
+    .text       start:0x02021a10 end:0x020222d8
+
+libs/NitroSDK/sdk_020222d8.c:
+    .text       start:0x020222d8 end:0x0202546c
+
+libs/NitroSDK/sdk_0202546c.c:
+    .text       start:0x0202546c end:0x020276f8
+
+libs/NitroSDK/sdk_020276f8.c:
+    .text       start:0x020276f8 end:0x02027b1c
+
+libs/NitroSDK/sdk_02027b1c.c:
+    .text       start:0x02027b1c end:0x02027dac
+
+libs/NitroSDK/sdk_02027dac.c:
+    .text       start:0x02027dac end:0x02027eac
+
+libs/unknown/lib_02027eac.c:
+    .text       start:0x02027eac end:0x02028100
+
+libs/unknown/lib_02028100.c:
+    .text       start:0x02028100 end:0x02028354
+
+libs/unknown/lib_02028354.c:
+    .text       start:0x02028354 end:0x02028578
+
+libs/unknown/lib_02028578.c:
+    .text       start:0x02028578 end:0x02028810
+
+libs/unknown/lib_02028810.c:
+    .text       start:0x02028810 end:0x02028a2c
+
+libs/unknown/lib_02028a2c.c:
+    .text       start:0x02028a2c end:0x02028d00
+
+libs/unknown/lib_02028d00.c:
+    .text       start:0x02028d00 end:0x02028fa8
+
+libs/unknown/lib_02028fa8.c:
+    .text       start:0x02028fa8 end:0x0202923c
+
+libs/unknown/lib_0202923c.c:
+    .text       start:0x0202923c end:0x02029470
+
+libs/unknown/lib_02029470.c:
+    .text       start:0x02029470 end:0x020296b8
+
+libs/unknown/lib_020296b8.c:
+    .text       start:0x020296b8 end:0x020298bc
+
+libs/unknown/lib_020298bc.c:
+    .text       start:0x020298bc end:0x02029b78
+
+libs/unknown/lib_02029b78.c:
+    .text       start:0x02029b78 end:0x02029de4
+
+libs/unknown/lib_02029de4.c:
+    .text       start:0x02029de4 end:0x0202a890
+
+libs/unknown/lib_0202a890.c:
+    .text       start:0x0202a890 end:0x0202aeb0
+
+libs/unknown/lib_0202aeb0.c:
+    .text       start:0x0202aeb0 end:0x0202b124
+
+libs/unknown/lib_0202b124.c:
+    .text       start:0x0202b124 end:0x0202cad4
+
+src/game/unit_0202cad4.c:
+    .text       start:0x0202cad4 end:0x0202d15c
+
+src/game/unit_0202d15c.c:
+    .text       start:0x0202d15c end:0x0202dcfc
+
+src/game/unit_0202dcfc.c:
+    .text       start:0x0202dcfc end:0x0202e000
+
+src/game/unit_0202e000.c:
+    .text       start:0x0202e000 end:0x0202ee5c
+
+src/game/unit_0202ee5c.c:
+    .text       start:0x0202ee5c end:0x0202f078
+
+src/game/unit_0202f078.c:
+    .text       start:0x0202f078 end:0x0202f2a8
+
+src/game/unit_0202f2a8.c:
+    .text       start:0x0202f2a8 end:0x020372ac
+
+src/game/unit_020372ac.c:
+    .text       start:0x020372ac end:0x02037dd4
+
+src/game/unit_02037dd4.c:
+    .text       start:0x02037dd4 end:0x0203812c
+
+src/game/unit_0203812c.c:
+    .text       start:0x0203812c end:0x0203845c
+
+src/game/unit_0203845c.c:
+    .text       start:0x0203845c end:0x020387bc
+
+src/game/unit_020387bc.c:
+    .text       start:0x020387bc end:0x02038fbc
+
+src/game/unit_02038fbc.c:
+    .text       start:0x02038fbc end:0x020392f8
+
+src/game/unit_020392f8.c:
+    .text       start:0x020392f8 end:0x02039520
+
+src/game/unit_02039520.c:
+    .text       start:0x02039520 end:0x02039774
+
+src/game/unit_02039774.c:
+    .text       start:0x02039774 end:0x02039bb4
+
+src/game/unit_02039bb4.c:
+    .text       start:0x02039bb4 end:0x0203aae8
+
+src/game/unit_0203aae8.c:
+    .text       start:0x0203aae8 end:0x0203b988
+
+src/game/unit_0203b988.c:
+    .text       start:0x0203b988 end:0x0203bba4
+
+src/game/unit_0203bba4.c:
+    .text       start:0x0203bba4 end:0x0203be10
+
+src/game/unit_0203be10.c:
+    .text       start:0x0203be10 end:0x0203c05c
+
+src/game/unit_0203c05c.c:
+    .text       start:0x0203c05c end:0x0203c274
+
+src/game/unit_0203c274.c:
+    .text       start:0x0203c274 end:0x0203c474
+
+src/game/unit_0203c474.c:
+    .text       start:0x0203c474 end:0x0203c6a4
+
+src/game/unit_0203c6a4.c:
+    .text       start:0x0203c6a4 end:0x0203ca38
+
+src/game/unit_0203ca38.c:
+    .text       start:0x0203ca38 end:0x0203cc58
+
+src/game/unit_0203cc58.c:
+    .text       start:0x0203cc58 end:0x0203ce68
+
+src/game/unit_0203ce68.c:
+    .text       start:0x0203ce68 end:0x0203d168
+
+src/game/unit_0203d168.c:
+    .text       start:0x0203d168 end:0x0203d494
+
+src/game/unit_0203d494.c:
+    .text       start:0x0203d494 end:0x0203d72c
+
+src/game/unit_0203d72c.c:
+    .text       start:0x0203d72c end:0x0203d930
+
+src/game/unit_0203d930.c:
+    .text       start:0x0203d930 end:0x0203dbbc
+
+src/game/unit_0203dbbc.c:
+    .text       start:0x0203dbbc end:0x0203de08
+
+src/game/unit_0203de08.c:
+    .text       start:0x0203de08 end:0x0203e02c
+
+src/game/unit_0203e02c.c:
+    .text       start:0x0203e02c end:0x0203e23c
+
+src/game/unit_0203e23c.c:
+    .text       start:0x0203e23c end:0x0203e43c
+
+src/game/unit_0203e43c.c:
+    .text       start:0x0203e43c end:0x02044394
+
+src/game/unit_02044394.c:
+    .text       start:0x02044394 end:0x0204459c
+
+src/game/unit_0204459c.c:
+    .text       start:0x0204459c end:0x02044904
+
+src/game/unit_02044904.c:
+    .text       start:0x02044904 end:0x020466a4
+
+src/game/unit_020466a4.c:
+    .text       start:0x020466a4 end:0x020469d8
+
+src/game/unit_020469d8.c:
+    .text       start:0x020469d8 end:0x02047338
+
+src/game/unit_02047338.c:
+    .text       start:0x02047338 end:0x02047568
+
+src/game/unit_02047568.c:
+    .text       start:0x02047568 end:0x02047788
+
+src/game/unit_02047788.c:
+    .text       start:0x02047788 end:0x02047c8c
+
+src/game/unit_02047c8c.c:
+    .text       start:0x02047c8c end:0x02047fb4
+
+src/game/unit_02047fb4.c:
+    .text       start:0x02047fb4 end:0x020481d4
+
+src/BattleTask.c:
+    .text       start:0x020481d4 end:0x02048e90
+
+libs/unknown/lib_02048e90.c:
+    .text       start:0x02048e90 end:0x0204915c
+
+libs/unknown/lib_0204915c.c:
+    .text       start:0x0204915c end:0x02049398
+
+libs/unknown/lib_02049398.c:
+    .text       start:0x02049398 end:0x02049620
+
+libs/unknown/lib_02049620.c:
+    .text       start:0x02049620 end:0x02049998
+
+libs/unknown/lib_02049998.c:
+    .text       start:0x02049998 end:0x02049bac
+
+libs/unknown/lib_02049bac.c:
+    .text       start:0x02049bac end:0x0204bb9c
+
+src/game/unit_0204bb9c.c:
+    .text       start:0x0204bb9c end:0x0204d1bc
+
+libs/unknown/lib_0204d1bc.c:
+    .text       start:0x0204d1bc end:0x0204e9d8
+
+libs/unknown/lib_0204e9d8.c:
+    .text       start:0x0204e9d8 end:0x0204f064
+
+libs/unknown/lib_0204f064.c:
+    .text       start:0x0204f064 end:0x0204f520
+
+libs/NitroSDK/sdk_0204f520.c:
+    .text       start:0x0204f520 end:0x0204f7d4
+
+libs/NitroSDK/sdk_0204f7d4.c:
+    .text       start:0x0204f7d4 end:0x0204f9d8
+
+libs/NitroSDK/sdk_0204f9d8.c:
+    .text       start:0x0204f9d8 end:0x0204fce8
+
+libs/NitroSDK/sdk_0204fce8.c:
+    .text       start:0x0204fce8 end:0x0204ff30
+
+libs/NitroSDK/sdk_0204ff30.c:
+    .text       start:0x0204ff30 end:0x02050160
+
+libs/NitroSDK/sdk_02050160.c:
+    .text       start:0x02050160 end:0x020504a4
+
+libs/NitroSDK/sdk_020504a4.c:
+    .text       start:0x020504a4 end:0x02051378
+
+libs/NitroSDK/sdk_02051378.c:
+    .text       start:0x02051378 end:0x020519e8
+
+libs/NitroSDK/sdk_020519e8.c:
+    .text       start:0x020519e8 end:0x02052b58
+
+libs/NitroSDK/sdk_02052b58.c:
+    .text       start:0x02052b58 end:0x02052dfc
+
+libs/NitroSDK/sdk_02052dfc.c:
+    .text       start:0x02052dfc end:0x02052e68
+
+libs/NitroWiFi/wifi_02052e68.c:
+    .text       start:0x02052e68 end:0x020535cc
+
+libs/NitroSDK/sdk_020535cc.c:
+    .text       start:0x020535cc end:0x02053c08
+
+libs/NitroSDK/sdk_02053c08.c:
+    .text       start:0x02053c08 end:0x02053fd0
+
+libs/NitroSDK/sdk_02053fd0.c:
+    .text       start:0x02053fd0 end:0x02054284
+
+libs/NitroSDK/sdk_02054284.c:
+    .text       start:0x02054284 end:0x020544b0
+
+libs/NitroSDK/sdk_020544b0.c:
+    .text       start:0x020544b0 end:0x020546d8
+
+libs/NitroSDK/sdk_020546d8.c:
+    .text       start:0x020546d8 end:0x02054fb8
+
+libs/NitroSDK/sdk_02054fb8.c:
+    .text       start:0x02054fb8 end:0x020555bc
+
+libs/NitroSDK/sdk_020555bc.c:
+    .text       start:0x020555bc end:0x020557c0
+
+libs/NitroSDK/sdk_020557c0.c:
+    .text       start:0x020557c0 end:0x02056090
+
+libs/NitroSDK/sdk_02056090.c:
+    .text       start:0x02056090 end:0x02056cac
+
+libs/NitroSDK/sdk_02056cac.c:
+    .text       start:0x02056cac end:0x020572f8
+
+libs/NitroSDK/sdk_020572f8.c:
+    .text       start:0x020572f8 end:0x020580ec
+
+libs/NitroSDK/sdk_020580ec.c:
+    .text       start:0x020580ec end:0x02058370
+
+libs/NitroSDK/sdk_02058370.c:
+    .text       start:0x02058370 end:0x020585a8
+
+libs/NitroSDK/sdk_020585a8.c:
+    .text       start:0x020585a8 end:0x020587fc
+
+libs/NitroSDK/sdk_020587fc.c:
+    .text       start:0x020587fc end:0x02058a1c
+
+libs/NitroSDK/sdk_02058a1c.c:
+    .text       start:0x02058a1c end:0x0205ae50
+
+src/game/unit_0205ae50.c:
+    .text       start:0x0205ae50 end:0x0205b540
+
+src/game/unit_0205b540.c:
+    .text       start:0x0205b540 end:0x0205b82c
+
+src/game/unit_0205b82c.c:
+    .text       start:0x0205b82c end:0x0205b900
+
+libs/NitroSDK/sdk_0205b900.c:
+    .text       start:0x0205b900 end:0x0205bbac
+
+libs/NitroSDK/sdk_0205bbac.c:
+    .text       start:0x0205bbac end:0x0205bf18
+
+libs/NitroSDK/sdk_0205bf18.c:
+    .text       start:0x0205bf18 end:0x0205c1c8
+
+libs/NitroSDK/sdk_0205c1c8.c:
+    .text       start:0x0205c1c8 end:0x0205c3fc
+
+libs/NitroSDK/sdk_0205c3fc.c:
+    .text       start:0x0205c3fc end:0x0205dacc
+
+libs/NitroSDK/sdk_0205dacc.c:
+    .text       start:0x0205dacc end:0x0205de1c
+
+libs/NitroSDK/sdk_0205de1c.c:
+    .text       start:0x0205de1c end:0x0205e318
+
+libs/NitroSDK/sdk_0205e318.c:
+    .text       start:0x0205e318 end:0x0205e53c
+
+libs/NitroSDK/sdk_0205e53c.c:
+    .text       start:0x0205e53c end:0x0205e800
+
+libs/NitroSDK/sdk_0205e800.c:
+    .text       start:0x0205e800 end:0x0205ea18
+
+libs/NitroSDK/sdk_0205ea18.c:
+    .text       start:0x0205ea18 end:0x0205ee84
+
+libs/unknown/lib_0205ee84.c:
+    .text       start:0x0205ee84 end:0x0205f1d8
+
+libs/unknown/lib_0205f1d8.c:
+    .text       start:0x0205f1d8 end:0x0205f70c
+
+libs/unknown/lib_0205f70c.c:
+    .text       start:0x0205f70c end:0x0205fb4c
+
+libs/unknown/lib_0205fb4c.c:
+    .text       start:0x0205fb4c end:0x02060014
+
+libs/unknown/lib_02060014.c:
+    .text       start:0x02060014 end:0x02061798
+
+libs/unknown/lib_02061798.c:
+    .text       start:0x02061798 end:0x02065dd8
+
+libs/unknown/lib_02065dd8.c:
+    .text       start:0x02065dd8 end:0x02065e88
+
+src/game/unit_02065e88.c:
+    .text       start:0x02065e88 end:0x02068f18
+
+src/game/unit_02068f18.c:
+    .text       start:0x02068f18 end:0x0206a224
+
+src/game/unit_0206a224.c:
+    .text       start:0x0206a224 end:0x0206ae94
+
+src/game/unit_0206ae94.c:
+    .text       start:0x0206ae94 end:0x0206d950
+
+src/game/unit_0206d950.c:
+    .text       start:0x0206d950 end:0x0206dddc
+
+src/game/unit_0206dddc.c:
+    .text       start:0x0206dddc end:0x0206e2a0
+
+src/game/unit_0206e2a0.c:
+    .text       start:0x0206e2a0 end:0x0206e4d8
+
+src/game/unit_0206e4d8.c:
+    .text       start:0x0206e4d8 end:0x0206ea70
+
+src/game/unit_0206ea70.c:
+    .text       start:0x0206ea70 end:0x0206f6e4
+
+src/game/unit_0206f6e4.c:
+    .text       start:0x0206f6e4 end:0x0206fb70
+
+src/game/unit_0206fb70.c:
+    .text       start:0x0206fb70 end:0x02071dc0
+
+src/game/unit_02071dc0.c:
+    .text       start:0x02071dc0 end:0x02072238
+
+src/game/unit_02072238.c:
+    .text       start:0x02072238 end:0x02077218
+
+src/ImageObj.c:
+    .text       start:0x02077218 end:0x02079238
+
+libs/CRI/cri_02079238.c:
+    .text       start:0x02079238 end:0x02079ea0
+
+libs/CRI/cri_02079ea0.c:
+    .text       start:0x02079ea0 end:0x0207a8d0
+
+libs/CRI/cri_0207a8d0.c:
+    .text       start:0x0207a8d0 end:0x0207adc4
+
+libs/CRI/cri_0207adc4.c:
+    .text       start:0x0207adc4 end:0x0207c82c
+
+libs/CRI/cri_0207c82c.c:
+    .text       start:0x0207c82c end:0x0207ca2c
+
+libs/CRI/cri_0207ca2c.c:
+    .text       start:0x0207ca2c end:0x0207d7e0
+
+libs/CRI/cri_0207d7e0.c:
+    .text       start:0x0207d7e0 end:0x0207dc1c
+
+libs/CRI/cri_0207dc1c.c:
+    .text       start:0x0207dc1c end:0x0207f504
+
+libs/CRI/cri_0207f504.c:
+    .text       start:0x0207f504 end:0x0208073c
+
+libs/CRI/cri_0208073c.c:
+    .text       start:0x0208073c end:0x0208093c
+
+libs/CRI/cri_0208093c.c:
+    .text       start:0x0208093c end:0x020815b0
+
+libs/CRI/cri_020815b0.c:
+    .text       start:0x020815b0 end:0x0208256c
+
+libs/CRI/cri_0208256c.c:
+    .text       start:0x0208256c end:0x02082788
+
+libs/CRI/cri_02082788.c:
+    .text       start:0x02082788 end:0x0208325c
+
+libs/CRI/cri_0208325c.c:
+    .text       start:0x0208325c end:0x02083954
+
+libs/CRI/cri_02083954.c:
+    .text       start:0x02083954 end:0x02084384
+
+libs/CRI/cri_02084384.c:
+    .text       start:0x02084384 end:0x0208539c
+
+libs/CRI/cri_0208539c.c:
+    .text       start:0x0208539c end:0x02085b80
+
+libs/CRI/cri_02085b80.c:
+    .text       start:0x02085b80 end:0x02086b70
+
+libs/CRI/cri_02086b70.c:
+    .text       start:0x02086b70 end:0x02087268
+
+libs/CRI/cri_02087268.c:
+    .text       start:0x02087268 end:0x02087ef8
+
+libs/CRI/cri_02087ef8.c:
+    .text       start:0x02087ef8 end:0x020881d0
+
+libs/CRI/cri_020881d0.c:
+    .text       start:0x020881d0 end:0x0208995c
+
+libs/CRI/cri_0208995c.c:
+    .text       start:0x0208995c end:0x0208a5ac
+
+libs/CRI/cri_0208a5ac.c:
+    .text       start:0x0208a5ac end:0x0208a978
+
+libs/CRI/cri_0208a978.c:
+    .text       start:0x0208a978 end:0x0208aba0
+
+libs/CRI/cri_0208aba0.c:
+    .text       start:0x0208aba0 end:0x0208cf94
+
+libs/CRI/cri_0208cf94.c:
+    .text       start:0x0208cf94 end:0x0208d1fc
+
+libs/CRI/cri_0208d1fc.c:
+    .text       start:0x0208d1fc end:0x0208d5ac
+
+libs/CRI/cri_0208d5ac.c:
+    .text       start:0x0208d5ac end:0x0208d8e8
+
+libs/CRI/cri_0208d8e8.c:
+    .text       start:0x0208d8e8 end:0x0208dc78
+
+libs/NitroSDK/sdk_0208dc78.c:
+    .text       start:0x0208dc78 end:0x0208e1f0
+
+libs/NitroSDK/sdk_0208e1f0.c:
+    .text       start:0x0208e1f0 end:0x02090068
+
+libs/unknown/lib_02090068.c:
+    .text       start:0x02090068 end:0x020907a0
+
+libs/unknown/lib_020907a0.c:
+    .text       start:0x020907a0 end:0x020909c8
+
+libs/unknown/lib_020909c8.c:
+    .text       start:0x020909c8 end:0x02090e60
+
+src/game/unit_02090e60.c:
+    .text       start:0x02090e60 end:0x020939f0
+
+src/game/unit_020939f0.c:
+    .text       start:0x020939f0 end:0x020946e0
+
+src/game/unit_020946e0.c:
+    .text       start:0x020946e0 end:0x02094fe0
+
+src/game/unit_02094fe0.c:
+    .text       start:0x02094fe0 end:0x02095560
+
+src/game/unit_02095560.c:
+    .text       start:0x02095560 end:0x020964f8
+
+src/game/unit_020964f8.c:
+    .text       start:0x020964f8 end:0x02096754
+
+src/game/unit_02096754.c:
+    .text       start:0x02096754 end:0x0209727c
+
+src/game/unit_0209727c.c:
+    .text       start:0x0209727c end:0x02097514
+
+src/game/unit_02097514.c:
+    .text       start:0x02097514 end:0x020979d8
+
+src/game/unit_020979d8.c:
+    .text       start:0x020979d8 end:0x020981dc
+
+src/game/unit_020981dc.c:
+    .text       start:0x020981dc end:0x0209846c
+
+src/game/unit_0209846c.c:
+    .text       start:0x0209846c end:0x020986ac
+
+src/game/unit_020986ac.c:
+    .text       start:0x020986ac end:0x02099494
+
+src/game/unit_02099494.c:
+    .text       start:0x02099494 end:0x0209974c
+
+src/game/unit_0209974c.c:
+    .text       start:0x0209974c end:0x0209a268
+
+src/game/unit_0209a268.c:
+    .text       start:0x0209a268 end:0x0209d060
+
+src/game/unit_0209d060.c:
+    .text       start:0x0209d060 end:0x0209d42c
+
+src/game/unit_0209d42c.c:
+    .text       start:0x0209d42c end:0x0209e418
+
+src/game/unit_0209e418.c:
+    .text       start:0x0209e418 end:0x0209e72c
+
+src/game/unit_0209e72c.c:
+    .text       start:0x0209e72c end:0x0209e96c
+
+src/game/unit_0209e96c.c:
+    .text       start:0x0209e96c end:0x0209ebd0
+
+src/game/unit_0209ebd0.c:
+    .text       start:0x0209ebd0 end:0x0209ee4c
+
+src/game/unit_0209ee4c.c:
+    .text       start:0x0209ee4c end:0x020a03cc
+
+src/game/unit_020a03cc.c:
+    .text       start:0x020a03cc end:0x020a0ce4
+
+src/game/unit_020a0ce4.c:
+    .text       start:0x020a0ce4 end:0x020a1418
+
+src/game/unit_020a1418.c:
+    .text       start:0x020a1418 end:0x020a163c
+
+src/game/unit_020a163c.c:
+    .text       start:0x020a163c end:0x020a23f4
+
+src/game/unit_020a23f4.c:
+    .text       start:0x020a23f4 end:0x020a2660
+
+src/ScanVisor.c:
+    .text       start:0x020a2660 end:0x020a4e48
+
+src/game/unit_020a4e48.c:
+    .text       start:0x020a4e48 end:0x020a50d4
+
+src/game/unit_020a50d4.c:
+    .text       start:0x020a50d4 end:0x020a5680
+
+src/game/unit_020a5680.c:
+    .text       start:0x020a5680 end:0x020a6174
+
+src/game/unit_020a6174.c:
+    .text       start:0x020a6174 end:0x020a7d54
+
+src/game/unit_020a7d54.c:
+    .text       start:0x020a7d54 end:0x020a93e8
+
+src/game/unit_020a93e8.c:
+    .text       start:0x020a93e8 end:0x020a9a90
+
+src/game/unit_020a9a90.c:
+    .text       start:0x020a9a90 end:0x020aa118
+
+src/game/unit_020aa118.c:
+    .text       start:0x020aa118 end:0x020afc28
+
+src/game/unit_020afc28.c:
+    .text       start:0x020afc28 end:0x020b0b5c
+
+src/game/unit_020b0b5c.c:
+    .text       start:0x020b0b5c end:0x020b0e08
+
+src/game/unit_020b0e08.c:
+    .text       start:0x020b0e08 end:0x020b12c8
+
+src/game/unit_020b12c8.c:
+    .text       start:0x020b12c8 end:0x020b17f4
+
+src/game/unit_020b17f4.c:
+    .text       start:0x020b17f4 end:0x020b1ab8
+
+src/game/unit_020b1ab8.c:
+    .text       start:0x020b1ab8 end:0x020b1fa0
+
+src/game/unit_020b1fa0.c:
+    .text       start:0x020b1fa0 end:0x020b23bc
+
+src/game/unit_020b23bc.c:
+    .text       start:0x020b23bc end:0x020b28e4
+
+src/game/unit_020b28e4.c:
+    .text       start:0x020b28e4 end:0x020b6570
+
+src/game/unit_020b6570.c:
+    .text       start:0x020b6570 end:0x020b7898
+
+src/game/unit_020b7898.c:
+    .text       start:0x020b7898 end:0x020b78d8
+
+libs/unknown/lib_020b78d8.c:
+    .text       start:0x020b78d8 end:0x020b80c8
+
+libs/unknown/lib_020b80c8.c:
+    .text       start:0x020b80c8 end:0x020b8ac8
+
+libs/unknown/lib_020b8ac8.c:
+    .text       start:0x020b8ac8 end:0x020b8f8c
+
+libs/unknown/lib_020b8f8c.c:
+    .text       start:0x020b8f8c end:0x020b91a8
+
+libs/unknown/lib_020b91a8.c:
+    .text       start:0x020b91a8 end:0x020b93cc
+
+libs/unknown/lib_020b93cc.c:
+    .text       start:0x020b93cc end:0x020b95f0
+
+libs/unknown/lib_020b95f0.c:
+    .text       start:0x020b95f0 end:0x020b9820
+
+libs/unknown/lib_020b9820.c:
+    .text       start:0x020b9820 end:0x020b9a38
+
+libs/unknown/lib_020b9a38.c:
+    .text       start:0x020b9a38 end:0x020b9c3c
+
+libs/unknown/lib_020b9c3c.c:
+    .text       start:0x020b9c3c end:0x020b9e3c
+
+libs/unknown/lib_020b9e3c.c:
+    .text       start:0x020b9e3c end:0x020ba05c
+
+libs/unknown/lib_020ba05c.c:
+    .text       start:0x020ba05c end:0x020ba264
+
+libs/unknown/lib_020ba264.c:
+    .text       start:0x020ba264 end:0x020ba474
+
+libs/unknown/lib_020ba474.c:
+    .text       start:0x020ba474 end:0x020ba678
+
+libs/unknown/lib_020ba678.c:
+    .text       start:0x020ba678 end:0x020ba90c
+
+libs/unknown/lib_020ba90c.c:
+    .text       start:0x020ba90c end:0x020bac80
+
+src/game/unit_020bac80.c:
+    .text       start:0x020bac80 end:0x020bb2b0
+
+src/game/unit_020bb2b0.c:
+    .text       start:0x020bb2b0 end:0x020bb4c0
+
+src/game/unit_020bb4c0.c:
+    .text       start:0x020bb4c0 end:0x020bb6e8
+
+src/game/unit_020bb6e8.c:
+    .text       start:0x020bb6e8 end:0x020bb908
+
+src/game/unit_020bb908.c:
+    .text       start:0x020bb908 end:0x020bbb44
+
+src/game/unit_020bbb44.c:
+    .text       start:0x020bbb44 end:0x020bbd6c
+
+src/game/unit_020bbd6c.c:
+    .text       start:0x020bbd6c end:0x020bbfa4
+
+src/game/unit_020bbfa4.c:
+    .text       start:0x020bbfa4 end:0x020bc1a8
+
+src/game/unit_020bc1a8.c:
+    .text       start:0x020bc1a8 end:0x020bcc7c
+
+src/game/unit_020bcc7c.c:
+    .text       start:0x020bcc7c end:0x020bcef4
+
+src/game/unit_020bcef4.c:
+    .text       start:0x020bcef4 end:0x020bd5f0
+
+src/game/unit_020bd5f0.c:
+    .text       start:0x020bd5f0 end:0x020c855c
+
+src/game/unit_020c855c.c:
+    .text       start:0x020c855c end:0x020ca69c
+
+src/game/unit_020ca69c.c:
+    .text       start:0x020ca69c end:0x020caea8
+
+src/game/unit_020caea8.c:
+    .text       start:0x020caea8 end:0x020cb0d0
+
+src/game/unit_020cb0d0.c:
+    .text       start:0x020cb0d0 end:0x020cb32c
+
+src/game/unit_020cb32c.c:
+    .text       start:0x020cb32c end:0x020cce38
+
+src/game/unit_020cce38.c:
+    .text       start:0x020cce38 end:0x020cd470
+
+src/game/unit_020cd470.c:
+    .text       start:0x020cd470 end:0x020cd6ec
+
+src/game/unit_020cd6ec.c:
+    .text       start:0x020cd6ec end:0x020ce578
+
+src/game/unit_020ce578.c:
+    .text       start:0x020ce578 end:0x020cf5e8
+
+src/game/unit_020cf5e8.c:
+    .text       start:0x020cf5e8 end:0x020d1a18
+
+src/game/unit_020d1a18.c:
+    .text       start:0x020d1a18 end:0x020d1c98
+
+src/game/unit_020d1c98.c:
+    .text       start:0x020d1c98 end:0x020d1ee8
+
+src/game/unit_020d1ee8.c:
+    .text       start:0x020d1ee8 end:0x020d297c
+
+src/game/unit_020d297c.c:
+    .text       start:0x020d297c end:0x020d34e4
+
+src/CampStatus.c:
+    .text       start:0x020d34e4 end:0x020ddeb0
+
+src/game/unit_020ddeb0.c:
+    .text       start:0x020ddeb0 end:0x020de37c
+
+src/game/unit_020de37c.c:
+    .text       start:0x020de37c end:0x020de678
+
+src/game/unit_020de678.c:
+    .text       start:0x020de678 end:0x020df5b8
+
+src/game/unit_020df5b8.c:
+    .text       start:0x020df5b8 end:0x020df7c4
+
+src/SaveLoadTask.c:
+    .text       start:0x020df7c4 end:0x020e1648
+
+src/game/unit_020e1648.c:
+    .text       start:0x020e1648 end:0x020e5484
+
+src/ImageBg.c:
+    .text       start:0x020e5484 end:0x020e5710
+
+src/game/unit_020e5710.c:
+    .text       start:0x020e5710 end:0x020e5cb8
+
+src/game/unit_020e5cb8.c:
+    .text       start:0x020e5cb8 end:0x020e5fb8
+
+src/game/unit_020e5fb8.c:
+    .text       start:0x020e5fb8 end:0x020e651c
+
+src/game/unit_020e651c.c:
+    .text       start:0x020e651c end:0x020e675c
+
+src/game/unit_020e675c.c:
+    .text       start:0x020e675c end:0x020e6a0c
+
+src/game/unit_020e6a0c.c:
+    .text       start:0x020e6a0c end:0x020e7290
+
+src/game/unit_020e7290.c:
+    .text       start:0x020e7290 end:0x020e78b8
+
+src/game/unit_020e78b8.c:
+    .text       start:0x020e78b8 end:0x020e7ac4
+
+src/game/unit_020e7ac4.c:
+    .text       start:0x020e7ac4 end:0x020e8228
+
+src/game/unit_020e8228.c:
+    .text       start:0x020e8228 end:0x020ea208
+
+src/game/unit_020ea208.c:
+    .text       start:0x020ea208 end:0x020eb7e0
+
+src/CaveArea.c:
+    .text       start:0x020eb7e0 end:0x020edc78
+
+src/game/unit_020edc78.c:
+    .text       start:0x020edc78 end:0x020ee01c
+
+src/game/unit_020ee01c.c:
+    .text       start:0x020ee01c end:0x020ee454
+
+src/game/unit_020ee454.c:
+    .text       start:0x020ee454 end:0x020ee6dc
+
+src/game/unit_020ee6dc.c:
+    .text       start:0x020ee6dc end:0x020ee904
+
+src/game/unit_020ee904.c:
+    .text       start:0x020ee904 end:0x020eeb20
+
+src/game/unit_020eeb20.c:
+    .text       start:0x020eeb20 end:0x020eed24
+
+src/game/unit_020eed24.c:
+    .text       start:0x020eed24 end:0x020eef2c
+
+src/game/unit_020eef2c.c:
+    .text       start:0x020eef2c end:0x020ef248
+
+src/game/unit_020ef248.c:
+    .text       start:0x020ef248 end:0x020ef958
+
+src/game/unit_020ef958.c:
+    .text       start:0x020ef958 end:0x020efb90
+
+src/game/unit_020efb90.c:
+    .text       start:0x020efb90 end:0x020efdf4
+
+src/game/unit_020efdf4.c:
+    .text       start:0x020efdf4 end:0x020efff4
+
+src/game/unit_020efff4.c:
+    .text       start:0x020efff4 end:0x020f0510
+
+src/game/unit_020f0510.c:
+    .text       start:0x020f0510 end:0x020f077c
+
+src/game/unit_020f077c.c:
+    .text       start:0x020f077c end:0x020f09b4
+
+src/game/unit_020f09b4.c:
+    .text       start:0x020f09b4 end:0x020f0be0
+
+src/game/unit_020f0be0.c:
+    .text       start:0x020f0be0 end:0x020f0eac
+
+src/game/unit_020f0eac.c:
+    .text       start:0x020f0eac end:0x020f1128
+
+src/game/unit_020f1128.c:
+    .text       start:0x020f1128 end:0x020f2e78
+
+src/game/unit_020f2e78.c:
+    .text       start:0x020f2e78 end:0x020f3db4
+
+src/game/unit_020f3db4.c:
+    .text       start:0x020f3db4 end:0x020f470c
+
+src/game/unit_020f470c.c:
+    .text       start:0x020f470c end:0x020f4c50
+
+src/game/unit_020f4c50.c:
+    .text       start:0x020f4c50 end:0x020f51dc
+
+src/game/unit_020f51dc.c:
+    .text       start:0x020f51dc end:0x020f6250
+
+src/game/unit_020f6250.c:
+    .text       start:0x020f6250 end:0x020f6f48
+
+src/game/unit_020f6f48.c:
+    .text       start:0x020f6f48 end:0x020f7188
+
+src/game/unit_020f7188.c:
+    .text       start:0x020f7188 end:0x020f7eb4
+
+src/game/unit_020f7eb4.c:
+    .text       start:0x020f7eb4 end:0x020f81a4
+
+src/game/unit_020f81a4.c:
+    .text       start:0x020f81a4 end:0x020f8448
+
+src/game/unit_020f8448.c:
+    .text       start:0x020f8448 end:0x020f868c
+
+src/game/unit_020f868c.c:
+    .text       start:0x020f868c end:0x020f8998
+
+src/game/unit_020f8998.c:
+    .text       start:0x020f8998 end:0x020f8bc8
+
+src/game/unit_020f8bc8.c:
+    .text       start:0x020f8bc8 end:0x020f90dc
+
+src/game/unit_020f90dc.c:
+    .text       start:0x020f90dc end:0x020fa520
+
+src/game/unit_020fa520.c:
+    .text       start:0x020fa520 end:0x020fa7e8
+
+src/game/unit_020fa7e8.c:
+    .text       start:0x020fa7e8 end:0x020fb128
+
+src/game/unit_020fb128.c:
+    .text       start:0x020fb128 end:0x020fb634
+
+src/game/unit_020fb634.c:
+    .text       start:0x020fb634 end:0x020fb858
+
+src/game/unit_020fb858.c:
+    .text       start:0x020fb858 end:0x020fbc74
+
+src/game/unit_020fbc74.c:
+    .text       start:0x020fbc74 end:0x020fbed4
+
+src/game/unit_020fbed4.c:
+    .text       start:0x020fbed4 end:0x020fc584
+
+src/game/unit_020fc584.c:
+    .text       start:0x020fc584 end:0x020fcfe4
+
+src/game/unit_020fcfe4.c:
+    .text       start:0x020fcfe4 end:0x020fd268
+
+src/game/unit_020fd268.c:
+    .text       start:0x020fd268 end:0x020fd5a4
+
+src/game/unit_020fd5a4.c:
+    .text       start:0x020fd5a4 end:0x020fd9f0
+
+src/game/unit_020fd9f0.c:
+    .text       start:0x020fd9f0 end:0x020fe360
+
+src/game/unit_020fe360.c:
+    .text       start:0x020fe360 end:0x020feba0
+
+src/game/unit_020feba0.c:
+    .text       start:0x020feba0 end:0x020fedd4
+
+src/game/unit_020fedd4.c:
+    .text       start:0x020fedd4 end:0x020ff030
+
+src/game/unit_020ff030.c:
+    .text       start:0x020ff030 end:0x020ffd14
+
+src/CaveNpc.c:
+    .text       start:0x020ffd14 end:0x02100208
+
+src/game/unit_02100208.c:
+    .text       start:0x02100208 end:0x02100414
+
+src/game/unit_02100414.c:
+    .text       start:0x02100414 end:0x02100810
+
+src/game/unit_02100810.c:
+    .text       start:0x02100810 end:0x021071e4
+
+src/game/unit_021071e4.c:
+    .text       start:0x021071e4 end:0x02108bc8
+
+src/game/unit_02108bc8.c:
+    .text       start:0x02108bc8 end:0x02109230
+
+src/game/unit_02109230.c:
+    .text       start:0x02109230 end:0x0210947c
+
+src/game/unit_0210947c.c:
+    .text       start:0x0210947c end:0x02109dcc
+
+src/game/unit_02109dcc.c:
+    .text       start:0x02109dcc end:0x0210a034
+
+src/game/unit_0210a034.c:
+    .text       start:0x0210a034 end:0x0210b4d0
+
+src/game/unit_0210b4d0.c:
+    .text       start:0x0210b4d0 end:0x0210b98c
+
+src/UniteEvent.c:
+    .text       start:0x0210b98c end:0x0210fe28
+
+src/game/unit_0210fe28.c:
+    .text       start:0x0210fe28 end:0x02111400
+
+src/game/unit_02111400.c:
+    .text       start:0x02111400 end:0x021122bc
+
+src/game/unit_021122bc.c:
+    .text       start:0x021122bc end:0x021124f0
+
+src/game/unit_021124f0.c:
+    .text       start:0x021124f0 end:0x02112714
+
+src/game/unit_02112714.c:
+    .text       start:0x02112714 end:0x02112aa0
+
+src/game/unit_02112aa0.c:
+    .text       start:0x02112aa0 end:0x02113294
+
+src/game/unit_02113294.c:
+    .text       start:0x02113294 end:0x021159f8
+
+src/game/unit_021159f8.c:
+    .text       start:0x021159f8 end:0x02115ca0
+
+src/game/unit_02115ca0.c:
+    .text       start:0x02115ca0 end:0x02115fbc
+
+src/game/unit_02115fbc.c:
+    .text       start:0x02115fbc end:0x02116360
+
+src/game/unit_02116360.c:
+    .text       start:0x02116360 end:0x02116598
+
+src/game/unit_02116598.c:
+    .text       start:0x02116598 end:0x02117cf4
+
+src/StaffRoll.c:
+    .text       start:0x02117cf4 end:0x02118b04
+
+src/game/unit_02118b04.c:
+    .text       start:0x02118b04 end:0x02119658
+
+src/BattleShowingTask.c:
+    .text       start:0x02119658 end:0x0211d120
+
+src/game/unit_0211d120.c:
+    .text       start:0x0211d120 end:0x0211d520
+
+src/game/unit_0211d520.c:
+    .text       start:0x0211d520 end:0x0211e6b8
+
+src/game/unit_0211e6b8.c:
+    .text       start:0x0211e6b8 end:0x0211ec7c
+
+src/game/unit_0211ec7c.c:
+    .text       start:0x0211ec7c end:0x0211f0a0
+
+src/game/unit_0211f0a0.c:
+    .text       start:0x0211f0a0 end:0x0211f2d0
+
+src/game/unit_0211f2d0.c:
+    .text       start:0x0211f2d0 end:0x0211f894
+
+src/game/unit_0211f894.c:
+    .text       start:0x0211f894 end:0x0211fc20
+
+src/game/unit_0211fc20.c:
+    .text       start:0x0211fc20 end:0x021214e0
+
+src/game/unit_021214e0.c:
+    .text       start:0x021214e0 end:0x021218d0
+
+src/game/unit_021218d0.c:
+    .text       start:0x021218d0 end:0x021225bc
+
+src/game/unit_021225bc.c:
+    .text       start:0x021225bc end:0x02122850
+
+src/game/unit_02122850.c:
+    .text       start:0x02122850 end:0x02122a78
+
+src/game/unit_02122a78.c:
+    .text       start:0x02122a78 end:0x02122e1c
+
+src/game/unit_02122e1c.c:
+    .text       start:0x02122e1c end:0x021241ec
+
+src/game/unit_021241ec.c:
+    .text       start:0x021241ec end:0x0212449c
+
+src/game/unit_0212449c.c:
+    .text       start:0x0212449c end:0x02124c5c
+
+src/game/unit_02124c5c.c:
+    .text       start:0x02124c5c end:0x02124e68
+
+src/game/unit_02124e68.c:
+    .text       start:0x02124e68 end:0x021250a8
+
+src/game/unit_021250a8.c:
+    .text       start:0x021250a8 end:0x021252b4
+
+src/ImageBgDual3D.c:
+    .text       start:0x021252b4 end:0x02125d84
+
+src/game/unit_02125d84.c:
+    .text       start:0x02125d84 end:0x02126178
+
+src/game/unit_02126178.c:
+    .text       start:0x02126178 end:0x0212ee24
+
+src/game/unit_0212ee24.c:
+    .text       start:0x0212ee24 end:0x0212f7e4
+
+src/game/unit_0212f7e4.c:
+    .text       start:0x0212f7e4 end:0x0212fa68
+
+src/game/unit_0212fa68.c:
+    .text       start:0x0212fa68 end:0x0213b32c
+
+src/game/unit_0213b32c.c:
+    .text       start:0x0213b32c end:0x0213b790
