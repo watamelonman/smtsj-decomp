@@ -19,3 +19,51 @@ void func_0211825c(int arg0)
   *(u32 *)(arg0 + 0xc) = 0;
   return;
 }
+
+
+
+/* decompiler-derived */
+void func_021182a4(int arg0)
+{
+  int tmp1;
+  int tmp2;
+  tmp2 = arg0 + 0xf8;
+  tmp1 = 0;
+  do {
+    if ((*(int *)(tmp2 + 4) == 1) && (*(int *)(tmp2 + 8) + 0x10 < *(int *)(arg0 + 0xe0))) {
+      func_0211825c(tmp2);
+    }
+    tmp1 = tmp1 + 1;
+    tmp2 = tmp2 + 0x10;
+  } while (tmp1 < 0x20);
+  return;
+}
+
+int func_02117f94();
+int func_021180e4();
+int func_02118174();
+/* decompiler-derived */
+u32 func_021181a0(int arg0)
+{
+  u32 tmp1;
+  tmp1 = 0;
+  switch(*(u32 *)(arg0 + 0xac)) {
+  case 0:
+    if (*(u32 *)(arg0 + 0xb8) <= *(u32 *)(arg0 + 8)) {
+      *(u32 *)(arg0 + 0xac) = 3;
+    }
+    break;
+  case 1:
+    func_02117f94();
+    break;
+  case 2:
+    func_021180e4();
+    break;
+  case 3:
+    func_02118174();
+    break;
+  case 4:
+    tmp1 = 1;
+  }
+  return tmp1;
+}
