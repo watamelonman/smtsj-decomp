@@ -18,3 +18,13 @@
 - `func_020df348`
 - `func_020dea70`
 - `func_020deedc`
+- `func_020de870`: decompiler-derived
+- `func_020df064`: decompiler-derived
+- `func_020dec94`: decompiler-derived
+
+## Not done in M1-T688
+- `func_020df4f0`
+- `func_020dedf8`
+- `func_020df520`
+- `func_020de720`
+- `func_020de784`
