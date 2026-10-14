@@ -10,3 +10,13 @@
 
 ## Hard list
 - `func_02119640`: no candidate matched locally
+- `func_02118ba8`: decompiler-derived
+- `func_02118e50`: decompiler-derived
+- `func_02119434`: decompiler-derived
+
+## Not done in M1-T564
+- `func_02118bcc`
+- `func_02119358`
+- `func_02118ef4`
+- `func_02118b30`
+- `func_02118da0`
