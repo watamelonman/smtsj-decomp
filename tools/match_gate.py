@@ -20,9 +20,13 @@ FUNC_DEF = re.compile(r'^[A-Za-z_][\w\s\*]*?\b([A-Za-z_]\w*)\s*\([^;{]*\)\s*(\{.
 
 
 def changed_c(base):
+    # committed changes since base, plus uncommitted/untracked ones (manual runs before commit)
     out = subprocess.run(["git", "diff", "--name-only", f"{base}...HEAD", "--", "src", "libs"],
                          capture_output=True, text=True, check=True).stdout
-    return [p for p in out.split() if p.endswith((".c", ".cpp")) and os.path.exists(p)]
+    out += subprocess.run(["git", "status", "--porcelain", "-uall", "--", "src", "libs"],
+                          capture_output=True, text=True).stdout.replace("??", "").replace(" M ", " ").replace("A  ", " ")
+    paths = dict.fromkeys(p for p in out.split() if p.endswith((".c", ".cpp")) and os.path.exists(p))
+    return list(paths)
 
 
 def c_functions(path):
@@ -55,7 +59,7 @@ def main():
     exc = set()
     if os.path.exists("config/match_exceptions.txt"):  # human-owned, protected
         exc = {l.split()[0] for l in open("config/match_exceptions.txt") if l.strip() and not l.startswith("#")}
-    fails = []
+    fails, checked = [], 0
     for path in changed_c(base):
         stem = os.path.splitext(path)[0].removeprefix("src/")
         unit = next((u for n, u in by_unit.items() if n.endswith(stem)), None)
@@ -63,6 +67,7 @@ def main():
             fails.append(f"{path}: no objdiff unit (is it in objdiff.json / the split config?)"); continue
         funcs = {f.get("name"): f for f in unit.get("functions", [])}
         for name in c_functions(path):
+            checked += 1
             f = funcs.get(name)
             if f is None:
                 fails.append(f"{path}: {name} not found in target object (wrong name/split?)")
@@ -73,10 +78,12 @@ def main():
         new = rep.get("measures", {}).get("matched_code", 0)
         if int(new) < int(old):
             fails.append(f"overall matched_code dropped {old} -> {new}")
+    if not checked:
+        fails.append("no C function definitions found in changed src/ or libs/ files (nothing was checked)")
     for f in fails[:40]:
         print("match:", f)
     if not fails:
-        print("match: every C function in changed files is 100%")
+        print(f"match: all {checked} C functions in changed files are 100%")
     return 1 if fails else 0
 
 
