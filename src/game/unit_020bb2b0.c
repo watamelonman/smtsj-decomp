@@ -22,3 +22,18 @@ u32 func_020bb42c(void)
   func_0203acf4();
   return 1;
 }
+
+
+int func_0202eab8();
+/* decompiler-derived */
+u32 func_020bb450(void)
+{
+  u16 tmp1;
+  int tmp2;
+  int tmp3;
+  tmp1 = func_0203ac00(0);
+  tmp2 = func_0203ac00(1);
+  tmp3 = func_0202eb0c(tmp1);
+  func_0202eab8(tmp1,tmp2 + tmp3);
+  return 1;
+}

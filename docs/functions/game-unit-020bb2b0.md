@@ -10,3 +10,11 @@
 - `func_020bb314`
 - `func_020bb33c`
 - `func_020bb364`
+- `func_020bb450`: decompiler-derived
+
+## Not done in M1-T059
+- `func_020bb38c`
+- `func_020bb3b4`
+- `func_020bb3dc`
+- `func_020bb404`
+- `func_020bb490`
