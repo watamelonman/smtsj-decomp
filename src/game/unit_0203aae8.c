@@ -49,3 +49,29 @@ u32 Unk03aae8_Unk_03af50(void)
   Unk02dcfc_Unk_02df00(value2,(int)v1);
   return 3;
 }
+
+
+
+/* decompiler-derived */
+u32 func_0203ac9c(int arg0)
+{
+  int tmp1;
+  int tmp2;
+  tmp2 = *(int *)(((int)data_0215de34) + 4);
+  tmp1 = *(int *)(tmp2 + 0x1c) - (arg0 + 1);
+  switch(*(u8 *)(tmp2 + tmp1 + 0x20)) {
+  case 0:
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    return *(u32 *)(tmp2 + tmp1 * 4 + 0x3c);
+  }
+  return 0;
+}
