@@ -59,3 +59,24 @@ u32 Unk03ce68_Unk_03d010(void)
   func_0202ef34((int)v1);
   return 1;
 }
+
+
+
+/* decompiler-derived */
+u32 func_0203d038(u32 arg0)
+{
+  switch(arg0) {
+  case 0:
+    return 0;
+  case 1:
+    return 4;
+  case 2:
+    return 1;
+  case 3:
+    return 2;
+  case 4:
+    return 3;
+  default:
+    return 0;
+  }
+}
