@@ -162,3 +162,112 @@ void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
   work->UnkField00e8 = 0;
   *(u32 *)(value + 4) = 0;
 }
+
+
+int func_0202cbec();
+int func_020df814();
+int func_02124dac();
+/* decompiler-derived */
+void func_020df94c(void)
+{
+  u32 tmp1;
+  int tmp2;
+  tmp1 = func_0202cbec();
+  switch(tmp1) {
+  case 0:
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    goto LAB_020df988;
+  case 6:
+    goto LAB_020df988;
+  case 7:
+    goto LAB_020df988;
+  case 8:
+    goto LAB_020df988;
+  case 9:
+LAB_020df988:
+    tmp2 = func_02124dac();
+    if (tmp2 != 0) {
+      return;
+    }
+  }
+  func_020df814();
+  return;
+}
+
+int func_0205257c();
+int func_02124d8c();
+/* decompiler-derived */
+void func_020df86c(void)
+{
+  u32 tmp1;
+  tmp1 = func_0202cbec();
+  switch(tmp1) {
+  case 0:
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    goto LAB_020df8a8;
+  case 6:
+    goto LAB_020df8a8;
+  case 7:
+    goto LAB_020df8a8;
+  case 8:
+    goto LAB_020df8a8;
+  case 9:
+LAB_020df8a8:
+    func_02124d8c(1,0);
+    return;
+  }
+  func_0205257c(3);
+  return;
+}
+
+int func_0204faf0();
+int func_020dff20();
+/* decompiler-derived */
+u32 func_020dff68(u32 arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_020dff20();
+  if (tmp1 < 0) {
+    return 0;
+  }
+  tmp2 = 0xd;
+  switch(tmp1) {
+  case 0:
+    tmp2 = 0xc;
+    break;
+  case 1:
+    goto LAB_020dffb0;
+  case 2:
+    goto LAB_020dffc0;
+  case 3:
+    break;
+  case 4:
+LAB_020dffb0:
+    func_0204faf0(1,1);
+    break;
+  case 5:
+LAB_020dffc0:
+    func_0204faf0(1,2);
+  }
+  func_020dfd9c(arg0,tmp2,1,0,0);
+  return 1;
+}
