@@ -24,3 +24,13 @@
 - `func_020e8c68` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `func_020e8db8` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `func_020e8f20` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020e8f38` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020e8f50` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020e9020` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020e9048` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020ea028` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020ea040` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `func_020e8228` (28 B): decompiler-derived (Ghidra output, cleaned)
+
+## Hard list
+- `func_020e8244`: no candidate matched locally

@@ -7,11 +7,13 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u8 data_02150c30[];
+extern u32 data_02176cdc[];
 extern u32 data_02176ce0[];
 void func_02045c38(void);
 int func_02057524();
 void func_02057534(void);
 int func_02057eb8();
+int func_02061424();
 int func_02099d14();
 int func_020a29a0();
 int func_020e8374();
@@ -20,6 +22,7 @@ int func_020e8d90();
 int func_020e8e8c();
 int func_020e9c00();
 int func_020ea5e4();
+int func_020eb2f8();
 
 void func_020e93d4(void);
 void func_020e8e60(void);
@@ -45,6 +48,13 @@ void func_020e8c50(u32 arg0);
 u32 func_020e8c68(void);
 void func_020e8db8(void);
 u32 func_020e8f20(void);
+u32 func_020e8f38(void);
+void func_020e8f50(u32 arg0);
+void func_020e9020(u32 arg0);
+int func_020e9048(int *arg0,int *arg1);
+void func_020ea028(void);
+u32 func_020ea040(void);
+int func_020e8228(void);
 
 /* empty callback */
 void func_020e93d4(void) { }
@@ -254,4 +264,80 @@ u32 func_020e8f20(void)
     tmp2 = *(u32 *)(tmp1 + 0x180);
   }
   return tmp2;
+}
+
+/* decompiler-derived */
+u32 func_020e8f38(void)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_020e9038();
+  if (tmp1 == 0) {
+    tmp2 = 0;
+  }
+  else {
+    tmp2 = *(u32 *)(tmp1 + 0x17c);
+  }
+  return tmp2;
+}
+
+/* decompiler-derived */
+void func_020e8f50(u32 arg0)
+{
+  int tmp1;
+  tmp1 = func_020e9038();
+  if (tmp1 != 0) {
+    *(u32 *)(tmp1 + 0x28) = arg0;
+  }
+  return;
+}
+
+/* decompiler-derived */
+void func_020e9020(u32 arg0)
+{
+  int tmp1;
+  tmp1 = func_020e9038();
+  if (tmp1 != 0) {
+    *(u32 *)(tmp1 + 0x10) = arg0;
+  }
+  return;
+}
+
+/* decompiler-derived */
+int func_020e9048(int *arg0,int *arg1)
+{
+  return (u32)*(u8 *)(*arg0 + 0x2e) - (u32)*(u8 *)(*arg1 + 0x2e);
+}
+
+/* decompiler-derived */
+void func_020ea028(void)
+{
+  int tmp1;
+  tmp1 = func_020eb2f8();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_02061424();
+  return;
+}
+
+/* decompiler-derived */
+u32 func_020ea040(void)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = func_020eb2f8();
+  if (tmp1 == 0) {
+    tmp2 = 0;
+  }
+  else {
+    tmp2 = *(u32 *)(tmp1 + 0x1cc);
+  }
+  return tmp2;
+}
+
+/* decompiler-derived */
+int func_020e8228(void)
+{
+  return *data_02176cdc != 0;
 }
