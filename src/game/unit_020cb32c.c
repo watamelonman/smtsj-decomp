@@ -95,3 +95,52 @@ void Unk0cb32c_Unk_0cba78(void)
   func_020de870();
   func_020956c8();
 }
+
+
+int func_02122e1c();
+/* decompiler-derived */
+void func_020cb754(u32 *arg0)
+{
+  func_020bc9b4(10,0);
+  func_02122e1c(*arg0);
+  *arg0 = 0;
+  ImageBg_Unk_0e5530();
+  Unk0fd268_Unk_0fd3ac();
+  Unk0cb32c_Unk_0cb344();
+  func_020de870();
+  return;
+}
+
+
+/* decompiler-derived */
+u32 func_020cb440(u32 arg0)
+{
+  switch(arg0) {
+  case 0:
+    return 6;
+  case 1:
+    return 8;
+  case 2:
+    return 7;
+  case 3:
+    return 9;
+  case 4:
+    return 5;
+  default:
+    return arg0;
+  }
+}
+
+int func_02059f70();
+int func_02060dd4();
+/* decompiler-derived */
+void func_020cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
+                  u32 arg4,u32 arg5)
+{
+  u8 auStack_24 [16];
+  u32 uStack_14;
+  uStack_14 = arg3;
+  func_02060dd4(auStack_24,arg0,0,arg3,arg4);
+  func_02059f70(*arg0,0,arg1,arg2,auStack_24,0,arg5);
+  return;
+}
