@@ -28,3 +28,4 @@ int Unk0f81a4_Unk_0f81b4(int arg0)
 {
   return *(int *)(arg0 + 0x84) != -1;
 }
+
