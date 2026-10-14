@@ -326,3 +326,75 @@ int Unk0e8228_IsSet_data_02176cdc(void)
 {
   return *data_02176cdc != 0;
 }
+
+
+
+/* decompiler-derived */
+int func_020e82ac(void)
+{
+  int tmp1;
+  tmp1 = Unk02e000_Unk_02e8f0();
+  return *(char *)(tmp1 + 3) == '\0';
+}
+
+int func_020e942c();
+/* decompiler-derived */
+void func_020e8684(void)
+{
+  int tmp1;
+  tmp1 = Unk0e8228_Get_data_02176ce0();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_020e942c(tmp1,*(u32 *)(tmp1 + 0x10));
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020e8cbc(void)
+{
+  int tmp1;
+  tmp1 = Unk0e8228_Get_data_02176ce0();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_020a29a0(*(u32 *)(tmp1 + 8));
+  return;
+}
+
+int func_02044ec4();
+int func_0204a244();
+int func_020e8c80();
+/* decompiler-derived */
+int func_020e8c9c(void)
+{
+  int tmp1;
+  func_020e8c80();
+  func_02044ec4();
+  tmp1 = func_0204a244();
+  return tmp1 == 6;
+}
+
+int func_020e9778();
+/* decompiler-derived */
+void func_020e8d18(u32 arg0)
+{
+  int tmp1;
+  tmp1 = Unk0e8228_Get_data_02176ce0();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_020e9778(tmp1,arg0);
+  return;
+}
+
+int func_020febc8();
+/* decompiler-derived */
+void func_020e940c(void)
+{
+  Unk0e8228_Unk_0ea028();
+  func_020febc8();
+  *data_02176ce0 = 0;
+  return;
+}
