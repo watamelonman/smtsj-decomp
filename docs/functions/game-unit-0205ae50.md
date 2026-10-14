@@ -10,3 +10,8 @@
 ## Hard list
 - `func_0205b36c`: no candidate matched locally
 - `func_0205af2c`: dropped when combining the TU
+
+## Not done in M1-T427
+- `func_0205ae60`
+- `func_0205b234`
+- `func_0205b02c`

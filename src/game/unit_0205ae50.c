@@ -71,3 +71,4 @@ u32 Unk05ae50_Unk_05af3c(Unk05ae50Work *work)
   work->UnkField000c = 0;
   return 1;
 }
+
