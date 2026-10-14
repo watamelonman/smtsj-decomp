@@ -10,3 +10,4 @@
 .ninja_log
 .ninja_deps
 __pycache__/
+/.forge/

@@ -1,5 +1,5 @@
 """Make a forge worktree buildable: its git-ignored inputs (tools, extract/, ROM-derived
-files) live only in the main checkout, so symlink them in and generate build.ninja."""
+files) live only in the main checkout, so symlink them in and (re)generate build.ninja."""
 import os, pathlib, subprocess
 
 SHARED = ["dsd", "objdiff-cli", "tools/wibo", "tools/mwccarm", "extract"]
@@ -16,5 +16,5 @@ def ensure():
             if src.exists() and not os.path.lexists(dst):
                 dst.parent.mkdir(parents=True, exist_ok=True)
                 dst.symlink_to(src)
-    if not pathlib.Path("build.ninja").exists():
-        subprocess.run(["python3", "configure.py"], check=True, capture_output=True)
+    # always regenerate: build.ninja only compiles src/ files that existed when it was written
+    subprocess.run(["python3", "configure.py"], check=True, capture_output=True)
