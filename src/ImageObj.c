@@ -6,6 +6,17 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+typedef struct ImageObjWork {
+    u8 unk_0000[0x4];
+    s32 UnkField0004;
+    u8 unk_0008[0x14];
+    s32 UnkField001c;
+    u8 unk_0020[0xc];
+    s32 UnkField002c;
+} ImageObjWork;
+
+
 extern u32 data_0217231c[];
 int func_020775a0();
 int func_02077620();
@@ -19,7 +30,7 @@ void ImageObj_Unk_07784c(u32 arg0);
 void ImageObj_Unk_077880(int arg0);
 void ImageObj_Unk_0778d4(int arg0);
 u32 ImageObj_Unk_0778e8(int arg0);
-void ImageObj_Unk_07916c(int arg0);
+void ImageObj_Unk_07916c(ImageObjWork *work);
 void ImageObj_Unk_0772f8(void);
 
 /* decompiler-derived */
@@ -34,45 +45,40 @@ void ImageObj_Unk_0775d8(void)
   func_02077620();
   func_020775a0();
   func_02077640();
-  return;
 }
 
 /* decompiler-derived */
 void ImageObj_Unk_07784c(u32 arg0)
 {
   func_02079238(0,arg0);
-  return;
 }
 
 /* decompiler-derived */
 void ImageObj_Unk_077880(int arg0)
 {
   func_02079238(1,arg0 + 1);
-  return;
 }
 
 /* decompiler-derived */
 void ImageObj_Unk_0778d4(int arg0)
 {
   func_02079238(2,arg0 + 3);
-  return;
 }
 
 /* decompiler-derived */
 u32 ImageObj_Unk_0778e8(int arg0)
 {
-  int tmp1;
-  tmp1 = ImageObj_Get_data_0217231c();
-  return *(u32 *)(tmp1 + arg0 * 4 + 4);
+  int value;
+  value = ImageObj_Get_data_0217231c();
+  return *(u32 *)(value + arg0 * 4 + 4);
 }
 
 /* decompiler-derived */
-void ImageObj_Unk_07916c(int arg0)
+void ImageObj_Unk_07916c(ImageObjWork *work)
 {
-  if (*(int *)(arg0 + 4) == 1) {
-    *(int *)(arg0 + 0x1c) = 0x100 - *(int *)(arg0 + 0x2c);
+  if (work->UnkField0004 == 1) {
+    work->UnkField001c = 0x100 - work->UnkField002c;
   }
-  return;
 }
 
 /* decompiler-derived */
@@ -80,5 +86,4 @@ void ImageObj_Unk_0772f8(void)
 {
   func_02077ddc();
   *data_0217231c = 0;
-  return;
 }

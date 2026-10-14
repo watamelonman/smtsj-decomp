@@ -26,7 +26,6 @@ void Unk1241ec_Unk_124214(void)
 {
   func_020fee18();
   Unk0fedd4_Thunk_0205bb68();
-  return;
 }
 
 /* decompiler-derived */
@@ -36,5 +35,4 @@ void Unk1241ec_Unk_1241ec(void)
   func_020fedf0(1);
   func_020fee68(0,0x2b);
   func_020fee84(5);
-  return;
 }

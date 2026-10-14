@@ -24,7 +24,6 @@ void Unk0a7d54_SetUnkField8(void *obj, u32 value) { FIELD(u32, obj, 0x8) = value
 void Unk0a7d54_Unk_0a9158(int arg0)
 {
   *(u32 *)(arg0 + 4) = 1;
-  return;
 }
 
 /* decompiler-derived */
@@ -32,20 +31,19 @@ void Unk0a7d54_Unk_0a7eb8(int arg0,u32 arg1)
 {
   *(u8 *)(arg0 + 0xd) = 1;
   *(u32 *)(arg0 + 0x1c) = arg1;
-  return;
 }
 
 /* decompiler-derived */
 u32 Unk0a7d54_Unk_0a8648(int arg0)
 {
-  u32 tmp1;
+  u32 value;
   if (arg0 == 0) {
-    tmp1 = 0;
+    value = 0;
   }
   else {
-    tmp1 = *(u32 *)(arg0 + 4);
+    value = *(u32 *)(arg0 + 4);
   }
-  return tmp1;
+  return value;
 }
 
 /* decompiler-derived */
@@ -57,23 +55,21 @@ int Unk0a7d54_Unk_0a9204(int arg0)
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a8594(void)
 {
-  int tmp1;
-  tmp1 = func_020a855c();
-  if (tmp1 == 0) {
+  int value;
+  value = func_020a855c();
+  if (value == 0) {
     return;
   }
   func_020a7e8c();
-  return;
 }
 
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a7ec8(u32 arg0,u32 arg1,u32 arg2)
 {
-  int tmp1;
-  tmp1 = func_020a855c();
-  if (tmp1 == 0) {
+  int value;
+  value = func_020a855c();
+  if (value == 0) {
     return;
   }
-  Unk0a7d54_Unk_0a7eb8(tmp1,arg2);
-  return;
+  Unk0a7d54_Unk_0a7eb8(value,arg2);
 }

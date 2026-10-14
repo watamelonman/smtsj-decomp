@@ -32,16 +32,14 @@ void Unk118b04_Thunk_0206146c(void) { func_0206146c(); }
 void Unk118b04_Set_data_02151b28(u32 arg0)
 {
   *data_02151b28 = arg0;
-  return;
 }
 
 /* decompiler-derived */
 void Unk118b04_Unk_118b78(u32 arg0)
 {
-  u32 tmp1;
-  tmp1 = func_0202e228();
-  Unk118b04_Unk_118b90(tmp1,arg0);
-  return;
+  u32 value;
+  value = func_0202e228();
+  Unk118b04_Unk_118b90(value,arg0);
 }
 
 /* decompiler-derived */
@@ -53,7 +51,7 @@ int Unk118b04_Unk_118b90(int arg0,int arg1)
 /* decompiler-derived */
 u32 Unk118b04_Unk_118e74(int arg0)
 {
-  int tmp1;
-  tmp1 = func_0202e228();
-  return *(u32 *)(tmp1 + arg0 * 4 + 0x14);
+  int value;
+  value = func_0202e228();
+  return *(u32 *)(value + arg0 * 4 + 0x14);
 }

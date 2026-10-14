@@ -60,7 +60,6 @@ void Unk116598_Unk_1168b8(void)
   Unk095560_Unk_096130();
   Unk065e88_Unk_065eac();
   func_020a2414();
-  return;
 }
 
 int func_021172dc();
@@ -70,7 +69,6 @@ void Unk116598_Unk_116954(void)
 {
   func_021177cc(0);
   func_021172dc();
-  return;
 }
 
 
@@ -79,7 +77,6 @@ extern u32 data_02176e60[];
 void Unk116598_Clear_data_02176e60(void)
 {
   *data_02176e60 = 0;
-  return;
 }
 
 extern u32 data_02176e64[];
@@ -87,7 +84,6 @@ extern u32 data_02176e64[];
 void Unk116598_Clear_data_02176e64(void)
 {
   *data_02176e64 = 0;
-  return;
 }
 
 
@@ -97,7 +93,6 @@ void Unk116598_Unk_117ae4(void)
   Unk095560_Unk_096130();
   Unk065e88_Unk_065eac();
   func_020a2414();
-  return;
 }
 
 
@@ -106,5 +101,4 @@ void Unk116598_Unk_117b80(void)
 {
   func_021177cc(0);
   func_021172dc();
-  return;
 }

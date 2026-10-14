@@ -35,14 +35,12 @@ void Unk0cb32c_Nop_0cccc0(void) { }
 void Unk0cb32c_Unk_0cb35c(u32 arg0)
 {
   func_0205e484(arg0,0x1e);
-  return;
 }
 
 /* decompiler-derived */
 void Unk0cb32c_Unk_0cb57c(u32 arg0)
 {
   func_020cb564(arg0,0);
-  return;
 }
 
 /* decompiler-derived */
@@ -66,8 +64,7 @@ u32 Unk0cb32c_Unk_0cb344(void)
 /* decompiler-derived */
 void Unk0cb32c_Unk_0cb54c(void)
 {
-  u8 tmp1;
-  tmp1 = func_020cb3dc();
-  func_020cb4e4(tmp1,0);
-  return;
+  u8 value;
+  value = func_020cb3dc();
+  func_020cb4e4(value,0);
 }

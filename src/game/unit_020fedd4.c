@@ -24,5 +24,4 @@ void Unk0fedd4_Thunk_020feef0(void) { func_020feef0(); }
 void Unk0fedd4_Unk_0fedd4(void)
 {
   func_0205b82c(0xd1);
-  return;
 }

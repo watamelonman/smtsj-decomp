@@ -31,9 +31,9 @@ u32 Unk044904_Get_data_0215ee98(void)
 /* decompiler-derived */
 u32 Unk044904_Unk_0459ec(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  return *(u32 *)(tmp1 + 0x50);
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  return *(u32 *)(value + 0x50);
 }
 
 /* decompiler-derived */
@@ -41,7 +41,6 @@ void Unk044904_Unk_045c98(void)
 {
   func_0206df10();
   func_02072200();
-  return;
 }
 
 /* decompiler-derived */
@@ -50,15 +49,14 @@ void Unk044904_Unk_044e90(int arg0)
   if (*data_0215ee98 == 0) {
     *data_0215ee98 = arg0;
   }
-  return;
 }
 
 /* decompiler-derived */
 int Unk044904_Unk_045fd4(void)
 {
-  int tmp1;
-  tmp1 = func_0209d13c();
-  return tmp1 != 0;
+  int value;
+  value = func_0209d13c();
+  return value != 0;
 }
 
 /* decompiler-derived */
@@ -67,5 +65,4 @@ void Unk044904_Unk_044ea8(void)
   if (*data_0215ee98 != 0) {
     *data_0215ee98 = 0;
   }
-  return;
 }

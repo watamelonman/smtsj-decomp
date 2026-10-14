@@ -30,26 +30,23 @@ int Unk03e43c_Unk_03f2ac(int arg0)
 /* decompiler-derived */
 void Unk03e43c_Unk_03fa28(void)
 {
-  int tmp1;
-  tmp1 = func_0202e788();
-  func_0203fa08(*(u8 *)(tmp1 + 0x360));
-  return;
+  int value;
+  value = func_0202e788();
+  func_0203fa08(*(u8 *)(value + 0x360));
 }
 
 /* decompiler-derived */
 void Unk03e43c_Unk_03f2bc(void)
 {
-  int tmp1;
-  tmp1 = func_0205410c();
-  *(u8 *)(tmp1 + 0x10) = *(u8 *)(tmp1 + 0x10) | 2;
-  return;
+  int value;
+  value = func_0205410c();
+  *(u8 *)(value + 0x10) = *(u8 *)(value + 0x10) | 2;
 }
 
 /* decompiler-derived */
 void Unk03e43c_Unk_03fa3c(char arg0)
 {
-  int tmp1;
-  tmp1 = func_0202e788();
-  *(char *)(tmp1 + 0x360) = arg0 * '\n';
-  return;
+  int value;
+  value = func_0202e788();
+  *(char *)(value + 0x360) = arg0 * '\n';
 }

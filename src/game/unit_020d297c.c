@@ -36,7 +36,6 @@ void Unk0d297c_Thunk_020953ac(void) { func_020953ac(); }
 void Unk0d297c_Unk_0d2adc(u32 arg0)
 {
   func_020e651c(arg0,0);
-  return;
 }
 
 /* decompiler-derived */

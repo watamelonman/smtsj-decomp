@@ -39,7 +39,6 @@ void Unk02e000_Thunk_0202e788(void) { func_0202e788(); }
 void Unk02e000_Set_data_0215dd24(u32 arg0)
 {
   *data_0215dd24 = arg0;
-  return;
 }
 
 /* decompiler-derived */
@@ -59,7 +58,6 @@ void Unk02e000_Unk_02e0ac(void)
 {
   func_0205a9d0(0xa0);
   func_0202e0cc();
-  return;
 }
 
 /* decompiler-derived */
@@ -71,9 +69,9 @@ int Unk02e000_Unk_02e774(void)
 /* decompiler-derived */
 int Unk02e000_Unk_02e8b8(void)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e774();
-  return tmp1 + 0xafc;
+  int value;
+  value = Unk02e000_Unk_02e774();
+  return value + 0xafc;
 }
 
 /* decompiler-derived */

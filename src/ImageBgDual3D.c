@@ -50,7 +50,6 @@ void ImageBgDual3D_Unk_125a80(void)
 {
   Unk095560_Unk_096130();
   Unk065e88_Unk_065eac();
-  return;
 }
 
 extern u32 data_02176e8c[];
@@ -58,7 +57,6 @@ extern u32 data_02176e8c[];
 void ImageBgDual3D_Clear_data_02176e8c(void)
 {
   *data_02176e8c = 0;
-  return;
 }
 
 int func_021172dc();
@@ -68,7 +66,6 @@ void ImageBgDual3D_Unk_125afc(void)
 {
   func_021177cc(0);
   func_021172dc();
-  return;
 }
 
 
@@ -79,5 +76,4 @@ void ImageBgDual3D_Unk_1259e0(void)
   v1 = (u32 *)ImageBgDual3D_Get_data_02176e94();
   *v1 = 1;
   ImageBgDual3D_Unk_125a80();
-  return;
 }

@@ -6,6 +6,15 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+typedef struct Unk10a034Work {
+    u8 unk_0000[0x8];
+    u32 UnkField0008;
+    u8 unk_000c[0x4];
+    u32 UnkField0010;
+} Unk10a034Work;
+
+
 extern u32 data_02176e38[];
 extern u32 data_02176e3c[];
 extern u32 data_02176e44[];
@@ -17,9 +26,9 @@ u32 Unk10a034_Get_data_02176e3c(void);
 u32 Unk10a034_Unk_10af7c(void);
 u32 Unk10a034_Get_data_02176e44(void);
 void Unk10a034_Clear_data_02176e38(void);
-void Unk10a034_Unk_10a9a4(int arg0,u32 arg1,int arg2);
+void Unk10a034_Unk_10a9a4(Unk10a034Work *work,u32 arg1,int arg2);
 void Unk10a034_Clear_data_02176e44(void);
-void Unk10a034_Unk_10b394(int arg0,u32 arg1,int arg2);
+void Unk10a034_Unk_10b394(Unk10a034Work *work,u32 arg1,int arg2);
 void Unk10a034_Unk_10a05c(void);
 void Unk10a034_Unk_10a074(void);
 u32 Unk10a034_Unk_10a0b4(void);
@@ -57,130 +66,121 @@ u32 Unk10a034_Get_data_02176e44(void)
 void Unk10a034_Clear_data_02176e38(void)
 {
   *data_02176e38 = 0;
-  return;
 }
 
 /* decompiler-derived */
-void Unk10a034_Unk_10a9a4(int arg0,u32 arg1,int arg2)
+void Unk10a034_Unk_10a9a4(Unk10a034Work *work,u32 arg1,int arg2)
 {
-  *(u32 *)(arg0 + 0x10) = arg1;
+  work->UnkField0010 = arg1;
   if (arg2 == 0) {
     arg1 = 0x11;
   }
-  *(u32 *)(arg0 + 8) = arg1;
-  return;
+  work->UnkField0008 = arg1;
 }
 
 /* decompiler-derived */
 void Unk10a034_Clear_data_02176e44(void)
 {
   *data_02176e44 = 0;
-  return;
 }
 
 /* decompiler-derived */
-void Unk10a034_Unk_10b394(int arg0,u32 arg1,int arg2)
+void Unk10a034_Unk_10b394(Unk10a034Work *work,u32 arg1,int arg2)
 {
-  *(u32 *)(arg0 + 0x10) = arg1;
+  work->UnkField0010 = arg1;
   if (arg2 == 0) {
     arg1 = 8;
   }
-  *(u32 *)(arg0 + 8) = arg1;
-  return;
+  work->UnkField0008 = arg1;
 }
 
 /* decompiler-derived */
 void Unk10a034_Unk_10a05c(void)
 {
-  int tmp1;
-  tmp1 = Unk10a034_Get_data_02176e38();
-  if (tmp1 == 0) {
+  int value;
+  value = Unk10a034_Get_data_02176e38();
+  if (value == 0) {
     return;
   }
   func_02061424();
-  return;
 }
 
 /* decompiler-derived */
 void Unk10a034_Unk_10a074(void)
 {
-  int tmp1;
-  tmp1 = Unk10a034_Get_data_02176e38();
-  if (tmp1 != 0) {
-    *(u32 *)(tmp1 + 8) = *(u32 *)(tmp1 + 0x10);
+  int value;
+  value = Unk10a034_Get_data_02176e38();
+  if (value != 0) {
+    *(u32 *)(value + 8) = *(u32 *)(value + 0x10);
   }
-  return;
 }
 
 /* decompiler-derived */
 u32 Unk10a034_Unk_10a0b4(void)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = Unk10a034_Get_data_02176e38();
-  if (tmp1 == 0) {
-    tmp2 = 1;
+  int value1;
+  u32 value2;
+  value1 = Unk10a034_Get_data_02176e38();
+  if (value1 == 0) {
+    value2 = 1;
   }
   else {
-    tmp2 = *(u32 *)(tmp1 + 0x18);
+    value2 = *(u32 *)(value1 + 0x18);
   }
-  return tmp2;
+  return value2;
 }
 
 /* decompiler-derived */
 int Unk10a034_Unk_10afc0(void)
 {
-  int tmp1;
-  tmp1 = Unk10a034_Unk_10af7c();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk10a034_Unk_10af7c();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x18;
+    value = value + 0x18;
   }
-  return tmp1;
+  return value;
 }
 
 /* decompiler-derived */
 void Unk10a034_Unk_10b000(void)
 {
-  int tmp1;
-  tmp1 = Unk10a034_Get_data_02176e44();
-  if (tmp1 == 0) {
+  int value;
+  value = Unk10a034_Get_data_02176e44();
+  if (value == 0) {
     return;
   }
   func_02061424();
-  return;
 }
 
 /* decompiler-derived */
 void Unk10a034_Unk_10b018(void)
 {
-  int tmp1;
-  tmp1 = Unk10a034_Get_data_02176e44();
-  if (tmp1 != 0) {
-    *(u32 *)(tmp1 + 8) = *(u32 *)(tmp1 + 0x10);
+  int value;
+  value = Unk10a034_Get_data_02176e44();
+  if (value != 0) {
+    *(u32 *)(value + 8) = *(u32 *)(value + 0x10);
   }
-  return;
 }
 
 /* decompiler-derived */
 int Unk10a034_Unk_10b058(void)
 {
-  int tmp1;
-  tmp1 = func_020a1740();
-  return (u32)*(u8 *)(tmp1 + 2) * 300;
+  int value;
+  value = func_020a1740();
+  return (u32)*(u8 *)(value + 2) * 300;
 }
 
 /* decompiler-derived */
 void Unk10a034_Unk_10aeb0(int arg0)
 {
-  int tmp1;
-  tmp1 = 0;
+  int value;
+  value = 0;
   do {
-    tmp1 = tmp1 + 1;
+    value = value + 1;
     *(u32 *)(arg0 + 0x2c) = 0;
     arg0 = arg0 + 0xc;
-  } while (tmp1 < 0xc);
-  return;
+  } while (value < 0xc);
 }

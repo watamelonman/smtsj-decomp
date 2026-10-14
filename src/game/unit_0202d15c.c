@@ -17,9 +17,9 @@ void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1);
 /* decompiler-derived */
 u32 Unk02d15c_Unk_02d934(void)
 {
-  int tmp1;
-  tmp1 = Unk095560_GetManagerSub3a8();
-  return *(u32 *)(tmp1 + 4);
+  int value;
+  value = Unk095560_GetManagerSub3a8();
+  return *(u32 *)(value + 4);
 }
 
 /* decompiler-derived */
@@ -34,7 +34,6 @@ u32 Unk02d15c_Unk_02d944(void)
 void Unk02d15c_Unk_02d81c(void)
 {
   *data_0213d898 = 0xffffffff;
-  return;
 }
 
 /* decompiler-derived */
@@ -44,5 +43,4 @@ void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1)
   v1 = (u32 *)Unk095560_GetManagerSub3a8();
   *v1 = arg1;
   v1[1] = arg0;
-  return;
 }

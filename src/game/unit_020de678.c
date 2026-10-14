@@ -40,26 +40,22 @@ u32 Unk0de678_Get_data_021508d4(void)
 void Unk0de678_Unk_0dea60(void)
 {
   func_02044534(0x1f);
-  return;
 }
 
 /* decompiler-derived */
 void Unk0de678_Unk_0df598(void)
 {
   func_02044428(0x20);
-  return;
 }
 
 /* decompiler-derived */
 void Unk0de678_Unk_0df5a8(void)
 {
   func_02044534(0x20);
-  return;
 }
 
 /* decompiler-derived */
 void Unk0de678_Unk_0dee2c(int arg0)
 {
   Unk0e651c_Unk_0e666c(arg0 + 0x5f1);
-  return;
 }

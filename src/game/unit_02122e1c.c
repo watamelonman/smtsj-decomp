@@ -6,6 +6,15 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+typedef struct Unk122e1cWork {
+    u8 unk_0000[0x14];
+    u32 UnkField0014;
+    u8 unk_0018[0x48];
+    char UnkField0060;
+} Unk122e1cWork;
+
+
 int func_0205caa8();
 int Unk0cb32c_Unk_0cb57c();
 
@@ -13,10 +22,10 @@ void Unk122e1c_SetUnkFields64_b0(void *obj, u32 a, u32 b);
 void Unk122e1c_Unk_122f88(int arg0,int arg1,u32 arg2);
 u32 Unk122e1c_Unk_122f94(int arg0,int arg1);
 void Unk122e1c_Unk_122fa0(int arg0,int arg1,u32 arg2);
-void Unk122e1c_Unk_12331c(int arg0);
-int Unk122e1c_Unk_122f54(int arg0);
-int Unk122e1c_Unk_122f68(int arg0);
-void Unk122e1c_Unk_12332c(int arg0);
+void Unk122e1c_Unk_12331c(Unk122e1cWork *work);
+int Unk122e1c_Unk_122f54(Unk122e1cWork *work);
+int Unk122e1c_Unk_122f68(Unk122e1cWork *work);
+void Unk122e1c_Unk_12332c(Unk122e1cWork *work);
 
 /* set +0x64 and +0xb0 */
 void Unk122e1c_SetUnkFields64_b0(void *obj, u32 a, u32 b) {
@@ -28,7 +37,6 @@ void Unk122e1c_SetUnkFields64_b0(void *obj, u32 a, u32 b) {
 void Unk122e1c_Unk_122f88(int arg0,int arg1,u32 arg2)
 {
   *(u32 *)(arg0 + arg1 * 4 + 0x78) = arg2;
-  return;
 }
 
 /* decompiler-derived */
@@ -41,31 +49,28 @@ u32 Unk122e1c_Unk_122f94(int arg0,int arg1)
 void Unk122e1c_Unk_122fa0(int arg0,int arg1,u32 arg2)
 {
   *(u32 *)(arg0 + arg1 * 4 + 200) = arg2;
-  return;
 }
 
 /* decompiler-derived */
-void Unk122e1c_Unk_12331c(int arg0)
+void Unk122e1c_Unk_12331c(Unk122e1cWork *work)
 {
-  Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x14));
-  return;
+  Unk0cb32c_Unk_0cb57c(work->UnkField0014);
 }
 
 /* decompiler-derived */
-int Unk122e1c_Unk_122f54(int arg0)
+int Unk122e1c_Unk_122f54(Unk122e1cWork *work)
 {
-  return *(char *)(arg0 + 0x60) == '\0';
+  return work->UnkField0060 == '\0';
 }
 
 /* decompiler-derived */
-int Unk122e1c_Unk_122f68(int arg0)
+int Unk122e1c_Unk_122f68(Unk122e1cWork *work)
 {
-  return *(char *)(arg0 + 0x60) == '\b';
+  return work->UnkField0060 == '\b';
 }
 
 /* decompiler-derived */
-void Unk122e1c_Unk_12332c(int arg0)
+void Unk122e1c_Unk_12332c(Unk122e1cWork *work)
 {
-  func_0205caa8(*(u32 *)(arg0 + 0x14),1);
-  return;
+  func_0205caa8(work->UnkField0014,1);
 }

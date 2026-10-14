@@ -26,14 +26,12 @@ void Unk09a268_Nop_09b3c8(void) { }
 void Unk09a268_Unk_09a7fc(u32 arg0)
 {
   func_0209a48c(arg0,3);
-  return;
 }
 
 /* decompiler-derived */
 void Unk09a268_Unk_09a820(u32 arg0)
 {
   func_0209a48c(arg0,4);
-  return;
 }
 
 /* decompiler-derived */
@@ -41,26 +39,22 @@ void Unk09a268_Unk_09c498(void)
 {
   func_0209bb68();
   func_0209c484();
-  return;
 }
 
 /* decompiler-derived */
 void Unk09a268_Unk_09a80c(u32 arg0,u32 arg1)
 {
   func_0209a4a0(arg0,3,arg1);
-  return;
 }
 
 /* decompiler-derived */
 void Unk09a268_Unk_09a830(u32 arg0,u32 arg1)
 {
   func_0209a4a0(arg0,4,arg1);
-  return;
 }
 
 /* decompiler-derived */
 void Unk09a268_Unk_09a870(u32 arg0,u32 arg1)
 {
   func_0209a4a0(arg0,5,arg1);
-  return;
 }

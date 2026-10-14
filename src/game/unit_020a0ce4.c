@@ -43,7 +43,6 @@ void Unk0a0ce4_Unk_0a0e34(void)
 {
   func_02053048();
   func_020b72a8();
-  return;
 }
 
 /* decompiler-derived */
@@ -52,14 +51,13 @@ void Unk0a0ce4_Unk_0a0e98(void)
   func_02052528(0xffffffff);
   func_0205e590(0);
   func_020a1318();
-  return;
 }
 
 /* decompiler-derived */
 int Unk0a0ce4_Unk_0a0ce4(int arg0)
 {
-  int tmp1;
+  int value;
   func_020445d0(0,0);
-  tmp1 = func_0204fde0();
-  return tmp1 + arg0 * 0x20;
+  value = func_0204fde0();
+  return value + arg0 * 0x20;
 }

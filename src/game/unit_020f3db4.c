@@ -30,14 +30,12 @@ u32 Unk0f3db4_Unk_0f44a8(u32 arg0)
 void Unk0f3db4_Unk_0f3dc8(void)
 {
   func_02044428(8);
-  return;
 }
 
 /* decompiler-derived */
 void Unk0f3db4_Unk_0f3dd8(void)
 {
   func_02044534(8);
-  return;
 }
 
 /* decompiler-derived */
@@ -50,29 +48,26 @@ int Unk0f3db4_Unk_0f4528(u32 arg0)
 void Unk0f3db4_Unk_0f4550(u8 *arg0)
 {
   *arg0 = *arg0 | 4;
-  return;
 }
 
 /* decompiler-derived */
 int Unk0f3db4_Unk_0f3db4(void)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e774();
-  return tmp1 + 0x5e52;
+  int value;
+  value = Unk02e000_Unk_02e774();
+  return value + 0x5e52;
 }
 
 /* decompiler-derived */
 void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1)
 {
   *arg0 = *arg0 & 4 | arg1;
-  return;
 }
 
 /* decompiler-derived */
 void Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
 {
-  int tmp1;
-  tmp1 = func_020f3ec8();
-  Unk0f3db4_Unk_0f44a8(*(u8 *)(tmp1 + arg1));
-  return;
+  int value;
+  value = func_020f3ec8();
+  Unk0f3db4_Unk_0f44a8(*(u8 *)(value + arg1));
 }

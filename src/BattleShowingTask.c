@@ -6,6 +6,15 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+typedef struct BattleShowingTaskWork {
+    u8 unk_0000[0x4];
+    s32 UnkField0004;
+    s32 UnkField0008;
+    s32 UnkField000c;
+} BattleShowingTaskWork;
+
+
 extern u32 data_02176e70[];
 int func_020a0d30();
 int func_02119658();
@@ -17,7 +26,7 @@ void BattleShowingTask_Nop_119850(void);
 u32 BattleShowingTask_GetUnkField28(void *obj);
 void BattleShowingTask_Unk_119834(void);
 void BattleShowingTask_Unk_1196e0(u32 *arg0);
-u32 BattleShowingTask_Unk_11c230(int arg0);
+u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
 /* empty callback */
 void BattleShowingTask_Nop_11982c(void) { }
@@ -37,10 +46,9 @@ u32 BattleShowingTask_GetUnkField28(void *obj) { return FIELD(u32, obj, 0x28); }
 /* decompiler-derived */
 void BattleShowingTask_Unk_119834(void)
 {
-  u32 tmp1;
-  tmp1 = func_02119658();
-  *data_02176e70 = tmp1;
-  return;
+  u32 value;
+  value = func_02119658();
+  *data_02176e70 = value;
 }
 
 /* decompiler-derived */
@@ -49,20 +57,19 @@ void BattleShowingTask_Unk_1196e0(u32 *arg0)
   *arg0 = 0;
   arg0[1] = 0;
   func_020a0d30(1);
-  return;
 }
 
 /* decompiler-derived */
-u32 BattleShowingTask_Unk_11c230(int arg0)
+u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work)
 {
-  u32 tmp1;
-  if (*(int *)(arg0 + 0xc) < *(int *)(arg0 + 8)) {
-    tmp1 = *(u32 *)(*(int *)(arg0 + 4) + *(int *)(arg0 + 0xc) * 4);
+  u32 value;
+  if (work->UnkField000c < work->UnkField0008) {
+    value = *(u32 *)(work->UnkField0004 + work->UnkField000c * 4);
   }
   else {
-    tmp1 = 0;
+    value = 0;
   }
-  return tmp1;
+  return value;
 }
 
 typedef struct BattleResultInfo {

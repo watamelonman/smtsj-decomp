@@ -39,39 +39,36 @@ u32 Unk0946e0_GetAddr_data_02175d94(void)
 /* decompiler-derived */
 void Unk0946e0_Unk_094ae0(int *arg0)
 {
-  int tmp1;
-  tmp1 = Unk0946e0_GetAddr_data_02175d94();
-  *arg0 = (int)*(short *)(tmp1 + 0x10);
-  return;
+  int value;
+  value = Unk0946e0_GetAddr_data_02175d94();
+  *arg0 = (int)*(short *)(value + 0x10);
 }
 
 /* decompiler-derived */
 u32 Unk0946e0_Unk_0946e0(void)
 {
-  u32 tmp1;
-  tmp1 = func_02052ff0(0xc);
-  func_02008848(tmp1,0,0xc);
-  return tmp1;
+  u32 value;
+  value = func_02052ff0(0xc);
+  func_02008848(value,0,0xc);
+  return value;
 }
 
 /* decompiler-derived */
 void Unk0946e0_Unk_094c50(int *arg0)
 {
   short *v1;
-  int tmp2;
+  int value;
   v1 = (short *)Unk0946e0_GetAddr_data_02175d94();
   *arg0 = (int)*v1;
-  tmp2 = Unk0946e0_GetAddr_data_02175d94();
-  arg0[1] = (int)*(short *)(tmp2 + 2);
-  return;
+  value = Unk0946e0_GetAddr_data_02175d94();
+  arg0[1] = (int)*(short *)(value + 2);
 }
 
 /* decompiler-derived */
 void Unk0946e0_Unk_094a64(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk0946e0_GetAddr_data_02175d94();
-  func_02057678(arg0,*(u32 *)(tmp1 + 4),*(u32 *)(tmp1 + 8));
+  int value;
+  value = Unk0946e0_GetAddr_data_02175d94();
+  func_02057678(arg0,*(u32 *)(value + 4),*(u32 *)(value + 8));
   func_02057628(arg0,0,0);
-  return;
 }

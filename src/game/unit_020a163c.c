@@ -27,17 +27,15 @@ int Unk0a163c_Unk_0a1718(u16 *arg0,u16 *arg1)
 /* decompiler-derived */
 void Unk0a163c_Unk_0a1814(u32 arg0)
 {
-  u32 tmp1;
-  tmp1 = func_020445f4(0x12,1);
-  func_0204fed8(tmp1,arg0);
-  return;
+  u32 value;
+  value = func_020445f4(0x12,1);
+  func_0204fed8(value,arg0);
 }
 
 /* decompiler-derived */
 void Unk0a163c_Unk_0a1834(u32 arg0)
 {
-  u32 tmp1;
-  tmp1 = func_020445f4(0x12,0);
-  func_0204fed8(tmp1,arg0);
-  return;
+  u32 value;
+  value = func_020445f4(0x12,0);
+  func_0204fed8(value,arg0);
 }

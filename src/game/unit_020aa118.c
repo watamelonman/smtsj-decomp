@@ -23,16 +23,15 @@ void Unk0aa118_Thunk_020af8d8(void) { func_020af8d8(); }
 /* decompiler-derived */
 void Unk0aa118_Unk_0ab454(void)
 {
-  int tmp1;
-  tmp1 = func_0204509c();
-  *(u32 *)(tmp1 + 0x18) = 0;
-  return;
+  int value;
+  value = func_0204509c();
+  *(u32 *)(value + 0x18) = 0;
 }
 
 /* decompiler-derived */
 int Unk0aa118_Unk_0ab4b8(void)
 {
-  int tmp1;
-  tmp1 = func_0204509c();
-  return *(int *)(tmp1 + 0x18) != 0;
+  int value;
+  value = func_0204509c();
+  return *(int *)(value + 0x18) != 0;
 }

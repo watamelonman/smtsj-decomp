@@ -18,5 +18,4 @@ int Unk0bc1a8_GetConst0(void) { return 0; }
 void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 {
   func_020bc514(arg0,arg1,0);
-  return;
 }

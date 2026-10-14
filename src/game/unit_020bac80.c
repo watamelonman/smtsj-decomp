@@ -28,25 +28,25 @@ void Unk0bac80_Thunk_02044ec4(void) { func_02044ec4(); }
 /* decompiler-derived */
 u32 Unk0bac80_Unk_0badc0(void)
 {
-  int tmp1;
-  tmp1 = func_0203ad14();
-  return *(u32 *)(tmp1 + 0xe8);
+  int value;
+  value = func_0203ad14();
+  return *(u32 *)(value + 0xe8);
 }
 
 /* decompiler-derived */
 u32 Unk0bac80_Unk_0bae08(void)
 {
-  int tmp1;
-  tmp1 = Unk0bac80_Unk_0badc0();
-  return *(u32 *)(tmp1 + 0x68);
+  int value;
+  value = Unk0bac80_Unk_0badc0();
+  return *(u32 *)(value + 0x68);
 }
 
 /* decompiler-derived */
 int Unk0bac80_Unk_0bae18(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  return tmp1 + 0x8c;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  return value + 0x8c;
 }
 
 /* decompiler-derived */
@@ -60,26 +60,24 @@ u32 Unk0bac80_Unk_0bae50(void)
 /* decompiler-derived */
 u32 Unk0bac80_Unk_0bb298(void)
 {
-  int tmp1;
-  tmp1 = Unk0bac80_Unk_0badc0();
-  func_0203acf4(*(u32 *)(tmp1 + 0x40));
+  int value;
+  value = Unk0bac80_Unk_0badc0();
+  func_0203acf4(*(u32 *)(value + 0x40));
   return 1;
 }
 
 /* decompiler-derived */
 void Unk0bac80_Unk_0badd0(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk0bac80_Unk_0badc0();
-  func_0204fdac(*(u32 *)(tmp1 + 0x54),arg0);
-  return;
+  int value;
+  value = Unk0bac80_Unk_0badc0();
+  func_0204fdac(*(u32 *)(value + 0x54),arg0);
 }
 
 /* decompiler-derived */
 void Unk0bac80_Unk_0badec(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk0bac80_Unk_0badc0();
-  func_0204fdac(*(u32 *)(tmp1 + 0x60),arg0);
-  return;
+  int value;
+  value = Unk0bac80_Unk_0badc0();
+  func_0204fdac(*(u32 *)(value + 0x60),arg0);
 }

@@ -26,7 +26,6 @@ void Unk0ea208_Unk_0ead3c(void)
 {
   Unk0e8228_Unk_0e8f38();
   func_020cb044();
-  return;
 }
 
 /* decompiler-derived */
@@ -40,22 +39,21 @@ void Unk0ea208_Unk_0eaca0(void)
 {
   func_02057eb8(0xffffffff);
   func_020572d8();
-  return;
 }
 
 /* decompiler-derived */
 u32 Unk0ea208_Unk_0ea72c(void)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = Unk0ea208_Get_data_02176ddc();
-  if (tmp1 == 0) {
-    tmp2 = 0;
+  int value1;
+  u32 value2;
+  value1 = Unk0ea208_Get_data_02176ddc();
+  if (value1 == 0) {
+    value2 = 0;
   }
   else {
-    tmp2 = *(u32 *)(tmp1 + 0x1d4);
+    value2 = *(u32 *)(value1 + 0x1d4);
   }
-  return tmp2;
+  return value2;
 }
 
 /* decompiler-derived */
@@ -64,5 +62,4 @@ void Unk0ea208_Unk_0ead4c(void)
   func_020e8374(8);
   func_020e849c();
   func_02099bac();
-  return;
 }

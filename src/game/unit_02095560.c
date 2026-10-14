@@ -61,7 +61,6 @@ void Unk095560_Unk_096130(void)
 {
   func_02095728();
   func_02065ca8();
-  return;
 }
 
 int func_020445d0();
@@ -69,5 +68,4 @@ int func_020445d0();
 void Unk095560_Unk_095764(u32 arg0)
 {
   func_020445d0(0x1b,arg0);
-  return;
 }

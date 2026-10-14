@@ -22,68 +22,64 @@ void Unk02f078_Unk_02f08c(void);
 /* decompiler-derived */
 u8 Unk02f078_Unk_02f0d8(void)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e774();
-  return *(u8 *)(tmp1 + 2);
+  int value;
+  value = Unk02e000_Unk_02e774();
+  return *(u8 *)(value + 2);
 }
 
 /* decompiler-derived */
 u8 Unk02f078_Unk_02f220(void)
 {
-  int tmp1;
-  tmp1 = func_0202e788();
-  return *(u8 *)(tmp1 + 0x361);
+  int value;
+  value = func_0202e788();
+  return *(u8 *)(value + 0x361);
 }
 
 /* decompiler-derived */
 int Unk02f078_Unk_02f078(void)
 {
-  int tmp1;
-  tmp1 = func_0202e788();
-  return tmp1 + 0x36e;
+  int value;
+  value = func_0202e788();
+  return value + 0x36e;
 }
 
 /* decompiler-derived */
 void Unk02f078_Unk_02f0b0(u8 arg0)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e774();
-  *(u8 *)(tmp1 + 2) = arg0;
-  return;
+  int value;
+  value = Unk02e000_Unk_02e774();
+  *(u8 *)(value + 2) = arg0;
 }
 
 /* decompiler-derived */
 void Unk02f078_Unk_02f0c4(void)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e774();
-  *(u8 *)(tmp1 + 2) = 0;
-  return;
+  int value;
+  value = Unk02e000_Unk_02e774();
+  *(u8 *)(value + 2) = 0;
 }
 
 /* decompiler-derived */
 void Unk02f078_Unk_02f20c(u8 arg0)
 {
-  int tmp1;
-  tmp1 = func_0202e788();
-  *(u8 *)(tmp1 + 0x361) = arg0;
-  return;
+  int value;
+  value = func_0202e788();
+  *(u8 *)(value + 0x361) = arg0;
 }
 
 /* decompiler-derived */
 int Unk02f078_Unk_02f0e8(void)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e774();
-  return *(char *)(tmp1 + 2) != '\0';
+  int value;
+  value = Unk02e000_Unk_02e774();
+  return *(char *)(value + 2) != '\0';
 }
 
 /* decompiler-derived */
 void Unk02f078_Unk_02f08c(void)
 {
-  int tmp1;
-  tmp1 = Unk02f078_Unk_02f078();
-  func_02008848(tmp1,0,6);
-  *(u8 *)(tmp1 + 1) = 100;
-  return;
+  int value;
+  value = Unk02f078_Unk_02f078();
+  func_02008848(value,0,6);
+  *(u8 *)(value + 1) = 100;
 }
