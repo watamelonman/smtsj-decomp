@@ -20,3 +20,13 @@
 - `func_020c7f70`
 - `func_020c7fbc`
 - `func_020c842c`
+- `func_020c75a8`: decompiler-derived
+
+## Not done in M1-T1136
+- `func_020c1870`
+- `func_020c1918`
+- `func_020c84c0`
+- `func_020bd9c4`
+- `func_020c18c0`
+- `func_020c2578`
+- `func_020c72a4`
