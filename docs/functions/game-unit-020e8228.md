@@ -64,3 +64,13 @@
 - `func_020e8ce8`
 - `func_020e9748`
 - `func_020e93d8`
+
+## Not done in M1-T904
+- `func_020e83ac`
+- `func_020e83e8`
+- `func_020e8424`
+- `func_020e8fe4`
+- `func_020e942c`
+- `func_020e9bc0`
+- `func_020e8be8`
+- `func_020e9b10`
