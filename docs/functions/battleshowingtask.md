@@ -28,3 +28,13 @@
 - `func_0211985c`
 - `func_02119888`
 - `func_02119910`
+- `func_0211a8dc`: decompiler-derived
+
+## Not done in M1-T1032
+- `func_0211c670`
+- `func_0211c5d0`
+- `func_02119a10`
+- `func_021198b4`
+- `func_0211c610`
+- `func_02119658`
+- `func_0211c4e0`

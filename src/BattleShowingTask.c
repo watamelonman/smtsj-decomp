@@ -241,3 +241,23 @@ void BattleShowingTask_Unk_11a01c(int arg0)
   *(u32 *)(arg0 + 0x1c) = 0;
   return;
 }
+
+
+
+/* decompiler-derived */
+void func_0211a8dc(int arg0,u32 arg1)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = 0;
+  tmp2 = arg0;
+  do {
+    if (arg1 == *(u16 *)(tmp2 + 0x268)) {
+      *(u8 *)(arg0 + 0x26c + tmp1 * 6) = *(u8 *)(arg0 + 0x26c + tmp1 * 6) | 8;
+      return;
+    }
+    tmp1 = tmp1 + 1;
+    tmp2 = tmp2 + 6;
+  } while (tmp1 < 0xf);
+  return;
+}
