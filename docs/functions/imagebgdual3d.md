@@ -13,3 +13,11 @@
 ## Not done in M1-T536
 - `func_02125984`
 - `func_02125998`
+- `func_02125a68`: decompiler-derived
+- `func_02125ca4`: decompiler-derived
+- `func_02125cbc`: decompiler-derived
+- `func_02125d30`: decompiler-derived
+- `func_021259c4`: decompiler-derived
+- `func_02125c40`: decompiler-derived
+- `func_02125d10`: decompiler-derived
+- `func_02125650`: decompiler-derived

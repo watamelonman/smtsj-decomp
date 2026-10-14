@@ -77,3 +77,96 @@ void ImageBgDual3D_Unk_1259e0(void)
   *v1 = 1;
   ImageBgDual3D_Unk_125a80();
 }
+
+
+int func_02065e88();
+int func_020773dc();
+int func_02125c68();
+/* decompiler-derived */
+void func_02125a68(void)
+{
+  func_02125c68();
+  func_02065e88();
+  func_020773dc(1);
+  return;
+}
+
+int func_0212594c();
+/* decompiler-derived */
+int func_02125ca4(void)
+{
+  int tmp1;
+  tmp1 = func_0212594c();
+  return tmp1 == 0;
+}
+
+
+/* decompiler-derived */
+int func_02125cbc(void)
+{
+  int tmp1;
+  tmp1 = func_0212594c();
+  return tmp1 == 1;
+}
+
+int func_021258e8();
+/* decompiler-derived */
+void func_02125d30(void)
+{
+  int tmp1;
+  tmp1 = func_02125cbc();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_021258e8();
+  return;
+}
+
+
+/* decompiler-derived */
+void func_021259c4(u32 arg0)
+{
+  int tmp1;
+  tmp1 = ImageBgDual3D_Get_data_02176e94();
+  *(u32 *)(tmp1 + 4) = arg0;
+  *(u32 *)(tmp1 + 0xc) = 1;
+  return;
+}
+
+int func_02117294();
+int func_02117790();
+int func_02125a08();
+/* decompiler-derived */
+void func_02125c40(void)
+{
+  u32 tmp1;
+  func_02117790();
+  func_02117294();
+  tmp1 = func_02125a08();
+  *data_02176e94 = tmp1;
+  return;
+}
+
+int func_021258a0();
+/* decompiler-derived */
+void func_02125d10(u32 arg0)
+{
+  int tmp1;
+  tmp1 = func_02125cbc();
+  if (tmp1 == 0) {
+    return;
+  }
+  func_021258a0(arg0);
+  return;
+}
+
+int func_0205c408();
+int func_0205c6e0();
+/* decompiler-derived */
+void func_02125650(int arg0)
+{
+  func_0205c408(*(u32 *)(arg0 + 0x8c),0);
+  func_0205c6e0(*(u32 *)(arg0 + 0x8c));
+  *(u32 *)(arg0 + 0x208) = 0;
+  return;
+}
