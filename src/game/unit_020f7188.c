@@ -8,15 +8,15 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 
 
-void func_020f7884(void);
-void func_020f7ae0(void);
-void func_020f7ae4(void);
+void Unk0f7188_Nop_0f7884(void);
+void Unk0f7188_Nop_0f7ae0(void);
+void Unk0f7188_Nop_0f7ae4(void);
 
 /* empty callback */
-void func_020f7884(void) { }
+void Unk0f7188_Nop_0f7884(void) { }
 
 /* empty callback */
-void func_020f7ae0(void) { }
+void Unk0f7188_Nop_0f7ae0(void) { }
 
 /* empty callback */
-void func_020f7ae4(void) { }
+void Unk0f7188_Nop_0f7ae4(void) { }

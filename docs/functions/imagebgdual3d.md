@@ -1,14 +1,14 @@
 # ImageBgDual3D
 
-- `func_021252f4`, `func_021252f8`, `func_021252fc`, `func_02125c3c`, `func_02125c60`, `func_02125c64`: empty callbacks (function-table slots).
-- `func_021257e8`: tail-forwards to `func_021255b4`.
-- `func_021259ac`: tail-forwards to `func_021177e0`.
-- `func_021259b8`: decompiler-derived
-- `func_021259f8`: decompiler-derived
-- `func_02125a80`: decompiler-derived
-- `func_02125300`: decompiler-derived
-- `func_02125afc`: decompiler-derived
-- `func_021259e0`: decompiler-derived
+- `ImageBgDual3D_Nop_1252f4`, `ImageBgDual3D_Nop_1252f8`, `ImageBgDual3D_Nop_1252fc`, `ImageBgDual3D_Nop_125c3c`, `ImageBgDual3D_Nop_125c60`, `ImageBgDual3D_Nop_125c64`: empty callbacks (function-table slots).
+- `ImageBgDual3D_Thunk_021255b4`: tail-forwards to `func_021255b4`.
+- `ImageBgDual3D_Thunk_021177e0`: tail-forwards to `func_021177e0`.
+- `ImageBgDual3D_Thunk_02117808`: decompiler-derived
+- `ImageBgDual3D_Get_data_02176e94`: decompiler-derived
+- `ImageBgDual3D_Unk_125a80`: decompiler-derived
+- `ImageBgDual3D_Clear_data_02176e8c`: decompiler-derived
+- `ImageBgDual3D_Unk_125afc`: decompiler-derived
+- `ImageBgDual3D_Unk_1259e0`: decompiler-derived
 
 ## Not done in M1-T536
 - `func_02125984`

@@ -26,7 +26,7 @@ typedef struct Worker {
 void func_020a2bb8(u32 *sub);
 
 /* Resets the object and attaches it to `owner`. */
-void func_0202dd28(Worker *w, u32 owner) {
+void Unk0202dcfc_InitWorker(Worker *w, u32 owner) {
     int i;
 
     w->owner = owner;
@@ -46,13 +46,13 @@ void func_0202dd28(Worker *w, u32 owner) {
 }
 
 
-void func_02095748(void);
-/* forwards to `func_02095748` */
-void func_0202dd1c(void) { func_02095748(); }
+void Unk095560_GetManagerAlias(void);
+/* forwards to `Unk095560_GetManagerAlias` */
+void Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void) { Unk095560_GetManagerAlias(); }
 
 
 /* decompiler-derived */
-void func_0202df00(int arg0,u32 arg1)
+void Unk02dcfc_Unk_02df00(int arg0,u32 arg1)
 {
   *(u32 *)(arg0 + 0x18) = 0x15;
   *(u32 *)(arg0 + 0x1c) = arg1;
@@ -61,7 +61,7 @@ void func_0202df00(int arg0,u32 arg1)
 
 
 /* decompiler-derived */
-void func_0202de58(int arg0)
+void Unk02dcfc_Unk_02de58(int arg0)
 {
   *(u32 *)(arg0 + 0x18) = 0xc;
   *(u32 *)(arg0 + 0x54) = 1;

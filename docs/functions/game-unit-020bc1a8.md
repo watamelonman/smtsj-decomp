@@ -1,7 +1,7 @@
 # src/game/unit_020bc1a8.c
 
-- `func_020bc420` (8 B): returns 0
-- `func_020bc504` (16 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0bc1a8_GetConst0` (8 B): returns 0
+- `Unk0bc1a8_Unk_0bc504` (16 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
 - `func_020bc598`: no candidate matched locally

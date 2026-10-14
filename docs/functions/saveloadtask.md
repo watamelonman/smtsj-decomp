@@ -1,6 +1,6 @@
 # src/SaveLoadTask.c
 
-- `func_020e1144`: hand-written (see comment in source)
+- `SaveLoadTask_Draw`: hand-written (see comment in source)
 
 ## Not done in M1-T896
 - `func_020dfd9c`

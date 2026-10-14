@@ -9,29 +9,29 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 extern u8 data_02175dac[];
 void func_0202e8cc(void);
 
-void func_02095000(void);
-int func_02095004(int arg0);
-u32 func_020953bc(void *obj);
-void func_02094fe0(void);
-int func_02094fec(int arg0);
+void Unk094fe0_Nop_095000(void);
+int Unk094fe0_Unk_095004(int arg0);
+u32 Unk094fe0_GetUnkField9a0(void *obj);
+void Unk094fe0_Thunk_0202e8cc(void);
+int Unk094fe0_Unk_094fec(int arg0);
 
 /* empty callback */
-void func_02095000(void) { }
+void Unk094fe0_Nop_095000(void) { }
 
 /* decompiler-derived */
-int func_02095004(int arg0)
+int Unk094fe0_Unk_095004(int arg0)
 {
   return arg0 + 0x990;
 }
 
 /* get u32 at +0x9a0 */
-u32 func_020953bc(void *obj) { return FIELD(u32, obj, 0x9a0); }
+u32 Unk094fe0_GetUnkField9a0(void *obj) { return FIELD(u32, obj, 0x9a0); }
 
 /* forwards to `func_0202e8cc` */
-void func_02094fe0(void) { func_0202e8cc(); }
+void Unk094fe0_Thunk_0202e8cc(void) { func_0202e8cc(); }
 
 /* decompiler-derived */
-int func_02094fec(int arg0)
+int Unk094fe0_Unk_094fec(int arg0)
 {
   return arg0 * 0x1c + ((int)data_02175dac);
 }

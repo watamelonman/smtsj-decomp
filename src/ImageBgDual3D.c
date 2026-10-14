@@ -18,44 +18,44 @@ void func_021255b4(void);
 void func_021177e0(void);
 
 /* Empty per-frame / lifecycle callbacks (no direct callers; table entries). */
-void func_021252f4(void) { }
-void func_021252f8(void) { }
-void func_021252fc(void) { }
-void func_02125c3c(void) { }
-void func_02125c60(void) { }
-void func_02125c64(void) { }
+void ImageBgDual3D_Nop_1252f4(void) { }
+void ImageBgDual3D_Nop_1252f8(void) { }
+void ImageBgDual3D_Nop_1252fc(void) { }
+void ImageBgDual3D_Nop_125c3c(void) { }
+void ImageBgDual3D_Nop_125c60(void) { }
+void ImageBgDual3D_Nop_125c64(void) { }
 
 /* Forwards to func_021255b4 with the caller's arguments. */
-void func_021257e8(void) { func_021255b4(); }
+void ImageBgDual3D_Thunk_021255b4(void) { func_021255b4(); }
 
 /* Forwards to func_021177e0 (shared helper also used by unit_02116598). */
-void func_021259ac(void) { func_021177e0(); }
+void ImageBgDual3D_Thunk_021177e0(void) { func_021177e0(); }
 
 
 void func_02117808(void);
 /* forwards to `func_02117808` */
-void func_021259b8(void) { func_02117808(); }
+void ImageBgDual3D_Thunk_02117808(void) { func_02117808(); }
 
 extern u32 data_02176e94[];
 /* decompiler-derived */
-u32 func_021259f8(void)
+u32 ImageBgDual3D_Get_data_02176e94(void)
 {
   return *data_02176e94;
 }
 
-int func_02065eac();
-int func_02096130();
+int Unk065e88_Unk_065eac();
+int Unk095560_Unk_096130();
 /* decompiler-derived */
-void func_02125a80(void)
+void ImageBgDual3D_Unk_125a80(void)
 {
-  func_02096130();
-  func_02065eac();
+  Unk095560_Unk_096130();
+  Unk065e88_Unk_065eac();
   return;
 }
 
 extern u32 data_02176e8c[];
 /* decompiler-derived */
-void func_02125300(void)
+void ImageBgDual3D_Clear_data_02176e8c(void)
 {
   *data_02176e8c = 0;
   return;
@@ -64,7 +64,7 @@ void func_02125300(void)
 int func_021172dc();
 int func_021177cc();
 /* decompiler-derived */
-void func_02125afc(void)
+void ImageBgDual3D_Unk_125afc(void)
 {
   func_021177cc(0);
   func_021172dc();
@@ -73,11 +73,11 @@ void func_02125afc(void)
 
 
 /* decompiler-derived */
-void func_021259e0(void)
+void ImageBgDual3D_Unk_1259e0(void)
 {
   u32 *v1;
-  v1 = (u32 *)func_021259f8();
+  v1 = (u32 *)ImageBgDual3D_Get_data_02176e94();
   *v1 = 1;
-  func_02125a80();
+  ImageBgDual3D_Unk_125a80();
   return;
 }

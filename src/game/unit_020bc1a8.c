@@ -8,14 +8,14 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 int func_020bc514();
 
-int func_020bc420(void);
-void func_020bc504(u32 arg0,u32 arg1);
+int Unk0bc1a8_GetConst0(void);
+void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1);
 
 /* returns 0 */
-int func_020bc420(void) { return 0; }
+int Unk0bc1a8_GetConst0(void) { return 0; }
 
 /* decompiler-derived */
-void func_020bc504(u32 arg0,u32 arg1)
+void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 {
   func_020bc514(arg0,arg1,0);
   return;

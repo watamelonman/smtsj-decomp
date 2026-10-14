@@ -7,28 +7,28 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int func_02008848();
-int func_0202e774();
+int Unk02e000_Unk_02e774();
 int func_0202e788();
 
-u8 func_0202f0d8(void);
-u8 func_0202f220(void);
-int func_0202f078(void);
-void func_0202f0b0(u8 arg0);
-void func_0202f0c4(void);
-void func_0202f20c(u8 arg0);
-int func_0202f0e8(void);
-void func_0202f08c(void);
+u8 Unk02f078_Unk_02f0d8(void);
+u8 Unk02f078_Unk_02f220(void);
+int Unk02f078_Unk_02f078(void);
+void Unk02f078_Unk_02f0b0(u8 arg0);
+void Unk02f078_Unk_02f0c4(void);
+void Unk02f078_Unk_02f20c(u8 arg0);
+int Unk02f078_Unk_02f0e8(void);
+void Unk02f078_Unk_02f08c(void);
 
 /* decompiler-derived */
-u8 func_0202f0d8(void)
+u8 Unk02f078_Unk_02f0d8(void)
 {
   int tmp1;
-  tmp1 = func_0202e774();
+  tmp1 = Unk02e000_Unk_02e774();
   return *(u8 *)(tmp1 + 2);
 }
 
 /* decompiler-derived */
-u8 func_0202f220(void)
+u8 Unk02f078_Unk_02f220(void)
 {
   int tmp1;
   tmp1 = func_0202e788();
@@ -36,7 +36,7 @@ u8 func_0202f220(void)
 }
 
 /* decompiler-derived */
-int func_0202f078(void)
+int Unk02f078_Unk_02f078(void)
 {
   int tmp1;
   tmp1 = func_0202e788();
@@ -44,25 +44,25 @@ int func_0202f078(void)
 }
 
 /* decompiler-derived */
-void func_0202f0b0(u8 arg0)
+void Unk02f078_Unk_02f0b0(u8 arg0)
 {
   int tmp1;
-  tmp1 = func_0202e774();
+  tmp1 = Unk02e000_Unk_02e774();
   *(u8 *)(tmp1 + 2) = arg0;
   return;
 }
 
 /* decompiler-derived */
-void func_0202f0c4(void)
+void Unk02f078_Unk_02f0c4(void)
 {
   int tmp1;
-  tmp1 = func_0202e774();
+  tmp1 = Unk02e000_Unk_02e774();
   *(u8 *)(tmp1 + 2) = 0;
   return;
 }
 
 /* decompiler-derived */
-void func_0202f20c(u8 arg0)
+void Unk02f078_Unk_02f20c(u8 arg0)
 {
   int tmp1;
   tmp1 = func_0202e788();
@@ -71,18 +71,18 @@ void func_0202f20c(u8 arg0)
 }
 
 /* decompiler-derived */
-int func_0202f0e8(void)
+int Unk02f078_Unk_02f0e8(void)
 {
   int tmp1;
-  tmp1 = func_0202e774();
+  tmp1 = Unk02e000_Unk_02e774();
   return *(char *)(tmp1 + 2) != '\0';
 }
 
 /* decompiler-derived */
-void func_0202f08c(void)
+void Unk02f078_Unk_02f08c(void)
 {
   int tmp1;
-  tmp1 = func_0202f078();
+  tmp1 = Unk02f078_Unk_02f078();
   func_02008848(tmp1,0,6);
   *(u8 *)(tmp1 + 1) = 100;
   return;

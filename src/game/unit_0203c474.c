@@ -6,7 +6,7 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int func_0202df00();
+int Unk02dcfc_Unk_02df00();
 int func_0202df88();
 int func_0203ac00();
 int func_0203ad14();
@@ -24,122 +24,122 @@ int func_020a27e0();
 int func_020a2820();
 int func_020a2884();
 int func_020a28b0();
-int func_020a28e8();
+int ScanVisor_Thunk_020fc6b8();
 int func_020a2920();
 
-u32 func_0203c4c8(void);
-u32 func_0203c4dc(void);
-u32 func_0203c4f0(void);
-u32 func_0203c504(void);
-u32 func_0203c518(void);
-u32 func_0203c52c(void);
-u32 func_0203c558(void);
-u32 func_0203c5a4(void);
-u32 func_0203c5b8(void);
-u32 func_0203c5cc(void);
-u32 func_0203c5e0(void);
-u32 func_0203c5f4(void);
-u32 func_0203c540(void);
-u32 func_0203c56c(void);
-u32 func_0203c588(void);
-u32 func_0203c4a0(void);
-u32 func_0203c474(void);
-u32 func_0203c638(void);
+u32 Unk03c474_Unk_03c4c8(void);
+u32 Unk03c474_Unk_03c4dc(void);
+u32 Unk03c474_Unk_03c4f0(void);
+u32 Unk03c474_Unk_03c504(void);
+u32 Unk03c474_Unk_03c518(void);
+u32 Unk03c474_Unk_03c52c(void);
+u32 Unk03c474_Unk_03c558(void);
+u32 Unk03c474_Unk_03c5a4(void);
+u32 Unk03c474_Unk_03c5b8(void);
+u32 Unk03c474_Unk_03c5cc(void);
+u32 Unk03c474_Unk_03c5e0(void);
+u32 Unk03c474_Unk_03c5f4(void);
+u32 Unk03c474_Unk_03c540(void);
+u32 Unk03c474_Unk_03c56c(void);
+u32 Unk03c474_Unk_03c588(void);
+u32 Unk03c474_Unk_03c4a0(void);
+u32 Unk03c474_Unk_03c474(void);
+u32 Unk03c474_Unk_03c638(void);
 
 /* decompiler-derived */
-u32 func_0203c4c8(void)
+u32 Unk03c474_Unk_03c4c8(void)
 {
   func_020a2884(1);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c4dc(void)
+u32 Unk03c474_Unk_03c4dc(void)
 {
   func_020a2884(0);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c4f0(void)
+u32 Unk03c474_Unk_03c4f0(void)
 {
   func_020a2820(1);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c504(void)
+u32 Unk03c474_Unk_03c504(void)
 {
   func_020a2820(0);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c518(void)
+u32 Unk03c474_Unk_03c518(void)
 {
   func_020a27e0(1);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c52c(void)
+u32 Unk03c474_Unk_03c52c(void)
 {
   func_020a27e0(0);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c558(void)
+u32 Unk03c474_Unk_03c558(void)
 {
-  func_020a28e8(0);
+  ScanVisor_Thunk_020fc6b8(0);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c5a4(void)
+u32 Unk03c474_Unk_03c5a4(void)
 {
   func_020a269c(1);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c5b8(void)
+u32 Unk03c474_Unk_03c5b8(void)
 {
   func_020a269c(0);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c5cc(void)
+u32 Unk03c474_Unk_03c5cc(void)
 {
   func_020a273c(1);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c5e0(void)
+u32 Unk03c474_Unk_03c5e0(void)
 {
   func_020a273c(0);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c5f4(void)
+u32 Unk03c474_Unk_03c5f4(void)
 {
   func_020a28b0(0);
   return 1;
 }
 
 /* decompiler-derived */
-u32 func_0203c540(void)
+u32 Unk03c474_Unk_03c540(void)
 {
-  func_020a28e8(1);
+  ScanVisor_Thunk_020fc6b8(1);
   func_0202df88();
   return 3;
 }
 
 /* decompiler-derived */
-u32 func_0203c56c(void)
+u32 Unk03c474_Unk_03c56c(void)
 {
   func_020a277c(1);
   func_020a2920(1);
@@ -147,7 +147,7 @@ u32 func_0203c56c(void)
 }
 
 /* decompiler-derived */
-u32 func_0203c588(void)
+u32 Unk03c474_Unk_03c588(void)
 {
   func_020a277c(0);
   func_020a2920(0);
@@ -155,30 +155,30 @@ u32 func_0203c588(void)
 }
 
 /* decompiler-derived */
-u32 func_0203c4a0(void)
+u32 Unk03c474_Unk_03c4a0(void)
 {
   int tmp1;
   func_0203ac00(0);
   func_0205e590();
   tmp1 = func_0203ad14();
-  func_0202df00(*(u32 *)(tmp1 + 0xe8),1);
+  Unk02dcfc_Unk_02df00(*(u32 *)(tmp1 + 0xe8),1);
   return 3;
 }
 
 /* decompiler-derived */
-u32 func_0203c474(void)
+u32 Unk03c474_Unk_03c474(void)
 {
   u32 tmp1;
   int tmp2;
   tmp1 = func_0203ac00(0);
   func_0205e484(tmp1,0);
   tmp2 = func_0203ad14();
-  func_0202df00(*(u32 *)(tmp2 + 0xe8),1);
+  Unk02dcfc_Unk_02df00(*(u32 *)(tmp2 + 0xe8),1);
   return 3;
 }
 
 /* decompiler-derived */
-u32 func_0203c638(void)
+u32 Unk03c474_Unk_03c638(void)
 {
   u32 tmp1;
   int tmp2;

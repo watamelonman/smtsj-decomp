@@ -13,23 +13,23 @@ int func_02077640();
 int func_02077ddc();
 int func_02079238();
 
-u32 func_02077218(void);
-void func_020775d8(void);
-void func_0207784c(u32 arg0);
-void func_02077880(int arg0);
-void func_020778d4(int arg0);
-u32 func_020778e8(int arg0);
-void func_0207916c(int arg0);
-void func_020772f8(void);
+u32 ImageObj_Get_data_0217231c(void);
+void ImageObj_Unk_0775d8(void);
+void ImageObj_Unk_07784c(u32 arg0);
+void ImageObj_Unk_077880(int arg0);
+void ImageObj_Unk_0778d4(int arg0);
+u32 ImageObj_Unk_0778e8(int arg0);
+void ImageObj_Unk_07916c(int arg0);
+void ImageObj_Unk_0772f8(void);
 
 /* decompiler-derived */
-u32 func_02077218(void)
+u32 ImageObj_Get_data_0217231c(void)
 {
   return *data_0217231c;
 }
 
 /* decompiler-derived */
-void func_020775d8(void)
+void ImageObj_Unk_0775d8(void)
 {
   func_02077620();
   func_020775a0();
@@ -38,36 +38,36 @@ void func_020775d8(void)
 }
 
 /* decompiler-derived */
-void func_0207784c(u32 arg0)
+void ImageObj_Unk_07784c(u32 arg0)
 {
   func_02079238(0,arg0);
   return;
 }
 
 /* decompiler-derived */
-void func_02077880(int arg0)
+void ImageObj_Unk_077880(int arg0)
 {
   func_02079238(1,arg0 + 1);
   return;
 }
 
 /* decompiler-derived */
-void func_020778d4(int arg0)
+void ImageObj_Unk_0778d4(int arg0)
 {
   func_02079238(2,arg0 + 3);
   return;
 }
 
 /* decompiler-derived */
-u32 func_020778e8(int arg0)
+u32 ImageObj_Unk_0778e8(int arg0)
 {
   int tmp1;
-  tmp1 = func_02077218();
+  tmp1 = ImageObj_Get_data_0217231c();
   return *(u32 *)(tmp1 + arg0 * 4 + 4);
 }
 
 /* decompiler-derived */
-void func_0207916c(int arg0)
+void ImageObj_Unk_07916c(int arg0)
 {
   if (*(int *)(arg0 + 4) == 1) {
     *(int *)(arg0 + 0x1c) = 0x100 - *(int *)(arg0 + 0x2c);
@@ -76,7 +76,7 @@ void func_0207916c(int arg0)
 }
 
 /* decompiler-derived */
-void func_020772f8(void)
+void ImageObj_Unk_0772f8(void)
 {
   func_02077ddc();
   *data_0217231c = 0;

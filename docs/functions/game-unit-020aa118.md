@@ -1,9 +1,9 @@
 # src/game/unit_020aa118.c
 
-- `func_020ae054` (4 B): empty callback
-- `func_020af9e8` (12 B): forwards to `func_020af8d8`
-- `func_020ab454` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `func_020ab4b8` (28 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0aa118_Nop_0ae054` (4 B): empty callback
+- `Unk0aa118_Thunk_020af8d8` (12 B): forwards to `func_020af8d8`
+- `Unk0aa118_Unk_0ab454` (20 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0aa118_Unk_0ab4b8` (28 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
 - `func_020aa118`: no candidate matched locally

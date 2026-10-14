@@ -1,10 +1,10 @@
 # src/game/unit_020ea208.c
 
-- `func_020ead3c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `func_020eb2f8` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `func_020eaca0` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `func_020ea72c` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `func_020ead4c` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0ea208_Unk_0ead3c` (16 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0ea208_Get_data_02176ddc` (16 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0ea208_Unk_0eaca0` (20 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0ea208_Unk_0ea72c` (24 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0ea208_Unk_0ead4c` (24 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
 - `func_020eb6cc`: no candidate matched locally

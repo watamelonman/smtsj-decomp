@@ -12,23 +12,23 @@ int func_0203fa08();
 void func_0203fa84(void);
 int func_0205410c();
 
-void func_02041d64(void);
-int func_0203f2ac(int arg0);
-void func_0203fa28(void);
-void func_0203f2bc(void);
-void func_0203fa3c(char arg0);
+void Unk03e43c_Thunk_0203fa84(void);
+int Unk03e43c_Unk_03f2ac(int arg0);
+void Unk03e43c_Unk_03fa28(void);
+void Unk03e43c_Unk_03f2bc(void);
+void Unk03e43c_Unk_03fa3c(char arg0);
 
 /* forwards to `func_0203fa84` */
-void func_02041d64(void) { func_0203fa84(); }
+void Unk03e43c_Thunk_0203fa84(void) { func_0203fa84(); }
 
 /* decompiler-derived */
-int func_0203f2ac(int arg0)
+int Unk03e43c_Unk_03f2ac(int arg0)
 {
   return ((int)data_0215e85e) + arg0;
 }
 
 /* decompiler-derived */
-void func_0203fa28(void)
+void Unk03e43c_Unk_03fa28(void)
 {
   int tmp1;
   tmp1 = func_0202e788();
@@ -37,7 +37,7 @@ void func_0203fa28(void)
 }
 
 /* decompiler-derived */
-void func_0203f2bc(void)
+void Unk03e43c_Unk_03f2bc(void)
 {
   int tmp1;
   tmp1 = func_0205410c();
@@ -46,7 +46,7 @@ void func_0203f2bc(void)
 }
 
 /* decompiler-derived */
-void func_0203fa3c(char arg0)
+void Unk03e43c_Unk_03fa3c(char arg0)
 {
   int tmp1;
   tmp1 = func_0202e788();

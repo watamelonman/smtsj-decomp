@@ -10,18 +10,18 @@ int func_0205b82c();
 void func_0205bb68(void);
 void func_020feef0(void);
 
-void func_020fede4(void);
-void func_020fef00(void);
-void func_020fedd4(void);
+void Unk0fedd4_Thunk_0205bb68(void);
+void Unk0fedd4_Thunk_020feef0(void);
+void Unk0fedd4_Unk_0fedd4(void);
 
 /* forwards to `func_0205bb68` */
-void func_020fede4(void) { func_0205bb68(); }
+void Unk0fedd4_Thunk_0205bb68(void) { func_0205bb68(); }
 
 /* forwards to `func_020feef0` */
-void func_020fef00(void) { func_020feef0(); }
+void Unk0fedd4_Thunk_020feef0(void) { func_020feef0(); }
 
 /* decompiler-derived */
-void func_020fedd4(void)
+void Unk0fedd4_Unk_0fedd4(void)
 {
   func_0205b82c(0xd1);
   return;

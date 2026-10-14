@@ -1,9 +1,9 @@
 # unit_0202dcfc
 
-- `func_0202dd28`: initialise a `Worker` (store owner at 0x40, clear state, init sub-object at 0x4C via `func_020a2bb8`, zero the 16-entry table at 0x74).
-- `func_0202dd1c`: decompiler-derived
-- `func_0202df00`: decompiler-derived
-- `func_0202de58`: decompiler-derived
+- `Unk0202dcfc_InitWorker`: initialise a `Worker` (store owner at 0x40, clear state, init sub-object at 0x4C via `func_020a2bb8`, zero the 16-entry table at 0x74).
+- `Unk02dcfc_Thunk_Unk095560_GetManagerAlias`: decompiler-derived
+- `Unk02dcfc_Unk_02df00`: decompiler-derived
+- `Unk02dcfc_Unk_02de58`: decompiler-derived
 
 ## Not done in M1-T253
 - `func_0202dd84`

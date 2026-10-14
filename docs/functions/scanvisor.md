@@ -1,16 +1,16 @@
 # ScanVisor
 
-- `func_020a34a4`, `func_020a34a8`: empty callbacks.
-- `func_020a2bb0`: returns 20. `func_020a4e40`: returns 6.
-- `func_020a45f8`: get u32 at 0x14.
-- `func_020a28e8`: forwards to `func_020fc6b8`.
-- `func_020a42b8`: read `slots[index]` (table at 0x1C0).
-- `func_020a43dc`: set the pair at 0x1C/0x20.
-- `func_020a43e8`: decompiler-derived
-- `func_020a4904`: decompiler-derived
-- `func_020a4988`: decompiler-derived
-- `func_020a49cc`: decompiler-derived
-- `func_020a2cfc`: decompiler-derived
-- `func_020a3620`: decompiler-derived
-- `func_020a465c`: decompiler-derived
-- `func_020a4a30`: decompiler-derived
+- `ScanVisor_Nop_0a34a4`, `ScanVisor_Nop_0a34a8`: empty callbacks.
+- `ScanVisor_GetConst20`: returns 20. `ScanVisor_GetConst6`: returns 6.
+- `ScanVisor_Unk_0a45f8`: get u32 at 0x14.
+- `ScanVisor_Thunk_020fc6b8`: forwards to `func_020fc6b8`.
+- `ScanVisor_GetSlot`: read `slots[index]` (table at 0x1C0).
+- `ScanVisor_SetRange`: set the pair at 0x1C/0x20.
+- `ScanVisor_SetUnkFields24_28`: decompiler-derived
+- `ScanVisor_Unk_0a4904`: decompiler-derived
+- `ScanVisor_ClearUnkField198`: decompiler-derived
+- `ScanVisor_Thunk_020a4600`: decompiler-derived
+- `ScanVisor_Get_data_02176b04`: decompiler-derived
+- `ScanVisor_Unk_0a3620`: decompiler-derived
+- `ScanVisor_Unk_0a465c`: decompiler-derived
+- `ScanVisor_Unk_0a4a30`: decompiler-derived

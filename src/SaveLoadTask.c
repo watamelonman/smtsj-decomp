@@ -1,3 +1,4 @@
+#include "types.h"
 /* src/SaveLoadTask.c */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
@@ -24,7 +25,7 @@ typedef struct SaveLoadTask {
 
 void func_020580ec(int enable);
 void func_02057524(int a);
-void func_020de678(u32 palette);
+void Unk_LoadPalette_020de678(u32 palette);
 void func_02057534(void);
 void func_02057df8(void);
 void func_02057e18(int a);
@@ -34,11 +35,11 @@ void func_0205dee8(int screen, u32 obj, int frame, int x, int y, float sx, float
 void func_02060b60(int screen, u32 obj, int x, int y, int z, int prio);
 
 /* Per-frame draw/update of the save/load screen. */
-void func_020e1144(SaveLoadTask *task) {
+void SaveLoadTask_Draw(SaveLoadTask *task) {
     if (task->visible) {
         func_020580ec(0);
         func_02057524(0);
-        func_020de678(task->palette);
+        Unk_LoadPalette_020de678(task->palette);
         func_02057534();
         func_02057df8();
         if (task->state != 0 && task->state != 1) {

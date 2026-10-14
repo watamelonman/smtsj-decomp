@@ -10,16 +10,16 @@ extern u32 data_021457e0[];
 int func_02052d34();
 int func_02052d58();
 
-u32 func_0206c764(void *obj);
-void func_0206c8e0(int arg0,u32 arg1,u32 arg2);
-void func_0206ae94(u32 arg0);
-void func_0206aeb4(u32 arg0);
+u32 Unk06ae94_GetUnkField4c(void *obj);
+void Unk06ae94_Unk_06c8e0(int arg0,u32 arg1,u32 arg2);
+void Unk06ae94_Unk_06ae94(u32 arg0);
+void Unk06ae94_Unk_06aeb4(u32 arg0);
 
 /* get u32 at +0x4c */
-u32 func_0206c764(void *obj) { return FIELD(u32, obj, 0x4c); }
+u32 Unk06ae94_GetUnkField4c(void *obj) { return FIELD(u32, obj, 0x4c); }
 
 /* decompiler-derived */
-void func_0206c8e0(int arg0,u32 arg1,u32 arg2)
+void Unk06ae94_Unk_06c8e0(int arg0,u32 arg1,u32 arg2)
 {
   *(u32 *)(arg0 + 0x34) = *(u32 *)(arg0 + 0x34) | 4;
   *(u32 *)(arg0 + 0x3c) = arg2;
@@ -28,7 +28,7 @@ void func_0206c8e0(int arg0,u32 arg1,u32 arg2)
 }
 
 /* decompiler-derived */
-void func_0206ae94(u32 arg0)
+void Unk06ae94_Unk_06ae94(u32 arg0)
 {
   if ((*data_021457e0 & arg0) == 0) {
     return;
@@ -38,7 +38,7 @@ void func_0206ae94(u32 arg0)
 }
 
 /* decompiler-derived */
-void func_0206aeb4(u32 arg0)
+void Unk06ae94_Unk_06aeb4(u32 arg0)
 {
   if ((*data_021457e0 & arg0) == 0) {
     return;

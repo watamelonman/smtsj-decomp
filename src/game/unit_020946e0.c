@@ -13,40 +13,40 @@ void func_02053000(void);
 int func_02057628();
 int func_02057678();
 
-int func_020948fc(int arg0);
-void func_02094904(void);
-u32 func_0209494c(void);
-void func_02094ae0(int *arg0);
-u32 func_020946e0(void);
-void func_02094c50(int *arg0);
-void func_02094a64(u32 arg0);
+int Unk0946e0_Unk_0948fc(int arg0);
+void Unk0946e0_Thunk_02053000(void);
+u32 Unk0946e0_GetAddr_data_02175d94(void);
+void Unk0946e0_Unk_094ae0(int *arg0);
+u32 Unk0946e0_Unk_0946e0(void);
+void Unk0946e0_Unk_094c50(int *arg0);
+void Unk0946e0_Unk_094a64(u32 arg0);
 
 /* decompiler-derived */
-int func_020948fc(int arg0)
+int Unk0946e0_Unk_0948fc(int arg0)
 {
   return arg0 + 4;
 }
 
 /* forwards to `func_02053000` */
-void func_02094904(void) { func_02053000(); }
+void Unk0946e0_Thunk_02053000(void) { func_02053000(); }
 
 /* decompiler-derived */
-u32 func_0209494c(void)
+u32 Unk0946e0_GetAddr_data_02175d94(void)
 {
   return ((int)data_02175d94);
 }
 
 /* decompiler-derived */
-void func_02094ae0(int *arg0)
+void Unk0946e0_Unk_094ae0(int *arg0)
 {
   int tmp1;
-  tmp1 = func_0209494c();
+  tmp1 = Unk0946e0_GetAddr_data_02175d94();
   *arg0 = (int)*(short *)(tmp1 + 0x10);
   return;
 }
 
 /* decompiler-derived */
-u32 func_020946e0(void)
+u32 Unk0946e0_Unk_0946e0(void)
 {
   u32 tmp1;
   tmp1 = func_02052ff0(0xc);
@@ -55,22 +55,22 @@ u32 func_020946e0(void)
 }
 
 /* decompiler-derived */
-void func_02094c50(int *arg0)
+void Unk0946e0_Unk_094c50(int *arg0)
 {
   short *v1;
   int tmp2;
-  v1 = (short *)func_0209494c();
+  v1 = (short *)Unk0946e0_GetAddr_data_02175d94();
   *arg0 = (int)*v1;
-  tmp2 = func_0209494c();
+  tmp2 = Unk0946e0_GetAddr_data_02175d94();
   arg0[1] = (int)*(short *)(tmp2 + 2);
   return;
 }
 
 /* decompiler-derived */
-void func_02094a64(u32 arg0)
+void Unk0946e0_Unk_094a64(u32 arg0)
 {
   int tmp1;
-  tmp1 = func_0209494c();
+  tmp1 = Unk0946e0_GetAddr_data_02175d94();
   func_02057678(arg0,*(u32 *)(tmp1 + 4),*(u32 *)(tmp1 + 8));
   func_02057628(arg0,0,0);
   return;

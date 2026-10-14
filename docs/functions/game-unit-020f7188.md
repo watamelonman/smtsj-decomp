@@ -1,8 +1,8 @@
 # src/game/unit_020f7188.c
 
-- `func_020f7884` (4 B): empty callback
-- `func_020f7ae0` (4 B): empty callback
-- `func_020f7ae4` (4 B): empty callback
+- `Unk0f7188_Nop_0f7884` (4 B): empty callback
+- `Unk0f7188_Nop_0f7ae0` (4 B): empty callback
+- `Unk0f7188_Nop_0f7ae4` (4 B): empty callback
 
 ## Hard list
 - `func_020f7c90`: no candidate matched locally

@@ -24,7 +24,7 @@ typedef struct UniteEvent {
     s32 skipRequested;          /* 0x338 */
 } UniteEvent;
 
-void func_0210f960(UniteEvent *ev, s32 state);
+void UniteEvent_SetState(UniteEvent *ev, s32 state);
 void func_0205257c(int a);
 void func_0205e590(int a);
 
@@ -43,13 +43,13 @@ static inline int GetEventParam(const EventParams *p, int index, s32 *out) {
 }
 
 /* Message handler of the fusion ("Unite") event. */
-void func_0210b9e8(UniteEvent *ev, EventMsg *msg) {
+void UniteEvent_HandleMessage(UniteEvent *ev, EventMsg *msg) {
     EventParams *p = &msg->params;
     s32 value;
 
     switch (msg->type) {
     case 0:
-        func_0210f960(ev, 1);
+        UniteEvent_SetState(ev, 1);
         if (GetEventParam(p, 3, &value)) {
             ev->mode = value;
             if (value == 3) {
@@ -68,7 +68,7 @@ void func_0210b9e8(UniteEvent *ev, EventMsg *msg) {
     case 3:
         if (GetEventParam(p, 0, &value) && value == 7 && ev->state == 18) {
             func_0205257c(0);
-            func_0210f960(ev, 19);
+            UniteEvent_SetState(ev, 19);
             func_0205e590(0);
         }
         break;

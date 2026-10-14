@@ -9,24 +9,24 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 int func_0202ef0c();
 int func_0203acf4();
 int func_0203ad14();
-int func_02044e80();
+int Unk044904_Get_data_0215ee98();
 void func_02044ec4(void);
 int func_0204fdac();
 
-void func_020bae28(void);
-u32 func_020badc0(void);
-u32 func_020bae08(void);
-int func_020bae18(void);
-u32 func_020bae50(void);
-u32 func_020bb298(void);
-void func_020badd0(u32 arg0);
-void func_020badec(u32 arg0);
+void Unk0bac80_Thunk_02044ec4(void);
+u32 Unk0bac80_Unk_0badc0(void);
+u32 Unk0bac80_Unk_0bae08(void);
+int Unk0bac80_Unk_0bae18(void);
+u32 Unk0bac80_Unk_0bae50(void);
+u32 Unk0bac80_Unk_0bb298(void);
+void Unk0bac80_Unk_0badd0(u32 arg0);
+void Unk0bac80_Unk_0badec(u32 arg0);
 
 /* forwards to `func_02044ec4` */
-void func_020bae28(void) { func_02044ec4(); }
+void Unk0bac80_Thunk_02044ec4(void) { func_02044ec4(); }
 
 /* decompiler-derived */
-u32 func_020badc0(void)
+u32 Unk0bac80_Unk_0badc0(void)
 {
   int tmp1;
   tmp1 = func_0203ad14();
@@ -34,23 +34,23 @@ u32 func_020badc0(void)
 }
 
 /* decompiler-derived */
-u32 func_020bae08(void)
+u32 Unk0bac80_Unk_0bae08(void)
 {
   int tmp1;
-  tmp1 = func_020badc0();
+  tmp1 = Unk0bac80_Unk_0badc0();
   return *(u32 *)(tmp1 + 0x68);
 }
 
 /* decompiler-derived */
-int func_020bae18(void)
+int Unk0bac80_Unk_0bae18(void)
 {
   int tmp1;
-  tmp1 = func_02044e80();
+  tmp1 = Unk044904_Get_data_0215ee98();
   return tmp1 + 0x8c;
 }
 
 /* decompiler-derived */
-u32 func_020bae50(void)
+u32 Unk0bac80_Unk_0bae50(void)
 {
   func_0202ef0c();
   func_0203acf4();
@@ -58,28 +58,28 @@ u32 func_020bae50(void)
 }
 
 /* decompiler-derived */
-u32 func_020bb298(void)
+u32 Unk0bac80_Unk_0bb298(void)
 {
   int tmp1;
-  tmp1 = func_020badc0();
+  tmp1 = Unk0bac80_Unk_0badc0();
   func_0203acf4(*(u32 *)(tmp1 + 0x40));
   return 1;
 }
 
 /* decompiler-derived */
-void func_020badd0(u32 arg0)
+void Unk0bac80_Unk_0badd0(u32 arg0)
 {
   int tmp1;
-  tmp1 = func_020badc0();
+  tmp1 = Unk0bac80_Unk_0badc0();
   func_0204fdac(*(u32 *)(tmp1 + 0x54),arg0);
   return;
 }
 
 /* decompiler-derived */
-void func_020badec(u32 arg0)
+void Unk0bac80_Unk_0badec(u32 arg0)
 {
   int tmp1;
-  tmp1 = func_020badc0();
+  tmp1 = Unk0bac80_Unk_0badc0();
   func_0204fdac(*(u32 *)(tmp1 + 0x60),arg0);
   return;
 }

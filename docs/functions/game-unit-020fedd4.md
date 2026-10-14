@@ -1,8 +1,8 @@
 # src/game/unit_020fedd4.c
 
-- `func_020fede4` (12 B): forwards to `func_0205bb68`
-- `func_020fef00` (12 B): forwards to `func_020feef0`
-- `func_020fedd4` (16 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk0fedd4_Thunk_0205bb68` (12 B): forwards to `func_0205bb68`
+- `Unk0fedd4_Thunk_020feef0` (12 B): forwards to `func_020feef0`
+- `Unk0fedd4_Unk_0fedd4` (16 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
 - `func_020feef0`: no candidate matched locally

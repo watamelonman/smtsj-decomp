@@ -9,19 +9,19 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 int func_0204509c();
 void func_020af8d8(void);
 
-void func_020ae054(void);
-void func_020af9e8(void);
-void func_020ab454(void);
-int func_020ab4b8(void);
+void Unk0aa118_Nop_0ae054(void);
+void Unk0aa118_Thunk_020af8d8(void);
+void Unk0aa118_Unk_0ab454(void);
+int Unk0aa118_Unk_0ab4b8(void);
 
 /* empty callback */
-void func_020ae054(void) { }
+void Unk0aa118_Nop_0ae054(void) { }
 
 /* forwards to `func_020af8d8` */
-void func_020af9e8(void) { func_020af8d8(); }
+void Unk0aa118_Thunk_020af8d8(void) { func_020af8d8(); }
 
 /* decompiler-derived */
-void func_020ab454(void)
+void Unk0aa118_Unk_0ab454(void)
 {
   int tmp1;
   tmp1 = func_0204509c();
@@ -30,7 +30,7 @@ void func_020ab454(void)
 }
 
 /* decompiler-derived */
-int func_020ab4b8(void)
+int Unk0aa118_Unk_0ab4b8(void)
 {
   int tmp1;
   tmp1 = func_0204509c();

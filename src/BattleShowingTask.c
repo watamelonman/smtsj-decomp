@@ -10,32 +10,32 @@ extern u32 data_02176e70[];
 int func_020a0d30();
 int func_02119658();
 
-void func_0211982c(void);
-void func_02119830(void);
-void func_0211984c(void);
-void func_02119850(void);
-u32 func_02119854(void *obj);
-void func_02119834(void);
-void func_021196e0(u32 *arg0);
-u32 func_0211c230(int arg0);
+void BattleShowingTask_Nop_11982c(void);
+void BattleShowingTask_Nop_119830(void);
+void BattleShowingTask_Nop_11984c(void);
+void BattleShowingTask_Nop_119850(void);
+u32 BattleShowingTask_GetUnkField28(void *obj);
+void BattleShowingTask_Unk_119834(void);
+void BattleShowingTask_Unk_1196e0(u32 *arg0);
+u32 BattleShowingTask_Unk_11c230(int arg0);
 
 /* empty callback */
-void func_0211982c(void) { }
+void BattleShowingTask_Nop_11982c(void) { }
 
 /* empty callback */
-void func_02119830(void) { }
+void BattleShowingTask_Nop_119830(void) { }
 
 /* empty callback */
-void func_0211984c(void) { }
+void BattleShowingTask_Nop_11984c(void) { }
 
 /* empty callback */
-void func_02119850(void) { }
+void BattleShowingTask_Nop_119850(void) { }
 
 /* get u32 at +0x28 */
-u32 func_02119854(void *obj) { return FIELD(u32, obj, 0x28); }
+u32 BattleShowingTask_GetUnkField28(void *obj) { return FIELD(u32, obj, 0x28); }
 
 /* decompiler-derived */
-void func_02119834(void)
+void BattleShowingTask_Unk_119834(void)
 {
   u32 tmp1;
   tmp1 = func_02119658();
@@ -44,7 +44,7 @@ void func_02119834(void)
 }
 
 /* decompiler-derived */
-void func_021196e0(u32 *arg0)
+void BattleShowingTask_Unk_1196e0(u32 *arg0)
 {
   *arg0 = 0;
   arg0[1] = 0;
@@ -53,7 +53,7 @@ void func_021196e0(u32 *arg0)
 }
 
 /* decompiler-derived */
-u32 func_0211c230(int arg0)
+u32 BattleShowingTask_Unk_11c230(int arg0)
 {
   u32 tmp1;
   if (*(int *)(arg0 + 0xc) < *(int *)(arg0 + 8)) {
@@ -96,7 +96,7 @@ enum {
     EXP_GAUGE_FADE_OUT
 };
 
-s32 func_0205eb20(s32 from, s32 to, s32 frames, s32 frame);  /* linear interpolation */
+s32 Unk_InterpolateLinear(s32 from, s32 to, s32 frames, s32 frame);  /* linear interpolation */
 s32 func_0205c704(u32 anim);
 void func_0205c408(u32 anim, int seq);
 void func_0205c41c(u32 anim, int frame);
@@ -110,13 +110,13 @@ void func_02119910(ExpGauge *g);
 void func_02119a10(ExpGauge *g);
 
 /* Per-frame update: fade in, count EXP up (pausing for each level up), fade out. */
-void func_02119a60(ExpGauge *g) {
+void ExpGauge_Update(ExpGauge *g) {
     switch (g->state) {
     case EXP_GAUGE_FADE_IN:
         if (g->timer < 0) {
             g->fade = 256;
         } else {
-            g->fade = func_0205eb20(256, 0, 10, g->timer);
+            g->fade = Unk_InterpolateLinear(256, 0, 10, g->timer);
             if (g->fade == 0) {
                 g->state = EXP_GAUGE_DONE;
             }
@@ -167,7 +167,7 @@ void func_02119a60(ExpGauge *g) {
         if (g->timer < 0) {
             g->fade = 0;
         } else {
-            g->fade = func_0205eb20(0, -256, 10, g->timer);
+            g->fade = Unk_InterpolateLinear(0, -256, 10, g->timer);
             if (g->fade <= -256) {
                 func_02061424(g);
             }

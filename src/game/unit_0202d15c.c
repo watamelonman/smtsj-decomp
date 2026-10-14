@@ -7,41 +7,41 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u32 data_0213d898[];
-int func_02095754();
+int Unk095560_GetManagerSub3a8();
 
-u32 func_0202d934(void);
-u32 func_0202d944(void);
-void func_0202d81c(void);
-void func_0202d91c(u32 arg0,u32 arg1);
+u32 Unk02d15c_Unk_02d934(void);
+u32 Unk02d15c_Unk_02d944(void);
+void Unk02d15c_Unk_02d81c(void);
+void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1);
 
 /* decompiler-derived */
-u32 func_0202d934(void)
+u32 Unk02d15c_Unk_02d934(void)
 {
   int tmp1;
-  tmp1 = func_02095754();
+  tmp1 = Unk095560_GetManagerSub3a8();
   return *(u32 *)(tmp1 + 4);
 }
 
 /* decompiler-derived */
-u32 func_0202d944(void)
+u32 Unk02d15c_Unk_02d944(void)
 {
   u32 *v1;
-  v1 = (u32 *)func_02095754();
+  v1 = (u32 *)Unk095560_GetManagerSub3a8();
   return *v1;
 }
 
 /* decompiler-derived */
-void func_0202d81c(void)
+void Unk02d15c_Unk_02d81c(void)
 {
   *data_0213d898 = 0xffffffff;
   return;
 }
 
 /* decompiler-derived */
-void func_0202d91c(u32 arg0,u32 arg1)
+void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1)
 {
   u32 *v1;
-  v1 = (u32 *)func_02095754();
+  v1 = (u32 *)Unk095560_GetManagerSub3a8();
   *v1 = arg1;
   v1[1] = arg0;
   return;
