@@ -87,3 +87,66 @@ void SaveLoadTask_Draw(SaveLoadTask *task) {
         break;
     }
 }
+
+
+
+/* decompiler-derived */
+void func_020e006c(int arg0,u32 arg1,u32 arg2)
+{
+  *(u32 *)(arg0 + 8) = 8;
+  *(u32 *)(arg0 + 0xc) = arg1;
+  *(u32 *)(arg0 + 0x10) = arg2;
+  return;
+}
+
+int func_020dfd9c();
+/* decompiler-derived */
+void func_020dfed4(u32 arg0,u32 arg1)
+{
+  func_020dfd9c(arg0,arg1,1,0,0);
+  return;
+}
+
+extern u8 data_02176bf0[];
+/* decompiler-derived */
+int func_020df7f8(int arg0)
+{
+  return *(int *)(((int)data_02176bf0) + arg0 * 0x18) * 3;
+}
+
+
+/* decompiler-derived */
+void func_020dffec(int arg0,int arg1)
+{
+  *(int *)(arg0 + 0x18) = arg1 + 1;
+  *(int *)(arg0 + 0x1c) = arg1 + 4;
+  *(u32 *)(arg0 + 0x20) = 6;
+  *(u32 *)(arg0 + 0x34) = 0;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020e0010(int arg0)
+{
+  *(u32 *)(arg0 + 0x18) = 1;
+  *(u32 *)(arg0 + 0x1c) = 2;
+  *(u32 *)(arg0 + 0x20) = 6;
+  *(u32 *)(arg0 + 0x34) = 0;
+  return;
+}
+
+extern u8 data_02176c78[];
+int func_02053000();
+int func_020bc6d4();
+/* decompiler-derived */
+void func_020e137c(int arg0)
+{
+  int tmp1;
+  func_020bc6d4(1);
+  func_02053000(*(u32 *)(arg0 + 0xe8));
+  tmp1 = ((int)data_02176c78);
+  *(u32 *)(arg0 + 0xe8) = 0;
+  *(u32 *)(tmp1 + 4) = 0;
+  return;
+}
