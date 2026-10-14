@@ -83,3 +83,4 @@ void Unk02f078_Unk_02f08c(void)
   func_02008848(value,0,6);
   *(u8 *)(value + 1) = 100;
 }
+
