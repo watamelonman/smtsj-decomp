@@ -67,3 +67,29 @@ int Unk096754_Unk_0969f0(void)
   value2 = func_02096898();
   return value2 < (int)(u32)*(u8 *)(value1 + 0x357);
 }
+
+
+int func_0202e904();
+/* decompiler-derived */
+int func_02096a14(void)
+{
+  int tmp1;
+  int tmp2;
+  int tmp3;
+  tmp1 = Unk096754_Unk_0969f0();
+  if (tmp1 == 0) {
+    return -1;
+  }
+  tmp1 = func_0202e788(tmp1);
+  tmp1 = tmp1 + 0x74;
+  tmp3 = 0;
+  do {
+    tmp2 = func_0202e904(tmp1);
+    if (tmp2 == 0) {
+      return tmp3;
+    }
+    tmp3 = tmp3 + 1;
+    tmp1 = tmp1 + 0x3c;
+  } while (tmp3 < 0xc);
+  return -1;
+}
