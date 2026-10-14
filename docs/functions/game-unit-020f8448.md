@@ -10,3 +10,8 @@
 
 ## Hard list
 - `func_020f8478`: no candidate matched locally
+
+## Not done in M1-T151
+- `func_020f84c0`
+- `func_020f84f4`
+- `func_020f8558`

@@ -49,3 +49,4 @@ int Unk0f8448_Unk_0f8468(Unk0f8448Work *work)
 {
   return work->UnkField0010 - work->UnkField0008;
 }
+
