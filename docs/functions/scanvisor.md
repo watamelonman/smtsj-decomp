@@ -24,3 +24,13 @@
 ## Not done in M1-T985
 - `func_020a4a18`
 - `func_020a2980`
+- `func_020a2b18`: decompiler-derived
+- `func_020a2b38`: decompiler-derived
+- `func_020a29a0`: decompiler-derived
+- `func_020a29c4`: decompiler-derived
+- `func_020a2a8c`: decompiler-derived
+- `func_020a2a38`: decompiler-derived
+
+## Not done in M1-T986
+- `func_020a3254`
+- `func_020a2b58`
