@@ -18,3 +18,13 @@
 
 ## Not done in M1-T923
 - `func_02077620`
+- `func_020775ec`: decompiler-derived
+- `func_020776d4`: decompiler-derived
+
+## Not done in M1-T924
+- `func_02079000`
+- `func_02077a9c`
+- `func_02077d68`
+- `func_02077ddc`
+- `func_02077e74`
+- `func_02077efc`

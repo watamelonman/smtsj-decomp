@@ -149,3 +149,42 @@ void ImageObj_Unk_079184(int arg0)
   }
   func_02061424();
 }
+
+
+int func_02077554();
+/* decompiler-derived */
+void func_020775ec(void)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = ImageObj_Get_data_0217231c();
+  if (tmp1 == 0) {
+    return;
+  }
+  tmp2 = 0;
+  do {
+    if (tmp1 != 0) {
+      func_02077554(tmp2);
+    }
+    tmp2 = tmp2 + 1;
+  } while (tmp2 < 3);
+  return;
+}
+
+int func_02077a9c();
+/* decompiler-derived */
+u32 func_020776d4(void)
+{
+  int tmp1;
+  int tmp2;
+  tmp2 = 0;
+  do {
+    ImageObj_Unk_0778e8(tmp2);
+    tmp1 = func_02077a9c();
+    if (tmp1 != 0) {
+      return 1;
+    }
+    tmp2 = tmp2 + 1;
+  } while (tmp2 < 3);
+  return 0;
+}
