@@ -10,3 +10,13 @@
 
 ## Hard list
 - `func_020d1454`: no candidate matched locally
+- `func_020d1470`: decompiler-derived
+- `func_020d14ac`: decompiler-derived
+- `func_020d0f94`: decompiler-derived
+- `func_020d0fc4`: decompiler-derived
+- `func_020d182c`: decompiler-derived
+- `func_020cf630`: decompiler-derived
+
+## Not done in M1-T958
+- `func_020d1490`
+- `func_020d1360`
