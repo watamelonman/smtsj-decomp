@@ -80,7 +80,7 @@ void Unk02dcfc_Unk_02de58(int arg0)
 int func_0205e5b4();
 int func_020a2c00();
 /* decompiler-derived */
-void func_0202dd9c(int arg0)
+void Unk02dcfc_Unk_02dd9c(int arg0)
 {
   int tmp1;
   *(u32 *)(arg0 + 0x18) = 0xb;

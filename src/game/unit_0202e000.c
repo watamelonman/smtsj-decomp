@@ -86,16 +86,15 @@ int func_0202e23c();
 int func_0202e5a8();
 int func_0202e5c4();
 /* decompiler-derived */
-void func_0202e144(void)
+void Unk02e000_Unk_02e144(void)
 {
-  int tmp1;
+  int value;
   func_0202e180();
   func_0202e23c();
   func_0202e5a8();
-  tmp1 = 0;
+  value = 0;
   do {
-    func_0202e5c4(tmp1);
-    tmp1 = tmp1 + 1;
-  } while (tmp1 < 2);
-  return;
+    func_0202e5c4(value);
+    value = value + 1;
+  } while (value < 2);
 }

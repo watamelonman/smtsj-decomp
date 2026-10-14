@@ -14,6 +14,15 @@ typedef unsigned long long u64;
 typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+typedef struct ImageBgDual3DWork {
+    u8 unk_0000[0x8c];
+    u32 UnkField008c;
+    u8 unk_0090[0x178];
+    u32 UnkField0208;
+} ImageBgDual3DWork;
+
+
 void func_021255b4(void);
 void func_021177e0(void);
 
@@ -83,90 +92,84 @@ int func_02065e88();
 int func_020773dc();
 int func_02125c68();
 /* decompiler-derived */
-void func_02125a68(void)
+void ImageBgDual3D_Unk_125a68(void)
 {
   func_02125c68();
   func_02065e88();
   func_020773dc(1);
-  return;
 }
 
 int func_0212594c();
 /* decompiler-derived */
-int func_02125ca4(void)
+int ImageBgDual3D_Unk_125ca4(void)
 {
-  int tmp1;
-  tmp1 = func_0212594c();
-  return tmp1 == 0;
+  int value;
+  value = func_0212594c();
+  return value == 0;
 }
 
 
 /* decompiler-derived */
-int func_02125cbc(void)
+int ImageBgDual3D_Unk_125cbc(void)
 {
-  int tmp1;
-  tmp1 = func_0212594c();
-  return tmp1 == 1;
+  int value;
+  value = func_0212594c();
+  return value == 1;
 }
 
 int func_021258e8();
 /* decompiler-derived */
-void func_02125d30(void)
+void ImageBgDual3D_Unk_125d30(void)
 {
-  int tmp1;
-  tmp1 = func_02125cbc();
-  if (tmp1 == 0) {
+  int value;
+  value = ImageBgDual3D_Unk_125cbc();
+  if (value == 0) {
     return;
   }
   func_021258e8();
-  return;
 }
 
 
 /* decompiler-derived */
-void func_021259c4(u32 arg0)
+void ImageBgDual3D_Unk_1259c4(u32 arg0)
 {
-  int tmp1;
-  tmp1 = ImageBgDual3D_Get_data_02176e94();
-  *(u32 *)(tmp1 + 4) = arg0;
-  *(u32 *)(tmp1 + 0xc) = 1;
-  return;
+  int value;
+  value = ImageBgDual3D_Get_data_02176e94();
+  *(u32 *)(value + 4) = arg0;
+  *(u32 *)(value + 0xc) = 1;
 }
 
 int func_02117294();
 int func_02117790();
 int func_02125a08();
 /* decompiler-derived */
-void func_02125c40(void)
+void ImageBgDual3D_Unk_125c40(void)
 {
-  u32 tmp1;
+  u32 value;
   func_02117790();
   func_02117294();
-  tmp1 = func_02125a08();
-  *data_02176e94 = tmp1;
-  return;
+  value = func_02125a08();
+  *data_02176e94 = value;
 }
 
 int func_021258a0();
 /* decompiler-derived */
-void func_02125d10(u32 arg0)
+void ImageBgDual3D_Unk_125d10(u32 arg0)
 {
-  int tmp1;
-  tmp1 = func_02125cbc();
-  if (tmp1 == 0) {
+  int value;
+  value = ImageBgDual3D_Unk_125cbc();
+  if (value == 0) {
     return;
   }
   func_021258a0(arg0);
-  return;
 }
 
 int func_0205c408();
 int func_0205c6e0();
 /* decompiler-derived */
-void func_02125650(int arg0)
+void ImageBgDual3D_Unk_125650(ImageBgDual3DWork *work)
 {
-  func_0205c408(*(u32 *)(arg0 + 0x8c),0);
-  func_0205c6e0(*(u32 *)(arg0 + 0x8c));
-  *(u32 *)(arg0 + 0x208) = 0;
-  return;
+  func_0205c408(work->UnkField008c,0);
+  func_0205c6e0(work->UnkField008c);
+  work->UnkField0208 = 0;
 }

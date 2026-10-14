@@ -72,28 +72,26 @@ void Unk0cb32c_Unk_0cb54c(void)
 
 int func_020cca80();
 /* decompiler-derived */
-void func_020ccaa8(int *arg0,int arg1)
+void Unk0cb32c_Unk_0ccaa8(int *arg0,int arg1)
 {
   if (arg1 == 2) {
     func_020cca80();
   }
   *arg0 = arg1;
-  return;
 }
 
 int func_020956c8();
 int func_020bc9b4();
 int func_020de870();
 /* decompiler-derived */
-void func_020cba78(void)
+void Unk0cb32c_Unk_0cba78(void)
 {
-  int tmp1;
-  tmp1 = Unk0de678_Get_data_021508d4();
-  if (tmp1 == 0) {
+  int value;
+  value = Unk0de678_Get_data_021508d4();
+  if (value == 0) {
     func_020bc9b4(0xf,0);
     Unk0cb32c_Unk_0cb344();
   }
   func_020de870();
   func_020956c8();
-  return;
 }

@@ -16,9 +16,9 @@
 - `Unk10a034_Unk_10b018` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk10a034_Unk_10b058` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk10a034_Unk_10aeb0` (32 B): decompiler-derived (Ghidra output, cleaned)
-- `func_0210b104`: decompiler-derived
-- `func_0210af40`: decompiler-derived
-- `func_0210af0c`: decompiler-derived
+- `Unk10a034_Unk_10b104`: decompiler-derived
+- `Unk10a034_Unk_10af40`: decompiler-derived
+- `Unk10a034_Unk_10af0c`: decompiler-derived
 
 ## Not done in M1-T763
 - `func_0210a034`

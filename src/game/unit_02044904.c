@@ -70,141 +70,141 @@ void Unk044904_Unk_044ea8(void)
 
 
 /* decompiler-derived */
-int func_02044fd8(void)
+int Unk044904_Unk_044fd8(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x379c;
+    value = value + 0x379c;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_02044ff4(void)
+int Unk044904_Unk_044ff4(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x3fb0;
+    value = value + 0x3fb0;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_02045010(void)
+int Unk044904_Unk_045010(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x77bc;
+    value = value + 0x77bc;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_0204502c(void)
+int Unk044904_Unk_04502c(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x372c;
+    value = value + 0x372c;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_02045048(void)
+int Unk044904_Unk_045048(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x7804;
+    value = value + 0x7804;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_02045064(void)
+int Unk044904_Unk_045064(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x7874;
+    value = value + 0x7874;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_02045080(void)
+int Unk044904_Unk_045080(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x78e4;
+    value = value + 0x78e4;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_0204509c(void)
+int Unk044904_Unk_04509c(void)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  if (tmp1 == 0) {
-    tmp1 = 0;
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  if (value == 0) {
+    value = 0;
   }
   else {
-    tmp1 = tmp1 + 0x7970;
+    value = value + 0x7970;
   }
-  return tmp1;
+  return value;
 }
 
 
 int func_020bc650();
 /* decompiler-derived */
-int func_02045c7c(void)
+int Unk044904_Unk_045c7c(void)
 {
-  int tmp1;
-  tmp1 = func_020bc650(0x1a);
-  return tmp1 == 0;
+  int value;
+  value = func_020bc650(0x1a);
+  return value == 0;
 }
 
 int func_020452c4();
 int func_020aa224();
 /* decompiler-derived */
-u32 func_02046688(void)
+u32 Unk044904_Unk_046688(void)
 {
   func_020452c4();
-  func_02044fd8();
+  Unk044904_Unk_044fd8();
   func_020aa224();
   Unk044904_Unk_045c98();
   return 1;
@@ -212,20 +212,20 @@ u32 func_02046688(void)
 
 
 /* decompiler-derived */
-int func_02045460(int arg0)
+int Unk044904_Unk_045460(int arg0)
 {
-  int tmp1;
-  tmp1 = Unk044904_Get_data_0215ee98();
-  return arg0 == *(int *)(tmp1 + 0x5c);
+  int value;
+  value = Unk044904_Get_data_0215ee98();
+  return arg0 == *(int *)(value + 0x5c);
 }
 
 int func_02045ca8();
 /* decompiler-derived */
-u32 func_02046448(u16 *arg0)
+u32 Unk044904_Unk_046448(u16 *arg0)
 {
-  int tmp1;
-  tmp1 = func_02045ca8();
-  if (tmp1 != 0) {
+  int value;
+  value = func_02045ca8();
+  if (value != 0) {
     *arg0 = 2;
   }
   return 1;

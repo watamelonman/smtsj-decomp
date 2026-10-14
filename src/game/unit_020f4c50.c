@@ -4,19 +4,19 @@
 
 
 /* empty callback */
-void func_020f4cf8(void) { }
+void Unk0f4c50_Nop_0f4cf8(void) { }
 
 
 /* empty callback */
-void func_020f4d5c(void) { }
+void Unk0f4c50_Nop_0f4d5c(void) { }
 
 
 /* empty callback */
-void func_020f4d60(void) { }
+void Unk0f4c50_Nop_0f4d60(void) { }
 
 
 /* decompiler-derived */
-void func_020f4cd4(u32 *arg0)
+void Unk0f4c50_Unk_0f4cd4(u32 *arg0)
 {
   *arg0 = 0x23;
   arg0[1] = 0;
@@ -29,7 +29,7 @@ int func_020d1d94();
 int func_020d1e94();
 int func_020ea630();
 /* decompiler-derived */
-void func_020f51b0(int arg0,int arg1)
+void Unk0f4c50_Unk_0f51b0(int arg0,int arg1)
 {
   u32 tmp1;
   if (arg1 != 0) {

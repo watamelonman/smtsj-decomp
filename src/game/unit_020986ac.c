@@ -61,18 +61,17 @@ int Unk0986ac_Unk_0986c0(int arg0)
 
 
 /* decompiler-derived */
-void func_02098990(u8 arg0)
+void Unk0986ac_Unk_098990(u8 arg0)
 {
-  int tmp1;
-  tmp1 = Unk0986ac_Unk_0986ac();
-  *(u8 *)(tmp1 + 0xd) = arg0;
-  return;
+  int value;
+  value = Unk0986ac_Unk_0986ac();
+  *(u8 *)(value + 0xd) = arg0;
 }
 
 int func_0202e0cc();
 int func_0205b82c();
 /* decompiler-derived */
-u32 func_02099300(void)
+u32 Unk0986ac_Unk_099300(void)
 {
   func_0202e0cc();
   func_0205b82c(0xbf);
@@ -83,15 +82,15 @@ int func_02099d78();
 int func_0209a114();
 int func_0209a12c();
 /* decompiler-derived */
-u32 func_02098918(void)
+u32 Unk0986ac_Unk_098918(void)
 {
-  int tmp1;
-  int tmp2;
-  u32 tmp3;
-  tmp3 = 0;
-  tmp1 = func_02099d78();
-  if ((tmp1 != 0) && (tmp2 = func_0209a114(), tmp2 != 0)) {
-    tmp3 = func_0209a12c(tmp1);
+  int value1;
+  int value2;
+  u32 value3;
+  value3 = 0;
+  value1 = func_02099d78();
+  if ((value1 != 0) && (value2 = func_0209a114(), value2 != 0)) {
+    value3 = func_0209a12c(value1);
   }
-  return tmp3;
+  return value3;
 }

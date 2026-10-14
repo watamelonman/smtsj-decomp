@@ -1,11 +1,11 @@
 # src/game/unit_020cce38.c
 
-- `func_020cce70`: decompiler-derived
-- `func_020cd46c`: decompiler-derived
-- `func_020cd45c`: decompiler-derived
-- `func_020cce74`: decompiler-derived
-- `func_020cd430`: decompiler-derived
-- `func_020ccfac`: decompiler-derived
+- `Unk0cce38_Nop_0cce70`: decompiler-derived
+- `Unk0cce38_Nop_0cd46c`: decompiler-derived
+- `Unk0cce38_Unk_0cd45c`: decompiler-derived
+- `Unk0cce38_Unk_0cce74`: decompiler-derived
+- `Unk0cce38_Unk_0cd430`: decompiler-derived
+- `Unk0cce38_Unk_0ccfac`: decompiler-derived
 
 ## Not done in M1-T407
 - `func_020cce38`

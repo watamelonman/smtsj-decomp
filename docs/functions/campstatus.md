@@ -10,8 +10,8 @@
 - `func_020d6d84`: no candidate matched locally
 - `func_020db37c`: no candidate matched locally
 - `func_020dcb44`: no candidate matched locally
-- `func_020d34e4`: decompiler-derived
-- `func_020d3510`: decompiler-derived
+- `CampStatus_Unk_0d34e4`: decompiler-derived
+- `CampStatus_Unk_0d3510`: decompiler-derived
 
 ## Not done in M1-T1123
 - `func_020d6dd4`

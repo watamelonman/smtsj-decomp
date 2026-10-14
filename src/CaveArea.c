@@ -4,7 +4,7 @@
 
 int func_0205bb68();
 /* decompiler-derived */
-void func_020ed354(void)
+void CaveArea_Unk_0ed354(void)
 {
   func_0205bb68();
   func_0205bb68();
@@ -13,7 +13,7 @@ void func_020ed354(void)
 
 
 /* decompiler-derived */
-void func_020ec278(int arg0)
+void CaveArea_Unk_0ec278(int arg0)
 {
   *(u8 *)(arg0 + 200) = 2;
   *(u32 *)(arg0 + 0x160) = 1;
@@ -22,7 +22,7 @@ void func_020ec278(int arg0)
 
 
 /* decompiler-derived */
-void func_020ed3b4(u32 *arg0)
+void CaveArea_Unk_0ed3b4(u32 *arg0)
 {
   *arg0 = 0;
   arg0[2] = 0;
@@ -33,7 +33,7 @@ void func_020ed3b4(u32 *arg0)
 int func_020445f4();
 int func_0204fed8();
 /* decompiler-derived */
-void func_020eda18(u32 arg0)
+void CaveArea_Unk_0eda18(u32 arg0)
 {
   u32 tmp1;
   tmp1 = func_020445f4(0x25,0);
@@ -43,7 +43,7 @@ void func_020eda18(u32 arg0)
 
 
 /* decompiler-derived */
-void func_020ed26c(int arg0)
+void CaveArea_Unk_0ed26c(int arg0)
 {
   if (*(int *)(arg0 + 0x124) == 0) {
     return;

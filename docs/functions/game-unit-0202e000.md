@@ -18,7 +18,7 @@
 - `func_0202e578`: no candidate matched locally
 - `func_0202e590`: no candidate matched locally
 - `func_0202e228`: objdiff < 100%
-- `func_0202e144`: decompiler-derived
+- `Unk02e000_Unk_02e144`: decompiler-derived
 
 ## Not done in M1-T652
 - `func_0202e070`

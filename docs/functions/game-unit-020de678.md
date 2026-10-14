@@ -8,8 +8,8 @@
 - `Unk0de678_Unk_0df598` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0de678_Unk_0df5a8` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0de678_Unk_0dee2c` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `func_020df584`: decompiler-derived
-- `func_020df0a4`: decompiler-derived
+- `Unk0de678_Unk_0df584`: decompiler-derived
+- `Unk0de678_Unk_0df0a4`: decompiler-derived
 
 ## Not done in M1-T687
 - `func_020df330`

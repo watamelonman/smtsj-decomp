@@ -104,135 +104,126 @@ void Unk116598_Unk_117b80(void)
 }
 
 
-int func_021171c8();
+int Unk116598_Unk_1171c8();
 /* decompiler-derived */
-u32 func_0211727c(void)
+u32 Unk116598_Unk_11727c(void)
 {
-  u32 tmp1;
-  tmp1 = func_021171c8();
+  u32 value;
+  value = Unk116598_Unk_1171c8();
   Unk02f078_Unk_02f20c();
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-void func_02116700(u32 arg0)
+void Unk116598_Unk_116700(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk116598_Get_data_02176e5c();
-  *(u32 *)(tmp1 + 4) = arg0;
-  *(u32 *)(tmp1 + 0xc) = 1;
-  return;
+  int value;
+  value = Unk116598_Get_data_02176e5c();
+  *(u32 *)(value + 4) = arg0;
+  *(u32 *)(value + 0xc) = 1;
 }
 
 int func_021167e0();
 /* decompiler-derived */
-void func_0211671c(void)
+void Unk116598_Unk_11671c(void)
 {
   u32 *v1;
   v1 = (u32 *)Unk116598_Get_data_02176e5c();
   *v1 = 1;
   func_021167e0();
   Unk116598_Unk_1168b8();
-  return;
 }
 
 
 /* decompiler-derived */
-void func_02116810(void)
+void Unk116598_Unk_116810(void)
 {
   u32 *v1;
   v1 = (u32 *)Unk116598_Get_data_02176e5c();
   *v1 = 2;
   func_021167e0();
   Unk116598_Unk_1168b8();
-  return;
 }
 
 int func_02065e88();
 int func_020773dc();
 int func_020a23f4();
 /* decompiler-derived */
-void func_0211689c(void)
+void Unk116598_Unk_11689c(void)
 {
   func_020a23f4(2);
   func_02065e88();
   func_020773dc(1);
-  return;
 }
 
 
 /* decompiler-derived */
-void func_02117968(u32 arg0)
+void Unk116598_Unk_117968(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk116598_Get_data_02176e68();
-  *(u32 *)(tmp1 + 4) = arg0;
-  *(u32 *)(tmp1 + 0xc) = 1;
-  return;
+  int value;
+  value = Unk116598_Get_data_02176e68();
+  *(u32 *)(value + 4) = arg0;
+  *(u32 *)(value + 0xc) = 1;
 }
 
 
 int func_02117a28();
 /* decompiler-derived */
-void func_02117984(void)
+void Unk116598_Unk_117984(void)
 {
   u32 *v1;
   v1 = (u32 *)Unk116598_Get_data_02176e68();
   *v1 = 1;
   func_02117a28();
   Unk116598_Unk_117ae4();
-  return;
 }
 
 
 /* decompiler-derived */
-void func_02117ac8(void)
+void Unk116598_Unk_117ac8(void)
 {
   func_020a23f4(2);
   func_02065e88();
   func_020773dc(1);
-  return;
 }
 
 
 /* decompiler-derived */
-void func_02116738(u32 arg0)
+void Unk116598_Unk_116738(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk116598_Get_data_02176e5c();
-  *(u32 *)(tmp1 + 4) = 3;
-  *(u32 *)(tmp1 + 8) = arg0;
-  *(u32 *)(tmp1 + 0xc) = 1;
-  return;
+  int value;
+  value = Unk116598_Get_data_02176e5c();
+  *(u32 *)(value + 4) = 3;
+  *(u32 *)(value + 8) = arg0;
+  *(u32 *)(value + 0xc) = 1;
 }
 
 int func_0211683c();
 int func_02117294();
 int func_02117790();
 /* decompiler-derived */
-void func_02116b48(void)
+void Unk116598_Unk_116b48(void)
 {
-  u32 tmp1;
+  u32 value;
   func_02117790();
   func_02117294();
-  tmp1 = func_0211683c();
-  *data_02176e5c = tmp1;
-  return;
+  value = func_0211683c();
+  *data_02176e5c = value;
 }
 
 
 /* decompiler-derived */
-int func_021171a8(void)
+int Unk116598_Unk_1171a8(void)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e774();
-  return *(char *)(tmp1 + 0x5fc2) == '\x01';
+  int value;
+  value = Unk02e000_Unk_02e774();
+  return *(char *)(value + 0x5fc2) == '\x01';
 }
 
 
 /* decompiler-derived */
-int func_021171c8(int arg0,int arg1)
+int Unk116598_Unk_1171c8(int arg0,int arg1)
 {
   if (arg0 == 0) {
     if (arg1 == 5) {
@@ -245,7 +236,7 @@ int func_021171c8(int arg0,int arg1)
 
 
 /* decompiler-derived */
-int func_021171e8(int arg0,int arg1)
+int Unk116598_Unk_1171e8(int arg0,int arg1)
 {
   if (arg0 == 0) {
     if (arg1 == 8) {
@@ -258,24 +249,22 @@ int func_021171e8(int arg0,int arg1)
 
 int func_02061424();
 /* decompiler-derived */
-void func_021172bc(void)
+void Unk116598_Unk_1172bc(void)
 {
   if (*data_02176e60 != 0) {
     return;
   }
   func_02061424();
-  return;
 }
 
 
 int func_02117a68();
 /* decompiler-derived */
-void func_02117cd4(void)
+void Unk116598_Unk_117cd4(void)
 {
-  u32 tmp1;
+  u32 value;
   func_02117790();
   func_02117294();
-  tmp1 = func_02117a68();
-  *data_02176e68 = tmp1;
-  return;
+  value = func_02117a68();
+  *data_02176e68 = value;
 }

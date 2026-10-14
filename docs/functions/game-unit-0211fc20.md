@@ -1,9 +1,9 @@
 # src/game/unit_0211fc20.c
 
-- `func_0211fd24`: decompiler-derived
-- `func_0211fc48`: decompiler-derived
-- `func_0211fc20`: decompiler-derived
-- `func_02120944`: decompiler-derived
+- `Unk11fc20_Clear_data_02176e7c`: decompiler-derived
+- `Unk11fc20_Unk_11fc48`: decompiler-derived
+- `Unk11fc20_Unk_11fc20`: decompiler-derived
+- `Unk11fc20_Unk_120944`: decompiler-derived
 
 ## Not done in M1-T835
 - `func_0211fc94`

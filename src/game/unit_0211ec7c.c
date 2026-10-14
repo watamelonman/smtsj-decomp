@@ -4,12 +4,12 @@
 
 
 /* empty callback */
-void func_0211ef08(void) { }
+void Unk11ec7c_Nop_11ef08(void) { }
 
 int func_0202e0cc();
 int func_0205b82c();
 /* decompiler-derived */
-u32 func_0211efec(void)
+u32 Unk11ec7c_Unk_11efec(void)
 {
   func_0202e0cc();
   func_0205b82c(0xd2);
@@ -19,7 +19,7 @@ u32 func_0211efec(void)
 int func_0205dde4();
 int func_0211eda0();
 /* decompiler-derived */
-void func_0211ee8c(int arg0)
+void Unk11ec7c_Unk_11ee8c(int arg0)
 {
   func_0205dde4(*(u32 *)(arg0 + 4));
   func_0211eda0(*(u32 *)(arg0 + 8));
@@ -28,7 +28,7 @@ void func_0211ee8c(int arg0)
 
 
 /* decompiler-derived */
-void func_0211ef0c(int arg0)
+void Unk11ec7c_Unk_11ef0c(int arg0)
 {
   u32 tmp1;
   tmp1 = *(int *)(arg0 + 0x18) + 1;
@@ -41,7 +41,7 @@ void func_0211ef0c(int arg0)
 
 int func_0211ee10();
 /* decompiler-derived */
-void func_0211ef2c(int arg0)
+void Unk11ec7c_Unk_11ef2c(int arg0)
 {
   *(int *)(arg0 + 0x1c) = *(int *)(arg0 + 0x1c) + -1;
   func_0211ee10(arg0,0);

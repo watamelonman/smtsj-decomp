@@ -77,7 +77,7 @@ void Unk0a7d54_Unk_0a7ec8(u32 arg0,u32 arg1,u32 arg2)
 
 
 /* decompiler-derived */
-void func_020a7e64(u32 *arg0)
+void Unk0a7d54_Unk_0a7e64(u32 *arg0)
 {
   arg0[1] = 0;
   *arg0 = 0;
@@ -92,7 +92,7 @@ void func_020a7e64(u32 *arg0)
 
 
 /* decompiler-derived */
-int * func_020a7d54(int arg0)
+int * Unk0a7d54_Unk_0a7d54(int arg0)
 {
   int *v1;
   int tmp2;
@@ -110,7 +110,7 @@ int * func_020a7d54(int arg0)
 
 int func_020a8628();
 /* decompiler-derived */
-void func_020a8b44(int arg0)
+void Unk0a7d54_Unk_0a8b44(int arg0)
 {
   int tmp1;
   if (arg0 == 0) {

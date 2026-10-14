@@ -4,36 +4,35 @@
 
 
 /* empty callback */
-void func_020faa84(void) { }
+void Unk0fa7e8_Nop_0faa84(void) { }
 
 
 /* empty callback */
-void func_020fae70(void) { }
+void Unk0fa7e8_Nop_0fae70(void) { }
 
 
 /* empty callback */
-void func_020fae74(void) { }
+void Unk0fa7e8_Nop_0fae74(void) { }
 
 
 /* empty callback */
-void func_020fae78(void) { }
+void Unk0fa7e8_Nop_0fae78(void) { }
 
 int func_020445f4();
 int func_0204fed8();
 /* decompiler-derived */
-void func_020fb108(u32 arg0)
+void Unk0fa7e8_Unk_0fb108(u32 arg0)
 {
-  u32 tmp1;
-  tmp1 = func_020445f4(0x25,0);
-  func_0204fed8(tmp1,arg0);
-  return;
+  u32 value;
+  value = func_020445f4(0x25,0);
+  func_0204fed8(value,arg0);
 }
 
 int func_020655b4();
 int func_02065604();
 int func_02065bc0();
 /* decompiler-derived */
-void func_020fa7e8(u32 *arg0)
+void Unk0fa7e8_Unk_0fa7e8(u32 *arg0)
 {
   *arg0 = 0;
   arg0[3] = 0;
@@ -55,5 +54,4 @@ void func_020fa7e8(u32 *arg0)
   func_02065604(0);
   func_02065bc0();
   func_020655b4(0);
-  return;
 }

@@ -4,32 +4,31 @@
 
 void func_02118c6c(void);
 /* forwards to `func_02118c6c` */
-void func_0209f028(void) { func_02118c6c(); }
+void Unk09ee4c_Thunk_02118c6c(void) { func_02118c6c(); }
 
 extern u8 data_0213c190[];
 /* decompiler-derived */
-int func_020a03b8(int arg0)
+int Unk09ee4c_Unk_0a03b8(int arg0)
 {
   return arg0 * 0x18 + ((int)data_0213c190);
 }
 
 int func_020a2ae8();
 /* decompiler-derived */
-void func_0209ef50(u32 arg0)
+void Unk09ee4c_Unk_09ef50(u32 arg0)
 {
-  int tmp1;
-  tmp1 = GetGameState();
-  if (tmp1 == 0) {
+  int value;
+  value = GetGameState();
+  if (value == 0) {
     return;
   }
   func_020a2ae8(arg0,2);
-  *(u32 *)(tmp1 + 0x73e8) = 0x14;
-  return;
+  *(u32 *)(value + 0x73e8) = 0x14;
 }
 
 
 /* decompiler-derived */
-void func_0209ee4c(void)
+void Unk09ee4c_Unk_09ee4c(void)
 {
   int *v1;
   v1 = (int *)GetGameState();
@@ -39,19 +38,17 @@ void func_0209ee4c(void)
   v1[0x1d00] = 0;
   *(u32 *)(*v1 + 0x5c) = 1;
   v1[0x1cfa] = 0x12;
-  return;
 }
 
-int func_0211f308();
+int Unk11f2d0_Unk_11f308();
 /* decompiler-derived */
-void func_0209ef80(u32 arg0)
+void Unk09ee4c_Unk_09ef80(u32 arg0)
 {
-  int tmp1;
-  tmp1 = GetGameState();
-  if (tmp1 == 0) {
+  int value;
+  value = GetGameState();
+  if (value == 0) {
     return;
   }
-  func_0211f308(tmp1 + 0x7598,arg0);
-  *(u32 *)(tmp1 + 0x73e8) = 0x15;
-  return;
+  Unk11f2d0_Unk_11f308(value + 0x7598,arg0);
+  *(u32 *)(value + 0x73e8) = 0x15;
 }

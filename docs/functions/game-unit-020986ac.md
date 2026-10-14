@@ -10,9 +10,9 @@
 
 ## Hard list
 - `func_02098980`: objdiff < 100%
-- `func_02098990`: decompiler-derived
-- `func_02099300`: decompiler-derived
-- `func_02098918`: decompiler-derived
+- `Unk0986ac_Unk_098990`: decompiler-derived
+- `Unk0986ac_Unk_099300`: decompiler-derived
+- `Unk0986ac_Unk_098918`: decompiler-derived
 
 ## Not done in M1-T632
 - `func_02098714`

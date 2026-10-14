@@ -34,21 +34,21 @@
 
 ## Hard list
 - `func_020e8244`: no candidate matched locally
-- `func_020e82ac`: decompiler-derived
-- `func_020e8684`: decompiler-derived
-- `func_020e8cbc`: decompiler-derived
-- `func_020e8c9c`: decompiler-derived
-- `func_020e8d18`: decompiler-derived
-- `func_020e940c`: decompiler-derived
+- `Unk0e8228_Unk_0e82ac`: decompiler-derived
+- `Unk0e8228_Unk_0e8684`: decompiler-derived
+- `Unk0e8228_Unk_0e8cbc`: decompiler-derived
+- `Unk0e8228_Unk_0e8c9c`: decompiler-derived
+- `Unk0e8228_Unk_0e8d18`: decompiler-derived
+- `Unk0e8228_Unk_0e940c`: decompiler-derived
 
 ## Not done in M1-T901
 - `func_020e8c80`
 - `func_020e8e8c`
-- `func_020e9728`: decompiler-derived
-- `func_020e9f18`: decompiler-derived
-- `func_020e9f38`: decompiler-derived
-- `func_020e8bc4`: decompiler-derived
-- `func_020e8c2c`: decompiler-derived
+- `Unk0e8228_Unk_0e9728`: decompiler-derived
+- `Unk0e8228_Unk_0e9f18`: decompiler-derived
+- `Unk0e8228_Unk_0e9f38`: decompiler-derived
+- `Unk0e8228_Unk_0e8bc4`: decompiler-derived
+- `Unk0e8228_Unk_0e8c2c`: decompiler-derived
 
 ## Not done in M1-T902
 - `func_020e8374`

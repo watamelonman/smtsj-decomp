@@ -74,22 +74,20 @@ void Unk095560_Unk_095764(u32 arg0)
 int func_020775ec();
 int func_02077640();
 /* decompiler-derived */
-void func_0209615c(void)
+void Unk095560_Unk_09615c(void)
 {
   func_020775ec();
   func_02077640();
   func_02065ca8();
-  return;
 }
 
 int func_02077750();
-int func_020e5550();
+int ImageBg_Unk_0e5550();
 /* decompiler-derived */
-void func_020958a8(u32 arg0,u32 arg1)
+void Unk095560_Unk_0958a8(u32 arg0,u32 arg1)
 {
-  func_020e5550();
+  ImageBg_Unk_0e5550();
   func_02077750(arg0,arg1);
-  return;
 }
 
 
@@ -97,62 +95,59 @@ int func_0204459c();
 int func_0204fe68();
 int func_0204fed8();
 /* decompiler-derived */
-void func_02095778(u32 arg0)
+void Unk095560_Unk_095778(u32 arg0)
 {
-  u32 tmp1;
-  tmp1 = func_0204459c(0x19);
-  tmp1 = func_0204fe68(tmp1,0);
-  func_0204fed8(tmp1,arg0);
-  return;
+  u32 value;
+  value = func_0204459c(0x19);
+  value = func_0204fe68(value,0);
+  func_0204fed8(value,arg0);
 }
 
 
 /* decompiler-derived */
-void func_0209579c(u32 arg0)
+void Unk095560_Unk_09579c(u32 arg0)
 {
-  u32 tmp1;
-  tmp1 = func_0204459c(0x1a);
-  tmp1 = func_0204fe68(tmp1,0);
-  func_0204fed8(tmp1,arg0);
-  return;
+  u32 value;
+  value = func_0204459c(0x1a);
+  value = func_0204fe68(value,0);
+  func_0204fed8(value,arg0);
 }
 
 
 /* decompiler-derived */
-void func_020957c0(u32 arg0)
+void Unk095560_Unk_0957c0(u32 arg0)
 {
-  u32 tmp1;
-  tmp1 = func_0204459c(0x1a);
-  tmp1 = func_0204fe68(tmp1,0);
-  func_0204fed8(tmp1,arg0);
-  return;
+  u32 value;
+  value = func_0204459c(0x1a);
+  value = func_0204fe68(value,0);
+  func_0204fed8(value,arg0);
 }
 
 int func_020956e8();
 int func_020958c8();
 int func_02095950();
 /* decompiler-derived */
-u32 func_02095af8(u32 arg0)
+u32 Unk095560_Unk_095af8(u32 arg0)
 {
-  int tmp1;
+  int value;
   func_020956e8();
-  tmp1 = func_02095950(0,arg0);
-  if (tmp1 != 0) {
-    func_020958c8(tmp1);
+  value = func_02095950(0,arg0);
+  if (value != 0) {
+    func_020958c8(value);
     return 1;
   }
   return 0;
 }
 
 int func_02095818();
-int func_020e5530();
+int ImageBg_Unk_0e5530();
 /* decompiler-derived */
-void func_02096170(void)
+void Unk095560_Unk_096170(void)
 {
-  int tmp1;
-  tmp1 = func_02095818();
-  if (tmp1 == 0) {
-    func_020e5530();
+  int value;
+  value = func_02095818();
+  if (value == 0) {
+    ImageBg_Unk_0e5530();
     func_02077640();
     func_02065ca8();
   }
@@ -161,5 +156,4 @@ void func_02096170(void)
   }
   Unk02d15c_Unk_02d81c();
   func_02065ca8();
-  return;
 }

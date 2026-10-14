@@ -10,9 +10,9 @@
 
 ## Hard list
 - `func_020998c0`: no candidate matched locally
-- `func_02099bac`: decompiler-derived
-- `func_02099bd4`: decompiler-derived
-- `func_0209974c`: decompiler-derived
+- `Unk09974c_Unk_099bac`: decompiler-derived
+- `Unk09974c_Unk_099bd4`: decompiler-derived
+- `Unk09974c_Unk_09974c`: decompiler-derived
 
 ## Not done in M1-T554
 - `func_0209a114`

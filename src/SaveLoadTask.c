@@ -4,6 +4,23 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+typedef struct SaveLoadTaskWork {
+    u8 unk_0000[0x8];
+    u32 UnkField0008;
+    u32 UnkField000c;
+    u32 UnkField0010;
+    u8 unk_0014[0x4];
+    s32 UnkField0018;
+    s32 UnkField001c;
+    u32 UnkField0020;
+    u8 unk_0024[0x10];
+    u32 UnkField0034;
+    u8 unk_0038[0xb0];
+    u32 UnkField00e8;
+} SaveLoadTaskWork;
+
+
 typedef struct SaveLoadSprite { u8 unk00[0x18]; s32 height; } SaveLoadSprite;
 typedef struct SaveLoadTask {
     u32 unk00;
@@ -91,62 +108,57 @@ void SaveLoadTask_Draw(SaveLoadTask *task) {
 
 
 /* decompiler-derived */
-void func_020e006c(int arg0,u32 arg1,u32 arg2)
+void SaveLoadTask_Unk_0e006c(SaveLoadTaskWork *work,u32 arg1,u32 arg2)
 {
-  *(u32 *)(arg0 + 8) = 8;
-  *(u32 *)(arg0 + 0xc) = arg1;
-  *(u32 *)(arg0 + 0x10) = arg2;
-  return;
+  work->UnkField0008 = 8;
+  work->UnkField000c = arg1;
+  work->UnkField0010 = arg2;
 }
 
 int func_020dfd9c();
 /* decompiler-derived */
-void func_020dfed4(u32 arg0,u32 arg1)
+void SaveLoadTask_Unk_0dfed4(u32 arg0,u32 arg1)
 {
   func_020dfd9c(arg0,arg1,1,0,0);
-  return;
 }
 
 extern u8 data_02176bf0[];
 /* decompiler-derived */
-int func_020df7f8(int arg0)
+int SaveLoadTask_Unk_0df7f8(int arg0)
 {
   return *(int *)(((int)data_02176bf0) + arg0 * 0x18) * 3;
 }
 
 
 /* decompiler-derived */
-void func_020dffec(int arg0,int arg1)
+void SaveLoadTask_Unk_0dffec(SaveLoadTaskWork *work,int arg1)
 {
-  *(int *)(arg0 + 0x18) = arg1 + 1;
-  *(int *)(arg0 + 0x1c) = arg1 + 4;
-  *(u32 *)(arg0 + 0x20) = 6;
-  *(u32 *)(arg0 + 0x34) = 0;
-  return;
+  work->UnkField0018 = arg1 + 1;
+  work->UnkField001c = arg1 + 4;
+  work->UnkField0020 = 6;
+  work->UnkField0034 = 0;
 }
 
 
 /* decompiler-derived */
-void func_020e0010(int arg0)
+void SaveLoadTask_Unk_0e0010(int arg0)
 {
   *(u32 *)(arg0 + 0x18) = 1;
   *(u32 *)(arg0 + 0x1c) = 2;
   *(u32 *)(arg0 + 0x20) = 6;
   *(u32 *)(arg0 + 0x34) = 0;
-  return;
 }
 
 extern u8 data_02176c78[];
 int func_02053000();
 int func_020bc6d4();
 /* decompiler-derived */
-void func_020e137c(int arg0)
+void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
 {
-  int tmp1;
+  int value;
   func_020bc6d4(1);
-  func_02053000(*(u32 *)(arg0 + 0xe8));
-  tmp1 = ((int)data_02176c78);
-  *(u32 *)(arg0 + 0xe8) = 0;
-  *(u32 *)(tmp1 + 4) = 0;
-  return;
+  func_02053000(work->UnkField00e8);
+  value = ((int)data_02176c78);
+  work->UnkField00e8 = 0;
+  *(u32 *)(value + 4) = 0;
 }

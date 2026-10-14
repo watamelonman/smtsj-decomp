@@ -1,10 +1,10 @@
 # src/game/unit_0203aae8.c
 
-- `func_0203ae0c`: decompiler-derived
-- `func_0203ad14`: decompiler-derived
-- `func_0203aef0`: decompiler-derived
-- `func_0203b878`: decompiler-derived
-- `func_0203af50`: decompiler-derived
+- `Unk03aae8_Nop_03ae0c`: decompiler-derived
+- `Unk03aae8_Unk_03ad14`: decompiler-derived
+- `Unk03aae8_Unk_03aef0`: decompiler-derived
+- `Unk03aae8_Unk_03b878`: decompiler-derived
+- `Unk03aae8_Unk_03af50`: decompiler-derived
 
 ## Not done in M1-T664
 - `func_0203acf4`

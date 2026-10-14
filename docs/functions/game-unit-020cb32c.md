@@ -10,8 +10,8 @@
 
 ## Hard list
 - `func_020cccb4`: no candidate matched locally
-- `func_020ccaa8`: decompiler-derived
-- `func_020cba78`: decompiler-derived
+- `Unk0cb32c_Unk_0ccaa8`: decompiler-derived
+- `Unk0cb32c_Unk_0cba78`: decompiler-derived
 
 ## Not done in M1-T867
 - `func_020cb564`

@@ -9,7 +9,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 int Unk02dcfc_Unk_02df00();
 int func_0202df88();
 int func_0203ac00();
-int func_0203ad14();
+int Unk03aae8_Unk_03ad14();
 int func_0203ad24();
 int func_0203ad98();
 int func_0205e484();
@@ -20,7 +20,7 @@ int func_02065bc0();
 int func_020a269c();
 int func_020a273c();
 int func_020a277c();
-int func_020a27e0();
+int ScanVisor_Unk_0a27e0();
 int func_020a2820();
 int func_020a2884();
 int func_020a28b0();
@@ -77,14 +77,14 @@ u32 Unk03c474_Unk_03c504(void)
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c518(void)
 {
-  func_020a27e0(1);
+  ScanVisor_Unk_0a27e0(1);
   return 1;
 }
 
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c52c(void)
 {
-  func_020a27e0(0);
+  ScanVisor_Unk_0a27e0(0);
   return 1;
 }
 
@@ -160,7 +160,7 @@ u32 Unk03c474_Unk_03c4a0(void)
   int value;
   func_0203ac00(0);
   func_0205e590();
-  value = func_0203ad14();
+  value = Unk03aae8_Unk_03ad14();
   Unk02dcfc_Unk_02df00(*(u32 *)(value + 0xe8),1);
   return 3;
 }
@@ -172,7 +172,7 @@ u32 Unk03c474_Unk_03c474(void)
   int value2;
   value1 = func_0203ac00(0);
   func_0205e484(value1,0);
-  value2 = func_0203ad14();
+  value2 = Unk03aae8_Unk_03ad14();
   Unk02dcfc_Unk_02df00(*(u32 *)(value2 + 0xe8),1);
   return 3;
 }
@@ -184,7 +184,7 @@ u32 Unk03c474_Unk_03c638(void)
   int value2;
   int value3;
   value1 = func_0203ac00(0);
-  value2 = func_0203ad14();
+  value2 = Unk03aae8_Unk_03ad14();
   value2 = *(int *)(value2 + 0xe8);
   if (*(int *)(value2 + 0x28) == 0) {
     func_0203ad24(value2);

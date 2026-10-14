@@ -8,10 +8,10 @@
 - `Unk122e1c_Unk_122f54` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk122e1c_Unk_122f68` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk122e1c_Unk_12332c` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `func_02123024`: decompiler-derived
-- `func_02123048`: decompiler-derived
-- `func_021232f8`: decompiler-derived
-- `func_021232c8`: decompiler-derived
+- `Unk122e1c_Unk_123024`: decompiler-derived
+- `Unk122e1c_Unk_123048`: decompiler-derived
+- `Unk122e1c_Unk_1232f8`: decompiler-derived
+- `Unk122e1c_Unk_1232c8`: decompiler-derived
 
 ## Not done in M1-T748
 - `func_0212351c`

@@ -30,7 +30,7 @@ u32 CampStatus_GetUnkField7494(CampStatusWork *work)
 
 
 /* decompiler-derived */
-int func_020d34e4(int *arg0,int arg1)
+int CampStatus_Unk_0d34e4(int *arg0,int arg1)
 {
   if (arg1 < arg0[7]) {
     return *arg0 + *(int *)(arg0[6] + arg1 * 4) * 2;
@@ -40,15 +40,14 @@ int func_020d34e4(int *arg0,int arg1)
 
 int func_02061424();
 /* decompiler-derived */
-void func_020d3510(int *arg0)
+void CampStatus_Unk_0d3510(int *arg0)
 {
-  int tmp1;
-  tmp1 = *arg0;
-  *arg0 = tmp1 + 1;
-  if (tmp1 + 1 < arg0[1]) {
+  int value;
+  value = *arg0;
+  *arg0 = value + 1;
+  if (value + 1 < arg0[1]) {
     return;
   }
   arg0[2] = 0;
   func_02061424();
-  return;
 }

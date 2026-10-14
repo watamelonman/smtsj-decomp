@@ -21,7 +21,7 @@
 - `func_0202dfa0`
 - `func_0202dfb8`
 - `func_0202dfd0`
-- `func_0202dd9c`: decompiler-derived
+- `Unk02dcfc_Unk_02dd9c`: decompiler-derived
 
 ## Not done in M1-T255
 - `func_0202dfe8`

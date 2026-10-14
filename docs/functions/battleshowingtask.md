@@ -18,10 +18,10 @@
 - `func_0211a6e4`
 - `func_0211ceb4`
 - `func_0211b4e4`
-- `func_0211c4c4`: decompiler-derived
-- `func_0211b684`: decompiler-derived
-- `func_0211ce80`: decompiler-derived
-- `func_0211a01c`: decompiler-derived
+- `BattleShowingTask_Unk_11c4c4`: decompiler-derived
+- `BattleShowingTask_Unk_11b684`: decompiler-derived
+- `BattleShowingTask_Unk_11ce80`: decompiler-derived
+- `BattleShowingTask_Unk_11a01c`: decompiler-derived
 
 ## Not done in M1-T1031
 - `func_021196c0`

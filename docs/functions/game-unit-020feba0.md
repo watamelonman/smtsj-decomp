@@ -1,14 +1,14 @@
 # src/game/unit_020feba0.c
 
-- `func_020fed7c`: decompiler-derived
+- `Unk0feba0_Unk_0fed7c`: decompiler-derived
 
 ## Not done in M1-T130
 - `func_020fecfc`
 - `func_020fec84`
-- `func_020fec54`: decompiler-derived
-- `func_020fece8`: decompiler-derived
-- `func_020febc8`: decompiler-derived
-- `func_020feba0`: decompiler-derived
+- `Unk0feba0_Get_data_02176e24`: decompiler-derived
+- `Unk0feba0_Clear_data_02176e24`: decompiler-derived
+- `Unk0feba0_Unk_0febc8`: decompiler-derived
+- `Unk0feba0_Unk_0feba0`: decompiler-derived
 
 ## Not done in M1-T129
 - `func_020febe8`

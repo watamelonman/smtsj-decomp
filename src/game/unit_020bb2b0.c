@@ -4,21 +4,21 @@
 
 void func_020a1428(void);
 /* forwards to `func_020a1428` */
-void func_020bb2d4(void) { func_020a1428(); }
+void Unk0bb2b0_Thunk_020a1428(void) { func_020a1428(); }
 
 void func_020a1740(void);
 /* forwards to `func_020a1740` */
-void func_020bb2e0(void) { func_020a1740(); }
+void Unk0bb2b0_Thunk_020a1740(void) { func_020a1740(); }
 
 int func_0202eb0c();
 int func_0203ac00();
 int func_0203acf4();
 /* decompiler-derived */
-u32 func_020bb42c(void)
+u32 Unk0bb2b0_Unk_0bb42c(void)
 {
-  u16 tmp1;
-  tmp1 = func_0203ac00(0);
-  func_0202eb0c(tmp1);
+  u16 value;
+  value = func_0203ac00(0);
+  func_0202eb0c(value);
   func_0203acf4();
   return 1;
 }
@@ -26,14 +26,14 @@ u32 func_020bb42c(void)
 
 int func_0202eab8();
 /* decompiler-derived */
-u32 func_020bb450(void)
+u32 Unk0bb2b0_Unk_0bb450(void)
 {
-  u16 tmp1;
-  int tmp2;
-  int tmp3;
-  tmp1 = func_0203ac00(0);
-  tmp2 = func_0203ac00(1);
-  tmp3 = func_0202eb0c(tmp1);
-  func_0202eab8(tmp1,tmp2 + tmp3);
+  u16 value1;
+  int value2;
+  int value3;
+  value1 = func_0203ac00(0);
+  value2 = func_0203ac00(1);
+  value3 = func_0202eb0c(value1);
+  func_0202eab8(value1,value2 + value3);
   return 1;
 }

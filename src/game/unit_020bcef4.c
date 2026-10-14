@@ -16,7 +16,7 @@ typedef struct Unk0bcef4Work {
 int func_020bd30c();
 int func_020bd49c();
 int func_020bd584();
-int func_020bd614();
+int Unk0bd5f0_Unk_0bd614();
 
 void Unk0bcef4_Unk_0bd2fc(u32 arg0,u32 arg1);
 void Unk0bcef4_Unk_0bd388(u32 arg0,u32 *arg1);
@@ -40,7 +40,7 @@ void Unk0bcef4_Unk_0bd388(u32 arg0,u32 *arg1)
 /* decompiler-derived */
 void Unk0bcef4_Unk_0bd470(u32 *arg0)
 {
-  func_020bd614(*arg0);
+  Unk0bd5f0_Unk_0bd614(*arg0);
 }
 
 /* decompiler-derived */

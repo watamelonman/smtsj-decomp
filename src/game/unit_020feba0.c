@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-void func_020fed7c(u32 *arg0,u32 arg1)
+void Unk0feba0_Unk_0fed7c(u32 *arg0,u32 arg1)
 {
   switch(arg1) {
   case 0:
@@ -27,45 +27,41 @@ void func_020fed7c(u32 *arg0,u32 arg1)
   arg0[5] = 100;
 switchD_020fed80_default:
   arg0[3] = arg1;
-  return;
 }
 
 
 extern u32 data_02176e24[];
 /* decompiler-derived */
-u32 func_020fec54(void)
+u32 Unk0feba0_Get_data_02176e24(void)
 {
   return *data_02176e24;
 }
 
 
 /* decompiler-derived */
-void func_020fece8(void)
+void Unk0feba0_Clear_data_02176e24(void)
 {
   *data_02176e24 = 0;
-  return;
 }
 
 int func_02061424();
 /* decompiler-derived */
-void func_020febc8(void)
+void Unk0feba0_Unk_0febc8(void)
 {
   if (*data_02176e24 == 0) {
     return;
   }
   func_02061424();
-  return;
 }
 
 int func_020fec84();
 /* decompiler-derived */
-void func_020feba0(void)
+void Unk0feba0_Unk_0feba0(void)
 {
-  int tmp1;
+  int value;
   if (*data_02176e24 != 0) {
     return;
   }
-  tmp1 = func_020fec84();
-  *data_02176e24 = tmp1;
-  return;
+  value = func_020fec84();
+  *data_02176e24 = value;
 }

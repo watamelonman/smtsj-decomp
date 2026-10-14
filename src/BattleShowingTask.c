@@ -193,7 +193,7 @@ void ExpGauge_Update(ExpGauge *g) {
 int func_020445f4();
 int func_0204fed8();
 /* decompiler-derived */
-void func_0211c4c4(u32 arg0)
+void BattleShowingTask_Unk_11c4c4(u32 arg0)
 {
   u32 tmp1;
   tmp1 = func_020445f4(0x29);
@@ -204,7 +204,7 @@ void func_0211c4c4(u32 arg0)
 int func_02044534();
 int func_0211a380();
 /* decompiler-derived */
-void func_0211b684(void)
+void BattleShowingTask_Unk_11b684(void)
 {
   func_0211a380();
   func_02044534(0x17);
@@ -217,7 +217,7 @@ extern u32 data_02176e74[];
 int func_02053000();
 int func_020a1ae0();
 /* decompiler-derived */
-void func_0211ce80(int arg0)
+void BattleShowingTask_Unk_11ce80(int arg0)
 {
   func_02053000(*(u32 *)(arg0 + 4));
   *(u32 *)(arg0 + 4) = 0;
@@ -228,7 +228,7 @@ void func_0211ce80(int arg0)
 
 int func_0205c3dc();
 /* decompiler-derived */
-void func_0211a01c(int arg0)
+void BattleShowingTask_Unk_11a01c(int arg0)
 {
   if (*(int *)(arg0 + 0x18) != 0) {
     func_0205c3dc();

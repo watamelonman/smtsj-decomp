@@ -188,7 +188,7 @@ void Unk10a034_Unk_10aeb0(int arg0)
 
 
 /* decompiler-derived */
-void func_0210b104(u32 *arg0,u32 arg1,u32 arg2)
+void Unk10a034_Unk_10b104(u32 *arg0,u32 arg1,u32 arg2)
 {
   *arg0 = arg1;
   arg0[1] = arg2;
@@ -202,7 +202,7 @@ void func_0210b104(u32 *arg0,u32 arg1,u32 arg2)
 
 int func_020d2eb0();
 /* decompiler-derived */
-void func_0210af40(int arg0)
+void Unk10a034_Unk_10af40(int arg0)
 {
   int tmp1;
   if (*data_02176e3c == arg0) {
@@ -216,13 +216,13 @@ void func_0210af40(int arg0)
 
 int func_0204faf0();
 int func_02065864();
-int func_020d2f98();
+int Unk0d297c_Unk_0d2f98();
 /* decompiler-derived */
-void func_0210af0c(int arg0)
+void Unk10a034_Unk_10af0c(int arg0)
 {
   u32 tmp1;
   func_0204faf0(7,*(u16 *)(arg0 + 0xb4));
-  tmp1 = func_020d2f98(0x16);
+  tmp1 = Unk0d297c_Unk_0d2f98(0x16);
   func_02065864(tmp1,0xffffffff);
   *(u32 *)(*(int *)(arg0 + 4) + 0x18) = 0x1c;
   return;

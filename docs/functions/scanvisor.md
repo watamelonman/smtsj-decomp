@@ -14,22 +14,22 @@
 - `ScanVisor_Unk_0a3620`: decompiler-derived
 - `ScanVisor_Unk_0a465c`: decompiler-derived
 - `ScanVisor_Unk_0a4a30`: decompiler-derived
-- `func_020a4644`: decompiler-derived
-- `func_020a2a1c`: decompiler-derived
-- `func_020a2ab0`: decompiler-derived
-- `func_020a2acc`: decompiler-derived
-- `func_020a27e0`: decompiler-derived
-- `func_020a2800`: decompiler-derived
+- `ScanVisor_Unk_0a4644`: decompiler-derived
+- `ScanVisor_Unk_0a2a1c`: decompiler-derived
+- `ScanVisor_Unk_0a2ab0`: decompiler-derived
+- `ScanVisor_Unk_0a2acc`: decompiler-derived
+- `ScanVisor_Unk_0a27e0`: decompiler-derived
+- `ScanVisor_Unk_0a2800`: decompiler-derived
 
 ## Not done in M1-T985
 - `func_020a4a18`
 - `func_020a2980`
-- `func_020a2b18`: decompiler-derived
-- `func_020a2b38`: decompiler-derived
-- `func_020a29a0`: decompiler-derived
-- `func_020a29c4`: decompiler-derived
-- `func_020a2a8c`: decompiler-derived
-- `func_020a2a38`: decompiler-derived
+- `ScanVisor_Unk_0a2b18`: decompiler-derived
+- `ScanVisor_Unk_0a2b38`: decompiler-derived
+- `ScanVisor_Unk_0a29a0`: decompiler-derived
+- `ScanVisor_Unk_0a29c4`: decompiler-derived
+- `ScanVisor_Unk_0a2a8c`: decompiler-derived
+- `ScanVisor_Unk_0a2a38`: decompiler-derived
 
 ## Not done in M1-T986
 - `func_020a3254`

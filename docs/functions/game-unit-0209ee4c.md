@@ -1,10 +1,10 @@
 # src/game/unit_0209ee4c.c
 
-- `func_0209f028`: decompiler-derived
-- `func_020a03b8`: decompiler-derived
-- `func_0209ef50`: decompiler-derived
-- `func_0209ee4c`: decompiler-derived
-- `func_0209ef80`: decompiler-derived
+- `Unk09ee4c_Thunk_02118c6c`: decompiler-derived
+- `Unk09ee4c_Unk_0a03b8`: decompiler-derived
+- `Unk09ee4c_Unk_09ef50`: decompiler-derived
+- `Unk09ee4c_Unk_09ee4c`: decompiler-derived
+- `Unk09ee4c_Unk_09ef80`: decompiler-derived
 
 ## Not done in M1-T766
 - `func_0209f0c0`
