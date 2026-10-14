@@ -44,3 +44,26 @@ void func_0202dd28(Worker *w, u32 owner) {
         w->slots[i] = 0;
     }
 }
+
+
+void func_02095748(void);
+/* forwards to `func_02095748` */
+void func_0202dd1c(void) { func_02095748(); }
+
+
+/* decompiler-derived */
+void func_0202df00(int arg0,u32 arg1)
+{
+  *(u32 *)(arg0 + 0x18) = 0x15;
+  *(u32 *)(arg0 + 0x1c) = arg1;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_0202de58(int arg0)
+{
+  *(u32 *)(arg0 + 0x18) = 0xc;
+  *(u32 *)(arg0 + 0x54) = 1;
+  return;
+}
