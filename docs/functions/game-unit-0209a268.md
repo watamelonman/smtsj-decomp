@@ -20,3 +20,13 @@
 - `func_0209b754`
 - `func_0209c528`
 - `func_0209a4a0`
+- `func_0209bb38`: decompiler-derived
+
+## Not done in M1-T1011
+- `func_0209a458`
+- `func_0209a4c4`
+- `func_0209c4a8`
+- `func_0209a4fc`
+- `func_0209a77c`
+- `func_0209a7bc`
+- `func_0209c4e0`

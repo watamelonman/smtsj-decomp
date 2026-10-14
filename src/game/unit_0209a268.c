@@ -101,3 +101,16 @@ void Unk09a268_Unk_09b3cc(Unk09a268Work *work)
   }
   func_02057534();
 }
+
+
+int func_020bc650();
+/* decompiler-derived */
+u32 func_0209bb38(void)
+{
+  int tmp1;
+  tmp1 = func_020bc650(0);
+  if ((tmp1 != 0) && (tmp1 = func_020bc650(9), tmp1 != 0)) {
+    return 1;
+  }
+  return 0;
+}
