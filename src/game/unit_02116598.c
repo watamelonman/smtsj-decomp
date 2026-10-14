@@ -72,3 +72,39 @@ void func_02116954(void)
   func_021172dc();
   return;
 }
+
+
+extern u32 data_02176e60[];
+/* decompiler-derived */
+void func_0211753c(void)
+{
+  *data_02176e60 = 0;
+  return;
+}
+
+extern u32 data_02176e64[];
+/* decompiler-derived */
+void func_02117914(void)
+{
+  *data_02176e64 = 0;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02117ae4(void)
+{
+  func_02096130();
+  func_02065eac();
+  func_020a2414();
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02117b80(void)
+{
+  func_021177cc(0);
+  func_021172dc();
+  return;
+}
