@@ -187,3 +187,46 @@ int func_0204509c(void)
   }
   return tmp1;
 }
+
+
+int func_020bc650();
+/* decompiler-derived */
+int func_02045c7c(void)
+{
+  int tmp1;
+  tmp1 = func_020bc650(0x1a);
+  return tmp1 == 0;
+}
+
+int func_020452c4();
+int func_020aa224();
+/* decompiler-derived */
+u32 func_02046688(void)
+{
+  func_020452c4();
+  func_02044fd8();
+  func_020aa224();
+  Unk044904_Unk_045c98();
+  return 1;
+}
+
+
+/* decompiler-derived */
+int func_02045460(int arg0)
+{
+  int tmp1;
+  tmp1 = Unk044904_Get_data_0215ee98();
+  return arg0 == *(int *)(tmp1 + 0x5c);
+}
+
+int func_02045ca8();
+/* decompiler-derived */
+u32 func_02046448(u16 *arg0)
+{
+  int tmp1;
+  tmp1 = func_02045ca8();
+  if (tmp1 != 0) {
+    *arg0 = 2;
+  }
+  return 1;
+}
