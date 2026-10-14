@@ -72,3 +72,21 @@ void Unk0946e0_Unk_094a64(u32 arg0)
   func_02057678(arg0,*(u32 *)(value + 4),*(u32 *)(value + 8));
   func_02057628(arg0,0,0);
 }
+
+
+
+/* decompiler-derived */
+void func_02094704(u16 *arg0,u16 arg1,u16 arg2,u16 arg3,
+                  short arg4)
+{
+  if (arg0 == (u16 *)0x0) {
+    return;
+  }
+  *arg0 = arg1;
+  arg0[1] = arg2;
+  arg0[4] = arg3;
+  arg0[5] = -arg4;
+  arg0[2] = 0;
+  arg0[3] = 0;
+  return;
+}
