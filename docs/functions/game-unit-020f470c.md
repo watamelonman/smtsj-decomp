@@ -14,3 +14,13 @@
 ## Not done in M1-T372
 - `func_020f4878`
 - `func_020f4790`
+- `func_020f4958`: decompiler-derived
+- `func_020f4b44`: decompiler-derived
+- `func_020f4ac0`: decompiler-derived
+
+## Not done in M1-T371
+- `func_020f4a1c`
+- `func_020f470c`
+- `func_020f4994`
+- `func_020f4a60`
+- `func_020f4ba4`
