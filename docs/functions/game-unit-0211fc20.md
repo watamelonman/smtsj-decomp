@@ -10,3 +10,13 @@
 - `func_02120650`
 - `func_0211fc68`
 - `func_0212066c`
+- `func_0212143c`: decompiler-derived
+- `func_0211fd38`: decompiler-derived
+- `func_02120b88`: decompiler-derived
+
+## Not done in M1-T836
+- `func_02120898`
+- `func_02120b30`
+- `func_021208dc`
+- `func_02121478`
+- `func_0211fcb0`
