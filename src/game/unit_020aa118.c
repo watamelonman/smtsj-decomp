@@ -67,3 +67,41 @@ void func_020af824(void)
   func_0204fde0();
   return;
 }
+
+
+
+/* decompiler-derived */
+u32 func_020afb90(int arg0)
+{
+  u32 tmp1;
+  tmp1 = func_02052fe0(0x90);
+  func_02008848(tmp1,0,0x90);
+  if (*(int *)(arg0 + 0x18) == 0) {
+    *(u32 *)(arg0 + 0x18) = tmp1;
+  }
+  else {
+    **(u32 **)(arg0 + 0x1c) = tmp1;
+  }
+  *(u32 *)(arg0 + 0x1c) = tmp1;
+  *(int *)(arg0 + 4) = *(int *)(arg0 + 4) + 1;
+  return tmp1;
+}
+
+int func_0204a0e8();
+int func_0204a244();
+int func_020b0310();
+/* decompiler-derived */
+u32 func_020ab4f4(u32 arg0,u32 arg1,u32 arg2,int arg3)
+{
+  int tmp1;
+  u32 tmp2;
+  if (arg3 == 3) {
+    return 1;
+  }
+  tmp1 = func_0204a244(arg2);
+  if ((tmp1 == 2) && (tmp1 = func_0204a0e8(arg2,400), tmp1 != 0)) {
+    return 0;
+  }
+  tmp2 = func_020b0310(arg0,arg1,arg2);
+  return tmp2;
+}

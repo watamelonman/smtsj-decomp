@@ -30,3 +30,13 @@
 - `func_020ab930`
 - `func_020acb28`
 - `func_020af780`
+- `func_020afb90`: decompiler-derived
+- `func_020ab4f4`: decompiler-derived
+
+## Not done in M1-T1079
+- `func_020afbdc`
+- `func_020ab468`
+- `func_020afa60`
+- `func_020aa130`
+- `func_020aa188`
+- `func_020aa298`
