@@ -1,0 +1,7 @@
+# No-Intro "Nintendo - Nintendo DS (Decrypted)" entries, keyed by header gamecode.
+# BMTE: SHA-1 from two independent pages that quote No-Intro: openretro.org (No-Intro
+# import, USA) and gamegear.net (DAT 20260315-141512). Not checked against the DAT file itself.
+[BMTE]
+name = "Shin Megami Tensei - Strange Journey (USA)"
+size = 134217728
+sha1 = "179428d69edee7b1df83e2fc6e20d0ec0cc855b7"

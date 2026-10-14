@@ -1,0 +1,4 @@
+# ids verified against decomp.me source 2026-10-13; pick the compiler matching the game.
+platform = "nds_arm9"
+compiler = "mwcc_30_131"
+compiler_flags = "-O4,p -proc arm946e -enum int -lang c99 -Cpp_exceptions off -interworking -gccinc -nolink -msgstyle gcc -sym on"

@@ -1,0 +1,11 @@
+/dsd
+/objdiff-cli
+/tools/wibo
+/tools/mwccarm/
+/extract/
+/build/
+/build.ninja
+/objdiff.json
+*.nds
+.forge/
+build/
