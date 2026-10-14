@@ -44,3 +44,13 @@
 ## Not done in M1-T901
 - `func_020e8c80`
 - `func_020e8e8c`
+- `func_020e9728`: decompiler-derived
+- `func_020e9f18`: decompiler-derived
+- `func_020e9f38`: decompiler-derived
+- `func_020e8bc4`: decompiler-derived
+- `func_020e8c2c`: decompiler-derived
+
+## Not done in M1-T902
+- `func_020e8374`
+- `func_020e85a0`
+- `func_020e8b54`
