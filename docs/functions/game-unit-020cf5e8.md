@@ -20,3 +20,13 @@
 ## Not done in M1-T958
 - `func_020d1490`
 - `func_020d1360`
+- `func_020d1414`: decompiler-derived
+- `func_020d13b4`: decompiler-derived
+- `func_020d0960`: decompiler-derived
+
+## Not done in M1-T959
+- `func_020cf5e8`
+- `func_020d185c`
+- `func_020d19d4`
+- `func_020d1908`
+- `func_020d16f8`

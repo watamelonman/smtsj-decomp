@@ -136,3 +136,54 @@ void func_020cf630(void)
   func_020956c8();
   return;
 }
+
+
+int func_020f3de8();
+int func_020f3f2c();
+/* decompiler-derived */
+void func_020d1414(int arg0)
+{
+  u32 tmp1;
+  int tmp2;
+  tmp1 = func_020f3f2c(*(u16 *)(arg0 + *(int *)(arg0 + 0x288) * 8 + 0xa8));
+  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + *(int *)(arg0 + 0x288) * 8 + 0xa6));
+  func_020dec94(tmp2 + 0x16);
+  *(int *)(arg0 + 0x288) = *(int *)(arg0 + 0x288) + 1;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_020d13b4(int arg0)
+{
+  u32 tmp1;
+  int tmp2;
+  tmp1 = func_020f3f2c(*(u16 *)(arg0 + *(int *)(arg0 + 0x28c) * 8 + 0x19c));
+  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + *(int *)(arg0 + 0x28c) * 8 + 0x19a));
+  func_020dec94(tmp2 + 0x16);
+  *(int *)(arg0 + 0x28c) = *(int *)(arg0 + 0x28c) + 1;
+  return;
+}
+
+int func_020cb5b4();
+int func_020d0ff4();
+int func_020d10ac();
+/* decompiler-derived */
+void func_020d0960(int arg0,u32 arg1)
+{
+  int tmp1;
+  tmp1 = func_020cb5b4(arg1,arg0 + 8);
+  if (tmp1 == 1) {
+    func_020d0ff4(arg0);
+    return;
+  }
+  if (tmp1 == 2) {
+    func_020d10ac(arg0);
+    return;
+  }
+  if (tmp1 != 3) {
+    return;
+  }
+  func_020d1360(arg0,*(u32 *)(arg0 + 4));
+  return;
+}
