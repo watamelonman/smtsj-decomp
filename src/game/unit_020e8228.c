@@ -500,3 +500,30 @@ void func_020e9fa4(u32 arg0)
   return;
 }
 
+
+
+int func_020459fc();
+int func_02053800();
+int func_020e82c8();
+int func_020e85a0();
+int func_020fda58();
+int func_02100208();
+/* decompiler-derived */
+u32 func_020e85c8(void)
+{
+  int tmp1;
+  tmp1 = Unk0e8228_Get_data_02176ce0();
+  if (tmp1 == 0) {
+    return 0;
+  }
+  tmp1 = func_020e85a0(tmp1);
+  if ((tmp1 != 0) && (tmp1 = func_02053800(0,0x400), tmp1 != 0)) {
+    func_020459fc();
+    Unk0e8228_Unk_0e8cd8();
+    func_020e82c8();
+    func_020fda58(2);
+    func_02100208(7);
+    return 1;
+  }
+  return 0;
+}

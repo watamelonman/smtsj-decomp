@@ -74,3 +74,13 @@
 - `func_020e9bc0`
 - `func_020e8be8`
 - `func_020e9b10`
+- `func_020e85c8`: decompiler-derived
+
+## Not done in M1-T905
+- `func_020e849c`
+- `func_020e8260`
+- `func_020e9f58`
+- `func_020e8d38`
+- `func_020e9fd0`
+- `func_020e8628`
+- `func_020e8ebc`
