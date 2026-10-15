@@ -70,11 +70,11 @@ void Unk113294_Unk_115698(u8 *arg0)
 /* get u32 at +0x20 */
 u32 Unk113294_GetUnkField20(void *obj) { return ((Unk113294Work *)obj)->unk_0020; }
 
-int Unk113294_GetMsgKind();
+int Unk113294_Unk_1150e8();
 /* decompiler-derived */
 int Unk113294_Unk_115110(void)
 {
-  return Unk113294_GetMsgKind(1,0x35);
+  return Unk113294_Unk_1150e8(1,0x35);
 }
 
 int func_020655b4();
@@ -103,7 +103,7 @@ u16 *Unk113294_Unk_1150c8(u32 arg0,u32 arg1)
 /* decompiler-derived */
 int Unk113294_Unk_115124(int arg0)
 {
-  return Unk113294_GetMsgKind(((Unk113294Work *)arg0)->unk_0008 + 1,((Unk113294Work *)arg0)->unk_0010 & 0xffff);
+  return Unk113294_Unk_1150e8(((Unk113294Work *)arg0)->unk_0008 + 1,((Unk113294Work *)arg0)->unk_0010 & 0xffff);
 }
 
 
@@ -148,7 +148,7 @@ typedef struct Unk113294Pair {
     u16 a;
     u16 b;
 } Unk113294Pair;
-int Unk113294_GetMsgKind(u32 a, u32 b)
+int Unk113294_Unk_1150e8(u32 a, u32 b)
 {
     u16 *q = Unk113294_Unk_1150c8(a, b);
     u32 v = q[0];
