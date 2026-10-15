@@ -67,3 +67,4 @@ u32 func_021181a0(int arg0)
   }
   return tmp1;
 }
+
