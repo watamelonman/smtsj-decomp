@@ -17,3 +17,4 @@ u16 func_020a9a94(int arg0,int arg1)
   return *(u16 *)
           (arg1 * 0xc + *(int *)(*(int *)(arg0 * 0x18 + tmp1 + 0x14) + 0x54) + 4);
 }
+
