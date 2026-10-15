@@ -30,3 +30,10 @@
 - `func_020a2004`
 - `func_020a1bb8`
 - `func_020a1c50`
+
+## Not done in M1-T630
+- `func_020a1a24`
+- `func_020a163c`
+- `func_020a18c8`
+- `func_020a208c`
+- `func_020a1d00`
