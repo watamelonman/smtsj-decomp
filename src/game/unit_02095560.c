@@ -488,3 +488,23 @@ void Unk095560_Call_020773dc(void)
 {
     func_020773dc(1);
 }
+
+int func_0206552c();
+
+int func_02096484(void)
+{
+    switch (func_02095818()) {
+    case 0:
+        return func_0206552c() == 0;
+    case 2:
+        return func_0206552c() == 0;
+    case 3:
+        return func_0206552c() == 0;
+    case 1:
+    case 4:
+    case 5:
+    case 6:
+    default:
+        return 1;
+    }
+}
