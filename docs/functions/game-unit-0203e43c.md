@@ -27,15 +27,15 @@
 - `Unk03e43c_UpdatePos18`
 - `Unk03e43c_MergeTable`
 - `Unk03e43c_Unk_03e8cc`
-- `func_02044194`
-- `func_02043450`
-- `func_02043560`
+- `Unk03e43c_Unk_044194`
+- `Unk03e43c_Unk_043450`
+- `Unk03e43c_Unk_043560`
 
 ## Not done in M1-T1089
 - `func_0203e684`
 - `Unk03e43c_Unk_03f234`
-- `func_020441ec`
-- `func_02041ce4`
+- `Unk03e43c_Unk_0441ec`
+- `Unk03e43c_Unk_041ce4`
 - `func_02044114`
 - `func_0203fa84`
 - `func_02044264`
@@ -62,8 +62,8 @@
 - `Unk03e43c_UpdatePos18`: hand-matched
 - `Unk03e43c_Unk_03e8cc`: hand-matched
 - `Unk03e43c_Unk_03f234`: hand-matched
-- `func_02041ce4`: hand-matched
-- `func_02043450`: hand-matched
-- `func_02043560`: hand-matched
-- `func_02044194`: hand-matched
-- `func_020441ec`: hand-matched
+- `Unk03e43c_Unk_041ce4`: hand-matched
+- `Unk03e43c_Unk_043450`: hand-matched
+- `Unk03e43c_Unk_043560`: hand-matched
+- `Unk03e43c_Unk_044194`: hand-matched
+- `Unk03e43c_Unk_0441ec`: hand-matched

@@ -49,7 +49,7 @@ void func_02008848();
 int func_0202092c();
 void func_020211d8();
 void func_0204b6d0();
-void func_02043450();
+void Unk03e43c_Unk_043450();
 extern u8 data_0215ee60[];
 void Unk03e43c_ClearTable(void)
 {
@@ -230,7 +230,7 @@ void Unk03e43c_UpdatePos18(u8 *o)
 {
     s16 x = FIELD(s16, o, 0x18);
     s16 y = FIELD(s16, o, 0x1a);
-    func_02043450(o + 0x18, o + 0x1a, FIELD(u32, o, 0x28dc));
+    Unk03e43c_Unk_043450(o + 0x18, o + 0x1a, FIELD(u32, o, 0x28dc));
     if (FIELD(s16, o, 0x18) != x || FIELD(s16, o, 0x1a) != y) {
         FIELD(u32, o, 0x04) = 1;
     }
@@ -320,11 +320,11 @@ int GameState_GetUnkField74f4();
 int GameState_GetUnkField74f6();
 int Unk02f078_TestFlag380();
 void Unk04bb9c_SetCtxUnka14();
-void func_02044194(u8 *p);
+void Unk03e43c_Unk_044194(u8 *p);
 void Unk03e43c_MergeTable(u8 *src);
 void Unk03e43c_Call_02056cc0(void);
 
-void func_02041ce4(u8 *p)
+void Unk03e43c_Unk_041ce4(u8 *p)
 {
     func_020516d0(FIELD(u32, p, 12));
     func_020516d0(FIELD(u32, p + 0x2000, 2228));
@@ -341,7 +341,7 @@ void func_02041ce4(u8 *p)
     FIELD(u32, data_0215ee60, 52) = 0;
 }
 
-void func_02043450(s16 *x, s16 *y)
+void Unk03e43c_Unk_043450(s16 *x, s16 *y)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     *x = 128 - ((s8)(FIELD(s8, w + 0x300, 100) - GameState_GetUnkField74f4()) << 3);
@@ -349,7 +349,7 @@ void func_02043450(s16 *x, s16 *y)
     *y = 96 - ((s8)(FIELD(s8, w + 0x300, 101) - GameState_GetUnkField74f6()) << 3);
 }
 
-int func_02043560(void)
+int Unk03e43c_Unk_043560(void)
 {
     int n = 0;
     int i;
@@ -376,7 +376,7 @@ int func_02043560(void)
     return 20;
 }
 
-void func_02044194(u8 *p)
+void Unk03e43c_Unk_044194(u8 *p)
 {
     u16 *t;
     int i;
@@ -391,12 +391,12 @@ void func_02044194(u8 *p)
     Unk03e43c_Call_02056cc0();
 }
 
-void func_020441ec(void)
+void Unk03e43c_Unk_0441ec(void)
 {
     FIELD(u8, FIELD(u8 *, data_0215ee60, 52) + 0x2000, 2438) = 0;
     FIELD(u8, FIELD(u8 *, data_0215ee60, 52) + 0x2000, 2439) = 0;
     FIELD(u32, FIELD(u8 *, data_0215ee60, 52) + 0x2000, 2252) = 0;
-    func_02044194(FIELD(u8 *, data_0215ee60, 52));
+    Unk03e43c_Unk_044194(FIELD(u8 *, data_0215ee60, 52));
     Unk04bb9c_SetCtxUnka14(-1);
     FIELD(u8, FIELD(u8 *, data_0215ee60, 52) + 0x2000, 2275) = 0;
     FIELD(u32, FIELD(u8 *, data_0215ee60, 52), 4) = 0;
