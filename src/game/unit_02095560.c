@@ -33,6 +33,18 @@ unsigned char *Unk095560_GetManagerSub3a8(void) { return Unk095560_GetManager() 
 
 /* Forwarders. */
 void Unk095560_Thunk_0202d15c(void) { func_0202d15c(); }
+void Unk0a163c_Unk_0a1814(u16 id);
+void Unk0a163c_Unk_0a1834(u16 id);
+void func_020957e4(int id)
+{
+    Unk0a163c_Unk_0a1814((u16)id);
+}
+
+void func_020957f8(int id)
+{
+    Unk0a163c_Unk_0a1834((u16)id);
+}
+
 void Unk095560_Thunk_020cb044(void) { Unk0caea8_Unk_0cb044(); }
 void Unk095560_Thunk_020773dc(void) { func_020773dc(); }
 void Unk095560_Thunk_020961a0(void) { func_020961a0(); }
