@@ -30,3 +30,13 @@
 - `func_020ed290`
 - `func_020ecf20`
 - `func_020edb94`
+
+## Not done in M1-T974
+- `func_020ed800`
+- `func_020ed8f4`
+- `func_020ec330`
+- `func_020ed634`
+- `func_020ecfe8`
+- `func_020ec514`
+- `func_020ed3fc`
+- `func_020eb83c`
