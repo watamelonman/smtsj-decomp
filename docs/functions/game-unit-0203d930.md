@@ -9,3 +9,5 @@
 - `func_0203da10`
 - `func_0203db2c`
 - `func_0203da90`
+- `func_0203d930`: hand-matched
+- `func_0203d968`: hand-matched

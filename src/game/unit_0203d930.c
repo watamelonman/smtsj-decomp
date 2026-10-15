@@ -3,6 +3,31 @@
 
 
 int Unk02dcfc_SetField64();
+int Unk03aae8_Unk_03ad14();
+static inline void Unk03d930_SetSubState(u32 v, u8 *sub)
+{
+    FIELD(u32, sub, 0x18) = v;
+}
+u8 *Unk095560_GetManager();
+void Unk09ee4c_Unk_09ef80();
+void Unk09d42c_Unk_09e2a4();
+int func_0203d930(void)
+{
+    if (FIELD(u32, Unk095560_GetManager(), 0x3bc) == 0) {
+        return 0;
+    }
+    Unk09ee4c_Unk_09ef80(90);
+    Unk03d930_SetSubState(15, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
+    return 3;
+}
+
+int func_0203d968(void)
+{
+    Unk09d42c_Unk_09e2a4((s16)func_0203ac00(0));
+    Unk03d930_SetSubState(15, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
+    return 3;
+}
+
 /* decompiler-derived */
 u32 Unk03d930_Unk_03da00(void)
 {
