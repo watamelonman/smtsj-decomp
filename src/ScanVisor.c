@@ -16,7 +16,8 @@ typedef unsigned int u32;
 
 /* Scan visor UI object (name from assert). Named fields from matched accessors. */
 typedef struct ScanVisor {
-    u8  pad_0000[0x8];
+    u32 mode;                   /* +0x00: 0..3, selects the draw path */
+    u8  pad_0004[0x4];
     u32 unk_0008;               /* +0x08 */
     u8  pad_000c[0x4];
     u32 unk_0010;               /* +0x10 */
@@ -41,8 +42,8 @@ typedef struct ScanVisor {
 void func_020fc6b8(void);
 
 /* Empty callbacks (called from func_020a3114). */
-void ScanVisor_Nop_0a34a4(void) { }
-void ScanVisor_Nop_0a34a8(void) { }
+void ScanVisor_Nop_0a34a4(ScanVisor *sv) { }
+void ScanVisor_Nop_0a34a8(ScanVisor *sv) { }
 
 /* Constant: 20 (used by six different systems). */
 int ScanVisor_GetConst20(void) { return 20; }
@@ -658,4 +659,60 @@ u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
     return v1;
   }
   return (u32 *)0x0;
+}
+
+void func_020580ec(int on);
+void func_02057e18(int a);
+void func_02057ddc(int a);
+void func_02057524(int a);
+void func_02057e58(int a, int b, int c);
+void func_020a3254(ScanVisor *sv);
+void func_020a32cc(ScanVisor *sv);
+void func_020a34ac(ScanVisor *sv);
+void func_020a8ad0(void *p);
+void func_020572d8(void);
+
+/* Draws the visor layers; modes 1/3 use layer 2, modes 0/2 layer 1. */
+void func_020a3114(ScanVisor *sv)
+{
+    func_020580ec(0);
+    func_02057e18(31);
+    func_02057ddc(-1);
+    func_02057524(4);
+    switch (sv->mode) {
+    case 1:
+    case 3:
+        func_02057e58(2, 48, 10);
+        func_02057eb8(2);
+        func_020a3254(sv);
+        func_02057eb8(2);
+        ScanVisor_Nop_0a34a4(sv);
+        func_02057eb8(2);
+        ScanVisor_Nop_0a34a8(sv);
+        func_02057eb8(2);
+        func_020a34ac(sv);
+        func_02057eb8(-1);
+        break;
+    case 0:
+    case 2:
+        func_02057e58(1, 40, 10);
+        func_02057eb8(1);
+        func_020a32cc(sv);
+        func_02057eb8(1);
+        func_020a3254(sv);
+        func_02057eb8(1);
+        ScanVisor_Nop_0a34a4(sv);
+        func_02057eb8(1);
+        ScanVisor_Nop_0a34a8(sv);
+        func_02057eb8(1);
+        func_020a34ac(sv);
+        func_02057eb8(1);
+        func_020a8ad0((u8 *)sv + 0x428);
+        func_02057eb8(1);
+        ScanVisor_Unk_0a3620((int)sv);
+        func_02057eb8(-1);
+        break;
+    }
+    func_020572d8();
+    func_020580ec(1);
 }
