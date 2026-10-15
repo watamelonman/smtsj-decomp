@@ -25,10 +25,10 @@
 - `Unk0cf5e8_Unk_0d0960`: decompiler-derived
 
 ## Not done in M1-T959
-- `func_020cf5e8`
+- `Unk0cf5e8_Enter`
 - `func_020d185c`
 - `func_020d19d4`
-- `func_020d1908`
+- `Unk0cf5e8_InitSlots`
 - `func_020d16f8`
 
 ## Not done in M1-T960
@@ -42,5 +42,5 @@
 - `func_020d02c0`
 - `Unk0cf5e8_Unk_0d1454`: hand-matched
 - `Unk0cf5e8_Unk_0d1490`: hand-matched
-- `func_020cf5e8`: hand-matched
-- `func_020d1908`: hand-matched
+- `Unk0cf5e8_Enter`: hand-matched
+- `Unk0cf5e8_InitSlots`: hand-matched

@@ -18,7 +18,7 @@ typedef struct Unk0cd6ecWork {
 int func_020cb5b4();
 void func_020ce2d8();
 void func_020ce33c();
-void func_020cddd0(u8 *p, u32 a)
+void Unk0cd6ec_Unk_0cddd0(u8 *p, u32 a)
 {
     int r = func_020cb5b4(a, p + 1);
     if (r == 1) {

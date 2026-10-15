@@ -27,14 +27,14 @@ void Unk0ce578_Unk_0cec98(Unk0ce578Work *arg0){
   return;
 }
 
-void func_020cf238();
+void Unk0ce578_SetState();
 int Unk122e1c_Unk_123294();
 /* decompiler-derived */
 void Unk0ce578_Unk_0cf29c(Unk0ce578Work *arg0, u32 arg1){
   Unk122e1c_Unk_123294(arg0->unk_0010);
   arg0->unk_00d8 = arg1;
   arg0->unk_0004 = 1;
-  func_020cf238(arg0,3);
+  Unk0ce578_SetState(arg0,3);
   return;
 }
 
@@ -65,7 +65,7 @@ int Unk0a0ce4_Unk_0a0da4();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-void func_020cf238(Unk0ce578Work *p, int k)
+void Unk0ce578_SetState(Unk0ce578Work *p, int k)
 {
     if (k == 2) {
         Unk0ce578_Unk_0cec98(p);
@@ -81,7 +81,7 @@ void Unk0ce578_Unk_0cf258(Unk0ce578Work *arg0, int arg1){
   }
   Unk0a0ce4_Unk_0a0da4(5);
   arg0->unk_0004 = 4;
-  func_020cf238(arg0,9);
+  Unk0ce578_SetState(arg0,9);
   arg0->unk_000c = arg1;
   return;
 }

@@ -9,7 +9,7 @@
 ## Not done in M1-T718
 - `func_020cf4b8`
 - `func_020cf4c4`
-- `func_020cf238`
+- `Unk0ce578_SetState`
 
 ## Not done in M1-T719
 - `func_020ce628`
@@ -26,4 +26,4 @@
 - `func_020cefac`
 - `func_020ced18`
 - `func_020ce868`
-- `func_020cf238`: hand-matched
+- `Unk0ce578_SetState`: hand-matched

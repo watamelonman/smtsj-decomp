@@ -39,7 +39,7 @@ void Unk09d060_Unk_09d1b0(void)
 }
 
 int func_02061424();
-int func_020d1d4c();
+int Unk0d1c98_Release();
 /* decompiler-derived */
 void Unk09d060_Unk_09d10c(void)
 {
@@ -47,7 +47,7 @@ void Unk09d060_Unk_09d10c(void)
     func_02061424();
     *data_02176274 = 0;
   }
-  func_020d1d4c();
+  Unk0d1c98_Release();
 }
 
 int ScanVisor_Unk_0a2980();

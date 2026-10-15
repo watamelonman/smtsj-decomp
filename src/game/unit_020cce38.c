@@ -22,7 +22,7 @@ void Unk095560_Unk_095a2c();
 int func_020de8b0();
 void Unk0cb32c_Unk_0cb32c();
 void Unk0bc1a8_Unk_0bc928();
-void func_020cce38(void)
+void Unk0cce38_Enter(void)
 {
     func_020cb3dc();
     Unk095560_Unk_095a2c();

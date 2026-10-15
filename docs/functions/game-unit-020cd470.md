@@ -7,7 +7,7 @@
 ## Not done in M1-T190
 - `func_020cd490`
 - `func_020cd49c`
-- `func_020cd4d0`
+- `Unk0cd470_Enter`
 - `func_020cd538`
 - `func_020cd594`
-- `func_020cd4d0`: hand-matched
+- `Unk0cd470_Enter`: hand-matched

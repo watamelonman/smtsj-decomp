@@ -54,7 +54,7 @@ typedef struct Unk0cf5e8Slots {
     u8 pad_024[0x348];
     u32 slot[6];
 } Unk0cf5e8Slots;
-void func_020cf5e8(void)
+void Unk0cf5e8_Enter(void)
 {
     func_020cb3dc();
     Unk095560_Unk_095a2c();
@@ -245,7 +245,7 @@ void Unk0cf5e8_Unk_0d0960(int arg0,u32 arg1)
   return;
 }
 
-void func_020d1908(Unk0cf5e8Slots *p)
+void Unk0cf5e8_InitSlots(Unk0cf5e8Slots *p)
 {
     int j;
     for (j = 0; j < 6; j++) {

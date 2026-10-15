@@ -412,5 +412,12 @@
  "func_020cb504": "Unk0cb32c_Unk_0cb504",
  "func_020cb58c": "Unk0cb32c_Unk_0cb58c",
  "func_020cb7f0": "Unk0cb32c_Unk_0cb7f0",
- "func_020cca80": "Unk0cb32c_Unk_0cca80"
+ "func_020cca80": "Unk0cb32c_Unk_0cca80",
+ "func_020cce38": "Unk0cce38_Enter",
+ "func_020cd4d0": "Unk0cd470_Enter",
+ "func_020cddd0": "Unk0cd6ec_Unk_0cddd0",
+ "func_020cf238": "Unk0ce578_SetState",
+ "func_020cf5e8": "Unk0cf5e8_Enter",
+ "func_020d1908": "Unk0cf5e8_InitSlots",
+ "func_020d1d4c": "Unk0d1c98_Release"
 }

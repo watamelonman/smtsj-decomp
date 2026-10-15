@@ -53,3 +53,5 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
 - Real prototypes for forwarding thunks (`ldr ip; bx ip`): use u32 params, not u16, so the thunk does not gain an extension.
 - Reading output: batch.py `wordN X vs Y` is **ours vs ROM**; `cmp.py -v` shows **ROM on the left**, ours on the right.
 - `u16` field shifted left then right: cast to u32 first (`((u32)x << 16) >> 28`), or int promotion makes the right shift `asr`.
+- ROM reloads a global object pointer after storing through it (`ldr r1,[r0]; str ..,[r1,#4]; ldr r0,[r0]`): declare the
+  global as a typed struct pointer (`extern Work *g;`) and write `g->f = 0; call(g);`. The u32-array/FIELD form keeps it in a register (b48).

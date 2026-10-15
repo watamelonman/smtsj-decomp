@@ -30,7 +30,7 @@ void Unk0d1c98_Unk_0d1c98(Unk0d1c98Work *arg0){
 #endif
 extern Unk0d1c98Work *data_02176bdc;
 void func_02061424();
-void func_020d1d4c(void)
+void Unk0d1c98_Release(void)
 {
     if (data_02176bdc == 0) {
         return;

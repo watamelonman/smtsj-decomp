@@ -8,7 +8,7 @@
 - `Unk0cce38_Unk_0ccfac`: decompiler-derived
 
 ## Not done in M1-T407
-- `func_020cce38`
+- `Unk0cce38_Enter`
 - `func_020ccea0`
 
 ## Not done in M1-T408
@@ -16,4 +16,4 @@
 - `func_020ccfe0`
 - `func_020cd200`
 - `Unk0cce38_Unk_0ccefc`: decompiler-derived (struct+fix cleanup)
-- `func_020cce38`: hand-matched
+- `Unk0cce38_Enter`: hand-matched
