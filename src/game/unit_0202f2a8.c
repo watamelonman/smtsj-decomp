@@ -916,3 +916,22 @@ int Unk02f2a8_Unk_035b08(int a, int b)
     }
     return r;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+int func_02035b74(int a)
+{
+    void *h = func_020445d0(36, 0);
+    u8 *t = func_0204fde0();
+    u32 n = func_0204fe18(h);
+    int r = 0;
+    u8 i;
+    for (i = 0; i < n; i++) {
+        if (a == (s8)(t + i * 40)[25]) {
+            r++;
+        }
+    }
+    return r;
+}
