@@ -164,3 +164,4 @@
 - `Unk02f2a8_Unk_032f3c`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_03538c`: decompiler-derived (plain+fix cleanup)
 - `Unk02f2a8_Unk_030d20`: decompiler-derived (plain+fix cleanup)
+- `func_02034244`: hand-written. GameState_Shutdown + GameState_Exists (gGameState teardown / null check).

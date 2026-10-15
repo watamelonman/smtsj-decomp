@@ -320,3 +320,24 @@ int Unk02f2a8_Unk_030d20(int arg0,int arg1)
   Unk0964f8_Unk_0964f8();
   Unk0a23f4_Unk_0a2414();
 }
+
+u32 Unk038fbc_Unk_038fbc(int *obj);
+u32 Unk0387bc_Unk_038e40(int *obj);
+u32 Unk0387bc_Unk_038cbc(int *obj);
+void Unk02cad4_Unk_02cbdc(u32 a);
+
+/* Tears down the GameState sub-objects and clears gGameState. */
+void func_02034244(GameState *gs)
+{
+    Unk038fbc_Unk_038fbc((int *)gs->unk_314c);
+    Unk0387bc_Unk_038e40((int *)gs->unk_3140);
+    Unk0387bc_Unk_038cbc((int *)gs->unk_3134);
+    Unk02cad4_Unk_02cbdc(gs->unk_73d0);
+    gGameState = 0;
+}
+
+/* Returns whether the global game state exists. */
+int func_02034954(void)
+{
+    return gGameState != 0;
+}
