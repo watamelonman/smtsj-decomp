@@ -20,3 +20,10 @@
 - `func_020f7d14`
 - `func_020f7d7c`
 - `func_020f7e48`
+
+## Not done in M1-T623
+- `func_020f7188`
+- `func_020f7ae8`
+- `func_020f7888`
+- `func_020f7578`
+- `func_020f7248`
