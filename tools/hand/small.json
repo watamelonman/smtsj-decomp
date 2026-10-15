@@ -1,53 +1,5 @@
 [
 {
-"fn": "func_02038f18",
-"addr": "0x2038f18",
-"size": "0x30",
-"tu": "src/game/unit_020387bc.c"
-},
-{
-"fn": "func_02038f48",
-"addr": "0x2038f48",
-"size": "0x34",
-"tu": "src/game/unit_020387bc.c"
-},
-{
-"fn": "func_02039204",
-"addr": "0x2039204",
-"size": "0x44",
-"tu": "src/game/unit_02038fbc.c"
-},
-{
-"fn": "func_0203947c",
-"addr": "0x203947c",
-"size": "0x20",
-"tu": "src/game/unit_020392f8.c"
-},
-{
-"fn": "func_02039b74",
-"addr": "0x2039b74",
-"size": "0x40",
-"tu": "src/game/unit_02039774.c"
-},
-{
-"fn": "func_0203a0a0",
-"addr": "0x203a0a0",
-"size": "0x40",
-"tu": "src/game/unit_02039bb4.c"
-},
-{
-"fn": "func_0203af14",
-"addr": "0x203af14",
-"size": "0x3c",
-"tu": "src/game/unit_0203aae8.c"
-},
-{
-"fn": "func_0203b89c",
-"addr": "0x203b89c",
-"size": "0x48",
-"tu": "src/game/unit_0203aae8.c"
-},
-{
 "fn": "func_0203b93c",
 "addr": "0x203b93c",
 "size": "0x4c",

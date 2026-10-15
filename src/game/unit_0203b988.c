@@ -32,7 +32,7 @@ int func_020df348();
 void Unk02dcfc_SetCode25();
 int Unk116598_Unk_116738();
 void Unk0e651c_Unk_0e66f0();
-int func_0203bab4(void)
+int Unk03b988_Unk_03bab4(void)
 {
     int x = func_0203ac00(0);
     switch (func_02095818()) {
@@ -46,7 +46,7 @@ int func_0203bab4(void)
     return 3;
 }
 
-int func_0203bb00(void)
+int Unk03b988_Call_0e66f0(void)
 {
     int a = func_0203ac00(0);
     Unk0e651c_Unk_0e66f0(func_0203ac00(1), (u8)(a - 1));

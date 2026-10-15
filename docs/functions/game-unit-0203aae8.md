@@ -13,7 +13,7 @@
 - `Unk03aae8_Unk_03ac9c`: decompiler-derived
 
 ## Not done in M1-T665
-- `func_0203b93c`
+- `Unk03aae8_Unk_03b93c`
 - `func_0203ae10`
 - `func_0203b694`
 - `func_0203b8e4`
@@ -39,4 +39,4 @@
 - `Unk03aae8_Unk_03acf4`: decompiler-derived (plain+fix cleanup)
 - `Unk03aae8_Unk_03af14`: hand-matched
 - `Unk03aae8_Unk_03b89c`: hand-matched
-- `func_0203b93c`: hand-matched
+- `Unk03aae8_Unk_03b93c`: hand-matched

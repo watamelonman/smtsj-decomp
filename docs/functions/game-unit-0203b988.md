@@ -4,9 +4,9 @@
 - `Unk03b988_Unk_03b988`: decompiler-derived
 
 ## Not done in M1-T070
-- `func_0203bb00`
-- `func_0203bab4`
+- `Unk03b988_Call_0e66f0`
+- `Unk03b988_Unk_03bab4`
 - `func_0203bb2c`
 - `func_0203b9dc`
-- `func_0203bab4`: hand-matched
-- `func_0203bb00`: hand-matched
+- `Unk03b988_Unk_03bab4`: hand-matched
+- `Unk03b988_Call_0e66f0`: hand-matched

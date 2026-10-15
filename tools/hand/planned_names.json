@@ -75,5 +75,10 @@
  "func_0203947c": "Unk0392f8_GetEntry36",
  "func_02039b74": "Unk039774_ReleaseByKey",
  "func_0203af14": "Unk03aae8_Unk_03af14",
- "func_0203b89c": "Unk03aae8_Unk_03b89c"
+ "func_0203b89c": "Unk03aae8_Unk_03b89c",
+ "Unk039774_ReleaseByKey": "Unk039774_Unk_039b74",
+ "func_0203b93c": "Unk03aae8_Unk_03b93c",
+ "func_0203bab4": "Unk03b988_Unk_03bab4",
+ "func_0203bb00": "Unk03b988_Call_0e66f0",
+ "func_0203cf48": "Unk03ce68_Unk_03cf48"
 }

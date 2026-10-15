@@ -9,7 +9,7 @@
 
 ## Not done in M1-T250
 - `func_0203cfd4`
-- `func_0203cf48`
+- `Unk03ce68_Unk_03cf48`
 - `Unk03ce68_Unk_03d038`: decompiler-derived
 
 ## Not done in M1-T251
@@ -17,4 +17,4 @@
 - `func_0203d088`
 - `func_0203ced0`
 - `func_0203d0f0`
-- `func_0203cf48`: hand-matched
+- `Unk03ce68_Unk_03cf48`: hand-matched

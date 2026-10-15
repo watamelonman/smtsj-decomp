@@ -135,7 +135,7 @@ int Unk03aae8_Unk_03b89c(void)
     return 1;
 }
 
-int func_0203b93c(void)
+int Unk03aae8_Unk_03b93c(void)
 {
     int v = func_0203ac00(0);
     int lo = func_0203ac00(1);
