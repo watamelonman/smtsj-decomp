@@ -10,7 +10,7 @@ u32 Unk03c05c_Unk_03c134(void)
   return 3;
 }
 
-int func_0202df28();
+int Unk02dcfc_SetCode8();
 int func_0203ac00();
 /* decompiler-derived */
 u32 Unk03c05c_Unk_03c0c8(void)
@@ -18,7 +18,7 @@ u32 Unk03c05c_Unk_03c0c8(void)
   short v1;
   v1 = func_0203ac00(0);
   ImageObj_Unk_0778d4((int)v1);
-  func_0202df28();
+  Unk02dcfc_SetCode8();
   return 3;
 }
 
@@ -45,7 +45,7 @@ u32 Unk03c05c_Unk_03c088(void)
   v1 = func_0203ac00(0);
   v2 = func_0203ac00(1);
   ImageObj_Unk_077894((int)v1,(int)v2);
-  func_0202df28();
+  Unk02dcfc_SetCode8();
   func_020a2920(0);
   return 3;
 }

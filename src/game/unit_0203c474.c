@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk02dcfc_Unk_02df00();
-int func_0202df88();
+int Unk02dcfc_SetOwnerCode26();
 int func_0203ac00();
 int Unk03aae8_Unk_03ad14();
 int func_0203ad24();
@@ -134,7 +134,7 @@ u32 Unk03c474_Unk_03c5f4(void)
 u32 Unk03c474_Unk_03c540(void)
 {
   ScanVisor_Thunk_020fc6b8(1);
-  func_0202df88();
+  Unk02dcfc_SetOwnerCode26();
   return 3;
 }
 

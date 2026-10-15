@@ -21,7 +21,7 @@ void Unk0f09b4_Thunk_020f7248(void) { func_020f7248(); }
 
 int func_020f7210();
 int func_020f82e0();
-int func_020feed4();
+int Unk0fedd4_SetState2();
 /* decompiler-derived */
 void Unk0f09b4_Unk_0f09b4(int arg0)
 {
@@ -34,7 +34,7 @@ void Unk0f09b4_Unk_0f09b4(int arg0)
   if (((Unk0f09b4Work *)arg0)->unk_0008 != 10) {
     return;
   }
-  func_020feed4();
+  Unk0fedd4_SetState2();
 }
 
 int func_020e8374();

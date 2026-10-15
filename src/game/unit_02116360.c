@@ -2,7 +2,7 @@
 #include "types.h"
 
 
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 /* 8-byte record filled by Unk116360_FillEntry. */
 typedef struct Unk116360Entry {
     u16 id;
@@ -18,7 +18,7 @@ void Unk116360_Unk_116404(int arg0,u32 arg1,u32 arg2)
   if (arg0 == 0) {
     return;
   }
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   Unk116360_FillEntry(arg0,*(u16 *)(value + 0x35c),arg1,arg2);
 }
 
@@ -29,7 +29,7 @@ u32 Unk116360_Unk_116438(u32 arg0,u32 arg1)
   int value1;
   u32 value2;
   value2 = 0;
-  value1 = func_0202e788();
+  value1 = Unk02e000_GetWorkArea();
   value1 = func_02116360(*(u16 *)(value1 + 0x35c),arg0,arg1);
   if (value1 == 1) {
     value2 = 2;

@@ -2,12 +2,12 @@
 #include "types.h"
 
 
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 /* decompiler-derived */
 int Unk02ee5c_Unk_02f044(void)
 {
   int value;
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   return value + 0x368;
 }
 

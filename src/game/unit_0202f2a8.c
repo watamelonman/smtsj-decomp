@@ -27,12 +27,12 @@ void Unk02f2a8_Unk_035ec4(int arg0,u32 arg1)
   *(u16 *)(arg0 + 0x18) = tmp1;
 }
 
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 /* decompiler-derived */
 void Unk02f2a8_Unk_030578(int arg0)
 {
   int tmp1;
-  tmp1 = func_0202e788();
+  tmp1 = Unk02e000_GetWorkArea();
   Unk02f2a8_Unk_035ec4(arg0 + 0x7c,*(u32 *)(tmp1 + 0x358));
 }
 
@@ -103,7 +103,7 @@ void Unk02f2a8_Unk_036488(void)
 {
   u16 tmp1;
   int tmp2;
-  tmp2 = func_0202e788();
+  tmp2 = Unk02e000_GetWorkArea();
   *(u16 *)(tmp2 + 0xaf2) = 0;
   tmp1 = func_02050088(1,0x32,100);
   *(u16 *)(tmp2 + 0xaf4) = tmp1;
@@ -148,8 +148,8 @@ void Unk02f2a8_Unk_02fc10(int arg0)
   int tmp1;
   int tmp2;
   u32 tmp3;
-  tmp1 = func_0202e788();
-  tmp2 = func_0202e788();
+  tmp1 = Unk02e000_GetWorkArea();
+  tmp2 = Unk02e000_GetWorkArea();
   tmp3 = func_020361ec(*(u32 *)(tmp2 + 0x358),*(u32 *)(arg0 + 0x18));
   *(u32 *)(tmp1 + 0x358) = tmp3;
   *(u32 *)(arg0 + 0x1c) = 0;

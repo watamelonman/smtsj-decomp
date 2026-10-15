@@ -2,13 +2,13 @@
 #include "types.h"
 
 
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 int Unk03aae8_Unk_03acf4();
 /* decompiler-derived */
 u32 Unk03bba4_Unk_03bcc0(void)
 {
   int value;
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   Unk03aae8_Unk_03acf4(*(u32 *)(value + 0x358));
   return 1;
 }
@@ -24,14 +24,14 @@ u32 Unk03bba4_Unk_03bbd0(void)
   return 1;
 }
 
-int func_0202df28();
+int Unk02dcfc_SetCode8();
 /* decompiler-derived */
 u32 Unk03bba4_Unk_03bd18(void)
 {
   short v1;
   v1 = func_0203ac00(0);
   ImageObj_Unk_07784c((int)v1);
-  func_0202df28();
+  Unk02dcfc_SetCode8();
   return 3;
 }
 
@@ -42,7 +42,7 @@ u32 Unk03bba4_Unk_03bd7c(void)
   short v1;
   v1 = func_0203ac00(0);
   ImageObj_Unk_077880((int)v1);
-  func_0202df28();
+  Unk02dcfc_SetCode8();
   return 3;
 }
 
@@ -56,7 +56,7 @@ u32 Unk03bba4_Unk_03bcd8(void)
   v1 = func_0203ac00(0);
   v2 = func_0203ac00(1);
   ImageObj_Unk_07782c((int)v1,(int)v2);
-  func_0202df28();
+  Unk02dcfc_SetCode8();
   func_020a2920(0);
   return 3;
 }
@@ -71,12 +71,12 @@ u32 Unk03bba4_Unk_03bd3c(void)
   v1 = func_0203ac00(0);
   v2 = func_0203ac00(1);
   ImageObj_Unk_077860((int)v1,(int)v2);
-  func_0202df28();
+  Unk02dcfc_SetCode8();
   func_020a2920(0);
   return 3;
 }
 
-int func_0202deb0();
+int Unk02dcfc_Unk_02deb0();
 int Unk03aae8_Unk_03ad14();
 int Unk09e418_Unk_09e418();
 /* decompiler-derived */
@@ -91,6 +91,6 @@ u32 Unk03bba4_Unk_03bbec(void)
   value3 = func_0203ac00(2);
   Unk09e418_Unk_09e418(value1,value2,value3);
   value4 = Unk03aae8_Unk_03ad14();
-  func_0202deb0(*(u32 *)(value4 + 0xe8));
+  Unk02dcfc_Unk_02deb0(*(u32 *)(value4 + 0xe8));
   return 3;
 }

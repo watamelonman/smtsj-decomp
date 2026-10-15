@@ -30,7 +30,7 @@ void Unk0efff4_Unk_0f004c(u32 arg0)
 
 int func_020f7210();
 int func_020f82e0();
-int func_020feed4();
+int Unk0fedd4_SetState2();
 /* decompiler-derived */
 void Unk0efff4_Unk_0f0300(int arg0)
 {
@@ -43,6 +43,6 @@ void Unk0efff4_Unk_0f0300(int arg0)
   if (((Unk0efff4Work *)arg0)->unk_0008 != 10) {
     return;
   }
-  func_020feed4();
+  Unk0fedd4_SetState2();
 }
 

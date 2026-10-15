@@ -101,7 +101,7 @@ void func_02056424(int a, int b, int c);
 void func_02058458(void);
 
 /* Sets up the display for layout `mode` (0..3). */
-void func_0202ceec(int mode, u32 unused, u32 arg)
+void Unk02cad4_SetupDisplayMode(int mode, u32 unused, u32 arg)
 {
     Unk02e000_Unk_02e0cc();
     switch (mode) {

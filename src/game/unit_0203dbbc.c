@@ -23,7 +23,7 @@ u32 Unk03dbbc_Unk_03dc0c(void)
   return 3;
 }
 
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 int func_0204c8f4();
 /* decompiler-derived */
 u32 Unk03dbbc_Unk_03dccc(void)
@@ -31,7 +31,7 @@ u32 Unk03dbbc_Unk_03dccc(void)
   u8 value1;
   u8 value2;
   int value3;
-  value3 = func_0202e788();
+  value3 = Unk02e000_GetWorkArea();
   value1 = func_0203ac00(0);
   value2 = func_0203ac00(1);
   func_0204c8f4(value1,value2,*(u16 *)(value3 + 0x35c));

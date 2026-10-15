@@ -23,13 +23,13 @@ extern Unk0fedd4Obj *data_02176e28;
 
 int Unk05b82c_Unk_05b82c();
 void func_0205bb68(void);
-Unk0fedd4Obj *func_020feef0(void);
+Unk0fedd4Obj *Unk0fedd4_GetObj(void);
 
 void Unk0fedd4_Thunk_0205bb68(void);
 Unk0fedd4Obj *Unk0fedd4_Thunk_020feef0(void);
 void Unk0fedd4_Unk_0fedd4(void);
 
-Unk0fedd4Obj *func_020feef0(void)
+Unk0fedd4Obj *Unk0fedd4_GetObj(void)
 {
     return data_02176e28;
 }
@@ -37,44 +37,44 @@ Unk0fedd4Obj *func_020feef0(void)
 /* forwards to `func_0205bb68` */
 void Unk0fedd4_Thunk_0205bb68(void) { func_0205bb68(); }
 
-/* forwards to `func_020feef0` */
-Unk0fedd4Obj *Unk0fedd4_Thunk_020feef0(void) { return func_020feef0(); }
+/* forwards to `Unk0fedd4_GetObj` */
+Unk0fedd4Obj *Unk0fedd4_Thunk_020feef0(void) { return Unk0fedd4_GetObj(); }
 
 void func_02061f10(u32 handle, int a, int b, int c, u32 d);
 
-void func_020fee38(u32 arg)
+void Unk0fedd4_Unk_0fee38(u32 arg)
 {
     func_02061f10(Unk0fedd4_Thunk_020feef0()->handle, -1, 0, 0, arg);
 }
 
-void func_020fee68(u32 a, u32 b)
+void Unk0fedd4_SetUnk0c10(u32 a, u32 b)
 {
     Unk0fedd4Obj *o = Unk0fedd4_Thunk_020feef0();
     o->unk_0c = a;
     o->unk_10 = b;
 }
 
-void func_020fee84(u32 a)
+void Unk0fedd4_SetUnk1c(u32 a)
 {
     Unk0fedd4_Thunk_020feef0()->unk_1c = a;
 }
 
-void func_020fee98(void)
+void Unk0fedd4_SetState1(void)
 {
     Unk0fedd4_Thunk_020feef0()->state = 1;
 }
 
-void func_020feeac(void)
+void Unk0fedd4_SetState1b(void)
 {
     Unk0fedd4_Thunk_020feef0()->state = 1;
 }
 
-void func_020feec0(void)
+void Unk0fedd4_SetState0(void)
 {
     Unk0fedd4_Thunk_020feef0()->state = 0;
 }
 
-void func_020feed4(void)
+void Unk0fedd4_SetState2(void)
 {
     Unk0fedd4Obj *o = Unk0fedd4_Thunk_020feef0();
     o->state = 2;

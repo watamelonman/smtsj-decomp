@@ -9,7 +9,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 extern u8 data_02140ac8[];
 extern u32 data_0215dd24[];
 void Unk02e000_Unk_02e0cc(void);
-u8 *func_0202e788(void);
+u8 *Unk02e000_GetWorkArea(void);
 int func_0205a9d0();
 
 void Unk02e000_Nop_02e3e0(void);
@@ -32,8 +32,8 @@ u32 Unk02e000_GetAddr_data_02140ac8(void)
   return ((int)data_02140ac8);
 }
 
-/* forwards to `func_0202e788` */
-void Unk02e000_Thunk_0202e788(void) { func_0202e788(); }
+/* forwards to `Unk02e000_GetWorkArea` */
+void Unk02e000_Thunk_0202e788(void) { Unk02e000_GetWorkArea(); }
 
 /* decompiler-derived */
 void Unk02e000_Set_data_0215dd24(u32 arg0)
@@ -171,20 +171,20 @@ int Unk02e000_Unk_02e740(int arg0)
 }
 
 /* Work area at +4 of the Unk02e000_Unk_02e774 block. */
-u8 *func_0202e788(void)
+u8 *Unk02e000_GetWorkArea(void)
 {
     return (u8 *)Unk02e000_Unk_02e774() + 4;
 }
 
 
 /* Unk094fe0Work block at +0xCFC of the Unk02e000_Unk_02e774 block. */
-u8 *func_0202e8cc(void)
+u8 *Unk02e000_GetUnk094fe0Work(void)
 {
     return (u8 *)Unk02e000_Unk_02e774() + 0xcfc;
 }
 
-/* Pointer to the +0x3A4 sub-block of the func_0202e788 work area. */
+/* Pointer to the +0x3A4 sub-block of the Unk02e000_GetWorkArea work area. */
 u8 *Unk02e000_GetSubBlock3a4(void)
 {
-    return func_0202e788() + 0x3a4;
+    return Unk02e000_GetWorkArea() + 0x3a4;
 }

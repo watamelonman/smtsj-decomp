@@ -16,8 +16,8 @@ typedef struct Unk0d297cWork {
 } Unk0d297cWork;
 
 
-void func_02095398();
-void func_020953ac(void);
+void Unk094fe0_SetUnkField9a0();
+void Unk094fe0_GetWorkUnkField9a0(void);
 int Unk0e5fb8_Unk_0e6448(void);
 void Unk0e5fb8_Unk_0e64c8(void);
 int Unk0e651c_Unk_0e651c();
@@ -36,11 +36,11 @@ void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_U
 /* forwards to `Unk0e5fb8_Unk_0e64c8` */
 void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8(void) { Unk0e5fb8_Unk_0e64c8(); }
 
-/* forwards to `func_02095398` */
-void Unk0d297c_Thunk_02095398(void) { func_02095398(); }
+/* forwards to `Unk094fe0_SetUnkField9a0` */
+void Unk0d297c_Thunk_02095398(void) { Unk094fe0_SetUnkField9a0(); }
 
-/* forwards to `func_020953ac` */
-void Unk0d297c_Thunk_020953ac(void) { func_020953ac(); }
+/* forwards to `Unk094fe0_GetWorkUnkField9a0` */
+void Unk0d297c_Thunk_020953ac(void) { Unk094fe0_GetWorkUnkField9a0(); }
 
 /* decompiler-derived */
 void Unk0d297c_Unk_0d2adc(u32 arg0)
@@ -140,7 +140,7 @@ void Unk0d297c_Unk_0d2f98(u32 arg0)
   func_0204fed8(value,arg0);
 }
 
-int func_0202dfa0();
+int Unk02dcfc_SetField64();
 int func_02095818();
 void Unk0d297c_Unk_0d2aa4();
 /* decompiler-derived */
@@ -153,7 +153,7 @@ void Unk0d297c_Unk_0d2b70(u32 arg0)
   if (value == 1) {
     return;
   }
-  func_0202dfa0();
+  Unk02dcfc_SetField64();
 }
 
 int func_02095350();
@@ -164,7 +164,7 @@ void Unk0d297c_Unk_0d2c1c(u32 arg0)
   Unk0e651c_Unk_0e6560();
   func_02095350(arg0,1);
   Unk0d297c_Unk_0d2aec(arg0);
-  func_0202dfa0();
+  Unk02dcfc_SetField64();
 }
 
 extern u32 data_02176be0[];
@@ -302,7 +302,7 @@ void Unk0d297c_Unk_0d2aa4(u32 obj)
     }
     Unk0e5fb8_Unk_0e649c(obj, 1);
     Unk0e651c_Unk_0e651c(obj, 1);
-    func_02095398(obj);
+    Unk094fe0_SetUnkField9a0(obj);
 }
 
 /* Switches to mode 2 when active. */

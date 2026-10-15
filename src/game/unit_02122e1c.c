@@ -90,11 +90,11 @@ void Unk122e1c_Unk_12332c(Unk122e1cWork *work)
 }
 
 
-int func_020fee98();
+int Unk0fedd4_SetState1();
 /* decompiler-derived */
 void Unk122e1c_Unk_123024(int arg0)
 {
-  func_020fee98();
+  Unk0fedd4_SetState1();
   ((Unk122e1cWork *)arg0)->unk_0114 = 0;
   ((Unk122e1cWork *)arg0)->unk_0061 = 0;
   ((Unk122e1cWork *)arg0)->unk_0060 = 1;
@@ -105,7 +105,7 @@ void Unk122e1c_Unk_123024(int arg0)
 /* decompiler-derived */
 void Unk122e1c_Unk_123048(int arg0)
 {
-  func_020fee98();
+  Unk0fedd4_SetState1();
   ((Unk122e1cWork *)arg0)->unk_0114 = 0;
   ((Unk122e1cWork *)arg0)->unk_0061 = 0;
   ((Unk122e1cWork *)arg0)->unk_0060 = 2;
@@ -116,18 +116,18 @@ void Unk122e1c_Unk_123048(int arg0)
 /* decompiler-derived */
 void Unk122e1c_Unk_1232f8(int arg0)
 {
-  func_020fee98();
+  Unk0fedd4_SetState1();
   ((Unk122e1cWork *)arg0)->unk_0114 = 0;
   ((Unk122e1cWork *)arg0)->unk_0061 = 0;
   ((Unk122e1cWork *)arg0)->unk_0060 = 6;
   return;
 }
 
-int func_020feec0();
+int Unk0fedd4_SetState0();
 /* decompiler-derived */
 void Unk122e1c_Unk_1232c8(int arg0)
 {
-  func_020feec0();
+  Unk0fedd4_SetState0();
   Unk0cb32c_Unk_0cb57c(((Unk122e1cWork *)arg0)->unk_0014);
   ((Unk122e1cWork *)arg0)->unk_0114 = 0;
   ((Unk122e1cWork *)arg0)->unk_00b8 = 0xffffffa4;
@@ -141,7 +141,7 @@ void Unk122e1c_Unk_1232c8(int arg0)
 /* decompiler-derived */
 void Unk122e1c_Unk_122ff0(int arg0)
 {
-  func_020feec0();
+  Unk0fedd4_SetState0();
   Unk0cb32c_Unk_0cb57c(((Unk122e1cWork *)arg0)->unk_0010);
   ((Unk122e1cWork *)arg0)->unk_0114 = ((Unk122e1cWork *)arg0)->unk_011c + -1;
   ((Unk122e1cWork *)arg0)->unk_0061 = 0;
@@ -153,7 +153,7 @@ void Unk122e1c_Unk_122ff0(int arg0)
 /* decompiler-derived */
 void Unk122e1c_Unk_123294(int arg0)
 {
-  func_020feec0();
+  Unk0fedd4_SetState0();
   Unk0cb32c_Unk_0cb57c(((Unk122e1cWork *)arg0)->unk_0014);
   ((Unk122e1cWork *)arg0)->unk_0114 = ((Unk122e1cWork *)arg0)->unk_011c + -1;
   ((Unk122e1cWork *)arg0)->unk_0061 = 0;

@@ -6,47 +6,47 @@
 - `Unk02dcfc_Unk_02de58`: decompiler-derived
 
 ## Not done in M1-T253
-- `func_0202dd84`
-- `func_0202de28`
-- `func_0202de40`
-- `func_0202de98`
-- `func_0202df10`
+- `Unk02dcfc_GetState`
+- `Unk02dcfc_GetTimer`
+- `Unk02dcfc_GetField54`
+- `Unk02dcfc_GetField58`
+- `Unk02dcfc_SetCode7`
 
 ## Not done in M1-T254
-- `func_0202df28`
-- `func_0202df40`
-- `func_0202df58`
-- `func_0202df70`
-- `func_0202df88`
-- `func_0202dfa0`
-- `func_0202dfb8`
-- `func_0202dfd0`
+- `Unk02dcfc_SetCode8`
+- `Unk02dcfc_SetOwnerCode22`
+- `Unk02dcfc_SetCode24`
+- `Unk02dcfc_SetCode25`
+- `Unk02dcfc_SetOwnerCode26`
+- `Unk02dcfc_SetField64`
+- `Unk02dcfc_SetField68`
+- `Unk02dcfc_GetField70`
 - `Unk02dcfc_Unk_02dd9c`: decompiler-derived
 
 ## Not done in M1-T255
-- `func_0202dfe8`
+- `Unk02dcfc_SetField70`
 - `Unk02dcfc_ResetWorker`
 - `func_0202dcfc`
-- `func_0202deb0`
-- `func_0202de6c`
-- `func_0202ded4`
-- `func_0202ddf4`
+- `Unk02dcfc_Unk_02deb0`
+- `Unk02dcfc_Unk_02de6c`
+- `Unk02dcfc_Unk_02ded4`
+- `Unk02dcfc_Unk_02ddf4`
 - `Unk02dcfc_ResetWorker`: hand-matched
-- `func_0202dd84`: hand-matched
-- `func_0202ddf4`: hand-matched
-- `func_0202de28`: hand-matched
-- `func_0202de40`: hand-matched
-- `func_0202de6c`: hand-matched
-- `func_0202de98`: hand-matched
-- `func_0202deb0`: hand-matched
-- `func_0202ded4`: hand-matched
-- `func_0202df10`: hand-matched
-- `func_0202df28`: hand-matched
-- `func_0202df40`: hand-matched
-- `func_0202df58`: hand-matched
-- `func_0202df70`: hand-matched
-- `func_0202df88`: hand-matched
-- `func_0202dfa0`: hand-matched
-- `func_0202dfb8`: hand-matched
-- `func_0202dfd0`: hand-matched
-- `func_0202dfe8`: hand-matched
+- `Unk02dcfc_GetState`: hand-matched
+- `Unk02dcfc_Unk_02ddf4`: hand-matched
+- `Unk02dcfc_GetTimer`: hand-matched
+- `Unk02dcfc_GetField54`: hand-matched
+- `Unk02dcfc_Unk_02de6c`: hand-matched
+- `Unk02dcfc_GetField58`: hand-matched
+- `Unk02dcfc_Unk_02deb0`: hand-matched
+- `Unk02dcfc_Unk_02ded4`: hand-matched
+- `Unk02dcfc_SetCode7`: hand-matched
+- `Unk02dcfc_SetCode8`: hand-matched
+- `Unk02dcfc_SetOwnerCode22`: hand-matched
+- `Unk02dcfc_SetCode24`: hand-matched
+- `Unk02dcfc_SetCode25`: hand-matched
+- `Unk02dcfc_SetOwnerCode26`: hand-matched
+- `Unk02dcfc_SetField64`: hand-matched
+- `Unk02dcfc_SetField68`: hand-matched
+- `Unk02dcfc_GetField70`: hand-matched
+- `Unk02dcfc_SetField70`: hand-matched

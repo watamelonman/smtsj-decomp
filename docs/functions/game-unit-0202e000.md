@@ -2,7 +2,7 @@
 
 - `Unk02e000_Nop_02e3e0` (4 B): empty callback
 - `Unk02e000_GetAddr_data_02140ac8` (12 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk02e000_Thunk_0202e788` (12 B): forwards to `func_0202e788`
+- `Unk02e000_Thunk_0202e788` (12 B): forwards to `Unk02e000_GetWorkArea`
 - `Unk02e000_Set_data_0215dd24` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk02e000_Get_data_0215dd24` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk02e000_Unk_02e170` (16 B): decompiler-derived (Ghidra output, cleaned)
@@ -12,9 +12,9 @@
 - `Unk02e000_Unk_02e8f0` (20 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_0202e788`: no candidate matched locally
+- `Unk02e000_GetWorkArea`: no candidate matched locally
 - `Unk02e000_GetSubBlock3a4`: dropped when combining the TU
-- `func_0202e8cc`: no candidate matched locally
+- `Unk02e000_GetUnk094fe0Work`: no candidate matched locally
 - `func_0202e578`: no candidate matched locally
 - `func_0202e590`: no candidate matched locally
 - `Unk02e000_Unk_02e228`: objdiff < 100%
@@ -80,5 +80,5 @@
 - `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
 - `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)
 - `Unk02e000_GetSubBlock3a4`: hand-matched
-- `func_0202e788`: hand-matched
-- `func_0202e8cc`: hand-matched
+- `Unk02e000_GetWorkArea`: hand-matched
+- `Unk02e000_GetUnk094fe0Work`: hand-matched

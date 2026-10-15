@@ -281,7 +281,7 @@ void Unk116598_Unk_117cd4(void)
 }
 
 
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 int func_02116c20();
 /* decompiler-derived */
 u32 Unk116598_Unk_117050(u32 arg0,u32 arg1)
@@ -289,7 +289,7 @@ u32 Unk116598_Unk_117050(u32 arg0,u32 arg1)
   int value1;
   u32 value2;
   value2 = 0;
-  value1 = func_0202e788();
+  value1 = Unk02e000_GetWorkArea();
   value1 = func_02116c20(*(u16 *)(value1 + 0x35c),arg0,arg1,1);
   if (value1 == 1) {
     value2 = 2;

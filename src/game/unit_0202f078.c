@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 int func_02008848();
 int Unk02e000_Unk_02e774();
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 
 u8 Unk02f078_Unk_02f0d8(void);
 u8 Unk02f078_Unk_02f220(void);
@@ -31,7 +31,7 @@ u8 Unk02f078_Unk_02f0d8(void)
 u8 Unk02f078_Unk_02f220(void)
 {
   int value;
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   return *(u8 *)(value + 0x361);
 }
 
@@ -39,7 +39,7 @@ u8 Unk02f078_Unk_02f220(void)
 int Unk02f078_Unk_02f078(void)
 {
   int value;
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   return value + 0x36e;
 }
 
@@ -63,7 +63,7 @@ void Unk02f078_Unk_02f0c4(void)
 void Unk02f078_Unk_02f20c(u8 arg0)
 {
   int value;
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   *(u8 *)(value + 0x361) = arg0;
 }
 

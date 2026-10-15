@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u8 data_0215e85e[];
-int func_0202e788();
+int Unk02e000_GetWorkArea();
 int func_0203fa08();
 void func_0203fa84(void);
 int func_0205410c();
@@ -31,7 +31,7 @@ int Unk03e43c_Unk_03f2ac(int arg0)
 void Unk03e43c_Unk_03fa28(void)
 {
   int value;
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   func_0203fa08(*(u8 *)(value + 0x360));
 }
 
@@ -47,7 +47,7 @@ void Unk03e43c_Unk_03f2bc(void)
 void Unk03e43c_Unk_03fa3c(char arg0)
 {
   int value;
-  value = func_0202e788();
+  value = Unk02e000_GetWorkArea();
   *(char *)(value + 0x360) = arg0 * '\n';
 }
 

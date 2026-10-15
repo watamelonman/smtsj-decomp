@@ -4,20 +4,20 @@
 - `CampStatus_GetUnkField7494` (12 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020d6d48`: no candidate matched locally
-- `func_020d6d5c`: no candidate matched locally
-- `func_020d6d70`: no candidate matched locally
-- `func_020d6d84`: no candidate matched locally
+- `CampStatus_GetUnk1a8`: no candidate matched locally
+- `CampStatus_SetUnk1a8`: no candidate matched locally
+- `CampStatus_GetUnk258`: no candidate matched locally
+- `CampStatus_SetUnk260`: no candidate matched locally
 - `func_020db37c`: no candidate matched locally
 - `func_020dcb44`: no candidate matched locally
 - `CampStatus_Unk_0d34e4`: decompiler-derived
 - `CampStatus_Unk_0d3510`: decompiler-derived
 
 ## Not done in M1-T1123
-- `func_020d6dd4`
-- `func_020d6df0`
+- `CampStatus_SetUnk240`
+- `CampStatus_GetLinkUnk14`
 - `func_020d6c88`
-- `func_020d6d20`
+- `CampStatus_IsUnkF4F8Set`
 - `func_020dcaac`
 - `func_020d51cc`
 - `CampStatus_Unk_0db338`: decompiler-derived
@@ -25,7 +25,7 @@
 
 ## Not done in M1-T1124
 - `func_020d6cac`
-- `func_020d6d9c`
+- `CampStatus_ResetAnim`
 - `func_020d6ce4`
 - `func_020dbf24`
 - `func_020dddf4`
@@ -72,11 +72,11 @@
 - `func_020dd9d8`
 - `CampStatus_Unk_0d71bc`: decompiler-derived (struct cleanup)
 - `CampStatus_Unk_0d7680`: decompiler-derived (struct cleanup)
-- `func_020d6d20`: hand-matched
-- `func_020d6d48`: hand-matched
-- `func_020d6d5c`: hand-matched
-- `func_020d6d70`: hand-matched
-- `func_020d6d84`: hand-matched
-- `func_020d6d9c`: hand-matched
-- `func_020d6dd4`: hand-matched
-- `func_020d6df0`: hand-matched
+- `CampStatus_IsUnkF4F8Set`: hand-matched
+- `CampStatus_GetUnk1a8`: hand-matched
+- `CampStatus_SetUnk1a8`: hand-matched
+- `CampStatus_GetUnk258`: hand-matched
+- `CampStatus_SetUnk260`: hand-matched
+- `CampStatus_ResetAnim`: hand-matched
+- `CampStatus_SetUnk240`: hand-matched
+- `CampStatus_GetLinkUnk14`: hand-matched

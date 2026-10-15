@@ -15,7 +15,7 @@ int Unk09d42c_Unk_09d4e0(void)
     return *(int *)(((int)data_02176278) + 0x800) == *(int *)(((int)data_02176278) + 0x804);
 }
 
-u32 func_0202e788(void);
+u32 Unk02e000_GetWorkArea(void);
 u32 func_0203611c(u32 a, u32 b);
 
 void Unk09d42c_Unk_09e2f4(u32 arg0)
@@ -25,7 +25,7 @@ void Unk09d42c_Unk_09e2f4(u32 arg0)
     if (gs == 0) {
         return;
     }
-    v = func_0203611c(*(u32 *)(func_0202e788() + 0x358), arg0);
+    v = func_0203611c(*(u32 *)(Unk02e000_GetWorkArea() + 0x358), arg0);
     gs->root->unk_18 = v;
     gs->root->unk_14 = 4;
     gs->unk_73e8 = 1;
@@ -38,7 +38,7 @@ void Unk09d42c_Unk_09e2a4(u32 arg0)
     if (gs == 0) {
         return;
     }
-    v = func_0203611c(*(u32 *)(func_0202e788() + 0x358), arg0);
+    v = func_0203611c(*(u32 *)(Unk02e000_GetWorkArea() + 0x358), arg0);
     gs->root->unk_18 = v;
     gs->root->unk_14 = 2;
     gs->root->unk_0c = 0;

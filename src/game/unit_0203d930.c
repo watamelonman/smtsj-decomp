@@ -2,11 +2,11 @@
 #include "types.h"
 
 
-int func_0202dfa0();
+int Unk02dcfc_SetField64();
 /* decompiler-derived */
 u32 Unk03d930_Unk_03da00(void)
 {
-  func_0202dfa0();
+  Unk02dcfc_SetField64();
   return 3;
 }
 

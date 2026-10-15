@@ -111,9 +111,9 @@ typedef struct Unk02dcfcOwner {
 Unk02dcfcOwner *Unk03aae8_Unk_03ad14(void);
 void func_020a2c90(u32 *sub);
 void func_020a2950(int a);
-void func_0202dfe8(u32 value);
+void Unk02dcfc_SetField70(u32 value);
 
-u32 func_0202dd84(void)
+u32 Unk02dcfc_GetState(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -122,7 +122,7 @@ u32 func_0202dd84(void)
     return w->state;
 }
 
-void func_0202ddf4(void)
+void Unk02dcfc_Unk_02ddf4(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -131,10 +131,10 @@ void func_0202ddf4(void)
     w->unk_0018 = 1;
     func_020a2c90(w->sub);
     func_020a2950(0);
-    func_0202dfe8(0);
+    Unk02dcfc_SetField70(0);
 }
 
-u32 func_0202de28(void)
+u32 Unk02dcfc_GetTimer(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -143,7 +143,7 @@ u32 func_0202de28(void)
     return w->timer;
 }
 
-u32 func_0202de40(void)
+u32 Unk02dcfc_GetField54(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -152,7 +152,7 @@ u32 func_0202de40(void)
     return w->field54;
 }
 
-void func_0202de6c(void)
+void Unk02dcfc_Unk_02de6c(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -160,10 +160,10 @@ void func_0202de6c(void)
     }
     w->unk_0018 = 1;
     w->field54 = 0;
-    func_0202dfe8(0);
+    Unk02dcfc_SetField70(0);
 }
 
-u32 func_0202de98(void)
+u32 Unk02dcfc_GetField58(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -172,7 +172,7 @@ u32 func_0202de98(void)
     return w->field58;
 }
 
-void func_0202deb0(void)
+void Unk02dcfc_Unk_02deb0(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -182,7 +182,7 @@ void func_0202deb0(void)
     w->field58 = 1;
 }
 
-void func_0202ded4(void)
+void Unk02dcfc_Unk_02ded4(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -190,10 +190,10 @@ void func_0202ded4(void)
     }
     w->unk_0018 = 1;
     w->field58 = 0;
-    func_0202dfe8(0);
+    Unk02dcfc_SetField70(0);
 }
 
-void func_0202df10(void)
+void Unk02dcfc_SetCode7(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w != 0) {
@@ -201,7 +201,7 @@ void func_0202df10(void)
     }
 }
 
-void func_0202df28(void)
+void Unk02dcfc_SetCode8(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w != 0) {
@@ -209,14 +209,14 @@ void func_0202df28(void)
     }
 }
 
-void func_0202df40(void)
+void Unk02dcfc_SetOwnerCode22(void)
 {
     u32 code = 22;
     Worker *w = Unk03aae8_Unk_03ad14()->worker;
     w->unk_0018 = code;
 }
 
-void func_0202df58(void)
+void Unk02dcfc_SetCode24(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w != 0) {
@@ -224,7 +224,7 @@ void func_0202df58(void)
     }
 }
 
-void func_0202df70(void)
+void Unk02dcfc_SetCode25(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w != 0) {
@@ -232,14 +232,14 @@ void func_0202df70(void)
     }
 }
 
-void func_0202df88(void)
+void Unk02dcfc_SetOwnerCode26(void)
 {
     u32 code = 26;
     Worker *w = Unk03aae8_Unk_03ad14()->worker;
     w->unk_0018 = code;
 }
 
-void func_0202dfa0(void)
+void Unk02dcfc_SetField64(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w != 0) {
@@ -247,7 +247,7 @@ void func_0202dfa0(void)
     }
 }
 
-void func_0202dfb8(void)
+void Unk02dcfc_SetField68(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w != 0) {
@@ -255,7 +255,7 @@ void func_0202dfb8(void)
     }
 }
 
-u32 func_0202dfd0(void)
+u32 Unk02dcfc_GetField70(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w == 0) {
@@ -264,7 +264,7 @@ u32 func_0202dfd0(void)
     return w->field70;
 }
 
-void func_0202dfe8(u32 value)
+void Unk02dcfc_SetField70(u32 value)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (w != 0) {

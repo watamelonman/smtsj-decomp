@@ -3,12 +3,12 @@
 - `Unk094fe0_Nop_095000` (4 B): empty callback
 - `Unk094fe0_Unk_095004` (8 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk094fe0_GetUnkField9a0` (8 B): get u32 at +0x9a0
-- `Unk094fe0_Thunk_0202e8cc` (12 B): forwards to `func_0202e8cc`
+- `Unk094fe0_Thunk_0202e8cc` (12 B): forwards to `Unk02e000_GetUnk094fe0Work`
 - `Unk094fe0_Unk_094fec` (20 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020953ac`: no candidate matched locally
-- `func_02095398`: no candidate matched locally
+- `Unk094fe0_GetWorkUnkField9a0`: no candidate matched locally
+- `Unk094fe0_SetUnkField9a0`: no candidate matched locally
 - `func_0209509c`: dropped when combining the TU
 
 ## Not done in M1-T381
@@ -35,5 +35,5 @@
 - `func_0209512c`
 - `func_02095258`
 - `func_020952ac`
-- `func_02095398`: hand-matched
-- `func_020953ac`: hand-matched
+- `Unk094fe0_SetUnkField9a0`: hand-matched
+- `Unk094fe0_GetWorkUnkField9a0`: hand-matched

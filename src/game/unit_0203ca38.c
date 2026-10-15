@@ -2,7 +2,7 @@
 #include "types.h"
 
 
-int func_0202df40();
+int Unk02dcfc_SetOwnerCode22();
 int func_0203ac00();
 int Unk03aae8_Unk_03acf4();
 int func_020980e8();
@@ -17,7 +17,7 @@ u32 Unk03ca38_Unk_03ca38(void)
   func_020980e8();
   Unk03aae8_Unk_03acf4();
   if ((value1 != 0) && (value2 = func_020fc6e4(), value2 != 0)) {
-    func_0202df40();
+    Unk02dcfc_SetOwnerCode22();
     Unk0fc584_Unk_0fc7b8(value1);
     return 3;
   }

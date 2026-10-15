@@ -226,46 +226,46 @@ void CampStatus_Unk_0d7680(int arg0)
   func_02057e18(0x1f);
 }
 
-int func_020d6d20(void)
+int CampStatus_IsUnkF4F8Set(void)
 {
     CampStatusWork *w = data_02176be4;
     return w->unk_00f4 != 0 && w->unk_00f8 != 0;
 }
 
-u32 func_020d6d48(void)
+u32 CampStatus_GetUnk1a8(void)
 {
     return data_02176be4->unk_01a8;
 }
 
-void func_020d6d5c(u32 value)
+void CampStatus_SetUnk1a8(u32 value)
 {
     data_02176be4->unk_01a8 = value;
 }
 
-u32 func_020d6d70(void)
+u32 CampStatus_GetUnk258(void)
 {
     return data_02176be4->unk_0258;
 }
 
-void func_020d6d84(void)
+void CampStatus_SetUnk260(void)
 {
     data_02176be4->unk_0260 = 1;
 }
 
-void func_020d6d9c(void)
+void CampStatus_ResetAnim(void)
 {
     data_02176be4->unk_0260 = 0;
     data_02176be4->unk_0094->unk_0028 = -1;
     data_02176be4->unk_0094->scale = 1.0f;
 }
 
-void func_020d6dd4(u8 a, u8 b)
+void CampStatus_SetUnk240(u8 a, u8 b)
 {
     data_02176be4->unk_0240 = a;
     data_02176be4->unk_0241 = b;
 }
 
-void func_020d6df0(u32 *out)
+void CampStatus_GetLinkUnk14(u32 *out)
 {
     *out = (*data_02176be4->unk_002c)->unk_0014;
 }

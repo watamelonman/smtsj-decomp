@@ -15,7 +15,7 @@
 - `func_0202cd14`
 - `func_0202cad4`
 - `func_0202cbfc`
-- `func_0202ceec`
+- `Unk02cad4_SetupDisplayMode`
 - `Unk02cad4_ResetGlobals`: hand-matched
 - `Unk02cad4_GetUnk00`: hand-matched
-- `func_0202ceec`: hand-matched
+- `Unk02cad4_SetupDisplayMode`: hand-matched
