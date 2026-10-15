@@ -50,3 +50,4 @@ u32 func_020afcd4(u32 arg0)
     return 0x1a;
   }
 }
+
