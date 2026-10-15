@@ -50,3 +50,6 @@
 - `Unk094fe0_Call_02095370`: hand-matched
 - `Unk094fe0_Unk_095370`: hand-matched
 - `Unk094fe0_Unk_09502c`: hand-matched
+- `func_02095258`: hand-matched
+- `func_020952ac`: hand-matched
+- `func_020953f0`: hand-matched
