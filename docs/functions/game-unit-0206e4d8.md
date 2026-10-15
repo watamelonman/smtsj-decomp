@@ -13,3 +13,13 @@
 
 ## Not done in M1-T388
 - `func_0206e8b0`
+- `func_0206e6a4`: decompiler-derived
+- `func_0206e814`: decompiler-derived
+
+## Not done in M1-T387
+- `func_0206ea0c`
+- `func_0206e854`
+- `func_0206e538`
+- `func_0206e790`
+- `func_0206e6e4`
+- `func_0206e5bc`

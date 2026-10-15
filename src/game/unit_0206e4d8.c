@@ -46,3 +46,29 @@ void func_0206e680(void)
   return;
 }
 
+
+
+int func_02070440();
+/* decompiler-derived */
+void func_0206e6a4(int arg0)
+{
+  func_02070440(arg0 + 0xc,arg0 + 0x60,arg0 + 0x5c,arg0 + 100,arg0 + 0x2c,
+                arg0 + 0x3c,arg0 + 0x4c);
+  return;
+}
+
+int func_020086a0();
+/* decompiler-derived */
+void func_0206e814(int arg0)
+{
+  func_020086a0(0,arg0 + 0xc,0x20);
+  *(u32 *)(arg0 + 0x2c) = 0;
+  *(u32 *)(arg0 + 0x30) = 0;
+  *(u32 *)(arg0 + 0x34) = 0;
+  *(u32 *)(arg0 + 0x3c) = 0;
+  *(u32 *)(arg0 + 0x4c) = 0;
+  *(u32 *)(arg0 + 0x60) = 0;
+  *(u32 *)(arg0 + 0x5c) = 0;
+  *(u32 *)(arg0 + 100) = 0;
+  return;
+}
