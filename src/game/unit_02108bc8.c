@@ -21,3 +21,4 @@ int func_02108c60(void)
   }
   return *data_02176e34;
 }
+
