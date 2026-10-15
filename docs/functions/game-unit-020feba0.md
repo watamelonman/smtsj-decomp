@@ -16,3 +16,5 @@
 - `func_020fed54`
 - `func_020fec00`
 - `Unk0feba0_Unk_0febe8`: decompiler-derived (plain+fix cleanup)
+- `func_020fec64`: hand-matched
+- `func_020fed54`: hand-matched

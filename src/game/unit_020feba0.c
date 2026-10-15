@@ -73,3 +73,22 @@ void Unk0feba0_Unk_0febe8(u32 arg0)
   tmp1 = Unk0feba0_Get_data_02176e24();
   Unk0feba0_Unk_0fed7c((u32 *)tmp1, (u32)arg0);
 }
+
+void Unk0feba0_Unk_0fed7c();
+void func_020f51dc();
+void func_020fec64(u32 *p)
+{
+    p[0] = 0;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = 0;
+    Unk0feba0_Unk_0fed7c(p);
+}
+
+void func_020fed54(int *p)
+{
+    if (p[3] == 0) {
+        return;
+    }
+    func_020f51dc(p[0], p[1], p[3], 100 - p[5]);
+}
