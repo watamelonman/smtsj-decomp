@@ -44,3 +44,9 @@
 - `func_02039dc0`
 - `func_0203a1dc`
 - `func_02039e50`
+
+## Not done in M1-T679
+- `func_02039c60`
+- `func_02039bb4`
+- `func_0203a888`
+- `func_0203a334`
