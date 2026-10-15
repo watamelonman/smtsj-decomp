@@ -265,3 +265,32 @@ int Unk0e5fb8_Get2Bits(u32 a, u32 b)
     int lo = Unk094fe0_TestBit(a, o);
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
+
+int Unk094fe0_TestBit();
+int func_020e6360(u32 a, u32 b)
+{
+    int o = Unk0e5fb8_GetOffsetB00(b);
+    int lo = Unk094fe0_TestBit(a, o);
+    return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
+}
+
+int func_020e63e0(u32 a, u32 b)
+{
+    int o = Unk0e5fb8_GetOffsetD00(b);
+    int lo = Unk094fe0_TestBit(a, o);
+    return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
+}
+
+int func_020e6460(u32 a, u32 b)
+{
+    int o = Unk0e5fb8_GetOffsetD80(b);
+    int lo = Unk094fe0_TestBit(a, o);
+    return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
+}
+
+int func_020e64e0(u32 a, u32 b)
+{
+    int o = Unk0e5fb8_GetOffsetD80(b);
+    int lo = Unk094fe0_TestBit(a, o + 2);
+    return (u8)(lo | (Unk094fe0_TestBit(a, o + 3) << 1));
+}

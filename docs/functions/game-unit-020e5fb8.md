@@ -53,3 +53,7 @@
 - `Unk0e5fb8_SetBits`: hand-matched
 - `Unk0e5fb8_Unk_0e620c`: hand-matched
 - `Unk0e5fb8_Get2Bits`: hand-matched
+- `func_020e6360`: hand-matched
+- `func_020e63e0`: hand-matched
+- `func_020e6460`: hand-matched
+- `func_020e64e0`: hand-matched
