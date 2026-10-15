@@ -9,16 +9,16 @@
 - `Unk0979d8_Unk_0981bc`: decompiler-derived
 
 ## Not done in M1-T473
-- `func_020979d8`
+- `Unk0979d8_ResetFields`
 - `Unk0979d8_Unk_0979fc`: decompiler-derived
 - `Unk0979d8_Unk_097f00`: decompiler-derived
 - `Unk0979d8_Unk_097f34`: decompiler-derived
 
 ## Not done in M1-T474
-- `func_02097bec`
-- `func_02097b54`
-- `func_02097b84`
-- `func_02097bb4`
+- `Unk0979d8_CopyIds`
+- `Unk0979d8_ClampField1e`
+- `Unk0979d8_ClampField20`
+- `Unk0979d8_HasId`
 - `func_020980e8`
 
 ## Not done in M1-T475
@@ -35,8 +35,8 @@
 - `func_02097a20`
 - `func_02097f68`
 - `func_02097c18`
-- `func_020979d8`: hand-matched
-- `func_02097b54`: hand-matched
-- `func_02097b84`: hand-matched
-- `func_02097bb4`: hand-matched
-- `func_02097bec`: hand-matched
+- `Unk0979d8_ResetFields`: hand-matched
+- `Unk0979d8_ClampField1e`: hand-matched
+- `Unk0979d8_ClampField20`: hand-matched
+- `Unk0979d8_HasId`: hand-matched
+- `Unk0979d8_CopyIds`: hand-matched

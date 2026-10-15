@@ -9,11 +9,11 @@ typedef struct Unk0979d8Work {
 
 
 
-int func_02096754();
+int Unk096754_GetAreaRecordIf();
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-int func_020979d8(u8 *p)
+int Unk0979d8_ResetFields(u8 *p)
 {
     if (p == 0) {
         return 0;
@@ -28,7 +28,7 @@ u8 Unk0979d8_Unk_098124(void)
 {
   u8 value1;
   int value2;
-  value2 = func_02096754();
+  value2 = Unk096754_GetAreaRecordIf();
   if (value2 == 0) {
     value1 = 0;
   }
@@ -43,7 +43,7 @@ u8 Unk0979d8_Unk_098124(void)
 int Unk0979d8_Unk_09813c(void)
 {
   int value;
-  value = func_02096754();
+  value = Unk096754_GetAreaRecordIf();
   if (value == 0) {
     value = 0;
   }
@@ -58,7 +58,7 @@ int Unk0979d8_Unk_09813c(void)
 int Unk0979d8_Unk_098154(void)
 {
   int value;
-  value = func_02096754();
+  value = Unk096754_GetAreaRecordIf();
   if (value == 0) {
     value = 0;
   }
@@ -73,7 +73,7 @@ int Unk0979d8_Unk_098154(void)
 int Unk0979d8_Unk_09818c(void)
 {
   int value;
-  value = func_02096754();
+  value = Unk096754_GetAreaRecordIf();
   if (value == 0) {
     value = 0;
   }
@@ -88,7 +88,7 @@ int Unk0979d8_Unk_09818c(void)
 int Unk0979d8_Unk_0981a4(void)
 {
   int value;
-  value = func_02096754();
+  value = Unk096754_GetAreaRecordIf();
   if (value == 0) {
     value = 0;
   }
@@ -98,44 +98,44 @@ int Unk0979d8_Unk_0981a4(void)
   return value;
 }
 
-int func_02097b54();
+int Unk0979d8_ClampField1e();
 /* decompiler-derived */
 void Unk0979d8_Unk_09816c(u32 arg0,u32 arg1)
 {
   int value;
-  value = func_02096754();
+  value = Unk096754_GetAreaRecordIf();
   if (value == 0) {
     return;
   }
-  func_02097b54(value,arg1);
+  Unk0979d8_ClampField1e(value,arg1);
 }
 
-int func_02097b84();
+int Unk0979d8_ClampField20();
 /* decompiler-derived */
 void Unk0979d8_Unk_0981bc(u32 arg0,u32 arg1)
 {
   int value;
-  value = func_02096754();
+  value = Unk096754_GetAreaRecordIf();
   if (value == 0) {
     return;
   }
-  func_02097b84(value,arg1);
+  Unk0979d8_ClampField20(value,arg1);
 }
 
 
-int func_020979d8();
+int Unk0979d8_ResetFields();
 /* decompiler-derived */
 u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0){
   if (arg0 != 0) {
     arg0->unk_0034 = 0;
-    func_020979d8();
+    Unk0979d8_ResetFields();
     return 1;
   }
   return 0;
 }
 
-int func_020970d4();
-int func_02097b54(u8 *p, int v)
+int Unk096754_ClampField1c();
+int Unk0979d8_ClampField1e(u8 *p, int v)
 {
     s32 m;
     if (p == 0) {
@@ -152,7 +152,7 @@ int func_02097b54(u8 *p, int v)
     return FIELD(s16, p, 30);
 }
 
-int func_02097b84(u8 *p, int v)
+int Unk0979d8_ClampField20(u8 *p, int v)
 {
     s32 m;
     if (p == 0) {
@@ -169,7 +169,7 @@ int func_02097b84(u8 *p, int v)
     return FIELD(s16, p, 32);
 }
 
-int func_02097bb4(u8 *p, int id)
+int Unk0979d8_HasId(u8 *p, int id)
 {
     int j;
     if (p == 0) {
@@ -183,7 +183,7 @@ int func_02097bb4(u8 *p, int id)
     return 0;
 }
 
-void func_02097bec(u8 *p, u16 *out)
+void Unk0979d8_CopyIds(u8 *p, u16 *out)
 {
     int j;
     if (p == 0) {
@@ -197,17 +197,17 @@ void func_02097bec(u8 *p, u16 *out)
 /* decompiler-derived */
 void Unk0979d8_Unk_097f00(u32 arg0)
 {
-  func_020970d4();
+  Unk096754_ClampField1c();
   Unk0979d8_Unk_09816c(0,arg0);
   Unk0979d8_Unk_09816c(1,arg0);
   Unk0979d8_Unk_09816c(2,arg0);
 }
 
-int func_02097120();
+int Unk096754_ClampField1e();
 /* decompiler-derived */
 void Unk0979d8_Unk_097f34(u32 arg0)
 {
-  func_02097120();
+  Unk096754_ClampField1e();
   Unk0979d8_Unk_0981bc(0,arg0);
   Unk0979d8_Unk_0981bc(1,arg0);
   Unk0979d8_Unk_0981bc(2,arg0);

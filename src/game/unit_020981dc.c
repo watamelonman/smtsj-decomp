@@ -2,13 +2,13 @@
 #include "types.h"
 
 
-int func_02096754();
+int Unk096754_GetAreaRecordIf();
 /* decompiler-derived */
 u16 Unk0981dc_Unk_0981dc(void)
 {
   u16 value1;
   int value2;
-  value2 = func_02096754();
+  value2 = Unk096754_GetAreaRecordIf();
   if (value2 == 0) {
     value1 = 0;
   }
@@ -23,7 +23,7 @@ int func_0209786c();
 void Unk0981dc_Unk_0981f4(u32 arg0,u32 arg1,u8 arg2)
 {
   int value;
-  value = func_02096754();
+  value = Unk096754_GetAreaRecordIf();
   if (value != 0) {
     switch(arg1) {
     case 0:

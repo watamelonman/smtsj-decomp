@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 int Unk02e000_GetWorkArea();
 int Unk02e000_Thunk_0202e788();
-int func_02096898();
+int Unk096754_CountEntries();
 int func_0209846c();
 
 int Unk096754_Unk_0970b4(void);
@@ -31,8 +31,8 @@ typedef struct Unk096754Area {
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 int Unk02e000_GetAreaRecord();
-int func_02096a60(int id);
-int func_02096754(u32 i)
+int Unk096754_HasEntryId(int id);
+int Unk096754_GetAreaRecordIf(u32 i)
 {
     u8 *base;
     s8 *t;
@@ -50,7 +50,7 @@ int func_02096754(u32 i)
     return 0;
 }
 
-int func_02096898(void)
+int Unk096754_CountEntries(void)
 {
     u8 *base = (u8 *)Unk02e000_GetWorkArea();
     int n = 0;
@@ -117,7 +117,7 @@ int Unk096754_Unk_0969f0(void)
   int value1;
   int value2;
   value1 = Unk02e000_GetWorkArea();
-  value2 = func_02096898();
+  value2 = Unk096754_CountEntries();
   return value2 < (int)(u32)*(u8 *)(value1 + 0x357);
 }
 
@@ -147,7 +147,7 @@ int Unk096754_Unk_096a14(void)
   return -1;
 }
 
-int func_02096a60(int id)
+int Unk096754_HasEntryId(int id)
 {
     u8 *base = (u8 *)Unk02e000_GetWorkArea();
     int j;
@@ -160,7 +160,7 @@ int func_02096a60(int id)
     return 0;
 }
 
-int func_02096ab0(int i)
+int Unk096754_Unk_096ab0(int i)
 {
     u8 *base = (u8 *)Unk02e000_GetWorkArea();
     u16 v;
@@ -174,15 +174,15 @@ int func_02096ab0(int i)
     return 1;
 }
 
-int func_02096b44(int id)
+int Unk096754_Unk_096b44(int id)
 {
     if (Unk096754_Unk_0969f0() == 0) {
         return 0;
     }
-    return func_02096a60(id) != 1;
+    return Unk096754_HasEntryId(id) != 1;
 }
 
-void func_02096f28(void)
+void Unk096754_ResetAreaPos(void)
 {
     u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
     FIELD(s16, p, 108) = 0;
@@ -191,7 +191,7 @@ void func_02096f28(void)
     FIELD(s16, p, 30) = FIELD(s16, p, 20);
 }
 
-void func_020970d4(int v)
+void Unk096754_ClampField1c(int v)
 {
     u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
     s32 m = FIELD(s16, p, 18);
@@ -204,7 +204,7 @@ void func_020970d4(int v)
     FIELD(s16, p, 28) = m;
 }
 
-void func_02097120(int v)
+void Unk096754_ClampField1e(int v)
 {
     u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
     s32 m = FIELD(s16, p, 20);

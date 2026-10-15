@@ -97,7 +97,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk03c474_Unk_03c608` (M1-T118): left out of the card
 - `Unk0946e0_Clear12` (M1-T492): left out of the card
 - `Unk096754_CopyAreaPos` (M1-T559): left out of the card
-- `func_02096f28` (M1-T559): left out of the card
+- `Unk096754_ResetAreaPos` (M1-T559): left out of the card
 - `Unk0e8228_Call_02008848` (M1-T900): left out of the card
 - `Unk06ae94_Unk_06aed4` (M1-T994): left out of the card
 - `Unk06ae94_Unk_06aeec` (M1-T994): left out of the card

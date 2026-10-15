@@ -22,11 +22,11 @@ u32 Unk03ce68_Unk_03cfb4(void)
   return 1;
 }
 
-int func_02096f28();
+int Unk096754_ResetAreaPos();
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03cfc4(void)
 {
-  func_02096f28();
+  Unk096754_ResetAreaPos();
   return 1;
 }
 
