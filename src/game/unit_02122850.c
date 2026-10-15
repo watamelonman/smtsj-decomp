@@ -52,3 +52,17 @@ void Unk122850_Unk_122978(int *arg0)
   *data_02176e80 = 0;
 }
 
+extern u8 data_02152044[];
+int func_02052634();
+int func_0205dcd4();
+/* decompiler-derived; refs "Camp/camp_BG" */
+void func_021228e0(u32 *arg0)
+{
+  u32 tmp1;
+  *data_02176e80 = (int)arg0;
+  arg0[1] = 0;
+  Unk05b82c_Unk_05b82c(0x39);
+  tmp1 = func_0205dcd4(data_02152044,1);
+  *arg0 = tmp1;
+  func_02052634(1,0,0x1f);
+}
