@@ -15,7 +15,7 @@ typedef struct Unk0bcef4Work {
 
 int func_020bd30c();
 int func_020bd49c();
-int func_020bd584();
+u32 func_020bd584(int arg0,u32 arg1);
 int Unk0bd5f0_Unk_0bd614();
 
 void Unk0bcef4_Unk_0bd2fc(u32 arg0,u32 arg1);
@@ -107,4 +107,26 @@ u32 Unk0bcef4_Unk_0bd29c(int arg0,int *arg1)
     } while (value < *arg1);
   }
   return 1;
+}
+
+int func_020bd398();
+/* decompiler-derived */
+u32 func_020bd584(int arg0,u32 arg1)
+{
+  int tmp1;
+  u32 tmp2;
+  u32 tmp3;
+  tmp2 = 0xffffffff;
+  tmp3 = 0;
+  if (arg1 != 0) {
+    do {
+      tmp1 = func_020bd398(arg0);
+      if (tmp1 != 0) {
+        tmp2 = tmp3;
+      }
+      tmp3 = tmp3 + 1;
+      arg0 = arg0 + 0xc;
+    } while (tmp3 < arg1);
+  }
+  return tmp2;
 }
