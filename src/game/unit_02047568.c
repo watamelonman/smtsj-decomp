@@ -20,3 +20,19 @@ u32 Unk047568_Unk_047590(void)
   }
   return 0;
 }
+
+int func_0205e4f8();
+void func_02045480();
+void func_02048ed8();
+int func_02047718(void)
+{
+    if (func_02052728() != 0) {
+        return 0;
+    }
+    if (func_0205e4f8(-1) != 0) {
+        return 0;
+    }
+    func_02045480();
+    func_02048ed8();
+    return 1;
+}
