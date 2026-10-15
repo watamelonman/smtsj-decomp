@@ -60,7 +60,10 @@ typedef struct Unk044904Mgr {
     u8 pad_0000[0x40];
     u32 pad_0040_0 : 10;
     u32 flag_0040_10 : 1;
-    u32 pad_0040_11 : 7;
+    u32 pad_0040_11 : 4;
+    u32 flag_0040_15 : 1;
+    u32 flag_0040_16 : 1;
+    u32 pad_0040_17 : 1;
     u32 flag_0040_18 : 1;
     u8 pad_0044[0xc];
     u32 unk_0050;
@@ -336,6 +339,38 @@ int Unk044904_Unk_045c7c(void)
 
 int func_020452c4();
 int func_020aa224();
+void func_02045bd0();
+void func_020456d8();
+void func_020455cc();
+int func_02046468(s16 *st)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    FIELD(u16, m, 0x38)++;
+    FIELD(u32, m, 0x40) &= ~0x10000;
+    st[0] = 2;
+    return 1;
+}
+
+int func_0204661c(s16 *st)
+{
+    if (st[1] == 1) {
+        st[0] = 2;
+    } else {
+        func_02045bd0(0);
+    }
+    return 2;
+}
+
+int func_02046644(void)
+{
+    if (UNK044904_MGR()->flag_0040_16 && Unk044904_Unk_045460(1) != 0) {
+        return 2;
+    }
+    func_020456d8(0);
+    func_020455cc(2);
+    return 1;
+}
+
 /* decompiler-derived */
 u32 Unk044904_Unk_046688(void)
 {
