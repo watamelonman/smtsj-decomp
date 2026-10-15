@@ -208,3 +208,22 @@ u32 Unk0fd9f0_GetColor(int x)
     }
     return 0x299ce700;
 }
+
+void func_020fda58(u32 x)
+{
+    u32 p = Unk0fd9f0_Get_data_02176e20();
+    if (p == 0) {
+        return;
+    }
+    switch (FIELD(u32, p, 44)) {
+    case 1:
+        FIELD(u32, p, 40) = x;
+        return;
+    case 2:
+        FIELD(u32, p, 52) = 1;
+        FIELD(u32, p, 56) = 1;
+        Unk0fd9f0_Unk_0fdc0c(p);
+        Unk0fd9f0_Unk_0fe33c(p);
+        return;
+    }
+}

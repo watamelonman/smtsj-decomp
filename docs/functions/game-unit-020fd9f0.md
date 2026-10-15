@@ -33,3 +33,4 @@
 - `Unk0fd9f0_SetDir`: hand-matched
 - `Unk0fd9f0_Update`: hand-matched
 - `Unk0fd9f0_GetColor`: hand-matched
+- `func_020fda58`: hand-matched; end-of-file placement
