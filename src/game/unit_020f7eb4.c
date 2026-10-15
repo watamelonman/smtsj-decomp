@@ -113,3 +113,22 @@ void func_020f7f68(Unk0f7eb4Work *w, char *name, u32 arg2, u32 arg3)
     w->unk_0080 = func_0204fe18(msg);
     Unk0f7eb4_Unk_0f8078(w);
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_0204af80();
+void Unk039774_Unk_039b74();
+void func_02053000();
+void func_020f8034(u8 *p)
+{
+    if (FIELD(u32, p, 68) == 0) {
+        return;
+    }
+    func_0204af80(p);
+    Unk039774_Unk_039b74(3);
+    func_02053000(FIELD(u32, p, 116));
+    FIELD(u32, p, 116) = 0;
+    func_02053000(FIELD(u32, p, 120));
+    FIELD(u32, p, 120) = 0;
+}

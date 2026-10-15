@@ -8,3 +8,4 @@
 - `func_020f7f68`
 - `func_020f8098`
 - `func_020f7f68`: hand-written. Loads battle event script (.bf/.mbb).
+- `func_020f8034`: hand-matched
