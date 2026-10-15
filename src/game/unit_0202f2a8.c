@@ -935,3 +935,23 @@ int Unk02f2a8_Unk_035b74(int a)
     }
     return r;
 }
+
+int Unk0986ac_Unk_098978();
+int Unk0986ac_Thunk_02098714();
+
+int func_020366dc(int v)
+{
+    int r = (int)(0.1f * v);
+    int a = Unk0986ac_Unk_098978(152);
+    int b = Unk0986ac_Unk_098978(163);
+    if (Unk0986ac_Thunk_02098714(a) == 1) {
+        r /= 2;
+    }
+    if (Unk0986ac_Thunk_02098714(b) == 1) {
+        r /= 3;
+    }
+    if (r < 1) {
+        r = 1;
+    }
+    return r;
+}

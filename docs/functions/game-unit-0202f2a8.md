@@ -207,3 +207,4 @@
 - `Unk02f2a8_Unk_035820`: hand-matched
 - `Unk02f2a8_Unk_035b08`: hand-matched
 - `Unk02f2a8_Unk_035b74`: hand-matched
+- `func_020366dc`: hand-matched
