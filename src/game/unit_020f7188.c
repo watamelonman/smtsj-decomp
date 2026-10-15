@@ -22,7 +22,7 @@ void Unk0f7188_Nop_0f7ae0(void) { }
 void Unk0f7188_Nop_0f7ae4(void) { }
 
 
-int func_020f7ca8();
+void func_020f7ca8(u32 arg0);
 /* decompiler-derived */
 void Unk0f7188_Unk_0f7cc0(u32 arg0)
 {
@@ -55,3 +55,21 @@ LAB_020f7cfc:
   func_020f7ca8(0);
 }
 
+extern u32 data_02176e08[];
+/* decompiler-derived */
+void func_020f780c(u32 *arg0)
+{
+  *data_02176e08 = (u32)(arg0);
+  *arg0 = 0;
+  arg0[2] = 0;
+  arg0[5] = 0;
+  arg0[6] = 0;
+}
+
+/* decompiler-derived */
+void func_020f7ca8(u32 arg0)
+{
+  if (*data_02176e08 != 0) {
+    *(u32 *)(*data_02176e08 + 0x18) = arg0;
+  }
+}

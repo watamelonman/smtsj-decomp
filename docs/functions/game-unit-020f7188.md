@@ -27,3 +27,5 @@
 - `func_020f7888`
 - `func_020f7578`
 - `func_020f7248`
+- `func_020f780c`: decompiler-derived (plain+fix cleanup)
+- `func_020f7ca8`: decompiler-derived (plain+fix cleanup)
