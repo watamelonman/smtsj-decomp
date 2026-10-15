@@ -44,6 +44,26 @@ void Unk03e43c_MergeTable(u8 *src)
     }
 }
 
+void func_02020f8c();
+void func_02008848();
+int func_0202092c();
+void func_020211d8();
+void func_0204b6d0();
+void func_02043450();
+extern u8 data_0215ee60[];
+void func_0203e848(void)
+{
+    func_02020f8c();
+    func_02008848(data_0215e85e, 0, 512);
+    *(u16 *)data_0215e85c = 0;
+}
+
+void func_0203e894(u8 *o, int b, int c, int d)
+{
+    func_020211d8(o, func_0202092c(c, (u16)d), b);
+    FIELD(u16, o, 0x58) = 0;
+}
+
 /* Counts down; returns 1 once the counter is already 0. */
 int Unk03e43c_CountDown(Unk03e43cTimer *t)
 {
@@ -52,6 +72,24 @@ int Unk03e43c_CountDown(Unk03e43cTimer *t)
     }
     t->count--;
     return 0;
+}
+
+int func_0203fa08(int x)
+{
+    int r = x / 10;
+    if (r >= 16) {
+        r = -1;
+    }
+    return r;
+}
+
+void func_0203fa58(void)
+{
+    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    s32 v = ++w[0x360];
+    if (v >= 160) {
+        w[0x360] -= 160;
+    }
 }
 
 /* forwards to `func_0203fa84` */
@@ -180,6 +218,24 @@ void Unk03e43c_Unk_03e794(int arg0,int arg1)
 
 
 int GameState_GetBody();
+void func_02041d70(int mode)
+{
+    FIELD(s32, data_0215ee60, 0x30) = mode;
+    if (mode == 1 && FIELD(u32, data_0215ee60, 0x34) == 0) {
+        func_0204b6d0();
+    }
+}
+
+void func_02043410(u8 *o)
+{
+    s16 x = FIELD(s16, o, 0x18);
+    s16 y = FIELD(s16, o, 0x1a);
+    func_02043450(o + 0x18, o + 0x1a, FIELD(u32, o, 0x28dc));
+    if (FIELD(s16, o, 0x18) != x || FIELD(s16, o, 0x1a) != y) {
+        FIELD(u32, o, 0x04) = 1;
+    }
+}
+
 /* decompiler-derived */
 void Unk03e43c_Unk_0434b0(short *arg0,short *arg1)
 {

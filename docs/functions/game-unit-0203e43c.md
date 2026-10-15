@@ -54,3 +54,9 @@
 - `Unk03e43c_CountDown`: hand-matched
 - `Unk03e43c_CopyEntry32`: hand-matched
 - `Unk03e43c_MergeTable`: hand-matched
+- `func_0203e848`: hand-matched
+- `func_0203e894`: hand-matched
+- `func_0203fa08`: hand-matched
+- `func_0203fa58`: hand-matched
+- `func_02041d70`: hand-matched
+- `func_02043410`: hand-matched
