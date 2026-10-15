@@ -40,3 +40,6 @@
 - `Unk10a034_Unk_10a08c`: hand-matched
 - `Unk10a034_HasId`: hand-matched
 - `Unk10a034_ClearById`: hand-matched
+- `func_0210af8c`: hand-matched
+- `func_0210afd8`: hand-matched
+- `func_0210b030`: hand-matched

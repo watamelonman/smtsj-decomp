@@ -318,3 +318,31 @@ void Unk10a034_ClearById(u8 *p, u32 id)
         e++;
     }
 }
+
+u32 func_0210b080();
+u32 func_0210af8c(int i)
+{
+    u32 p;
+    if (i < 0 || i >= 4) {
+        return 0;
+    }
+    p = Unk10a034_Unk_10af7c();
+    return p == 0 ? 0 : p + 32 + i * 8;
+}
+
+void func_0210afd8(u32 a, u32 b)
+{
+    if (*data_02176e44 != 0) {
+        return;
+    }
+    *data_02176e44 = func_0210b080(a, b);
+}
+
+int func_0210b030(void)
+{
+    u32 p = Unk10a034_Get_data_02176e44();
+    if (p == 0) {
+        return 1;
+    }
+    return FIELD(u32, p, 8) == 10;
+}
