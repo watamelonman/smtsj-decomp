@@ -141,6 +141,30 @@ void Unk113294_Unk_11508c(u32 a, u32 b)
     func_02061f10(a, -1, 0, 0, func_0204fed8(func_020445f4(42, 0), b));
 }
 
+u16 *Unk113294_Unk_1150c8(u32 arg0, u32 arg1);
+int Unk113294_Unk_115124(int arg0);
+int Unk113294_Unk_115110(void);
+typedef struct Unk113294Pair {
+    u16 a;
+    u16 b;
+} Unk113294Pair;
+int func_021150e8(u32 a, u32 b)
+{
+    u16 *q = Unk113294_Unk_1150c8(a, b);
+    u32 v = q[0];
+    if (v == 0xffff) {
+        v = q[1] & 0xff;
+    }
+    return v;
+}
+
+void func_02115144(u8 *p)
+{
+    Unk113294Pair t = {0, 0};
+    t.a = Unk113294_Unk_115124((int)p);
+    func_02061f10(FIELD(u32, p, 196), -1, 0, 0, &t);
+}
+
 /* decompiler-derived */
 void Unk113294_Unk_11518c(u32 arg0)
 {
@@ -159,6 +183,14 @@ void Unk113294_Unk_11518c(u32 arg0)
 }
 
 extern u8 data_0215159c[];
+int func_021155bc(u32 id)
+{
+    if (id == 0) {
+        return 0;
+    }
+    return id != Unk113294_Unk_115110();
+}
+
 int Unk113294_AnyLo(Unk113294Ids *p)
 {
     int i;
