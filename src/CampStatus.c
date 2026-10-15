@@ -124,3 +124,4 @@ void func_020ddd2c(u32 arg0,u32 arg1,u32 arg2)
   func_0205dee8(2,arg0,0x12,arg1,0,0x3f800000,0x3f800000,0,arg2,4);
   return;
 }
+
