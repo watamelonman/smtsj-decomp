@@ -52,3 +52,19 @@ int BattleTask_Unk_0481d4(void)
   return value != 0;
 }
 
+void func_02049c28();
+int func_020484d0(u32 *a, u32 *b)
+{
+    s16 x = 256;
+    s16 y = 256;
+    struct { s16 v; s16 pad; } tx, ty;
+    if (*a != 0) {
+        func_02049c28(*a, &tx);
+        x = tx.v;
+    }
+    if (*b != 0) {
+        func_02049c28(*b, &ty);
+        y = ty.v;
+    }
+    return x - y;
+}
