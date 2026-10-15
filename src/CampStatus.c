@@ -65,6 +65,16 @@ u32 CampStatus_GetUnkField7494(CampStatusWork *work);
 /* get u32 at +0x1c */
 u32 CampStatus_GetUnkField1c(void *obj) { return ((CampStatusWork *)obj)->unk_001c; }
 
+extern u8 data_0213c60c[49];
+
+int func_020db37c(u32 i)
+{
+    if (i >= 49) {
+        i = 0;
+    }
+    return data_0213c60c[i];
+}
+
 /* decompiler-derived */
 u32 CampStatus_GetUnkField7494(CampStatusWork *work)
 {

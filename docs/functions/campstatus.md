@@ -80,3 +80,4 @@
 - `CampStatus_ResetAnim`: hand-matched
 - `CampStatus_SetUnk240`: hand-matched
 - `CampStatus_GetLinkUnk14`: hand-matched
+- `func_020db37c`: hand-matched
