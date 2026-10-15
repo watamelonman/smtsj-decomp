@@ -96,6 +96,27 @@ void Unk0f470c_Unk_0f49f4(u8 *p)
     func_020d1e94(1);
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void Unk0e8228_Unk_0e8f50();
+void func_020f4a1c(u8 *p, int a, int b)
+{
+    if (a != 2) {
+        return;
+    }
+    switch (b) {
+    case 1:
+    case 5:
+    case 6:
+        FIELD(u32, p, 80) = 1;
+        Unk0e8228_Unk_0e8f50(1);
+        return;
+    }
+    FIELD(u32, p, 80) = 0;
+    Unk0e8228_Unk_0e8f50(0);
+}
+
 /* decompiler-derived */
 void Unk0f470c_Unk_0f4b44(void)
 {
