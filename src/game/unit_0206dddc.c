@@ -73,7 +73,7 @@ extern u8 data_0216baf0[];
 int Unk06dddc_Unk_06e058(int arg0);
 int func_020152cc();
 
-u8 func_0206e06c(int k)
+u8 Unk06dddc_Unk_06e06c(int k)
 {
     int i;
     for (i = 0; i < (s32)data_0216bac4[0]; i++) {

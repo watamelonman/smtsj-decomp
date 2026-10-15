@@ -14,7 +14,7 @@
 ## Not done in M1-T339
 - `Unk06dddc_Unk_06dee8`
 - `Unk06dddc_GetEntryUnk24`
-- `func_0206e06c`
+- `Unk06dddc_Unk_06e06c`
 - `func_0206de10`
 - `func_0206de7c`
 - `func_0206df10`
@@ -26,4 +26,4 @@
 - `Unk06dddc_Unk_06e034`: decompiler-derived (plain cleanup)
 - `Unk06dddc_Unk_06e0c4`: hand-matched
 - `Unk06dddc_GetEntryUnk24`: hand-matched
-- `func_0206e06c`: hand-matched
+- `Unk06dddc_Unk_06e06c`: hand-matched
