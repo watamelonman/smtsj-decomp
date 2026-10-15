@@ -6,14 +6,14 @@
 ## Not done in M1-T680
 - `func_020afd48`
 - `Unk0afc28_IsOrigin`
-- `func_020afd60`
-- `func_020afd98`
-- `func_020b0930`
-- `func_020afc38`
+- `Unk0afc28_RandSpread`
+- `Unk0afc28_Unk_0afd98`
+- `Unk0afc28_Unk_0b0930`
+- `Unk0afc28_Unk_0afc38`
 - `Unk0afc28_Unk_0afcd4`: decompiler-derived
 
 ## Not done in M1-T681
-- `func_020b0654`
+- `Unk0afc28_CountById`
 - `func_020afc80`
 - `func_020b07c4`
 - `func_020b081c`
@@ -36,8 +36,8 @@
 - `func_020b0974`
 - `func_020affc8`
 - `Unk0afc28_IsOrigin`: hand-matched
-- `func_020afc38`: hand-matched
-- `func_020afd60`: hand-matched
-- `func_020afd98`: hand-matched
-- `func_020b0654`: hand-matched
-- `func_020b0930`: hand-matched
+- `Unk0afc28_Unk_0afc38`: hand-matched
+- `Unk0afc28_RandSpread`: hand-matched
+- `Unk0afc28_Unk_0afd98`: hand-matched
+- `Unk0afc28_CountById`: hand-matched
+- `Unk0afc28_Unk_0b0930`: hand-matched

@@ -32,12 +32,12 @@ typedef struct Unk0afc28Ptrs {
 
 int Unk0981dc_Unk_098324(int a, int b);
 int func_02050074();
-int func_020afd60(int a, int b);
+int Unk0afc28_RandSpread(int a, int b);
 int Unk044904_Get_data_0215ee98();
 int func_020982c0();
 typedef struct Unk0afc28Pos Unk0afc28Pos;
 int Unk0afc28_IsOrigin(Unk0afc28Pos *p);
-void func_020afc38(u8 *p, Unk0afc28Pos12 *src)
+void Unk0afc28_Unk_0afc38(u8 *p, Unk0afc28Pos12 *src)
 {
     u32 cur = FIELD(u32, p, 36);
     if (cur != 0 && Unk0981dc_Unk_098324((s8)src->w[0], (s8)cur) == 0) {
@@ -92,19 +92,19 @@ struct Unk0afc28Pos {
     s8 y;                       /* +0x06 */
 };
 
-int func_020afd60(int a, int b)
+int Unk0afc28_RandSpread(int a, int b)
 {
     int n = a * b * 2;
     return (func_02050074(0, n) - n / 2) / 100;
 }
 
-int func_020afd98(int a, int b, int c)
+int Unk0afc28_Unk_0afd98(int a, int b, int c)
 {
     int r;
     if (a <= c) {
         r = func_02050074(0, c - 1) + 1;
     } else {
-        r = func_020afd60(a, b);
+        r = Unk0afc28_RandSpread(a, b);
         r += a;
     }
     if (r <= 0) {
@@ -113,7 +113,7 @@ int func_020afd98(int a, int b, int c)
     return r;
 }
 
-int func_020b0654(u32 id)
+int Unk0afc28_CountById(u32 id)
 {
     Unk0afc28Ptrs *g = (Unk0afc28Ptrs *)Unk044904_Get_data_0215ee98();
     int n = 0;
@@ -135,7 +135,7 @@ int Unk0afc28_IsOrigin(Unk0afc28Pos *p)
     return 0;
 }
 
-int func_020b0930(u32 *p, u32 a, u16 b, u32 c)
+int Unk0afc28_Unk_0b0930(u32 *p, u32 a, u16 b, u32 c)
 {
     Unk0afc28Pos *r = (Unk0afc28Pos *)func_020982c0((s8)c);
     if (r == 0) {

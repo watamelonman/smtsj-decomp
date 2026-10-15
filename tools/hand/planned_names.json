@@ -345,5 +345,17 @@
  "func_020afa60": "Unk0aa118_Unk_0afa60",
  "func_020afab0": "Unk0aa118_Unk_0afab0",
  "func_020afaf8": "Unk0aa118_Unk_0afaf8",
- "func_020afb40": "Unk0aa118_Unk_0afb40"
+ "func_020afb40": "Unk0aa118_Unk_0afb40",
+ "func_020afc38": "Unk0afc28_Unk_0afc38",
+ "func_020afd60": "Unk0afc28_RandSpread",
+ "func_020afd98": "Unk0afc28_Unk_0afd98",
+ "func_020b0654": "Unk0afc28_CountById",
+ "func_020b0930": "Unk0afc28_Unk_0b0930",
+ "func_020b0c30": "Unk0b0b5c_Unk_0b0c30",
+ "func_020b0cac": "Unk0b0b5c_Unk_0b0cac",
+ "func_020b2d84": "Unk0b28e4_InitCallbacks",
+ "func_020b5e10": "Unk0b28e4_Unk_0b5e10",
+ "func_020b62e8": "Unk0b28e4_Unk_0b62e8",
+ "func_020b6338": "Unk0b28e4_Unk_0b6338",
+ "func_020b6370": "Unk0b28e4_Unk_0b6370"
 }

@@ -5,16 +5,16 @@
 
 ## Not done in M1-T1037
 - `func_020b6514`
-- `func_020b5e10`
+- `Unk0b28e4_Unk_0b5e10`
 - `func_020b64dc`
 - `func_020b64f8`
-- `func_020b6338`
-- `func_020b6370`
+- `Unk0b28e4_Unk_0b6338`
+- `Unk0b28e4_Unk_0b6370`
 
 ## Not done in M1-T1038
 - `func_020b6528`
-- `func_020b2d84`
-- `func_020b62e8`
+- `Unk0b28e4_InitCallbacks`
+- `Unk0b28e4_Unk_0b62e8`
 - `func_020b3d28`
 - `func_020b4fb4`
 - `func_020b3570`
@@ -30,8 +30,8 @@
 - `func_020b4dd8`
 - `func_020b49cc`
 - `func_020b5adc`
-- `func_020b2d84`: hand-matched
-- `func_020b5e10`: hand-matched
-- `func_020b62e8`: hand-matched
-- `func_020b6338`: hand-matched
-- `func_020b6370`: hand-matched
+- `Unk0b28e4_InitCallbacks`: hand-matched
+- `Unk0b28e4_Unk_0b5e10`: hand-matched
+- `Unk0b28e4_Unk_0b62e8`: hand-matched
+- `Unk0b28e4_Unk_0b6338`: hand-matched
+- `Unk0b28e4_Unk_0b6370`: hand-matched

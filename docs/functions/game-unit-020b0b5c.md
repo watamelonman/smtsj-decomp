@@ -6,9 +6,9 @@
 - `Unk0b0b5c_Unk_0b0cf4`: decompiler-derived
 
 ## Not done in M1-T222
-- `func_020b0c30`
-- `func_020b0cac`
+- `Unk0b0b5c_Unk_0b0c30`
+- `Unk0b0b5c_Unk_0b0cac`
 - `func_020b0bd4`
 - `func_020b0b5c`
-- `func_020b0c30`: hand-matched
-- `func_020b0cac`: hand-matched
+- `Unk0b0b5c_Unk_0b0c30`: hand-matched
+- `Unk0b0b5c_Unk_0b0cac`: hand-matched

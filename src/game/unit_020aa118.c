@@ -217,7 +217,7 @@ int func_020ab62c();
 void Unk0aa118_Unk_0ab8f8();
 int func_020af9f4();
 int func_020afbdc();
-int func_020b0930();
+int Unk0afc28_Unk_0b0930();
 int func_020cb084();
 void Unk0aa118_Unk_0ab8f8(u32 p)
 {
@@ -298,7 +298,7 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
     tmp4 = Unk0aa118_Unk_0afb90(tmp2);
     *(u32 *)(tmp4 + 0x84) = *(u32 *)(tmp4 + 0x84) & 0xffffff00 | 4;
     *(u32 *)(tmp4 + 4) = *v1;
-    func_020b0930(tmp4 + 100,arg0,0,1);
+    Unk0afc28_Unk_0b0930(tmp4 + 100,arg0,0,1);
     func_020ab62c(tmp4,arg0,0xffffffff);
     *(u32 *)(tmp4 + 0x84) = *(u32 *)(tmp4 + 0x84) | 0x1000;
     Unk0aa118_Unk_0ab8f8(tmp2);

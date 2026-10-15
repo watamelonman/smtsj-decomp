@@ -7,7 +7,7 @@ int func_02049f24();
 int func_02049d80();
 int func_0204ab98();
 int func_0204ab14();
-int func_020b0c30(int a, int l)
+int Unk0b0b5c_Unk_0b0c30(int a, int l)
 {
     int x = func_02049f24(a, 0);
     int y = func_02049d80(a, 0);
@@ -47,7 +47,7 @@ int Unk0b0b5c_Unk_0b0c78(u32 arg0,int arg1)
 }
 
 int func_0204ab14();
-int func_020b0cac(int a, int l)
+int Unk0b0b5c_Unk_0b0cac(int a, int l)
 {
     int x = func_02049f24(a, 1);
     int y = func_02049d80(a, 1);
