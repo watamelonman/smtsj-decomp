@@ -40,3 +40,4 @@
 - `func_02119080`
 - `func_02119178`
 - `Unk118b04_Unk_119358`: hand-matched
+- `func_02119640`: hand-matched

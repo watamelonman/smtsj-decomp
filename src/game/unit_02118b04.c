@@ -101,3 +101,12 @@ int Unk118b04_Unk_119358(u32 id)
     }
     return func_02036654(*entry);
 }
+
+int func_02119640(u32 id)
+{
+    u16 *e = func_02118f30(id);
+    if (e != 0) {
+        return *e;
+    }
+    return -1;
+}
