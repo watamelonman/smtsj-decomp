@@ -327,7 +327,7 @@ u32 Unk0387bc_Unk_038cbc(int *obj);
 void Unk02cad4_Unk_02cbdc(u32 a);
 
 /* Tears down the GameState sub-objects and clears gGameState. */
-void func_02034244(GameState *gs)
+void GameState_Shutdown(GameState *gs)
 {
     Unk038fbc_Unk_038fbc((int *)gs->unk_314c);
     Unk0387bc_Unk_038e40((int *)gs->unk_3140);
@@ -337,7 +337,7 @@ void func_02034244(GameState *gs)
 }
 
 /* Returns whether the global game state exists. */
-int func_02034954(void)
+int GameState_Exists(void)
 {
     return gGameState != 0;
 }
