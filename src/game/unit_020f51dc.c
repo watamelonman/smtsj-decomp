@@ -19,6 +19,12 @@ void Unk0f51dc_Unk_0f5738(u32 arg0,u32 arg1)
 }
 
 
+void func_020f58bc();
+void func_020f57d4(u32 a, u32 b, u32 c, u32 d, u32 e)
+{
+    func_020f58bc(a, b, c, d, e, 0, 8, 0);
+}
+
 /* decompiler-derived */
 void Unk0f51dc_Unk_0f5dfc(u32 arg0,u32 arg1)
 {
