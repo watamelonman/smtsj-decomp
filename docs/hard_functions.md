@@ -16,7 +16,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020f8478` (M1-T150): left out of the card
 - `func_020cccb4` (M1-T866): left out of the card
 - `func_0209a48c` (M1-T1009): left out of the card
-- `func_020a1140` (M1-T447): left out of the card
+- `Unk0a0ce4_ScaleFx10` (M1-T447): left out of the card
 - `Unk0fedd4_GetObj` (M1-T167): left out of the card
 - `Unk0fedd4_SetUnk1c` (M1-T167): left out of the card
 - `Unk0fedd4_SetState1` (M1-T167): left out of the card
@@ -35,7 +35,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `CampStatus_SetUnk1a8` (M1-T1122): left out of the card
 - `CampStatus_GetUnk258` (M1-T1122): left out of the card
 - `CampStatus_SetUnk260` (M1-T1122): left out of the card
-- `func_020db37c` (M1-T1122): left out of the card
+- `CampStatus_GetTableByte` (M1-T1122): left out of the card
 - `func_020dcb44` (M1-T1122): left out of the card
 - card M1-T1018: skipped (TU already has a hand-written file; needs merging by hand)
 - `func_020caea8` (M1-T107): card skipped
@@ -47,13 +47,13 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020bc4e0` (M1-T545): left out of the card
 - `func_020a8608` (M1-T790): left out of the card
 - card M1-T801: skipped (TU already has a hand-written file; needs merging by hand)
-- `func_02044b68` (M1-T878): left out of the card
+- `Unk044904_AddRecUnk08` (M1-T878): left out of the card
 - card M1-T253: skipped (TU already has a hand-written file; needs merging by hand)
 - `func_0205b36c` (M1-T425): left out of the card
 - `Unk05ae50_Unk_05af2c` (M1-T425): left out of the card
 - `Unk02e000_GetUnk094fe0Work` (M1-T650): left out of the card
-- `func_0202e578` (M1-T650): left out of the card
-- `func_0202e590` (M1-T650): left out of the card
+- `Unk02e000_Call_02e4dc` (M1-T650): left out of the card
+- `Unk02e000_Call_02e520` (M1-T650): left out of the card
 - `Unk02e000_Unk_02e228` (M1-T650): left out of the card
 - `Unk0e1648_IsUnkeecSet` (M1-T1042): left out of the card
 - `func_020bd3fc` (M1-T434): left out of the card
@@ -70,7 +70,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk0a163c_Call_020a1b08` (M1-T627): left out of the card
 - `Unk0a163c_Call_020a2218` (M1-T627): left out of the card
 - `Unk03e43c_Call_02056cc0` (M1-T1086): left out of the card
-- `func_0203e920` (M1-T1086): left out of the card
+- `Unk03e43c_CountDown` (M1-T1086): left out of the card
 - `func_0203fa08` (M1-T1086): left out of the card
 - `Unk1241ec_Unk_124284` (M1-T227): left out of the card
 - `Unk1241ec_Unk_12429c` (M1-T227): left out of the card
@@ -95,8 +95,8 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020f7210` (M1-T621): left out of the card
 - `func_021229b0` (M1-T110): card skipped
 - `func_0203c608` (M1-T118): left out of the card
-- `func_02094734` (M1-T492): left out of the card
-- `func_02096f0c` (M1-T559): left out of the card
+- `Unk0946e0_Clear12` (M1-T492): left out of the card
+- `Unk096754_CopyAreaPos` (M1-T559): left out of the card
 - `func_02096f28` (M1-T559): left out of the card
 - `Unk0e8228_Call_02008848` (M1-T900): left out of the card
 - `Unk06ae94_Unk_06aed4` (M1-T994): left out of the card

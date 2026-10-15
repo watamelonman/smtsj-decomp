@@ -9,7 +9,7 @@
 - `Unk0946e0_Unk_094a64` (44 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_02094734`: no candidate matched locally
+- `Unk0946e0_Clear12`: no candidate matched locally
 - `Unk0946e0_Unk_094704`: decompiler-derived
 
 ## Not done in M1-T493
@@ -32,4 +32,4 @@
 - `func_02094750`
 - `Unk0946e0_Unk_094b98`: decompiler-derived (proto cleanup)
 - `Unk0946e0_Unk_094d64`: decompiler-derived (proto cleanup)
-- `func_02094734`: hand-matched
+- `Unk0946e0_Clear12`: hand-matched

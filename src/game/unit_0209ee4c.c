@@ -22,7 +22,7 @@ typedef struct Unk09ee4cObj {
 
 void func_0204f68c(u32 a, u32 b, u32 *p);
 
-void func_0209f534(u32 a, u32 b, Unk09ee4cObj *o)
+void Unk09ee4c_Call_0204f68c(u32 a, u32 b, Unk09ee4cObj *o)
 {
     if (o->unk_64 == 0) {
         return;

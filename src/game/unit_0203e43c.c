@@ -24,7 +24,7 @@ typedef struct Unk03e43cTimer {
 } Unk03e43cTimer;
 
 /* Counts down; returns 1 once the counter is already 0. */
-int func_0203e920(Unk03e43cTimer *t)
+int Unk03e43c_CountDown(Unk03e43cTimer *t)
 {
     if (t->count == 0) {
         return 1;

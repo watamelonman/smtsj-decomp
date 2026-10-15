@@ -48,7 +48,7 @@ void Unk095560_Call_0a1834(int id)
 void Unk095560_Thunk_020cb044(void) { Unk0caea8_Unk_0cb044(); }
 int func_02095d5c(u32 a, u32 b, int c);
 
-int func_02095950(u32 a, u32 b)
+int Unk095560_Unk_095950(u32 a, u32 b)
 {
     return func_02095d5c(a, b, 1) != 0;
 }
@@ -144,13 +144,13 @@ void Unk095560_Unk_0957c0(u32 arg0)
 
 u32 Unk095560_Unk_0956e8(void);
 int func_020958c8();
-int func_02095950();
+int Unk095560_Unk_095950();
 /* decompiler-derived */
 u32 Unk095560_Unk_095af8(u32 arg0)
 {
   int value;
   Unk095560_Unk_0956e8();
-  value = func_02095950(0,arg0);
+  value = Unk095560_Unk_095950(0,arg0);
   if (value != 0) {
     func_020958c8(value);
     return 1;
@@ -184,7 +184,7 @@ u32 Unk095560_Unk_095a2c(u32 arg0)
 {
   int value;
   Unk095560_Unk_0956e8();
-  value = func_02095950(1,arg0);
+  value = Unk095560_Unk_095950(1,arg0);
   if (value != 0) {
     func_020958c8(value);
     Unk02d15c_Call_02d91c();

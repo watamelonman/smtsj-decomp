@@ -9,7 +9,7 @@
 - `Unk0a0ce4_Unk_0a0ce4` (32 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020a1140`: no candidate matched locally
+- `Unk0a0ce4_ScaleFx10`: no candidate matched locally
 - `Unk0a0ce4_Unk_0a0d04`: decompiler-derived
 - `Unk0a0ce4_Unk_0a12e8`: decompiler-derived
 - `Unk0a0ce4_Unk_0a0d30`: decompiler-derived
@@ -28,4 +28,4 @@
 - `func_020a1214`
 - `func_020a1318`
 - `func_020a0fc0`
-- `func_020a1140`: hand-matched
+- `Unk0a0ce4_ScaleFx10`: hand-matched

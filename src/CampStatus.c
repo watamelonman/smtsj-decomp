@@ -67,7 +67,7 @@ u32 CampStatus_GetUnkField1c(void *obj) { return ((CampStatusWork *)obj)->unk_00
 
 extern u8 data_0213c60c[49];
 
-int func_020db37c(u32 i)
+int CampStatus_GetTableByte(u32 i)
 {
     if (i >= 49) {
         i = 0;
@@ -124,13 +124,13 @@ u32 CampStatus_Unk_0db338(int arg0,u32 arg1)
 }
 
 extern u8 data_02150824[];
-int func_020db37c();
+int CampStatus_GetTableByte();
 /* decompiler-derived */
 u32 CampStatus_Unk_0db394(int arg0,u32 arg1)
 {
   u32 tmp1;
   u8 auStack_48 [64];
-  tmp1 = func_020db37c(arg1);
+  tmp1 = CampStatus_GetTableByte(arg1);
   func_02013c3c(auStack_48,((int)data_02150824),tmp1);
   tmp1 = func_02051610(auStack_48);
   ((CampStatusWork *)arg0)->unk_000c = tmp1;

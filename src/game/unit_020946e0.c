@@ -21,7 +21,7 @@ u32 Unk0946e0_Unk_0946e0(void);
 void Unk0946e0_Unk_094c50(int *arg0);
 void Unk0946e0_Unk_094a64(u32 arg0);
 
-void func_02094734(void *p)
+void Unk0946e0_Clear12(void *p)
 {
     if (p == 0) {
         return;

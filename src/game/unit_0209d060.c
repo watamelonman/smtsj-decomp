@@ -21,7 +21,7 @@ typedef struct Unk09d060Ctx {
     u32 unk_00;
 } Unk09d060Ctx;
 
-u32 func_0209d194(void)
+u32 Unk09d060_GetCtxUnk00(void)
 {
     Unk09d060Ctx *c = *(Unk09d060Ctx **)data_02176274;
     if (c != 0) {

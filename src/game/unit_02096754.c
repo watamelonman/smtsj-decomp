@@ -27,7 +27,7 @@ typedef struct Unk096754Area {
     s16 unk_1e;
 } Unk096754Area;
 
-void func_02096f0c(void)
+void Unk096754_CopyAreaPos(void)
 {
     Unk096754Area *a = (Unk096754Area *)Unk02e000_Thunk_0202e788();
     a->unk_1c = a->unk_12;

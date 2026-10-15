@@ -11,7 +11,7 @@ typedef struct Unk0fd5a4Obj {
 
 void func_020fd71c(Unk0fd5a4Obj *o);
 
-void func_020fd6ec(Unk0fd5a4Obj *o)
+void Unk0fd5a4_Unk_0fd6ec(Unk0fd5a4Obj *o)
 {
     if (o->state == 0) {
         return;
@@ -19,7 +19,7 @@ void func_020fd6ec(Unk0fd5a4Obj *o)
     func_020fd71c(o);
 }
 
-void func_020fd704(Unk0fd5a4Obj *o)
+void Unk0fd5a4_Unk_0fd704(Unk0fd5a4Obj *o)
 {
     if (o->state == 1) {
         return;

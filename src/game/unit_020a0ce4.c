@@ -85,7 +85,7 @@ extern u32 data_02176b00[];
 int func_0205bb68();
 int func_020629c4();
 /* a * scale / 1024 (fixed point 1.10), with 0 and 1024 short-cut. */
-int func_020a1140(int a, int scale)
+int Unk0a0ce4_ScaleFx10(int a, int scale)
 {
     if (scale == 0) {
         return 0;

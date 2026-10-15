@@ -15,8 +15,8 @@
 - `Unk02e000_GetWorkArea`: no candidate matched locally
 - `Unk02e000_GetSubBlock3a4`: dropped when combining the TU
 - `Unk02e000_GetUnk094fe0Work`: no candidate matched locally
-- `func_0202e578`: no candidate matched locally
-- `func_0202e590`: no candidate matched locally
+- `Unk02e000_Call_02e4dc`: no candidate matched locally
+- `Unk02e000_Call_02e520`: no candidate matched locally
 - `Unk02e000_Unk_02e228`: objdiff < 100%
 - `Unk02e000_Unk_02e144`: decompiler-derived
 
@@ -34,10 +34,10 @@
 
 ## Not done in M1-T651
 - `Unk02e000_Unk_02e5c4`
-- `func_0202e090`
+- `Unk02e000_ClearMgrUnk38`
 - `func_0202e5a8`
 - `Unk02e000_Unk_02e740`
-- `func_0202e7a4`
+- `Unk02e000_GetAreaRecord`
 
 ## Not done in M1-T653
 - `func_0202e7c0`
@@ -82,7 +82,7 @@
 - `Unk02e000_GetSubBlock3a4`: hand-matched
 - `Unk02e000_GetWorkArea`: hand-matched
 - `Unk02e000_GetUnk094fe0Work`: hand-matched
-- `func_0202e090`: hand-matched
-- `func_0202e578`: hand-matched
-- `func_0202e590`: hand-matched
-- `func_0202e7a4`: hand-matched
+- `Unk02e000_ClearMgrUnk38`: hand-matched
+- `Unk02e000_Call_02e4dc`: hand-matched
+- `Unk02e000_Call_02e520`: hand-matched
+- `Unk02e000_GetAreaRecord`: hand-matched

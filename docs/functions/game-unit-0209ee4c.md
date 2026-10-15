@@ -8,7 +8,7 @@
 
 ## Not done in M1-T766
 - `Unk09ee4c_Call_0204f1f8`
-- `func_0209f534`
+- `Unk09ee4c_Call_0204f68c`
 - `func_0209eff8`
 
 ## Not done in M1-T767
@@ -21,4 +21,4 @@
 - `func_0209f480`
 - `func_0209ee80`
 - `Unk09ee4c_Call_0204f1f8`: hand-matched
-- `func_0209f534`: hand-matched
+- `Unk09ee4c_Call_0204f68c`: hand-matched

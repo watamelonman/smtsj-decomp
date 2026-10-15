@@ -8,7 +8,7 @@
 - `CampStatus_SetUnk1a8`: no candidate matched locally
 - `CampStatus_GetUnk258`: no candidate matched locally
 - `CampStatus_SetUnk260`: no candidate matched locally
-- `func_020db37c`: no candidate matched locally
+- `CampStatus_GetTableByte`: no candidate matched locally
 - `func_020dcb44`: no candidate matched locally
 - `CampStatus_Unk_0d34e4`: decompiler-derived
 - `CampStatus_Unk_0d3510`: decompiler-derived
@@ -80,4 +80,4 @@
 - `CampStatus_ResetAnim`: hand-matched
 - `CampStatus_SetUnk240`: hand-matched
 - `CampStatus_GetLinkUnk14`: hand-matched
-- `func_020db37c`: hand-matched
+- `CampStatus_GetTableByte`: hand-matched

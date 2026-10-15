@@ -8,7 +8,7 @@
 
 ## Hard list
 - `Unk03e43c_Call_02056cc0`: no candidate matched locally
-- `func_0203e920`: no candidate matched locally
+- `Unk03e43c_CountDown`: no candidate matched locally
 - `func_0203fa08`: no candidate matched locally
 - `Unk03e43c_Unk_03e5a4`: decompiler-derived
 - `Unk03e43c_Unk_03e5dc`: decompiler-derived
@@ -51,4 +51,4 @@
 - `func_0203f2d4`
 - `func_02043340`
 - `Unk03e43c_Call_02056cc0`: decompiler-derived (plain cleanup)
-- `func_0203e920`: hand-matched
+- `Unk03e43c_CountDown`: hand-matched

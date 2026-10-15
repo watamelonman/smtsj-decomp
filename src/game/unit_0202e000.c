@@ -31,7 +31,7 @@ typedef struct Unk02e000Mgr {
 
 Unk02e000Mgr *Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void);
 
-void func_0202e090(void)
+void Unk02e000_ClearMgrUnk38(void)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (m != 0) {
@@ -53,12 +53,12 @@ void func_0202e4dc(u8 *rec);
 void func_0202e520(u8 *rec);
 
 /* 100-byte records starting at +500. */
-void func_0202e578(u8 *base, int i)
+void Unk02e000_Call_02e4dc(u8 *base, int i)
 {
     func_0202e4dc(base + 500 + i * 100);
 }
 
-void func_0202e590(u8 *base, int i)
+void Unk02e000_Call_02e520(u8 *base, int i)
 {
     func_0202e520(base + 500 + i * 100);
 }
@@ -98,7 +98,7 @@ int Unk02e000_Unk_02e774(void)
 }
 
 /* 60-byte records at +0x74 of the work area. */
-u8 *func_0202e7a4(int i)
+u8 *Unk02e000_GetAreaRecord(int i)
 {
     return Unk02e000_GetWorkArea() + 116 + i * 60;
 }

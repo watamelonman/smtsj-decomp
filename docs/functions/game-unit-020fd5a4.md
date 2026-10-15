@@ -5,10 +5,10 @@
 - `Unk0fd5a4_Unk_0fd5a4`: decompiler-derived
 
 ## Not done in M1-T324
-- `func_020fd6ec`
-- `func_020fd704`
+- `Unk0fd5a4_Unk_0fd6ec`
+- `Unk0fd5a4_Unk_0fd704`
 - `func_020fd68c`
 - `func_020fd5e0`
 - `func_020fd71c`
-- `func_020fd6ec`: hand-matched
-- `func_020fd704`: hand-matched
+- `Unk0fd5a4_Unk_0fd6ec`: hand-matched
+- `Unk0fd5a4_Unk_0fd704`: hand-matched

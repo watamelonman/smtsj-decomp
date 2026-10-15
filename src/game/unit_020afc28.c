@@ -64,7 +64,7 @@ typedef struct Unk0afc28Pos {
     s8 y;                       /* +0x06 */
 } Unk0afc28Pos;
 
-int func_020b0914(Unk0afc28Pos *p)
+int Unk0afc28_IsOrigin(Unk0afc28Pos *p)
 {
     if (p->x == 0 && p->y == 0) {
         return -1;

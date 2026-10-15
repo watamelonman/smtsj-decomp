@@ -5,7 +5,7 @@
 
 ## Not done in M1-T680
 - `func_020afd48`
-- `func_020b0914`
+- `Unk0afc28_IsOrigin`
 - `func_020afd60`
 - `func_020afd98`
 - `func_020b0930`
@@ -35,4 +35,4 @@
 - `func_020b0234`
 - `func_020b0974`
 - `func_020affc8`
-- `func_020b0914`: hand-matched
+- `Unk0afc28_IsOrigin`: hand-matched

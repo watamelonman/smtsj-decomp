@@ -7,8 +7,8 @@
 - `Unk03bba4_Unk_03bcd8`: decompiler-derived
 
 ## Not done in M1-T180
-- `func_0203bc88`
-- `func_0203bca4`
+- `Unk03bba4_Unk_03bc88`
+- `Unk03bba4_Unk_03bca4`
 - `func_0203bba4`
 - `Unk03bba4_Unk_03bd3c`: decompiler-derived
 - `Unk03bba4_Unk_03bbec`: decompiler-derived
@@ -16,5 +16,5 @@
 ## Not done in M1-T181
 - `func_0203bc40`
 - `func_0203bda0`
-- `func_0203bc88`: hand-matched
-- `func_0203bca4`: hand-matched
+- `Unk03bba4_Unk_03bc88`: hand-matched
+- `Unk03bba4_Unk_03bca4`: hand-matched
