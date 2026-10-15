@@ -42,6 +42,19 @@ void Unk11fc20_Unk_11fc20(void)
 }
 
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_02057d54();
+int func_0211fc68(void)
+{
+    u8 *p = (u8 *)*data_02176e7c;
+    if (p == 0) {
+        return 1;
+    }
+    return FIELD(int, p, 0) == 4;
+}
+
 /* decompiler-derived */
 int Unk11fc20_Unk_120944(int arg0)
 {
@@ -164,4 +177,32 @@ u32 Unk11fc20_Unk_11fc94(void)
     tmp1 = *(u32 *)(*data_02176e7c + 0x10);
   }
   return tmp1;
+}
+
+int func_02120650(u8 *p)
+{
+    int v = FIELD(int, p, 40) - 4096;
+    FIELD(int, p, 40) = v;
+    return v <= 8192;
+}
+
+int func_0212066c(u8 *p)
+{
+    int v;
+    Unk0a0ce4_Unk_0a0da4(3);
+    FIELD(u32, p, 64) = 0;
+    v = FIELD(int, p, 68) - 4096;
+    FIELD(int, p, 68) = v;
+    if (v <= 4096) {
+        FIELD(u32, p, 28) = 0;
+        return 1;
+    }
+    FIELD(u32, p, 24) = 15;
+    return 0;
+}
+
+void func_02120898(u32 a, int b, int c, u32 d, u32 e, u32 f)
+{
+    u8 *w = (u8 *)*data_02176e7c;
+    func_02057d54(a, b + (FIELD(int, w, 4) + 64), c + FIELD(int, w, 8), d, e, f);
 }
