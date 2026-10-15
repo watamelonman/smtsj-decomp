@@ -39,6 +39,13 @@ void CaveArea_Unk_0ec278(int arg0)
 }
 
 
+extern u8 data_02150d6c[];
+u32 func_0205ba98();
+void func_020ed1a8(u8 *p)
+{
+    FIELD(u32, p, 128) = func_0205ba98(0x4000, 0x200, data_02150d6c, 0x5a1);
+}
+
 /* decompiler-derived */
 void CaveArea_Unk_0ed3b4(u32 *arg0)
 {
@@ -77,7 +84,7 @@ extern u8 data_02150dac[];
 int func_02013c3c();
 int func_0205ae60();
 int func_0205b398();
-int func_020ed1a8();
+void func_020ed1a8();
 /* Loads Cave/Area/cave_area0%d (or cave_privatearmy) layout (medium). */
 void CaveArea_LoadAreaLayout(int arg0)
 {

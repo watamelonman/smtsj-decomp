@@ -41,3 +41,4 @@
 - `func_020ed3fc`
 - `func_020eb83c`
 - `CaveArea_LoadAreaLayout`: decompiler-derived (struct cleanup)
+- `func_020ed1a8`: hand-matched
