@@ -3,6 +3,15 @@
 
 
 extern u32 data_0216bac4[];
+extern u8 data_0216baec[];
+u32 func_0206dddc(int i)
+{
+    if ((s32)data_0216bac4[0] - 1 - i < 0) {
+        return 0;
+    }
+    return *(u32 *)(data_0216baec + i * 328);
+}
+
 /* decompiler-derived */
 u32 Unk06dddc_Get_data_0216bac4(void)
 {
