@@ -277,7 +277,7 @@ int Unk09974c_GetFlagsMidMinus1(Unk09974cFlags *f)
     return f->unk_04_mid - 1;
 }
 
-void Unk09974c_SetSeenBit(int id)
+void Unk09974c_SetBit6ac(int id)
 {
     u8 *b = (u8 *)Unk02e000_GetSubBlock3a4();
     s32 k = id - 51;
