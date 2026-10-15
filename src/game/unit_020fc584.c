@@ -10,6 +10,25 @@ typedef struct Unk0fc584Work {
 } Unk0fc584Work;
 
 extern u32 data_02176e14[];
+extern u8 *data_02176e10;
+void func_020a4e48();
+void func_020a4eb0();
+int func_020fc6e4(void);
+void func_020fc638(u32 x)
+{
+    if (data_02176e10 != 0) {
+        FIELD(u32, data_02176e10, 0x2000 + 2236) = x;
+    }
+}
+
+u32 func_020fc654(void)
+{
+    if (data_02176e10 == 0) {
+        return 0;
+    }
+    return FIELD(u32, data_02176e10, 0x2000 + 2236);
+}
+
 /* decompiler-derived */
 u32 Unk0fc584_Get_data_02176e14(void)
 {
@@ -108,6 +127,37 @@ void Unk0fc584_Unk_0fc674(u32 arg0)
 
 int func_0205bb68();
 int func_0205ddb4();
+void func_020fc6b8(int flag)
+{
+    u32 p = Unk0fc584_Get_data_02176e14();
+    if (p == 0) {
+        return;
+    }
+    if (flag != 0) {
+        FIELD(int, p, 20) = FIELD(int, p, 28);
+    } else {
+        FIELD(int, p, 20) = -FIELD(int, p, 28);
+    }
+}
+
+int func_020fc6e4(void)
+{
+    u32 p = Unk0fc584_Get_data_02176e14();
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(int, p, 12) < 64;
+}
+
+int func_020fc70c(void)
+{
+    u32 p = Unk0fc584_Get_data_02176e14();
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(int, p, 12) == 0;
+}
+
 /* decompiler-derived */
 void Unk0fc584_Unk_0fc9fc(int *arg0)
 {
@@ -147,7 +197,7 @@ void Unk0fc584_LoadMoneyWindow(int arg0,int arg1)
 }
 
 int func_020fc734();
-int func_020fc86c();
+void func_020fc86c();
 /* decompiler-derived */
 void Unk0fc584_Unk_0fc7b8(u32 arg0)
 {
@@ -164,4 +214,22 @@ void Unk0fc584_Unk_0fc7b8(u32 arg0)
     return;
   }
   func_020fc734(arg0);
+}
+
+int func_020fc7f4(void)
+{
+    u32 p;
+    if (func_020fc6e4() == 0) {
+        return 0;
+    }
+    p = Unk0fc584_Get_data_02176e14();
+    return FIELD(int, p, 32) != FIELD(int, p, 36);
+}
+
+void func_020fc86c(void)
+{
+    u32 p = Unk0fc584_Get_data_02176e14();
+    if (p != 0 && FIELD(u32, p, 48) != 0 && FIELD(u32, p, 44) != 0) {
+        func_020fc734(FIELD(u32, p, 44));
+    }
 }

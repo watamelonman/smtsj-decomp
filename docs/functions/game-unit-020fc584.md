@@ -37,3 +37,10 @@
 - `func_020fcd18`
 - `Unk0fc584_LoadMoneyWindow`: decompiler-derived (plain cleanup)
 - `Unk0fc584_Unk_0fc7b8`: decompiler-derived (plain+fix cleanup)
+- `func_020fc638`: hand-matched
+- `func_020fc654`: hand-matched
+- `func_020fc6b8`: hand-matched
+- `func_020fc6e4`: hand-matched
+- `func_020fc70c`: hand-matched
+- `func_020fc7f4`: hand-matched
+- `func_020fc86c`: hand-matched
