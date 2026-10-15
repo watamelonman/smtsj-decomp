@@ -15,3 +15,4 @@
 - `Unk03e23c_Unk_03e2bc`: hand-matched
 - `Unk03e23c_Unk_03e36c`: hand-matched
 - `Unk03e23c_Unk_03e398`: hand-matched
+- `func_0203e3e4`: hand-matched

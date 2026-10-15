@@ -76,3 +76,26 @@ u32 Unk03e23c_Unk_03e23c(void)
   Unk03aae8_Unk_03acf4();
   return 1;
 }
+
+int func_0203ac00();
+int Unk096754_Unk_096a14();
+int BattleTask_Unk_0481d4();
+u32 Unk02e000_GetRecordUnk1e(u32 id);
+int Unk02e000_SetRecordUnk1e();
+void Unk097514_Unk_0977f0();
+void func_020494d0();
+
+int func_0203e3e4(void)
+{
+    u16 id;
+    int n;
+    u32 old;
+    id = func_0203ac00(0);
+    n = func_0203ac00(1);
+    old = Unk02e000_GetRecordUnk1e(id);
+    if (BattleTask_Unk_0481d4() != 0) {
+        func_020494d0(id, n);
+    }
+    Unk02e000_SetRecordUnk1e(id, old + n);
+    return 1;
+}
