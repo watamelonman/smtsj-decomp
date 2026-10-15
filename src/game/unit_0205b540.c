@@ -3,6 +3,22 @@
 
 
 extern u8 data_0216a730[];
+int func_02008848();
+void func_0205b540(void)
+{
+    func_02008848(data_0216a730, 0, 0xc18);
+}
+
+void func_0205b560(u32 a, u32 b, u32 c)
+{
+    func_0205b540();
+    FIELD(u32, data_0216a730, 0xc0c) = a;
+    FIELD(u32, data_0216a730, 0xc10) = b + c;
+    FIELD(u32, data_0216a730, 0xc14) = b;
+    FIELD(u32, data_0216a730, 0x404) = a;
+    FIELD(u32, data_0216a730, 0x408) = b + c;
+}
+
 /* decompiler-derived */
 u32 Unk05b540_GetAddr_data_0216a730(void)
 {
