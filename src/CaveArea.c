@@ -131,7 +131,7 @@ typedef struct CaveAreaUnk0ed9e8 {
     float t;
 } CaveAreaUnk0ed9e8;
 
-void func_020ed3cc(float *p)
+void CaveArea_Unk_0ed3cc(float *p)
 {
     *p += 0.6f;
     if (*p >= 32.0f) {
@@ -147,7 +147,7 @@ void CaveArea_InitParams(float *p)
     FIELD(u32, p, 12) = 16;
 }
 
-void func_020ed9e8(CaveAreaUnk0ed9e8 *o)
+void CaveArea_Unk_0ed9e8(CaveAreaUnk0ed9e8 *o)
 {
     o->t += 0.5f;
     if (o->t >= 192.0f) {

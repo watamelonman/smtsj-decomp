@@ -55,7 +55,7 @@ void Unk0ef248_ClearArrF4(Unk0ef248Obj *p)
     }
 }
 
-void func_020ef2ec(float *p, int v)
+void Unk0ef248_Unk_0ef2ec(float *p, int v)
 {
     if (v < 0) {
         *p = 0.0f;

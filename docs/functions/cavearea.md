@@ -9,10 +9,10 @@
 ## Not done in M1-T971
 - `CaveArea_InitParams`
 - `CaveArea_AllocBuf`
-- `func_020ed3cc`
+- `CaveArea_Unk_0ed3cc`
 
 ## Not done in M1-T972
-- `func_020ed9e8`
+- `CaveArea_Unk_0ed9e8`
 - `CaveArea_Unk_0edb4c`
 - `CaveArea_Unk_0ed364`
 - `func_020eb7e0`
@@ -45,5 +45,5 @@
 - `CaveArea_Unk_0ed364`: hand-matched
 - `CaveArea_InitParams`: hand-matched
 - `CaveArea_Unk_0edb4c`: hand-matched
-- `func_020ed3cc`: hand-matched
-- `func_020ed9e8`: hand-matched
+- `CaveArea_Unk_0ed3cc`: hand-matched
+- `CaveArea_Unk_0ed9e8`: hand-matched
