@@ -50,3 +50,8 @@
 - `func_020eb034`
 - `func_020ea630`
 - `func_020ea208`
+
+## Not done in M1-T775
+- `func_020eaa90`
+- `func_020eae84`
+- `func_020eb488`
