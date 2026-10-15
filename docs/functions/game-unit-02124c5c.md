@@ -18,3 +18,7 @@
 - `func_02124ce8`
 - `Unk124c5c_Unk_124d54`: decompiler-derived (plain cleanup)
 - `Unk124c5c_Unk_124e50`: decompiler-derived (plain cleanup)
+- `func_02124cc4`: hand-matched
+- `func_02124dac`: hand-matched
+- `func_02124dd8`: hand-matched
+- `func_02124e04`: hand-matched
