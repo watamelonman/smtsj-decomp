@@ -113,3 +113,5 @@
 - `Unk02e000_SetRecordUnk1c`: hand-matched
 - `Unk02e000_SetRecordUnk1e`: hand-matched
 - `Unk02e000_SetRecordFlag1f`: hand-matched
+- `func_0202ecf8`: hand-matched
+- `func_0202eda8`: hand-matched
