@@ -111,3 +111,9 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   (its other callees 0834..0f30 are soft-float and still asm); defining them plus the 9 small helpers at the END of the
   file passes gatecheck (merge via hmerge.py with a hand-built candidate). Soft-float callees (func_0201e434 compare
   returning flags, 0201eb70/de2c/ed5c/ea6c) are not reproducible without the float runtime symbol names; skip them.
+- Soft-float runtime (for a later float pass; tentative, unnamed in symbols.txt): block ~0x0201d308..0x0201f5e4.
+  By behaviour: func_0201e434 = float a>b compare returning the result in CPSR C (callers use bls/bhi; mwcc `_fgr`-style),
+  its 0x5c/0x68 neighbours 0201e3d8..0201e5bc look like the other compares (_fls/_fle/_fge/_feq/_fne-style);
+  func_0201ea6c = float->s32 (_ffix-style), func_0201eaa0 = float->u32, func_0201e9e8 = float->double;
+  func_0201de2c/0201eb70/0201ed5c (0x21c/0x1e0/0x278) are the arithmetic ops (add/sub/mul/div, order unverified).
+  The real names can only be confirmed by compiling float C with mwcc and reading the emitted relocations.

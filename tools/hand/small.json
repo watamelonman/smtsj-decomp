@@ -102,42 +102,6 @@
 "tu": "src/ImageObj.c"
 },
 {
-"fn": "func_02093b14",
-"addr": "0x2093b14",
-"size": "0x58",
-"tu": "src/game/unit_020939f0.c"
-},
-{
-"fn": "func_02094bd4",
-"addr": "0x2094bd4",
-"size": "0x7c",
-"tu": "src/game/unit_020946e0.c"
-},
-{
-"fn": "func_0209502c",
-"addr": "0x209502c",
-"size": "0x70",
-"tu": "src/game/unit_02094fe0.c"
-},
-{
-"fn": "func_02095258",
-"addr": "0x2095258",
-"size": "0x54",
-"tu": "src/game/unit_02094fe0.c"
-},
-{
-"fn": "func_020952ac",
-"addr": "0x20952ac",
-"size": "0x5c",
-"tu": "src/game/unit_02094fe0.c"
-},
-{
-"fn": "func_020953f0",
-"addr": "0x20953f0",
-"size": "0x78",
-"tu": "src/game/unit_02094fe0.c"
-},
-{
 "fn": "func_0209560c",
 "addr": "0x209560c",
 "size": "0x54",
