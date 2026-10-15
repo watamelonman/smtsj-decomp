@@ -166,3 +166,10 @@ void Unk03e43c_Unk_0434b0(short *arg0,short *arg1)
     return;
   }
 }
+
+int func_02056cc0();
+/* decompiler-derived */
+void func_0203e878(void)
+{
+  func_02056cc0(1,0,data_0215e85e);
+}
