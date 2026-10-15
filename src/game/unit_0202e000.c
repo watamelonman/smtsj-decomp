@@ -375,7 +375,7 @@ int Unk02e000_TestFlag(int i)
 void func_02008904();
 u8 *func_020a1740();
 int func_020a17d8();
-int func_0202ee18(u32 id);
+int Unk02e000_GetRecordUnk1f(u32 id);
 
 typedef struct Unk02e000Rec {
     u8 pad_0000[0x1c];
@@ -394,7 +394,7 @@ typedef struct Unk02e000ObjFlags {
 } Unk02e000ObjFlags;
 
 #define UNK02E000_RECS() ((Unk02e000Rec *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc))
-int func_0202e9c8(u32 id, void *src)
+int Unk02e000_SetRecord(u32 id, void *src)
 {
     if (id > 491) {
         return 0;
@@ -403,7 +403,7 @@ int func_0202e9c8(u32 id, void *src)
     return 1;
 }
 
-int func_0202ea68(int i, void *src)
+int Unk02e000_SetSlot40(int i, void *src)
 {
     u8 *base = (u8 *)Unk02e000_Unk_02e774() + 8 + 0x5c00;
     if (i >= 0 && i < 3) {
@@ -413,7 +413,7 @@ int func_0202ea68(int i, void *src)
     return 0;
 }
 
-u32 func_0202eb0c(u32 id)
+u32 Unk02e000_GetRecordUnk1c(u32 id)
 {
     if (id > 491) {
         return 0;
@@ -424,7 +424,7 @@ u32 func_0202eb0c(u32 id)
     }
 }
 
-u32 func_0202ebb8(u32 id)
+u32 Unk02e000_GetRecordUnk1e(u32 id)
 {
     if (id > 491) {
         return 0;
@@ -435,16 +435,16 @@ u32 func_0202ebb8(u32 id)
     }
 }
 
-int func_0202ebfc(u32 id)
+int Unk02e000_IsRecordAvailable(u32 id)
 {
     Unk02e000ObjFlags *o = (Unk02e000ObjFlags *)func_020a1740(id);
-    if (func_020a17d8(id) == 0 && o->flag_0016_0 && func_0202ee18(id) > 0) {
+    if (func_020a17d8(id) == 0 && o->flag_0016_0 && Unk02e000_GetRecordUnk1f(id) > 0) {
         return 1;
     }
     return 0;
 }
 
-int func_0202ecac(u32 id)
+int Unk02e000_GetRecordFlag0(u32 id)
 {
     if (id > 491) {
         return 0;
@@ -455,7 +455,7 @@ int func_0202ecac(u32 id)
     }
 }
 
-int func_0202ed5c(u32 id)
+int Unk02e000_GetRecordFlag1(u32 id)
 {
     if (id > 491) {
         return 0;
@@ -466,7 +466,7 @@ int func_0202ed5c(u32 id)
     }
 }
 
-int func_0202ee18(u32 id)
+int Unk02e000_GetRecordUnk1f(u32 id)
 {
     if (id > 491) {
         return 0;

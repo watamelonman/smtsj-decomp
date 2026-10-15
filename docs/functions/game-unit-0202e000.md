@@ -43,21 +43,21 @@
 - `Unk02e000_GetPartyEntry`
 - `Unk02e000_Unk_02e180`
 - `Unk02e000_GetSlot`
-- `func_0202eb0c`
+- `Unk02e000_GetRecordUnk1c`
 - `func_0202e1b8`
 - `func_0202e4dc`
 - `Unk02e000_IsEntryInParty`
 - `Unk02e000_TestFlag`
 
 ## Not done in M1-T654
-- `func_0202ebb8`
-- `func_0202ee18`
-- `func_0202e9c8`
+- `Unk02e000_GetRecordUnk1e`
+- `Unk02e000_GetRecordUnk1f`
+- `Unk02e000_SetRecord`
 - `Unk02e000_FindEntryIndex`
-- `func_0202ebfc`
-- `func_0202ecac`
-- `func_0202ed5c`
-- `func_0202ea68`
+- `Unk02e000_IsRecordAvailable`
+- `Unk02e000_GetRecordFlag0`
+- `Unk02e000_GetRecordFlag1`
+- `Unk02e000_SetSlot40`
 
 ## Not done in M1-T655
 - `func_0202eab8`
@@ -98,11 +98,11 @@
 - `Unk02e000_IsEntryInParty`: hand-matched
 - `Unk02e000_HasField36`: hand-matched
 - `Unk02e000_TestFlag`: hand-matched
-- `func_0202e9c8`: hand-matched
-- `func_0202ea68`: hand-matched
-- `func_0202eb0c`: hand-matched
-- `func_0202ebb8`: hand-matched
-- `func_0202ebfc`: hand-matched
-- `func_0202ecac`: hand-matched
-- `func_0202ed5c`: hand-matched
-- `func_0202ee18`: hand-matched
+- `Unk02e000_SetRecord`: hand-matched
+- `Unk02e000_SetSlot40`: hand-matched
+- `Unk02e000_GetRecordUnk1c`: hand-matched
+- `Unk02e000_GetRecordUnk1e`: hand-matched
+- `Unk02e000_IsRecordAvailable`: hand-matched
+- `Unk02e000_GetRecordFlag0`: hand-matched
+- `Unk02e000_GetRecordFlag1`: hand-matched
+- `Unk02e000_GetRecordUnk1f`: hand-matched

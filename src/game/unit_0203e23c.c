@@ -12,14 +12,14 @@ u32 Unk03e23c_Unk_03e3d0(void)
   return 1;
 }
 
-int func_0202ee18();
+int Unk02e000_GetRecordUnk1f();
 int func_0203ac00();
 /* decompiler-derived */
 u32 Unk03e23c_Unk_03e23c(void)
 {
   u16 value;
   value = func_0203ac00(0);
-  func_0202ee18(value);
+  Unk02e000_GetRecordUnk1f(value);
   Unk03aae8_Unk_03acf4();
   return 1;
 }

@@ -26,5 +26,13 @@
  "func_0202e7f4": "Unk02e000_FindEntryIndex",
  "func_0202e840": "Unk02e000_IsEntryInParty",
  "func_0202e904": "Unk02e000_HasField36",
- "func_0202e924": "Unk02e000_TestFlag"
+ "func_0202e924": "Unk02e000_TestFlag",
+ "func_0202e9c8": "Unk02e000_SetRecord",
+ "func_0202ea68": "Unk02e000_SetSlot40",
+ "func_0202eb0c": "Unk02e000_GetRecordUnk1c",
+ "func_0202ebb8": "Unk02e000_GetRecordUnk1e",
+ "func_0202ebfc": "Unk02e000_IsRecordAvailable",
+ "func_0202ecac": "Unk02e000_GetRecordFlag0",
+ "func_0202ed5c": "Unk02e000_GetRecordFlag1",
+ "func_0202ee18": "Unk02e000_GetRecordUnk1f"
 }
