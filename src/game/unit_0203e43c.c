@@ -142,3 +142,29 @@ void func_0203e794(int arg0,int arg1)
 }
 
 
+
+
+int func_02034398();
+/* decompiler-derived */
+void func_020434b0(short *arg0,short *arg1)
+{
+  int tmp1;
+  if (0xb0 < *arg0) {
+    *arg0 = 0xb0;
+  }
+  if (0x70 < *arg1) {
+    *arg1 = 0x70;
+  }
+  tmp1 = func_02034398();
+  if ((int)*arg0 < (int)((*(u8 *)(*(int *)(tmp1 + 0x354) + 10) - 10) * -8)) {
+    tmp1 = func_02034398();
+    *arg0 = (*(u8 *)(*(int *)(tmp1 + 0x354) + 10) - 10) * -8;
+  }
+  tmp1 = func_02034398();
+  if ((int)*arg1 < (int)((*(u8 *)(*(int *)(tmp1 + 0x354) + 0xb) - 10) * -8)) {
+    tmp1 = func_02034398();
+    *arg1 = (*(u8 *)(*(int *)(tmp1 + 0x354) + 0xb) - 10) * -8;
+    return;
+  }
+  return;
+}

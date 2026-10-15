@@ -40,3 +40,13 @@
 - `func_0203fa84`
 - `func_02044264`
 - `func_020442fc`
+- `func_020434b0`: decompiler-derived
+
+## Not done in M1-T1090
+- `func_0203e6f0`
+- `func_0203f960`
+- `func_0203eaf8`
+- `func_0203f394`
+- `func_0203f174`
+- `func_0203f2d4`
+- `func_02043340`
