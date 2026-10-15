@@ -10,3 +10,10 @@
 - `func_020ff5c0`
 - `func_020ffbcc`
 - `func_020ff034`
+
+## Not done in M1-T614
+- `func_020ffc44`
+- `func_020ff140`
+- `func_020ffa9c`
+- `func_020ff29c`
+- `func_020ff638`
