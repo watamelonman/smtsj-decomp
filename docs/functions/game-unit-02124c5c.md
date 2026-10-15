@@ -22,3 +22,5 @@
 - `Unk124c5c_IsKind0`: hand-matched
 - `Unk124c5c_IsKind31`: hand-matched
 - `Unk124c5c_Unk_124e04`: hand-matched
+- `func_02124d6c`: hand-matched
+- `func_02124d8c`: hand-matched

@@ -35,6 +35,26 @@ void Unk124c5c_Unk_124d54(void)
   func_02061424((u32)data_02176e88);
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+void func_02124d6c(u32 a, u32 b)
+{
+    if (data_02176e88 != 0) {
+        FIELD(u32, data_02176e88, 12) = a;
+        FIELD(u32, data_02176e88, 16) = b;
+    }
+}
+
+void func_02124d8c(u32 a, u32 b)
+{
+    if (data_02176e88 != 0) {
+        FIELD(u32, data_02176e88, 4) = a;
+        FIELD(u8, data_02176e88, 8) = b;
+    }
+}
+
 int Unk124c5c_IsKind0(void)
 {
     u8 *p = data_02176e88;
