@@ -10,3 +10,4 @@
 ## Not done in M1-T106
 - `func_020cb084`
 - `func_020cafbc`
+- `func_020cb084`: hand-matched
