@@ -33,3 +33,4 @@
 - `func_020f3de8`
 - `func_020f40c8`
 - `func_020f3f2c`
+- `func_020f4538`: decompiler-derived (plain+fix cleanup)

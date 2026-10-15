@@ -165,3 +165,11 @@ void Unk0f3db4_Unk_0f4674(int arg0,int arg1)
     *(u8 *)(value2 + 300) = value1;
   } while (value3 < 0x3c);
 }
+
+/* decompiler-derived */
+void func_020f4538(u32 arg0,int arg1)
+{
+  int tmp1;
+  tmp1 = Unk0f3db4_Unk_0f3ec8((u32)arg0);
+  Unk0f3db4_Unk_0f4550((u8 *)tmp1 + arg1);
+}
