@@ -17,3 +17,4 @@
 - `func_020de04c`
 - `Unk0ddeb0_GetRes15Word0`: hand-matched
 - `Unk0ddeb0_GetRes15Word1`: hand-matched
+- `func_020ddf0c`: hand-matched
