@@ -22,7 +22,10 @@ typedef struct GameStateRoot {
 
 typedef struct GameState {
     GameStateRoot *root;        /* +0x0000 */
-    u8  pad_0004[0x38e4];
+    u8  pad_0004[0x3130];
+    u8  unk_3134[0xc];          /* +0x3134  sub-object, torn down by GameState_Shutdown */
+    u8  unk_3140[0xc];          /* +0x3140  sub-object (Unk0387bc_*) */
+    u8  unk_314c[0x79c];        /* +0x314C  sub-object (Unk038fbc_*); size unknown */
     u8  unk_38e8[4];            /* +0x38E8  base passed to func_0209a884 */
     u8  pad_38ec[0x3ae0];
     u32 unk_73cc;               /* +0x73CC */
