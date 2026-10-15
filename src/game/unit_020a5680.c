@@ -18,7 +18,38 @@ typedef struct Unk0a5680Entry {
     u8 unk_0020[4];             /* +0x20 sub-block */
 } Unk0a5680Entry;
 
-Unk0a5680Entry *func_020a5680(u32 a, u32 b);
+Unk0a5680Entry *func_020a5680();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int func_02008904();
+int func_0206f24c();
+int func_02044ec4();
+int func_0204a244();
+extern s8 data_0213c3d4[];
+int func_020616c0();
+int func_020a572c(u8 *p, u32 c);
+
+int func_020a572c(u8 *p, u32 c)
+{
+    s32 k = FIELD(s8, p, 18);
+    if (k == -1) {
+        return func_02008904(FIELD(u32, p, 28), p + 32, 512, c);
+    }
+    return func_0206f24c(p + 32, FIELD(u32, p, 28), 1 << (k + 13), c);
+}
+
+int func_020a5778(u8 *p, int force)
+{
+    s8 k = data_0213c3d4[func_0204a244(func_02044ec4(FIELD(u32, p, 12)))];
+    if (FIELD(s8, p, 18) == k && force == 0) {
+        return 0;
+    }
+    FIELD(s8, p, 18) = k;
+    func_020a572c(p, 4096);
+    return 1;
+}
+
 s32 Unk0a5680_GetEntryUnk14(u32 a, u32 b)
 {
     Unk0a5680Entry *e = func_020a5680(a, b);
@@ -71,6 +102,16 @@ int Unk0a5680_Unk_0a5c14(u32 arg0,u32 arg1,u32 arg2)
 
 int func_0205c41c();
 int func_0205ca88();
+int func_020a5e28(id)
+    u32 id;
+{
+    u8 *e = (u8 *)func_020a5680(id);
+    if (e == 0) {
+        return 0;
+    }
+    return func_020616c0(e + 8);
+}
+
 /* decompiler-derived */
 void Unk0a5680_Unk_0a611c(void)
 {
@@ -90,4 +131,13 @@ int func_020a5e8c();
 void Unk0a5680_Unk_0a5fb0(void)
 {
   func_020a5e8c(*data_02176b14);
+}
+
+int func_020a60fc(u32 id)
+{
+    u8 *e = (u8 *)func_020a5e28(id);
+    if (e != 0 && e[56] != 0) {
+        return 1;
+    }
+    return 0;
 }

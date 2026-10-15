@@ -38,3 +38,7 @@
 - `Unk0a5680_Unk_0a5fb0`: decompiler-derived (plain cleanup)
 - `Unk0a5680_GetEntryUnk14`: hand-matched
 - `Unk0a5680_GetEntrySub20`: hand-matched
+- `func_020a572c`: hand-matched
+- `func_020a5778`: hand-matched
+- `func_020a5e28`: hand-matched
+- `func_020a60fc`: hand-matched
