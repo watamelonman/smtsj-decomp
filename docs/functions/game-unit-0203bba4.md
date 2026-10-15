@@ -15,9 +15,9 @@
 
 ## Not done in M1-T181
 - `Unk03bba4_Unk_03bc40`
-- `func_0203bda0`
+- `Unk03bba4_Unk_03bda0`
 - `Unk03bba4_Unk_03bc88`: hand-matched
 - `Unk03bba4_Unk_03bca4`: hand-matched
 - `Unk03bba4_Unk_03bba4`: hand-matched
 - `Unk03bba4_Unk_03bc40`: hand-matched
-- `func_0203bda0`: hand-matched
+- `Unk03bba4_Unk_03bda0`: hand-matched

@@ -64,7 +64,7 @@ void func_020babb4();
 void Unk11fc20_Unk_11fc20();
 u32 Unk03aae8_Unk_03ad14(void);
 
-int func_0203bb2c(void)
+int Unk03b988_Unk_03bb2c(void)
 {
     func_0203ac00(0);
     func_0203ac00(1);

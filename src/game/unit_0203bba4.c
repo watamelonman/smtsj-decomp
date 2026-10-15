@@ -145,7 +145,7 @@ void ImageBg_Unk_0e54d4();
 void Unk02e000_SetSlot();
 int ImageBg_IsMode1or2();
 
-int func_0203bda0(void)
+int Unk03bba4_Unk_03bda0(void)
 {
     if (func_0206552c() != 0) {
         return 0;

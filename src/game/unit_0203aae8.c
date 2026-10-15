@@ -198,7 +198,7 @@ int Unk094fe0_GetSlot();
 void func_0209512c();
 u32 Unk03aae8_Unk_03ad14(void);
 
-int func_0203b634(void)
+int Unk03aae8_Unk_03b634(void)
 {
     int r;
     s16 a = func_0203ac00(0);
@@ -216,7 +216,7 @@ int func_0203b634(void)
     return 1;
 }
 
-int func_0203b694(void)
+int Unk03aae8_Unk_03b694(void)
 {
     int r;
     s16 a = func_0203ac00(0);
@@ -233,7 +233,7 @@ int func_0203b694(void)
     return 1;
 }
 
-int func_0203b6ec(void)
+int Unk03aae8_Unk_03b6ec(void)
 {
     s16 a = func_0203ac00(0);
     u8 *o = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);

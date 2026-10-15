@@ -6,8 +6,8 @@
 ## Not done in M1-T070
 - `Unk03b988_Call_0e66f0`
 - `Unk03b988_Unk_03bab4`
-- `func_0203bb2c`
+- `Unk03b988_Unk_03bb2c`
 - `func_0203b9dc`
 - `Unk03b988_Unk_03bab4`: hand-matched
 - `Unk03b988_Call_0e66f0`: hand-matched
-- `func_0203bb2c`: hand-matched
+- `Unk03b988_Unk_03bb2c`: hand-matched
