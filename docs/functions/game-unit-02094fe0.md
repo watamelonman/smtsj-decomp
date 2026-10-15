@@ -41,3 +41,11 @@
 - `Unk094fe0_Call_02095320`: hand-matched
 - `Unk094fe0_Call_0209502c`: hand-matched
 - `Unk094fe0_TestBit`: hand-matched
+- `func_02095178`: hand-matched
+- `func_020951b0`: hand-matched
+- `func_020951d4`: hand-matched
+- `func_02095204`: hand-matched
+- `func_02095230`: hand-matched
+- `func_02095320`: hand-matched
+- `func_02095350`: hand-matched
+- `func_02095370`: hand-matched
