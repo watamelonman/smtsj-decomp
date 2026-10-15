@@ -72,9 +72,9 @@ int StaffRoll_Unk_117d38(u16 *p)
 int func_02117dd8();
 u32 StaffRoll_Unk_1181a0(int arg0);
 int func_02118424();
-void func_02118490(u8 *p);
+void StaffRoll_Unk_118490(u8 *p);
 void func_02061424();
-void func_02118174(u8 *p)
+void StaffRoll_Tick(u8 *p)
 {
     u32 n = FIELD(u32, p, 180) + 1;
     FIELD(u32, p, 180) = n;
@@ -115,7 +115,7 @@ void StaffRoll_Unk_1182a4(int arg0)
 
 int func_02117f94();
 int func_021180e4();
-void func_02118174();
+void StaffRoll_Tick();
 /* decompiler-derived */
 u32 StaffRoll_Unk_1181a0(int arg0)
 {
@@ -134,7 +134,7 @@ u32 StaffRoll_Unk_1181a0(int arg0)
     func_021180e4();
     break;
   case 3:
-    func_02118174();
+    StaffRoll_Tick();
     break;
   case 4:
     tmp1 = 1;
@@ -151,7 +151,7 @@ typedef struct StaffRollCmd {
 
 int func_02117d5c(StaffRollWork *w, u32 cmd, int line);
 
-void func_02118490(u8 *p)
+void StaffRoll_Unk_118490(u8 *p)
 {
     int a;
     int b;
@@ -165,14 +165,14 @@ void func_02118490(u8 *p)
     }
 }
 
-void func_021184d8(u8 *p)
+void StaffRoll_Update(u8 *p)
 {
     switch (FIELD(u32, p, 0)) {
     case 0:
         FIELD(u32, p, 0) = 1;
         return;
     case 1:
-        func_02118490(p);
+        StaffRoll_Unk_118490(p);
         return;
     case 2:
         func_02061424(p);

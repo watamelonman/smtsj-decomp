@@ -34,7 +34,7 @@ void BattleShowingTask_Unk_1196e0(u32 *arg0);
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
 void Unk02cad4_Unk_02cbdc();
-void func_021196c0(void)
+void BattleShowingTask_Unk_1196c0(void)
 {
     *data_02176e70 = 0;
     Unk02cad4_Unk_02cbdc(1);

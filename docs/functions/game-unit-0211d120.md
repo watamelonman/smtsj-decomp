@@ -4,9 +4,9 @@
 - `Unk11d120_Unk_11d198`: decompiler-derived
 
 ## Not done in M1-T312
-- `func_0211d178`
+- `Unk11d120_Init`
 - `func_0211d120`
 - `func_0211d200`
 - `func_0211d2a4`
 - `func_0211d338`
-- `func_0211d178`: hand-matched
+- `Unk11d120_Init`: hand-matched

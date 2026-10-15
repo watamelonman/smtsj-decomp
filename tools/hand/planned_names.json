@@ -586,5 +586,17 @@
  "func_020e5484": "ImageBg_IsMode1or2",
  "func_020e55fc": "ImageBg_AllocBuf",
  "func_020fda58": "Unk0fd9f0_Unk_0fda58",
- "func_0211558c": "Unk113294_Unk_11558c"
+ "func_0211558c": "Unk113294_Unk_11558c",
+ "func_021177e0": "Unk116598_Set",
+ "func_02118174": "StaffRoll_Tick",
+ "func_02118490": "StaffRoll_Unk_118490",
+ "func_021184d8": "StaffRoll_Update",
+ "func_02118b30": "Unk118b04_SetFlag",
+ "func_02118bcc": "Unk118b04_ClearFlag2",
+ "func_02118ef4": "Unk118b04_GetEntry",
+ "func_02118f88": "Unk118b04_Unk_118f88",
+ "func_021196c0": "BattleShowingTask_Unk_1196c0",
+ "func_0211d178": "Unk11d120_Init",
+ "func_0211d7f4": "Unk11d520_AddUniqueId",
+ "func_0211dde8": "Unk11d520_Unk_11dde8"
 }

@@ -8,14 +8,14 @@
 - `StaffRoll_Unk_117cfc`
 - `StaffRoll_Unk_117d18`
 - `StaffRoll_Unk_117d38`
-- `func_02118174`
+- `StaffRoll_Tick`
 - `func_02118270`
 - `StaffRoll_Unk_1182a4`: decompiler-derived
 - `StaffRoll_Unk_1181a0`: decompiler-derived
 
 ## Not done in M1-T641
-- `func_021184d8`
-- `func_02118490`
+- `StaffRoll_Update`
+- `StaffRoll_Unk_118490`
 - `func_02118208`
 - `func_02118424`
 - `func_02118518`
@@ -32,6 +32,6 @@
 - `StaffRoll_Unk_117cfc`: hand-matched
 - `StaffRoll_Unk_117d18`: hand-matched
 - `StaffRoll_Unk_117d38`: hand-matched
-- `func_02118174`: hand-matched
-- `func_02118490`: hand-matched
-- `func_021184d8`: hand-matched
+- `StaffRoll_Tick`: hand-matched
+- `StaffRoll_Unk_118490`: hand-matched
+- `StaffRoll_Update`: hand-matched

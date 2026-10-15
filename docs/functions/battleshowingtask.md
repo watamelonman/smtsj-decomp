@@ -24,7 +24,7 @@
 - `BattleShowingTask_Unk_11a01c`: decompiler-derived
 
 ## Not done in M1-T1031
-- `func_021196c0`
+- `BattleShowingTask_Unk_1196c0`
 - `ExpGauge_PlayGaugeNormal`
 - `ExpGauge_PlayGaugeLevelUp`
 - `ExpGauge_UpdateToNextLevel`
@@ -66,4 +66,4 @@
 - `ExpGauge_PlayGaugeLevelUp`: hand-matched (ExpGauge)
 - `ExpGauge_GetExpForNextLevel`: hand-matched (ExpGauge)
 - `ExpGauge_UpdateToNextLevel`: hand-matched (ExpGauge)
-- `func_021196c0`: hand-matched
+- `BattleShowingTask_Unk_1196c0`: hand-matched

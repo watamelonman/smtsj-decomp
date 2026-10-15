@@ -12,7 +12,7 @@ typedef struct Unk11d120Work {
 int func_02053000();
 extern u32 data_02176e74[];
 void func_02008848();
-void func_0211d178(u32 x)
+void Unk11d120_Init(u32 x)
 {
     *data_02176e74 = x;
     func_02008848(x, 0, 176);

@@ -15,14 +15,14 @@
 - `Unk118b04_Unk_119434`: decompiler-derived
 
 ## Not done in M1-T564
-- `func_02118bcc`
+- `Unk118b04_ClearFlag2`
 - `Unk118b04_Unk_119358`
-- `func_02118ef4`
-- `func_02118b30`
+- `Unk118b04_GetEntry`
+- `Unk118b04_SetFlag`
 - `func_02118da0`
 
 ## Not done in M1-T565
-- `func_02118f88`
+- `Unk118b04_Unk_118f88`
 - `func_02118f30`
 - `func_02119504`
 - `func_02118cd8`
@@ -41,7 +41,7 @@
 - `func_02119178`
 - `Unk118b04_Unk_119358`: hand-matched
 - `Unk118b04_GetEntryKey`: hand-matched
-- `func_02118b30`: hand-matched
-- `func_02118bcc`: hand-matched
-- `func_02118ef4`: hand-matched
-- `func_02118f88`: hand-matched
+- `Unk118b04_SetFlag`: hand-matched
+- `Unk118b04_ClearFlag2`: hand-matched
+- `Unk118b04_GetEntry`: hand-matched
+- `Unk118b04_Unk_118f88`: hand-matched

@@ -40,7 +40,7 @@ typedef struct Unk11d520Ids {
     u8 pad2[32];
     u32 h[8];
 } Unk11d520Ids;
-void func_0211d7f4(Unk11d520Ids *p, u32 id)
+void Unk11d520_AddUniqueId(Unk11d520Ids *p, u32 id)
 {
     int i;
     int n = p->n;
@@ -74,7 +74,7 @@ int Unk11d520_Unk_11d858(Unk11d520Work *arg0, u32 arg1){
   return tmp2;
 }
 
-void func_0211dde8(Unk11d520Ids *p, int i, u32 v)
+void Unk11d520_Unk_11dde8(Unk11d520Ids *p, int i, u32 v)
 {
     func_0205c408(p->h[i], v);
     func_0205c6e0(p->h[i]);

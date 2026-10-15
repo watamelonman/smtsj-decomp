@@ -37,8 +37,8 @@ void Unk118b04_Set_data_02151b28(u32 arg0)
 u32 func_020445d0();
 int func_0204fde0();
 int func_0204fe18();
-u8 *func_02118ef4(int i);
-void func_02118b30(int i, int f)
+u8 *Unk118b04_GetEntry(int i);
+void Unk118b04_SetFlag(int i, int f)
 {
     u8 *q = (u8 *)Unk02e000_Unk_02e228() + 148;
     if (f != 0) {
@@ -85,7 +85,7 @@ int Unk118b04_Unk_118ba8(int arg0)
 }
 
 
-void func_02118bcc(int i)
+void Unk118b04_ClearFlag2(int i)
 {
     u8 *q = (u8 *)Unk02e000_Unk_02e228() + 148;
     q[i] &= ~2;
@@ -101,7 +101,7 @@ void Unk118b04_Unk_118e50(int arg0,int arg1)
 
 int func_02008848();
 int func_02008904();
-u8 *func_02118ef4(int i)
+u8 *Unk118b04_GetEntry(int i)
 {
     u32 h = func_020445d0(45, 0);
     u8 *base = (u8 *)func_0204fde0(h);
@@ -111,12 +111,12 @@ u8 *func_02118ef4(int i)
     return base + i * 12;
 }
 
-int func_02118f88(u32 x)
+int Unk118b04_Unk_118f88(u32 x)
 {
     int i;
     u8 *e;
     for (i = 0; i < 106; i++) {
-        e = func_02118ef4(i);
+        e = Unk118b04_GetEntry(i);
         if (e != 0 && e[9] == x) {
             if (Unk118b04_Unk_118b78(i) == 0) {
                 return 0;

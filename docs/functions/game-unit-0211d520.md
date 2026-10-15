@@ -6,9 +6,9 @@
 - `Unk11d520_Unk_11d858`: decompiler-derived
 
 ## Not done in M1-T729
-- `func_0211dde8`
-- `func_0211d7f4`
+- `Unk11d520_Unk_11dde8`
+- `Unk11d520_AddUniqueId`
 - `func_0211da70`
 - `func_0211d6fc`
-- `func_0211d7f4`: hand-matched
-- `func_0211dde8`: hand-matched
+- `Unk11d520_AddUniqueId`: hand-matched
+- `Unk11d520_Unk_11dde8`: hand-matched
