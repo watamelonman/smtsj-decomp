@@ -83,6 +83,33 @@ int Unk122e1c_Unk_122f68(Unk122e1cWork *work)
   return work->unk_0060 == '\b';
 }
 
+typedef struct Unk122e1cObj {
+    u32 pad0;
+    u32 unk4;
+    u8 pad[216];
+    u32 h[6];
+    u32 slot[6];
+} Unk122e1cObj;
+void Unk0cb32c_Unk_0cb504();
+void func_02122fac(Unk122e1cObj *p, int i, u32 v)
+{
+    if (p == 0) {
+        return;
+    }
+    if (i < 0 || i >= 6) {
+        return;
+    }
+    p->slot[i] = v;
+}
+
+void func_02122fd0(Unk122e1cObj *p)
+{
+    int i;
+    for (i = 0; i < 6; i++) {
+        p->slot[i] = 0;
+    }
+}
+
 /* decompiler-derived */
 void Unk122e1c_Unk_12332c(Unk122e1cWork *work)
 {
@@ -161,7 +188,7 @@ void Unk122e1c_Unk_123294(int arg0)
   return;
 }
 
-int func_02122fac();
+void func_02122fac();
 /* decompiler-derived */
 void Unk122e1c_Unk_12306c(int arg0)
 {
@@ -178,6 +205,14 @@ void Unk122e1c_Unk_12306c(int arg0)
 }
 
 extern u8 data_0213cd7c[];
+void func_02123534(Unk122e1cObj *p)
+{
+    int i;
+    for (i = 0; i < 2; i++) {
+        Unk0cb32c_Unk_0cb504(p->h[i], (u8)p->unk4, (u8)(i + 110));
+    }
+}
+
 /* decompiler-derived */
 void Unk122e1c_Unk_1241cc(int arg0,int arg1)
 {
