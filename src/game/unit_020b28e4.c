@@ -72,4 +72,18 @@ int Unk0b28e4_Unk_0b64c8(void)
   return *(int *)(((int)data_02176b80) + 4) + 2;
 }
 
-
+u32 func_020b6528(u8 *p, int i)
+{
+    u32 ok = i >= 0;
+    if (ok == 0) {
+        return 0;
+    }
+    ok = i < 27;
+    if (ok == 0) {
+        return 0;
+    }
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 12, 52);
+}

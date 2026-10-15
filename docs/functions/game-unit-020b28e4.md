@@ -35,3 +35,4 @@
 - `Unk0b28e4_Unk_0b62e8`: hand-matched
 - `Unk0b28e4_Unk_0b6338`: hand-matched
 - `Unk0b28e4_Unk_0b6370`: hand-matched
+- `func_020b6528`: hand-matched
