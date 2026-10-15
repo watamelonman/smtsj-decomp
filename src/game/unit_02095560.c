@@ -55,7 +55,7 @@ u32 Unk095560_Unk_095d3c(void)
 }
 
 int func_02065ca8();
-int func_02095728();
+void func_02095728(void);
 /* decompiler-derived */
 void Unk095560_Unk_096130(void)
 {
@@ -285,4 +285,12 @@ void func_02095b48(char *buf, int id)
         case 4: func_02013c3c(buf, data_0214c874); return;
         }
     }
+}
+
+/* decompiler-derived */
+void func_02095728(void)
+{
+  ImageBg_Unk_0e5530();
+  ImageObj_Unk_0775d8();
+  Unk02d15c_Unk_02d81c();
 }
