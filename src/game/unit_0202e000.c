@@ -14,7 +14,7 @@ int func_0205a9d0();
 
 void Unk02e000_Nop_02e3e0(void);
 u32 Unk02e000_GetAddr_data_02140ac8(void);
-void Unk02e000_Thunk_0202e788(void);
+u8 *Unk02e000_Thunk_0202e788(void);
 void Unk02e000_Set_data_0215dd24(u32 arg0);
 u32 Unk02e000_Get_data_0215dd24(void);
 u32 Unk02e000_Unk_02e170(void);
@@ -39,6 +39,20 @@ typedef struct Unk02e000Save {
     u8 pad_0000[0x5fc4];
     u32 counter_5fc4;          /* +0x5FC4, capped at 35999999 */
 } Unk02e000Save;
+
+typedef struct Unk02e000Rec {
+    u8 pad_0000[0xb];
+    u8 unk_000b;
+    u8 pad_000c[0x10];
+    u16 unk_001c;
+    u8 unk_001e_0 : 7;
+    u8 unk_001e_7 : 1;
+    u8 flag_001f_0 : 1;
+    u8 flag_001f_1 : 1;
+    u8 unk_001f_2 : 6;
+    u8 pad_0020[4];
+} Unk02e000Rec;                 /* 36 bytes; table at work+0x16FC, ids 1..491 */
+#define UNK02E000_RECS() ((Unk02e000Rec *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc))
 
 void Unk02e000_SetSlot(int i, u32 v)
 {
@@ -144,7 +158,7 @@ int Unk02e000_Call_02008848(void)
 }
 
 /* forwards to `Unk02e000_GetWorkArea` */
-void Unk02e000_Thunk_0202e788(void) { Unk02e000_GetWorkArea(); }
+u8 *Unk02e000_Thunk_0202e788(void) { return Unk02e000_GetWorkArea(); }
 
 /* decompiler-derived */
 void Unk02e000_Set_data_0215dd24(u32 arg0)
@@ -335,18 +349,6 @@ int Unk02e000_FindIndex_02e3e4(int a)
 int Unk02e000_Unk_02e884(void);
 int Unk02e000_GetTier(int x);
 int Unk02e000_FindIndex_02e3e4(int a);
-typedef struct Unk02e000Ent {
-    u8 pad[11];
-    u8 unk_0b;
-    u8 pad2[16];
-    u16 unk_1c;
-    u8 unk_1e_lo : 7;
-    u8 unk_1e_hi : 1;
-    u8 unk_1f_b0 : 1;
-    u8 unk_1f_rest : 7;
-    u8 pad3[4];
-} Unk02e000Ent;
-#define ENT(i) ((Unk02e000Ent *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc) + ((i) - 1))
 
 u8 *Unk02e000_GetSlotPtr(int i)
 {
@@ -428,23 +430,12 @@ u8 *func_020a1740();
 int Unk0a163c_Unk_0a17d8();
 int Unk02e000_GetRecordUnk1f(u32 id);
 
-typedef struct Unk02e000Rec {
-    u8 pad_0000[0x1c];
-    u16 unk_001c;
-    u8 unk_001e_0 : 7;
-    u8 unk_001e_7 : 1;
-    u8 flag_001f_0 : 1;
-    u8 flag_001f_1 : 1;
-    u8 unk_001f_2 : 6;
-    u8 pad_0020[4];
-} Unk02e000Rec;                 /* 36 bytes; table at work+0x16FC, ids 1..491 */
 
 typedef struct Unk02e000ObjFlags {
     u16 pad_0000[11];
     u16 flag_0016_0 : 1;
 } Unk02e000ObjFlags;
 
-#define UNK02E000_RECS() ((Unk02e000Rec *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc))
 void Unk02e000_SetBit_02e968(int i, int set)
 {
     u8 m;
@@ -472,13 +463,13 @@ int Unk02e000_SetRecord(u32 id, void *src)
 
 int Unk02e000_GetRecord(u32 id, u32 a)
 {
-    Unk02e000Ent *e;
+    Unk02e000Rec *e;
     if (id > 491) {
         return 0;
     }
-    e = ENT(id);
+    e = &UNK02E000_RECS()[id - 1];
     func_02008904(a, e, 36);
-    e->unk_0b |= 2;
+    e->unk_000b |= 2;
     return 1;
 }
 
@@ -494,14 +485,14 @@ int Unk02e000_SetSlot40(int i, void *src)
 
 int Unk02e000_SetRecordUnk1c(u32 id, u16 v)
 {
-    Unk02e000Ent *e;
+    Unk02e000Rec *e;
     if (id > 491) {
         return 0;
     }
-    e = ENT(id);
-    e->unk_1c = v;
-    if (e->unk_1c > 500) {
-        e->unk_1c = 500;
+    e = &UNK02E000_RECS()[id - 1];
+    e->unk_001c = v;
+    if (e->unk_001c > 500) {
+        e->unk_001c = 500;
     }
     return 1;
 }
@@ -519,15 +510,15 @@ u32 Unk02e000_GetRecordUnk1c(u32 id)
 
 int Unk02e000_SetRecordUnk1e(u32 id, int v)
 {
-    Unk02e000Ent *e;
+    Unk02e000Rec *e;
     if (id > 491) {
         return 0;
     }
-    e = ENT(id);
+    e = &UNK02E000_RECS()[id - 1];
     if (v > 100) {
-        e->unk_1e_lo = 100;
+        e->unk_001e_0 = 100;
     } else {
-        e->unk_1e_lo = (u8)v;
+        e->unk_001e_0 = (u8)v;
     }
     return 1;
 }
@@ -554,12 +545,12 @@ int Unk02e000_IsRecordAvailable(u32 id)
 
 int Unk02e000_SetRecordFlag1f(u32 id, int v)
 {
-    Unk02e000Ent *e;
+    Unk02e000Rec *e;
     if (id > 491) {
         return 0;
     }
-    e = ENT(id);
-    e->unk_1f_b0 = (u8)(v != 0);
+    e = &UNK02E000_RECS()[id - 1];
+    e->flag_001f_0 = (u8)(v != 0);
     return 1;
 }
 
@@ -574,26 +565,15 @@ int Unk02e000_GetRecordFlag0(u32 id)
     }
 }
 
-typedef struct Unk02e000Ent2 {
-    u8 pad[11];
-    u8 unk_0b_b0 : 1;
-    u8 unk_0b_rest : 7;
-    u8 pad2[19];
-    u8 unk_1f_b0 : 1;
-    u8 unk_1f_b1 : 1;
-    u8 unk_1f_hi : 6;
-    u8 pad3[4];
-} Unk02e000Ent2;
-#define ENT2(i) ((Unk02e000Ent2 *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc) + ((i) - 1))
 
 int Unk02e000_SetRecordFlag1f_1(u32 id, int v)
 {
-    Unk02e000Ent2 *e;
+    Unk02e000Rec *e;
     if (id > 491) {
         return 0;
     }
-    e = ENT2(id);
-    e->unk_1f_b1 = (u8)(v != 0);
+    e = &UNK02E000_RECS()[id - 1];
+    e->flag_001f_1 = (u8)(v != 0);
     return 1;
 }
 
@@ -610,15 +590,15 @@ int Unk02e000_GetRecordFlag1(u32 id)
 
 int Unk02e000_SetRecordUnk1f_2(u32 id, int v)
 {
-    Unk02e000Ent2 *e;
+    Unk02e000Rec *e;
     if (id > 491) {
         return 0;
     }
-    e = ENT2(id);
+    e = &UNK02E000_RECS()[id - 1];
     if (v > 63) {
-        e->unk_1f_hi = 63;
+        e->unk_001f_2 = 63;
     } else {
-        e->unk_1f_hi = (u8)v;
+        e->unk_001f_2 = (u8)v;
     }
     return 1;
 }
