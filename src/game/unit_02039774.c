@@ -38,3 +38,21 @@ void Unk039774_Unk_039b10(int arg0)
   func_020397cc(arg0);
   func_02053000(arg0);
 }
+
+extern u8 *data_0215de28;
+void Unk039774_Unk_039b10(int arg0);
+void func_02039b74(u32 key)
+{
+    u8 *o = data_0215de28;
+    u8 *next;
+    if (o == 0) {
+        return;
+    }
+    do {
+        next = FIELD(u8 *, o, 0xe4);
+        if (FIELD(u32, o, 0xf4) == key) {
+            Unk039774_Unk_039b10((int)o);
+        }
+        o = next;
+    } while (o != 0);
+}
