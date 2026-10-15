@@ -11,3 +11,4 @@
 - `func_02039160`
 - `func_02038ff8`
 - `Unk038fbc_GetNodeUnk08`: hand-matched
+- `func_02039204`: hand-matched

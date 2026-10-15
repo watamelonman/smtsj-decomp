@@ -59,6 +59,21 @@ u32 Unk038fbc_Unk_038fbc(int *arg0)
 }
 
 
+u32 Unk038fbc_Unk_039248(u32 arg0);
+u8 *func_02039204(u32 *p, u32 i, u32 j)
+{
+    if (p == 0) {
+        return 0;
+    }
+    if (((u8 *)p[0] + i)[12] <= j) {
+        return 0;
+    }
+    {
+        u8 *base = (u8 *)(p + i)[3];
+        return base + j * Unk038fbc_Unk_039248(i);
+    }
+}
+
 /* decompiler-derived */
 u32 Unk038fbc_Unk_039248(u32 arg0)
 {
