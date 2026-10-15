@@ -7,6 +7,25 @@ void func_02057660(int a, int b);
 
 void Unk02f2a8_Nop_0303c8(void) { }
 void Unk02f2a8_Nop_0303cc(void) { }
+/* Main body at +4, or 0 when no GameState exists. */
+u8 *func_02034398(void)
+{
+    if (gGameState != 0) {
+        return gGameState->unk_0004;
+    }
+    return 0;
+}
+
+void func_02034b08(void)
+{
+    gGameState->root->unk_60 = 0;
+}
+
+u16 func_02034db8(void)
+{
+    return gGameState->unk_74f6;
+}
+
 void Unk02f2a8_Nop_035430(void) { }
 
 void Unk02f2a8_Thunk_0203428c(void) { func_0203428c(); }
