@@ -159,3 +159,36 @@ void func_020e16f0(u8 *arg0)
   arg0[0xeec] = 0xff;
   return;
 }
+
+
+int func_0204faf0();
+int func_020e49cc();
+/* decompiler-derived */
+void func_020e4964(u32 arg0)
+{
+  u32 tmp1;
+  u32 tmp2;
+  tmp1 = func_020998c0();
+  tmp2 = 0;
+  switch(tmp1) {
+  case 0:
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  case 3:
+    goto LAB_020e499c;
+  case 4:
+LAB_020e499c:
+    tmp2 = func_020e49cc(6,arg0);
+    break;
+  case 5:
+    goto LAB_020e49b0;
+  case 6:
+LAB_020e49b0:
+    tmp2 = func_020e49cc(7,arg0);
+  }
+  func_0204faf0(1,tmp2);
+  return;
+}
