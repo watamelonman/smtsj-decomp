@@ -29,6 +29,36 @@ int Unk0a6174_FindFree10d(u8 *p)
     return -1;
 }
 
+typedef struct Unk0a6174Slot {
+    u8 pad_00[2];
+    u8 weight;
+    u8 pad_03;
+} Unk0a6174Slot;
+int func_02050074();
+
+Unk0a6174Slot *func_020a6548(Unk0a6174Slot *p)
+{
+    u32 sum = 0;
+    u8 acc;
+    u32 r;
+    int i;
+    for (i = 0; i < 8; i++) {
+        sum += p[i].weight;
+    }
+    if ((s32)sum <= 0) {
+        return 0;
+    }
+    acc = 0;
+    r = (u32)func_02050074(1, 65535) % sum;
+    for (i = 0; i < 8; i++) {
+        acc += p[i].weight;
+        if (r < acc) {
+            return &p[i];
+        }
+    }
+    return 0;
+}
+
 void Unk0a6174_ClearBuffers(u8 *a, u8 *b)
 {
     if (a == 0 || b == 0) {

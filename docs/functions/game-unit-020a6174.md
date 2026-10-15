@@ -37,3 +37,4 @@
 - `Unk0a6174_FindFree0c`: hand-matched
 - `Unk0a6174_FindFree10d`: hand-matched
 - `Unk0a6174_ClearBuffers`: hand-matched
+- `func_020a6548`: hand-matched
