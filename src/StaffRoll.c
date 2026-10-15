@@ -5,18 +5,30 @@
 
 /* empty callback */
 
-/* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct StaffRollWork {
-    u8 pad_0000[0x4];
+    u8  pad_0000[0x4];
     u32 unk_0004;
     u32 unk_0008;
     u32 unk_000c;
-    u8 pad_0010[0x9c];
+    u8  pad_0010[0x4];
+    s32 unk_0014;
+    s32 unk_0018;
+    u8  pad_001c[0x90];
     u32 unk_00ac;
-    u8 pad_00b0[0x8];
+    u8  pad_00b0[0x8];
     u32 unk_00b8;
-    u8 pad_00bc[0x24];
+    s32 unk_00bc;
+    s32 unk_00c0;
+    s32 unk_00c4;
+    u8  pad_00c8[0xc];
+    s32 unk_00d4;
+    s32 unk_00d8;
+    s32 scrollY;                /* +0xDC  starts at 0x1F0, grows per text line */
     s32 unk_00e0;
+    u32 firstTextCmd;           /* +0xE4 */
+    u8  pad_00e8[0x214];
+    struct StaffRollCmd *cmds;  /* +0x2FC */
+    u32 cmdCount;               /* +0x300 */
 } StaffRollWork;
 
 void StaffRoll_Nop_117cf4(void) { }
@@ -83,3 +95,55 @@ u32 StaffRoll_Unk_1181a0(int arg0)
   return tmp1;
 }
 
+/* Staff-roll script entry (20 bytes). */
+typedef struct StaffRollCmd {
+    u32 type;
+    s32 arg[4];
+} StaffRollCmd;
+
+
+int func_02117d5c(StaffRollWork *w, u32 cmd, int line);
+
+/* Parses the staff-roll command list and lays out its text lines. */
+void func_0211882c(StaffRollWork *w)
+{
+    int found = 0;
+    int line;
+    u32 i;
+    StaffRollCmd *c;
+    int j;
+
+    w->scrollY = 0x1f0;
+    line = 0;
+    for (i = 0; i < w->cmdCount; i++) {
+        c = &w->cmds[i];
+        switch (c->type) {
+        case 0:
+            break;
+        case 1:
+            w->unk_0014 = c->arg[0] < 0 ? 0 : c->arg[0];
+            w->unk_0018 = c->arg[1] < 1 ? 1 : c->arg[1];
+            break;
+        case 2:
+            w->unk_00b8 = c->arg[0] < 0 ? 0 : c->arg[0];
+            w->unk_00bc = c->arg[1] < 1 ? 1 : c->arg[1];
+            w->unk_00c0 = c->arg[2] < 1 ? 1 : c->arg[2];
+            w->unk_00c4 = c->arg[3] < 1 ? 1 : c->arg[3];
+            break;
+        case 3:
+            w->unk_00d4 = c->arg[0] < 0 ? 0 : c->arg[0];
+            w->unk_00d8 = c->arg[1] < 1 ? 1 : c->arg[1];
+            break;
+        case 4:
+            if (!found) {
+                w->firstTextCmd = i;
+                found = 1;
+            }
+            for (j = 0; j < c->arg[0]; j++) {
+                w->scrollY += func_02117d5c(w, i, line);
+                line++;
+            }
+            break;
+        }
+    }
+}

@@ -26,3 +26,4 @@
 - `func_0211882c`
 - `func_02117f94`
 - `func_02118974`
+- `func_0211882c`: hand-written. Parses staff-roll command list and lays out text lines.
