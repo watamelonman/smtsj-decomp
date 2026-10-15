@@ -9,7 +9,7 @@
 ## Hard list
 - `Unk03e43c_Call_02056cc0`: no candidate matched locally
 - `Unk03e43c_CountDown`: no candidate matched locally
-- `func_0203fa08`: no candidate matched locally
+- `Unk03e43c_Div10Clamp16`: no candidate matched locally
 - `Unk03e43c_Unk_03e5a4`: decompiler-derived
 - `Unk03e43c_Unk_03e5dc`: decompiler-derived
 - `Unk03e43c_Unk_03e614`: decompiler-derived
@@ -17,14 +17,14 @@
 - `Unk03e43c_Unk_03e794`: decompiler-derived
 
 ## Not done in M1-T1087
-- `func_02041d70`
-- `func_0203fa58`
-- `func_0203e848`
+- `Unk03e43c_SetMode30`
+- `Unk03e43c_AdvanceCounter360`
+- `Unk03e43c_ClearTable`
 
 ## Not done in M1-T1088
 - `Unk03e43c_CopyEntry32`
-- `func_0203e894`
-- `func_02043410`
+- `Unk03e43c_Unk_03e894`
+- `Unk03e43c_UpdatePos18`
 - `Unk03e43c_MergeTable`
 - `func_0203e8cc`
 - `func_02044194`
@@ -54,9 +54,9 @@
 - `Unk03e43c_CountDown`: hand-matched
 - `Unk03e43c_CopyEntry32`: hand-matched
 - `Unk03e43c_MergeTable`: hand-matched
-- `func_0203e848`: hand-matched
-- `func_0203e894`: hand-matched
-- `func_0203fa08`: hand-matched
-- `func_0203fa58`: hand-matched
-- `func_02041d70`: hand-matched
-- `func_02043410`: hand-matched
+- `Unk03e43c_ClearTable`: hand-matched
+- `Unk03e43c_Unk_03e894`: hand-matched
+- `Unk03e43c_Div10Clamp16`: hand-matched
+- `Unk03e43c_AdvanceCounter360`: hand-matched
+- `Unk03e43c_SetMode30`: hand-matched
+- `Unk03e43c_UpdatePos18`: hand-matched

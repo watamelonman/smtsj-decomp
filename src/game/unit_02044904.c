@@ -31,7 +31,7 @@ typedef struct Unk044904Entry {
     u8 pad_0002[10];
 } Unk044904Entry;
 
-Unk044904Entry *func_02044904(Unk044904Entry *tbl, u16 key)
+Unk044904Entry *Unk044904_FindById(Unk044904Entry *tbl, u16 key)
 {
     u32 i;
     Unk044904Entry *e;

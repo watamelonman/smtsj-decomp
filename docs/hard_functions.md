@@ -71,7 +71,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk0a163c_Call_020a2218` (M1-T627): left out of the card
 - `Unk03e43c_Call_02056cc0` (M1-T1086): left out of the card
 - `Unk03e43c_CountDown` (M1-T1086): left out of the card
-- `func_0203fa08` (M1-T1086): left out of the card
+- `Unk03e43c_Div10Clamp16` (M1-T1086): left out of the card
 - `Unk1241ec_Unk_124284` (M1-T227): left out of the card
 - `Unk1241ec_Unk_12429c` (M1-T227): left out of the card
 - `Unk1241ec_Unk_1242b4` (M1-T227): left out of the card

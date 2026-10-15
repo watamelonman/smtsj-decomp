@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 extern u8 data_0215e85e[];
 int Unk02e000_GetWorkArea();
-int func_0203fa08();
+int Unk03e43c_Div10Clamp16();
 void func_0203fa84(void);
 int func_0205410c();
 
@@ -51,14 +51,14 @@ void func_020211d8();
 void func_0204b6d0();
 void func_02043450();
 extern u8 data_0215ee60[];
-void func_0203e848(void)
+void Unk03e43c_ClearTable(void)
 {
     func_02020f8c();
     func_02008848(data_0215e85e, 0, 512);
     *(u16 *)data_0215e85c = 0;
 }
 
-void func_0203e894(u8 *o, int b, int c, int d)
+void Unk03e43c_Unk_03e894(u8 *o, int b, int c, int d)
 {
     func_020211d8(o, func_0202092c(c, (u16)d), b);
     FIELD(u16, o, 0x58) = 0;
@@ -74,7 +74,7 @@ int Unk03e43c_CountDown(Unk03e43cTimer *t)
     return 0;
 }
 
-int func_0203fa08(int x)
+int Unk03e43c_Div10Clamp16(int x)
 {
     int r = x / 10;
     if (r >= 16) {
@@ -83,7 +83,7 @@ int func_0203fa08(int x)
     return r;
 }
 
-void func_0203fa58(void)
+void Unk03e43c_AdvanceCounter360(void)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     s32 v = ++w[0x360];
@@ -106,7 +106,7 @@ void Unk03e43c_Unk_03fa28(void)
 {
   int value;
   value = Unk02e000_GetWorkArea();
-  func_0203fa08(*(u8 *)(value + 0x360));
+  Unk03e43c_Div10Clamp16(*(u8 *)(value + 0x360));
 }
 
 /* decompiler-derived */
@@ -218,7 +218,7 @@ void Unk03e43c_Unk_03e794(int arg0,int arg1)
 
 
 int GameState_GetBody();
-void func_02041d70(int mode)
+void Unk03e43c_SetMode30(int mode)
 {
     FIELD(s32, data_0215ee60, 0x30) = mode;
     if (mode == 1 && FIELD(u32, data_0215ee60, 0x34) == 0) {
@@ -226,7 +226,7 @@ void func_02041d70(int mode)
     }
 }
 
-void func_02043410(u8 *o)
+void Unk03e43c_UpdatePos18(u8 *o)
 {
     s16 x = FIELD(s16, o, 0x18);
     s16 y = FIELD(s16, o, 0x1a);

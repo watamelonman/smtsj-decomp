@@ -24,7 +24,7 @@ void Unk044394_Unk_044394(u32 *arg0)
 }
 
 extern u8 data_0214283c[];
-int func_020443e4(int i)
+int Unk044394_HasEntry(int i)
 {
     int ok;
     if (i >= 0 && i < 49) {

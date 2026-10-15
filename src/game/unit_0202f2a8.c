@@ -590,7 +590,7 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
   func_020a0da4(8);
 }
 
-int func_0203fa58();
+int Unk03e43c_AdvanceCounter360();
 int func_020952ac();
 /* decompiler-derived */
 void Unk02f2a8_Unk_03538c(void)
@@ -601,7 +601,7 @@ void Unk02f2a8_Unk_03538c(void)
   tmp1 = (int)GetGameState();
   tmp2 = Unk03e43c_Unk_03fa28();
   *(u32 *)(tmp1 + 0x74f0) = tmp2;
-  func_0203fa58();
+  Unk03e43c_AdvanceCounter360();
   tmp1 = (int)GetGameState();
   tmp3 = Unk03e43c_Unk_03fa28();
   if (*(int *)(tmp1 + 0x74f0) == tmp3) {
@@ -611,16 +611,16 @@ void Unk02f2a8_Unk_03538c(void)
 }
 
 int func_0203480c();
-int func_02041d70();
+int Unk03e43c_SetMode30();
 /* decompiler-derived */
 int Unk02f2a8_Unk_030d20(int arg0,int arg1)
 {
   ScanVisor_Unk_0a2b38();
   if (arg1 == 1) {
-    func_02041d70(1);
+    Unk03e43c_SetMode30(1);
   }
   else {
-    func_02041d70(2);
+    Unk03e43c_SetMode30(2);
   }
   func_0203480c(arg0 + 4,1);
   Unk09974c_Unk_09974c(arg0 + 0x7550);

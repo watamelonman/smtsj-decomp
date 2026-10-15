@@ -100,5 +100,13 @@
  "func_0203e36c": "Unk03e23c_Unk_03e36c",
  "func_0203e398": "Unk03e23c_Unk_03e398",
  "func_0203e7cc": "Unk03e43c_CopyEntry32",
- "func_0203e804": "Unk03e43c_MergeTable"
+ "func_0203e804": "Unk03e43c_MergeTable",
+ "func_0203e848": "Unk03e43c_ClearTable",
+ "func_0203e894": "Unk03e43c_Unk_03e894",
+ "func_0203fa08": "Unk03e43c_Div10Clamp16",
+ "func_0203fa58": "Unk03e43c_AdvanceCounter360",
+ "func_02041d70": "Unk03e43c_SetMode30",
+ "func_02043410": "Unk03e43c_UpdatePos18",
+ "func_020443e4": "Unk044394_HasEntry",
+ "func_02044904": "Unk044904_FindById"
 }
