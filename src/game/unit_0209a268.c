@@ -16,7 +16,7 @@ typedef struct Unk09a268Work {
 
 
 int func_0209a48c();
-int func_0209a4a0();
+void func_0209a4a0();
 int func_0209bb68();
 int Unk09a268_Unk_09c484();
 
@@ -27,6 +27,78 @@ void Unk09a268_Unk_09c498(void);
 void Unk09a268_Unk_09a80c(u32 arg0,u32 arg1);
 void Unk09a268_Unk_09a830(u32 arg0,u32 arg1);
 void Unk09a268_Unk_09a870(u32 arg0,u32 arg1);
+
+typedef struct Unk09a268Ent {
+    s32 *val;
+    u32 pad_04;
+    u32 id;
+    u32 pad_0c;
+    u32 sub;
+    u32 pad_14;
+} Unk09a268Ent;
+
+int func_02058af8();
+int func_0209a3ec();
+void func_02058b14();
+void func_02058a1c();
+u8 *func_02039160(u32 h, u32 a, u32 b);
+int func_0209a3a0(u8 *w, u32 id, u32 sub)
+{
+    int j;
+    for (j = 0; j < 128; j++) {
+        if (((Unk09a268Ent *)((u8 *)w + 164 + 9216))[j].id == id && ((Unk09a268Ent *)((u8 *)w + 164 + 9216))[j].sub == sub) {
+            return func_02058af8((u8 *)w + 164 + 9216, j);
+        }
+    }
+    return 1;
+}
+
+void func_0209a458(u8 *w, u32 a, u32 b, u32 c, u8 d, u32 e)
+{
+    int i = func_0209a3ec(w, a, b, c, d);
+    func_02058b14(w + 164 + 9216, i, e);
+}
+
+void func_0209a4a0(u32 p, int bit, int on)
+{
+    if (on == 1) {
+        *(u8 *)p |= 1 << bit;
+    } else {
+        *(u8 *)p &= ~(1 << bit);
+    }
+}
+
+int func_0209a4c4(u8 *w, u32 id, u32 sub)
+{
+    int j;
+    for (j = 0; j < 128; j++) {
+        if (((Unk09a268Ent *)((u8 *)w + 164 + 9216))[j].id == id && ((Unk09a268Ent *)((u8 *)w + 164 + 9216))[j].sub == sub) {
+            return j;
+        }
+    }
+    return -1;
+}
+
+u8 func_0209a77c(void *p)
+{
+    u8 r = 0;
+    u8 j;
+    for (j = 0; j < 3; j++) {
+        if (func_0209a48c(p, j) == 1) {
+            r = j;
+            break;
+        }
+    }
+    return r;
+}
+
+void func_0209a7bc(u32 p, u32 v)
+{
+    u32 j;
+    for (j = 0; j < 3; j++) {
+        func_0209a4a0(p, j, v == j ? 1 : 0);
+    }
+}
 
 /* empty callback */
 void Unk09a268_Nop_09b3c8(void) { }
@@ -118,6 +190,14 @@ void Unk09a268_Unk_09b3cc(Unk09a268Work *work)
 
 
 int func_020bc650();
+void func_0209b754(u32 a, u32 b)
+{
+    if (data_02176270 != 0) {
+        FIELD(u32, data_02176270, 44) = a;
+        FIELD(u32, data_02176270, 48) = b;
+    }
+}
+
 /* decompiler-derived */
 u32 Unk09a268_Unk_09bb38(void)
 {
@@ -131,7 +211,7 @@ u32 Unk09a268_Unk_09bb38(void)
 
 
 int Unk02f2a8_GetCurrentCell38e8();
-int func_0209a7bc();
+void func_0209a7bc();
 int func_0209c548();
 /* decompiler-derived */
 void Unk09a268_Unk_09cb10(u32 arg0)
@@ -161,4 +241,27 @@ u8 Unk09a268_Unk_09beb0(u32 a, u32 b)
         ret = ((u8 *)Unk09a268_Unk_09c484(func_0209bb68(*e)))[0x1b];
     }
     return ret;
+}
+
+int func_0209c4a8(u32 h, u32 a, u32 b)
+{
+    int r;
+    u8 *e;
+    if (h == 0) {
+        return 0;
+    }
+    r = 0;
+    e = func_02039160(h, a, b);
+    if (e != 0) {
+        r = func_0209bb68(*e);
+    }
+    return Unk09a268_Unk_09c484(r);
+}
+
+int func_0209c528(const u8 *p)
+{
+    if (p == 0) {
+        return 0;
+    }
+    return *p == 1;
 }

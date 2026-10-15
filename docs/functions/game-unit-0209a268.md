@@ -67,3 +67,12 @@
 - `func_0209c854`
 - `Unk09a268_Unk_09beb0`: hand-matched
 - `Unk09a268_SetCtxUnk38`: hand-matched
+- `func_0209a3a0`: hand-matched
+- `func_0209a458`: hand-matched
+- `func_0209a4a0`: hand-matched
+- `func_0209a4c4`: hand-matched
+- `func_0209a77c`: hand-matched
+- `func_0209a7bc`: hand-matched
+- `func_0209b754`: hand-matched
+- `func_0209c4a8`: hand-matched
+- `func_0209c528`: hand-matched
