@@ -1,6 +1,13 @@
 /* src/game/unit_02122850.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk122850Work {
+    u8 pad_0000[0x4];
+    s32 unk_0004;
+} Unk122850Work;
+
+
 
 
 /* empty callback */
@@ -19,10 +26,9 @@ void Unk122850_Unk_122968(u32 *arg0)
 
 int func_020bc650();
 /* decompiler-derived */
-void Unk122850_Unk_12292c(int arg0)
-{
+void Unk122850_Unk_12292c(Unk122850Work *arg0){
   int value;
-  if (*(int *)(arg0 + 4) == 0) {
+  if (arg0->unk_0004 == 0) {
     return;
   }
   value = func_020bc650(0xc);

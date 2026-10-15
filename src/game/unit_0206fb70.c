@@ -1,14 +1,20 @@
 /* src/game/unit_0206fb70.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk06fb70Work {
+    u8 pad_0000[0x120];
+    s32 unk_0120;
+} Unk06fb70Work;
+
+
 
 int func_0206d68c();
 /* decompiler-derived */
-void Unk06fb70_Unk_0717c0(int arg0,u32 arg1)
-{
+void Unk06fb70_Unk_0717c0(Unk06fb70Work *arg0, u32 arg1){
   int tmp1;
   tmp1 = func_0206d68c(2,arg1,100);
-  *(int *)(arg0 + 0x120) = *(int *)(arg0 + 0x120) + tmp1;
+  arg0->unk_0120 = arg0->unk_0120 + tmp1;
   return;
 }
 

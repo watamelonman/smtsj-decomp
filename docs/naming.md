@@ -25,6 +25,12 @@ Every rename is checked by rebuilding: objdiff 100% for all matched functions, a
 | Plain descriptive names (`SaveLoadTask_Draw`, `ExpGauge_Update`, `UniteEvent_HandleMessage`, `GetGameState`) | inferred from strings, callers and behaviour | medium: see the comment in the source |
 | `Unk_<Verb>...` on library-range functions (`Unk_InterpolateLinear`) | behaviour guessed from a call site | low-medium |
 
+## Struct field names
+- Shared globals go in `include/*.h` (`GameState.h`, `Globals.h`). See `docs/structs.md`.
+- Field names: `unk_XXXX` (offset in hex) or a real name when known. Padding: `pad_XXXX[N]`.
+- Prefer `GameState *gs` / `ScanVisor *sv` over `int arg0` once the TU is converted.
+- Do not invent shared structs from coincident offsets across unrelated files.
+
 ## Inferred so far
 - `gGameState` (0x0215dd2c): pointer to the global game state. `GetGameState` returns it
   and has about 60 callers. Header: `include/GameState.h`.

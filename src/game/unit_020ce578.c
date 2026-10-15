@@ -1,6 +1,18 @@
 /* src/game/unit_020ce578.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0ce578Work {
+    u8 pad_0000[0x4];
+    u32 unk_0004;
+    u8 pad_0008[0x4];
+    s32 unk_000c;
+    u32 unk_0010;
+    u8 pad_0014[0xc4];
+    u32 unk_00d8;
+} Unk0ce578Work;
+
+
 
 
 /* empty callback */
@@ -8,22 +20,20 @@ void Unk0ce578_Nop_0ce5e4(void) { }
 
 int func_020d3138();
 /* decompiler-derived */
-void Unk0ce578_Unk_0cec98(int arg0)
-{
+void Unk0ce578_Unk_0cec98(Unk0ce578Work *arg0){
   u32 tmp1;
   tmp1 = func_020d3138();
-  Unk122e1c_Unk_122f88(*(u32 *)(arg0 + 0x10),0,tmp1);
+  Unk122e1c_Unk_122f88(arg0->unk_0010,0,tmp1);
   return;
 }
 
 int func_020cf238();
 int Unk122e1c_Unk_123294();
 /* decompiler-derived */
-void Unk0ce578_Unk_0cf29c(int arg0,u32 arg1)
-{
-  Unk122e1c_Unk_123294(*(u32 *)(arg0 + 0x10));
-  *(u32 *)(arg0 + 0xd8) = arg1;
-  *(u32 *)(arg0 + 4) = 1;
+void Unk0ce578_Unk_0cf29c(Unk0ce578Work *arg0, u32 arg1){
+  Unk122e1c_Unk_123294(arg0->unk_0010);
+  arg0->unk_00d8 = arg1;
+  arg0->unk_0004 = 1;
   func_020cf238(arg0,3);
   return;
 }
@@ -52,16 +62,15 @@ void Unk0ce578_Unk_0ce5e8(void)
 
 int func_020a0da4();
 /* decompiler-derived */
-void Unk0ce578_Unk_0cf258(int arg0,int arg1)
-{
+void Unk0ce578_Unk_0cf258(Unk0ce578Work *arg0, int arg1){
   int tmp1;
   if ((arg1 == 2) && (tmp1 = func_020d3138(), tmp1 == 0)) {
     return;
   }
   func_020a0da4(5);
-  *(u32 *)(arg0 + 4) = 4;
+  arg0->unk_0004 = 4;
   func_020cf238(arg0,9);
-  *(int *)(arg0 + 0xc) = arg1;
+  arg0->unk_000c = arg1;
   return;
 }
 

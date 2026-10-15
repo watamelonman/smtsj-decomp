@@ -1,6 +1,13 @@
 /* src/game/unit_02111400.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk111400Work {
+    u8 pad_0000[0x18];
+    u32 unk_0018;
+} Unk111400Work;
+
+
 
 
 /* decompiler-derived */
@@ -12,11 +19,10 @@ int Unk111400_Unk_112254(u16 *arg0,u16 *arg1)
 extern u8 data_02151560[];
 int func_02051610();
 /* decompiler-derived */
-void Unk111400_Unk_111458(int arg0)
-{
+void Unk111400_Unk_111458(Unk111400Work *arg0){
   u32 tmp1;
   tmp1 = func_02051610(((int)data_02151560));
-  *(u32 *)(arg0 + 0x18) = tmp1;
+  arg0->unk_0018 = tmp1;
   return;
 }
 

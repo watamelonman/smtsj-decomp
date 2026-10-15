@@ -1,6 +1,14 @@
 /* src/game/unit_020b6570.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0b6570Work {
+    u8 pad_0000[0x8];
+    u32 unk_0008;
+    u32 unk_000c;
+} Unk0b6570Work;
+
+
 
 extern u32 data_02176b88[];
 /* decompiler-derived */
@@ -11,17 +19,16 @@ u32 Unk0b6570_Get_data_02176b88(void)
 
 int func_020df7c4();
 /* decompiler-derived */
-void Unk0b6570_Unk_0b65d0(int arg0)
-{
+void Unk0b6570_Unk_0b65d0(Unk0b6570Work *arg0){
   int tmp1;
-  *(u32 *)(arg0 + 8) = 1;
-  *(u32 *)(arg0 + 0xc) = 2;
+  arg0->unk_0008 = 1;
+  arg0->unk_000c = 2;
   tmp1 = func_020df7c4();
   if (tmp1 == 0) {
     return;
   }
-  *(u32 *)(arg0 + 8) = 2;
-  *(u32 *)(arg0 + 0xc) = 3;
+  arg0->unk_0008 = 2;
+  arg0->unk_000c = 3;
   return;
 }
 

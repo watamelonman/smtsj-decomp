@@ -1,12 +1,18 @@
 /* src/game/unit_020afc28.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0afc28Work {
+    u8 pad_0000[0x20];
+    s32 unk_0020;
+} Unk0afc28Work;
+
+
 
 
 /* decompiler-derived */
-void Unk0afc28_Unk_0afc28(int arg0,int arg1)
-{
-  *(int *)(arg0 + 0x20) = *(int *)(arg0 + 0x20) + arg1;
+void Unk0afc28_Unk_0afc28(Unk0afc28Work *arg0, int arg1){
+  arg0->unk_0020 = arg0->unk_0020 + arg1;
   return;
 }
 

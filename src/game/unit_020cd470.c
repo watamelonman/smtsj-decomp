@@ -1,6 +1,13 @@
 /* src/game/unit_020cd470.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0cd470Work {
+    u8 pad_0000[0xc0];
+    s32 unk_00c0;
+} Unk0cd470Work;
+
+
 
 
 /* empty callback */
@@ -9,9 +16,8 @@ void Unk0cd470_Nop_0cd508(void) { }
 int func_020572d8();
 int func_02057524();
 /* decompiler-derived */
-void Unk0cd470_Unk_0cd470(int arg0)
-{
-  if (*(int *)(arg0 + 0xc0) == 0) {
+void Unk0cd470_Unk_0cd470(Unk0cd470Work *arg0){
+  if (arg0->unk_00c0 == 0) {
     return;
   }
   func_02057524(4);

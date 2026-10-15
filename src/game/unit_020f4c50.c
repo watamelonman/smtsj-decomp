@@ -1,6 +1,13 @@
 /* src/game/unit_020f4c50.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0f4c50Work {
+    u8 pad_0000[0x10];
+    u32 unk_0010;
+} Unk0f4c50Work;
+
+
 
 
 /* empty callback */
@@ -29,11 +36,10 @@ int Unk0d1c98_Unk_0d1d94();
 int func_020d1e94();
 int func_020ea630();
 /* decompiler-derived */
-void Unk0f4c50_Unk_0f51b0(int arg0,int arg1)
-{
+void Unk0f4c50_Unk_0f51b0(Unk0f4c50Work *arg0, int arg1){
   u32 tmp1;
   if (arg1 != 0) {
-    tmp1 = func_020ea630(*(u32 *)(arg0 + 0x10));
+    tmp1 = func_020ea630(arg0->unk_0010);
     Unk0d1c98_Unk_0d1d94(tmp1,0xffffffff);
     return;
   }

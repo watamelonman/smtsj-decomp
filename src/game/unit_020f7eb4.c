@@ -1,16 +1,27 @@
 /* src/game/unit_020f7eb4.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0f7eb4Work {
+    u8 pad_0000[0x48];
+    u32 unk_0048;
+    u32 unk_004c;
+    u32 unk_0050;
+    u8 unk_0054;
+    u8 pad_0055[0x2f];
+    u32 unk_0084;
+} Unk0f7eb4Work;
+
+
 
 
 /* decompiler-derived */
-void Unk0f7eb4_Unk_0f8078(int arg0)
-{
-  *(u32 *)(arg0 + 0x48) = 0;
-  *(u32 *)(arg0 + 0x4c) = 0;
-  *(u32 *)(arg0 + 0x50) = 0;
-  *(u32 *)(arg0 + 0x84) = 0xffffffff;
-  *(u8 *)(arg0 + 0x54) = 0;
+void Unk0f7eb4_Unk_0f8078(Unk0f7eb4Work *arg0){
+  arg0->unk_0048 = 0;
+  arg0->unk_004c = 0;
+  arg0->unk_0050 = 0;
+  arg0->unk_0084 = 0xffffffff;
+  arg0->unk_0054 = 0;
   return;
 }
 

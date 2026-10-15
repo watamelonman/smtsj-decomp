@@ -1,6 +1,18 @@
 /* src/game/unit_020f90dc.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0f90dcWork {
+    u8 pad_0000[0x50];
+    u32 unk_0050;
+    u8 pad_0054[0x98];
+    u32 unk_00ec;
+    u8 pad_00f0[0x4];
+    u32 unk_00f4;
+    u32 unk_00f8;
+} Unk0f90dcWork;
+
+
 
 
 /* empty callback */
@@ -16,17 +28,16 @@ int Unk0f90dc_Unk_0f9128(int *arg0,int *arg1)
 int func_02053000();
 int func_020f91fc();
 /* decompiler-derived */
-void Unk0f90dc_Unk_0fa4cc(int arg0)
-{
+void Unk0f90dc_Unk_0fa4cc(Unk0f90dcWork *arg0){
   func_020f91fc();
   Unk0d297c_Unk_0d2e88();
-  func_02053000(*(u32 *)(arg0 + 0x50));
-  *(u32 *)(arg0 + 0x50) = 0;
-  func_02053000(*(u32 *)(arg0 + 0xf8));
-  *(u32 *)(arg0 + 0xf8) = 0;
-  func_02053000(*(u32 *)(arg0 + 0xec));
-  *(u32 *)(arg0 + 0xec) = 0;
-  func_02053000(*(u32 *)(arg0 + 0xf4));
-  *(u32 *)(arg0 + 0xf4) = 0;
+  func_02053000(arg0->unk_0050);
+  arg0->unk_0050 = 0;
+  func_02053000(arg0->unk_00f8);
+  arg0->unk_00f8 = 0;
+  func_02053000(arg0->unk_00ec);
+  arg0->unk_00ec = 0;
+  func_02053000(arg0->unk_00f4);
+  arg0->unk_00f4 = 0;
   return;
 }
