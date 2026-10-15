@@ -42,3 +42,5 @@
 - `func_020d02c0`
 - `Unk0cf5e8_Unk_0d1454`: hand-matched
 - `Unk0cf5e8_Unk_0d1490`: hand-matched
+- `func_020cf5e8`: hand-matched
+- `func_020d1908`: hand-matched
