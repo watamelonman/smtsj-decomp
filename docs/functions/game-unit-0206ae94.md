@@ -40,3 +40,6 @@
 - `func_0206d68c`
 - `func_0206ced4`
 - `func_0206cd30`
+- `func_0206aed4`: hand-matched
+- `func_0206aeec`: hand-matched
+- `func_0206c8c8`: hand-matched

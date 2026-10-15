@@ -27,8 +27,40 @@ void Unk06ae94_Unk_06c8e0(Unk06ae94Work *work,u32 arg1,u32 arg2);
 void Unk06ae94_Unk_06ae94(u32 arg0);
 void Unk06ae94_Unk_06aeb4(u32 arg0);
 
+u32 func_020445d0(int kind, u32 id);
+void func_0204fde0(u32 h);
+void func_0204fe18(u32 h);
+void func_0206aed4(u32 id)
+{
+    func_0204fde0(func_020445d0(2, id));
+}
+
+void func_0206aeec(u32 id)
+{
+    func_0204fe18(func_020445d0(2, id));
+}
+
 /* get u32 at +0x4c */
 u32 Unk06ae94_GetUnkField4c(void *obj) { return ((Unk06ae94Work *)obj)->unk_004c; }
+
+typedef struct Unk06ae94Pair {
+    u32 a;
+    u32 b;
+} Unk06ae94Pair;
+
+typedef struct Unk06ae94Pairs {
+    u8 pad_0000[0x158];
+    Unk06ae94Pair pair[2];      /* +0x158 */
+} Unk06ae94Pairs;
+
+void func_0206c8c8(Unk06ae94Pairs *p, u32 a, u32 b, int i)
+{
+    if (i >= 2) {
+        i = 1;
+    }
+    p->pair[i].a = a;
+    p->pair[i].b = b;
+}
 
 /* decompiler-derived */
 void Unk06ae94_Unk_06c8e0(Unk06ae94Work *work,u32 arg1,u32 arg2)
