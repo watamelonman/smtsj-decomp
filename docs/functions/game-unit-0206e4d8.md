@@ -23,3 +23,6 @@
 - `func_0206e790`
 - `func_0206e6e4`
 - `func_0206e5bc`
+- `func_0206e5a0`: hand-matched
+- `func_0206ea0c`: hand-matched
+- `func_0206ea44`: hand-matched

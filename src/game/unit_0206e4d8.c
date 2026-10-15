@@ -55,6 +55,18 @@ int Unk06e4d8_Unk_06e520(int arg0)
 }
 
 int func_02061424();
+extern u32 data_0216bac4[];
+u8 *Unk06dddc_Unk_06e058();
+void Unk06e4d8_Unk_06e814(int arg0);
+u32 Unk06e4d8_Get_data_02170cc8(void);
+void func_0206e5a0(u8 *o)
+{
+    FIELD(u32, o, 0x08) = 0;
+    FIELD(u8, o, 0x6c) = 0;
+    FIELD(u32, o, 0x68) = 0;
+    Unk06e4d8_Unk_06e814((int)o);
+}
+
 /* decompiler-derived */
 void Unk06e4d8_Unk_06e680(void)
 {
@@ -85,4 +97,20 @@ void Unk06e4d8_Unk_06e814(int arg0)
   ((Unk06e4d8Work *)arg0)->unk_0060 = 0;
   ((Unk06e4d8Work *)arg0)->unk_005c = 0;
   ((Unk06e4d8Work *)arg0)->unk_0064 = 0;
+}
+
+int func_0206ea0c(int i)
+{
+    if ((s32)data_0216bac4[0] - 1 - i < 0) {
+        return 0;
+    }
+    return FIELD(s32, Unk06dddc_Unk_06e058(i), 0xd8) > 0;
+}
+
+int func_0206ea44(void)
+{
+    if (Unk06e4d8_Get_data_02170cc8() == 0) {
+        return 0;
+    }
+    return FIELD(u8, Unk06e4d8_Get_data_02170cc8(), 0x6c) != 0;
 }
