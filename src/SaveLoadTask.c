@@ -271,3 +271,44 @@ LAB_020dffc0:
   func_020dfd9c(arg0,tmp2,1,0,0);
   return 1;
 }
+void func_020e1490(u32 entry, int a, int b);
+void Unk02e000_Unk_02e144(void);
+void Unk02f078_Unk_02f0b0(int kind);
+void func_02119390(void);
+void func_02108c0c(void);
+
+void func_020e13ac(u32 entry)
+{
+    switch (entry) {
+    case 0:
+        func_020e1490(entry, 0, 0);
+        return;
+    case 1:
+        Unk02e000_Unk_02e144();
+        func_020e1490(entry, 3, 4);
+        return;
+    case 2:
+    case 3:
+        func_02108c0c();
+        func_020e1490(entry, 2, 4);
+        return;
+    case 4:
+        func_020e1490(entry, 1, 0);
+        return;
+    case 5:
+        Unk02f078_Unk_02f0b0(1);
+        func_02119390();
+        func_020e1490(entry, 1, 4);
+        return;
+    case 6:
+        Unk02f078_Unk_02f0b0(2);
+        func_02119390();
+        func_020e1490(entry, 1, 4);
+        return;
+    case 7:
+        Unk02f078_Unk_02f0b0(3);
+        func_02119390();
+        func_020e1490(entry, 1, 4);
+        return;
+    }
+}

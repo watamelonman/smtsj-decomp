@@ -30,3 +30,5 @@
 - `func_020dfe80`
 - `func_020df814`
 - `func_020df8c4`
+
+- `func_020e13ac`: save/load menu entry dispatch (cases 0-7).
