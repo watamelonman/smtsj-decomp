@@ -29,7 +29,7 @@ int Unk04bb9c_IsKind02Or32to34(int x)
 int GameState_GetBody();
 void Unk04bb9c_SetCtxUnk0c(s16 a, s16 b, u16 c);
 
-void func_0204c404(int x, int y)
+void Unk04bb9c_Unk_04c404(int x, int y)
 {
     u8 *a;
     u8 *b;

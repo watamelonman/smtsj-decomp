@@ -674,7 +674,7 @@ void func_020ae0d8();
 int Unk044904_Unk_044fd8();
 int Unk0aa118_Clear814();
 
-int func_020465c0(u16 *p)
+int Unk044904_Unk_0465c0(u16 *p)
 {
     int f;
     if (Unk044904_Unk_045460(1) != 0 && FIELD(u16, Unk044904_Get_data_0215ee98(), 56) == 0) {

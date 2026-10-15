@@ -27,7 +27,7 @@ void func_0204a780();
 int Unk044904_Unk_045080();
 int func_020f8098();
 
-int func_020474a0(u16 *p)
+int Unk047338_Unk_0474a0(u16 *p)
 {
     u32 *it;
     int o;
