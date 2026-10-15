@@ -84,3 +84,13 @@
 - `func_020e9fd0`
 - `func_020e8628`
 - `func_020e8ebc`
+
+## Not done in M1-T906
+- `func_020e946c`
+- `func_020e9b54`
+- `func_020e86a0`
+- `func_020e8f74`
+- `func_020e9814`
+- `func_020e9aa0`
+- `func_020e852c`
+- `func_020ea0ec`
