@@ -69,11 +69,11 @@
 ## Not done in M1-T1111
 - `Unk02f2a8_Unk_02f378`
 - `Unk02f2a8_ApplyPending`
-- `func_020308c0`
+- `Unk02f2a8_CallWithName16_40`
 - `Unk02f2a8_Unk_030d20`
-- `func_020313a4`
+- `Unk02f2a8_Unk_0313a4`
 - `func_02035b74`
-- `func_02030704`
+- `Unk02f2a8_CallWithName16`
 - `Unk02f2a8_Unk_030198`
 
 ## Not done in M1-T1112
@@ -196,6 +196,6 @@
 - `Unk02f2a8_Unk_030198`: hand-matched
 - `Unk02f2a8_ApplyPending`: hand-matched
 - `Unk02f2a8_Unk_03034c`: hand-matched
-- `func_02030704`: hand-matched
-- `func_020308c0`: hand-matched
-- `func_020313a4`: hand-matched
+- `Unk02f2a8_CallWithName16`: hand-matched
+- `Unk02f2a8_CallWithName16_40`: hand-matched
+- `Unk02f2a8_Unk_0313a4`: hand-matched
