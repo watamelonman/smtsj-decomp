@@ -330,3 +330,12 @@ void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
   }
   *(u32 *)(tmp1 + 0x70) = arg3;
 }
+
+/* decompiler-derived */
+void func_02079000(int *arg0)
+{
+  if (*data_0217231c == 0) {
+    return;
+  }
+  *(u32 *)(*data_0217231c + *arg0 * 4 + 4) = 0;
+}
