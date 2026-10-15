@@ -8,13 +8,13 @@ static inline void Unk03dbbc_SetSubState(u32 v, u8 *sub)
 {
     FIELD(u32, sub, 0x18) = v;
 }
-void func_0204cbc8();
+void Unk04bb9c_GetCtxUnka20();
 void func_0204c404();
 int Unk03dbbc_Unk_03dbbc(void)
 {
     s16 a = func_0203ac00(0);
     s16 b = func_0203ac00(1);
-    func_0204cbc8();
+    Unk04bb9c_GetCtxUnka20();
     Unk02e000_GetWorkArea();
     func_0204c404(a, b);
     Unk03dbbc_SetSubState(17, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));

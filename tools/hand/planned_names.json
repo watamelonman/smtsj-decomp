@@ -122,5 +122,12 @@
  "func_02046644": "Unk044904_Unk_046644",
  "func_02047534": "Unk047338_Unk_047534",
  "func_02047718": "Unk047568_Unk_047718",
- "func_02047788": "Unk047788_Unk_047788"
+ "func_02047788": "Unk047788_Unk_047788",
+ "func_020477e4": "Unk047788_Unk_0477e4",
+ "func_02047834": "Unk047788_Unk_047834",
+ "func_020484d0": "BattleTask_CompareKeys",
+ "func_0204c13c": "Unk04bb9c_IsKind02Or32to34",
+ "func_0204c464": "Unk04bb9c_SetCtxPos",
+ "func_0204c4a0": "Unk04bb9c_IsCtxIdle",
+ "func_0204cbc8": "Unk04bb9c_GetCtxUnka20"
 }

@@ -15,7 +15,7 @@ typedef struct Unk04bb9cCtx {
 
 extern Unk04bb9cCtx *data_0215eea4;
 
-int func_0204c13c(int x)
+int Unk04bb9c_IsKind02Or32to34(int x)
 {
     if (x == 2 || x == 0 || (u32)(x - 32) <= 2) {
         return 1;
@@ -23,7 +23,7 @@ int func_0204c13c(int x)
     return 0;
 }
 
-void func_0204c464(u16 a, u16 b, u16 c)
+void Unk04bb9c_SetCtxPos(u16 a, u16 b, u16 c)
 {
     if (data_0215eea4 == 0) {
         return;
@@ -34,7 +34,7 @@ void func_0204c464(u16 a, u16 b, u16 c)
     data_0215eea4->unk_0010 = c;
 }
 
-int func_0204c4a0(void)
+int Unk04bb9c_IsCtxIdle(void)
 {
     if (data_0215eea4 == 0) {
         return 1;
@@ -49,7 +49,7 @@ void Unk04bb9c_SetCtxUnka14(u32 value)
     }
 }
 
-u16 func_0204cbc8(void)
+u16 Unk04bb9c_GetCtxUnka20(void)
 {
     if (data_0215eea4 == 0) {
         return 0;

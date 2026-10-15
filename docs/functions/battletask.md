@@ -5,7 +5,7 @@
 - `BattleTask_Unk_0481d4`: decompiler-derived
 
 ## Not done in M1-T611
-- `func_020484d0`
+- `BattleTask_CompareKeys`
 - `func_02048264`
 - `func_02048520`
 - `func_020485c4`
@@ -13,4 +13,4 @@
 
 ## Not done in M1-T612
 - `func_0204870c`
-- `func_020484d0`: hand-matched
+- `BattleTask_CompareKeys`: hand-matched

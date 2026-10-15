@@ -29,7 +29,7 @@ int Unk047788_GetConst1(void) { return 1; }
 int Unk047788_GetConst1_0477dc(void) { return 1; }
 
 int func_020453dc();
-void func_02047834();
+void Unk047788_Unk_047834();
 typedef struct Unk047788Mgr {
     u8 pad_0000[0x64];
     u32 *slots[10];
@@ -40,7 +40,7 @@ int func_0205e4f8();
 void func_02116028();
 int Unk0a5680_GetEntryUnk14();
 void func_020a5fc8();
-int func_020477e4(void)
+int Unk047788_Unk_0477e4(void)
 {
     FIELD(u32, Unk044904_Get_data_0215ee98(), 0x50) = 0;
     func_020b6514(1);
@@ -51,7 +51,7 @@ int func_020477e4(void)
     return 1;
 }
 
-void func_02047834(void)
+void Unk047788_Unk_047834(void)
 {
     int i;
     for (i = 0; i < 10; i++) {
@@ -69,7 +69,7 @@ void func_02047834(void)
 u32 Unk047788_Unk_047884(void)
 {
   func_020453dc();
-  func_02047834();
+  Unk047788_Unk_047834();
   return 1;
 }
 
