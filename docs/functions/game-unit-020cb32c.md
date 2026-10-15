@@ -44,3 +44,5 @@
 ## Not done in M1-T871
 - `func_020cbce4`
 - `Unk0cb32c_Unk_0cb4e4`: decompiler-derived (plain cleanup)
+- `func_020ccac8`: decompiler-derived (plain+fix cleanup)
+- `func_020ccaf8`: decompiler-derived (plain+fix cleanup)

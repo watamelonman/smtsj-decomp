@@ -152,3 +152,22 @@ void Unk0cb32c_Unk_0cb4e4(u32 arg0,u32 arg1)
   tmp1 = func_020445f4(0x1e,arg0);
   func_0204fed8(tmp1,arg1);
 }
+
+int func_020a0da4();
+/* decompiler-derived */
+void func_020ccac8(int arg0,u32 arg1)
+{
+  func_020a0da4(5);
+  *(u32 *)(arg0 + 8) = 4;
+  Unk0cb32c_Unk_0ccaa8((int *)arg0, (int)0xd);
+  *(u32 *)(arg0 + 0xc) = arg1;
+}
+
+/* decompiler-derived */
+void func_020ccaf8(int arg0,u32 arg1)
+{
+  Unk122e1c_Unk_123294(*(u32 *)(arg0 + 0x94));
+  *(u32 *)(arg0 + 0xd8) = arg1;
+  *(u32 *)(arg0 + 8) = 1;
+  Unk0cb32c_Unk_0ccaa8((int *)arg0, (int)3);
+}
