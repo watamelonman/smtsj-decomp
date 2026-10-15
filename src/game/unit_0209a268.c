@@ -130,7 +130,7 @@ u32 Unk09a268_Unk_09bb38(void)
 }
 
 
-int func_02034a68();
+int Unk02f2a8_GetCurrentCell38e8();
 int func_0209a7bc();
 int func_0209c548();
 /* decompiler-derived */
@@ -139,7 +139,7 @@ void Unk09a268_Unk_09cb10(u32 arg0)
   int value1;
   int value2;
   value1 = Unk09a268_Unk_09c484(5);
-  value2 = func_02034a68();
+  value2 = Unk02f2a8_GetCurrentCell38e8();
   Unk09a268_Unk_09a80c(value2,1);
   Unk09a268_Unk_09a830(value2,0);
   func_0209a7bc(value2,*(u8 *)(value1 + 0x19));

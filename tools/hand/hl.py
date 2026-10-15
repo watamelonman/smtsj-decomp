@@ -34,7 +34,9 @@ def strip_includes(src, seen=None):
     return re.sub(r'^#include "([^"]+)"\s*$', rep, src, flags=re.M)
 
 def compile_(src):
-    os.makedirs(WORK, exist_ok=True); d = tempfile.mkdtemp(dir=WORK)
+    d = os.path.join(WORK, 'c'); os.makedirs(d, exist_ok=True)  # fixed dir: no leak, t.c stays inspectable
+    for f in ('t.o',):
+        if os.path.exists(f'{d}/{f}'): os.remove(f'{d}/{f}')
     open(f'{d}/t.c', 'w').write(HDR + strip_includes(src))
     r = subprocess.run(['nice', '-n', '10', f'{SJ}/tools/wibo', f'{SJ}/tools/mwccarm/2.0/sp1p5/mwccarm.exe', *FLAGS,
                         '-c', 't.c', '-o', 't.o'], capture_output=True, text=True, cwd=d)

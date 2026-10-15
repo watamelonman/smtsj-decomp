@@ -53,14 +53,14 @@ typedef struct Unk02f2a8Obj39160 {
     u32 pad_0004_0 : 16;
     u32 unk_0004_16 : 4;
 } Unk02f2a8Obj39160;
-void func_02030548(u8 *p)
+void Unk02f2a8_Call_02035db8(u8 *p)
 {
     u8 *a = (u8 *)Unk02e000_GetWorkArea();
     u8 *b = (u8 *)Unk02e000_GetWorkArea();
     func_02035db8(p + 0x70, FIELD(s8, a, 0x364), FIELD(s8, b, 0x365));
 }
 
-void func_02031408(GameState *gs)
+void Unk02f2a8_Call_02036318(GameState *gs)
 {
     s8 x = FIELD(s8, gs, 0x744e);
     s8 y = FIELD(s8, gs, 0x744f);
@@ -73,7 +73,7 @@ void func_02031408(GameState *gs)
     func_02036318(x, y, v);
 }
 
-int func_02032a08(int *p)
+int Unk02f2a8_Unk_032a08(int *p)
 {
     func_0209e0b0();
     if (Unk095560_Thunk_020961a0() != 0) {
@@ -84,7 +84,7 @@ int func_02032a08(int *p)
     func_020a269c(1);
 }
 
-void func_02032df4(GameState *gs)
+void Unk02f2a8_ResetField7478(GameState *gs)
 {
     FIELD(u32, gs, 0x7478) = 0;
     FIELD(u8, gs, 0x7481) = 0;
@@ -92,7 +92,7 @@ void func_02032df4(GameState *gs)
     Unk0a4e48_Unk_0a4e9c(2);
 }
 
-void func_020333b4(GameState *gs)
+void Unk02f2a8_ResetField7478Ex(GameState *gs)
 {
     FIELD(u32, gs, 0x7478) = 0;
     FIELD(u8, gs, 0x7480) = 0;
@@ -117,17 +117,17 @@ u8 *GameState_GetBody(void)
     return 0;
 }
 
-u32 *func_02034a44(int a, int b)
+u32 *Unk02f2a8_GetCell38e8(int a, int b)
 {
     return (u32 *)gGameState->unk_38e8 + func_02035c90(a, b);
 }
 
-u32 *func_02034a68(void)
+u32 *Unk02f2a8_GetCurrentCell38e8(void)
 {
-    return func_02034a44(FIELD(s8, gGameState, 0x7482), FIELD(s8, gGameState, 0x7483));
+    return Unk02f2a8_GetCell38e8(FIELD(s8, gGameState, 0x7482), FIELD(s8, gGameState, 0x7483));
 }
 
-u32 func_02034ab0(void)
+u32 Unk02f2a8_GetObj39160Bits16(void)
 {
     u32 r = 0;
     Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)func_02039160();

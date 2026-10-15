@@ -22,7 +22,7 @@ u32 Unk0edc78_Unk_0ee00c(void)
   return 0;
 }
 
-int func_02034a68();
+int Unk02f2a8_GetCurrentCell38e8();
 int func_02052d7c();
 int func_0209a7bc();
 int func_020a0da4();
@@ -32,7 +32,7 @@ void Unk0edc78_Unk_0edf98(int arg0)
   int value1;
   int value2;
   value1 = Unk09a268_Unk_09c484(5);
-  value2 = func_02034a68();
+  value2 = Unk02f2a8_GetCurrentCell38e8();
   Unk09a268_Unk_09a80c(value2,1);
   Unk09a268_Unk_09a830(value2,0);
   func_0209a7bc(value2,*(u8 *)(value1 + 0x19));

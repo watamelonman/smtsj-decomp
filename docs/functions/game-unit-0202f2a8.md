@@ -18,11 +18,11 @@
 
 ## Not done in M1-T1106
 - `Unk02f2a8_Unk_033ac8`
-- `func_02032df4`
-- `func_02034a44`
-- `func_02034a68`
+- `Unk02f2a8_ResetField7478`
+- `Unk02f2a8_GetCell38e8`
+- `Unk02f2a8_GetCurrentCell38e8`
 - `Unk02f2a8_Unk_034a8c`
-- `func_02034ab0`
+- `Unk02f2a8_GetObj39160Bits16`
 - `func_02035c90`
 - `func_02035ab8`
 
@@ -31,19 +31,19 @@
 - `func_020353cc`
 - `func_020353f8`
 - `Unk02f2a8_Unk_035440`
-- `func_02030548`
+- `Unk02f2a8_Call_02035db8`
 - `Unk02f2a8_ClearEntry5e12Bit0`
 - `func_02034ad4`
 - `func_02035c5c`
 
 ## Not done in M1-T1108
 - `Unk02f2a8_Unk_036488`
-- `func_02032a08`
+- `Unk02f2a8_Unk_032a08`
 - `Unk02f2a8_Unk_0343b4`
 - `Unk02f2a8_Unk_033c94`
 - `func_02035bd8`
 - `Unk02f2a8_Unk_02fc10`
-- `func_02031408`
+- `Unk02f2a8_Call_02036318`
 - `Unk02f2a8_Unk_03538c`
 
 ## Not done in M1-T1109
@@ -54,7 +54,7 @@
 - `GameState_Shutdown`
 - `func_02035a70`
 - `func_02035c14`
-- `func_020333b4`
+- `Unk02f2a8_ResetField7478Ex`
 
 ## Not done in M1-T1110
 - `func_020362c8`
@@ -170,11 +170,11 @@
 - `GameState_GetUnkField74f6`: hand-matched
 - `Unk02f2a8_ClearEntry5e12Bit0`: hand-matched
 - `Unk02f2a8_SetField6138`: hand-matched
-- `func_02030548`: hand-matched
-- `func_02031408`: hand-matched
-- `func_02032a08`: hand-matched
-- `func_02032df4`: hand-matched
-- `func_020333b4`: hand-matched
-- `func_02034a44`: hand-matched
-- `func_02034a68`: hand-matched
-- `func_02034ab0`: hand-matched
+- `Unk02f2a8_Call_02035db8`: hand-matched
+- `Unk02f2a8_Call_02036318`: hand-matched
+- `Unk02f2a8_Unk_032a08`: hand-matched
+- `Unk02f2a8_ResetField7478`: hand-matched
+- `Unk02f2a8_ResetField7478Ex`: hand-matched
+- `Unk02f2a8_GetCell38e8`: hand-matched
+- `Unk02f2a8_GetCurrentCell38e8`: hand-matched
+- `Unk02f2a8_GetObj39160Bits16`: hand-matched
