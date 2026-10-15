@@ -236,5 +236,16 @@
  "func_020989a4": "Unk0986ac_Unk_0989a4",
  "func_020989dc": "Unk0986ac_FindEmpty",
  "func_02098aa8": "Unk0986ac_Unk_098aa8",
- "func_02098ae0": "Unk0986ac_IsMode012"
+ "func_02098ae0": "Unk0986ac_IsMode012",
+ "func_02099234": "Unk0986ac_Unk_099234",
+ "func_02099274": "Unk0986ac_Unk_099274",
+ "func_020992b0": "Unk0986ac_Unk_0992b0",
+ "func_02099780": "Unk09974c_FindEntry",
+ "func_020998f0": "Unk09974c_Unk_0998f0",
+ "func_02099cc4": "Unk09974c_Unk_099cc4",
+ "func_0209a090": "Unk09974c_Unk_09a090",
+ "func_0209a0c0": "Unk09974c_Unk_09a0c0",
+ "func_0209a0f4": "Unk09974c_IsKind1or14",
+ "func_0209a12c": "Unk09974c_GetFlagsMidMinus1",
+ "func_0209a1a0": "Unk09974c_SetSeenBit"
 }

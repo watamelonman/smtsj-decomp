@@ -22,10 +22,10 @@
 - `Unk0986ac_Unk_098aa8`
 
 ## Not done in M1-T633
-- `func_02099274`
+- `Unk0986ac_Unk_099274`
 - `Unk0986ac_SetFlagBit`
-- `func_02099234`
-- `func_020992b0`
+- `Unk0986ac_Unk_099234`
+- `Unk0986ac_Unk_0992b0`
 - `func_0209911c`
 - `func_02098860`
 - `func_020988bc`
@@ -47,6 +47,6 @@
 - `Unk0986ac_FindEmpty`: hand-matched
 - `Unk0986ac_Unk_098aa8`: hand-matched
 - `Unk0986ac_IsMode012`: hand-matched
-- `func_02099234`: hand-matched
-- `func_02099274`: hand-matched
-- `func_020992b0`: hand-matched
+- `Unk0986ac_Unk_099234`: hand-matched
+- `Unk0986ac_Unk_099274`: hand-matched
+- `Unk0986ac_Unk_0992b0`: hand-matched

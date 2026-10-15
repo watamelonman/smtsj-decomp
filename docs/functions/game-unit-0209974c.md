@@ -16,18 +16,18 @@
 
 ## Not done in M1-T554
 - `Unk09974c_HasFlagsMid`
-- `func_0209a0f4`
-- `func_0209a12c`
+- `Unk09974c_IsKind1or14`
+- `Unk09974c_GetFlagsMidMinus1`
 - `func_0209a23c`
-- `func_0209a090`
+- `Unk09974c_Unk_09a090`
 
 ## Not done in M1-T555
-- `func_0209a0c0`
-- `func_0209a1a0`
-- `func_02099780`
+- `Unk09974c_Unk_09a0c0`
+- `Unk09974c_SetSeenBit`
+- `Unk09974c_FindEntry`
 - `func_0209a158`
-- `func_020998f0`
-- `func_02099cc4`
+- `Unk09974c_Unk_0998f0`
+- `Unk09974c_Unk_099cc4`
 - `func_020999d4`
 - `func_02099abc`
 
@@ -50,11 +50,11 @@
 - `func_02099f7c`
 - `Unk09974c_GetEntryUnk08`: hand-matched
 - `Unk09974c_HasFlagsMid`: hand-matched
-- `func_02099780`: hand-matched
-- `func_020998f0`: hand-matched
-- `func_02099cc4`: hand-matched
-- `func_0209a090`: hand-matched
-- `func_0209a0c0`: hand-matched
-- `func_0209a0f4`: hand-matched
-- `func_0209a12c`: hand-matched
-- `func_0209a1a0`: hand-matched
+- `Unk09974c_FindEntry`: hand-matched
+- `Unk09974c_Unk_0998f0`: hand-matched
+- `Unk09974c_Unk_099cc4`: hand-matched
+- `Unk09974c_Unk_09a090`: hand-matched
+- `Unk09974c_Unk_09a0c0`: hand-matched
+- `Unk09974c_IsKind1or14`: hand-matched
+- `Unk09974c_GetFlagsMidMinus1`: hand-matched
+- `Unk09974c_SetSeenBit`: hand-matched

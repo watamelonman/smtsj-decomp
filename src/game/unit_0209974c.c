@@ -67,11 +67,11 @@ typedef struct Unk09974cEntry {
     u8 pad_000a[0x2];
 } Unk09974cEntry;
 
-Unk09974cEntry *func_02099780(int id);
+Unk09974cEntry *Unk09974c_FindEntry(int id);
 
 u8 Unk09974c_GetEntryUnk08(u32 id)
 {
-    Unk09974cEntry *e = func_02099780(id);
+    Unk09974cEntry *e = Unk09974c_FindEntry(id);
     if (e != 0) {
         return e->unk_0008;
     }
@@ -147,7 +147,7 @@ typedef struct Unk09974cKind {
     u8 kind : 7;
     u8 kind_hi : 1;
 } Unk09974cKind;
-Unk09974cEntry *func_02099780(int id)
+Unk09974cEntry *Unk09974c_FindEntry(int id)
 {
     Unk09974cEntry *t = (Unk09974cEntry *)data_0213bdec;
     u32 j;
@@ -197,9 +197,9 @@ typedef struct Unk09974cFlags {
     u16 unk_04_hi : 4;
 } Unk09974cFlags;
 
-int func_020998f0(int id)
+int Unk09974c_Unk_0998f0(int id)
 {
-    Unk09974cEntry *e = func_02099780(id);
+    Unk09974cEntry *e = Unk09974c_FindEntry(id);
     int n;
     if (e == 0) {
         return 0;
@@ -214,7 +214,7 @@ int func_020998f0(int id)
     return 1;
 }
 
-s32 func_02099cc4(Unk09974cStat *p)
+s32 Unk09974c_Unk_099cc4(Unk09974cStat *p)
 {
     u32 v = p->unk_04;
     u32 r;
@@ -236,7 +236,7 @@ s32 func_02099cc4(Unk09974cStat *p)
     return q;
 }
 
-int func_0209a090(int id)
+int Unk09974c_Unk_09a090(int id)
 {
     if (id >= 51 && id <= 110) {
         u8 v = ((u8 *)func_02099d14(id))[45];
@@ -247,7 +247,7 @@ int func_0209a090(int id)
     return 0;
 }
 
-int func_0209a0c0(int id)
+int Unk09974c_Unk_09a0c0(int id)
 {
     if (id >= 51 && id <= 110) {
         u8 v = ((u8 *)func_02099d14(id))[45];
@@ -258,7 +258,7 @@ int func_0209a0c0(int id)
     return 0;
 }
 
-int func_0209a0f4(Unk09974cKind *p)
+int Unk09974c_IsKind1or14(Unk09974cKind *p)
 {
     u32 v = p->kind;
     return v == 14 || v == 1;
@@ -269,7 +269,7 @@ int Unk09974c_HasFlagsMid(Unk09974cFlags *f)
     return f->unk_04_mid != 0;
 }
 
-int func_0209a12c(Unk09974cFlags *f)
+int Unk09974c_GetFlagsMidMinus1(Unk09974cFlags *f)
 {
     if (Unk09974c_HasFlagsMid(f) == 0) {
         return -1;
@@ -277,7 +277,7 @@ int func_0209a12c(Unk09974cFlags *f)
     return f->unk_04_mid - 1;
 }
 
-void func_0209a1a0(int id)
+void Unk09974c_SetSeenBit(int id)
 {
     u8 *b = (u8 *)Unk02e000_GetSubBlock3a4();
     s32 k = id - 51;

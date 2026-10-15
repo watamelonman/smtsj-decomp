@@ -99,7 +99,7 @@ u32 Unk0986ac_Unk_099300(void)
 
 int func_02099d78();
 int Unk09974c_HasFlagsMid();
-int func_0209a12c();
+int Unk09974c_GetFlagsMidMinus1();
 /* decompiler-derived */
 u32 Unk0986ac_Unk_098918(void)
 {
@@ -109,7 +109,7 @@ u32 Unk0986ac_Unk_098918(void)
   value3 = 0;
   value1 = func_02099d78();
   if ((value1 != 0) && (value2 = Unk09974c_HasFlagsMid(), value2 != 0)) {
-    value3 = func_0209a12c(value1);
+    value3 = Unk09974c_GetFlagsMidMinus1(value1);
   }
   return value3;
 }
@@ -174,8 +174,8 @@ int Unk0986ac_IsMode012(u8 *p)
 void func_0209911c();
 void func_02099174();
 int func_020a246c();
-void func_02099234(u8 *p);
-void func_02099234(u8 *p)
+void Unk0986ac_Unk_099234(u8 *p);
+void Unk0986ac_Unk_099234(u8 *p)
 {
     FIELD(s32, p, 56) -= 1;
     Unk0986ac_Unk_098aa8(p);
@@ -189,7 +189,7 @@ void func_02099234(u8 *p)
     FIELD(u8, p, 68) = 0;
 }
 
-void func_02099274(u8 *p)
+void Unk0986ac_Unk_099274(u8 *p)
 {
     FIELD(s32, p, 20) = FIELD(s32, p, 24);
     FIELD(s32, p, 24) = -1;
@@ -203,7 +203,7 @@ void func_02099274(u8 *p)
     }
 }
 
-void func_020992b0(u8 *p)
+void Unk0986ac_Unk_0992b0(u8 *p)
 {
     switch (FIELD(u32, p, 20)) {
     case 0:
@@ -219,7 +219,7 @@ void func_020992b0(u8 *p)
     case 3:
         break;
     case 4:
-        func_02099234(p);
+        Unk0986ac_Unk_099234(p);
         break;
     }
 }
