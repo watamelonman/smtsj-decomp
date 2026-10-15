@@ -186,3 +186,9 @@
 - `Unk02f2a8_GetRes36Unk19`: hand-matched
 - `Unk02f2a8_GetRes36Unk1a`: hand-matched
 - `Unk02f2a8_GetRes36Unk1b`: hand-matched
+- `func_02035c14`: hand-matched
+- `func_02035c5c`: hand-matched
+- `func_02035c90`: hand-matched
+- `func_020360d8`: hand-matched
+- `func_020362c8`: hand-matched
+- `func_02036318`: hand-matched

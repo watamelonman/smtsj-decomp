@@ -39,7 +39,7 @@ void Unk02f2a8_SetField6138(int k, u32 v)
 void Unk02f2a8_Nop_0303c8(void) { }
 void Unk02f2a8_Nop_0303cc(void) { }
 void func_02035db8();
-void func_02036318();
+int func_02036318();
 void func_0209e0b0();
 int Unk095560_Thunk_020961a0();
 void func_020305a8();
@@ -140,7 +140,7 @@ u32 Unk02f2a8_GetObj39160Bits16(void)
 void *func_020445d0();
 u8 *func_0204fde0();
 int func_02035890();
-void func_020362c8();
+int func_020362c8();
 
 typedef struct Unk02f2a8Res36 {
     u8 pad_0000[0x19];
@@ -248,6 +248,42 @@ int Unk02f2a8_GetRes36Unk1b(int i, int j)
     return r;
 }
 
+int Unk0e5fb8_Unk_0e63c8();
+int Unk02e000_TestFlag();
+void func_0202e968();
+int func_02035c14(int i, int j)
+{
+    Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
+    s8 v = e->unk_001b[j];
+    int r = 0;
+    if (v >= 0) {
+        r = Unk0e5fb8_Unk_0e63c8(v);
+    }
+    return r;
+}
+
+int func_02035c5c(int x, int y)
+{
+    if (x < 0) {
+        return 0;
+    }
+    if (x >= 45) {
+        return 0;
+    }
+    if (y < 0) {
+        return 0;
+    }
+    return y < 40;
+}
+
+int func_02035c90(int x, int y)
+{
+    if (func_02035c5c(x, y) == 0) {
+        return 0;
+    }
+    return y * 45 + x;
+}
+
 /* decompiler-derived */
 void Unk02f2a8_Unk_035ec4(int arg0,u32 arg1)
 {
@@ -327,6 +363,51 @@ void Unk02f2a8_Unk_035440(int arg0)
 }
 
 int func_02050088();
+int func_020360d8(int dir)
+{
+    switch (dir) {
+    case 1:
+        return 0;
+    case 2:
+        return 0x4000;
+    case 3:
+        return 0x8000;
+    case 0:
+        return 0xc000;
+    }
+    return 0;
+}
+
+int func_020362c8(u32 id)
+{
+    u8 *w;
+    if (id >= 90) {
+        return 0;
+    }
+    w = (u8 *)Unk02e000_GetWorkArea();
+    FIELD(u16, w, 0x35c) = id;
+    if (Unk02e000_TestFlag(FIELD(u16, w, 0x35c)) != 0) {
+        return 0;
+    }
+    func_0202e968(FIELD(u16, w, 0x35c), 1);
+    return 1;
+}
+
+int func_02036318(int x, int y, u32 v)
+{
+    u8 *w;
+    if (func_02035c5c(x, y) == 0) {
+        return 0;
+    }
+    w = (u8 *)Unk02e000_GetWorkArea();
+    FIELD(s8, w, 0x364) = x;
+    FIELD(s8, w, 0x365) = y;
+    FIELD(s8, w, 0x366) = x;
+    FIELD(s8, w, 0x367) = y;
+    FIELD(u32, w, 0x358) = v;
+    return 1;
+}
+
 /* decompiler-derived */
 void Unk02f2a8_Unk_036488(void)
 {
