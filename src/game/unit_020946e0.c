@@ -90,3 +90,30 @@ void func_02094704(u16 *arg0,u16 arg1,u16 arg2,u16 arg3,
   arg0[3] = 0;
   return;
 }
+
+
+int func_02094750();
+int func_020949e0();
+int func_02094a90();
+/* decompiler-derived */
+void func_02094958(void)
+{
+  int tmp1;
+  short *v2;
+  short *v3;
+  tmp1 = Unk044904_Get_data_0215ee98();
+  func_02094750(*(u32 *)(tmp1 + 0x7870));
+  v2 = (short *)Unk0946e0_GetAddr_data_02175d94();
+  tmp1 = Unk044904_Get_data_0215ee98();
+  v3 = (short *)Unk0946e0_Unk_0948fc(*(u32 *)(tmp1 + 0x7870));
+  *(int *)(v2 + 2) = (int)*v2 + (int)*v3;
+  tmp1 = Unk044904_Get_data_0215ee98();
+  tmp1 = Unk0946e0_Unk_0948fc(*(u32 *)(tmp1 + 0x7870));
+  *(int *)(v2 + 4) = (int)v2[1] + (int)*(short *)(tmp1 + 2);
+  func_02094a90(0);
+  func_020949e0(1);
+  func_02094a90(2);
+  func_020949e0(3);
+  Unk0946e0_Unk_094a64(6);
+  return;
+}
