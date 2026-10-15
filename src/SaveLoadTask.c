@@ -51,6 +51,15 @@ void func_0205c748(int screen, void *obj, int x, int y, float sx, float sy, int 
 void func_0205dee8(int screen, u32 obj, int frame, int x, int y, float sx, float sy, int rot, float alpha, int prio);
 void func_02060b60(int screen, u32 obj, int x, int y, int z, int prio);
 
+int func_02050628();
+int func_020df7c4(void)
+{
+    if (func_02050628(4) != 0 || func_02050628(5) != 0) {
+        return 1;
+    }
+    return 0;
+}
+
 /* Per-frame draw/update of the save/load screen. */
 void SaveLoadTask_Draw(SaveLoadTask *task) {
     if (task->visible) {
