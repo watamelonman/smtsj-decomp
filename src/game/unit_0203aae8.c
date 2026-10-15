@@ -123,6 +123,72 @@ int Unk03aae8_Unk_03acf4(u32 arg0)
   *(u32 *)(*(int *)(tmp1 + 4) + 0xa8) = arg0;
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+typedef int (*Unk03aae8StepFn)(u8 *);
+extern u8 data_02142170[];
+void func_02095b48();
+void func_0204b344();
+void *func_0204b3cc();
+void *func_0204fe68();
+void *func_0204fed8();
+void *Unk095560_Unk_095778();
+int func_0201f1dc();
+
+void func_0203ad24(u8 *p)
+{
+    switch (FIELD(s32, p, 8)) {
+    case 0: {
+        u8 buf[64] = {0};
+        func_02095b48(buf, FIELD(u32, p, 64));
+        func_0204b344(p, buf);
+        break;
+    }
+    case 1:
+    case 2:
+    case 3:
+        break;
+    }
+}
+
+void *func_0203ad98(u8 *p, int key)
+{
+    void *r = 0;
+    switch (FIELD(s32, p, 8)) {
+    case 0:
+        r = func_0204b3cc(p, key);
+        break;
+    case 1:
+        break;
+    case 2:
+        r = func_0204fed8(func_0204fe68(FIELD(u32, p, 92), r), key);
+        break;
+    case 3:
+        r = func_0204fed8(func_0204fe68(FIELD(u32, p, 116), r), key);
+        break;
+    }
+    return r;
+}
+
+void *func_0203ae10(u8 *p, int key)
+{
+    void *r = 0;
+    switch (FIELD(s32, p, 8)) {
+    case 0:
+        r = Unk095560_Unk_095778(key);
+        break;
+    case 1:
+        break;
+    case 2:
+        r = func_0204fed8(func_0204fe68(FIELD(u32, p, 80), r), key);
+        break;
+    case 3:
+        break;
+    }
+    return r;
+}
+
 int Unk03aae8_Unk_03b89c(void)
 {
     u32 a = func_0203ac00(0);

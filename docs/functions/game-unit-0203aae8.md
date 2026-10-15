@@ -40,3 +40,6 @@
 - `Unk03aae8_Unk_03af14`: hand-matched
 - `Unk03aae8_Unk_03b89c`: hand-matched
 - `Unk03aae8_Unk_03b93c`: hand-matched
+- `func_0203ad24`: hand-matched
+- `func_0203ad98`: hand-matched
+- `func_0203ae10`: hand-matched
