@@ -59,6 +59,22 @@ int Unk09974c_Unk_0998b0(u16 *arg0,u16 *arg1)
   return (u32)*arg0 - (u32)*arg1;
 }
 
+typedef struct Unk09974cEntry {
+    u8 pad_0000[0x8];
+    u8 unk_0008;
+} Unk09974cEntry;
+
+Unk09974cEntry *func_02099780(u32 id);
+
+u8 func_020998c0(u32 id)
+{
+    Unk09974cEntry *e = func_02099780(id);
+    if (e != 0) {
+        return e->unk_0008;
+    }
+    return 0;
+}
+
 /* decompiler-derived */
 int Unk09974c_Unk_0998d8(void)
 {
@@ -141,4 +157,16 @@ int Unk09974c_Unk_0997c8(u32 arg0)
   default:
     return 0;
   }
+}
+
+typedef struct Unk09974cFlags {
+    u8 pad_0000[0x4];
+    u16 unk_04_lo : 8;          /* +0x04 */
+    u16 unk_04_mid : 4;         /* +0x04 bits 8..11 */
+    u16 unk_04_hi : 4;
+} Unk09974cFlags;
+
+int func_0209a114(Unk09974cFlags *f)
+{
+    return f->unk_04_mid != 0;
 }
