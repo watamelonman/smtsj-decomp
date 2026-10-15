@@ -274,3 +274,20 @@ void Unk0d297c_Unk_0d3308(int arg0)
   ((Unk0d297cWork *)arg0)->unk_001c = 0;
   ((Unk0d297cWork *)arg0)->unk_0020 = 0x100;
 }
+
+/* decompiler-derived */
+void func_020d3358(int arg0, int arg1)
+{
+  u32 tmp1;
+  if (((Unk0d297cWork *)arg0)->unk_0014 == 0) {
+    Unk0d297c_Unk_0d3200((u32 *)arg0, (int)arg1);
+    if (((Unk0d297cWork *)arg0)->unk_0018 != 0) {
+      func_02053000();
+      ((Unk0d297cWork *)arg0)->unk_0018 = 0;
+    }
+    tmp1 = func_02052fe0(((Unk0d297cWork *)arg0)->unk_0020 << 2);
+    ((Unk0d297cWork *)arg0)->unk_0018 = tmp1;
+    ((Unk0d297cWork *)arg0)->unk_0014 = 1;
+  }
+  Unk0d297c_Unk_0d3330((Unk0d297cWork *)arg0);
+}
