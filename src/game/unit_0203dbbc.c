@@ -3,6 +3,24 @@
 
 
 int func_0203ac00();
+int Unk03aae8_Unk_03ad14();
+static inline void Unk03dbbc_SetSubState(u32 v, u8 *sub)
+{
+    FIELD(u32, sub, 0x18) = v;
+}
+void func_0204cbc8();
+void func_0204c404();
+int func_0203dbbc(void)
+{
+    s16 a = func_0203ac00(0);
+    s16 b = func_0203ac00(1);
+    func_0204cbc8();
+    Unk02e000_GetWorkArea();
+    func_0204c404(a, b);
+    Unk03dbbc_SetSubState(17, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
+    return 3;
+}
+
 /* decompiler-derived */
 u32 Unk03dbbc_Unk_03dc48(void)
 {
