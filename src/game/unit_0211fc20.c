@@ -152,3 +152,16 @@ int * Unk11fc20_Unk_120a58(u32 arg0)
   }
   return (int *)0x0;
 }
+
+/* decompiler-derived */
+u32 func_0211fc94(void)
+{
+  u32 tmp1;
+  if (*data_02176e7c == 0) {
+    tmp1 = 0;
+  }
+  else {
+    tmp1 = *(u32 *)(*data_02176e7c + 0x10);
+  }
+  return tmp1;
+}
