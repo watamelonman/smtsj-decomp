@@ -29,3 +29,4 @@
 - `func_020fde4c`
 - `func_020fe004`
 - `Unk0fd9f0_LoadBattleHelpTalk`: decompiler-derived (plain cleanup)
+- `func_020fdc18`: decompiler-derived (plain+fix cleanup)

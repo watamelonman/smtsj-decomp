@@ -136,3 +136,27 @@ void Unk0fd9f0_LoadBattleHelpTalk(u32 *arg0)
   tmp1 = func_0205c2c4(data_021510e0);
   arg0[8] = tmp1;
 }
+
+int func_0205bb68();
+int func_0205c368();
+int func_0205ddb4();
+/* decompiler-derived */
+void func_020fdc18(int *arg0)
+{
+  Unk0fd9f0_Unk_0fe33c((int)arg0);
+  if (arg0[8] != 0) {
+    func_0205c368();
+    arg0[8] = 0;
+  }
+  if (*arg0 != 0) {
+    func_0205ddb4();
+    *arg0 = 0;
+  }
+  if (arg0[7] != 0) {
+    func_0205ddb4();
+    arg0[7] = 0;
+  }
+  func_0205bb68();
+  func_0205bb68();
+  *data_02176e20 = 0;
+}
