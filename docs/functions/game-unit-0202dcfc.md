@@ -32,3 +32,21 @@
 - `func_0202ded4`
 - `func_0202ddf4`
 - `Unk02dcfc_ResetWorker`: hand-matched
+- `func_0202dd84`: hand-matched
+- `func_0202ddf4`: hand-matched
+- `func_0202de28`: hand-matched
+- `func_0202de40`: hand-matched
+- `func_0202de6c`: hand-matched
+- `func_0202de98`: hand-matched
+- `func_0202deb0`: hand-matched
+- `func_0202ded4`: hand-matched
+- `func_0202df10`: hand-matched
+- `func_0202df28`: hand-matched
+- `func_0202df40`: hand-matched
+- `func_0202df58`: hand-matched
+- `func_0202df70`: hand-matched
+- `func_0202df88`: hand-matched
+- `func_0202dfa0`: hand-matched
+- `func_0202dfb8`: hand-matched
+- `func_0202dfd0`: hand-matched
+- `func_0202dfe8`: hand-matched

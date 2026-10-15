@@ -56,9 +56,9 @@ void Unk0202dcfc_InitWorker(Worker *w, u32 owner) {
 }
 
 
-void Unk095560_GetManagerAlias(void);
+Worker *Unk095560_GetManagerAlias(void);
 /* forwards to `Unk095560_GetManagerAlias` */
-void Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void) { Unk095560_GetManagerAlias(); }
+Worker *Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void) { return Unk095560_GetManagerAlias(); }
 
 
 /* decompiler-derived */
@@ -100,4 +100,174 @@ void Unk02dcfc_ResetWorker(Worker *w)
     w->timer = 0;
     w->state = 0;
     func_020a2bb8(w->sub);
+}
+
+/* Object returned by Unk03aae8_Unk_03ad14; holds the worker at +0xE8. */
+typedef struct Unk02dcfcOwner {
+    u8 pad_0000[0xe8];
+    Worker *worker;
+} Unk02dcfcOwner;
+
+Unk02dcfcOwner *Unk03aae8_Unk_03ad14(void);
+void func_020a2c90(u32 *sub);
+void func_020a2950(int a);
+void func_0202dfe8(u32 value);
+
+u32 func_0202dd84(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return 0;
+    }
+    return w->state;
+}
+
+void func_0202ddf4(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return;
+    }
+    w->unk_0018 = 1;
+    func_020a2c90(w->sub);
+    func_020a2950(0);
+    func_0202dfe8(0);
+}
+
+u32 func_0202de28(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return 1;
+    }
+    return w->timer;
+}
+
+u32 func_0202de40(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return 0;
+    }
+    return w->field54;
+}
+
+void func_0202de6c(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return;
+    }
+    w->unk_0018 = 1;
+    w->field54 = 0;
+    func_0202dfe8(0);
+}
+
+u32 func_0202de98(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return 0;
+    }
+    return w->field58;
+}
+
+void func_0202deb0(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return;
+    }
+    w->unk_0018 = 13;
+    w->field58 = 1;
+}
+
+void func_0202ded4(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return;
+    }
+    w->unk_0018 = 1;
+    w->field58 = 0;
+    func_0202dfe8(0);
+}
+
+void func_0202df10(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w != 0) {
+        w->unk_0018 = 7;
+    }
+}
+
+void func_0202df28(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w != 0) {
+        w->unk_0018 = 8;
+    }
+}
+
+void func_0202df40(void)
+{
+    u32 code = 22;
+    Worker *w = Unk03aae8_Unk_03ad14()->worker;
+    w->unk_0018 = code;
+}
+
+void func_0202df58(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w != 0) {
+        w->unk_0018 = 24;
+    }
+}
+
+void func_0202df70(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w != 0) {
+        w->unk_0018 = 25;
+    }
+}
+
+void func_0202df88(void)
+{
+    u32 code = 26;
+    Worker *w = Unk03aae8_Unk_03ad14()->worker;
+    w->unk_0018 = code;
+}
+
+void func_0202dfa0(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w != 0) {
+        w->field64 = 1;
+    }
+}
+
+void func_0202dfb8(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w != 0) {
+        w->field68 = 1;
+    }
+}
+
+u32 func_0202dfd0(void)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w == 0) {
+        return 0;
+    }
+    return w->field70;
+}
+
+void func_0202dfe8(u32 value)
+{
+    Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (w != 0) {
+        w->field70 = value;
+    }
 }
