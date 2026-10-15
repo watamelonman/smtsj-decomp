@@ -51,3 +51,4 @@
 - `func_0203f2d4`
 - `func_02043340`
 - `Unk03e43c_Call_02056cc0`: decompiler-derived (plain cleanup)
+- `func_0203e920`: hand-matched

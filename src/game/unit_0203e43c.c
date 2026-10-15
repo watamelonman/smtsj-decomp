@@ -18,6 +18,21 @@ void Unk03e43c_Unk_03fa28(void);
 void Unk03e43c_Unk_03f2bc(void);
 void Unk03e43c_Unk_03fa3c(char arg0);
 
+typedef struct Unk03e43cTimer {
+    u8 pad_0000[0x58];
+    u16 count;                  /* +0x58 */
+} Unk03e43cTimer;
+
+/* Counts down; returns 1 once the counter is already 0. */
+int func_0203e920(Unk03e43cTimer *t)
+{
+    if (t->count == 0) {
+        return 1;
+    }
+    t->count--;
+    return 0;
+}
+
 /* forwards to `func_0203fa84` */
 void Unk03e43c_Thunk_0203fa84(void) { func_0203fa84(); }
 
