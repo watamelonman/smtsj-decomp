@@ -40,3 +40,6 @@
 - `func_020cb8f8`
 - `func_020cb98c`
 - `func_020cbc50`
+
+## Not done in M1-T871
+- `func_020cbce4`
