@@ -97,3 +97,18 @@ void Unk1241ec_Unk_1242e4(u32 arg0)
     *(u32 *)(data_02176e84 + 0x38) = arg0;
   }
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+void func_021242fc(void)
+{
+    if (data_02176e84 == 0) {
+        return;
+    }
+    FIELD(u32, data_02176e84, 40) = 1;
+    FIELD(u32, data_02176e84, 44) = 0;
+    FIELD(u32, data_02176e84, 60) = 1;
+    FIELD(u32, data_02176e84, 56) = 0;
+}
