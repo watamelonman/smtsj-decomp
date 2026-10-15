@@ -26,3 +26,4 @@
 - `Unk06dddc_Unk_06e034`: decompiler-derived (plain cleanup)
 - `Unk06dddc_Unk_06e0c4`: hand-matched
 - `Unk06dddc_GetEntryUnk24`: hand-matched
+- `func_0206e06c`: hand-matched

@@ -64,6 +64,26 @@ int Unk06dddc_Unk_06e034(int arg0,int arg1)
   return (int)*(short *)(arg1 * 0x14 + *(int *)(data_0216bc04 + arg0 * 0x148) + 6);
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u32 data_0216bac4[];
+extern u8 data_0216baec[];
+extern u8 data_0216baf0[];
+int Unk06dddc_Unk_06e058(int arg0);
+int func_020152cc();
+
+u8 func_0206e06c(int k)
+{
+    int i;
+    for (i = 0; i < (s32)data_0216bac4[0]; i++) {
+        if (func_020152cc(Unk06dddc_Unk_06e058((u8)i) + 1, k) == 0) {
+            return i;
+        }
+    }
+    return 255;
+}
+
 u8 *Unk06dddc_Unk_06e0c4(u32 a)
 {
     u8 *p = (u8 *)Unk06dddc_Unk_06e058(a);
