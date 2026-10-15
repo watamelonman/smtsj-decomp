@@ -8,3 +8,4 @@
 - `func_021159f8`
 - `func_02115a80`
 - `func_02115b1c`
+- `func_02115bcc`: hand-matched

@@ -4,6 +4,16 @@
 
 int Unk02e000_GetWorkArea();
 int func_021159f8();
+int func_02035b08();
+int func_02115bcc(int x)
+{
+    int r = 0;
+    if (x == func_02035b08(8, 3)) {
+        r = 1;
+    }
+    return r;
+}
+
 /* decompiler-derived */
 u32 Unk1159f8_Unk_115c68(u32 arg0,u32 arg1)
 {
