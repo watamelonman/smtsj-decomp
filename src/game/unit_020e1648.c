@@ -352,7 +352,7 @@ typedef struct Unk0e1648Rec {
     Unk0e1648Ent ents[3];
 } Unk0e1648Rec;
 
-int func_020e4f54(Unk0e1648Rec *p)
+int Unk0e1648_Unk_0e4f54(Unk0e1648Rec *p)
 {
     int m = 0;
     int r;

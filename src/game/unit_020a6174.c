@@ -36,7 +36,7 @@ typedef struct Unk0a6174Slot {
 } Unk0a6174Slot;
 int func_02050074();
 
-Unk0a6174Slot *func_020a6548(Unk0a6174Slot *p)
+Unk0a6174Slot *Unk0a6174_Unk_0a6548(Unk0a6174Slot *p)
 {
     u32 sum = 0;
     u8 acc;

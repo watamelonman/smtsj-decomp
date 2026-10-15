@@ -52,7 +52,7 @@
 - `func_020e41d0`
 
 ## Not done in M1-T1047
-- `func_020e4f54`
+- `Unk0e1648_Unk_0e4f54`
 - `func_020e30f0`
 - `func_020e28a8`
 - `func_020e40a4`
@@ -83,4 +83,4 @@
 - `Unk0e1648_Unk_0e2f54`: hand-matched
 - `Unk0e1648_Unk_0e4c64`: hand-matched
 - `Unk0e1648_Unk_0e536c`: hand-matched
-- `func_020e4f54`: hand-matched
+- `Unk0e1648_Unk_0e4f54`: hand-matched

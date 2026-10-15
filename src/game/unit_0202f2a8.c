@@ -939,7 +939,7 @@ int Unk02f2a8_Unk_035b74(int a)
 int Unk0986ac_Unk_098978();
 int Unk0986ac_Thunk_02098714();
 
-int func_020366dc(int v)
+int Unk02f2a8_Unk_0366dc(int v)
 {
     int r = (int)(0.1f * v);
     int a = Unk0986ac_Unk_098978(152);

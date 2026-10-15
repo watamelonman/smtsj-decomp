@@ -87,7 +87,7 @@
 - `Unk02f2a8_Unk_0351b4`
 
 ## Not done in M1-T1113
-- `func_020366dc`
+- `Unk02f2a8_Unk_0366dc`
 - `func_02036654`
 - `func_02030204`
 - `func_0203721c`
@@ -207,4 +207,4 @@
 - `Unk02f2a8_Unk_035820`: hand-matched
 - `Unk02f2a8_Unk_035b08`: hand-matched
 - `Unk02f2a8_Unk_035b74`: hand-matched
-- `func_020366dc`: hand-matched
+- `Unk02f2a8_Unk_0366dc`: hand-matched
