@@ -17,3 +17,4 @@
 - `Unk071dc0_Unk_071dc0`: decompiler-derived (plain cleanup)
 - `Unk071dc0_Clear`: hand-matched
 - `Unk071dc0_GetMode604Sign`: hand-matched
+- `func_02071fcc`: hand-matched

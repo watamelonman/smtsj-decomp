@@ -64,6 +64,24 @@ void Unk071dc0_Clear(void)
     func_02008848(data_02170d14, 0, 0x1608);
 }
 
+typedef struct Unk071dc0Rec {
+    u8 pad_00[24];
+} Unk071dc0Rec;
+int func_0205b36c();
+
+int func_02071fcc(void)
+{
+    int i;
+    FIELD(s32, data_02171d14, 0x604) = 0;
+    for (i = 0; i < FIELD(s32, data_02171d14, 0x600); i++) {
+        if (func_0205b36c(&((Unk071dc0Rec *)data_02170d14)[i]) == 0) {
+            return 1;
+        }
+    }
+    FIELD(s32, data_02171d14, 0x604) = 4;
+    return 0;
+}
+
 int Unk071dc0_GetMode604Sign(void)
 {
     switch (FIELD(s32, data_02171d14, 0x604)) {
