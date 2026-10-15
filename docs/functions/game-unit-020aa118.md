@@ -40,3 +40,13 @@
 - `func_020aa130`
 - `func_020aa188`
 - `func_020aa298`
+
+## Not done in M1-T1080
+- `func_020ae270`
+- `func_020af9f4`
+- `func_020ae16c`
+- `func_020af85c`
+- `func_020ae058`
+- `func_020ab2c8`
+- `func_020ae1e8`
+- `func_020ae0d8`
