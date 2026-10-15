@@ -156,3 +156,41 @@ u32 Unk0c855c_Unk_0c92dc(int arg0)
 {
   return *(u32 *)(data_0213c51c + (u32)((Unk0c855cWork *)arg0)->unk_003a * 4);
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+u32 func_020d353c();
+void func_020616c0();
+void func_020ca2e4();
+void func_020c9ee0();
+void func_0205bb68();
+void func_020ca550(u32 *p)
+{
+    p[0] = 32;
+    p[1] = 0;
+    p[3] = 0;
+    p[4] = (u32)func_020ca2e4;
+    p[5] = 0;
+    p[6] = 0;
+    p[7] = 0;
+    p[8] = (u32)func_020c9ee0;
+}
+
+void func_020ca648(int k)
+{
+    int j;
+    switch (k) {
+    case 0:
+        func_0205bb68();
+        break;
+    case 1:
+        func_0205bb68();
+        break;
+    case 2:
+        for (j = 0; j < 12; j++) {
+            func_0205bb68();
+        }
+        break;
+    }
+}

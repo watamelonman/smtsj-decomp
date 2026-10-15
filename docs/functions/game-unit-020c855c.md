@@ -32,3 +32,5 @@
 - `func_020ca2e4`
 - `Unk0c855c_Unk_0c92c0`: decompiler-derived (struct cleanup)
 - `Unk0c855c_Unk_0c92dc`: decompiler-derived (struct cleanup)
+- `func_020ca550`: hand-matched
+- `func_020ca648`: hand-matched
