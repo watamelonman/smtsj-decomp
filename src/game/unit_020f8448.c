@@ -51,3 +51,23 @@ int Unk0f8448_Unk_0f8468(Unk0f8448Work *work)
   return work->unk_0010 - work->unk_0008;
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+typedef void (*Unk0f8448Fn)(u8 *);
+void func_020bcfc4();
+void func_020bd1a8();
+void func_020f8478(u8 *p, u32 a)
+{
+    func_020bcfc4(p, a);
+    func_020bd1a8(p + 28, p, p + 100, 1);
+    FIELD(Unk0f8448Fn, p, 148)(p);
+}
+
+u32 func_020f84c0(u8 *p, int i)
+{
+    if (i < 0 || (int)Unk0f8448_GetUnkField0(p) <= i) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 12, 28);
+}
