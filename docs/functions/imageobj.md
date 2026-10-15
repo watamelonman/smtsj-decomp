@@ -77,3 +77,4 @@
 - `ImageObj_Unk_077640`: decompiler-derived (plain cleanup)
 - `ImageObj_Unk_0791a8`: decompiler-derived (proto cleanup)
 - `ImageObj_Unk_079000`: decompiler-derived (plain cleanup)
+- `func_02077ddc`: hand-matched

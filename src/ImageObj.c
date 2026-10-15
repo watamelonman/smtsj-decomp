@@ -8,12 +8,16 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
 typedef struct ImageObjWork {
-    u8 unk_0000[0x4];
+    u32 unk_0000;
     s32 UnkField0004;
-    u8 unk_0008[0x14];
+    u8 unk_0008[0x8];
+    s32 unk_0010;               /* nonzero while loaded */
+    u8 unk_0014[0x8];
     s32 UnkField001c;
     u8 unk_0020[0xc];
     s32 UnkField002c;
+    u8 unk_0030[0x4];
+    u8 unk_0034[4];             /* sub-object released by Unk0a163c_Unk_0a1ae0 */
 } ImageObjWork;
 
 
@@ -21,7 +25,7 @@ extern u32 data_0217231c[];
 void ImageObj_Unk_0775a0(void);
 void ImageObj_Unk_077620(void);
 void ImageObj_Unk_077640(void);
-int func_02077ddc();
+void func_02077ddc();
 int func_02079238();
 
 u32 ImageObj_Get_data_0217231c(void);
@@ -338,4 +342,18 @@ void ImageObj_Unk_079000(int *arg0)
     return;
   }
   *(u32 *)(*data_0217231c + *arg0 * 4 + 4) = 0;
+}
+
+void Unk0a163c_Unk_0a1ae0(void *p);
+
+/* Releases the object if loaded and clears its state. */
+void func_02077ddc(ImageObjWork *work)
+{
+    if (work->unk_0010 == 0) {
+        return;
+    }
+    Unk0a163c_Unk_0a1ae0(work->unk_0034);
+    func_0205bb68();
+    work->unk_0010 = 0;
+    work->unk_0000 = 0;
 }
