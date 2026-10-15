@@ -24,7 +24,7 @@ extern u32 data_02176e1c[];
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 extern u8 *data_02176e18;
-int func_020fd364(void)
+int Unk0fd268_GetField0(void)
 {
     if (data_02176e18 != 0) {
         return FIELD(int, data_02176e18, 0);
@@ -91,7 +91,7 @@ void Unk0fd268_Unk_0fd380(u32 arg0)
 extern u8 data_021510a4[];
 int Unk05b82c_Unk_05b82c();
 int func_0205dcd4();
-void func_020fd3c4(int flag)
+void Unk0fd268_SetDir(int flag)
 {
     u32 p = Unk0fd268_Get_data_02176e1c();
     if (p == 0) {
@@ -148,7 +148,7 @@ void Unk0fd268_Unk_0fd3f0(int arg0)
   return;
 }
 
-int func_020fd428(void)
+int Unk0fd268_IsField8Zero(void)
 {
     u32 p = Unk0fd268_Get_data_02176e1c();
     if (p == 0) {
@@ -157,7 +157,7 @@ int func_020fd428(void)
     return FIELD(int, p, 8) == 0;
 }
 
-int func_020fd450(void)
+int Unk0fd268_IsField8Neg81(void)
 {
     u32 p = Unk0fd268_Get_data_02176e1c();
     if (p == 0) {

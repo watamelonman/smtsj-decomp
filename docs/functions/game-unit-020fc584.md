@@ -8,17 +8,17 @@
 - `Unk0fc584_Unk_0fcfb0`: decompiler-derived
 
 ## Not done in M1-T525
-- `func_020fc638`
-- `func_020fc654`
+- `Unk0fc584_SetField28bc`
+- `Unk0fc584_GetField28bc`
 - `Unk0fc584_Unk_0fc824`: decompiler-derived
 - `Unk0fc584_Unk_0fc674`: decompiler-derived
 
 ## Not done in M1-T526
-- `func_020fc6e4`
-- `func_020fc70c`
-- `func_020fc86c`
-- `func_020fc6b8`
-- `func_020fc7f4`
+- `Unk0fc584_IsBelow64`
+- `Unk0fc584_IsFieldCZero`
+- `Unk0fc584_Unk_0fc86c`
+- `Unk0fc584_SetDir`
+- `Unk0fc584_Unk_0fc7f4`
 - `Unk0fc584_Unk_0fc7b8`
 - `Unk0fc584_Unk_0fc9fc`: decompiler-derived
 
@@ -37,10 +37,10 @@
 - `func_020fcd18`
 - `Unk0fc584_LoadMoneyWindow`: decompiler-derived (plain cleanup)
 - `Unk0fc584_Unk_0fc7b8`: decompiler-derived (plain+fix cleanup)
-- `func_020fc638`: hand-matched
-- `func_020fc654`: hand-matched
-- `func_020fc6b8`: hand-matched
-- `func_020fc6e4`: hand-matched
-- `func_020fc70c`: hand-matched
-- `func_020fc7f4`: hand-matched
-- `func_020fc86c`: hand-matched
+- `Unk0fc584_SetField28bc`: hand-matched
+- `Unk0fc584_GetField28bc`: hand-matched
+- `Unk0fc584_SetDir`: hand-matched
+- `Unk0fc584_IsBelow64`: hand-matched
+- `Unk0fc584_IsFieldCZero`: hand-matched
+- `Unk0fc584_Unk_0fc7f4`: hand-matched
+- `Unk0fc584_Unk_0fc86c`: hand-matched

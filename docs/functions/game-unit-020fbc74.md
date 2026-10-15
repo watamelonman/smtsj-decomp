@@ -5,8 +5,8 @@
 
 ## Not done in M1-T169
 - `Unk0fbc74_Unk_0fbd30`
-- `func_020fbd74`
+- `Unk0fbc74_Unk_0fbd74`
 - `func_020fbc74`
 - `func_020fbde4`
 - `Unk0fbc74_Unk_0fbd30`: hand-matched
-- `func_020fbd74`: hand-matched
+- `Unk0fbc74_Unk_0fbd74`: hand-matched

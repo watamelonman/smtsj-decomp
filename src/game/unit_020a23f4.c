@@ -2,13 +2,13 @@
 #include "types.h"
 
 
-void func_020fd428(void);
-/* forwards to `func_020fd428` */
-void Unk0a23f4_Thunk_020fd428(void) { func_020fd428(); }
+void Unk0fd268_IsField8Zero(void);
+/* forwards to `Unk0fd268_IsField8Zero` */
+void Unk0a23f4_Thunk_020fd428(void) { Unk0fd268_IsField8Zero(); }
 
-void func_020fd450(void);
-/* forwards to `func_020fd450` */
-void Unk0a23f4_Thunk_020fd450(void) { func_020fd450(); }
+void Unk0fd268_IsField8Neg81(void);
+/* forwards to `Unk0fd268_IsField8Neg81` */
+void Unk0a23f4_Thunk_020fd450(void) { Unk0fd268_IsField8Neg81(); }
 
 int func_02061424();
 /* decompiler-derived */

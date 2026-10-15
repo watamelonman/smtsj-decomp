@@ -50,7 +50,7 @@ int Unk0fbc74_Unk_0fbd30(u8 *p)
     return 0;
 }
 
-int func_020fbd74(u8 *p)
+int Unk0fbc74_Unk_0fbd74(u8 *p)
 {
     u16 old;
     if (FIELD(u32, p, 0) != 4) {

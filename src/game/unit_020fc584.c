@@ -13,15 +13,15 @@ extern u32 data_02176e14[];
 extern u8 *data_02176e10;
 void func_020a4e48();
 void func_020a4eb0();
-int func_020fc6e4(void);
-void func_020fc638(u32 x)
+int Unk0fc584_IsBelow64(void);
+void Unk0fc584_SetField28bc(u32 x)
 {
     if (data_02176e10 != 0) {
         FIELD(u32, data_02176e10, 0x2000 + 2236) = x;
     }
 }
 
-u32 func_020fc654(void)
+u32 Unk0fc584_GetField28bc(void)
 {
     if (data_02176e10 == 0) {
         return 0;
@@ -96,12 +96,12 @@ void Unk0fc584_Unk_0fcfb0(void)
 }
 
 
-int func_020fc6e4();
+int Unk0fc584_IsBelow64();
 /* decompiler-derived */
 void Unk0fc584_Unk_0fc824(void)
 {
   int value;
-  value = func_020fc6e4();
+  value = Unk0fc584_IsBelow64();
   if (value == 0) {
     return;
   }
@@ -127,7 +127,7 @@ void Unk0fc584_Unk_0fc674(u32 arg0)
 
 int func_0205bb68();
 int func_0205ddb4();
-void func_020fc6b8(int flag)
+void Unk0fc584_SetDir(int flag)
 {
     u32 p = Unk0fc584_Get_data_02176e14();
     if (p == 0) {
@@ -140,7 +140,7 @@ void func_020fc6b8(int flag)
     }
 }
 
-int func_020fc6e4(void)
+int Unk0fc584_IsBelow64(void)
 {
     u32 p = Unk0fc584_Get_data_02176e14();
     if (p == 0) {
@@ -149,7 +149,7 @@ int func_020fc6e4(void)
     return FIELD(int, p, 12) < 64;
 }
 
-int func_020fc70c(void)
+int Unk0fc584_IsFieldCZero(void)
 {
     u32 p = Unk0fc584_Get_data_02176e14();
     if (p == 0) {
@@ -197,36 +197,36 @@ void Unk0fc584_LoadMoneyWindow(int arg0,int arg1)
 }
 
 int func_020fc734();
-void func_020fc86c();
+void Unk0fc584_Unk_0fc86c();
 /* decompiler-derived */
 void Unk0fc584_Unk_0fc7b8(u32 arg0)
 {
   int tmp1;
   int *v2;
-  tmp1 = func_020fc6e4();
+  tmp1 = Unk0fc584_IsBelow64();
   if (tmp1 == 0) {
     return;
   }
   v2 = (int *)Unk0fc584_Get_data_02176e14();
   if (*v2 == 1) {
     Unk0fc584_Unk_0fc84c((u32)arg0);
-    func_020fc86c();
+    Unk0fc584_Unk_0fc86c();
     return;
   }
   func_020fc734(arg0);
 }
 
-int func_020fc7f4(void)
+int Unk0fc584_Unk_0fc7f4(void)
 {
     u32 p;
-    if (func_020fc6e4() == 0) {
+    if (Unk0fc584_IsBelow64() == 0) {
         return 0;
     }
     p = Unk0fc584_Get_data_02176e14();
     return FIELD(int, p, 32) != FIELD(int, p, 36);
 }
 
-void func_020fc86c(void)
+void Unk0fc584_Unk_0fc86c(void)
 {
     u32 p = Unk0fc584_Get_data_02176e14();
     if (p != 0 && FIELD(u32, p, 48) != 0 && FIELD(u32, p, 44) != 0) {

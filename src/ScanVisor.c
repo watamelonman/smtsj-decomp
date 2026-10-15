@@ -39,7 +39,7 @@ typedef struct ScanVisor {
     u8  pad_0200[0x4c];
     u32 unk_024c;               /* +0x24C */
 } ScanVisor;
-void func_020fc6b8(void);
+void Unk0fc584_SetDir(void);
 
 /* Empty callbacks (called from ScanVisor_Draw). */
 void ScanVisor_Nop_0a34a4(ScanVisor *sv) { }
@@ -53,8 +53,8 @@ int ScanVisor_GetConst6(void) { return 6; }
 
 u32 ScanVisor_Unk_0a45f8(ScanVisor *sv) { return sv->field14; }
 
-/* Forwards to func_020fc6b8. */
-void ScanVisor_Thunk_020fc6b8(void) { func_020fc6b8(); }
+/* Forwards to Unk0fc584_SetDir. */
+void ScanVisor_Thunk_020fc6b8(void) { Unk0fc584_SetDir(); }
 
 /* Reads entry `index` of the slot table at 0x1C0. */
 u32 ScanVisor_GetSlot(ScanVisor *sv, int index) { return sv->slots[index]; }
@@ -176,7 +176,7 @@ void ScanVisor_Unk_0a2acc(void)
   return;
 }
 
-int func_020fd3c4();
+int Unk0fd268_SetDir();
 /* decompiler-derived */
 void ScanVisor_Unk_0a27e0(u32 arg0)
 {
@@ -185,7 +185,7 @@ void ScanVisor_Unk_0a27e0(u32 arg0)
   if (tmp1 == 0) {
     return;
   }
-  func_020fd3c4(arg0);
+  Unk0fd268_SetDir(arg0);
   return;
 }
 
@@ -282,7 +282,7 @@ void ScanVisor_Unk_0a2a38(u32 arg0)
 }
 
 
-int func_020fda2c();
+int Unk0fd9f0_SetDir();
 /* decompiler-derived */
 void ScanVisor_Unk_0a28f4(u32 arg0)
 {
@@ -294,7 +294,7 @@ void ScanVisor_Unk_0a28f4(u32 arg0)
   if (*v1 != 1) {
     return;
   }
-  func_020fda2c(arg0);
+  Unk0fd9f0_SetDir(arg0);
   return;
 }
 

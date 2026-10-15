@@ -78,7 +78,7 @@ void Unk0fd9f0_Unk_0fd9f0(void)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-void func_020fda2c(int flag)
+void Unk0fd9f0_SetDir(int flag)
 {
     u32 p = Unk0fd9f0_Get_data_02176e20();
     if (p == 0) {
