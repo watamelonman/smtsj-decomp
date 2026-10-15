@@ -69,7 +69,7 @@ void Unk09ee4c_Unk_09ef80(u32 arg0)
 }
 
 int Unk1124f0_Unk_11259c();
-void func_0209efb4(u32 id)
+void Unk09ee4c_Unk_09efb4(u32 id)
 {
     u8 *gs = (u8 *)GetGameState();
     void (**ent)(u32);
@@ -84,7 +84,7 @@ void func_0209efb4(u32 id)
     FIELD(u32, gs + 28672, 1004) = id;
 }
 
-u16 func_0209eff8(void)
+u16 Unk09ee4c_GetField3c0Bits(void)
 {
     u8 *gs = (u8 *)GetGameState();
     if (gs == 0) {

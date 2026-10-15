@@ -38,7 +38,7 @@ void func_02052da0();
 int Unk02f2a8_GetCell38e8();
 int Unk09a268_Unk_09a844();
 int Unk1124f0_Unk_11259c();
-u8 func_0209d60c(int a, int b)
+u8 Unk09d42c_MapId(int a, int b)
 {
     if (a == 0) {
         return 1;
@@ -56,7 +56,7 @@ u8 func_0209d60c(int a, int b)
     return a;
 }
 
-u8 *func_0209d65c(int i)
+u8 *Unk09d42c_GetTable0Entry(int i)
 {
     int t = func_020445d0(9, 0);
     u8 *base = (u8 *)func_0204fde0(t);
@@ -66,7 +66,7 @@ u8 *func_0209d65c(int i)
     return base + i * 2;
 }
 
-u8 *func_0209d6a4(int i)
+u8 *Unk09d42c_GetTable1Entry(int i)
 {
     int t = func_020445d0(9, 1);
     u8 *base = (u8 *)func_0204fde0(t);
@@ -76,7 +76,7 @@ u8 *func_0209d6a4(int i)
     return base + i * 106;
 }
 
-u8 *func_0209d6f0(int i)
+u8 *Unk09d42c_GetTable2Entry(int i)
 {
     int t = func_020445d0(9, 2);
     u8 *base = (u8 *)func_0204fde0(t);
@@ -86,7 +86,7 @@ u8 *func_0209d6f0(int i)
     return base + i * 24;
 }
 
-u8 *func_0209d7a8(int i)
+u8 *Unk09d42c_GetTable3Entry(int i)
 {
     int t = func_020445d0(9, 3);
     u8 *base = (u8 *)func_0204fde0(t);
@@ -96,7 +96,7 @@ u8 *func_0209d7a8(int i)
     return base + i * 52;
 }
 
-int func_0209df70(u8 *p)
+int Unk09d42c_Unk_09df70(u8 *p)
 {
     int r = 0;
     u8 *cell;
@@ -109,7 +109,7 @@ int func_0209df70(u8 *p)
     return r;
 }
 
-int func_0209e080(u8 *p)
+int Unk09d42c_Unk_09e080(u8 *p)
 {
     int r = 1;
     int (**ent)(void) = (int (**)(void))Unk1124f0_Unk_11259c(FIELD(u32, p + 28672, 1004));
@@ -119,7 +119,7 @@ int func_0209e080(u8 *p)
     return r;
 }
 
-int func_0209e274(void)
+int Unk09d42c_Unk_09e274(void)
 {
     u8 *gs = (u8 *)GetGameState();
     if (gs == 0) {

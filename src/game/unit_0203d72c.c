@@ -10,7 +10,7 @@ static inline void Unk03d72c_SetSubState(u32 v, u8 *sub)
     FIELD(u32, sub, 0x18) = v;
 }
 void Unk09d42c_Unk_09e2f4();
-void func_0209efb4();
+void Unk09ee4c_Unk_09efb4();
 void func_0209ee80();
 void Unk09ee4c_Unk_09ef50();
 int Unk03d72c_Unk_03d72c(void)
@@ -24,7 +24,7 @@ int Unk03d72c_Unk_03d7dc(void)
 {
     int a = func_0203ac00(0);
     int b = func_0203ac00(1);
-    func_0209efb4(a, b, func_0203ac00(2));
+    Unk09ee4c_Unk_09efb4(a, b, func_0203ac00(2));
     Unk03d72c_SetSubState(15, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
     return 3;
 }

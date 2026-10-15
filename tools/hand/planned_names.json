@@ -260,5 +260,15 @@
  "func_0209d13c": "Unk09d060_Unk_09d13c",
  "func_0209d170": "Unk09d060_Unk_09d170",
  "func_0209d42c": "Unk09d42c_Init_data_02176278",
- "func_0209d4bc": "Unk09d42c_Unk_09d4bc"
+ "func_0209d4bc": "Unk09d42c_Unk_09d4bc",
+ "func_0209d60c": "Unk09d42c_MapId",
+ "func_0209d65c": "Unk09d42c_GetTable0Entry",
+ "func_0209d6a4": "Unk09d42c_GetTable1Entry",
+ "func_0209d6f0": "Unk09d42c_GetTable2Entry",
+ "func_0209d7a8": "Unk09d42c_GetTable3Entry",
+ "func_0209df70": "Unk09d42c_Unk_09df70",
+ "func_0209e080": "Unk09d42c_Unk_09e080",
+ "func_0209e274": "Unk09d42c_Unk_09e274",
+ "func_0209efb4": "Unk09ee4c_Unk_09efb4",
+ "func_0209eff8": "Unk09ee4c_GetField3c0Bits"
 }

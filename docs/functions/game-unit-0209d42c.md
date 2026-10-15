@@ -6,18 +6,18 @@
 ## Not done in M1-T706
 - `Unk09d42c_Init_data_02176278`
 - `Unk09d42c_Unk_09d4bc`
-- `func_0209e080`
-- `func_0209e274`
-- `func_0209df70`
-- `func_0209d65c`
+- `Unk09d42c_Unk_09e080`
+- `Unk09d42c_Unk_09e274`
+- `Unk09d42c_Unk_09df70`
+- `Unk09d42c_GetTable0Entry`
 - `Unk09d42c_Unk_09e2f4`: decompiler-derived
 - `Unk09d42c_Unk_09e2a4`: decompiler-derived
 
 ## Not done in M1-T707
-- `func_0209d6a4`
-- `func_0209d6f0`
-- `func_0209d7a8`
-- `func_0209d60c`
+- `Unk09d42c_GetTable1Entry`
+- `Unk09d42c_GetTable2Entry`
+- `Unk09d42c_GetTable3Entry`
+- `Unk09d42c_MapId`
 - `func_0209e020`
 - `func_0209d73c`
 
@@ -38,11 +38,11 @@
 - `func_0209db70`
 - `Unk09d42c_Init_data_02176278`: hand-matched
 - `Unk09d42c_Unk_09d4bc`: hand-matched
-- `func_0209d60c`: hand-matched
-- `func_0209d65c`: hand-matched
-- `func_0209d6a4`: hand-matched
-- `func_0209d6f0`: hand-matched
-- `func_0209d7a8`: hand-matched
-- `func_0209df70`: hand-matched
-- `func_0209e080`: hand-matched
-- `func_0209e274`: hand-matched
+- `Unk09d42c_MapId`: hand-matched
+- `Unk09d42c_GetTable0Entry`: hand-matched
+- `Unk09d42c_GetTable1Entry`: hand-matched
+- `Unk09d42c_GetTable2Entry`: hand-matched
+- `Unk09d42c_GetTable3Entry`: hand-matched
+- `Unk09d42c_Unk_09df70`: hand-matched
+- `Unk09d42c_Unk_09e080`: hand-matched
+- `Unk09d42c_Unk_09e274`: hand-matched

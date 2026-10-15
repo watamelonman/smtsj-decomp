@@ -3,7 +3,7 @@
 
 
 int Unk03aae8_Unk_03acf4();
-int func_0209eff8();
+int Unk09ee4c_GetField3c0Bits();
 void func_0202eda8();
 int Unk096754_Unk_0969f0();
 int Unk096754_HasEntryId();
@@ -60,7 +60,7 @@ int Unk03e23c_Unk_03e398(void)
 /* decompiler-derived */
 u32 Unk03e23c_Unk_03e3d0(void)
 {
-  func_0209eff8();
+  Unk09ee4c_GetField3c0Bits();
   Unk03aae8_Unk_03acf4();
   return 1;
 }
