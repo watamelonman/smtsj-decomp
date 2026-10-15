@@ -246,3 +246,14 @@ u32 Unk113294_Unk_115754(int arg0,int arg1,int arg2)
 {
   return *(u32 *)(arg0 * 0xdc + data_0215159c + (arg1 * 0xb + arg2) * 4);
 }
+
+int func_0211558c(Unk113294Ids *p)
+{
+    if (Unk113294_AnyHi(p) == 0) {
+        return 1;
+    }
+    if (Unk113294_AnyLo(p) == 0) {
+        return 2;
+    }
+    return 0;
+}
