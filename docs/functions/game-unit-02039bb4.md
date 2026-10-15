@@ -50,3 +50,7 @@
 - `func_02039bb4`
 - `func_0203a888`
 - `func_0203a334`
+- `func_02039f80`: decompiler-derived (struct cleanup)
+- `func_02039fbc`: decompiler-derived (struct cleanup)
+- `func_0203a0e0`: decompiler-derived (struct cleanup)
+- `func_0203a11c`: decompiler-derived (struct cleanup)
