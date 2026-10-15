@@ -95,7 +95,7 @@ void Unk02dcfc_Unk_02dd9c(int arg0)
 }
 
 /* Clears state/timer and resets the sub-object. */
-void func_0202ddd8(Worker *w)
+void Unk02dcfc_ResetWorker(Worker *w)
 {
     w->timer = 0;
     w->state = 0;

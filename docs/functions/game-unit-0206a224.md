@@ -5,8 +5,8 @@
 - `Unk06a224_Unk_06a244`: decompiler-derived
 
 ## Not done in M1-T599
-- `func_0206a234`
-- `func_0206a254`
+- `Unk06a224_GetUnk00`
+- `Unk06a224_SetUnk00`
 - `func_0206a9fc`
 - `func_0206a374`
 - `func_0206a264`
@@ -28,5 +28,5 @@
 - `func_0206aa70`
 - `func_0206a2ac`
 - `func_0206a3f4`
-- `func_0206a234`: hand-matched; reads/writes data_0216b9b0.unk_00
-- `func_0206a254`: hand-matched; reads/writes data_0216b9b0.unk_00
+- `Unk06a224_GetUnk00`: hand-matched; reads/writes data_0216b9b0.unk_00
+- `Unk06a224_SetUnk00`: hand-matched; reads/writes data_0216b9b0.unk_00

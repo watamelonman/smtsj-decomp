@@ -25,7 +25,7 @@
 - `ImageObj_Unk_079000`
 - `func_02077a9c`
 - `func_02077d68`
-- `func_02077ddc`
+- `ImageObj_Release`
 - `func_02077e74`
 - `func_02077efc`
 - `ImageObj_Unk_077228`: decompiler-derived
@@ -77,4 +77,4 @@
 - `ImageObj_Unk_077640`: decompiler-derived (plain cleanup)
 - `ImageObj_Unk_0791a8`: decompiler-derived (proto cleanup)
 - `ImageObj_Unk_079000`: decompiler-derived (plain cleanup)
-- `func_02077ddc`: hand-matched
+- `ImageObj_Release`: hand-matched

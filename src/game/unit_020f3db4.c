@@ -175,7 +175,7 @@ void Unk0f3db4_Unk_0f4538(u32 arg0,int arg1)
 }
 
 /* Forwards (base + offset, value) to Unk0f3db4_Unk_0f44d0. */
-void func_020f44b0(u32 arg0, int offset, u8 value)
+void Unk0f3db4_Unk_0f44b0(u32 arg0, int offset, u8 value)
 {
     Unk0f3db4_Unk_0f44d0((u8 *)Unk0f3db4_Unk_0f3ec8(arg0) + offset, value);
 }

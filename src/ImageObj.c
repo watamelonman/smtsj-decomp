@@ -25,7 +25,7 @@ extern u32 data_0217231c[];
 void ImageObj_Unk_0775a0(void);
 void ImageObj_Unk_077620(void);
 void ImageObj_Unk_077640(void);
-void func_02077ddc();
+void ImageObj_Release();
 int func_02079238();
 
 u32 ImageObj_Get_data_0217231c(void);
@@ -88,7 +88,7 @@ void ImageObj_Unk_07916c(ImageObjWork *work)
 /* decompiler-derived */
 void ImageObj_Unk_0772f8(void)
 {
-  func_02077ddc();
+  ImageObj_Release();
   *data_0217231c = 0;
 }
 
@@ -280,7 +280,7 @@ void ImageObj_Unk_0775a0(void)
   }
   tmp1 = ImageObj_Unk_0776d4();
   if (tmp1 == 0) {
-    func_02077ddc(tmp2);
+    ImageObj_Release(tmp2);
     return;
   }
   *(u32 *)(tmp2 + 200) = 1;
@@ -347,7 +347,7 @@ void ImageObj_Unk_079000(int *arg0)
 void Unk0a163c_Unk_0a1ae0(void *p);
 
 /* Releases the object if loaded and clears its state. */
-void func_02077ddc(ImageObjWork *work)
+void ImageObj_Release(ImageObjWork *work)
 {
     if (work->unk_0010 == 0) {
         return;

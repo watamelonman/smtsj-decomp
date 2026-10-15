@@ -3,14 +3,14 @@
 
 
 int func_0202e788();
-/* 8-byte record filled by func_021163a4. */
+/* 8-byte record filled by Unk116360_FillEntry. */
 typedef struct Unk116360Entry {
     u16 id;
     u8 unk_02;
     u8 unk_03;
     u32 unk_04;
 } Unk116360Entry;
-void func_021163a4();
+void Unk116360_FillEntry();
 /* decompiler-derived */
 void Unk116360_Unk_116404(int arg0,u32 arg1,u32 arg2)
 {
@@ -19,7 +19,7 @@ void Unk116360_Unk_116404(int arg0,u32 arg1,u32 arg2)
     return;
   }
   value = func_0202e788();
-  func_021163a4(arg0,*(u16 *)(value + 0x35c),arg1,arg2);
+  Unk116360_FillEntry(arg0,*(u16 *)(value + 0x35c),arg1,arg2);
 }
 
 int func_02116360();
@@ -41,7 +41,7 @@ int Unk03e43c_Unk_03fa28(void);
 int func_02035b08(int a, int b);
 
 /* Fills `e` when the (8,6) lookup equals `id` and the position is (36,18). */
-void func_021163a4(Unk116360Entry *e, int id, int x, int y)
+void Unk116360_FillEntry(Unk116360Entry *e, int id, int x, int y)
 {
     if (e == 0) {
         return;

@@ -13,7 +13,7 @@
 ## Not done in M1-T504
 - `Unk0f3db4_Unk_0f4538`
 - `func_020f4160`
-- `func_020f44b0`
+- `Unk0f3db4_Unk_0f44b0`
 - `func_020f44e4`
 - `func_020f4398`
 - `func_020f4448`
@@ -34,4 +34,4 @@
 - `func_020f40c8`
 - `func_020f3f2c`
 - `Unk0f3db4_Unk_0f4538`: decompiler-derived (plain+fix cleanup)
-- `func_020f44b0`: hand-matched
+- `Unk0f3db4_Unk_0f44b0`: hand-matched

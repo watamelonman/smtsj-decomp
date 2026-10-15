@@ -25,16 +25,16 @@
 
 ## Not done in M1-T1031
 - `func_021196c0`
-- `func_0211985c`
-- `func_02119888`
-- `func_02119910`
+- `ExpGauge_PlayGaugeNormal`
+- `ExpGauge_PlayGaugeLevelUp`
+- `ExpGauge_UpdateToNextLevel`
 - `BattleShowingTask_Unk_11a8dc`: decompiler-derived
 
 ## Not done in M1-T1032
 - `BattleShowingTask_Unk_11c670`
 - `BattleShowingTask_Unk_11c5d0`
 - `func_02119a10`
-- `func_021198b4`
+- `ExpGauge_GetExpForNextLevel`
 - `BattleShowingTask_Unk_11c610`
 - `func_02119658`
 - `func_0211c4e0`
@@ -62,7 +62,7 @@
 - `BattleShowingTask_Unk_11c5d0`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11c610`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11b4e4`: decompiler-derived (plain cleanup)
-- `func_0211985c`: hand-matched (ExpGauge)
-- `func_02119888`: hand-matched (ExpGauge)
-- `func_021198b4`: hand-matched (ExpGauge)
-- `func_02119910`: hand-matched (ExpGauge)
+- `ExpGauge_PlayGaugeNormal`: hand-matched (ExpGauge)
+- `ExpGauge_PlayGaugeLevelUp`: hand-matched (ExpGauge)
+- `ExpGauge_GetExpForNextLevel`: hand-matched (ExpGauge)
+- `ExpGauge_UpdateToNextLevel`: hand-matched (ExpGauge)

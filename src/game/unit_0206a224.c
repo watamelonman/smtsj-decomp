@@ -30,7 +30,7 @@ u32 Unk06a224_Unk_06a224(void)
     return data_0216b9b0.unk_08;
 }
 
-u32 func_0206a234(void)
+u32 Unk06a224_GetUnk00(void)
 {
     return data_0216b9b0.unk_00;
 }
@@ -40,7 +40,7 @@ void Unk06a224_Unk_06a244(u32 arg0)
     data_0216b9b0.unk_08 = arg0;
 }
 
-void func_0206a254(u32 arg0)
+void Unk06a224_SetUnk00(u32 arg0)
 {
     data_0216b9b0.unk_00 = arg0;
 }

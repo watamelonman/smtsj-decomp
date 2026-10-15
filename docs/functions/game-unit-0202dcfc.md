@@ -25,10 +25,10 @@
 
 ## Not done in M1-T255
 - `func_0202dfe8`
-- `func_0202ddd8`
+- `Unk02dcfc_ResetWorker`
 - `func_0202dcfc`
 - `func_0202deb0`
 - `func_0202de6c`
 - `func_0202ded4`
 - `func_0202ddf4`
-- `func_0202ddd8`: hand-matched
+- `Unk02dcfc_ResetWorker`: hand-matched

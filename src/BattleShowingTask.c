@@ -119,10 +119,10 @@ void func_0205c41c(u32 anim, int frame);
 void func_0205c6e0(u32 anim);
 void func_020a0da4(int se);
 void func_02061424(ExpGauge *g);
-void func_0211985c(ExpGauge *g);
-void func_02119888(ExpGauge *g);
-s32 func_021198b4(ExpGauge *g);
-void func_02119910(ExpGauge *g);
+void ExpGauge_PlayGaugeNormal(ExpGauge *g);
+void ExpGauge_PlayGaugeLevelUp(ExpGauge *g);
+s32 ExpGauge_GetExpForNextLevel(ExpGauge *g);
+void ExpGauge_UpdateToNextLevel(ExpGauge *g);
 void func_02119a10(ExpGauge *g);
 s32 func_020b80c8(s32 level);
 s32 func_020b8154(u16 curve, s32 level, s32 level2);
@@ -151,17 +151,17 @@ void ExpGauge_Update(ExpGauge *g) {
             if (g->shown >= g->info->expGained) {
                 g->shown = g->info->expGained;
             }
-            func_02119910(g);
+            ExpGauge_UpdateToNextLevel(g);
             if (g->toNextLevel <= 0) {
-                g->total += func_021198b4(g);
+                g->total += ExpGauge_GetExpForNextLevel(g);
                 g->levelUps++;
                 func_02119a10(g);
-                func_02119910(g);
+                ExpGauge_UpdateToNextLevel(g);
                 g->state = EXP_GAUGE_LEVEL_UP;
                 func_0205c408(g->levelUpAnim, 14);
                 func_0205c41c(g->levelUpAnim, 0);
                 func_0205c6e0(g->levelUpAnim);
-                func_02119888(g);
+                ExpGauge_PlayGaugeLevelUp(g);
                 func_020a0da4(0x29);
             } else if (g->shown >= g->info->expGained) {
                 g->state = EXP_GAUGE_DONE;
@@ -175,7 +175,7 @@ void ExpGauge_Update(ExpGauge *g) {
             } else {
                 g->state = EXP_GAUGE_COUNT;
             }
-            func_0211985c(g);
+            ExpGauge_PlayGaugeNormal(g);
         }
         break;
     case EXP_GAUGE_DONE:
@@ -403,7 +403,7 @@ LAB_0211b670:
 }
 
 /* Gauge back to its normal sequence after a level-up pause. */
-void func_0211985c(ExpGauge *g)
+void ExpGauge_PlayGaugeNormal(ExpGauge *g)
 {
     func_0205c408(g->gaugeAnim, 17);
     func_0205c41c(g->gaugeAnim, 0);
@@ -411,7 +411,7 @@ void func_0211985c(ExpGauge *g)
 }
 
 /* Gauge level-up sequence. */
-void func_02119888(ExpGauge *g)
+void ExpGauge_PlayGaugeLevelUp(ExpGauge *g)
 {
     func_0205c408(g->gaugeAnim, 16);
     func_0205c41c(g->gaugeAnim, 0);
@@ -419,7 +419,7 @@ void func_02119888(ExpGauge *g)
 }
 
 /* EXP needed for the next level (curve lookup unless unk00 < 0). */
-s32 func_021198b4(ExpGauge *g)
+s32 ExpGauge_GetExpForNextLevel(ExpGauge *g)
 {
     s32 to;
     if (g->info->unk00 < 0) {
@@ -433,7 +433,7 @@ s32 func_021198b4(ExpGauge *g)
 }
 
 /* Recompute EXP remaining until the next level. */
-void func_02119910(ExpGauge *g)
+void ExpGauge_UpdateToNextLevel(ExpGauge *g)
 {
-    g->toNextLevel = func_021198b4(g) - ((g->info->baseExp + g->shown) - g->total);
+    g->toNextLevel = ExpGauge_GetExpForNextLevel(g) - ((g->info->baseExp + g->shown) - g->total);
 }
