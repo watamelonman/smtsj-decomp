@@ -83,3 +83,4 @@
 - `Unk0e1648_Unk_0e2f54`: hand-matched
 - `Unk0e1648_Unk_0e4c64`: hand-matched
 - `Unk0e1648_Unk_0e536c`: hand-matched
+- `func_020e4f54`: hand-matched

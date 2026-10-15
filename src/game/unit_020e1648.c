@@ -340,6 +340,45 @@ int Unk0e1648_Unk_0e4c64(u8 *p, u32 x)
     return Unk0f3db4_Unk_0f4510(FIELD(u32, p, 104), x) != 0;
 }
 
+typedef struct Unk0e1648Ent {
+    u16 a;
+    u16 b;
+} Unk0e1648Ent;
+typedef struct Unk0e1648Rec {
+    u16 id;
+    u8 pad_02;
+    u8 unk_03;
+    u8 pad_04[6];
+    Unk0e1648Ent ents[3];
+} Unk0e1648Rec;
+
+int func_020e4f54(Unk0e1648Rec *p)
+{
+    int m = 0;
+    int r;
+    int i;
+    int c;
+    if (p->unk_03 != 0) {
+        m = 1;
+    } else {
+        for (i = 0; i < 3; i++) {
+            if (p->ents[i].a != 0 && m < p->ents[i].b) {
+                m = p->ents[i].b;
+            }
+        }
+    }
+    if (m <= 0) {
+        r = 99;
+    } else {
+        r = 99 / m;
+    }
+    c = Unk0e1648_Unk_0e4f34(p->id, 99);
+    if (r > c) {
+        r = c;
+    }
+    return r;
+}
+
 void Unk0e1648_Unk_0e536c(u8 *p)
 {
     FIELD(u32, p, 3816) = 1;
