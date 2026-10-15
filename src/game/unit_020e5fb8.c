@@ -28,6 +28,15 @@ void Unk0e5fb8_Unk_0e6448(u32 arg0);
 void Unk0e5fb8_Unk_0e64c8(u32 arg0);
 void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1);
 
+int func_020e613c(int row, u32 col)
+{
+    int base = row * 10;
+    if (col >= 10) {
+        col = 0;
+    }
+    return col + (base + 0x800);
+}
+
 /* decompiler-derived */
 int Unk0e5fb8_Unk_0e6158(int arg0)
 {
