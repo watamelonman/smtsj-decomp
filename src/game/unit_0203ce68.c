@@ -8,7 +8,7 @@ int func_0203ac00();
 int Unk03aae8_Unk_03acf4();
 u8 *Unk02e000_Thunk_0202e788();
 int Unk09727c_GetAreaS8();
-int func_02098258();
+int Unk0981dc_Unk_098258();
 u32 Unk03ce68_Unk_03d038(u32 arg0);
 
 int Unk03ce68_Unk_03ce68(void)
@@ -33,7 +33,7 @@ int func_0203ac00();
 int Unk03aae8_Unk_03acf4();
 u8 *Unk02e000_Thunk_0202e788();
 int Unk09974c_GetEntryUnk08();
-void func_02097220();
+void Unk096754_Unk_097220();
 void Unk0981dc_Unk_0981f4();
 u32 Unk03ce68_Unk_03d038(u32 arg0);
 
@@ -162,7 +162,7 @@ int Unk03ce68_Unk_03d088(void)
     if (k == 0) {
         r = Unk09727c_GetAreaS8(y);
     } else if (k >= 1 && k <= 3) {
-        r = func_02098258((u8)(k - 1), y);
+        r = Unk0981dc_Unk_098258((u8)(k - 1), y);
     }
     Unk03aae8_Unk_03acf4(r);
     return 1;
@@ -175,7 +175,7 @@ int Unk03ce68_Unk_03d0f0(void)
     int y = func_0203ac00(2);
     u32 e = Unk03ce68_Unk_03d038(x);
     if (k == 0) {
-        func_02097220(e, (s16)y);
+        Unk096754_Unk_097220(e, (s16)y);
     } else if (k >= 1 && k <= 3) {
         Unk0981dc_Unk_0981f4((u8)(k - 1), e, (s16)y);
     }

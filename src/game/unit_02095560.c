@@ -491,7 +491,7 @@ void Unk095560_Call_020773dc(void)
 
 int func_0206552c();
 
-int func_02096484(void)
+int Unk095560_Unk_096484(void)
 {
     switch (func_02095818()) {
     case 0:

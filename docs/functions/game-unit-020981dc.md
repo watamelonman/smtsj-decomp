@@ -6,7 +6,7 @@
 ## Not done in M1-T205
 - `Unk0981dc_Unk_098324`
 - `func_020982c0`
-- `func_02098258`
+- `Unk0981dc_Unk_098258`
 - `func_0209835c`
 - `Unk0981dc_Unk_098324`: hand-matched
-- `func_02098258`: hand-matched
+- `Unk0981dc_Unk_098258`: hand-matched

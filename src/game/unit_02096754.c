@@ -227,7 +227,7 @@ typedef struct Unk096754Work {
 } Unk096754Work;
 void func_02096c8c();
 
-void func_02097220(int i, u8 v)
+void Unk096754_Unk_097220(int i, u8 v)
 {
     Unk096754Work *w = (Unk096754Work *)Unk02e000_Thunk_0202e788();
     switch (i) {

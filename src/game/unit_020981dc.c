@@ -56,7 +56,7 @@ typedef struct Unk0981dcRec {
     s8 unk_12;
 } Unk0981dcRec;
 
-s8 func_02098258(int a, int i)
+s8 Unk0981dc_Unk_098258(int a, int i)
 {
     Unk0981dcRec *r = (Unk0981dcRec *)Unk096754_GetAreaRecordIf(a);
     if (r == 0) {
