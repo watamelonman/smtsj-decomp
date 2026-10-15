@@ -86,3 +86,5 @@
 - `ImageObj_Unk_077d68`: hand-matched
 - `ImageObj_Unk_077d98`: hand-matched
 - `ImageObj_ReleaseField68`: hand-matched
+- `func_020779f4`: hand-matched
+- `func_02077c30`: hand-matched

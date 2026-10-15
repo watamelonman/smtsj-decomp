@@ -387,6 +387,38 @@ int ImageObj_Unk_0777e0(void)
     return 0;
 }
 
+typedef struct ImageObjNode {
+    u8 pad_00[0x38];
+    s8 unk_38;
+    u8 pad_39[0x17];
+    u32 unk_50;
+    u8 pad_54[0x14];
+    u32 unk_68;
+    u32 unk_6c;
+    u32 unk_70;
+} ImageObjNode;
+void Unk065e88_SetUnkField28();
+int Unk0a163c_Unk_0a1798();
+void Unk0a163c_Call_020a1b08();
+void func_020a1b68();
+void Unk0a163c_Unk_0a21f8();
+
+void func_020779f4(ImageObjNode *n)
+{
+    s32 v;
+    u32 c;
+    if (n == 0 || n->unk_68 == 0) {
+        return;
+    }
+    v = n->unk_38;
+    c = -1;
+    if (v < 31) {
+        v = v * 255 / 31;
+        c = (v << 24) | (v << 16) | (v << 8);
+    }
+    Unk065e88_SetUnkField28(n->unk_68, c);
+}
+
 void ImageObj_Unk_077a4c(void *o, int kind)
 {
     switch (kind) {
@@ -400,6 +432,21 @@ void ImageObj_Unk_077a4c(void *o, int kind)
         func_02013c3c(o, data_02145a88);
         break;
     }
+}
+
+void func_02077c30(ImageObjNode *n)
+{
+    ImageObjWork *w = (ImageObjWork *)ImageObj_Get_data_0217231c();
+    if (n == 0) {
+        return;
+    }
+    if (n->unk_70 != 0) {
+        Unk0a163c_Call_020a1b08(w->unk_0034, Unk0a163c_Unk_0a1798((u16)n->unk_50), w->unk_0010);
+    } else {
+        func_020a1b68(w->unk_0034, (u16)n->unk_50, w->unk_0010);
+    }
+    Unk0a163c_Unk_0a21f8(w->unk_0034);
+    n->unk_6c = 1;
 }
 
 int ImageObj_Unk_077d68(s32 *o)
