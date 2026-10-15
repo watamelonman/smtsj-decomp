@@ -90,6 +90,25 @@ typedef struct UniteEventCtx {
 
 extern UniteEventCtx *data_02176e48;
 
+void func_0200866c();
+void func_0210f970(u32 a, int n)
+{
+    if (data_02176e48 == 0) {
+        return;
+    }
+    func_0200866c(a, (u8 *)data_02176e48 + 614, n * 2);
+    FIELD(u8, data_02176e48, 638) = n;
+}
+
+void func_0210f9ac(u32 x)
+{
+    if (data_02176e48 == 0) {
+        return;
+    }
+    FIELD(u32, data_02176e48, 816) = 1;
+    FIELD(u16, data_02176e48, 640) = x;
+}
+
 void UniteEvent_SetCtxUnk32c(void)
 {
     if (data_02176e48 != 0) {

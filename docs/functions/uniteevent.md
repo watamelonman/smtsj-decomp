@@ -12,3 +12,5 @@
 - `func_0210fa60`
 - `UniteEvent_LoadEffects`: decompiler-derived (plain cleanup)
 - `UniteEvent_SetCtxUnk32c`: hand-matched
+- `func_0210f970`: hand-matched
+- `func_0210f9ac`: hand-matched
