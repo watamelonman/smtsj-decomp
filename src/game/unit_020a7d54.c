@@ -234,3 +234,14 @@ u32 Unk0a7d54_Unk_0a916c(u32 arg0)
   }
   return 0;
 }
+
+int func_02061424();
+/* decompiler-derived */
+int func_020a7e8c(int arg0)
+{
+  if (*(int *)(arg0 + 8) != 0) {
+    func_02061424();
+    *(u32 *)(arg0 + 8) = 0;
+  }
+  Unk0a7d54_Unk_0a7e64((u32 *)arg0);
+}

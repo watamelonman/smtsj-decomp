@@ -40,3 +40,4 @@
 - `func_020a7d80`
 - `func_020a9218`
 - `func_020a82f0`
+- `func_020a7e8c`: decompiler-derived (plain+fix cleanup)
