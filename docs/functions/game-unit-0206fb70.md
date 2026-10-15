@@ -65,3 +65,10 @@
 - `Unk06fb70_Unk_0702b8`: hand-matched
 - `Unk06fb70_Unk_07030c`: hand-matched
 - `Unk06fb70_Unk_070360`: hand-matched
+- `func_02070834`: hand-matched
+- `func_02070950`: hand-matched
+- `func_02070a6c`: hand-matched
+- `func_02070b88`: hand-matched
+- `func_02070cc0`: hand-matched
+- `func_02070df8`: hand-matched
+- `func_02070f30`: hand-matched

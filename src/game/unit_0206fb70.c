@@ -57,13 +57,14 @@ void Unk06fb70_Unk_06feb4(u32 arg0,u32 arg1)
 
 void Unk06fb70_Unk_0705f8();
 void Unk06fb70_Unk_070758();
-int func_02070834();
-int func_02070950();
-int func_02070a6c();
-int func_02070b88();
-int func_02070cc0();
-int func_02070df8();
-int func_02070f30();
+void func_02070834();
+int func_0206fb9c(s32 t0, s32 t1, float f0, float f1);
+void func_02070950();
+void func_02070a6c();
+void func_02070b88();
+void func_02070cc0();
+void func_02070df8();
+void func_02070f30();
 /* decompiler-derived */
 void Unk06fb70_Unk_06ff28(u32 arg0,u32 arg1)
 {
@@ -110,14 +111,23 @@ void Unk06fb70_Call_0703b4(u8 *o)
 }
 
 typedef struct Unk06fb70Key {
-    u8 pad_00[16];
-    s32 t[9];                   /* +0x10: per-channel time */
-    u8 c[4];                    /* +0x34 */
-    u8 pad_38[12];
+    s32 t[9];                   /* +0x00: per-channel time */
+    u8 c[4];                    /* +0x24 */
+    float f0;                   /* +0x28 */
+    s16 h0;                     /* +0x2c */
+    u8 pad_2e[2];
+    float f1;                   /* +0x30 */
+    float f2;                   /* +0x34 */
+    s16 h1;                     /* +0x38 */
+    s16 h2;                     /* +0x3a */
+    s16 h3;                     /* +0x3c */
+    u8 pad_3e[2];
+    s32 unk_40;                 /* +0x40 */
 } Unk06fb70Key;
 typedef struct Unk06fb70Anim {
-    Unk06fb70Key keys[4];       /* count from the < 4 bounds */
-    u8 pad_110[212];
+    u8 pad_000[16];
+    Unk06fb70Key keys[4];       /* +0x10: count from the < 4 bounds */
+    u8 pad_120[196];
     s32 pos[11];                /* +0x1e4: channel 0 uses [0..2], channel n>0 uses [n+2] */
     s32 vel[11];                /* +0x210 */
     s32 max[11];                /* +0x23c */
@@ -303,4 +313,176 @@ void Unk06fb70_Unk_070360(Unk06fb70Anim *a, Unk06fb70Anim *b)
         return;
     }
     Unk06fb70_AddClamped(&a->pos[10], a->vel[10], a->max[10]);
+}
+
+void func_02070834(Unk06fb70Anim *a, Unk06fb70Anim *b)
+{
+    int s;
+    int k = 1;
+    if (a->state[2] + 1 >= 4) {
+        a->state[2] = 4;
+    }
+    s = a->state[2];
+    if (s + 1 >= 4) {
+        return;
+    }
+    for (; s + k < 4; k++, s = a->state[2]) {
+        a->limit[2] = b->keys[s + k].t[2] - b->keys[s].t[2];
+        if (a->limit[2] > 0) {
+            a->vel[4] = func_0206fb9c(a->keys[a->state[2]].t[2], a->keys[a->state[2] + k].t[2], a->keys[a->state[2]].f0, a->keys[a->state[2] + k].f0);
+            a->max[4] = (s32)(a->keys[a->state[2] + k].f0 > 0.0f
+                                  ? 0.5f + 4096.0f * a->keys[a->state[2] + k].f0
+                                  : 4096.0f * a->keys[a->state[2] + k].f0 - 0.5f);
+            a->state[2] = a->state[2] + k;
+            return;
+        }
+    }
+}
+
+void func_02070950(Unk06fb70Anim *a, Unk06fb70Anim *b)
+{
+    int s;
+    int k = 1;
+    if (a->state[3] + 1 >= 4) {
+        a->state[3] = 4;
+    }
+    s = a->state[3];
+    if (s + 1 >= 4) {
+        return;
+    }
+    for (; s + k < 4; k++, s = a->state[3]) {
+        a->limit[3] = b->keys[s + k].t[4] - b->keys[s].t[4];
+        if (a->limit[3] > 0) {
+            a->vel[5] = func_0206fb9c(a->keys[a->state[3]].t[4], a->keys[a->state[3] + k].t[4], a->keys[a->state[3]].f1, a->keys[a->state[3] + k].f1);
+            a->max[5] = (s32)(a->keys[a->state[3] + k].f1 > 0.0f
+                                  ? 0.5f + 4096.0f * a->keys[a->state[3] + k].f1
+                                  : 4096.0f * a->keys[a->state[3] + k].f1 - 0.5f);
+            a->state[3] = a->state[3] + k;
+            return;
+        }
+    }
+}
+
+void func_02070a6c(Unk06fb70Anim *a, Unk06fb70Anim *b)
+{
+    int s;
+    int k = 1;
+    if (a->state[4] + 1 >= 4) {
+        a->state[4] = 4;
+    }
+    s = a->state[4];
+    if (s + 1 >= 4) {
+        return;
+    }
+    for (; s + k < 4; k++, s = a->state[4]) {
+        a->limit[4] = b->keys[s + k].t[5] - b->keys[s].t[5];
+        if (a->limit[4] > 0) {
+            a->vel[6] = func_0206fb9c(a->keys[a->state[4]].t[5], a->keys[a->state[4] + k].t[5], a->keys[a->state[4]].f2, a->keys[a->state[4] + k].f2);
+            a->max[6] = (s32)(a->keys[a->state[4] + k].f2 > 0.0f
+                                  ? 0.5f + 4096.0f * a->keys[a->state[4] + k].f2
+                                  : 4096.0f * a->keys[a->state[4] + k].f2 - 0.5f);
+            a->state[4] = a->state[4] + k;
+            return;
+        }
+    }
+}
+
+void func_02070b88(Unk06fb70Anim *a, Unk06fb70Anim *b)
+{
+    int s;
+    int k = 1;
+    if (a->state[5] + 1 >= 4) {
+        a->state[5] = 4;
+    }
+    s = a->state[5];
+    if (s + 1 >= 4) {
+        return;
+    }
+    for (; s + k < 4; k++, s = a->state[5]) {
+        a->limit[5] = b->keys[s + k].t[3] - b->keys[s].t[3];
+        if (a->limit[5] > 0) {
+            if (a->keys[a->state[5] + k].h0 != 0 && a->keys[a->state[5] + k].unk_40 > 0) {
+                a->keys[a->state[5] + k].h0 -= func_0206d68c(2, a->keys[a->state[5] + k].unk_40, 1) >> 12;
+            }
+            a->vel[7] = Unk06fb70_Unk_06fb70(a->keys[a->state[5]].t[3], a->keys[a->state[5] + k].t[3], a->keys[a->state[5]].h0, a->keys[a->state[5] + k].h0);
+            a->max[7] = a->keys[a->state[5] + k].h0 << 12;
+            a->state[5] = a->state[5] + k;
+            return;
+        }
+    }
+}
+
+void func_02070cc0(Unk06fb70Anim *a, Unk06fb70Anim *b)
+{
+    int s;
+    int k = 1;
+    if (a->state[6] + 1 >= 4) {
+        a->state[6] = 4;
+    }
+    s = a->state[6];
+    if (s + 1 >= 4) {
+        return;
+    }
+    for (; s + k < 4; k++, s = a->state[6]) {
+        a->limit[6] = b->keys[s + k].t[6] - b->keys[s].t[6];
+        if (a->limit[6] > 0) {
+            if (a->keys[a->state[6] + k].h1 != 0 && a->keys[a->state[6] + k].unk_40 > 0) {
+                a->keys[a->state[6] + k].h1 -= func_0206d68c(2, a->keys[a->state[6] + k].unk_40, 1) >> 12;
+            }
+            a->vel[8] = Unk06fb70_Unk_06fb70(a->keys[a->state[6]].t[6], a->keys[a->state[6] + k].t[6], a->keys[a->state[6]].h1, a->keys[a->state[6] + k].h1);
+            a->max[8] = a->keys[a->state[6] + k].h1 << 12;
+            a->state[6] = a->state[6] + k;
+            return;
+        }
+    }
+}
+
+void func_02070df8(Unk06fb70Anim *a, Unk06fb70Anim *b)
+{
+    int s;
+    int k = 1;
+    if (a->state[7] + 1 >= 4) {
+        a->state[7] = 4;
+    }
+    s = a->state[7];
+    if (s + 1 >= 4) {
+        return;
+    }
+    for (; s + k < 4; k++, s = a->state[7]) {
+        a->limit[7] = b->keys[s + k].t[7] - b->keys[s].t[7];
+        if (a->limit[7] > 0) {
+            if (a->keys[a->state[7] + k].h2 != 0 && a->keys[a->state[7] + k].unk_40 > 0) {
+                a->keys[a->state[7] + k].h2 -= func_0206d68c(2, a->keys[a->state[7] + k].unk_40, 1) >> 12;
+            }
+            a->vel[9] = Unk06fb70_Unk_06fb70(a->keys[a->state[7]].t[7], a->keys[a->state[7] + k].t[7], a->keys[a->state[7]].h2, a->keys[a->state[7] + k].h2);
+            a->max[9] = a->keys[a->state[7] + k].h2 << 12;
+            a->state[7] = a->state[7] + k;
+            return;
+        }
+    }
+}
+
+void func_02070f30(Unk06fb70Anim *a, Unk06fb70Anim *b)
+{
+    int s;
+    int k = 1;
+    if (a->state[8] + 1 >= 4) {
+        a->state[8] = 4;
+    }
+    s = a->state[8];
+    if (s + 1 >= 4) {
+        return;
+    }
+    for (; s + k < 4; k++, s = a->state[8]) {
+        a->limit[8] = b->keys[s + k].t[8] - b->keys[s].t[8];
+        if (a->limit[8] > 0) {
+            if (a->keys[a->state[8] + k].h3 != 0 && a->keys[a->state[8] + k].unk_40 > 0) {
+                a->keys[a->state[8] + k].h3 -= func_0206d68c(2, a->keys[a->state[8] + k].unk_40, 1) >> 12;
+            }
+            a->vel[10] = Unk06fb70_Unk_06fb70(a->keys[a->state[8]].t[8], a->keys[a->state[8] + k].t[8], a->keys[a->state[8]].h3, a->keys[a->state[8] + k].h3);
+            a->max[10] = a->keys[a->state[8] + k].h3 << 12;
+            a->state[8] = a->state[8] + k;
+            return;
+        }
+    }
 }
