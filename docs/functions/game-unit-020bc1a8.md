@@ -39,3 +39,4 @@
 - `func_020bc9f4`
 - `func_020bcacc`
 - `func_020bc200`
+- `func_020bc514`: decompiler-derived (plain cleanup)

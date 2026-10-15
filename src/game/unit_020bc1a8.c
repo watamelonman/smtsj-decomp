@@ -6,7 +6,7 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int func_020bc514();
+void func_020bc514(int arg0,int arg1,u32 arg2);
 
 int Unk0bc1a8_GetConst0(void);
 void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1);
@@ -77,4 +77,19 @@ void Unk0bc1a8_Unk_0bc928(int arg0,u32 arg1,u32 arg2,u32 arg3)
     func_020bc770(arg0,auStack_58);
     return;
   }
+}
+
+int func_02061424();
+int func_020bc5ac();
+int func_020bcacc();
+/* decompiler-derived */
+void func_020bc514(int arg0,int arg1,u32 arg2)
+{
+  u32 tmp1;
+  func_02061424(arg0 + -0x34);
+  if (arg1 == 0) {
+    return;
+  }
+  tmp1 = func_020bc5ac(arg0);
+  func_020bcacc(tmp1,arg2);
 }
