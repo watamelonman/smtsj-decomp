@@ -11,3 +11,4 @@
 - `Unk03ca38_Unk_03ca80`: hand-matched
 - `Unk03ca38_Unk_03cad4`: hand-matched
 - `Unk03ca38_Unk_03cb28`: hand-matched
+- `func_0203cc04`: hand-matched

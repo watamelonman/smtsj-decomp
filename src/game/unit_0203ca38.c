@@ -71,3 +71,21 @@ int Unk03ca38_Unk_03cb28(void)
     Unk03aae8_Unk_03acf4(r);
     return 1;
 }
+
+int func_0203ac00();
+int Unk03aae8_Unk_03acf4();
+int Unk096754_Unk_097100();
+int Unk0979d8_Unk_09818c();
+
+int func_0203cc04(void)
+{
+    int k = func_0203ac00(0);
+    int r = 0;
+    if (k == 0) {
+        r = Unk096754_Unk_097100();
+    } else if (k >= 1 && k <= 3) {
+        r = Unk0979d8_Unk_09818c((u8)(k - 1));
+    }
+    Unk03aae8_Unk_03acf4(r);
+    return 1;
+}
