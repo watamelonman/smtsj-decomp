@@ -118,3 +118,62 @@ void Unk0a0ce4_Unk_0a0d30(int arg0)
   func_0205e5ec(arg0);
 }
 
+int func_0205e65c();
+int func_0205e5ec();
+int func_0205e6c0();
+int func_0205e740();
+extern u32 data_0214cc84[];
+int Unk0b6570_Get_data_02176b88();
+void func_020967a4();
+void Unk02cad4_Unk_02cbdc();
+void func_020a0d68(int x)
+{
+    func_0205e65c();
+    *data_02176afc = 5;
+    func_0205e5ec(5);
+    func_0205e5ec(x);
+}
+
+int func_020a0da4(int i)
+{
+    u8 *p;
+    if (i < 0 || i >= 300) {
+        return -1;
+    }
+    p = (u8 *)Unk0a0ce4_Unk_0a0ce4(i);
+    return func_0205e6c0(p[1], p[0]);
+}
+
+int func_020a0dd8(int i)
+{
+    u8 *p;
+    if (i < 0 || i >= 300) {
+        return -1;
+    }
+    p = (u8 *)Unk0a0ce4_Unk_0a0ce4(i);
+    return func_0205e740(p[1], p[0]);
+}
+
+u32 func_020a0e0c(int i)
+{
+    if (i >= 0 && i < 29) {
+        return data_0214cc84[i];
+    }
+    return data_0214cc84[0];
+}
+
+void func_020a0e44(void)
+{
+    switch (Unk0b6570_Get_data_02176b88()) {
+    case 2:
+        func_020967a4(0);
+        Unk02cad4_Unk_02cbdc(10);
+        break;
+    case 3:
+        Unk02cad4_Unk_02cbdc(15);
+        break;
+    case 4:
+        Unk02cad4_Unk_02cbdc(1);
+        break;
+    }
+}

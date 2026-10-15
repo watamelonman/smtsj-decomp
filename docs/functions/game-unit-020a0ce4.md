@@ -29,3 +29,8 @@
 - `func_020a1318`
 - `func_020a0fc0`
 - `Unk0a0ce4_ScaleFx10`: hand-matched
+- `func_020a0d68`: hand-matched
+- `func_020a0da4`: hand-matched
+- `func_020a0dd8`: hand-matched
+- `func_020a0e0c`: hand-matched
+- `func_020a0e44`: hand-matched
