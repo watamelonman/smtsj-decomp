@@ -112,3 +112,4 @@ void func_0211518c(u32 arg0)
   } while (tmp2 < 2);
   return;
 }
+
