@@ -16,7 +16,9 @@ typedef struct Unk0e1648Work {
     u32 unk_0068;
     u8 pad_006c[0x10];
     s32 unk_007c;
-    u8 pad_0080[0xe20];
+    u8 pad_0080[0x50];
+    u16 unk_00d0;
+    u8 pad_00d2[0xdce];
     u32 unk_0ea0;
     u8 pad_0ea4[0x1c];
     s32 unk_0ec0;
@@ -243,4 +245,24 @@ void Unk0e1648_Unk_0e5090(u32 arg0,u32 arg1)
   Unk0e1648_Unk_0e50c8(arg1);
   tmp1 = func_02063a30();
   func_02061f10(arg0,0xffffffff,0,0,tmp1);
+}
+
+int func_020f4448();
+/* decompiler-derived */
+void func_020e48a8(int arg0,u32 arg1)
+{
+  u16 tmp1;
+  int tmp2;
+  tmp2 = func_020f4448(arg1);
+  if (tmp2 < 1) {
+    return;
+  }
+  tmp2 = func_020e49cc(3,arg1);
+  if (tmp2 != 0) {
+    return;
+  }
+  *(short *)(arg0 + (u32)((Unk0e1648Work *)arg0)->unk_00d0 * 8 + 0xd6) = (short)arg1;
+  tmp1 = func_020e49cc(4,arg1);
+  *(u16 *)(arg0 + (u32)((Unk0e1648Work *)arg0)->unk_00d0 * 8 + 0xd8) = tmp1;
+  ((Unk0e1648Work *)arg0)->unk_00d0 = ((Unk0e1648Work *)arg0)->unk_00d0 + 1;
 }

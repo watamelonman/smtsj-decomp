@@ -74,3 +74,4 @@
 - `Unk0e1648_Unk_0e51cc`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5214`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)
+- `func_020e48a8`: decompiler-derived (struct cleanup)
