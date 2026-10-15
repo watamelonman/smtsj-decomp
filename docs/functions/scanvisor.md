@@ -23,7 +23,7 @@
 
 ## Not done in M1-T985
 - `ScanVisor_Unk_0a4a18`
-- `func_020a2980`
+- `ScanVisor_Unk_0a2980`
 - `ScanVisor_Unk_0a2b18`: decompiler-derived
 - `ScanVisor_Unk_0a2b38`: decompiler-derived
 - `ScanVisor_Unk_0a29a0`: decompiler-derived
@@ -32,8 +32,8 @@
 - `ScanVisor_Unk_0a2a38`: decompiler-derived
 
 ## Not done in M1-T986
-- `func_020a3254`
-- `func_020a2b58`
+- `ScanVisor_Unk_0a3254`
+- `ScanVisor_Unk_0a2b58`
 - `ScanVisor_Unk_0a28f4`: decompiler-derived
 - `ScanVisor_Unk_0a2a60`: decompiler-derived
 - `ScanVisor_Unk_0a42c4`: decompiler-derived
@@ -52,26 +52,26 @@
 
 ## Not done in M1-T988
 - `ScanVisor_Unk_0a2950`
-- `func_020a379c`
-- `func_020a4284`
+- `ScanVisor_Unk_0a379c`
+- `ScanVisor_FindEnt20`
 - `ScanVisor_Unk_0a284c`: decompiler-derived
 - `ScanVisor_Unk_0a28b0`: decompiler-derived
 - `ScanVisor_Unk_0a2660`: decompiler-derived
 - `ScanVisor_Unk_0a273c`: decompiler-derived
 
 ## Not done in M1-T989
-- `func_020a45c0`
+- `ScanVisor_FindSlotByKey`
 - `ScanVisor_Unk_0a4950`
-- `func_020a4994`
-- `func_020a3760`
+- `ScanVisor_AllSlotsF28Is80`
+- `ScanVisor_Unk_0a3760`
 
 ## Not done in M1-T990
 - `ScanVisor_Unk_0a4910`
 - `ScanVisor_SetById`
 - `func_020a3ac0`
-- `func_020a4600`
-- `func_020a2bb8`
-- `func_020a4578`
+- `ScanVisor_AnySlotField14`
+- `ScanVisor_ResetBits`
+- `ScanVisor_Unk_0a4578`
 - `ScanVisor_Unk_0a4864`
 - `ScanVisor_Unk_0a48b4`
 
@@ -109,14 +109,14 @@
 - `ScanVisor_SetField214`: hand-matched
 - `ScanVisor_Unk_0a2920`: hand-matched
 - `ScanVisor_Unk_0a2950`: hand-matched
-- `func_020a2980`: hand-matched
-- `func_020a2b58`: hand-matched
-- `func_020a2bb8`: hand-matched
-- `func_020a3254`: hand-matched
-- `func_020a3760`: hand-matched
-- `func_020a379c`: hand-matched
-- `func_020a4284`: hand-matched
-- `func_020a4578`: hand-matched
-- `func_020a45c0`: hand-matched
-- `func_020a4600`: hand-matched
-- `func_020a4994`: hand-matched
+- `ScanVisor_Unk_0a2980`: hand-matched
+- `ScanVisor_Unk_0a2b58`: hand-matched
+- `ScanVisor_ResetBits`: hand-matched
+- `ScanVisor_Unk_0a3254`: hand-matched
+- `ScanVisor_Unk_0a3760`: hand-matched
+- `ScanVisor_Unk_0a379c`: hand-matched
+- `ScanVisor_FindEnt20`: hand-matched
+- `ScanVisor_Unk_0a4578`: hand-matched
+- `ScanVisor_FindSlotByKey`: hand-matched
+- `ScanVisor_AnySlotField14`: hand-matched
+- `ScanVisor_AllSlotsF28Is80`: hand-matched

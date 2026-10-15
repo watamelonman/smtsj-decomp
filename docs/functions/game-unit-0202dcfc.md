@@ -1,6 +1,6 @@
 # unit_0202dcfc
 
-- `Unk0202dcfc_InitWorker`: initialise a `Worker` (store owner at 0x40, clear state, init sub-object at 0x4C via `func_020a2bb8`, zero the 16-entry table at 0x74).
+- `Unk0202dcfc_InitWorker`: initialise a `Worker` (store owner at 0x40, clear state, init sub-object at 0x4C via `ScanVisor_ResetBits`, zero the 16-entry table at 0x74).
 - `Unk02dcfc_Thunk_Unk095560_GetManagerAlias`: decompiler-derived
 - `Unk02dcfc_Unk_02df00`: decompiler-derived
 - `Unk02dcfc_Unk_02de58`: decompiler-derived

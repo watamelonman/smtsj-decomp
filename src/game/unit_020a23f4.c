@@ -47,7 +47,7 @@ void Unk0a23f4_Unk_0a23f4(u32 arg0)
 int func_020a8608();
 int func_020a8628();
 int Unk0a7d54_Unk_0a8648();
-int func_020a4994();
+int ScanVisor_AllSlotsF28Is80();
 int Unk0a23f4_Unk_0a2448(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
@@ -135,5 +135,5 @@ int Unk0a23f4_Unk_0a25c0(void)
     if (v == 0) {
         return 0;
     }
-    return func_020a4994(v + 588);
+    return ScanVisor_AllSlotsF28Is80(v + 588);
 }

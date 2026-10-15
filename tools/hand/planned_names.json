@@ -295,5 +295,16 @@
  "func_020a2820": "ScanVisor_SetRangeA",
  "func_020a2884": "ScanVisor_SetField214",
  "func_020a2920": "ScanVisor_Unk_0a2920",
- "func_020a2950": "ScanVisor_Unk_0a2950"
+ "func_020a2950": "ScanVisor_Unk_0a2950",
+ "func_020a2980": "ScanVisor_Unk_0a2980",
+ "func_020a2b58": "ScanVisor_Unk_0a2b58",
+ "func_020a2bb8": "ScanVisor_ResetBits",
+ "func_020a3254": "ScanVisor_Unk_0a3254",
+ "func_020a3760": "ScanVisor_Unk_0a3760",
+ "func_020a379c": "ScanVisor_Unk_0a379c",
+ "func_020a4284": "ScanVisor_FindEnt20",
+ "func_020a4578": "ScanVisor_Unk_0a4578",
+ "func_020a45c0": "ScanVisor_FindSlotByKey",
+ "func_020a4600": "ScanVisor_AnySlotField14",
+ "func_020a4994": "ScanVisor_AllSlotsF28Is80"
 }

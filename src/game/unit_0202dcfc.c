@@ -33,7 +33,7 @@ typedef struct Worker {
     u32 field70;                /* +0x70 */
     u32 slots[16];              /* +0x74 */
 } Worker;
-void func_020a2bb8(u32 *sub);
+void ScanVisor_ResetBits(u32 *sub);
 
 int Unk02dcfc_HasField50(u8 *p)
 {
@@ -50,7 +50,7 @@ void Unk0202dcfc_InitWorker(Worker *w, u32 owner) {
     w->owner = owner;
     w->state = 0;
     w->timer = 0;
-    func_020a2bb8(w->sub);
+    ScanVisor_ResetBits(w->sub);
     w->field54 = 0;
     w->field58 = 0;
     w->flag5C = 0;
@@ -107,7 +107,7 @@ void Unk02dcfc_ResetWorker(Worker *w)
 {
     w->timer = 0;
     w->state = 0;
-    func_020a2bb8(w->sub);
+    ScanVisor_ResetBits(w->sub);
 }
 
 /* Object returned by Unk03aae8_Unk_03ad14; holds the worker at +0xE8. */

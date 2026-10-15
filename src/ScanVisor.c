@@ -89,9 +89,9 @@ void ScanVisor_ClearUnkField198(int arg0)
   return;
 }
 
-int func_020a4600();
-/* forwards to `func_020a4600` */
-void ScanVisor_Thunk_020a4600(void) { func_020a4600(); }
+int ScanVisor_AnySlotField14();
+/* forwards to `ScanVisor_AnySlotField14` */
+void ScanVisor_Thunk_020a4600(void) { ScanVisor_AnySlotField14(); }
 
 extern u32 data_02176b04[];
 /* decompiler-derived */
@@ -356,7 +356,7 @@ void ScanVisor_Unk_0a29e8(u32 arg0,u32 arg1,u32 arg2)
   return;
 }
 
-int func_020a2b58();
+int ScanVisor_Unk_0a2b58();
 int Unk0a7d54_Unk_0a8c40();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2b7c(void)
@@ -367,7 +367,7 @@ void ScanVisor_Unk_0a2b7c(void)
   if (tmp1 == 0) {
     return;
   }
-  tmp2 = func_020a2b58();
+  tmp2 = ScanVisor_Unk_0a2b58();
   if (tmp2 == 0) {
     return;
   }
@@ -600,7 +600,7 @@ int func_020c9eb0();
 void func_020616ec();
 int func_02057eb8();
 void func_020a43f4();
-int func_020a2980(void)
+int ScanVisor_Unk_0a2980(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -609,7 +609,7 @@ int func_020a2980(void)
     return Unk0c855c_Unk_0c9bac(v + 120);
 }
 
-int func_020a2b58(void)
+int ScanVisor_Unk_0a2b58(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -618,7 +618,7 @@ int func_020a2b58(void)
     return func_020a8c04(v + 40 + 1024);
 }
 
-void func_020a2bb8(ScanVisorBits *p)
+void ScanVisor_ResetBits(ScanVisorBits *p)
 {
     p->word = 0;
     p->b0 = 0;
@@ -691,12 +691,12 @@ void ScanVisor_LoadSearchParts(int arg0,u32 arg1)
 }
 
 int func_02057eb8();
-void func_020a4578();
+void ScanVisor_Unk_0a4578();
 int func_020a4a70();
 /* decompiler-derived */
 void ScanVisor_Unk_0a4a44(int arg0)
 {
-  func_020a4578();
+  ScanVisor_Unk_0a4578();
   if (((ScanVisor *)arg0)->unk_0198 == 0) {
     return;
   }
@@ -769,7 +769,7 @@ void ScanVisor_Unk_0a48b4(int arg0)
   *(u32 *)(arg0 + 0x1bc) = 0;
 }
 
-int func_020a4284();
+int ScanVisor_FindEnt20();
 /* decompiler-derived */
 u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
 {
@@ -780,7 +780,7 @@ u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
     *v1 = 1;
     *(u8 *)(v1 + 6) = *(u8 *)(arg0 + 0x1c);
     v1[1] = arg1;
-    tmp2 = func_020a4284(arg1);
+    tmp2 = ScanVisor_FindEnt20(arg1);
     v1[2] = *(u32 *)(tmp2 + 0xc);
     v1[3] = *(u32 *)(tmp2 + 0x10);
     v1[0xb] = *(u32 *)(tmp2 + 4);
@@ -797,7 +797,7 @@ void func_02057e18(int a);
 void func_02057ddc(int a);
 void func_02057524(int a);
 void func_02057e58(int a, int b, int c);
-void func_020a3254(ScanVisor *sv);
+void ScanVisor_Unk_0a3254(ScanVisor *sv);
 void func_020a32cc(ScanVisor *sv);
 void func_020a34ac(ScanVisor *sv);
 void func_020a8ad0(void *p);
@@ -815,7 +815,7 @@ void ScanVisor_Draw(ScanVisor *sv)
     case 3:
         func_02057e58(2, 48, 10);
         func_02057eb8(2);
-        func_020a3254(sv);
+        ScanVisor_Unk_0a3254(sv);
         func_02057eb8(2);
         ScanVisor_Nop_0a34a4(sv);
         func_02057eb8(2);
@@ -830,7 +830,7 @@ void ScanVisor_Draw(ScanVisor *sv)
         func_02057eb8(1);
         func_020a32cc(sv);
         func_02057eb8(1);
-        func_020a3254(sv);
+        ScanVisor_Unk_0a3254(sv);
         func_02057eb8(1);
         ScanVisor_Nop_0a34a4(sv);
         func_02057eb8(1);
@@ -848,10 +848,10 @@ void ScanVisor_Draw(ScanVisor *sv)
     func_020580ec(1);
 }
 
-ScanVisor *func_020a45c0(u32 list, u32 id);
+ScanVisor *ScanVisor_FindSlotByKey(u32 list, u32 id);
 void Unk0a0ce4_Unk_0a0da4(int se);
 
-void func_020a3254(ScanVisor *p)
+void ScanVisor_Unk_0a3254(ScanVisor *p)
 {
     if (FIELD(s32, p, 528) >= 50) {
         return;
@@ -859,17 +859,17 @@ void func_020a3254(ScanVisor *p)
     Unk0c855c_Unk_0c9890((u8 *)p + 120, 12);
 }
 
-void func_020a3760(u32 a, u32 b, u32 c)
+void ScanVisor_Unk_0a3760(u32 a, u32 b, u32 c)
 {
     func_020616ec(*data_02176b04, func_020c9db4((u8 *)*data_02176b04 + 120, a, b, c));
 }
 
-void func_020a379c(u32 a, u32 b)
+void ScanVisor_Unk_0a379c(u32 a, u32 b)
 {
     func_020616ec(*data_02176b04, func_020c9eb0((u8 *)*data_02176b04 + 120, a, b));
 }
 
-int func_020a4284(u32 id)
+int ScanVisor_FindEnt20(u32 id)
 {
     u32 j;
     ScanVisorEnt20 *e = (ScanVisorEnt20 *)data_0214ce2c;
@@ -881,7 +881,7 @@ int func_020a4284(u32 id)
     return 0;
 }
 
-void func_020a4578(u32 *p)
+void ScanVisor_Unk_0a4578(u32 *p)
 {
     int j;
     ScanVisorSlot *e = (ScanVisorSlot *)((u8 *)p + 32);
@@ -893,7 +893,7 @@ void func_020a4578(u32 *p)
     }
 }
 
-ScanVisor *func_020a45c0(u32 p, u32 k)
+ScanVisor *ScanVisor_FindSlotByKey(u32 p, u32 k)
 {
     int j;
     ScanVisorSlot *e = (ScanVisorSlot *)((u8 *)p + 32);
@@ -905,7 +905,7 @@ ScanVisor *func_020a45c0(u32 p, u32 k)
     return 0;
 }
 
-int func_020a4600(u8 *p)
+int ScanVisor_AnySlotField14(u8 *p)
 {
     int j;
     ScanVisorSlot *e = (ScanVisorSlot *)((u8 *)p + 32);
@@ -917,7 +917,7 @@ int func_020a4600(u8 *p)
     return 0;
 }
 
-int func_020a4994(u8 *p)
+int ScanVisor_AllSlotsF28Is80(u8 *p)
 {
     int j;
     ScanVisorSlot *e = (ScanVisorSlot *)((u8 *)p + 32);
@@ -932,7 +932,7 @@ int func_020a4994(u8 *p)
 /* Looks up the visor entry; if idle, (optionally with SE 28) applies `on`. */
 void ScanVisor_SetById(u32 list, u32 id, int on)
 {
-    ScanVisor *sv = func_020a45c0(list, id);
+    ScanVisor *sv = ScanVisor_FindSlotByKey(list, id);
     if (sv == 0) {
         return;
     }
@@ -947,7 +947,7 @@ void ScanVisor_SetById(u32 list, u32 id, int on)
 
 void ScanVisor_Unk_0a4a18(u32 list, u32 id)
 {
-    ScanVisor *sv = func_020a45c0(list, id);
+    ScanVisor *sv = ScanVisor_FindSlotByKey(list, id);
     if (sv == 0) {
         return;
     }

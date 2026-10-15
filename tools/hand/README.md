@@ -46,3 +46,5 @@ bytes and relocations are identical. cmp.py does not catch this. Fixed: batch.py
 Root cause (objdiff-cli diff): the caller's mismatched instructions are its `bl`s to a callee that is *defined in the
 target unit but still undefined (asm) in ours* (func_020949e0 for 094958). The arg diff appears once another local
 in that region gets defined. Remedy: match those still-undefined same-unit callees in the same batch, or skip.
+- Loop counter vs cursor register swapped (e.g. ROM uses r5 for the cursor, r4 for j): declare the counter *before*
+  the pointer; mwcc assigns registers in declaration order (fixed 4 ScanVisor loops in b37).

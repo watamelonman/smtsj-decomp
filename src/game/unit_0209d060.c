@@ -50,12 +50,12 @@ void Unk09d060_Unk_09d10c(void)
   func_020d1d4c();
 }
 
-int func_020a2980();
+int ScanVisor_Unk_0a2980();
 int func_02061750();
 void func_020616ec();
 int Unk09d060_Unk_09d13c(void)
 {
-    if (func_020a2980() == 0) {
+    if (ScanVisor_Unk_0a2980() == 0) {
         return 0;
     }
     return func_02061750(*data_02176274) == 0;
