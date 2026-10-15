@@ -74,10 +74,12 @@ void func_0210fe48(Unk10fe28Work *w)
     } while (n < 6);
     w->unk_001c = func_0205dcd4(data_02151540, 1);
     w->unk_0020 = func_0205c2c4(data_02151548);
+
     w->unk_0050 = func_020629ac(3, 1, 0, 1);
     func_02061e98(w->unk_0050, 0x10, 1);
     font = func_0204fed8(func_0204fe68(w->unk_0018, 1), 10);
     func_02061f10(w->unk_0050, -1, 0, 0, font);
+
     w->unk_0054 = func_020629ac(5, 2, 0, 1);
     func_02061e98(w->unk_0054, 0x10, 1);
     if (w->unk_000c == 1) {
