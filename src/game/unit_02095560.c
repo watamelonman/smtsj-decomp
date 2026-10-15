@@ -194,3 +194,38 @@ u32 func_02095660(void)
   return 1;
 }
 
+
+
+int func_02052f58();
+int func_02052f68();
+int func_02052fe0();
+int func_02052ff0();
+int func_02053000();
+int func_0205f508();
+int func_0205f534();
+int func_0205f590();
+int func_0205f5f0();
+int func_0205f668();
+/* decompiler-derived */
+u32
+func_02095a60(u32 arg0,u32 arg1,u32 arg2,u32 arg3)
+{
+  u32 tmp1;
+  u32 tmp2;
+  u8 auStack_20 [12];
+  u32 uStack_14;
+  uStack_14 = arg3;
+  func_02052f58(0);
+  func_0205f508(auStack_20,arg0);
+  tmp1 = func_0205f534(auStack_20);
+  tmp2 = func_02052ff0();
+  func_0205f590(auStack_20,tmp2,tmp1);
+  func_0205f5f0(auStack_20,tmp2,arg1);
+  tmp1 = func_02052fe0();
+  func_02052f68();
+  func_0205f668(auStack_20,tmp2,arg1,tmp1);
+  func_02052f58(0);
+  func_02053000(tmp2);
+  func_02052f68();
+  return tmp1;
+}
