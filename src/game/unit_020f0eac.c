@@ -50,3 +50,24 @@ void Unk0f0eac_Unk_0f0eac(void)
   }
   func_020f7e48(*(u32 *)(value2 + 0x40),0,2);
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u32 data_02176dfc[];
+int Unk0f8448_GetUnkField10();
+void Unk0e8228_Unk_0e8d90();
+void func_020f0f08(u32 a)
+{
+    u32 w = *data_02176dfc;
+    Unk0e8228_Unk_0e8d90(FIELD(u32, w, 76), Unk0f8448_GetUnkField10(a));
+}
+
+int func_020f0fe0(u8 *a, u8 *b)
+{
+    int d = a[4] - b[4];
+    if (d == 0) {
+        d = FIELD(u16, a, 0) - FIELD(u16, b, 0);
+    }
+    return d;
+}
