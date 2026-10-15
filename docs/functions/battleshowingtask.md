@@ -31,11 +31,11 @@
 - `BattleShowingTask_Unk_11a8dc`: decompiler-derived
 
 ## Not done in M1-T1032
-- `func_0211c670`
-- `func_0211c5d0`
+- `BattleShowingTask_Unk_11c670`
+- `BattleShowingTask_Unk_11c5d0`
 - `func_02119a10`
 - `func_021198b4`
-- `func_0211c610`
+- `BattleShowingTask_Unk_11c610`
 - `func_02119658`
 - `func_0211c4e0`
 
@@ -58,6 +58,6 @@
 - `func_0211b100`
 - `func_0211a924`
 - `func_0211c24c`
-- `func_0211c670`: decompiler-derived (proto cleanup)
-- `func_0211c5d0`: decompiler-derived (proto cleanup)
-- `func_0211c610`: decompiler-derived (proto cleanup)
+- `BattleShowingTask_Unk_11c670`: decompiler-derived (proto cleanup)
+- `BattleShowingTask_Unk_11c5d0`: decompiler-derived (proto cleanup)
+- `BattleShowingTask_Unk_11c610`: decompiler-derived (proto cleanup)

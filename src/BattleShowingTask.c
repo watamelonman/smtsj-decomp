@@ -274,7 +274,7 @@ int func_0206569c();
 int func_02065bc0();
 int func_02065cfc();
 /* decompiler-derived */
-void func_0211c670(int arg0)
+void BattleShowingTask_Unk_11c670(int arg0)
 {
   int tmp1;
   tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
@@ -288,7 +288,7 @@ void func_0211c670(int arg0)
 
 int func_02065864();
 /* decompiler-derived */
-void func_0211c5d0(int arg0)
+void BattleShowingTask_Unk_11c5d0(int arg0)
 {
   int tmp1;
   u32 tmp2;
@@ -303,7 +303,7 @@ void func_0211c5d0(int arg0)
 
 int func_0204fcb0();
 /* decompiler-derived */
-void func_0211c610(int arg0)
+void BattleShowingTask_Unk_11c610(int arg0)
 {
   int tmp1;
   u32 tmp2;
