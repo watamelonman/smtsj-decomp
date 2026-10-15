@@ -252,3 +252,14 @@ u32 Unk0d297c_Unk_0d3034(u32 arg0,u32 arg1)
   }
   return 0;
 }
+
+extern u8 data_02150680[];
+int func_02051610();
+/* decompiler-derived; refs "Data/Event/Mission/MissionLog.mbb" */
+u32 func_020d2e64(void)
+{
+  u32 tmp1;
+  tmp1 = func_02051610(data_02150680);
+  *data_02176be0 = tmp1;
+  return 1;
+}
