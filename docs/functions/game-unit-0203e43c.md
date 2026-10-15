@@ -62,3 +62,8 @@
 - `Unk03e43c_UpdatePos18`: hand-matched
 - `Unk03e43c_Unk_03e8cc`: hand-matched
 - `Unk03e43c_Unk_03f234`: hand-matched
+- `func_02041ce4`: hand-matched
+- `func_02043450`: hand-matched
+- `func_02043560`: hand-matched
+- `func_02044194`: hand-matched
+- `func_020441ec`: hand-matched
