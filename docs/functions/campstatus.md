@@ -72,3 +72,11 @@
 - `func_020dd9d8`
 - `CampStatus_Unk_0d71bc`: decompiler-derived (struct cleanup)
 - `CampStatus_Unk_0d7680`: decompiler-derived (struct cleanup)
+- `func_020d6d20`: hand-matched
+- `func_020d6d48`: hand-matched
+- `func_020d6d5c`: hand-matched
+- `func_020d6d70`: hand-matched
+- `func_020d6d84`: hand-matched
+- `func_020d6d9c`: hand-matched
+- `func_020d6dd4`: hand-matched
+- `func_020d6df0`: hand-matched

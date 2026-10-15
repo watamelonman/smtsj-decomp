@@ -7,7 +7,23 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 
-/* Object passed as first arg in this file; layout from observed accesses. */
+typedef float f32;
+
+/* Reached through two pointers from CampStatusWork.unk_002c. */
+typedef struct CampStatusLink {
+    u8 pad_0000[0x14];
+    u32 unk_0014;
+} CampStatusLink;
+
+/* Animation/scale block at CampStatusWork.unk_0094. */
+typedef struct CampStatusAnim {
+    u8 pad_0000[0x20];
+    f32 scale;                  /* +0x20: reset to 1.0 */
+    u8 pad_0024[0x4];
+    s32 unk_0028;               /* +0x28: reset to -1 */
+} CampStatusAnim;
+
+/* Camp status work; the first argument here and also *data_02176be4. */
 typedef struct CampStatusWork {
     u8 pad_0000[0x8];
     u32 unk_0008;
@@ -15,15 +31,33 @@ typedef struct CampStatusWork {
     u8 pad_0010[0x8];
     u32 unk_0018;
     u32 unk_001c;
-    u8 pad_0020[0xde];
+    u8 pad_0020[0xc];
+    CampStatusLink **unk_002c;
+    u8 pad_0030[0x64];
+    CampStatusAnim *unk_0094;
+    u8 pad_0098[0x5c];
+    u32 unk_00f4;
+    u32 unk_00f8;
+    u8 pad_00fc[0x2];
     s16 unk_00fe;
     u8 pad_0100[0xc];
     s16 unk_010c;
     u8 pad_010e[0x2];
     u32 unk_0110;
-    u8 pad_0114[0x7380];
+    u8 pad_0114[0x94];
+    u32 unk_01a8;
+    u8 pad_01ac[0x94];
+    u8 unk_0240;
+    u8 unk_0241;
+    u8 pad_0242[0x16];
+    u32 unk_0258;
+    u8 pad_025c[0x4];
+    u32 unk_0260;
+    u8 pad_0264[0x7230];
     u32 unk_7494;
 } CampStatusWork;
+
+extern CampStatusWork *data_02176be4;
 
 u32 CampStatus_GetUnkField1c(void *obj);
 u32 CampStatus_GetUnkField7494(CampStatusWork *work);
@@ -190,4 +224,48 @@ void CampStatus_Unk_0d7680(int arg0)
   func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x21,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
                 ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
   func_02057e18(0x1f);
+}
+
+int func_020d6d20(void)
+{
+    CampStatusWork *w = data_02176be4;
+    return w->unk_00f4 != 0 && w->unk_00f8 != 0;
+}
+
+u32 func_020d6d48(void)
+{
+    return data_02176be4->unk_01a8;
+}
+
+void func_020d6d5c(u32 value)
+{
+    data_02176be4->unk_01a8 = value;
+}
+
+u32 func_020d6d70(void)
+{
+    return data_02176be4->unk_0258;
+}
+
+void func_020d6d84(void)
+{
+    data_02176be4->unk_0260 = 1;
+}
+
+void func_020d6d9c(void)
+{
+    data_02176be4->unk_0260 = 0;
+    data_02176be4->unk_0094->unk_0028 = -1;
+    data_02176be4->unk_0094->scale = 1.0f;
+}
+
+void func_020d6dd4(u8 a, u8 b)
+{
+    data_02176be4->unk_0240 = a;
+    data_02176be4->unk_0241 = b;
+}
+
+void func_020d6df0(u32 *out)
+{
+    *out = (*data_02176be4->unk_002c)->unk_0014;
 }
