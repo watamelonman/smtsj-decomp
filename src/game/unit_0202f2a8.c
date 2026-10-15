@@ -279,3 +279,23 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
   *(u32 *)(*arg0 + 0x1c) = 0;
   func_020a0da4(8);
 }
+
+int func_0203fa58();
+int func_020952ac();
+/* decompiler-derived */
+void func_0203538c(void)
+{
+  int tmp1;
+  u32 tmp2;
+  int tmp3;
+  tmp1 = (int)GetGameState();
+  tmp2 = Unk03e43c_Unk_03fa28();
+  *(u32 *)(tmp1 + 0x74f0) = tmp2;
+  func_0203fa58();
+  tmp1 = (int)GetGameState();
+  tmp3 = Unk03e43c_Unk_03fa28();
+  if (*(int *)(tmp1 + 0x74f0) == tmp3) {
+    return;
+  }
+  func_020952ac();
+}
