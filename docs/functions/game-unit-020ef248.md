@@ -27,3 +27,4 @@
 - `Unk0ef248_ClearArrF4`: hand-matched
 - `Unk0ef248_Unk_0ef6fc`: hand-matched
 - `Unk0ef248_Unk_0ef74c`: hand-matched
+- `func_020ef2ec`: hand-matched
