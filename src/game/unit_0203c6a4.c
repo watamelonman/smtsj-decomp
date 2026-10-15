@@ -8,6 +8,22 @@ int Unk03c6a4_GetConst1(void) { return 1; }
 
 int func_0203ac00();
 int func_0203c748();
+int Unk03aae8_Unk_03ad14();
+void func_02065c30();
+static inline void Unk03c6a4_SetSubState(u32 v, u8 *sub)
+{
+    FIELD(u32, sub, 0x18) = v;
+}
+int func_0203c718(void)
+{
+    if (func_02065544() == 0) {
+        return 3;
+    }
+    func_02065c30();
+    Unk03c6a4_SetSubState(4, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
+    return 3;
+}
+
 /* decompiler-derived */
 void Unk03c6a4_Unk_03c84c(void)
 {
