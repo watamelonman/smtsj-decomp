@@ -103,6 +103,47 @@ extern u8 data_02151fb4[];
 int func_02008848();
 int func_0205dcd4();
 int func_020629ac();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void Unk11ec7c_Unk_11ee8c(int arg0);
+void Unk11ec7c_Nop_11ef08(void);
+void Unk11ec7c_Unk_11ef0c(int arg0);
+void Unk11ec7c_Unk_11ef2c(int arg0);
+void func_0211eea8();
+void func_0211ef74(u8 *p);
+void func_0211efb0(u8 *p);
+void func_0211ef74(u8 *p)
+{
+    FIELD(int, p, 12) = FIELD(int, p, 16);
+    FIELD(int, p, 16) = -1;
+    switch (FIELD(int, p, 12)) {
+    case 1:
+        Unk11ec7c_Unk_11ee8c((int)p);
+        return;
+    case 2:
+        Unk11ec7c_Nop_11ef08();
+        return;
+    }
+}
+
+void func_0211efb0(u8 *p)
+{
+    switch (FIELD(u32, p, 12)) {
+    case 0:
+        break;
+    case 1:
+        func_0211eea8(p);
+        break;
+    case 2:
+        Unk11ec7c_Unk_11ef0c((int)p);
+        break;
+    case 3:
+        Unk11ec7c_Unk_11ef2c((int)p);
+        break;
+    }
+}
+
 /* decompiler-derived */
 void Unk11ec7c_Unk_11f004(int *arg0)
 {
@@ -120,4 +161,15 @@ void Unk11ec7c_Unk_11f004(int *arg0)
   tmp1 = func_020629ac(5,1,1,1);
   arg0[2] = tmp1;
   return;
+}
+
+void func_0211f06c(u8 *p)
+{
+    if (FIELD(u32, p, 0) == 0) {
+        return;
+    }
+    if (FIELD(int, p, 16) != -1) {
+        func_0211ef74(p);
+    }
+    func_0211efb0(p);
 }
