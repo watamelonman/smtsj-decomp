@@ -116,3 +116,16 @@ void Unk0bbfa4_Unk_0bc144(void)
   func_02053000(*(u32 *)(value + 0x60));
   *(u32 *)(value + 0x60) = 0;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int Unk044904_Unk_045048();
+int func_02044ec4();
+u8 *func_020a1428(u32 id);
+u32 func_020bc17c(void)
+{
+    u8 *r = (u8 *)func_02044ec4(FIELD(u32, Unk044904_Unk_045048(), 64));
+    u32 v = FIELD(u32, func_020a1428(FIELD(u16, r + 256, 216)), 36);
+    return (v << 4) >> 25;
+}
