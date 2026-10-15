@@ -25,3 +25,13 @@
 - `func_020afe64`
 - `func_020b04b4`
 - `func_020b0310`
+
+## Not done in M1-T682
+- `func_020b0adc`
+- `func_020b0874`
+- `func_020b071c`
+- `func_020b017c`
+- `func_020b00c0`
+- `func_020b0234`
+- `func_020b0974`
+- `func_020affc8`
