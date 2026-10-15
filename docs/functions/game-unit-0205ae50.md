@@ -26,3 +26,6 @@
 - `func_0205b154`
 - `func_0205b398`
 - `Unk05ae50_Unk_05af2c`: decompiler-derived (chain+fix cleanup)
+- `func_0205afec`: hand-matched
+- `func_0205b200`: hand-matched
+- `func_0205b30c`: hand-matched

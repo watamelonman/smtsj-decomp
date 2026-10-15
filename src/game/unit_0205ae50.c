@@ -30,6 +30,29 @@ void Unk05ae50_Unk_05afd8(u32 arg0);
 int Unk05ae50_Unk_05b358(int arg0);
 u32 Unk05ae50_Unk_05af3c(Unk05ae50Work *work);
 
+int func_02008848();
+int func_02052624();
+void Unk05ae50_Unk_05af64(int *arg0);
+int func_0205afec(int x)
+{
+    s32 vc = *(volatile u16 *)0x04000006;
+    int lim;
+    if (vc < 191 || vc > 213) {
+        return 0;
+    }
+    lim = FIELD(s32, data_0216a184, 0x5a8);
+    if (lim < x) {
+        x = lim;
+    }
+    return x & ~3;
+}
+
+void func_0205b200(void)
+{
+    func_02008848(data_0216a184, 0, 0x5ac);
+    Unk05ae50_Unk_05afd8(0x18000);
+}
+
 /* decompiler-derived */
 void Unk05ae50_Unk_05b228(Unk05ae50Work *work)
 {
@@ -41,6 +64,17 @@ void Unk05ae50_Unk_05ae50(void)
 {
   func_0205ad9c();
   func_0205ae60();
+}
+
+void func_0205b30c(int *x)
+{
+    if (func_02052624() < 31) {
+        while ((s32)*(volatile u16 *)0x04000006 < 191 || (s32)*(volatile u16 *)0x04000006 > 213) {
+        }
+        Unk05ae50_Unk_05af64(x);
+    } else {
+        Unk05ae50_Unk_05af64(x);
+    }
 }
 
 /* decompiler-derived */
