@@ -41,7 +41,7 @@ void Unk039774_Unk_039b10(int arg0)
 
 extern u8 *data_0215de28;
 void Unk039774_Unk_039b10(int arg0);
-void func_02039b74(u32 key)
+void Unk039774_ReleaseByKey(u32 key)
 {
     u8 *o = data_0215de28;
     u8 *next;

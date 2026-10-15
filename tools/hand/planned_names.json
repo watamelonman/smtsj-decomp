@@ -68,5 +68,12 @@
  "func_020362c8": "Unk02f2a8_SetField35c",
  "func_02036318": "Unk02f2a8_SetGridPos",
  "func_02038d94": "Unk0387bc_GetEntry32",
- "func_02038dc4": "Unk0387bc_GetEntry36"
+ "func_02038dc4": "Unk0387bc_GetEntry36",
+ "func_02038f18": "Unk0387bc_GetEntry32b",
+ "func_02038f48": "Unk0387bc_GetEntry36b",
+ "func_02039204": "Unk038fbc_GetElement",
+ "func_0203947c": "Unk0392f8_GetEntry36",
+ "func_02039b74": "Unk039774_ReleaseByKey",
+ "func_0203af14": "Unk03aae8_Unk_03af14",
+ "func_0203b89c": "Unk03aae8_Unk_03b89c"
 }

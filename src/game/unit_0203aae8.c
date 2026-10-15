@@ -27,7 +27,7 @@ u32 Unk03aae8_Unk_03aef0(void)
 int Unk03aae8_Unk_03acf4();
 int func_02050074();
 int Unk094fe0_Call_020950b4();
-int func_0203af14(void)
+int Unk03aae8_Unk_03af14(void)
 {
     if (Unk094fe0_Call_020950b4((s16)func_0203ac00(0))) {
         Unk03aae8_Unk_03acf4(1);
@@ -123,7 +123,7 @@ int Unk03aae8_Unk_03acf4(u32 arg0)
   *(u32 *)(*(int *)(tmp1 + 4) + 0xa8) = arg0;
 }
 
-int func_0203b89c(void)
+int Unk03aae8_Unk_03b89c(void)
 {
     u32 a = func_0203ac00(0);
     int b = func_0203ac00(1);
