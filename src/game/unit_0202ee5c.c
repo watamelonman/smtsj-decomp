@@ -26,7 +26,7 @@ typedef struct Unk02e000Ent2 {
 } Unk02e000Ent2;
 #define ENT2(i) ((Unk02e000Ent2 *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc) + ((i) - 1))
 
-int func_0202ee5c(u32 id, int v)
+int Unk02ee5c_SetRecordFlag0b(u32 id, int v)
 {
     Unk02e000Ent2 *e;
     if (id > 491) {
@@ -60,7 +60,7 @@ int Unk02ee5c_GetTierFromField70(void)
     return 1;
 }
 
-void func_0202ef34(int d)
+void Unk02ee5c_AddClamped70(int d)
 {
     u8 *w;
     s16 v;

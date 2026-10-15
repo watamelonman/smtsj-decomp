@@ -586,7 +586,7 @@ typedef struct Unk02e000Ent2 {
 } Unk02e000Ent2;
 #define ENT2(i) ((Unk02e000Ent2 *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc) + ((i) - 1))
 
-int func_0202ecf8(u32 id, int v)
+int Unk02e000_SetRecordFlag1f_1(u32 id, int v)
 {
     Unk02e000Ent2 *e;
     if (id > 491) {
@@ -608,7 +608,7 @@ int Unk02e000_GetRecordFlag1(u32 id)
     }
 }
 
-int func_0202eda8(u32 id, int v)
+int Unk02e000_SetRecordUnk1f_2(u32 id, int v)
 {
     Unk02e000Ent2 *e;
     if (id > 491) {

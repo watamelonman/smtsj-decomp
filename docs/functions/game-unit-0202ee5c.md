@@ -6,10 +6,10 @@
 ## Not done in M1-T069
 - `Unk02ee5c_GetTierFromField70`
 - `Unk02ee5c_GetRecordFlagB`
-- `func_0202ee5c`
-- `func_0202ef34`
+- `Unk02ee5c_SetRecordFlag0b`
+- `Unk02ee5c_AddClamped70`
 - `func_0202efa4`
 - `Unk02ee5c_GetRecordFlagB`: hand-matched
 - `Unk02ee5c_GetTierFromField70`: hand-matched
-- `func_0202ee5c`: hand-matched
-- `func_0202ef34`: hand-matched
+- `Unk02ee5c_SetRecordFlag0b`: hand-matched
+- `Unk02ee5c_AddClamped70`: hand-matched

@@ -4,7 +4,7 @@
 
 int Unk03aae8_Unk_03acf4();
 int Unk09ee4c_GetField3c0Bits();
-void func_0202eda8();
+void Unk02e000_SetRecordUnk1f_2();
 int Unk096754_Unk_0969f0();
 int Unk096754_HasEntryId();
 int func_02096af4();
@@ -14,7 +14,7 @@ int Unk0986ac_Thunk_02098714();
 int Unk03e23c_Unk_03e260(void)
 {
     int a = func_0203ac00(0);
-    func_0202eda8((u16)a, func_0203ac00(1));
+    Unk02e000_SetRecordUnk1f_2((u16)a, func_0203ac00(1));
     return 1;
 }
 

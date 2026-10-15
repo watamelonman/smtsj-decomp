@@ -69,14 +69,14 @@ u32 Unk03ce68_Unk_03cf94(void)
   return 1;
 }
 
-int func_0202ef34();
+int Unk02ee5c_AddClamped70();
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03d010(void)
 {
   short v1;
   func_0203ac00(0);
   v1 = func_0203ac00(1);
-  func_0202ef34((int)v1);
+  Unk02ee5c_AddClamped70((int)v1);
   return 1;
 }
 

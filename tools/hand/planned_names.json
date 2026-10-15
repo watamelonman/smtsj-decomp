@@ -637,5 +637,9 @@
  "func_0202ea10": "Unk02e000_GetRecord",
  "func_0202eab8": "Unk02e000_SetRecordUnk1c",
  "func_0202eb48": "Unk02e000_SetRecordUnk1e",
- "func_0202ec48": "Unk02e000_SetRecordFlag1f"
+ "func_0202ec48": "Unk02e000_SetRecordFlag1f",
+ "func_0202ecf8": "Unk02e000_SetRecordFlag1f_1",
+ "func_0202eda8": "Unk02e000_SetRecordUnk1f_2",
+ "func_0202ee5c": "Unk02ee5c_SetRecordFlag0b",
+ "func_0202ef34": "Unk02ee5c_AddClamped70"
 }

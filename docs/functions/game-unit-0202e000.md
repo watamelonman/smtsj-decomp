@@ -66,11 +66,11 @@
 - `Unk02e000_FindIndex_02e3e4`
 - `Unk02e000_SetBit_02e968`
 - `Unk02e000_SetRecordFlag1f`
-- `func_0202ecf8`
+- `Unk02e000_SetRecordFlag1f_1`
 - `Unk02e000_SetRecordUnk1e`
 
 ## Not done in M1-T656
-- `func_0202eda8`
+- `Unk02e000_SetRecordUnk1f_2`
 - `Unk02e000_GetSlotPtr`
 - `func_0202e5dc`
 - `func_0202e23c`
@@ -113,5 +113,5 @@
 - `Unk02e000_SetRecordUnk1c`: hand-matched
 - `Unk02e000_SetRecordUnk1e`: hand-matched
 - `Unk02e000_SetRecordFlag1f`: hand-matched
-- `func_0202ecf8`: hand-matched
-- `func_0202eda8`: hand-matched
+- `Unk02e000_SetRecordFlag1f_1`: hand-matched
+- `Unk02e000_SetRecordUnk1f_2`: hand-matched
