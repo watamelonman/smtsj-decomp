@@ -67,3 +67,6 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
 - `x == 1 || x == 2` folds to `sub r0,#1; cmp #1`; to keep `cmp #1; cmpne #2` write a switch with fallthrough cases (b57).
 - Soft-float functions (calls to func_0201de2c/0201e3d8/0201e630/0201eae0 with `movcs` after the compare call) are
   skipped for now: the repo has no float C yet, and the compare result comes back in flags (b56).
+- Tail `moveq r0,#0; bxeq lr; mov r1,#7; str; mov r0,#1; bx lr` (separate return blocks) came from the
+  early-return-in-if form: `if (x != old) { ...; return 1; } return 0;`. The `if (x == old) return 0;` form was predicated (b59).
+- `return p ? field : -1` with `ldrne` before `mvneq`: write the non-null case first (`if (p != 0) return field; return -1;`) (b59).
