@@ -64,6 +64,26 @@ void Unk0939f0_Clear_data_02175d90(void)
 }
 
 int func_02070440();
+typedef struct Unk0939f0Ent {
+    u8 pad_00[112];
+} Unk0939f0Ent;
+typedef struct Unk0939f0Ents {
+    Unk0939f0Ent e[19];
+} Unk0939f0Ents;
+void func_02093b6c();
+
+void func_02093b14(Unk0939f0Ents *p)
+{
+    int i;
+    Unk0939f0Ent *e;
+    func_02093b6c(0, &p->e[0]);
+    for (i = 0, e = &p->e[1]; i < 16; i++, e++) {
+        func_02093b6c(1, e);
+    }
+    func_02093b6c(2, &p->e[17]);
+    func_02093b6c(3, &p->e[18]);
+}
+
 /* decompiler-derived */
 void Unk0939f0_Unk_093dbc(int arg0)
 {
