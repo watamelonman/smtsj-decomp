@@ -10,12 +10,12 @@
 - `Unk02f078_Unk_02f08c` (36 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Not done in M1-T115
-- `func_0202f230`
-- `func_0202f268`
-- `func_0202f14c`
-- `func_0202f104`
+- `Unk02f078_InitEntry5e12`
+- `Unk02f078_GetEntry5e12Bit0`
+- `Unk02f078_SetFlag380`
+- `Unk02f078_TestFlag380`
 - `func_0202f190`
-- `func_0202f104`: hand-matched
-- `func_0202f14c`: hand-matched
-- `func_0202f230`: hand-matched
-- `func_0202f268`: hand-matched
+- `Unk02f078_TestFlag380`: hand-matched
+- `Unk02f078_SetFlag380`: hand-matched
+- `Unk02f078_InitEntry5e12`: hand-matched
+- `Unk02f078_GetEntry5e12Bit0`: hand-matched

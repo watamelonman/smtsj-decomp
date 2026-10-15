@@ -27,7 +27,7 @@ u8 Unk02f078_Unk_02f0d8(void)
   return *(u8 *)(value + 2);
 }
 
-int func_0202f104(int i)
+int Unk02f078_TestFlag380(int i)
 {
     if (i <= 0) {
         return 0;
@@ -41,7 +41,7 @@ int func_0202f104(int i)
     return 0;
 }
 
-void func_0202f14c(int i)
+void Unk02f078_SetFlag380(int i)
 {
     u8 mask;
     u8 *p;
@@ -115,7 +115,7 @@ void Unk02f078_Unk_02f08c(void)
   *(u8 *)(value + 1) = 100;
 }
 
-void func_0202f230(int i)
+void Unk02f078_InitEntry5e12(int i)
 {
     if (i >= 64) {
         return;
@@ -131,7 +131,7 @@ void func_0202f230(int i)
     }
 }
 
-int func_0202f268(int i)
+int Unk02f078_GetEntry5e12Bit0(int i)
 {
     if (i >= 64) {
         return 0;

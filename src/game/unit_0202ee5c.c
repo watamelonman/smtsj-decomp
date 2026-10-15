@@ -11,7 +11,7 @@ typedef struct Unk02ee5cRec {
     u8 flag_000b_0 : 1;
     u8 pad_000c[0x18];
 } Unk02ee5cRec;                 /* 36 bytes; same table as unit_0202e000 (work+0x16FC, ids 1..491) */
-int func_0202eec0(u32 id)
+int Unk02ee5c_GetRecordFlagB(u32 id)
 {
     if (id > 491) {
         return 0;
@@ -22,7 +22,7 @@ int func_0202eec0(u32 id)
     }
 }
 
-int func_0202ef0c(void)
+int Unk02ee5c_GetTierFromField70(void)
 {
     u8 v = Unk02e000_Thunk_0202e788()[0x70];
     if (v >= 160) {

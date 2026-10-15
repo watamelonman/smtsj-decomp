@@ -6,7 +6,7 @@ void func_0206146c(void);
 void func_02057660(int a, int b);
 
 int Unk02e000_Unk_02e774();
-void func_0202f2a8(int i)
+void Unk02f2a8_ClearEntry5e12Bit0(int i)
 {
     if (i >= 64) {
         return;
@@ -20,7 +20,7 @@ void func_0202f2a8(int i)
     }
 }
 
-void func_0202f330(int k, u32 v)
+void Unk02f2a8_SetField6138(int k, u32 v)
 {
     u8 *w = (u8 *)Unk02e000_Unk_02e774();
     switch (k) {

@@ -28,12 +28,12 @@ u32 Unk03ce68_Unk_03cf78(void)
   return 1;
 }
 
-int func_0202ef0c();
+int Unk02ee5c_GetTierFromField70();
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03cff4(void)
 {
   func_0203ac00(0);
-  func_0202ef0c();
+  Unk02ee5c_GetTierFromField70();
   Unk03aae8_Unk_03acf4();
   return 1;
 }

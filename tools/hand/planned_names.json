@@ -36,5 +36,13 @@
  "func_0202ed5c": "Unk02e000_GetRecordFlag1",
  "func_0202ee18": "Unk02e000_GetRecordUnk1f",
  "Unk02e000_GetPartyEntry": "Unk02e000_Unk_02e7c0",
- "Unk02e000_IsEntryInParty": "Unk02e000_Unk_02e840"
+ "Unk02e000_IsEntryInParty": "Unk02e000_Unk_02e840",
+ "func_0202eec0": "Unk02ee5c_GetRecordFlagB",
+ "func_0202ef0c": "Unk02ee5c_GetTierFromField70",
+ "func_0202f104": "Unk02f078_TestFlag380",
+ "func_0202f14c": "Unk02f078_SetFlag380",
+ "func_0202f230": "Unk02f078_InitEntry5e12",
+ "func_0202f268": "Unk02f078_GetEntry5e12Bit0",
+ "func_0202f2a8": "Unk02f2a8_ClearEntry5e12Bit0",
+ "func_0202f330": "Unk02f2a8_SetField6138"
 }

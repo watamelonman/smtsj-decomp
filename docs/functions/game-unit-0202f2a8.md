@@ -32,7 +32,7 @@
 - `func_020353f8`
 - `Unk02f2a8_Unk_035440`
 - `func_02030548`
-- `func_0202f2a8`
+- `Unk02f2a8_ClearEntry5e12Bit0`
 - `func_02034ad4`
 - `func_02035c5c`
 
@@ -50,7 +50,7 @@
 - `Unk02f2a8_Unk_02f8ac`
 - `func_02034d5c`
 - `func_020360d8`
-- `func_0202f330`
+- `Unk02f2a8_SetField6138`
 - `GameState_Shutdown`
 - `func_02035a70`
 - `func_02035c14`
@@ -168,5 +168,5 @@
 - `GameState_GetBody`: hand-matched
 - `GameState_ClearRootUnk60`: hand-matched
 - `GameState_GetUnkField74f6`: hand-matched
-- `func_0202f2a8`: hand-matched
-- `func_0202f330`: hand-matched
+- `Unk02f2a8_ClearEntry5e12Bit0`: hand-matched
+- `Unk02f2a8_SetField6138`: hand-matched
