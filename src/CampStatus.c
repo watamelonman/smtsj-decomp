@@ -12,9 +12,16 @@ typedef struct CampStatusWork {
     u8 pad_0000[0x8];
     u32 unk_0008;
     u32 unk_000c;
-    u8 pad_0010[0xc];
+    u8 pad_0010[0x8];
+    u32 unk_0018;
     u32 unk_001c;
-    u8 pad_0020[0x7474];
+    u8 pad_0020[0xde];
+    s16 unk_00fe;
+    u8 pad_0100[0xc];
+    s16 unk_010c;
+    u8 pad_010e[0x2];
+    u32 unk_0110;
+    u8 pad_0114[0x7380];
     u32 unk_7494;
 } CampStatusWork;
 
@@ -128,3 +135,59 @@ void CampStatus_Unk_0ddd2c(u32 arg0,u32 arg1,u32 arg2)
   return;
 }
 
+int func_02057df8();
+int func_02057e18();
+/* decompiler-derived */
+void func_020d71bc(int arg0)
+{
+  func_02057fd8();
+  func_02057df8();
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x2b,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x2c,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x2d,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+  func_02057e18(0x1f);
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x2e,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x2f,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,0x3f800000,3);
+}
+
+/* decompiler-derived */
+void func_020d7680(int arg0)
+{
+  func_02057fd8();
+  func_02057df8();
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,5,(int)((CampStatusWork *)arg0)->unk_00fe,0,0x3f800000,
+                0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x41,(int)((CampStatusWork *)arg0)->unk_00fe,0,0x3f800000,
+                0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,3);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x22,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x23,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x24,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x25,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x26,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x27,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+
+  func_0205dee8(2,((CampStatusWork *)arg0)->unk_0018,0x21,0,(int)((CampStatusWork *)arg0)->unk_010c,0x3f800000
+                ,0x3f800000,0,((CampStatusWork *)arg0)->unk_0110,2);
+  func_02057e18(0x1f);
+}

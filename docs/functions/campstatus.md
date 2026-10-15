@@ -70,3 +70,5 @@
 - `func_020dc3b8`
 - `func_020ddc20`
 - `func_020dd9d8`
+- `func_020d71bc`: decompiler-derived (struct cleanup)
+- `func_020d7680`: decompiler-derived (struct cleanup)
