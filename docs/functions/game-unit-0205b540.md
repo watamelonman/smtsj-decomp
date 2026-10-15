@@ -1,9 +1,9 @@
 # src/game/unit_0205b540.c
 
-- `func_0205b7e0`: decompiler-derived
-- `func_0205b7c0`: decompiler-derived
-- `func_0205b7d0`: decompiler-derived
-- `func_0205b7ec`: decompiler-derived
+- `Unk05b540_GetAddr_data_0216a730`: decompiler-derived
+- `Unk05b540_Unk_05b7c0`: decompiler-derived
+- `Unk05b540_Unk_05b7d0`: decompiler-derived
+- `Unk05b540_Unk_05b7ec`: decompiler-derived
 
 ## Not done in M1-T244
 - `func_0205b540`

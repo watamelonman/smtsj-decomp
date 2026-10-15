@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-int func_020cb190(int arg0,int arg1)
+int Unk0cb0d0_Unk_0cb190(int arg0,int arg1)
 {
   return (u32)*(u16 *)(arg0 + 0x20) - (u32)*(u16 *)(arg1 + 0x20);
 }
@@ -13,7 +13,7 @@ int func_020445d0();
 int func_0204fde0();
 int func_0204fe18();
 /* decompiler-derived */
-void func_020cb1f8(void)
+void Unk0cb0d0_Unk_0cb1f8(void)
 {
   u32 tmp1;
   tmp1 = func_020445d0(0xb,0);
@@ -24,7 +24,7 @@ void func_020cb1f8(void)
 
 int func_020cb1a0();
 /* decompiler-derived */
-u32 func_020cb304(void)
+u32 Unk0cb0d0_Unk_0cb304(void)
 {
   int tmp1;
   tmp1 = func_020cb1a0();

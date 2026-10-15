@@ -15,7 +15,7 @@
 - `func_0205ae60`
 - `func_0205b234`
 - `func_0205b02c`
-- `func_0205af64`: decompiler-derived
+- `Unk05ae50_Unk_05af64`: decompiler-derived
 
 ## Not done in M1-T426
 - `func_0205b200`

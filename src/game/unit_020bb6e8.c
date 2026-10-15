@@ -4,11 +4,11 @@
 
 int func_0203ac00();
 /* decompiler-derived */
-u32 func_020bb8a0(void)
+u32 Unk0bb6e8_Unk_0bb8a0(void)
 {
-  int tmp1;
-  tmp1 = func_0203ac00(0);
-  if (tmp1 < 0xf) {
+  int value;
+  value = func_0203ac00(0);
+  if (value < 0xf) {
     Unk0e5fb8_Unk_0e628c();
   }
   return 1;

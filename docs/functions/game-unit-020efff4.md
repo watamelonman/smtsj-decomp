@@ -1,9 +1,9 @@
 # src/game/unit_020efff4.c
 
-- `func_020f0260`: decompiler-derived
-- `func_020f0498`: decompiler-derived
-- `func_020f004c`: decompiler-derived
-- `func_020f0300`: decompiler-derived
+- `Unk0efff4_Nop_0f0260`: decompiler-derived
+- `Unk0efff4_Thunk_020f7248`: decompiler-derived
+- `Unk0efff4_Unk_0f004c`: decompiler-derived
+- `Unk0efff4_Unk_0f0300`: decompiler-derived
 
 ## Not done in M1-T360
 - `func_020f0078`

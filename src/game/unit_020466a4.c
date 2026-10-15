@@ -5,20 +5,20 @@
 int func_020aa24c();
 int func_020f8098();
 /* decompiler-derived */
-u32 func_020466a4(u16 *arg0)
+u32 Unk0466a4_Unk_0466a4(u16 *arg0)
 {
   u32 *v1;
-  u32 tmp2;
-  int tmp3;
+  u32 value1;
+  int value2;
   Unk044904_Unk_044fd8();
   v1 = (u32 *)func_020aa24c();
   if (v1 == (u32 *)0x0) {
     *arg0 = 2;
   }
   else {
-    tmp2 = Unk044904_Unk_045080();
-    tmp3 = func_020f8098(tmp2,1,*v1);
-    if (tmp3 != 0) {
+    value1 = Unk044904_Unk_045080();
+    value2 = func_020f8098(value1,1,*v1);
+    if (value2 != 0) {
       *arg0 = 3;
     }
   }

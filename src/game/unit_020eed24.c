@@ -4,28 +4,26 @@
 
 void func_020f7248(void);
 /* forwards to `func_020f7248` */
-void func_020eee88(void) { func_020f7248(); }
+void Unk0eed24_Thunk_020f7248(void) { func_020f7248(); }
 
 int func_020d1e94();
 int func_020fda58();
 /* decompiler-derived */
-void func_020eeebc(void)
+void Unk0eed24_Unk_0eeebc(void)
 {
   func_020d1e94(1);
   func_020fda58(1);
-  return;
 }
 
-int func_020d1d94();
+int Unk0d1c98_Unk_0d1d94();
 int func_020ea630();
 int func_020febe8();
 /* decompiler-derived */
-void func_020eee94(void)
+void Unk0eed24_Unk_0eee94(void)
 {
-  u32 tmp1;
+  u32 value;
   func_020febe8(0);
-  tmp1 = func_020ea630(10);
-  func_020d1d94(tmp1,0xffffffff);
+  value = func_020ea630(10);
+  Unk0d1c98_Unk_0d1d94(value,0xffffffff);
   func_020fda58(3);
-  return;
 }

@@ -10,9 +10,9 @@
 
 ## Hard list
 - `func_020a1140`: no candidate matched locally
-- `func_020a0d04`: decompiler-derived
-- `func_020a12e8`: decompiler-derived
-- `func_020a0d30`: decompiler-derived
+- `Unk0a0ce4_Unk_0a0d04`: decompiler-derived
+- `Unk0a0ce4_Unk_0a12e8`: decompiler-derived
+- `Unk0a0ce4_Unk_0a0d30`: decompiler-derived
 
 ## Not done in M1-T448
 - `func_020a0e0c`

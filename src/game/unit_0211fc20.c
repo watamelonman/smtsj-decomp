@@ -52,7 +52,7 @@ int Unk11fc20_Unk_120944(int arg0)
 
 int func_02120bd4();
 /* decompiler-derived */
-void func_0212143c(int arg0,int arg1,u32 arg2)
+void Unk11fc20_Unk_12143c(int arg0,int arg1,u32 arg2)
 {
   func_02120bd4(4,0,*(u32 *)(arg0 + 0xc),*(u32 *)(arg0 + 0x10),0x3000,
                 arg1 << 0xc,arg2,0,0);
@@ -61,7 +61,7 @@ void func_0212143c(int arg0,int arg1,u32 arg2)
 
 int func_020a0da4();
 /* decompiler-derived */
-void func_0211fd38(u32 *arg0)
+void Unk11fc20_Unk_11fd38(u32 *arg0)
 {
   arg0[3] = 100;
   *arg0 = 0;
@@ -76,7 +76,7 @@ void func_0211fd38(u32 *arg0)
 
 
 /* decompiler-derived */
-void func_02120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
+void Unk11fc20_Unk_120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
                   int arg5,u32 arg6,u32 arg7,u32 arg8)
 {
   func_02120bd4(arg0,arg1,arg2 << 0xc,arg3 << 0xc,arg4 << 0xc,arg5 << 0xc,arg6,
@@ -88,7 +88,7 @@ void func_02120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
 
 
 /* decompiler-derived */
-int * func_02120a58(u32 arg0)
+int * Unk11fc20_Unk_120a58(u32 arg0)
 {
   int *v1;
   int tmp2;

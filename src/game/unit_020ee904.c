@@ -6,16 +6,15 @@ extern u32 data_02176de4[];
 int func_020f7e48();
 int func_020f8478();
 /* decompiler-derived */
-void func_020eeadc(void)
+void Unk0ee904_Unk_0eeadc(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp2 = *data_02176de4;
-  tmp1 = Unk0e8228_Unk_0e82ac();
-  if (tmp1 == 0) {
-    func_020f8478(tmp2 + 0x50,0);
+  int value1;
+  int value2;
+  value2 = *data_02176de4;
+  value1 = Unk0e8228_Unk_0e82ac();
+  if (value1 == 0) {
+    func_020f8478(value2 + 0x50,0);
   }
   Unk0e8228_Unk_0e8d18(1);
-  func_020f7e48(*(u32 *)(tmp2 + 0x40),0,8);
-  return;
+  func_020f7e48(*(u32 *)(value2 + 0x40),0,8);
 }

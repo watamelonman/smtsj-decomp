@@ -15,7 +15,7 @@ typedef signed char s8;
 extern unsigned char gUnkManager_02175eb0[];   /* static manager instance */
 
 void func_0202d15c(void);
-void func_020cb044(void);
+void Unk0caea8_Unk_0cb044(void);
 void func_020773dc(void);
 void func_020961a0(void);
 
@@ -33,7 +33,7 @@ unsigned char *Unk095560_GetManagerSub3a8(void) { return Unk095560_GetManager() 
 
 /* Forwarders. */
 void Unk095560_Thunk_0202d15c(void) { func_0202d15c(); }
-void Unk095560_Thunk_020cb044(void) { func_020cb044(); }
+void Unk095560_Thunk_020cb044(void) { Unk0caea8_Unk_0cb044(); }
 void Unk095560_Thunk_020773dc(void) { func_020773dc(); }
 void Unk095560_Thunk_020961a0(void) { func_020961a0(); }
 
@@ -71,12 +71,12 @@ void Unk095560_Unk_095764(u32 arg0)
 }
 
 
-int func_020775ec();
+int ImageObj_Unk_0775ec();
 int func_02077640();
 /* decompiler-derived */
 void Unk095560_Unk_09615c(void)
 {
-  func_020775ec();
+  ImageObj_Unk_0775ec();
   func_02077640();
   func_02065ca8();
 }
@@ -161,13 +161,13 @@ void Unk095560_Unk_096170(void)
 
 
 /* decompiler-derived */
-u32 func_02095a2c(u32 arg0)
+u32 Unk095560_Unk_095a2c(u32 arg0)
 {
-  int tmp1;
+  int value;
   func_020956e8();
-  tmp1 = func_02095950(1,arg0);
-  if (tmp1 != 0) {
-    func_020958c8(tmp1);
+  value = func_02095950(1,arg0);
+  if (value != 0) {
+    func_020958c8(value);
     func_0202d15c();
     return 1;
   }
@@ -177,20 +177,20 @@ u32 func_02095a2c(u32 arg0)
 int func_0202dc44();
 int func_0209560c();
 /* decompiler-derived */
-u32 func_02095660(void)
+u32 Unk095560_Unk_095660(void)
 {
   u32 *v1;
-  int tmp2;
-  int tmp3;
-  tmp3 = 2;
+  int value1;
+  int value2;
+  value2 = 2;
   do {
-    v1 = (u32 *)Unk094fe0_Unk_094fec(tmp3);
-    tmp2 = func_0202dc44(tmp3);
-    func_0209560c(tmp3);
+    v1 = (u32 *)Unk094fe0_Unk_094fec(value2);
+    value1 = func_0202dc44(value2);
+    func_0209560c(value2);
     *v1 = 0xffffffff;
-    tmp3 = tmp3 + 1;
-    *(u32 *)(tmp2 + 0x50) = 0xffffffff;
-  } while (tmp3 < 8);
+    value2 = value2 + 1;
+    *(u32 *)(value1 + 0x50) = 0xffffffff;
+  } while (value2 < 8);
   return 1;
 }
 
@@ -210,22 +210,22 @@ int func_0205f668();
 u32
 func_02095a60(u32 arg0,u32 arg1,u32 arg2,u32 arg3)
 {
-  u32 tmp1;
-  u32 tmp2;
+  u32 value1;
+  u32 value2;
   u8 auStack_20 [12];
   u32 uStack_14;
   uStack_14 = arg3;
   func_02052f58(0);
   func_0205f508(auStack_20,arg0);
-  tmp1 = func_0205f534(auStack_20);
-  tmp2 = func_02052ff0();
-  func_0205f590(auStack_20,tmp2,tmp1);
-  func_0205f5f0(auStack_20,tmp2,arg1);
-  tmp1 = func_02052fe0();
+  value1 = func_0205f534(auStack_20);
+  value2 = func_02052ff0();
+  func_0205f590(auStack_20,value2,value1);
+  func_0205f5f0(auStack_20,value2,arg1);
+  value1 = func_02052fe0();
   func_02052f68();
-  func_0205f668(auStack_20,tmp2,arg1,tmp1);
+  func_0205f668(auStack_20,value2,arg1,value1);
   func_02052f58(0);
-  func_02053000(tmp2);
+  func_02053000(value2);
   func_02052f68();
-  return tmp1;
+  return value1;
 }

@@ -4,12 +4,12 @@
 
 
 /* decompiler-derived */
-int func_02100414(u16 *arg0,u16 *arg1)
+int Unk100414_Unk_100414(u16 *arg0,u16 *arg1)
 {
-  int tmp1;
-  tmp1 = *(int *)(arg1 + 4) - *(int *)(arg0 + 4);
-  if (tmp1 == 0) {
-    tmp1 = (u32)*arg0 - (u32)*arg1;
+  int value;
+  value = *(int *)(arg1 + 4) - *(int *)(arg0 + 4);
+  if (value == 0) {
+    value = (u32)*arg0 - (u32)*arg1;
   }
-  return tmp1;
+  return value;
 }

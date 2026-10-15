@@ -53,13 +53,13 @@ u32 Unk03aae8_Unk_03af50(void)
 
 
 /* decompiler-derived */
-u32 func_0203ac9c(int arg0)
+u32 Unk03aae8_Unk_03ac9c(int arg0)
 {
-  int tmp1;
-  int tmp2;
-  tmp2 = *(int *)(((int)data_0215de34) + 4);
-  tmp1 = *(int *)(tmp2 + 0x1c) - (arg0 + 1);
-  switch(*(u8 *)(tmp2 + tmp1 + 0x20)) {
+  int value1;
+  int value2;
+  value2 = *(int *)(((int)data_0215de34) + 4);
+  value1 = *(int *)(value2 + 0x1c) - (arg0 + 1);
+  switch(*(u8 *)(value2 + value1 + 0x20)) {
   case 0:
     break;
   case 1:
@@ -71,7 +71,7 @@ u32 func_0203ac9c(int arg0)
   case 4:
     break;
   case 5:
-    return *(u32 *)(tmp2 + tmp1 * 4 + 0x3c);
+    return *(u32 *)(value2 + value1 * 4 + 0x3c);
   }
   return 0;
 }
@@ -79,7 +79,7 @@ u32 func_0203ac9c(int arg0)
 
 int func_020b8660();
 /* decompiler-derived */
-u32 func_0203ae68(void)
+u32 Unk03aae8_Unk_03ae68(void)
 {
   short v1;
   v1 = func_0203ac00(0);

@@ -14,9 +14,9 @@
 ## Not done in M1-T372
 - `func_020f4878`
 - `func_020f4790`
-- `func_020f4958`: decompiler-derived
-- `func_020f4b44`: decompiler-derived
-- `func_020f4ac0`: decompiler-derived
+- `Unk0f470c_Unk_0f4958`: decompiler-derived
+- `Unk0f470c_Unk_0f4b44`: decompiler-derived
+- `Unk0f470c_Unk_0f4ac0`: decompiler-derived
 
 ## Not done in M1-T371
 - `func_020f4a1c`

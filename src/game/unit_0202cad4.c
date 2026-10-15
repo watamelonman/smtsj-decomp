@@ -4,7 +4,7 @@
 
 int Unk065e88_Unk_065eac();
 /* decompiler-derived */
-void Unk02cad4_Unk_02cee0(void)
+void Unk02cad4_Thunk_Unk065e88_Unk_065eac(void)
 {
   Unk065e88_Unk_065eac();
 }
@@ -20,16 +20,16 @@ void Unk02cad4_Unk_02cbdc(u32 arg0)
   *(u32 *)(((int)data_0213d338) + 8) = arg0;
 }
 
-int func_02065e88();
+int Unk065e88_Unk_065e88();
 int func_020e13ac();
 /* decompiler-derived */
 void Unk02cad4_Unk_02ce80(void)
 {
-  func_02065e88();
+  Unk065e88_Unk_065e88();
   func_020e13ac(0);
 }
 
-int func_0202e75c();
+int Unk02e000_Unk_02e75c();
 /* decompiler-derived */
 void Unk02cad4_Unk_02ce94(void)
 {
@@ -43,7 +43,7 @@ void Unk02cad4_Unk_02ce94(void)
   value3 = 0;
   value1 = 0;
   do {
-    value2 = func_0202e75c(value1);
+    value2 = Unk02e000_Unk_02e75c(value1);
     value1 = value1 + 1;
     if (value3 < *(u32 *)(value2 + 0x38)) {
       value3 = *(u32 *)(value2 + 0x38);

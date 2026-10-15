@@ -4,14 +4,14 @@
 
 extern u32 data_02176b88[];
 /* decompiler-derived */
-u32 func_020b75a0(void)
+u32 Unk0b6570_Get_data_02176b88(void)
 {
   return *data_02176b88;
 }
 
 int func_020df7c4();
 /* decompiler-derived */
-void func_020b65d0(int arg0)
+void Unk0b6570_Unk_0b65d0(int arg0)
 {
   int tmp1;
   *(u32 *)(arg0 + 8) = 1;
@@ -29,7 +29,7 @@ int func_02058548();
 int func_020588ec();
 int func_02058a1c();
 /* decompiler-derived */
-void func_020b7838(int arg0)
+void Unk0b6570_Unk_0b7838(int arg0)
 {
   int tmp1;
   func_02058548();

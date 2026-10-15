@@ -1,6 +1,6 @@
 # src/game/unit_020fbed4.c
 
-- `func_020fc17c`: decompiler-derived
+- `Unk0fbed4_Nop_0fc17c`: decompiler-derived
 
 ## Not done in M1-T424
 - `func_020fc124`

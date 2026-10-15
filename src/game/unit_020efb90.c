@@ -4,21 +4,21 @@
 
 
 /* empty callback */
-void func_020efd18(void) { }
+void Unk0efb90_Nop_0efd18(void) { }
 
 void func_020f7248(void);
 /* forwards to `func_020f7248` */
-void func_020efcdc(void) { func_020f7248(); }
+void Unk0efb90_Thunk_020f7248(void) { func_020f7248(); }
 
 int func_020f7210();
 int func_020f82e0();
 int func_020feed4();
 /* decompiler-derived */
-void func_020efb90(int arg0)
+void Unk0efb90_Unk_0efb90(int arg0)
 {
-  int tmp1;
-  tmp1 = func_020f7210();
-  if (tmp1 == 0) {
+  int value;
+  value = func_020f7210();
+  if (value == 0) {
     return;
   }
   func_020f82e0(arg0 + 0x50);
@@ -26,7 +26,6 @@ void func_020efb90(int arg0)
     return;
   }
   func_020feed4();
-  return;
 }
 
 int func_020e8374();
@@ -34,12 +33,11 @@ int func_020f8478();
 int func_020fda58();
 int func_020febe8();
 /* decompiler-derived */
-void func_020efce8(int arg0)
+void Unk0efb90_Unk_0efce8(int arg0)
 {
-  u32 tmp1;
+  u32 value;
   func_020febe8(1);
   func_020fda58(0);
-  tmp1 = func_020e8374(*(u32 *)(arg0 + 0x4c));
-  func_020f8478(arg0 + 0x50,tmp1);
-  return;
+  value = func_020e8374(*(u32 *)(arg0 + 0x4c));
+  func_020f8478(arg0 + 0x50,value);
 }

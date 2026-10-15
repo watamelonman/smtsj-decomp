@@ -130,7 +130,7 @@ int func_020a0da4();
 int func_020a0dd8();
 int func_020a8b70();
 /* decompiler-derived */
-void func_020a8c40(u32 arg0)
+void Unk0a7d54_Unk_0a8c40(u32 arg0)
 {
   int tmp1;
   tmp1 = func_020a0dd8(0x1d);
@@ -143,7 +143,7 @@ void func_020a8c40(u32 arg0)
 
 int func_020a7ee8();
 /* decompiler-derived */
-void func_020a84cc(int arg0)
+void Unk0a7d54_Unk_0a84cc(int arg0)
 {
   int tmp1;
   int *v2;
@@ -161,7 +161,7 @@ void func_020a84cc(int arg0)
 
 int func_020a82f0();
 /* decompiler-derived */
-void func_020a8500(int arg0)
+void Unk0a7d54_Unk_0a8500(int arg0)
 {
   int tmp1;
   int *v2;
@@ -183,7 +183,7 @@ int func_0205ddb4();
 int func_020a8534();
 int func_020a93b8();
 /* decompiler-derived */
-void func_020a8bac(int arg0)
+void Unk0a7d54_Unk_0a8bac(int arg0)
 {
   if (arg0 == 0) {
     return;
@@ -206,7 +206,7 @@ void func_020a8bac(int arg0)
 
 
 /* decompiler-derived */
-u32 func_020a916c(u32 arg0)
+u32 Unk0a7d54_Unk_0a916c(u32 arg0)
 {
   switch(arg0) {
   case 0:

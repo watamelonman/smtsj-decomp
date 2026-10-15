@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-int func_020a1418(u16 *arg0,u16 *arg1)
+int Unk0a1418_Unk_0a1418(u16 *arg0,u16 *arg1)
 {
   return (u32)*arg0 - (u32)*arg1;
 }

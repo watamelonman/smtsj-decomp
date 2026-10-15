@@ -4,8 +4,7 @@
 
 int func_020bce08();
 /* decompiler-derived */
-void func_020bcdf8(u32 arg0)
+void Unk0bcc7c_Unk_0bcdf8(u32 arg0)
 {
   func_020bce08(arg0,1);
-  return;
 }

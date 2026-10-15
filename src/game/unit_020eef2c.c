@@ -4,16 +4,16 @@
 
 
 /* empty callback */
-void func_020eef80(void) { }
+void Unk0eef2c_Nop_0eef80(void) { }
 
 
 /* empty callback */
-void func_020ef06c(void) { }
+void Unk0eef2c_Nop_0ef06c(void) { }
 
 int func_02057df8();
 int func_02057e18();
 /* decompiler-derived */
-void func_020ef070(int arg0)
+void Unk0eef2c_Unk_0ef070(int arg0)
 {
   if (*(int *)(arg0 + 4) == 1) {
     return;
@@ -25,7 +25,7 @@ void func_020ef070(int arg0)
 
 
 /* decompiler-derived */
-void func_020eef58(u32 *arg0)
+void Unk0eef2c_Unk_0eef58(u32 *arg0)
 {
   *arg0 = 0x21;
   arg0[1] = 1;

@@ -4,15 +4,15 @@
 
 
 /* decompiler-derived */
-int func_02069afc(int arg0,int arg1,int arg2,int arg3)
+int Unk068f18_Unk_069afc(int arg0,int arg1,int arg2,int arg3)
 {
-  int tmp1;
-  tmp1 = (arg0 + arg2) * 0x1000000 >> 0x18;
-  if (arg1 + arg3 < tmp1) {
-    tmp1 = (arg1 + arg3) * 0x1000000 >> 0x18;
+  int value;
+  value = (arg0 + arg2) * 0x1000000 >> 0x18;
+  if (arg1 + arg3 < value) {
+    value = (arg1 + arg3) * 0x1000000 >> 0x18;
   }
-  if (99 < tmp1) {
-    tmp1 = 99;
+  if (99 < value) {
+    value = 99;
   }
-  return tmp1;
+  return value;
 }

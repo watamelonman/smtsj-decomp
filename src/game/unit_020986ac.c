@@ -69,12 +69,12 @@ void Unk0986ac_Unk_098990(u8 arg0)
 }
 
 int func_0202e0cc();
-int func_0205b82c();
+int Unk05b82c_Unk_05b82c();
 /* decompiler-derived */
 u32 Unk0986ac_Unk_099300(void)
 {
   func_0202e0cc();
-  func_0205b82c(0xbf);
+  Unk05b82c_Unk_05b82c(0xbf);
   return 1;
 }
 

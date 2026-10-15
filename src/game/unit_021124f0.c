@@ -4,52 +4,51 @@
 
 
 /* returns 1 */
-int func_0211255c(void) { return 1; }
+int Unk1124f0_GetConst1(void) { return 1; }
 
 extern u8 data_0213cb24[];
 /* decompiler-derived */
-int func_0211259c(int arg0)
+int Unk1124f0_Unk_11259c(int arg0)
 {
   return ((int)data_0213cb24) + arg0 * 8;
 }
 
 int func_0209a884();
 /* decompiler-derived */
-void func_02112538(void)
+void Unk1124f0_Unk_112538(void)
 {
-  int tmp1;
-  tmp1 = GetGameState();
-  if (tmp1 == 0) {
+  int value;
+  value = GetGameState();
+  if (value == 0) {
     return;
   }
-  func_0209a884(tmp1 + 0x38e8,tmp1 + 4);
-  return;
+  func_0209a884(value + 0x38e8,value + 4);
 }
 
 int func_0202e788();
 int func_021124f0();
 /* decompiler-derived */
-u32 func_02112564(u32 arg0,u32 arg1)
+u32 Unk1124f0_Unk_112564(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp2 = 0;
-  tmp1 = func_0202e788();
-  tmp1 = func_021124f0(*(u16 *)(tmp1 + 0x35c),arg0,arg1);
-  if (tmp1 == 1) {
-    tmp2 = 2;
+  int value1;
+  u32 value2;
+  value2 = 0;
+  value1 = func_0202e788();
+  value1 = func_021124f0(*(u16 *)(value1 + 0x35c),arg0,arg1);
+  if (value1 == 1) {
+    value2 = 2;
   }
-  return tmp2;
+  return value2;
 }
 
 int func_02115bf4();
 int func_02116f84();
 /* decompiler-derived */
-int func_021125ac(u32 arg0,u32 arg1,u32 arg2)
+int Unk1124f0_Unk_1125ac(u32 arg0,u32 arg1,u32 arg2)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = func_02115bf4();
-  tmp2 = func_02116f84(arg0,arg1,arg2);
-  return tmp1 != 0 && tmp2 != 0;
+  int value1;
+  int value2;
+  value1 = func_02115bf4();
+  value2 = func_02116f84(arg0,arg1,arg2);
+  return value1 != 0 && value2 != 0;
 }

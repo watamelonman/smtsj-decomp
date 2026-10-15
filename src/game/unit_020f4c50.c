@@ -25,7 +25,7 @@ void Unk0f4c50_Unk_0f4cd4(u32 *arg0)
   return;
 }
 
-int func_020d1d94();
+int Unk0d1c98_Unk_0d1d94();
 int func_020d1e94();
 int func_020ea630();
 /* decompiler-derived */
@@ -34,7 +34,7 @@ void Unk0f4c50_Unk_0f51b0(int arg0,int arg1)
   u32 tmp1;
   if (arg1 != 0) {
     tmp1 = func_020ea630(*(u32 *)(arg0 + 0x10));
-    func_020d1d94(tmp1,0xffffffff);
+    Unk0d1c98_Unk_0d1d94(tmp1,0xffffffff);
     return;
   }
   func_020d1e94(1);

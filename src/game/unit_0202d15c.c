@@ -48,7 +48,7 @@ void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1)
 
 
 /* decompiler-derived */
-u32 func_0202d9a8(u32 arg0)
+u32 Unk02d15c_Unk_02d9a8(u32 arg0)
 {
   switch(arg0) {
   case 0:
@@ -68,7 +68,7 @@ u32 func_0202d9a8(u32 arg0)
 
 
 /* decompiler-derived */
-u32 func_0202d9f8(u32 arg0)
+u32 Unk02d15c_Unk_02d9f8(u32 arg0)
 {
   switch(arg0) {
   case 0:
@@ -89,7 +89,7 @@ u32 func_0202d9f8(u32 arg0)
 
 
 /* decompiler-derived */
-u32 func_0202da48(u32 arg0)
+u32 Unk02d15c_Unk_02da48(u32 arg0)
 {
   switch(arg0) {
   case 0:

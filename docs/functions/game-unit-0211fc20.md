@@ -10,9 +10,9 @@
 - `func_02120650`
 - `func_0211fc68`
 - `func_0212066c`
-- `func_0212143c`: decompiler-derived
-- `func_0211fd38`: decompiler-derived
-- `func_02120b88`: decompiler-derived
+- `Unk11fc20_Unk_12143c`: decompiler-derived
+- `Unk11fc20_Unk_11fd38`: decompiler-derived
+- `Unk11fc20_Unk_120b88`: decompiler-derived
 
 ## Not done in M1-T836
 - `func_02120898`
@@ -24,7 +24,7 @@
 ## Not done in M1-T838
 - `func_0211ff14`
 - `func_02120d7c`
-- `func_02120a58`: decompiler-derived
+- `Unk11fc20_Unk_120a58`: decompiler-derived
 
 ## Not done in M1-T837
 - `func_02120cb4`

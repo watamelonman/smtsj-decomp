@@ -4,7 +4,7 @@
 
 int func_02053000();
 /* decompiler-derived */
-void func_0211d288(int arg0)
+void Unk11d120_Unk_11d288(int arg0)
 {
   func_02053000(*(u32 *)(arg0 + 4));
   *(u32 *)(arg0 + 4) = 0;
@@ -19,7 +19,7 @@ int func_0206569c();
 int func_02065b10();
 int func_020a1428();
 /* decompiler-derived */
-void func_0211d198(u16 *arg0)
+void Unk11d120_Unk_11d198(u16 *arg0)
 {
   int tmp1;
   func_02065628(1);

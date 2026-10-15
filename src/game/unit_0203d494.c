@@ -8,19 +8,19 @@ int func_0203acf4();
 int func_02097f68();
 int func_02098050();
 /* decompiler-derived */
-u32 func_0203d5c8(void)
+u32 Unk03d494_Unk_03d5c8(void)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = func_0203ac00(0);
-  tmp2 = 0;
-  if (tmp1 == 0) {
-    tmp2 = func_02098050(2);
+  int value1;
+  u32 value2;
+  value1 = func_0203ac00(0);
+  value2 = 0;
+  if (value1 == 0) {
+    value2 = func_02098050(2);
   }
-  else if (tmp1 == 1) {
+  else if (value1 == 1) {
     func_02097f68(2);
-    tmp2 = func_0201ea6c();
+    value2 = func_0201ea6c();
   }
-  func_0203acf4(tmp2);
+  func_0203acf4(value2);
   return 1;
 }

@@ -1,8 +1,8 @@
 # src/BattleTask.c
 
-- `func_0204822c`: decompiler-derived
-- `func_02048244`: decompiler-derived
-- `func_020481d4`: decompiler-derived
+- `BattleTask_Unk_04822c`: decompiler-derived
+- `BattleTask_Unk_048244`: decompiler-derived
+- `BattleTask_Unk_0481d4`: decompiler-derived
 
 ## Not done in M1-T611
 - `func_020484d0`

@@ -20,9 +20,9 @@
 - `func_020a8534`
 - `func_020a9390`
 - `func_020a7e8c`
-- `func_020a8c40`: decompiler-derived
-- `func_020a84cc`: decompiler-derived
-- `func_020a8500`: decompiler-derived
+- `Unk0a7d54_Unk_0a8c40`: decompiler-derived
+- `Unk0a7d54_Unk_0a84cc`: decompiler-derived
+- `Unk0a7d54_Unk_0a8500`: decompiler-derived
 
 ## Not done in M1-T792
 - `func_020a8ad0`
@@ -30,8 +30,8 @@
 - `func_020a93b8`
 - `func_020a855c`
 - `func_020a8b70`
-- `func_020a8bac`: decompiler-derived
-- `func_020a916c`: decompiler-derived
+- `Unk0a7d54_Unk_0a8bac`: decompiler-derived
+- `Unk0a7d54_Unk_0a916c`: decompiler-derived
 
 ## Not done in M1-T793
 - `func_020a8c04`

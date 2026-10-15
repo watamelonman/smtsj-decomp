@@ -4,16 +4,16 @@
 
 
 /* returns 1 */
-int func_020477d4(void) { return 1; }
+int Unk047788_GetConst1(void) { return 1; }
 
 
 /* returns 1 */
-int func_020477dc(void) { return 1; }
+int Unk047788_GetConst1_0477dc(void) { return 1; }
 
 int func_020453dc();
 int func_02047834();
 /* decompiler-derived */
-u32 func_02047884(void)
+u32 Unk047788_Unk_047884(void)
 {
   func_020453dc();
   func_02047834();
@@ -22,10 +22,10 @@ u32 func_02047884(void)
 
 int func_0209d13c();
 /* decompiler-derived */
-int func_0204781c(void)
+int Unk047788_Unk_04781c(void)
 {
-  int tmp1;
-  tmp1 = func_0209d13c();
-  return tmp1 != 0;
+  int value;
+  value = func_0209d13c();
+  return value != 0;
 }
 

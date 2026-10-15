@@ -24,34 +24,33 @@ void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 int func_020bc770();
 int func_020bc8c8();
 /* decompiler-derived */
-void func_020bc9b4(u32 arg0,u32 arg1)
+void Unk0bc1a8_Unk_0bc9b4(u32 arg0,u32 arg1)
 {
-  int tmp1;
+  int value;
   u8 auStack_50 [72];
-  tmp1 = func_020bc8c8(auStack_50,arg0,arg1,1);
-  if (tmp1 != 0) {
+  value = func_020bc8c8(auStack_50,arg0,arg1,1);
+  if (value != 0) {
     func_020bc770(arg0,auStack_50);
     return;
   }
-  return;
 }
 
 extern u32 data_02176ba8[];
 /* decompiler-derived */
-u32 func_020bcc34(int arg0)
+u32 Unk0bc1a8_Unk_0bcc34(int arg0)
 {
-  int tmp1;
+  int value;
   int *v2;
-  tmp1 = 0;
+  value = 0;
   v2 = *(int **)*data_02176ba8;
   do {
     if (*v2 == arg0) {
       *v2 = 0;
       return 1;
     }
-    tmp1 = tmp1 + 1;
+    value = value + 1;
     v2 = v2 + 3;
-  } while (tmp1 < 0x29);
+  } while (value < 0x29);
   return 0;
 }
 
@@ -59,24 +58,23 @@ u32 func_020bcc34(int arg0)
 
 int func_020bc814();
 /* decompiler-derived */
-void func_020bc928(int arg0,u32 arg1,u32 arg2,u32 arg3)
+void Unk0bc1a8_Unk_0bc928(int arg0,u32 arg1,u32 arg2,u32 arg3)
 {
-  int tmp1;
-  int tmp2;
+  int value1;
+  int value2;
   u8 auStack_58 [72];
   u32 uStack_10;
   uStack_10 = arg3;
-  tmp1 = func_020bc8c8(auStack_58,arg0,arg2,0);
-  if (tmp1 != 0) {
+  value1 = func_020bc8c8(auStack_58,arg0,arg2,0);
+  if (value1 != 0) {
     func_020bc814(arg0,arg1);
-    tmp1 = arg0 * 0xc;
-    tmp2 = *(int *)*data_02176ba8;
-    *(u32 *)(*(int *)(tmp2 + tmp1) + 0x24) = *(u32 *)(*(int *)(tmp2 + tmp1) + 0x24) | 4;
-    *(u32 *)(*(int *)(tmp2 + tmp1) + 0x28) =
-         *(u32 *)(*(int *)(tmp2 + tmp1) + 0x28) & 0xfffffff0;
-    *(u32 *)(*(int *)(tmp2 + tmp1) + 0x30) = arg1;
+    value1 = arg0 * 0xc;
+    value2 = *(int *)*data_02176ba8;
+    *(u32 *)(*(int *)(value2 + value1) + 0x24) = *(u32 *)(*(int *)(value2 + value1) + 0x24) | 4;
+    *(u32 *)(*(int *)(value2 + value1) + 0x28) =
+         *(u32 *)(*(int *)(value2 + value1) + 0x28) & 0xfffffff0;
+    *(u32 *)(*(int *)(value2 + value1) + 0x30) = arg1;
     func_020bc770(arg0,auStack_58);
     return;
   }
-  return;
 }

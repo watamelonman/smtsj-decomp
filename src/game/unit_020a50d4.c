@@ -4,7 +4,7 @@
 
 extern u8 data_02176b08[];
 /* decompiler-derived */
-u32 func_020a50d4(void)
+u32 Unk0a50d4_Unk_0a50d4(void)
 {
   return *(u32 *)(((int)data_02176b08) + 8);
 }

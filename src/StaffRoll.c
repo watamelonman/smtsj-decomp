@@ -4,15 +4,15 @@
 
 
 /* empty callback */
-void func_02117cf4(void) { }
+void StaffRoll_Nop_117cf4(void) { }
 
 
 /* empty callback */
-void func_02117cf8(void) { }
+void StaffRoll_Nop_117cf8(void) { }
 
 
 /* decompiler-derived */
-void func_0211825c(int arg0)
+void StaffRoll_Unk_11825c(int arg0)
 {
   *(u32 *)(arg0 + 4) = 0;
   *(u32 *)(arg0 + 8) = 0;
@@ -23,7 +23,7 @@ void func_0211825c(int arg0)
 
 
 /* decompiler-derived */
-void func_021182a4(int arg0)
+void StaffRoll_Unk_1182a4(int arg0)
 {
   int tmp1;
   int tmp2;
@@ -31,7 +31,7 @@ void func_021182a4(int arg0)
   tmp1 = 0;
   do {
     if ((*(int *)(tmp2 + 4) == 1) && (*(int *)(tmp2 + 8) + 0x10 < *(int *)(arg0 + 0xe0))) {
-      func_0211825c(tmp2);
+      StaffRoll_Unk_11825c(tmp2);
     }
     tmp1 = tmp1 + 1;
     tmp2 = tmp2 + 0x10;
@@ -43,7 +43,7 @@ int func_02117f94();
 int func_021180e4();
 int func_02118174();
 /* decompiler-derived */
-u32 func_021181a0(int arg0)
+u32 StaffRoll_Unk_1181a0(int arg0)
 {
   u32 tmp1;
   tmp1 = 0;

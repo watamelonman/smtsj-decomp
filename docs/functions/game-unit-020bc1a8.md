@@ -10,8 +10,8 @@
 - `func_020bc6d4`: no candidate matched locally
 - `func_020bc6e8`: no candidate matched locally
 - `func_020bc4e0`: no candidate matched locally
-- `func_020bc9b4`: decompiler-derived
-- `func_020bcc34`: decompiler-derived
+- `Unk0bc1a8_Unk_0bc9b4`: decompiler-derived
+- `Unk0bc1a8_Unk_0bcc34`: decompiler-derived
 
 ## Not done in M1-T546
 - `func_020bc548`
@@ -30,7 +30,7 @@
 - `func_020bc428`
 - `func_020bcbc4`
 - `func_020bc6fc`
-- `func_020bc928`: decompiler-derived
+- `Unk0bc1a8_Unk_0bc928`: decompiler-derived
 
 ## Not done in M1-T548
 - `func_020bc770`

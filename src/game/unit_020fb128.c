@@ -4,4 +4,4 @@
 
 
 /* returns 1 */
-int func_020fb31c(void) { return 1; }
+int Unk0fb128_GetConst1(void) { return 1; }

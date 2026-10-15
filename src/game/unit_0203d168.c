@@ -4,7 +4,7 @@
 
 int func_0203acf4();
 /* decompiler-derived */
-u32 func_0203d168(void)
+u32 Unk03d168_Unk_03d168(void)
 {
   Unk03e43c_Unk_03fa28();
   func_0203acf4();
@@ -13,7 +13,7 @@ u32 func_0203d168(void)
 
 int func_0203ac00();
 /* decompiler-derived */
-u32 func_0203d17c(void)
+u32 Unk03d168_Unk_03d17c(void)
 {
   func_0203ac00(0);
   Unk03e43c_Unk_03fa3c();

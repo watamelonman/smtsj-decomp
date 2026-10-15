@@ -4,20 +4,19 @@
 
 int func_0202e788();
 /* decompiler-derived */
-int func_0202f044(void)
+int Unk02ee5c_Unk_02f044(void)
 {
-  int tmp1;
-  tmp1 = func_0202e788();
-  return tmp1 + 0x368;
+  int value;
+  value = func_0202e788();
+  return value + 0x368;
 }
 
 int func_02008848();
 /* decompiler-derived */
-void func_0202f054(void)
+void Unk02ee5c_Unk_02f054(void)
 {
-  int tmp1;
-  tmp1 = func_0202f044();
-  func_02008848(tmp1,0,6);
-  *(u8 *)(tmp1 + 1) = 100;
-  return;
+  int value;
+  value = Unk02ee5c_Unk_02f044();
+  func_02008848(value,0,6);
+  *(u8 *)(value + 1) = 100;
 }

@@ -20,7 +20,7 @@
 - `func_020e2dec`
 - `func_020e51f4`
 - `func_020e1664`
-- `func_020e533c`: decompiler-derived
+- `Unk0e1648_Unk_0e533c`: decompiler-derived
 
 ## Not done in M1-T1044
 - `func_020e51cc`
@@ -30,7 +30,7 @@
 - `func_020e5198`
 - `func_020e5090`
 - `func_020e544c`
-- `func_020e16f0`: decompiler-derived
+- `Unk0e1648_Unk_0e16f0`: decompiler-derived
 
 ## Not done in M1-T1045
 - `func_020e2db0`
@@ -40,7 +40,7 @@
 - `func_020e2e60`
 - `func_020e1698`
 - `func_020e490c`
-- `func_020e4964`: decompiler-derived
+- `Unk0e1648_Unk_0e4964`: decompiler-derived
 
 ## Not done in M1-T1046
 - `func_020e2cc8`

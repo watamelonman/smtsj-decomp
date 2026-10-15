@@ -153,90 +153,89 @@ void ImageObj_Unk_079184(int arg0)
 
 int func_02077554();
 /* decompiler-derived */
-void func_020775ec(void)
+void ImageObj_Unk_0775ec(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = ImageObj_Get_data_0217231c();
-  if (tmp1 == 0) {
+  int value1;
+  int value2;
+  value1 = ImageObj_Get_data_0217231c();
+  if (value1 == 0) {
     return;
   }
-  tmp2 = 0;
+  value2 = 0;
   do {
-    if (tmp1 != 0) {
-      func_02077554(tmp2);
+    if (value1 != 0) {
+      func_02077554(value2);
     }
-    tmp2 = tmp2 + 1;
-  } while (tmp2 < 3);
-  return;
+    value2 = value2 + 1;
+  } while (value2 < 3);
 }
 
 int func_02077a9c();
 /* decompiler-derived */
-u32 func_020776d4(void)
+u32 ImageObj_Unk_0776d4(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp2 = 0;
+  int value1;
+  int value2;
+  value2 = 0;
   do {
-    ImageObj_Unk_0778e8(tmp2);
-    tmp1 = func_02077a9c();
-    if (tmp1 != 0) {
+    ImageObj_Unk_0778e8(value2);
+    value1 = func_02077a9c();
+    if (value1 != 0) {
       return 1;
     }
-    tmp2 = tmp2 + 1;
-  } while (tmp2 < 3);
+    value2 = value2 + 1;
+  } while (value2 < 3);
   return 0;
 }
 
 
 
 /* decompiler-derived */
-u32 func_02077228(void)
+u32 ImageObj_Unk_077228(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp2 = 0;
+  int value1;
+  int value2;
+  value2 = 0;
   do {
-    tmp1 = ImageObj_Unk_0778e8(tmp2);
-    if (tmp1 != 0) {
-      tmp1 = func_02077a9c();
-      if (tmp1 != 0) {
+    value1 = ImageObj_Unk_0778e8(value2);
+    if (value1 != 0) {
+      value1 = func_02077a9c();
+      if (value1 != 0) {
         return 0;
       }
-      func_02077554(tmp2);
+      func_02077554(value2);
     }
-    tmp2 = tmp2 + 1;
-  } while (tmp2 < 3);
+    value2 = value2 + 1;
+  } while (value2 < 3);
   return 1;
 }
 
 
 /* decompiler-derived */
-int func_02077688(void)
+int ImageObj_Unk_077688(void)
 {
-  int tmp1;
-  int tmp2;
-  int tmp3;
-  tmp1 = ImageObj_Get_data_0217231c();
-  if (tmp1 == 0) {
+  int value1;
+  int value2;
+  int value3;
+  value1 = ImageObj_Get_data_0217231c();
+  if (value1 == 0) {
     return 1;
   }
-  tmp3 = 0;
+  value3 = 0;
   do {
-    tmp2 = ImageObj_Unk_0778e8(tmp3);
-    if (tmp2 != 0) {
+    value2 = ImageObj_Unk_0778e8(value3);
+    if (value2 != 0) {
       return 0;
     }
-    tmp3 = tmp3 + 1;
-  } while (tmp3 < 3);
-  return *(int *)(tmp1 + 0x10) == 0;
+    value3 = value3 + 1;
+  } while (value3 < 3);
+  return *(int *)(value1 + 0x10) == 0;
 }
 
 
 
 /* decompiler-derived */
-void func_020779a0(u32 *arg0,u32 arg1)
+void ImageObj_Unk_0779a0(u32 *arg0,u32 arg1)
 {
   arg0[3] = 0;
   *arg0 = arg1;
@@ -253,7 +252,6 @@ void func_020779a0(u32 *arg0,u32 arg1)
   arg0[0x13] = 0;
   arg0[0x1b] = 0;
   arg0[0x15] = 0xffffffff;
-  return;
 }
 
 

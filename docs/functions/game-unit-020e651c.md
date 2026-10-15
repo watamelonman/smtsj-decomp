@@ -10,7 +10,7 @@
 - `func_020e66d8`: no candidate matched locally
 - `func_020e6594`: no candidate matched locally
 - `func_020e65b0`: no candidate matched locally
-- `func_020e651c`: decompiler-derived
+- `Unk0e651c_Unk_0e651c`: decompiler-derived
 
 ## Not done in M1-T147
 - `func_020e66a4`

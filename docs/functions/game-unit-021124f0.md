@@ -1,10 +1,10 @@
 # src/game/unit_021124f0.c
 
-- `func_0211255c`: decompiler-derived
-- `func_0211259c`: decompiler-derived
-- `func_02112538`: decompiler-derived
-- `func_02112564`: decompiler-derived
-- `func_021125ac`: decompiler-derived
+- `Unk1124f0_GetConst1`: decompiler-derived
+- `Unk1124f0_Unk_11259c`: decompiler-derived
+- `Unk1124f0_Unk_112538`: decompiler-derived
+- `Unk1124f0_Unk_112564`: decompiler-derived
+- `Unk1124f0_Unk_1125ac`: decompiler-derived
 
 ## Not done in M1-T094
 - `func_021124f0`

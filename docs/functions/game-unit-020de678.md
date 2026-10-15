@@ -18,9 +18,9 @@
 - `func_020df348`
 - `func_020dea70`
 - `func_020deedc`
-- `func_020de870`: decompiler-derived
-- `func_020df064`: decompiler-derived
-- `func_020dec94`: decompiler-derived
+- `Unk0de678_Unk_0de870`: decompiler-derived
+- `Unk0de678_Unk_0df064`: decompiler-derived
+- `Unk0de678_Unk_0dec94`: decompiler-derived
 
 ## Not done in M1-T688
 - `func_020df4f0`

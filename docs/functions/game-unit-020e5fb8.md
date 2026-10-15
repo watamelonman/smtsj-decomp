@@ -31,7 +31,7 @@
 - `func_020e626c`
 - `func_020e61e8`
 - `func_020e62a4`
-- `func_020e649c`: decompiler-derived
+- `Unk0e5fb8_Unk_0e649c`: decompiler-derived
 
 ## Not done in M1-T376
 - `func_020e6100`

@@ -18,12 +18,12 @@ int func_02065544();
 int func_0206569c();
 int func_02065bc0();
 int func_020a269c();
-int func_020a273c();
+int ScanVisor_Unk_0a273c();
 int func_020a277c();
 int ScanVisor_Unk_0a27e0();
 int func_020a2820();
 int func_020a2884();
-int func_020a28b0();
+int ScanVisor_Unk_0a28b0();
 int ScanVisor_Thunk_020fc6b8();
 int func_020a2920();
 
@@ -112,21 +112,21 @@ u32 Unk03c474_Unk_03c5b8(void)
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c5cc(void)
 {
-  func_020a273c(1);
+  ScanVisor_Unk_0a273c(1);
   return 1;
 }
 
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c5e0(void)
 {
-  func_020a273c(0);
+  ScanVisor_Unk_0a273c(0);
   return 1;
 }
 
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c5f4(void)
 {
-  func_020a28b0(0);
+  ScanVisor_Unk_0a28b0(0);
   return 1;
 }
 

@@ -463,28 +463,28 @@ void Unk0e8228_Unk_0e8c2c(void)
 
 int func_020e9900();
 /* decompiler-derived */
-u32 func_020e8dd0(u32 arg0,u32 arg1)
+u32 Unk0e8228_Unk_0e8dd0(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = Unk0e8228_Get_data_02176ce0();
-  if (tmp1 != 0) {
-    tmp2 = func_020e9900(arg0,tmp1,arg1);
-    return tmp2;
+  int value1;
+  u32 value2;
+  value1 = Unk0e8228_Get_data_02176ce0();
+  if (value1 != 0) {
+    value2 = func_020e9900(arg0,value1,arg1);
+    return value2;
   }
   return 0;
 }
 
 int func_020e9aa0();
 /* decompiler-derived */
-u32 func_020e8dfc(u32 arg0,u32 arg1)
+u32 Unk0e8228_Unk_0e8dfc(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = Unk0e8228_Get_data_02176ce0();
-  if (tmp1 != 0) {
-    tmp2 = func_020e9aa0(arg0,tmp1,arg1);
-    return tmp2;
+  int value1;
+  u32 value2;
+  value1 = Unk0e8228_Get_data_02176ce0();
+  if (value1 != 0) {
+    value2 = func_020e9aa0(arg0,value1,arg1);
+    return value2;
   }
   return 0;
 }
@@ -492,12 +492,11 @@ u32 func_020e8dfc(u32 arg0,u32 arg1)
 int func_02008848();
 int func_020e9060();
 /* decompiler-derived */
-void func_020e9fa4(u32 arg0)
+void Unk0e8228_Unk_0e9fa4(u32 arg0)
 {
   func_02008848(arg0,0,0x1cc);
   *data_02176ce0 = arg0;
   func_020e9060(arg0);
-  return;
 }
 
 
@@ -507,22 +506,22 @@ int func_02053800();
 int func_020e82c8();
 int func_020e85a0();
 int func_020fda58();
-int func_02100208();
+int Unk100208_Unk_100208();
 /* decompiler-derived */
-u32 func_020e85c8(void)
+u32 Unk0e8228_Unk_0e85c8(void)
 {
-  int tmp1;
-  tmp1 = Unk0e8228_Get_data_02176ce0();
-  if (tmp1 == 0) {
+  int value;
+  value = Unk0e8228_Get_data_02176ce0();
+  if (value == 0) {
     return 0;
   }
-  tmp1 = func_020e85a0(tmp1);
-  if ((tmp1 != 0) && (tmp1 = func_02053800(0,0x400), tmp1 != 0)) {
+  value = func_020e85a0(value);
+  if ((value != 0) && (value = func_02053800(0,0x400), value != 0)) {
     func_020459fc();
     Unk0e8228_Unk_0e8cd8();
     func_020e82c8();
     func_020fda58(2);
-    func_02100208(7);
+    Unk100208_Unk_100208(7);
     return 1;
   }
   return 0;

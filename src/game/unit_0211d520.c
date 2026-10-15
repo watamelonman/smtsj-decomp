@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-u32 func_0211da60(int arg0)
+u32 Unk11d520_Unk_11da60(int arg0)
 {
   return *(u32 *)(*(int *)(arg0 + 0xa8) + *(int *)(arg0 + 0x18) * 4);
 }
@@ -12,7 +12,7 @@ u32 func_0211da60(int arg0)
 int func_0204fe68();
 int func_0204fed8();
 /* decompiler-derived */
-void func_0211d520(int arg0,u32 arg1,u32 arg2)
+void Unk11d520_Unk_11d520(int arg0,u32 arg1,u32 arg2)
 {
   u32 tmp1;
   tmp1 = func_0204fe68(*(u32 *)(arg0 + 0x26c),arg2);
@@ -22,7 +22,7 @@ void func_0211d520(int arg0,u32 arg1,u32 arg2)
 
 
 /* decompiler-derived */
-void func_0211d838(int arg0,u32 arg1)
+void Unk11d520_Unk_11d838(int arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = func_0204fe68(*(u32 *)(arg0 + 0x26c),4);
@@ -32,7 +32,7 @@ void func_0211d838(int arg0,u32 arg1)
 
 extern u8 data_02151d18[];
 /* decompiler-derived */
-int func_0211d858(int arg0,u32 arg1)
+int Unk11d520_Unk_11d858(int arg0,u32 arg1)
 {
   u32 tmp1;
   int tmp2;

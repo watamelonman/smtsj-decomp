@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-u32 func_0203c134(void)
+u32 Unk03c05c_Unk_03c134(void)
 {
   Unk09ee4c_Unk_09ee4c();
   return 3;
@@ -13,7 +13,7 @@ u32 func_0203c134(void)
 int func_0202df28();
 int func_0203ac00();
 /* decompiler-derived */
-u32 func_0203c0c8(void)
+u32 Unk03c05c_Unk_03c0c8(void)
 {
   short v1;
   v1 = func_0203ac00(0);
@@ -24,21 +24,21 @@ u32 func_0203c0c8(void)
 
 int func_02095818();
 /* decompiler-derived */
-u32 func_0203c05c(void)
+u32 Unk03c05c_Unk_03c05c(void)
 {
-  u32 tmp1;
-  int tmp2;
-  tmp1 = func_0203ac00(0);
-  tmp2 = func_02095818();
-  if (tmp2 == 5) {
-    ImageBgDual3D_Unk_125d10(tmp1);
+  u32 value1;
+  int value2;
+  value1 = func_0203ac00(0);
+  value2 = func_02095818();
+  if (value2 == 5) {
+    ImageBgDual3D_Unk_125d10(value1);
   }
   return 1;
 }
 
 int func_020a2920();
 /* decompiler-derived */
-u32 func_0203c088(void)
+u32 Unk03c05c_Unk_03c088(void)
 {
   short v1;
   short v2;
@@ -52,7 +52,7 @@ u32 func_0203c088(void)
 
 int func_0209ed78();
 /* decompiler-derived */
-u32 func_0203c0ec(void)
+u32 Unk03c05c_Unk_03c0ec(void)
 {
   short v1;
   short v2;

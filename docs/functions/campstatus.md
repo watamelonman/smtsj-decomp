@@ -20,8 +20,8 @@
 - `func_020d6d20`
 - `func_020dcaac`
 - `func_020d51cc`
-- `func_020db338`: decompiler-derived
-- `func_020db394`: decompiler-derived
+- `CampStatus_Unk_0db338`: decompiler-derived
+- `CampStatus_Unk_0db394`: decompiler-derived
 
 ## Not done in M1-T1124
 - `func_020d6cac`
@@ -40,7 +40,7 @@
 - `func_020dcad4`
 - `func_020db214`
 - `func_020dde3c`
-- `func_020dd88c`: decompiler-derived
+- `CampStatus_Unk_0dd88c`: decompiler-derived
 
 ## Not done in M1-T1126
 - `func_020d353c`
@@ -50,7 +50,7 @@
 - `func_020dcb68`
 - `func_020ddb04`
 - `func_020dc540`
-- `func_020ddd2c`: decompiler-derived
+- `CampStatus_Unk_0ddd2c`: decompiler-derived
 
 ## Not done in M1-T1127
 - `func_020da670`

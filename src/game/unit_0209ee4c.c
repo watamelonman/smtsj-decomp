@@ -13,7 +13,7 @@ int Unk09ee4c_Unk_0a03b8(int arg0)
   return arg0 * 0x18 + ((int)data_0213c190);
 }
 
-int func_020a2ae8();
+int ScanVisor_Unk_0a2ae8();
 /* decompiler-derived */
 void Unk09ee4c_Unk_09ef50(u32 arg0)
 {
@@ -22,7 +22,7 @@ void Unk09ee4c_Unk_09ef50(u32 arg0)
   if (value == 0) {
     return;
   }
-  func_020a2ae8(arg0,2);
+  ScanVisor_Unk_0a2ae8(arg0,2);
   *(u32 *)(value + 0x73e8) = 0x14;
 }
 

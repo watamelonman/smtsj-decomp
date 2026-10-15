@@ -61,39 +61,39 @@ int func_0206d4e8();
 int func_02071844();
 int func_02071d6c();
 /* decompiler-derived */
-void func_0206c76c(u32 *arg0)
+void Unk06ae94_Unk_06c76c(u32 *arg0)
 {
-  int tmp1;
+  int value;
   if (arg0 == (u32 *)0x0) {
     return;
   }
-  tmp1 = 0;
+  value = 0;
   if (0 < (int)arg0[3]) {
     do {
-      func_0206c0b0(arg0[tmp1 + 0x14]);
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < (int)arg0[3]);
+      func_0206c0b0(arg0[value + 0x14]);
+      value = value + 1;
+    } while (value < (int)arg0[3]);
   }
-  tmp1 = 0;
+  value = 0;
   if (0 < (int)arg0[4]) {
     do {
-      func_0206d4e8(arg0[tmp1 + 0x24]);
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < (int)arg0[4]);
+      func_0206d4e8(arg0[value + 0x24]);
+      value = value + 1;
+    } while (value < (int)arg0[4]);
   }
-  tmp1 = 0;
+  value = 0;
   if (0 < (int)arg0[6]) {
     do {
-      func_02071d6c(arg0[tmp1 + 0x44]);
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < (int)arg0[6]);
+      func_02071d6c(arg0[value + 0x44]);
+      value = value + 1;
+    } while (value < (int)arg0[6]);
   }
-  tmp1 = 0;
+  value = 0;
   if (0 < (int)arg0[5]) {
     do {
-      func_02071844(arg0[tmp1 + 0x34]);
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < (int)arg0[5]);
+      func_02071844(arg0[value + 0x34]);
+      value = value + 1;
+    } while (value < (int)arg0[5]);
   }
   arg0[3] = 0;
   arg0[4] = 0;
@@ -104,6 +104,5 @@ void func_0206c76c(u32 *arg0)
   if ((u32 *)*arg0 != (u32 *)0x0) {
     *(u32 *)*arg0 = 0;
   }
-  return;
 }
 

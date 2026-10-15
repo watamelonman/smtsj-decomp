@@ -21,17 +21,17 @@
 - `ImageBgDual3D_Unk_125c40`: decompiler-derived
 - `ImageBgDual3D_Unk_125d10`: decompiler-derived
 - `ImageBgDual3D_Unk_125650`: decompiler-derived
-- `func_02125618`: decompiler-derived
-- `func_02125cd4`: decompiler-derived
-- `func_02125d48`: decompiler-derived
-- `func_021252b4`: decompiler-derived
+- `ImageBgDual3D_Unk_125618`: decompiler-derived
+- `ImageBgDual3D_Unk_125cd4`: decompiler-derived
+- `ImageBgDual3D_Unk_125d48`: decompiler-derived
+- `ImageBgDual3D_Unk_1252b4`: decompiler-derived
 
 ## Not done in M1-T538
 - `func_021258e8`
 - `func_0212594c`
 - `func_02125910`
 - `func_02125c68`
-- `func_02125b10`: decompiler-derived
+- `ImageBgDual3D_Unk_125b10`: decompiler-derived
 
 ## Not done in M1-T539
 - `func_021258a0`

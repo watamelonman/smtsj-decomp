@@ -40,7 +40,7 @@
 - `func_02099d78`
 - `func_02099ddc`
 - `func_02099e40`
-- `func_020997c8`: decompiler-derived
+- `Unk09974c_Unk_0997c8`: decompiler-derived
 
 ## Not done in M1-T557
 - `func_02099ea4`

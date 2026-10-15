@@ -4,40 +4,38 @@
 
 
 /* empty callback */
-void func_020eecb8(void) { }
+void Unk0eeb20_Nop_0eecb8(void) { }
 
 extern u32 data_02176de8[];
 int func_02008848();
 int func_020eec4c();
 /* decompiler-derived */
-void func_020eec20(u32 arg0)
+void Unk0eeb20_Unk_0eec20(u32 arg0)
 {
   func_02008848(arg0,0,0x50);
   *data_02176de8 = arg0;
   func_020eec4c(arg0);
-  return;
 }
 
 extern u32 data_02176de4[];
 int func_020f7d7c();
 int func_020f7e48();
 /* decompiler-derived */
-void func_020eeb44(void)
+void Unk0eeb20_Unk_0eeb44(void)
 {
-  int tmp1;
-  tmp1 = *data_02176de4;
-  func_020f7e48(*(u32 *)(tmp1 + 0x40),0,7);
-  func_020f7d7c(*(u32 *)(tmp1 + 0x40),0x22);
-  return;
+  int value;
+  value = *data_02176de4;
+  func_020f7e48(*(u32 *)(value + 0x40),0,7);
+  func_020f7d7c(*(u32 *)(value + 0x40),0x22);
 }
 
 int func_020ea3cc();
 /* decompiler-derived */
-void func_020eeb74(void)
+void Unk0eeb20_Unk_0eeb74(void)
 {
-  u32 tmp1;
-  tmp1 = Unk0f8448_GetUnkField10();
-  switch(tmp1) {
+  u32 value;
+  value = Unk0f8448_GetUnkField10();
+  switch(value) {
   case 0:
     func_020ea3cc(9);
     return;

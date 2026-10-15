@@ -85,53 +85,50 @@ void Unk065e88_Unk_0663bc(u32 arg0,u32 arg1)
 
 
 /* decompiler-derived */
-int func_0206644c(u16 *arg0,u16 *arg1)
+int Unk065e88_Unk_06644c(u16 *arg0,u16 *arg1)
 {
-  int tmp1;
-  tmp1 = (u32)arg0[1] - (u32)arg1[1];
-  if (tmp1 == 0) {
-    tmp1 = (u32)*arg0 - (u32)*arg1;
+  int value;
+  value = (u32)arg0[1] - (u32)arg1[1];
+  if (value == 0) {
+    value = (u32)*arg0 - (u32)*arg1;
   }
-  return tmp1;
+  return value;
 }
 
 int func_0202e0cc();
-int func_0205b82c();
+int Unk05b82c_Unk_05b82c();
 /* decompiler-derived */
-void func_02065e88(void)
+void Unk065e88_Unk_065e88(void)
 {
   func_0202e0cc();
-  func_0205b82c(0xbc);
-  func_0205b82c(0xbd);
-  func_0205b82c(0xbe);
-  return;
+  Unk05b82c_Unk_05b82c(0xbc);
+  Unk05b82c_Unk_05b82c(0xbd);
+  Unk05b82c_Unk_05b82c(0xbe);
 }
 
 int func_0205c3dc();
 /* decompiler-derived */
-void func_02066258(int *arg0)
+void Unk065e88_Unk_066258(int *arg0)
 {
   if (*arg0 == 0) {
     return;
   }
   func_0205c3dc();
   *arg0 = 0;
-  return;
 }
 
 int func_020445d0();
 int func_0204fde0();
 int func_0204fe18();
 /* decompiler-derived */
-void func_02067d30(u32 arg0,u32 arg1,u16 *arg2)
+void Unk065e88_Unk_067d30(u32 arg0,u32 arg1,u16 *arg2)
 {
-  u16 tmp1;
-  u32 tmp2;
-  tmp2 = func_020445d0();
-  tmp1 = func_0204fe18();
-  *arg2 = tmp1;
-  func_0204fde0(tmp2);
-  return;
+  u16 value1;
+  u32 value2;
+  value2 = func_020445d0();
+  value1 = func_0204fe18();
+  *arg2 = value1;
+  func_0204fde0(value2);
 }
 
 
@@ -140,18 +137,18 @@ int func_02008848();
 int func_020629ac();
 int func_02063a6c();
 /* decompiler-derived */
-void func_02065f30(int *arg0)
+void Unk065e88_Unk_065f30(int *arg0)
 {
-  int tmp1;
+  int value;
   func_02008848(arg0,0,0x78);
-  tmp1 = func_020629ac(5,4,1,1);
-  *arg0 = tmp1;
-  if (tmp1 == 0) {
+  value = func_020629ac(5,4,1,1);
+  *arg0 = value;
+  if (value == 0) {
     return;
   }
-  tmp1 = func_020629ac(4,1,1,1);
-  arg0[1] = tmp1;
-  if (tmp1 == 0) {
+  value = func_020629ac(4,1,1,1);
+  arg0[1] = value;
+  if (value == 0) {
     return;
   }
   arg0[3] = 0;
@@ -159,7 +156,6 @@ void func_02065f30(int *arg0)
   arg0[0x13] = 0;
   func_02063a6c(arg0);
   *(int **)(((int)data_0216b9a8) + 4) = arg0;
-  return;
 }
 
 

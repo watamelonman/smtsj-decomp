@@ -6,7 +6,7 @@ int func_0203ac00();
 int func_0203acf4();
 int func_0209993c();
 /* decompiler-derived */
-u32 func_0203cd34(void)
+u32 Unk03cc58_Unk_03cd34(void)
 {
   func_0203ac00(0);
   func_0209993c();
@@ -16,24 +16,22 @@ u32 func_0203cd34(void)
 
 int func_0203cd50();
 /* decompiler-derived */
-void func_0203ce10(void)
+void Unk03cc58_Unk_03ce10(void)
 {
-  u32 tmp1;
-  u32 tmp2;
-  tmp1 = func_0203ac00(0);
-  tmp2 = func_0203ac00(1);
-  func_0203cd50(tmp1,tmp2,0);
-  return;
+  u32 value1;
+  u32 value2;
+  value1 = func_0203ac00(0);
+  value2 = func_0203ac00(1);
+  func_0203cd50(value1,value2,0);
 }
 
 
 /* decompiler-derived */
-void func_0203ce3c(void)
+void Unk03cc58_Unk_03ce3c(void)
 {
-  u32 tmp1;
-  u32 tmp2;
-  tmp1 = func_0203ac00(0);
-  tmp2 = func_0203ac00(1);
-  func_0203cd50(tmp1,tmp2,1);
-  return;
+  u32 value1;
+  u32 value2;
+  value1 = func_0203ac00(0);
+  value2 = func_0203ac00(1);
+  func_0203cd50(value1,value2,1);
 }

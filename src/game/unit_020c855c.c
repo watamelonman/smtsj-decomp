@@ -62,7 +62,7 @@ int func_0202e0cc();
 int func_02057fd8();
 int func_020c92f0();
 /* decompiler-derived */
-void func_020c9890(u32 arg0,u32 arg1)
+void Unk0c855c_Unk_0c9890(u32 arg0,u32 arg1)
 {
   u32 tmp1;
   u32 tmp2;
@@ -82,7 +82,7 @@ void func_020c9890(u32 arg0,u32 arg1)
 
 
 /* decompiler-derived */
-void func_020c9c5c(int arg0,int arg1)
+void Unk0c855c_Unk_0c9c5c(int arg0,int arg1)
 {
   int tmp1;
   int tmp2;
@@ -104,7 +104,7 @@ void func_020c9c5c(int arg0,int arg1)
 
 int func_020537b8();
 /* decompiler-derived */
-void func_020c855c(int arg0)
+void Unk0c855c_Unk_0c855c(int arg0)
 {
   int tmp1;
   tmp1 = func_020537b8(0,0x40);

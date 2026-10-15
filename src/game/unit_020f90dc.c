@@ -4,11 +4,11 @@
 
 
 /* empty callback */
-void func_020f9ce4(void) { }
+void Unk0f90dc_Nop_0f9ce4(void) { }
 
 
 /* decompiler-derived */
-int func_020f9128(int *arg0,int *arg1)
+int Unk0f90dc_Unk_0f9128(int *arg0,int *arg1)
 {
   return (u32)*(u8 *)(*arg0 + 1) - (u32)*(u8 *)(*arg1 + 1);
 }
@@ -16,7 +16,7 @@ int func_020f9128(int *arg0,int *arg1)
 int func_02053000();
 int func_020f91fc();
 /* decompiler-derived */
-void func_020fa4cc(int arg0)
+void Unk0f90dc_Unk_0fa4cc(int arg0)
 {
   func_020f91fc();
   Unk0d297c_Unk_0d2e88();

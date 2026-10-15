@@ -44,7 +44,7 @@ void Unk0a163c_Unk_0a1834(u32 arg0)
 int func_02053000();
 int func_020a1a24();
 /* decompiler-derived */
-u32 func_020a1ae0(u32 *arg0)
+u32 Unk0a163c_Unk_0a1ae0(u32 *arg0)
 {
   func_020a1a24();
   func_02053000(arg0[1]);

@@ -10,7 +10,7 @@
 
 ## Hard list
 - `func_02094734`: no candidate matched locally
-- `func_02094704`: decompiler-derived
+- `Unk0946e0_Unk_094704`: decompiler-derived
 
 ## Not done in M1-T493
 - `func_02094910`
@@ -20,7 +20,7 @@
 - `func_02094e30`
 - `func_02094e70`
 - `func_02094a90`
-- `func_02094958`: decompiler-derived
+- `Unk0946e0_Unk_094958`: decompiler-derived
 
 ## Not done in M1-T494
 - `func_02094bd4`

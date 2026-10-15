@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-int func_02112254(u16 *arg0,u16 *arg1)
+int Unk111400_Unk_112254(u16 *arg0,u16 *arg1)
 {
   return (u32)*arg0 - (u32)*arg1;
 }
@@ -12,7 +12,7 @@ int func_02112254(u16 *arg0,u16 *arg1)
 extern u8 data_02151560[];
 int func_02051610();
 /* decompiler-derived */
-void func_02111458(int arg0)
+void Unk111400_Unk_111458(int arg0)
 {
   u32 tmp1;
   tmp1 = func_02051610(((int)data_02151560));
@@ -26,7 +26,7 @@ int func_0208f020();
 int func_0208f038();
 int func_0208f044();
 /* decompiler-derived */
-u32 func_02111508(u32 arg0,u32 arg1,u32 arg2)
+u32 Unk111400_Unk_111508(u32 arg0,u32 arg1,u32 arg2)
 {
   func_0208f020();
   func_0208f044(arg0,arg1,arg2);

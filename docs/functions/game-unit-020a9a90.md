@@ -1,7 +1,7 @@
 # src/game/unit_020a9a90.c
 
-- `func_020a9a90`: decompiler-derived
-- `func_020a9a94`: decompiler-derived
+- `Unk0a9a90_Nop_0a9a90`: decompiler-derived
+- `Unk0a9a90_Unk_0a9a94`: decompiler-derived
 
 ## Not done in M1-T420
 - `func_020a9e84`

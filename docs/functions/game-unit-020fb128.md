@@ -1,6 +1,6 @@
 # src/game/unit_020fb128.c
 
-- `func_020fb31c`: decompiler-derived
+- `Unk0fb128_GetConst1`: decompiler-derived
 
 ## Not done in M1-T358
 - `func_020fb1d0`

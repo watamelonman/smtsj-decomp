@@ -125,7 +125,7 @@ void Unk122e1c_Unk_1232c8(int arg0)
 
 
 /* decompiler-derived */
-void func_02122ff0(int arg0)
+void Unk122e1c_Unk_122ff0(int arg0)
 {
   func_020feec0();
   Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x10));
@@ -137,7 +137,7 @@ void func_02122ff0(int arg0)
 
 
 /* decompiler-derived */
-void func_02123294(int arg0)
+void Unk122e1c_Unk_123294(int arg0)
 {
   func_020feec0();
   Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x14));
@@ -149,7 +149,7 @@ void func_02123294(int arg0)
 
 int func_02122fac();
 /* decompiler-derived */
-void func_0212306c(int arg0)
+void Unk122e1c_Unk_12306c(int arg0)
 {
   int tmp1;
   tmp1 = 0;

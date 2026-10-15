@@ -4,7 +4,7 @@
 
 int func_020662b8();
 /* decompiler-derived */
-void func_02107154(int arg0,int arg1)
+void Unk100810_Unk_107154(int arg0,int arg1)
 {
   if (arg1 != 0) {
     *(u32 *)(arg0 + 0x20cc) = 1;
@@ -24,7 +24,7 @@ int func_02061f10();
 int func_02063920();
 int func_02063a30();
 /* decompiler-derived */
-void func_02104f18(u32 arg0,u32 arg1,u32 arg2)
+void Unk100810_Unk_104f18(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 tmp1;
   tmp1 = func_020445f4(0xc);
@@ -41,7 +41,7 @@ void func_02104f18(u32 arg0,u32 arg1,u32 arg2)
 
 int func_020537b8();
 /* decompiler-derived */
-void func_021070d8(int arg0)
+void Unk100810_Unk_1070d8(int arg0)
 {
   int tmp1;
   tmp1 = func_020537b8(0,0x40);

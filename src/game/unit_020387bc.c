@@ -4,7 +4,7 @@
 
 int func_020516d0();
 /* decompiler-derived */
-u32 func_02038820(int arg0)
+u32 Unk0387bc_Unk_038820(int arg0)
 {
   if (arg0 != 0) {
     func_020516d0(arg0);
@@ -15,7 +15,7 @@ u32 func_02038820(int arg0)
 
 int func_02008848();
 /* decompiler-derived */
-u32 func_02038cbc(int *arg0)
+u32 Unk0387bc_Unk_038cbc(int *arg0)
 {
   if (arg0 == (int *)0x0) {
     return 0;
@@ -30,7 +30,7 @@ u32 func_02038cbc(int *arg0)
 
 
 /* decompiler-derived */
-u32 func_02038d58(int *arg0)
+u32 Unk0387bc_Unk_038d58(int *arg0)
 {
   if (arg0 == (int *)0x0) {
     return 0;
@@ -45,7 +45,7 @@ u32 func_02038d58(int *arg0)
 
 
 /* decompiler-derived */
-u32 func_02038e40(int *arg0)
+u32 Unk0387bc_Unk_038e40(int *arg0)
 {
   if (arg0 == (int *)0x0) {
     return 0;
@@ -61,7 +61,7 @@ u32 func_02038e40(int *arg0)
 
 
 /* decompiler-derived */
-u32 func_02038edc(int *arg0)
+u32 Unk0387bc_Unk_038edc(int *arg0)
 {
   if (arg0 == (int *)0x0) {
     return 0;
@@ -78,17 +78,17 @@ extern u8 data_02142064[];
 int func_020387bc();
 int func_0204fe68();
 /* decompiler-derived */
-u32 func_02038f7c(int *arg0)
+u32 Unk0387bc_Unk_038f7c(int *arg0)
 {
-  int tmp1;
+  int value;
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  tmp1 = func_020387bc(((int)data_02142064));
-  if (tmp1 != 0) {
-    *arg0 = tmp1;
-    tmp1 = func_0204fe68(tmp1,0);
-    arg0[1] = tmp1;
+  value = func_020387bc(((int)data_02142064));
+  if (value != 0) {
+    *arg0 = value;
+    value = func_0204fe68(value,0);
+    arg0[1] = value;
     return 1;
   }
   return 0;
@@ -98,19 +98,19 @@ extern u8 data_02142024[];
 int func_0204fdac();
 int func_0204fde0();
 /* decompiler-derived */
-u32 func_02038c74(int *arg0)
+u32 Unk0387bc_Unk_038c74(int *arg0)
 {
-  int tmp1;
+  int value;
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  tmp1 = func_020387bc(((int)data_02142024));
-  if (tmp1 != 0) {
-    *arg0 = tmp1;
-    tmp1 = func_0204fdac(tmp1,0);
-    arg0[1] = tmp1;
-    tmp1 = func_0204fde0();
-    arg0[2] = tmp1;
+  value = func_020387bc(((int)data_02142024));
+  if (value != 0) {
+    *arg0 = value;
+    value = func_0204fdac(value,0);
+    arg0[1] = value;
+    value = func_0204fde0();
+    arg0[2] = value;
     return 1;
   }
   return 0;
@@ -118,19 +118,19 @@ u32 func_02038c74(int *arg0)
 
 extern u8 data_02142048[];
 /* decompiler-derived */
-u32 func_02038df8(int *arg0)
+u32 Unk0387bc_Unk_038df8(int *arg0)
 {
-  int tmp1;
+  int value;
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  tmp1 = func_020387bc(((int)data_02142048));
-  if (tmp1 != 0) {
-    *arg0 = tmp1;
-    tmp1 = func_0204fdac(tmp1,0);
-    arg0[1] = tmp1;
-    tmp1 = func_0204fde0();
-    arg0[2] = tmp1;
+  value = func_020387bc(((int)data_02142048));
+  if (value != 0) {
+    *arg0 = value;
+    value = func_0204fdac(value,0);
+    arg0[1] = value;
+    value = func_0204fde0();
+    arg0[2] = value;
     return 1;
   }
   return 0;
@@ -140,7 +140,7 @@ extern u32 data_02141f98[];
 int func_0205ad2c();
 int func_0205b8c8();
 /* decompiler-derived */
-void func_0203883c(int *arg0,int arg1,int arg2)
+void Unk0387bc_Unk_03883c(int *arg0,int arg1,int arg2)
 {
   func_0205ad2c(*data_02141f98);
   arg0[1] = arg2;
@@ -148,28 +148,27 @@ void func_0203883c(int *arg0,int arg1,int arg2)
   func_0205b8c8(arg0);
   *(u16 *)(arg1 + 4) = *(u16 *)(arg0[5] + 0x28);
   *(u16 *)(arg1 + 6) = *(u16 *)(arg0[5] + 0x2a);
-  return;
 }
 
 extern u8 data_02142034[];
 /* decompiler-derived */
-u32 func_02038cf8(int *arg0)
+u32 Unk0387bc_Unk_038cf8(int *arg0)
 {
-  int tmp1;
+  int value;
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  tmp1 = func_020387bc(((int)data_02142034));
-  if (tmp1 != 0) {
-    *arg0 = tmp1;
-    tmp1 = func_0204fdac(tmp1,1);
-    arg0[1] = tmp1;
-    tmp1 = func_0204fde0();
-    arg0[2] = tmp1;
-    tmp1 = func_0204fdac(*arg0,0);
-    arg0[3] = tmp1;
-    tmp1 = func_0204fde0();
-    arg0[4] = tmp1;
+  value = func_020387bc(((int)data_02142034));
+  if (value != 0) {
+    *arg0 = value;
+    value = func_0204fdac(value,1);
+    arg0[1] = value;
+    value = func_0204fde0();
+    arg0[2] = value;
+    value = func_0204fdac(*arg0,0);
+    arg0[3] = value;
+    value = func_0204fde0();
+    arg0[4] = value;
     return 1;
   }
   return 0;
@@ -177,23 +176,23 @@ u32 func_02038cf8(int *arg0)
 
 extern u8 data_02142054[];
 /* decompiler-derived */
-u32 func_02038e7c(int *arg0)
+u32 Unk0387bc_Unk_038e7c(int *arg0)
 {
-  int tmp1;
+  int value;
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  tmp1 = func_020387bc(((int)data_02142054));
-  if (tmp1 != 0) {
-    *arg0 = tmp1;
-    tmp1 = func_0204fdac(tmp1,1);
-    arg0[1] = tmp1;
-    tmp1 = func_0204fde0();
-    arg0[2] = tmp1;
-    tmp1 = func_0204fdac(*arg0,0);
-    arg0[3] = tmp1;
-    tmp1 = func_0204fde0();
-    arg0[4] = tmp1;
+  value = func_020387bc(((int)data_02142054));
+  if (value != 0) {
+    *arg0 = value;
+    value = func_0204fdac(value,1);
+    arg0[1] = value;
+    value = func_0204fde0();
+    arg0[2] = value;
+    value = func_0204fdac(*arg0,0);
+    arg0[3] = value;
+    value = func_0204fde0();
+    arg0[4] = value;
     return 1;
   }
   return 0;

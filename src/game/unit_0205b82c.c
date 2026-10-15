@@ -5,9 +5,8 @@
 int func_0205ad9c();
 int func_0205b8c8();
 /* decompiler-derived */
-void func_0205b82c(void)
+void Unk05b82c_Unk_05b82c(void)
 {
   func_0205ad9c();
   func_0205b8c8();
-  return;
 }

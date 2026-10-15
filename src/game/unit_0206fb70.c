@@ -4,7 +4,7 @@
 
 int func_0206d68c();
 /* decompiler-derived */
-void func_020717c0(int arg0,u32 arg1)
+void Unk06fb70_Unk_0717c0(int arg0,u32 arg1)
 {
   int tmp1;
   tmp1 = func_0206d68c(2,arg1,100);
@@ -15,7 +15,7 @@ void func_020717c0(int arg0,u32 arg1)
 int func_0200219c();
 int func_02007e94();
 /* decompiler-derived */
-void func_0206fb70(int arg0,int arg1,int arg2,int arg3)
+void Unk06fb70_Unk_06fb70(int arg0,int arg1,int arg2,int arg3)
 {
   if (arg1 - arg0 == 0) {
     func_02007e94();
@@ -36,7 +36,7 @@ int func_020702b8();
 int func_0207030c();
 int func_02070360();
 /* decompiler-derived */
-void func_0206feb4(u32 arg0,u32 arg1)
+void Unk06fb70_Unk_06feb4(u32 arg0,u32 arg1)
 {
   func_02070094();
   func_02070114(arg0,arg1);
@@ -60,7 +60,7 @@ int func_02070cc0();
 int func_02070df8();
 int func_02070f30();
 /* decompiler-derived */
-void func_0206ff28(u32 arg0,u32 arg1)
+void Unk06fb70_Unk_06ff28(u32 arg0,u32 arg1)
 {
   func_020705f8();
   func_02070758(arg0,arg1);

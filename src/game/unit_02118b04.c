@@ -59,31 +59,29 @@ u32 Unk118b04_Unk_118e74(int arg0)
 
 
 /* decompiler-derived */
-int func_02118ba8(int arg0)
+int Unk118b04_Unk_118ba8(int arg0)
 {
-  int tmp1;
-  tmp1 = func_0202e228();
-  return (*(u8 *)(tmp1 + arg0 + 0x94) & 2) != 0;
+  int value;
+  value = func_0202e228();
+  return (*(u8 *)(value + arg0 + 0x94) & 2) != 0;
 }
 
 
 /* decompiler-derived */
-void func_02118e50(int arg0,int arg1)
+void Unk118b04_Unk_118e50(int arg0,int arg1)
 {
-  int tmp1;
-  tmp1 = func_0202e228();
-  *(int *)(tmp1 + 0x14 + arg0 * 4) = *(int *)(tmp1 + 0x14 + arg0 * 4) + arg1;
-  return;
+  int value;
+  value = func_0202e228();
+  *(int *)(value + 0x14 + arg0 * 4) = *(int *)(value + 0x14 + arg0 * 4) + arg1;
 }
 
 int func_02008848();
 int func_02008904();
 /* decompiler-derived */
-void func_02119434(u32 arg0,u32 arg1)
+void Unk118b04_Unk_119434(u32 arg0,u32 arg1)
 {
   func_02008904(arg1,arg0,0x170);
   func_02008848(arg0,0,0xf);
-  return;
 }
 
 

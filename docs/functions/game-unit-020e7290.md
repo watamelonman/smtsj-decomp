@@ -1,9 +1,9 @@
 # src/game/unit_020e7290.c
 
-- `func_020e7644`: decompiler-derived
-- `func_020e7734`: decompiler-derived
-- `func_020e77a8`: decompiler-derived
-- `func_020e747c`: decompiler-derived
+- `Unk0e7290_Clear_data_02176cd8`: decompiler-derived
+- `Unk0e7290_Unk_0e7734`: decompiler-derived
+- `Unk0e7290_Unk_0e77a8`: decompiler-derived
+- `Unk0e7290_Unk_0e747c`: decompiler-derived
 
 ## Not done in M1-T401
 - `func_020e7790`

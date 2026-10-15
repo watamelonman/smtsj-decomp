@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 extern u32 data_0215ee98[];
 int func_0206df10();
-int func_02072200();
+int Unk071dc0_Unk_072200();
 int func_0209d13c();
 
 int Unk044904_GetConst1(void);
@@ -40,7 +40,7 @@ u32 Unk044904_Unk_0459ec(void)
 void Unk044904_Unk_045c98(void)
 {
   func_0206df10();
-  func_02072200();
+  Unk071dc0_Unk_072200();
 }
 
 /* decompiler-derived */
@@ -238,42 +238,42 @@ int func_0204527c();
 int func_020aa118();
 int func_020f8098();
 /* decompiler-derived */
-u32 func_02046108(u16 *arg0)
+u32 Unk044904_Unk_046108(u16 *arg0)
 {
-  u32 tmp1;
-  int tmp2;
+  u32 value1;
+  int value2;
   Unk044904_Unk_044fd8();
   func_020aa118();
   func_02045138();
   func_0204527c();
   func_020450b8();
-  tmp1 = Unk044904_Unk_045080();
-  tmp2 = func_020f8098(tmp1,0,0);
-  if (tmp2 != 0) {
+  value1 = Unk044904_Unk_045080();
+  value2 = func_020f8098(value1,0,0);
+  if (value2 != 0) {
     *arg0 = 2;
   }
   return 2;
 }
 
 
-int func_020a5c14();
+int Unk0a5680_Unk_0a5c14();
 /* decompiler-derived */
-u32 func_0204599c(u32 *arg0)
+u32 Unk044904_Unk_04599c(u32 *arg0)
 {
-  int tmp1;
-  u32 tmp2;
-  int tmp3;
-  tmp2 = 0;
-  tmp3 = 0;
+  int value1;
+  u32 value2;
+  int value3;
+  value2 = 0;
+  value3 = 0;
   do {
     if ((*arg0 != 0) &&
-       (tmp1 = func_020a5c14(*arg0 & 0xffff,arg0[1],arg0[2]), tmp1 != 0)) {
-      tmp2 = 1;
+       (value1 = Unk0a5680_Unk_0a5c14(*arg0 & 0xffff,arg0[1],arg0[2]), value1 != 0)) {
+      value2 = 1;
     }
-    tmp3 = tmp3 + 1;
+    value3 = value3 + 1;
     arg0 = arg0 + 3;
-  } while (tmp3 < 6);
-  return tmp2;
+  } while (value3 < 6);
+  return value2;
 }
 
 

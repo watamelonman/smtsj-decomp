@@ -4,18 +4,18 @@
 
 void func_020d6cac(void);
 /* forwards to `func_020d6cac` */
-void func_0206ad34(void) { func_020d6cac(); }
+void Unk06a224_Thunk_020d6cac(void) { func_020d6cac(); }
 
 extern u8 data_0216b9b0[];
 /* decompiler-derived */
-u32 func_0206a224(void)
+u32 Unk06a224_Unk_06a224(void)
 {
   return *(u32 *)(((int)data_0216b9b0) + 8);
 }
 
 
 /* decompiler-derived */
-void func_0206a244(u32 arg0)
+void Unk06a224_Unk_06a244(u32 arg0)
 {
   *(u32 *)(((int)data_0216b9b0) + 8) = arg0;
   return;
@@ -24,7 +24,7 @@ void func_0206a244(u32 arg0)
 
 int func_020537b8();
 /* decompiler-derived */
-void func_0206ae28(int arg0)
+void Unk06a224_Unk_06ae28(int arg0)
 {
   int tmp1;
   tmp1 = func_020537b8(0,0x40);

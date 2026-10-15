@@ -5,7 +5,7 @@
 int func_020bc9f4();
 int func_020bcacc();
 /* decompiler-derived */
-void func_02107c34(int arg0)
+void Unk1071e4_Unk_107c34(int arg0)
 {
   func_020bc9f4(0x13,0);
   func_020bcacc(0x12,0);
@@ -15,7 +15,7 @@ void func_02107c34(int arg0)
 
 int func_02108aec();
 /* decompiler-derived */
-int func_021087f4(u32 arg0,int arg1,int arg2,int arg3,short arg4)
+int Unk1071e4_Unk_1087f4(u32 arg0,int arg1,int arg2,int arg3,short arg4)
 {
   int tmp1;
   tmp1 = func_02108aec();

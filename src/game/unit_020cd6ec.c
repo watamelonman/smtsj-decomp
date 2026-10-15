@@ -4,26 +4,24 @@
 
 
 /* empty callback */
-void func_020ce3ec(void) { }
+void Unk0cd6ec_Nop_0ce3ec(void) { }
 
 int func_020a0da4();
 /* decompiler-derived */
-void func_020ce280(u8 *arg0,u32 arg1)
+void Unk0cd6ec_Unk_0ce280(u8 *arg0,u32 arg1)
 {
   func_020a0da4(5);
   arg0[2] = 4;
   *arg0 = 0xc;
   *(u32 *)(arg0 + 8) = arg1;
-  return;
 }
 
-int func_02123294();
+int Unk122e1c_Unk_123294();
 /* decompiler-derived */
-void func_020ce2ac(u8 *arg0,u32 arg1)
+void Unk0cd6ec_Unk_0ce2ac(u8 *arg0,u32 arg1)
 {
-  func_02123294(*(u32 *)(arg0 + 0x1c));
+  Unk122e1c_Unk_123294(*(u32 *)(arg0 + 0x1c));
   *(u32 *)(arg0 + 0xf0) = arg1;
   arg0[2] = 1;
   *arg0 = 3;
-  return;
 }

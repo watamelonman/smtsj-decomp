@@ -4,8 +4,8 @@
 
 
 /* set u32 at +0x5c */
-void func_02109da4(void *obj, u32 value) { FIELD(u32, obj, 0x5c) = value; }
+void Unk10947c_SetUnkField5c(void *obj, u32 value) { FIELD(u32, obj, 0x5c) = value; }
 
 void func_021099fc(void);
 /* forwards to `func_021099fc` */
-void func_02109dac(void) { func_021099fc(); }
+void Unk10947c_Thunk_021099fc(void) { func_021099fc(); }

@@ -113,31 +113,31 @@ void Unk09974c_Unk_09974c(int *arg0)
 
 int func_0202e8e0();
 /* decompiler-derived */
-int func_020997c8(u32 arg0)
+int Unk09974c_Unk_0997c8(u32 arg0)
 {
-  int tmp1;
-  tmp1 = func_0202e8e0();
+  int value;
+  value = func_0202e8e0();
   switch(arg0) {
   case 0:
-    return tmp1;
+    return value;
   case 1:
-    return tmp1 + 0xf;
+    return value + 0xf;
   case 2:
-    return tmp1 + 0x4b;
+    return value + 0x4b;
   case 3:
-    return tmp1 + 0x58;
+    return value + 0x58;
   case 4:
-    return tmp1 + 0x8a;
+    return value + 0x8a;
   case 5:
-    return tmp1 + 0xbc;
+    return value + 0xbc;
   case 6:
-    return tmp1 + 0xee;
+    return value + 0xee;
   case 7:
-    return tmp1 + 0x120;
+    return value + 0x120;
   case 8:
-    return tmp1 + 0x4f4;
+    return value + 0x4f4;
   case 9:
-    return tmp1 + 0x5d0;
+    return value + 0x5d0;
   default:
     return 0;
   }

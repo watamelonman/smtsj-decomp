@@ -10,8 +10,8 @@
 ## Hard list
 - `func_020bd3fc`: no candidate matched locally
 - `func_020bd5d4`: no candidate matched locally
-- `func_020bcef4`: decompiler-derived
-- `func_020bd368`: decompiler-derived
+- `Unk0bcef4_Unk_0bcef4`: decompiler-derived
+- `Unk0bcef4_Unk_0bd368`: decompiler-derived
 
 ## Not done in M1-T435
 - `func_020bd54c`
@@ -20,7 +20,7 @@
 - `func_020bd398`
 - `func_020bd418`
 - `func_020bd30c`
-- `func_020bd29c`: decompiler-derived
+- `Unk0bcef4_Unk_0bd29c`: decompiler-derived
 
 ## Not done in M1-T436
 - `func_020bcfc4`

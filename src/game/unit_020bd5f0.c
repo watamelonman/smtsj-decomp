@@ -45,7 +45,7 @@ int Unk0bd5f0_Unk_0c7588(u16 *arg0,u16 *arg1)
 
 
 /* decompiler-derived */
-int func_020c75a8(u16 *arg0,u16 *arg1)
+int Unk0bd5f0_Unk_0c75a8(u16 *arg0,u16 *arg1)
 {
   int tmp1;
   int tmp2;
@@ -67,7 +67,7 @@ int func_020c75a8(u16 *arg0,u16 *arg1)
 
 int func_020537b8();
 /* decompiler-derived */
-void func_020c2050(int arg0)
+void Unk0bd5f0_Unk_0c2050(int arg0)
 {
   int tmp1;
   tmp1 = func_020537b8(0,0x40);

@@ -4,46 +4,46 @@
 
 
 /* decompiler-derived */
-int func_02100398(u16 *arg0,u16 *arg1)
+int Unk100208_Unk_100398(u16 *arg0,u16 *arg1)
 {
-  int tmp1;
-  tmp1 = (u32)*(u8 *)((int)arg1 + 3) - (u32)*(u8 *)((int)arg0 + 3);
-  if (tmp1 == 0) {
-    tmp1 = (u32)*arg0 - (u32)*arg1;
+  int value;
+  value = (u32)*(u8 *)((int)arg1 + 3) - (u32)*(u8 *)((int)arg0 + 3);
+  if (value == 0) {
+    value = (u32)*arg0 - (u32)*arg1;
   }
-  return tmp1;
+  return value;
 }
 
 
 /* decompiler-derived */
-int func_021003b8(u16 *arg0,u16 *arg1)
+int Unk100208_Unk_1003b8(u16 *arg0,u16 *arg1)
 {
-  int tmp1;
-  tmp1 = *(int *)(arg1 + 2) - *(int *)(arg0 + 2);
-  if (tmp1 == 0) {
-    tmp1 = (u32)*arg0 - (u32)*arg1;
+  int value;
+  value = *(int *)(arg1 + 2) - *(int *)(arg0 + 2);
+  if (value == 0) {
+    value = (u32)*arg0 - (u32)*arg1;
   }
-  return tmp1;
+  return value;
 }
 
 int func_020a1428();
 /* decompiler-derived */
-int func_021003d8(u16 *arg0,u16 *arg1)
+int Unk100208_Unk_1003d8(u16 *arg0,u16 *arg1)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = func_020a1428(*arg0);
-  tmp2 = func_020a1428(*arg1);
-  tmp1 = (u32)*(u8 *)(tmp2 + 3) - (u32)*(u8 *)(tmp1 + 3);
-  if (tmp1 == 0) {
-    tmp1 = (u32)*arg0 - (u32)*arg1;
+  int value1;
+  int value2;
+  value1 = func_020a1428(*arg0);
+  value2 = func_020a1428(*arg1);
+  value1 = (u32)*(u8 *)(value2 + 3) - (u32)*(u8 *)(value1 + 3);
+  if (value1 == 0) {
+    value1 = (u32)*arg0 - (u32)*arg1;
   }
-  return tmp1;
+  return value1;
 }
 
 int func_020a0da4();
 /* decompiler-derived */
-void func_02100208(u32 arg0)
+void Unk100208_Unk_100208(u32 arg0)
 {
   switch(arg0) {
   case 0:

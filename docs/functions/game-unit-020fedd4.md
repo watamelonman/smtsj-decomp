@@ -10,9 +10,9 @@
 - `func_020fee98`: dropped when combining the TU
 - `func_020feeac`: dropped when combining the TU
 - `func_020feec0`: dropped when combining the TU
-- `func_020fee18`: decompiler-derived
-- `func_020fef78`: decompiler-derived
-- `func_020fefc8`: decompiler-derived
+- `Unk0fedd4_Unk_0fee18`: decompiler-derived
+- `Unk0fedd4_Unk_0fef78`: decompiler-derived
+- `Unk0fedd4_Unk_0fefc8`: decompiler-derived
 
 ## Not done in M1-T168
 - `func_020fee68`

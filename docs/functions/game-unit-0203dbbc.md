@@ -1,8 +1,8 @@
 # src/game/unit_0203dbbc.c
 
-- `func_0203dc48`: decompiler-derived
-- `func_0203dc0c`: decompiler-derived
-- `func_0203dccc`: decompiler-derived
+- `Unk03dbbc_Unk_03dc48`: decompiler-derived
+- `Unk03dbbc_Unk_03dc0c`: decompiler-derived
+- `Unk03dbbc_Unk_03dccc`: decompiler-derived
 
 ## Not done in M1-T156
 - `func_0203dbbc`

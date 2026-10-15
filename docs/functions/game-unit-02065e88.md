@@ -15,17 +15,17 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `func_02065fac`
 - `func_020662b8`
 - `func_020663d8`
-- `func_0206644c`: decompiler-derived
-- `func_02065e88`: decompiler-derived
-- `func_02066258`: decompiler-derived
-- `func_02067d30`: decompiler-derived
+- `Unk065e88_Unk_06644c`: decompiler-derived
+- `Unk065e88_Unk_065e88`: decompiler-derived
+- `Unk065e88_Unk_066258`: decompiler-derived
+- `Unk065e88_Unk_067d30`: decompiler-derived
 
 ## Not done in M1-T1019
 - `func_020663f8`
 - `func_0206641c`
 - `func_020672b4`
 - `func_02068564`
-- `func_02065f30`: decompiler-derived
+- `Unk065e88_Unk_065f30`: decompiler-derived
 
 ## Not done in M1-T1020
 - `func_02066078`

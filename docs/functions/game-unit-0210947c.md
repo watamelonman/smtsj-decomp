@@ -1,7 +1,7 @@
 # src/game/unit_0210947c.c
 
-- `func_02109da4`: decompiler-derived
-- `func_02109dac`: decompiler-derived
+- `Unk10947c_SetUnkField5c`: decompiler-derived
+- `Unk10947c_Thunk_021099fc`: decompiler-derived
 
 ## Not done in M1-T502
 - `func_02109db8`

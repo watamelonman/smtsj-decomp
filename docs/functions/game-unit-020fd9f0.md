@@ -1,17 +1,17 @@
 # src/game/unit_020fd9f0.c
 
-- `func_020fdc0c`: decompiler-derived
-- `func_020fdb04`: decompiler-derived
-- `func_020fe2b0`: decompiler-derived
-- `func_020fda14`: decompiler-derived
-- `func_020fd9f0`: decompiler-derived
-- `func_020fe33c`: decompiler-derived
+- `Unk0fd9f0_Unk_0fdc0c`: decompiler-derived
+- `Unk0fd9f0_Get_data_02176e20`: decompiler-derived
+- `Unk0fd9f0_Unk_0fe2b0`: decompiler-derived
+- `Unk0fd9f0_Unk_0fda14`: decompiler-derived
+- `Unk0fd9f0_Unk_0fd9f0`: decompiler-derived
+- `Unk0fd9f0_Unk_0fe33c`: decompiler-derived
 
 ## Not done in M1-T508
 - `func_020fda2c`
 - `func_020fe1c8`
-- `func_020fdb80`: decompiler-derived
-- `func_020fe278`: decompiler-derived
+- `Unk0fd9f0_Unk_0fdb80`: decompiler-derived
+- `Unk0fd9f0_Unk_0fe278`: decompiler-derived
 
 ## Not done in M1-T509
 - `func_020fde0c`

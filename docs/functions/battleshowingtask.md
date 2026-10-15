@@ -28,7 +28,7 @@
 - `func_0211985c`
 - `func_02119888`
 - `func_02119910`
-- `func_0211a8dc`: decompiler-derived
+- `BattleShowingTask_Unk_11a8dc`: decompiler-derived
 
 ## Not done in M1-T1032
 - `func_0211c670`

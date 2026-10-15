@@ -1,7 +1,7 @@
 # src/game/unit_020d297c.c
 
-- `Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448` (12 B): forwards to `Unk0e5fb8_Unk_0e6448`
-- `Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8` (12 B): forwards to `Unk0e5fb8_Unk_0e64c8`
+- `Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448` (12 B): forwards to `Unk0e5fb8_Unk_0e6448`
+- `Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8` (12 B): forwards to `Unk0e5fb8_Unk_0e64c8`
 - `Unk0d297c_Thunk_02095398` (12 B): forwards to `func_02095398`
 - `Unk0d297c_Thunk_020953ac` (12 B): forwards to `func_020953ac`
 - `Unk0d297c_Unk_0d2adc` (16 B): decompiler-derived (Ghidra output, cleaned)
@@ -30,8 +30,8 @@
 
 ## Not done in M1-T569
 - `func_020d322c`
-- `func_020d3330`: decompiler-derived
-- `func_020d3200`: decompiler-derived
+- `Unk0d297c_Unk_0d3330`: decompiler-derived
+- `Unk0d297c_Unk_0d3200`: decompiler-derived
 
 ## Not done in M1-T570
 - `func_020d3308`
@@ -44,8 +44,8 @@
 ## Not done in M1-T572
 - `func_020d33cc`
 - `func_020d2c44`
-- `func_020d2fbc`: decompiler-derived
-- `func_020d3034`: decompiler-derived
+- `Unk0d297c_Unk_0d2fbc`: decompiler-derived
+- `Unk0d297c_Unk_0d3034`: decompiler-derived
 
 ## Not done in M1-T571
 - `func_020d3358`

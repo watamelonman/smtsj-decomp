@@ -1,10 +1,10 @@
 # src/game/unit_020bbd6c.c
 
-- `func_020bbec0`: decompiler-derived
-- `func_020bbdd0`: decompiler-derived
-- `func_020bbdf0`: decompiler-derived
-- `func_020bbe10`: decompiler-derived
-- `func_020bbe30`: decompiler-derived
+- `Unk0bbd6c_Unk_0bbec0`: decompiler-derived
+- `Unk0bbd6c_Unk_0bbdd0`: decompiler-derived
+- `Unk0bbd6c_Unk_0bbdf0`: decompiler-derived
+- `Unk0bbd6c_Unk_0bbe10`: decompiler-derived
+- `Unk0bbd6c_Unk_0bbe30`: decompiler-derived
 
 ## Not done in M1-T135
 - `func_020bbf44`

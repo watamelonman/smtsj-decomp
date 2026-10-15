@@ -1,10 +1,10 @@
 # src/game/unit_020a23f4.c
 
-- `func_020a2504`: decompiler-derived
-- `func_020a2588`: decompiler-derived
-- `func_020a2414`: decompiler-derived
-- `func_020a242c`: decompiler-derived
-- `func_020a23f4`: decompiler-derived
+- `Unk0a23f4_Thunk_020fd428`: decompiler-derived
+- `Unk0a23f4_Thunk_020fd450`: decompiler-derived
+- `Unk0a23f4_Unk_0a2414`: decompiler-derived
+- `Unk0a23f4_IsSet_data_02176b04`: decompiler-derived
+- `Unk0a23f4_Unk_0a23f4`: decompiler-derived
 
 ## Not done in M1-T182
 - `func_020a25c0`

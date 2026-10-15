@@ -11,11 +11,11 @@ int func_020cb3dc();
 int func_020cb4e4();
 int func_020cb564();
 int func_02122a78();
-int func_02122aa0();
+int Unk122a78_Unk_122aa0();
 int Unk1241ec_Unk_1241ec();
 int Unk1241ec_Unk_124214();
 int Unk1241ec_Thunk_02124338();
-int func_02124258();
+int Unk1241ec_Unk_124258();
 
 void Unk0cb32c_Nop_0cba74(void);
 void Unk0cb32c_Nop_0cccc0(void);
@@ -56,8 +56,8 @@ u32 Unk0cb32c_Unk_0cb32c(void)
 u32 Unk0cb32c_Unk_0cb344(void)
 {
   Unk1241ec_Unk_124214();
-  func_02124258();
-  func_02122aa0();
+  Unk1241ec_Unk_124258();
+  Unk122a78_Unk_122aa0();
   return 1;
 }
 
@@ -81,39 +81,38 @@ void Unk0cb32c_Unk_0ccaa8(int *arg0,int arg1)
 }
 
 int func_020956c8();
-int func_020bc9b4();
-int func_020de870();
+int Unk0bc1a8_Unk_0bc9b4();
+int Unk0de678_Unk_0de870();
 /* decompiler-derived */
 void Unk0cb32c_Unk_0cba78(void)
 {
   int value;
   value = Unk0de678_Get_data_021508d4();
   if (value == 0) {
-    func_020bc9b4(0xf,0);
+    Unk0bc1a8_Unk_0bc9b4(0xf,0);
     Unk0cb32c_Unk_0cb344();
   }
-  func_020de870();
+  Unk0de678_Unk_0de870();
   func_020956c8();
 }
 
 
 int func_02122e1c();
 /* decompiler-derived */
-void func_020cb754(u32 *arg0)
+void Unk0cb32c_Unk_0cb754(u32 *arg0)
 {
-  func_020bc9b4(10,0);
+  Unk0bc1a8_Unk_0bc9b4(10,0);
   func_02122e1c(*arg0);
   *arg0 = 0;
   ImageBg_Unk_0e5530();
   Unk0fd268_Unk_0fd3ac();
   Unk0cb32c_Unk_0cb344();
-  func_020de870();
-  return;
+  Unk0de678_Unk_0de870();
 }
 
 
 /* decompiler-derived */
-u32 func_020cb440(u32 arg0)
+u32 Unk0cb32c_Unk_0cb440(u32 arg0)
 {
   switch(arg0) {
   case 0:
@@ -134,7 +133,7 @@ u32 func_020cb440(u32 arg0)
 int func_02059f70();
 int func_02060dd4();
 /* decompiler-derived */
-void func_020cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
+void Unk0cb32c_Unk_0cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
                   u32 arg4,u32 arg5)
 {
   u8 auStack_24 [16];
@@ -142,7 +141,6 @@ void func_020cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
   uStack_14 = arg3;
   func_02060dd4(auStack_24,arg0,0,arg3,arg4);
   func_02059f70(*arg0,0,arg1,arg2,auStack_24,0,arg5);
-  return;
 }
 
 

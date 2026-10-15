@@ -4,48 +4,45 @@
 
 int func_0205bb68();
 /* decompiler-derived */
-void func_02071e08(void)
+void Unk071dc0_Unk_071e08(void)
 {
-  u32 tmp1;
-  tmp1 = 0;
+  u32 value;
+  value = 0;
   do {
     func_0205bb68();
-    tmp1 = tmp1 + 1;
-  } while (tmp1 < 9);
-  return;
+    value = value + 1;
+  } while (value < 9);
 }
 
-int func_0205b82c();
+int Unk05b82c_Unk_05b82c();
 int func_02071dc0();
 /* decompiler-derived */
-void func_02071de4(void)
+void Unk071dc0_Unk_071de4(void)
 {
-  u32 tmp1;
+  u32 value;
   func_02071dc0();
-  tmp1 = 0;
+  value = 0;
   do {
-    func_0205b82c(tmp1);
-    tmp1 = tmp1 + 1;
-  } while (tmp1 < 9);
-  return;
+    Unk05b82c_Unk_05b82c(value);
+    value = value + 1;
+  } while (value < 9);
 }
 
 extern u8 data_02171d14[];
 int func_02071e24();
 /* decompiler-derived */
-void func_02072200(void)
+void Unk071dc0_Unk_072200(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = ((int)data_02171d14);
-  tmp2 = 0;
+  int value1;
+  int value2;
+  value1 = ((int)data_02171d14);
+  value2 = 0;
   if (0 < *(int *)(((int)data_02171d14) + 0x600)) {
     do {
       func_0205bb68();
-      tmp2 = tmp2 + 1;
-    } while (tmp2 < *(int *)(tmp1 + 0x600));
+      value2 = value2 + 1;
+    } while (value2 < *(int *)(value1 + 0x600));
   }
   func_02071e24();
-  return;
 }
 

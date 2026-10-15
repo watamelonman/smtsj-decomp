@@ -1,6 +1,6 @@
 # src/game/unit_020a50d4.c
 
-- `func_020a50d4`: decompiler-derived
+- `Unk0a50d4_Unk_0a50d4`: decompiler-derived
 
 ## Not done in M1-T391
 - `func_020a50e4`

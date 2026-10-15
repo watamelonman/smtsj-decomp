@@ -4,12 +4,12 @@
 
 
 /* empty callback */
-void func_020fff3c(void) { }
+void CaveNpc_Nop_0fff3c(void) { }
 
 extern u8 data_02151180[];
 int func_0205ba98();
 /* decompiler-derived */
-void func_021000d0(int arg0)
+void CaveNpc_Unk_1000d0(int arg0)
 {
   u32 tmp1;
   if (*(int *)(arg0 + 0x2c) != 0) {

@@ -1,9 +1,9 @@
 # src/game/unit_020b0b5c.c
 
-- `func_020b0d28`: decompiler-derived
-- `func_020b0d38`: decompiler-derived
-- `func_020b0c78`: decompiler-derived
-- `func_020b0cf4`: decompiler-derived
+- `Unk0b0b5c_Unk_0b0d28`: decompiler-derived
+- `Unk0b0b5c_Unk_0b0d38`: decompiler-derived
+- `Unk0b0b5c_Unk_0b0c78`: decompiler-derived
+- `Unk0b0b5c_Unk_0b0cf4`: decompiler-derived
 
 ## Not done in M1-T222
 - `func_020b0c30`

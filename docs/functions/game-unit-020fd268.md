@@ -10,9 +10,9 @@
 - `func_020fd364`
 - `func_020fd428`
 - `func_020fd3c4`
-- `func_020fd574`: decompiler-derived
-- `func_020fd540`: decompiler-derived
-- `func_020fd3f0`: decompiler-derived
+- `Unk0fd268_Unk_0fd574`: decompiler-derived
+- `Unk0fd268_Unk_0fd540`: decompiler-derived
+- `Unk0fd268_Unk_0fd3f0`: decompiler-derived
 
 ## Not done in M1-T274
 - `func_020fd450`

@@ -24,7 +24,7 @@ void Unk0f7188_Nop_0f7ae4(void) { }
 
 int func_020f7ca8();
 /* decompiler-derived */
-void func_020f7cc0(u32 arg0)
+void Unk0f7188_Unk_0f7cc0(u32 arg0)
 {
   switch(arg0) {
   case 0:
@@ -53,6 +53,5 @@ LAB_020f7cfc:
     return;
   }
   func_020f7ca8(0);
-  return;
 }
 

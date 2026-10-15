@@ -4,12 +4,11 @@
 
 
 /* empty callback */
-void func_020a4f38(void) { }
+void Unk0a4e48_Nop_0a4f38(void) { }
 
 int func_020a4eb0();
 /* decompiler-derived */
-void func_020a4e9c(u32 arg0)
+void Unk0a4e48_Unk_0a4e9c(u32 arg0)
 {
   func_020a4eb0(arg0,0,3);
-  return;
 }

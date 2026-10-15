@@ -38,7 +38,7 @@ void Unk0939f0_Unk_093dbc(int arg0)
 
 int func_0200219c();
 /* decompiler-derived */
-void func_02093ea8(int arg0)
+void Unk0939f0_Unk_093ea8(int arg0)
 {
   u32 tmp1;
   if (*data_02175d90 == 0) {
@@ -56,7 +56,7 @@ void func_02093ea8(int arg0)
 
 int func_020086a0();
 /* decompiler-derived */
-void func_02093f0c(int arg0)
+void Unk0939f0_Unk_093f0c(int arg0)
 {
   func_020086a0(0,arg0 + 0xc,0x20);
   *(u8 *)(arg0 + 0xc) = 0xff;

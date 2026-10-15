@@ -1,6 +1,6 @@
 # src/game/unit_0202cad4.c
 
-- `Unk02cad4_Unk_02cee0`: decompiler-derived
+- `Unk02cad4_Thunk_Unk065e88_Unk_065eac`: decompiler-derived
 - `Unk02cad4_Thunk_0206148c`: decompiler-derived
 - `Unk02cad4_Unk_02cbdc`: decompiler-derived
 - `Unk02cad4_Unk_02ce80`: decompiler-derived

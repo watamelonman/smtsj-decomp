@@ -18,8 +18,8 @@
 
 ## Not done in M1-T923
 - `func_02077620`
-- `func_020775ec`: decompiler-derived
-- `func_020776d4`: decompiler-derived
+- `ImageObj_Unk_0775ec`: decompiler-derived
+- `ImageObj_Unk_0776d4`: decompiler-derived
 
 ## Not done in M1-T924
 - `func_02079000`
@@ -28,8 +28,8 @@
 - `func_02077ddc`
 - `func_02077e74`
 - `func_02077efc`
-- `func_02077228`: decompiler-derived
-- `func_02077688`: decompiler-derived
+- `ImageObj_Unk_077228`: decompiler-derived
+- `ImageObj_Unk_077688`: decompiler-derived
 
 ## Not done in M1-T925
 - `func_020775a0`
@@ -38,7 +38,7 @@
 - `func_02077640`
 - `func_02077708`
 - `func_02077554`
-- `func_020779a0`: decompiler-derived
+- `ImageObj_Unk_0779a0`: decompiler-derived
 
 ## Not done in M1-T926
 - `func_020777e0`

@@ -20,7 +20,7 @@
 - `func_020c7f70`
 - `func_020c7fbc`
 - `func_020c842c`
-- `func_020c75a8`: decompiler-derived
+- `Unk0bd5f0_Unk_0c75a8`: decompiler-derived
 
 ## Not done in M1-T1136
 - `func_020c1870`
@@ -30,7 +30,7 @@
 - `func_020c18c0`
 - `func_020c2578`
 - `func_020c72a4`
-- `func_020c2050`: decompiler-derived
+- `Unk0bd5f0_Unk_0c2050`: decompiler-derived
 
 ## Not done in M1-T1137
 - `func_020c1f40`

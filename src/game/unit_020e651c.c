@@ -61,11 +61,10 @@ void Unk0e651c_Unk_0e66f0(u32 arg0,u32 arg1)
 
 int func_020e619c();
 /* decompiler-derived */
-void func_020e651c(u32 arg0,u32 arg1)
+void Unk0e651c_Unk_0e651c(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  tmp1 = func_020e619c();
-  func_0209500c(tmp1 + 2,arg1 & 1);
-  func_0209500c(tmp1 + 3,(int)(arg1 & 2) >> 1);
-  return;
+  int value;
+  value = func_020e619c();
+  func_0209500c(value + 2,arg1 & 1);
+  func_0209500c(value + 3,(int)(arg1 & 2) >> 1);
 }

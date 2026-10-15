@@ -20,9 +20,9 @@
 ## Not done in M1-T894
 - `func_020df7c4`
 - `func_020dfeec`
-- `func_020df94c`: decompiler-derived
-- `func_020df86c`: decompiler-derived
-- `func_020dff68`: decompiler-derived
+- `SaveLoadTask_Unk_0df94c`: decompiler-derived
+- `SaveLoadTask_Unk_0df86c`: decompiler-derived
+- `SaveLoadTask_Unk_0dff68`: decompiler-derived
 
 ## Not done in M1-T895
 - `func_020e0034`

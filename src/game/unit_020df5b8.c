@@ -4,15 +4,14 @@
 
 
 /* empty callback */
-void func_020df668(void) { }
+void Unk0df5b8_Nop_0df668(void) { }
 
 int func_02008904();
-int func_02108c60();
+int Unk108bc8_Unk_108c60();
 /* decompiler-derived */
-void func_020df684(u32 arg0,u32 arg1,u32 arg2)
+void Unk0df5b8_Unk_0df684(u32 arg0,u32 arg1,u32 arg2)
 {
-  u32 tmp1;
-  tmp1 = func_02108c60();
-  func_02008904(arg0,tmp1,arg2);
-  return;
+  u32 value;
+  value = Unk108bc8_Unk_108c60();
+  func_02008904(arg0,value,arg2);
 }

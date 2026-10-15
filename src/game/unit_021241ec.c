@@ -9,7 +9,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 int Unk0fedd4_Unk_0fedd4();
 int Unk0fedd4_Thunk_0205bb68();
 int func_020fedf0();
-int func_020fee18();
+int Unk0fedd4_Unk_0fee18();
 int func_020fee68();
 int func_020fee84();
 void func_02124338(void);
@@ -24,7 +24,7 @@ void Unk1241ec_Thunk_02124338(void) { func_02124338(); }
 /* decompiler-derived */
 void Unk1241ec_Unk_124214(void)
 {
-  func_020fee18();
+  Unk0fedd4_Unk_0fee18();
   Unk0fedd4_Thunk_0205bb68();
 }
 
@@ -41,12 +41,11 @@ void Unk1241ec_Unk_1241ec(void)
 extern u32 data_02176e84[];
 int func_02061424();
 /* decompiler-derived */
-void func_02124258(void)
+void Unk1241ec_Unk_124258(void)
 {
   if (*data_02176e84 == 0) {
     return;
   }
   func_02061424();
   *data_02176e84 = 0;
-  return;
 }

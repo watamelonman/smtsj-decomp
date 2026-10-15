@@ -16,11 +16,11 @@
 - `Unk0bac80_Unk_0bb078`: decompiler-derived
 - `Unk0bac80_Unk_0bb094`: decompiler-derived
 - `Unk0bac80_Unk_0bb0b0`: decompiler-derived
-- `func_020bb0cc`: decompiler-derived
-- `func_020bb0e8`: decompiler-derived
-- `func_020bacf8`: decompiler-derived
-- `func_020bad1c`: decompiler-derived
-- `func_020bb104`: decompiler-derived
+- `Unk0bac80_Unk_0bb0cc`: decompiler-derived
+- `Unk0bac80_Unk_0bb0e8`: decompiler-derived
+- `Unk0bac80_Unk_0bacf8`: decompiler-derived
+- `Unk0bac80_Unk_0bad1c`: decompiler-derived
+- `Unk0bac80_Unk_0bb104`: decompiler-derived
 
 ## Not done in M1-T405
 - `func_020bb144`

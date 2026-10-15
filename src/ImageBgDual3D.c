@@ -88,14 +88,14 @@ void ImageBgDual3D_Unk_1259e0(void)
 }
 
 
-int func_02065e88();
+int Unk065e88_Unk_065e88();
 int func_020773dc();
 int func_02125c68();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125a68(void)
 {
   func_02125c68();
-  func_02065e88();
+  Unk065e88_Unk_065e88();
   func_020773dc(1);
 }
 
@@ -177,7 +177,7 @@ void ImageBgDual3D_Unk_125650(ImageBgDual3DWork *work)
 
 
 /* decompiler-derived */
-u32 func_02125618(int arg0)
+u32 ImageBgDual3D_Unk_125618(int arg0)
 {
   int *v1;
   int tmp2;
@@ -199,7 +199,7 @@ extern u32 data_02176e98[];
 int func_021257f4();
 int func_02125910();
 /* decompiler-derived */
-void func_02125cd4(u32 arg0)
+void ImageBgDual3D_Unk_125cd4(u32 arg0)
 {
   int tmp1;
   tmp1 = ImageBgDual3D_Unk_125cbc();
@@ -213,7 +213,7 @@ void func_02125cd4(u32 arg0)
 
 int func_0205bb68();
 /* decompiler-derived */
-void func_02125d48(void)
+void ImageBgDual3D_Unk_125d48(void)
 {
   int tmp1;
   tmp1 = ImageBgDual3D_Unk_125cbc();
@@ -230,7 +230,7 @@ void func_02125d48(void)
 
 int func_020bc650();
 /* decompiler-derived */
-void func_021252b4(u32 *arg0)
+void ImageBgDual3D_Unk_1252b4(u32 *arg0)
 {
   int tmp1;
   if (arg0[2] == 0) {
@@ -252,10 +252,10 @@ int func_02035440();
 int func_020956e8();
 int func_021177b8();
 /* decompiler-derived */
-void func_02125b10(int arg0)
+void ImageBgDual3D_Unk_125b10(int arg0)
 {
   func_020956e8();
-  func_02125d48();
+  ImageBgDual3D_Unk_125d48();
   ImageObj_Unk_0773bc();
   ImageBgDual3D_Unk_125a80();
   Unk116598_Unk_1172bc();

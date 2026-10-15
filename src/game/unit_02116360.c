@@ -5,28 +5,27 @@
 int func_0202e788();
 int func_021163a4();
 /* decompiler-derived */
-void func_02116404(int arg0,u32 arg1,u32 arg2)
+void Unk116360_Unk_116404(int arg0,u32 arg1,u32 arg2)
 {
-  int tmp1;
+  int value;
   if (arg0 == 0) {
     return;
   }
-  tmp1 = func_0202e788();
-  func_021163a4(arg0,*(u16 *)(tmp1 + 0x35c),arg1,arg2);
-  return;
+  value = func_0202e788();
+  func_021163a4(arg0,*(u16 *)(value + 0x35c),arg1,arg2);
 }
 
 int func_02116360();
 /* decompiler-derived */
-u32 func_02116438(u32 arg0,u32 arg1)
+u32 Unk116360_Unk_116438(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp2 = 0;
-  tmp1 = func_0202e788();
-  tmp1 = func_02116360(*(u16 *)(tmp1 + 0x35c),arg0,arg1);
-  if (tmp1 == 1) {
-    tmp2 = 2;
+  int value1;
+  u32 value2;
+  value2 = 0;
+  value1 = func_0202e788();
+  value1 = func_02116360(*(u16 *)(value1 + 0x35c),arg0,arg1);
+  if (value1 == 1) {
+    value2 = 2;
   }
-  return tmp2;
+  return value2;
 }

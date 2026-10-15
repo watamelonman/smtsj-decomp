@@ -7,19 +7,18 @@ int func_02052fe0();
 int func_0205f460();
 int func_0205f4b0();
 /* decompiler-derived */
-void func_02044394(u32 *arg0)
+void Unk044394_Unk_044394(u32 *arg0)
 {
-  int tmp1;
-  u32 tmp2;
-  if ((arg0[3] != 0) && (tmp1 = func_0205f460(*arg0), tmp1 != 0)) {
-    tmp2 = func_02052fe0();
-    arg0[1] = tmp2;
-    tmp1 = func_0205f4b0(*arg0,arg0[1],tmp1);
-    if (tmp1 != 0) {
+  int value1;
+  u32 value2;
+  if ((arg0[3] != 0) && (value1 = func_0205f460(*arg0), value1 != 0)) {
+    value2 = func_02052fe0();
+    arg0[1] = value2;
+    value1 = func_0205f4b0(*arg0,arg0[1],value1);
+    if (value1 != 0) {
       return;
     }
   }
-  tmp2 = func_02051610(*arg0);
-  arg0[1] = tmp2;
-  return;
+  value2 = func_02051610(*arg0);
+  arg0[1] = value2;
 }

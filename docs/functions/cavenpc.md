@@ -1,7 +1,7 @@
 # src/CaveNpc.c
 
-- `func_020fff3c`: decompiler-derived
-- `func_021000d0`: decompiler-derived
+- `CaveNpc_Nop_0fff3c`: decompiler-derived
+- `CaveNpc_Unk_1000d0`: decompiler-derived
 
 ## Not done in M1-T353
 - `func_020ffd14`

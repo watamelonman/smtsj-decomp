@@ -18,9 +18,9 @@
 - `func_02122fd0`
 - `func_021241cc`
 - `func_02122fac`
-- `func_02122ff0`: decompiler-derived
-- `func_02123294`: decompiler-derived
-- `func_0212306c`: decompiler-derived
+- `Unk122e1c_Unk_122ff0`: decompiler-derived
+- `Unk122e1c_Unk_123294`: decompiler-derived
+- `Unk122e1c_Unk_12306c`: decompiler-derived
 
 ## Not done in M1-T749
 - `func_02123534`

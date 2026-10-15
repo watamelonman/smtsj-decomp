@@ -10,8 +10,8 @@
 - `func_0211f06c`
 - `func_0211ef74`
 - `func_0211efb0`
-- `func_0211ec7c`: decompiler-derived
-- `func_0211f004`: decompiler-derived
+- `Unk11ec7c_Unk_11ec7c`: decompiler-derived
+- `Unk11ec7c_Unk_11f004`: decompiler-derived
 
 ## Not done in M1-T317
 - `func_0211eccc`

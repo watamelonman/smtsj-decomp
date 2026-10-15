@@ -9,7 +9,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 int Unk02e000_Unk_02e774();
 int func_02044428();
 int func_02044534();
-int func_020f3ec8();
+int Unk0f3db4_Unk_0f3ec8();
 
 u32 Unk0f3db4_Unk_0f44a8(u32 arg0);
 void Unk0f3db4_Unk_0f3dc8(void);
@@ -68,26 +68,25 @@ void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1)
 void Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
 {
   int value;
-  value = func_020f3ec8();
+  value = Unk0f3db4_Unk_0f3ec8();
   Unk0f3db4_Unk_0f44a8(*(u8 *)(value + arg1));
 }
 
 
 
 /* decompiler-derived */
-void func_020f4510(u32 arg0,int arg1)
+void Unk0f3db4_Unk_0f4510(u32 arg0,int arg1)
 {
-  int tmp1;
-  tmp1 = func_020f3ec8();
-  Unk0f3db4_Unk_0f4528(*(u8 *)(tmp1 + arg1));
-  return;
+  int value;
+  value = Unk0f3db4_Unk_0f3ec8();
+  Unk0f3db4_Unk_0f4528(*(u8 *)(value + arg1));
 }
 
 
 
 
 /* decompiler-derived */
-u32 func_020f3e6c(u32 arg0)
+u32 Unk0f3db4_Unk_0f3e6c(u32 arg0)
 {
   switch(arg0) {
   case 0:
@@ -109,23 +108,23 @@ u32 func_020f3e6c(u32 arg0)
 
 
 /* decompiler-derived */
-int func_020f3ec8(u32 arg0)
+int Unk0f3db4_Unk_0f3ec8(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk0f3db4_Unk_0f3db4();
+  int value;
+  value = Unk0f3db4_Unk_0f3db4();
   switch(arg0) {
   case 0:
-    return tmp1;
+    return value;
   case 1:
-    return tmp1 + 0x32;
+    return value + 0x32;
   case 2:
-    return tmp1 + 100;
+    return value + 100;
   case 3:
-    return tmp1 + 0x96;
+    return value + 0x96;
   case 4:
-    return tmp1 + 200;
+    return value + 200;
   case 5:
-    return tmp1 + 300;
+    return value + 300;
   default:
     return 0;
   }
@@ -133,37 +132,36 @@ int func_020f3ec8(u32 arg0)
 
 
 /* decompiler-derived */
-void func_020f4674(int arg0,int arg1)
+void Unk0f3db4_Unk_0f4674(int arg0,int arg1)
 {
-  u8 tmp1;
-  int tmp2;
-  int tmp3;
-  tmp3 = 0;
+  u8 value1;
+  int value2;
+  int value3;
+  value3 = 0;
   do {
-    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3));
-    *(u8 *)(arg0 + tmp3) = tmp1;
-    tmp3 = tmp3 + 1;
-  } while (tmp3 < 100);
-  tmp3 = 0;
+    value1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + value3));
+    *(u8 *)(arg0 + value3) = value1;
+    value3 = value3 + 1;
+  } while (value3 < 100);
+  value3 = 0;
   do {
-    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3 + 100));
-    tmp2 = arg0 + tmp3;
-    tmp3 = tmp3 + 1;
-    *(u8 *)(tmp2 + 100) = tmp1;
-  } while (tmp3 < 0x32);
-  tmp3 = 0;
+    value1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + value3 + 100));
+    value2 = arg0 + value3;
+    value3 = value3 + 1;
+    *(u8 *)(value2 + 100) = value1;
+  } while (value3 < 0x32);
+  value3 = 0;
   do {
-    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3 + 0x96));
-    tmp2 = arg0 + tmp3;
-    tmp3 = tmp3 + 1;
-    *(u8 *)(tmp2 + 0x96) = tmp1;
-  } while (tmp3 < 0x32);
-  tmp3 = 0;
+    value1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + value3 + 0x96));
+    value2 = arg0 + value3;
+    value3 = value3 + 1;
+    *(u8 *)(value2 + 0x96) = value1;
+  } while (value3 < 0x32);
+  value3 = 0;
   do {
-    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3 + 300));
-    tmp2 = arg0 + tmp3;
-    tmp3 = tmp3 + 1;
-    *(u8 *)(tmp2 + 300) = tmp1;
-  } while (tmp3 < 0x3c);
-  return;
+    value1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + value3 + 300));
+    value2 = arg0 + value3;
+    value3 = value3 + 1;
+    *(u8 *)(value2 + 300) = value1;
+  } while (value3 < 0x3c);
 }

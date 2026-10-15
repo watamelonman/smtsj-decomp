@@ -20,7 +20,7 @@
 - `func_0206d4e8`
 - `func_0206ca64`
 - `func_0206b8e4`
-- `func_0206c76c`: decompiler-derived
+- `Unk06ae94_Unk_06c76c`: decompiler-derived
 
 ## Not done in M1-T996
 - `func_0206c854`

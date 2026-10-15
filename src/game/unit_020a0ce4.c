@@ -6,6 +6,13 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+typedef struct Unk0a0ce4Work {
+    u8 unk_0000[0x1c];
+    u32 UnkField001c;
+} Unk0a0ce4Work;
+
+
 extern u32 data_02176afc[];
 int func_020445d0();
 int func_0204fde0();
@@ -66,32 +73,30 @@ int Unk0a0ce4_Unk_0a0ce4(int arg0)
 int func_0205e5ec();
 int func_0205e63c();
 /* decompiler-derived */
-void func_020a0d04(void)
+void Unk0a0ce4_Unk_0a0d04(void)
 {
   func_0205e5ec(0);
   func_0205e63c();
   func_0205e5ec(1);
   *data_02176afc = 1;
-  return;
 }
 
 extern u32 data_02176b00[];
 int func_0205bb68();
 int func_020629c4();
 /* decompiler-derived */
-void func_020a12e8(int arg0)
+void Unk0a0ce4_Unk_0a12e8(Unk0a0ce4Work *work)
 {
   func_0205bb68();
   func_0205bb68();
   func_0205bb68();
-  func_020629c4(*(u32 *)(arg0 + 0x1c));
+  func_020629c4(work->UnkField001c);
   *data_02176b00 = 0;
-  return;
 }
 
 int func_0205e65c();
 /* decompiler-derived */
-void func_020a0d30(int arg0)
+void Unk0a0ce4_Unk_0a0d30(int arg0)
 {
   if (*data_02176afc == arg0 || arg0 == 0) {
     return;
@@ -99,6 +104,5 @@ void func_020a0d30(int arg0)
   func_0205e65c();
   *data_02176afc = arg0;
   func_0205e5ec(arg0);
-  return;
 }
 

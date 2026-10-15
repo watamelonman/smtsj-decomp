@@ -1,8 +1,8 @@
 # src/game/unit_020a5680.c
 
-- `func_020a5718`: decompiler-derived
-- `func_020a5e78`: decompiler-derived
-- `func_020a6150`: decompiler-derived
+- `Unk0a5680_Clear_data_02176b14`: decompiler-derived
+- `Unk0a5680_Unk_0a5e78`: decompiler-derived
+- `Unk0a5680_Unk_0a6150`: decompiler-derived
 
 ## Not done in M1-T549
 - `func_020a5e48`
@@ -10,8 +10,8 @@
 - `func_020a5fb0`
 - `func_020a5e28`
 - `func_020a60fc`
-- `func_020a5c14`: decompiler-derived
-- `func_020a611c`: decompiler-derived
+- `Unk0a5680_Unk_0a5c14`: decompiler-derived
+- `Unk0a5680_Unk_0a611c`: decompiler-derived
 
 ## Not done in M1-T550
 - `func_020a59c4`

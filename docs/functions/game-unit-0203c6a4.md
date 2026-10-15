@@ -10,7 +10,7 @@
 
 ## Not done in M1-T296
 - `func_0203c718`
-- `func_0203c6a4`: decompiler-derived
+- `Unk03c6a4_Unk_03c6a4`: decompiler-derived
 
 ## Not done in M1-T297
 - `func_0203c954`

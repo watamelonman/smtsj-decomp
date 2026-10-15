@@ -1,18 +1,18 @@
 # src/game/unit_020979d8.c
 
-- `func_02098124`: decompiler-derived
-- `func_0209813c`: decompiler-derived
-- `func_02098154`: decompiler-derived
-- `func_0209818c`: decompiler-derived
-- `func_020981a4`: decompiler-derived
-- `func_0209816c`: decompiler-derived
-- `func_020981bc`: decompiler-derived
+- `Unk0979d8_Unk_098124`: decompiler-derived
+- `Unk0979d8_Unk_09813c`: decompiler-derived
+- `Unk0979d8_Unk_098154`: decompiler-derived
+- `Unk0979d8_Unk_09818c`: decompiler-derived
+- `Unk0979d8_Unk_0981a4`: decompiler-derived
+- `Unk0979d8_Unk_09816c`: decompiler-derived
+- `Unk0979d8_Unk_0981bc`: decompiler-derived
 
 ## Not done in M1-T473
 - `func_020979d8`
-- `func_020979fc`: decompiler-derived
-- `func_02097f00`: decompiler-derived
-- `func_02097f34`: decompiler-derived
+- `Unk0979d8_Unk_0979fc`: decompiler-derived
+- `Unk0979d8_Unk_097f00`: decompiler-derived
+- `Unk0979d8_Unk_097f34`: decompiler-derived
 
 ## Not done in M1-T474
 - `func_02097bec`

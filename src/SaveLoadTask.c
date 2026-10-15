@@ -168,7 +168,7 @@ int func_0202cbec();
 int func_020df814();
 int func_02124dac();
 /* decompiler-derived */
-void func_020df94c(void)
+void SaveLoadTask_Unk_0df94c(void)
 {
   u32 tmp1;
   int tmp2;
@@ -206,7 +206,7 @@ LAB_020df988:
 int func_0205257c();
 int func_02124d8c();
 /* decompiler-derived */
-void func_020df86c(void)
+void SaveLoadTask_Unk_0df86c(void)
 {
   u32 tmp1;
   tmp1 = func_0202cbec();
@@ -241,7 +241,7 @@ LAB_020df8a8:
 int func_0204faf0();
 int func_020dff20();
 /* decompiler-derived */
-u32 func_020dff68(u32 arg0)
+u32 SaveLoadTask_Unk_0dff68(u32 arg0)
 {
   int tmp1;
   u32 tmp2;

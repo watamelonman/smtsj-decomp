@@ -78,7 +78,7 @@ u32 Unk03bba4_Unk_03bd3c(void)
 
 int func_0202deb0();
 int Unk03aae8_Unk_03ad14();
-int func_0209e418();
+int Unk09e418_Unk_09e418();
 /* decompiler-derived */
 u32 Unk03bba4_Unk_03bbec(void)
 {
@@ -89,7 +89,7 @@ u32 Unk03bba4_Unk_03bbec(void)
   value1 = func_0203ac00(0);
   value2 = func_0203ac00(1);
   value3 = func_0203ac00(2);
-  func_0209e418(value1,value2,value3);
+  Unk09e418_Unk_09e418(value1,value2,value3);
   value4 = Unk03aae8_Unk_03ad14();
   func_0202deb0(*(u32 *)(value4 + 0xe8));
   return 3;

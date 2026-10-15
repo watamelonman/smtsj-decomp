@@ -1,8 +1,8 @@
 # src/game/unit_02124e68.c
 
-- `func_02124f48`: decompiler-derived
-- `func_02124fbc`: decompiler-derived
-- `func_02124ff0`: decompiler-derived
+- `Unk124e68_Nop_124f48`: decompiler-derived
+- `Unk124e68_Unk_124fbc`: decompiler-derived
+- `Unk124e68_Unk_124ff0`: decompiler-derived
 
 ## Not done in M1-T149
 - `func_02124e68`

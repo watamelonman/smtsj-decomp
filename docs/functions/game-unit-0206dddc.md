@@ -1,8 +1,8 @@
 # src/game/unit_0206dddc.c
 
-- `func_0206dfa0`: decompiler-derived
-- `func_0206e058`: decompiler-derived
-- `func_0206dfb0`: decompiler-derived
+- `Unk06dddc_Get_data_0216bac4`: decompiler-derived
+- `Unk06dddc_Unk_06e058`: decompiler-derived
+- `Unk06dddc_Unk_06dfb0`: decompiler-derived
 
 ## Not done in M1-T338
 - `func_0206e0c4`

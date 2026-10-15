@@ -69,16 +69,16 @@ void Unk0de678_Unk_0df584(void)
 }
 
 int func_0205bb68();
-int func_020a2414();
-int func_020fc6a0();
+int Unk0a23f4_Unk_0a2414();
+int Unk0fc584_Unk_0fc6a0();
 /* decompiler-derived */
 void Unk0de678_Unk_0df0a4(void)
 {
-  func_020a2414();
+  Unk0a23f4_Unk_0a2414();
   func_02044534(0x1e);
   Unk065e88_Unk_065eac();
   Unk0de678_Unk_0df5a8();
-  func_020fc6a0();
+  Unk0fc584_Unk_0fc6a0();
   func_0205bb68();
   Unk095560_Unk_096130();
 }
@@ -86,56 +86,54 @@ void Unk0de678_Unk_0df0a4(void)
 
 int func_02124d54();
 /* decompiler-derived */
-void func_020de870(void)
+void Unk0de678_Unk_0de870(void)
 {
   if (*(int *)(((int)data_021508d4) + 200) != 0) {
     return;
   }
-  func_020a2414();
+  Unk0a23f4_Unk_0a2414();
   func_02044534(0x1e);
   func_02124d54();
   Unk065e88_Unk_065eac();
   Unk0de678_Unk_0df5a8();
-  func_020fc6a0();
+  Unk0fc584_Unk_0fc6a0();
   func_0205bb68();
   Unk095560_Unk_096130();
-  return;
 }
 
 int func_0202e0cc();
-int func_0205b82c();
-int func_02065e88();
-int func_02096508();
-int func_020a23f4();
-int func_020fc674();
-int func_020fc84c();
+int Unk05b82c_Unk_05b82c();
+int Unk065e88_Unk_065e88();
+int Unk0964f8_Unk_096508();
+int Unk0a23f4_Unk_0a23f4();
+int Unk0fc584_Unk_0fc674();
+int Unk0fc584_Unk_0fc84c();
 /* decompiler-derived */
-void func_020df064(void)
+void Unk0de678_Unk_0df064(void)
 {
-  func_02096508();
+  Unk0964f8_Unk_096508();
   Unk0de678_Unk_0df598();
   func_0202e0cc();
-  func_0205b82c(0xc2);
-  func_020fc674(1);
-  func_020fc84c(0);
-  func_02065e88();
+  Unk05b82c_Unk_05b82c(0xc2);
+  Unk0fc584_Unk_0fc674(1);
+  Unk0fc584_Unk_0fc84c(0);
+  Unk065e88_Unk_065e88();
   func_02044428(0x1e);
-  func_020a23f4(2);
-  return;
+  Unk0a23f4_Unk_0a23f4(2);
 }
 
 int func_0202d8a8();
-int func_0202da48();
+int Unk02d15c_Unk_02da48();
 int func_020cb3dc();
 /* decompiler-derived */
-u32 func_020dec94(u32 arg0)
+u32 Unk0de678_Unk_0dec94(u32 arg0)
 {
-  u32 tmp1;
-  int tmp2;
+  u32 value1;
+  int value2;
   func_020cb3dc();
-  tmp1 = func_0202da48();
-  tmp2 = func_0202d8a8(1,tmp1,arg0);
-  if (tmp2 != 0) {
+  value1 = Unk02d15c_Unk_02da48();
+  value2 = func_0202d8a8(1,value1,arg0);
+  if (value2 != 0) {
     *(u32 *)(((int)data_021508d4) + 0xcc) = 0;
     return 1;
   }

@@ -1,7 +1,7 @@
 # src/game/unit_0206fb70.c
 
-- `func_020717c0`: decompiler-derived
-- `func_0206fb70`: decompiler-derived
+- `Unk06fb70_Unk_0717c0`: decompiler-derived
+- `Unk06fb70_Unk_06fb70`: decompiler-derived
 
 ## Not done in M1-T934
 - `func_020713fc`
@@ -20,8 +20,8 @@
 - `func_02070360`
 - `func_02071844`
 - `func_02071d6c`
-- `func_0206feb4`: decompiler-derived
-- `func_0206ff28`: decompiler-derived
+- `Unk06fb70_Unk_06feb4`: decompiler-derived
+- `Unk06fb70_Unk_06ff28`: decompiler-derived
 
 ## Not done in M1-T936
 - `func_020717e4`

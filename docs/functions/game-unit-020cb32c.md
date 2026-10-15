@@ -20,9 +20,9 @@
 - `func_020cb58c`
 - `func_020cca80`
 - `func_020ccac8`
-- `func_020cb754`: decompiler-derived
-- `func_020cb440`: decompiler-derived
-- `func_020cb488`: decompiler-derived
+- `Unk0cb32c_Unk_0cb754`: decompiler-derived
+- `Unk0cb32c_Unk_0cb440`: decompiler-derived
+- `Unk0cb32c_Unk_0cb488`: decompiler-derived
 
 ## Not done in M1-T868
 - `func_020ccaf8`

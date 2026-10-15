@@ -54,9 +54,9 @@
 - `func_020e8374`
 - `func_020e85a0`
 - `func_020e8b54`
-- `func_020e8dd0`: decompiler-derived
-- `func_020e8dfc`: decompiler-derived
-- `func_020e9fa4`: decompiler-derived
+- `Unk0e8228_Unk_0e8dd0`: decompiler-derived
+- `Unk0e8228_Unk_0e8dfc`: decompiler-derived
+- `Unk0e8228_Unk_0e9fa4`: decompiler-derived
 
 ## Not done in M1-T903
 - `func_020e8d90`
@@ -74,7 +74,7 @@
 - `func_020e9bc0`
 - `func_020e8be8`
 - `func_020e9b10`
-- `func_020e85c8`: decompiler-derived
+- `Unk0e8228_Unk_0e85c8`: decompiler-derived
 
 ## Not done in M1-T905
 - `func_020e849c`

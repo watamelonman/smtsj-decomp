@@ -84,7 +84,7 @@ int func_02006c94();
 int func_02007a58();
 int func_02007a6c();
 /* decompiler-derived */
-void func_0205af64(int *arg0)
+void Unk05ae50_Unk_05af64(int *arg0)
 {
   u32 tmp1;
   tmp1 = func_02007a58();

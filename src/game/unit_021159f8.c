@@ -5,15 +5,15 @@
 int func_0202e788();
 int func_021159f8();
 /* decompiler-derived */
-u32 func_02115c68(u32 arg0,u32 arg1)
+u32 Unk1159f8_Unk_115c68(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp2 = 0;
-  tmp1 = func_0202e788();
-  tmp1 = func_021159f8(*(u16 *)(tmp1 + 0x35c),arg0,arg1);
-  if (tmp1 == 1) {
-    tmp2 = 2;
+  int value1;
+  u32 value2;
+  value2 = 0;
+  value1 = func_0202e788();
+  value1 = func_021159f8(*(u16 *)(value1 + 0x35c),arg0,arg1);
+  if (value1 == 1) {
+    value2 = 2;
   }
-  return tmp2;
+  return value2;
 }

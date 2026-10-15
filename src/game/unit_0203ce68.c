@@ -38,13 +38,13 @@ u32 Unk03ce68_Unk_03cff4(void)
   return 1;
 }
 
-int func_020981dc();
+int Unk0981dc_Unk_0981dc();
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03cf94(void)
 {
   u8 value;
   value = func_0203ac00(0);
-  func_020981dc(value);
+  Unk0981dc_Unk_0981dc(value);
   func_0203acf4();
   return 1;
 }
@@ -63,7 +63,7 @@ u32 Unk03ce68_Unk_03d010(void)
 
 
 /* decompiler-derived */
-u32 func_0203d038(u32 arg0)
+u32 Unk03ce68_Unk_03d038(u32 arg0)
 {
   switch(arg0) {
   case 0:

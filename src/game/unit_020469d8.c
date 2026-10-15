@@ -5,13 +5,13 @@
 int func_02049594();
 int func_02049620();
 /* decompiler-derived */
-u32 func_020469d8(void)
+u32 Unk0469d8_Unk_0469d8(void)
 {
-  int tmp1;
+  int value;
   Unk044904_Unk_044ff4();
   func_02049594();
-  tmp1 = Unk044904_Unk_0459ec();
-  if (tmp1 != 0) {
+  value = Unk044904_Unk_0459ec();
+  if (value != 0) {
     Unk044904_Unk_044ff4();
     func_02049620();
   }
@@ -19,17 +19,17 @@ u32 func_020469d8(void)
 }
 
 int func_020496d0();
-int func_0209d1b0();
+int Unk09d060_Unk_09d1b0();
 int func_0209d4bc();
 /* decompiler-derived */
-u32 func_02046a00(u16 *arg0)
+u32 Unk0469d8_Unk_046a00(u16 *arg0)
 {
-  int tmp1;
+  int value;
   Unk044904_Unk_044ff4();
   func_020496d0();
-  func_0209d1b0();
-  tmp1 = func_0209d4bc();
-  if (tmp1 == 0) {
+  Unk09d060_Unk_09d1b0();
+  value = func_0209d4bc();
+  if (value == 0) {
     *arg0 = 2;
   }
   return 2;

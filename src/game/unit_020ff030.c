@@ -4,14 +4,14 @@
 
 
 /* empty callback */
-void func_020ff030(void) { }
+void Unk0ff030_Nop_0ff030(void) { }
 
 int func_02057524();
 int func_02057ddc();
 int func_02057e18();
 int func_02057eb8();
 /* decompiler-derived */
-void func_020ff0ec(int arg0)
+void Unk0ff030_Unk_0ff0ec(int arg0)
 {
   func_02057e18(0x1f);
   func_02057ddc(0xffffffff);
@@ -26,7 +26,7 @@ void func_020ff0ec(int arg0)
 int func_0205ddb4();
 int func_020629c4();
 /* decompiler-derived */
-void func_020ffa60(int *arg0)
+void Unk0ff030_Unk_0ffa60(int *arg0)
 {
   if (*arg0 != 0) {
     func_0205ddb4();

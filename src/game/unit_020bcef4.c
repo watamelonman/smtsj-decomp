@@ -72,7 +72,7 @@ void Unk0bcef4_Unk_0bd480(int *arg0,int arg1)
 
 
 /* decompiler-derived */
-void func_020bcef4(u32 *arg0,u32 arg1,u32 arg2,u32 arg3)
+void Unk0bcef4_Unk_0bcef4(u32 *arg0,u32 arg1,u32 arg2,u32 arg3)
 {
   *arg0 = arg1;
   arg0[1] = arg2;
@@ -81,32 +81,30 @@ void func_020bcef4(u32 *arg0,u32 arg1,u32 arg2,u32 arg3)
   arg0[4] = 0;
   arg0[5] = 0;
   arg0[6] = arg3;
-  return;
 }
 
 int func_020bd5f0();
 /* decompiler-derived */
-void func_020bd368(int arg0,int arg1)
+void Unk0bcef4_Unk_0bd368(int arg0,int arg1)
 {
   func_020bd5f0((*(int *)(arg1 + 0x10) - *(int *)(arg1 + 8)) * 0xc + arg0);
-  return;
 }
 
 
 int func_020bd070();
 int func_020bd54c();
 /* decompiler-derived */
-u32 func_020bd29c(int arg0,int *arg1)
+u32 Unk0bcef4_Unk_0bd29c(int arg0,int *arg1)
 {
-  int tmp1;
-  tmp1 = 0;
+  int value;
+  value = 0;
   if (0 < *arg1) {
     do {
       func_020bd070(arg0,1,0);
       func_020bd54c(arg0,0);
-      tmp1 = tmp1 + 1;
+      value = value + 1;
       arg0 = arg0 + 0xc;
-    } while (tmp1 < *arg1);
+    } while (value < *arg1);
   }
   return 1;
 }

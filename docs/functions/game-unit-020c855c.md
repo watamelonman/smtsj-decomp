@@ -10,9 +10,9 @@
 - `func_020c92dc`
 - `func_020c92c0`
 - `func_020c9eb0`
-- `func_020c9890`: decompiler-derived
-- `func_020c9c5c`: decompiler-derived
-- `func_020c855c`: decompiler-derived
+- `Unk0c855c_Unk_0c9890`: decompiler-derived
+- `Unk0c855c_Unk_0c9c5c`: decompiler-derived
+- `Unk0c855c_Unk_0c855c`: decompiler-derived
 
 ## Not done in M1-T931
 - `func_020ca550`

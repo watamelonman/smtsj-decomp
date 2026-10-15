@@ -4,16 +4,16 @@
 
 extern u32 data_02176e54[];
 /* decompiler-derived */
-u32 func_02112730(void)
+u32 Unk112714_Get_data_02176e54(void)
 {
   return *data_02176e54;
 }
 
 int func_020bc650();
 /* decompiler-derived */
-int func_02112714(void)
+int Unk112714_Unk_112714(void)
 {
-  int tmp1;
-  tmp1 = func_020bc650(0x27);
-  return tmp1 != 0;
+  int value;
+  value = func_020bc650(0x27);
+  return value != 0;
 }

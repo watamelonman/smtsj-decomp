@@ -131,7 +131,7 @@ u32 Unk0e1648_Unk_0e4fd0(int arg0,u32 arg1)
 int func_020e5090();
 int func_020e544c();
 /* decompiler-derived */
-void func_020e533c(int arg0)
+void Unk0e1648_Unk_0e533c(int arg0)
 {
   int tmp1;
   tmp1 = func_020e544c();
@@ -146,13 +146,13 @@ void func_020e533c(int arg0)
 
 extern u8 data_02176c80[];
 int func_0202e0cc();
-int func_020fc84c();
+int Unk0fc584_Unk_0fc84c();
 /* decompiler-derived */
-void func_020e16f0(u8 *arg0)
+void Unk0e1648_Unk_0e16f0(u8 *arg0)
 {
   *(u8 **)(((int)data_02176c80) + 4) = arg0;
   func_0202e0cc();
-  func_020fc84c(0);
+  Unk0fc584_Unk_0fc84c(0);
   *(u32 *)(arg0 + 0xee4) = 0;
   arg0[1] = 0;
   *arg0 = 1;
@@ -164,7 +164,7 @@ void func_020e16f0(u8 *arg0)
 int func_0204faf0();
 int func_020e49cc();
 /* decompiler-derived */
-void func_020e4964(u32 arg0)
+void Unk0e1648_Unk_0e4964(u32 arg0)
 {
   u32 tmp1;
   u32 tmp2;

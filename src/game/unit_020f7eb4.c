@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-void func_020f8078(int arg0)
+void Unk0f7eb4_Unk_0f8078(int arg0)
 {
   *(u32 *)(arg0 + 0x48) = 0;
   *(u32 *)(arg0 + 0x4c) = 0;
@@ -16,7 +16,7 @@ void func_020f8078(int arg0)
 
 
 /* decompiler-derived */
-u32 func_020f7eb4(u32 arg0)
+u32 Unk0f7eb4_Unk_0f7eb4(u32 arg0)
 {
   switch(arg0) {
   case 0:

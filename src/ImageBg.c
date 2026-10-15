@@ -67,13 +67,13 @@ int func_020e5484();
 int func_020e5580();
 int func_020e55fc();
 /* decompiler-derived */
-void func_020e54d4(u32 arg0)
+void ImageBg_Unk_0e54d4(u32 arg0)
 {
-  int tmp1;
+  int value;
   u32 *v2;
   func_020e7790(0xffffffff);
-  tmp1 = func_020e5484();
-  if (tmp1 != 0) {
+  value = func_020e5484();
+  if (value != 0) {
     return;
   }
   func_020e55fc();
@@ -81,5 +81,4 @@ void func_020e54d4(u32 arg0)
   v2 = (u32 *)ImageBg_Get_data_02176ca4();
   *v2 = arg0;
   v2[1] = 1;
-  return;
 }

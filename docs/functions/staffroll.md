@@ -1,8 +1,8 @@
 # src/StaffRoll.c
 
-- `func_02117cf4`: decompiler-derived
-- `func_02117cf8`: decompiler-derived
-- `func_0211825c`: decompiler-derived
+- `StaffRoll_Nop_117cf4`: decompiler-derived
+- `StaffRoll_Nop_117cf8`: decompiler-derived
+- `StaffRoll_Unk_11825c`: decompiler-derived
 
 ## Not done in M1-T640
 - `func_02117cfc`
@@ -10,8 +10,8 @@
 - `func_02117d38`
 - `func_02118174`
 - `func_02118270`
-- `func_021182a4`: decompiler-derived
-- `func_021181a0`: decompiler-derived
+- `StaffRoll_Unk_1182a4`: decompiler-derived
+- `StaffRoll_Unk_1181a0`: decompiler-derived
 
 ## Not done in M1-T641
 - `func_021184d8`

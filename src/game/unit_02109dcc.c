@@ -4,7 +4,7 @@
 
 int func_0205c3dc();
 /* decompiler-derived */
-void func_02109f70(int arg0)
+void Unk109dcc_Unk_109f70(int arg0)
 {
   if (*(int *)(arg0 + 0x10) == 0) {
     return;
@@ -17,7 +17,7 @@ void func_02109f70(int arg0)
 int func_0205c704();
 int func_02061424();
 /* decompiler-derived */
-void func_02109dcc(int arg0)
+void Unk109dcc_Unk_109dcc(int arg0)
 {
   func_0205c704(*(u32 *)(arg0 + 0x10));
   if (**(int **)(arg0 + 4) != 0) {

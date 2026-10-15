@@ -58,7 +58,7 @@ int func_02013c3c();
 int func_02051610();
 int func_0205b444();
 /* decompiler-derived */
-u32 func_020db338(int arg0,u32 arg1)
+u32 CampStatus_Unk_0db338(int arg0,u32 arg1)
 {
   u32 tmp1;
   u8 auStack_48 [64];
@@ -72,7 +72,7 @@ u32 func_020db338(int arg0,u32 arg1)
 extern u8 data_02150824[];
 int func_020db37c();
 /* decompiler-derived */
-u32 func_020db394(int arg0,u32 arg1)
+u32 CampStatus_Unk_0db394(int arg0,u32 arg1)
 {
   u32 tmp1;
   u8 auStack_48 [64];
@@ -88,7 +88,7 @@ u32 func_020db394(int arg0,u32 arg1)
 
 
 /* decompiler-derived */
-int func_020dd88c(int arg0,int arg1)
+int CampStatus_Unk_0dd88c(int arg0,int arg1)
 {
   int tmp1;
   tmp1 = arg0;
@@ -115,7 +115,7 @@ int func_020dd88c(int arg0,int arg1)
 int func_02057fd8();
 int func_0205dee8();
 /* decompiler-derived */
-void func_020ddd2c(u32 arg0,u32 arg1,u32 arg2)
+void CampStatus_Unk_0ddd2c(u32 arg0,u32 arg1,u32 arg2)
 {
   func_0205dee8(2,arg0,0x10,arg1,0,0x3f800000,0x3f800000,0,arg2,2);
   func_02057fd8();

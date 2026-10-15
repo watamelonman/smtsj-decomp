@@ -4,7 +4,7 @@
 
 
 /* decompiler-derived */
-void func_020afc28(int arg0,int arg1)
+void Unk0afc28_Unk_0afc28(int arg0,int arg1)
 {
   *(int *)(arg0 + 0x20) = *(int *)(arg0 + 0x20) + arg1;
   return;
@@ -13,7 +13,7 @@ void func_020afc28(int arg0,int arg1)
 int func_020492ec();
 int func_0204a67c();
 /* decompiler-derived */
-void func_020afdd0(u32 arg0,u32 arg1,int arg2)
+void Unk0afc28_Unk_0afdd0(u32 arg0,u32 arg1,int arg2)
 {
   int tmp1;
   tmp1 = func_0204a67c();
@@ -27,7 +27,7 @@ void func_020afdd0(u32 arg0,u32 arg1,int arg2)
 
 
 /* decompiler-derived */
-u32 func_020afcd4(u32 arg0)
+u32 Unk0afc28_Unk_0afcd4(u32 arg0)
 {
   switch(arg0) {
   case 0:

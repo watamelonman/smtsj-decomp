@@ -23,41 +23,39 @@ int Unk09d42c_Unk_09d4e0(void)
 int func_0202e788();
 int func_0203611c();
 /* decompiler-derived */
-void func_0209e2f4(u32 arg0)
+void Unk09d42c_Unk_09e2f4(u32 arg0)
 {
   int *v1;
-  int tmp2;
-  u32 tmp3;
+  int value1;
+  u32 value2;
   v1 = (int *)GetGameState();
   if (v1 == (int *)0x0) {
     return;
   }
-  tmp2 = func_0202e788();
-  tmp3 = func_0203611c(*(u32 *)(tmp2 + 0x358),arg0);
-  *(u32 *)(*v1 + 0x18) = tmp3;
+  value1 = func_0202e788();
+  value2 = func_0203611c(*(u32 *)(value1 + 0x358),arg0);
+  *(u32 *)(*v1 + 0x18) = value2;
   *(u32 *)(*v1 + 0x14) = 4;
   v1[0x1cfa] = 1;
-  return;
 }
 
 
 /* decompiler-derived */
-void func_0209e2a4(u32 arg0)
+void Unk09d42c_Unk_09e2a4(u32 arg0)
 {
   int *v1;
-  int tmp2;
-  u32 tmp3;
+  int value1;
+  u32 value2;
   v1 = (int *)GetGameState();
   if (v1 == (int *)0x0) {
     return;
   }
-  tmp2 = func_0202e788();
-  tmp3 = func_0203611c(*(u32 *)(tmp2 + 0x358),arg0);
-  *(u32 *)(*v1 + 0x18) = tmp3;
+  value1 = func_0202e788();
+  value2 = func_0203611c(*(u32 *)(value1 + 0x358),arg0);
+  *(u32 *)(*v1 + 0x18) = value2;
   *(u32 *)(*v1 + 0x14) = 2;
   *(u32 *)(*v1 + 0xc) = 0;
   v1[0x1cfa] = 0;
-  return;
 }
 
 
