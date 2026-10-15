@@ -15,11 +15,11 @@
 ## Not done in M1-T251
 - `Unk03ce68_Unk_03ce68`
 - `Unk03ce68_Unk_03d088`
-- `func_0203ced0`
-- `func_0203d0f0`
+- `Unk03ce68_Unk_03ced0`
+- `Unk03ce68_Unk_03d0f0`
 - `Unk03ce68_Unk_03cf48`: hand-matched
 - `Unk03ce68_Unk_03cfd4`: hand-matched
 - `Unk03ce68_Unk_03ce68`: hand-matched
 - `Unk03ce68_Unk_03d088`: hand-matched
-- `func_0203ced0`: hand-matched
-- `func_0203d0f0`: hand-matched
+- `Unk03ce68_Unk_03ced0`: hand-matched
+- `Unk03ce68_Unk_03d0f0`: hand-matched

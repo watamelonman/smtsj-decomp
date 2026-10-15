@@ -37,7 +37,7 @@ void func_02097220();
 void Unk0981dc_Unk_0981f4();
 u32 Unk03ce68_Unk_03d038(u32 arg0);
 
-int func_0203ced0(void)
+int Unk03ce68_Unk_03ced0(void)
 {
     u16 v;
     u16 *w;
@@ -168,7 +168,7 @@ int Unk03ce68_Unk_03d088(void)
     return 1;
 }
 
-int func_0203d0f0(void)
+int Unk03ce68_Unk_03d0f0(void)
 {
     int k = func_0203ac00(0);
     int x = func_0203ac00(1);
