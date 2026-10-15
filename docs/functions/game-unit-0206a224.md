@@ -14,7 +14,7 @@
 
 ## Not done in M1-T600
 - `Unk06a224_Unk_06a3a4`
-- `func_0206a998`
+- `Unk06a224_Unk_06a998`
 - `func_0206aa0c`
 - `func_0206aafc`
 - `func_0206ab64`
@@ -34,4 +34,4 @@
 - `Unk06a224_CountUsedSlots`: hand-matched
 - `Unk06a224_Unk_06a374`: hand-matched
 - `Unk06a224_Unk_06a3a4`: hand-matched
-- `func_0206a998`: hand-matched
+- `Unk06a224_Unk_06a998`: hand-matched

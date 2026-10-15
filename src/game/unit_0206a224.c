@@ -99,7 +99,7 @@ void func_02099b10();
 void func_02067d54();
 s16 Unk06a224_CountUsedSlots(void);
 
-void func_0206a998(Unk06a224Ctl *c, int i)
+void Unk06a224_Unk_06a998(Unk06a224Ctl *c, int i)
 {
     u8 *p = (u8 *)c;
     if (c->slots[i] != 0) {

@@ -46,7 +46,7 @@ int Unk068f18_Unk_069afc(int arg0,int arg1,int arg2,int arg3)
 #endif
 int Unk02e000_GetWorkArea();
 
-int func_0206a1a8(u8 *p, int key)
+int Unk068f18_Unk_06a1a8(u8 *p, int key)
 {
     int r;
     u8 *w;

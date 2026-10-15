@@ -280,7 +280,7 @@ int func_0204fed8();
 int func_02063a30();
 void func_02061f10();
 
-void func_0206646c(u32 *p)
+void Unk065e88_Unk_06646c(u32 *p)
 {
     p[0] = 1104;
     p[1] = 4;
@@ -311,7 +311,7 @@ void Unk065e88_SetMode(s32 *o, s32 v, int notify)
     }
 }
 
-void func_020672fc(u8 *p, int a, u32 n)
+void Unk065e88_Unk_0672fc(u8 *p, int a, u32 n)
 {
     int r;
     int h;

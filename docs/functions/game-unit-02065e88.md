@@ -29,9 +29,9 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 
 ## Not done in M1-T1020
 - `Unk065e88_Unk_066078`
-- `func_0206646c`
+- `Unk065e88_Unk_06646c`
 - `Unk065e88_Unk_065ec0`
-- `func_020672fc`
+- `Unk065e88_Unk_0672fc`
 - `func_02067418`
 - `func_020684c0`
 - `func_02066c94`
@@ -64,5 +64,5 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `Unk065e88_Unk_068564`: hand-matched
 - `Unk065e88_Unk_065ec0`: hand-matched
 - `Unk065e88_Unk_066078`: hand-matched
-- `func_0206646c`: hand-matched
-- `func_020672fc`: hand-matched
+- `Unk065e88_Unk_06646c`: hand-matched
+- `Unk065e88_Unk_0672fc`: hand-matched
