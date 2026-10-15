@@ -7,3 +7,4 @@
 - `func_0203947c`
 - `func_020394b8`
 - `func_020392f8`
+- `func_020392f8`: hand-written. Loads Data/Dungeon/Ydm file and splits sections.

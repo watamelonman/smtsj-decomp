@@ -26,3 +26,57 @@ void CaveNpc_Unk_1000d0(int arg0)
   ((CaveNpcWork *)arg0)->unk_002c = tmp1;
   return;
 }
+
+/* NPC list scroll state; +8 = vertical scroll offset in pixels. */
+typedef struct CaveNpcList {
+    u8  pad_0000[8];
+    s32 scrollY;                /* +0x08 */
+} CaveNpcList;
+
+/* Sets the list scroll offset for row `row` of a list with `count` visible rows. */
+void func_02100104(CaveNpcList *list, int row, u32 count)
+{
+    switch (count) {
+    case 0:
+        break;
+    case 1:
+        list->scrollY = 0;
+        break;
+    case 2:
+        if (row == 0) {
+            list->scrollY = -0x22;
+        } else {
+            list->scrollY = 0x22;
+        }
+        break;
+    case 3:
+        switch (row) {
+        case 0:
+            list->scrollY = -0x44;
+            break;
+        case 1:
+            list->scrollY = 0;
+            break;
+        case 2:
+            list->scrollY = 0x44;
+            break;
+        }
+        break;
+    case 4:
+        switch (row) {
+        case 0:
+            list->scrollY = -0x44;
+            break;
+        case 1:
+            list->scrollY = 0;
+            break;
+        case 2:
+            list->scrollY = 0x44;
+            break;
+        case 3:
+            list->scrollY = 0;
+            break;
+        }
+        break;
+    }
+}

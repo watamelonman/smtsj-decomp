@@ -10,3 +10,4 @@
 - `func_020fff40`
 - `func_02100104`
 - `func_020fffc8`
+- `func_02100104`: hand-written. Sets NPC list scroll offset per row/count.
