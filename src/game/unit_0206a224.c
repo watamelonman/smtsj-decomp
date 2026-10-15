@@ -91,6 +91,30 @@ int Unk06a224_Unk_06a3a4(u8 *o)
     return 0;
 }
 
+typedef struct Unk06a224Ctl {
+    u8 pad_0000[348];
+    u16 *slots[4];
+} Unk06a224Ctl;
+void func_02099b10();
+void func_02067d54();
+s16 Unk06a224_CountUsedSlots(void);
+
+void func_0206a998(Unk06a224Ctl *c, int i)
+{
+    u8 *p = (u8 *)c;
+    if (c->slots[i] != 0) {
+        func_02099b10(*c->slots[i], 1);
+    }
+    {
+        c->slots[i] = 0;
+        FIELD(u16, p + 0x100, 84) = 0;
+        FIELD(u16, p + 0x100, 86) = 0;
+        func_02067d54(p);
+        FIELD(s16, p + 0x100, 88) = Unk06a224_CountUsedSlots();
+        FIELD(s16, p + 0x100, 88)++;
+    }
+}
+
 /* decompiler-derived */
 void Unk06a224_Unk_06ae28(Unk06a224Work *arg0){
   int tmp1;

@@ -34,3 +34,4 @@
 - `Unk06a224_CountUsedSlots`: hand-matched
 - `Unk06a224_Unk_06a374`: hand-matched
 - `Unk06a224_Unk_06a3a4`: hand-matched
+- `func_0206a998`: hand-matched
