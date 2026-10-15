@@ -16,3 +16,10 @@ void Unk0f1128_Unk_0f2d30(u32 arg0,int arg1,u32 arg2,u32 arg3)
   uStack_8 = arg3;
   func_020dde3c(arg0,0xc,0x17,&local_c,1);
 }
+
+void Unk0bd5f0_Unk_0c7f70();
+void func_020f2d60(u32 x)
+{
+    u32 t = x;
+    Unk0bd5f0_Unk_0c7f70(7, 0, &t, 1);
+}
