@@ -19,6 +19,34 @@ u32 Unk047338_Unk_047470(u16 *arg0)
 
 int Unk0aa118_SortRemaining();
 int Unk0aa118_Advance();
+int Unk09d060_Unk_09d13c();
+int Unk044904_Unk_044fd8();
+int Unk0aa118_PeekItem();
+int func_02044ec4();
+void func_0204a780();
+int Unk044904_Unk_045080();
+int func_020f8098();
+
+int func_020474a0(u16 *p)
+{
+    u32 *it;
+    int o;
+    if (Unk09d060_Unk_09d13c() == 0) {
+        return 0;
+    }
+    it = (u32 *)Unk0aa118_PeekItem(Unk044904_Unk_044fd8());
+    if (it != 0) {
+        o = func_02044ec4(it[0]);
+        if (o != 0) {
+            func_0204a780(o, 6);
+        }
+        if (func_020f8098(Unk044904_Unk_045080(), 2, it[0]) != 0) {
+            *p = 2;
+        }
+    }
+    return 2;
+}
+
 /* decompiler-derived */
 u32 Unk047338_Unk_047504(u16 *arg0)
 {
