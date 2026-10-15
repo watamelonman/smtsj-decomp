@@ -5,7 +5,14 @@
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct CaveAreaWork {
-    u8 pad_0000[0xc8];
+    u8 pad_0000[0x7c];
+    u32 unk_007c;
+    u32 unk_0080;
+    u8 pad_0084[0x24];
+    u8 unk_00a8;
+    u8 pad_00a9[0x13];
+    s32 unk_00bc;
+    u8 pad_00c0[0x8];
     u8 unk_00c8;
     u8 pad_00c9[0x5b];
     s32 unk_0124;
@@ -64,5 +71,34 @@ void CaveArea_Unk_0ed26c(int arg0)
   return;
 }
 
-
-
+extern u8 data_02150d78[];
+extern u8 data_02150d94[];
+extern u8 data_02150dac[];
+int func_02013c3c();
+int func_0205ae60();
+int func_0205b398();
+int func_020ed1a8();
+/* decompiler-derived; refs "Cave/Area/cave_privatearmy", "Cave/Area/cave_area0%d" */
+void func_020ed1d4(int arg0)
+{
+  int tmp1;
+  u8 auStack_48 [64];
+  tmp1 = ((CaveAreaWork *)arg0)->unk_00bc;
+  if (((CaveAreaWork *)arg0)->unk_00a8 == '\0') {
+    if (tmp1 == 5) {
+      func_02013c3c(auStack_48,data_02150d78);
+    }
+    else {
+      func_02013c3c(auStack_48,data_02150d94,tmp1 + 1);
+    }
+  }
+  else {
+    func_02013c3c(auStack_48,data_02150dac,tmp1 + 6);
+  }
+  func_020ed1a8(arg0);
+  *(u8 **)(arg0 + 0x6c) = auStack_48;
+  ((CaveAreaWork *)arg0)->unk_007c = 0;
+  func_0205ae60(arg0 + 0x68);
+  func_0205b398(((CaveAreaWork *)arg0)->unk_0080,arg0 + 0x68);
+  ((CaveAreaWork *)arg0)->unk_0124 = 1;
+}

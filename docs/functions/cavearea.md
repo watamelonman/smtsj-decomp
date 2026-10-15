@@ -40,3 +40,4 @@
 - `func_020ec514`
 - `func_020ed3fc`
 - `func_020eb83c`
+- `func_020ed1d4`: decompiler-derived (struct cleanup)
