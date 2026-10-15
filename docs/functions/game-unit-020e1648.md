@@ -70,3 +70,6 @@
 - `func_020e3e70`
 - `func_020e2fe8`
 - `func_020e4e28`
+- `func_020e51f4`: decompiler-derived (proto cleanup)
+- `func_020e51cc`: decompiler-derived (proto cleanup)
+- `func_020e5214`: decompiler-derived (proto cleanup)

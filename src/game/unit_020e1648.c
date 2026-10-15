@@ -201,4 +201,33 @@ LAB_020e49b0:
   return;
 }
 
+extern u8 data_0213c674[];
+int func_0205caa8();
+/* decompiler-derived */
+void func_020e51f4(u32 arg0,int arg1)
+{
+  u32 tmp1;
+  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
+  func_0205caa8(tmp1,*(u32 *)(data_0213c674 + arg1 * 4));
+}
 
+int func_0205c41c();
+/* decompiler-derived */
+void func_020e51cc(u32 arg0,u32 arg1)
+{
+  u32 tmp1;
+  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
+  func_0205c41c(tmp1,0);
+  func_020e51f4(arg0,arg1);
+}
+
+int func_0205c6ec();
+/* decompiler-derived */
+void func_020e5214(u32 arg0,u32 arg1)
+{
+  u32 tmp1;
+  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
+  func_0205c41c(tmp1,0);
+  Unk0e1648_Unk_0e5240(arg0, arg1);
+  func_0205c6ec();
+}
