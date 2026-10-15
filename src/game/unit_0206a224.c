@@ -153,6 +153,96 @@ void Unk06a224_Unk_06aafc(u32 x)
     func_020bcbc4(3, &m);
 }
 
+void func_020bcbc4();
+void func_020bcacc();
+void func_020bc9f4();
+void CampStatus_SetUnk1a8();
+void CampStatus_Copy12c();
+
+void func_0206ab64(void)
+{
+    Unk06a224Msg m;
+    int i;
+    CampStatus_Copy12c();
+    for (i = 0; i < 2; i++) {
+        m.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        m.w[i] = 0;
+    }
+    m.w[1] = 11;
+    m.flags[0] |= 2;
+    func_020bcbc4(3, &m);
+}
+
+void func_0206ac54(u32 x)
+{
+    Unk06a224Msg m;
+    int i;
+    for (i = 0; i < 2; i++) {
+        m.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        m.w[i] = 0;
+    }
+    m.w[7] = x;
+    m.w[1] = 20;
+    m.w[6] = 1;
+    m.flags[0] |= 0x82;
+    m.flags[0] |= 0x40;
+    func_020bcbc4(3, &m);
+}
+
+void func_0206accc(u32 x)
+{
+    Unk06a224Msg m;
+    int i;
+    for (i = 0; i < 2; i++) {
+        m.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        m.w[i] = 0;
+    }
+    m.w[7] = x;
+    m.w[1] = 10;
+    m.flags[0] |= 0x82;
+    func_020bcbc4(3, &m);
+}
+
+void func_0206ad40(void)
+{
+    Unk06a224Msg m;
+    int i;
+    for (i = 0; i < 2; i++) {
+        m.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        m.w[i] = 0;
+    }
+    m.w[3] = 12;
+    m.w[1] = 11;
+    m.flags[0] |= 10;
+    func_020bcacc(3, &m);
+    func_020bc9f4(11, 0);
+    CampStatus_SetUnk1a8(0);
+}
+
+void func_0206adc0(u32 x)
+{
+    Unk06a224Msg m;
+    int i;
+    for (i = 0; i < 2; i++) {
+        m.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        m.w[i] = 0;
+    }
+    m.w[7] = x;
+    m.w[1] = 25;
+    m.flags[0] |= 0x82;
+    func_020bcbc4(3, &m);
+}
+
 /* decompiler-derived */
 void Unk06a224_Unk_06ae28(Unk06a224Work *arg0){
   int tmp1;
