@@ -75,3 +75,30 @@ u32 func_0203ac9c(int arg0)
   }
   return 0;
 }
+
+
+int func_020b8660();
+/* decompiler-derived */
+u32 func_0203ae68(void)
+{
+  short v1;
+  v1 = func_0203ac00(0);
+  func_0209500c((int)v1,1);
+  switch((int)v1) {
+  case 0x733:
+    func_020b8660(0);
+    break;
+  case 0x734:
+    func_020b8660(1);
+    break;
+  case 0x735:
+    func_020b8660(2);
+    break;
+  case 0x736:
+    func_020b8660(3);
+    break;
+  case 0x737:
+    func_020b8660(4);
+  }
+  return 1;
+}
