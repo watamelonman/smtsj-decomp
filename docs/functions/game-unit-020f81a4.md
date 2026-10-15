@@ -13,3 +13,4 @@
 
 ## Not done in M1-T218
 - `func_020f82e0`
+- `func_020f8224`: hand-matched
