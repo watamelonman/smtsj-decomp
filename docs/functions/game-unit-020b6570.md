@@ -10,3 +10,4 @@
 - `func_020b71d8`
 - `func_020b75b0`
 - `func_020b76cc`
+- `func_020b75b0`: hand-written. Loads title-screen model and animations (titleModel).
