@@ -29,7 +29,7 @@ void Unk071dc0_Unk_071de4(void)
 }
 
 extern u8 data_02171d14[];
-int func_02071e24();
+void func_02071e24();
 /* decompiler-derived */
 void Unk071dc0_Unk_072200(void)
 {
@@ -55,4 +55,22 @@ void Unk071dc0_Unk_071dc0(void)
 {
   func_0205ad2c(data_021459b0);
   func_0205ad78(data_021458d8,9);
+}
+
+extern u8 data_02170d14[];
+int func_02008848();
+void func_02071e24(void)
+{
+    func_02008848(data_02170d14, 0, 0x1608);
+}
+
+int func_02072030(void)
+{
+    switch (FIELD(s32, data_02171d14, 0x604)) {
+    case 4:
+        return 1;
+    case 5:
+        return -1;
+    }
+    return 0;
 }
