@@ -10,3 +10,5 @@
 - `func_020cb2a8`
 - `func_020cb1a0`
 - `func_020cb21c`
+- `func_020cb274`: hand-matched
+- `func_020cb2ec`: hand-matched

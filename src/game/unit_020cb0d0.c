@@ -29,6 +29,27 @@ void Unk0cb0d0_Unk_0cb1f8(void)
 }
 
 int func_020cb1a0();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+int func_020cb274(u8 *p)
+{
+    u32 k = ((u32)FIELD(u16, p, 50) << 16) >> 28;
+    if (k == 14 || k == 1) {
+        u8 b = p[35];
+        if (b == 3 || b == 7) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int func_020cb2ec(s32 x)
+{
+    return x > 0x15e;
+}
+
 /* decompiler-derived */
 u32 Unk0cb0d0_Unk_0cb304(void)
 {
