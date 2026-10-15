@@ -46,3 +46,10 @@
 - `Unk0a7d54_FindByKey`: hand-matched
 - `Unk0a7d54_HasField8`: hand-matched
 - `Unk0a7d54_IsField8Is3`: hand-matched
+- `func_020a8ad0`: hand-matched
+- `func_020a8b00`: hand-matched
+- `func_020a8b70`: hand-matched
+- `func_020a8c04`: hand-matched
+- `func_020a91d4`: hand-matched
+- `func_020a9390`: hand-matched
+- `func_020a93b8`: hand-matched
