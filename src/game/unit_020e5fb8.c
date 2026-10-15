@@ -7,9 +7,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk094fe0_Thunk_0202e8cc();
-int func_020e61e8();
-int func_020e626c();
-int func_020e62a4();
+void func_020e61e8(u32 arg0,u32 arg1,u32 arg2);
+void func_020e626c(u32 arg0,u32 arg1);
+void func_020e62a4(u32 arg0,u32 arg1);
 int func_020e62e0();
 int func_020e6360();
 int func_020e63e0();
@@ -162,4 +162,29 @@ void Unk0e5fb8_Unk_0e649c(u32 arg0,u32 arg1)
   value = func_020e619c();
   func_0209500c(value,arg1 & 1);
   func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
+}
+
+int func_020950b4();
+/* decompiler-derived */
+void func_020e626c(u32 arg0,u32 arg1)
+{
+  u32 tmp1;
+  tmp1 = Unk0e5fb8_Unk_0e6158(arg1);
+  func_020950b4(arg0,tmp1);
+}
+
+/* decompiler-derived */
+void func_020e61e8(u32 arg0,u32 arg1,u32 arg2)
+{
+  u32 tmp1;
+  tmp1 = func_020e613c(arg1,arg2);
+  func_020950b4(arg0,tmp1);
+}
+
+/* decompiler-derived */
+void func_020e62a4(u32 arg0,u32 arg1)
+{
+  u32 tmp1;
+  tmp1 = Unk0e5fb8_Unk_0e6158(arg1);
+  func_0209502c(arg0,tmp1,1);
 }
