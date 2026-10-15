@@ -56,6 +56,42 @@ void Unk065e88_SetFlag3a(Unk065e88Flag *o, int on)
     o->unk_003a = on != 0;
 }
 
+extern u8 data_0214544c[];
+extern u8 data_02144e44[];
+u32 *func_020663d8(int i)
+{
+    if (i == 0) {
+        return (u32 *)data_0214544c;
+    }
+    if (i == 1) {
+        return (u32 *)data_02144e44;
+    }
+    /* no return for other i: the ROM falls through with i still in r0 */
+}
+
+int func_020663f8(int i)
+{
+    int n = 0;
+    switch (i) {
+    case 0:
+        n = 193;
+        break;
+    case 1:
+        n = 193;
+        break;
+    }
+    return n;
+}
+
+u32 *func_0206641c(int i, int n)
+{
+    n--;
+    if (n >= func_020663f8(i) - 1) {
+        n = 0;
+    }
+    return func_020663d8(i) + n;
+}
+
 /* Empty callback (no callers; likely a function-table entry). */
 void Unk065e88_Nop_066c90(void) { }
 
