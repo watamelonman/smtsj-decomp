@@ -17,7 +17,7 @@ Rules learned: define new functions before existing callers (address order) or o
 caller ~98%; ninja does not track header deps (touch includers after editing include/*.h); keep
 `forge.toml` reviewer = "none" only during hand batches.
 
-Candidate list: `candidates.py [maxsize]` writes `small.json` (ARM `func_` <= 0x50 bytes in C TUs, not yet
+Candidate list: `candidates.py [maxsize]` writes `small.json` (ARM `func_` <= maxsize bytes, default 0x50; current list built with 0x80 in C TUs, not yet
 defined, minus `skips.json`). Specs for each batch live in `specs/`. `hmerge.py` refuses to run unless
 forge.toml reviewer = "none"; names are only queued after a merged regate. Pass ONE card id to
 `forge regate` (several cards can own the same TU).
@@ -98,3 +98,7 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   The `if (i >= 0 && i < N) store;` form predicates the store (b67).
 - Three calls whose results are all tested at the end (`cmp r5; cmpne r4; cmpne r0`): assign every result to a local
   first, then test. `a && b && f()` short-circuits the third call (b66).
+- Retype pass: a `u32 X[]` global used as an object pointer can be retyped to `u8 *X` (`*X` -> `X`,
+  `(*X + off)` -> `(X + off)`); byte-identical, and new `FIELD(T, X, off)` stores then reload X as in ROM.
+- Jump-table switch: decode the handler order from the `b` targets (first `b` after addls is default);
+  write cases in handler-address order and let shared-default cases fall to `return` after the switch.
