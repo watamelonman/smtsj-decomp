@@ -100,7 +100,7 @@ int func_020152cc();
 void func_02013c3c();
 int Unk0e651c_Unk_0e666c();
 
-u16 func_0209d73c(u16 id)
+u16 Unk09d42c_Unk_09d73c(u16 id)
 {
     int tab = func_020445d0(9, 4);
     Unk09d42cMap *e = (Unk09d42cMap *)func_0204fde0(tab);

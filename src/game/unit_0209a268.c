@@ -197,7 +197,7 @@ void func_0209b3f8();
 void func_0209b5d8();
 void func_0209aebc();
 
-void func_0209ae60(Unk09ae60Ops *o)
+void Unk09a268_Unk_09ae60(Unk09ae60Ops *o)
 {
     o->size = 60;
     o->unk_04 = 0;

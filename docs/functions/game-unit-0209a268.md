@@ -36,7 +36,7 @@
 - `Unk09a268_Unk_09a3a0`
 - `func_0209a53c`
 - `Unk09a268_Unk_09beb0`
-- `func_0209ae60`
+- `Unk09a268_Unk_09ae60`
 - `func_0209a3ec`
 - `func_0209a970`
 - `func_0209be20`
@@ -76,4 +76,4 @@
 - `Unk09a268_SetCtxUnk2c30`: hand-matched
 - `Unk09a268_Unk_09c4a8`: hand-matched
 - `Unk09a268_IsType1`: hand-matched
-- `func_0209ae60`: hand-matched
+- `Unk09a268_Unk_09ae60`: hand-matched

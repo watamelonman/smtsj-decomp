@@ -19,7 +19,7 @@
 - `Unk09d42c_GetTable3Entry`
 - `Unk09d42c_MapId`
 - `func_0209e020`
-- `func_0209d73c`
+- `Unk09d42c_Unk_09d73c`
 
 ## Not done in M1-T708
 - `func_0209e33c`
@@ -46,4 +46,4 @@
 - `Unk09d42c_Unk_09df70`: hand-matched
 - `Unk09d42c_Unk_09e080`: hand-matched
 - `Unk09d42c_Unk_09e274`: hand-matched
-- `func_0209d73c`: hand-matched
+- `Unk09d42c_Unk_09d73c`: hand-matched
