@@ -58,3 +58,6 @@
 - `func_0211b100`
 - `func_0211a924`
 - `func_0211c24c`
+- `func_0211c670`: decompiler-derived (proto cleanup)
+- `func_0211c5d0`: decompiler-derived (proto cleanup)
+- `func_0211c610`: decompiler-derived (proto cleanup)

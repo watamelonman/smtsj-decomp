@@ -267,4 +267,54 @@ void BattleShowingTask_Unk_11a8dc(int arg0,u32 arg1)
   return;
 }
 
+int func_020493e0();
+int func_0204faf0();
+int func_02065628();
+int func_0206569c();
+int func_02065bc0();
+int func_02065cfc();
+/* decompiler-derived */
+void func_0211c670(int arg0)
+{
+  int tmp1;
+  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
+  func_0204faf0(6,*(u16 *)(tmp1 + 8));
+  func_02065bc0();
+  func_02065628(1);
+  func_020493e0(10);
+  func_0206569c();
+  func_02065cfc(1,0);
+}
 
+int func_02065864();
+/* decompiler-derived */
+void func_0211c5d0(int arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
+  func_0204faf0(6,*(u16 *)(tmp1 + 8));
+  func_02065bc0();
+  func_02065628(1);
+  tmp2 = func_020493e0(5);
+  func_02065864(tmp2,1);
+  func_02065cfc(1,0);
+}
+
+int func_0204fcb0();
+/* decompiler-derived */
+void func_0211c610(int arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
+  func_0204faf0(6,*(u16 *)(tmp1 + 8));
+  func_0204faf0(10,*(u16 *)(tmp1 + 0x1c));
+  tmp2 = Unk0caea8_Unk_0cb044(*(u16 *)(tmp1 + 0x1e));
+  func_0204fcb0(1,tmp2);
+  func_02065bc0();
+  func_02065628(1);
+  func_020493e0(6);
+  func_0206569c();
+  func_02065cfc(1,0);
+}
