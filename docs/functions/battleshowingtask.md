@@ -48,3 +48,13 @@
 - `func_0211a474`
 - `func_0211b1f4`
 - `func_02119940`
+
+## Not done in M1-T1034
+- `func_0211a614`
+- `func_0211c160`
+- `func_0211d050`
+- `func_0211a058`
+- `func_0211a380`
+- `func_0211b100`
+- `func_0211a924`
+- `func_0211c24c`
