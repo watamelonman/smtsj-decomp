@@ -104,3 +104,46 @@ u32 Unk03c6a4_Unk_03c6a4(void)
   *(u32 *)(value2 + 0x18) = 0x1c;
   return 3;
 }
+
+int func_0203ac00();
+int func_0203c748();
+
+int func_0203c954(void)
+{
+    s16 a = func_0203ac00(0);
+    int k = func_0203ac00(1);
+    int m;
+    m = 0;
+    switch (k) {
+    case 0:
+        break;
+    case 1:
+        m = 1;
+        break;
+    case 2:
+        m = 2;
+        break;
+    }
+    return func_0203c748(m, a, 0, 0, 0x101);
+}
+
+int func_0203c9c0(void)
+{
+    s16 a = func_0203ac00(0);
+    int b = func_0203ac00(1);
+    int k = func_0203ac00(2);
+    int m;
+    func_0203ac00(3);
+    m = 0;
+    switch (k) {
+    case 0:
+        break;
+    case 1:
+        m = 1;
+        break;
+    case 2:
+        m = 2;
+        break;
+    }
+    return func_0203c748(m, a, b, 0, 0);
+}
