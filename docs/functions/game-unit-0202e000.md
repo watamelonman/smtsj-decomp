@@ -82,3 +82,7 @@
 - `Unk02e000_GetSubBlock3a4`: hand-matched
 - `Unk02e000_GetWorkArea`: hand-matched
 - `Unk02e000_GetUnk094fe0Work`: hand-matched
+- `func_0202e090`: hand-matched
+- `func_0202e578`: hand-matched
+- `func_0202e590`: hand-matched
+- `func_0202e7a4`: hand-matched

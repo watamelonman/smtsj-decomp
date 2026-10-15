@@ -23,6 +23,23 @@ int Unk02e000_Unk_02e774(void);
 int Unk02e000_Unk_02e8b8(void);
 int Unk02e000_Unk_02e8f0(void);
 
+typedef struct Unk02e000Mgr {
+    u8 pad_0000[0x38];
+    u32 unk_0038;
+    u32 unk_003c;
+} Unk02e000Mgr;
+
+Unk02e000Mgr *Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void);
+
+void func_0202e090(void)
+{
+    Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (m != 0) {
+        m->unk_0038 = 0;
+        m->unk_003c = 0;
+    }
+}
+
 /* empty callback */
 void Unk02e000_Nop_02e3e0(void) { }
 
@@ -30,6 +47,20 @@ void Unk02e000_Nop_02e3e0(void) { }
 u32 Unk02e000_GetAddr_data_02140ac8(void)
 {
   return ((int)data_02140ac8);
+}
+
+void func_0202e4dc(u8 *rec);
+void func_0202e520(u8 *rec);
+
+/* 100-byte records starting at +500. */
+void func_0202e578(u8 *base, int i)
+{
+    func_0202e4dc(base + 500 + i * 100);
+}
+
+void func_0202e590(u8 *base, int i)
+{
+    func_0202e520(base + 500 + i * 100);
 }
 
 /* forwards to `Unk02e000_GetWorkArea` */
@@ -64,6 +95,12 @@ void Unk02e000_Unk_02e0ac(void)
 int Unk02e000_Unk_02e774(void)
 {
   return *(int *)(((int)data_0215dd24) + 4) + 0x98;
+}
+
+/* 60-byte records at +0x74 of the work area. */
+u8 *func_0202e7a4(int i)
+{
+    return Unk02e000_GetWorkArea() + 116 + i * 60;
 }
 
 /* decompiler-derived */
