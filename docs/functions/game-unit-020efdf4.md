@@ -7,3 +7,4 @@
 - `func_020eff38`
 - `func_020eff8c`
 - `func_020efdf4`
+- `func_020eff38`: hand-matched
