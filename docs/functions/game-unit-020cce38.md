@@ -12,7 +12,7 @@
 - `func_020ccea0`
 
 ## Not done in M1-T408
-- `func_020ccefc`
+- `Unk0cce38_Unk_0ccefc`
 - `func_020ccfe0`
 - `func_020cd200`
-- `func_020ccefc`: decompiler-derived (struct+fix cleanup)
+- `Unk0cce38_Unk_0ccefc`: decompiler-derived (struct+fix cleanup)

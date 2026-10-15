@@ -6,8 +6,8 @@
 
 ## Hard list
 - `func_020f7c90`: no candidate matched locally
-- `func_020f7ca8`: no candidate matched locally
-- `func_020f780c`: no candidate matched locally
+- `Unk0f7188_Unk_0f7ca8`: no candidate matched locally
+- `Unk0f7188_Unk_0f780c`: no candidate matched locally
 - `func_020f7c64`: no candidate matched locally
 - `func_020f7210`: no candidate matched locally
 - `Unk0f7188_Unk_0f7cc0`: decompiler-derived
@@ -27,5 +27,5 @@
 - `func_020f7888`
 - `func_020f7578`
 - `func_020f7248`
-- `func_020f780c`: decompiler-derived (plain+fix cleanup)
-- `func_020f7ca8`: decompiler-derived (plain+fix cleanup)
+- `Unk0f7188_Unk_0f780c`: decompiler-derived (plain+fix cleanup)
+- `Unk0f7188_Unk_0f7ca8`: decompiler-derived (plain+fix cleanup)

@@ -43,7 +43,7 @@ void Unk0f470c_Unk_0f4764(u32 arg0)
 
 int Unk0d1c98_Unk_0d1d94();
 int func_020ea630();
-int func_020f4b80();
+int Unk0f470c_Unk_0f4b80();
 /* decompiler-derived */
 void Unk0f470c_Unk_0f4c20(u32 arg0)
 {
@@ -53,7 +53,7 @@ void Unk0f470c_Unk_0f4c20(u32 arg0)
   if (value1 == 0) {
     return;
   }
-  func_020f4b80(arg0);
+  Unk0f470c_Unk_0f4b80(arg0);
   value2 = func_020ea630(8);
   Unk0d1c98_Unk_0d1d94(value2,0xffffffff);
 }
@@ -123,7 +123,7 @@ void Unk0f470c_Unk_0f4ac0(void)
 }
 
 /* decompiler-derived */
-int func_020f4b80(void)
+int Unk0f470c_Unk_0f4b80(void)
 {
   u32 tmp1;
   tmp1 = Unk0f8448_GetUnkField10();

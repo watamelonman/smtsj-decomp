@@ -79,7 +79,7 @@ int func_020de960();
 int func_020dea70();
 int func_02122abc();
 /* decompiler-derived */
-void func_020ccefc(u8 *arg0)
+void Unk0cce38_Unk_0ccefc(u8 *arg0)
 {
   u32 tmp1;
   func_020de960(arg0 + 8,0);

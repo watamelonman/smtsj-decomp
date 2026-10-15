@@ -3,7 +3,7 @@
 
 
 int func_0203ac00();
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 int func_0204fb14();
 /* decompiler-derived */
 u32 Unk03b988_Unk_03b9b8(void)
@@ -11,7 +11,7 @@ u32 Unk03b988_Unk_03b9b8(void)
   u16 value;
   value = func_0203ac00(0);
   func_0204fb14(value);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 

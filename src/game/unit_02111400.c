@@ -45,7 +45,7 @@ u32 Unk111400_Unk_111508(u32 arg0,u32 arg1,u32 arg2)
 extern u32 data_02176e4c[];
 extern u8 data_02151580[];
 /* decompiler-derived */
-void func_02111474(u32 arg0,u16 arg1,u32 arg2)
+void Unk111400_Unk_111474(u32 arg0,u16 arg1,u32 arg2)
 {
   u32 *v1;
   u16 *v2;

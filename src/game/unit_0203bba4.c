@@ -3,13 +3,13 @@
 
 
 int func_0202e788();
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 /* decompiler-derived */
 u32 Unk03bba4_Unk_03bcc0(void)
 {
   int value;
   value = func_0202e788();
-  func_0203acf4(*(u32 *)(value + 0x358));
+  Unk03aae8_Unk_03acf4(*(u32 *)(value + 0x358));
   return 1;
 }
 

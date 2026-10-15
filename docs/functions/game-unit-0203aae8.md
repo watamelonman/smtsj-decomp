@@ -7,7 +7,7 @@
 - `Unk03aae8_Unk_03af50`: decompiler-derived
 
 ## Not done in M1-T664
-- `func_0203acf4`
+- `Unk03aae8_Unk_03acf4`
 - `func_0203af14`
 - `func_0203b89c`
 - `Unk03aae8_Unk_03ac9c`: decompiler-derived
@@ -36,4 +36,4 @@
 - `func_0203b30c`
 - `func_0203b4a0`
 - `func_0203b158`
-- `func_0203acf4`: decompiler-derived (plain+fix cleanup)
+- `Unk03aae8_Unk_03acf4`: decompiler-derived (plain+fix cleanup)

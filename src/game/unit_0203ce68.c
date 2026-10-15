@@ -19,12 +19,12 @@ u32 Unk03ce68_Unk_03cfc4(void)
 }
 
 int func_0203ac00();
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03cf78(void)
 {
   func_0203ac00(0);
-  func_0203acf4(1);
+  Unk03aae8_Unk_03acf4(1);
   return 1;
 }
 
@@ -34,7 +34,7 @@ u32 Unk03ce68_Unk_03cff4(void)
 {
   func_0203ac00(0);
   func_0202ef0c();
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -45,7 +45,7 @@ u32 Unk03ce68_Unk_03cf94(void)
   u8 value;
   value = func_0203ac00(0);
   Unk0981dc_Unk_0981dc(value);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 

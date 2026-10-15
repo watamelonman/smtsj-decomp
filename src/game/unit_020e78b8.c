@@ -6,7 +6,7 @@ extern u8 data_02150bf4[];
 int func_020086a0();
 int func_0205dcd4();
 /* decompiler-derived; refs "Camp/Button/buttonhelp" */
-void func_020e7a30(u8 *arg0)
+void Unk0e78b8_Unk_0e7a30(u8 *arg0)
 {
   u32 tmp1;
   *data_02176cdc = (u32)(arg0);

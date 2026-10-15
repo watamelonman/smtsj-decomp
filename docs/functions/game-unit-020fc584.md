@@ -19,7 +19,7 @@
 - `func_020fc86c`
 - `func_020fc6b8`
 - `func_020fc7f4`
-- `func_020fc7b8`
+- `Unk0fc584_Unk_0fc7b8`
 - `Unk0fc584_Unk_0fc9fc`: decompiler-derived
 
 ## Not done in M1-T527
@@ -36,4 +36,4 @@
 - `func_020fca5c`
 - `func_020fcd18`
 - `Unk0fc584_LoadMoneyWindow`: decompiler-derived (plain cleanup)
-- `func_020fc7b8`: decompiler-derived (plain+fix cleanup)
+- `Unk0fc584_Unk_0fc7b8`: decompiler-derived (plain+fix cleanup)

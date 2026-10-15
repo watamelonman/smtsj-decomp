@@ -7,7 +7,7 @@
 - `Unk0ea208_Unk_0ead4c` (24 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020eb6cc`: no candidate matched locally
+- `Unk0ea208_Unk_0eb6cc`: no candidate matched locally
 - `func_020ea85c`: no candidate matched locally
 - `func_020eac24`: no candidate matched locally
 - `Unk0ea208_Unk_0eb308`: decompiler-derived
@@ -57,4 +57,4 @@
 - `func_020eb488`
 - `Unk0ea208_Unk_0ea878`: decompiler-derived (plain cleanup)
 - `Unk0ea208_Unk_0ea984`: decompiler-derived (plain cleanup)
-- `func_020eb6cc`: decompiler-derived (struct+fix cleanup)
+- `Unk0ea208_Unk_0eb6cc`: decompiler-derived (struct+fix cleanup)

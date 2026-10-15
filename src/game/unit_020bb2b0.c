@@ -12,14 +12,14 @@ void Unk0bb2b0_Thunk_020a1740(void) { func_020a1740(); }
 
 int func_0202eb0c();
 int func_0203ac00();
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 /* decompiler-derived */
 u32 Unk0bb2b0_Unk_0bb42c(void)
 {
   u16 value;
   value = func_0203ac00(0);
   func_0202eb0c(value);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 

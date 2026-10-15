@@ -62,7 +62,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020aa24c` (M1-T1076): left out of the card
 - `func_020ab4d4` (M1-T1076): left out of the card
 - `func_020afb40` (M1-T1076): left out of the card
-- `func_020eb6cc` (M1-T769): left out of the card
+- `Unk0ea208_Unk_0eb6cc` (M1-T769): left out of the card
 - `func_020ea85c` (M1-T769): left out of the card
 - `func_020eac24` (M1-T769): left out of the card
 - `func_020a21f8` (M1-T627): left out of the card
@@ -89,8 +89,8 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_0202d348` (M1-T575): left out of the card
 - `func_0202d36c` (M1-T575): left out of the card
 - `func_020f7c90` (M1-T621): left out of the card
-- `func_020f7ca8` (M1-T621): left out of the card
-- `func_020f780c` (M1-T621): left out of the card
+- `Unk0f7188_Unk_0f7ca8` (M1-T621): left out of the card
+- `Unk0f7188_Unk_0f780c` (M1-T621): left out of the card
 - `func_020f7c64` (M1-T621): left out of the card
 - `func_020f7210` (M1-T621): left out of the card
 - `func_021229b0` (M1-T110): card skipped

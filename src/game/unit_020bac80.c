@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int func_0202ef0c();
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 int Unk03aae8_Unk_03ad14();
 int Unk044904_Get_data_0215ee98();
 void func_02044ec4(void);
@@ -53,7 +53,7 @@ int Unk0bac80_Unk_0bae18(void)
 u32 Unk0bac80_Unk_0bae50(void)
 {
   func_0202ef0c();
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -62,7 +62,7 @@ u32 Unk0bac80_Unk_0bb298(void)
 {
   int value;
   value = Unk0bac80_Unk_0badc0();
-  func_0203acf4(*(u32 *)(value + 0x40));
+  Unk03aae8_Unk_03acf4(*(u32 *)(value + 0x40));
   return 1;
 }
 
@@ -90,7 +90,7 @@ u32 Unk0bac80_Unk_0bae34(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,2);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -101,7 +101,7 @@ u32 Unk0bac80_Unk_0bae64(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049f24(value,0);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -112,7 +112,7 @@ u32 Unk0bac80_Unk_0bae80(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,0);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -123,7 +123,7 @@ u32 Unk0bac80_Unk_0baf6c(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,1);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -134,7 +134,7 @@ u32 Unk0bac80_Unk_0baf88(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049f24(value,1);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -145,7 +145,7 @@ u32 Unk0bac80_Unk_0bb078(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,3);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -156,7 +156,7 @@ u32 Unk0bac80_Unk_0bb094(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,4);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -167,7 +167,7 @@ u32 Unk0bac80_Unk_0bb0b0(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,5);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -179,7 +179,7 @@ u32 Unk0bac80_Unk_0bb0cc(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,6);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -190,7 +190,7 @@ u32 Unk0bac80_Unk_0bb0e8(void)
   u32 value;
   value = Unk0bac80_Unk_0bae18();
   func_02049d80(value,7);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -222,10 +222,10 @@ u32 Unk0bac80_Unk_0bb104(void)
   value1 = func_0203ac00(0);
   if (value1 < 0xf) {
     value2 = func_0202e788();
-    func_0203acf4(*(u16 *)(value2 + value1 * 2 + 0x386));
+    Unk03aae8_Unk_03acf4(*(u16 *)(value2 + value1 * 2 + 0x386));
   }
   else {
-    func_0203acf4(0);
+    Unk03aae8_Unk_03acf4(0);
   }
   return 1;
 }

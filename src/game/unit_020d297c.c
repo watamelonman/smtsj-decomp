@@ -276,7 +276,7 @@ void Unk0d297c_Unk_0d3308(int arg0)
 }
 
 /* decompiler-derived */
-void func_020d3358(int arg0, int arg1)
+void Unk0d297c_Unk_0d3358(int arg0, int arg1)
 {
   u32 tmp1;
   if (((Unk0d297cWork *)arg0)->unk_0014 == 0) {

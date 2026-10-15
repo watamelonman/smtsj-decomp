@@ -2,13 +2,13 @@
 #include "types.h"
 
 
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 int func_0209eff8();
 /* decompiler-derived */
 u32 Unk03e23c_Unk_03e3d0(void)
 {
   func_0209eff8();
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 
@@ -20,6 +20,6 @@ u32 Unk03e23c_Unk_03e23c(void)
   u16 value;
   value = func_0203ac00(0);
   func_0202ee18(value);
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }

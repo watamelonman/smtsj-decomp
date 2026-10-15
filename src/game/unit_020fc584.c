@@ -149,7 +149,7 @@ void Unk0fc584_LoadMoneyWindow(int arg0,int arg1)
 int func_020fc734();
 int func_020fc86c();
 /* decompiler-derived */
-void func_020fc7b8(u32 arg0)
+void Unk0fc584_Unk_0fc7b8(u32 arg0)
 {
   int tmp1;
   int *v2;

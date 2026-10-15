@@ -3,14 +3,14 @@
 
 
 int func_0203ac00();
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 int func_0209993c();
 /* decompiler-derived */
 u32 Unk03cc58_Unk_03cd34(void)
 {
   func_0203ac00(0);
   func_0209993c();
-  func_0203acf4();
+  Unk03aae8_Unk_03acf4();
   return 1;
 }
 

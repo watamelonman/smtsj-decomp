@@ -2,11 +2,11 @@
 #include "types.h"
 
 
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 /* decompiler-derived */
 u32 Unk0bbd6c_Unk_0bbec0(void)
 {
-  func_0203acf4(0);
+  Unk03aae8_Unk_03acf4(0);
   return 1;
 }
 

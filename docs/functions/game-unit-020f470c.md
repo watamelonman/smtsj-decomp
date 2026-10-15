@@ -8,7 +8,7 @@
 
 ## Not done in M1-T370
 - `func_020f4928`
-- `func_020f4b80`
+- `Unk0f470c_Unk_0f4b80`
 - `func_020f49f4`
 
 ## Not done in M1-T372
@@ -24,4 +24,4 @@
 - `func_020f4994`
 - `func_020f4a60`
 - `func_020f4ba4`
-- `func_020f4b80`: decompiler-derived (plain+fix cleanup)
+- `Unk0f470c_Unk_0f4b80`: decompiler-derived (plain+fix cleanup)

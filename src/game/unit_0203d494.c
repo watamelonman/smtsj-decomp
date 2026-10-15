@@ -4,7 +4,7 @@
 
 int func_0201ea6c();
 int func_0203ac00();
-int func_0203acf4();
+int Unk03aae8_Unk_03acf4();
 int func_02097f68();
 int func_02098050();
 /* decompiler-derived */
@@ -21,6 +21,6 @@ u32 Unk03d494_Unk_03d5c8(void)
     func_02097f68(2);
     value2 = func_0201ea6c();
   }
-  func_0203acf4(value2);
+  Unk03aae8_Unk_03acf4(value2);
   return 1;
 }
