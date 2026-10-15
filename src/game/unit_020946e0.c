@@ -21,6 +21,14 @@ u32 Unk0946e0_Unk_0946e0(void);
 void Unk0946e0_Unk_094c50(int *arg0);
 void Unk0946e0_Unk_094a64(u32 arg0);
 
+void func_02094734(void *p)
+{
+    if (p == 0) {
+        return;
+    }
+    func_02008848(p, 0, 12);
+}
+
 /* decompiler-derived */
 int Unk0946e0_Unk_0948fc(int arg0)
 {

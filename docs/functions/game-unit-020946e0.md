@@ -32,3 +32,4 @@
 - `func_02094750`
 - `Unk0946e0_Unk_094b98`: decompiler-derived (proto cleanup)
 - `Unk0946e0_Unk_094d64`: decompiler-derived (proto cleanup)
+- `func_02094734`: hand-matched
