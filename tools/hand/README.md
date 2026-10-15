@@ -117,3 +117,7 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   func_0201ea6c = float->s32 (_ffix-style), func_0201eaa0 = float->u32, func_0201e9e8 = float->double;
   func_0201de2c/0201eb70/0201ed5c (0x21c/0x1e0/0x278) are the arithmetic ops (add/sub/mul/div, order unverified).
   The real names can only be confirmed by compiling float C with mwcc and reading the emitted relocations.
+- Float pass (b100): soft-float runtime names now in symbols.txt (_fadd/_fsub/_fmul/_fdiv, _fgr/_fgeq/_fls/_fleq/_feq/_fneq,
+  _ffix/_ffixu/_fflt/_ffltu/_f2d/_d2f, _dadd/_dmul/_ddiv/_dfix/_dflt/_dfltu, _dgr/_dgeq/_dls/_dleq/_deq/_dneq, _s32_div_f/_u32_div_f),
+  mapped from an mwcc reloc probe + routine behaviour. Plain float C now matches (CaveArea_Unk_0ed3cc etc.).
+  Unnamed still: 0201d458 (double->u64?), 0201d8c4 (sqrt-like), 0201e048, 0201efd4/0201f194 (64-bit div family, _ll_sdiv etc.).

@@ -102,24 +102,6 @@
 "tu": "src/ImageObj.c"
 },
 {
-"fn": "func_0209560c",
-"addr": "0x209560c",
-"size": "0x54",
-"tu": "src/game/unit_02095560.c"
-},
-{
-"fn": "func_0209596c",
-"addr": "0x209596c",
-"size": "0x64",
-"tu": "src/game/unit_02095560.c"
-},
-{
-"fn": "func_020959d0",
-"addr": "0x20959d0",
-"size": "0x5c",
-"tu": "src/game/unit_02095560.c"
-},
-{
 "fn": "func_02096484",
 "addr": "0x2096484",
 "size": "0x74",
