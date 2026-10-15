@@ -41,6 +41,14 @@ u32 Unk03ce68_Unk_03cf78(void)
 }
 
 int Unk02ee5c_GetTierFromField70();
+u8 *Unk02e000_Thunk_0202e788();
+int func_0203cfd4(void)
+{
+    func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(Unk02e000_Thunk_0202e788()[0x70]);
+    return 1;
+}
+
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03cff4(void)
 {

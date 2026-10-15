@@ -18,3 +18,4 @@
 - `func_0203ced0`
 - `func_0203d0f0`
 - `Unk03ce68_Unk_03cf48`: hand-matched
+- `func_0203cfd4`: hand-matched
