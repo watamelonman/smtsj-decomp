@@ -23,6 +23,24 @@ int Unk04bb9c_IsKind02Or32to34(int x)
     return 0;
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int GameState_GetBody();
+void Unk04bb9c_SetCtxUnk0c(s16 a, s16 b, u16 c);
+
+void func_0204c404(int x, int y)
+{
+    u8 *a;
+    u8 *b;
+    if (data_0215eea4 == 0) {
+        return;
+    }
+    a = (u8 *)GameState_GetBody();
+    b = (u8 *)GameState_GetBody();
+    Unk04bb9c_SetCtxUnk0c((s16)(x - FIELD(u8, FIELD(u8 *, a, 852), 8)), (s16)(y - FIELD(u8, FIELD(u8 *, b, 852), 9)), 20);
+}
+
 void Unk04bb9c_SetCtxUnk0c(s16 a, s16 b, u16 c)
 {
     if (data_0215eea4 == 0) {

@@ -4,3 +4,4 @@
 - `Unk04bb9c_SetCtxUnk0c`: hand-matched
 - `Unk04bb9c_IsCtxUnk8Clear`: hand-matched
 - `Unk04bb9c_GetCtxUnka20`: hand-matched
+- `func_0204c404`: hand-matched
