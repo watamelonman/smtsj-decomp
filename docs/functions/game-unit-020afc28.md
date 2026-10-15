@@ -36,3 +36,8 @@
 - `func_020b0974`
 - `func_020affc8`
 - `Unk0afc28_IsOrigin`: hand-matched
+- `func_020afc38`: hand-matched
+- `func_020afd60`: hand-matched
+- `func_020afd98`: hand-matched
+- `func_020b0654`: hand-matched
+- `func_020b0930`: hand-matched
