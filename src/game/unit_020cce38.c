@@ -7,10 +7,14 @@
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0cce38Work {
-    u8 pad_0000[0x7c];
+    u8 pad_0000[0x4];
+    u32 unk_0004;
+    u8 pad_0008[0x74];
     u32 unk_007c;
     u8 pad_0080[0x38];
     u32 unk_00b8;
+    u32 unk_00bc;
+    u32 unk_00c0;
 } Unk0cce38Work;
 
 void Unk0cce38_Nop_0cce70(void) { }
@@ -69,3 +73,30 @@ void Unk0cce38_Unk_0ccfac(int arg0)
   return;
 }
 
+int func_020525cc();
+int func_02052634();
+int func_020de960();
+int func_020dea70();
+int func_02122abc();
+/* decompiler-derived */
+void func_020ccefc(u8 *arg0)
+{
+  u32 tmp1;
+  func_020de960(arg0 + 8,0);
+  ImageBg_Unk_0e54d4(arg0[0x10]);
+  func_02122abc(((Unk0cce38Work *)arg0)->unk_007c);
+  Unk0bcef4_Unk_0bcef4(arg0 + 0x80,5,5,1);
+  tmp1 = func_020dea70(arg0 + 8);
+  Unk0bcef4_Unk_0bcef4(arg0 + 0x9c,tmp1,tmp1,1);
+  *data_02176bc8 = (u32)(arg0);
+  func_02052634(1,0,0x1f);
+  func_020525cc(0);
+  ((Unk0cce38Work *)arg0)->unk_00b8 = 8;
+  *arg0 = 0;
+  arg0[2] = 2;
+  arg0[1] = 0;
+  ((Unk0cce38Work *)arg0)->unk_00bc = 0;
+  ((Unk0cce38Work *)arg0)->unk_00c0 = 1;
+  ((Unk0cce38Work *)arg0)->unk_0004 = 1;
+  Unk0cb32c_Unk_0cb35c(arg0[0x11]);
+}

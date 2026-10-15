@@ -15,3 +15,4 @@
 - `func_020ccefc`
 - `func_020ccfe0`
 - `func_020cd200`
+- `func_020ccefc`: decompiler-derived (struct+fix cleanup)
