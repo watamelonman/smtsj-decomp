@@ -24,3 +24,52 @@ void func_0206fb70(int arg0,int arg1,int arg2,int arg3)
   return;
 }
 
+
+
+int func_02070094();
+int func_02070114();
+int func_02070168();
+int func_020701bc();
+int func_02070210();
+int func_02070264();
+int func_020702b8();
+int func_0207030c();
+int func_02070360();
+/* decompiler-derived */
+void func_0206feb4(u32 arg0,u32 arg1)
+{
+  func_02070094();
+  func_02070114(arg0,arg1);
+  func_02070168(arg0,arg1);
+  func_020701bc(arg0,arg1);
+  func_02070210(arg0,arg1);
+  func_02070264(arg0,arg1);
+  func_020702b8(arg0,arg1);
+  func_0207030c(arg0,arg1);
+  func_02070360(arg0,arg1);
+  return;
+}
+
+int func_020705f8();
+int func_02070758();
+int func_02070834();
+int func_02070950();
+int func_02070a6c();
+int func_02070b88();
+int func_02070cc0();
+int func_02070df8();
+int func_02070f30();
+/* decompiler-derived */
+void func_0206ff28(u32 arg0,u32 arg1)
+{
+  func_020705f8();
+  func_02070758(arg0,arg1);
+  func_02070834(arg0,arg1);
+  func_02070950(arg0,arg1);
+  func_02070a6c(arg0,arg1);
+  func_02070b88(arg0,arg1);
+  func_02070cc0(arg0,arg1);
+  func_02070df8(arg0,arg1);
+  func_02070f30(arg0,arg1);
+  return;
+}
