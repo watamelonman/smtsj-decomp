@@ -362,6 +362,74 @@ int ImageObj_Unk_077708(void)
     return 1;
 }
 
+extern u8 data_02145a54[];
+extern u8 data_02145a70[];
+extern u8 data_02145a88[];
+void func_02013c3c();
+int func_02095818();
+void Unk065e88_SetPair04();
+void func_02077efc(u32 o);
+void func_02077ea4();
+void func_020a1a24();
+int func_020777e0(void)
+{
+    Unk077Tbl *t = (Unk077Tbl *)ImageObj_Get_data_0217231c();
+    int i;
+    if (t == 0) {
+        return 0;
+    }
+    for (i = 0; i < 3; i++) {
+        u8 *e = (u8 *)t->e[i];
+        if (e != 0 && FIELD(u32, e, 0x48) == 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_02077a4c(void *o, int kind)
+{
+    switch (kind) {
+    case 0:
+        func_02013c3c(o, data_02145a54);
+        break;
+    case 1:
+        func_02013c3c(o, data_02145a70);
+        break;
+    case 2:
+        func_02013c3c(o, data_02145a88);
+        break;
+    }
+}
+
+int func_02077d68(s32 *o)
+{
+    if (o == 0) {
+        return 0;
+    }
+    if (o[0] != 2) {
+        return 0;
+    }
+    return FIELD(s32, o, 0x50) < 600;
+}
+
+void func_02077d98(u8 *o)
+{
+    int v;
+    switch (func_02095818()) {
+    case 0:
+        v = 8;
+        break;
+    case 2:
+        v = 8;
+        break;
+    default:
+        v = 0;
+        break;
+    }
+    Unk065e88_SetPair04(FIELD(u32, o, 0x68), 0, v);
+}
+
 /* decompiler-derived */
 void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
 {
@@ -405,4 +473,15 @@ void ImageObj_Release(ImageObjWork *work)
     func_0205bb68();
     work->unk_0010 = 0;
     work->unk_0000 = 0;
+}
+
+void func_02077efc(u32 o)
+{
+    u8 *t = (u8 *)ImageObj_Get_data_0217231c();
+    if (FIELD(u32, o, 0x68) == 0) {
+        return;
+    }
+    func_02061424(FIELD(u32, o, 0x68));
+    FIELD(u32, o, 0x68) = 0;
+    func_020a1a24(t + 52);
 }

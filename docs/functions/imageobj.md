@@ -81,3 +81,8 @@
 - `ImageObj_GetOrCreate`: hand-matched
 - `ImageObj_Unk_077554`: hand-matched
 - `ImageObj_Unk_077708`: hand-matched
+- `func_020777e0`: hand-matched
+- `func_02077a4c`: hand-matched
+- `func_02077d68`: hand-matched
+- `func_02077d98`: hand-matched
+- `func_02077efc`: hand-matched
