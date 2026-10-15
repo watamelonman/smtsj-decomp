@@ -15,7 +15,7 @@ typedef signed long long s64;
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
 /* Object passed as first arg; +0x13 is byte3 of unk_0010 (LE). */
 typedef struct Unk116598Work {
-    u8  pad_0000[0x4];
+    u32 unk_0000;
     s32 unk_0004;
     u32 unk_0008;
     s32 unk_000c;
@@ -76,7 +76,7 @@ void Unk116598_Unk_1168b8(void)
 void Unk116598_Unk_1172dc(void);
 void Unk116598_Unk_1177cc(u32 arg0);
 /* decompiler-derived */
-void Unk116598_Unk_116954(void)
+void Unk116598_Unk_116954(Unk116598Work *work)
 {
   Unk116598_Unk_1177cc(0);
   Unk116598_Unk_1172dc();
@@ -108,7 +108,7 @@ void Unk116598_Unk_117ae4(void)
 
 
 /* decompiler-derived */
-void Unk116598_Unk_117b80(void)
+void Unk116598_Unk_117b80(Unk116598Work *work)
 {
   Unk116598_Unk_1177cc(0);
   Unk116598_Unk_1172dc();
@@ -472,4 +472,52 @@ void Unk116598_Unk_1174a0(void)
 void Unk116598_Unk_1174b8(void)
 {
   *(u32 *)(*data_02176e60 + 0x18) = 0;
+}
+
+void func_02077314(void);
+int func_020443e4(int id);
+s32 func_02044428(int id);
+int func_02095b28(int id);
+void Unk02d15c_Unk_02d91c(int a, int b);
+void func_0202d86c(int a, int b, int c, int d);
+void func_02095f94(void);
+
+void func_021168cc(Unk116598Work *work)
+{
+    func_02077314();
+    Unk116598_Unk_11689c();
+    if (func_020443e4(30) == 0) {
+        work->unk_0010 = func_02044428(30);
+    }
+    if (func_02095b28(1) == 0) {
+        return;
+    }
+    Unk02d15c_Unk_02d91c(8, 1);
+    func_0202d86c(8, 41, 0, -1);
+    func_02095f94();
+    work->unk_0000 = 0;
+    work->unk_0004 = 3;
+    work->unk_0008 = 1;
+    work->unk_000c = 0;
+    Unk116598_Unk_116954(work);
+}
+
+void func_02117af8(Unk116598Work *work)
+{
+    func_02077314();
+    Unk116598_Unk_117ac8();
+    if (func_020443e4(30) == 0) {
+        work->unk_0010 = func_02044428(30);
+    }
+    if (func_02095b28(2) == 0) {
+        return;
+    }
+    Unk02d15c_Unk_02d91c(8, 2);
+    func_0202d86c(8, 42, 0, -1);
+    func_02095f94();
+    work->unk_0000 = 0;
+    work->unk_0004 = 13;
+    work->unk_0008 = 1;
+    work->unk_000c = 0;
+    Unk116598_Unk_117b80(work);
 }
