@@ -1,14 +1,18 @@
 /* src/game/unit_020f7eb4.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
-/* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0f7eb4Work {
-    u8 pad_0000[0x48];
+    u8  pad_0000[0x44];
+    u32 unk_0044;               /* +0x44  set to 1 on load */
     u32 unk_0048;
     u32 unk_004c;
     u32 unk_0050;
-    u8 unk_0054;
-    u8 pad_0055[0x2f];
+    u8  unk_0054;
+    u8  pad_0055[0x1f];
+    u32 bfData;                 /* +0x74  loaded Data/Battle/Event/%s.bf */
+    u32 mbbData;                /* +0x78  loaded Data/Battle/Event/%s.mbb */
+    u32 unk_007c;
+    u32 unk_0080;
     u32 unk_0084;
 } Unk0f7eb4Work;
 
@@ -72,4 +76,40 @@ u32 Unk0f7eb4_Unk_0f7eb4(u32 arg0)
     return 0xf;
   }
   return 0x12;
+}
+
+extern char data_02150e64[];
+extern char data_02150e7c[];
+extern char data_02150e98[];
+extern char data_02150ea4[];
+int func_02013c3c();
+int func_0204ae84();
+int func_0204aecc();
+int func_0204af70();
+int func_02051610();
+int func_02015118();
+int func_0204fdac();
+int func_0204fde0();
+int func_0204fe18();
+
+
+/* Loads battle event script `name` (Data/Battle/Event/%s.bf / .mbb). */
+void func_020f7f68(Unk0f7eb4Work *w, char *name, u32 arg2, u32 arg3)
+{
+    char path[64];
+    int msg;
+
+    w->unk_0044 = 1;
+    func_02013c3c(path, data_02150e64, name);
+    func_0204ae84(w);
+    func_0204aecc(w, path, 3);
+    func_0204af70(w, w);
+    func_02013c3c(path, data_02150e7c, name);
+    w->bfData = func_02051610(path);
+    func_02013c3c(path, data_02150ea4, name + func_02015118(data_02150e98));
+    w->mbbData = func_02051610(path);
+    msg = func_0204fdac(w->mbbData, 0);
+    w->unk_007c = func_0204fde0();
+    w->unk_0080 = func_0204fe18(msg);
+    Unk0f7eb4_Unk_0f8078(w);
 }
