@@ -388,7 +388,7 @@ int Unk02ee5c_GetTierFromField70();
 void *Unk02e000_Thunk_0202e788();
 int func_0209a158();
 
-void *func_02099e40(int id)
+void *Unk09974c_Unk_099e40(int id)
 {
     Unk09974cRec16 key;
     void *base;
@@ -403,7 +403,7 @@ void *func_02099e40(int id)
     return func_02011810(&key, base, n, 16, Unk09974c_Unk_0998b0);
 }
 
-int func_02099ea4(int id)
+int Unk09974c_Unk_099ea4(int id)
 {
     int tier = Unk02ee5c_GetTierFromField70();
     Unk09974cRec80 *r = (Unk09974cRec80 *)Unk09974c_Unk_099c60(id);
@@ -422,11 +422,11 @@ int func_02099ea4(int id)
     return 0;
 }
 
-void func_02099f24(int id)
+void Unk09974c_Unk_099f24(int id)
 {
     u16 *w;
     Unk09974cRec80 *r;
-    if (func_02099ea4(id) == 0) {
+    if (Unk09974c_Unk_099ea4(id) == 0) {
         return;
     }
     w = (u16 *)Unk02e000_Thunk_0202e788();
@@ -499,7 +499,7 @@ void Unk09974c_SetBit6ac(int id)
     f[i] |= (u8)(1 << (k & 7));
 }
 
-int func_0209a1e4(int id)
+int Unk09974c_Unk_09a1e4(int id)
 {
     if (func_0209a158(id) != 0) {
         return 0;

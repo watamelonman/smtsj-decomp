@@ -203,7 +203,7 @@ int Unk0e1648_Unk_0e2d28(u8 *p)
 }
 
 void Unk0e1648_Unk_0e51cc(u32 arg0, u32 arg1);
-int func_0209a1e4();
+int Unk09974c_Unk_09a1e4();
 void func_020e3174();
 int Unk0f3db4_Unk_0f4510();
 void func_020e5394();
@@ -211,7 +211,7 @@ int Unk0e1648_Unk_0e2db0(u16 *p)
 {
     int a = func_0209993c(p[0]);
     int b = p[1];
-    if (func_0209a1e4(p[0]) != 0) {
+    if (Unk09974c_Unk_09a1e4(p[0]) != 0) {
         return 0;
     }
     return b > a ? 1 : 2;

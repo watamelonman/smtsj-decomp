@@ -32,18 +32,18 @@
 - `Unk09974c_Unk_099abc`
 
 ## Not done in M1-T556
-- `func_02099f24`
-- `func_0209a1e4`
+- `Unk09974c_Unk_099f24`
+- `Unk09974c_Unk_09a1e4`
 - `Unk09974c_Unk_099bfc`
 - `Unk09974c_Unk_099c60`
 - `Unk09974c_Unk_099d14`
 - `Unk09974c_Unk_099d78`
 - `Unk09974c_Unk_099ddc`
-- `func_02099e40`
+- `Unk09974c_Unk_099e40`
 - `Unk09974c_Unk_0997c8`: decompiler-derived
 
 ## Not done in M1-T557
-- `func_02099ea4`
+- `Unk09974c_Unk_099ea4`
 - `func_02099a28`
 - `func_0209993c`
 - `func_02099b10`
@@ -65,7 +65,7 @@
 - `Unk09974c_Unk_099ddc`: hand-matched
 - `Unk09974c_Unk_0999d4`: hand-matched
 - `Unk09974c_Unk_099abc`: hand-matched
-- `func_02099e40`: hand-matched
-- `func_02099ea4`: hand-matched
-- `func_02099f24`: hand-matched
-- `func_0209a1e4`: hand-matched
+- `Unk09974c_Unk_099e40`: hand-matched
+- `Unk09974c_Unk_099ea4`: hand-matched
+- `Unk09974c_Unk_099f24`: hand-matched
+- `Unk09974c_Unk_09a1e4`: hand-matched
