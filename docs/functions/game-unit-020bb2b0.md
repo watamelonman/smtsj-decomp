@@ -18,3 +18,13 @@
 - `func_020bb3dc`
 - `func_020bb404`
 - `func_020bb490`
+- `func_020bb2b0`: hand-matched
+- `func_020bb2ec`: hand-matched
+- `func_020bb314`: hand-matched
+- `func_020bb33c`: hand-matched
+- `func_020bb364`: hand-matched
+- `func_020bb38c`: hand-matched
+- `func_020bb3b4`: hand-matched
+- `func_020bb3dc`: hand-matched
+- `func_020bb404`: hand-matched
+- `func_020bb490`: hand-matched
