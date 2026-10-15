@@ -20,13 +20,50 @@ typedef struct Unk039774List {
 extern Unk039774List data_0215de28;
 
 int func_020399f4();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+void func_02039774(u8 *n)
+{
+    if (data_0215de28.tail == 0) {
+        data_0215de28.head = n;
+        data_0215de28.tail = n;
+        FIELD(u8 *, n, 224) = 0;
+        FIELD(u8 *, n, 228) = 0;
+    } else {
+        FIELD(u8 *, n, 224) = data_0215de28.tail;
+        FIELD(u8 *, data_0215de28.tail, 228) = n;
+        FIELD(u8 *, n, 228) = 0;
+        data_0215de28.tail = n;
+    }
+    data_0215de28.count++;
+}
+
+void func_020397cc(u8 *n)
+{
+    if (data_0215de28.head == n) {
+        data_0215de28.head = FIELD(u8 *, n, 228);
+    } else {
+        FIELD(u8 *, FIELD(u8 *, n, 224), 228) = FIELD(u8 *, n, 228);
+    }
+    if (data_0215de28.tail == n) {
+        data_0215de28.tail = FIELD(u8 *, n, 224);
+    } else {
+        FIELD(u8 *, FIELD(u8 *, n, 228), 224) = FIELD(u8 *, n, 224);
+    }
+    FIELD(u8 *, n, 224) = 0;
+    FIELD(u8 *, n, 228) = 0;
+    data_0215de28.count--;
+}
+
 /* decompiler-derived */
 void Unk039774_Unk_039b00(u32 arg0)
 {
   func_020399f4(arg0,0);
 }
 
-int func_020397cc();
+void func_020397cc();
 int func_02053000();
 /* decompiler-derived */
 void Unk039774_Unk_039b10(int arg0)
