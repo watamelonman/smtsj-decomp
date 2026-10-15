@@ -19,3 +19,4 @@
 - `func_0206f0a4`
 - `func_0206f24c`
 - `Unk06ea70_Unk_06f4e4`: decompiler-derived (plain cleanup)
+- `func_0206ec50`: hand-matched
