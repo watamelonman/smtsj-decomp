@@ -11,6 +11,14 @@ typedef struct Unk039774Work {
     s32 unk_00dc;
 } Unk039774Work;
 
+/* intrusive list of objects (next at +0xe4, prev link at +0xe0/+0xe4). */
+typedef struct Unk039774List {
+    u8 *head;
+    s32 count;
+    u8 *tail;
+} Unk039774List;
+extern Unk039774List data_0215de28;
+
 int func_020399f4();
 /* decompiler-derived */
 void Unk039774_Unk_039b00(u32 arg0)
@@ -39,12 +47,6 @@ void Unk039774_Unk_039b10(int arg0)
   func_02053000(arg0);
 }
 
-typedef struct Unk039774List {
-    u8 *head;
-    s32 count;
-    u8 *tail;
-} Unk039774List;
-extern Unk039774List data_0215de28;
 void Unk039774_Unk_039b10(int arg0);
 void Unk039774_Unk_039b74(u32 key)
 {
