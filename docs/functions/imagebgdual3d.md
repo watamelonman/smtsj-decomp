@@ -51,3 +51,5 @@
 - `ImageBgDual3D_Unk_12594c`: decompiler-derived (plain cleanup)
 - `ImageBgDual3D_Unk_1258e8`: decompiler-derived (plain cleanup)
 - `ImageBgDual3D_Unk_125a90`: hand-matched
+- `func_02125984`: hand-matched
+- `func_02125998`: hand-matched
