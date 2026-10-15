@@ -20,3 +20,11 @@
 - `func_0206ab64`
 - `func_0206accc`
 - `func_0206adc0`
+
+## Not done in M1-T601
+- `func_0206ac54`
+- `func_0206ad40`
+- `func_0206abcc`
+- `func_0206aa70`
+- `func_0206a2ac`
+- `func_0206a3f4`
