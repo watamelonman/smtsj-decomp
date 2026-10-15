@@ -53,3 +53,5 @@
 - `ImageBgDual3D_Unk_125a90`: hand-matched
 - `ImageBgDual3D_Call_02117360`: hand-matched
 - `ImageBgDual3D_Call_02117400`: hand-matched
+- `func_02125910`: hand-matched
+- `func_02125c68`: hand-matched

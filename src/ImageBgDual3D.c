@@ -108,7 +108,7 @@ void ImageBgDual3D_Unk_1259e0(void)
 
 int Unk065e88_Unk_065e88();
 int func_020773dc();
-int func_02125c68();
+void func_02125c68();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125a68(void)
 {
@@ -215,7 +215,7 @@ u32 ImageBgDual3D_Unk_125618(int arg0)
 
 extern u32 data_02176e98[];
 int func_021257f4();
-int func_02125910();
+void func_02125910();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125cd4(u32 arg0)
 {
@@ -334,6 +334,27 @@ void Unk02d15c_Unk_02d91c(int a, int b);
 void Unk02d15c_Setup(int a, int b, int c, int d);
 void func_02095f94(void);
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u8 data_02176e90[];
+int func_02061698();
+int func_020616c0();
+extern u8 data_02152180[];
+u32 func_0205ba98();
+void ImageBgDual3D_Thunk_021255b4(void);
+void func_02125910(u32 x)
+{
+    u8 *q;
+    if (func_02061698(data_02176e90) == 0) {
+        return;
+    }
+    q = (u8 *)func_020616c0(data_02176e90);
+    ImageBgDual3D_Thunk_021255b4();
+    FIELD(u32, q, 128) = x;
+    FIELD(u32, q, 0) = 0;
+}
+
 void ImageBgDual3D_Unk_125a90(ImageBgDual3DWork *work)
 {
     func_02077314();
@@ -349,4 +370,12 @@ void ImageBgDual3D_Unk_125a90(ImageBgDual3DWork *work)
     work->unk_0008 = 1;
     work->unk_000c = 0;
     ImageBgDual3D_Unk_125afc(work);
+}
+
+void func_02125c68(void)
+{
+    if (*data_02176e98 != 0) {
+        return;
+    }
+    *data_02176e98 = func_0205ba98(0x28000, 0x800, data_02152180, 22);
 }
