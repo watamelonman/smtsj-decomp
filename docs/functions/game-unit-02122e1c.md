@@ -18,3 +18,13 @@
 - `func_02122fd0`
 - `func_021241cc`
 - `func_02122fac`
+- `func_02122ff0`: decompiler-derived
+- `func_02123294`: decompiler-derived
+- `func_0212306c`: decompiler-derived
+
+## Not done in M1-T749
+- `func_02123534`
+- `func_021230b4`
+- `func_02123340`
+- `func_02122e1c`
+- `func_021233e0`

@@ -121,3 +121,44 @@ void Unk122e1c_Unk_1232c8(int arg0)
   *(u8 *)(arg0 + 0x60) = 0;
   return;
 }
+
+
+
+/* decompiler-derived */
+void func_02122ff0(int arg0)
+{
+  func_020feec0();
+  Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x10));
+  *(int *)(arg0 + 0x114) = *(int *)(arg0 + 0x11c) + -1;
+  *(u8 *)(arg0 + 0x61) = 0;
+  *(u8 *)(arg0 + 0x60) = 3;
+  return;
+}
+
+
+/* decompiler-derived */
+void func_02123294(int arg0)
+{
+  func_020feec0();
+  Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x14));
+  *(int *)(arg0 + 0x114) = *(int *)(arg0 + 0x11c) + -1;
+  *(u8 *)(arg0 + 0x61) = 0;
+  *(u8 *)(arg0 + 0x60) = 7;
+  return;
+}
+
+int func_02122fac();
+/* decompiler-derived */
+void func_0212306c(int arg0)
+{
+  int tmp1;
+  tmp1 = 0;
+  *(int *)(arg0 + 0x114) = *(int *)(arg0 + 0x11c) + -1;
+  *(u8 *)(arg0 + 0x61) = 0;
+  *(u8 *)(arg0 + 0x60) = 5;
+  do {
+    func_02122fac(arg0,tmp1,0);
+    tmp1 = tmp1 + 1;
+  } while (tmp1 < 6);
+  return;
+}
