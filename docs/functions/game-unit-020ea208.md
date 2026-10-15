@@ -8,15 +8,15 @@
 
 ## Hard list
 - `Unk0ea208_Unk_0eb6cc`: no candidate matched locally
-- `func_020ea85c`: no candidate matched locally
-- `func_020eac24`: no candidate matched locally
+- `Unk0ea208_Unk_0ea85c`: no candidate matched locally
+- `Unk0ea208_Unk_0eac24`: no candidate matched locally
 - `Unk0ea208_Unk_0eb308`: decompiler-derived
 - `Unk0ea208_Unk_0eac80`: decompiler-derived
 - `Unk0ea208_Unk_0ead1c`: decompiler-derived
 - `Unk0ea208_Unk_0eae20`: decompiler-derived
 
 ## Not done in M1-T770
-- `func_020ea70c`
+- `Unk0ea208_Unk_0ea70c`
 - `Unk0ea208_GetField0`
 - `Unk0ea208_GetField4`
 - `Unk0ea208_GetField8`
@@ -26,23 +26,23 @@
 
 ## Not done in M1-T771
 - `Unk0ea208_GetFieldC`
-- `func_020ea570`
-- `func_020eb2a4`
-- `func_020ea828`
+- `Unk0ea208_GetField3c`
+- `Unk0ea208_ForEachSlot`
+- `Unk0ea208_Unk_0ea828`
 - `Unk0ea208_Unk_0ea390`
 - `Unk0ea208_Unk_0eade4`: decompiler-derived
 - `Unk0ea208_Unk_0eb264`: decompiler-derived
 - `Unk0ea208_Unk_0eae40`: decompiler-derived
 
 ## Not done in M1-T772
-- `func_020eac40`
+- `Unk0ea208_Unk_0eac40`
 - `func_020ead64`
 - `Unk0ea208_GetArr10`
-- `func_020ea524`
-- `func_020ea598`
+- `Unk0ea208_GetArr24`
+- `Unk0ea208_GetArr40`
 
 ## Not done in M1-T773
-- `func_020ea5e4`
+- `Unk0ea208_GetArr58`
 - `func_020ea6ac`
 - `func_020eacb4`
 - `func_020ea3cc`
@@ -64,13 +64,13 @@
 - `Unk0ea208_GetField8`: hand-matched
 - `Unk0ea208_GetFieldC`: hand-matched
 - `Unk0ea208_GetArr10`: hand-matched
-- `func_020ea524`: hand-matched
-- `func_020ea570`: hand-matched
-- `func_020ea598`: hand-matched
-- `func_020ea5e4`: hand-matched
-- `func_020ea70c`: hand-matched
-- `func_020ea828`: hand-matched
-- `func_020ea85c`: hand-matched
-- `func_020eac24`: hand-matched
-- `func_020eac40`: hand-matched
-- `func_020eb2a4`: hand-matched
+- `Unk0ea208_GetArr24`: hand-matched
+- `Unk0ea208_GetField3c`: hand-matched
+- `Unk0ea208_GetArr40`: hand-matched
+- `Unk0ea208_GetArr58`: hand-matched
+- `Unk0ea208_Unk_0ea70c`: hand-matched
+- `Unk0ea208_Unk_0ea828`: hand-matched
+- `Unk0ea208_Unk_0ea85c`: hand-matched
+- `Unk0ea208_Unk_0eac24`: hand-matched
+- `Unk0ea208_Unk_0eac40`: hand-matched
+- `Unk0ea208_ForEachSlot`: hand-matched

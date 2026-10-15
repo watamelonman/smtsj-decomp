@@ -21,7 +21,7 @@ int Unk0e8228_GetArr88Field20();
 void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1);
 void Unk0e8228_Unk_0e8e8c(u32 arg0);
 int func_020e9c00();
-int func_020ea5e4();
+int Unk0ea208_GetArr58();
 int Unk0ea208_Get_data_02176ddc();
 
 void Unk0e8228_Nop_0e93d4(void);
@@ -159,7 +159,7 @@ u16 Unk0e8228_Unk_0e8514(void)
 {
   u16 value1;
   int value2;
-  value2 = func_020ea5e4();
+  value2 = Unk0ea208_GetArr58();
   if (value2 == 0) {
     value1 = 0;
   }

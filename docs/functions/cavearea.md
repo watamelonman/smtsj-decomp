@@ -8,7 +8,7 @@
 
 ## Not done in M1-T971
 - `func_020ed60c`
-- `func_020ed1a8`
+- `CaveArea_AllocBuf`
 - `func_020ed3cc`
 
 ## Not done in M1-T972
@@ -41,4 +41,4 @@
 - `func_020ed3fc`
 - `func_020eb83c`
 - `CaveArea_LoadAreaLayout`: decompiler-derived (struct cleanup)
-- `func_020ed1a8`: hand-matched
+- `CaveArea_AllocBuf`: hand-matched

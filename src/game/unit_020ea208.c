@@ -109,14 +109,14 @@ u32 Unk0ea208_GetArr10(int i)
     return FIELD(u32, p + i * 4, 16);
 }
 
-void func_020eb2a4(u8 *p);
+void Unk0ea208_ForEachSlot(u8 *p);
 void func_020eb034();
 void func_020ea744();
 int Unk0e8228_Unk_0e8460();
 int Unk0e8228_GetArr40();
 int func_020445f4();
 int func_0204fed8();
-u32 func_020ea524(int i)
+u32 Unk0ea208_GetArr24(int i)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -131,7 +131,7 @@ u32 func_020ea524(int i)
     return FIELD(u32, p + i * 4, 36);
 }
 
-u32 func_020ea570(void)
+u32 Unk0ea208_GetField3c(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -143,7 +143,7 @@ u32 func_020ea570(void)
     return FIELD(u32, p, 60);
 }
 
-u32 func_020ea598(int i)
+u32 Unk0ea208_GetArr40(int i)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -158,7 +158,7 @@ u32 func_020ea598(int i)
     return FIELD(u32, p + i * 4, 64);
 }
 
-u32 func_020ea5e4(int i)
+u32 Unk0ea208_GetArr58(int i)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -173,11 +173,11 @@ u32 func_020ea5e4(int i)
     return FIELD(u32, p + i * 4, 88);
 }
 
-void func_020ea70c(void)
+void Unk0ea208_Unk_0ea70c(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p != 0 && FIELD(u32, p, 460) != 0) {
-        func_020eb2a4((u8 *)p);
+        Unk0ea208_ForEachSlot((u8 *)p);
     }
 }
 
@@ -216,7 +216,7 @@ u32 Unk0ea208_Unk_0ea72c(void)
   return value2;
 }
 
-void func_020ea828(void)
+void Unk0ea208_Unk_0ea828(void)
 {
     int n = Unk0e8228_Unk_0e8460();
     int i;
@@ -225,7 +225,7 @@ void func_020ea828(void)
     }
 }
 
-int func_020ea85c(void)
+int Unk0ea208_Unk_0ea85c(void)
 {
     return func_0204fed8(func_020445f4(39, 3), 1);
 }
@@ -260,14 +260,14 @@ void Unk0ea208_Unk_0eac80(void)
   func_02057524(4);
 }
 
-int func_020ea85c();
+int Unk0ea208_Unk_0ea85c();
 /* decompiler-derived */
 void Unk0ea208_Unk_0ead1c(void)
 {
   int value;
   value = Unk0e8228_Unk_0e8f38();
   if (value == 0) {
-    func_020ea85c();
+    Unk0ea208_Unk_0ea85c();
     return;
   }
   Unk0caea8_Unk_0cb044();
@@ -466,17 +466,17 @@ void Unk0ea208_Unk_0ea984(u32 arg0)
   func_0204fed8(tmp1,0);
 }
 
-int func_020eac24(void)
+int Unk0ea208_Unk_0eac24(void)
 {
     return func_0204fed8(func_020445f4(39, 4), 1);
 }
 
-void func_020eac40(u8 *p)
+void Unk0ea208_Unk_0eac40(u8 *p)
 {
     func_02061f10(FIELD(u32, p, 60), -1, 0, 3, func_0204fed8(func_020445f4(39, 2), 1));
 }
 
-void func_020eb2a4(u8 *p)
+void Unk0ea208_ForEachSlot(u8 *p)
 {
     int i;
     u8 *q = p + 112;

@@ -61,17 +61,17 @@ void Unk0f470c_Unk_0f4c20(u32 arg0)
 
 
 int Unk0e8228_GetArr40();
-int func_020ea70c();
+int Unk0ea208_Unk_0ea70c();
 int func_020ea744();
-int func_020ea828();
+int Unk0ea208_Unk_0ea828();
 /* decompiler-derived */
 void Unk0f470c_Unk_0f4958(int arg0)
 {
   u32 value;
   value = Unk0f8448_GetUnkField10(arg0 + 0x54);
-  func_020ea70c();
+  Unk0ea208_Unk_0ea70c();
   if (((Unk0f470cWork *)arg0)->unk_0050 != 0) {
-    func_020ea828();
+    Unk0ea208_Unk_0ea828();
     return;
   }
   Unk0e8228_GetArr40(value);

@@ -479,5 +479,16 @@
  "func_020ea460": "Unk0ea208_GetField4",
  "func_020ea488": "Unk0ea208_GetField8",
  "func_020ea4b0": "Unk0ea208_GetFieldC",
- "func_020ea4d8": "Unk0ea208_GetArr10"
+ "func_020ea4d8": "Unk0ea208_GetArr10",
+ "func_020ea524": "Unk0ea208_GetArr24",
+ "func_020ea570": "Unk0ea208_GetField3c",
+ "func_020ea598": "Unk0ea208_GetArr40",
+ "func_020ea5e4": "Unk0ea208_GetArr58",
+ "func_020ea70c": "Unk0ea208_Unk_0ea70c",
+ "func_020ea828": "Unk0ea208_Unk_0ea828",
+ "func_020ea85c": "Unk0ea208_Unk_0ea85c",
+ "func_020eac24": "Unk0ea208_Unk_0eac24",
+ "func_020eac40": "Unk0ea208_Unk_0eac40",
+ "func_020eb2a4": "Unk0ea208_ForEachSlot",
+ "func_020ed1a8": "CaveArea_AllocBuf"
 }
