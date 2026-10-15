@@ -22,3 +22,11 @@ void Unk124c5c_Unk_124d54(void)
 {
   func_02061424(*data_02176e88);
 }
+
+/* decompiler-derived */
+void func_02124e50(u32 arg0)
+{
+  if (*data_02176e88 != 0) {
+    *(u32 *)(*data_02176e88 + 0x14) = arg0;
+  }
+}

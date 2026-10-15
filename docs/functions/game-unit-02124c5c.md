@@ -17,3 +17,4 @@
 - `func_02124c5c`
 - `func_02124ce8`
 - `Unk124c5c_Unk_124d54`: decompiler-derived (plain cleanup)
+- `func_02124e50`: decompiler-derived (plain cleanup)
