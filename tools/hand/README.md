@@ -74,3 +74,7 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   printed as `strdeq r5,[r0],-ip`. Put a placeholder in, then read the real value from batch.py's word diff (b61).
 - ROM reloading `[p + i*4 + off]` after a call when FIELD() keeps it in a register: use a struct array member (`p->h[i]`) (b61).
 - merge_batch.py now skips TUs whose function list is empty (it used to stop on hmerge 'nocard') (b60).
+- `if (*g) return; *g = f();` where the ROM keeps the global in r1/r2: the function passes its own args straight to f.
+  Give it those params (`void Alloc(u32 a, u32 b) { ... = f(a, b); }`). This fixed 0210afd8 and the earlier 020fedf0 (b62/b63).
+- Defining a small function above its callers in the same file can drop those callers below 100% (likely auto-inlining):
+  UniteEvent_SetState, 020e55fc, 0211558c. gatecheck catches it; skip the callee rather than fighting it.
