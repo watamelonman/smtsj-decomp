@@ -410,6 +410,63 @@ void Unk095560_Unk_095598(void)
   *(u32 *)(tmp2 + 0x18) = 0xffffffff;
 }
 
+typedef struct Unk095560Rec {
+    u32 buf;
+    u8 pad_04[12];
+    u8 unk_10[4];
+    u32 unk_14;
+    u8 pad_18[56];
+    s32 id;
+} Unk095560Rec;
+int func_02053000();
+int func_020959d0(s32 a, s32 *out);
+
+int func_0209560c(int i)
+{
+    Unk095560Rec *r = (Unk095560Rec *)Unk02d15c_GetManagerRecord(i);
+    s32 *slot = (s32 *)Unk094fe0_Unk_094fec(i);
+    if (r->buf != 0) {
+        func_02053000(r->buf);
+        r->buf = 0;
+        r->unk_14 = 0;
+    }
+    r->id = -1;
+    *slot = -1;
+    func_0204af80(&r->unk_10);
+    return 1;
+}
+
+int func_0209596c(u32 a)
+{
+    s32 slot = -1;
+    switch (func_020959d0(a, &slot)) {
+    case 0:
+        return 0;
+    case 1:
+        break;
+    case 2:
+        return 1;
+    }
+    return Unk095560_Unk_095950(slot, a);
+}
+
+int func_020959d0(s32 a, s32 *out)
+{
+    int i;
+    for (i = 2; i < 8; i++) {
+        Unk095560Rec *r = (Unk095560Rec *)Unk02d15c_GetManagerRecord(i);
+        Unk094fe0_Unk_094fec(i);
+        if (r->id == a) {
+            return 2;
+        }
+        if (r->id == -1) {
+            *out = i;
+            return 1;
+        }
+    }
+    return 0;
+}
+
 int Unk095560_Unk_095b28(u32 x)
 {
     return Unk095560_Unk_095950(8, x) != 0;
