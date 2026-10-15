@@ -20,3 +20,13 @@
 - `func_0209d60c`
 - `func_0209e020`
 - `func_0209d73c`
+
+## Not done in M1-T708
+- `func_0209e33c`
+- `func_0209d44c`
+- `func_0209dfb0`
+- `func_0209e3a8`
+- `func_0209dadc`
+- `func_0209da38`
+- `func_0209d964`
+- `func_0209d500`
