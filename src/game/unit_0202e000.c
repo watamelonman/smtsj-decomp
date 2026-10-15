@@ -121,6 +121,10 @@ int Unk02e000_Unk_02e89c(int arg0)
   return *(int *)(((int)data_0215dd24) + 4) + 0x5d26 + arg0 * 4;
 }
 
-
-
-
+/* decompiler-derived */
+int func_0202e228(void)
+{
+  int tmp1;
+  tmp1 = Unk02e000_Unk_02e774();
+  return tmp1 + 0x5fc8;
+}
