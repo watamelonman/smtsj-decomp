@@ -16,3 +16,5 @@
 ## Not done in M1-T181
 - `func_0203bc40`
 - `func_0203bda0`
+- `func_0203bc88`: hand-matched
+- `func_0203bca4`: hand-matched

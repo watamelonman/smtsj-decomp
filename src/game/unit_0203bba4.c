@@ -4,6 +4,18 @@
 
 int Unk02e000_GetWorkArea();
 int Unk03aae8_Unk_03acf4();
+int func_0203bc88(void)
+{
+    Unk03aae8_Unk_03acf4(((s8 *)(u8 *)Unk02e000_GetWorkArea())[0x364]);
+    return 1;
+}
+
+int func_0203bca4(void)
+{
+    Unk03aae8_Unk_03acf4(((s8 *)(u8 *)Unk02e000_GetWorkArea())[0x365]);
+    return 1;
+}
+
 /* decompiler-derived */
 u32 Unk03bba4_Unk_03bcc0(void)
 {
