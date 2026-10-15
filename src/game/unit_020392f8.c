@@ -116,3 +116,21 @@ Unk0392f8Entry *Unk0392f8_GetEntry(Unk0392f8Set *s, u32 i)
     }
     return &s->entries[i];
 }
+
+u8 *func_020394b8(u8 **o, int x, int y)
+{
+    u8 *h;
+    int dx, dy;
+    if (o == 0) {
+        return 0;
+    }
+    h = o[0];
+    if (h != 0) {
+        dx = x - h[9];
+        dy = y - h[10];
+        if (dx >= 0 && dx < h[11] && dy >= 0 && dy < h[12]) {
+            return o[4] + (h[11] * dy + dx) * 2;
+        }
+    }
+    return 0;
+}
