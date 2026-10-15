@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 int func_0205e484();
 int func_020cb3dc();
-void Unk0cb32c_Unk_0cb4e4(u32 arg0,u32 arg1);
+int Unk0cb32c_Unk_0cb4e4(u32 arg0, u32 arg1);
 int Unk0cb32c_Unk_0cb564();
 int func_02122a78();
 int Unk122a78_Unk_122aa0();
@@ -146,14 +146,25 @@ void Unk0cb32c_Unk_0cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
 int func_020445f4();
 int func_0204fed8();
 /* decompiler-derived */
-void Unk0cb32c_Unk_0cb4e4(u32 arg0,u32 arg1)
+int Unk0cb32c_Unk_0cb4e4(u32 arg0, u32 arg1)
 {
-  u32 tmp1;
-  tmp1 = func_020445f4(0x1e,arg0);
-  func_0204fed8(tmp1,arg1);
+    return func_0204fed8(func_020445f4(0x1e, arg0), arg1);
 }
 
 int Unk0a0ce4_Unk_0a0da4();
+void func_02063920();
+int func_02063a30();
+void func_02061f10();
+int func_0205caa0();
+int func_0205ca88();
+int Unk0e651c_Unk_0e666c();
+int Unk122e1c_Unk_122f88();
+void func_020cb504(u32 a, u32 b, u32 c)
+{
+    func_02063920(a);
+    func_02061f10(a, -1, 0, 0, func_02063a30(Unk0cb32c_Unk_0cb4e4(b, c)));
+}
+
 /* decompiler-derived */
 void Unk0cb32c_Unk_0ccac8(int arg0,u32 arg1)
 {
@@ -179,4 +190,19 @@ int Unk0cb32c_Unk_0cb564(u32 arg0)
 {
   func_0205c41c();
   func_0205c6ec(arg0);
+}
+
+int func_020cb58c(u32 x)
+{
+    return func_0205caa0(x) >= func_0205ca88(x);
+}
+
+int func_020cb7f0(void)
+{
+    return Unk0e651c_Unk_0e666c(0x752) == 0;
+}
+
+int func_020cca80(u8 *p)
+{
+    return Unk122e1c_Unk_122f88(FIELD(u32, p, 148), 0, Unk0e651c_Unk_0e666c(0x5f1));
 }
