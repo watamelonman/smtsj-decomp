@@ -53,6 +53,18 @@ void Unk100810_Unk_104f18(u32 arg0,u32 arg1,u32 arg2)
 }
 
 int func_020537b8();
+extern u8 *data_02176e2c;
+void Unk100810_Unk_107154();
+void Unk0bc1a8_Unk_0bc928();
+void func_02008904();
+void func_021069c8(u32 a)
+{
+    if (data_02176e2c == 0) {
+        return;
+    }
+    func_02008904(a, data_02176e2c + 8128, 60);
+}
+
 /* decompiler-derived */
 void Unk100810_Unk_1070d8(Unk100810Work *arg0){
   int tmp1;
@@ -75,4 +87,10 @@ void Unk100810_Unk_1070d8(Unk100810Work *arg0){
   return;
 }
 
-
+int func_021071b8(void)
+{
+    if (data_02176e2c == 0) {
+        return 0;
+    }
+    return FIELD(u32, data_02176e2c, 80) == 1;
+}
