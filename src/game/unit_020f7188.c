@@ -12,6 +12,21 @@ void Unk0f7188_Nop_0f7884(void);
 void Unk0f7188_Nop_0f7ae0(void);
 void Unk0f7188_Nop_0f7ae4(void);
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+int func_020f7210(u8 *p)
+{
+    if (FIELD(u32, p, 8) != 10) {
+        return 0;
+    }
+    if (FIELD(u32, p, 20) != 0) {
+        return 0;
+    }
+    return FIELD(int, p, 16) >= FIELD(int, p, 28);
+}
+
 /* empty callback */
 void Unk0f7188_Nop_0f7884(void) { }
 

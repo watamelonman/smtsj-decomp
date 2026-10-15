@@ -30,3 +30,4 @@
 - `Unk0f7188_Unk_0f780c`: decompiler-derived (plain+fix cleanup)
 - `Unk0f7188_Unk_0f7ca8`: decompiler-derived (plain+fix cleanup)
 - `Unk0f7188_Call_02065cfc`: hand-matched
+- `func_020f7210`: hand-matched
