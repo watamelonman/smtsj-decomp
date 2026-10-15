@@ -15,8 +15,8 @@
 ## Not done in M1-T600
 - `Unk06a224_Unk_06a3a4`
 - `Unk06a224_Unk_06a998`
-- `func_0206aa0c`
-- `func_0206aafc`
+- `Unk06a224_Unk_06aa0c`
+- `Unk06a224_Unk_06aafc`
 - `func_0206ab64`
 - `func_0206accc`
 - `func_0206adc0`
@@ -35,5 +35,5 @@
 - `Unk06a224_Unk_06a374`: hand-matched
 - `Unk06a224_Unk_06a3a4`: hand-matched
 - `Unk06a224_Unk_06a998`: hand-matched
-- `func_0206aa0c`: hand-matched
-- `func_0206aafc`: hand-matched
+- `Unk06a224_Unk_06aa0c`: hand-matched
+- `Unk06a224_Unk_06aafc`: hand-matched

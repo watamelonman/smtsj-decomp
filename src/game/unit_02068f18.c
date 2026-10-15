@@ -32,7 +32,7 @@ typedef struct Unk068f18Ids {
     u16 ids[6];
 } Unk068f18Ids;
 
-void func_02069888(Unk068f18Ids *p, u16 *src)
+void Unk068f18_Unk_069888(Unk068f18Ids *p, u16 *src)
 {
     int i;
     int j;

@@ -122,7 +122,7 @@ typedef struct Unk06a224Msg {
 } Unk06a224Msg;
 void func_020bcbc4();
 
-void func_0206aa0c(void)
+void Unk06a224_Unk_06aa0c(void)
 {
     Unk06a224Msg m;
     int i;
@@ -137,7 +137,7 @@ void func_0206aa0c(void)
     func_020bcbc4(3, &m);
 }
 
-void func_0206aafc(u32 x)
+void Unk06a224_Unk_06aafc(u32 x)
 {
     Unk06a224Msg m;
     int i;
