@@ -28,6 +28,22 @@ void Unk0cd470_Unk_0cd470(Unk0cd470Work *arg0){
 int Unk095560_Unk_0956c8();
 int Unk0bc1a8_Unk_0bc9b4();
 int Unk0de678_Unk_0de870();
+void func_020cb3dc();
+void Unk095560_Unk_095a2c();
+int func_020de8b0();
+void Unk0cb32c_Unk_0cb32c();
+void Unk0bc1a8_Unk_0bc928();
+void func_020cd4d0(void)
+{
+    func_020cb3dc();
+    Unk095560_Unk_095a2c();
+    if (func_020de8b0(0) != 0) {
+        return;
+    }
+    Unk0cb32c_Unk_0cb32c();
+    Unk0bc1a8_Unk_0bc928(18, 0xffff, 0);
+}
+
 /* decompiler-derived */
 void Unk0cd470_Unk_0cd50c(void)
 {
