@@ -5,8 +5,8 @@
 - `Unk03dbbc_Unk_03dccc`: decompiler-derived
 
 ## Not done in M1-T156
-- `func_0203dbbc`
+- `Unk03dbbc_Unk_03dbbc`
 - `func_0203dc5c`
 - `func_0203dd98`
 - `func_0203dd08`
-- `func_0203dbbc`: hand-matched
+- `Unk03dbbc_Unk_03dbbc`: hand-matched

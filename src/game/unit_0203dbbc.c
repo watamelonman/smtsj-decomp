@@ -10,7 +10,7 @@ static inline void Unk03dbbc_SetSubState(u32 v, u8 *sub)
 }
 void func_0204cbc8();
 void func_0204c404();
-int func_0203dbbc(void)
+int Unk03dbbc_Unk_03dbbc(void)
 {
     s16 a = func_0203ac00(0);
     s16 b = func_0203ac00(1);

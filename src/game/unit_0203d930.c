@@ -11,7 +11,7 @@ static inline void Unk03d930_SetSubState(u32 v, u8 *sub)
 u8 *Unk095560_GetManager();
 void Unk09ee4c_Unk_09ef80();
 void Unk09d42c_Unk_09e2a4();
-int func_0203d930(void)
+int Unk03d930_Unk_03d930(void)
 {
     if (FIELD(u32, Unk095560_GetManager(), 0x3bc) == 0) {
         return 0;
@@ -21,7 +21,7 @@ int func_0203d930(void)
     return 3;
 }
 
-int func_0203d968(void)
+int Unk03d930_Unk_03d968(void)
 {
     Unk09d42c_Unk_09e2a4((s16)func_0203ac00(0));
     Unk03d930_SetSubState(15, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));

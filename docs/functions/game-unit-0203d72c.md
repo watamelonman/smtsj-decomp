@@ -6,11 +6,11 @@
 - `Unk03d72c_Unk_03d75c`: decompiler-derived
 
 ## Not done in M1-T028
-- `func_0203d72c`
-- `func_0203d890`
-- `func_0203d8c0`
-- `func_0203d7dc`
-- `func_0203d72c`: hand-matched
-- `func_0203d7dc`: hand-matched
-- `func_0203d890`: hand-matched
-- `func_0203d8c0`: hand-matched
+- `Unk03d72c_Unk_03d72c`
+- `Unk03d72c_Unk_03d890`
+- `Unk03d72c_Unk_03d8c0`
+- `Unk03d72c_Unk_03d7dc`
+- `Unk03d72c_Unk_03d72c`: hand-matched
+- `Unk03d72c_Unk_03d7dc`: hand-matched
+- `Unk03d72c_Unk_03d890`: hand-matched
+- `Unk03d72c_Unk_03d8c0`: hand-matched

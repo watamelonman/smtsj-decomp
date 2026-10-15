@@ -13,14 +13,14 @@ void Unk09d42c_Unk_09e2f4();
 void func_0209efb4();
 void func_0209ee80();
 void Unk09ee4c_Unk_09ef50();
-int func_0203d72c(void)
+int Unk03d72c_Unk_03d72c(void)
 {
     Unk09d42c_Unk_09e2f4((s16)func_0203ac00(0));
     Unk03d72c_SetSubState(15, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
     return 3;
 }
 
-int func_0203d7dc(void)
+int Unk03d72c_Unk_03d7dc(void)
 {
     int a = func_0203ac00(0);
     int b = func_0203ac00(1);
@@ -53,14 +53,14 @@ u32 Unk03d72c_Unk_03d85c(void)
 }
 
 int func_02095258();
-int func_0203d890(void)
+int Unk03d72c_Unk_03d890(void)
 {
     func_0209ee80((s16)func_0203ac00(0));
     Unk03d72c_SetSubState(15, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
     return 3;
 }
 
-int func_0203d8c0(void)
+int Unk03d72c_Unk_03d8c0(void)
 {
     Unk09ee4c_Unk_09ef50((s16)func_0203ac00(0));
     Unk03d72c_SetSubState(15, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
