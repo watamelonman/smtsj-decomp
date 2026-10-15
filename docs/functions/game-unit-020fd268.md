@@ -19,3 +19,7 @@
 - `func_020fd2fc`
 - `func_020fd4c4`
 - `func_020fd268`
+- `func_020fd364`: hand-matched
+- `func_020fd3c4`: hand-matched
+- `func_020fd428`: hand-matched
+- `func_020fd450`: hand-matched

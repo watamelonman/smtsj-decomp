@@ -20,6 +20,18 @@ typedef struct Unk0fd268Work {
 
 
 extern u32 data_02176e1c[];
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u8 *data_02176e18;
+int func_020fd364(void)
+{
+    if (data_02176e18 != 0) {
+        return FIELD(int, data_02176e18, 0);
+    }
+    return -1;
+}
+
 /* decompiler-derived */
 u32 Unk0fd268_Get_data_02176e1c(void)
 {
@@ -79,6 +91,19 @@ void Unk0fd268_Unk_0fd380(u32 arg0)
 extern u8 data_021510a4[];
 int Unk05b82c_Unk_05b82c();
 int func_0205dcd4();
+void func_020fd3c4(int flag)
+{
+    u32 p = Unk0fd268_Get_data_02176e1c();
+    if (p == 0) {
+        return;
+    }
+    if (flag != 0) {
+        FIELD(int, p, 16) = 3;
+    } else {
+        FIELD(int, p, 16) = -3;
+    }
+}
+
 /* decompiler-derived */
 void Unk0fd268_Unk_0fd574(u32 *arg0)
 {
@@ -121,4 +146,22 @@ void Unk0fd268_Unk_0fd3f0(int arg0)
   }
   *(u32 *)(tmp1 + 8) = 0;
   return;
+}
+
+int func_020fd428(void)
+{
+    u32 p = Unk0fd268_Get_data_02176e1c();
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(int, p, 8) == 0;
+}
+
+int func_020fd450(void)
+{
+    u32 p = Unk0fd268_Get_data_02176e1c();
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(int, p, 8) == -81;
 }
