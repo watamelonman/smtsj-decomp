@@ -14,7 +14,7 @@ static inline void Unk03c6a4_SetSubState(u32 v, u8 *sub)
 {
     FIELD(u32, sub, 0x18) = v;
 }
-int func_0203c718(void)
+int Unk03c6a4_Unk_03c718(void)
 {
     if (func_02065544() == 0) {
         return 3;

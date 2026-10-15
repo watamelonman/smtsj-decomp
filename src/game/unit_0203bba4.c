@@ -14,7 +14,7 @@ static inline void Unk03bba4_SetSubState(u32 v, u8 *sub)
 {
     FIELD(u32, sub, 0x18) = v;
 }
-int func_0203bba4(void)
+int Unk03bba4_Unk_03bba4(void)
 {
     Unk03bba4_SetSubState(19, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
     if (func_02095818() == 3) {
@@ -23,7 +23,7 @@ int func_0203bba4(void)
     return 3;
 }
 
-int func_0203bc40(void)
+int Unk03bba4_Unk_03bc40(void)
 {
     u16 id = func_0203ac00(0);
     if (func_02065544() == 0) {

@@ -94,7 +94,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020f7c64` (M1-T621): left out of the card
 - `func_020f7210` (M1-T621): left out of the card
 - `func_021229b0` (M1-T110): card skipped
-- `func_0203c608` (M1-T118): left out of the card
+- `Unk03c474_Unk_03c608` (M1-T118): left out of the card
 - `Unk0946e0_Clear12` (M1-T492): left out of the card
 - `Unk096754_CopyAreaPos` (M1-T559): left out of the card
 - `func_02096f28` (M1-T559): left out of the card

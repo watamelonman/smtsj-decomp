@@ -9,11 +9,11 @@
 - `Unk03c6a4_Unk_03c928`: decompiler-derived
 
 ## Not done in M1-T296
-- `func_0203c718`
+- `Unk03c6a4_Unk_03c718`
 - `Unk03c6a4_Unk_03c6a4`: decompiler-derived
 
 ## Not done in M1-T297
 - `func_0203c954`
 - `func_0203c9c0`
 - `func_0203c748`
-- `func_0203c718`: hand-matched
+- `Unk03c6a4_Unk_03c718`: hand-matched

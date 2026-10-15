@@ -181,7 +181,7 @@ static inline void Unk03c474_SetSubUnkC(u16 v, u8 *sub)
 {
     FIELD(u16, sub, 0x0c) = v;
 }
-int func_0203c608(void)
+int Unk03c474_Unk_03c608(void)
 {
     int v = func_0203ac00(0);
     if (v > 0) {

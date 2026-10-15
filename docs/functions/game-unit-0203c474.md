@@ -20,5 +20,5 @@
 - `Unk03c474_Unk_03c638` (108 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_0203c608`: no candidate matched locally
-- `func_0203c608`: hand-matched
+- `Unk03c474_Unk_03c608`: no candidate matched locally
+- `Unk03c474_Unk_03c608`: hand-matched
