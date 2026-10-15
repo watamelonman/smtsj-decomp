@@ -157,7 +157,7 @@ typedef struct Unk02f2a8Pos {
 } Unk02f2a8Pos;
 
 #define UNK02F2A8_RES36() ((Unk02f2a8Res36 *)func_0204fde0(func_020445d0(36, 0)))
-void func_02034ad4(u32 a, u32 b)
+void Unk02f2a8_SetRootUnk60(u32 a, u32 b)
 {
     FIELD(u32, gGameState->root, 0x60) = 1;
     FIELD(u32, gGameState->root, 0x64) = a;
@@ -169,7 +169,7 @@ void GameState_ClearRootUnk60(void)
     gGameState->root->unk_60 = 0;
 }
 
-void func_02034d5c(u16 a, u8 b, u8 c)
+void Unk02f2a8_SetField7470(u16 a, u8 b, u8 c)
 {
     FIELD(u32, gGameState, 0x7470) = 1;
     FIELD(u16, gGameState, 0x7474) = a;
@@ -182,7 +182,7 @@ u16 GameState_GetUnkField74f6(void)
     return gGameState->unk_74f6;
 }
 
-u8 *func_020353cc(void)
+u8 *Unk02f2a8_GetOptSub240(void)
 {
     GameState *gs = gGameState;
     if (gs == 0) {
@@ -194,7 +194,7 @@ u8 *func_020353cc(void)
     return 0;
 }
 
-u8 *func_020353f8(void)
+u8 *Unk02f2a8_GetOptSub2cc(void)
 {
     GameState *gs = gGameState;
     if (gs == 0) {
@@ -218,7 +218,7 @@ void Unk02f2a8_Call_02057660(void) { func_02057660(2, 0); }
 u16 GameState_GetUnkField74f4(void) { return gGameState->unk_74f4; }
 
 int func_020360d8();
-int func_02035a70(int a)
+int Unk02f2a8_Unk_035a70(int a)
 {
     Unk02f2a8Pos pos = {0};
     int r = func_02035890(&pos, a);
@@ -227,17 +227,17 @@ int func_02035a70(int a)
     return r;
 }
 
-s8 func_02035ab8(int i)
+s8 Unk02f2a8_GetRes36Unk19(int i)
 {
     return UNK02F2A8_RES36()[i].unk_0019;
 }
 
-s8 func_02035ae0(int i)
+s8 Unk02f2a8_GetRes36Unk1a(int i)
 {
     return UNK02F2A8_RES36()[i].unk_001a;
 }
 
-int func_02035bd8(int i, int j)
+int Unk02f2a8_GetRes36Unk1b(int i, int j)
 {
     Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
     s8 v = e->unk_001b[j];
@@ -310,7 +310,7 @@ u32 Unk02f2a8_Unk_034a8c(void)
   return tmp2;
 }
 
-int func_02035a70();
+int Unk02f2a8_Unk_035a70();
 int func_02044428();
 int func_02044534();
 int func_020f43d4();
@@ -321,7 +321,7 @@ void Unk02f2a8_Unk_035440(int arg0)
     arg0 = 1;
   }
   func_02044428(0x24);
-  func_02035a70(arg0);
+  Unk02f2a8_Unk_035a70(arg0);
   func_02044534(0x24);
   func_020f43d4();
 }
@@ -487,7 +487,7 @@ void Unk02f2a8_Unk_02f378(int arg0)
   func_02035edc(arg0 + 0x7c,arg0 + 0x70);
 }
 
-void func_02034ad4();
+void Unk02f2a8_SetRootUnk60();
 int func_0205257c();
 /* decompiler-derived */
 void Unk02f2a8_Unk_032f3c(int *arg0)
@@ -496,7 +496,7 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
   Unk0a4e48_Unk_0a4e9c(3);
   func_0205e590(9);
   ScanVisor_Unk_0a2660();
-  func_02034ad4(0x800,0xf);
+  Unk02f2a8_SetRootUnk60(0x800,0xf);
   arg0[0x1d1e] = 0;
   arg0[0x1d1f] = 0;
   *(u8 *)(arg0 + 0x1d20) = 0;

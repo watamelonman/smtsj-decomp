@@ -262,7 +262,7 @@ extern char data_0214c854[];
 extern char data_0214c874[];
 void func_02013c3c(char *buf, const char *fmt, ...);
 u8 *Unk02e000_GetWorkArea(void);
-u32 func_02035ab8(u16 n);
+u32 Unk02f2a8_GetRes36Unk19(u16 n);
 int func_02096448(int id);
 
 /* Mission/progress record returned by Unk02d15c_GetManagerRecord. */
@@ -283,7 +283,7 @@ void func_02095b48(char *buf, int id)
     }
     if (id == 0) {
         n = *(u16 *)(Unk02e000_GetWorkArea() + 0x35c);
-        v = func_02035ab8(n);
+        v = Unk02f2a8_GetRes36Unk19(n);
         if (n >= 0x3d4) {
             v = 99;
         }
