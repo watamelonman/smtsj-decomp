@@ -176,6 +176,27 @@ void Unk0946e0_Unk_094b98(int arg0)
 }
 
 int func_02094c74();
+typedef struct Unk0946e0Task {
+    u32 unk_00;
+    s32 unk_04;
+    s32 unk_08;
+    u32 unk_0c;
+    u8 unk_10;
+} Unk0946e0Task;
+void *func_020611dc();
+void Unk0946e0_Unk_094b98(int arg0);
+void Unk09d060_Unk_09d170();
+
+void func_02094bd4(int a, u32 b, u8 c)
+{
+    Unk0946e0Task *t = (Unk0946e0Task *)func_020611dc(Unk0946e0_Unk_094b98, 0, 0, 0, 20, 0, 0, 0);
+    t->unk_08 = -1;
+    t->unk_0c = b;
+    t->unk_04 = ((100 - a) << 8) / 100;
+    t->unk_10 = c;
+    Unk09d060_Unk_09d170(t);
+}
+
 /* decompiler-derived */
 void Unk0946e0_Unk_094d64(int arg0)
 {
