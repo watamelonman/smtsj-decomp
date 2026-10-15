@@ -38,6 +38,16 @@ void Unk0e1648_Unk_0e5434(void);
 int Unk0e1648_Unk_0e1648(void);
 int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,int arg1);
 
+typedef struct Unk0e1648Obj {
+    u8 pad_0000[0xeec];
+    u8 unk_0eec;
+} Unk0e1648Obj;
+
+int func_020e2d6c(Unk0e1648Obj *o)
+{
+    return o->unk_0eec != 0xff;
+}
+
 /* decompiler-derived */
 u32 Unk0e1648_Unk_0e5240(int arg0,int arg1)
 {

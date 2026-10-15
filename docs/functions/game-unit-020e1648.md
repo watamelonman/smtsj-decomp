@@ -75,3 +75,4 @@
 - `Unk0e1648_Unk_0e5214`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)
 - `Unk0e1648_Unk_0e48a8`: decompiler-derived (struct cleanup)
+- `func_020e2d6c`: hand-matched
