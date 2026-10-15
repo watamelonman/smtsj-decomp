@@ -19,6 +19,19 @@ void Unk044904_Unk_044e90(int arg0);
 int Unk044904_Unk_045fd4(void);
 void Unk044904_Unk_044ea8(void);
 
+typedef struct Unk044904Rec {
+    u8 pad_0000[0x8];
+    u16 unk_08;
+} Unk044904Rec;
+
+Unk044904Rec *func_02044948(u32 a, u32 b);
+
+void func_02044b68(u32 a, u32 b, int n)
+{
+    Unk044904Rec *r = func_02044948(a, b);
+    r->unk_08 += n;
+}
+
 /* returns 1 */
 int Unk044904_GetConst1(void) { return 1; }
 
