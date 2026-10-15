@@ -63,3 +63,28 @@ int func_020c75a8(u16 *arg0,u16 *arg1)
   }
   return tmp1;
 }
+
+
+int func_020537b8();
+/* decompiler-derived */
+void func_020c2050(int arg0)
+{
+  int tmp1;
+  tmp1 = func_020537b8(0,0x40);
+  if (tmp1 != 0) {
+    *(u32 *)(arg0 + 0x150) = 1;
+  }
+  tmp1 = func_020537b8(0,0x80);
+  if (tmp1 != 0) {
+    *(u32 *)(arg0 + 0x154) = 1;
+  }
+  tmp1 = func_020537b8(0,0x20);
+  if (tmp1 != 0) {
+    *(u32 *)(arg0 + 0x158) = 1;
+  }
+  tmp1 = func_020537b8(0,0x10);
+  if (tmp1 != 0) {
+    *(u32 *)(arg0 + 0x15c) = 1;
+  }
+  return;
+}
