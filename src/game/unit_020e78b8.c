@@ -5,6 +5,18 @@ extern u32 data_02176cdc[];
 extern u8 data_02150bf4[];
 int func_020086a0();
 int func_0205dcd4();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u32 data_02176cd8[];
+int func_020e78b8(void)
+{
+    if (*data_02176cd8 == 0) {
+        return 0;
+    }
+    return FIELD(u32, *data_02176cd8, 16) == 5;
+}
+
 /* decompiler-derived; refs "Camp/Button/buttonhelp" */
 void Unk0e78b8_Unk_0e7a30(u8 *arg0)
 {
