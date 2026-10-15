@@ -20,3 +20,13 @@
 - `func_020b3570`
 - `func_020b5264`
 - `func_020b5e2c`
+
+## Not done in M1-T1039
+- `func_020b6104`
+- `func_020b61f0`
+- `func_020b63b4`
+- `func_020b5ccc`
+- `func_020b593c`
+- `func_020b4dd8`
+- `func_020b49cc`
+- `func_020b5adc`
