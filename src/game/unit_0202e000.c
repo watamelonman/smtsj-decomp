@@ -170,6 +170,19 @@ int Unk02e000_Unk_02e740(int arg0)
   return *(char *)(tmp1 + 0x28) != '\0';
 }
 
+/* Work area at +4 of the Unk02e000_Unk_02e774 block. */
+u8 *func_0202e788(void)
+{
+    return (u8 *)Unk02e000_Unk_02e774() + 4;
+}
+
+
+/* Unk094fe0Work block at +0xCFC of the Unk02e000_Unk_02e774 block. */
+u8 *func_0202e8cc(void)
+{
+    return (u8 *)Unk02e000_Unk_02e774() + 0xcfc;
+}
+
 /* Pointer to the +0x3A4 sub-block of the func_0202e788 work area. */
 u8 *Unk02e000_GetSubBlock3a4(void)
 {

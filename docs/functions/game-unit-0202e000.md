@@ -80,3 +80,5 @@
 - `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
 - `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)
 - `Unk02e000_GetSubBlock3a4`: hand-matched
+- `func_0202e788`: hand-matched
+- `func_0202e8cc`: hand-matched
