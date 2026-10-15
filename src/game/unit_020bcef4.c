@@ -91,3 +91,22 @@ void func_020bd368(int arg0,int arg1)
   func_020bd5f0((*(int *)(arg1 + 0x10) - *(int *)(arg1 + 8)) * 0xc + arg0);
   return;
 }
+
+
+int func_020bd070();
+int func_020bd54c();
+/* decompiler-derived */
+u32 func_020bd29c(int arg0,int *arg1)
+{
+  int tmp1;
+  tmp1 = 0;
+  if (0 < *arg1) {
+    do {
+      func_020bd070(arg0,1,0);
+      func_020bd54c(arg0,0);
+      tmp1 = tmp1 + 1;
+      arg0 = arg0 + 0xc;
+    } while (tmp1 < *arg1);
+  }
+  return 1;
+}
