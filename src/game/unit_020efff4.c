@@ -43,7 +43,7 @@ void Unk0efff4_ClearArrF8(Unk0efff4Obj *p)
     }
 }
 
-void func_020f0098(float *p, int v)
+void Unk0efff4_Unk_0f0098(float *p, int v)
 {
     if (v < 0) {
         *p = 0.0f;

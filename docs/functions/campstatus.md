@@ -35,7 +35,7 @@
 - `func_020d3624`
 - `func_020db2dc`
 - `func_020dca50`
-- `func_020dd308`
+- `CampStatus_Unk_0dd308`
 - `func_020d35c0`
 - `func_020dcad4`
 - `func_020db214`
@@ -84,4 +84,4 @@
 - `CampStatus_Unk_0d51cc`: hand-matched
 - `CampStatus_Copy12c`: hand-matched
 - `CampStatus_Unk_0dcaac`: hand-matched
-- `func_020dd308`: hand-matched
+- `CampStatus_Unk_0dd308`: hand-matched

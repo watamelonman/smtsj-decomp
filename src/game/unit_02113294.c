@@ -258,7 +258,7 @@ int Unk113294_Unk_11558c(Unk113294Ids *p)
     return 0;
 }
 
-int func_02115778(int a, int b, int c)
+int Unk113294_Unk_115778(int a, int b, int c)
 {
     return ((float *)(data_0215159c + a * 220))[b * 11 + c] != 0.0f;
 }

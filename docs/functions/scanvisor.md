@@ -78,7 +78,7 @@
 ## Not done in M1-T991
 - `func_020a4df0`
 - `ScanVisor_LoadSearchParts`
-- `func_020a3274`
+- `ScanVisor_Unk_0a3274`
 - `func_020a30b4`
 - `func_020a466c`
 - `func_020a2c90`
@@ -120,4 +120,4 @@
 - `ScanVisor_FindSlotByKey`: hand-matched
 - `ScanVisor_AnySlotField14`: hand-matched
 - `ScanVisor_AllSlotsF28Is80`: hand-matched
-- `func_020a3274`: hand-matched
+- `ScanVisor_Unk_0a3274`: hand-matched

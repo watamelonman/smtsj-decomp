@@ -304,7 +304,7 @@ void CampStatus_Unk_0dcaac(void)
     FIELD(s16, data_02176be4, 270) = -80;
 }
 
-void func_020dd308(s32 *v, s32 add, int n, s32 *cnt, float *out)
+void CampStatus_Unk_0dd308(s32 *v, s32 add, int n, s32 *cnt, float *out)
 {
     int i;
     for (i = 0; i < n; i++) {

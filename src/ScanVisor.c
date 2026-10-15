@@ -862,7 +862,7 @@ void ScanVisor_Unk_0a3254(ScanVisor *p)
 int GameState_Exists();
 void *Unk02e000_GetWorkArea();
 
-s8 func_020a3274(void)
+s8 ScanVisor_Unk_0a3274(void)
 {
     u8 *w;
     s16 a;
