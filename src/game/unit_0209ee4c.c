@@ -92,3 +92,29 @@ u16 Unk09ee4c_GetField3c0Bits(void)
     }
     return (u16)((FIELD(u32, gs + 28672, 960) << 12) >> 22);
 }
+
+int func_02044ec4();
+int func_020a1740();
+int func_0209f550();
+void Unk044904_ClearSlotsUnk1de();
+void func_0209f034();
+int func_0209f5d8(u32 a, u32 id)
+{
+    u8 *e;
+    if (((id >> 16) & 0xff) != 2) {
+        return -1;
+    }
+    e = (u8 *)func_02044ec4(id);
+    e = (u8 *)func_020a1740(FIELD(u16, e + 256, 216));
+    return func_0209f550(a, id, e[3], 0);
+}
+
+void func_0209fd14(u32 a, u32 b)
+{
+    int j;
+    Unk044904_ClearSlotsUnk1de(a);
+    for (j = 0; j < 4; j++) {
+        func_0209f034(0, a, a, b, 1);
+        b += 22;
+    }
+}

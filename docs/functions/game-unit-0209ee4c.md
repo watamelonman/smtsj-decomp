@@ -24,3 +24,5 @@
 - `Unk09ee4c_Call_0204f68c`: hand-matched
 - `Unk09ee4c_Unk_09efb4`: hand-matched
 - `Unk09ee4c_GetField3c0Bits`: hand-matched
+- `func_0209f5d8`: hand-matched
+- `func_0209fd14`: hand-matched
