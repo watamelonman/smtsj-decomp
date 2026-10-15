@@ -127,3 +127,4 @@ void func_020fc9fc(int *arg0)
   *data_02176e14 = 0;
   return;
 }
+
