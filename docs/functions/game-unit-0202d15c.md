@@ -46,3 +46,8 @@
 - `Unk02d15c_Setup`: hand-matched
 - `Unk02d15c_ResetRecord`: hand-matched
 - `Unk02d15c_FindRecordEntry`: hand-matched
+- `func_0202d22c`: hand-matched
+- `func_0202d2a0`: hand-matched
+- `func_0202d794`: hand-matched
+- `func_0202d8a8`: hand-matched
+- `func_0202d954`: hand-matched
