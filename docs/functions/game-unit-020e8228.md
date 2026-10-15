@@ -115,3 +115,14 @@
 - `Unk0e8228_Call_02008848`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)
+- `func_020e8260`: hand-matched
+- `func_020e8374`: hand-matched
+- `func_020e83ac`: hand-matched
+- `func_020e83e8`: hand-matched
+- `func_020e8424`: hand-matched
+- `func_020e849c`: hand-matched
+- `func_020e85a0`: hand-matched
+- `func_020e8b54`: hand-matched
+- `func_020e8be8`: hand-matched
+- `func_020e8c80`: hand-matched
+- `func_020e8ce8`: hand-matched

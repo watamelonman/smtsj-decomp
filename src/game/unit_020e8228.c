@@ -534,6 +534,145 @@ void Unk0e8228_Call_02008848(void)
   func_02008848(data_02176ce4,0,0xf8);
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u8 data_02176ce4[];
+void Unk0e8228_Unk_0e9f18(u32 *arg0);
+void Unk0e8228_Unk_0e9f38(u32 *arg0, u32 arg1);
+int func_020e9ca8();
+int func_020e9b54();
+int func_020e9748();
+int func_02044ec4();
+int func_0204a244();
+u8 *func_020982c0();
+void func_020e8260(u32 i)
+{
+    u8 *base = data_02176ce4;
+    if (i == 0) {
+        Unk0e8228_Unk_0e9f18((u32 *)(base + 8));
+        return;
+    }
+    if (i >= 1 && i <= 3) {
+        Unk0e8228_Unk_0e9f38((u32 *)(base + 32 + (i - 1) * 24), 0);
+    }
+}
+
+int func_020e8374(u32 x)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    return func_020e9ca8(p, x);
+}
+
+int func_020e83ac(int i)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 4) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 4, 48);
+}
+
+int func_020e83e8(int i)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 12) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 4, 88);
+}
+
+int func_020e8424(int i)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 6) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 4, 64);
+}
+
+int func_020e849c(int i)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    u8 *q;
+    if (p == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 60) {
+        return 0;
+    }
+    q = FIELD(u8 *, p + i * 4, 136);
+    return q == 0 ? 0 : FIELD(u16, q, 32);
+}
+
+int func_020e85a0(void)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 4) == 1;
+}
+
+int func_020e8b54(void)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 12) == 1;
+}
+
+int func_020e8be8(void)
+{
+    u32 p;
+    switch (func_0204a244(func_02044ec4(func_020e83ac(0)))) {
+    case 1:
+    case 7:
+    case 11:
+        return 0;
+    }
+    p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    return func_020e9b54(p);
+}
+
+int func_020e8c80(void)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    return func_020e9748(p);
+}
+
+int func_020e8ce8(u32 x)
+{
+    u8 *v;
+    if (x == 0) {
+        return 0;
+    }
+    v = func_020982c0((s8)func_0204a244(x));
+    if (v == 0) {
+        return 1;
+    }
+    return (s8)v[2];
+}
+
 /* decompiler-derived */
 void Unk0e8228_Unk_0e8e8c(u32 arg0)
 {
