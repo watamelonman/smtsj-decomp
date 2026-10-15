@@ -4,14 +4,14 @@
 
 extern u8 data_0216a730[];
 int func_02008848();
-void func_0205b540(void)
+void Unk05b540_Clear(void)
 {
     func_02008848(data_0216a730, 0, 0xc18);
 }
 
-void func_0205b560(u32 a, u32 b, u32 c)
+void Unk05b540_Init(u32 a, u32 b, u32 c)
 {
-    func_0205b540();
+    Unk05b540_Clear();
     FIELD(u32, data_0216a730, 0xc0c) = a;
     FIELD(u32, data_0216a730, 0xc10) = b + c;
     FIELD(u32, data_0216a730, 0xc14) = b;

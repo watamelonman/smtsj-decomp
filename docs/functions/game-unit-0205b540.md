@@ -6,9 +6,9 @@
 - `Unk05b540_Unk_05b7ec`: decompiler-derived
 
 ## Not done in M1-T244
-- `func_0205b540`
-- `func_0205b560`
+- `Unk05b540_Clear`
+- `Unk05b540_Init`
 - `func_0205b724`
 - `func_0205b598`
-- `func_0205b540`: hand-matched
-- `func_0205b560`: hand-matched
+- `Unk05b540_Clear`: hand-matched
+- `Unk05b540_Init`: hand-matched

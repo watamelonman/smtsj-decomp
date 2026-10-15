@@ -14,15 +14,15 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 ## Not done in M1-T1018
 - `Unk065e88_Call_02065fc0`
 - `Unk065e88_SetFlag3a`
-- `func_020663d8`
+- `Unk065e88_GetTable`
 - `Unk065e88_Unk_06644c`: decompiler-derived
 - `Unk065e88_Unk_065e88`: decompiler-derived
 - `Unk065e88_Unk_066258`: decompiler-derived
 - `Unk065e88_Unk_067d30`: decompiler-derived
 
 ## Not done in M1-T1019
-- `func_020663f8`
-- `func_0206641c`
+- `Unk065e88_GetTableCount`
+- `Unk065e88_GetTableEntry`
 - `func_020672b4`
 - `func_02068564`
 - `Unk065e88_Unk_065f30`: decompiler-derived
@@ -57,6 +57,6 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `func_02066d30`
 - `Unk065e88_Call_02065fc0`: hand-matched
 - `Unk065e88_SetFlag3a`: hand-matched
-- `func_020663d8`: hand-matched
-- `func_020663f8`: hand-matched
-- `func_0206641c`: hand-matched
+- `Unk065e88_GetTable`: hand-matched
+- `Unk065e88_GetTableCount`: hand-matched
+- `Unk065e88_GetTableEntry`: hand-matched

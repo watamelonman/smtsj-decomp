@@ -12,54 +12,6 @@
 "tu": "src/game/unit_02047568.c"
 },
 {
-"fn": "func_020477e4",
-"addr": "0x20477e4",
-"size": "0x38",
-"tu": "src/game/unit_02047788.c"
-},
-{
-"fn": "func_02047834",
-"addr": "0x2047834",
-"size": "0x50",
-"tu": "src/game/unit_02047788.c"
-},
-{
-"fn": "func_02047fb4",
-"addr": "0x2047fb4",
-"size": "0x48",
-"tu": "src/game/unit_02047fb4.c"
-},
-{
-"fn": "func_020484d0",
-"addr": "0x20484d0",
-"size": "0x50",
-"tu": "src/BattleTask.c"
-},
-{
-"fn": "func_0204c13c",
-"addr": "0x204c13c",
-"size": "0x28",
-"tu": "src/game/unit_0204bb9c.c"
-},
-{
-"fn": "func_0204c464",
-"addr": "0x204c464",
-"size": "0x3c",
-"tu": "src/game/unit_0204bb9c.c"
-},
-{
-"fn": "func_0204c4a0",
-"addr": "0x204c4a0",
-"size": "0x2c",
-"tu": "src/game/unit_0204bb9c.c"
-},
-{
-"fn": "func_0204cbc8",
-"addr": "0x204cbc8",
-"size": "0x20",
-"tu": "src/game/unit_0204bb9c.c"
-},
-{
 "fn": "func_0205afec",
 "addr": "0x205afec",
 "size": "0x40",

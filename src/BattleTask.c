@@ -53,7 +53,7 @@ int BattleTask_Unk_0481d4(void)
 }
 
 void func_02049c28();
-int BattleTask_CompareKeys(u32 *a, u32 *b)
+int BattleTask_Unk_0484d0(u32 *a, u32 *b)
 {
     s16 x = 256;
     s16 y = 256;

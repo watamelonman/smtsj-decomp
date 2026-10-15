@@ -58,7 +58,7 @@ void Unk065e88_SetFlag3a(Unk065e88Flag *o, int on)
 
 extern u8 data_0214544c[];
 extern u8 data_02144e44[];
-u32 *func_020663d8(int i)
+u32 *Unk065e88_GetTable(int i)
 {
     if (i == 0) {
         return (u32 *)data_0214544c;
@@ -69,7 +69,7 @@ u32 *func_020663d8(int i)
     /* no return for other i: the ROM falls through with i still in r0 */
 }
 
-int func_020663f8(int i)
+int Unk065e88_GetTableCount(int i)
 {
     int n = 0;
     switch (i) {
@@ -83,13 +83,13 @@ int func_020663f8(int i)
     return n;
 }
 
-u32 *func_0206641c(int i, int n)
+u32 *Unk065e88_GetTableEntry(int i, int n)
 {
     n--;
-    if (n >= func_020663f8(i) - 1) {
+    if (n >= Unk065e88_GetTableCount(i) - 1) {
         n = 0;
     }
-    return func_020663d8(i) + n;
+    return Unk065e88_GetTable(i) + n;
 }
 
 /* Empty callback (no callers; likely a function-table entry). */

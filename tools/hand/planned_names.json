@@ -129,5 +129,16 @@
  "func_0204c13c": "Unk04bb9c_IsKind02Or32to34",
  "func_0204c464": "Unk04bb9c_SetCtxPos",
  "func_0204c4a0": "Unk04bb9c_IsCtxIdle",
- "func_0204cbc8": "Unk04bb9c_GetCtxUnka20"
+ "func_0204cbc8": "Unk04bb9c_GetCtxUnka20",
+ "Unk04bb9c_SetCtxPos": "Unk04bb9c_SetCtxUnk0c",
+ "Unk04bb9c_IsCtxIdle": "Unk04bb9c_IsCtxUnk8Clear",
+ "BattleTask_CompareKeys": "BattleTask_Unk_0484d0",
+ "func_0205afec": "Unk05ae50_Unk_05afec",
+ "func_0205b200": "Unk05ae50_Reset",
+ "func_0205b30c": "Unk05ae50_WaitVCountThen_05af64",
+ "func_0205b540": "Unk05b540_Clear",
+ "func_0205b560": "Unk05b540_Init",
+ "func_020663d8": "Unk065e88_GetTable",
+ "func_020663f8": "Unk065e88_GetTableCount",
+ "func_0206641c": "Unk065e88_GetTableEntry"
 }

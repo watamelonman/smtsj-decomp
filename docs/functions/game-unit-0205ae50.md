@@ -18,14 +18,14 @@
 - `Unk05ae50_Unk_05af64`: decompiler-derived
 
 ## Not done in M1-T426
-- `func_0205b200`
-- `func_0205afec`
-- `func_0205b30c`
+- `Unk05ae50_Reset`
+- `Unk05ae50_Unk_05afec`
+- `Unk05ae50_WaitVCountThen_05af64`
 - `func_0205b4c4`
 - `func_0205b444`
 - `func_0205b154`
 - `func_0205b398`
 - `Unk05ae50_Unk_05af2c`: decompiler-derived (chain+fix cleanup)
-- `func_0205afec`: hand-matched
-- `func_0205b200`: hand-matched
-- `func_0205b30c`: hand-matched
+- `Unk05ae50_Unk_05afec`: hand-matched
+- `Unk05ae50_Reset`: hand-matched
+- `Unk05ae50_WaitVCountThen_05af64`: hand-matched

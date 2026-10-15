@@ -33,7 +33,7 @@ u32 Unk05ae50_Unk_05af3c(Unk05ae50Work *work);
 int func_02008848();
 int func_02052624();
 void Unk05ae50_Unk_05af64(int *arg0);
-int func_0205afec(int x)
+int Unk05ae50_Unk_05afec(int x)
 {
     s32 vc = *(volatile u16 *)0x04000006;
     int lim;
@@ -47,7 +47,7 @@ int func_0205afec(int x)
     return x & ~3;
 }
 
-void func_0205b200(void)
+void Unk05ae50_Reset(void)
 {
     func_02008848(data_0216a184, 0, 0x5ac);
     Unk05ae50_Unk_05afd8(0x18000);
@@ -66,7 +66,7 @@ void Unk05ae50_Unk_05ae50(void)
   func_0205ae60();
 }
 
-void func_0205b30c(int *x)
+void Unk05ae50_WaitVCountThen_05af64(int *x)
 {
     if (func_02052624() < 31) {
         while ((s32)*(volatile u16 *)0x04000006 < 191 || (s32)*(volatile u16 *)0x04000006 > 213) {

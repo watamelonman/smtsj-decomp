@@ -93,7 +93,7 @@ void func_02051dd0(int plane, const char *name);
 void func_02058290(int plane, const char *name);
 void func_02053fd0(int a);
 void func_02051eb4(u32 a);
-void func_0205b560(int a, int b, int c);
+void Unk05b540_Init(int a, int b, int c);
 void func_020552ec(int a, int b);
 void func_02058300(int plane, const char *name);
 void func_02054b14(int a, int b, int c, int d);
@@ -111,7 +111,7 @@ void Unk02cad4_SetupDisplayMode(int mode, u32 unused, u32 arg)
         func_02058290(0, data_0213d854);
         func_02053fd0(1);
         func_02051eb4(arg);
-        func_0205b560(0, 0, 0x1000);
+        Unk05b540_Init(0, 0, 0x1000);
         func_020552ec(1, 0);
         func_020552ec(0, 1);
         break;
@@ -125,7 +125,7 @@ void Unk02cad4_SetupDisplayMode(int mode, u32 unused, u32 arg)
         func_02054b14(6, 1, 0, 1);
         func_02056424(1, 0, 0);
         func_02051eb4(arg);
-        func_0205b560(0, 0, 0x1400);
+        Unk05b540_Init(0, 0, 0x1400);
         func_020552ec(1, 0);
         func_020552ec(0, 1);
         func_020552ec(6, 1);
@@ -141,7 +141,7 @@ void Unk02cad4_SetupDisplayMode(int mode, u32 unused, u32 arg)
         func_02054b14(6, 1, 0, 1);
         func_02056424(1, 0, 0);
         func_02051eb4(arg);
-        func_0205b560(0, 0, 0x1400);
+        Unk05b540_Init(0, 0, 0x1400);
         func_020552ec(1, 0);
         func_020552ec(0, 1);
         func_020552ec(6, 1);
@@ -152,7 +152,7 @@ void Unk02cad4_SetupDisplayMode(int mode, u32 unused, u32 arg)
         func_02058290(0, data_0213d894);
         func_02053fd0(1);
         func_02051eb4(arg);
-        func_0205b560(0, 0, 0x1000);
+        Unk05b540_Init(0, 0, 0x1000);
         func_020552ec(1, 0);
         func_020552ec(0, 1);
         func_02058458();

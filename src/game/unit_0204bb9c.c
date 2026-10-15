@@ -23,7 +23,7 @@ int Unk04bb9c_IsKind02Or32to34(int x)
     return 0;
 }
 
-void Unk04bb9c_SetCtxPos(u16 a, u16 b, u16 c)
+void Unk04bb9c_SetCtxUnk0c(u16 a, u16 b, u16 c)
 {
     if (data_0215eea4 == 0) {
         return;
@@ -34,7 +34,7 @@ void Unk04bb9c_SetCtxPos(u16 a, u16 b, u16 c)
     data_0215eea4->unk_0010 = c;
 }
 
-int Unk04bb9c_IsCtxIdle(void)
+int Unk04bb9c_IsCtxUnk8Clear(void)
 {
     if (data_0215eea4 == 0) {
         return 1;
