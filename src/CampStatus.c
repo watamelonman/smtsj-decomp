@@ -111,6 +111,24 @@ extern u8 data_021507f4[];
 int func_02013c3c();
 int func_02051610();
 int func_0205b444();
+void Unk05b82c_Unk_05b82c();
+void func_020ca5a4();
+void func_020119a0();
+void func_020d51cc(void)
+{
+    int i;
+    for (i = 59; i <= 64; i++) {
+        Unk05b82c_Unk_05b82c(i);
+    }
+    func_020ca5a4(0);
+    func_020ca5a4(2);
+}
+
+void func_020d6c88(void *src)
+{
+    func_020119a0((u8 *)data_02176be4 + 300, src, 60);
+}
+
 /* decompiler-derived */
 u32 CampStatus_Unk_0db338(int arg0,u32 arg1)
 {
@@ -278,4 +296,10 @@ void CampStatus_SetUnk240(u8 a, u8 b)
 void CampStatus_GetLinkUnk14(u32 *out)
 {
     *out = (*data_02176be4->unk_002c)->unk_0014;
+}
+
+void func_020dcaac(void)
+{
+    FIELD(u32, data_02176be4, 244) = 0;
+    FIELD(s16, data_02176be4, 270) = -80;
 }

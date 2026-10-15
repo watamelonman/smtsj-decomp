@@ -81,3 +81,6 @@
 - `CampStatus_SetUnk240`: hand-matched
 - `CampStatus_GetLinkUnk14`: hand-matched
 - `CampStatus_GetTableByte`: hand-matched
+- `func_020d51cc`: hand-matched
+- `func_020d6c88`: hand-matched
+- `func_020dcaac`: hand-matched
