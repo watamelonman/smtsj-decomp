@@ -40,7 +40,7 @@ typedef struct Unk02e000Save {
     u32 counter_5fc4;          /* +0x5FC4, capped at 35999999 */
 } Unk02e000Save;
 
-void func_0202e000(int i, u32 v)
+void Unk02e000_SetSlot(int i, u32 v)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (m == 0) {
@@ -52,7 +52,7 @@ void func_0202e000(int i, u32 v)
     m->slots[i] = v;
 }
 
-u32 func_0202e034(int i)
+u32 Unk02e000_GetSlot(int i)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (m == 0) {
@@ -64,7 +64,7 @@ u32 func_0202e034(int i)
     return m->slots[i];
 }
 
-void func_0202e070(u32 a, u32 b)
+void Unk02e000_SetMgrUnk38(u32 a, u32 b)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
     if (m != 0) {
@@ -82,7 +82,7 @@ void Unk02e000_ClearMgrUnk38(void)
     }
 }
 
-void func_0202e114(void)
+void Unk02e000_EnsureAlloc7718(void)
 {
     if (data_0215dd24[1] != 0) {
         return;
@@ -90,7 +90,7 @@ void func_0202e114(void)
     data_0215dd24[1] = func_02052fe0(0x7718);
 }
 
-void func_0202e1f8(int add)
+void Unk02e000_AddCounter5fc4(int add)
 {
     Unk02e000Save *w = (Unk02e000Save *)Unk02e000_Unk_02e774();
     u32 v = w->counter_5fc4 + add;

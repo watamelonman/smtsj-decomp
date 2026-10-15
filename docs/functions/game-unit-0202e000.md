@@ -21,13 +21,13 @@
 - `Unk02e000_Unk_02e144`: decompiler-derived
 
 ## Not done in M1-T652
-- `func_0202e070`
+- `Unk02e000_SetMgrUnk38`
 - `func_0202e904`
 - `Unk02e000_Unk_02e0cc`
 - `func_0202e440`
-- `func_0202e114`
-- `func_0202e1f8`
-- `func_0202e000`
+- `Unk02e000_EnsureAlloc7718`
+- `Unk02e000_AddCounter5fc4`
+- `Unk02e000_SetSlot`
 - `Unk02e000_Unk_02e75c`: decompiler-derived
 - `Unk02e000_Unk_02e884`: decompiler-derived
 - `Unk02e000_Unk_02e89c`: decompiler-derived
@@ -42,7 +42,7 @@
 ## Not done in M1-T653
 - `func_0202e7c0`
 - `Unk02e000_Unk_02e180`
-- `func_0202e034`
+- `Unk02e000_GetSlot`
 - `func_0202eb0c`
 - `func_0202e1b8`
 - `func_0202e4dc`
@@ -86,8 +86,8 @@
 - `Unk02e000_Call_02e4dc`: hand-matched
 - `Unk02e000_Call_02e520`: hand-matched
 - `Unk02e000_GetAreaRecord`: hand-matched
-- `func_0202e000`: hand-matched
-- `func_0202e034`: hand-matched
-- `func_0202e070`: hand-matched
-- `func_0202e114`: hand-matched
-- `func_0202e1f8`: hand-matched
+- `Unk02e000_SetSlot`: hand-matched
+- `Unk02e000_GetSlot`: hand-matched
+- `Unk02e000_SetMgrUnk38`: hand-matched
+- `Unk02e000_EnsureAlloc7718`: hand-matched
+- `Unk02e000_AddCounter5fc4`: hand-matched

@@ -12,5 +12,12 @@
  "func_0202d7f4": "Unk02d15c_ReleaseImage",
  "func_0202d830": "Unk02d15c_IsMode1Match",
  "func_0202d86c": "Unk02d15c_Setup",
- "func_0202dc60": "Unk02d15c_ResetRecord"
+ "func_0202dc60": "Unk02d15c_ResetRecord",
+ "func_0202dcac": "Unk02d15c_FindRecordEntry",
+ "func_0202dcfc": "Unk02dcfc_HasField50",
+ "func_0202e000": "Unk02e000_SetSlot",
+ "func_0202e034": "Unk02e000_GetSlot",
+ "func_0202e070": "Unk02e000_SetMgrUnk38",
+ "func_0202e114": "Unk02e000_EnsureAlloc7718",
+ "func_0202e1f8": "Unk02e000_AddCounter5fc4"
 }

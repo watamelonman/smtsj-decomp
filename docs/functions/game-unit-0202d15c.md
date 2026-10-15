@@ -23,7 +23,7 @@
 - `Unk02d15c_Unk_02da48`: decompiler-derived
 
 ## Not done in M1-T577
-- `func_0202dcac`
+- `Unk02d15c_FindRecordEntry`
 - `func_0202d954`
 - `func_0202d794`
 - `func_0202d2a0`
@@ -45,4 +45,4 @@
 - `Unk02d15c_IsMode1Match`: hand-matched
 - `Unk02d15c_Setup`: hand-matched
 - `Unk02d15c_ResetRecord`: hand-matched
-- `func_0202dcac`: hand-matched
+- `Unk02d15c_FindRecordEntry`: hand-matched

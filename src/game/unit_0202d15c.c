@@ -181,7 +181,7 @@ int Unk02d15c_ResetRecord(int a, s32 b)
     return 1;
 }
 
-int func_0202dcac(int a, int key)
+int Unk02d15c_FindRecordEntry(int a, int key)
 {
     u8 *rec = Unk02d15c_GetManagerRecord(a);
     u32 i;

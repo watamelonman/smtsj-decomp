@@ -35,7 +35,7 @@ typedef struct Worker {
 } Worker;
 void func_020a2bb8(u32 *sub);
 
-int func_0202dcfc(u8 *p)
+int Unk02dcfc_HasField50(u8 *p)
 {
     if (p == 0) {
         return 0;

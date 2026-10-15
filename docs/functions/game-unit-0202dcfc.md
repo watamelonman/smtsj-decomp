@@ -26,7 +26,7 @@
 ## Not done in M1-T255
 - `Unk02dcfc_SetField70`
 - `Unk02dcfc_ResetWorker`
-- `func_0202dcfc`
+- `Unk02dcfc_HasField50`
 - `Unk02dcfc_Unk_02deb0`
 - `Unk02dcfc_Unk_02de6c`
 - `Unk02dcfc_Unk_02ded4`
@@ -50,4 +50,4 @@
 - `Unk02dcfc_SetField68`: hand-matched
 - `Unk02dcfc_GetField70`: hand-matched
 - `Unk02dcfc_SetField70`: hand-matched
-- `func_0202dcfc`: hand-matched
+- `Unk02dcfc_HasField50`: hand-matched
