@@ -40,3 +40,5 @@
 - `func_020bcacc`
 - `func_020bc200`
 - `Unk0bc1a8_Unk_0bc514`: decompiler-derived (plain cleanup)
+- `func_020bc6d4`: decompiler-derived (plain cleanup)
+- `func_020bc6e8`: decompiler-derived (plain cleanup)

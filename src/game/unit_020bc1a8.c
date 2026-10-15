@@ -93,3 +93,15 @@ void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2)
   tmp1 = func_020bc5ac(arg0);
   func_020bcacc(tmp1,arg2);
 }
+
+/* decompiler-derived */
+void func_020bc6d4(u32 arg0)
+{
+  *(u32 *)(*data_02176ba8 + 4) = arg0;
+}
+
+/* decompiler-derived */
+u32 func_020bc6e8(void)
+{
+  return *(u32 *)(*data_02176ba8 + 4);
+}
