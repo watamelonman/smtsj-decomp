@@ -34,3 +34,7 @@ Patterns found:
   `(value, sub)` (see `fam.py`, specs/b11-b12); plain stores swap r0/r1.
 - Word tested as `(w >> 16) & 0xff` (lsr+tst) is not a bitfield; single-bit `lsl/lsr(s)` tests are.
 - `next.py N 0xADDR` lists candidates after an address (use this after renames).
+- `insert()` places new code after the last lower-address function, so out-of-order files work.
+- Hardware register compares (e.g. VCOUNT at 0x04000006) are signed in the ROM: read into an `s32`.
+- A function with no return on some path (ROM falls through with the argument still in r0) is
+  written without a final return and commented (func_020663d8).
