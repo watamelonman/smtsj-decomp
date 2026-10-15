@@ -9,3 +9,4 @@
 - `func_020fbc74`
 - `func_020fbde4`
 - `Unk0fbc74_Unk_0fbd30`: hand-matched
+- `func_020fbd74`: hand-matched

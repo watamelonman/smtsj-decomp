@@ -49,3 +49,21 @@ int Unk0fbc74_Unk_0fbd30(u8 *p)
     Unk0a0ce4_Unk_0a0da4(2);
     return 0;
 }
+
+int func_020fbd74(u8 *p)
+{
+    u16 old;
+    if (FIELD(u32, p, 0) != 4) {
+        return 0;
+    }
+    old = FIELD(u16, p, 56);
+    FIELD(u16, p, 56) = old + 10;
+    if (FIELD(u16, p, 56) >= FIELD(int, p, 60)) {
+        FIELD(u16, p, 56) = 0;
+    }
+    if (FIELD(u16, p, 56) != old) {
+        FIELD(u32, p, 0) = 7;
+        return 1;
+    }
+    return 0;
+}
