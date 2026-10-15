@@ -78,3 +78,17 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   Give it those params (`void Alloc(u32 a, u32 b) { ... = f(a, b); }`). This fixed 0210afd8 and the earlier 020fedf0 (b62/b63).
 - Defining a small function above its callers in the same file can drop those callers below 100% (likely auto-inlining):
   UniteEvent_SetState, 020e55fc, 0211558c. gatecheck catches it; skip the callee rather than fighting it.
+
+## Caller drop when a same-file callee is defined (investigated in wave b64)
+- Flags: `-O4,p -proc arm946e -enum int -lang c99 ...` with no explicit `-inline`/`-ipa`. This is NOT auto-inlining.
+  Compiling UniteEvent.c with UniteEvent_SetState defined (before the caller, after it, at the end, or with
+  `#pragma auto_inline off`) gives byte-identical HandleMessage code, still `bl UniteEvent_SetState`, and checksum stays identical.
+- It is an objdiff scoring artifact that depends on where the definition sits: SetState right before UniteEvent_CopyIds
+  (its address-order slot; the two are contiguous in the ROM) scores HandleMessage at 99.85%. Defined before the caller
+  or at the end of the file, it is 100%. The final ROM is identical in all three cases.
+- Workaround: when gatecheck reports a caller drop, retry with the callee defined at the end of the file
+  (merge via `hmerge.py tu candidate 'fn=Name'` directly). UniteEvent_SetState was merged that way.
+  Candidates to retry this way: func_020e55fc (ImageBg), func_0211558c, func_020fda58, func_020e5484.
+- No global flag change is needed or proposed.
+- An aggregate initializer `T t = {0, 0};` reproduces the ROM's `add rX, sp, #n; strh r1, [rX]` stack init; field
+  assignments give `strh r1, [sp, #n]` (b64: func_02115144).
