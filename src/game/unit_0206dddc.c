@@ -23,3 +23,9 @@ u32 Unk06dddc_Unk_06dfb0(int arg0)
   return *(u32 *)(((int)data_0216baf0) + arg0 * 0x148);
 }
 
+int func_020086bc();
+/* decompiler-derived */
+void func_0206dee8(int arg0,u32 arg1)
+{
+  func_020086bc(arg1,arg0 * 0x148 + data_0216bac8 + 0x2c,0x90);
+}
