@@ -44,7 +44,7 @@
 - `ImageObj_Unk_0777e0`
 - `ImageObj_Unk_077a4c`
 - `ImageObj_Unk_0779f4`
-- `func_02077ea4`
+- `ImageObj_Unk_077ea4`
 - `func_02077f30`
 - `func_02077e0c`
 - `ImageObj_Unk_077c30`
@@ -88,4 +88,4 @@
 - `ImageObj_ReleaseField68`: hand-matched
 - `ImageObj_Unk_0779f4`: hand-matched
 - `ImageObj_Unk_077c30`: hand-matched
-- `func_02077ea4`: hand-matched
+- `ImageObj_Unk_077ea4`: hand-matched

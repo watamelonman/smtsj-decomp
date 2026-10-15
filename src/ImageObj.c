@@ -369,7 +369,7 @@ void func_02013c3c();
 int func_02095818();
 void Unk065e88_SetPair04();
 void ImageObj_ReleaseField68(u32 o);
-void func_02077ea4();
+void ImageObj_Unk_077ea4();
 void func_020a1a24();
 int ImageObj_Unk_0777e0(void)
 {
@@ -528,7 +528,7 @@ void ImageObj_Release(ImageObjWork *work)
 
 void func_0205c368();
 
-void func_02077ea4(ImageObjNode *n)
+void ImageObj_Unk_077ea4(ImageObjNode *n)
 {
     if (n->unk_68 == 0) {
         return;
