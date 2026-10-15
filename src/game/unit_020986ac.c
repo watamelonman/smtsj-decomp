@@ -175,6 +175,42 @@ void func_0209911c();
 void func_02099174();
 int Unk0a23f4_Unk_0a246c();
 void Unk0986ac_Unk_099234(u8 *p);
+typedef struct Unk09911cHdr {
+    u8 pad_00[16];
+    s32 unk_10;
+} Unk09911cHdr;
+typedef struct Unk09911cState {
+    Unk09911cHdr *hdr;
+} Unk09911cState;
+typedef struct Unk09911cObj {
+    u8 pad_00[4];
+    u32 unk_04;
+    u8 pad_08[8];
+    s32 unk_10;
+    u8 pad_14[20];
+    s32 unk_28;
+    u8 pad_2c[12];
+    s32 unk_38;
+} Unk09911cObj;
+void *GetGameState();
+void Unk11f2d0_Unk_11f320();
+int Unk09974c_Unk_0998d8();
+
+void func_0209911c(Unk09911cObj *p)
+{
+    Unk09911cState *gs = (Unk09911cState *)GetGameState();
+    if (gs == 0) {
+        return;
+    }
+    Unk11f2d0_Unk_11f320((u8 *)gs + 30104);
+    Unk0986ac_Unk_0989a4(p->unk_10, (u8 *)p->unk_04, p->unk_28);
+    if (p->unk_28 == 1 || gs->hdr->unk_10 == 1) {
+        p->unk_38 = 1;
+    } else {
+        p->unk_38 = 0;
+    }
+}
+
 void Unk0986ac_Unk_099234(u8 *p)
 {
     FIELD(s32, p, 56) -= 1;
@@ -195,7 +231,7 @@ void Unk0986ac_Unk_099274(u8 *p)
     FIELD(s32, p, 24) = -1;
     switch (FIELD(s32, p, 20)) {
     case 2:
-        func_0209911c(p);
+        func_0209911c((void *)p);
         break;
     case 3:
         Unk0986ac_Nop_099230();
