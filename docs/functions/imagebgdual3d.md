@@ -31,3 +31,13 @@
 - `func_0212594c`
 - `func_02125910`
 - `func_02125c68`
+- `func_02125b10`: decompiler-derived
+
+## Not done in M1-T539
+- `func_021258a0`
+- `func_02125738`
+- `func_02125790`
+- `func_02125a08`
+- `func_021255b4`
+- `func_02125a90`
+- `func_021257f4`
