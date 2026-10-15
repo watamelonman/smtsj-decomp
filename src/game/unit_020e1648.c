@@ -202,6 +202,42 @@ int Unk0e1648_Unk_0e2d28(u8 *p)
     return Unk09974c_GetEntryUnk08(*e) == 4;
 }
 
+void Unk0e1648_Unk_0e51cc(u32 arg0, u32 arg1);
+int func_0209a1e4();
+void func_020e3174();
+int Unk0f3db4_Unk_0f4510();
+void func_020e5394();
+int func_020e2db0(u16 *p)
+{
+    int a = func_0209993c(p[0]);
+    int b = p[1];
+    if (func_0209a1e4(p[0]) != 0) {
+        return 0;
+    }
+    return b > a ? 1 : 2;
+}
+
+int func_020e2dec(int x)
+{
+    switch (x) {
+    case 177:
+    case 178:
+    case 179:
+        return 1;
+    }
+    return 0;
+}
+
+void func_020e2f54(u8 *p)
+{
+    if (p[3820] == 255) {
+        return;
+    }
+    func_020e3174(p);
+    Unk0e1648_Unk_0e51cc((u32)p, 0);
+    p[3820] = 255;
+}
+
 /* decompiler-derived */
 void Unk0e1648_Unk_0e4964(u32 arg0)
 {
@@ -294,4 +330,20 @@ void Unk0e1648_Unk_0e48a8(int arg0,u32 arg1)
   tmp1 = func_020e49cc(4,arg1);
   *(u16 *)(arg0 + (u32)((Unk0e1648Work *)arg0)->unk_00d0 * 8 + 0xd8) = tmp1;
   ((Unk0e1648Work *)arg0)->unk_00d0 = ((Unk0e1648Work *)arg0)->unk_00d0 + 1;
+}
+
+int func_020e4c64(u8 *p, u32 x)
+{
+    if (((u8 *)func_020f3de8(FIELD(u32, p, 104)))[3] == 0) {
+        return 0;
+    }
+    return Unk0f3db4_Unk_0f4510(FIELD(u32, p, 104), x) != 0;
+}
+
+void func_020e536c(u8 *p)
+{
+    FIELD(u32, p, 3816) = 1;
+    FIELD(u32, p, 3776) = FIELD(u32, p, 3780);
+    func_020e5394(p);
+    p[0] = 7;
 }

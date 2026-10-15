@@ -78,3 +78,8 @@
 - `Unk0e1648_IsUnkeecSet`: hand-matched
 - `Unk0e1648_Unk_0e1664`: hand-matched
 - `Unk0e1648_Unk_0e2d28`: hand-matched
+- `func_020e2db0`: hand-matched
+- `func_020e2dec`: hand-matched
+- `func_020e2f54`: hand-matched
+- `func_020e4c64`: hand-matched
+- `func_020e536c`: hand-matched
