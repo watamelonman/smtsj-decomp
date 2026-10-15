@@ -102,3 +102,5 @@
 - `ScanVisor_Unk_0a48b4`: decompiler-derived (plain+fix cleanup)
 - `ScanVisor_Unk_0a42f0`: decompiler-derived (plain+fix cleanup)
 - `func_020a3114`: hand-matched
+- `func_020a49d8`: hand-matched
+- `func_020a4a18`: hand-matched

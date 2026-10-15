@@ -255,7 +255,7 @@ void ScanVisor_Unk_0a29c4(u32 arg0)
   return;
 }
 
-int func_020a4a18();
+void func_020a4a18();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2a8c(u32 arg0)
 {
@@ -268,7 +268,7 @@ void ScanVisor_Unk_0a2a8c(u32 arg0)
   return;
 }
 
-int func_020a49d8();
+void func_020a49d8();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2a38(u32 arg0)
 {
@@ -715,4 +715,32 @@ void func_020a3114(ScanVisor *sv)
     }
     func_020572d8();
     func_020580ec(1);
+}
+
+ScanVisor *func_020a45c0(u32 list, u32 id);
+void func_020a0da4(int se);
+
+/* Looks up the visor entry; if idle, (optionally with SE 28) applies `on`. */
+void func_020a49d8(u32 list, u32 id, int on)
+{
+    ScanVisor *sv = func_020a45c0(list, id);
+    if (sv == 0) {
+        return;
+    }
+    if (ScanVisor_Unk_0a45f8(sv) != 0) {
+        return;
+    }
+    if (on != 0) {
+        func_020a0da4(28);
+    }
+    ScanVisor_Unk_0a4644((int)sv, on);
+}
+
+void func_020a4a18(u32 list, u32 id)
+{
+    ScanVisor *sv = func_020a45c0(list, id);
+    if (sv == 0) {
+        return;
+    }
+    ScanVisor_Unk_0a465c((int)sv);
 }
