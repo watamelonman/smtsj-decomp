@@ -34,11 +34,11 @@
 ## Not done in M1-T556
 - `func_02099f24`
 - `func_0209a1e4`
-- `func_02099bfc`
-- `func_02099c60`
-- `func_02099d14`
-- `func_02099d78`
-- `func_02099ddc`
+- `Unk09974c_Unk_099bfc`
+- `Unk09974c_Unk_099c60`
+- `Unk09974c_Unk_099d14`
+- `Unk09974c_Unk_099d78`
+- `Unk09974c_Unk_099ddc`
 - `func_02099e40`
 - `Unk09974c_Unk_0997c8`: decompiler-derived
 
@@ -58,8 +58,8 @@
 - `Unk09974c_IsKind1or14`: hand-matched
 - `Unk09974c_GetFlagsMidMinus1`: hand-matched
 - `Unk09974c_SetSeenBit`: hand-matched
-- `func_02099bfc`: hand-matched
-- `func_02099c60`: hand-matched
-- `func_02099d14`: hand-matched
-- `func_02099d78`: hand-matched
-- `func_02099ddc`: hand-matched
+- `Unk09974c_Unk_099bfc`: hand-matched
+- `Unk09974c_Unk_099c60`: hand-matched
+- `Unk09974c_Unk_099d14`: hand-matched
+- `Unk09974c_Unk_099d78`: hand-matched
+- `Unk09974c_Unk_099ddc`: hand-matched

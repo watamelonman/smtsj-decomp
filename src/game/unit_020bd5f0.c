@@ -35,7 +35,7 @@ u32 Unk0bd5f0_Unk_0bd614(int arg0)
 
 int func_020c8008();
 int Unk02e000_GetWorkArea();
-int func_02099d78();
+int Unk09974c_Unk_099d78();
 int Unk09974c_Unk_0998d8();
 int Unk09974c_HasFlagsMid();
 void func_020dde3c();
@@ -162,7 +162,7 @@ int Unk0bd5f0_AnyIdWithFlagsMid(void)
 {
     u32 id;
     for (id = 111; id <= 210; id++) {
-        int r = func_02099d78(id);
+        int r = Unk09974c_Unk_099d78(id);
         if (Unk09974c_Unk_0998d8(id) != 0 && Unk09974c_HasFlagsMid(r) != 0) {
             return 1;
         }
@@ -174,7 +174,7 @@ int Unk0bd5f0_AnyIdWithoutFlagsMid(void)
 {
     u32 id;
     for (id = 111; id <= 210; id++) {
-        int r = func_02099d78(id);
+        int r = Unk09974c_Unk_099d78(id);
         if (Unk09974c_Unk_0998d8(id) != 0 && Unk09974c_HasFlagsMid(r) == 0) {
             return 1;
         }

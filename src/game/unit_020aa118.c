@@ -88,7 +88,7 @@ int func_0205f41c();
 int func_0204fd18();
 int func_0204fdac();
 int func_0204fe18();
-int func_02099d14();
+int Unk09974c_Unk_099d14();
 extern u8 data_0214fef8[];
 extern u32 data_0214d380[];
 int func_0204fde0(int t);
@@ -369,7 +369,7 @@ u8 *Unk0aa118_Unk_0af8d8(int a, u32 id, int c)
 
 u8 *Unk0aa118_Unk_0afa60(int a, u32 id, int c)
 {
-    u32 e = func_02099d14(id);
+    u32 e = Unk09974c_Unk_099d14(id);
     if (e != 0) {
         if (func_020152cc(e, data_0214fef8) == 0) {
             return 0;

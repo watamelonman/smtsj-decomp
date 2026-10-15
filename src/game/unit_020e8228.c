@@ -14,7 +14,7 @@ int func_02057524();
 void func_02057534(void);
 int func_02057eb8();
 int func_02061424();
-int func_02099d14();
+int Unk09974c_Unk_099d14();
 int ScanVisor_Unk_0a29a0();
 int Unk0e8228_Unk_0e8374();
 int Unk0e8228_GetArr88Field20();
@@ -151,7 +151,7 @@ void Unk0e8228_Unk_0e84fc(void)
 {
   Unk0e8228_Unk_0e8374(8);
   Unk0e8228_GetArr88Field20();
-  func_02099d14();
+  Unk09974c_Unk_099d14();
 }
 
 /* decompiler-derived */
@@ -721,7 +721,7 @@ int Unk0e8228_Unk_0e8fe4(u32 x)
     if (x == 0) {
         return 0;
     }
-    h = FIELD(u16, func_02099d14(x), 34);
+    h = FIELD(u16, Unk09974c_Unk_099d14(x), 34);
     if (h == 0) {
         return 0;
     }

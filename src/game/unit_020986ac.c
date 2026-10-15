@@ -97,7 +97,7 @@ u32 Unk0986ac_Unk_099300(void)
   return 1;
 }
 
-int func_02099d78();
+int Unk09974c_Unk_099d78();
 int Unk09974c_HasFlagsMid();
 int Unk09974c_GetFlagsMidMinus1();
 /* decompiler-derived */
@@ -107,7 +107,7 @@ u32 Unk0986ac_Unk_098918(void)
   int value2;
   u32 value3;
   value3 = 0;
-  value1 = func_02099d78();
+  value1 = Unk09974c_Unk_099d78();
   if ((value1 != 0) && (value2 = Unk09974c_HasFlagsMid(), value2 != 0)) {
     value3 = Unk09974c_GetFlagsMidMinus1(value1);
   }
