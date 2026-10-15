@@ -50,3 +50,20 @@ void Unk09d060_Unk_09d10c(void)
   func_020d1d4c();
 }
 
+int func_020a2980();
+int func_02061750();
+void func_020616ec();
+int func_0209d13c(void)
+{
+    if (func_020a2980() == 0) {
+        return 0;
+    }
+    return func_02061750(*data_02176274) == 0;
+}
+
+void func_0209d170(u32 a)
+{
+    if (*data_02176274 != 0) {
+        func_020616ec(*data_02176274, a);
+    }
+}

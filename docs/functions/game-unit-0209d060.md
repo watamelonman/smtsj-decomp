@@ -14,3 +14,5 @@
 ## Not done in M1-T307
 - `func_0209d1cc`
 - `Unk09d060_GetCtxUnk00`: hand-matched
+- `func_0209d13c`: hand-matched
+- `func_0209d170`: hand-matched
