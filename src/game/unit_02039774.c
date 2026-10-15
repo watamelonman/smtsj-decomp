@@ -39,11 +39,16 @@ void Unk039774_Unk_039b10(int arg0)
   func_02053000(arg0);
 }
 
-extern u8 *data_0215de28;
+typedef struct Unk039774List {
+    u8 *head;
+    s32 count;
+    u8 *tail;
+} Unk039774List;
+extern Unk039774List data_0215de28;
 void Unk039774_Unk_039b10(int arg0);
 void Unk039774_Unk_039b74(u32 key)
 {
-    u8 *o = data_0215de28;
+    u8 *o = data_0215de28.head;
     u8 *next;
     if (o == 0) {
         return;
