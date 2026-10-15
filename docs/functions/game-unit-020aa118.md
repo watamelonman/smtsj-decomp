@@ -1,7 +1,7 @@
 # src/game/unit_020aa118.c
 
 - `Unk0aa118_Nop_0ae054` (4 B): empty callback
-- `Unk0aa118_Thunk_020af8d8` (12 B): forwards to `func_020af8d8`
+- `Unk0aa118_Thunk_020af8d8` (12 B): forwards to `Unk0aa118_Unk_0af8d8`
 - `Unk0aa118_Unk_0ab454` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0aa118_Unk_0ab4b8` (28 B): decompiler-derived (Ghidra output, cleaned)
 
@@ -9,34 +9,34 @@
 - `Unk0aa118_Clear814`: no candidate matched locally
 - `Unk0aa118_PeekItem`: no candidate matched locally
 - `func_020ab4d4`: no candidate matched locally
-- `func_020afb40`: no candidate matched locally
+- `Unk0aa118_Unk_0afb40`: no candidate matched locally
 - `Unk0aa118_Unk_0afb64`: decompiler-derived
 
 ## Not done in M1-T1077
 - `Unk0aa118_SortRemaining`
-- `func_020ab34c`
-- `func_020af7cc`
-- `func_020af7f8`
+- `Unk0aa118_Unk_0ab34c`
+- `Unk0aa118_Unk_0af7cc`
+- `Unk0aa118_Unk_0af7f8`
 - `Unk0aa118_Advance`
-- `func_020af8d8`
-- `func_020ab8f8`
+- `Unk0aa118_Unk_0af8d8`
+- `Unk0aa118_Unk_0ab8f8`
 - `Unk0aa118_Unk_0af824`: decompiler-derived
 
 ## Not done in M1-T1078
-- `func_020adaf4`
+- `Unk0aa118_GetTableD2f4`
 - `Unk0aa118_CompareItems`
-- `func_020afab0`
-- `func_020afaf8`
-- `func_020ab930`
-- `func_020acb28`
-- `func_020af780`
+- `Unk0aa118_Unk_0afab0`
+- `Unk0aa118_Unk_0afaf8`
+- `Unk0aa118_Unk_0ab930`
+- `Unk0aa118_Unk_0acb28`
+- `Unk0aa118_FindRecord`
 - `Unk0aa118_Unk_0afb90`: decompiler-derived
 - `Unk0aa118_Unk_0ab4f4`: decompiler-derived
 
 ## Not done in M1-T1079
 - `func_020afbdc`
-- `func_020ab468`
-- `func_020afa60`
+- `Unk0aa118_AddUniqueId`
+- `Unk0aa118_Unk_0afa60`
 - `func_020aa130`
 - `func_020aa188`
 - `func_020aa298`
@@ -76,17 +76,17 @@
 - `Unk0aa118_CompareItems`: hand-matched
 - `Unk0aa118_SortRemaining`: hand-matched
 - `Unk0aa118_Advance`: hand-matched
-- `func_020ab34c`: hand-matched
-- `func_020ab468`: hand-matched
-- `func_020ab8f8`: hand-matched
-- `func_020ab930`: hand-matched
-- `func_020acb28`: hand-matched
-- `func_020adaf4`: hand-matched
-- `func_020af780`: hand-matched
-- `func_020af7cc`: hand-matched
-- `func_020af7f8`: hand-matched
-- `func_020af8d8`: hand-matched
-- `func_020afa60`: hand-matched
-- `func_020afab0`: hand-matched
-- `func_020afaf8`: hand-matched
-- `func_020afb40`: hand-matched
+- `Unk0aa118_Unk_0ab34c`: hand-matched
+- `Unk0aa118_AddUniqueId`: hand-matched
+- `Unk0aa118_Unk_0ab8f8`: hand-matched
+- `Unk0aa118_Unk_0ab930`: hand-matched
+- `Unk0aa118_Unk_0acb28`: hand-matched
+- `Unk0aa118_GetTableD2f4`: hand-matched
+- `Unk0aa118_FindRecord`: hand-matched
+- `Unk0aa118_Unk_0af7cc`: hand-matched
+- `Unk0aa118_Unk_0af7f8`: hand-matched
+- `Unk0aa118_Unk_0af8d8`: hand-matched
+- `Unk0aa118_Unk_0afa60`: hand-matched
+- `Unk0aa118_Unk_0afab0`: hand-matched
+- `Unk0aa118_Unk_0afaf8`: hand-matched
+- `Unk0aa118_Unk_0afb40`: hand-matched

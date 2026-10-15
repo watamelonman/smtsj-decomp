@@ -331,5 +331,19 @@
  "func_020aa118": "Unk0aa118_Clear814",
  "func_020aa1e0": "Unk0aa118_CompareItems",
  "func_020aa224": "Unk0aa118_SortRemaining",
- "func_020aa264": "Unk0aa118_Advance"
+ "func_020aa264": "Unk0aa118_Advance",
+ "func_020ab34c": "Unk0aa118_Unk_0ab34c",
+ "func_020ab468": "Unk0aa118_AddUniqueId",
+ "func_020ab8f8": "Unk0aa118_Unk_0ab8f8",
+ "func_020ab930": "Unk0aa118_Unk_0ab930",
+ "func_020acb28": "Unk0aa118_Unk_0acb28",
+ "func_020adaf4": "Unk0aa118_GetTableD2f4",
+ "func_020af780": "Unk0aa118_FindRecord",
+ "func_020af7cc": "Unk0aa118_Unk_0af7cc",
+ "func_020af7f8": "Unk0aa118_Unk_0af7f8",
+ "func_020af8d8": "Unk0aa118_Unk_0af8d8",
+ "func_020afa60": "Unk0aa118_Unk_0afa60",
+ "func_020afab0": "Unk0aa118_Unk_0afab0",
+ "func_020afaf8": "Unk0aa118_Unk_0afaf8",
+ "func_020afb40": "Unk0aa118_Unk_0afb40"
 }

@@ -61,7 +61,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk0aa118_Clear814` (M1-T1076): left out of the card
 - `Unk0aa118_PeekItem` (M1-T1076): left out of the card
 - `func_020ab4d4` (M1-T1076): left out of the card
-- `func_020afb40` (M1-T1076): left out of the card
+- `Unk0aa118_Unk_0afb40` (M1-T1076): left out of the card
 - `Unk0ea208_Unk_0eb6cc` (M1-T769): left out of the card
 - `func_020ea85c` (M1-T769): left out of the card
 - `func_020eac24` (M1-T769): left out of the card

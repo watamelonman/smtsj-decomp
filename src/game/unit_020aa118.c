@@ -17,7 +17,7 @@ typedef struct Unk0aa118Work {
 } Unk0aa118Work;
 
 int Unk044904_Unk_04509c();
-u8 *func_020af8d8(int a, u32 id, int c);
+u8 *Unk0aa118_Unk_0af8d8(int a, u32 id, int c);
 
 void Unk0aa118_Nop_0ae054(void);
 u8 *Unk0aa118_Thunk_020af8d8(int a, u32 id, int c);
@@ -92,16 +92,16 @@ int func_02099d14();
 extern u8 data_0214fef8[];
 extern u32 data_0214d380[];
 int func_0204fde0(int t);
-u8 *func_020af780(u32 id);
-int func_020af7cc(u32 i);
-int func_020af7f8(u32 a, u32 b);
+u8 *Unk0aa118_FindRecord(u32 id);
+int Unk0aa118_Unk_0af7cc(u32 i);
+int Unk0aa118_Unk_0af7f8(u32 a, u32 b);
 int Unk0aa118_Unk_0af824(u32 id);
-u8 *func_020af8d8(int a, u32 id, int c);
+u8 *Unk0aa118_Unk_0af8d8(int a, u32 id, int c);
 typedef struct Unk0aa118Ptrs {
     u8 pad_00[0x64];
     u32 *e[10];
 } Unk0aa118Ptrs;
-void func_020ab34c(void)
+void Unk0aa118_Unk_0ab34c(void)
 {
     func_020aa4f4(2, 0, 0, 0);
     func_020ae1e8(data_02176b18);
@@ -110,8 +110,8 @@ void func_020ab34c(void)
 /* empty callback */
 void Unk0aa118_Nop_0ae054(void) { }
 
-/* forwards to `func_020af8d8` */
-u8 *Unk0aa118_Thunk_020af8d8(int a, u32 id, int c) { return func_020af8d8(a, id, c); }
+/* forwards to `Unk0aa118_Unk_0af8d8` */
+u8 *Unk0aa118_Thunk_020af8d8(int a, u32 id, int c) { return Unk0aa118_Unk_0af8d8(a, id, c); }
 
 /* decompiler-derived */
 void Unk0aa118_Unk_0ab454(void)
@@ -121,7 +121,7 @@ void Unk0aa118_Unk_0ab454(void)
   *(u32 *)(value + 0x18) = 0;
 }
 
-void func_020ab468(u32 x)
+void Unk0aa118_AddUniqueId(u32 x)
 {
     u32 *t = (u32 *)Unk044904_Unk_04509c();
     s32 j;
@@ -161,14 +161,14 @@ u32 * Unk0aa118_Unk_0afb64(u32 arg0)
 
 
 /* decompiler-derived */
-/* returns the table base for the record found by func_020af780 (or for record 0,0) */
+/* returns the table base for the record found by Unk0aa118_FindRecord (or for record 0,0) */
 int Unk0aa118_Unk_0af824(u32 id)
 {
-    u8 *v = func_020af780(id);
+    u8 *v = Unk0aa118_FindRecord(id);
     if (v != 0) {
-        return func_0204fde0(func_020af7f8(v[0], v[1]));
+        return func_0204fde0(Unk0aa118_Unk_0af7f8(v[0], v[1]));
     }
-    return func_0204fde0(func_020af7f8(0, 0));
+    return func_0204fde0(Unk0aa118_Unk_0af7f8(0, 0));
 }
 
 
@@ -214,12 +214,12 @@ int func_0204abd8();
 int func_0204f108();
 int func_0209fd64();
 int func_020ab62c();
-void func_020ab8f8();
+void Unk0aa118_Unk_0ab8f8();
 int func_020af9f4();
 int func_020afbdc();
 int func_020b0930();
 int func_020cb084();
-void func_020ab8f8(u32 p)
+void Unk0aa118_Unk_0ab8f8(u32 p)
 {
     u32 v = FIELD(u32, Unk044904_Get_data_0215ee98(), 64);
     if (((v << 20) >> 31) == 0) {
@@ -230,7 +230,7 @@ void func_020ab8f8(u32 p)
     }
 }
 
-u8 func_020ab930(u8 *p, u32 id)
+u8 Unk0aa118_Unk_0ab930(u8 *p, u32 id)
 {
     switch (func_0204add4(id)) {
     case 4:
@@ -243,7 +243,7 @@ u8 func_020ab930(u8 *p, u32 id)
     return 0;
 }
 
-void func_020acb28(void)
+void Unk0aa118_Unk_0acb28(void)
 {
     Unk0aa118Ptrs *g = (Unk0aa118Ptrs *)Unk044904_Get_data_0215ee98();
     int j;
@@ -301,14 +301,14 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
     func_020b0930(tmp4 + 100,arg0,0,1);
     func_020ab62c(tmp4,arg0,0xffffffff);
     *(u32 *)(tmp4 + 0x84) = *(u32 *)(tmp4 + 0x84) | 0x1000;
-    func_020ab8f8(tmp2);
+    Unk0aa118_Unk_0ab8f8(tmp2);
     func_0209fd64(tmp2);
     func_020afbdc(tmp2);
     return;
   }
 }
 
-u32 func_020adaf4(int k, int i)
+u32 Unk0aa118_GetTableD2f4(int k, int i)
 {
     int b = 0;
     switch (k) {
@@ -324,7 +324,7 @@ u32 func_020adaf4(int k, int i)
     return data_0214d2f4[b + (i - 1)];
 }
 
-u8 *func_020af780(u32 id)
+u8 *Unk0aa118_FindRecord(u32 id)
 {
     u8 *e = data_0214d398;
     u32 j;
@@ -336,7 +336,7 @@ u8 *func_020af780(u32 id)
     return 0;
 }
 
-int func_020af7cc(u32 i)
+int Unk0aa118_Unk_0af7cc(u32 i)
 {
     int t = func_020491b4(i);
     if (i >= (u32)func_0205f2e4(t)) {
@@ -345,16 +345,16 @@ int func_020af7cc(u32 i)
     return func_0205f41c(t, i);
 }
 
-int func_020af7f8(u32 a, u32 b)
+int Unk0aa118_Unk_0af7f8(u32 a, u32 b)
 {
-    int t = func_020af7cc(a);
+    int t = Unk0aa118_Unk_0af7cc(a);
     if (b >= (u32)func_0204fd18(t)) {
         b = 0;
     }
     return func_0204fdac(t, b);
 }
 
-u8 *func_020af8d8(int a, u32 id, int c)
+u8 *Unk0aa118_Unk_0af8d8(int a, u32 id, int c)
 {
     u8 *base = (u8 *)Unk0aa118_Unk_0af824(id);
     int k = 0;
@@ -367,21 +367,21 @@ u8 *func_020af8d8(int a, u32 id, int c)
     return base + k * 412;
 }
 
-u8 *func_020afa60(int a, u32 id, int c)
+u8 *Unk0aa118_Unk_0afa60(int a, u32 id, int c)
 {
     u32 e = func_02099d14(id);
     if (e != 0) {
         if (func_020152cc(e, data_0214fef8) == 0) {
             return 0;
         }
-        return func_020af8d8(a, e, c);
+        return Unk0aa118_Unk_0af8d8(a, e, c);
     }
     return 0;
 }
 
-u8 *func_020afab0(u32 x)
+u8 *Unk0aa118_Unk_0afab0(u32 x)
 {
-    int t = func_020af7f8(39, 0);
+    int t = Unk0aa118_Unk_0af7f8(39, 0);
     int k = 0;
     u8 *base = (u8 *)func_0204fde0(t);
     u32 n = func_0204fe18(t);
@@ -391,9 +391,9 @@ u8 *func_020afab0(u32 x)
     return base + k * 22;
 }
 
-u8 *func_020afaf8(u32 x)
+u8 *Unk0aa118_Unk_0afaf8(u32 x)
 {
-    int t = func_020af7f8(0, 0);
+    int t = Unk0aa118_Unk_0af7f8(0, 0);
     int k = 0;
     u8 *base = (u8 *)func_0204fde0(t);
     u32 n = func_0204fe18(t);
@@ -403,7 +403,7 @@ u8 *func_020afaf8(u32 x)
     return base + k * 22;
 }
 
-int func_020afb40(int i)
+int Unk0aa118_Unk_0afb40(int i)
 {
     if (i == 0) {
         return 0;
