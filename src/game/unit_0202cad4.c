@@ -73,3 +73,89 @@ void Unk02cad4_Unk_02ce94(void)
   Unk02cad4_Unk_02cbdc(1);
 }
 
+/* Palette/plane name strings (".rodata" outside this TU). */
+extern char data_0213d848[];
+extern char data_0213d854[];
+extern char data_0213d858[];
+extern char data_0213d864[];
+extern char data_0213d868[];
+extern char data_0213d86c[];
+extern char data_0213d870[];
+extern char data_0213d87c[];
+extern char data_0213d880[];
+extern char data_0213d884[];
+extern char data_0213d888[];
+extern char data_0213d894[];
+
+void Unk02e000_Unk_02e0cc(void);
+void func_02051c2c(u32 a);
+void func_02051dd0(int plane, const char *name);
+void func_02058290(int plane, const char *name);
+void func_02053fd0(int a);
+void func_02051eb4(u32 a);
+void func_0205b560(int a, int b, int c);
+void func_020552ec(int a, int b);
+void func_02058300(int plane, const char *name);
+void func_02054b14(int a, int b, int c, int d);
+void func_02056424(int a, int b, int c);
+void func_02058458(void);
+
+/* Sets up the display for layout `mode` (0..3). */
+void func_0202ceec(int mode, u32 unused, u32 arg)
+{
+    Unk02e000_Unk_02e0cc();
+    switch (mode) {
+    case 0:
+        func_02051c2c(arg);
+        func_02051dd0(0, data_0213d848);
+        func_02058290(0, data_0213d854);
+        func_02053fd0(1);
+        func_02051eb4(arg);
+        func_0205b560(0, 0, 0x1000);
+        func_020552ec(1, 0);
+        func_020552ec(0, 1);
+        break;
+    case 1:
+        func_02051c2c(arg);
+        func_02051dd0(1, data_0213d858);
+        func_02058290(0, data_0213d864);
+        func_02053fd0(1);
+        func_02058290(1, data_0213d868);
+        func_02058300(1, data_0213d86c);
+        func_02054b14(6, 1, 0, 1);
+        func_02056424(1, 0, 0);
+        func_02051eb4(arg);
+        func_0205b560(0, 0, 0x1400);
+        func_020552ec(1, 0);
+        func_020552ec(0, 1);
+        func_020552ec(6, 1);
+        func_02058458();
+        break;
+    case 2:
+        func_02051c2c(arg);
+        func_02051dd0(1, data_0213d870);
+        func_02058290(0, data_0213d87c);
+        func_02053fd0(1);
+        func_02058290(1, data_0213d880);
+        func_02058300(1, data_0213d884);
+        func_02054b14(6, 1, 0, 1);
+        func_02056424(1, 0, 0);
+        func_02051eb4(arg);
+        func_0205b560(0, 0, 0x1400);
+        func_020552ec(1, 0);
+        func_020552ec(0, 1);
+        func_020552ec(6, 1);
+        break;
+    case 3:
+        func_02051c2c(arg);
+        func_02051dd0(0, data_0213d888);
+        func_02058290(0, data_0213d894);
+        func_02053fd0(1);
+        func_02051eb4(arg);
+        func_0205b560(0, 0, 0x1000);
+        func_020552ec(1, 0);
+        func_020552ec(0, 1);
+        func_02058458();
+        break;
+    }
+}

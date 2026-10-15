@@ -18,3 +18,4 @@
 - `func_0202ceec`
 - `Unk02cad4_ResetGlobals`: hand-matched
 - `Unk02cad4_GetUnk00`: hand-matched
+- `func_0202ceec`: hand-matched
