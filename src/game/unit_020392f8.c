@@ -84,3 +84,27 @@ int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int dark
     ydm->sec3 = p + ydm->header->count8 * 8 + 4;
     return 1;
 }
+
+typedef struct Unk0392f8Hdr {
+    u8 pad_0000[0x8];
+    u8 count;                   /* +0x08 */
+} Unk0392f8Hdr;
+
+typedef struct Unk0392f8Entry {
+    u32 unk_00;
+    u32 unk_04;
+} Unk0392f8Entry;
+
+typedef struct Unk0392f8Set {
+    Unk0392f8Hdr *hdr;          /* +0x00 */
+    u8 pad_0004[0x8];
+    Unk0392f8Entry *entries;    /* +0x0C */
+} Unk0392f8Set;
+
+Unk0392f8Entry *func_0203949c(Unk0392f8Set *s, u32 i)
+{
+    if (s->hdr->count <= i) {
+        return 0;
+    }
+    return &s->entries[i];
+}
