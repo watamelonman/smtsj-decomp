@@ -108,21 +108,9 @@
 "tu": "src/game/unit_0209a268.c"
 },
 {
-"fn": "func_0209ae60",
-"addr": "0x209ae60",
-"size": "0x5c",
-"tu": "src/game/unit_0209a268.c"
-},
-{
 "fn": "func_0209d44c",
 "addr": "0x209d44c",
 "size": "0x70",
-"tu": "src/game/unit_0209d42c.c"
-},
-{
-"fn": "func_0209d73c",
-"addr": "0x209d73c",
-"size": "0x6c",
 "tu": "src/game/unit_0209d42c.c"
 },
 {
