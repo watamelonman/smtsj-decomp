@@ -30,3 +30,13 @@
 - `func_020d19d4`
 - `func_020d1908`
 - `func_020d16f8`
+
+## Not done in M1-T960
+- `func_020cf668`
+- `func_020d18a0`
+- `func_020d1958`
+- `func_020cf8e8`
+- `func_020d0ff4`
+- `func_020d03c0`
+- `func_020d174c`
+- `func_020d02c0`
