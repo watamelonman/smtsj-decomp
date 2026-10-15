@@ -41,3 +41,17 @@ u32 Unk111400_Unk_111508(u32 arg0,u32 arg1,u32 arg2)
   func_0208dc78();
   return 0;
 }
+
+extern u32 data_02176e4c[];
+extern u8 data_02151580[];
+/* decompiler-derived */
+void func_02111474(u32 arg0,u16 arg1,u32 arg2)
+{
+  u32 *v1;
+  u16 *v2;
+  v2 = (u16 *)(data_02151580);
+  v1 = data_02176e4c;
+  *data_02176e4c = arg0;
+  *v2 = arg1;
+  v1[1] = arg2;
+}
