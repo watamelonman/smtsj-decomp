@@ -60,3 +60,5 @@
 - `Unk03e43c_AdvanceCounter360`: hand-matched
 - `Unk03e43c_SetMode30`: hand-matched
 - `Unk03e43c_UpdatePos18`: hand-matched
+- `func_0203e8cc`: hand-matched
+- `func_0203f234`: hand-matched
