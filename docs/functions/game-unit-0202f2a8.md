@@ -170,3 +170,11 @@
 - `GameState_GetUnkField74f6`: hand-matched
 - `Unk02f2a8_ClearEntry5e12Bit0`: hand-matched
 - `Unk02f2a8_SetField6138`: hand-matched
+- `func_02030548`: hand-matched
+- `func_02031408`: hand-matched
+- `func_02032a08`: hand-matched
+- `func_02032df4`: hand-matched
+- `func_020333b4`: hand-matched
+- `func_02034a44`: hand-matched
+- `func_02034a68`: hand-matched
+- `func_02034ab0`: hand-matched
