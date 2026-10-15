@@ -133,3 +133,31 @@ void func_02067d30(u32 arg0,u32 arg1,u16 *arg2)
   func_0204fde0(tmp2);
   return;
 }
+
+
+extern u8 data_0216b9a8[];
+int func_02008848();
+int func_020629ac();
+int func_02063a6c();
+/* decompiler-derived */
+void func_02065f30(int *arg0)
+{
+  int tmp1;
+  func_02008848(arg0,0,0x78);
+  tmp1 = func_020629ac(5,4,1,1);
+  *arg0 = tmp1;
+  if (tmp1 == 0) {
+    return;
+  }
+  tmp1 = func_020629ac(4,1,1,1);
+  arg0[1] = tmp1;
+  if (tmp1 == 0) {
+    return;
+  }
+  arg0[3] = 0;
+  arg0[2] = 0;
+  arg0[0x13] = 0;
+  func_02063a6c(arg0);
+  *(int **)(((int)data_0216b9a8) + 4) = arg0;
+  return;
+}

@@ -25,3 +25,13 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `func_0206641c`
 - `func_020672b4`
 - `func_02068564`
+- `func_02065f30`: decompiler-derived
+
+## Not done in M1-T1020
+- `func_02066078`
+- `func_0206646c`
+- `func_02065ec0`
+- `func_020672fc`
+- `func_02067418`
+- `func_020684c0`
+- `func_02066c94`
