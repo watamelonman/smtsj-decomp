@@ -346,3 +346,23 @@ int Unk10a034_Unk_10b030(void)
     }
     return FIELD(u32, p, 8) == 10;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+int func_0210b484(u8 *p)
+{
+    u8 *q;
+    if (FIELD(u32, p, 24) == 0) {
+        return 0;
+    }
+    q = FIELD(u8 *, p, 20);
+    switch (FIELD(u16, q, 24)) {
+    case 2:
+        return FIELD(int, q, 28);
+    case 3:
+        return Unk10a034_Unk_10b058(FIELD(u16, q, 26));
+    }
+    return 0;
+}

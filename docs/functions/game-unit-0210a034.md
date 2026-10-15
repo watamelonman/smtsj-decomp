@@ -43,3 +43,4 @@
 - `Unk10a034_GetEntry8`: hand-matched
 - `Unk10a034_Alloc`: hand-matched
 - `Unk10a034_Unk_10b030`: hand-matched
+- `func_0210b484`: hand-matched
