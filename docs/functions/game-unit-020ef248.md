@@ -13,3 +13,13 @@
 
 ## Not done in M1-T445
 - `func_020ef578`
+
+## Not done in M1-T444
+- `func_020ef2ec`
+- `func_020ef6fc`
+- `func_020ef248`
+- `func_020ef8d0`
+- `func_020ef4b8`
+- `func_020ef330`
+- `func_020ef3f0`
+- `func_020ef78c`

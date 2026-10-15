@@ -54,3 +54,4 @@ void Unk0ef248_Unk_0ef878(void)
   func_020f7e48(*(u32 *)(value + 0x40),0,1);
 }
 
+
