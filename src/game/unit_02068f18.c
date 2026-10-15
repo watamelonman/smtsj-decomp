@@ -27,6 +27,32 @@ int Unk068f18_CompareKeyDesc(u8 *a, u8 *b)
     return d;
 }
 
+typedef struct Unk068f18Ids {
+    u8 pad_0000[40];
+    u16 ids[6];
+} Unk068f18Ids;
+
+void func_02069888(Unk068f18Ids *p, u16 *src)
+{
+    int i;
+    int j;
+    for (i = 0; i < 6; i++) {
+        u16 v = src[i];
+        if (v == 0) {
+            continue;
+        }
+        for (j = 0; j < 6; j++) {
+            if (v == p->ids[j]) {
+                break;
+            }
+            if (p->ids[j] == 0) {
+                p->ids[j] = v;
+                break;
+            }
+        }
+    }
+}
+
 /* decompiler-derived */
 int Unk068f18_Unk_069afc(int arg0,int arg1,int arg2,int arg3)
 {

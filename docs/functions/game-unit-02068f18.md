@@ -13,3 +13,4 @@
 - `Unk068f18_CompareKeyAsc`: hand-matched
 - `Unk068f18_CompareKeyDesc`: hand-matched
 - `Unk068f18_Unk_06a1a8`: hand-matched
+- `func_02069888`: hand-matched
