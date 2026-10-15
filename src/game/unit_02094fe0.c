@@ -14,12 +14,12 @@ typedef struct Unk094fe0Work {
 } Unk094fe0Work;
 
 extern u8 data_02175dac[];
-void func_0202e8cc(void);
+Unk094fe0Work *func_0202e8cc(void);
 
 void Unk094fe0_Nop_095000(void);
 int Unk094fe0_Unk_095004(int arg0);
 u32 Unk094fe0_GetUnkField9a0(void *obj);
-void Unk094fe0_Thunk_0202e8cc(void);
+Unk094fe0Work *Unk094fe0_Thunk_0202e8cc(void);
 int Unk094fe0_Unk_094fec(int arg0);
 
 /* empty callback */
@@ -35,7 +35,7 @@ int Unk094fe0_Unk_095004(int arg0)
 u32 Unk094fe0_GetUnkField9a0(void *obj) { return ((Unk094fe0Work *)obj)->unk_09a0; }
 
 /* forwards to `func_0202e8cc` */
-void Unk094fe0_Thunk_0202e8cc(void) { func_0202e8cc(); }
+Unk094fe0Work *Unk094fe0_Thunk_0202e8cc(void) { return func_0202e8cc(); }
 
 /* decompiler-derived */
 int Unk094fe0_Unk_094fec(int arg0)
@@ -43,5 +43,12 @@ int Unk094fe0_Unk_094fec(int arg0)
   return arg0 * 0x1c + ((int)data_02175dac);
 }
 
+void func_02095398(u32 value)
+{
+    Unk094fe0_Thunk_0202e8cc()->unk_09a0 = value;
+}
 
-
+u32 func_020953ac(void)
+{
+    return Unk094fe0_GetUnkField9a0(Unk094fe0_Thunk_0202e8cc());
+}
