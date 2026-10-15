@@ -34,3 +34,13 @@
 
 ## Not done in M1-T677
 - `func_02039f80`
+
+## Not done in M1-T678
+- `func_02039fbc`
+- `func_0203a0e0`
+- `func_0203a11c`
+- `func_0203a0a0`
+- `func_0203a944`
+- `func_02039dc0`
+- `func_0203a1dc`
+- `func_02039e50`
