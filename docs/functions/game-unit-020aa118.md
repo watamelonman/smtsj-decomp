@@ -60,3 +60,13 @@
 - `func_020aa42c`
 - `func_020af90c`
 - `func_020ab374`
+
+## Not done in M1-T1082
+- `func_020ab54c`
+- `func_020ae888`
+- `func_020aa4f4`
+- `func_020ac97c`
+- `func_020aabf4`
+- `func_020acb74`
+- `func_020aa2f0`
+- `func_020aeb90`
