@@ -84,3 +84,61 @@ void func_02120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
   return;
 }
 
+
+
+
+/* decompiler-derived */
+int * func_02120a58(u32 arg0)
+{
+  int *v1;
+  int tmp2;
+  tmp2 = *data_02176e7c;
+  switch(arg0) {
+  case 0:
+    break;
+  case 1:
+    v1 = (int *)(tmp2 + 0x48);
+    tmp2 = 0;
+    do {
+      if (*v1 == 0) {
+        return v1;
+      }
+      tmp2 = tmp2 + 1;
+      v1 = v1 + 0xb;
+    } while (tmp2 < 8);
+    break;
+  case 2:
+    v1 = (int *)(tmp2 + 0x728);
+    tmp2 = 0;
+    do {
+      if (*v1 == 0) {
+        return v1;
+      }
+      tmp2 = tmp2 + 1;
+      v1 = v1 + 0xb;
+    } while (tmp2 < 0x10);
+    break;
+  case 3:
+    v1 = (int *)(tmp2 + 0x1a8);
+    tmp2 = 0;
+    do {
+      if (*v1 == 0) {
+        return v1;
+      }
+      tmp2 = tmp2 + 1;
+      v1 = v1 + 0xb;
+    } while (tmp2 < 0x20);
+    break;
+  case 4:
+    v1 = (int *)(tmp2 + 0x9e8);
+    tmp2 = 0;
+    do {
+      if (*v1 == 0) {
+        return v1;
+      }
+      tmp2 = tmp2 + 1;
+      v1 = v1 + 0xb;
+    } while (tmp2 < 0x80);
+  }
+  return (int *)0x0;
+}

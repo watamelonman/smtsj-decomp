@@ -24,3 +24,13 @@
 ## Not done in M1-T838
 - `func_0211ff14`
 - `func_02120d7c`
+- `func_02120a58`: decompiler-derived
+
+## Not done in M1-T837
+- `func_02120cb4`
+- `func_02120bd4`
+- `func_02120970`
+- `func_021212f4`
+- `func_0211fd7c`
+- `func_021206a8`
+- `func_0212034c`
