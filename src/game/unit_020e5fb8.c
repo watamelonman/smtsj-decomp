@@ -10,7 +10,7 @@ int Unk094fe0_Thunk_0202e8cc();
 void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2);
 void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1);
 void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1);
-int func_020e62e0();
+int Unk0e5fb8_Get2Bits();
 int func_020e6360();
 int func_020e63e0();
 int func_020e6460();
@@ -28,7 +28,7 @@ void Unk0e5fb8_Unk_0e6448(u32 arg0);
 void Unk0e5fb8_Unk_0e64c8(u32 arg0);
 void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1);
 
-u32 func_020e60b4(u32 a, int b, int n)
+u32 Unk0e5fb8_GetBits(u32 a, int b, int n)
 {
     u32 bits = 0;
     int i;
@@ -40,7 +40,7 @@ u32 func_020e60b4(u32 a, int b, int n)
     return bits;
 }
 
-void func_020e6100(int a, int n, u32 bits)
+void Unk0e5fb8_SetBits(int a, int n, u32 bits)
 {
     int i;
     for (i = 0; i < n; i++) {
@@ -132,7 +132,7 @@ void Unk0e5fb8_Unk_0e62c8(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e62e0(value,arg0);
+  Unk0e5fb8_Get2Bits(value,arg0);
 }
 
 /* decompiler-derived */
@@ -246,7 +246,7 @@ void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2)
   Unk094fe0_TestBit(arg0,tmp1);
 }
 
-void func_020e620c(u32 a, u32 b)
+void Unk0e5fb8_Unk_0e620c(u32 a, u32 b)
 {
     Unk0e5fb8_Unk_0e622c(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
@@ -259,7 +259,7 @@ void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1)
   func_0209502c(arg0,tmp1,1);
 }
 
-int func_020e62e0(u32 a, u32 b)
+int Unk0e5fb8_Get2Bits(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffset900(b);
     int lo = Unk094fe0_TestBit(a, o);

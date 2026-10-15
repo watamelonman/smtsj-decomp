@@ -16,11 +16,11 @@ int ImageBg_IsSet_data_02176ca4(void)
   return *data_02176ca4 != 0;
 }
 
-void func_020e5638();
+void ImageBg_Release();
 /* decompiler-derived */
 void ImageBg_Unk_0e56f4(void)
 {
-  func_020e5638();
+  ImageBg_Release();
   *data_02176ca4 = 0;
 }
 
@@ -31,7 +31,7 @@ void ImageBg_Unk_0e5530(void)
   int value;
   value = ImageBg_Get_data_02176ca4();
   if (value == 0) {
-    func_020e5638();
+    ImageBg_Release();
     return;
   }
   func_02061424();
@@ -90,7 +90,7 @@ extern u8 data_02150bd4[];
 u32 func_0205ba98();
 void func_0205bb68();
 void Unk0e7290_Unk_0e7734();
-void func_020e5638(void)
+void ImageBg_Release(void)
 {
     if (data_02176ca4[1] == 0) {
         return;

@@ -435,5 +435,15 @@
  "func_020df5b8": "Unk0df5b8_GetEntry42",
  "func_020df7c4": "SaveLoadTask_Unk_0df7c4",
  "func_020e1664": "Unk0e1648_Unk_0e1664",
- "func_020e2d28": "Unk0e1648_Unk_0e2d28"
+ "func_020e2d28": "Unk0e1648_Unk_0e2d28",
+ "func_020e2db0": "Unk0e1648_Unk_0e2db0",
+ "func_020e2dec": "Unk0e1648_IsId177to179",
+ "func_020e2f54": "Unk0e1648_Unk_0e2f54",
+ "func_020e4c64": "Unk0e1648_Unk_0e4c64",
+ "func_020e536c": "Unk0e1648_Unk_0e536c",
+ "func_020e5638": "ImageBg_Release",
+ "func_020e60b4": "Unk0e5fb8_GetBits",
+ "func_020e6100": "Unk0e5fb8_SetBits",
+ "func_020e620c": "Unk0e5fb8_Unk_0e620c",
+ "func_020e62e0": "Unk0e5fb8_Get2Bits"
 }

@@ -207,7 +207,7 @@ int func_0209a1e4();
 void func_020e3174();
 int Unk0f3db4_Unk_0f4510();
 void func_020e5394();
-int func_020e2db0(u16 *p)
+int Unk0e1648_Unk_0e2db0(u16 *p)
 {
     int a = func_0209993c(p[0]);
     int b = p[1];
@@ -217,7 +217,7 @@ int func_020e2db0(u16 *p)
     return b > a ? 1 : 2;
 }
 
-int func_020e2dec(int x)
+int Unk0e1648_IsId177to179(int x)
 {
     switch (x) {
     case 177:
@@ -228,7 +228,7 @@ int func_020e2dec(int x)
     return 0;
 }
 
-void func_020e2f54(u8 *p)
+void Unk0e1648_Unk_0e2f54(u8 *p)
 {
     if (p[3820] == 255) {
         return;
@@ -332,7 +332,7 @@ void Unk0e1648_Unk_0e48a8(int arg0,u32 arg1)
   ((Unk0e1648Work *)arg0)->unk_00d0 = ((Unk0e1648Work *)arg0)->unk_00d0 + 1;
 }
 
-int func_020e4c64(u8 *p, u32 x)
+int Unk0e1648_Unk_0e4c64(u8 *p, u32 x)
 {
     if (((u8 *)func_020f3de8(FIELD(u32, p, 104)))[3] == 0) {
         return 0;
@@ -340,7 +340,7 @@ int func_020e4c64(u8 *p, u32 x)
     return Unk0f3db4_Unk_0f4510(FIELD(u32, p, 104), x) != 0;
 }
 
-void func_020e536c(u8 *p)
+void Unk0e1648_Unk_0e536c(u8 *p)
 {
     FIELD(u32, p, 3816) = 1;
     FIELD(u32, p, 3776) = FIELD(u32, p, 3780);

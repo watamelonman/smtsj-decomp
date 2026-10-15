@@ -8,7 +8,7 @@
 - `ImageBg_Unk_0e550c`: decompiler-derived
 
 ## Not done in M1-T202
-- `func_020e5638`
+- `ImageBg_Release`
 - `func_020e5484`
 - `ImageBg_Unk_0e54d4`: decompiler-derived
 
@@ -16,4 +16,4 @@
 - `func_020e55fc`
 - `func_020e5580`
 - `func_020e5664`
-- `func_020e5638`: hand-matched
+- `ImageBg_Release`: hand-matched

@@ -27,20 +27,20 @@
 - `Unk0e5fb8_Unk_0e641c`: decompiler-derived
 
 ## Not done in M1-T375
-- `func_020e620c`
+- `Unk0e5fb8_Unk_0e620c`
 - `Unk0e5fb8_Unk_0e626c`
 - `Unk0e5fb8_Unk_0e61e8`
 - `Unk0e5fb8_Unk_0e62a4`
 - `Unk0e5fb8_Unk_0e649c`: decompiler-derived
 
 ## Not done in M1-T376
-- `func_020e6100`
-- `func_020e62e0`
+- `Unk0e5fb8_SetBits`
+- `Unk0e5fb8_Get2Bits`
 - `func_020e6360`
 - `func_020e63e0`
 - `func_020e6460`
 - `func_020e64e0`
-- `func_020e60b4`
+- `Unk0e5fb8_GetBits`
 - `Unk0e5fb8_Unk_0e626c`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_Unk_0e61e8`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_Unk_0e62a4`: decompiler-derived (plain cleanup)
@@ -49,7 +49,7 @@
 - `Unk0e5fb8_GetOffsetD00`: hand-matched
 - `Unk0e5fb8_GetOffsetD80`: hand-matched
 - `Unk0e5fb8_GetOffset800`: hand-matched
-- `func_020e60b4`: hand-matched
-- `func_020e6100`: hand-matched
-- `func_020e620c`: hand-matched
-- `func_020e62e0`: hand-matched
+- `Unk0e5fb8_GetBits`: hand-matched
+- `Unk0e5fb8_SetBits`: hand-matched
+- `Unk0e5fb8_Unk_0e620c`: hand-matched
+- `Unk0e5fb8_Get2Bits`: hand-matched

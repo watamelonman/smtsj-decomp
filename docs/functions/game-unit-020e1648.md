@@ -17,24 +17,24 @@
 - `Unk0e1648_Unk_0e4fd0`: decompiler-derived
 
 ## Not done in M1-T1043
-- `func_020e2dec`
+- `Unk0e1648_IsId177to179`
 - `Unk0e1648_Unk_0e51f4`
 - `Unk0e1648_Unk_0e1664`
 - `Unk0e1648_Unk_0e533c`: decompiler-derived
 
 ## Not done in M1-T1044
 - `Unk0e1648_Unk_0e51cc`
-- `func_020e536c`
+- `Unk0e1648_Unk_0e536c`
 - `Unk0e1648_Unk_0e5214`
-- `func_020e2f54`
+- `Unk0e1648_Unk_0e2f54`
 - `func_020e5198`
 - `Unk0e1648_Unk_0e5090`
 - `func_020e544c`
 - `Unk0e1648_Unk_0e16f0`: decompiler-derived
 
 ## Not done in M1-T1045
-- `func_020e2db0`
-- `func_020e4c64`
+- `Unk0e1648_Unk_0e2db0`
+- `Unk0e1648_Unk_0e4c64`
 - `Unk0e1648_Unk_0e2d28`
 - `func_020e2e0c`
 - `func_020e2e60`
@@ -78,8 +78,8 @@
 - `Unk0e1648_IsUnkeecSet`: hand-matched
 - `Unk0e1648_Unk_0e1664`: hand-matched
 - `Unk0e1648_Unk_0e2d28`: hand-matched
-- `func_020e2db0`: hand-matched
-- `func_020e2dec`: hand-matched
-- `func_020e2f54`: hand-matched
-- `func_020e4c64`: hand-matched
-- `func_020e536c`: hand-matched
+- `Unk0e1648_Unk_0e2db0`: hand-matched
+- `Unk0e1648_IsId177to179`: hand-matched
+- `Unk0e1648_Unk_0e2f54`: hand-matched
+- `Unk0e1648_Unk_0e4c64`: hand-matched
+- `Unk0e1648_Unk_0e536c`: hand-matched
