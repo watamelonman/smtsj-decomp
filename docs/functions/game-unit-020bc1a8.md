@@ -43,3 +43,4 @@
 - `Unk0bc1a8_Unk_0bc6d4`: decompiler-derived (plain cleanup)
 - `Unk0bc1a8_Unk_0bc6e8`: decompiler-derived (plain cleanup)
 - `Unk0bc1a8_Unk_0bc5d4`: decompiler-derived (plain+fix cleanup)
+- `func_020bc5c0`: hand-matched
