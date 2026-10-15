@@ -8,8 +8,8 @@
 ## Not done in M1-T268
 - `Unk038fbc_GetNodeUnk08`
 - `Unk038fbc_GetElement`
-- `Unk038fbc_GetCell8`
+- `Unk038fbc_Unk_039160`
 - `func_02038ff8`
 - `Unk038fbc_GetNodeUnk08`: hand-matched
 - `Unk038fbc_GetElement`: hand-matched
-- `Unk038fbc_GetCell8`: hand-matched
+- `Unk038fbc_Unk_039160`: hand-matched

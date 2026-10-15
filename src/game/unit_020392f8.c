@@ -117,7 +117,7 @@ Unk0392f8Entry *Unk0392f8_GetEntry(Unk0392f8Set *s, u32 i)
     return &s->entries[i];
 }
 
-u8 *Unk0392f8_GetCell2(u8 **o, int x, int y)
+u8 *Unk0392f8_Unk_0394b8(u8 **o, int x, int y)
 {
     u8 *h;
     int dx, dy;

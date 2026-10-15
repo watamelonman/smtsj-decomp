@@ -156,7 +156,7 @@ u32 *Unk02f2a8_GetCurrentCell38e8(void)
 u32 Unk02f2a8_GetObj39160Bits16(u8 *base, int x, int y)
 {
     u32 r = 0;
-    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)Unk038fbc_GetCell8(base, x, y);
+    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)Unk038fbc_Unk_039160(base, x, y);
     if (o != 0) {
         r = o->unk_0004_16;
     }
@@ -358,14 +358,14 @@ void Unk02f2a8_Unk_033ac8(int arg0)
   *(u32 *)(arg0 + 0x7488) = 0;
 }
 
-int Unk038fbc_GetCell8();
+int Unk038fbc_Unk_039160();
 /* decompiler-derived */
 u32 Unk02f2a8_Unk_034a8c(u8 *base, int x, int y)
 {
   int tmp1;
   u32 tmp2;
   tmp2 = 0;
-  tmp1 = Unk038fbc_GetCell8(base, x, y);
+  tmp1 = Unk038fbc_Unk_039160(base, x, y);
   if (tmp1 != 0) {
     tmp2 = (*(u32 *)(tmp1 + 4) & 0xffff) >> 0xc;
   }
@@ -790,7 +790,7 @@ u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y);
 u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y)
 {
     u8 *r = p + 572;
-    u8 *o = (u8 *)Unk038fbc_GetCell8(r, x, y);
+    u8 *o = (u8 *)Unk038fbc_Unk_039160(r, x, y);
     u32 n;
     if (o != 0) {
         n = (FIELD(u32, o, 4) << 12) >> 28;
@@ -807,7 +807,7 @@ u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y)
 int Unk02f2a8_Unk_0349c4(u8 *p, int x, int y)
 {
     int r = FIELD(u16, (u8 *)Unk02e000_GetWorkArea() + 0x300, 92);
-    u8 *o = (u8 *)Unk038fbc_GetCell8(p + 572, x, y);
+    u8 *o = (u8 *)Unk038fbc_Unk_039160(p + 572, x, y);
     u32 n;
     if (o != 0) {
         n = (FIELD(u32, o, 4) << 12) >> 28;
@@ -921,7 +921,7 @@ int Unk02f2a8_Unk_035b08(int a, int b)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-int Unk02f2a8_CountKind_035b74(int a)
+int Unk02f2a8_Unk_035b74(int a)
 {
     void *h = func_020445d0(36, 0);
     u8 *t = func_0204fde0();

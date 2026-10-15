@@ -72,7 +72,7 @@
 - `Unk02f2a8_Unk_0308c0`
 - `Unk02f2a8_Unk_030d20`
 - `Unk02f2a8_Unk_0313a4`
-- `Unk02f2a8_CountKind_035b74`
+- `Unk02f2a8_Unk_035b74`
 - `Unk02f2a8_Unk_030704`
 - `Unk02f2a8_Unk_030198`
 
@@ -206,4 +206,4 @@
 - `Unk02f2a8_Unk_03550c`: hand-matched
 - `Unk02f2a8_Unk_035820`: hand-matched
 - `Unk02f2a8_Unk_035b08`: hand-matched
-- `Unk02f2a8_CountKind_035b74`: hand-matched
+- `Unk02f2a8_Unk_035b74`: hand-matched
