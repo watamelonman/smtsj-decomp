@@ -17,3 +17,4 @@
 - `func_020f019c`
 - `func_020f0330`
 - `Unk0efff4_ClearArrF8`: hand-matched
+- `func_020f0098`: hand-matched
