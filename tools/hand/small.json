@@ -348,12 +348,6 @@
 "tu": "src/ScanVisor.c"
 },
 {
-"fn": "func_020a3274",
-"addr": "0x20a3274",
-"size": "0x58",
-"tu": "src/ScanVisor.c"
-},
-{
 "fn": "func_020a3ac0",
 "addr": "0x20a3ac0",
 "size": "0x44",
@@ -1068,12 +1062,6 @@
 "tu": "src/CampStatus.c"
 },
 {
-"fn": "func_020dd308",
-"addr": "0x20dd308",
-"size": "0x5c",
-"tu": "src/CampStatus.c"
-},
-{
 "fn": "func_020dddf4",
 "addr": "0x20dddf4",
 "size": "0x48",
@@ -1545,12 +1533,6 @@
 "fn": "func_020efff4",
 "addr": "0x20efff4",
 "size": "0x58",
-"tu": "src/game/unit_020efff4.c"
-},
-{
-"fn": "func_020f0098",
-"addr": "0x20f0098",
-"size": "0x44",
 "tu": "src/game/unit_020efff4.c"
 },
 {
@@ -2109,12 +2091,6 @@
 "fn": "func_02115498",
 "addr": "0x2115498",
 "size": "0x68",
-"tu": "src/game/unit_02113294.c"
-},
-{
-"fn": "func_02115778",
-"addr": "0x2115778",
-"size": "0x34",
 "tu": "src/game/unit_02113294.c"
 },
 {
