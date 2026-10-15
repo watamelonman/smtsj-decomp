@@ -54,6 +54,43 @@ void Unk06a224_SetUnk00(u32 arg0)
 
 
 int func_020537b8();
+typedef struct Unk06a224Slot {
+    u16 id;
+    u16 pad_0002;
+} Unk06a224Slot;
+s16 func_0206a264(void)
+{
+    s16 n = 0;
+    int i;
+    for (i = 0; i < 489; i++) {
+        if (FIELD(Unk06a224Slot *, data_0216b9b0.unk_04, 0x408)[i].id != 0) {
+            n++;
+        }
+    }
+    return n;
+}
+
+int func_0206a374(u8 *o)
+{
+    if (FIELD(s16, o, 0x154) % 2 != 0) {
+        return 1;
+    }
+    return FIELD(s16, o, 0x156) > 0;
+}
+
+int func_0206a3a4(u8 *o)
+{
+    s16 a = FIELD(s16, o, 0x154);
+    if (a % 2 == 0) {
+        if (a < FIELD(s16, o, 0x158) - 1) {
+            return 1;
+        }
+    } else if (FIELD(s16, o, 0x156) + 24 < FIELD(s16, o, 0x158)) {
+        return 1;
+    }
+    return 0;
+}
+
 /* decompiler-derived */
 void Unk06a224_Unk_06ae28(Unk06a224Work *arg0){
   int tmp1;
