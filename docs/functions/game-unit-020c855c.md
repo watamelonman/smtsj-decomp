@@ -30,3 +30,5 @@
 - `func_020c9030`
 - `func_020c8ce0`
 - `func_020ca2e4`
+- `func_020c92c0`: decompiler-derived (struct cleanup)
+- `func_020c92dc`: decompiler-derived (struct cleanup)

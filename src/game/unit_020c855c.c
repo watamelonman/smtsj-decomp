@@ -11,7 +11,9 @@ typedef struct Unk0c855cWork {
     u32 unk_001c;
     u8 pad_0020[0x10];
     s32 unk_0030;
-    u8 pad_0034[0x174];
+    u8 pad_0034[0x6];
+    u16 unk_003a;
+    u8 pad_003c[0x16c];
     u32 unk_01a8;
     u32 unk_01ac;
     u32 unk_01b0;
@@ -140,3 +142,17 @@ void Unk0c855c_Unk_0c855c(int arg0)
   return;
 }
 
+extern u8 data_0213c54c[];
+int Unk0ca69c_Unk_0ca6a4();
+/* decompiler-derived */
+void func_020c92c0(int arg0)
+{
+  Unk0ca69c_Unk_0ca6a4(*(u8 *)(data_0213c54c + (u32)((Unk0c855cWork *)arg0)->unk_003a));
+}
+
+extern u8 data_0213c51c[];
+/* decompiler-derived */
+u32 func_020c92dc(int arg0)
+{
+  return *(u32 *)(data_0213c51c + (u32)((Unk0c855cWork *)arg0)->unk_003a * 4);
+}
