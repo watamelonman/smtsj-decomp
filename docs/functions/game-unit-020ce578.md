@@ -20,3 +20,9 @@
 - `func_020ce7cc`
 - `func_020cf360`
 - `func_020cf4d0`
+
+## Not done in M1-T720
+- `func_020ce684`
+- `func_020cefac`
+- `func_020ced18`
+- `func_020ce868`
