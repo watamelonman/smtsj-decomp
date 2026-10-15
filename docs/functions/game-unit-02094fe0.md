@@ -37,3 +37,5 @@
 - `func_020952ac`
 - `Unk094fe0_SetUnkField9a0`: hand-matched
 - `Unk094fe0_GetWorkUnkField9a0`: hand-matched
+- `func_0209509c`: hand-matched
+- `func_02095308`: hand-matched

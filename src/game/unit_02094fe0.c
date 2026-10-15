@@ -31,6 +31,18 @@ int Unk094fe0_Unk_095004(int arg0)
   return arg0 + 0x990;
 }
 
+void func_020950b4(Unk094fe0Work *w, u32 a);
+void func_02095320(Unk094fe0Work *w, u32 a);
+void func_0209509c(u32 a)
+{
+    func_020950b4(Unk094fe0_Thunk_0202e8cc(), a);
+}
+
+void func_02095308(u32 a)
+{
+    func_02095320(Unk094fe0_Thunk_0202e8cc(), a);
+}
+
 /* get u32 at +0x9a0 */
 u32 Unk094fe0_GetUnkField9a0(void *obj) { return ((Unk094fe0Work *)obj)->unk_09a0; }
 
