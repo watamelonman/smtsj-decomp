@@ -5,5 +5,12 @@
  "func_020bd5d4": "Unk0bcef4_IsState015",
  "func_020c8540": "Unk0bd5f0_IsSpecialId",
  "func_020de014": "Unk0ddeb0_GetRes15Word0",
- "func_020de030": "Unk0ddeb0_GetRes15Word1"
+ "func_020de030": "Unk0ddeb0_GetRes15Word1",
+ "func_0202d30c": "Unk02d15c_IsMode0Match",
+ "func_0202d348": "Unk02d15c_IsStatus1OrNeg",
+ "func_0202d36c": "Unk02d15c_IsStatus0OrNeg",
+ "func_0202d7f4": "Unk02d15c_ReleaseImage",
+ "func_0202d830": "Unk02d15c_IsMode1Match",
+ "func_0202d86c": "Unk02d15c_Setup",
+ "func_0202dc60": "Unk02d15c_ResetRecord"
 }

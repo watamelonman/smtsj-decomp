@@ -502,7 +502,7 @@ int func_020443e4(int id);
 s32 func_02044428(int id);
 int func_02095b28(int id);
 void Unk02d15c_Unk_02d91c(int a, int b);
-void func_0202d86c(int a, int b, int c, int d);
+void Unk02d15c_Setup(int a, int b, int c, int d);
 void func_02095f94(void);
 
 void Unk116598_Unk_1168cc(Unk116598Work *work)
@@ -516,7 +516,7 @@ void Unk116598_Unk_1168cc(Unk116598Work *work)
         return;
     }
     Unk02d15c_Unk_02d91c(8, 1);
-    func_0202d86c(8, 41, 0, -1);
+    Unk02d15c_Setup(8, 41, 0, -1);
     func_02095f94();
     work->unk_0000 = 0;
     work->unk_0004 = 3;
@@ -536,7 +536,7 @@ void Unk116598_Unk_117af8(Unk116598Work *work)
         return;
     }
     Unk02d15c_Unk_02d91c(8, 2);
-    func_0202d86c(8, 42, 0, -1);
+    Unk02d15c_Setup(8, 42, 0, -1);
     func_02095f94();
     work->unk_0000 = 0;
     work->unk_0004 = 13;

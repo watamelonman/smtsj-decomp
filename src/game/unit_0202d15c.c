@@ -27,12 +27,12 @@ void Unk02dcfc_SetField68();
 void func_02095cd8();
 void Unk095560_Unk_095d08();
 s32 *Unk094fe0_Unk_094fec();
-int func_0202d30c(int a)
+int Unk02d15c_IsMode0Match(int a)
 {
     return func_0202d668(Unk095560_Unk_095d1c(), a, 0, 0, -1) == 1;
 }
 
-int func_0202d348(int a)
+int Unk02d15c_IsStatus1OrNeg(int a)
 {
     if (a < 0) {
         return 1;
@@ -40,7 +40,7 @@ int func_0202d348(int a)
     return Unk094fe0_Call_020950b4(a) == 1;
 }
 
-int func_0202d36c(int a)
+int Unk02d15c_IsStatus0OrNeg(int a)
 {
     if (a < 0) {
         return 1;
@@ -48,7 +48,7 @@ int func_0202d36c(int a)
     return Unk094fe0_Call_020950b4(a) == 0;
 }
 
-void func_0202d7f4(void)
+void Unk02d15c_ReleaseImage(void)
 {
     if ((s32)data_0213d898[0] == -1) {
         return;
@@ -56,12 +56,12 @@ void func_0202d7f4(void)
     ImageObj_Unk_077894(data_0213d898[0], 0);
 }
 
-int func_0202d830(int a)
+int Unk02d15c_IsMode1Match(int a)
 {
     return func_0202d668(Unk095560_Unk_095d1c(), 0, 1, a, -1) == 1;
 }
 
-int func_0202d86c(int a, int b, int c, int d)
+int Unk02d15c_Setup(int a, int b, int c, int d)
 {
     Unk02dcfc_SetField68();
     func_02095cd8(a, c, b, 0);
@@ -167,7 +167,7 @@ u8 *Unk02d15c_GetManagerRecord(int i)
     return (u8 *)Unk095560_GetManager() + 180 + i * 84;
 }
 
-int func_0202dc60(int a, s32 b)
+int Unk02d15c_ResetRecord(int a, s32 b)
 {
     u8 *rec = Unk02d15c_GetManagerRecord(a);
     s32 *p = Unk094fe0_Unk_094fec(a);

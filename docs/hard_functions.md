@@ -86,8 +86,8 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - card M1-T254: skipped (TU already has a hand-written file; needs merging by hand)
 - `Unk02d15c_Call_02d91c` (M1-T575): left out of the card
 - `Unk02d15c_GetManagerRecord` (M1-T575): left out of the card
-- `func_0202d348` (M1-T575): left out of the card
-- `func_0202d36c` (M1-T575): left out of the card
+- `Unk02d15c_IsStatus1OrNeg` (M1-T575): left out of the card
+- `Unk02d15c_IsStatus0OrNeg` (M1-T575): left out of the card
 - `Unk0f7188_Call_02065cfc` (M1-T621): left out of the card
 - `Unk0f7188_Unk_0f7ca8` (M1-T621): left out of the card
 - `Unk0f7188_Unk_0f780c` (M1-T621): left out of the card

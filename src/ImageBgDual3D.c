@@ -331,7 +331,7 @@ void ImageBgDual3D_Unk_1258e8(void)
 void func_02077314(void);
 int func_02095b28(int id);
 void Unk02d15c_Unk_02d91c(int a, int b);
-void func_0202d86c(int a, int b, int c, int d);
+void Unk02d15c_Setup(int a, int b, int c, int d);
 void func_02095f94(void);
 
 void ImageBgDual3D_Unk_125a90(ImageBgDual3DWork *work)
@@ -342,7 +342,7 @@ void ImageBgDual3D_Unk_125a90(ImageBgDual3DWork *work)
         return;
     }
     Unk02d15c_Unk_02d91c(8, 3);
-    func_0202d86c(8, 42, 0, -1);
+    Unk02d15c_Setup(8, 42, 0, -1);
     func_02095f94();
     work->unk_0000 = 0;
     work->unk_0004 = 13;

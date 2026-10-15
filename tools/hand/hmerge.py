@@ -6,6 +6,8 @@ from hl import SJ
 sh = lambda c, cwd=SJ: subprocess.run(c, shell=True, cwd=cwd, capture_output=True, text=True)
 tu, src, ren = sys.argv[1:4]; desc = sys.argv[4] if len(sys.argv) > 4 else 'hand-matched'
 ren = dict(x.split('=') for x in ren.split(',') if x); fns = list(ren); new = open(src).read()
+if not re.search(r'^reviewer *= *"none"', open(f'{SJ}/forge.toml').read(), re.M):
+    print('forge.toml reviewer must be "none" during hand batches'); sys.exit(1)
 card = None
 for x in sorted(os.listdir(f'{SJ}/tasks')):
     s = open(f'{SJ}/tasks/{x}').read()
