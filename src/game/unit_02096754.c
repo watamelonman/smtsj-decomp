@@ -18,6 +18,22 @@ int Unk096754_Unk_097110(void);
 void Unk096754_Unk_097204(u32 arg0);
 int Unk096754_Unk_0969f0(void);
 
+typedef struct Unk096754Area {
+    u8 pad_0000[0x12];
+    s16 unk_12;
+    s16 unk_14;
+    u8 pad_0016[0x6];
+    s16 unk_1c;
+    s16 unk_1e;
+} Unk096754Area;
+
+void func_02096f0c(void)
+{
+    Unk096754Area *a = (Unk096754Area *)Unk02e000_Thunk_0202e788();
+    a->unk_1c = a->unk_12;
+    a->unk_1e = a->unk_14;
+}
+
 /* decompiler-derived */
 int Unk096754_Unk_0970b4(void)
 {
