@@ -37,3 +37,6 @@
 - `func_0210a0dc`
 - `func_0210b080`
 - `Unk10a034_Unk_10ac28`: decompiler-derived (struct cleanup)
+- `func_0210a08c`: hand-matched
+- `func_0210ae84`: hand-matched
+- `func_0210aed0`: hand-matched

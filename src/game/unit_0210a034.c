@@ -122,6 +122,28 @@ void Unk10a034_Unk_10a074(void)
   }
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+typedef struct Unk10a034Ent {
+    u16 id;
+    u16 pad;
+    u32 used;
+    u32 val;
+} Unk10a034Ent;
+typedef struct Unk10a034Obj {
+    u8 pad[200];
+    u16 ids[4];
+} Unk10a034Obj;
+int func_0210a08c(void)
+{
+    u32 p = Unk10a034_Get_data_02176e38();
+    if (p == 0) {
+        return 1;
+    }
+    return FIELD(u32, p, 8) == 18;
+}
+
 /* decompiler-derived */
 u32 Unk10a034_Unk_10a0b4(void)
 {
@@ -271,4 +293,28 @@ void Unk10a034_Unk_10ac28(int arg0)
     v4 = v4 + 6;
     arg0 = arg0 + 0xc;
   } while (tmp3 < 0xc);
+}
+
+int func_0210ae84(Unk10a034Obj *p, u32 x)
+{
+    int i;
+    for (i = 0; i < 4; i++) {
+        if (x == p->ids[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_0210aed0(u8 *p, u32 id)
+{
+    int i;
+    Unk10a034Ent *e = (Unk10a034Ent *)(p + 36);
+    for (i = 0; i < 12; i++) {
+        if (e->used != 0 && e->id == id) {
+            e->val = 0;
+            return;
+        }
+        e++;
+    }
 }
