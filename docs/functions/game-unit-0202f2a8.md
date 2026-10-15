@@ -145,3 +145,20 @@
 - `func_0203675c`
 - `func_020368e8`
 - `func_020364bc`
+- `func_02035ec4`: decompiler-derived (plain cleanup)
+- `func_02030578`: decompiler-derived (plain cleanup)
+- `func_02030478`: decompiler-derived (plain cleanup)
+- `func_02033890`: decompiler-derived (plain cleanup)
+- `func_02033ac8`: decompiler-derived (plain cleanup)
+- `func_02034a8c`: decompiler-derived (plain cleanup)
+- `func_02035440`: decompiler-derived (plain cleanup)
+- `func_02036488`: decompiler-derived (plain cleanup)
+- `func_020343b4`: decompiler-derived (plain cleanup)
+- `func_02033c94`: decompiler-derived (plain cleanup)
+- `func_0202fc10`: decompiler-derived (plain cleanup)
+- `func_0202f8ac`: decompiler-derived (plain cleanup)
+- `func_020302f4`: decompiler-derived (plain cleanup)
+- `func_0203064c`: decompiler-derived (plain cleanup)
+- `func_020306a8`: decompiler-derived (plain cleanup)
+- `func_0202f378`: decompiler-derived (plain cleanup)
+- `func_02032f3c`: decompiler-derived (plain cleanup)
