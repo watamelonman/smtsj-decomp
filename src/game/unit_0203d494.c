@@ -2,7 +2,7 @@
 #include "types.h"
 
 
-int func_0201ea6c();
+int _ffix();
 int func_0203ac00();
 int Unk03aae8_Unk_03acf4();
 int func_02097f68();
@@ -19,7 +19,7 @@ u32 Unk03d494_Unk_03d5c8(void)
   }
   else if (value1 == 1) {
     func_02097f68(2);
-    value2 = func_0201ea6c();
+    value2 = _ffix();
   }
   Unk03aae8_Unk_03acf4(value2);
   return 1;

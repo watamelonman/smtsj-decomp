@@ -134,7 +134,7 @@ void *func_0204b3cc();
 void *func_0204fe68();
 void *func_0204fed8();
 void *Unk095560_Unk_095778();
-int func_0201f1dc();
+int _s32_div_f();
 
 void Unk03aae8_Unk_03ad24(u8 *p)
 {
