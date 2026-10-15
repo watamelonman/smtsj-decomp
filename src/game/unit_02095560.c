@@ -193,3 +193,4 @@ u32 func_02095660(void)
   } while (tmp3 < 8);
   return 1;
 }
+
