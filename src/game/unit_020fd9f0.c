@@ -118,3 +118,21 @@ void Unk0fd9f0_Unk_0fe278(void)
   return;
 }
 
+extern u8 data_021510b8[];
+extern u8 data_021510cc[];
+extern u8 data_021510e0[];
+int func_0205c2c4();
+int func_0205dcd4();
+/* decompiler-derived; refs "Battle/battle_help", "Battle/battle_talk" */
+void func_020fdbb8(u32 *arg0)
+{
+  u32 tmp1;
+  Unk05b82c_Unk_05b82c(0xd5);
+  Unk05b82c_Unk_05b82c(0xd6);
+  tmp1 = func_0205dcd4(data_021510b8,1);
+  *arg0 = tmp1;
+  tmp1 = func_0205dcd4(data_021510cc,1);
+  arg0[7] = tmp1;
+  tmp1 = func_0205c2c4(data_021510e0);
+  arg0[8] = tmp1;
+}
