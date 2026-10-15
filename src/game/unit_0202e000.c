@@ -183,7 +183,7 @@ u8 *Unk02e000_GetAreaRecord(int i)
     return Unk02e000_GetWorkArea() + 116 + i * 60;
 }
 
-u8 *Unk02e000_GetPartyEntry(int i)
+u8 *Unk02e000_Unk_02e7c0(int i)
 {
     u8 *w = Unk02e000_GetWorkArea();
     s8 idx = (w + i + 0x300)[0x54];
@@ -214,7 +214,7 @@ int Unk02e000_FindEntryIndex(u8 *p)
     return -1;
 }
 
-int Unk02e000_IsEntryInParty(u8 *p)
+int Unk02e000_Unk_02e840(u8 *p)
 {
     int idx = Unk02e000_FindEntryIndex(p);
     s8 *arr = (s8 *)(Unk02e000_GetWorkArea() + 0x354);

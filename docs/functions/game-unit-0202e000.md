@@ -40,13 +40,13 @@
 - `Unk02e000_GetAreaRecord`
 
 ## Not done in M1-T653
-- `Unk02e000_GetPartyEntry`
+- `Unk02e000_Unk_02e7c0`
 - `Unk02e000_Unk_02e180`
 - `Unk02e000_GetSlot`
 - `Unk02e000_GetRecordUnk1c`
 - `func_0202e1b8`
 - `func_0202e4dc`
-- `Unk02e000_IsEntryInParty`
+- `Unk02e000_Unk_02e840`
 - `Unk02e000_TestFlag`
 
 ## Not done in M1-T654
@@ -93,9 +93,9 @@
 - `Unk02e000_AddCounter5fc4`: hand-matched
 - `Unk02e000_GetTier`: hand-matched
 - `Unk02e000_Call_02008848`: hand-matched
-- `Unk02e000_GetPartyEntry`: hand-matched
+- `Unk02e000_Unk_02e7c0`: hand-matched
 - `Unk02e000_FindEntryIndex`: hand-matched
-- `Unk02e000_IsEntryInParty`: hand-matched
+- `Unk02e000_Unk_02e840`: hand-matched
 - `Unk02e000_HasField36`: hand-matched
 - `Unk02e000_TestFlag`: hand-matched
 - `Unk02e000_SetRecord`: hand-matched
