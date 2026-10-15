@@ -29,7 +29,42 @@ int Unk047788_GetConst1(void) { return 1; }
 int Unk047788_GetConst1_0477dc(void) { return 1; }
 
 int func_020453dc();
-int func_02047834();
+void func_02047834();
+typedef struct Unk047788Mgr {
+    u8 pad_0000[0x64];
+    u32 *slots[10];
+} Unk047788Mgr;
+
+void func_020b6514();
+int func_0205e4f8();
+void func_02116028();
+int Unk0a5680_GetEntryUnk14();
+void func_020a5fc8();
+int func_020477e4(void)
+{
+    FIELD(u32, Unk044904_Get_data_0215ee98(), 0x50) = 0;
+    func_020b6514(1);
+    if (func_0205e4f8(-1) != 0) {
+        return 0;
+    }
+    func_02116028();
+    return 1;
+}
+
+void func_02047834(void)
+{
+    int i;
+    for (i = 0; i < 10; i++) {
+        u32 *o = ((Unk047788Mgr *)Unk044904_Get_data_0215ee98())->slots[i];
+        if (o != 0) {
+            u32 w = o[0];
+            if ((w >> 16 & 0xff) == 2) {
+                func_020a5fc8(Unk0a5680_GetEntryUnk14(w), 0);
+            }
+        }
+    }
+}
+
 /* decompiler-derived */
 u32 Unk047788_Unk_047884(void)
 {
