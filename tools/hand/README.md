@@ -64,3 +64,6 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
 - A literal-pool load hoisted above the first branch: bind the global to a local first (`u8 *base = data_x;`) (b53).
 - Null-checked sub-object (`adds r1,r0,#392; bxeq lr`) whose loops still index from the outer pointer: embed the
   sub-struct in a host struct and test `&p->sel == 0`, then write `p->sel.a[j]` (b54). A separate `q` pointer indexes from q.
+- `x == 1 || x == 2` folds to `sub r0,#1; cmp #1`; to keep `cmp #1; cmpne #2` write a switch with fallthrough cases (b57).
+- Soft-float functions (calls to func_0201de2c/0201e3d8/0201e630/0201eae0 with `movcs` after the compare call) are
+  skipped for now: the repo has no float C yet, and the compare result comes back in flags (b56).
