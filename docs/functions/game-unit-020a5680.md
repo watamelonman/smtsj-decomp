@@ -35,3 +35,4 @@
 - `func_020a5d08`
 - `func_020a57c8`
 - `func_020a5c40`
+- `func_020a5fb0`: decompiler-derived (plain cleanup)
