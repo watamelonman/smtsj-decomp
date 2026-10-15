@@ -30,3 +30,13 @@
 - `func_020dbf24`
 - `func_020dddf4`
 - `func_020db288`
+
+## Not done in M1-T1125
+- `func_020d3624`
+- `func_020db2dc`
+- `func_020dca50`
+- `func_020dd308`
+- `func_020d35c0`
+- `func_020dcad4`
+- `func_020db214`
+- `func_020dde3c`
