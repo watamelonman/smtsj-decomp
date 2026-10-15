@@ -60,3 +60,4 @@
 - `Unk0d297c_Unk_0d2aa4`: hand-matched
 - `Unk0d297c_Unk_0d2aec`: hand-matched
 - `Unk0d297c_FreeSlot`: hand-matched
+- `func_020d2a8c`: hand-matched

@@ -30,6 +30,12 @@ void Unk0d297c_Unk_0d2adc(u32 arg0);
 u16 Unk0d297c_Unk_0d32e8(int *arg0,int arg1);
 int Unk0d297c_Unk_0d32f8(int *arg0);
 
+void func_020d297c(u16 id);
+void func_020d2a8c(int id)
+{
+    func_020d297c((u16)(id + 50));
+}
+
 /* forwards to `Unk0e5fb8_Unk_0e6448` */
 void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(void) { Unk0e5fb8_Unk_0e6448(); }
 
