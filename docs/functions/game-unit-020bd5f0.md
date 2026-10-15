@@ -51,3 +51,4 @@
 - `func_020c1770`
 - `func_020c7304`
 - `Unk0bd5f0_SetCtxUnk1b8`: hand-matched
+- `func_020c8540`: hand-matched

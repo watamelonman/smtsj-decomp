@@ -109,3 +109,11 @@ void Unk0bd5f0_SetCtxUnk1b8(void)
 {
     data_02176bb4->unk_01b8 = 1;
 }
+
+int func_020c8540(int id)
+{
+    if (id == 8 || id == 5 || id == 6 || id == 22) {
+        return 1;
+    }
+    return 0;
+}
