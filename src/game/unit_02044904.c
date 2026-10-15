@@ -24,6 +24,21 @@ typedef struct Unk044904Rec {
     u16 unk_08;
 } Unk044904Rec;
 
+/* 8 x 12-byte keyed slots followed by a count (see Unk044904_Unk_044948). */
+typedef struct Unk044904Slot {
+    u16 id;
+    u8 pad_02[10];
+} Unk044904Slot;
+typedef struct Unk044904SlotTab {
+    Unk044904Slot slots[8];
+    u32 count;
+} Unk044904SlotTab;
+
+typedef struct Unk044904Objs {
+    u8 pad_0000[100];
+    u32 objs[10];
+} Unk044904Objs;
+
 Unk044904Rec *Unk044904_Unk_044948(u32 a, u32 b);
 
 typedef struct Unk044904Entry {
@@ -54,23 +69,22 @@ void func_0204a8cc();
 
 Unk044904Rec *Unk044904_Unk_044948(u32 a, u32 key)
 {
-    u8 *p = (u8 *)a;
-    u32 n = FIELD(u32, p, 96);
+    Unk044904SlotTab *t = (Unk044904SlotTab *)a;
+    u32 n = t->count;
     u32 i;
-    u8 *e;
-    typedef struct Unk044904Slot { u16 id; u8 pad[10]; } Unk044904Slot;
+    Unk044904Slot *e;
     for (i = 0; i < n; i++) {
-        if (key == ((Unk044904Slot *)p)[i].id) {
-            return (Unk044904Rec *)(p + i * 12);
+        if (key == t->slots[i].id) {
+            return (Unk044904Rec *)&t->slots[i];
         }
     }
     if (n >= 8) {
         return 0;
     }
-    e = p + n * 12;
+    e = &t->slots[n];
     func_02008848(e, 0, 12);
-    FIELD(u16, e, 0) = key;
-    FIELD(u32, p, 96)++;
+    e->id = key;
+    t->count++;
     return (Unk044904Rec *)e;
 }
 
@@ -240,14 +254,13 @@ void Unk044904_Unk_044ea8(void)
 
 int Unk044904_Unk_044f4c(u32 k)
 {
-    typedef struct Unk044904Objs { u8 pad[100]; u32 objs[10]; } Unk044904Objs;
-    u8 *t = (u8 *)Unk044904_Get_data_0215ee98();
+    Unk044904Objs *t = (Unk044904Objs *)Unk044904_Get_data_0215ee98();
     int i;
     if (t == 0) {
         return 0;
     }
     for (i = 0; i < 10; i++) {
-        u32 o = ((Unk044904Objs *)t)->objs[i];
+        u32 o = t->objs[i];
         if (o != 0 && func_02049a84(o, k) != 0) {
             return i;
         }
@@ -378,7 +391,6 @@ int Unk044904_Unk_04509c(void)
 int Unk0bc1a8_IsSlotEmpty();
 void Unk044904_Unk_0453dc(void)
 {
-    typedef struct Unk044904Objs { u8 pad[100]; u32 objs[10]; } Unk044904Objs;
     int i;
     int one = 1;
     for (i = 0; i < 10; i++) {
