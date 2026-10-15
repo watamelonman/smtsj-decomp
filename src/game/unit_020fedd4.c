@@ -89,6 +89,15 @@ void Unk0fedd4_Unk_0fedd4(void)
 
 
 int func_02061424();
+u32 func_020fef0c();
+void func_020fedf0(u32 a)
+{
+    if (data_02176e28 != 0) {
+        return;
+    }
+    data_02176e28 = (Unk0fedd4Obj *)func_020fef0c(a);
+}
+
 /* decompiler-derived */
 void Unk0fedd4_Unk_0fee18(void)
 {

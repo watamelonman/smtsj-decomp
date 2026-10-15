@@ -28,3 +28,4 @@
 - `Unk0fedd4_SetState0`: hand-matched
 - `Unk0fedd4_SetState2`: hand-matched
 - `Unk0fedd4_GetObj`: hand-matched
+- `func_020fedf0`: hand-matched
