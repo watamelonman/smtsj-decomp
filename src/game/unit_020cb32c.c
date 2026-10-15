@@ -144,3 +144,4 @@ void func_020cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
   func_02059f70(*arg0,0,arg1,arg2,auStack_24,0,arg5);
   return;
 }
+

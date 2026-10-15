@@ -30,3 +30,13 @@
 - `func_020ccc64`
 - `func_020cba20`
 - `func_020cbaa4`
+
+## Not done in M1-T869
+- `func_020cc21c`
+- `func_020cb3dc`
+- `func_020cb78c`
+- `func_020cb36c`
+- `func_020ccb28`
+- `func_020cb8f8`
+- `func_020cb98c`
+- `func_020cbc50`
