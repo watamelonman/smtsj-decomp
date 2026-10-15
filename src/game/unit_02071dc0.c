@@ -15,7 +15,7 @@ void Unk071dc0_Unk_071e08(void)
 }
 
 int Unk05b82c_Unk_05b82c();
-int func_02071dc0();
+void func_02071dc0(void);
 /* decompiler-derived */
 void Unk071dc0_Unk_071de4(void)
 {
@@ -46,3 +46,13 @@ void Unk071dc0_Unk_072200(void)
   func_02071e24();
 }
 
+extern u8 data_021458d8[];
+extern u8 data_021459b0[];
+int func_0205ad2c();
+int func_0205ad78();
+/* decompiler-derived; refs "Data/Effect/tex/" */
+void func_02071dc0(void)
+{
+  func_0205ad2c(data_021459b0);
+  func_0205ad78(data_021458d8,9);
+}

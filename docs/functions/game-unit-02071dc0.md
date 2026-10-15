@@ -14,3 +14,4 @@
 ## Not done in M1-T329
 - `func_02071efc`
 - `func_02072068`
+- `func_02071dc0`: decompiler-derived (plain cleanup)
