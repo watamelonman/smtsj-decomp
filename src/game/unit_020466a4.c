@@ -2,7 +2,7 @@
 #include "types.h"
 
 
-int func_020aa24c();
+int Unk0aa118_PeekItem();
 int func_020f8098();
 /* decompiler-derived */
 u32 Unk0466a4_Unk_0466a4(u16 *arg0)
@@ -11,7 +11,7 @@ u32 Unk0466a4_Unk_0466a4(u16 *arg0)
   u32 value1;
   int value2;
   Unk044904_Unk_044fd8();
-  v1 = (u32 *)func_020aa24c();
+  v1 = (u32 *)Unk0aa118_PeekItem();
   if (v1 == (u32 *)0x0) {
     *arg0 = 2;
   }

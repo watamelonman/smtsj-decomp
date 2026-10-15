@@ -5,7 +5,7 @@
 - `Unk0f7188_Nop_0f7ae4` (4 B): empty callback
 
 ## Hard list
-- `func_020f7c90`: no candidate matched locally
+- `Unk0f7188_Call_02065cfc`: no candidate matched locally
 - `Unk0f7188_Unk_0f7ca8`: no candidate matched locally
 - `Unk0f7188_Unk_0f780c`: no candidate matched locally
 - `func_020f7c64`: no candidate matched locally
@@ -29,4 +29,4 @@
 - `func_020f7248`
 - `Unk0f7188_Unk_0f780c`: decompiler-derived (plain+fix cleanup)
 - `Unk0f7188_Unk_0f7ca8`: decompiler-derived (plain+fix cleanup)
-- `func_020f7c90`: hand-matched
+- `Unk0f7188_Call_02065cfc`: hand-matched

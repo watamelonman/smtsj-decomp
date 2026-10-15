@@ -12,8 +12,8 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `Unk065e88_Unk_0663bc`: decompiler-derived
 
 ## Not done in M1-T1018
-- `func_02065fac`
-- `func_020662b8`
+- `Unk065e88_Call_02065fc0`
+- `Unk065e88_SetFlag3a`
 - `func_020663d8`
 - `Unk065e88_Unk_06644c`: decompiler-derived
 - `Unk065e88_Unk_065e88`: decompiler-derived
@@ -55,5 +55,5 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `func_02067888`
 - `func_02067634`
 - `func_02066d30`
-- `func_02065fac`: hand-matched
-- `func_020662b8`: hand-matched
+- `Unk065e88_Call_02065fc0`: hand-matched
+- `Unk065e88_SetFlag3a`: hand-matched

@@ -14,7 +14,7 @@ typedef signed char s8;
 
 extern unsigned char gUnkManager_02175eb0[];   /* static manager instance */
 
-void func_0202d15c(void);
+void Unk02d15c_Call_02d91c(void);
 void Unk0caea8_Unk_0cb044(void);
 void func_020773dc();
 void func_020961a0(void);
@@ -32,15 +32,15 @@ unsigned char *Unk095560_GetManagerAlias(void) { return Unk095560_GetManager(); 
 unsigned char *Unk095560_GetManagerSub3a8(void) { return Unk095560_GetManager() + 0x3a8; }
 
 /* Forwarders. */
-void Unk095560_Thunk_0202d15c(void) { func_0202d15c(); }
+void Unk095560_Thunk_0202d15c(void) { Unk02d15c_Call_02d91c(); }
 void Unk0a163c_Unk_0a1814(u16 id);
 void Unk0a163c_Unk_0a1834(u16 id);
-void func_020957e4(int id)
+void Unk095560_Call_0a1814(int id)
 {
     Unk0a163c_Unk_0a1814((u16)id);
 }
 
-void func_020957f8(int id)
+void Unk095560_Call_0a1834(int id)
 {
     Unk0a163c_Unk_0a1834((u16)id);
 }
@@ -180,13 +180,13 @@ u32 Unk095560_Unk_095a2c(u32 arg0)
   value = func_02095950(1,arg0);
   if (value != 0) {
     func_020958c8(value);
-    func_0202d15c();
+    Unk02d15c_Call_02d91c();
     return 1;
   }
   return 0;
 }
 
-int func_0202dc44();
+int Unk02d15c_GetManagerRecord();
 int func_0209560c();
 /* decompiler-derived */
 u32 Unk095560_Unk_095660(void)
@@ -197,7 +197,7 @@ u32 Unk095560_Unk_095660(void)
   value2 = 2;
   do {
     v1 = (u32 *)Unk094fe0_Unk_094fec(value2);
-    value1 = func_0202dc44(value2);
+    value1 = Unk02d15c_GetManagerRecord(value2);
     func_0209560c(value2);
     *v1 = 0xffffffff;
     value2 = value2 + 1;
@@ -258,7 +258,7 @@ u8 *Unk02e000_GetWorkArea(void);
 u32 func_02035ab8(u16 n);
 int func_02096448(int id);
 
-/* Mission/progress record returned by func_0202dc44. */
+/* Mission/progress record returned by Unk02d15c_GetManagerRecord. */
 typedef struct MissionInfo {
     u8  pad_0000[0x50];
     u32 stage;                  /* +0x50 */
@@ -271,7 +271,7 @@ void func_02095b48(char *buf, int id)
     u32 v;
 
     if (func_02096448(id) != 0) {
-        func_02013c3c(buf, data_0214c6f8, ((MissionInfo *)func_0202dc44(id))->stage);
+        func_02013c3c(buf, data_0214c6f8, ((MissionInfo *)Unk02d15c_GetManagerRecord(id))->stage);
         return;
     }
     if (id == 0) {
@@ -282,14 +282,14 @@ void func_02095b48(char *buf, int id)
         }
         func_02013c3c(buf, data_0214c720, v);
     } else if (id == 8) {
-        switch (((MissionInfo *)func_0202dc44(id))->stage) {
+        switch (((MissionInfo *)Unk02d15c_GetManagerRecord(id))->stage) {
         case 0: func_02013c3c(buf, data_0214c750); return;
         case 1: func_02013c3c(buf, data_0214c774); return;
         case 2: func_02013c3c(buf, data_0214c798); return;
         case 3: func_02013c3c(buf, data_0214c7bc); return;
         }
     } else if (id == 1) {
-        switch (((MissionInfo *)func_0202dc44(id))->stage) {
+        switch (((MissionInfo *)Unk02d15c_GetManagerRecord(id))->stage) {
         case 0: func_02013c3c(buf, data_0214c7e4); return;
         case 1: func_02013c3c(buf, data_0214c808); return;
         case 2: func_02013c3c(buf, data_0214c830); return;
@@ -388,7 +388,7 @@ void Unk095560_Unk_095598(void)
   func_02008848(tmp1,0,0x3c0);
   tmp5 = 0;
   do {
-    tmp3 = func_0202dc44(tmp5);
+    tmp3 = Unk02d15c_GetManagerRecord(tmp5);
     v4 = (u32 *)Unk094fe0_Unk_094fec(tmp5);
     func_0204ae84(tmp3 + 0x10);
     *(u32 *)(tmp3 + 0x50) = 0xffffffff;

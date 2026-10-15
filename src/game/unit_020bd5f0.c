@@ -105,7 +105,7 @@ typedef struct Unk0bd5f0Ctx {
 
 extern Unk0bd5f0Ctx *data_02176bb4;
 
-void func_020c84a8(void)
+void Unk0bd5f0_SetCtxUnk1b8(void)
 {
     data_02176bb4->unk_01b8 = 1;
 }

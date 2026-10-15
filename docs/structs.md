@@ -125,5 +125,5 @@ transient local, not the file Work object.
 | `Unk0f7eb4Work.bfData/mbbData` | unit_020f7eb4.c | +0x74/+0x78 loaded `Data/Battle/Event/%s.bf/.mbb` — medium |
 | `Unk0b6570Work.model` | unit_020b6570.c | +0x208C title model set (titleModel.*) — medium |
 | `Unk10fe28Work` | unit_0210fe28.c | config screen object; fields +0x18..+0x54 hedged — none |
-| `MissionInfo.stage` | unit_02095560.c | +0x50 of `func_0202dc44` result — low |
+| `MissionInfo.stage` | unit_02095560.c | +0x50 of `Unk02d15c_GetManagerRecord` result — low |
 | `Unk112aa0Step` | WIP branch only | mode/step bytes, `menuId` +0x14 |

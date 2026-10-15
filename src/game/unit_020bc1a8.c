@@ -23,7 +23,7 @@ void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 
 int func_020bc770();
 int func_020bc8c8();
-int func_020bc5c0(u32 *p, u32 value)
+int Unk0bc1a8_SetPrevWord(u32 *p, u32 value)
 {
     if (p == 0) {
         return 0;

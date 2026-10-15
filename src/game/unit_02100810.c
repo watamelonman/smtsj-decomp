@@ -16,18 +16,18 @@ typedef struct Unk100810Work {
 
 
 
-int func_020662b8();
+int Unk065e88_SetFlag3a();
 /* decompiler-derived */
 void Unk100810_Unk_107154(Unk100810Work *arg0, int arg1){
   if (arg1 != 0) {
     arg0->unk_20cc = 1;
-    func_020662b8(arg0->unk_1f38);
-    func_020662b8(arg0->unk_1f3c,1);
+    Unk065e88_SetFlag3a(arg0->unk_1f38);
+    Unk065e88_SetFlag3a(arg0->unk_1f3c,1);
     return;
   }
   arg0->unk_20cc = 0;
-  func_020662b8(arg0->unk_1f38);
-  func_020662b8(arg0->unk_1f3c,0);
+  Unk065e88_SetFlag3a(arg0->unk_1f38);
+  Unk065e88_SetFlag3a(arg0->unk_1f3c,0);
   return;
 }
 

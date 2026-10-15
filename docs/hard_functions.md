@@ -28,7 +28,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk0e5fb8_GetOffsetD80` (M1-T373): left out of the card
 - card M1-T692: skipped (TU already has a hand-written file; needs merging by hand)
 - card M1-T800: skipped (TU already has a hand-written file; needs merging by hand)
-- `func_02119640` (M1-T563): left out of the card
+- `Unk118b04_GetEntryKey` (M1-T563): left out of the card
 - `Unk09974c_GetEntryUnk08` (M1-T553): left out of the card
 - card M1-T536: skipped (TU already has a hand-written file; needs merging by hand)
 - `CampStatus_GetUnk1a8` (M1-T1122): left out of the card
@@ -41,7 +41,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020caea8` (M1-T107): card skipped
 - `func_020bc598` (M1-T545): left out of the card
 - `func_020bc5ac` (M1-T545): left out of the card
-- `func_020bc5c0` (M1-T545): left out of the card
+- `Unk0bc1a8_SetPrevWord` (M1-T545): left out of the card
 - `Unk0bc1a8_Unk_0bc6d4` (M1-T545): left out of the card
 - `Unk0bc1a8_Unk_0bc6e8` (M1-T545): left out of the card
 - `func_020bc4e0` (M1-T545): left out of the card
@@ -55,11 +55,11 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_0202e578` (M1-T650): left out of the card
 - `func_0202e590` (M1-T650): left out of the card
 - `Unk02e000_Unk_02e228` (M1-T650): left out of the card
-- `func_020e2d6c` (M1-T1042): left out of the card
+- `Unk0e1648_IsUnkeecSet` (M1-T1042): left out of the card
 - `func_020bd3fc` (M1-T434): left out of the card
 - `func_020bd5d4` (M1-T434): left out of the card
 - `func_020aa118` (M1-T1076): left out of the card
-- `func_020aa24c` (M1-T1076): left out of the card
+- `Unk0aa118_PeekItem` (M1-T1076): left out of the card
 - `func_020ab4d4` (M1-T1076): left out of the card
 - `func_020afb40` (M1-T1076): left out of the card
 - `Unk0ea208_Unk_0eb6cc` (M1-T769): left out of the card
@@ -84,11 +84,11 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020cb12c` (M1-T166): card skipped
 - `func_020b0d48` (M1-T223): card skipped
 - card M1-T254: skipped (TU already has a hand-written file; needs merging by hand)
-- `func_0202d15c` (M1-T575): left out of the card
-- `func_0202dc44` (M1-T575): left out of the card
+- `Unk02d15c_Call_02d91c` (M1-T575): left out of the card
+- `Unk02d15c_GetManagerRecord` (M1-T575): left out of the card
 - `func_0202d348` (M1-T575): left out of the card
 - `func_0202d36c` (M1-T575): left out of the card
-- `func_020f7c90` (M1-T621): left out of the card
+- `Unk0f7188_Call_02065cfc` (M1-T621): left out of the card
 - `Unk0f7188_Unk_0f7ca8` (M1-T621): left out of the card
 - `Unk0f7188_Unk_0f780c` (M1-T621): left out of the card
 - `func_020f7c64` (M1-T621): left out of the card
@@ -206,3 +206,16 @@ Near-miss (branch `WIP-02112fb8`): `func_02112fb8` 97.3% (584/584 B), two schedu
 Harness bug fixed: `objdump -d` hides all-zero words (`...`), so literal pools made up only
 of relocations looked "short" (e.g. 188 vs 204 B) and real matches were reported as misses.
 Local verify/cmp now use `-z`. The project gates (objdump-free objdiff) were never affected.
+
+## Notes from the hand-matching wave (2026-10-15)
+
+- `ldr r0,[r0,#N]; cmp r0,#0; bx lr` (e.g. func_020cccb4, func_020cd490, func_020ce3e0,
+  func_020cf4b8, func_020cf4c4, func_021177b8): a leftover compare with no consumer. None of
+  `x ? x : 0`, `!= 0`, `_Bool`, or volatile variants reproduce it; still unmatched.
+- When adding a function to a TU whose existing code calls it, define it *before* the caller
+  (address order). Defining it after the caller changed the caller's objdiff result to 98.75%
+  in unit_0205b82c and unit_0202e000.
+- Ghidra drops return values on tail-forwarding wrappers (Unk0f3db4_Unk_0f4490,
+  Unk118b04_Unk_118b78): returning the callee's value is byte-identical and unlocks callers.
+- ninja does not track header dependencies: after editing include/*.h, touch the including
+  sources before running checksum.

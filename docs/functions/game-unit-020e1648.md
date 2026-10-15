@@ -9,7 +9,7 @@
 - `Unk0e1648_Unk_0e2c90` (32 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020e2d6c`: no candidate matched locally
+- `Unk0e1648_IsUnkeecSet`: no candidate matched locally
 - `Unk0e1648_Unk_0e2d80`: decompiler-derived
 - `Unk0e1648_Unk_0e4f34`: decompiler-derived
 - `Unk0e1648_Unk_0e50c8`: decompiler-derived
@@ -75,4 +75,4 @@
 - `Unk0e1648_Unk_0e5214`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)
 - `Unk0e1648_Unk_0e48a8`: decompiler-derived (struct cleanup)
-- `func_020e2d6c`: hand-matched
+- `Unk0e1648_IsUnkeecSet`: hand-matched

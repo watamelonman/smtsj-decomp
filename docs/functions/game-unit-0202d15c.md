@@ -6,8 +6,8 @@
 - `Unk02d15c_Unk_02d91c` (24 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_0202d15c`: no candidate matched locally
-- `func_0202dc44`: no candidate matched locally
+- `Unk02d15c_Call_02d91c`: no candidate matched locally
+- `Unk02d15c_GetManagerRecord`: no candidate matched locally
 - `func_0202d348`: no candidate matched locally
 - `func_0202d36c`: no candidate matched locally
 - `Unk02d15c_Unk_02d9a8`: decompiler-derived
@@ -36,5 +36,5 @@
 - `func_0202d668`
 - `func_0202da98`
 - `func_0202d390`
-- `func_0202d15c`: hand-matched
-- `func_0202dc44`: hand-matched
+- `Unk02d15c_Call_02d91c`: hand-matched
+- `Unk02d15c_GetManagerRecord`: hand-matched

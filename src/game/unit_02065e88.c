@@ -27,7 +27,7 @@ typedef struct GameObj {
 } GameObj;
 
 void func_02065fc0(u32 a, u32 b, u32 c, int d, u32 e);
-void func_02065fac(u32 a, u32 b, u32 c, u32 d)
+void Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u32 d)
 {
     func_02065fc0(a, b, c, 3, d);
 }
@@ -51,7 +51,7 @@ typedef struct Unk065e88Flag {
     u8 unk_003a;
 } Unk065e88Flag;
 
-void func_020662b8(Unk065e88Flag *o, int on)
+void Unk065e88_SetFlag3a(Unk065e88Flag *o, int on)
 {
     o->unk_003a = on != 0;
 }

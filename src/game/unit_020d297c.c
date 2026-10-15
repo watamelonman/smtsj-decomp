@@ -31,7 +31,7 @@ u16 Unk0d297c_Unk_0d32e8(int *arg0,int arg1);
 int Unk0d297c_Unk_0d32f8(int *arg0);
 
 void func_020d297c(u16 id);
-void func_020d2a8c(int id)
+void Unk0d297c_Call_020d297c(int id)
 {
     func_020d297c((u16)(id + 50));
 }

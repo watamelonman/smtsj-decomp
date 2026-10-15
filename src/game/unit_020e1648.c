@@ -43,7 +43,7 @@ typedef struct Unk0e1648Obj {
     u8 unk_0eec;
 } Unk0e1648Obj;
 
-int func_020e2d6c(Unk0e1648Obj *o)
+int Unk0e1648_IsUnkeecSet(Unk0e1648Obj *o)
 {
     return o->unk_0eec != 0xff;
 }

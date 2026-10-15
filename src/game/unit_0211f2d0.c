@@ -86,7 +86,7 @@ void Unk11f2d0_Unk_11f2d0(int *arg0)
 
 int func_0205c408();
 int func_0205c6e0();
-int func_02065fac();
+int Unk065e88_Call_02065fc0();
 /* decompiler-derived */
 void Unk11f2d0_Unk_11f544(int arg0)
 {
@@ -95,7 +95,7 @@ void Unk11f2d0_Unk_11f544(int arg0)
     return;
   }
   v1 = (u32 *)
-           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
+           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
   *(u32 **)(arg0 + 0x24) = v1;
   func_0205c408(*v1,0);
   func_0205c6e0(**(u32 **)(arg0 + 0x24));
@@ -111,7 +111,7 @@ void Unk11f2d0_Unk_11f58c(int arg0)
     return;
   }
   v1 = (u32 *)
-           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
+           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
   *(u32 **)(arg0 + 0x28) = v1;
   func_0205c408(*v1,1);
   func_0205c6e0(**(u32 **)(arg0 + 0x28));
@@ -127,7 +127,7 @@ void Unk11f2d0_Unk_11f5d4(int arg0)
     return;
   }
   v1 = (u32 *)
-           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
+           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
   *(u32 **)(arg0 + 0x2c) = v1;
   func_0205c408(*v1,2);
   func_0205c6e0(**(u32 **)(arg0 + 0x2c));
@@ -143,7 +143,7 @@ void Unk11f2d0_Unk_11f61c(int arg0)
     return;
   }
   v1 = (u32 *)
-           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0018,((Unk11f2d0Work *)arg0)->unk_0020,0,0);
+           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0018,((Unk11f2d0Work *)arg0)->unk_0020,0,0);
   *(u32 **)(arg0 + 0x30) = v1;
   func_0205c408(*v1,0);
   func_0205c6e0(**(u32 **)(arg0 + 0x30));

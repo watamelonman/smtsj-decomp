@@ -90,7 +90,7 @@ typedef struct UniteEventCtx {
 
 extern UniteEventCtx *data_02176e48;
 
-void func_0210f9d8(void)
+void UniteEvent_SetCtxUnk32c(void)
 {
     if (data_02176e48 != 0) {
         data_02176e48->unk_032c = 1;

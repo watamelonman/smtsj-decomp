@@ -6,7 +6,7 @@
 - `Unk0bd5f0_Unk_0c7588`: decompiler-derived
 
 ## Not done in M1-T1134
-- `func_020c84a8`
+- `Unk0bd5f0_SetCtxUnk1b8`
 - `func_020c8540`
 - `func_020bd5f0`
 - `func_020c1968`
@@ -50,4 +50,4 @@
 - `func_020c0c5c`
 - `func_020c1770`
 - `func_020c7304`
-- `func_020c84a8`: hand-matched
+- `Unk0bd5f0_SetCtxUnk1b8`: hand-matched

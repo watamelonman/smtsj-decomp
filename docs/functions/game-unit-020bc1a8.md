@@ -6,7 +6,7 @@
 ## Hard list
 - `func_020bc598`: no candidate matched locally
 - `func_020bc5ac`: no candidate matched locally
-- `func_020bc5c0`: no candidate matched locally
+- `Unk0bc1a8_SetPrevWord`: no candidate matched locally
 - `Unk0bc1a8_Unk_0bc6d4`: no candidate matched locally
 - `Unk0bc1a8_Unk_0bc6e8`: no candidate matched locally
 - `func_020bc4e0`: no candidate matched locally
@@ -43,4 +43,4 @@
 - `Unk0bc1a8_Unk_0bc6d4`: decompiler-derived (plain cleanup)
 - `Unk0bc1a8_Unk_0bc6e8`: decompiler-derived (plain cleanup)
 - `Unk0bc1a8_Unk_0bc5d4`: decompiler-derived (plain+fix cleanup)
-- `func_020bc5c0`: hand-matched
+- `Unk0bc1a8_SetPrevWord`: hand-matched

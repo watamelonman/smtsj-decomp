@@ -22,7 +22,7 @@ typedef struct Unk10947cObj {
     s32 unk_004c;
 } Unk10947cObj;
 
-int func_02109db8(Unk10947cObj *o)
+int Unk10947c_IsUnk4cAtLeast2(Unk10947cObj *o)
 {
     return o->unk_004c >= 2;
 }

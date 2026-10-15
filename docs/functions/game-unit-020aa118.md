@@ -7,7 +7,7 @@
 
 ## Hard list
 - `func_020aa118`: no candidate matched locally
-- `func_020aa24c`: no candidate matched locally
+- `Unk0aa118_PeekItem`: no candidate matched locally
 - `func_020ab4d4`: no candidate matched locally
 - `func_020afb40`: no candidate matched locally
 - `Unk0aa118_Unk_0afb64`: decompiler-derived
@@ -71,4 +71,4 @@
 - `func_020aa2f0`
 - `func_020aeb90`
 - `Unk0aa118_Unk_0acb74`: decompiler-derived (plain+fix cleanup)
-- `func_020aa24c`: hand-matched
+- `Unk0aa118_PeekItem`: hand-matched

@@ -9,7 +9,7 @@
 - `Unk118b04_Unk_118e74` (24 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_02119640`: no candidate matched locally
+- `Unk118b04_GetEntryKey`: no candidate matched locally
 - `Unk118b04_Unk_118ba8`: decompiler-derived
 - `Unk118b04_Unk_118e50`: decompiler-derived
 - `Unk118b04_Unk_119434`: decompiler-derived
@@ -40,4 +40,4 @@
 - `func_02119080`
 - `func_02119178`
 - `Unk118b04_Unk_119358`: hand-matched
-- `func_02119640`: hand-matched
+- `Unk118b04_GetEntryKey`: hand-matched

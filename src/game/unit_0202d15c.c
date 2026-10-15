@@ -14,7 +14,7 @@ u32 Unk02d15c_Unk_02d944(void);
 void Unk02d15c_Unk_02d81c(void);
 void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1);
 
-void func_0202d15c(void)
+void Unk02d15c_Call_02d91c(void)
 {
     Unk02d15c_Unk_02d91c(0, -1);
 }
@@ -112,7 +112,7 @@ u32 Unk02d15c_Unk_02da48(u32 arg0)
   }
 }
 
-u8 *func_0202dc44(int i)
+u8 *Unk02d15c_GetManagerRecord(int i)
 {
     return (u8 *)Unk095560_GetManager() + 180 + i * 84;
 }

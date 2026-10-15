@@ -24,7 +24,7 @@ void Unk0f7188_Nop_0f7ae4(void) { }
 
 void Unk0f7188_Unk_0f7ca8(u32 arg0);
 void func_02065cfc(int a, s16 id);
-void func_020f7c90(int id)
+void Unk0f7188_Call_02065cfc(int id)
 {
     func_02065cfc(1, (s16)id);
 }

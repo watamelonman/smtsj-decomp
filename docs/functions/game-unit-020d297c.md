@@ -17,7 +17,7 @@
 - `Unk0d297c_Unk_0d33ac`: decompiler-derived
 
 ## Not done in M1-T568
-- `func_020d2a8c`
+- `Unk0d297c_Call_020d297c`
 - `Unk0d297c_Unk_0d2aec`
 - `Unk0d297c_LoadMissionLog`
 - `Unk0d297c_Unk_0d2f18`: decompiler-derived
@@ -60,4 +60,4 @@
 - `Unk0d297c_Unk_0d2aa4`: hand-matched
 - `Unk0d297c_Unk_0d2aec`: hand-matched
 - `Unk0d297c_FreeSlot`: hand-matched
-- `func_020d2a8c`: hand-matched
+- `Unk0d297c_Call_020d297c`: hand-matched

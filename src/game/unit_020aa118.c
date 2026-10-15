@@ -30,7 +30,7 @@ typedef struct Unk0aa118List {
     u32 count;                  /* +0x84 */
 } Unk0aa118List;
 
-u32 func_020aa24c(Unk0aa118List *l)
+u32 Unk0aa118_PeekItem(Unk0aa118List *l)
 {
     if (l->pos >= l->count) {
         return 0;

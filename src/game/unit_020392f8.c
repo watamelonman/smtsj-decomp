@@ -101,7 +101,7 @@ typedef struct Unk0392f8Set {
     Unk0392f8Entry *entries;    /* +0x0C */
 } Unk0392f8Set;
 
-Unk0392f8Entry *func_0203949c(Unk0392f8Set *s, u32 i)
+Unk0392f8Entry *Unk0392f8_GetEntry(Unk0392f8Set *s, u32 i)
 {
     if (s->hdr->count <= i) {
         return 0;
