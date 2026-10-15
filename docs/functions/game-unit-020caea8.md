@@ -8,6 +8,6 @@
 - `Unk0caea8_Unk_0caf48`: decompiler-derived
 
 ## Not done in M1-T106
-- `func_020cb084`
+- `Unk0caea8_GetInRange`
 - `func_020cafbc`
-- `func_020cb084`: hand-matched
+- `Unk0caea8_GetInRange`: hand-matched

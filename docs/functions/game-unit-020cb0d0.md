@@ -5,10 +5,10 @@
 - `Unk0cb0d0_Unk_0cb304`: decompiler-derived
 
 ## Not done in M1-T165
-- `func_020cb2ec`
-- `func_020cb274`
+- `Unk0cb0d0_IsAbove15e`
+- `Unk0cb0d0_Unk_0cb274`
 - `func_020cb2a8`
 - `func_020cb1a0`
 - `func_020cb21c`
-- `func_020cb274`: hand-matched
-- `func_020cb2ec`: hand-matched
+- `Unk0cb0d0_Unk_0cb274`: hand-matched
+- `Unk0cb0d0_IsAbove15e`: hand-matched

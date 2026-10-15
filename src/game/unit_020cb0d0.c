@@ -33,7 +33,7 @@ int func_020cb1a0();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-int func_020cb274(u8 *p)
+int Unk0cb0d0_Unk_0cb274(u8 *p)
 {
     u32 k = ((u32)FIELD(u16, p, 50) << 16) >> 28;
     if (k == 14 || k == 1) {
@@ -45,7 +45,7 @@ int func_020cb274(u8 *p)
     return 0;
 }
 
-int func_020cb2ec(s32 x)
+int Unk0cb0d0_IsAbove15e(s32 x)
 {
     return x > 0x15e;
 }

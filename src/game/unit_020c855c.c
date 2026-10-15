@@ -165,7 +165,7 @@ void func_020616c0();
 void func_020ca2e4();
 void func_020c9ee0();
 void func_0205bb68();
-void func_020ca550(u32 *p)
+void Unk0c855c_InitCallbacks(u32 *p)
 {
     p[0] = 32;
     p[1] = 0;
@@ -177,7 +177,7 @@ void func_020ca550(u32 *p)
     p[8] = (u32)func_020c9ee0;
 }
 
-void func_020ca648(int k)
+void Unk0c855c_Unk_0ca648(int k)
 {
     int j;
     switch (k) {

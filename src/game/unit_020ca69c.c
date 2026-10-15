@@ -21,7 +21,7 @@ int Unk0ca69c_Unk_0ca6a4(int arg0)
 #endif
 int func_020ca6b0();
 int func_020cab28();
-int func_020cae84(u8 *p)
+int Unk0ca69c_Unk_0cae84(u8 *p)
 {
     if (FIELD(s8, p + 29696, 128) == 1) {
         return func_020ca6b0(p);

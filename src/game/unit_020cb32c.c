@@ -70,12 +70,12 @@ void Unk0cb32c_Unk_0cb54c(void)
 }
 
 
-int func_020cca80();
+int Unk0cb32c_Unk_0cca80();
 /* decompiler-derived */
 void Unk0cb32c_Unk_0ccaa8(int *arg0,int arg1)
 {
   if (arg1 == 2) {
-    func_020cca80();
+    Unk0cb32c_Unk_0cca80();
   }
   *arg0 = arg1;
 }
@@ -159,7 +159,7 @@ int func_0205caa0();
 int func_0205ca88();
 int Unk0e651c_Unk_0e666c();
 int Unk122e1c_Unk_122f88();
-void func_020cb504(u32 a, u32 b, u32 c)
+void Unk0cb32c_Unk_0cb504(u32 a, u32 b, u32 c)
 {
     func_02063920(a);
     func_02061f10(a, -1, 0, 0, func_02063a30(Unk0cb32c_Unk_0cb4e4(b, c)));
@@ -192,17 +192,17 @@ int Unk0cb32c_Unk_0cb564(u32 arg0)
   func_0205c6ec(arg0);
 }
 
-int func_020cb58c(u32 x)
+int Unk0cb32c_Unk_0cb58c(u32 x)
 {
     return func_0205caa0(x) >= func_0205ca88(x);
 }
 
-int func_020cb7f0(void)
+int Unk0cb32c_Unk_0cb7f0(void)
 {
     return Unk0e651c_Unk_0e666c(0x752) == 0;
 }
 
-int func_020cca80(u8 *p)
+int Unk0cb32c_Unk_0cca80(u8 *p)
 {
     return Unk122e1c_Unk_122f88(FIELD(u32, p, 148), 0, Unk0e651c_Unk_0e666c(0x5f1));
 }

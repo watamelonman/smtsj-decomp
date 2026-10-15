@@ -495,7 +495,7 @@ int func_0205bb68();
 int func_0205ddb4();
 int Unk0a7d54_Unk_0a8bac();
 int func_020c8f08();
-int func_020ca648();
+int Unk0c855c_Unk_0ca648();
 int Unk0fc584_Unk_0fc6a0();
 int Unk0fd9f0_Unk_0fda14();
 void ScanVisor_Unk_0a4904();
@@ -664,7 +664,7 @@ void ScanVisor_Unk_0a2e5c(int arg0)
   func_0205bb68();
   func_0205bb68();
   func_0205bb68();
-  func_020ca648(2);
+  Unk0c855c_Unk_0ca648(2);
   Unk02e000_Unk_02e0cc();
   Unk05ae50_Unk_05af2c(0xc2);
   func_0205bb68();

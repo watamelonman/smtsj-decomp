@@ -218,7 +218,7 @@ void Unk0aa118_Unk_0ab8f8();
 int func_020af9f4();
 int func_020afbdc();
 int Unk0afc28_Unk_0b0930();
-int func_020cb084();
+int Unk0caea8_GetInRange();
 void Unk0aa118_Unk_0ab8f8(u32 p)
 {
     u32 v = FIELD(u32, Unk044904_Get_data_0215ee98(), 64);
@@ -266,7 +266,7 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
   v1 = (u32 *)func_02044ec4(arg2);
   tmp2 = func_0204abd8(v1,0);
   if (tmp2 == 0) {
-    tmp2 = func_020cb084(arg1);
+    tmp2 = Unk0caea8_GetInRange(arg1);
     if (tmp2 != 0) {
       func_0204f108(0,0x20,tmp2,0);
     }

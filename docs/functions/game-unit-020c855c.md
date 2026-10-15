@@ -15,8 +15,8 @@
 - `Unk0c855c_Unk_0c855c`: decompiler-derived
 
 ## Not done in M1-T931
-- `func_020ca550`
-- `func_020ca648`
+- `Unk0c855c_InitCallbacks`
+- `Unk0c855c_Unk_0ca648`
 - `func_020c9bd8`
 - `func_020c9234`
 - `func_020ca5a4`
@@ -32,5 +32,5 @@
 - `func_020ca2e4`
 - `Unk0c855c_Unk_0c92c0`: decompiler-derived (struct cleanup)
 - `Unk0c855c_Unk_0c92dc`: decompiler-derived (struct cleanup)
-- `func_020ca550`: hand-matched
-- `func_020ca648`: hand-matched
+- `Unk0c855c_InitCallbacks`: hand-matched
+- `Unk0c855c_Unk_0ca648`: hand-matched

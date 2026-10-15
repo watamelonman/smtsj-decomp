@@ -58,7 +58,7 @@ u32 Unk0caea8_Unk_0caf48(void)
 
 int func_0204ff30();
 int func_0204ff64();
-int func_020cb084(u32 i)
+int Unk0caea8_GetInRange(u32 i)
 {
     int t = func_020445f4(10, 2);
     if ((u32)func_0204ff30(t) <= i && i <= (u32)func_0204ff64(t)) {

@@ -402,5 +402,15 @@
  "func_020c7fbc": "Unk0bd5f0_Unk_0c7fbc",
  "func_020c842c": "Unk0bd5f0_Unk_0c842c",
  "func_020c8478": "Unk0bd5f0_IsState22or24",
- "func_020c8510": "Unk0bd5f0_Unk_0c8510"
+ "func_020c8510": "Unk0bd5f0_Unk_0c8510",
+ "func_020ca550": "Unk0c855c_InitCallbacks",
+ "func_020ca648": "Unk0c855c_Unk_0ca648",
+ "func_020cae84": "Unk0ca69c_Unk_0cae84",
+ "func_020cb084": "Unk0caea8_GetInRange",
+ "func_020cb274": "Unk0cb0d0_Unk_0cb274",
+ "func_020cb2ec": "Unk0cb0d0_IsAbove15e",
+ "func_020cb504": "Unk0cb32c_Unk_0cb504",
+ "func_020cb58c": "Unk0cb32c_Unk_0cb58c",
+ "func_020cb7f0": "Unk0cb32c_Unk_0cb7f0",
+ "func_020cca80": "Unk0cb32c_Unk_0cca80"
 }

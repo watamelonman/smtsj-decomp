@@ -4,9 +4,9 @@
 - `Unk0ca69c_Unk_0ca6a4`: decompiler-derived
 
 ## Not done in M1-T477
-- `func_020cae84`
+- `Unk0ca69c_Unk_0cae84`
 - `func_020cab28`
 - `func_020cad5c`
 - `func_020cabe4`
 - `func_020ca6b0`
-- `func_020cae84`: hand-matched
+- `Unk0ca69c_Unk_0cae84`: hand-matched
