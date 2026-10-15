@@ -16,7 +16,7 @@ extern unsigned char gUnkManager_02175eb0[];   /* static manager instance */
 
 void func_0202d15c(void);
 void Unk0caea8_Unk_0cb044(void);
-void func_020773dc(void);
+void func_020773dc();
 void func_020961a0(void);
 
 /* Reads the signed byte at table[index]. */
@@ -384,4 +384,9 @@ void Unk095560_Unk_095598(void)
     *v4 = 0xffffffff;
   } while (tmp5 < 9);
   *(u32 *)(tmp2 + 0x18) = 0xffffffff;
+}
+
+void func_0209614c(void)
+{
+    func_020773dc(1);
 }
