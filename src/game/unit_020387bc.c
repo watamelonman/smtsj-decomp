@@ -8,7 +8,7 @@ void func_02015134();
 void func_0201524c();
 int func_02051610();
 
-int func_020387bc(u32 a)
+int Unk0387bc_Unk_0387bc(u32 a)
 {
     u8 buf[64] = {0};
     func_02015134(buf, data_02141f98[2]);
@@ -111,7 +111,7 @@ u32 Unk0387bc_Unk_038edc(int *arg0)
 }
 
 extern u8 data_02142064[];
-int func_020387bc();
+int Unk0387bc_Unk_0387bc();
 int func_0204fe68();
 u8 *Unk0387bc_GetEntry32b(u32 *p, u32 i)
 {
@@ -142,7 +142,7 @@ u32 Unk0387bc_Unk_038f7c(int *arg0)
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  value = func_020387bc(((int)data_02142064));
+  value = Unk0387bc_Unk_0387bc(((int)data_02142064));
   if (value != 0) {
     *arg0 = value;
     value = func_0204fe68(value,0);
@@ -162,7 +162,7 @@ u32 Unk0387bc_Unk_038c74(int *arg0)
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  value = func_020387bc(((int)data_02142024));
+  value = Unk0387bc_Unk_0387bc(((int)data_02142024));
   if (value != 0) {
     *arg0 = value;
     value = func_0204fdac(value,0);
@@ -182,7 +182,7 @@ u32 Unk0387bc_Unk_038df8(int *arg0)
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  value = func_020387bc(((int)data_02142048));
+  value = Unk0387bc_Unk_0387bc(((int)data_02142048));
   if (value != 0) {
     *arg0 = value;
     value = func_0204fdac(value,0);
@@ -216,7 +216,7 @@ u32 Unk0387bc_Unk_038cf8(int *arg0)
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  value = func_020387bc(((int)data_02142034));
+  value = Unk0387bc_Unk_0387bc(((int)data_02142034));
   if (value != 0) {
     *arg0 = value;
     value = func_0204fdac(value,1);
@@ -240,7 +240,7 @@ u32 Unk0387bc_Unk_038e7c(int *arg0)
   if (arg0 == (int *)0x0) {
     return 0;
   }
-  value = func_020387bc(((int)data_02142054));
+  value = Unk0387bc_Unk_0387bc(((int)data_02142054));
   if (value != 0) {
     *arg0 = value;
     value = func_0204fdac(value,1);

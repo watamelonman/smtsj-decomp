@@ -41,7 +41,7 @@ int func_02058af8();
 int func_0209a3ec();
 void func_02058b14();
 void func_02058a1c();
-u8 *func_02039160(u32 h, u32 a, u32 b);
+u8 *Unk038fbc_GetCell8(u32 h, u32 a, u32 b);
 int Unk09a268_Unk_09a3a0(u8 *w, u32 id, u32 sub)
 {
     int j;
@@ -230,13 +230,13 @@ void Unk09a268_Unk_09cb10(u32 arg0)
 
 u8 *GetGameState(void);     /* GameState *, see include/GameState.h */
 u32 Unk02f2a8_Unk_034970(void *table, u32 a, u32 b);
-u8 *func_02039160(u32 h, u32 a, u32 b);
+u8 *Unk038fbc_GetCell8(u32 h, u32 a, u32 b);
 
 /* Byte +0x1B of the record for (a, b), or 0 when absent. */
 u8 Unk09a268_Unk_09beb0(u32 a, u32 b)
 {
     u8 ret = 0;
-    u8 *e = func_02039160(Unk02f2a8_Unk_034970(GetGameState() + 4, a, b), a, b);
+    u8 *e = Unk038fbc_GetCell8(Unk02f2a8_Unk_034970(GetGameState() + 4, a, b), a, b);
     if (e != 0) {
         ret = ((u8 *)Unk09a268_Unk_09c484(func_0209bb68(*e)))[0x1b];
     }
@@ -251,7 +251,7 @@ int Unk09a268_Unk_09c4a8(u32 h, u32 a, u32 b)
         return 0;
     }
     r = 0;
-    e = func_02039160(h, a, b);
+    e = Unk038fbc_GetCell8(h, a, b);
     if (e != 0) {
         r = func_0209bb68(*e);
     }

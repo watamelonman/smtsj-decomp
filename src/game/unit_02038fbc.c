@@ -60,7 +60,7 @@ u32 Unk038fbc_Unk_038fbc(int *arg0)
 
 
 u32 Unk038fbc_Unk_039248(u32 arg0);
-u8 *func_02039160(u8 **o, int x, int y)
+u8 *Unk038fbc_GetCell8(u8 **o, int x, int y)
 {
     u8 *h;
     int dx, dy;

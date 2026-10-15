@@ -656,5 +656,9 @@
  "func_020351b4": "Unk02f2a8_Unk_0351b4",
  "func_0203550c": "Unk02f2a8_Unk_03550c",
  "func_02035820": "Unk02f2a8_Unk_035820",
- "func_02035b08": "Unk02f2a8_Unk_035b08"
+ "func_02035b08": "Unk02f2a8_Unk_035b08",
+ "func_02035b74": "Unk02f2a8_CountKind_035b74",
+ "func_020387bc": "Unk0387bc_Unk_0387bc",
+ "func_02039160": "Unk038fbc_GetCell8",
+ "func_020394b8": "Unk0392f8_GetCell2"
 }
