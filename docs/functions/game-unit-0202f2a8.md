@@ -178,3 +178,11 @@
 - `Unk02f2a8_GetCell38e8`: hand-matched
 - `Unk02f2a8_GetCurrentCell38e8`: hand-matched
 - `Unk02f2a8_GetObj39160Bits16`: hand-matched
+- `func_02034ad4`: hand-matched
+- `func_02034d5c`: hand-matched
+- `func_020353cc`: hand-matched
+- `func_020353f8`: hand-matched
+- `func_02035a70`: hand-matched
+- `func_02035ab8`: hand-matched
+- `func_02035ae0`: hand-matched
+- `func_02035bd8`: hand-matched

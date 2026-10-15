@@ -137,14 +137,73 @@ u32 Unk02f2a8_GetObj39160Bits16(void)
     return r;
 }
 
+void *func_020445d0();
+u8 *func_0204fde0();
+int func_02035890();
+void func_020362c8();
+
+typedef struct Unk02f2a8Res36 {
+    u8 pad_0000[0x19];
+    s8 unk_0019;
+    s8 unk_001a;
+    s8 unk_001b[0xd];
+} Unk02f2a8Res36;               /* 40 bytes; entries of resource 36 */
+
+typedef struct Unk02f2a8Pos {
+    u16 unk_0000;
+    s8 unk_0002;
+    s8 unk_0003;
+    u32 unk_0004;
+} Unk02f2a8Pos;
+
+#define UNK02F2A8_RES36() ((Unk02f2a8Res36 *)func_0204fde0(func_020445d0(36, 0)))
+void func_02034ad4(u32 a, u32 b)
+{
+    FIELD(u32, gGameState->root, 0x60) = 1;
+    FIELD(u32, gGameState->root, 0x64) = a;
+    FIELD(u32, gGameState->root, 0x68) = b;
+}
+
 void GameState_ClearRootUnk60(void)
 {
     gGameState->root->unk_60 = 0;
 }
 
+void func_02034d5c(u16 a, u8 b, u8 c)
+{
+    FIELD(u32, gGameState, 0x7470) = 1;
+    FIELD(u16, gGameState, 0x7474) = a;
+    FIELD(u8, gGameState, 0x7476) = b;
+    FIELD(u8, gGameState, 0x7477) = c;
+}
+
 u16 GameState_GetUnkField74f6(void)
 {
     return gGameState->unk_74f6;
+}
+
+u8 *func_020353cc(void)
+{
+    GameState *gs = gGameState;
+    if (gs == 0) {
+        return 0;
+    }
+    if (FIELD(u32, gs, 0x240) != 0) {
+        return (u8 *)gs + 0x240;
+    }
+    return 0;
+}
+
+u8 *func_020353f8(void)
+{
+    GameState *gs = gGameState;
+    if (gs == 0) {
+        return 0;
+    }
+    if (FIELD(u32, gs, 0x2cc) != 0) {
+        return (u8 *)gs + 0x2cc;
+    }
+    return 0;
 }
 
 void Unk02f2a8_Nop_035430(void) { }
@@ -159,6 +218,36 @@ void Unk02f2a8_Call_02057660(void) { func_02057660(2, 0); }
 u16 GameState_GetUnkField74f4(void) { return gGameState->unk_74f4; }
 
 int func_020360d8();
+int func_02035a70(int a)
+{
+    Unk02f2a8Pos pos = {0};
+    int r = func_02035890(&pos, a);
+    func_020362c8(pos.unk_0000);
+    func_02036318(pos.unk_0002, pos.unk_0003, pos.unk_0004);
+    return r;
+}
+
+s8 func_02035ab8(int i)
+{
+    return UNK02F2A8_RES36()[i].unk_0019;
+}
+
+s8 func_02035ae0(int i)
+{
+    return UNK02F2A8_RES36()[i].unk_001a;
+}
+
+int func_02035bd8(int i, int j)
+{
+    Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
+    s8 v = e->unk_001b[j];
+    int r = -1;
+    if (v >= 0) {
+        r = v;
+    }
+    return r;
+}
+
 /* decompiler-derived */
 void Unk02f2a8_Unk_035ec4(int arg0,u32 arg1)
 {
@@ -398,7 +487,7 @@ void Unk02f2a8_Unk_02f378(int arg0)
   func_02035edc(arg0 + 0x7c,arg0 + 0x70);
 }
 
-int func_02034ad4();
+void func_02034ad4();
 int func_0205257c();
 /* decompiler-derived */
 void Unk02f2a8_Unk_032f3c(int *arg0)
