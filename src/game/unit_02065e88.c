@@ -210,4 +210,40 @@ void Unk065e88_Unk_065f30(int *arg0)
   *(int **)(((int)data_0216b9a8) + 4) = arg0;
 }
 
+typedef struct Unk065e88Obj24 {
+    u8 pad_0000[0x24];
+    u32 pad_0024_0 : 28;
+    u32 flag_0024_28 : 1;
+    u8 pad_0028[2];
+    u16 unk_002a;
+} Unk065e88Obj24;
 
+void func_02072238();
+int Unk0e651c_Unk_0e666c();
+int func_020684c0();
+void func_020672b4(s32 *o, s32 v, int notify)
+{
+    o[0] = v;
+    if (notify == 0) {
+        return;
+    }
+    switch (o[0]) {
+    case 1:
+        func_02072238(o);
+        break;
+    case 2:
+        FIELD(u32, o, 0x220) = 1;
+        break;
+    case 4:
+        FIELD(u32, o, 0x2f0) = 1;
+        break;
+    }
+}
+
+int func_02068564(Unk065e88Obj24 *o)
+{
+    if (!o->flag_0024_28 && (o->unk_002a == 0 || Unk0e651c_Unk_0e666c(o->unk_002a) != 0) && func_020684c0(o) != 0) {
+        return 1;
+    }
+    return 0;
+}
