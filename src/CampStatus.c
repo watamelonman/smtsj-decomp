@@ -110,3 +110,17 @@ int func_020dd88c(int arg0,int arg1)
   }
   return tmp1;
 }
+
+
+int func_02057fd8();
+int func_0205dee8();
+/* decompiler-derived */
+void func_020ddd2c(u32 arg0,u32 arg1,u32 arg2)
+{
+  func_0205dee8(2,arg0,0x10,arg1,0,0x3f800000,0x3f800000,0,arg2,2);
+  func_02057fd8();
+  func_0205dee8(2,arg0,0x11,arg1,0,0x3f800000,0x3f800000,0,arg2,3);
+  func_02057fd8();
+  func_0205dee8(2,arg0,0x12,arg1,0,0x3f800000,0x3f800000,0,arg2,4);
+  return;
+}

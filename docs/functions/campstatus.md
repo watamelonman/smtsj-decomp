@@ -50,3 +50,13 @@
 - `func_020dcb68`
 - `func_020ddb04`
 - `func_020dc540`
+- `func_020ddd2c`: decompiler-derived
+
+## Not done in M1-T1127
+- `func_020da670`
+- `func_020dbd04`
+- `func_020dc240`
+- `func_020da8c4`
+- `func_020dc184`
+- `func_020dd910`
+- `func_020dc2ec`
