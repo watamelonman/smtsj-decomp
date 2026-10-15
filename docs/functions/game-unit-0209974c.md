@@ -58,3 +58,8 @@
 - `Unk09974c_IsKind1or14`: hand-matched
 - `Unk09974c_GetFlagsMidMinus1`: hand-matched
 - `Unk09974c_SetSeenBit`: hand-matched
+- `func_02099bfc`: hand-matched
+- `func_02099c60`: hand-matched
+- `func_02099d14`: hand-matched
+- `func_02099d78`: hand-matched
+- `func_02099ddc`: hand-matched

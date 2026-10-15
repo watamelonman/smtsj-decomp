@@ -132,8 +132,8 @@ void Unk09974c_Unk_09974c(int *arg0)
 
 int Unk02e000_GetSubBlock3a4();
 extern u8 data_0213bdec[];
-int func_02099d14();
-int func_02099bfc();
+void *func_02099d14(int id);
+void *func_02099bfc(int id);
 typedef struct Unk09974cStat {
     u8 pad_0000[0x4];
     u32 unk_04 : 10;
@@ -214,6 +214,58 @@ int Unk09974c_Unk_0998f0(int id)
     return 1;
 }
 
+typedef struct Unk09974cRec8 {
+    u16 id;
+    u8 pad_02[6];
+} Unk09974cRec8;
+typedef struct Unk09974cRec16 {
+    u16 id;
+    u8 pad_02[14];
+} Unk09974cRec16;
+typedef struct Unk09974cRec56 {
+    u8 pad_00[32];
+    u16 id;
+    u8 pad_22[22];
+} Unk09974cRec56;
+typedef struct Unk09974cRec80 {
+    u16 id;
+    u8 pad_02[78];
+} Unk09974cRec80;
+void *func_020445d0();
+void *func_0204fde0();
+int func_0204fe18();
+void *func_02011810();
+
+void *func_02099bfc(int id)
+{
+    Unk09974cRec8 key;
+    void *base;
+    int n;
+    void *tab = func_020445d0(5, 0);
+    if (tab == 0) {
+        return 0;
+    }
+    base = func_0204fde0(tab);
+    n = func_0204fe18(tab);
+    key.id = id;
+    return func_02011810(&key, base, n, 8, Unk09974c_Unk_099860);
+}
+
+void *func_02099c60(int id)
+{
+    Unk09974cRec80 key;
+    void *base;
+    int n;
+    void *tab = func_020445d0(5, 2);
+    if (tab == 0) {
+        return 0;
+    }
+    base = func_0204fde0(tab);
+    n = func_0204fe18(tab);
+    key.id = id;
+    return func_02011810(&key, base, n, 80, Unk09974c_Unk_099870);
+}
+
 s32 Unk09974c_Unk_099cc4(Unk09974cStat *p)
 {
     u32 v = p->unk_04;
@@ -234,6 +286,51 @@ s32 Unk09974c_Unk_099cc4(Unk09974cStat *p)
         q = 1;
     }
     return q;
+}
+
+void *func_02099d14(int id)
+{
+    Unk09974cRec56 key;
+    void *base;
+    int n;
+    void *tab = func_020445d0(5, 1);
+    if (tab == 0) {
+        return 0;
+    }
+    base = func_0204fde0(tab);
+    n = func_0204fe18(tab);
+    key.id = id;
+    return func_02011810(&key, base, n, 56, Unk09974c_Unk_099880);
+}
+
+void *func_02099d78(int id)
+{
+    Unk09974cRec16 key;
+    void *base;
+    int n;
+    void *tab = func_020445d0(5, 3);
+    if (tab == 0) {
+        return 0;
+    }
+    base = func_0204fde0(tab);
+    n = func_0204fe18(tab);
+    key.id = id;
+    return func_02011810(&key, base, n, 16, Unk09974c_Unk_099890);
+}
+
+void *func_02099ddc(int id)
+{
+    Unk09974cRec16 key;
+    void *base;
+    int n;
+    void *tab = func_020445d0(5, 4);
+    if (tab == 0) {
+        return 0;
+    }
+    base = func_0204fde0(tab);
+    n = func_0204fe18(tab);
+    key.id = id;
+    return func_02011810(&key, base, n, 16, Unk09974c_Unk_0998a0);
 }
 
 int Unk09974c_Unk_09a090(int id)
