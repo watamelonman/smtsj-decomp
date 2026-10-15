@@ -109,3 +109,14 @@
 - `ScanVisor_SetField214`: hand-matched
 - `ScanVisor_Unk_0a2920`: hand-matched
 - `ScanVisor_Unk_0a2950`: hand-matched
+- `func_020a2980`: hand-matched
+- `func_020a2b58`: hand-matched
+- `func_020a2bb8`: hand-matched
+- `func_020a3254`: hand-matched
+- `func_020a3760`: hand-matched
+- `func_020a379c`: hand-matched
+- `func_020a4284`: hand-matched
+- `func_020a4578`: hand-matched
+- `func_020a45c0`: hand-matched
+- `func_020a4600`: hand-matched
+- `func_020a4994`: hand-matched
