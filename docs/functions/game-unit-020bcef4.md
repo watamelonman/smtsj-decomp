@@ -9,7 +9,7 @@
 
 ## Hard list
 - `func_020bd3fc`: no candidate matched locally
-- `func_020bd5d4`: no candidate matched locally
+- `Unk0bcef4_IsState015`: no candidate matched locally
 - `Unk0bcef4_Unk_0bcef4`: decompiler-derived
 - `Unk0bcef4_Unk_0bd368`: decompiler-derived
 
@@ -30,4 +30,4 @@
 - `func_020bd49c`
 - `func_020bd1a8`
 - `Unk0bcef4_Unk_0bd584`: decompiler-derived (plain cleanup)
-- `func_020bd5d4`: hand-matched
+- `Unk0bcef4_IsState015`: hand-matched

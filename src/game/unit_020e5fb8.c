@@ -28,7 +28,7 @@ void Unk0e5fb8_Unk_0e6448(u32 arg0);
 void Unk0e5fb8_Unk_0e64c8(u32 arg0);
 void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1);
 
-int func_020e613c(int row, u32 col)
+int Unk0e5fb8_GetOffset800(int row, u32 col)
 {
     int base = row * 10;
     if (col >= 10) {
@@ -158,12 +158,12 @@ void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1)
 
 
 int func_0209502c();
-int func_020e613c();
+int Unk0e5fb8_GetOffset800();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e622c(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 value;
-  value = func_020e613c(arg1,arg2);
+  value = Unk0e5fb8_GetOffset800(arg1,arg2);
   func_0209502c(arg0,value,1);
 }
 
@@ -222,7 +222,7 @@ void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1)
 void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 tmp1;
-  tmp1 = func_020e613c(arg1,arg2);
+  tmp1 = Unk0e5fb8_GetOffset800(arg1,arg2);
   func_020950b4(arg0,tmp1);
 }
 

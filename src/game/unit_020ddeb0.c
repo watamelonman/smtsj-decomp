@@ -39,12 +39,12 @@ void Unk0ddeb0_Unk_0ddeb0(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
   func_02059f70(*arg0,0,arg1,arg2,auStack_24,0,arg5);
 }
 
-u32 func_020de014(void)
+u32 Unk0ddeb0_GetRes15Word0(void)
 {
     return ((u32 *)func_0204fde0(func_020445d0(15, 1)))[0];
 }
 
-u32 func_020de030(void)
+u32 Unk0ddeb0_GetRes15Word1(void)
 {
     return ((u32 *)func_0204fde0(func_020445d0(15, 1)))[1];
 }

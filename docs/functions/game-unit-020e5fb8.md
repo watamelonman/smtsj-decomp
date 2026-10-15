@@ -17,7 +17,7 @@
 - `Unk0e5fb8_GetOffsetB00`: no candidate matched locally
 - `Unk0e5fb8_GetOffsetD00`: no candidate matched locally
 - `Unk0e5fb8_GetOffsetD80`: no candidate matched locally
-- `func_020e613c`: no candidate matched locally
+- `Unk0e5fb8_GetOffset800`: no candidate matched locally
 
 ## Not done in M1-T377
 - `func_020e5fb8`
@@ -48,4 +48,4 @@
 - `Unk0e5fb8_GetOffsetB00`: hand-matched
 - `Unk0e5fb8_GetOffsetD00`: hand-matched
 - `Unk0e5fb8_GetOffsetD80`: hand-matched
-- `func_020e613c`: hand-matched
+- `Unk0e5fb8_GetOffset800`: hand-matched

@@ -1,1 +1,9 @@
-{}
+{
+ "func_020d1454": "Unk0cf5e8_Unk_0d1454",
+ "func_020d1490": "Unk0cf5e8_Unk_0d1490",
+ "func_020e613c": "Unk0e5fb8_GetOffset800",
+ "func_020bd5d4": "Unk0bcef4_IsState015",
+ "func_020c8540": "Unk0bd5f0_IsSpecialId",
+ "func_020de014": "Unk0ddeb0_GetRes15Word0",
+ "func_020de030": "Unk0ddeb0_GetRes15Word1"
+}

@@ -9,7 +9,7 @@
 - `Unk0cf5e8_Unk_0d13fc` (24 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020d1454`: no candidate matched locally
+- `Unk0cf5e8_Unk_0d1454`: no candidate matched locally
 - `Unk0cf5e8_Unk_0d1470`: decompiler-derived
 - `Unk0cf5e8_Unk_0d14ac`: decompiler-derived
 - `Unk0cf5e8_Unk_0d0f94`: decompiler-derived
@@ -18,7 +18,7 @@
 - `Unk0cf5e8_Unk_0cf630`: decompiler-derived
 
 ## Not done in M1-T958
-- `func_020d1490`
+- `Unk0cf5e8_Unk_0d1490`
 - `func_020d1360`
 - `Unk0cf5e8_Unk_0d1414`: decompiler-derived
 - `Unk0cf5e8_Unk_0d13b4`: decompiler-derived
@@ -40,5 +40,5 @@
 - `func_020d03c0`
 - `func_020d174c`
 - `func_020d02c0`
-- `func_020d1454`: hand-matched
-- `func_020d1490`: hand-matched
+- `Unk0cf5e8_Unk_0d1454`: hand-matched
+- `Unk0cf5e8_Unk_0d1490`: hand-matched

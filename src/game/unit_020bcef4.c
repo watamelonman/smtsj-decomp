@@ -135,7 +135,7 @@ typedef struct Unk0bcef4State {
     s32 state;
 } Unk0bcef4State;
 
-int func_020bd5d4(Unk0bcef4State *t)
+int Unk0bcef4_IsState015(Unk0bcef4State *t)
 {
     s32 s = t->state;
     if (s == 1 || s == 0 || s == 5) {

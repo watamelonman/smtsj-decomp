@@ -78,7 +78,7 @@ typedef struct Unk0cf5e8Obj {
     s32 unk_0294;
 } Unk0cf5e8Obj;
 
-int func_020d1454(Unk0cf5e8Obj *o)
+int Unk0cf5e8_Unk_0d1454(Unk0cf5e8Obj *o)
 {
     return o->unk_009c == 1 && o->unk_0290 == 0;
 }
@@ -92,7 +92,7 @@ void Unk0cf5e8_Unk_0d1470(int arg0)
 }
 
 extern u8 data_02150654[];
-int func_020d1490(Unk0cf5e8Obj *o)
+int Unk0cf5e8_Unk_0d1490(Unk0cf5e8Obj *o)
 {
     return o->unk_0098 == 1 && o->unk_0294 == 0;
 }
