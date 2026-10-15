@@ -4,6 +4,36 @@
 
 int Unk02e000_GetWorkArea();
 int Unk03aae8_Unk_03acf4();
+int Unk03aae8_Unk_03ad14();
+int func_02095818();
+void Unk116598_Unk_116810();
+int func_02065544();
+void func_02065c10();
+void func_02065b10();
+static inline void Unk03bba4_SetSubState(u32 v, u8 *sub)
+{
+    FIELD(u32, sub, 0x18) = v;
+}
+int func_0203bba4(void)
+{
+    Unk03bba4_SetSubState(19, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
+    if (func_02095818() == 3) {
+        Unk116598_Unk_116810();
+    }
+    return 3;
+}
+
+int func_0203bc40(void)
+{
+    u16 id = func_0203ac00(0);
+    if (func_02065544() == 0) {
+        func_02065c10();
+    }
+    func_02065b10(0, id);
+    Unk03bba4_SetSubState(6, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
+    return 3;
+}
+
 int Unk03bba4_Unk_03bc88(void)
 {
     Unk03aae8_Unk_03acf4(((s8 *)(u8 *)Unk02e000_GetWorkArea())[0x364]);
