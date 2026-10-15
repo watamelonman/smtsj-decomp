@@ -7,7 +7,7 @@
 ## Not done in M1-T156
 - `Unk03dbbc_Unk_03dbbc`
 - `func_0203dc5c`
-- `func_0203dd98`
+- `Unk03dbbc_Unk_03dd98`
 - `func_0203dd08`
 - `Unk03dbbc_Unk_03dbbc`: hand-matched
-- `func_0203dd98`: hand-matched
+- `Unk03dbbc_Unk_03dd98`: hand-matched

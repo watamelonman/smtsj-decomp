@@ -66,7 +66,7 @@ void func_0204c804();
 void func_0204c564();
 int Unk02f2a8_Unk_035b08();
 
-int func_0203dd98(void)
+int Unk03dbbc_Unk_03dd98(void)
 {
     s16 a = func_0203ac00(0);
     s16 b = func_0203ac00(1);

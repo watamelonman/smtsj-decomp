@@ -272,7 +272,7 @@ void Unk03e43c_Call_02056cc0(void)
 
 typedef struct Unk03e43cEnt { u8 pad[4]; u16 unk_04; u8 pad2[2]; } Unk03e43cEnt;
 typedef struct Unk03e43cTab { u16 n; u8 pad[10]; Unk03e43cEnt *ents; } Unk03e43cTab;
-int func_0203e8cc(u8 *p)
+int Unk03e43c_Unk_03e8cc(u8 *p)
 {
     Unk03e43cTab *q = FIELD(Unk03e43cTab *, p, 28);
     u32 sum = 0;
@@ -287,7 +287,7 @@ int func_0203e8cc(u8 *p)
     return 0;
 }
 
-void func_0203f234(s16 *a, s16 *b, int x, int y)
+void Unk03e43c_Unk_03f234(s16 *a, s16 *b, int x, int y)
 {
     int v = *a;
     int d = x - v;

@@ -85,7 +85,7 @@ int Unk02e000_SetRecordUnk1e();
 void Unk097514_Unk_0977f0();
 void func_020494d0();
 
-int func_0203e3e4(void)
+int Unk03e23c_Unk_03e3e4(void)
 {
     u16 id;
     int n;
