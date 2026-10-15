@@ -91,7 +91,7 @@ typedef struct UniteEventCtx {
 extern UniteEventCtx *data_02176e48;
 
 void func_0200866c();
-void func_0210f970(u32 a, int n)
+void UniteEvent_CopyIds(u32 a, int n)
 {
     if (data_02176e48 == 0) {
         return;
@@ -100,7 +100,7 @@ void func_0210f970(u32 a, int n)
     FIELD(u8, data_02176e48, 638) = n;
 }
 
-void func_0210f9ac(u32 x)
+void UniteEvent_SetId(u32 x)
 {
     if (data_02176e48 == 0) {
         return;

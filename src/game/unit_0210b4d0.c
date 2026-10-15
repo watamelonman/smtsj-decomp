@@ -61,7 +61,7 @@ u8 Unk10b4d0_Unk_10b71c(u32 arg0)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-int func_0210b7bc(void)
+int Unk10b4d0_Unk_10b7bc(void)
 {
     int r = 0;
     if (func_0210b4d0(FIELD(u16, Unk02e000_GetWorkArea(), 860)) == 1) {

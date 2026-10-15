@@ -3,13 +3,13 @@
 
 
 int Unk02e000_GetWorkArea();
-int func_021122bc();
+int Unk1122bc_Unk_1122bc();
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 int func_02035b08();
 int Unk0e651c_Unk_0e666c();
-int func_021122bc(int x)
+int Unk1122bc_Unk_1122bc(int x)
 {
     if (x == func_02035b08(8, 4)) {
         if (Unk0e651c_Unk_0e666c(0x159) == 1) {
@@ -19,7 +19,7 @@ int func_021122bc(int x)
     return 0;
 }
 
-int func_02112438(int x)
+int Unk1122bc_IsCurrent(int x)
 {
     int r = 0;
     if (x == func_02035b08(8, 4)) {
@@ -35,14 +35,14 @@ u32 Unk1122bc_Unk_1124c8(void)
   u32 value2;
   value2 = 0;
   value1 = Unk02e000_GetWorkArea();
-  value1 = func_021122bc(*(u16 *)(value1 + 0x35c));
+  value1 = Unk1122bc_Unk_1122bc(*(u16 *)(value1 + 0x35c));
   if (value1 == 1) {
     value2 = 2;
   }
   return value2;
 }
 
-int func_02112438();
+int Unk1122bc_IsCurrent();
 /* decompiler-derived */
 u32 Unk1122bc_Unk_112460(void)
 {
@@ -50,10 +50,10 @@ u32 Unk1122bc_Unk_112460(void)
   u32 value2;
   value2 = 1;
   value1 = Unk02e000_GetWorkArea();
-  value1 = func_02112438(*(u16 *)(value1 + 0x35c));
+  value1 = Unk1122bc_IsCurrent(*(u16 *)(value1 + 0x35c));
   if (value1 == 1) {
     value1 = Unk02e000_GetWorkArea();
-    value1 = func_021122bc(*(u16 *)(value1 + 0x35c));
+    value1 = Unk1122bc_Unk_1122bc(*(u16 *)(value1 + 0x35c));
     if (value1 == 0) {
       value2 = 0;
     }
@@ -61,10 +61,10 @@ u32 Unk1122bc_Unk_112460(void)
   return value2;
 }
 
-int func_021124a0(void)
+int Unk1122bc_Unk_1124a0(void)
 {
     int r = 1;
-    if (func_021122bc(FIELD(u16, Unk02e000_GetWorkArea(), 860)) == 1) {
+    if (Unk1122bc_Unk_1122bc(FIELD(u16, Unk02e000_GetWorkArea(), 860)) == 1) {
         r = 0;
     }
     return r;

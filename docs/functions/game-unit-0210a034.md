@@ -23,12 +23,12 @@
 ## Not done in M1-T763
 - `func_0210a034`
 - `Unk10a034_Unk_10a08c`
-- `func_0210afd8`
-- `func_0210b030`
+- `Unk10a034_Alloc`
+- `Unk10a034_Unk_10b030`
 - `Unk10a034_HasId`
 
 ## Not done in M1-T764
-- `func_0210af8c`
+- `Unk10a034_GetEntry8`
 - `Unk10a034_ClearById`
 - `func_0210b484`
 - `func_0210acac`
@@ -40,6 +40,6 @@
 - `Unk10a034_Unk_10a08c`: hand-matched
 - `Unk10a034_HasId`: hand-matched
 - `Unk10a034_ClearById`: hand-matched
-- `func_0210af8c`: hand-matched
-- `func_0210afd8`: hand-matched
-- `func_0210b030`: hand-matched
+- `Unk10a034_GetEntry8`: hand-matched
+- `Unk10a034_Alloc`: hand-matched
+- `Unk10a034_Unk_10b030`: hand-matched

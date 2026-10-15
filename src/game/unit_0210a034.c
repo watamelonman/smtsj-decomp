@@ -320,7 +320,7 @@ void Unk10a034_ClearById(u8 *p, u32 id)
 }
 
 u32 func_0210b080();
-u32 func_0210af8c(int i)
+u32 Unk10a034_GetEntry8(int i)
 {
     u32 p;
     if (i < 0 || i >= 4) {
@@ -330,7 +330,7 @@ u32 func_0210af8c(int i)
     return p == 0 ? 0 : p + 32 + i * 8;
 }
 
-void func_0210afd8(u32 a, u32 b)
+void Unk10a034_Alloc(u32 a, u32 b)
 {
     if (*data_02176e44 != 0) {
         return;
@@ -338,7 +338,7 @@ void func_0210afd8(u32 a, u32 b)
     *data_02176e44 = func_0210b080(a, b);
 }
 
-int func_0210b030(void)
+int Unk10a034_Unk_10b030(void)
 {
     u32 p = Unk10a034_Get_data_02176e44();
     if (p == 0) {

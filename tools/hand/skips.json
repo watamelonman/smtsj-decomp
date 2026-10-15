@@ -53,5 +53,6 @@
  "func_020fb1d0",
  "func_020fc584",
  "func_020fda58",
- "func_020ff120"
+ "func_020ff120",
+ "UniteEvent_SetState"
 ]

@@ -4,11 +4,11 @@
 - `Unk1122bc_Unk_112460`: decompiler-derived
 
 ## Not done in M1-T131
-- `func_02112438`
-- `func_021124a0`
-- `func_021122bc`
+- `Unk1122bc_IsCurrent`
+- `Unk1122bc_Unk_1124a0`
+- `Unk1122bc_Unk_1122bc`
 - `func_021122f8`
 - `func_02112394`
-- `func_021122bc`: hand-matched
-- `func_02112438`: hand-matched
-- `func_021124a0`: hand-matched
+- `Unk1122bc_Unk_1122bc`: hand-matched
+- `Unk1122bc_IsCurrent`: hand-matched
+- `Unk1122bc_Unk_1124a0`: hand-matched

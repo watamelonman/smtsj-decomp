@@ -549,5 +549,17 @@
  "func_02108c88": "Unk108bc8_GetHead",
  "func_0210a08c": "Unk10a034_Unk_10a08c",
  "func_0210ae84": "Unk10a034_HasId",
- "func_0210aed0": "Unk10a034_ClearById"
+ "func_0210aed0": "Unk10a034_ClearById",
+ "func_0210af8c": "Unk10a034_GetEntry8",
+ "func_0210afd8": "Unk10a034_Alloc",
+ "func_0210b030": "Unk10a034_Unk_10b030",
+ "func_0210b7bc": "Unk10b4d0_Unk_10b7bc",
+ "func_0210f970": "UniteEvent_CopyIds",
+ "func_0210f9ac": "UniteEvent_SetId",
+ "func_02110048": "Unk10fe28_Unk_110048",
+ "func_02110074": "Unk10fe28_Unk_110074",
+ "func_021102d4": "Unk10fe28_Unk_1102d4",
+ "func_021122bc": "Unk1122bc_Unk_1122bc",
+ "func_02112438": "Unk1122bc_IsCurrent",
+ "func_021124a0": "Unk1122bc_Unk_1124a0"
 }

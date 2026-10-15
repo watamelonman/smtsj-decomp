@@ -96,28 +96,28 @@ void func_0210fe48(Unk10fe28Work *w)
 
 }
 
-void func_02110048(Unk10fe28Work *w, int i, u32 v);
+void Unk10fe28_Unk_110048(Unk10fe28Work *w, int i, u32 v);
 void func_0205c408();
 void func_0205c6e0();
 void func_0205c704();
 extern s16 data_0213ca70[];
-void func_02110048(Unk10fe28Work *w, int i, u32 v)
+void Unk10fe28_Unk_110048(Unk10fe28Work *w, int i, u32 v)
 {
     func_0205c408(w->unk_0028[i], v);
     func_0205c6e0(w->unk_0028[i]);
 }
 
-void func_02110074(Unk10fe28Work *w)
+void Unk10fe28_Unk_110074(Unk10fe28Work *w)
 {
     int i;
-    func_02110048(w, 0, 0);
-    func_02110048(w, 1, 2);
+    Unk10fe28_Unk_110048(w, 0, 0);
+    Unk10fe28_Unk_110048(w, 1, 2);
     for (i = 2; i <= 7; i++) {
-        func_02110048(w, i, 6);
+        Unk10fe28_Unk_110048(w, i, 6);
     }
 }
 
-void func_021102d4(Unk10fe28Work *w)
+void Unk10fe28_Unk_1102d4(Unk10fe28Work *w)
 {
     u32 i;
     for (i = 0; i < 4; i++) {
