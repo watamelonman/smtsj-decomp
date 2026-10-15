@@ -5,6 +5,37 @@ void func_0203428c(void);
 void func_0206146c(void);
 void func_02057660(int a, int b);
 
+int Unk02e000_Unk_02e774();
+void func_0202f2a8(int i)
+{
+    if (i >= 64) {
+        return;
+    }
+    if (i < 0) {
+        return;
+    }
+    {
+        u8 *p = (u8 *)Unk02e000_Unk_02e774() + 0x5e12;
+        p[i] &= ~1;
+    }
+}
+
+void func_0202f330(int k, u32 v)
+{
+    u8 *w = (u8 *)Unk02e000_Unk_02e774();
+    switch (k) {
+    case 1:
+        *(u32 *)(w + 0x6138) = v;
+        break;
+    case 2:
+        *(u32 *)(w + 0x613c) = v;
+        break;
+    case 3:
+        *(u32 *)(w + 0x6140) = v;
+        break;
+    }
+}
+
 void Unk02f2a8_Nop_0303c8(void) { }
 void Unk02f2a8_Nop_0303cc(void) { }
 /* Main body at +4, or 0 when no GameState exists. */

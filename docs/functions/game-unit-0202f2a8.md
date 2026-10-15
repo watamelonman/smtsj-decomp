@@ -168,3 +168,5 @@
 - `GameState_GetBody`: hand-matched
 - `GameState_ClearRootUnk60`: hand-matched
 - `GameState_GetUnkField74f6`: hand-matched
+- `func_0202f2a8`: hand-matched
+- `func_0202f330`: hand-matched
