@@ -9,3 +9,4 @@
 - `func_02098258`
 - `func_0209835c`
 - `Unk0981dc_Unk_098324`: hand-matched
+- `func_02098258`: hand-matched

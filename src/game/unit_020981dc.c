@@ -47,6 +47,36 @@ void Unk0981dc_Unk_0981f4(u32 arg0,u32 arg1,u8 arg2)
 }
 
 int func_020982c0();
+typedef struct Unk0981dcRec {
+    u8 pad_00[14];
+    s8 unk_0e;
+    s8 unk_0f;
+    s8 unk_10;
+    s8 unk_11;
+    s8 unk_12;
+} Unk0981dcRec;
+
+s8 func_02098258(int a, int i)
+{
+    Unk0981dcRec *r = (Unk0981dcRec *)Unk096754_GetAreaRecordIf(a);
+    if (r == 0) {
+        return 0;
+    }
+    switch (i) {
+    case 0:
+        return r->unk_0e;
+    case 1:
+        return r->unk_0f;
+    case 2:
+        return r->unk_10;
+    case 3:
+        return r->unk_11;
+    case 4:
+        return r->unk_12;
+    }
+    return 0;
+}
+
 int Unk0981dc_Unk_098324(int a, int b)
 {
     if (b != 0) {
