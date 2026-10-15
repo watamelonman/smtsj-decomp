@@ -10,3 +10,13 @@
 - `func_020cf4b8`
 - `func_020cf4c4`
 - `func_020cf238`
+
+## Not done in M1-T719
+- `func_020ce628`
+- `func_020cecb8`
+- `func_020cf454`
+- `func_020ce578`
+- `func_020cf2cc`
+- `func_020ce7cc`
+- `func_020cf360`
+- `func_020cf4d0`
