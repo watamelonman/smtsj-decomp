@@ -98,3 +98,11 @@
 - `Unk02e000_IsEntryInParty`: hand-matched
 - `Unk02e000_HasField36`: hand-matched
 - `Unk02e000_TestFlag`: hand-matched
+- `func_0202e9c8`: hand-matched
+- `func_0202ea68`: hand-matched
+- `func_0202eb0c`: hand-matched
+- `func_0202ebb8`: hand-matched
+- `func_0202ebfc`: hand-matched
+- `func_0202ecac`: hand-matched
+- `func_0202ed5c`: hand-matched
+- `func_0202ee18`: hand-matched
