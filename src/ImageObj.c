@@ -388,11 +388,15 @@ int ImageObj_Unk_0777e0(void)
 }
 
 typedef struct ImageObjNode {
-    u8 pad_00[0x38];
+    u8 pad_00[0x30];
+    s32 unk_30;
+    u8 pad_34[4];
     s8 unk_38;
     u8 pad_39[0x17];
     u32 unk_50;
-    u8 pad_54[0x14];
+    u8 pad_54[0xc];
+    u32 unk_60;
+    u32 unk_64;
     u32 unk_68;
     u32 unk_6c;
     u32 unk_70;
@@ -520,6 +524,27 @@ void ImageObj_Release(ImageObjWork *work)
     func_0205bb68();
     work->unk_0010 = 0;
     work->unk_0000 = 0;
+}
+
+void func_0205c368();
+
+void func_02077ea4(ImageObjNode *n)
+{
+    if (n->unk_68 == 0) {
+        return;
+    }
+    if (n->unk_68 != 0) {
+        func_02061424(n->unk_68);
+        n->unk_68 = 0;
+    }
+    if (n->unk_60 != 0) {
+        func_0205ddb4(n->unk_60);
+        n->unk_60 = 0;
+    }
+    if (n->unk_64 != 0) {
+        func_0205c368(n->unk_64);
+        n->unk_64 = 0;
+    }
 }
 
 void ImageObj_ReleaseField68(u32 o)
