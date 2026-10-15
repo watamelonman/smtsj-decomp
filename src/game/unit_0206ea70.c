@@ -16,6 +16,29 @@ extern Unk06ea70Globals data_02170ccc;
 
 
 
+extern u32 data_02170cd4[];
+extern u32 data_021457e8[];
+int func_0206f674();
+u32 func_0206ea70(u32 mask)
+{
+    int i;
+    for (i = 0; i < 16; i++) {
+        if ((mask & data_021457e8[i]) && data_02170cd4[i] != 0) {
+            return data_02170cd4[i];
+        }
+    }
+    return data_02170cd4[0];
+}
+
+int func_0206ebb8(int i)
+{
+    Unk06ea70Table *t = data_02170ccc.table;
+    if (t == 0 || t->entry[i] == 0) {
+        return -1;
+    }
+    return func_0206f674(i);
+}
+
 u32 Unk06ea70_GetTableEntry(int i)
 {
     return data_02170ccc.table->entry[i];

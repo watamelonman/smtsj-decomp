@@ -20,3 +20,5 @@
 - `func_0206f24c`
 - `Unk06ea70_Unk_06f4e4`: decompiler-derived (plain cleanup)
 - `Unk06ea70_GetTableEntry`: hand-matched
+- `func_0206ea70`: hand-matched
+- `func_0206ebb8`: hand-matched
