@@ -74,3 +74,13 @@
 - `func_020a4578`
 - `func_020a4864`
 - `func_020a48b4`
+
+## Not done in M1-T991
+- `func_020a4df0`
+- `func_020a370c`
+- `func_020a3274`
+- `func_020a30b4`
+- `func_020a466c`
+- `func_020a2c90`
+- `func_020a4370`
+- `func_020a42f0`
