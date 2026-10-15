@@ -332,7 +332,7 @@ void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
 }
 
 /* decompiler-derived */
-void func_02079000(int *arg0)
+void ImageObj_Unk_079000(int *arg0)
 {
   if (*data_0217231c == 0) {
     return;

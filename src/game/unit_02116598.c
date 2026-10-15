@@ -463,13 +463,13 @@ void Unk116598_Unk_117790(void)
 }
 
 /* decompiler-derived */
-void func_021174a0(void)
+void Unk116598_Unk_1174a0(void)
 {
   *(u32 *)(*data_02176e60 + 0x18) = 1;
 }
 
 /* decompiler-derived */
-void func_021174b8(void)
+void Unk116598_Unk_1174b8(void)
 {
   *(u32 *)(*data_02176e60 + 0x18) = 0;
 }

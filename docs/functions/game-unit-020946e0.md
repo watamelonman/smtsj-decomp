@@ -14,8 +14,8 @@
 
 ## Not done in M1-T493
 - `func_02094910`
-- `func_02094b98`
-- `func_02094d64`
+- `Unk0946e0_Unk_094b98`
+- `Unk0946e0_Unk_094d64`
 - `func_02094eb8`
 - `func_02094e30`
 - `func_02094e70`
@@ -30,5 +30,5 @@
 - `func_02094ef4`
 - `func_02094c74`
 - `func_02094750`
-- `func_02094b98`: decompiler-derived (proto cleanup)
-- `func_02094d64`: decompiler-derived (proto cleanup)
+- `Unk0946e0_Unk_094b98`: decompiler-derived (proto cleanup)
+- `Unk0946e0_Unk_094d64`: decompiler-derived (proto cleanup)

@@ -7,8 +7,8 @@
 - `func_020bc598`: no candidate matched locally
 - `func_020bc5ac`: no candidate matched locally
 - `func_020bc5c0`: no candidate matched locally
-- `func_020bc6d4`: no candidate matched locally
-- `func_020bc6e8`: no candidate matched locally
+- `Unk0bc1a8_Unk_0bc6d4`: no candidate matched locally
+- `Unk0bc1a8_Unk_0bc6e8`: no candidate matched locally
 - `func_020bc4e0`: no candidate matched locally
 - `Unk0bc1a8_Unk_0bc9b4`: decompiler-derived
 - `Unk0bc1a8_Unk_0bcc34`: decompiler-derived
@@ -40,5 +40,5 @@
 - `func_020bcacc`
 - `func_020bc200`
 - `Unk0bc1a8_Unk_0bc514`: decompiler-derived (plain cleanup)
-- `func_020bc6d4`: decompiler-derived (plain cleanup)
-- `func_020bc6e8`: decompiler-derived (plain cleanup)
+- `Unk0bc1a8_Unk_0bc6d4`: decompiler-derived (plain cleanup)
+- `Unk0bc1a8_Unk_0bc6e8`: decompiler-derived (plain cleanup)

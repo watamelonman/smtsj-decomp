@@ -151,12 +151,12 @@ void SaveLoadTask_Unk_0e0010(int arg0)
 
 extern u8 data_02176c78[];
 int func_02053000();
-int func_020bc6d4();
+int Unk0bc1a8_Unk_0bc6d4();
 /* decompiler-derived */
 void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
 {
   int value;
-  func_020bc6d4(1);
+  Unk0bc1a8_Unk_0bc6d4(1);
   func_02053000(work->unk_00e8);
   value = ((int)data_02176c78);
   work->unk_00e8 = 0;

@@ -49,7 +49,7 @@ void ImageBg_Unk_0e5550(u32 arg0,u32 arg1)
   }
 }
 
-int func_020e7790();
+int Unk0e7290_Unk_0e7790();
 /* decompiler-derived */
 void ImageBg_Unk_0e550c(void)
 {
@@ -59,7 +59,7 @@ void ImageBg_Unk_0e550c(void)
     return;
   }
   *(u32 *)(value + 4) = 0;
-  func_020e7790(0);
+  Unk0e7290_Unk_0e7790(0);
 }
 
 
@@ -71,7 +71,7 @@ void ImageBg_Unk_0e54d4(u32 arg0)
 {
   int value;
   u32 *v2;
-  func_020e7790(0xffffffff);
+  Unk0e7290_Unk_0e7790(0xffffffff);
   value = func_020e5484();
   if (value != 0) {
     return;

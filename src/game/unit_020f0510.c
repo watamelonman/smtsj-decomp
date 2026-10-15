@@ -15,7 +15,7 @@ void Unk0f0510_Unk_0f06a4(void)
 }
 
 /* decompiler-derived */
-void func_020f06d0(void)
+void Unk0f0510_Unk_0f06d0(void)
 {
   u32 tmp1;
   tmp1 = Unk0f8448_GetUnkField10();

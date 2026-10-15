@@ -17,7 +17,7 @@
 - `func_0211c350`
 - `func_0211a6e4`
 - `func_0211ceb4`
-- `func_0211b4e4`
+- `BattleShowingTask_Unk_11b4e4`
 - `BattleShowingTask_Unk_11c4c4`: decompiler-derived
 - `BattleShowingTask_Unk_11b684`: decompiler-derived
 - `BattleShowingTask_Unk_11ce80`: decompiler-derived
@@ -61,4 +61,4 @@
 - `BattleShowingTask_Unk_11c670`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11c5d0`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11c610`: decompiler-derived (proto cleanup)
-- `func_0211b4e4`: decompiler-derived (plain cleanup)
+- `BattleShowingTask_Unk_11b4e4`: decompiler-derived (plain cleanup)

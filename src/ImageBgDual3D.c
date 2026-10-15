@@ -104,12 +104,12 @@ void ImageBgDual3D_Unk_125a68(void)
   func_020773dc(1);
 }
 
-u32 func_0212594c(void);
+u32 ImageBgDual3D_Unk_12594c(void);
 /* decompiler-derived */
 int ImageBgDual3D_Unk_125ca4(void)
 {
   int value;
-  value = func_0212594c();
+  value = ImageBgDual3D_Unk_12594c();
   return value == 0;
 }
 
@@ -118,11 +118,11 @@ int ImageBgDual3D_Unk_125ca4(void)
 int ImageBgDual3D_Unk_125cbc(void)
 {
   int value;
-  value = func_0212594c();
+  value = ImageBgDual3D_Unk_12594c();
   return value == 1;
 }
 
-void func_021258e8(void);
+void ImageBgDual3D_Unk_1258e8(void);
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125d30(void)
 {
@@ -131,7 +131,7 @@ void ImageBgDual3D_Unk_125d30(void)
   if (value == 0) {
     return;
   }
-  func_021258e8();
+  ImageBgDual3D_Unk_1258e8();
 }
 
 
@@ -157,7 +157,7 @@ void ImageBgDual3D_Unk_125c40(void)
   *data_02176e94 = value;
 }
 
-void func_021258a0(u32 arg0);
+void ImageBgDual3D_Unk_1258a0(u32 arg0);
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125d10(u32 arg0)
 {
@@ -166,7 +166,7 @@ void ImageBgDual3D_Unk_125d10(u32 arg0)
   if (value == 0) {
     return;
   }
-  func_021258a0(arg0);
+  ImageBgDual3D_Unk_1258a0(arg0);
 }
 
 int func_0205c408();
@@ -223,7 +223,7 @@ void ImageBgDual3D_Unk_125d48(void)
   int tmp1;
   tmp1 = ImageBgDual3D_Unk_125cbc();
   if (tmp1 != 0) {
-    func_021258e8();
+    ImageBgDual3D_Unk_1258e8();
   }
   if (*data_02176e98 == 0) {
     return;
@@ -277,7 +277,7 @@ extern u8 data_02176e90[];
 int func_02061698();
 int func_020616c0();
 /* decompiler-derived */
-void func_021258a0(u32 arg0)
+void ImageBgDual3D_Unk_1258a0(u32 arg0)
 {
   int tmp1;
   tmp1 = func_02061698(data_02176e90);
@@ -291,7 +291,7 @@ void func_021258a0(u32 arg0)
 }
 
 /* decompiler-derived */
-u32 func_0212594c(void)
+u32 ImageBgDual3D_Unk_12594c(void)
 {
   int tmp1;
   int *v2;
@@ -304,7 +304,7 @@ u32 func_0212594c(void)
 
 int func_02061424();
 /* decompiler-derived */
-void func_021258e8(void)
+void ImageBgDual3D_Unk_1258e8(void)
 {
   int tmp1;
   tmp1 = func_02061698(data_02176e90);

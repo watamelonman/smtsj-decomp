@@ -22,7 +22,7 @@
 - `ImageObj_Unk_0776d4`: decompiler-derived
 
 ## Not done in M1-T924
-- `func_02079000`
+- `ImageObj_Unk_079000`
 - `func_02077a9c`
 - `func_02077d68`
 - `func_02077ddc`
@@ -76,4 +76,4 @@
 - `ImageObj_Unk_0775a0`: decompiler-derived (plain cleanup)
 - `ImageObj_Unk_077640`: decompiler-derived (plain cleanup)
 - `ImageObj_Unk_0791a8`: decompiler-derived (proto cleanup)
-- `func_02079000`: decompiler-derived (plain cleanup)
+- `ImageObj_Unk_079000`: decompiler-derived (plain cleanup)

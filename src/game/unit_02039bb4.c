@@ -336,7 +336,7 @@ u32 Unk039bb4_Unk_03a2c0(int arg0)
 
 extern u8 data_0215e258[];
 /* decompiler-derived */
-u32 func_02039f80(int arg0)
+u32 Unk039bb4_Unk_039f80(int arg0)
 {
   Unk039bb4_Unk_039d10(arg0,*(u32 *)
                          (data_0215e258 +
@@ -348,7 +348,7 @@ u32 func_02039f80(int arg0)
 
 extern u8 data_0215de58[];
 /* decompiler-derived */
-u32 func_02039fbc(int arg0)
+u32 Unk039bb4_Unk_039fbc(int arg0)
 {
   Unk039bb4_Unk_039d3c(arg0,*(u32 *)
                          (data_0215de58 +
@@ -359,7 +359,7 @@ u32 func_02039fbc(int arg0)
 }
 
 /* decompiler-derived */
-u32 func_0203a0e0(int arg0)
+u32 Unk039bb4_Unk_03a0e0(int arg0)
 {
   u32 tmp1;
   tmp1 = func_02039dc0();
@@ -371,7 +371,7 @@ u32 func_0203a0e0(int arg0)
 }
 
 /* decompiler-derived */
-u32 func_0203a11c(int arg0)
+u32 Unk039bb4_Unk_03a11c(int arg0)
 {
   u32 tmp1;
   tmp1 = func_02039e50();

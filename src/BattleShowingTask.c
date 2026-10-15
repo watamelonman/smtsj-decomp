@@ -329,7 +329,7 @@ int func_0205dee8();
 int func_0211b100();
 int func_0211b2ac();
 /* decompiler-derived */
-void func_0211b4e4(u32 *arg0)
+void BattleShowingTask_Unk_11b4e4(u32 *arg0)
 {
   int tmp1;
   u32 tmp2;

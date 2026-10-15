@@ -119,7 +119,7 @@ void Unk0946e0_Unk_094958(void)
 int func_02061424();
 int func_02094af8();
 /* decompiler-derived */
-void func_02094b98(int arg0)
+void Unk0946e0_Unk_094b98(int arg0)
 {
   int tmp1;
   if (*(int *)(arg0 + 8) < 0) {
@@ -136,7 +136,7 @@ void func_02094b98(int arg0)
 
 int func_02094c74();
 /* decompiler-derived */
-void func_02094d64(int arg0)
+void Unk0946e0_Unk_094d64(int arg0)
 {
   int tmp1;
   if (*(int *)(arg0 + 0x10) < 0) {

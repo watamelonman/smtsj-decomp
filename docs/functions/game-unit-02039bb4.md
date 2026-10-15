@@ -33,12 +33,12 @@
 - `Unk039bb4_Unk_03a2c0`: decompiler-derived
 
 ## Not done in M1-T677
-- `func_02039f80`
+- `Unk039bb4_Unk_039f80`
 
 ## Not done in M1-T678
-- `func_02039fbc`
-- `func_0203a0e0`
-- `func_0203a11c`
+- `Unk039bb4_Unk_039fbc`
+- `Unk039bb4_Unk_03a0e0`
+- `Unk039bb4_Unk_03a11c`
 - `func_0203a0a0`
 - `func_0203a944`
 - `func_02039dc0`
@@ -50,7 +50,7 @@
 - `func_02039bb4`
 - `func_0203a888`
 - `func_0203a334`
-- `func_02039f80`: decompiler-derived (struct cleanup)
-- `func_02039fbc`: decompiler-derived (struct cleanup)
-- `func_0203a0e0`: decompiler-derived (struct cleanup)
-- `func_0203a11c`: decompiler-derived (struct cleanup)
+- `Unk039bb4_Unk_039f80`: decompiler-derived (struct cleanup)
+- `Unk039bb4_Unk_039fbc`: decompiler-derived (struct cleanup)
+- `Unk039bb4_Unk_03a0e0`: decompiler-derived (struct cleanup)
+- `Unk039bb4_Unk_03a11c`: decompiler-derived (struct cleanup)

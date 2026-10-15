@@ -6,7 +6,7 @@
 - `Unk0e7290_Unk_0e747c`: decompiler-derived
 
 ## Not done in M1-T401
-- `func_020e7790`
+- `Unk0e7290_Unk_0e7790`
 - `func_020e7770`
 - `func_020e77f0`
 - `func_020e7840`
@@ -17,4 +17,4 @@
 - `func_020e7290`
 - `func_020e7658`
 - `func_020e736c`
-- `func_020e7790`: decompiler-derived (plain cleanup)
+- `Unk0e7290_Unk_0e7790`: decompiler-derived (plain cleanup)

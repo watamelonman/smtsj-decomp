@@ -4,11 +4,11 @@
 - `Unk0e7ac4_Unk_0e7f0c`: decompiler-derived
 
 ## Not done in M1-T455
-- `func_020e8000`
-- `func_020e804c`
-- `func_020e8014`
-- `func_020e8030`
-- `func_020e8060`
+- `Unk0e7ac4_Unk_0e8000`
+- `Unk0e7ac4_Unk_0e804c`
+- `Unk0e7ac4_Unk_0e8014`
+- `Unk0e7ac4_Unk_0e8030`
+- `Unk0e7ac4_Unk_0e8060`
 - `Unk0e7ac4_Unk_0e8198`
 
 ## Not done in M1-T456
@@ -19,8 +19,8 @@
 - `func_020e7b80`
 - `func_020e7d40`
 - `Unk0e7ac4_Unk_0e8198`: decompiler-derived (plain cleanup)
-- `func_020e8014`: decompiler-derived (plain cleanup)
-- `func_020e8030`: decompiler-derived (plain cleanup)
-- `func_020e8060`: decompiler-derived (plain cleanup)
-- `func_020e8000`: decompiler-derived (plain cleanup)
-- `func_020e804c`: decompiler-derived (plain cleanup)
+- `Unk0e7ac4_Unk_0e8014`: decompiler-derived (plain cleanup)
+- `Unk0e7ac4_Unk_0e8030`: decompiler-derived (plain cleanup)
+- `Unk0e7ac4_Unk_0e8060`: decompiler-derived (plain cleanup)
+- `Unk0e7ac4_Unk_0e8000`: decompiler-derived (plain cleanup)
+- `Unk0e7ac4_Unk_0e804c`: decompiler-derived (plain cleanup)

@@ -5,7 +5,7 @@
 
 ## Not done in M1-T050
 - `Unk124c5c_Unk_124d54`
-- `func_02124e50`
+- `Unk124c5c_Unk_124e50`
 - `func_02124d6c`
 - `func_02124d8c`
 - `func_02124cc4`
@@ -17,4 +17,4 @@
 - `func_02124c5c`
 - `func_02124ce8`
 - `Unk124c5c_Unk_124d54`: decompiler-derived (plain cleanup)
-- `func_02124e50`: decompiler-derived (plain cleanup)
+- `Unk124c5c_Unk_124e50`: decompiler-derived (plain cleanup)

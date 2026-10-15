@@ -42,8 +42,8 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020bc598` (M1-T545): left out of the card
 - `func_020bc5ac` (M1-T545): left out of the card
 - `func_020bc5c0` (M1-T545): left out of the card
-- `func_020bc6d4` (M1-T545): left out of the card
-- `func_020bc6e8` (M1-T545): left out of the card
+- `Unk0bc1a8_Unk_0bc6d4` (M1-T545): left out of the card
+- `Unk0bc1a8_Unk_0bc6e8` (M1-T545): left out of the card
 - `func_020bc4e0` (M1-T545): left out of the card
 - `func_020a8608` (M1-T790): left out of the card
 - card M1-T801: skipped (TU already has a hand-written file; needs merging by hand)
@@ -72,11 +72,11 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk03e43c_Call_02056cc0` (M1-T1086): left out of the card
 - `func_0203e920` (M1-T1086): left out of the card
 - `func_0203fa08` (M1-T1086): left out of the card
-- `func_02124284` (M1-T227): left out of the card
-- `func_0212429c` (M1-T227): left out of the card
-- `func_021242b4` (M1-T227): left out of the card
-- `func_021242cc` (M1-T227): left out of the card
-- `func_021242e4` (M1-T227): left out of the card
+- `Unk1241ec_Unk_124284` (M1-T227): left out of the card
+- `Unk1241ec_Unk_12429c` (M1-T227): left out of the card
+- `Unk1241ec_Unk_1242b4` (M1-T227): left out of the card
+- `Unk1241ec_Unk_1242cc` (M1-T227): left out of the card
+- `Unk1241ec_Unk_1242e4` (M1-T227): left out of the card
 - `func_020e66d8` (M1-T146): left out of the card
 - `func_020e6594` (M1-T146): left out of the card
 - `func_020e65b0` (M1-T146): left out of the card

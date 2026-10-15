@@ -82,7 +82,7 @@ u32 Unk0e7290_Unk_0e747c(int arg0)
 }
 
 /* decompiler-derived */
-void func_020e7790(u32 arg0)
+void Unk0e7290_Unk_0e7790(u32 arg0)
 {
   if (*data_02176cd8 != 0) {
     *(u32 *)(*data_02176cd8 + 0x204) = arg0;

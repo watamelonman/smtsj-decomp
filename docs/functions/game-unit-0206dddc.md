@@ -6,10 +6,10 @@
 
 ## Not done in M1-T338
 - `func_0206e0c4`
-- `func_0206dfc8`
-- `func_0206dfec`
-- `func_0206e010`
-- `func_0206e034`
+- `Unk06dddc_Unk_06dfc8`
+- `Unk06dddc_Unk_06dfec`
+- `Unk06dddc_Unk_06e010`
+- `Unk06dddc_Unk_06e034`
 
 ## Not done in M1-T339
 - `Unk06dddc_Unk_06dee8`
@@ -20,7 +20,7 @@
 - `func_0206df10`
 - `func_0206e0dc`
 - `Unk06dddc_Unk_06dee8`: decompiler-derived (plain cleanup)
-- `func_0206dfc8`: decompiler-derived (plain cleanup)
-- `func_0206dfec`: decompiler-derived (plain cleanup)
-- `func_0206e010`: decompiler-derived (plain cleanup)
-- `func_0206e034`: decompiler-derived (plain cleanup)
+- `Unk06dddc_Unk_06dfc8`: decompiler-derived (plain cleanup)
+- `Unk06dddc_Unk_06dfec`: decompiler-derived (plain cleanup)
+- `Unk06dddc_Unk_06e010`: decompiler-derived (plain cleanup)
+- `Unk06dddc_Unk_06e034`: decompiler-derived (plain cleanup)

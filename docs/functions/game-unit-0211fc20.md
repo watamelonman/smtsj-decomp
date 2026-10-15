@@ -6,7 +6,7 @@
 - `Unk11fc20_Unk_120944`: decompiler-derived
 
 ## Not done in M1-T835
-- `func_0211fc94`
+- `Unk11fc20_Unk_11fc94`
 - `func_02120650`
 - `func_0211fc68`
 - `func_0212066c`
@@ -34,4 +34,4 @@
 - `func_0211fd7c`
 - `func_021206a8`
 - `func_0212034c`
-- `func_0211fc94`: decompiler-derived (plain cleanup)
+- `Unk11fc20_Unk_11fc94`: decompiler-derived (plain cleanup)

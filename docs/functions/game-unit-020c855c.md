@@ -7,8 +7,8 @@
 - `Unk0c855c_Unk_0c9bac`: decompiler-derived
 
 ## Not done in M1-T930
-- `func_020c92dc`
-- `func_020c92c0`
+- `Unk0c855c_Unk_0c92dc`
+- `Unk0c855c_Unk_0c92c0`
 - `func_020c9eb0`
 - `Unk0c855c_Unk_0c9890`: decompiler-derived
 - `Unk0c855c_Unk_0c9c5c`: decompiler-derived
@@ -30,5 +30,5 @@
 - `func_020c9030`
 - `func_020c8ce0`
 - `func_020ca2e4`
-- `func_020c92c0`: decompiler-derived (struct cleanup)
-- `func_020c92dc`: decompiler-derived (struct cleanup)
+- `Unk0c855c_Unk_0c92c0`: decompiler-derived (struct cleanup)
+- `Unk0c855c_Unk_0c92dc`: decompiler-derived (struct cleanup)

@@ -27,8 +27,8 @@ typedef struct Unk0e1648Work {
 } Unk0e1648Work;
 
 extern u32 data_02176c78[];
-int func_020e8014();
-int func_020e8030();
+int Unk0e7ac4_Unk_0e8014();
+int Unk0e7ac4_Unk_0e8030();
 
 u32 Unk0e1648_Unk_0e5240(int arg0,int arg1);
 u32 Unk0e1648_Get_data_02176c78(void);
@@ -65,8 +65,8 @@ void Unk0e1648_Unk_0e2cb0(Unk0e1648Work *work)
 /* decompiler-derived */
 void Unk0e1648_Unk_0e5434(void)
 {
-  func_020e8014(0);
-  func_020e8030(0);
+  Unk0e7ac4_Unk_0e8014(0);
+  Unk0e7ac4_Unk_0e8030(0);
 }
 
 /* decompiler-derived */
@@ -249,7 +249,7 @@ void Unk0e1648_Unk_0e5090(u32 arg0,u32 arg1)
 
 int func_020f4448();
 /* decompiler-derived */
-void func_020e48a8(int arg0,u32 arg1)
+void Unk0e1648_Unk_0e48a8(int arg0,u32 arg1)
 {
   u16 tmp1;
   int tmp2;

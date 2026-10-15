@@ -8,7 +8,7 @@
 
 ## Not done in M1-T443
 - `func_020ef2cc`
-- `func_020ef8ac`
+- `Unk0ef248_Unk_0ef8ac`
 - `func_020ef74c`
 
 ## Not done in M1-T445
@@ -23,4 +23,4 @@
 - `func_020ef330`
 - `func_020ef3f0`
 - `func_020ef78c`
-- `func_020ef8ac`: decompiler-derived (plain cleanup)
+- `Unk0ef248_Unk_0ef8ac`: decompiler-derived (plain cleanup)

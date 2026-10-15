@@ -6,7 +6,7 @@ int func_02052728();
 int func_020614b0();
 int func_02061698();
 /* decompiler-derived */
-u32 func_02047590(void)
+u32 Unk047568_Unk_047590(void)
 {
   int tmp1;
   tmp1 = func_02052728();

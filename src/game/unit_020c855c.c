@@ -145,14 +145,14 @@ void Unk0c855c_Unk_0c855c(int arg0)
 extern u8 data_0213c54c[];
 int Unk0ca69c_Unk_0ca6a4();
 /* decompiler-derived */
-void func_020c92c0(int arg0)
+void Unk0c855c_Unk_0c92c0(int arg0)
 {
   Unk0ca69c_Unk_0ca6a4(*(u8 *)(data_0213c54c + (u32)((Unk0c855cWork *)arg0)->unk_003a));
 }
 
 extern u8 data_0213c51c[];
 /* decompiler-derived */
-u32 func_020c92dc(int arg0)
+u32 Unk0c855c_Unk_0c92dc(int arg0)
 {
   return *(u32 *)(data_0213c51c + (u32)((Unk0c855cWork *)arg0)->unk_003a * 4);
 }

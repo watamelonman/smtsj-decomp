@@ -46,7 +46,7 @@
 - `func_020e2cc8`
 - `func_020e42e4`
 - `func_020e2f84`
-- `func_020e48a8`
+- `Unk0e1648_Unk_0e48a8`
 - `func_020e4ca4`
 - `func_020e524c`
 - `func_020e41d0`
@@ -74,4 +74,4 @@
 - `Unk0e1648_Unk_0e51cc`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5214`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)
-- `func_020e48a8`: decompiler-derived (struct cleanup)
+- `Unk0e1648_Unk_0e48a8`: decompiler-derived (struct cleanup)

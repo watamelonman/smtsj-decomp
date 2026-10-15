@@ -32,25 +32,25 @@ void Unk06dddc_Unk_06dee8(int arg0,u32 arg1)
 
 extern u8 data_0216bc04[];
 /* decompiler-derived */
-int func_0206dfc8(int arg0,int arg1)
+int Unk06dddc_Unk_06dfc8(int arg0,int arg1)
 {
   return (int)*(short *)(arg1 * 0x14 + *(int *)(data_0216bc04 + arg0 * 0x148) + 4);
 }
 
 /* decompiler-derived */
-u32 func_0206dfec(int arg0,int arg1)
+u32 Unk06dddc_Unk_06dfec(int arg0,int arg1)
 {
   return *(u32 *)(*(int *)(data_0216bc04 + arg0 * 0x148) + arg1 * 0x14);
 }
 
 /* decompiler-derived */
-int func_0206e010(int arg0,int arg1)
+int Unk06dddc_Unk_06e010(int arg0,int arg1)
 {
   return arg1 * 0x14 + *(int *)(data_0216bc04 + arg0 * 0x148) + 8;
 }
 
 /* decompiler-derived */
-int func_0206e034(int arg0,int arg1)
+int Unk06dddc_Unk_06e034(int arg0,int arg1)
 {
   return (int)*(short *)(arg1 * 0x14 + *(int *)(data_0216bc04 + arg0 * 0x148) + 6);
 }

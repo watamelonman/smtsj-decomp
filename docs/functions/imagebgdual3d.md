@@ -27,14 +27,14 @@
 - `ImageBgDual3D_Unk_1252b4`: decompiler-derived
 
 ## Not done in M1-T538
-- `func_021258e8`
-- `func_0212594c`
+- `ImageBgDual3D_Unk_1258e8`
+- `ImageBgDual3D_Unk_12594c`
 - `func_02125910`
 - `func_02125c68`
 - `ImageBgDual3D_Unk_125b10`: decompiler-derived
 
 ## Not done in M1-T539
-- `func_021258a0`
+- `ImageBgDual3D_Unk_1258a0`
 - `func_02125738`
 - `func_02125790`
 - `func_02125a08`
@@ -47,6 +47,6 @@
 - `func_02125678`
 - `func_02125b60`
 - `func_021253c4`
-- `func_021258a0`: decompiler-derived (plain cleanup)
-- `func_0212594c`: decompiler-derived (plain cleanup)
-- `func_021258e8`: decompiler-derived (plain cleanup)
+- `ImageBgDual3D_Unk_1258a0`: decompiler-derived (plain cleanup)
+- `ImageBgDual3D_Unk_12594c`: decompiler-derived (plain cleanup)
+- `ImageBgDual3D_Unk_1258e8`: decompiler-derived (plain cleanup)

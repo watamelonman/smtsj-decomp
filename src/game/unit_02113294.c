@@ -131,7 +131,7 @@ void Unk113294_Unk_11518c(u32 arg0)
 
 extern u8 data_0215159c[];
 /* decompiler-derived */
-u32 func_02115754(int arg0,int arg1,int arg2)
+u32 Unk113294_Unk_115754(int arg0,int arg1,int arg2)
 {
   return *(u32 *)(arg0 * 0xdc + data_0215159c + (arg1 * 0xb + arg2) * 4);
 }
