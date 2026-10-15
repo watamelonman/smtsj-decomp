@@ -11,7 +11,7 @@ env = dict(os.environ, PATH=os.path.expanduser('~/.local/bin') + ':' + os.enviro
 saved, bad = {}, []
 try:
     for c in sys.argv[1:]:
-        dst = subprocess.run(['git','ls-files','src/*/'+os.path.basename(c)],capture_output=True,text=True).stdout.split()[0]
+        dst = [f for f in subprocess.run(['git','ls-files','src'],capture_output=True,text=True).stdout.split() if os.path.basename(f) == os.path.basename(c)][0]
         saved[dst] = open(dst).read(); shutil.copy(c, dst)
     subprocess.run('nice ninja', shell=True, env=env, check=True, capture_output=True)
     subprocess.run(['./objdiff-cli', 'report', 'generate', '-o', '/tmp/handwork/gc_report.json'], check=True, capture_output=True)
