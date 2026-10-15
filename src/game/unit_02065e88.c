@@ -161,3 +161,4 @@ void func_02065f30(int *arg0)
   *(int **)(((int)data_0216b9a8) + 4) = arg0;
   return;
 }
+

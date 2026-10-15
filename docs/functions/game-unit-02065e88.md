@@ -35,3 +35,13 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `func_02067418`
 - `func_020684c0`
 - `func_02066c94`
+
+## Not done in M1-T1021
+- `func_02067370`
+- `func_02067c88`
+- `func_020685b0`
+- `func_02068658`
+- `func_02065fc0`
+- `func_02067b28`
+- `func_02067bd8`
+- `func_020674a4`
