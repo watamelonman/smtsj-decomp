@@ -3,6 +3,24 @@
 
 
 
+extern u8 data_0215ee9c[];
+int func_02052728();
+int func_02061698();
+void func_020614b0();
+u32 Unk044904_Get_data_0215ee98(void);
+int func_02047788(void)
+{
+    if (func_02052728() != 0) {
+        return 0;
+    }
+    if (func_02061698(data_0215ee9c) != 0) {
+        return 0;
+    }
+    FIELD(u32, Unk044904_Get_data_0215ee98(), 0x40) &= ~0x8000;
+    func_020614b0(data_0215ee9c);
+    return 1;
+}
+
 /* returns 1 */
 int Unk047788_GetConst1(void) { return 1; }
 
