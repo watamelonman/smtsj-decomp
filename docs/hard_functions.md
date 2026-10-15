@@ -78,8 +78,8 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk1241ec_Unk_1242cc` (M1-T227): left out of the card
 - `Unk1241ec_Unk_1242e4` (M1-T227): left out of the card
 - `func_020e66d8` (M1-T146): left out of the card
-- `func_020e6594` (M1-T146): left out of the card
-- `func_020e65b0` (M1-T146): left out of the card
+- `Unk0e651c_TestFlagIn` (M1-T146): left out of the card
+- `Unk0e651c_SetFlag` (M1-T146): left out of the card
 - `func_020cb0d0` (M1-T166): card skipped
 - `func_020cb12c` (M1-T166): card skipped
 - `func_020b0d48` (M1-T223): card skipped

@@ -36,10 +36,10 @@
 ## Not done in M1-T376
 - `Unk0e5fb8_SetBits`
 - `Unk0e5fb8_Get2Bits`
-- `func_020e6360`
-- `func_020e63e0`
-- `func_020e6460`
-- `func_020e64e0`
+- `Unk0e5fb8_Get2BitsB00`
+- `Unk0e5fb8_Get2BitsD00`
+- `Unk0e5fb8_Get2BitsD80`
+- `Unk0e5fb8_Get2BitsD80Hi`
 - `Unk0e5fb8_GetBits`
 - `Unk0e5fb8_Unk_0e626c`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_Unk_0e61e8`: decompiler-derived (plain cleanup)
@@ -53,7 +53,7 @@
 - `Unk0e5fb8_SetBits`: hand-matched
 - `Unk0e5fb8_Unk_0e620c`: hand-matched
 - `Unk0e5fb8_Get2Bits`: hand-matched
-- `func_020e6360`: hand-matched
-- `func_020e63e0`: hand-matched
-- `func_020e6460`: hand-matched
-- `func_020e64e0`: hand-matched
+- `Unk0e5fb8_Get2BitsB00`: hand-matched
+- `Unk0e5fb8_Get2BitsD00`: hand-matched
+- `Unk0e5fb8_Get2BitsD80`: hand-matched
+- `Unk0e5fb8_Get2BitsD80Hi`: hand-matched

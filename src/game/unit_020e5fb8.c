@@ -11,10 +11,10 @@ void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2);
 void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1);
 void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1);
 int Unk0e5fb8_Get2Bits();
-int func_020e6360();
-int func_020e63e0();
-int func_020e6460();
-int func_020e64e0();
+int Unk0e5fb8_Get2BitsB00();
+int Unk0e5fb8_Get2BitsD00();
+int Unk0e5fb8_Get2BitsD80();
+int Unk0e5fb8_Get2BitsD80Hi();
 
 int Unk0e5fb8_Unk_0e6158(int arg0);
 int Unk0e5fb8_Unk_0e61b0(int arg0);
@@ -140,7 +140,7 @@ void Unk0e5fb8_Unk_0e6348(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e6360(value,arg0);
+  Unk0e5fb8_Get2BitsB00(value,arg0);
 }
 
 /* decompiler-derived */
@@ -148,7 +148,7 @@ void Unk0e5fb8_Unk_0e63c8(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e63e0(value,arg0);
+  Unk0e5fb8_Get2BitsD00(value,arg0);
 }
 
 /* decompiler-derived */
@@ -156,7 +156,7 @@ void Unk0e5fb8_Unk_0e6448(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e6460(value,arg0);
+  Unk0e5fb8_Get2BitsD80(value,arg0);
 }
 
 /* decompiler-derived */
@@ -164,7 +164,7 @@ void Unk0e5fb8_Unk_0e64c8(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e64e0(value,arg0);
+  Unk0e5fb8_Get2BitsD80Hi(value,arg0);
 }
 
 /* decompiler-derived */
@@ -267,28 +267,28 @@ int Unk0e5fb8_Get2Bits(u32 a, u32 b)
 }
 
 int Unk094fe0_TestBit();
-int func_020e6360(u32 a, u32 b)
+int Unk0e5fb8_Get2BitsB00(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetB00(b);
     int lo = Unk094fe0_TestBit(a, o);
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
-int func_020e63e0(u32 a, u32 b)
+int Unk0e5fb8_Get2BitsD00(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetD00(b);
     int lo = Unk094fe0_TestBit(a, o);
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
-int func_020e6460(u32 a, u32 b)
+int Unk0e5fb8_Get2BitsD80(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetD80(b);
     int lo = Unk094fe0_TestBit(a, o);
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
-int func_020e64e0(u32 a, u32 b)
+int Unk0e5fb8_Get2BitsD80Hi(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetD80(b);
     int lo = Unk094fe0_TestBit(a, o + 2);

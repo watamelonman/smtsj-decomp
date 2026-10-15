@@ -11,7 +11,7 @@ int Unk094fe0_Call_0209502c();
 int Unk0e5fb8_SetBits();
 int Unk0e5fb8_Unk_0e61b0();
 int Unk0e5fb8_Unk_0e61bc();
-int func_020e6684();
+int Unk0e651c_TestBitChecked();
 int func_020e66d8();
 
 void Unk0e651c_Unk_0e654c(void);
@@ -41,7 +41,7 @@ void Unk0e651c_Unk_0e666c(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e6684(value,arg0);
+  Unk0e651c_TestBitChecked(value,arg0);
 }
 
 /* decompiler-derived */
@@ -69,17 +69,17 @@ void Unk0e651c_Unk_0e651c(u32 arg0,u32 arg1)
   Unk094fe0_Call_0209502c(value + 3,(int)(arg1 & 2) >> 1);
 }
 
-int func_020e6594(u32 a, u32 b, u32 c);
-int func_020e65ec(u32 a, u32 b, u32 c);
+int Unk0e651c_TestFlagIn(u32 a, u32 b, u32 c);
+int Unk0e651c_Get2BitsIn(u32 a, u32 b, u32 c);
 int Unk094fe0_TestBit200();
 void Unk094fe0_Unk_095204();
 int Unk094fe0_TestBit();
-int func_020e6574(u32 a, u32 b)
+int Unk0e651c_TestFlag(u32 a, u32 b)
 {
-    return func_020e6594(Unk094fe0_Thunk_0202e8cc(), a, b);
+    return Unk0e651c_TestFlagIn(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
-int func_020e6594(u32 a, u32 b, u32 c)
+int Unk0e651c_TestFlagIn(u32 a, u32 b, u32 c)
 {
     if (c >= 64) {
         return 0;
@@ -87,7 +87,7 @@ int func_020e6594(u32 a, u32 b, u32 c)
     return Unk094fe0_TestBit200(a, c + b * 128);
 }
 
-void func_020e65b0(u32 b, u32 c, u32 v)
+void Unk0e651c_SetFlag(u32 b, u32 c, u32 v)
 {
     if (c >= 64) {
         return;
@@ -95,12 +95,12 @@ void func_020e65b0(u32 b, u32 c, u32 v)
     Unk094fe0_Unk_095204(c + b * 128, v);
 }
 
-int func_020e65cc(u32 a, u32 b)
+int Unk0e651c_Get2Bits(u32 a, u32 b)
 {
-    return func_020e65ec(Unk094fe0_Thunk_0202e8cc(), a, b);
+    return Unk0e651c_Get2BitsIn(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
-int func_020e65ec(u32 a, u32 b, u32 c)
+int Unk0e651c_Get2BitsIn(u32 a, u32 b, u32 c)
 {
     int o;
     int lo;
@@ -112,7 +112,7 @@ int func_020e65ec(u32 a, u32 b, u32 c)
     return (u8)(lo | (Unk094fe0_TestBit200(a, o + 1) << 1));
 }
 
-void func_020e6630(u32 b, u32 c, int v)
+void Unk0e651c_Set2Bits(u32 b, u32 c, int v)
 {
     int o;
     if (c >= 32) {
@@ -123,7 +123,7 @@ void func_020e6630(u32 b, u32 c, int v)
     Unk094fe0_Unk_095204(o + 1, (v & 2) >> 1);
 }
 
-int func_020e6684(u32 a, u32 b)
+int Unk0e651c_TestBitChecked(u32 a, u32 b)
 {
     if (b > 0x7ff) {
         return 0;
@@ -131,7 +131,7 @@ int func_020e6684(u32 a, u32 b)
     return Unk094fe0_TestBit(a, b);
 }
 
-void func_020e66a4(u32 i, u32 v)
+void Unk0e651c_SetBitChecked(u32 i, u32 v)
 {
     if (i > 0x7ff) {
         return;

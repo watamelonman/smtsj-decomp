@@ -8,23 +8,23 @@
 
 ## Hard list
 - `func_020e66d8`: no candidate matched locally
-- `func_020e6594`: no candidate matched locally
-- `func_020e65b0`: no candidate matched locally
+- `Unk0e651c_TestFlagIn`: no candidate matched locally
+- `Unk0e651c_SetFlag`: no candidate matched locally
 - `Unk0e651c_Unk_0e651c`: decompiler-derived
 
 ## Not done in M1-T147
-- `func_020e66a4`
-- `func_020e6574`
-- `func_020e65cc`
-- `func_020e6684`
-- `func_020e6630`
-- `func_020e65ec`
+- `Unk0e651c_SetBitChecked`
+- `Unk0e651c_TestFlag`
+- `Unk0e651c_Get2Bits`
+- `Unk0e651c_TestBitChecked`
+- `Unk0e651c_Set2Bits`
+- `Unk0e651c_Get2BitsIn`
 - `func_020e6708`
-- `func_020e6574`: hand-matched
-- `func_020e6594`: hand-matched
-- `func_020e65b0`: hand-matched
-- `func_020e65cc`: hand-matched
-- `func_020e65ec`: hand-matched
-- `func_020e6630`: hand-matched
-- `func_020e6684`: hand-matched
-- `func_020e66a4`: hand-matched
+- `Unk0e651c_TestFlag`: hand-matched
+- `Unk0e651c_TestFlagIn`: hand-matched
+- `Unk0e651c_SetFlag`: hand-matched
+- `Unk0e651c_Get2Bits`: hand-matched
+- `Unk0e651c_Get2BitsIn`: hand-matched
+- `Unk0e651c_Set2Bits`: hand-matched
+- `Unk0e651c_TestBitChecked`: hand-matched
+- `Unk0e651c_SetBitChecked`: hand-matched
