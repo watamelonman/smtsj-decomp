@@ -196,3 +196,6 @@
 - `Unk02f2a8_Unk_030198`: hand-matched
 - `Unk02f2a8_ApplyPending`: hand-matched
 - `Unk02f2a8_Unk_03034c`: hand-matched
+- `func_02030704`: hand-matched
+- `func_020308c0`: hand-matched
+- `func_020313a4`: hand-matched

@@ -657,6 +657,34 @@ void Unk02f2a8_Unk_03034c(u8 *p)
     func_02116598();
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_02038ff8();
+void func_02039520();
+int Unk02e000_Unk_02e8b8();
+void func_020a7474();
+
+void func_02030704(int a, s8 *src, int unused, int c, u8 e)
+{
+    s8 buf[17] = {0};
+    int i;
+    for (i = 0; i < 16; i++) {
+        buf[i] = src[i];
+    }
+    func_02038ff8(a, buf, c, e);
+}
+
+void func_020308c0(u8 *p)
+{
+    s8 buf[17] = {0};
+    int i;
+    for (i = 0; i < 16; i++) {
+        buf[i] = FIELD(s8, p + i, 64);
+    }
+    func_02039520(p, buf);
+}
+
 /* decompiler-derived */
 void Unk02f2a8_Unk_032f3c(int *arg0)
 {
@@ -722,6 +750,14 @@ u32 Unk038fbc_Unk_038fbc(int *obj);
 u32 Unk0387bc_Unk_038e40(int *obj);
 u32 Unk0387bc_Unk_038cbc(int *obj);
 void Unk02cad4_Unk_02cbdc(u32 a);
+
+void func_020313a4(u8 *p)
+{
+    int bits = Unk02f2a8_GetObj39160Bits16(p + 576, FIELD(s8, p + 0x7400, 78), FIELD(s8, p + 0x7400, 79));
+    int m = Unk02e000_Unk_02e8b8();
+    u16 v = FIELD(u16, (u8 *)Unk02e000_GetWorkArea() + 0x300, 92);
+    func_020a7474(p + 264 + 0x5400, m, p + 576, p + 24, v, bits, 1);
+}
 
 /* Tears down the GameState sub-objects and clears gGameState. */
 void GameState_Shutdown(GameState *gs)
