@@ -136,3 +136,32 @@ u32 Unk03bba4_Unk_03bbec(void)
   Unk02dcfc_Unk_02deb0(*(u32 *)(value4 + 0xe8));
   return 3;
 }
+
+int func_0206552c();
+int ImageObj_Unk_077688();
+int Unk09d42c_Unk_09e274();
+int Unk02e000_GetSlot();
+void ImageBg_Unk_0e54d4();
+void Unk02e000_SetSlot();
+int ImageBg_IsMode1or2();
+
+int func_0203bda0(void)
+{
+    if (func_0206552c() != 0) {
+        return 0;
+    }
+    if (ImageObj_Unk_077688() == 0) {
+        return 0;
+    }
+    if (Unk09d42c_Unk_09e274() == 0) {
+        return 0;
+    }
+    if (Unk02e000_GetSlot(1) == 1) {
+        ImageBg_Unk_0e54d4(Unk02e000_GetSlot(0));
+        Unk02e000_SetSlot(1, 0);
+    }
+    if (ImageBg_IsMode1or2() == 1) {
+        return 0;
+    }
+    return 1;
+}
