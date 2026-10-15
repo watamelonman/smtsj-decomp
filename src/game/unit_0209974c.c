@@ -60,11 +60,14 @@ int Unk09974c_Unk_0998b0(u16 *arg0,u16 *arg1)
 }
 
 typedef struct Unk09974cEntry {
-    u8 pad_0000[0x8];
+    s32 lo;
+    s32 hi;
     u8 unk_0008;
+    u8 unk_0009;
+    u8 pad_000a[0x2];
 } Unk09974cEntry;
 
-Unk09974cEntry *func_02099780(u32 id);
+Unk09974cEntry *func_02099780(int id);
 
 u8 Unk09974c_GetEntryUnk08(u32 id)
 {
@@ -128,6 +131,34 @@ void Unk09974c_Unk_09974c(int *arg0)
 
 
 int Unk02e000_GetSubBlock3a4();
+extern u8 data_0213bdec[];
+int func_02099d14();
+int func_02099bfc();
+typedef struct Unk09974cStat {
+    u8 pad_0000[0x4];
+    u32 unk_04 : 10;
+    u32 unk_04_rest : 22;
+    u8 pad_0008[0x6];
+    u16 unk_0e;
+} Unk09974cStat;
+
+typedef struct Unk09974cKind {
+    u8 pad_0000[0x2a];
+    u8 kind : 7;
+    u8 kind_hi : 1;
+} Unk09974cKind;
+Unk09974cEntry *func_02099780(int id)
+{
+    Unk09974cEntry *t = (Unk09974cEntry *)data_0213bdec;
+    u32 j;
+    for (j = 0; j < 10; j++) {
+        if (t[j].lo <= id && id <= t[j].hi) {
+            return &((Unk09974cEntry *)data_0213bdec)[j];
+        }
+    }
+    return 0;
+}
+
 /* decompiler-derived */
 int Unk09974c_Unk_0997c8(u32 arg0)
 {
@@ -166,7 +197,95 @@ typedef struct Unk09974cFlags {
     u16 unk_04_hi : 4;
 } Unk09974cFlags;
 
+int func_020998f0(int id)
+{
+    Unk09974cEntry *e = func_02099780(id);
+    int n;
+    if (e == 0) {
+        return 0;
+    }
+    n = func_0209993c(id);
+    if (n == 0) {
+        return 0;
+    }
+    if (e->unk_0009 == 1 && n < 99) {
+        return 0;
+    }
+    return 1;
+}
+
+s32 func_02099cc4(Unk09974cStat *p)
+{
+    u32 v = p->unk_04;
+    u32 r;
+    s32 q;
+    if (v == 0) {
+        return 0;
+    }
+    r = p->unk_0e;
+    if (r == 0) {
+        return 0;
+    }
+    if (r == 100) {
+        return v;
+    }
+    q = (v * r) / 100;
+    if (q <= 0) {
+        q = 1;
+    }
+    return q;
+}
+
+int func_0209a090(int id)
+{
+    if (id >= 51 && id <= 110) {
+        u8 v = ((u8 *)func_02099d14(id))[45];
+        if (v != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int func_0209a0c0(int id)
+{
+    if (id >= 51 && id <= 110) {
+        u8 v = ((u8 *)func_02099d14(id))[45];
+        if (v == 1 || v == 3) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int func_0209a0f4(Unk09974cKind *p)
+{
+    u32 v = p->kind;
+    return v == 14 || v == 1;
+}
+
 int Unk09974c_HasFlagsMid(Unk09974cFlags *f)
 {
     return f->unk_04_mid != 0;
+}
+
+int func_0209a12c(Unk09974cFlags *f)
+{
+    if (Unk09974c_HasFlagsMid(f) == 0) {
+        return -1;
+    }
+    return f->unk_04_mid - 1;
+}
+
+void func_0209a1a0(int id)
+{
+    u8 *b = (u8 *)Unk02e000_GetSubBlock3a4();
+    s32 k = id - 51;
+    s32 i = k >> 3;
+    u8 *f;
+    if (i >= 162) {
+        return;
+    }
+    f = b + 684 + 1024;
+    f[i] |= (u8)(1 << (k & 7));
 }

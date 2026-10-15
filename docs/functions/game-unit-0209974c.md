@@ -50,3 +50,11 @@
 - `func_02099f7c`
 - `Unk09974c_GetEntryUnk08`: hand-matched
 - `Unk09974c_HasFlagsMid`: hand-matched
+- `func_02099780`: hand-matched
+- `func_020998f0`: hand-matched
+- `func_02099cc4`: hand-matched
+- `func_0209a090`: hand-matched
+- `func_0209a0c0`: hand-matched
+- `func_0209a0f4`: hand-matched
+- `func_0209a12c`: hand-matched
+- `func_0209a1a0`: hand-matched
