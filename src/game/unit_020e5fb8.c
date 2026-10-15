@@ -28,6 +28,26 @@ void Unk0e5fb8_Unk_0e6448(u32 arg0);
 void Unk0e5fb8_Unk_0e64c8(u32 arg0);
 void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1);
 
+u32 func_020e60b4(u32 a, int b, int n)
+{
+    u32 bits = 0;
+    int i;
+    for (i = 0; i < n; i++) {
+        if (Unk094fe0_TestBit(a, b + i) != 0) {
+            bits |= 1 << i;
+        }
+    }
+    return bits;
+}
+
+void func_020e6100(int a, int n, u32 bits)
+{
+    int i;
+    for (i = 0; i < n; i++) {
+        Unk094fe0_Call_0209502c(a + i, (bits >> i) & 1);
+    }
+}
+
 int Unk0e5fb8_GetOffset800(int row, u32 col)
 {
     int base = row * 10;
@@ -226,10 +246,22 @@ void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2)
   Unk094fe0_TestBit(arg0,tmp1);
 }
 
+void func_020e620c(u32 a, u32 b)
+{
+    Unk0e5fb8_Unk_0e622c(Unk094fe0_Thunk_0202e8cc(), a, b);
+}
+
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = Unk0e5fb8_Unk_0e6158(arg1);
   func_0209502c(arg0,tmp1,1);
+}
+
+int func_020e62e0(u32 a, u32 b)
+{
+    int o = Unk0e5fb8_GetOffset900(b);
+    int lo = Unk094fe0_TestBit(a, o);
+    return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }

@@ -49,3 +49,7 @@
 - `Unk0e5fb8_GetOffsetD00`: hand-matched
 - `Unk0e5fb8_GetOffsetD80`: hand-matched
 - `Unk0e5fb8_GetOffset800`: hand-matched
+- `func_020e60b4`: hand-matched
+- `func_020e6100`: hand-matched
+- `func_020e620c`: hand-matched
+- `func_020e62e0`: hand-matched
