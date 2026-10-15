@@ -78,8 +78,8 @@ int func_02013c3c();
 int func_0205ae60();
 int func_0205b398();
 int func_020ed1a8();
-/* decompiler-derived; refs "Cave/Area/cave_privatearmy", "Cave/Area/cave_area0%d" */
-void CaveArea_Unk_0ed1d4(int arg0)
+/* Loads Cave/Area/cave_area0%d (or cave_privatearmy) layout (medium). */
+void CaveArea_LoadAreaLayout(int arg0)
 {
   int tmp1;
   u8 auStack_48 [64];

@@ -166,7 +166,7 @@ void StaffRoll_Unk_118620(int arg0)
   func_02057df8();
   func_02057e30(0);
   func_02057e18(0x1f);
-  if (*(int *)(arg0 + 0xac) == 2) {
+  if (((StaffRollWork *)arg0)->unk_00ac == 2) {
     func_02058d04(*(u32 *)(arg0 + 0x9c),0,0,0,0x3f800000,0,0,0);
 
     func_02058d04(*(u32 *)(arg0 + 0xa0),0,*(u32 *)(data_0213cc08 + 0xc),
@@ -187,7 +187,7 @@ void StaffRoll_Unk_1186cc(int arg0)
   func_02057df8();
   func_02057e30(0);
   func_02057e18(0x1f);
-  if (*(int *)(arg0 + 0xac) == 2) {
+  if (((StaffRollWork *)arg0)->unk_00ac == 2) {
     func_02058d04(*(u32 *)(arg0 + 0xa4),0,*(u32 *)(data_0213cc1c + 0xc),
                   *(u32 *)(data_0213cc1c + 0x10),0x3f800000,0,0,0);
 

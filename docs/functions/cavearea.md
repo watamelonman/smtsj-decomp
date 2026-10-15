@@ -19,7 +19,7 @@
 - `func_020ec440`
 - `func_020ec4a8`
 - `func_020edad8`
-- `CaveArea_Unk_0ed1d4`
+- `CaveArea_LoadAreaLayout`
 
 ## Not done in M1-T973
 - `func_020ed768`
@@ -40,4 +40,4 @@
 - `func_020ec514`
 - `func_020ed3fc`
 - `func_020eb83c`
-- `CaveArea_Unk_0ed1d4`: decompiler-derived (struct cleanup)
+- `CaveArea_LoadAreaLayout`: decompiler-derived (struct cleanup)

@@ -545,16 +545,16 @@ extern u8 data_0214cdf0[];
 extern u8 data_0214ce08[];
 int func_0205dcd4();
 int func_020c8ce0();
-/* decompiler-derived; refs "Visor/e_appearance", "Visor/search_parts01" */
-void ScanVisor_Unk_0a370c(int arg0,u32 arg1)
+/* Loads Visor/e_appearance + search_parts01/02 (medium). */
+void ScanVisor_LoadSearchParts(int arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = func_0205dcd4(data_0214cddc);
-  *(u32 *)(arg0 + 8) = tmp1;
+  ((ScanVisor *)arg0)->unk_0008 = tmp1;
   tmp1 = func_0205dcd4(data_0214cdf0,arg1);
-  *(u32 *)(arg0 + 0x24) = tmp1;
+  ((ScanVisor *)arg0)->unk_0024 = tmp1;
   tmp1 = func_0205dcd4(data_0214ce08,arg1);
-  *(u32 *)(arg0 + 0x24c) = tmp1;
+  ((ScanVisor *)arg0)->unk_024c = tmp1;
   func_020c8ce0(arg0 + 0x78,arg1);
 }
 
@@ -565,7 +565,7 @@ int func_020a4a70();
 void ScanVisor_Unk_0a4a44(int arg0)
 {
   func_020a4578();
-  if (*(int *)(arg0 + 0x198) == 0) {
+  if (((ScanVisor *)arg0)->unk_0198 == 0) {
     return;
   }
   func_02057eb8(1);
@@ -578,12 +578,12 @@ void ScanVisor_Unk_0a4950(int arg0,u32 arg1,int arg2)
   u32 tmp1;
   *(u32 *)(arg0 + 400) = arg1;
   if (arg2 != 0) {
-    *(u32 *)(arg0 + 0x198) = 1;
+    ((ScanVisor *)arg0)->unk_0198 = 1;
     tmp1 = ScanVisor_GetConst6();
     *(u32 *)(arg0 + 0x194) = tmp1;
     return;
   }
-  *(u32 *)(arg0 + 0x198) = 2;
+  ((ScanVisor *)arg0)->unk_0198 = 2;
   *(u32 *)(arg0 + 0x194) = 0x1000;
 }
 
@@ -601,5 +601,5 @@ void ScanVisor_Unk_0a4864(int arg0)
     tmp1 = tmp1 + 1;
     v2 = v2 + 0xd;
   } while (tmp1 < 7);
-  *(u32 *)(arg0 + 0x1bc) = 0;
+  ((ScanVisor *)arg0)->unk_01bc = 0;
 }

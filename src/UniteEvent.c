@@ -83,8 +83,8 @@ int func_02013c3c();
 int func_0206df10();
 int func_0206f6e4();
 int func_02071fcc();
-/* decompiler-derived; refs "Data/Effect/%s", "Data/Effect/%s" */
-void UniteEvent_Unk_10f9f4(int arg0,u32 arg1,int arg2,u32 arg3)
+/* Loads two Data/Effect/%s effects for the fusion event (medium). */
+void UniteEvent_LoadEffects(int arg0,u32 arg1,int arg2,u32 arg3)
 {
   u8 tmp1;
   u8 auStack_98 [128];

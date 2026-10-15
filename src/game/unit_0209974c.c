@@ -38,7 +38,7 @@ int Unk09974c_Unk_099870(u16 *arg0,u16 *arg1)
 /* decompiler-derived */
 int Unk09974c_Unk_099880(Unk09974cWork *work,int arg1)
 {
-  return (u32)work->UnkField0020 - (u32)*(u16 *)(arg1 + 0x20);
+  return (u32)work->UnkField0020 - (u32)((Unk09974cWork *)arg1)->UnkField0020;
 }
 
 /* decompiler-derived */

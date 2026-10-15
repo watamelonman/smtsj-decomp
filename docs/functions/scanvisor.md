@@ -77,7 +77,7 @@
 
 ## Not done in M1-T991
 - `func_020a4df0`
-- `ScanVisor_Unk_0a370c`
+- `ScanVisor_LoadSearchParts`
 - `func_020a3274`
 - `func_020a30b4`
 - `func_020a466c`
@@ -94,7 +94,7 @@
 - `func_020a3630`
 - `func_020a3114`
 - `func_020a2d0c`
-- `ScanVisor_Unk_0a370c`: decompiler-derived (plain cleanup)
+- `ScanVisor_LoadSearchParts`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4950`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4864`: decompiler-derived (plain cleanup)

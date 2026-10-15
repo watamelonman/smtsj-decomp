@@ -12,7 +12,7 @@ typedef struct Unk0cb0d0Work {
 
 /* decompiler-derived */
 int Unk0cb0d0_Unk_0cb190(Unk0cb0d0Work *arg0, int arg1){
-  return (u32)arg0->unk_0020 - (u32)*(u16 *)(arg1 + 0x20);
+  return (u32)arg0->unk_0020 - (u32)((Unk0cb0d0Work *)arg1)->unk_0020;
 }
 
 int func_020445d0();

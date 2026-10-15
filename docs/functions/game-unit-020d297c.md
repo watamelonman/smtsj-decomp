@@ -19,7 +19,7 @@
 ## Not done in M1-T568
 - `func_020d2a8c`
 - `func_020d2aec`
-- `Unk0d297c_Unk_0d2e64`
+- `Unk0d297c_LoadMissionLog`
 - `Unk0d297c_Unk_0d2f18`: decompiler-derived
 - `Unk0d297c_Unk_0d2f3c`: decompiler-derived
 - `Unk0d297c_Unk_0d2f98`: decompiler-derived
@@ -54,4 +54,4 @@
 - `func_020d30b0`
 - `func_020d314c`
 - `func_020d297c`
-- `Unk0d297c_Unk_0d2e64`: decompiler-derived (plain cleanup)
+- `Unk0d297c_LoadMissionLog`: decompiler-derived (plain cleanup)

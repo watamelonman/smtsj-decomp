@@ -123,8 +123,8 @@ extern u8 data_021510cc[];
 extern u8 data_021510e0[];
 int func_0205c2c4();
 int func_0205dcd4();
-/* decompiler-derived; refs "Battle/battle_help", "Battle/battle_talk" */
-void Unk0fd9f0_Unk_0fdbb8(u32 *arg0)
+/* Loads Battle/battle_help and battle_talk layouts (medium). */
+void Unk0fd9f0_LoadBattleHelpTalk(u32 *arg0)
 {
   u32 tmp1;
   Unk05b82c_Unk_05b82c(0xd5);

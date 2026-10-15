@@ -55,8 +55,8 @@ void Unk122850_Unk_122978(int *arg0)
 extern u8 data_02152044[];
 int func_02052634();
 int func_0205dcd4();
-/* decompiler-derived; refs "Camp/camp_BG" */
-void Unk122850_Unk_1228e0(u32 *arg0)
+/* Registers object and loads Camp/camp_BG (medium). */
+void Unk122850_InitCampBG(u32 *arg0)
 {
   u32 tmp1;
   *data_02176e80 = (int)arg0;

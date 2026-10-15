@@ -26,7 +26,7 @@ int Unk100208_Unk_100398(u16 *arg0,u16 *arg1)
 int Unk100208_Unk_1003b8(u16 *arg0,u16 *arg1)
 {
   int value;
-  value = *(int *)(arg1 + 2) - ((Unk100208Work *)arg0)->unk_0002;
+  value = ((Unk100208Work *)arg1)->unk_0002 - ((Unk100208Work *)arg0)->unk_0002;
   if (value == 0) {
     value = (u32)*arg0 - (u32)*arg1;
   }

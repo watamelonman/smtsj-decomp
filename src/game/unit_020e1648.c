@@ -77,9 +77,9 @@ int Unk0e1648_Unk_0e1648(void)
 int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,int arg1)
 {
   int value;
-  value = (u32)work->unk_0006 - (u32)*(u16 *)(arg1 + 6);
+  value = (u32)work->unk_0006 - (u32)((Unk0e1648Work *)arg1)->unk_0006;
   if (value == 0) {
-    value = (u32)work->unk_0004 - (u32)*(u16 *)(arg1 + 4);
+    value = (u32)work->unk_0004 - (u32)((Unk0e1648Work *)arg1)->unk_0004;
   }
   return value;
 }
