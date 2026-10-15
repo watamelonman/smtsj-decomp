@@ -31,6 +31,18 @@ void Unk0efff4_Unk_0f004c(u32 arg0)
 int func_020f7210();
 int func_020f82e0();
 int Unk0fedd4_SetState2();
+typedef struct Unk0efff4Obj {
+    u8 pad[0xf8];
+    u32 unk_f8[6];
+} Unk0efff4Obj;
+void func_020f0078(Unk0efff4Obj *p)
+{
+    int i;
+    for (i = 0; i < 6; i++) {
+        p->unk_f8[i] = 0;
+    }
+}
+
 /* decompiler-derived */
 void Unk0efff4_Unk_0f0300(int arg0)
 {
