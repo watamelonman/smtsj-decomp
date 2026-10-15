@@ -11,7 +11,7 @@ typedef struct CaveNpcWork {
     s32 unk_002c;
 } CaveNpcWork;
 
-void func_020ffd14(u8 *p, int f)
+void CaveNpc_SetActive(u8 *p, int f)
 {
     if (f != 0) {
         if (FIELD(u32, p, 16) != 0) {

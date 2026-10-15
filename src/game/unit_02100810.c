@@ -57,7 +57,7 @@ extern u8 *data_02176e2c;
 void Unk100810_Unk_107154();
 void Unk0bc1a8_Unk_0bc928();
 void func_02008904();
-void func_021069c8(u32 a)
+void Unk100810_Unk_1069c8(u32 a)
 {
     if (data_02176e2c == 0) {
         return;
@@ -87,7 +87,7 @@ void Unk100810_Unk_1070d8(Unk100810Work *arg0){
   return;
 }
 
-int func_021071b8(void)
+int Unk100810_IsField50One(void)
 {
     if (data_02176e2c == 0) {
         return 0;

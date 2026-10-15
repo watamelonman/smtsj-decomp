@@ -531,5 +531,12 @@
  "func_020fd3c4": "Unk0fd268_SetDir",
  "func_020fd428": "Unk0fd268_IsField8Zero",
  "func_020fd450": "Unk0fd268_IsField8Neg81",
- "func_020fda2c": "Unk0fd9f0_SetDir"
+ "func_020fda2c": "Unk0fd9f0_SetDir",
+ "func_020fde0c": "Unk0fd9f0_Update",
+ "func_020fe1c8": "Unk0fd9f0_GetColor",
+ "func_020fec64": "Unk0feba0_Reset",
+ "func_020fed54": "Unk0feba0_Unk_0fed54",
+ "func_020ffd14": "CaveNpc_SetActive",
+ "func_021069c8": "Unk100810_Unk_1069c8",
+ "func_021071b8": "Unk100810_IsField50One"
 }

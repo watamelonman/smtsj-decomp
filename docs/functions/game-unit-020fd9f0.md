@@ -9,12 +9,12 @@
 
 ## Not done in M1-T508
 - `Unk0fd9f0_SetDir`
-- `func_020fe1c8`
+- `Unk0fd9f0_GetColor`
 - `Unk0fd9f0_Unk_0fdb80`: decompiler-derived
 - `Unk0fd9f0_Unk_0fe278`: decompiler-derived
 
 ## Not done in M1-T509
-- `func_020fde0c`
+- `Unk0fd9f0_Update`
 - `func_020fda58`
 - `Unk0fd9f0_LoadBattleHelpTalk`
 - `func_020fdaa8`
@@ -31,5 +31,5 @@
 - `Unk0fd9f0_LoadBattleHelpTalk`: decompiler-derived (plain cleanup)
 - `Unk0fd9f0_Unk_0fdc18`: decompiler-derived (plain+fix cleanup)
 - `Unk0fd9f0_SetDir`: hand-matched
-- `func_020fde0c`: hand-matched
-- `func_020fe1c8`: hand-matched
+- `Unk0fd9f0_Update`: hand-matched
+- `Unk0fd9f0_GetColor`: hand-matched

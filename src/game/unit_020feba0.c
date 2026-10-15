@@ -76,7 +76,7 @@ void Unk0feba0_Unk_0febe8(u32 arg0)
 
 void Unk0feba0_Unk_0fed7c();
 void func_020f51dc();
-void func_020fec64(u32 *p)
+void Unk0feba0_Reset(u32 *p)
 {
     p[0] = 0;
     p[1] = 0;
@@ -85,7 +85,7 @@ void func_020fec64(u32 *p)
     Unk0feba0_Unk_0fed7c(p);
 }
 
-void func_020fed54(int *p)
+void Unk0feba0_Unk_0fed54(int *p)
 {
     if (p[3] == 0) {
         return;

@@ -183,7 +183,7 @@ void Unk0fd9f0_Unk_0fe33c();
 void func_020fde4c();
 void func_020fe004();
 void func_020fe1f8();
-void func_020fde0c(u8 *p)
+void Unk0fd9f0_Update(u8 *p)
 {
     switch (FIELD(u32, p, 44)) {
     case 0:
@@ -198,7 +198,7 @@ void func_020fde0c(u8 *p)
     }
 }
 
-u32 func_020fe1c8(int x)
+u32 Unk0fd9f0_GetColor(int x)
 {
     switch (x) {
     case 1:
