@@ -15,7 +15,7 @@ void Unk118b04_Nop_118b20(void);
 void Unk118b04_Thunk_02118974(void);
 void Unk118b04_Thunk_0206146c(void);
 void Unk118b04_Set_data_02151b28(u32 arg0);
-void Unk118b04_Unk_118b78(u32 arg0);
+int Unk118b04_Unk_118b78(u32 arg0);
 int Unk118b04_Unk_118b90(int arg0,int arg1);
 u32 Unk118b04_Unk_118e74(int arg0);
 
@@ -35,11 +35,12 @@ void Unk118b04_Set_data_02151b28(u32 arg0)
 }
 
 /* decompiler-derived */
-void Unk118b04_Unk_118b78(u32 arg0)
+/* Bit 0 of flag byte `arg0` in the 0x94 table. */
+int Unk118b04_Unk_118b78(u32 arg0)
 {
   u32 value;
   value = Unk02e000_Unk_02e228();
-  Unk118b04_Unk_118b90(value,arg0);
+  return Unk118b04_Unk_118b90(value,arg0);
 }
 
 /* decompiler-derived */
@@ -84,4 +85,19 @@ void Unk118b04_Unk_119434(u32 arg0,u32 arg1)
   func_02008848(arg0,0,0xf);
 }
 
+u16 *func_02118f30(u32 id);
+int func_02036654(u16 key);
 
+int func_02119358(u32 id)
+{
+    u16 *entry;
+
+    if (Unk118b04_Unk_118b78(id) != 0) {
+        return 1;
+    }
+    entry = func_02118f30(id);
+    if (entry == 0) {
+        return 0;
+    }
+    return func_02036654(*entry);
+}
