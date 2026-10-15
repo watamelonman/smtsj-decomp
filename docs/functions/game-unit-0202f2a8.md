@@ -192,3 +192,7 @@
 - `Unk02f2a8_DirToAngle`: hand-matched
 - `Unk02f2a8_SetField35c`: hand-matched
 - `Unk02f2a8_SetGridPos`: hand-matched
+- `func_0202f2dc`: hand-matched
+- `func_02030198`: hand-matched
+- `func_02030294`: hand-matched
+- `func_0203034c`: hand-matched
