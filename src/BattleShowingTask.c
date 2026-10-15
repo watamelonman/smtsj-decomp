@@ -318,3 +318,80 @@ void BattleShowingTask_Unk_11c610(int arg0)
   func_0206569c();
   func_02065cfc(1,0);
 }
+
+extern u8 data_0213ccc0[];
+int func_02057df8();
+int func_02057e18();
+int func_02057fd8();
+int func_020580ec();
+int func_0205c848();
+int func_0205dee8();
+int func_0211b100();
+int func_0211b2ac();
+/* decompiler-derived */
+void func_0211b4e4(u32 *arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  u8 *v3;
+  Unk044904_Unk_04502c();
+  func_02057e18(0x1f);
+  func_02057df8();
+  func_020580ec(0);
+  switch(*arg0) {
+  case 0:
+    goto LAB_0211b670;
+  case 1:
+    goto LAB_0211b670;
+  case 2:
+    goto LAB_0211b54c;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    break;
+  case 6:
+    break;
+  case 7:
+    break;
+  case 8:
+    break;
+  case 9:
+LAB_0211b54c:
+    func_02057fd8();
+    tmp1 = 0;
+    do {
+      if ((arg0[0x14] != 0 || tmp1 != 0) && (arg0[0x13] != 0 || tmp1 != 5)) {
+
+        func_0205c848(2,arg0[tmp1 + 0xb5],0,0,0x3f800000,0x3f800000,0,0x3f800000,0);
+      }
+      tmp1 = tmp1 + 1;
+    } while (tmp1 < 6);
+    func_0211b100(arg0,*(u32 *)(arg0[0xb5] + 0x14),
+                  *(u32 *)(arg0[0xb5] + 0x28));
+    func_0211b2ac(arg0,*(u32 *)(arg0[0xb5] + 0x28));
+    goto LAB_0211b670;
+  case 10:
+    goto LAB_0211b670;
+  case 0xb:
+    goto LAB_0211b670;
+  case 0xc:
+    goto LAB_0211b670;
+  }
+  func_02057fd8();
+  tmp2 = 0;
+  v3 = data_0213ccc0;
+  do {
+    if ((arg0[0x14] != 0 || tmp2 != 0) && (arg0[0x13] != 0 || tmp2 != 3)) {
+
+      func_0205dee8(2,arg0[0xb1],*v3,0,0,0x3f800000,0x3f800000,0,0x3f800000,0);
+    }
+    tmp2 = tmp2 + 1;
+    v3 = v3 + 1;
+  } while (tmp2 < 6);
+  func_0211b100(arg0,0,0x1000);
+  func_0211b2ac(arg0,0x1000);
+LAB_0211b670:
+  func_020580ec(1);
+}

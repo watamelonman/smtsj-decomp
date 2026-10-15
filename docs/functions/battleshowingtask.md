@@ -61,3 +61,4 @@
 - `BattleShowingTask_Unk_11c670`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11c5d0`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11c610`: decompiler-derived (proto cleanup)
+- `func_0211b4e4`: decompiler-derived (plain cleanup)
