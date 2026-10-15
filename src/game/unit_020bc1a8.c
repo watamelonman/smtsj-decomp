@@ -19,7 +19,7 @@ void func_020580ec();
 void Unk06ae94_Unk_06aeb4();
 u32 Unk0bc1a8_Unk_0bcc34(int arg0);
 typedef void (*Unk0bc1a8Fn)(u8 *);
-void func_020bc490(u8 *p)
+void Unk0bc1a8_Unk_0bc490(u8 *p)
 {
     if (FIELD(u32, p, 24) == 0 || (FIELD(u32, p, 36) & 1) == 1) {
         return;
@@ -31,7 +31,7 @@ void func_020bc490(u8 *p)
     Unk06ae94_Unk_06aeb4(2);
 }
 
-void func_020bc4e0(u8 *p)
+void Unk0bc1a8_Unk_0bc4e0(u8 *p)
 {
     Unk0bc1a8Fn fn;
     Unk0bc1a8_Unk_0bcc34((int)p);
@@ -130,7 +130,7 @@ void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2)
   func_020bcacc(tmp1,arg2);
 }
 
-void func_020bc548(u8 *p, int on)
+void Unk0bc1a8_SetFlag4Inv(u8 *p, int on)
 {
     u8 *q;
     if (p == 0) {
@@ -144,7 +144,7 @@ void func_020bc548(u8 *p, int on)
     }
 }
 
-void func_020bc570(u8 *p, int on)
+void Unk0bc1a8_SetFlag1Inv(u8 *p, int on)
 {
     u8 *q;
     if (p == 0) {
@@ -158,7 +158,7 @@ void func_020bc570(u8 *p, int on)
     }
 }
 
-u32 func_020bc598(u8 *p)
+u32 Unk0bc1a8_GetHeaderWord(u8 *p)
 {
     if (p == 0) {
         return 0xffff;

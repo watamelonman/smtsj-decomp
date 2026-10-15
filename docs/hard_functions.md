@@ -39,12 +39,12 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020dcb44` (M1-T1122): left out of the card
 - card M1-T1018: skipped (TU already has a hand-written file; needs merging by hand)
 - `func_020caea8` (M1-T107): card skipped
-- `func_020bc598` (M1-T545): left out of the card
+- `Unk0bc1a8_GetHeaderWord` (M1-T545): left out of the card
 - `func_020bc5ac` (M1-T545): left out of the card
 - `Unk0bc1a8_SetPrevWord` (M1-T545): left out of the card
 - `Unk0bc1a8_Unk_0bc6d4` (M1-T545): left out of the card
 - `Unk0bc1a8_Unk_0bc6e8` (M1-T545): left out of the card
-- `func_020bc4e0` (M1-T545): left out of the card
+- `Unk0bc1a8_Unk_0bc4e0` (M1-T545): left out of the card
 - `Unk0a7d54_HasField8` (M1-T790): left out of the card
 - card M1-T801: skipped (TU already has a hand-written file; needs merging by hand)
 - `Unk044904_AddRecUnk08` (M1-T878): left out of the card

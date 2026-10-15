@@ -12,6 +12,6 @@
 - `Unk0bbfa4_Unk_0bc144`: decompiler-derived
 
 ## Not done in M1-T037
-- `func_020bc17c`
+- `Unk0bbfa4_Unk_0bc17c`
 - `func_020bc0b4`
-- `func_020bc17c`: hand-matched
+- `Unk0bbfa4_Unk_0bc17c`: hand-matched

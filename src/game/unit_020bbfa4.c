@@ -123,7 +123,7 @@ void Unk0bbfa4_Unk_0bc144(void)
 int Unk044904_Unk_045048();
 int func_02044ec4();
 u8 *func_020a1428(u32 id);
-u32 func_020bc17c(void)
+u32 Unk0bbfa4_Unk_0bc17c(void)
 {
     u8 *r = (u8 *)func_02044ec4(FIELD(u32, Unk044904_Unk_045048(), 64));
     u32 v = FIELD(u32, func_020a1428(FIELD(u16, r + 256, 216)), 36);

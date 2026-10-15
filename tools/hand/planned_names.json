@@ -381,5 +381,11 @@
  "func_020bba40": "Unk0bb908_Unk_0bba40",
  "func_020bba6c": "Unk0bb908_Unk_0bba6c",
  "func_020bbab4": "Unk0bb908_Unk_0bbab4",
- "func_020bbafc": "Unk0bb908_Unk_0bbafc"
+ "func_020bbafc": "Unk0bb908_Unk_0bbafc",
+ "func_020bc17c": "Unk0bbfa4_Unk_0bc17c",
+ "func_020bc490": "Unk0bc1a8_Unk_0bc490",
+ "func_020bc4e0": "Unk0bc1a8_Unk_0bc4e0",
+ "func_020bc548": "Unk0bc1a8_SetFlag4Inv",
+ "func_020bc570": "Unk0bc1a8_SetFlag1Inv",
+ "func_020bc598": "Unk0bc1a8_GetHeaderWord"
 }
