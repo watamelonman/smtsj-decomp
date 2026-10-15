@@ -47,3 +47,6 @@
 - `Unk0986ac_FindEmpty`: hand-matched
 - `Unk0986ac_Unk_098aa8`: hand-matched
 - `Unk0986ac_IsMode012`: hand-matched
+- `func_02099234`: hand-matched
+- `func_02099274`: hand-matched
+- `func_020992b0`: hand-matched

@@ -170,3 +170,56 @@ int Unk0986ac_IsMode012(u8 *p)
     }
     return r;
 }
+
+void func_0209911c();
+void func_02099174();
+int func_020a246c();
+void func_02099234(u8 *p);
+void func_02099234(u8 *p)
+{
+    FIELD(s32, p, 56) -= 1;
+    Unk0986ac_Unk_098aa8(p);
+    if (FIELD(s32, p, 56) > 0) {
+        return;
+    }
+    FIELD(s32, p, 24) = 0;
+    FIELD(s32, p, 40) = 0;
+    FIELD(s32, p, 56) = 0;
+    FIELD(s32, p, 64) = 0;
+    FIELD(u8, p, 68) = 0;
+}
+
+void func_02099274(u8 *p)
+{
+    FIELD(s32, p, 20) = FIELD(s32, p, 24);
+    FIELD(s32, p, 24) = -1;
+    switch (FIELD(s32, p, 20)) {
+    case 2:
+        func_0209911c(p);
+        break;
+    case 3:
+        Unk0986ac_Nop_099230();
+        break;
+    }
+}
+
+void func_020992b0(u8 *p)
+{
+    switch (FIELD(u32, p, 20)) {
+    case 0:
+        break;
+    case 1:
+        if (func_020a246c() == 1) {
+            FIELD(s32, p, 24) = 2;
+        }
+        break;
+    case 2:
+        func_02099174(p);
+        break;
+    case 3:
+        break;
+    case 4:
+        func_02099234(p);
+        break;
+    }
+}
