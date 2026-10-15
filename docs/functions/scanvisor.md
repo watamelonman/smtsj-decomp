@@ -120,3 +120,4 @@
 - `ScanVisor_FindSlotByKey`: hand-matched
 - `ScanVisor_AnySlotField14`: hand-matched
 - `ScanVisor_AllSlotsF28Is80`: hand-matched
+- `func_020a3274`: hand-matched

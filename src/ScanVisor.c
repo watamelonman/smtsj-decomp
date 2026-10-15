@@ -859,6 +859,31 @@ void ScanVisor_Unk_0a3254(ScanVisor *p)
     Unk0c855c_Unk_0c9890((u8 *)p + 120, 12);
 }
 
+int GameState_Exists();
+void *Unk02e000_GetWorkArea();
+
+s8 func_020a3274(void)
+{
+    u8 *w;
+    s16 a;
+    s16 b;
+    s32 r;
+    if (GameState_Exists() == 0) {
+        return 0;
+    }
+    w = (u8 *)Unk02e000_GetWorkArea();
+    b = *(s16 *)(w + 2804);
+    a = (s16)(*(s16 *)(w + 2802) * 100);
+    if (b <= 0) {
+        return 0;
+    }
+    r = a / b;
+    if (r >= 100) {
+        r = 99;
+    }
+    return r;
+}
+
 void ScanVisor_Unk_0a3760(u32 a, u32 b, u32 c)
 {
     func_020616ec(*data_02176b04, func_020c9db4((u8 *)*data_02176b04 + 120, a, b, c));
