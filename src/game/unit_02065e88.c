@@ -73,12 +73,12 @@ void Unk065e88_Unk_065eac(void)
   func_0205bb68();
 }
 
-int func_0205af2c();
+int Unk05ae50_Unk_05af2c();
 int func_020617c8();
 /* decompiler-derived */
 void Unk065e88_Unk_0663bc(u32 arg0,u32 arg1)
 {
-  func_0205af2c(arg1);
+  Unk05ae50_Unk_05af2c(arg1);
   func_020617c8(arg0);
 }
 

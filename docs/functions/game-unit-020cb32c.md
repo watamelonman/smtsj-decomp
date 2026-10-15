@@ -14,18 +14,18 @@
 - `Unk0cb32c_Unk_0cba78`: decompiler-derived
 
 ## Not done in M1-T867
-- `func_020cb564`
+- `Unk0cb32c_Unk_0cb564`
 - `Unk0cb32c_Unk_0cb4e4`
 - `func_020cb7f0`
 - `func_020cb58c`
 - `func_020cca80`
-- `func_020ccac8`
+- `Unk0cb32c_Unk_0ccac8`
 - `Unk0cb32c_Unk_0cb754`: decompiler-derived
 - `Unk0cb32c_Unk_0cb440`: decompiler-derived
 - `Unk0cb32c_Unk_0cb488`: decompiler-derived
 
 ## Not done in M1-T868
-- `func_020ccaf8`
+- `Unk0cb32c_Unk_0ccaf8`
 - `func_020cb504`
 - `func_020ccc64`
 - `func_020cba20`
@@ -44,6 +44,6 @@
 ## Not done in M1-T871
 - `func_020cbce4`
 - `Unk0cb32c_Unk_0cb4e4`: decompiler-derived (plain cleanup)
-- `func_020ccac8`: decompiler-derived (plain+fix cleanup)
-- `func_020ccaf8`: decompiler-derived (plain+fix cleanup)
-- `func_020cb564`: decompiler-derived (plain+fix cleanup)
+- `Unk0cb32c_Unk_0ccac8`: decompiler-derived (plain+fix cleanup)
+- `Unk0cb32c_Unk_0ccaf8`: decompiler-derived (plain+fix cleanup)
+- `Unk0cb32c_Unk_0cb564`: decompiler-derived (plain+fix cleanup)

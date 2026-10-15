@@ -41,12 +41,12 @@ int func_020e8374();
 int func_020f8264();
 int func_020f8478();
 int func_020fda58();
-int func_020febe8();
+int Unk0feba0_Unk_0febe8();
 /* decompiler-derived */
 void Unk0ee6dc_Unk_0ee880(int arg0)
 {
   u32 value;
-  func_020febe8(1);
+  Unk0feba0_Unk_0febe8(1);
   func_020fda58(0);
   value = func_020e8374(((Unk0ee6dcWork *)arg0)->unk_0044);
   func_020f8478(arg0 + 0x50,value);

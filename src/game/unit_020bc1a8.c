@@ -109,7 +109,7 @@ u32 Unk0bc1a8_Unk_0bc6e8(void)
 extern u8 data_0215034c[];
 int func_02052fe0();
 /* decompiler-derived */
-void func_020bc5d4(void)
+void Unk0bc1a8_Unk_0bc5d4(void)
 {
   u32 tmp1;
   u32 *v2;

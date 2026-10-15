@@ -19,7 +19,7 @@
 - `Unk0fd9f0_LoadBattleHelpTalk`
 - `func_020fdaa8`
 - `func_020fdb14`
-- `func_020fdc18`
+- `Unk0fd9f0_Unk_0fdc18`
 
 ## Not done in M1-T510
 - `func_020fe2c4`
@@ -29,4 +29,4 @@
 - `func_020fde4c`
 - `func_020fe004`
 - `Unk0fd9f0_LoadBattleHelpTalk`: decompiler-derived (plain cleanup)
-- `func_020fdc18`: decompiler-derived (plain+fix cleanup)
+- `Unk0fd9f0_Unk_0fdc18`: decompiler-derived (plain+fix cleanup)

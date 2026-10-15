@@ -33,10 +33,10 @@
 - `Unk02e000_Unk_02e89c`: decompiler-derived
 
 ## Not done in M1-T651
-- `func_0202e5c4`
+- `Unk02e000_Unk_02e5c4`
 - `func_0202e090`
 - `func_0202e5a8`
-- `func_0202e740`
+- `Unk02e000_Unk_02e740`
 - `func_0202e7a4`
 
 ## Not done in M1-T653
@@ -77,5 +77,5 @@
 - `Unk02e000_Unk_02e228`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e0cc`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
-- `func_0202e5c4`: decompiler-derived (proto+fix cleanup)
-- `func_0202e740`: decompiler-derived (plain+fix cleanup)
+- `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
+- `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)

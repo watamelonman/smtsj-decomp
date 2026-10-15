@@ -11,7 +11,7 @@
 - `Unk0f3db4_Unk_0f4510`: decompiler-derived
 
 ## Not done in M1-T504
-- `func_020f4538`
+- `Unk0f3db4_Unk_0f4538`
 - `func_020f4160`
 - `func_020f44b0`
 - `func_020f44e4`
@@ -33,4 +33,4 @@
 - `func_020f3de8`
 - `func_020f40c8`
 - `func_020f3f2c`
-- `func_020f4538`: decompiler-derived (plain+fix cleanup)
+- `Unk0f3db4_Unk_0f4538`: decompiler-derived (plain+fix cleanup)

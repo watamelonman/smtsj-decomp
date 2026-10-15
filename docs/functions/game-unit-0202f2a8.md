@@ -44,7 +44,7 @@
 - `func_02035bd8`
 - `Unk02f2a8_Unk_02fc10`
 - `func_02031408`
-- `func_0203538c`
+- `Unk02f2a8_Unk_03538c`
 
 ## Not done in M1-T1109
 - `Unk02f2a8_Unk_02f8ac`
@@ -70,7 +70,7 @@
 - `Unk02f2a8_Unk_02f378`
 - `func_02030294`
 - `func_020308c0`
-- `func_02030d20`
+- `Unk02f2a8_Unk_030d20`
 - `func_020313a4`
 - `func_02035b74`
 - `func_02030704`
@@ -162,5 +162,5 @@
 - `Unk02f2a8_Unk_0306a8`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_02f378`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_032f3c`: decompiler-derived (plain cleanup)
-- `func_0203538c`: decompiler-derived (plain+fix cleanup)
-- `func_02030d20`: decompiler-derived (plain+fix cleanup)
+- `Unk02f2a8_Unk_03538c`: decompiler-derived (plain+fix cleanup)
+- `Unk02f2a8_Unk_030d20`: decompiler-derived (plain+fix cleanup)

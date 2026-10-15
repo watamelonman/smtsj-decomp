@@ -1,6 +1,6 @@
 /*
  * unit_0202dcfc: initialiser for an object owned by the unit_02095560 system
- * (callers func_020956a8/func_020956c8/func_02095d5c).
+ * (callers Unk095560_Unk_0956a8/Unk095560_Unk_0956c8/func_02095d5c).
  */
 typedef signed int s32;
 typedef unsigned short u16;

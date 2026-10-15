@@ -167,7 +167,7 @@ void Unk0f3db4_Unk_0f4674(int arg0,int arg1)
 }
 
 /* decompiler-derived */
-void func_020f4538(u32 arg0,int arg1)
+void Unk0f3db4_Unk_0f4538(u32 arg0,int arg1)
 {
   int tmp1;
   tmp1 = Unk0f3db4_Unk_0f3ec8((u32)arg0);

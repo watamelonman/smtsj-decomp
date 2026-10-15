@@ -254,12 +254,12 @@ void ImageBgDual3D_Unk_1252b4(u32 *arg0)
 
 
 int Unk02f2a8_Unk_035440();
-int func_020956e8();
+int Unk095560_Unk_0956e8();
 int func_021177b8();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125b10(int arg0)
 {
-  func_020956e8();
+  Unk095560_Unk_0956e8();
   ImageBgDual3D_Unk_125d48();
   ImageObj_Unk_0773bc();
   ImageBgDual3D_Unk_125a80();

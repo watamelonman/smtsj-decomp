@@ -50,7 +50,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_02044b68` (M1-T878): left out of the card
 - card M1-T253: skipped (TU already has a hand-written file; needs merging by hand)
 - `func_0205b36c` (M1-T425): left out of the card
-- `func_0205af2c` (M1-T425): left out of the card
+- `Unk05ae50_Unk_05af2c` (M1-T425): left out of the card
 - `func_0202e8cc` (M1-T650): left out of the card
 - `func_0202e578` (M1-T650): left out of the card
 - `func_0202e590` (M1-T650): left out of the card

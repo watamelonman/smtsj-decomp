@@ -67,7 +67,7 @@
 - `func_020aa4f4`
 - `func_020ac97c`
 - `func_020aabf4`
-- `func_020acb74`
+- `Unk0aa118_Unk_0acb74`
 - `func_020aa2f0`
 - `func_020aeb90`
-- `func_020acb74`: decompiler-derived (plain+fix cleanup)
+- `Unk0aa118_Unk_0acb74`: decompiler-derived (plain+fix cleanup)

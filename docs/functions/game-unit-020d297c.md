@@ -34,7 +34,7 @@
 - `Unk0d297c_Unk_0d3200`: decompiler-derived
 
 ## Not done in M1-T570
-- `func_020d3308`
+- `Unk0d297c_Unk_0d3308`
 - `func_020d3264`
 - `func_020d3004`
 - `func_020d2aa4`
@@ -55,4 +55,4 @@
 - `func_020d314c`
 - `func_020d297c`
 - `Unk0d297c_LoadMissionLog`: decompiler-derived (plain cleanup)
-- `func_020d3308`: decompiler-derived (struct+fix cleanup)
+- `Unk0d297c_Unk_0d3308`: decompiler-derived (struct+fix cleanup)

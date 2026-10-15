@@ -105,7 +105,7 @@ void Unk05ae50_Unk_05af64(int *arg0)
 }
 
 /* decompiler-derived */
-void func_0205af2c(void)
+void Unk05ae50_Unk_05af2c(void)
 {
     Unk05ae50_Unk_05af3c((Unk05ae50Work *)func_0205ad9c());
 }

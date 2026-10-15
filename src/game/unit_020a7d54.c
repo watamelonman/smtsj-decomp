@@ -6,7 +6,7 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int func_020a7e8c();
+int Unk0a7d54_Unk_0a7e8c();
 int func_020a855c();
 
 void Unk0a7d54_SetUnkField8(void *obj, u32 value);
@@ -60,7 +60,7 @@ void Unk0a7d54_Unk_0a8594(void)
   if (value == 0) {
     return;
   }
-  func_020a7e8c();
+  Unk0a7d54_Unk_0a7e8c();
 }
 
 /* decompiler-derived */
@@ -237,7 +237,7 @@ u32 Unk0a7d54_Unk_0a916c(u32 arg0)
 
 int func_02061424();
 /* decompiler-derived */
-int func_020a7e8c(int arg0)
+int Unk0a7d54_Unk_0a7e8c(int arg0)
 {
   if (*(int *)(arg0 + 8) != 0) {
     func_02061424();

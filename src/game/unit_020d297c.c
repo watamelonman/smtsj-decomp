@@ -266,7 +266,7 @@ u32 Unk0d297c_LoadMissionLog(void)
 }
 
 /* decompiler-derived */
-void func_020d3308(int arg0)
+void Unk0d297c_Unk_0d3308(int arg0)
 {
   Unk0d297c_Unk_0d31e8((u32 *)arg0);
   ((Unk0d297cWork *)arg0)->unk_0014 = 0;

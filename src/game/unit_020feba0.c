@@ -67,7 +67,7 @@ void Unk0feba0_Unk_0feba0(void)
 }
 
 /* decompiler-derived */
-void func_020febe8(u32 arg0)
+void Unk0feba0_Unk_0febe8(u32 arg0)
 {
   u32 tmp1;
   tmp1 = Unk0feba0_Get_data_02176e24();

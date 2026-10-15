@@ -17,12 +17,12 @@ void Unk0eed24_Unk_0eeebc(void)
 
 int Unk0d1c98_Unk_0d1d94();
 int func_020ea630();
-int func_020febe8();
+int Unk0feba0_Unk_0febe8();
 /* decompiler-derived */
 void Unk0eed24_Unk_0eee94(void)
 {
   u32 value;
-  func_020febe8(0);
+  Unk0feba0_Unk_0febe8(0);
   value = func_020ea630(10);
   Unk0d1c98_Unk_0d1d94(value,0xffffffff);
   func_020fda58(3);

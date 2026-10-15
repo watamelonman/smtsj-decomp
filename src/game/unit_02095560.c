@@ -123,14 +123,14 @@ void Unk095560_Unk_0957c0(u32 arg0)
   func_0204fed8(value,arg0);
 }
 
-u32 func_020956e8(void);
+u32 Unk095560_Unk_0956e8(void);
 int func_020958c8();
 int func_02095950();
 /* decompiler-derived */
 u32 Unk095560_Unk_095af8(u32 arg0)
 {
   int value;
-  func_020956e8();
+  Unk095560_Unk_0956e8();
   value = func_02095950(0,arg0);
   if (value != 0) {
     func_020958c8(value);
@@ -164,7 +164,7 @@ void Unk095560_Unk_096170(void)
 u32 Unk095560_Unk_095a2c(u32 arg0)
 {
   int value;
-  func_020956e8();
+  Unk095560_Unk_0956e8();
   value = func_02095950(1,arg0);
   if (value != 0) {
     func_020958c8(value);
@@ -296,7 +296,7 @@ void Unk095560_Unk_095728(void)
 }
 
 /* decompiler-derived */
-u32 func_02095d1c(void)
+u32 Unk095560_Unk_095d1c(void)
 {
   int tmp1;
   tmp1 = (int)(Unk095560_GetManagerSub3a8());
@@ -304,7 +304,7 @@ u32 func_02095d1c(void)
 }
 
 /* decompiler-derived */
-u32 func_02095d4c(void)
+u32 Unk095560_Unk_095d4c(void)
 {
   int tmp1;
   tmp1 = (int)(Unk095560_GetManagerSub3a8());
@@ -312,7 +312,7 @@ u32 func_02095d4c(void)
 }
 
 /* decompiler-derived */
-void func_02095d08(u32 arg0)
+void Unk095560_Unk_095d08(u32 arg0)
 {
   int tmp1;
   tmp1 = (int)(Unk095560_GetManagerSub3a8());
@@ -320,10 +320,10 @@ void func_02095d08(u32 arg0)
 }
 
 /* decompiler-derived */
-u32 func_020956a8(void)
+u32 Unk095560_Unk_0956a8(void)
 {
   u32 tmp1;
-  func_020956e8();
+  Unk095560_Unk_0956e8();
   Unk0964f8_Unk_0964f8();
   tmp1 = (unsigned int)(Unk095560_GetManagerAlias());
   Unk0202dcfc_InitWorker(tmp1,0);
@@ -331,10 +331,10 @@ u32 func_020956a8(void)
 }
 
 /* decompiler-derived */
-u32 func_020956c8(void)
+u32 Unk095560_Unk_0956c8(void)
 {
   u32 tmp1;
-  func_020956e8();
+  Unk095560_Unk_0956e8();
   Unk0964f8_Unk_0964f8();
   tmp1 = (unsigned int)(Unk095560_GetManagerAlias());
   Unk0202dcfc_InitWorker(tmp1,0);
@@ -343,7 +343,7 @@ u32 func_020956c8(void)
 
 int func_0204af80();
 /* decompiler-derived */
-u32 func_020956e8(void)
+u32 Unk095560_Unk_0956e8(void)
 {
   int tmp1;
   int tmp2;
@@ -364,7 +364,7 @@ u32 func_020956e8(void)
 int func_02008848();
 int func_0204ae84();
 /* decompiler-derived */
-void func_02095598(void)
+void Unk095560_Unk_095598(void)
 {
   u32 tmp1;
   int tmp2;

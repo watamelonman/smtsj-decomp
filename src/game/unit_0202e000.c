@@ -84,7 +84,7 @@ int Unk02e000_Unk_02e8f0(void)
 void Unk02e000_Unk_02e180(void);
 int func_0202e23c();
 int func_0202e5a8();
-void func_0202e5c4(int arg0);
+void Unk02e000_Unk_02e5c4(int arg0);
 /* decompiler-derived */
 void Unk02e000_Unk_02e144(void)
 {
@@ -94,7 +94,7 @@ void Unk02e000_Unk_02e144(void)
   func_0202e5a8();
   value = 0;
   do {
-    func_0202e5c4(value);
+    Unk02e000_Unk_02e5c4(value);
     value = value + 1;
   } while (value < 2);
 }
@@ -155,7 +155,7 @@ void Unk02e000_Unk_02e180(void)
 }
 
 /* decompiler-derived */
-void func_0202e5c4(int arg0)
+void Unk02e000_Unk_02e5c4(int arg0)
 {
   u32 tmp1;
   tmp1 = Unk02e000_Unk_02e75c(arg0);
@@ -163,7 +163,7 @@ void func_0202e5c4(int arg0)
 }
 
 /* decompiler-derived */
-int func_0202e740(int arg0)
+int Unk02e000_Unk_02e740(int arg0)
 {
   int tmp1;
   tmp1 = Unk02e000_Unk_02e75c((int)arg0);

@@ -6,7 +6,7 @@
 - `Unk0eef2c_Unk_0eef58`: decompiler-derived
 
 ## Not done in M1-T261
-- `func_020eef2c`
+- `Unk0eef2c_Unk_0eef2c`
 - `func_020eef84`
 - `func_020ef090`
-- `func_020eef2c`: decompiler-derived (plain+fix cleanup)
+- `Unk0eef2c_Unk_0eef2c`: decompiler-derived (plain+fix cleanup)

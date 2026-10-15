@@ -124,15 +124,15 @@ void Unk02f2a8_Unk_0343b4(int arg0)
   *(u32 *)(arg0 + 8) = 0;
 }
 
-int func_02030d20();
+int Unk02f2a8_Unk_030d20();
 int func_020572c0();
 int func_0205e590();
-int func_020956a8();
+int Unk095560_Unk_0956a8();
 /* decompiler-derived */
 void Unk02f2a8_Unk_033c94(u32 *arg0)
 {
-  func_02030d20(arg0,1);
-  func_020956a8();
+  Unk02f2a8_Unk_030d20(arg0,1);
+  Unk095560_Unk_0956a8();
   func_02044534(0x24);
   Unk02f2a8_Unk_030478(*arg0);
   func_02061424(arg0);
@@ -283,7 +283,7 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
 int func_0203fa58();
 int func_020952ac();
 /* decompiler-derived */
-void func_0203538c(void)
+void Unk02f2a8_Unk_03538c(void)
 {
   int tmp1;
   u32 tmp2;
@@ -303,7 +303,7 @@ void func_0203538c(void)
 int func_0203480c();
 int func_02041d70();
 /* decompiler-derived */
-int func_02030d20(int arg0,int arg1)
+int Unk02f2a8_Unk_030d20(int arg0,int arg1)
 {
   ScanVisor_Unk_0a2b38();
   if (arg1 == 1) {

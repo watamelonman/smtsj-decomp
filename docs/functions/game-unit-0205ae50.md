@@ -9,7 +9,7 @@
 
 ## Hard list
 - `func_0205b36c`: no candidate matched locally
-- `func_0205af2c`: dropped when combining the TU
+- `Unk05ae50_Unk_05af2c`: dropped when combining the TU
 
 ## Not done in M1-T427
 - `func_0205ae60`
@@ -25,4 +25,4 @@
 - `func_0205b444`
 - `func_0205b154`
 - `func_0205b398`
-- `func_0205af2c`: decompiler-derived (chain+fix cleanup)
+- `Unk05ae50_Unk_05af2c`: decompiler-derived (chain+fix cleanup)

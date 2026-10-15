@@ -127,7 +127,7 @@ u32 Unk0cf5e8_Unk_0d182c(void)
 }
 
 int func_02044534();
-int func_020956c8();
+int Unk095560_Unk_0956c8();
 int Unk0bc1a8_Unk_0bc9b4();
 int Unk0de678_Unk_0de870();
 int Unk122a78_Unk_122aa0();
@@ -143,7 +143,7 @@ void Unk0cf5e8_Unk_0cf630(void)
     func_02044534(0x1e);
   }
   Unk0de678_Unk_0de870();
-  func_020956c8();
+  Unk095560_Unk_0956c8();
   return;
 }
 

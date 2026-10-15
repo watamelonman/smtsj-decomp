@@ -19,7 +19,7 @@
 - `func_020a84a4`
 - `func_020a8534`
 - `func_020a9390`
-- `func_020a7e8c`
+- `Unk0a7d54_Unk_0a7e8c`
 - `Unk0a7d54_Unk_0a8c40`: decompiler-derived
 - `Unk0a7d54_Unk_0a84cc`: decompiler-derived
 - `Unk0a7d54_Unk_0a8500`: decompiler-derived
@@ -40,4 +40,4 @@
 - `func_020a7d80`
 - `func_020a9218`
 - `func_020a82f0`
-- `func_020a7e8c`: decompiler-derived (plain+fix cleanup)
+- `Unk0a7d54_Unk_0a7e8c`: decompiler-derived (plain+fix cleanup)

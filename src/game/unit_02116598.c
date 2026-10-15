@@ -360,13 +360,13 @@ u32 Unk116598_Unk_117114(void)
 
 int Unk02f2a8_Unk_035440();
 int func_02044534();
-int func_020956e8();
+int Unk095560_Unk_0956e8();
 int func_021177b8();
 /* decompiler-derived */
 void Unk116598_Unk_116968(int arg0)
 {
   Unk116598_Unk_1167e0();
-  func_020956e8();
+  Unk095560_Unk_0956e8();
   Unk116598_Unk_1168b8();
   if (((Unk116598Work *)arg0)->unk_0010 != 0) {
     func_02044534(0x1e);
@@ -385,7 +385,7 @@ void Unk116598_Unk_116968(int arg0)
 void Unk116598_Unk_117b94(int arg0)
 {
   Unk116598_Unk_117a28();
-  func_020956e8();
+  Unk095560_Unk_0956e8();
   Unk116598_Unk_117ae4();
   if (((Unk116598Work *)arg0)->unk_0010 != 0) {
     func_02044534(0x1e);

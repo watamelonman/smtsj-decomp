@@ -7,10 +7,10 @@
 - `Unk0f4c50_Unk_0f51b0`: decompiler-derived
 
 ## Not done in M1-T384
-- `func_020f4ca8`
+- `Unk0f4c50_Unk_0f4ca8`
 - `func_020f4c50`
 - `func_020f4cfc`
 
 ## Not done in M1-T385
 - `func_020f4d64`
-- `func_020f4ca8`: decompiler-derived (plain+fix cleanup)
+- `Unk0f4c50_Unk_0f4ca8`: decompiler-derived (plain+fix cleanup)

@@ -126,7 +126,7 @@ int func_020afbdc();
 int func_020b0930();
 int func_020cb084();
 /* decompiler-derived */
-void func_020acb74(u32 arg0,u32 arg1,u32 arg2)
+void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 *v1;
   int tmp2;

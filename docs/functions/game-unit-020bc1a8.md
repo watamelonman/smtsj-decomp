@@ -19,7 +19,7 @@
 - `Unk0bc1a8_Unk_0bc514`
 - `func_020bc650`
 - `func_020bc614`
-- `func_020bc5d4`
+- `Unk0bc1a8_Unk_0bc5d4`
 
 ## Not done in M1-T547
 - `func_020bc688`
@@ -42,4 +42,4 @@
 - `Unk0bc1a8_Unk_0bc514`: decompiler-derived (plain cleanup)
 - `Unk0bc1a8_Unk_0bc6d4`: decompiler-derived (plain cleanup)
 - `Unk0bc1a8_Unk_0bc6e8`: decompiler-derived (plain cleanup)
-- `func_020bc5d4`: decompiler-derived (plain+fix cleanup)
+- `Unk0bc1a8_Unk_0bc5d4`: decompiler-derived (plain+fix cleanup)

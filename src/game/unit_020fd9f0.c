@@ -141,7 +141,7 @@ int func_0205bb68();
 int func_0205c368();
 int func_0205ddb4();
 /* decompiler-derived */
-void func_020fdc18(int *arg0)
+void Unk0fd9f0_Unk_0fdc18(int *arg0)
 {
   Unk0fd9f0_Unk_0fe33c((int)arg0);
   if (arg0[8] != 0) {

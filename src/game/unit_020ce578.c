@@ -39,7 +39,7 @@ void Unk0ce578_Unk_0cf29c(Unk0ce578Work *arg0, u32 arg1){
 }
 
 extern u8 data_02176bd0[];
-int func_020956c8();
+int Unk095560_Unk_0956c8();
 int Unk0bc1a8_Unk_0bc9b4();
 int Unk0de678_Unk_0de870();
 int Unk122a78_Unk_122aa0();
@@ -55,7 +55,7 @@ void Unk0ce578_Unk_0ce5e8(void)
     Unk122a78_Unk_122aa0();
   }
   Unk0de678_Unk_0de870();
-  func_020956c8();
+  Unk095560_Unk_0956c8();
   *(u32 *)(((int)data_02176bd0) + 4) = 0;
   return;
 }

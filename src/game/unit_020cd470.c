@@ -25,7 +25,7 @@ void Unk0cd470_Unk_0cd470(Unk0cd470Work *arg0){
   return;
 }
 
-int func_020956c8();
+int Unk095560_Unk_0956c8();
 int Unk0bc1a8_Unk_0bc9b4();
 int Unk0de678_Unk_0de870();
 /* decompiler-derived */
@@ -38,6 +38,6 @@ void Unk0cd470_Unk_0cd50c(void)
     Unk0cb32c_Unk_0cb344();
   }
   Unk0de678_Unk_0de870();
-  func_020956c8();
+  Unk095560_Unk_0956c8();
   return;
 }

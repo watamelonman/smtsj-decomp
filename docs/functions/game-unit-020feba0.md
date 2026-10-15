@@ -11,8 +11,8 @@
 - `Unk0feba0_Unk_0feba0`: decompiler-derived
 
 ## Not done in M1-T129
-- `func_020febe8`
+- `Unk0feba0_Unk_0febe8`
 - `func_020fec64`
 - `func_020fed54`
 - `func_020fec00`
-- `func_020febe8`: decompiler-derived (plain+fix cleanup)
+- `Unk0feba0_Unk_0febe8`: decompiler-derived (plain+fix cleanup)

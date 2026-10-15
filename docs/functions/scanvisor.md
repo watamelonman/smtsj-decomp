@@ -66,14 +66,14 @@
 - `func_020a3760`
 
 ## Not done in M1-T990
-- `func_020a4910`
+- `ScanVisor_Unk_0a4910`
 - `func_020a49d8`
 - `func_020a3ac0`
 - `func_020a4600`
 - `func_020a2bb8`
 - `func_020a4578`
 - `ScanVisor_Unk_0a4864`
-- `func_020a48b4`
+- `ScanVisor_Unk_0a48b4`
 
 ## Not done in M1-T991
 - `func_020a4df0`
@@ -83,7 +83,7 @@
 - `func_020a466c`
 - `func_020a2c90`
 - `func_020a4370`
-- `func_020a42f0`
+- `ScanVisor_Unk_0a42f0`
 - `ScanVisor_Unk_0a2e5c`: decompiler-derived
 
 ## Not done in M1-T992
@@ -98,6 +98,6 @@
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4950`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4864`: decompiler-derived (plain cleanup)
-- `func_020a4910`: decompiler-derived (plain+fix cleanup)
-- `func_020a48b4`: decompiler-derived (plain+fix cleanup)
-- `func_020a42f0`: decompiler-derived (plain+fix cleanup)
+- `ScanVisor_Unk_0a4910`: decompiler-derived (plain+fix cleanup)
+- `ScanVisor_Unk_0a48b4`: decompiler-derived (plain+fix cleanup)
+- `ScanVisor_Unk_0a42f0`: decompiler-derived (plain+fix cleanup)

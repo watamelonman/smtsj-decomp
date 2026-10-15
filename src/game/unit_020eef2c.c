@@ -45,7 +45,7 @@ void Unk0eef2c_Unk_0eef58(u32 *arg0)
 extern u32 data_02176dec[];
 int func_02008848();
 /* decompiler-derived */
-void func_020eef2c(u32 arg0)
+void Unk0eef2c_Unk_0eef2c(u32 arg0)
 {
   func_02008848(arg0,0,0x18);
   *data_02176dec = arg0;
