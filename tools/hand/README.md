@@ -92,3 +92,9 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
 - No global flag change is needed or proposed.
 - An aggregate initializer `T t = {0, 0};` reproduces the ROM's `add rX, sp, #n; strh r1, [rX]` stack init; field
   assignments give `strh r1, [sp, #n]` (b64: func_02115144).
+- Jump-table switch where case 0 just exits: write every case with `break` (including an empty `case 0: break;`).
+  The `return` form, with case 0 included or omitted, changes the table bound or adds code (b67).
+- Three separate early exits (`bxeq; bxlt; bxge`) before a store: `if (p == 0) return; if (i < 0 || i >= N) return; store;`.
+  The `if (i >= 0 && i < N) store;` form predicates the store (b67).
+- Three calls whose results are all tested at the end (`cmp r5; cmpne r4; cmpne r0`): assign every result to a local
+  first, then test. `a && b && f()` short-circuits the third call (b66).
