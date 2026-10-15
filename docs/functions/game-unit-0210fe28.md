@@ -10,3 +10,4 @@
 - `func_02110f08`
 - `func_0210ff80`
 - `func_0210fe48`
+- `func_0210fe48`: hand-written. Config screen (Data/Tex/Config/) setup.
