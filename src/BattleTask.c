@@ -2,14 +2,14 @@
 #include "types.h"
 
 
-int func_0206e538();
+int Unk06e4d8_Unk_06e538();
 int func_0206eab4();
 int Unk071dc0_Unk_071de4();
 int func_02093a1c();
 /* decompiler-derived */
 void BattleTask_Unk_04822c(void)
 {
-  func_0206e538();
+  Unk06e4d8_Unk_06e538();
   Unk071dc0_Unk_071de4();
   func_0206eab4();
   func_02093a1c();
@@ -17,7 +17,7 @@ void BattleTask_Unk_04822c(void)
 
 int func_0206df10();
 int Unk06e4d8_Unk_06e680();
-int func_0206eb54();
+int Unk06ea70_Unk_06eb54();
 int Unk071dc0_Unk_071e08();
 int Unk071dc0_Unk_072200();
 int Unk0939f0_Unk_093da4();
@@ -26,7 +26,7 @@ void BattleTask_Unk_048244(void)
 {
   func_0206df10();
   Unk071dc0_Unk_072200();
-  func_0206eb54();
+  Unk06ea70_Unk_06eb54();
   Unk071dc0_Unk_071e08();
   Unk06e4d8_Unk_06e680();
   Unk0939f0_Unk_093da4();

@@ -33,7 +33,7 @@ u32 Unk06ea70_FindByMask(u32 mask)
 int func_02053000();
 void Unk06ea70_Unk_06f4e4(void);
 
-void func_0206eb54(void)
+void Unk06ea70_Unk_06eb54(void)
 {
     int i;
     for (i = 0; i < 16; i++) {

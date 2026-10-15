@@ -7,7 +7,7 @@
 - `Unk06ea70_ReleaseEntry`
 - `Unk06ea70_FindByMask`
 - `func_0206f5cc`
-- `func_0206eb54`
+- `Unk06ea70_Unk_06eb54`
 - `func_0206f460`
 - `func_0206eab4`
 
@@ -29,4 +29,4 @@
 - `Unk06ea70_GetBuf04Slot`: hand-matched
 - `Unk06ea70_GetBuf00Slot`: hand-matched
 - `Unk06ea70_SetMask10Bit`: hand-matched
-- `func_0206eb54`: hand-matched
+- `Unk06ea70_Unk_06eb54`: hand-matched

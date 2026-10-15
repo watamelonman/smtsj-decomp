@@ -18,13 +18,13 @@
 
 ## Not done in M1-T387
 - `Unk06e4d8_Unk_06ea0c`
-- `func_0206e854`
-- `func_0206e538`
+- `Unk06e4d8_Unk_06e854`
+- `Unk06e4d8_Unk_06e538`
 - `func_0206e790`
 - `func_0206e6e4`
 - `func_0206e5bc`
 - `Unk06e4d8_Reset`: hand-matched
 - `Unk06e4d8_Unk_06ea0c`: hand-matched
 - `Unk06e4d8_GetFlag6c`: hand-matched
-- `func_0206e538`: hand-matched
-- `func_0206e854`: hand-matched
+- `Unk06e4d8_Unk_06e538`: hand-matched
+- `Unk06e4d8_Unk_06e854`: hand-matched

@@ -63,7 +63,7 @@ void *func_020611dc();
 void func_0206e5bc();
 void func_02008848();
 
-void func_0206e538(void)
+void Unk06e4d8_Unk_06e538(void)
 {
     u8 *p = (u8 *)func_020611dc(func_0206e5bc, 0, 0, 0, 112, 3, 0, 0);
     if (p == 0) {
@@ -114,7 +114,7 @@ void Unk06e4d8_Unk_06e814(int arg0)
   ((Unk06e4d8Work *)arg0)->unk_0064 = 0;
 }
 
-s32 func_0206e854(void)
+s32 Unk06e4d8_Unk_06e854(void)
 {
     Unk06e4d8Work *w;
     if (Unk06e4d8_Get_data_02170cc8() != 0 && ((u8 *)Unk06e4d8_Get_data_02170cc8())[108] != 0) {
