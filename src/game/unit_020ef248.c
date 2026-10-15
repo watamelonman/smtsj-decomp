@@ -47,7 +47,7 @@ void Unk0ef248_Unk_0ef548(int arg0)
 }
 
 int func_02044ec4();
-int func_020e8c80();
+int Unk0e8228_Unk_0e8c80();
 int func_020f7d14();
 int func_020f7e48();
 /* decompiler-derived */
@@ -55,7 +55,7 @@ void Unk0ef248_Unk_0ef878(void)
 {
   int value;
   value = *data_02176df0;
-  func_020e8c80();
+  Unk0e8228_Unk_0e8c80();
   func_02044ec4();
   func_020f7d14(*(u32 *)(value + 4));
   func_020f7e48(*(u32 *)(value + 0x40),0,1);

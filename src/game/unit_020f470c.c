@@ -60,7 +60,7 @@ void Unk0f470c_Unk_0f4c20(u32 arg0)
 
 
 
-int func_020e8424();
+int Unk0e8228_GetArr40();
 int func_020ea70c();
 int func_020ea744();
 int func_020ea828();
@@ -74,7 +74,7 @@ void Unk0f470c_Unk_0f4958(int arg0)
     func_020ea828();
     return;
   }
-  func_020e8424(value);
+  Unk0e8228_GetArr40(value);
   func_020ea744();
 }
 
@@ -94,7 +94,7 @@ void Unk0f470c_Unk_0f4b44(void)
 
 int func_02044ec4();
 int func_020e82c8();
-int func_020e8c80();
+int Unk0e8228_Unk_0e8c80();
 int func_020e8d38();
 /* decompiler-derived */
 void Unk0f470c_Unk_0f4ac0(void)
@@ -105,9 +105,9 @@ void Unk0f470c_Unk_0f4ac0(void)
   int value4;
   value1 = Unk0f8448_GetUnkField10();
   value4 = *data_02176e00;
-  func_020e8c80();
+  Unk0e8228_Unk_0e8c80();
   value2 = func_02044ec4();
-  value1 = func_020e8424(value1);
+  value1 = Unk0e8228_GetArr40(value1);
   value3 = Unk0e8228_Unk_0e8bac();
   if (value3 != 0) {
     value2 = Unk044904_Unk_045048();

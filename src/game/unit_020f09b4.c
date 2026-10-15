@@ -37,7 +37,7 @@ void Unk0f09b4_Unk_0f09b4(int arg0)
   Unk0fedd4_SetState2();
 }
 
-int func_020e8374();
+int Unk0e8228_Unk_0e8374();
 int func_020f8478();
 int func_020fda58();
 int Unk0feba0_Unk_0febe8();
@@ -47,6 +47,6 @@ void Unk0f09b4_Unk_0f0b64(int arg0)
   u32 value;
   Unk0feba0_Unk_0febe8(1);
   func_020fda58(0);
-  value = func_020e8374(((Unk0f09b4Work *)arg0)->unk_004c);
+  value = Unk0e8228_Unk_0e8374(((Unk0f09b4Work *)arg0)->unk_004c);
   func_020f8478(arg0 + 0x50,value);
 }

@@ -42,7 +42,7 @@
 - `Unk0e8228_Unk_0e940c`: decompiler-derived
 
 ## Not done in M1-T901
-- `func_020e8c80`
+- `Unk0e8228_Unk_0e8c80`
 - `Unk0e8228_Unk_0e8e8c`
 - `Unk0e8228_Unk_0e9728`: decompiler-derived
 - `Unk0e8228_Unk_0e9f18`: decompiler-derived
@@ -51,9 +51,9 @@
 - `Unk0e8228_Unk_0e8c2c`: decompiler-derived
 
 ## Not done in M1-T902
-- `func_020e8374`
-- `func_020e85a0`
-- `func_020e8b54`
+- `Unk0e8228_Unk_0e8374`
+- `Unk0e8228_IsField4One`
+- `Unk0e8228_IsFieldCOne`
 - `Unk0e8228_Unk_0e8dd0`: decompiler-derived
 - `Unk0e8228_Unk_0e8dfc`: decompiler-derived
 - `Unk0e8228_Unk_0e9fa4`: decompiler-derived
@@ -61,24 +61,24 @@
 ## Not done in M1-T903
 - `Unk0e8228_Unk_0e8d90`
 - `func_020e8e28`
-- `func_020e8ce8`
+- `Unk0e8228_Unk_0e8ce8`
 - `func_020e9748`
 - `func_020e93d8`
 
 ## Not done in M1-T904
-- `func_020e83ac`
-- `func_020e83e8`
-- `func_020e8424`
+- `Unk0e8228_GetArr30`
+- `Unk0e8228_GetArr58`
+- `Unk0e8228_GetArr40`
 - `func_020e8fe4`
 - `func_020e942c`
 - `func_020e9bc0`
-- `func_020e8be8`
+- `Unk0e8228_Unk_0e8be8`
 - `func_020e9b10`
 - `Unk0e8228_Unk_0e85c8`: decompiler-derived
 
 ## Not done in M1-T905
-- `func_020e849c`
-- `func_020e8260`
+- `Unk0e8228_GetArr88Field20`
+- `Unk0e8228_Unk_0e8260`
 - `func_020e9f58`
 - `func_020e8d38`
 - `func_020e9fd0`
@@ -115,14 +115,14 @@
 - `Unk0e8228_Call_02008848`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)
-- `func_020e8260`: hand-matched
-- `func_020e8374`: hand-matched
-- `func_020e83ac`: hand-matched
-- `func_020e83e8`: hand-matched
-- `func_020e8424`: hand-matched
-- `func_020e849c`: hand-matched
-- `func_020e85a0`: hand-matched
-- `func_020e8b54`: hand-matched
-- `func_020e8be8`: hand-matched
-- `func_020e8c80`: hand-matched
-- `func_020e8ce8`: hand-matched
+- `Unk0e8228_Unk_0e8260`: hand-matched
+- `Unk0e8228_Unk_0e8374`: hand-matched
+- `Unk0e8228_GetArr30`: hand-matched
+- `Unk0e8228_GetArr58`: hand-matched
+- `Unk0e8228_GetArr40`: hand-matched
+- `Unk0e8228_GetArr88Field20`: hand-matched
+- `Unk0e8228_IsField4One`: hand-matched
+- `Unk0e8228_IsFieldCOne`: hand-matched
+- `Unk0e8228_Unk_0e8be8`: hand-matched
+- `Unk0e8228_Unk_0e8c80`: hand-matched
+- `Unk0e8228_Unk_0e8ce8`: hand-matched

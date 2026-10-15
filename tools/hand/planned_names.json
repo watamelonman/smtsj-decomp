@@ -457,5 +457,17 @@
  "func_020e65ec": "Unk0e651c_Get2BitsIn",
  "func_020e6630": "Unk0e651c_Set2Bits",
  "func_020e6684": "Unk0e651c_TestBitChecked",
- "func_020e66a4": "Unk0e651c_SetBitChecked"
+ "func_020e66a4": "Unk0e651c_SetBitChecked",
+ "func_020e78b8": "Unk0e78b8_IsState5",
+ "func_020e8260": "Unk0e8228_Unk_0e8260",
+ "func_020e8374": "Unk0e8228_Unk_0e8374",
+ "func_020e83ac": "Unk0e8228_GetArr30",
+ "func_020e83e8": "Unk0e8228_GetArr58",
+ "func_020e8424": "Unk0e8228_GetArr40",
+ "func_020e849c": "Unk0e8228_GetArr88Field20",
+ "func_020e85a0": "Unk0e8228_IsField4One",
+ "func_020e8b54": "Unk0e8228_IsFieldCOne",
+ "func_020e8be8": "Unk0e8228_Unk_0e8be8",
+ "func_020e8c80": "Unk0e8228_Unk_0e8c80",
+ "func_020e8ce8": "Unk0e8228_Unk_0e8ce8"
 }

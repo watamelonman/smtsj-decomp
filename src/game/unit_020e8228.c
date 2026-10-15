@@ -16,8 +16,8 @@ int func_02057eb8();
 int func_02061424();
 int func_02099d14();
 int ScanVisor_Unk_0a29a0();
-int func_020e8374();
-int func_020e849c();
+int Unk0e8228_Unk_0e8374();
+int Unk0e8228_GetArr88Field20();
 void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1);
 void Unk0e8228_Unk_0e8e8c(u32 arg0);
 int func_020e9c00();
@@ -149,8 +149,8 @@ u32 Unk0e8228_Unk_0e84e4(void)
 /* decompiler-derived */
 void Unk0e8228_Unk_0e84fc(void)
 {
-  func_020e8374(8);
-  func_020e849c();
+  Unk0e8228_Unk_0e8374(8);
+  Unk0e8228_GetArr88Field20();
   func_02099d14();
 }
 
@@ -363,12 +363,12 @@ void Unk0e8228_Unk_0e8cbc(void)
 
 int func_02044ec4();
 int func_0204a244();
-int func_020e8c80();
+int Unk0e8228_Unk_0e8c80();
 /* decompiler-derived */
 int Unk0e8228_Unk_0e8c9c(void)
 {
   int value;
-  func_020e8c80();
+  Unk0e8228_Unk_0e8c80();
   func_02044ec4();
   value = func_0204a244();
   return value == 6;
@@ -435,15 +435,15 @@ void Unk0e8228_Unk_0e9f38(u32 *arg0,u32 arg1)
   arg0[5] = 0;
 }
 
-int func_020e83ac();
-int func_020e8ce8();
+int Unk0e8228_GetArr30();
+int Unk0e8228_Unk_0e8ce8();
 /* decompiler-derived */
 int Unk0e8228_Unk_0e8bc4(void)
 {
   int value;
-  func_020e83ac(0);
+  Unk0e8228_GetArr30(0);
   func_02044ec4();
-  value = func_020e8ce8();
+  value = Unk0e8228_Unk_0e8ce8();
   return value != 0;
 }
 
@@ -504,7 +504,7 @@ void Unk0e8228_Unk_0e9fa4(u32 arg0)
 int Unk044904_Unk_0459fc();
 int func_02053800();
 int func_020e82c8();
-int func_020e85a0();
+int Unk0e8228_IsField4One();
 int func_020fda58();
 int Unk100208_Unk_100208();
 /* decompiler-derived */
@@ -515,7 +515,7 @@ u32 Unk0e8228_Unk_0e85c8(void)
   if (value == 0) {
     return 0;
   }
-  value = func_020e85a0(value);
+  value = Unk0e8228_IsField4One(value);
   if ((value != 0) && (value = func_02053800(0,0x400), value != 0)) {
     Unk044904_Unk_0459fc();
     Unk0e8228_Unk_0e8cd8();
@@ -546,7 +546,7 @@ int func_020e9748();
 int func_02044ec4();
 int func_0204a244();
 u8 *func_020982c0();
-void func_020e8260(u32 i)
+void Unk0e8228_Unk_0e8260(u32 i)
 {
     u8 *base = data_02176ce4;
     if (i == 0) {
@@ -558,7 +558,7 @@ void func_020e8260(u32 i)
     }
 }
 
-int func_020e8374(u32 x)
+int Unk0e8228_Unk_0e8374(u32 x)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -567,7 +567,7 @@ int func_020e8374(u32 x)
     return func_020e9ca8(p, x);
 }
 
-int func_020e83ac(int i)
+int Unk0e8228_GetArr30(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -579,7 +579,7 @@ int func_020e83ac(int i)
     return FIELD(u32, p + i * 4, 48);
 }
 
-int func_020e83e8(int i)
+int Unk0e8228_GetArr58(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -591,7 +591,7 @@ int func_020e83e8(int i)
     return FIELD(u32, p + i * 4, 88);
 }
 
-int func_020e8424(int i)
+int Unk0e8228_GetArr40(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -603,7 +603,7 @@ int func_020e8424(int i)
     return FIELD(u32, p + i * 4, 64);
 }
 
-int func_020e849c(int i)
+int Unk0e8228_GetArr88Field20(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     u8 *q;
@@ -617,7 +617,7 @@ int func_020e849c(int i)
     return q == 0 ? 0 : FIELD(u16, q, 32);
 }
 
-int func_020e85a0(void)
+int Unk0e8228_IsField4One(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -626,7 +626,7 @@ int func_020e85a0(void)
     return FIELD(u32, p, 4) == 1;
 }
 
-int func_020e8b54(void)
+int Unk0e8228_IsFieldCOne(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -635,10 +635,10 @@ int func_020e8b54(void)
     return FIELD(u32, p, 12) == 1;
 }
 
-int func_020e8be8(void)
+int Unk0e8228_Unk_0e8be8(void)
 {
     u32 p;
-    switch (func_0204a244(func_02044ec4(func_020e83ac(0)))) {
+    switch (func_0204a244(func_02044ec4(Unk0e8228_GetArr30(0)))) {
     case 1:
     case 7:
     case 11:
@@ -651,7 +651,7 @@ int func_020e8be8(void)
     return func_020e9b54(p);
 }
 
-int func_020e8c80(void)
+int Unk0e8228_Unk_0e8c80(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -660,7 +660,7 @@ int func_020e8c80(void)
     return func_020e9748(p);
 }
 
-int func_020e8ce8(u32 x)
+int Unk0e8228_Unk_0e8ce8(u32 x)
 {
     u8 *v;
     if (x == 0) {

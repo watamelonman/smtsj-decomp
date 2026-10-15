@@ -27,9 +27,9 @@ void Unk0f0eac_Unk_0f0f2c(void)
 }
 
 int func_02044ec4();
-int func_020e85a0();
+int Unk0e8228_IsField4One();
 int func_020e86a0();
-int func_020e8c80();
+int Unk0e8228_Unk_0e8c80();
 int func_020f8478();
 /* decompiler-derived */
 void Unk0f0eac_Unk_0f0eac(void)
@@ -37,13 +37,13 @@ void Unk0f0eac_Unk_0f0eac(void)
   int value1;
   int value2;
   value2 = *data_02176dfc;
-  func_020e8c80();
+  Unk0e8228_Unk_0e8c80();
   func_02044ec4();
   value1 = Unk0e8228_Unk_0e82ac();
   if (value1 == 0) {
     func_020f8478(value2 + 0x50,0);
   }
-  value1 = func_020e85a0();
+  value1 = Unk0e8228_IsField4One();
   if (value1 != 0) {
     Unk0e8228_Unk_0e8d18(1);
     func_020e86a0();

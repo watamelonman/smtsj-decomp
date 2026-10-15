@@ -21,8 +21,8 @@ int func_020572d8();
 int func_02057eb8();
 int Unk09974c_Unk_099bac();
 int Unk0caea8_Unk_0cb044();
-int func_020e8374();
-int func_020e849c();
+int Unk0e8228_Unk_0e8374();
+int Unk0e8228_GetArr88Field20();
 int Unk0e8228_Unk_0e8f38();
 
 void Unk0ea208_Unk_0ead3c(void);
@@ -69,8 +69,8 @@ u32 Unk0ea208_Unk_0ea72c(void)
 /* decompiler-derived */
 void Unk0ea208_Unk_0ead4c(void)
 {
-  func_020e8374(8);
-  func_020e849c();
+  Unk0e8228_Unk_0e8374(8);
+  Unk0e8228_GetArr88Field20();
   Unk09974c_Unk_099bac();
 }
 

@@ -9,7 +9,7 @@ int func_0205dcd4();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 extern u32 data_02176cd8[];
-int func_020e78b8(void)
+int Unk0e78b8_IsState5(void)
 {
     if (*data_02176cd8 == 0) {
         return 0;
