@@ -85,7 +85,7 @@ u32 Unk0e7290_Unk_0e747c(int arg0)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-void func_020e7770(u32 a, u32 b)
+void Unk0e7290_Set_0e7770(u32 a, u32 b)
 {
     if (data_02176cd8 != 0) {
         FIELD(u32, data_02176cd8, 0) = a;
@@ -101,7 +101,7 @@ void Unk0e7290_Unk_0e7790(u32 arg0)
   }
 }
 
-int func_020e77f0(u32 a)
+int Unk0e7290_Unk_0e77f0(u32 a)
 {
     u32 k;
     if (data_02176cd8 == 0) {

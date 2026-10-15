@@ -620,5 +620,10 @@
  "func_02124e04": "Unk124c5c_Unk_124e04",
  "func_02124e68": "Unk124e68_Set",
  "func_02125910": "ImageBgDual3D_Unk_125910",
- "func_02125c68": "ImageBgDual3D_AllocBuf"
+ "func_02125c68": "ImageBgDual3D_AllocBuf",
+ "func_020e7770": "Unk0e7290_Set_0e7770",
+ "func_020e77f0": "Unk0e7290_Unk_0e77f0",
+ "func_021242fc": "Unk1241ec_Unk_1242fc",
+ "func_02124d6c": "Unk124c5c_Set_124d6c",
+ "func_02124d8c": "Unk124c5c_Set_124d8c"
 }

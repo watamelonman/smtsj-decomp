@@ -102,7 +102,7 @@ void Unk1241ec_Unk_1242e4(u32 arg0)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-void func_021242fc(void)
+void Unk1241ec_Unk_1242fc(void)
 {
     if (data_02176e84 == 0) {
         return;

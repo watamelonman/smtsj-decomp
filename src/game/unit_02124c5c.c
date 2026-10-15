@@ -39,7 +39,7 @@ void Unk124c5c_Unk_124d54(void)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-void func_02124d6c(u32 a, u32 b)
+void Unk124c5c_Set_124d6c(u32 a, u32 b)
 {
     if (data_02176e88 != 0) {
         FIELD(u32, data_02176e88, 12) = a;
@@ -47,7 +47,7 @@ void func_02124d6c(u32 a, u32 b)
     }
 }
 
-void func_02124d8c(u32 a, u32 b)
+void Unk124c5c_Set_124d8c(u32 a, u32 b)
 {
     if (data_02176e88 != 0) {
         FIELD(u32, data_02176e88, 4) = a;

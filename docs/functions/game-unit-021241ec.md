@@ -14,7 +14,7 @@
 
 ## Not done in M1-T228
 - `Unk1241ec_Unk_124224`
-- `func_021242fc`
+- `Unk1241ec_Unk_1242fc`
 - `func_02124338`
 - `Unk1241ec_Unk_124284`: decompiler-derived (plain cleanup)
 - `Unk1241ec_Unk_12429c`: decompiler-derived (plain cleanup)
@@ -22,4 +22,4 @@
 - `Unk1241ec_Unk_1242cc`: decompiler-derived (plain cleanup)
 - `Unk1241ec_Unk_1242e4`: decompiler-derived (plain cleanup)
 - `Unk1241ec_Unk_124224`: hand-matched
-- `func_021242fc`: hand-matched
+- `Unk1241ec_Unk_1242fc`: hand-matched

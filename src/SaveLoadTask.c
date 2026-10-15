@@ -213,7 +213,7 @@ LAB_020df988:
 }
 
 int func_0205257c();
-int func_02124d8c();
+int Unk124c5c_Set_124d8c();
 /* decompiler-derived */
 void SaveLoadTask_Unk_0df86c(void)
 {
@@ -240,7 +240,7 @@ void SaveLoadTask_Unk_0df86c(void)
     goto LAB_020df8a8;
   case 9:
 LAB_020df8a8:
-    func_02124d8c(1,0);
+    Unk124c5c_Set_124d8c(1,0);
     return;
   }
   func_0205257c(3);
@@ -349,7 +349,7 @@ void SaveLoadTask_Unk_0df814(void)
     goto LAB_020df850;
   case 9:
 LAB_020df850:
-    func_02124d8c(0,0x1f);
+    Unk124c5c_Set_124d8c(0,0x1f);
     return;
   }
   func_020525cc(3);

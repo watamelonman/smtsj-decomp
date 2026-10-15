@@ -7,8 +7,8 @@
 
 ## Not done in M1-T401
 - `Unk0e7290_Unk_0e7790`
-- `func_020e7770`
-- `func_020e77f0`
+- `Unk0e7290_Set_0e7770`
+- `Unk0e7290_Unk_0e77f0`
 - `func_020e7840`
 
 ## Not done in M1-T402
@@ -18,5 +18,5 @@
 - `func_020e7658`
 - `func_020e736c`
 - `Unk0e7290_Unk_0e7790`: decompiler-derived (plain cleanup)
-- `func_020e7770`: hand-matched
-- `func_020e77f0`: hand-matched
+- `Unk0e7290_Set_0e7770`: hand-matched
+- `Unk0e7290_Unk_0e77f0`: hand-matched
