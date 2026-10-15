@@ -153,10 +153,10 @@ u32 *Unk02f2a8_GetCurrentCell38e8(void)
     return Unk02f2a8_GetCell38e8(FIELD(s8, gGameState, 0x7482), FIELD(s8, gGameState, 0x7483));
 }
 
-u32 Unk02f2a8_GetObj39160Bits16(void)
+u32 Unk02f2a8_GetObj39160Bits16(u8 *base, int x, int y)
 {
     u32 r = 0;
-    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)func_02039160();
+    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)func_02039160(base, x, y);
     if (o != 0) {
         r = o->unk_0004_16;
     }
