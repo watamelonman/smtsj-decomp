@@ -171,7 +171,7 @@ int Unk0986ac_IsMode012(u8 *p)
     return r;
 }
 
-void func_0209911c();
+void Unk0986ac_Unk_09911c();
 void func_02099174();
 int Unk0a23f4_Unk_0a246c();
 void Unk0986ac_Unk_099234(u8 *p);
@@ -196,7 +196,7 @@ void *GetGameState();
 void Unk11f2d0_Unk_11f320();
 int Unk09974c_Unk_0998d8();
 
-void func_0209911c(Unk09911cObj *p)
+void Unk0986ac_Unk_09911c(Unk09911cObj *p)
 {
     Unk09911cState *gs = (Unk09911cState *)GetGameState();
     if (gs == 0) {
@@ -231,7 +231,7 @@ void Unk0986ac_Unk_099274(u8 *p)
     FIELD(s32, p, 24) = -1;
     switch (FIELD(s32, p, 20)) {
     case 2:
-        func_0209911c((void *)p);
+        Unk0986ac_Unk_09911c((void *)p);
         break;
     case 3:
         Unk0986ac_Nop_099230();

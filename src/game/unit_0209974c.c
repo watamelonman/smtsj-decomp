@@ -238,7 +238,7 @@ void *func_02011810();
 
 void Unk09974c_SetBit6ac(int id);
 
-u32 func_020999d4(int id)
+u32 Unk09974c_Unk_0999d4(int id)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
     u16 *buf;
@@ -258,7 +258,7 @@ u32 func_020999d4(int id)
     return 0;
 }
 
-void func_02099abc(int id, u16 v)
+void Unk09974c_Unk_099abc(int id, u16 v)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
     u16 *buf;

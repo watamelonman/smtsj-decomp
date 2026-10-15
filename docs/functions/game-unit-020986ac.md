@@ -26,7 +26,7 @@
 - `Unk0986ac_SetFlagBit`
 - `Unk0986ac_Unk_099234`
 - `Unk0986ac_Unk_0992b0`
-- `func_0209911c`
+- `Unk0986ac_Unk_09911c`
 - `func_02098860`
 - `func_020988bc`
 - `func_02098740`
@@ -50,4 +50,4 @@
 - `Unk0986ac_Unk_099234`: hand-matched
 - `Unk0986ac_Unk_099274`: hand-matched
 - `Unk0986ac_Unk_0992b0`: hand-matched
-- `func_0209911c`: hand-matched
+- `Unk0986ac_Unk_09911c`: hand-matched

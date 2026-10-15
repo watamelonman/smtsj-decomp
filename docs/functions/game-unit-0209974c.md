@@ -28,8 +28,8 @@
 - `func_0209a158`
 - `Unk09974c_Unk_0998f0`
 - `Unk09974c_Unk_099cc4`
-- `func_020999d4`
-- `func_02099abc`
+- `Unk09974c_Unk_0999d4`
+- `Unk09974c_Unk_099abc`
 
 ## Not done in M1-T556
 - `func_02099f24`
@@ -63,5 +63,5 @@
 - `Unk09974c_Unk_099d14`: hand-matched
 - `Unk09974c_Unk_099d78`: hand-matched
 - `Unk09974c_Unk_099ddc`: hand-matched
-- `func_020999d4`: hand-matched
-- `func_02099abc`: hand-matched
+- `Unk09974c_Unk_0999d4`: hand-matched
+- `Unk09974c_Unk_099abc`: hand-matched
