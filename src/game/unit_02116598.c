@@ -525,6 +525,24 @@ void Unk116598_Unk_1168cc(Unk116598Work *work)
     Unk116598_Unk_116954(work);
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int Unk0de678_Unk_0dee2c();
+int Unk02e000_Unk_02e774();
+int Unk02f078_Unk_02f220();
+int func_02117208();
+int func_02051ba4();
+void Unk095560_Unk_0958a8();
+void func_02117808(void)
+{
+    u8 *w = (u8 *)*data_02176e64;
+    FIELD(u32, w, 0) = 0;
+    FIELD(u32, w, 16) = 0;
+    FIELD(u32, w, 20) = 0;
+    Unk095560_Unk_0958a8(0, 0);
+}
+
 void Unk116598_Unk_117af8(Unk116598Work *work)
 {
     func_02077314();
