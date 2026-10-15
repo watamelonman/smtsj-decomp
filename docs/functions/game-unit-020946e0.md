@@ -19,12 +19,12 @@
 - `Unk0946e0_Unk_094eb8`
 - `Unk0946e0_Unk_094e30`
 - `Unk0946e0_Unk_094e70`
-- `func_02094a90`
+- `Unk0946e0_ApplyRect`
 - `Unk0946e0_Unk_094958`: decompiler-derived
 
 ## Not done in M1-T494
 - `func_02094bd4`
-- `func_020949e0`
+- `Unk0946e0_SetViewBox`
 - `func_02094da0`
 - `func_02094af8`
 - `func_02094ef4`
@@ -37,5 +37,5 @@
 - `Unk0946e0_Unk_094e30`: hand-matched
 - `Unk0946e0_Unk_094e70`: hand-matched
 - `Unk0946e0_Unk_094eb8`: hand-matched
-- `func_020949e0`: hand-matched
-- `func_02094a90`: hand-matched
+- `Unk0946e0_SetViewBox`: hand-matched
+- `Unk0946e0_ApplyRect`: hand-matched

@@ -220,5 +220,7 @@
  "func_02095cd8": "Unk095560_Unk_095cd8",
  "func_02097308": "Unk09727c_Unk_097308",
  "func_020974a4": "Unk09727c_GetPairLo",
- "func_020974dc": "Unk09727c_GetPairHi"
+ "func_020974dc": "Unk09727c_GetPairHi",
+ "func_020949e0": "Unk0946e0_SetViewBox",
+ "func_02094a90": "Unk0946e0_ApplyRect"
 }
