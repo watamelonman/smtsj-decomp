@@ -62,3 +62,7 @@
 - `BattleShowingTask_Unk_11c5d0`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11c610`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11b4e4`: decompiler-derived (plain cleanup)
+- `func_0211985c`: hand-matched (ExpGauge)
+- `func_02119888`: hand-matched (ExpGauge)
+- `func_021198b4`: hand-matched (ExpGauge)
+- `func_02119910`: hand-matched (ExpGauge)

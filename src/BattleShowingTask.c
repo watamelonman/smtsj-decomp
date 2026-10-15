@@ -78,8 +78,12 @@ u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work)
 }
 
 typedef struct BattleResultInfo {
-    u32 unk00;
+    s16 unk00;                  /* 0x00: < 0 selects the alternate EXP table */
+    s16 unk02;                  /* 0x02: compared against levelUps */
     u32 expGained;              /* 0x04: total to count up to */
+    u16 unk08;                  /* 0x08: EXP curve id */
+    s16 level;                  /* 0x0A: level before the battle */
+    u32 baseExp;                /* 0x0C: EXP held before the battle */
 } BattleResultInfo;
 
 /* EXP count-up state of the post-battle result screen (BattleShowingTask.c). */
@@ -120,6 +124,8 @@ void func_02119888(ExpGauge *g);
 s32 func_021198b4(ExpGauge *g);
 void func_02119910(ExpGauge *g);
 void func_02119a10(ExpGauge *g);
+s32 func_020b80c8(s32 level);
+s32 func_020b8154(u16 curve, s32 level, s32 level2);
 
 /* Per-frame update: fade in, count EXP up (pausing for each level up), fade out. */
 void ExpGauge_Update(ExpGauge *g) {
@@ -394,4 +400,40 @@ LAB_0211b54c:
   func_0211b2ac(arg0,0x1000);
 LAB_0211b670:
   func_020580ec(1);
+}
+
+/* Gauge back to its normal sequence after a level-up pause. */
+void func_0211985c(ExpGauge *g)
+{
+    func_0205c408(g->gaugeAnim, 17);
+    func_0205c41c(g->gaugeAnim, 0);
+    func_0205c6e0(g->gaugeAnim);
+}
+
+/* Gauge level-up sequence. */
+void func_02119888(ExpGauge *g)
+{
+    func_0205c408(g->gaugeAnim, 16);
+    func_0205c41c(g->gaugeAnim, 0);
+    func_0205c6e0(g->gaugeAnim);
+}
+
+/* EXP needed for the next level (curve lookup unless unk00 < 0). */
+s32 func_021198b4(ExpGauge *g)
+{
+    s32 to;
+    if (g->info->unk00 < 0) {
+        return func_020b80c8(g->info->level + g->levelUps);
+    }
+    to = g->info->level;
+    if (g->state == EXP_GAUGE_DONE || g->info->unk02 == g->levelUps) {
+        to = g->info->level + g->levelUps;
+    }
+    return func_020b8154(g->info->unk08, g->info->level + g->levelUps, to);
+}
+
+/* Recompute EXP remaining until the next level. */
+void func_02119910(ExpGauge *g)
+{
+    g->toNextLevel = func_021198b4(g) - ((g->info->baseExp + g->shown) - g->total);
 }
