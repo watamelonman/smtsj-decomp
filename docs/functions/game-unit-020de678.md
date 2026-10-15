@@ -37,3 +37,12 @@
 - `func_020decd8`
 - `func_020dee40`
 - `func_020de8b0`
+
+## Not done in M1-T690
+- `func_020df374`
+- `func_020df420`
+- `func_020deaa0`
+- `func_020df234`
+- `func_020de960`
+- `func_020def0c`
+- `func_020df0cc`
