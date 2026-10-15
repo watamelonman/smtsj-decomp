@@ -72,7 +72,7 @@ int Unk0b28e4_Unk_0b64c8(void)
   return *(int *)(((int)data_02176b80) + 4) + 2;
 }
 
-u32 func_020b6528(u8 *p, int i)
+u32 Unk0b28e4_GetEntry34(u8 *p, int i)
 {
     u32 ok = i >= 0;
     if (ok == 0) {

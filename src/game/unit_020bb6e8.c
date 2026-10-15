@@ -10,7 +10,7 @@ typedef struct Unk0bb6e8Flags {
     u8 b1 : 1;
     u8 rest : 6;
 } Unk0bb6e8Flags;
-u32 func_020bb6e8(void)
+u32 Unk0bb6e8_GetFlag282b1(void)
 {
     if (((Unk0bb6e8Flags *)(Unk0bac80_Thunk_02044ec4(func_0203ac00(0)) + 642))->b1) {
         Unk03aae8_Unk_03acf4(1);
@@ -20,7 +20,7 @@ u32 func_020bb6e8(void)
     return 1;
 }
 
-u32 func_020bb724(void)
+u32 Unk0bb6e8_SetFlag282b1(void)
 {
     int a = func_0203ac00(0);
     int on = func_0203ac00(1) != 0;

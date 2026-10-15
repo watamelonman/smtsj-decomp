@@ -357,5 +357,19 @@
  "func_020b5e10": "Unk0b28e4_Unk_0b5e10",
  "func_020b62e8": "Unk0b28e4_Unk_0b62e8",
  "func_020b6338": "Unk0b28e4_Unk_0b6338",
- "func_020b6370": "Unk0b28e4_Unk_0b6370"
+ "func_020b6370": "Unk0b28e4_Unk_0b6370",
+ "func_020b6528": "Unk0b28e4_GetEntry34",
+ "func_020bb144": "Unk0bac80_Unk_0bb144",
+ "func_020bb2b0": "Unk0bb2b0_Unk_0bb2b0",
+ "func_020bb2ec": "Unk0bb2b0_Unk_0bb2ec",
+ "func_020bb314": "Unk0bb2b0_Unk_0bb314",
+ "func_020bb33c": "Unk0bb2b0_Unk_0bb33c",
+ "func_020bb364": "Unk0bb2b0_Unk_0bb364",
+ "func_020bb38c": "Unk0bb2b0_Unk_0bb38c",
+ "func_020bb3b4": "Unk0bb2b0_Unk_0bb3b4",
+ "func_020bb3dc": "Unk0bb2b0_Unk_0bb3dc",
+ "func_020bb404": "Unk0bb2b0_Unk_0bb404",
+ "func_020bb490": "Unk0bb2b0_Unk_0bb490",
+ "func_020bb6e8": "Unk0bb6e8_GetFlag282b1",
+ "func_020bb724": "Unk0bb6e8_SetFlag282b1"
 }

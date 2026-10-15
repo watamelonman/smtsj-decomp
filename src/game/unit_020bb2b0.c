@@ -8,7 +8,7 @@ u8 *func_020a1428(u32 id);
 #endif
 u8 *Unk0bac80_Thunk_02044ec4(u32 id);
 u32 Unk0bac80_Unk_0badc0(void);
-u32 func_020bb2b0(void)
+u32 Unk0bb2b0_Unk_0bb2b0(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bac80_Thunk_02044ec4(FIELD(u32, Unk0bac80_Unk_0badc0(), 64)) + 256, 216));
     return 1;
@@ -24,49 +24,49 @@ u8 *Unk0bb2b0_Thunk_020a1740(u32 id) { return func_020a1740(id); }
 int Unk02e000_GetRecordUnk1c();
 int func_0203ac00();
 int Unk03aae8_Unk_03acf4();
-u32 func_020bb2ec(void)
+u32 Unk0bb2b0_Unk_0bb2ec(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u8, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 2));
     return 1;
 }
 
-u32 func_020bb314(void)
+u32 Unk0bb2b0_Unk_0bb314(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 12));
     return 1;
 }
 
-u32 func_020bb33c(void)
+u32 Unk0bb2b0_Unk_0bb33c(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 20));
     return 1;
 }
 
-u32 func_020bb364(void)
+u32 Unk0bb2b0_Unk_0bb364(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 14));
     return 1;
 }
 
-u32 func_020bb38c(void)
+u32 Unk0bb2b0_Unk_0bb38c(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 16));
     return 1;
 }
 
-u32 func_020bb3b4(void)
+u32 Unk0bb2b0_Unk_0bb3b4(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 18));
     return 1;
 }
 
-u32 func_020bb3dc(void)
+u32 Unk0bb2b0_Unk_0bb3dc(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u8, Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0)), 4));
     return 1;
 }
 
-u32 func_020bb404(void)
+u32 Unk0bb2b0_Unk_0bb404(void)
 {
     Unk03aae8_Unk_03acf4(FIELD(u8, Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0)), 5));
     return 1;
@@ -97,7 +97,7 @@ u32 Unk0bb2b0_Unk_0bb450(void)
   return 1;
 }
 
-u32 func_020bb490(void)
+u32 Unk0bb2b0_Unk_0bb490(void)
 {
     u32 v = FIELD(u32, Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0)), 36);
     Unk03aae8_Unk_03acf4((v << 4) >> 25);

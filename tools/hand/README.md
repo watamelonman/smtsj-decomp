@@ -48,3 +48,6 @@ target unit but still undefined (asm) in ours* (func_020949e0 for 094958). The a
 in that region gets defined. Remedy: match those still-undefined same-unit callees in the same batch, or skip.
 - Loop counter vs cursor register swapped (e.g. ROM uses r5 for the cursor, r4 for j): declare the counter *before*
   the pointer; mwcc assigns registers in declaration order (fixed 4 ScanVisor loops in b37).
+- ROM materialises a range test as a 0/1 flag (`movge r2,#1; movlt r2,#0; cmp r2,#0`): use a `u32 ok = i >= 0;` local.
+  `int` gets folded into the branch; `u8` adds `tst #255` (b42 func_020b6528).
+- Real prototypes for forwarding thunks (`ldr ip; bx ip`): use u32 params, not u16, so the thunk does not gain an extension.

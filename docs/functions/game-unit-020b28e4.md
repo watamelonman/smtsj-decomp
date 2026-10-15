@@ -12,7 +12,7 @@
 - `Unk0b28e4_Unk_0b6370`
 
 ## Not done in M1-T1038
-- `func_020b6528`
+- `Unk0b28e4_GetEntry34`
 - `Unk0b28e4_InitCallbacks`
 - `Unk0b28e4_Unk_0b62e8`
 - `func_020b3d28`
@@ -35,4 +35,4 @@
 - `Unk0b28e4_Unk_0b62e8`: hand-matched
 - `Unk0b28e4_Unk_0b6338`: hand-matched
 - `Unk0b28e4_Unk_0b6370`: hand-matched
-- `func_020b6528`: hand-matched
+- `Unk0b28e4_GetEntry34`: hand-matched

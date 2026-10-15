@@ -5,10 +5,10 @@
 ## Not done in M1-T083
 - `func_020bb880`
 - `func_020bb7ac`
-- `func_020bb6e8`
+- `Unk0bb6e8_GetFlag282b1`
 - `func_020bb770`
 - `func_020bb8c0`
-- `func_020bb724`
+- `Unk0bb6e8_SetFlag282b1`
 - `func_020bb7e4`
-- `func_020bb6e8`: hand-matched
-- `func_020bb724`: hand-matched
+- `Unk0bb6e8_GetFlag282b1`: hand-matched
+- `Unk0bb6e8_SetFlag282b1`: hand-matched

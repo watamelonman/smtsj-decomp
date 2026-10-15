@@ -23,7 +23,7 @@
 - `Unk0bac80_Unk_0bb104`: decompiler-derived
 
 ## Not done in M1-T405
-- `func_020bb144`
+- `Unk0bac80_Unk_0bb144`
 - `func_020bae9c`
 - `func_020baf04`
 
@@ -33,4 +33,4 @@
 - `func_020bac80`
 - `func_020bad40`
 - `func_020bb18c`
-- `func_020bb144`: hand-matched
+- `Unk0bac80_Unk_0bb144`: hand-matched
