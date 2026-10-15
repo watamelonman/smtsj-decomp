@@ -16,14 +16,14 @@ typedef struct Unk094fe0Work {
 extern u8 data_02175dac[];
 Unk094fe0Work *Unk02e000_GetUnk094fe0Work(void);
 
-void Unk094fe0_Nop_095000(void);
+u8 *Unk094fe0_Nop_095000(Unk094fe0Work *w);
 int Unk094fe0_Unk_095004(int arg0);
 u32 Unk094fe0_GetUnkField9a0(void *obj);
 Unk094fe0Work *Unk094fe0_Thunk_0202e8cc(void);
 int Unk094fe0_Unk_094fec(int arg0);
 
-/* empty callback */
-void Unk094fe0_Nop_095000(void) { }
+/* returns its argument (the ROM body is just `bx lr`) */
+u8 *Unk094fe0_Nop_095000(Unk094fe0Work *w) { return (u8 *)w; }
 
 /* decompiler-derived */
 int Unk094fe0_Unk_095004(int arg0)
@@ -31,11 +31,11 @@ int Unk094fe0_Unk_095004(int arg0)
   return arg0 + 0x990;
 }
 
-void func_020950b4(Unk094fe0Work *w, u32 a);
+int func_020950b4(Unk094fe0Work *w, u32 a);
 void func_02095320(Unk094fe0Work *w, u32 a);
-void Unk094fe0_Call_020950b4(u32 a)
+int Unk094fe0_Call_020950b4(u32 a)
 {
-    func_020950b4(Unk094fe0_Thunk_0202e8cc(), a);
+    return func_020950b4(Unk094fe0_Thunk_0202e8cc(), a);
 }
 
 void Unk094fe0_Call_02095320(u32 a)
@@ -53,6 +53,23 @@ Unk094fe0Work *Unk094fe0_Thunk_0202e8cc(void) { return Unk02e000_GetUnk094fe0Wor
 int Unk094fe0_Unk_094fec(int arg0)
 {
   return arg0 * 0x1c + ((int)data_02175dac);
+}
+
+void func_0209502c();
+void func_0209500c(int a, int b)
+{
+    func_0209502c(Unk094fe0_Thunk_0202e8cc(), a, b);
+}
+
+int func_020950b4(Unk094fe0Work *w, u32 bit)
+{
+    u32 sh = bit & 7;
+    u32 idx = bit >> 3;
+    u8 *bits = Unk094fe0_Nop_095000(w);
+    if (idx >= 512) {
+        return 0;
+    }
+    return (bits[idx] & (1 << sh)) != 0;
 }
 
 void Unk094fe0_SetUnkField9a0(u32 value)

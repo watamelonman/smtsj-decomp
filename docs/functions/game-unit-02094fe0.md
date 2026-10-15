@@ -39,3 +39,5 @@
 - `Unk094fe0_GetWorkUnkField9a0`: hand-matched
 - `Unk094fe0_Call_020950b4`: hand-matched
 - `Unk094fe0_Call_02095320`: hand-matched
+- `func_0209500c`: hand-matched
+- `func_020950b4`: hand-matched
