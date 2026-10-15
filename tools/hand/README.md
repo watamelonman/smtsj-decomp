@@ -102,3 +102,5 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   `(*X + off)` -> `(X + off)`); byte-identical, and new `FIELD(T, X, off)` stores then reload X as in ROM.
 - Jump-table switch: decode the handler order from the `b` targets (first `b` after addls is default);
   write cases in handler-address order and let shared-default cases fall to `return` after the switch.
+- Script-command shape (`cmp k,#0; beq; cmp k,#2; b X`): case 2 is an empty case; the call after the switch
+  runs with a zero-initialised result (`r = 0; switch(k){case 0: r = ...; break; case 2: break;} use(r);`).
