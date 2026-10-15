@@ -121,3 +121,20 @@ void Unk0fc584_Unk_0fc9fc(int *arg0)
   *data_02176e14 = 0;
 }
 
+extern u8 data_02151058[];
+extern u8 data_0215106c[];
+int func_0205dcd4();
+/* decompiler-derived; refs "Battle/battle_money", "Cave/cave_moneywindow" */
+void func_020fc9ac(int arg0,int arg1)
+{
+  u32 tmp1;
+  if (arg1 == 0) {
+    Unk05b82c_Unk_05b82c(0xda);
+    tmp1 = func_0205dcd4(data_02151058,1);
+    *(u32 *)(arg0 + 8) = tmp1;
+    return;
+  }
+  Unk05b82c_Unk_05b82c(0x59);
+  tmp1 = func_0205dcd4(data_0215106c,1);
+  *(u32 *)(arg0 + 8) = tmp1;
+}
