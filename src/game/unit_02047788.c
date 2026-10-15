@@ -8,7 +8,7 @@ int func_02052728();
 int func_02061698();
 void func_020614b0();
 u32 Unk044904_Get_data_0215ee98(void);
-int func_02047788(void)
+int Unk047788_Unk_047788(void)
 {
     if (func_02052728() != 0) {
         return 0;

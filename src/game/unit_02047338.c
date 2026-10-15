@@ -34,7 +34,7 @@ u32 Unk047338_Unk_047504(u16 *arg0)
 }
 
 int func_02045ca8();
-int func_02047534(s16 *st)
+int Unk047338_Unk_047534(s16 *st)
 {
     if (st[1] != 0) {
         st[0] = 2;

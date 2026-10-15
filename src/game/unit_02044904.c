@@ -342,7 +342,7 @@ int func_020aa224();
 void func_02045bd0();
 void func_020456d8();
 void func_020455cc();
-int func_02046468(s16 *st)
+int Unk044904_Unk_046468(s16 *st)
 {
     Unk044904Mgr *m = UNK044904_MGR();
     FIELD(u16, m, 0x38)++;
@@ -351,7 +351,7 @@ int func_02046468(s16 *st)
     return 1;
 }
 
-int func_0204661c(s16 *st)
+int Unk044904_Unk_04661c(s16 *st)
 {
     if (st[1] == 1) {
         st[0] = 2;
@@ -361,7 +361,7 @@ int func_0204661c(s16 *st)
     return 2;
 }
 
-int func_02046644(void)
+int Unk044904_Unk_046644(void)
 {
     if (UNK044904_MGR()->flag_0040_16 && Unk044904_Unk_045460(1) != 0) {
         return 2;
