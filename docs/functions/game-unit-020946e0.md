@@ -37,3 +37,5 @@
 - `Unk0946e0_Unk_094e30`: hand-matched
 - `Unk0946e0_Unk_094e70`: hand-matched
 - `Unk0946e0_Unk_094eb8`: hand-matched
+- `func_020949e0`: hand-matched
+- `func_02094a90`: hand-matched
