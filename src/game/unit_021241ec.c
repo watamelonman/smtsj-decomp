@@ -40,6 +40,14 @@ void Unk1241ec_Unk_1241ec(void)
 
 extern u32 data_02176e84[];
 int func_02061424();
+int func_020cb3dc();
+int Unk0cb32c_Unk_0cb4e4();
+void Unk0fedd4_Unk_0fee38();
+void func_02124224(int x)
+{
+    Unk0fedd4_Unk_0fee38(Unk0cb32c_Unk_0cb4e4((u8)func_020cb3dc(), (u16)(x + 200)));
+}
+
 /* decompiler-derived */
 void Unk1241ec_Unk_124258(void)
 {

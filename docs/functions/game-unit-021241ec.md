@@ -21,3 +21,4 @@
 - `Unk1241ec_Unk_1242b4`: decompiler-derived (plain cleanup)
 - `Unk1241ec_Unk_1242cc`: decompiler-derived (plain cleanup)
 - `Unk1241ec_Unk_1242e4`: decompiler-derived (plain cleanup)
+- `func_02124224`: hand-matched
