@@ -30,3 +30,5 @@
 - `func_02094ef4`
 - `func_02094c74`
 - `func_02094750`
+- `func_02094b98`: decompiler-derived (proto cleanup)
+- `func_02094d64`: decompiler-derived (proto cleanup)
