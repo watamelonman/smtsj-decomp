@@ -3,6 +3,18 @@
 
 
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u32 data_02176de4[];
+int Unk0f8448_GetUnkField10();
+void Unk0e8228_Unk_0e8d90();
+void func_020eeb20(u32 a)
+{
+    u32 w = *data_02176de4;
+    Unk0e8228_Unk_0e8d90(FIELD(u32, w, 68), Unk0f8448_GetUnkField10(a));
+}
+
 /* empty callback */
 void Unk0eeb20_Nop_0eecb8(void) { }
 
