@@ -18,9 +18,9 @@ typedef struct ImageObjWork {
 
 
 extern u32 data_0217231c[];
-int func_020775a0();
-int func_02077620();
-int func_02077640();
+void func_020775a0(void);
+void func_02077620(void);
+void func_02077640(void);
 int func_02077ddc();
 int func_02079238();
 
@@ -110,7 +110,7 @@ void ImageObj_Unk_0773bc(void)
   }
 }
 
-int func_020791a8();
+void func_020791a8(u32 arg0,int arg1,u32 arg2,u32 arg3);
 /* decompiler-derived */
 void ImageObj_Unk_07782c(u32 arg0,u32 arg1)
 {
@@ -254,5 +254,79 @@ void ImageObj_Unk_0779a0(u32 *arg0,u32 arg1)
   arg0[0x15] = 0xffffffff;
 }
 
+/* decompiler-derived */
+void func_02077620(void)
+{
+  int tmp1;
+  tmp1 = 0;
+  do {
+    func_02077554(tmp1);
+    tmp1 = tmp1 + 1;
+  } while (tmp1 < 3);
+}
 
+/* decompiler-derived */
+void func_020775a0(void)
+{
+  int tmp1;
+  int tmp2;
+  tmp2 = *data_0217231c;
+  if (tmp2 == 0) {
+    return;
+  }
+  tmp1 = ImageObj_Unk_0776d4();
+  if (tmp1 == 0) {
+    func_02077ddc(tmp2);
+    return;
+  }
+  *(u32 *)(tmp2 + 200) = 1;
+}
 
+int func_0205bb68();
+int func_0205ddb4();
+/* decompiler-derived */
+void func_02077640(void)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = ImageObj_Get_data_0217231c();
+  if (tmp1 == 0) {
+    return;
+  }
+  tmp2 = ImageObj_Unk_079028();
+  if (tmp2 == 0) {
+    return;
+  }
+  if (*(int *)(tmp1 + 0x18) != 0) {
+    func_0205ddb4();
+    *(u32 *)(tmp1 + 0x18) = 0;
+  }
+  func_0205bb68();
+  func_0205bb68();
+  *(u32 *)(tmp1 + 0x14) = 0;
+}
+
+int func_02077478();
+int func_020774b4();
+int func_02079268();
+/* decompiler-derived */
+void func_020791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = ImageObj_Unk_0778e8(arg0);
+  if (tmp1 == 0) {
+    tmp1 = func_02077478(arg0,arg1);
+    func_02079268(tmp1,arg2);
+  }
+  else {
+    if (((*(int *)(tmp1 + 0x48) == 1) || (*(int *)(tmp1 + 0x50) != arg1)) &&
+       (tmp2 = func_02077a9c(tmp1), tmp2 == 0)) {
+      func_020774b4(tmp1,arg1);
+    }
+    if (*(int *)(tmp1 + 0x48) != 0) {
+      func_02079268(tmp1,arg2);
+    }
+  }
+  *(u32 *)(tmp1 + 0x70) = arg3;
+}

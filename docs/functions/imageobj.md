@@ -72,3 +72,7 @@
 - `func_02078db4`
 - `func_02078730`
 - `func_020780f4`
+- `func_02077620`: decompiler-derived (plain cleanup)
+- `func_020775a0`: decompiler-derived (plain cleanup)
+- `func_02077640`: decompiler-derived (plain cleanup)
+- `func_020791a8`: decompiler-derived (proto cleanup)
