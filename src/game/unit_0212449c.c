@@ -40,3 +40,17 @@ void Unk12449c_Unk_12449c(int *arg0)
   }
   func_02044534(0x1e);
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_021245bc();
+void func_02124590(u8 *p)
+{
+    if (FIELD(u32, p, 60) == 0) {
+        return;
+    }
+    FIELD(u32, p, 40) = 0;
+    func_021245bc(p);
+    FIELD(u32, p, 40) = 1;
+}
