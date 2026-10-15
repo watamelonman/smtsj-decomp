@@ -93,3 +93,4 @@ int func_02096a14(void)
   } while (tmp3 < 0xc);
   return -1;
 }
+
