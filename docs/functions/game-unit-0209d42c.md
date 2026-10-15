@@ -30,3 +30,9 @@
 - `func_0209da38`
 - `func_0209d964`
 - `func_0209d500`
+
+## Not done in M1-T709
+- `func_0209de58`
+- `func_0209d7f4`
+- `func_0209e0b0`
+- `func_0209db70`
