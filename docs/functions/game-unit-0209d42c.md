@@ -38,3 +38,11 @@
 - `func_0209db70`
 - `Unk09d42c_Init_data_02176278`: hand-matched
 - `Unk09d42c_Unk_09d4bc`: hand-matched
+- `func_0209d60c`: hand-matched
+- `func_0209d65c`: hand-matched
+- `func_0209d6a4`: hand-matched
+- `func_0209d6f0`: hand-matched
+- `func_0209d7a8`: hand-matched
+- `func_0209df70`: hand-matched
+- `func_0209e080`: hand-matched
+- `func_0209e274`: hand-matched
