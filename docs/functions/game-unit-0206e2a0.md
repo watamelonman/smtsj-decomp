@@ -12,3 +12,6 @@
 - `func_0206e2b8`
 - `Unk06e2a0_GetEntrySubUnk34`: hand-matched
 - `Unk06e2a0_CopyEntryName`: hand-matched
+- `func_0206e418`: hand-matched
+- `func_0206e458`: hand-matched
+- `func_0206e498`: hand-matched

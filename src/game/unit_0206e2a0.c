@@ -27,3 +27,27 @@ void Unk06e2a0_CopyEntryName(int i, void *dst)
     }
     func_020086bc(dst, data_0216bac8 + i * 328 + 188, 32);
 }
+
+void func_0206e418(int i, void *dst)
+{
+    if ((s32)data_0216bac4[0] - 1 - i < 0) {
+        return;
+    }
+    func_020086bc(dst, data_0216bac8 + i * 328 + 220, 32);
+}
+
+void func_0206e458(int i, void *dst)
+{
+    if ((s32)data_0216bac4[0] - 1 - i < 0) {
+        return;
+    }
+    func_020086bc(dst, data_0216bac8 + i * 328 + 252, 32);
+}
+
+void func_0206e498(int i, void *dst)
+{
+    if ((s32)data_0216bac4[0] - 1 - i < 0) {
+        return;
+    }
+    func_020086bc(dst, data_0216bac8 + i * 328 + 284, 32);
+}
