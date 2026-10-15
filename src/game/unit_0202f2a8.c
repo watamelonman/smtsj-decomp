@@ -360,12 +360,12 @@ void Unk02f2a8_Unk_033ac8(int arg0)
 
 int func_02039160();
 /* decompiler-derived */
-u32 Unk02f2a8_Unk_034a8c(void)
+u32 Unk02f2a8_Unk_034a8c(u8 *base, int x, int y)
 {
   int tmp1;
   u32 tmp2;
   tmp2 = 0;
-  tmp1 = func_02039160();
+  tmp1 = func_02039160(base, x, y);
   if (tmp1 != 0) {
     tmp2 = (*(u32 *)(tmp1 + 4) & 0xffff) >> 0xc;
   }
