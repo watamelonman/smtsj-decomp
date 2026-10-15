@@ -73,7 +73,7 @@ typedef struct Unk044904Mgr {
 void func_0204a780();
 void func_0204a694();
 void Unk0bc1a8_Unk_0bc928();
-Unk044904Obj *func_02044fa0(int i)
+Unk044904Obj *Unk044904_GetSlot(int i)
 {
     Unk044904Mgr *m = UNK044904_MGR();
     if (m == 0) {
@@ -88,7 +88,7 @@ Unk044904Obj *func_02044fa0(int i)
     return m->slots[i];
 }
 
-void func_0204527c(void)
+void Unk044904_Unk_04527c(void)
 {
     int i;
     for (i = 0; i < 10; i++) {
@@ -99,7 +99,7 @@ void func_0204527c(void)
     }
 }
 
-void func_020453ac(void)
+void Unk044904_ClearSlotsUnk1de(void)
 {
     int i;
     for (i = 0; i < 10; i++) {
@@ -110,7 +110,7 @@ void func_020453ac(void)
     }
 }
 
-void func_02045430(void)
+void Unk044904_ForEachSlot_04a694(void)
 {
     int i;
     for (i = 0; i < 10; i++) {
@@ -121,7 +121,7 @@ void func_02045430(void)
     }
 }
 
-Unk044904Obj *func_020457a8(void)
+Unk044904Obj *Unk044904_FindInactiveSlot(void)
 {
     int i;
     for (i = 0; i < 10; i++) {
@@ -133,7 +133,7 @@ Unk044904Obj *func_020457a8(void)
     return 0;
 }
 
-void func_020459fc(void)
+void Unk044904_Unk_0459fc(void)
 {
     if (UNK044904_MGR()->flag_0040_10) {
         return;
@@ -142,12 +142,12 @@ void func_020459fc(void)
     UNK044904_MGR()->unk_0054 = 0;
 }
 
-int func_02045c38(void)
+int Unk044904_GetFlag18(void)
 {
     return UNK044904_MGR()->flag_0040_18 ? 1 : 0;
 }
 
-void func_02045c58(int x)
+void Unk044904_Unk_045c58(int x)
 {
     if (x != 1) {
         return;
@@ -370,7 +370,7 @@ u32 Unk044904_Unk_046448(u16 *arg0)
 
 int func_020450b8();
 int func_02045138();
-void func_0204527c();
+void Unk044904_Unk_04527c();
 int func_020aa118();
 int func_020f8098();
 /* decompiler-derived */
@@ -381,7 +381,7 @@ u32 Unk044904_Unk_046108(u16 *arg0)
   Unk044904_Unk_044fd8();
   func_020aa118();
   func_02045138();
-  func_0204527c();
+  Unk044904_Unk_04527c();
   func_020450b8();
   value1 = Unk044904_Unk_045080();
   value2 = func_020f8098(value1,0,0);

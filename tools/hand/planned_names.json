@@ -108,5 +108,13 @@
  "func_02041d70": "Unk03e43c_SetMode30",
  "func_02043410": "Unk03e43c_UpdatePos18",
  "func_020443e4": "Unk044394_HasEntry",
- "func_02044904": "Unk044904_FindById"
+ "func_02044904": "Unk044904_FindById",
+ "func_02044fa0": "Unk044904_GetSlot",
+ "func_0204527c": "Unk044904_Unk_04527c",
+ "func_020453ac": "Unk044904_ClearSlotsUnk1de",
+ "func_02045430": "Unk044904_ForEachSlot_04a694",
+ "func_020457a8": "Unk044904_FindInactiveSlot",
+ "func_020459fc": "Unk044904_Unk_0459fc",
+ "func_02045c38": "Unk044904_GetFlag18",
+ "func_02045c58": "Unk044904_Unk_045c58"
 }

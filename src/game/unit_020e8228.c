@@ -9,7 +9,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 extern u8 data_02150c30[];
 extern u32 data_02176cdc[];
 extern u32 data_02176ce0[];
-void func_02045c38(void);
+void Unk044904_GetFlag18(void);
 int func_02057524();
 void func_02057534(void);
 int func_02057eb8();
@@ -62,8 +62,8 @@ void Unk0e8228_Nop_0e93d4(void) { }
 /* forwards to `func_02057534` */
 void Unk0e8228_Thunk_02057534(void) { func_02057534(); }
 
-/* forwards to `func_02045c38` */
-void Unk0e8228_Thunk_02045c38(void) { func_02045c38(); }
+/* forwards to `Unk044904_GetFlag18` */
+void Unk0e8228_Thunk_02045c38(void) { Unk044904_GetFlag18(); }
 
 /* decompiler-derived */
 void Unk0e8228_Unk_0e8cd8(void)
@@ -501,7 +501,7 @@ void Unk0e8228_Unk_0e9fa4(u32 arg0)
 
 
 
-int func_020459fc();
+int Unk044904_Unk_0459fc();
 int func_02053800();
 int func_020e82c8();
 int func_020e85a0();
@@ -517,7 +517,7 @@ u32 Unk0e8228_Unk_0e85c8(void)
   }
   value = func_020e85a0(value);
   if ((value != 0) && (value = func_02053800(0,0x400), value != 0)) {
-    func_020459fc();
+    Unk044904_Unk_0459fc();
     Unk0e8228_Unk_0e8cd8();
     func_020e82c8();
     func_020fda58(2);

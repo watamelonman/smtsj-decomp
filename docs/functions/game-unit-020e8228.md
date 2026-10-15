@@ -2,7 +2,7 @@
 
 - `Unk0e8228_Nop_0e93d4` (4 B): empty callback
 - `Unk0e8228_Thunk_02057534` (12 B): forwards to `func_02057534`
-- `Unk0e8228_Thunk_02045c38` (12 B): forwards to `func_02045c38`
+- `Unk0e8228_Thunk_02045c38` (12 B): forwards to `Unk044904_GetFlag18`
 - `Unk0e8228_Unk_0e8cd8` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e8e50` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e8e6c` (16 B): decompiler-derived (Ghidra output, cleaned)
