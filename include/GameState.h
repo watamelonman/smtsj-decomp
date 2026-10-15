@@ -18,11 +18,12 @@ typedef struct GameStateRoot {
     u32 unk_18;
     u8  pad_1c[0x40];
     u32 unk_5c;
+    u32 unk_60;                 /* +0x60  cleared by func_02034b08 */
 } GameStateRoot;
 
 typedef struct GameState {
     GameStateRoot *root;        /* +0x0000 */
-    u8  pad_0004[0x3130];
+    u8  unk_0004[0x3130];       /* +0x0004  main body (returned by func_02034398) */
     u8  unk_3134[0xc];          /* +0x3134  sub-object, torn down by GameState_Shutdown */
     u8  unk_3140[0xc];          /* +0x3140  sub-object (Unk0387bc_*) */
     u8  unk_314c[0x79c];        /* +0x314C  sub-object (Unk038fbc_*); size unknown */
@@ -49,7 +50,8 @@ typedef struct GameState {
     u8  unk_7480;               /* +0x7480 */
     u8  pad_7481[0x73];
     u16 unk_74f4;               /* +0x74F4 */
-    u8  pad_74f6[0x5a];
+    u16 unk_74f6;               /* +0x74F6 */
+    u8  pad_74f8[0x58];
     u8  unk_7550[0x48];         /* +0x7550 */
     u8  unk_7598[4];            /* +0x7598 */
 } GameState;
