@@ -70,3 +70,7 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
 - Tail `moveq r0,#0; bxeq lr; mov r1,#7; str; mov r0,#1; bx lr` (separate return blocks) came from the
   early-return-in-if form: `if (x != old) { ...; return 1; } return 0;`. The `if (x == old) return 0;` form was predicated (b59).
 - `return p ? field : -1` with `ldrne` before `mvneq`: write the non-null case first (`if (p != 0) return field; return -1;`) (b59).
+- Do not decode literal-pool words from next.py's disassembly by hand: two different words (0x5bfc, 0x5ffc) both
+  printed as `strdeq r5,[r0],-ip`. Put a placeholder in, then read the real value from batch.py's word diff (b61).
+- ROM reloading `[p + i*4 + off]` after a call when FIELD() keeps it in a register: use a struct array member (`p->h[i]`) (b61).
+- merge_batch.py now skips TUs whose function list is empty (it used to stop on hmerge 'nocard') (b60).
