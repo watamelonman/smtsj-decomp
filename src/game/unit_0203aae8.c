@@ -136,7 +136,7 @@ void *func_0204fed8();
 void *Unk095560_Unk_095778();
 int func_0201f1dc();
 
-void func_0203ad24(u8 *p)
+void Unk03aae8_Unk_03ad24(u8 *p)
 {
     switch (FIELD(s32, p, 8)) {
     case 0: {
@@ -152,7 +152,7 @@ void func_0203ad24(u8 *p)
     }
 }
 
-void *func_0203ad98(u8 *p, int key)
+void *Unk03aae8_Unk_03ad98(u8 *p, int key)
 {
     void *r = 0;
     switch (FIELD(s32, p, 8)) {
@@ -171,7 +171,7 @@ void *func_0203ad98(u8 *p, int key)
     return r;
 }
 
-void *func_0203ae10(u8 *p, int key)
+void *Unk03aae8_Unk_03ae10(u8 *p, int key)
 {
     void *r = 0;
     switch (FIELD(s32, p, 8)) {

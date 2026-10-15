@@ -10,8 +10,8 @@ int Unk02dcfc_Unk_02df00();
 int Unk02dcfc_SetOwnerCode26();
 int func_0203ac00();
 int Unk03aae8_Unk_03ad14();
-int func_0203ad24();
-int func_0203ad98();
+int Unk03aae8_Unk_03ad24();
+int Unk03aae8_Unk_03ad98();
 int func_0205e484();
 int func_0205e590();
 int func_02065544();
@@ -200,10 +200,10 @@ u32 Unk03c474_Unk_03c638(void)
   value2 = Unk03aae8_Unk_03ad14();
   value2 = *(int *)(value2 + 0xe8);
   if (*(int *)(value2 + 0x28) == 0) {
-    func_0203ad24(value2);
+    Unk03aae8_Unk_03ad24(value2);
     *(u32 *)(value2 + 0x28) = 1;
   }
-  value1 = func_0203ad98(value2,value1);
+  value1 = Unk03aae8_Unk_03ad98(value2,value1);
   value3 = func_02065544();
   if (value3 == 0) {
     func_02065bc0();

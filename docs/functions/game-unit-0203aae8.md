@@ -14,12 +14,12 @@
 
 ## Not done in M1-T665
 - `Unk03aae8_Unk_03b93c`
-- `func_0203ae10`
+- `Unk03aae8_Unk_03ae10`
 - `func_0203b694`
 - `func_0203b8e4`
 - `func_0203b634`
-- `func_0203ad24`
-- `func_0203ad98`
+- `Unk03aae8_Unk_03ad24`
+- `Unk03aae8_Unk_03ad98`
 - `Unk03aae8_Unk_03ae68`: decompiler-derived
 
 ## Not done in M1-T666
@@ -40,6 +40,6 @@
 - `Unk03aae8_Unk_03af14`: hand-matched
 - `Unk03aae8_Unk_03b89c`: hand-matched
 - `Unk03aae8_Unk_03b93c`: hand-matched
-- `func_0203ad24`: hand-matched
-- `func_0203ad98`: hand-matched
-- `func_0203ae10`: hand-matched
+- `Unk03aae8_Unk_03ad24`: hand-matched
+- `Unk03aae8_Unk_03ad98`: hand-matched
+- `Unk03aae8_Unk_03ae10`: hand-matched

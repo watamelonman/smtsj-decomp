@@ -660,5 +660,10 @@
  "func_02035b74": "Unk02f2a8_Unk_035b74",
  "func_020387bc": "Unk0387bc_Unk_0387bc",
  "func_02039160": "Unk038fbc_Unk_039160",
- "func_020394b8": "Unk0392f8_Unk_0394b8"
+ "func_020394b8": "Unk0392f8_Unk_0394b8",
+ "func_02039774": "Unk039774_ListAppend",
+ "func_020397cc": "Unk039774_ListRemove",
+ "func_0203ad24": "Unk03aae8_Unk_03ad24",
+ "func_0203ad98": "Unk03aae8_Unk_03ad98",
+ "func_0203ae10": "Unk03aae8_Unk_03ae10"
 }

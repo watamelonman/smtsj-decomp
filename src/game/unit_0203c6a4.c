@@ -78,7 +78,7 @@ void Unk03c6a4_Unk_03c928(void)
 }
 
 
-int func_0203ae10();
+int Unk03aae8_Unk_03ae10();
 int func_02065544();
 int func_0206569c();
 int func_02065bc0();
@@ -95,7 +95,7 @@ u32 Unk03c6a4_Unk_03c6a4(void)
     Unk03aae8_Nop_03ae0c(value2);
     *(u32 *)(value2 + 0x2c) = 1;
   }
-  value1 = func_0203ae10(value2,value1);
+  value1 = Unk03aae8_Unk_03ae10(value2,value1);
   value3 = func_02065544();
   if (value3 == 0) {
     func_02065bc0();

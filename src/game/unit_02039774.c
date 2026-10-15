@@ -24,7 +24,7 @@ int func_020399f4();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-void func_02039774(u8 *n)
+void Unk039774_ListAppend(u8 *n)
 {
     if (data_0215de28.tail == 0) {
         data_0215de28.head = n;
@@ -40,7 +40,7 @@ void func_02039774(u8 *n)
     data_0215de28.count++;
 }
 
-void func_020397cc(u8 *n)
+void Unk039774_ListRemove(u8 *n)
 {
     if (data_0215de28.head == n) {
         data_0215de28.head = FIELD(u8 *, n, 228);
@@ -63,7 +63,7 @@ void Unk039774_Unk_039b00(u32 arg0)
   func_020399f4(arg0,0);
 }
 
-void func_020397cc();
+void Unk039774_ListRemove();
 int func_02053000();
 /* decompiler-derived */
 void Unk039774_Unk_039b10(int arg0)
@@ -80,7 +80,7 @@ void Unk039774_Unk_039b10(int arg0)
     func_02053000();
     ((Unk039774Work *)arg0)->unk_00d4 = 0;
   }
-  func_020397cc(arg0);
+  Unk039774_ListRemove(arg0);
   func_02053000(arg0);
 }
 
