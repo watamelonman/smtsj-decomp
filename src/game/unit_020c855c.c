@@ -72,7 +72,7 @@ u32 Unk0c855c_Unk_0c9bac(int arg0)
 }
 
 
-int func_0202e0cc();
+int Unk02e000_Unk_02e0cc();
 int func_02057fd8();
 int func_020c92f0();
 /* decompiler-derived */
@@ -82,7 +82,7 @@ void Unk0c855c_Unk_0c9890(u32 arg0,u32 arg1)
   u32 tmp2;
   u32 tmp3;
   int tmp4;
-  func_0202e0cc();
+  Unk02e000_Unk_02e0cc();
   tmp1 = func_02057fd8();
   tmp2 = func_02057fd8();
   tmp3 = func_02057fd8();

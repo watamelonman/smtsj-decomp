@@ -18,17 +18,17 @@
 
 ## Not done in M1-T1043
 - `func_020e2dec`
-- `func_020e51f4`
+- `Unk0e1648_Unk_0e51f4`
 - `func_020e1664`
 - `Unk0e1648_Unk_0e533c`: decompiler-derived
 
 ## Not done in M1-T1044
-- `func_020e51cc`
+- `Unk0e1648_Unk_0e51cc`
 - `func_020e536c`
-- `func_020e5214`
+- `Unk0e1648_Unk_0e5214`
 - `func_020e2f54`
 - `func_020e5198`
-- `func_020e5090`
+- `Unk0e1648_Unk_0e5090`
 - `func_020e544c`
 - `Unk0e1648_Unk_0e16f0`: decompiler-derived
 
@@ -70,7 +70,7 @@
 - `func_020e3e70`
 - `func_020e2fe8`
 - `func_020e4e28`
-- `func_020e51f4`: decompiler-derived (proto cleanup)
-- `func_020e51cc`: decompiler-derived (proto cleanup)
-- `func_020e5214`: decompiler-derived (proto cleanup)
-- `func_020e5090`: decompiler-derived (plain cleanup)
+- `Unk0e1648_Unk_0e51f4`: decompiler-derived (proto cleanup)
+- `Unk0e1648_Unk_0e51cc`: decompiler-derived (proto cleanup)
+- `Unk0e1648_Unk_0e5214`: decompiler-derived (proto cleanup)
+- `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)

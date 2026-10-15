@@ -12,11 +12,11 @@
 - `func_0206e034`
 
 ## Not done in M1-T339
-- `func_0206dee8`
+- `Unk06dddc_Unk_06dee8`
 - `func_0206dddc`
 - `func_0206e06c`
 - `func_0206de10`
 - `func_0206de7c`
 - `func_0206df10`
 - `func_0206e0dc`
-- `func_0206dee8`: decompiler-derived (plain cleanup)
+- `Unk06dddc_Unk_06dee8`: decompiler-derived (plain cleanup)

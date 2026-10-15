@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u32 data_02151b28[];
-int func_0202e228();
+int Unk02e000_Unk_02e228();
 void func_0206146c(void);
 void func_02118974(void);
 
@@ -38,7 +38,7 @@ void Unk118b04_Set_data_02151b28(u32 arg0)
 void Unk118b04_Unk_118b78(u32 arg0)
 {
   u32 value;
-  value = func_0202e228();
+  value = Unk02e000_Unk_02e228();
   Unk118b04_Unk_118b90(value,arg0);
 }
 
@@ -52,7 +52,7 @@ int Unk118b04_Unk_118b90(int arg0,int arg1)
 u32 Unk118b04_Unk_118e74(int arg0)
 {
   int value;
-  value = func_0202e228();
+  value = Unk02e000_Unk_02e228();
   return *(u32 *)(value + arg0 * 4 + 0x14);
 }
 
@@ -62,7 +62,7 @@ u32 Unk118b04_Unk_118e74(int arg0)
 int Unk118b04_Unk_118ba8(int arg0)
 {
   int value;
-  value = func_0202e228();
+  value = Unk02e000_Unk_02e228();
   return (*(u8 *)(value + arg0 + 0x94) & 2) != 0;
 }
 
@@ -71,7 +71,7 @@ int Unk118b04_Unk_118ba8(int arg0)
 void Unk118b04_Unk_118e50(int arg0,int arg1)
 {
   int value;
-  value = func_0202e228();
+  value = Unk02e000_Unk_02e228();
   *(int *)(value + 0x14 + arg0 * 4) = *(int *)(value + 0x14 + arg0 * 4) + arg1;
 }
 

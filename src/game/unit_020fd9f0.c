@@ -124,7 +124,7 @@ extern u8 data_021510e0[];
 int func_0205c2c4();
 int func_0205dcd4();
 /* decompiler-derived; refs "Battle/battle_help", "Battle/battle_talk" */
-void func_020fdbb8(u32 *arg0)
+void Unk0fd9f0_Unk_0fdbb8(u32 *arg0)
 {
   u32 tmp1;
   Unk05b82c_Unk_05b82c(0xd5);

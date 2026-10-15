@@ -125,7 +125,7 @@ extern u8 data_02151058[];
 extern u8 data_0215106c[];
 int func_0205dcd4();
 /* decompiler-derived; refs "Battle/battle_money", "Cave/cave_moneywindow" */
-void func_020fc9ac(int arg0,int arg1)
+void Unk0fc584_Unk_0fc9ac(int arg0,int arg1)
 {
   u32 tmp1;
   if (arg1 == 0) {

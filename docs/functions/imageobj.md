@@ -17,7 +17,7 @@
 - `ImageObj_Unk_079184`: decompiler-derived
 
 ## Not done in M1-T923
-- `func_02077620`
+- `ImageObj_Unk_077620`
 - `ImageObj_Unk_0775ec`: decompiler-derived
 - `ImageObj_Unk_0776d4`: decompiler-derived
 
@@ -32,10 +32,10 @@
 - `ImageObj_Unk_077688`: decompiler-derived
 
 ## Not done in M1-T925
-- `func_020775a0`
+- `ImageObj_Unk_0775a0`
 - `func_02077478`
 - `func_02077d98`
-- `func_02077640`
+- `ImageObj_Unk_077640`
 - `func_02077708`
 - `func_02077554`
 - `ImageObj_Unk_0779a0`: decompiler-derived
@@ -52,7 +52,7 @@
 ## Not done in M1-T927
 - `func_0207726c`
 - `func_02077750`
-- `func_020791a8`
+- `ImageObj_Unk_0791a8`
 - `func_020773dc`
 - `func_020774b4`
 - `func_02077900`
@@ -72,7 +72,7 @@
 - `func_02078db4`
 - `func_02078730`
 - `func_020780f4`
-- `func_02077620`: decompiler-derived (plain cleanup)
-- `func_020775a0`: decompiler-derived (plain cleanup)
-- `func_02077640`: decompiler-derived (plain cleanup)
-- `func_020791a8`: decompiler-derived (proto cleanup)
+- `ImageObj_Unk_077620`: decompiler-derived (plain cleanup)
+- `ImageObj_Unk_0775a0`: decompiler-derived (plain cleanup)
+- `ImageObj_Unk_077640`: decompiler-derived (plain cleanup)
+- `ImageObj_Unk_0791a8`: decompiler-derived (proto cleanup)

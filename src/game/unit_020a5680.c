@@ -60,7 +60,7 @@ void Unk0a5680_Unk_0a611c(void)
 
 int func_020a5e8c();
 /* decompiler-derived */
-void func_020a5fb0(void)
+void Unk0a5680_Unk_0a5fb0(void)
 {
   func_020a5e8c(*data_02176b14);
 }

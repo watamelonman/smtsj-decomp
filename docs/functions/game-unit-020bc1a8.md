@@ -16,7 +16,7 @@
 ## Not done in M1-T546
 - `func_020bc548`
 - `func_020bc570`
-- `func_020bc514`
+- `Unk0bc1a8_Unk_0bc514`
 - `func_020bc650`
 - `func_020bc614`
 - `func_020bc5d4`
@@ -39,4 +39,4 @@
 - `func_020bc9f4`
 - `func_020bcacc`
 - `func_020bc200`
-- `func_020bc514`: decompiler-derived (plain cleanup)
+- `Unk0bc1a8_Unk_0bc514`: decompiler-derived (plain cleanup)

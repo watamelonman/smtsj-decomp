@@ -165,7 +165,7 @@ void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
 
 
 int func_0202cbec();
-void func_020df814(void);
+void SaveLoadTask_Unk_0df814(void);
 int func_02124dac();
 /* decompiler-derived */
 void SaveLoadTask_Unk_0df94c(void)
@@ -199,7 +199,7 @@ LAB_020df988:
       return;
     }
   }
-  func_020df814();
+  SaveLoadTask_Unk_0df814();
   return;
 }
 
@@ -315,7 +315,7 @@ void SaveLoadTask_SelectEntry(u32 entry)
 
 int func_020525cc();
 /* decompiler-derived */
-void func_020df814(void)
+void SaveLoadTask_Unk_0df814(void)
 {
   u32 tmp1;
   tmp1 = func_0202cbec();

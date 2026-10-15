@@ -282,7 +282,7 @@ int func_02013c3c();
 int func_020513d4();
 int func_020a1740();
 /* decompiler-derived; refs "Data/Enemy/AI/ai_%s.bf", "Data/Enemy/AI/ai_scr_test.bf" */
-void func_02045898(u32 arg0,u32 arg1)
+void Unk044904_Unk_045898(u32 arg0,u32 arg1)
 {
   int tmp1;
   tmp1 = func_020a1740(arg1);

@@ -8,6 +8,6 @@
 - `func_0210f9ac`
 - `func_0210f970`
 - `func_0210b98c`
-- `func_0210f9f4`
+- `UniteEvent_Unk_10f9f4`
 - `func_0210fa60`
-- `func_0210f9f4`: decompiler-derived (plain cleanup)
+- `UniteEvent_Unk_10f9f4`: decompiler-derived (plain cleanup)

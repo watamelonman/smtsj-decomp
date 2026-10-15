@@ -68,12 +68,12 @@ void Unk0986ac_Unk_098990(u8 arg0)
   *(u8 *)(value + 0xd) = arg0;
 }
 
-int func_0202e0cc();
+int Unk02e000_Unk_02e0cc();
 int Unk05b82c_Unk_05b82c();
 /* decompiler-derived */
 u32 Unk0986ac_Unk_099300(void)
 {
-  func_0202e0cc();
+  Unk02e000_Unk_02e0cc();
   Unk05b82c_Unk_05b82c(0xbf);
   return 1;
 }
@@ -96,7 +96,7 @@ u32 Unk0986ac_Unk_098918(void)
 }
 
 /* decompiler-derived */
-u8 func_02098980(void)
+u8 Unk0986ac_Unk_098980(void)
 {
   int tmp1;
   tmp1 = Unk0986ac_Unk_0986ac();

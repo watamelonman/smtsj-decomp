@@ -33,7 +33,7 @@
 - `Unk0e8228_IsSet_data_02176cdc` (28 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020e8244`: no candidate matched locally
+- `Unk0e8228_Call_02008848`: no candidate matched locally
 - `Unk0e8228_Unk_0e82ac`: decompiler-derived
 - `Unk0e8228_Unk_0e8684`: decompiler-derived
 - `Unk0e8228_Unk_0e8cbc`: decompiler-derived
@@ -43,7 +43,7 @@
 
 ## Not done in M1-T901
 - `func_020e8c80`
-- `func_020e8e8c`
+- `Unk0e8228_Unk_0e8e8c`
 - `Unk0e8228_Unk_0e9728`: decompiler-derived
 - `Unk0e8228_Unk_0e9f18`: decompiler-derived
 - `Unk0e8228_Unk_0e9f38`: decompiler-derived
@@ -59,7 +59,7 @@
 - `Unk0e8228_Unk_0e9fa4`: decompiler-derived
 
 ## Not done in M1-T903
-- `func_020e8d90`
+- `Unk0e8228_Unk_0e8d90`
 - `func_020e8e28`
 - `func_020e8ce8`
 - `func_020e9748`
@@ -112,6 +112,6 @@
 - `func_020e9060`
 - `func_020e94d8`
 - `func_020e8710`
-- `func_020e8244`: decompiler-derived (plain cleanup)
-- `func_020e8e8c`: decompiler-derived (plain cleanup)
-- `func_020e8d90`: decompiler-derived (plain cleanup)
+- `Unk0e8228_Call_02008848`: decompiler-derived (plain cleanup)
+- `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
+- `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)

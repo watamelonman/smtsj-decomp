@@ -16,7 +16,7 @@
 ## Not done in M1-T435
 - `func_020bd54c`
 - `func_020bd034`
-- `func_020bd584`
+- `Unk0bcef4_Unk_0bd584`
 - `func_020bd398`
 - `func_020bd418`
 - `func_020bd30c`
@@ -29,4 +29,4 @@
 - `func_020bcf14`
 - `func_020bd49c`
 - `func_020bd1a8`
-- `func_020bd584`: decompiler-derived (plain cleanup)
+- `Unk0bcef4_Unk_0bd584`: decompiler-derived (plain cleanup)

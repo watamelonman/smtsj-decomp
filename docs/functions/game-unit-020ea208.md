@@ -55,5 +55,5 @@
 - `func_020eaa90`
 - `func_020eae84`
 - `func_020eb488`
-- `func_020ea878`: decompiler-derived (plain cleanup)
-- `func_020ea984`: decompiler-derived (plain cleanup)
+- `Unk0ea208_Unk_0ea878`: decompiler-derived (plain cleanup)
+- `Unk0ea208_Unk_0ea984`: decompiler-derived (plain cleanup)

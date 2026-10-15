@@ -7,9 +7,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk094fe0_Thunk_0202e8cc();
-void func_020e61e8(u32 arg0,u32 arg1,u32 arg2);
-void func_020e626c(u32 arg0,u32 arg1);
-void func_020e62a4(u32 arg0,u32 arg1);
+void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2);
+void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1);
+void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1);
 int func_020e62e0();
 int func_020e6360();
 int func_020e63e0();
@@ -51,7 +51,7 @@ void Unk0e5fb8_Unk_0e6254(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e626c(value,arg0);
+  Unk0e5fb8_Unk_0e626c(value,arg0);
 }
 
 /* decompiler-derived */
@@ -59,7 +59,7 @@ void Unk0e5fb8_Unk_0e628c(u32 arg0)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e62a4(value,arg0);
+  Unk0e5fb8_Unk_0e62a4(value,arg0);
 }
 
 /* decompiler-derived */
@@ -107,7 +107,7 @@ void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1)
 {
   u32 value;
   value = Unk094fe0_Thunk_0202e8cc();
-  func_020e61e8(value,arg0,arg1);
+  Unk0e5fb8_Unk_0e61e8(value,arg0,arg1);
 }
 
 
@@ -166,7 +166,7 @@ void Unk0e5fb8_Unk_0e649c(u32 arg0,u32 arg1)
 
 int func_020950b4();
 /* decompiler-derived */
-void func_020e626c(u32 arg0,u32 arg1)
+void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = Unk0e5fb8_Unk_0e6158(arg1);
@@ -174,7 +174,7 @@ void func_020e626c(u32 arg0,u32 arg1)
 }
 
 /* decompiler-derived */
-void func_020e61e8(u32 arg0,u32 arg1,u32 arg2)
+void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 tmp1;
   tmp1 = func_020e613c(arg1,arg2);
@@ -182,7 +182,7 @@ void func_020e61e8(u32 arg0,u32 arg1,u32 arg2)
 }
 
 /* decompiler-derived */
-void func_020e62a4(u32 arg0,u32 arg1)
+void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = Unk0e5fb8_Unk_0e6158(arg1);

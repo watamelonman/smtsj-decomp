@@ -24,7 +24,7 @@
 
 ## Not done in M1-T527
 - `func_020fc584`
-- `func_020fc9ac`
+- `Unk0fc584_Unk_0fc9ac`
 - `func_020fcf5c`
 - `func_020fc5d4`
 - `func_020fc944`
@@ -35,4 +35,4 @@
 - `func_020fcc10`
 - `func_020fca5c`
 - `func_020fcd18`
-- `func_020fc9ac`: decompiler-derived (plain cleanup)
+- `Unk0fc584_Unk_0fc9ac`: decompiler-derived (plain cleanup)

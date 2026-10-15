@@ -17,13 +17,13 @@
 - `func_0202e8cc`: no candidate matched locally
 - `func_0202e578`: no candidate matched locally
 - `func_0202e590`: no candidate matched locally
-- `func_0202e228`: objdiff < 100%
+- `Unk02e000_Unk_02e228`: objdiff < 100%
 - `Unk02e000_Unk_02e144`: decompiler-derived
 
 ## Not done in M1-T652
 - `func_0202e070`
 - `func_0202e904`
-- `func_0202e0cc`
+- `Unk02e000_Unk_02e0cc`
 - `func_0202e440`
 - `func_0202e114`
 - `func_0202e1f8`
@@ -41,7 +41,7 @@
 
 ## Not done in M1-T653
 - `func_0202e7c0`
-- `func_0202e180`
+- `Unk02e000_Unk_02e180`
 - `func_0202e034`
 - `func_0202eb0c`
 - `func_0202e1b8`
@@ -74,6 +74,6 @@
 - `func_0202e468`
 - `func_0202e5dc`
 - `func_0202e23c`
-- `func_0202e228`: decompiler-derived (plain cleanup)
-- `func_0202e0cc`: decompiler-derived (plain cleanup)
-- `func_0202e180`: decompiler-derived (plain cleanup)
+- `Unk02e000_Unk_02e228`: decompiler-derived (plain cleanup)
+- `Unk02e000_Unk_02e0cc`: decompiler-derived (plain cleanup)
+- `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)

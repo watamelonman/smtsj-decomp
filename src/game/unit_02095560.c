@@ -55,11 +55,11 @@ u32 Unk095560_Unk_095d3c(void)
 }
 
 int func_02065ca8();
-void func_02095728(void);
+void Unk095560_Unk_095728(void);
 /* decompiler-derived */
 void Unk095560_Unk_096130(void)
 {
-  func_02095728();
+  Unk095560_Unk_095728();
   func_02065ca8();
 }
 
@@ -72,12 +72,12 @@ void Unk095560_Unk_095764(u32 arg0)
 
 
 int ImageObj_Unk_0775ec();
-int func_02077640();
+int ImageObj_Unk_077640();
 /* decompiler-derived */
 void Unk095560_Unk_09615c(void)
 {
   ImageObj_Unk_0775ec();
-  func_02077640();
+  ImageObj_Unk_077640();
   func_02065ca8();
 }
 
@@ -148,7 +148,7 @@ void Unk095560_Unk_096170(void)
   value = func_02095818();
   if (value == 0) {
     ImageBg_Unk_0e5530();
-    func_02077640();
+    ImageObj_Unk_077640();
     func_02065ca8();
   }
   else {
@@ -288,7 +288,7 @@ void func_02095b48(char *buf, int id)
 }
 
 /* decompiler-derived */
-void func_02095728(void)
+void Unk095560_Unk_095728(void)
 {
   ImageBg_Unk_0e5530();
   ImageObj_Unk_0775d8();

@@ -18,8 +18,8 @@ int func_02099d14();
 int ScanVisor_Unk_0a29a0();
 int func_020e8374();
 int func_020e849c();
-void func_020e8d90(u32 arg0,u32 arg1);
-void func_020e8e8c(u32 arg0);
+void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1);
+void Unk0e8228_Unk_0e8e8c(u32 arg0);
 int func_020e9c00();
 int func_020ea5e4();
 int Unk0ea208_Get_data_02176ddc();
@@ -92,7 +92,7 @@ void Unk0e8228_Unk_0e8e7c(void)
 /* decompiler-derived */
 void Unk0e8228_Unk_0e8eac(int arg0)
 {
-  func_020e8e8c(arg0 + 8);
+  Unk0e8228_Unk_0e8e8c(arg0 + 8);
 }
 
 /* decompiler-derived */
@@ -104,7 +104,7 @@ u32 Unk0e8228_Get_data_02176ce0(void)
 /* decompiler-derived */
 void Unk0e8228_Unk_0e8398(void)
 {
-  func_020e8d90(7,0xffffffff);
+  Unk0e8228_Unk_0e8d90(7,0xffffffff);
 }
 
 /* decompiler-derived */
@@ -529,13 +529,13 @@ u32 Unk0e8228_Unk_0e85c8(void)
 
 extern u8 data_02176ce4[];
 /* decompiler-derived */
-void func_020e8244(void)
+void Unk0e8228_Call_02008848(void)
 {
   func_02008848(data_02176ce4,0,0xf8);
 }
 
 /* decompiler-derived */
-void func_020e8e8c(u32 arg0)
+void Unk0e8228_Unk_0e8e8c(u32 arg0)
 {
   int tmp1;
   tmp1 = Unk0e8228_Get_data_02176ce0();
@@ -547,7 +547,7 @@ void func_020e8e8c(u32 arg0)
 
 int func_020e9de4();
 /* decompiler-derived */
-void func_020e8d90(u32 arg0,u32 arg1)
+void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1)
 {
   int tmp1;
   tmp1 = Unk0e8228_Get_data_02176ce0();

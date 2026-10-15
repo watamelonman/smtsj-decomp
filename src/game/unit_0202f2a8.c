@@ -20,7 +20,7 @@ u16 GameState_GetUnkField74f4(void) { return gGameState->unk_74f4; }
 
 int func_020360d8();
 /* decompiler-derived */
-void func_02035ec4(int arg0,u32 arg1)
+void Unk02f2a8_Unk_035ec4(int arg0,u32 arg1)
 {
   u16 tmp1;
   tmp1 = func_020360d8(arg1);
@@ -29,16 +29,16 @@ void func_02035ec4(int arg0,u32 arg1)
 
 int func_0202e788();
 /* decompiler-derived */
-void func_02030578(int arg0)
+void Unk02f2a8_Unk_030578(int arg0)
 {
   int tmp1;
   tmp1 = func_0202e788();
-  func_02035ec4(arg0 + 0x7c,*(u32 *)(tmp1 + 0x358));
+  Unk02f2a8_Unk_035ec4(arg0 + 0x7c,*(u32 *)(tmp1 + 0x358));
 }
 
 int func_02061424();
 /* decompiler-derived */
-void func_02030478(int arg0)
+void Unk02f2a8_Unk_030478(int arg0)
 {
   if (arg0 == 0) {
     return;
@@ -48,7 +48,7 @@ void func_02030478(int arg0)
 }
 
 /* decompiler-derived */
-void func_02033890(int arg0)
+void Unk02f2a8_Unk_033890(int arg0)
 {
   *(u32 *)(arg0 + 0x7478) = 0;
   *(u8 *)(arg0 + 0x7480) = 0;
@@ -58,7 +58,7 @@ void func_02033890(int arg0)
 }
 
 /* decompiler-derived */
-void func_02033ac8(int arg0)
+void Unk02f2a8_Unk_033ac8(int arg0)
 {
   *(u32 *)(arg0 + 0x7478) = 0;
   *(u8 *)(arg0 + 0x7480) = 0;
@@ -69,7 +69,7 @@ void func_02033ac8(int arg0)
 
 int func_02039160();
 /* decompiler-derived */
-u32 func_02034a8c(void)
+u32 Unk02f2a8_Unk_034a8c(void)
 {
   int tmp1;
   u32 tmp2;
@@ -86,7 +86,7 @@ int func_02044428();
 int func_02044534();
 int func_020f43d4();
 /* decompiler-derived */
-void func_02035440(int arg0)
+void Unk02f2a8_Unk_035440(int arg0)
 {
   if (arg0 == 0) {
     arg0 = 1;
@@ -99,7 +99,7 @@ void func_02035440(int arg0)
 
 int func_02050088();
 /* decompiler-derived */
-void func_02036488(void)
+void Unk02f2a8_Unk_036488(void)
 {
   u16 tmp1;
   int tmp2;
@@ -111,7 +111,7 @@ void func_02036488(void)
 
 int func_0205bb68();
 /* decompiler-derived */
-void func_020343b4(int arg0)
+void Unk02f2a8_Unk_0343b4(int arg0)
 {
   int tmp1;
   tmp1 = 0;
@@ -129,12 +129,12 @@ int func_020572c0();
 int func_0205e590();
 int func_020956a8();
 /* decompiler-derived */
-void func_02033c94(u32 *arg0)
+void Unk02f2a8_Unk_033c94(u32 *arg0)
 {
   func_02030d20(arg0,1);
   func_020956a8();
   func_02044534(0x24);
-  func_02030478(*arg0);
+  Unk02f2a8_Unk_030478(*arg0);
   func_02061424(arg0);
   func_020572c0();
   func_0205e590(0);
@@ -143,7 +143,7 @@ void func_02033c94(u32 *arg0)
 int func_020361ec();
 int func_020a0da4();
 /* decompiler-derived */
-void func_0202fc10(int arg0)
+void Unk02f2a8_Unk_02fc10(int arg0)
 {
   int tmp1;
   int tmp2;
@@ -161,7 +161,7 @@ void func_0202fc10(int arg0)
 int func_021214e0();
 int func_021215d4();
 /* decompiler-derived */
-void func_0202f8ac(int arg0)
+void Unk02f2a8_Unk_02f8ac(int arg0)
 {
   int tmp1;
   *(u32 *)(arg0 + 0x1c) = 0;
@@ -181,7 +181,7 @@ int func_0202f8f0();
 int func_0202fc50();
 int func_02030204();
 /* decompiler-derived */
-void func_020302f4(int arg0)
+void Unk02f2a8_Unk_0302f4(int arg0)
 {
   switch(*(u32 *)(arg0 + 0x10)) {
   case 0:
@@ -207,7 +207,7 @@ void func_020302f4(int arg0)
 }
 
 /* decompiler-derived */
-void func_0203064c(int *arg0)
+void Unk02f2a8_Unk_03064c(int *arg0)
 {
   int tmp1;
   arg0[0x1cf8] = 1;
@@ -225,7 +225,7 @@ void func_0203064c(int *arg0)
 }
 
 /* decompiler-derived */
-void func_020306a8(int *arg0)
+void Unk02f2a8_Unk_0306a8(int *arg0)
 {
   *(u32 *)(*arg0 + 0x4c) = 1;
   *(u32 *)(*arg0 + 0x54) = 1;
@@ -243,7 +243,7 @@ void func_020306a8(int *arg0)
 int func_02035edc();
 int func_02036368();
 /* decompiler-derived */
-void func_0202f378(int arg0)
+void Unk02f2a8_Unk_02f378(int arg0)
 {
   if (*(int *)(arg0 + 0x60) == 1) {
     if (*(u32 *)(arg0 + 0x6c) < *(u32 *)(arg0 + 0x68)) {
@@ -261,7 +261,7 @@ void func_0202f378(int arg0)
 int func_02034ad4();
 int func_0205257c();
 /* decompiler-derived */
-void func_02032f3c(int *arg0)
+void Unk02f2a8_Unk_032f3c(int *arg0)
 {
   func_0205257c(4);
   Unk0a4e48_Unk_0a4e9c(3);

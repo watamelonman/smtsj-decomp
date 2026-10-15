@@ -9,7 +9,7 @@
 - `Unk0986ac_Unk_0986c0` (20 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_02098980`: objdiff < 100%
+- `Unk0986ac_Unk_098980`: objdiff < 100%
 - `Unk0986ac_Unk_098990`: decompiler-derived
 - `Unk0986ac_Unk_099300`: decompiler-derived
 - `Unk0986ac_Unk_098918`: decompiler-derived
@@ -40,4 +40,4 @@
 - `func_020993a8`
 - `func_02098fec`
 - `func_02098b9c`
-- `func_02098980`: decompiler-derived (plain cleanup)
+- `Unk0986ac_Unk_098980`: decompiler-derived (plain cleanup)

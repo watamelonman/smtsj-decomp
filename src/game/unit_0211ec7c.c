@@ -29,12 +29,12 @@ typedef struct Unk11ec7cWork {
 
 void Unk11ec7c_Nop_11ef08(void) { }
 
-int func_0202e0cc();
+int Unk02e000_Unk_02e0cc();
 int Unk05b82c_Unk_05b82c();
 /* decompiler-derived */
 u32 Unk11ec7c_Unk_11efec(void)
 {
-  func_0202e0cc();
+  Unk02e000_Unk_02e0cc();
   Unk05b82c_Unk_05b82c(0xd2);
   return 1;
 }
@@ -114,7 +114,7 @@ void Unk11ec7c_Unk_11f004(int *arg0)
   *arg0 = 1;
   arg0[3] = 0;
   arg0[4] = 0;
-  func_0202e0cc();
+  Unk02e000_Unk_02e0cc();
   tmp1 = func_0205dcd4(((int)data_02151fb4),1);
   arg0[1] = tmp1;
   tmp1 = func_020629ac(5,1,1,1);

@@ -84,7 +84,7 @@ int func_0206df10();
 int func_0206f6e4();
 int func_02071fcc();
 /* decompiler-derived; refs "Data/Effect/%s", "Data/Effect/%s" */
-void func_0210f9f4(int arg0,u32 arg1,int arg2,u32 arg3)
+void UniteEvent_Unk_10f9f4(int arg0,u32 arg1,int arg2,u32 arg3)
 {
   u8 tmp1;
   u8 auStack_98 [128];

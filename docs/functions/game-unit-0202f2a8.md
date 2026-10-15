@@ -8,20 +8,20 @@
 
 ## Not done in M1-T1105
 - `func_02034db8`
-- `func_02035ec4`
-- `func_02030478`
-- `func_02030578`
+- `Unk02f2a8_Unk_035ec4`
+- `Unk02f2a8_Unk_030478`
+- `Unk02f2a8_Unk_030578`
 - `func_02034398`
 - `func_02034954`
 - `func_02034b08`
-- `func_02033890`
+- `Unk02f2a8_Unk_033890`
 
 ## Not done in M1-T1106
-- `func_02033ac8`
+- `Unk02f2a8_Unk_033ac8`
 - `func_02032df4`
 - `func_02034a44`
 - `func_02034a68`
-- `func_02034a8c`
+- `Unk02f2a8_Unk_034a8c`
 - `func_02034ab0`
 - `func_02035c90`
 - `func_02035ab8`
@@ -30,24 +30,24 @@
 - `func_02035ae0`
 - `func_020353cc`
 - `func_020353f8`
-- `func_02035440`
+- `Unk02f2a8_Unk_035440`
 - `func_02030548`
 - `func_0202f2a8`
 - `func_02034ad4`
 - `func_02035c5c`
 
 ## Not done in M1-T1108
-- `func_02036488`
+- `Unk02f2a8_Unk_036488`
 - `func_02032a08`
-- `func_020343b4`
-- `func_02033c94`
+- `Unk02f2a8_Unk_0343b4`
+- `Unk02f2a8_Unk_033c94`
 - `func_02035bd8`
-- `func_0202fc10`
+- `Unk02f2a8_Unk_02fc10`
 - `func_02031408`
 - `func_0203538c`
 
 ## Not done in M1-T1109
-- `func_0202f8ac`
+- `Unk02f2a8_Unk_02f8ac`
 - `func_02034d5c`
 - `func_020360d8`
 - `func_0202f330`
@@ -61,13 +61,13 @@
 - `func_02036318`
 - `func_0202f2dc`
 - `func_02034970`
-- `func_020302f4`
+- `Unk02f2a8_Unk_0302f4`
 - `func_02034b24`
-- `func_0203064c`
-- `func_020306a8`
+- `Unk02f2a8_Unk_03064c`
+- `Unk02f2a8_Unk_0306a8`
 
 ## Not done in M1-T1111
-- `func_0202f378`
+- `Unk02f2a8_Unk_02f378`
 - `func_02030294`
 - `func_020308c0`
 - `func_02030d20`
@@ -82,7 +82,7 @@
 - `func_02035820`
 - `func_02036068`
 - `func_0203034c`
-- `func_02032f3c`
+- `Unk02f2a8_Unk_032f3c`
 - `func_020349c4`
 - `func_020351b4`
 
@@ -145,20 +145,20 @@
 - `func_0203675c`
 - `func_020368e8`
 - `func_020364bc`
-- `func_02035ec4`: decompiler-derived (plain cleanup)
-- `func_02030578`: decompiler-derived (plain cleanup)
-- `func_02030478`: decompiler-derived (plain cleanup)
-- `func_02033890`: decompiler-derived (plain cleanup)
-- `func_02033ac8`: decompiler-derived (plain cleanup)
-- `func_02034a8c`: decompiler-derived (plain cleanup)
-- `func_02035440`: decompiler-derived (plain cleanup)
-- `func_02036488`: decompiler-derived (plain cleanup)
-- `func_020343b4`: decompiler-derived (plain cleanup)
-- `func_02033c94`: decompiler-derived (plain cleanup)
-- `func_0202fc10`: decompiler-derived (plain cleanup)
-- `func_0202f8ac`: decompiler-derived (plain cleanup)
-- `func_020302f4`: decompiler-derived (plain cleanup)
-- `func_0203064c`: decompiler-derived (plain cleanup)
-- `func_020306a8`: decompiler-derived (plain cleanup)
-- `func_0202f378`: decompiler-derived (plain cleanup)
-- `func_02032f3c`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_035ec4`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_030578`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_030478`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_033890`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_033ac8`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_034a8c`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_035440`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_036488`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_0343b4`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_033c94`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_02fc10`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_02f8ac`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_0302f4`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_03064c`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_0306a8`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_02f378`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_032f3c`: decompiler-derived (plain cleanup)

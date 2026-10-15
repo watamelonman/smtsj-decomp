@@ -99,11 +99,11 @@ u32 ScanVisor_Get_data_02176b04(void)
   return *data_02176b04;
 }
 
-void func_020a4a44(int arg0);
+void ScanVisor_Unk_0a4a44(int arg0);
 /* decompiler-derived */
 void ScanVisor_Unk_0a3620(int arg0)
 {
-  func_020a4a44(arg0 + 0x24c);
+  ScanVisor_Unk_0a4a44(arg0 + 0x24c);
   return;
 }
 
@@ -116,11 +116,11 @@ void ScanVisor_Unk_0a465c(int arg0)
   return;
 }
 
-void func_020a4950(int arg0,u32 arg1,int arg2);
+void ScanVisor_Unk_0a4950(int arg0,u32 arg1,int arg2);
 /* decompiler-derived */
 void ScanVisor_Unk_0a4a30(u32 arg0)
 {
-  func_020a4950(arg0,1,1);
+  ScanVisor_Unk_0a4950(arg0,1,1);
   return;
 }
 
@@ -451,7 +451,7 @@ void ScanVisor_Unk_0a28b0(int arg0)
 int func_020a277c();
 int func_020a2820();
 int func_020a2884();
-void func_020a4864(int arg0);
+void ScanVisor_Unk_0a4864(int arg0);
 /* decompiler-derived */
 void ScanVisor_Unk_0a2660(void)
 {
@@ -464,7 +464,7 @@ void ScanVisor_Unk_0a2660(void)
   ScanVisor_Unk_0a27e0(0);
   func_020a2820(0);
   func_020a2884(0);
-  func_020a4864(tmp1 + 0x24c);
+  ScanVisor_Unk_0a4864(tmp1 + 0x24c);
   return;
 }
 
@@ -488,7 +488,7 @@ void ScanVisor_Unk_0a273c(u32 arg0)
 
 
 
-int func_0202e0cc();
+int Unk02e000_Unk_02e0cc();
 int func_0205af2c();
 int func_0205bb68();
 int func_0205ddb4();
@@ -533,7 +533,7 @@ void ScanVisor_Unk_0a2e5c(int arg0)
   func_0205bb68();
   func_0205bb68();
   func_020ca648(2);
-  func_0202e0cc();
+  Unk02e000_Unk_02e0cc();
   func_0205af2c(0xc2);
   func_0205bb68();
   *data_02176b04 = 0;
@@ -546,7 +546,7 @@ extern u8 data_0214ce08[];
 int func_0205dcd4();
 int func_020c8ce0();
 /* decompiler-derived; refs "Visor/e_appearance", "Visor/search_parts01" */
-void func_020a370c(int arg0,u32 arg1)
+void ScanVisor_Unk_0a370c(int arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = func_0205dcd4(data_0214cddc);
@@ -562,7 +562,7 @@ int func_02057eb8();
 int func_020a4578();
 int func_020a4a70();
 /* decompiler-derived */
-void func_020a4a44(int arg0)
+void ScanVisor_Unk_0a4a44(int arg0)
 {
   func_020a4578();
   if (*(int *)(arg0 + 0x198) == 0) {
@@ -573,7 +573,7 @@ void func_020a4a44(int arg0)
 }
 
 /* decompiler-derived */
-void func_020a4950(int arg0,u32 arg1,int arg2)
+void ScanVisor_Unk_0a4950(int arg0,u32 arg1,int arg2)
 {
   u32 tmp1;
   *(u32 *)(arg0 + 400) = arg1;
@@ -588,7 +588,7 @@ void func_020a4950(int arg0,u32 arg1,int arg2)
 }
 
 /* decompiler-derived */
-void func_020a4864(int arg0)
+void ScanVisor_Unk_0a4864(int arg0)
 {
   int tmp1;
   int *v2;

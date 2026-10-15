@@ -16,7 +16,7 @@
 ## Not done in M1-T509
 - `func_020fde0c`
 - `func_020fda58`
-- `func_020fdbb8`
+- `Unk0fd9f0_Unk_0fdbb8`
 - `func_020fdaa8`
 - `func_020fdb14`
 - `func_020fdc18`
@@ -28,4 +28,4 @@
 - `func_020fdc88`
 - `func_020fde4c`
 - `func_020fe004`
-- `func_020fdbb8`: decompiler-derived (plain cleanup)
+- `Unk0fd9f0_Unk_0fdbb8`: decompiler-derived (plain cleanup)

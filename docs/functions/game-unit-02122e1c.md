@@ -16,7 +16,7 @@
 ## Not done in M1-T748
 - `func_0212351c`
 - `func_02122fd0`
-- `func_021241cc`
+- `Unk122e1c_Unk_1241cc`
 - `func_02122fac`
 - `Unk122e1c_Unk_122ff0`: decompiler-derived
 - `Unk122e1c_Unk_123294`: decompiler-derived
@@ -28,4 +28,4 @@
 - `func_02123340`
 - `func_02122e1c`
 - `func_021233e0`
-- `func_021241cc`: decompiler-derived (plain cleanup)
+- `Unk122e1c_Unk_1241cc`: decompiler-derived (plain cleanup)

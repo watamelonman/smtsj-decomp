@@ -18,9 +18,9 @@ typedef struct ImageObjWork {
 
 
 extern u32 data_0217231c[];
-void func_020775a0(void);
-void func_02077620(void);
-void func_02077640(void);
+void ImageObj_Unk_0775a0(void);
+void ImageObj_Unk_077620(void);
+void ImageObj_Unk_077640(void);
 int func_02077ddc();
 int func_02079238();
 
@@ -42,9 +42,9 @@ u32 ImageObj_Get_data_0217231c(void)
 /* decompiler-derived */
 void ImageObj_Unk_0775d8(void)
 {
-  func_02077620();
-  func_020775a0();
-  func_02077640();
+  ImageObj_Unk_077620();
+  ImageObj_Unk_0775a0();
+  ImageObj_Unk_077640();
 }
 
 /* decompiler-derived */
@@ -110,32 +110,32 @@ void ImageObj_Unk_0773bc(void)
   }
 }
 
-void func_020791a8(u32 arg0,int arg1,u32 arg2,u32 arg3);
+void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3);
 /* decompiler-derived */
 void ImageObj_Unk_07782c(u32 arg0,u32 arg1)
 {
-  func_020791a8(0,arg0,arg1,0);
+  ImageObj_Unk_0791a8(0,arg0,arg1,0);
 }
 
 
 /* decompiler-derived */
 void ImageObj_Unk_077860(u32 arg0,int arg1)
 {
-  func_020791a8(1,arg0,arg1 + 1,0);
+  ImageObj_Unk_0791a8(1,arg0,arg1 + 1,0);
 }
 
 
 /* decompiler-derived */
 void ImageObj_Unk_077894(u32 arg0,int arg1)
 {
-  func_020791a8(2,arg0,arg1 + 3,0);
+  ImageObj_Unk_0791a8(2,arg0,arg1 + 3,0);
 }
 
 
 /* decompiler-derived */
 void ImageObj_Unk_0778b4(u32 arg0,int arg1)
 {
-  func_020791a8(2,arg0,arg1 + 3,1);
+  ImageObj_Unk_0791a8(2,arg0,arg1 + 3,1);
 }
 
 int func_02061424();
@@ -255,7 +255,7 @@ void ImageObj_Unk_0779a0(u32 *arg0,u32 arg1)
 }
 
 /* decompiler-derived */
-void func_02077620(void)
+void ImageObj_Unk_077620(void)
 {
   int tmp1;
   tmp1 = 0;
@@ -266,7 +266,7 @@ void func_02077620(void)
 }
 
 /* decompiler-derived */
-void func_020775a0(void)
+void ImageObj_Unk_0775a0(void)
 {
   int tmp1;
   int tmp2;
@@ -285,7 +285,7 @@ void func_020775a0(void)
 int func_0205bb68();
 int func_0205ddb4();
 /* decompiler-derived */
-void func_02077640(void)
+void ImageObj_Unk_077640(void)
 {
   int tmp1;
   int tmp2;
@@ -310,7 +310,7 @@ int func_02077478();
 int func_020774b4();
 int func_02079268();
 /* decompiler-derived */
-void func_020791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
+void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
 {
   int tmp1;
   int tmp2;

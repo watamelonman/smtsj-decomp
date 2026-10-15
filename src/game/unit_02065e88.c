@@ -95,12 +95,12 @@ int Unk065e88_Unk_06644c(u16 *arg0,u16 *arg1)
   return value;
 }
 
-int func_0202e0cc();
+int Unk02e000_Unk_02e0cc();
 int Unk05b82c_Unk_05b82c();
 /* decompiler-derived */
 void Unk065e88_Unk_065e88(void)
 {
-  func_0202e0cc();
+  Unk02e000_Unk_02e0cc();
   Unk05b82c_Unk_05b82c(0xbc);
   Unk05b82c_Unk_05b82c(0xbd);
   Unk05b82c_Unk_05b82c(0xbe);

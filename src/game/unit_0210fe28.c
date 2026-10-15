@@ -42,7 +42,7 @@ extern u8 data_021514b0[];
 extern u8 data_02151540[];
 extern u8 data_02151548[];
 extern u8 data_02151550[];
-void func_0202e0cc(void);
+void Unk02e000_Unk_02e0cc(void);
 void func_0205ad2c(u32 a);
 void func_0205b8c8(void *a);
 u32 func_0205c2c4(void *a);
@@ -90,7 +90,7 @@ void func_0210fe48(Unk10fe28Work *w)
         func_0205c3fc(w->unk_0028[i], w->unk_001c, w->unk_0020);
     }
 
-    func_0202e0cc();
+    Unk02e000_Unk_02e0cc();
     Unk05b82c_Unk_05b82c(0x39);
     w->unk_0024 = func_0205dcd4(data_02151550, 1);
 

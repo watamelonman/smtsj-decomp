@@ -15,7 +15,7 @@
 
 ## Not done in M1-T867
 - `func_020cb564`
-- `func_020cb4e4`
+- `Unk0cb32c_Unk_0cb4e4`
 - `func_020cb7f0`
 - `func_020cb58c`
 - `func_020cca80`
@@ -43,4 +43,4 @@
 
 ## Not done in M1-T871
 - `func_020cbce4`
-- `func_020cb4e4`: decompiler-derived (plain cleanup)
+- `Unk0cb32c_Unk_0cb4e4`: decompiler-derived (plain cleanup)

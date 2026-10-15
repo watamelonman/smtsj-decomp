@@ -159,7 +159,7 @@ int func_02058d04();
 int func_02118518();
 int func_02118584();
 /* decompiler-derived */
-void func_02118620(int arg0)
+void StaffRoll_Unk_118620(int arg0)
 {
   func_02057524(0);
   func_0205789c();
@@ -180,7 +180,7 @@ void func_02118620(int arg0)
 extern u8 data_0213cc1c[];
 extern u8 data_0213cc30[];
 /* decompiler-derived */
-void func_021186cc(int arg0)
+void StaffRoll_Unk_1186cc(int arg0)
 {
   func_02057524(0);
   func_0205789c();

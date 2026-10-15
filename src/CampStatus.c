@@ -138,7 +138,7 @@ void CampStatus_Unk_0ddd2c(u32 arg0,u32 arg1,u32 arg2)
 int func_02057df8();
 int func_02057e18();
 /* decompiler-derived */
-void func_020d71bc(int arg0)
+void CampStatus_Unk_0d71bc(int arg0)
 {
   func_02057fd8();
   func_02057df8();
@@ -159,7 +159,7 @@ void func_020d71bc(int arg0)
 }
 
 /* decompiler-derived */
-void func_020d7680(int arg0)
+void CampStatus_Unk_0d7680(int arg0)
 {
   func_02057fd8();
   func_02057df8();

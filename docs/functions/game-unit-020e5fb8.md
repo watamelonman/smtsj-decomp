@@ -28,9 +28,9 @@
 
 ## Not done in M1-T375
 - `func_020e620c`
-- `func_020e626c`
-- `func_020e61e8`
-- `func_020e62a4`
+- `Unk0e5fb8_Unk_0e626c`
+- `Unk0e5fb8_Unk_0e61e8`
+- `Unk0e5fb8_Unk_0e62a4`
 - `Unk0e5fb8_Unk_0e649c`: decompiler-derived
 
 ## Not done in M1-T376
@@ -41,6 +41,6 @@
 - `func_020e6460`
 - `func_020e64e0`
 - `func_020e60b4`
-- `func_020e626c`: decompiler-derived (plain cleanup)
-- `func_020e61e8`: decompiler-derived (plain cleanup)
-- `func_020e62a4`: decompiler-derived (plain cleanup)
+- `Unk0e5fb8_Unk_0e626c`: decompiler-derived (plain cleanup)
+- `Unk0e5fb8_Unk_0e61e8`: decompiler-derived (plain cleanup)
+- `Unk0e5fb8_Unk_0e62a4`: decompiler-derived (plain cleanup)

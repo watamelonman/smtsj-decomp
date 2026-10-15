@@ -8,7 +8,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020953ac` (M1-T380): left out of the card
 - `func_02095398` (M1-T380): left out of the card
 - `func_0209509c` (M1-T380): left out of the card
-- `func_02098980` (M1-T631): left out of the card
+- `Unk0986ac_Unk_098980` (M1-T631): left out of the card
 - `func_020d1454` (M1-T957): left out of the card
 - `func_0203e2f8` (M1-T019): card skipped
 - `func_020d3138` (M1-T567): left out of the card
@@ -54,7 +54,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_0202e8cc` (M1-T650): left out of the card
 - `func_0202e578` (M1-T650): left out of the card
 - `func_0202e590` (M1-T650): left out of the card
-- `func_0202e228` (M1-T650): left out of the card
+- `Unk02e000_Unk_02e228` (M1-T650): left out of the card
 - `func_020e2d6c` (M1-T1042): left out of the card
 - `func_020bd3fc` (M1-T434): left out of the card
 - `func_020bd5d4` (M1-T434): left out of the card
@@ -69,7 +69,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_020a1728` (M1-T627): left out of the card
 - `func_020a1ba0` (M1-T627): left out of the card
 - `func_020a22c8` (M1-T627): left out of the card
-- `func_0203e878` (M1-T1086): left out of the card
+- `Unk03e43c_Call_02056cc0` (M1-T1086): left out of the card
 - `func_0203e920` (M1-T1086): left out of the card
 - `func_0203fa08` (M1-T1086): left out of the card
 - `func_02124284` (M1-T227): left out of the card
@@ -98,7 +98,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_02094734` (M1-T492): left out of the card
 - `func_02096f0c` (M1-T559): left out of the card
 - `func_02096f28` (M1-T559): left out of the card
-- `func_020e8244` (M1-T900): left out of the card
+- `Unk0e8228_Call_02008848` (M1-T900): left out of the card
 - `func_0206aed4` (M1-T994): left out of the card
 - `func_0206aeec` (M1-T994): left out of the card
 - `func_0206c8c8` (M1-T994): left out of the card

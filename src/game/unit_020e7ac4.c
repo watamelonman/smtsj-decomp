@@ -30,7 +30,7 @@ void Unk0e7ac4_Unk_0e7f0c(int arg0)
 
 int func_020e7f44();
 /* decompiler-derived */
-void func_020e8198(void)
+void Unk0e7ac4_Unk_0e8198(void)
 {
   int tmp1;
   tmp1 = *data_02176cdc;

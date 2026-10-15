@@ -240,7 +240,7 @@ int func_0202e904();
 int func_02096ab0();
 int func_020a1428();
 /* decompiler-derived */
-void func_0210ac28(int arg0)
+void Unk10a034_Unk_10ac28(int arg0)
 {
   int tmp1;
   int tmp2;

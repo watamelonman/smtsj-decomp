@@ -9,7 +9,7 @@
 - `func_020e8014`
 - `func_020e8030`
 - `func_020e8060`
-- `func_020e8198`
+- `Unk0e7ac4_Unk_0e8198`
 
 ## Not done in M1-T456
 - `func_020e81c0`
@@ -18,4 +18,4 @@
 - `func_020e807c`
 - `func_020e7b80`
 - `func_020e7d40`
-- `func_020e8198`: decompiler-derived (plain cleanup)
+- `Unk0e7ac4_Unk_0e8198`: decompiler-derived (plain cleanup)

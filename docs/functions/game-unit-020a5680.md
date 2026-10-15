@@ -7,7 +7,7 @@
 ## Not done in M1-T549
 - `func_020a5e48`
 - `func_020a5e60`
-- `func_020a5fb0`
+- `Unk0a5680_Unk_0a5fb0`
 - `func_020a5e28`
 - `func_020a60fc`
 - `Unk0a5680_Unk_0a5c14`: decompiler-derived
@@ -35,4 +35,4 @@
 - `func_020a5d08`
 - `func_020a57c8`
 - `func_020a5c40`
-- `func_020a5fb0`: decompiler-derived (plain cleanup)
+- `Unk0a5680_Unk_0a5fb0`: decompiler-derived (plain cleanup)

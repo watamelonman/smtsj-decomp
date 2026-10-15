@@ -233,7 +233,7 @@ int func_0204a1e8();
 int func_0204faf0();
 int func_0204fcb0();
 /* decompiler-derived */
-void func_020ea878(u32 arg0)
+void Unk0ea208_Unk_0ea878(u32 arg0)
 {
   u32 tmp1;
   u32 tmp2;
@@ -268,7 +268,7 @@ void func_020ea878(u32 arg0)
 }
 
 /* decompiler-derived */
-void func_020ea984(u32 arg0)
+void Unk0ea208_Unk_0ea984(u32 arg0)
 {
   u32 tmp1;
   u32 tmp2;

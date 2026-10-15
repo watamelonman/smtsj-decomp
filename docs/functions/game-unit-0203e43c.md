@@ -7,7 +7,7 @@
 - `Unk03e43c_Unk_03fa3c` (28 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_0203e878`: no candidate matched locally
+- `Unk03e43c_Call_02056cc0`: no candidate matched locally
 - `func_0203e920`: no candidate matched locally
 - `func_0203fa08`: no candidate matched locally
 - `Unk03e43c_Unk_03e5a4`: decompiler-derived
@@ -50,4 +50,4 @@
 - `func_0203f174`
 - `func_0203f2d4`
 - `func_02043340`
-- `func_0203e878`: decompiler-derived (plain cleanup)
+- `Unk03e43c_Call_02056cc0`: decompiler-derived (plain cleanup)

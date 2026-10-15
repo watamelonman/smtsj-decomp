@@ -20,7 +20,7 @@ int Unk06e4d8_Unk_06e680();
 int func_0206eb54();
 int Unk071dc0_Unk_071e08();
 int Unk071dc0_Unk_072200();
-int func_02093da4();
+int Unk0939f0_Unk_093da4();
 /* decompiler-derived */
 void BattleTask_Unk_048244(void)
 {
@@ -29,7 +29,7 @@ void BattleTask_Unk_048244(void)
   func_0206eb54();
   Unk071dc0_Unk_071e08();
   Unk06e4d8_Unk_06e680();
-  func_02093da4();
+  Unk0939f0_Unk_093da4();
 }
 
 extern u32 data_02143334[];

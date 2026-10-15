@@ -6,7 +6,7 @@
 
 ## Not done in M1-T328
 - `func_02071e24`
-- `func_02071dc0`
+- `Unk071dc0_Unk_071dc0`
 - `func_02072030`
 - `func_02071fcc`
 - `func_02071e44`
@@ -14,4 +14,4 @@
 ## Not done in M1-T329
 - `func_02071efc`
 - `func_02072068`
-- `func_02071dc0`: decompiler-derived (plain cleanup)
+- `Unk071dc0_Unk_071dc0`: decompiler-derived (plain cleanup)

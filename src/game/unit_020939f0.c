@@ -106,7 +106,7 @@ void Unk0939f0_Unk_093f0c(int arg0)
 
 int func_02061424();
 /* decompiler-derived */
-void func_02093da4(void)
+void Unk0939f0_Unk_093da4(void)
 {
   func_02061424(*data_02175d90);
 }
