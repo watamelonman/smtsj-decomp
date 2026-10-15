@@ -100,7 +100,7 @@ void Unk0946e0_Unk_094704(u16 *arg0,u16 arg1,u16 arg2,u16 arg3,
 
 
 int func_02094750();
-void Unk0946e0_SetViewBox();
+void Unk0946e0_Unk_0949e0();
 void Unk0946e0_ApplyRect();
 void Unk0946e0_ResetRect(void)
 {
@@ -130,9 +130,9 @@ void Unk0946e0_Unk_094958(void)
   value = Unk0946e0_Unk_0948fc(*(u32 *)(value + 0x7870));
   *(int *)(v2 + 4) = (int)v2[1] + (int)*(short *)(value + 2);
   Unk0946e0_ApplyRect(0);
-  Unk0946e0_SetViewBox(1);
+  Unk0946e0_Unk_0949e0(1);
   Unk0946e0_ApplyRect(2);
-  Unk0946e0_SetViewBox(3);
+  Unk0946e0_Unk_0949e0(3);
   Unk0946e0_Unk_094a64(6);
 }
 
@@ -142,7 +142,7 @@ int func_02094af8();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void func_020575ac();
-void Unk0946e0_SetViewBox(int a)
+void Unk0946e0_Unk_0949e0(int a)
 {
     u8 *v = (u8 *)Unk0946e0_GetAddr_data_02175d94();
     s32 x = (FIELD(s32, v, 4) << 12) / 32;
