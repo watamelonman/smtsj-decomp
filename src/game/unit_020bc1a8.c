@@ -116,7 +116,7 @@ void Unk0bc1a8_Unk_0bc928(int arg0,u32 arg1,u32 arg2,u32 arg3)
 }
 
 int func_02061424();
-int func_020bc5ac();
+int Unk0bc1a8_GetHeaderWord4();
 int func_020bcacc();
 /* decompiler-derived */
 void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2)
@@ -126,7 +126,7 @@ void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2)
   if (arg1 == 0) {
     return;
   }
-  tmp1 = func_020bc5ac(arg0);
+  tmp1 = Unk0bc1a8_GetHeaderWord4(arg0);
   func_020bcacc(tmp1,arg2);
 }
 
@@ -171,7 +171,7 @@ typedef struct Unk0bc1a8Slot {
     u8 *obj;
     u32 pad_04[2];
 } Unk0bc1a8Slot;
-int func_020bc5ac(u8 *p)
+int Unk0bc1a8_GetHeaderWord4(u8 *p)
 {
     if (p == 0) {
         return 0xffff;
@@ -208,7 +208,7 @@ void Unk0bc1a8_Unk_0bc5d4(void)
   Unk0bc1a8_Unk_0bc6d4(1);
 }
 
-int func_020bc650(int i)
+int Unk0bc1a8_IsSlotEmpty(int i)
 {
     if (i >= 41) {
         return 1;
@@ -216,7 +216,7 @@ int func_020bc650(int i)
     return (*(Unk0bc1a8Slot **)*data_02176ba8)[i].obj == 0;
 }
 
-int func_020bc688(int i)
+int Unk0bc1a8_IsSlotEmptyOrFlag8(int i)
 {
     u8 *o;
     if (i >= 41) {

@@ -438,12 +438,12 @@ void Unk116598_Unk_1172dc(void)
   func_02117550();
 }
 
-int func_020bc650();
+int Unk0bc1a8_IsSlotEmpty();
 /* decompiler-derived */
 void Unk116598_Unk_1167e0(void)
 {
   int tmp1;
-  tmp1 = func_020bc650(0x18);
+  tmp1 = Unk0bc1a8_IsSlotEmpty(0x18);
   if (tmp1 != 0) {
     return;
   }
@@ -454,7 +454,7 @@ void Unk116598_Unk_1167e0(void)
 void Unk116598_Unk_117a28(void)
 {
   int tmp1;
-  tmp1 = func_020bc650(0x18);
+  tmp1 = Unk0bc1a8_IsSlotEmpty(0x18);
   if (tmp1 != 0) {
     return;
   }

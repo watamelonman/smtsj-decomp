@@ -3,7 +3,7 @@
 
 
 int func_020bce08();
-int func_020bcd58(s32 *p)
+int Unk0bcc7c_Unk_0bcd58(s32 *p)
 {
     if (p[2] <= 0) {
         return 0;

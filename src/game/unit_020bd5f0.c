@@ -18,7 +18,7 @@ int func_02057ddc();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 int Unk02e000_GetWorkArea();
-int func_020bd5f0(s32 *p)
+int Unk0bd5f0_Unk_0bd5f0(s32 *p)
 {
     if (p[2] == 2 && p[1] >= 2) {
         return 1;

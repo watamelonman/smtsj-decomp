@@ -83,11 +83,11 @@ void Unk0bcef4_Unk_0bcef4(u32 *arg0,u32 arg1,u32 arg2,u32 arg3)
   arg0[6] = arg3;
 }
 
-int func_020bd5f0();
+int Unk0bd5f0_Unk_0bd5f0();
 /* decompiler-derived */
 void Unk0bcef4_Unk_0bd368(int arg0,int arg1)
 {
-  func_020bd5f0((*(int *)(arg1 + 0x10) - *(int *)(arg1 + 8)) * 0xc + arg0);
+  Unk0bd5f0_Unk_0bd5f0((*(int *)(arg1 + 0x10) - *(int *)(arg1 + 8)) * 0xc + arg0);
 }
 
 

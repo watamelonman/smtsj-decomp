@@ -189,7 +189,7 @@ void Unk09a268_Unk_09b3cc(Unk09a268Work *work)
 }
 
 
-int func_020bc650();
+int Unk0bc1a8_IsSlotEmpty();
 void Unk09a268_SetCtxUnk2c30(u32 a, u32 b)
 {
     if (data_02176270 != 0) {
@@ -202,8 +202,8 @@ void Unk09a268_SetCtxUnk2c30(u32 a, u32 b)
 u32 Unk09a268_Unk_09bb38(void)
 {
   int value;
-  value = func_020bc650(0);
-  if ((value != 0) && (value = func_020bc650(9), value != 0)) {
+  value = Unk0bc1a8_IsSlotEmpty(0);
+  if ((value != 0) && (value = Unk0bc1a8_IsSlotEmpty(9), value != 0)) {
     return 1;
   }
   return 0;

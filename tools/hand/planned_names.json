@@ -387,5 +387,10 @@
  "func_020bc4e0": "Unk0bc1a8_Unk_0bc4e0",
  "func_020bc548": "Unk0bc1a8_SetFlag4Inv",
  "func_020bc570": "Unk0bc1a8_SetFlag1Inv",
- "func_020bc598": "Unk0bc1a8_GetHeaderWord"
+ "func_020bc598": "Unk0bc1a8_GetHeaderWord",
+ "func_020bc5ac": "Unk0bc1a8_GetHeaderWord4",
+ "func_020bc650": "Unk0bc1a8_IsSlotEmpty",
+ "func_020bc688": "Unk0bc1a8_IsSlotEmptyOrFlag8",
+ "func_020bcd58": "Unk0bcc7c_Unk_0bcd58",
+ "func_020bd5f0": "Unk0bd5f0_Unk_0bd5f0"
 }

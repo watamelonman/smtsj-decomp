@@ -8,7 +8,7 @@
 ## Not done in M1-T1134
 - `Unk0bd5f0_SetCtxUnk1b8`
 - `Unk0bd5f0_IsSpecialId`
-- `func_020bd5f0`
+- `Unk0bd5f0_Unk_0bd5f0`
 - `func_020c1968`
 
 ## Not done in M1-T1135
@@ -52,4 +52,4 @@
 - `func_020c7304`
 - `Unk0bd5f0_SetCtxUnk1b8`: hand-matched
 - `Unk0bd5f0_IsSpecialId`: hand-matched
-- `func_020bd5f0`: hand-matched
+- `Unk0bd5f0_Unk_0bd5f0`: hand-matched

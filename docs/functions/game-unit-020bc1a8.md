@@ -5,7 +5,7 @@
 
 ## Hard list
 - `Unk0bc1a8_GetHeaderWord`: no candidate matched locally
-- `func_020bc5ac`: no candidate matched locally
+- `Unk0bc1a8_GetHeaderWord4`: no candidate matched locally
 - `Unk0bc1a8_SetPrevWord`: no candidate matched locally
 - `Unk0bc1a8_Unk_0bc6d4`: no candidate matched locally
 - `Unk0bc1a8_Unk_0bc6e8`: no candidate matched locally
@@ -17,12 +17,12 @@
 - `Unk0bc1a8_SetFlag4Inv`
 - `Unk0bc1a8_SetFlag1Inv`
 - `Unk0bc1a8_Unk_0bc514`
-- `func_020bc650`
+- `Unk0bc1a8_IsSlotEmpty`
 - `func_020bc614`
 - `Unk0bc1a8_Unk_0bc5d4`
 
 ## Not done in M1-T547
-- `func_020bc688`
+- `Unk0bc1a8_IsSlotEmptyOrFlag8`
 - `Unk0bc1a8_Unk_0bc490`
 - `func_020bc1a8`
 - `func_020bc8c8`
@@ -49,6 +49,6 @@
 - `Unk0bc1a8_SetFlag4Inv`: hand-matched
 - `Unk0bc1a8_SetFlag1Inv`: hand-matched
 - `Unk0bc1a8_GetHeaderWord`: hand-matched
-- `func_020bc5ac`: hand-matched
-- `func_020bc650`: hand-matched
-- `func_020bc688`: hand-matched
+- `Unk0bc1a8_GetHeaderWord4`: hand-matched
+- `Unk0bc1a8_IsSlotEmpty`: hand-matched
+- `Unk0bc1a8_IsSlotEmptyOrFlag8`: hand-matched

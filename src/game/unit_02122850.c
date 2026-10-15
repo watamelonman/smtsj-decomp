@@ -24,14 +24,14 @@ void Unk122850_Unk_122968(u32 *arg0)
   Unk_LoadPalette_020de678(*arg0);
 }
 
-int func_020bc650();
+int Unk0bc1a8_IsSlotEmpty();
 /* decompiler-derived */
 void Unk122850_Unk_12292c(Unk122850Work *arg0){
   int value;
   if (arg0->unk_0004 == 0) {
     return;
   }
-  value = func_020bc650(0xc);
+  value = Unk0bc1a8_IsSlotEmpty(0xc);
   if (value == 0) {
     return;
   }

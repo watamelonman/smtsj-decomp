@@ -328,12 +328,12 @@ int Unk044904_Unk_04509c(void)
 }
 
 
-int func_020bc650();
+int Unk0bc1a8_IsSlotEmpty();
 /* decompiler-derived */
 int Unk044904_Unk_045c7c(void)
 {
   int value;
-  value = func_020bc650(0x1a);
+  value = Unk0bc1a8_IsSlotEmpty(0x1a);
   return value == 0;
 }
 

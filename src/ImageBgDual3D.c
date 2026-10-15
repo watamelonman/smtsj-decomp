@@ -246,7 +246,7 @@ void ImageBgDual3D_Unk_125d48(void)
   return;
 }
 
-int func_020bc650();
+int Unk0bc1a8_IsSlotEmpty();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_1252b4(u32 *arg0)
 {
@@ -257,7 +257,7 @@ void ImageBgDual3D_Unk_1252b4(u32 *arg0)
   if (1 < *arg0) {
     return;
   }
-  tmp1 = func_020bc650(0x24);
+  tmp1 = Unk0bc1a8_IsSlotEmpty(0x24);
   if (tmp1 == 0) {
     return;
   }
