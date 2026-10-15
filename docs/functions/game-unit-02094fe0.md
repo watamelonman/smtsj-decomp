@@ -23,7 +23,7 @@
 
 ## Not done in M1-T383
 - `Unk094fe0_Unk_09502c`
-- `func_020953f0`
+- `Unk094fe0_Unk_0953f0`
 - `func_02095468`
 
 ## Not done in M1-T382
@@ -33,8 +33,8 @@
 - `Unk094fe0_TestFlag18`
 - `func_020950e4`
 - `func_0209512c`
-- `func_02095258`
-- `func_020952ac`
+- `Unk094fe0_Unk_095258`
+- `Unk094fe0_Unk_0952ac`
 - `Unk094fe0_SetUnkField9a0`: hand-matched
 - `Unk094fe0_GetWorkUnkField9a0`: hand-matched
 - `Unk094fe0_Call_020950b4`: hand-matched
@@ -50,6 +50,6 @@
 - `Unk094fe0_Call_02095370`: hand-matched
 - `Unk094fe0_Unk_095370`: hand-matched
 - `Unk094fe0_Unk_09502c`: hand-matched
-- `func_02095258`: hand-matched
-- `func_020952ac`: hand-matched
-- `func_020953f0`: hand-matched
+- `Unk094fe0_Unk_095258`: hand-matched
+- `Unk094fe0_Unk_0952ac`: hand-matched
+- `Unk094fe0_Unk_0953f0`: hand-matched

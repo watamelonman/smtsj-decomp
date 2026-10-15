@@ -52,7 +52,7 @@ u32 Unk03d72c_Unk_03d85c(void)
   return 3;
 }
 
-int func_02095258();
+int Unk094fe0_Unk_095258();
 int Unk03d72c_Unk_03d890(void)
 {
     func_0209ee80((s16)func_0203ac00(0));
@@ -76,7 +76,7 @@ u32 Unk03d72c_Unk_03d8f0(void)
   value1 = func_0203ac00(0);
   value3 = func_0203ac00(1);
   value2 = func_0203ac00(2);
-  func_02095258(value1,value3,value2);
+  Unk094fe0_Unk_095258(value1,value3,value2);
   return 3;
 }
 

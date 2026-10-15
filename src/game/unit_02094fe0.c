@@ -161,7 +161,7 @@ void Unk0e651c_SetBitChecked();
 int Unk02f2a8_Unk_035b08();
 int Unk09ee4c_Thunk_02118c6c();
 
-int func_02095258(u32 i, u32 id, u8 cnt)
+int Unk094fe0_Unk_095258(u32 i, u32 id, u8 cnt)
 {
     Unk094fe0Timer *t;
     if (i >= 4) {
@@ -179,7 +179,7 @@ int func_02095258(u32 i, u32 id, u8 cnt)
     return 1;
 }
 
-void func_020952ac(void)
+void Unk094fe0_Unk_0952ac(void)
 {
     Unk094fe0Timer *t = Unk094fe0_Thunk_0202e8cc()->timers;
     int i;
@@ -228,7 +228,7 @@ u32 Unk094fe0_GetWorkUnkField9a0(void)
     return Unk094fe0_GetUnkField9a0(Unk094fe0_Thunk_0202e8cc());
 }
 
-int func_020953f0(void)
+int Unk094fe0_Unk_0953f0(void)
 {
     Unk094fe0Timer *t = &Unk094fe0_Thunk_0202e8cc()->unk_09a4;
     u8 cnt = t->cnt;

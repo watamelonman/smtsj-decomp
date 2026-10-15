@@ -706,7 +706,7 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
 }
 
 int Unk03e43c_AdvanceCounter360();
-int func_020952ac();
+int Unk094fe0_Unk_0952ac();
 /* decompiler-derived */
 void Unk02f2a8_Unk_03538c(void)
 {
@@ -722,7 +722,7 @@ void Unk02f2a8_Unk_03538c(void)
   if (*(int *)(tmp1 + 0x74f0) == tmp3) {
     return;
   }
-  func_020952ac();
+  Unk094fe0_Unk_0952ac();
 }
 
 int func_0203480c();
