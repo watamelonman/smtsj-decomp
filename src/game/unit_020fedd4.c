@@ -6,19 +6,80 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Singleton pointed to by data_02176e28. */
+typedef struct Unk0fedd4Obj {
+    u32 unk_00;
+    u32 handle;                 /* +0x04 */
+    u32 unk_08;
+    u32 unk_0c;
+    u32 unk_10;
+    u32 state;                  /* +0x14: 0, 1 or 2 */
+    u32 unk_18;
+    u32 unk_1c;
+    u32 unk_20;
+} Unk0fedd4Obj;
+
+extern Unk0fedd4Obj *data_02176e28;
+
 int Unk05b82c_Unk_05b82c();
 void func_0205bb68(void);
-void func_020feef0(void);
+Unk0fedd4Obj *func_020feef0(void);
 
 void Unk0fedd4_Thunk_0205bb68(void);
-void Unk0fedd4_Thunk_020feef0(void);
+Unk0fedd4Obj *Unk0fedd4_Thunk_020feef0(void);
 void Unk0fedd4_Unk_0fedd4(void);
+
+Unk0fedd4Obj *func_020feef0(void)
+{
+    return data_02176e28;
+}
 
 /* forwards to `func_0205bb68` */
 void Unk0fedd4_Thunk_0205bb68(void) { func_0205bb68(); }
 
 /* forwards to `func_020feef0` */
-void Unk0fedd4_Thunk_020feef0(void) { func_020feef0(); }
+Unk0fedd4Obj *Unk0fedd4_Thunk_020feef0(void) { return func_020feef0(); }
+
+void func_02061f10(u32 handle, int a, int b, int c, u32 d);
+
+void func_020fee38(u32 arg)
+{
+    func_02061f10(Unk0fedd4_Thunk_020feef0()->handle, -1, 0, 0, arg);
+}
+
+void func_020fee68(u32 a, u32 b)
+{
+    Unk0fedd4Obj *o = Unk0fedd4_Thunk_020feef0();
+    o->unk_0c = a;
+    o->unk_10 = b;
+}
+
+void func_020fee84(u32 a)
+{
+    Unk0fedd4_Thunk_020feef0()->unk_1c = a;
+}
+
+void func_020fee98(void)
+{
+    Unk0fedd4_Thunk_020feef0()->state = 1;
+}
+
+void func_020feeac(void)
+{
+    Unk0fedd4_Thunk_020feef0()->state = 1;
+}
+
+void func_020feec0(void)
+{
+    Unk0fedd4_Thunk_020feef0()->state = 0;
+}
+
+void func_020feed4(void)
+{
+    Unk0fedd4Obj *o = Unk0fedd4_Thunk_020feef0();
+    o->state = 2;
+    o->unk_20 = 1;
+}
 
 /* decompiler-derived */
 void Unk0fedd4_Unk_0fedd4(void)
@@ -27,12 +88,11 @@ void Unk0fedd4_Unk_0fedd4(void)
 }
 
 
-extern u32 data_02176e28[];
 int func_02061424();
 /* decompiler-derived */
 void Unk0fedd4_Unk_0fee18(void)
 {
-  if (*data_02176e28 == 0) {
+  if (data_02176e28 == 0) {
     return;
   }
   func_02061424();
@@ -51,7 +111,7 @@ void Unk0fedd4_Unk_0fef78(int *arg0)
     func_0205ddb4();
     arg0[2] = 0;
   }
-  *data_02176e28 = 0;
+  data_02176e28 = 0;
 }
 
 extern u8 data_021510f4[];
