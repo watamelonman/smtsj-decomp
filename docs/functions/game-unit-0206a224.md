@@ -35,3 +35,5 @@
 - `Unk06a224_Unk_06a374`: hand-matched
 - `Unk06a224_Unk_06a3a4`: hand-matched
 - `Unk06a224_Unk_06a998`: hand-matched
+- `func_0206aa0c`: hand-matched
+- `func_0206aafc`: hand-matched

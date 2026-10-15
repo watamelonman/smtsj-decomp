@@ -115,6 +115,44 @@ void Unk06a224_Unk_06a998(Unk06a224Ctl *c, int i)
     }
 }
 
+typedef struct Unk06a224Msg {
+    u8 flags[2];
+    u8 pad_02[2];
+    u32 w[16];
+} Unk06a224Msg;
+void func_020bcbc4();
+
+void func_0206aa0c(void)
+{
+    Unk06a224Msg m;
+    int i;
+    for (i = 0; i < 2; i++) {
+        m.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        m.w[i] = 0;
+    }
+    m.w[1] = 24;
+    m.flags[0] |= 2;
+    func_020bcbc4(3, &m);
+}
+
+void func_0206aafc(u32 x)
+{
+    Unk06a224Msg m;
+    int i;
+    for (i = 0; i < 2; i++) {
+        m.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        m.w[i] = 0;
+    }
+    m.w[7] = x;
+    m.w[1] = 2;
+    m.flags[0] |= 0x82;
+    func_020bcbc4(3, &m);
+}
+
 /* decompiler-derived */
 void Unk06a224_Unk_06ae28(Unk06a224Work *arg0){
   int tmp1;
