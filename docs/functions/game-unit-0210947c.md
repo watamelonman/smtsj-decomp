@@ -10,3 +10,4 @@
 - `func_02109c04`
 - `func_021099fc`
 - `func_02109538`
+- `func_02109db8`: hand-matched

@@ -16,3 +16,13 @@ void Unk10947c_SetUnkField5c(void *obj, u32 value) { ((Unk10947cWork *)obj)->unk
 void func_021099fc(void);
 /* forwards to `func_021099fc` */
 void Unk10947c_Thunk_021099fc(void) { func_021099fc(); }
+
+typedef struct Unk10947cObj {
+    u8 pad_0000[0x4c];
+    s32 unk_004c;
+} Unk10947cObj;
+
+int func_02109db8(Unk10947cObj *o)
+{
+    return o->unk_004c >= 2;
+}
