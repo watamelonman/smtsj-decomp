@@ -18,7 +18,7 @@
 - `Unk06fb70_Unk_0702b8`
 - `Unk06fb70_Unk_07030c`
 - `Unk06fb70_Unk_070360`
-- `func_02071844`
+- `Unk06fb70_Unk_071844`
 - `func_02071d6c`
 - `Unk06fb70_Unk_06feb4`: decompiler-derived
 - `Unk06fb70_Unk_06ff28`: decompiler-derived
@@ -28,8 +28,8 @@
 - `func_02071cc8`
 - `func_0207153c`
 - `func_020719a8`
-- `func_02070500`
-- `func_0207057c`
+- `Unk06fb70_Unk_070500`
+- `Unk06fb70_Unk_07057c`
 
 ## Not done in M1-T937
 - `Unk06fb70_Unk_070094`
@@ -72,6 +72,6 @@
 - `Unk06fb70_Unk_070cc0`: hand-matched
 - `Unk06fb70_Unk_070df8`: hand-matched
 - `Unk06fb70_Unk_070f30`: hand-matched
-- `func_02070500`: hand-matched
-- `func_0207057c`: hand-matched
-- `func_02071844`: hand-matched
+- `Unk06fb70_Unk_070500`: hand-matched
+- `Unk06fb70_Unk_07057c`: hand-matched
+- `Unk06fb70_Unk_071844`: hand-matched

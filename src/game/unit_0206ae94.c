@@ -92,7 +92,7 @@ void Unk06ae94_Unk_06aeb4(u32 arg0)
 
 void Unk06ae94_Unk_06c0b0();
 void Unk06ae94_Unk_06d4e8();
-int func_02071844();
+int Unk06fb70_Unk_071844();
 int func_02071d6c();
 void func_0206af04();
 void Unk06ae94_Call_06af04(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
@@ -213,7 +213,7 @@ void Unk06ae94_Unk_06c76c(u32 *arg0)
   value = 0;
   if (0 < (int)arg0[5]) {
     do {
-      func_02071844(arg0[value + 0x34]);
+      Unk06fb70_Unk_071844(arg0[value + 0x34]);
       value = value + 1;
     } while (value < (int)arg0[5]);
   }
