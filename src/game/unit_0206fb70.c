@@ -31,32 +31,32 @@ int Unk06fb70_Unk_06fb70(int arg0,int arg1,int arg2,int arg3)
 
 
 
-void func_02070094();
-void func_02070114();
-void func_02070168();
-void func_020701bc();
-void func_02070210();
-void func_02070264();
-void func_020702b8();
-void func_0207030c();
-void func_02070360();
+void Unk06fb70_Unk_070094();
+void Unk06fb70_Unk_070114();
+void Unk06fb70_Unk_070168();
+void Unk06fb70_Unk_0701bc();
+void Unk06fb70_Unk_070210();
+void Unk06fb70_Unk_070264();
+void Unk06fb70_Unk_0702b8();
+void Unk06fb70_Unk_07030c();
+void Unk06fb70_Unk_070360();
 /* decompiler-derived */
 void Unk06fb70_Unk_06feb4(u32 arg0,u32 arg1)
 {
-  func_02070094();
-  func_02070114(arg0,arg1);
-  func_02070168(arg0,arg1);
-  func_020701bc(arg0,arg1);
-  func_02070210(arg0,arg1);
-  func_02070264(arg0,arg1);
-  func_020702b8(arg0,arg1);
-  func_0207030c(arg0,arg1);
-  func_02070360(arg0,arg1);
+  Unk06fb70_Unk_070094();
+  Unk06fb70_Unk_070114(arg0,arg1);
+  Unk06fb70_Unk_070168(arg0,arg1);
+  Unk06fb70_Unk_0701bc(arg0,arg1);
+  Unk06fb70_Unk_070210(arg0,arg1);
+  Unk06fb70_Unk_070264(arg0,arg1);
+  Unk06fb70_Unk_0702b8(arg0,arg1);
+  Unk06fb70_Unk_07030c(arg0,arg1);
+  Unk06fb70_Unk_070360(arg0,arg1);
   return;
 }
 
-void func_020705f8();
-void func_02070758();
+void Unk06fb70_Unk_0705f8();
+void Unk06fb70_Unk_070758();
 int func_02070834();
 int func_02070950();
 int func_02070a6c();
@@ -67,8 +67,8 @@ int func_02070f30();
 /* decompiler-derived */
 void Unk06fb70_Unk_06ff28(u32 arg0,u32 arg1)
 {
-  func_020705f8();
-  func_02070758(arg0,arg1);
+  Unk06fb70_Unk_0705f8();
+  Unk06fb70_Unk_070758(arg0,arg1);
   func_02070834(arg0,arg1);
   func_02070950(arg0,arg1);
   func_02070a6c(arg0,arg1);
@@ -130,7 +130,7 @@ typedef struct Unk06fb70Anim {
 } Unk06fb70Anim;
 void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim);
 
-void func_020705f8(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_0705f8(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     int s = a->state[0];
     int k = 1;
@@ -153,7 +153,7 @@ void func_020705f8(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
-void func_02070758(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_070758(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     int s;
     int k = 1;
@@ -175,7 +175,7 @@ void func_02070758(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
-void func_02070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[0] >= 4) {
         return;
@@ -185,7 +185,7 @@ void func_02070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
         a->vel[0] = 0;
         a->vel[1] = 0;
         a->vel[2] = 0;
-        func_020705f8(a, b);
+        Unk06fb70_Unk_0705f8(a, b);
         return;
     }
     Unk06fb70_AddClamped(&a->pos[0], a->vel[0], a->max[0]);
@@ -193,7 +193,7 @@ void func_02070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[2], a->vel[2], a->max[2]);
 }
 
-void func_02070114(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_070114(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[1] >= 4) {
         return;
@@ -201,13 +201,13 @@ void func_02070114(Unk06fb70Anim *a, Unk06fb70Anim *b)
     if (++a->tick[1] > a->limit[1]) {
         a->tick[1] = 0;
         a->vel[3] = 0;
-        func_02070758(a, b);
+        Unk06fb70_Unk_070758(a, b);
         return;
     }
     Unk06fb70_AddClamped(&a->pos[3], a->vel[3], a->max[3]);
 }
 
-void func_02070168(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_070168(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[2] >= 4) {
         return;
@@ -221,7 +221,7 @@ void func_02070168(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[4], a->vel[4], a->max[4]);
 }
 
-void func_020701bc(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_0701bc(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[3] >= 4) {
         return;
@@ -235,7 +235,7 @@ void func_020701bc(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[5], a->vel[5], a->max[5]);
 }
 
-void func_02070210(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_070210(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[4] >= 4) {
         return;
@@ -249,7 +249,7 @@ void func_02070210(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[6], a->vel[6], a->max[6]);
 }
 
-void func_02070264(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_070264(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[5] >= 4) {
         return;
@@ -263,7 +263,7 @@ void func_02070264(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[7], a->vel[7], a->max[7]);
 }
 
-void func_020702b8(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_0702b8(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[6] >= 4) {
         return;
@@ -277,7 +277,7 @@ void func_020702b8(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[8], a->vel[8], a->max[8]);
 }
 
-void func_0207030c(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_07030c(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[7] >= 4) {
         return;
@@ -291,7 +291,7 @@ void func_0207030c(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[9], a->vel[9], a->max[9]);
 }
 
-void func_02070360(Unk06fb70Anim *a, Unk06fb70Anim *b)
+void Unk06fb70_Unk_070360(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[8] >= 4) {
         return;
