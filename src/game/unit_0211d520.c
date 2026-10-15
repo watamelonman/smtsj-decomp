@@ -31,6 +31,28 @@ void Unk11d520_Unk_11d520(Unk11d520Work *arg0, u32 arg1, u32 arg2){
 }
 
 
+void func_0205c408();
+void func_0205c6e0();
+typedef struct Unk11d520Ids {
+    u8 pad[180];
+    u16 ids[218];
+    u32 n;
+    u8 pad2[32];
+    u32 h[8];
+} Unk11d520Ids;
+void func_0211d7f4(Unk11d520Ids *p, u32 id)
+{
+    int i;
+    int n = p->n;
+    for (i = 0; i < n; i++) {
+        if (id == p->ids[i]) {
+            return;
+        }
+    }
+    p->ids[n] = id;
+    p->n++;
+}
+
 /* decompiler-derived */
 void Unk11d520_Unk_11d838(Unk11d520Work *arg0, u32 arg1){
   u32 tmp1;
@@ -50,4 +72,10 @@ int Unk11d520_Unk_11d858(Unk11d520Work *arg0, u32 arg1){
     tmp2 = ((int)data_02151d18);
   }
   return tmp2;
+}
+
+void func_0211dde8(Unk11d520Ids *p, int i, u32 v)
+{
+    func_0205c408(p->h[i], v);
+    func_0205c6e0(p->h[i]);
 }
