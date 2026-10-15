@@ -74,3 +74,4 @@
 - `Unk0ea208_Unk_0eac24`: hand-matched
 - `Unk0ea208_Unk_0eac40`: hand-matched
 - `Unk0ea208_ForEachSlot`: hand-matched
+- `func_020ead64`: hand-matched

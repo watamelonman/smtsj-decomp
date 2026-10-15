@@ -476,6 +476,19 @@ void Unk0ea208_Unk_0eac40(u8 *p)
     func_02061f10(FIELD(u32, p, 60), -1, 0, 3, func_0204fed8(func_020445f4(39, 2), 1));
 }
 
+int Unk0e8228_GetArr40();
+int func_02044ec4();
+void Unk0a163c_Unk_0a1814();
+void func_020ead64(void)
+{
+    u8 *q = (u8 *)func_02044ec4(Unk0e8228_GetArr40(Unk0e8228_Unk_0e8374(5)));
+    if (((u32)(q[642] << 29) >> 31) != 0) {
+        Unk0a163c_Unk_0a1814(0x17d);
+        return;
+    }
+    Unk0a163c_Unk_0a1814(FIELD(u16, q, 472));
+}
+
 void Unk0ea208_ForEachSlot(u8 *p)
 {
     int i;
