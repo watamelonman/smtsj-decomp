@@ -37,3 +37,57 @@ int Unk044394_HasEntry(int i)
     }
     return FIELD(u32, data_0214283c + i * 16, 4) != 0;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u8 data_0214283c[];
+void Unk044394_Unk_044394(u32 *arg0);
+void func_02053000();
+
+int func_02044428(int i)
+{
+    int ok;
+    u8 *e;
+    if (i >= 0 && i < 49) {
+        ok = 1;
+    } else {
+        ok = 0;
+    }
+    if (ok == 0) {
+        return 0;
+    }
+    e = data_0214283c + i * 16;
+    if (FIELD(u32, e, 4) != 0) {
+        return 1;
+    }
+    if (FIELD(u32, e, 8) != 0) {
+        return 0;
+    }
+    Unk044394_Unk_044394((u32 *)e);
+    return 1;
+}
+
+int func_02044534(int i)
+{
+    int ok;
+    u8 *e;
+    if (i >= 0 && i < 49) {
+        ok = 1;
+    } else {
+        ok = 0;
+    }
+    if (ok == 0) {
+        return 0;
+    }
+    e = data_0214283c + i * 16;
+    if (FIELD(u32, e, 4) == 0) {
+        return 1;
+    }
+    if (FIELD(u32, e, 8) != 0) {
+        return 0;
+    }
+    func_02053000(FIELD(u32, e, 4));
+    FIELD(u32, e, 4) = 0;
+    return 1;
+}
