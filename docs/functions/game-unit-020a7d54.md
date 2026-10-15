@@ -9,15 +9,15 @@
 - `Unk0a7d54_Unk_0a7ec8` (32 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020a8608`: no candidate matched locally
+- `Unk0a7d54_HasField8`: no candidate matched locally
 - `Unk0a7d54_Unk_0a7e64`: decompiler-derived
 - `Unk0a7d54_Unk_0a7d54`: decompiler-derived
 - `Unk0a7d54_Unk_0a8b44`: decompiler-derived
 
 ## Not done in M1-T791
-- `func_020a8628`
-- `func_020a84a4`
-- `func_020a8534`
+- `Unk0a7d54_IsField8Is3`
+- `Unk0a7d54_Unk_0a84a4`
+- `Unk0a7d54_Unk_0a8534`
 - `func_020a9390`
 - `Unk0a7d54_Unk_0a7e8c`
 - `Unk0a7d54_Unk_0a8c40`: decompiler-derived
@@ -28,7 +28,7 @@
 - `func_020a8ad0`
 - `func_020a91d4`
 - `func_020a93b8`
-- `func_020a855c`
+- `Unk0a7d54_FindByKey`
 - `func_020a8b70`
 - `Unk0a7d54_Unk_0a8bac`: decompiler-derived
 - `Unk0a7d54_Unk_0a916c`: decompiler-derived
@@ -41,8 +41,8 @@
 - `func_020a9218`
 - `func_020a82f0`
 - `Unk0a7d54_Unk_0a7e8c`: decompiler-derived (plain+fix cleanup)
-- `func_020a84a4`: hand-matched
-- `func_020a8534`: hand-matched
-- `func_020a855c`: hand-matched
-- `func_020a8608`: hand-matched
-- `func_020a8628`: hand-matched
+- `Unk0a7d54_Unk_0a84a4`: hand-matched
+- `Unk0a7d54_Unk_0a8534`: hand-matched
+- `Unk0a7d54_FindByKey`: hand-matched
+- `Unk0a7d54_HasField8`: hand-matched
+- `Unk0a7d54_IsField8Is3`: hand-matched

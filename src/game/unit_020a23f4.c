@@ -44,8 +44,8 @@ void Unk0a23f4_Unk_0a23f4(u32 arg0)
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-int func_020a8608();
-int func_020a8628();
+int Unk0a7d54_HasField8();
+int Unk0a7d54_IsField8Is3();
 int Unk0a7d54_Unk_0a8648();
 int ScanVisor_AllSlotsF28Is80();
 int Unk0a23f4_Unk_0a2448(void)
@@ -54,7 +54,7 @@ int Unk0a23f4_Unk_0a2448(void)
     if (v == 0) {
         return 0;
     }
-    return func_020a8608(v + 40 + 1024);
+    return Unk0a7d54_HasField8(v + 40 + 1024);
 }
 
 int Unk0a23f4_Unk_0a246c(void)
@@ -63,7 +63,7 @@ int Unk0a23f4_Unk_0a246c(void)
     if (v == 0) {
         return 0;
     }
-    return func_020a8628(v + 40 + 1024);
+    return Unk0a7d54_IsField8Is3(v + 40 + 1024);
 }
 
 int Unk0a23f4_Unk_0a2490(void)

@@ -5,9 +5,9 @@
 - `Unk0a6174_Unk_0a6a88`: decompiler-derived
 
 ## Not done in M1-T872
-- `func_020a6174`
-- `func_020a61f8`
-- `func_020a69d0`
+- `Unk0a6174_FindFree0c`
+- `Unk0a6174_FindFree10d`
+- `Unk0a6174_ClearBuffers`
 - `func_020a61a0`
 - `func_020a6224`
 
@@ -34,6 +34,6 @@
 - `func_020a6c98`
 - `func_020a6e94`
 - `func_020a65c4`
-- `func_020a6174`: hand-matched
-- `func_020a61f8`: hand-matched
-- `func_020a69d0`: hand-matched
+- `Unk0a6174_FindFree0c`: hand-matched
+- `Unk0a6174_FindFree10d`: hand-matched
+- `Unk0a6174_ClearBuffers`: hand-matched

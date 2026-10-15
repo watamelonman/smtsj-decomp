@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk0a7d54_Unk_0a7e8c();
-int func_020a855c();
+int Unk0a7d54_FindByKey();
 
 void Unk0a7d54_SetUnkField8(void *obj, u32 value);
 void Unk0a7d54_Unk_0a9158(int arg0);
@@ -56,7 +56,7 @@ int Unk0a7d54_Unk_0a9204(int arg0)
 void Unk0a7d54_Unk_0a8594(void)
 {
   int value;
-  value = func_020a855c();
+  value = Unk0a7d54_FindByKey();
   if (value == 0) {
     return;
   }
@@ -67,7 +67,7 @@ void Unk0a7d54_Unk_0a8594(void)
 void Unk0a7d54_Unk_0a7ec8(u32 arg0,u32 arg1,u32 arg2)
 {
   int value;
-  value = func_020a855c();
+  value = Unk0a7d54_FindByKey();
   if (value == 0) {
     return;
   }
@@ -108,7 +108,7 @@ int * Unk0a7d54_Unk_0a7d54(int arg0)
   return (int *)0x0;
 }
 
-int func_020a8628();
+int Unk0a7d54_IsField8Is3();
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a8b44(int arg0)
 {
@@ -116,7 +116,7 @@ void Unk0a7d54_Unk_0a8b44(int arg0)
   if (arg0 == 0) {
     return;
   }
-  tmp1 = func_020a8628();
+  tmp1 = Unk0a7d54_IsField8Is3();
   if (tmp1 == 0) {
     return;
   }
@@ -180,7 +180,7 @@ void Unk0a7d54_Unk_0a8500(int arg0)
 
 int func_0205c368();
 int func_0205ddb4();
-void func_020a8534();
+void Unk0a7d54_Unk_0a8534();
 int func_020a93b8();
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a8bac(int arg0)
@@ -189,7 +189,7 @@ void Unk0a7d54_Unk_0a8bac(int arg0)
     return;
   }
   func_020a93b8();
-  func_020a8534(arg0);
+  Unk0a7d54_Unk_0a8534(arg0);
   *(u32 *)(arg0 + 8) = 0;
   *(u32 *)(arg0 + 4) = 0;
   if (*(int *)(arg0 + 0x14) != 0) {
@@ -246,7 +246,7 @@ int Unk0a7d54_Unk_0a7e8c(int arg0)
   Unk0a7d54_Unk_0a7e64((u32 *)arg0);
 }
 
-void func_020a84a4(u8 *p)
+void Unk0a7d54_Unk_0a84a4(u8 *p)
 {
     int j;
     u8 *e = p + 72;
@@ -255,7 +255,7 @@ void func_020a84a4(u8 *p)
     }
 }
 
-void func_020a8534(u8 *p)
+void Unk0a7d54_Unk_0a8534(u8 *p)
 {
     int j;
     u8 *e = p + 72;
@@ -264,7 +264,7 @@ void func_020a8534(u8 *p)
     }
 }
 
-int func_020a855c(u8 *p, u32 k)
+int Unk0a7d54_FindByKey(u8 *p, u32 k)
 {
     int j;
     u8 *e = p + 72;
@@ -276,7 +276,7 @@ int func_020a855c(u8 *p, u32 k)
     return 0;
 }
 
-int func_020a8608(u8 *p)
+int Unk0a7d54_HasField8(u8 *p)
 {
     if (p == 0) {
         return 0;
@@ -284,7 +284,7 @@ int func_020a8608(u8 *p)
     return FIELD(u32, p, 8) != 0;
 }
 
-int func_020a8628(u8 *p)
+int Unk0a7d54_IsField8Is3(u8 *p)
 {
     if (p == 0) {
         return 0;

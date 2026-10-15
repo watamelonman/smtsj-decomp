@@ -28,9 +28,9 @@ int func_02044ec4();
 int func_0204a244();
 extern s8 data_0213c3d4[];
 int func_020616c0();
-int func_020a572c(u8 *p, u32 c);
+int Unk0a5680_Unk_0a572c(u8 *p, u32 c);
 
-int func_020a572c(u8 *p, u32 c)
+int Unk0a5680_Unk_0a572c(u8 *p, u32 c)
 {
     s32 k = FIELD(s8, p, 18);
     if (k == -1) {
@@ -39,14 +39,14 @@ int func_020a572c(u8 *p, u32 c)
     return func_0206f24c(p + 32, FIELD(u32, p, 28), 1 << (k + 13), c);
 }
 
-int func_020a5778(u8 *p, int force)
+int Unk0a5680_Unk_0a5778(u8 *p, int force)
 {
     s8 k = data_0213c3d4[func_0204a244(func_02044ec4(FIELD(u32, p, 12)))];
     if (FIELD(s8, p, 18) == k && force == 0) {
         return 0;
     }
     FIELD(s8, p, 18) = k;
-    func_020a572c(p, 4096);
+    Unk0a5680_Unk_0a572c(p, 4096);
     return 1;
 }
 
@@ -74,12 +74,12 @@ int Unk0a5680_Unk_0a5e78(int arg0)
   return (int)*(short *)(((int)data_0213c3e0) + arg0 * 2);
 }
 
-int func_020a5e28();
+int Unk0a5680_Unk_0a5e28();
 /* decompiler-derived */
 void Unk0a5680_Unk_0a6150(void)
 {
   int value;
-  value = func_020a5e28();
+  value = Unk0a5680_Unk_0a5e28();
   if (value == 0) {
     return;
   }
@@ -102,7 +102,7 @@ int Unk0a5680_Unk_0a5c14(u32 arg0,u32 arg1,u32 arg2)
 
 int func_0205c41c();
 int func_0205ca88();
-int func_020a5e28(id)
+int Unk0a5680_Unk_0a5e28(id)
     u32 id;
 {
     u8 *e = (u8 *)func_020a5680(id);
@@ -117,7 +117,7 @@ void Unk0a5680_Unk_0a611c(void)
 {
   u32 *v1;
   int value;
-  v1 = (u32 *)func_020a5e28();
+  v1 = (u32 *)Unk0a5680_Unk_0a5e28();
   if (v1 == (u32 *)0x0) {
     return;
   }
@@ -133,9 +133,9 @@ void Unk0a5680_Unk_0a5fb0(void)
   func_020a5e8c(*data_02176b14);
 }
 
-int func_020a60fc(u32 id)
+int Unk0a5680_Unk_0a60fc(u32 id)
 {
-    u8 *e = (u8 *)func_020a5e28(id);
+    u8 *e = (u8 *)Unk0a5680_Unk_0a5e28(id);
     if (e != 0 && e[56] != 0) {
         return 1;
     }

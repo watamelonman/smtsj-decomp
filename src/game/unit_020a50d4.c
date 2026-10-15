@@ -28,7 +28,7 @@ s8 Unk0a50d4_GetUnk06(void)
 int func_02002954();
 int func_020a5124();
 int func_020a5490();
-int func_020a50f4(void)
+int Unk0a50d4_IsSubBrightnessMax(void)
 {
     s32 v = func_02002954(0x0400106c);
     if (v == 16) {
@@ -37,7 +37,7 @@ int func_020a50f4(void)
     return v == -16;
 }
 
-int func_020a5648(u8 *p)
+int Unk0a50d4_Unk_0a5648(u8 *p)
 {
     switch (FIELD(s8, p + 29696, 128)) {
     case 0:

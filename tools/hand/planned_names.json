@@ -306,5 +306,19 @@
  "func_020a4578": "ScanVisor_Unk_0a4578",
  "func_020a45c0": "ScanVisor_FindSlotByKey",
  "func_020a4600": "ScanVisor_AnySlotField14",
- "func_020a4994": "ScanVisor_AllSlotsF28Is80"
+ "func_020a4994": "ScanVisor_AllSlotsF28Is80",
+ "func_020a50f4": "Unk0a50d4_IsSubBrightnessMax",
+ "func_020a5648": "Unk0a50d4_Unk_0a5648",
+ "func_020a572c": "Unk0a5680_Unk_0a572c",
+ "func_020a5778": "Unk0a5680_Unk_0a5778",
+ "func_020a5e28": "Unk0a5680_Unk_0a5e28",
+ "func_020a60fc": "Unk0a5680_Unk_0a60fc",
+ "func_020a6174": "Unk0a6174_FindFree0c",
+ "func_020a61f8": "Unk0a6174_FindFree10d",
+ "func_020a69d0": "Unk0a6174_ClearBuffers",
+ "func_020a84a4": "Unk0a7d54_Unk_0a84a4",
+ "func_020a8534": "Unk0a7d54_Unk_0a8534",
+ "func_020a855c": "Unk0a7d54_FindByKey",
+ "func_020a8608": "Unk0a7d54_HasField8",
+ "func_020a8628": "Unk0a7d54_IsField8Is3"
 }

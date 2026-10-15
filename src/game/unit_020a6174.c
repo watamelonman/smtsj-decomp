@@ -7,7 +7,7 @@
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void func_02008848();
-int func_020a6174(u8 *p)
+int Unk0a6174_FindFree0c(u8 *p)
 {
     int j;
     for (j = 0; j < 16; j++) {
@@ -18,7 +18,7 @@ int func_020a6174(u8 *p)
     return -1;
 }
 
-int func_020a61f8(u8 *p)
+int Unk0a6174_FindFree10d(u8 *p)
 {
     int j;
     for (j = 0; j < 16; j++) {
@@ -29,7 +29,7 @@ int func_020a61f8(u8 *p)
     return -1;
 }
 
-void func_020a69d0(u8 *a, u8 *b)
+void Unk0a6174_ClearBuffers(u8 *a, u8 *b)
 {
     if (a == 0 || b == 0) {
         return;

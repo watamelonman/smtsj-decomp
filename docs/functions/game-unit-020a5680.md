@@ -8,8 +8,8 @@
 - `Unk0a5680_GetEntryUnk14`
 - `Unk0a5680_GetEntrySub20`
 - `Unk0a5680_Unk_0a5fb0`
-- `func_020a5e28`
-- `func_020a60fc`
+- `Unk0a5680_Unk_0a5e28`
+- `Unk0a5680_Unk_0a60fc`
 - `Unk0a5680_Unk_0a5c14`: decompiler-derived
 - `Unk0a5680_Unk_0a611c`: decompiler-derived
 
@@ -17,8 +17,8 @@
 - `func_020a59c4`
 - `func_020a5680`
 - `func_020a56cc`
-- `func_020a572c`
-- `func_020a5778`
+- `Unk0a5680_Unk_0a572c`
+- `Unk0a5680_Unk_0a5778`
 - `func_020a609c`
 
 ## Not done in M1-T552
@@ -38,7 +38,7 @@
 - `Unk0a5680_Unk_0a5fb0`: decompiler-derived (plain cleanup)
 - `Unk0a5680_GetEntryUnk14`: hand-matched
 - `Unk0a5680_GetEntrySub20`: hand-matched
-- `func_020a572c`: hand-matched
-- `func_020a5778`: hand-matched
-- `func_020a5e28`: hand-matched
-- `func_020a60fc`: hand-matched
+- `Unk0a5680_Unk_0a572c`: hand-matched
+- `Unk0a5680_Unk_0a5778`: hand-matched
+- `Unk0a5680_Unk_0a5e28`: hand-matched
+- `Unk0a5680_Unk_0a60fc`: hand-matched
