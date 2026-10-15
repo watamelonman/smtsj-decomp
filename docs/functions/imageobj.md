@@ -62,3 +62,13 @@
 ## Not done in M1-T929
 - `func_02078940`
 - `func_02078364`
+
+## Not done in M1-T928
+- `func_02078f34`
+- `func_02078ce0`
+- `func_02079044`
+- `func_02077ac8`
+- `func_02077f8c`
+- `func_02078db4`
+- `func_02078730`
+- `func_020780f4`
