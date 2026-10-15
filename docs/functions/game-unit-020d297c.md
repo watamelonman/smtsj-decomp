@@ -44,3 +44,13 @@
 ## Not done in M1-T572
 - `func_020d33cc`
 - `func_020d2c44`
+- `func_020d2fbc`: decompiler-derived
+- `func_020d3034`: decompiler-derived
+
+## Not done in M1-T571
+- `func_020d3358`
+- `func_020d2eb0`
+- `func_020d2b98`
+- `func_020d30b0`
+- `func_020d314c`
+- `func_020d297c`

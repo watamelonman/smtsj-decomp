@@ -207,3 +207,47 @@ void func_020d3200(u32 *arg0,int arg1)
   return;
 }
 
+
+
+int func_020d2eb0();
+/* decompiler-derived */
+u32 func_020d2fbc(u32 arg0)
+{
+  int tmp1;
+  u32 tmp2;
+  if (*data_02176be0 == 0) {
+    return 0;
+  }
+  tmp1 = func_020d2eb0(arg0);
+  if (tmp1 != 0) {
+    tmp2 = func_0204fe68(*data_02176be0,0);
+    tmp2 = func_0204fed8(tmp2,*(u32 *)(tmp1 + 0x40));
+    return tmp2;
+  }
+  return 0;
+}
+
+int func_0204fb14();
+/* decompiler-derived */
+u32 func_020d3034(u32 arg0,u32 arg1)
+{
+  u16 tmp1;
+  u32 tmp2;
+  switch(arg0) {
+  case 0:
+    break;
+  case 1:
+    tmp2 = Unk09974c_Unk_099bac(arg1);
+    return tmp2;
+  case 2:
+    return 0;
+  case 3:
+    tmp2 = Unk0a163c_Unk_0a1814(arg1);
+    return tmp2;
+  case 4:
+    tmp1 = func_0204fb14(2);
+    tmp2 = Unk0a163c_Unk_0a1814(tmp1);
+    return tmp2;
+  }
+  return 0;
+}
