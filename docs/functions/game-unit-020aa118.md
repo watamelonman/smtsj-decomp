@@ -76,3 +76,17 @@
 - `Unk0aa118_CompareItems`: hand-matched
 - `Unk0aa118_SortRemaining`: hand-matched
 - `Unk0aa118_Advance`: hand-matched
+- `func_020ab34c`: hand-matched
+- `func_020ab468`: hand-matched
+- `func_020ab8f8`: hand-matched
+- `func_020ab930`: hand-matched
+- `func_020acb28`: hand-matched
+- `func_020adaf4`: hand-matched
+- `func_020af780`: hand-matched
+- `func_020af7cc`: hand-matched
+- `func_020af7f8`: hand-matched
+- `func_020af8d8`: hand-matched
+- `func_020afa60`: hand-matched
+- `func_020afab0`: hand-matched
+- `func_020afaf8`: hand-matched
+- `func_020afb40`: hand-matched
