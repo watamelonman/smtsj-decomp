@@ -60,6 +60,24 @@ u32 Unk038fbc_Unk_038fbc(int *arg0)
 
 
 u32 Unk038fbc_Unk_039248(u32 arg0);
+u8 *func_02039160(u8 **o, int x, int y)
+{
+    u8 *h;
+    int dx, dy;
+    if (o == 0) {
+        return 0;
+    }
+    h = o[0];
+    if (h != 0) {
+        dx = x - h[8];
+        dy = y - h[9];
+        if (dx >= 0 && dx < h[10] && dy >= 0 && dy < h[11]) {
+            return o[2] + (h[10] * dy + dx) * 8;
+        }
+    }
+    return 0;
+}
+
 u8 *Unk038fbc_GetElement(u32 *p, u32 i, u32 j)
 {
     if (p == 0) {
