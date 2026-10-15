@@ -45,7 +45,7 @@ extern u8 data_0214283c[];
 void Unk044394_Unk_044394(u32 *arg0);
 void func_02053000();
 
-int func_02044428(int i)
+int Unk044394_Unk_044428(int i)
 {
     int ok;
     u8 *e;
@@ -68,7 +68,7 @@ int func_02044428(int i)
     return 1;
 }
 
-int func_02044534(int i)
+int Unk044394_Unk_044534(int i)
 {
     int ok;
     u8 *e;

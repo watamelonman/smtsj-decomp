@@ -7,8 +7,8 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u32 data_021508d4[];
-int func_02044428();
-int func_02044534();
+int Unk044394_Unk_044428();
+int Unk044394_Unk_044534();
 int Unk0e651c_Unk_0e666c();
 void Unk124c5c_Unk_124e04(void);
 
@@ -39,19 +39,19 @@ u32 Unk0de678_Get_data_021508d4(void)
 /* decompiler-derived */
 void Unk0de678_Unk_0dea60(void)
 {
-  func_02044534(0x1f);
+  Unk044394_Unk_044534(0x1f);
 }
 
 /* decompiler-derived */
 void Unk0de678_Unk_0df598(void)
 {
-  func_02044428(0x20);
+  Unk044394_Unk_044428(0x20);
 }
 
 /* decompiler-derived */
 void Unk0de678_Unk_0df5a8(void)
 {
-  func_02044534(0x20);
+  Unk044394_Unk_044534(0x20);
 }
 
 /* decompiler-derived */
@@ -75,7 +75,7 @@ int Unk0fc584_Unk_0fc6a0();
 void Unk0de678_Unk_0df0a4(void)
 {
   Unk0a23f4_Unk_0a2414();
-  func_02044534(0x1e);
+  Unk044394_Unk_044534(0x1e);
   Unk065e88_Unk_065eac();
   Unk0de678_Unk_0df5a8();
   Unk0fc584_Unk_0fc6a0();
@@ -92,7 +92,7 @@ void Unk0de678_Unk_0de870(void)
     return;
   }
   Unk0a23f4_Unk_0a2414();
-  func_02044534(0x1e);
+  Unk044394_Unk_044534(0x1e);
   Unk124c5c_Unk_124d54();
   Unk065e88_Unk_065eac();
   Unk0de678_Unk_0df5a8();
@@ -146,7 +146,7 @@ void Unk0de678_Unk_0df064(void)
   Unk0fc584_Unk_0fc674(1);
   Unk0fc584_Unk_0fc84c(0);
   Unk065e88_Unk_065e88();
-  func_02044428(0x1e);
+  Unk044394_Unk_044428(0x1e);
   Unk0a23f4_Unk_0a23f4(2);
 }
 

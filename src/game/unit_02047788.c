@@ -28,7 +28,7 @@ int Unk047788_GetConst1(void) { return 1; }
 /* returns 1 */
 int Unk047788_GetConst1_0477dc(void) { return 1; }
 
-int func_020453dc();
+int Unk044904_Unk_0453dc();
 void Unk047788_Unk_047834();
 typedef struct Unk047788Mgr {
     u8 pad_0000[0x64];
@@ -68,7 +68,7 @@ void Unk047788_Unk_047834(void)
 /* decompiler-derived */
 u32 Unk047788_Unk_047884(void)
 {
-  func_020453dc();
+  Unk044904_Unk_0453dc();
   Unk047788_Unk_047834();
   return 1;
 }

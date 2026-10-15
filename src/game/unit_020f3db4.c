@@ -7,8 +7,8 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk02e000_Unk_02e774();
-int func_02044428();
-int func_02044534();
+int Unk044394_Unk_044428();
+int Unk044394_Unk_044534();
 int Unk0f3db4_Unk_0f3ec8();
 
 u32 Unk0f3db4_Unk_0f44a8(u32 arg0);
@@ -29,13 +29,13 @@ u32 Unk0f3db4_Unk_0f44a8(u32 arg0)
 /* decompiler-derived */
 void Unk0f3db4_Unk_0f3dc8(void)
 {
-  func_02044428(8);
+  Unk044394_Unk_044428(8);
 }
 
 /* decompiler-derived */
 void Unk0f3db4_Unk_0f3dd8(void)
 {
-  func_02044534(8);
+  Unk044394_Unk_044534(8);
 }
 
 /* decompiler-derived */

@@ -81,7 +81,7 @@ void Unk11ec7c_Unk_11ef2c(int arg0)
 }
 
 
-int func_02044534();
+int Unk044394_Unk_044534();
 int func_02053000();
 /* decompiler-derived */
 void Unk11ec7c_Unk_11ec7c(int arg0)
@@ -95,7 +95,7 @@ void Unk11ec7c_Unk_11ec7c(int arg0)
   if (((Unk11ec7cWork *)arg0)->unk_0274 == 0) {
     return;
   }
-  func_02044534(0x24);
+  Unk044394_Unk_044534(0x24);
   return;
 }
 

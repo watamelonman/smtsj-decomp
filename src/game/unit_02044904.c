@@ -24,7 +24,7 @@ typedef struct Unk044904Rec {
     u16 unk_08;
 } Unk044904Rec;
 
-Unk044904Rec *func_02044948(u32 a, u32 b);
+Unk044904Rec *Unk044904_Unk_044948(u32 a, u32 b);
 
 typedef struct Unk044904Entry {
     u16 id;
@@ -52,7 +52,7 @@ void func_02008848();
 int func_02049a84();
 void func_0204a8cc();
 
-Unk044904Rec *func_02044948(u32 a, u32 key)
+Unk044904Rec *Unk044904_Unk_044948(u32 a, u32 key)
 {
     u8 *p = (u8 *)a;
     u32 n = FIELD(u32, p, 96);
@@ -76,7 +76,7 @@ Unk044904Rec *func_02044948(u32 a, u32 key)
 
 void Unk044904_AddRecUnk08(u32 a, u32 b, int n)
 {
-    Unk044904Rec *r = func_02044948(a, b);
+    Unk044904Rec *r = Unk044904_Unk_044948(a, b);
     r->unk_08 += n;
 }
 
@@ -238,7 +238,7 @@ void Unk044904_Unk_044ea8(void)
 
 
 
-int func_02044f4c(u32 k)
+int Unk044904_Unk_044f4c(u32 k)
 {
     typedef struct Unk044904Objs { u8 pad[100]; u32 objs[10]; } Unk044904Objs;
     u8 *t = (u8 *)Unk044904_Get_data_0215ee98();
@@ -376,7 +376,7 @@ int Unk044904_Unk_04509c(void)
 
 
 int Unk0bc1a8_IsSlotEmpty();
-void func_020453dc(void)
+void Unk044904_Unk_0453dc(void)
 {
     typedef struct Unk044904Objs { u8 pad[100]; u32 objs[10]; } Unk044904Objs;
     int i;

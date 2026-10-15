@@ -219,15 +219,15 @@ void BattleShowingTask_Unk_11c4c4(u32 arg0)
   return;
 }
 
-int func_02044534();
+int Unk044394_Unk_044534();
 int func_0211a380();
 /* decompiler-derived */
 void BattleShowingTask_Unk_11b684(void)
 {
   func_0211a380();
-  func_02044534(0x17);
-  func_02044534(0x21);
-  func_02044534(0x29);
+  Unk044394_Unk_044534(0x17);
+  Unk044394_Unk_044534(0x21);
+  Unk044394_Unk_044534(0x29);
   return;
 }
 

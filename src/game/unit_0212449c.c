@@ -2,7 +2,7 @@
 #include "types.h"
 
 
-int func_02044534();
+int Unk044394_Unk_044534();
 int func_0205bb68();
 int func_0205c368();
 int func_0205c3dc();
@@ -38,7 +38,7 @@ void Unk12449c_Unk_12449c(int *arg0)
   if (arg0[9] == 0) {
     return;
   }
-  func_02044534(0x1e);
+  Unk044394_Unk_044534(0x1e);
 }
 
 #ifndef FIELD
