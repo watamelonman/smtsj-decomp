@@ -20,7 +20,7 @@ u32 Unk0469d8_Unk_0469d8(void)
 
 int func_020496d0();
 int Unk09d060_Unk_09d1b0();
-int func_0209d4bc();
+int Unk09d42c_Unk_09d4bc();
 /* decompiler-derived */
 u32 Unk0469d8_Unk_046a00(u16 *arg0)
 {
@@ -28,7 +28,7 @@ u32 Unk0469d8_Unk_046a00(u16 *arg0)
   Unk044904_Unk_044ff4();
   func_020496d0();
   Unk09d060_Unk_09d1b0();
-  value = func_0209d4bc();
+  value = Unk09d42c_Unk_09d4bc();
   if (value == 0) {
     *arg0 = 2;
   }

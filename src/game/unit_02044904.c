@@ -9,7 +9,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 extern u32 data_0215ee98[];
 int func_0206df10();
 int Unk071dc0_Unk_072200();
-int func_0209d13c();
+int Unk09d060_Unk_09d13c();
 
 int Unk044904_GetConst1(void);
 u32 Unk044904_Get_data_0215ee98(void);
@@ -194,7 +194,7 @@ void Unk044904_Unk_044e90(int arg0)
 int Unk044904_Unk_045fd4(void)
 {
   int value;
-  value = func_0209d13c();
+  value = Unk09d060_Unk_09d13c();
   return value != 0;
 }
 

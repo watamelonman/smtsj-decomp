@@ -7,12 +7,12 @@
 
 ## Not done in M1-T306
 - `Unk09d060_GetCtxUnk00`
-- `func_0209d170`
-- `func_0209d13c`
+- `Unk09d060_Unk_09d170`
+- `Unk09d060_Unk_09d13c`
 - `func_0209d084`
 
 ## Not done in M1-T307
 - `func_0209d1cc`
 - `Unk09d060_GetCtxUnk00`: hand-matched
-- `func_0209d13c`: hand-matched
-- `func_0209d170`: hand-matched
+- `Unk09d060_Unk_09d13c`: hand-matched
+- `Unk09d060_Unk_09d170`: hand-matched

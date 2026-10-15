@@ -17,23 +17,23 @@
 ## Not done in M1-T1010
 - `Unk09a268_SetCtxUnk38`
 - `func_0209b720`
-- `func_0209b754`
-- `func_0209c528`
-- `func_0209a4a0`
+- `Unk09a268_SetCtxUnk2c30`
+- `Unk09a268_IsType1`
+- `Unk09a268_SetBit`
 - `Unk09a268_Unk_09bb38`: decompiler-derived
 
 ## Not done in M1-T1011
-- `func_0209a458`
-- `func_0209a4c4`
-- `func_0209c4a8`
+- `Unk09a268_Unk_09a458`
+- `Unk09a268_FindEntry`
+- `Unk09a268_Unk_09c4a8`
 - `func_0209a4fc`
-- `func_0209a77c`
-- `func_0209a7bc`
+- `Unk09a268_Unk_09a77c`
+- `Unk09a268_SetOnlyBit`
 - `func_0209c4e0`
 - `Unk09a268_Unk_09cb10`: decompiler-derived
 
 ## Not done in M1-T1012
-- `func_0209a3a0`
+- `Unk09a268_Unk_09a3a0`
 - `func_0209a53c`
 - `Unk09a268_Unk_09beb0`
 - `func_0209ae60`
@@ -67,12 +67,12 @@
 - `func_0209c854`
 - `Unk09a268_Unk_09beb0`: hand-matched
 - `Unk09a268_SetCtxUnk38`: hand-matched
-- `func_0209a3a0`: hand-matched
-- `func_0209a458`: hand-matched
-- `func_0209a4a0`: hand-matched
-- `func_0209a4c4`: hand-matched
-- `func_0209a77c`: hand-matched
-- `func_0209a7bc`: hand-matched
-- `func_0209b754`: hand-matched
-- `func_0209c4a8`: hand-matched
-- `func_0209c528`: hand-matched
+- `Unk09a268_Unk_09a3a0`: hand-matched
+- `Unk09a268_Unk_09a458`: hand-matched
+- `Unk09a268_SetBit`: hand-matched
+- `Unk09a268_FindEntry`: hand-matched
+- `Unk09a268_Unk_09a77c`: hand-matched
+- `Unk09a268_SetOnlyBit`: hand-matched
+- `Unk09a268_SetCtxUnk2c30`: hand-matched
+- `Unk09a268_Unk_09c4a8`: hand-matched
+- `Unk09a268_IsType1`: hand-matched

@@ -24,7 +24,7 @@ u32 Unk0edc78_Unk_0ee00c(void)
 
 int Unk02f2a8_GetCurrentCell38e8();
 int func_02052d7c();
-int func_0209a7bc();
+int Unk09a268_SetOnlyBit();
 int func_020a0da4();
 /* decompiler-derived */
 void Unk0edc78_Unk_0edf98(int arg0)
@@ -35,7 +35,7 @@ void Unk0edc78_Unk_0edf98(int arg0)
   value2 = Unk02f2a8_GetCurrentCell38e8();
   Unk09a268_Unk_09a80c(value2,1);
   Unk09a268_Unk_09a830(value2,0);
-  func_0209a7bc(value2,*(u8 *)(value1 + 0x19));
+  Unk09a268_SetOnlyBit(value2,*(u8 *)(value1 + 0x19));
   *(u8 *)(value2 + 1) = 1;
   *(u16 *)(value2 + 2) = 0;
   func_020a0da4(((Unk0edc78Work *)arg0)->unk_0058);

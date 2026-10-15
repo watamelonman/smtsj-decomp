@@ -2,12 +2,12 @@
 #include "types.h"
 
 
-int func_0209d13c();
+int Unk09d060_Unk_09d13c();
 /* decompiler-derived */
 u32 Unk047fb4_Unk_0480b4(void)
 {
   int value;
-  value = func_0209d13c();
+  value = Unk09d060_Unk_09d13c();
   if (value != 0) {
     Unk044904_Unk_045080(value);
     Unk0f81a4_Unk_0f81a4();

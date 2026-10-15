@@ -247,5 +247,18 @@
  "func_0209a0c0": "Unk09974c_Unk_09a0c0",
  "func_0209a0f4": "Unk09974c_IsKind1or14",
  "func_0209a12c": "Unk09974c_GetFlagsMidMinus1",
- "func_0209a1a0": "Unk09974c_SetBit6ac"
+ "func_0209a1a0": "Unk09974c_SetBit6ac",
+ "func_0209a3a0": "Unk09a268_Unk_09a3a0",
+ "func_0209a458": "Unk09a268_Unk_09a458",
+ "func_0209a4a0": "Unk09a268_SetBit",
+ "func_0209a4c4": "Unk09a268_FindEntry",
+ "func_0209a77c": "Unk09a268_Unk_09a77c",
+ "func_0209a7bc": "Unk09a268_SetOnlyBit",
+ "func_0209b754": "Unk09a268_SetCtxUnk2c30",
+ "func_0209c4a8": "Unk09a268_Unk_09c4a8",
+ "func_0209c528": "Unk09a268_IsType1",
+ "func_0209d13c": "Unk09d060_Unk_09d13c",
+ "func_0209d170": "Unk09d060_Unk_09d170",
+ "func_0209d42c": "Unk09d42c_Init_data_02176278",
+ "func_0209d4bc": "Unk09d42c_Unk_09d4bc"
 }

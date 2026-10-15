@@ -3,12 +3,12 @@
 
 extern u8 data_02176278[];
 void func_02008848();
-void func_0209d42c(void)
+void Unk09d42c_Init_data_02176278(void)
 {
     func_02008848(data_02176278, 0, 0x884);
 }
 
-int func_0209d4bc(void)
+int Unk09d42c_Unk_09d4bc(void)
 {
     *(int *)(data_02176278 + 0x808) = 0;
     return *(int *)(data_02176278 + 0x800) > *(int *)(data_02176278 + 0x804);

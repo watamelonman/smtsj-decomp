@@ -73,12 +73,12 @@ u32 Unk047788_Unk_047884(void)
   return 1;
 }
 
-int func_0209d13c();
+int Unk09d060_Unk_09d13c();
 /* decompiler-derived */
 int Unk047788_Unk_04781c(void)
 {
   int value;
-  value = func_0209d13c();
+  value = Unk09d060_Unk_09d13c();
   return value != 0;
 }
 
