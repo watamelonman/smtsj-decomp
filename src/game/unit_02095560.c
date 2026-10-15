@@ -199,7 +199,7 @@ u32 Unk095560_Unk_095a2c(u32 arg0)
 }
 
 int Unk02d15c_GetManagerRecord();
-int func_0209560c();
+int Unk095560_Unk_09560c();
 /* decompiler-derived */
 u32 Unk095560_Unk_095660(void)
 {
@@ -210,7 +210,7 @@ u32 Unk095560_Unk_095660(void)
   do {
     v1 = (u32 *)Unk094fe0_Unk_094fec(value2);
     value1 = Unk02d15c_GetManagerRecord(value2);
-    func_0209560c(value2);
+    Unk095560_Unk_09560c(value2);
     *v1 = 0xffffffff;
     value2 = value2 + 1;
     *(u32 *)(value1 + 0x50) = 0xffffffff;
@@ -376,7 +376,7 @@ u32 Unk095560_Unk_0956e8(void)
   func_0204af80();
   tmp1 = 0;
   do {
-    tmp2 = func_0209560c(tmp1);
+    tmp2 = Unk095560_Unk_09560c(tmp1);
     if (tmp2 == 0) {
       return 0;
     }
@@ -419,9 +419,9 @@ typedef struct Unk095560Rec {
     s32 id;
 } Unk095560Rec;
 int func_02053000();
-int func_020959d0(s32 a, s32 *out);
+int Unk095560_Unk_0959d0(s32 a, s32 *out);
 
-int func_0209560c(int i)
+int Unk095560_Unk_09560c(int i)
 {
     Unk095560Rec *r = (Unk095560Rec *)Unk02d15c_GetManagerRecord(i);
     s32 *slot = (s32 *)Unk094fe0_Unk_094fec(i);
@@ -436,10 +436,10 @@ int func_0209560c(int i)
     return 1;
 }
 
-int func_0209596c(u32 a)
+int Unk095560_Unk_09596c(u32 a)
 {
     s32 slot = -1;
-    switch (func_020959d0(a, &slot)) {
+    switch (Unk095560_Unk_0959d0(a, &slot)) {
     case 0:
         return 0;
     case 1:
@@ -450,7 +450,7 @@ int func_0209596c(u32 a)
     return Unk095560_Unk_095950(slot, a);
 }
 
-int func_020959d0(s32 a, s32 *out)
+int Unk095560_Unk_0959d0(s32 a, s32 *out)
 {
     int i;
     for (i = 2; i < 8; i++) {
