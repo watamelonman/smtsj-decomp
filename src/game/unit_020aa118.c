@@ -24,6 +24,20 @@ void Unk0aa118_Thunk_020af8d8(void);
 void Unk0aa118_Unk_0ab454(void);
 int Unk0aa118_Unk_0ab4b8(void);
 
+typedef struct Unk0aa118List {
+    u32 item[0x20];             /* +0x00 */
+    u32 pos;                    /* +0x80 */
+    u32 count;                  /* +0x84 */
+} Unk0aa118List;
+
+u32 func_020aa24c(Unk0aa118List *l)
+{
+    if (l->pos >= l->count) {
+        return 0;
+    }
+    return l->item[l->pos];
+}
+
 /* empty callback */
 void Unk0aa118_Nop_0ae054(void) { }
 
