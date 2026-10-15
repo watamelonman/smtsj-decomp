@@ -85,7 +85,7 @@ int func_020f7e48();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void func_020d1e94();
-void func_020f49f4(u8 *p)
+void Unk0f470c_Unk_0f49f4(u8 *p)
 {
     Unk0ea208_Unk_0ea70c();
     switch (FIELD(u32, p, 8)) {

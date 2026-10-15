@@ -20,7 +20,7 @@ int func_020f7e48();
 extern u32 data_02176df4[];
 int Unk0f8448_GetUnkField10();
 void Unk0e8228_Unk_0e8d90();
-void func_020eff38(u32 a)
+void Unk0efdf4_Unk_0eff38(u32 a)
 {
     u32 w = *data_02176df4;
     Unk0e8228_Unk_0e8d90(FIELD(u32, w, 76), Unk0f8448_GetUnkField10(a));

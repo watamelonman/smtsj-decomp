@@ -498,5 +498,14 @@
  "func_020eeb20": "Unk0eeb20_Unk_0eeb20",
  "func_020ef2cc": "Unk0ef248_ClearArrF4",
  "func_020ef6fc": "Unk0ef248_Unk_0ef6fc",
- "func_020ef74c": "Unk0ef248_Unk_0ef74c"
+ "func_020ef74c": "Unk0ef248_Unk_0ef74c",
+ "func_020eff38": "Unk0efdf4_Unk_0eff38",
+ "func_020f0078": "Unk0efff4_ClearArrF8",
+ "func_020f0f08": "Unk0f0eac_Unk_0f0f08",
+ "func_020f0fe0": "Unk0f0eac_Compare",
+ "func_020f2d60": "Unk0f1128_Unk_0f2d60",
+ "func_020f4160": "Unk0f3db4_IsName",
+ "func_020f4398": "Unk0f3db4_Unk_0f4398",
+ "func_020f4448": "Unk0f3db4_Unk_0f4448",
+ "func_020f49f4": "Unk0f470c_Unk_0f49f4"
 }

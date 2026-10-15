@@ -5,10 +5,10 @@
 - `Unk0f0eac_Unk_0f0eac`: decompiler-derived
 
 ## Not done in M1-T191
-- `func_020f0fe0`
-- `func_020f0f08`
+- `Unk0f0eac_Compare`
+- `Unk0f0eac_Unk_0f0f08`
 - `func_020f0f5c`
 - `func_020f1020`
 - `func_020f10a4`
-- `func_020f0f08`: hand-matched
-- `func_020f0fe0`: hand-matched
+- `Unk0f0eac_Unk_0f0f08`: hand-matched
+- `Unk0f0eac_Compare`: hand-matched

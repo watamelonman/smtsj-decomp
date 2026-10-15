@@ -35,7 +35,7 @@ typedef struct Unk0efff4Obj {
     u8 pad[0xf8];
     u32 unk_f8[6];
 } Unk0efff4Obj;
-void func_020f0078(Unk0efff4Obj *p)
+void Unk0efff4_ClearArrF8(Unk0efff4Obj *p)
 {
     int i;
     for (i = 0; i < 6; i++) {

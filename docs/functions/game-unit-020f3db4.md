@@ -12,11 +12,11 @@
 
 ## Not done in M1-T504
 - `Unk0f3db4_Unk_0f4538`
-- `func_020f4160`
+- `Unk0f3db4_IsName`
 - `Unk0f3db4_Unk_0f44b0`
 - `Unk0f3db4_Unk_0f44e4`
-- `func_020f4398`
-- `func_020f4448`
+- `Unk0f3db4_Unk_0f4398`
+- `Unk0f3db4_Unk_0f4448`
 - `func_020f4070`
 
 ## Not done in M1-T506
@@ -36,6 +36,6 @@
 - `Unk0f3db4_Unk_0f4538`: decompiler-derived (plain+fix cleanup)
 - `Unk0f3db4_Unk_0f44b0`: hand-matched
 - `Unk0f3db4_Unk_0f44e4`: hand-matched
-- `func_020f4160`: hand-matched
-- `func_020f4398`: hand-matched
-- `func_020f4448`: hand-matched
+- `Unk0f3db4_IsName`: hand-matched
+- `Unk0f3db4_Unk_0f4398`: hand-matched
+- `Unk0f3db4_Unk_0f4448`: hand-matched

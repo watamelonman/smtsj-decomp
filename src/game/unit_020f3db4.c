@@ -145,12 +145,12 @@ typedef struct Unk0f3db4Obj {
     u8 pad[0xa];
     Unk0f3db4Ent e[3];
 } Unk0f3db4Obj;
-int func_020f4160(const char *s)
+int Unk0f3db4_IsName(const char *s)
 {
     return func_020152cc(s, data_02150e24) == 0;
 }
 
-void func_020f4398(Unk0f3db4Obj *p, int k)
+void Unk0f3db4_Unk_0f4398(Unk0f3db4Obj *p, int k)
 {
     int i;
     for (i = 0; i < 3; i++) {
@@ -160,7 +160,7 @@ void func_020f4398(Unk0f3db4Obj *p, int k)
     }
 }
 
-int func_020f4448(int id)
+int Unk0f3db4_Unk_0f4448(int id)
 {
     u16 *q = (u16 *)Unk02e000_Thunk_0202e788();
     int n = func_0209993c(id);

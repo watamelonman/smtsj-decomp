@@ -312,13 +312,13 @@ void Unk0e1648_Unk_0e5090(u32 arg0,u32 arg1)
   func_02061f10(arg0,0xffffffff,0,0,tmp1);
 }
 
-int func_020f4448();
+int Unk0f3db4_Unk_0f4448();
 /* decompiler-derived */
 void Unk0e1648_Unk_0e48a8(int arg0,u32 arg1)
 {
   u16 tmp1;
   int tmp2;
-  tmp2 = func_020f4448(arg1);
+  tmp2 = Unk0f3db4_Unk_0f4448(arg1);
   if (tmp2 < 1) {
     return;
   }

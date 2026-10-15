@@ -9,7 +9,7 @@
 ## Not done in M1-T370
 - `func_020f4928`
 - `Unk0f470c_Unk_0f4b80`
-- `func_020f49f4`
+- `Unk0f470c_Unk_0f49f4`
 
 ## Not done in M1-T372
 - `func_020f4878`
@@ -25,4 +25,4 @@
 - `func_020f4a60`
 - `func_020f4ba4`
 - `Unk0f470c_Unk_0f4b80`: decompiler-derived (plain+fix cleanup)
-- `func_020f49f4`: hand-matched
+- `Unk0f470c_Unk_0f49f4`: hand-matched

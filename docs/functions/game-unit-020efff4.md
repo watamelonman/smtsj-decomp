@@ -6,7 +6,7 @@
 - `Unk0efff4_Unk_0f0300`: decompiler-derived
 
 ## Not done in M1-T360
-- `func_020f0078`
+- `Unk0efff4_ClearArrF8`
 - `func_020f0098`
 - `func_020efff4`
 - `func_020f04a4`
@@ -16,4 +16,4 @@
 - `func_020f00dc`
 - `func_020f019c`
 - `func_020f0330`
-- `func_020f0078`: hand-matched
+- `Unk0efff4_ClearArrF8`: hand-matched
