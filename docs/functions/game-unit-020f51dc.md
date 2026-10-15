@@ -7,7 +7,7 @@
 - `Unk0f51dc_Unk_0f621c`: decompiler-derived
 
 ## Not done in M1-T721
-- `func_020f57d4`
+- `Unk0f51dc_Unk_0f57d4`
 - `func_020f5754`
 - `func_020f5ad4`
-- `func_020f57d4`: hand-matched
+- `Unk0f51dc_Unk_0f57d4`: hand-matched

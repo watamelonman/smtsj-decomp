@@ -9,11 +9,11 @@
 - `Unk0f8448_Unk_0f8468` (16 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020f8478`: no candidate matched locally
+- `Unk0f8448_Init`: no candidate matched locally
 
 ## Not done in M1-T151
-- `func_020f84c0`
+- `Unk0f8448_GetEntry`
 - `func_020f84f4`
 - `func_020f8558`
-- `func_020f8478`: hand-matched
-- `func_020f84c0`: hand-matched
+- `Unk0f8448_Init`: hand-matched
+- `Unk0f8448_GetEntry`: hand-matched

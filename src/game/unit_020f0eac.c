@@ -30,7 +30,7 @@ int func_02044ec4();
 int Unk0e8228_IsField4One();
 int func_020e86a0();
 int Unk0e8228_Unk_0e8c80();
-int func_020f8478();
+int Unk0f8448_Init();
 /* decompiler-derived */
 void Unk0f0eac_Unk_0f0eac(void)
 {
@@ -41,7 +41,7 @@ void Unk0f0eac_Unk_0f0eac(void)
   func_02044ec4();
   value1 = Unk0e8228_Unk_0e82ac();
   if (value1 == 0) {
-    func_020f8478(value2 + 0x50,0);
+    Unk0f8448_Init(value2 + 0x50,0);
   }
   value1 = Unk0e8228_IsField4One();
   if (value1 != 0) {

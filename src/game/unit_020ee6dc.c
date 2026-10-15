@@ -19,14 +19,14 @@ void func_020f7248(void);
 /* forwards to `func_020f7248` */
 void Unk0ee6dc_Thunk_020f7248(void) { func_020f7248(); }
 
-int func_020f7210();
+int Unk0f7188_Unk_0f7210();
 int func_020f82e0();
 int Unk0fedd4_SetState2();
 /* decompiler-derived */
 void Unk0ee6dc_Unk_0ee6dc(int arg0)
 {
   int value;
-  value = func_020f7210();
+  value = Unk0f7188_Unk_0f7210();
   if (value == 0) {
     return;
   }
@@ -39,7 +39,7 @@ void Unk0ee6dc_Unk_0ee6dc(int arg0)
 
 int Unk0e8228_Unk_0e8374();
 int func_020f8264();
-int func_020f8478();
+int Unk0f8448_Init();
 int func_020fda58();
 int Unk0feba0_Unk_0febe8();
 /* decompiler-derived */
@@ -49,6 +49,6 @@ void Unk0ee6dc_Unk_0ee880(int arg0)
   Unk0feba0_Unk_0febe8(1);
   func_020fda58(0);
   value = Unk0e8228_Unk_0e8374(((Unk0ee6dcWork *)arg0)->unk_0044);
-  func_020f8478(arg0 + 0x50,value);
+  Unk0f8448_Init(arg0 + 0x50,value);
   func_020f8264(arg0 + 0x50);
 }

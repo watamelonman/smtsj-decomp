@@ -13,7 +13,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `func_0203e2f8` (M1-T019): card skipped
 - `Unk0d297c_Unk_0d3138` (M1-T567): left out of the card
 - card M1-T984: skipped (TU already has a hand-written file; needs merging by hand)
-- `func_020f8478` (M1-T150): left out of the card
+- `Unk0f8448_Init` (M1-T150): left out of the card
 - `func_020cccb4` (M1-T866): left out of the card
 - `func_0209a48c` (M1-T1009): left out of the card
 - `Unk0a0ce4_ScaleFx10` (M1-T447): left out of the card
@@ -92,7 +92,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk0f7188_Unk_0f7ca8` (M1-T621): left out of the card
 - `Unk0f7188_Unk_0f780c` (M1-T621): left out of the card
 - `func_020f7c64` (M1-T621): left out of the card
-- `func_020f7210` (M1-T621): left out of the card
+- `Unk0f7188_Unk_0f7210` (M1-T621): left out of the card
 - `func_021229b0` (M1-T110): card skipped
 - `Unk03c474_Unk_03c608` (M1-T118): left out of the card
 - `Unk0946e0_Clear12` (M1-T492): left out of the card

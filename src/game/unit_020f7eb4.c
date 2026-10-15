@@ -120,7 +120,7 @@ void func_020f7f68(Unk0f7eb4Work *w, char *name, u32 arg2, u32 arg3)
 void func_0204af80();
 void Unk039774_Unk_039b74();
 void func_02053000();
-void func_020f8034(u8 *p)
+void Unk0f7eb4_Release(u8 *p)
 {
     if (FIELD(u32, p, 68) == 0) {
         return;

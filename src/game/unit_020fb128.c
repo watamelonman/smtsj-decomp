@@ -11,7 +11,7 @@ int Unk0fb128_GetConst1(void) { return 1; }
 #endif
 void func_020fd0c8();
 int func_020fb324();
-int func_020fb614(u8 *p)
+int Unk0fb128_Unk_0fb614(u8 *p)
 {
     if (FIELD(s8, p, 0x7400 + 128) != 1) {
         return 1;

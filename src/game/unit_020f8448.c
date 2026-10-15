@@ -57,14 +57,14 @@ int Unk0f8448_Unk_0f8468(Unk0f8448Work *work)
 typedef void (*Unk0f8448Fn)(u8 *);
 void func_020bcfc4();
 void func_020bd1a8();
-void func_020f8478(u8 *p, u32 a)
+void Unk0f8448_Init(u8 *p, u32 a)
 {
     func_020bcfc4(p, a);
     func_020bd1a8(p + 28, p, p + 100, 1);
     FIELD(Unk0f8448Fn, p, 148)(p);
 }
 
-u32 func_020f84c0(u8 *p, int i)
+u32 Unk0f8448_GetEntry(u8 *p, int i)
 {
     if (i < 0 || (int)Unk0f8448_GetUnkField0(p) <= i) {
         return 0;

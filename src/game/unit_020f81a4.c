@@ -43,7 +43,7 @@ int Unk0f81a4_Unk_0f81b4(int arg0)
 void Unk0bcef4_Unk_0bcef4();
 void Unk0bcef4_Unk_0bd29c();
 void func_020f8264();
-void func_020f8224(u8 *p, u32 b, u32 c)
+void Unk0f81a4_Init(u8 *p, u32 b, u32 c)
 {
     Unk0bcef4_Unk_0bcef4(p, b, c, 1);
     Unk0bcef4_Unk_0bd29c(p + 28, p);

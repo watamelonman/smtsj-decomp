@@ -28,7 +28,7 @@ void Unk0efff4_Unk_0f004c(u32 arg0)
   func_020f019c(arg0);
 }
 
-int func_020f7210();
+int Unk0f7188_Unk_0f7210();
 int func_020f82e0();
 int Unk0fedd4_SetState2();
 typedef struct Unk0efff4Obj {
@@ -47,7 +47,7 @@ void Unk0efff4_ClearArrF8(Unk0efff4Obj *p)
 void Unk0efff4_Unk_0f0300(int arg0)
 {
   int value;
-  value = func_020f7210();
+  value = Unk0f7188_Unk_0f7210();
   if (value == 0) {
     return;
   }

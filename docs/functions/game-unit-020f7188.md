@@ -9,7 +9,7 @@
 - `Unk0f7188_Unk_0f7ca8`: no candidate matched locally
 - `Unk0f7188_Unk_0f780c`: no candidate matched locally
 - `func_020f7c64`: no candidate matched locally
-- `func_020f7210`: no candidate matched locally
+- `Unk0f7188_Unk_0f7210`: no candidate matched locally
 - `Unk0f7188_Unk_0f7cc0`: decompiler-derived
 
 ## Not done in M1-T622
@@ -30,4 +30,4 @@
 - `Unk0f7188_Unk_0f780c`: decompiler-derived (plain+fix cleanup)
 - `Unk0f7188_Unk_0f7ca8`: decompiler-derived (plain+fix cleanup)
 - `Unk0f7188_Call_02065cfc`: hand-matched
-- `func_020f7210`: hand-matched
+- `Unk0f7188_Unk_0f7210`: hand-matched

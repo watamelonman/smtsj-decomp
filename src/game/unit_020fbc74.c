@@ -36,7 +36,7 @@ void Unk0fbc74_Unk_0fbcd4(int *arg0,int arg1)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void Unk0a0ce4_Unk_0a0da4();
-int func_020fbd30(u8 *p)
+int Unk0fbc74_Unk_0fbd30(u8 *p)
 {
     if (FIELD(u32, p, 0) != 4) {
         return 0;

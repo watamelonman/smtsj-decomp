@@ -28,7 +28,7 @@ void Unk0ef248_Unk_0ef2a0(u32 arg0)
   func_020ef3f0(arg0);
 }
 
-int func_020f7210();
+int Unk0f7188_Unk_0f7210();
 int func_020f82e0();
 int Unk0fedd4_SetState2();
 #ifndef FIELD
@@ -39,7 +39,7 @@ typedef struct Unk0ef248Obj {
     u32 unk_f4[6];
 } Unk0ef248Obj;
 int Unk0e8228_Unk_0e8374();
-void func_020f8478();
+void Unk0f8448_Init();
 void func_020ef8d0();
 u32 Unk0e8228_Unk_0e84e4();
 void Unk0feba0_Unk_0febe8();
@@ -59,7 +59,7 @@ void Unk0ef248_ClearArrF4(Unk0ef248Obj *p)
 void Unk0ef248_Unk_0ef548(int arg0)
 {
   int value;
-  value = func_020f7210();
+  value = Unk0f7188_Unk_0f7210();
   if (value == 0) {
     return;
   }
@@ -76,7 +76,7 @@ int func_020f7d14();
 int func_020f7e48();
 void Unk0ef248_Unk_0ef6fc(u8 *p)
 {
-    func_020f8478(p + 80, Unk0e8228_Unk_0e8374(FIELD(u32, p, 68)));
+    Unk0f8448_Init(p + 80, Unk0e8228_Unk_0e8374(FIELD(u32, p, 68)));
     func_020ef8d0(p + 80);
     if (Unk0e8228_Unk_0e84e4() >= 6) {
         Unk0feba0_Unk_0febe8(3);

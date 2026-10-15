@@ -4,8 +4,8 @@
 - `Unk0fbc74_Unk_0fbcd4`: decompiler-derived
 
 ## Not done in M1-T169
-- `func_020fbd30`
+- `Unk0fbc74_Unk_0fbd30`
 - `func_020fbd74`
 - `func_020fbc74`
 - `func_020fbde4`
-- `func_020fbd30`: hand-matched
+- `Unk0fbc74_Unk_0fbd30`: hand-matched

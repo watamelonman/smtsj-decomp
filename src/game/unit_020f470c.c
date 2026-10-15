@@ -17,13 +17,13 @@ void func_020f7248(void);
 /* forwards to `func_020f7248` */
 void Unk0f470c_Thunk_020f7248(void) { func_020f7248(); }
 
-int func_020f7210();
+int Unk0f7188_Unk_0f7210();
 int func_020f82e0();
 /* decompiler-derived */
 void Unk0f470c_Unk_0f4908(int arg0)
 {
   int value;
-  value = func_020f7210();
+  value = Unk0f7188_Unk_0f7210();
   if (value == 0) {
     return;
   }
@@ -100,7 +100,7 @@ void Unk0f470c_Unk_0f49f4(u8 *p)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void Unk0e8228_Unk_0e8f50();
-void func_020f4a1c(u8 *p, int a, int b)
+void Unk0f470c_Unk_0f4a1c(u8 *p, int a, int b)
 {
     if (a != 2) {
         return;

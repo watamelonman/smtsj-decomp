@@ -16,7 +16,7 @@ void Unk0f7188_Nop_0f7ae4(void);
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-int func_020f7210(u8 *p)
+int Unk0f7188_Unk_0f7210(u8 *p)
 {
     if (FIELD(u32, p, 8) != 10) {
         return 0;

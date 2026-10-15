@@ -19,11 +19,11 @@
 - `Unk0f470c_Unk_0f4ac0`: decompiler-derived
 
 ## Not done in M1-T371
-- `func_020f4a1c`
+- `Unk0f470c_Unk_0f4a1c`
 - `func_020f470c`
 - `func_020f4994`
 - `func_020f4a60`
 - `func_020f4ba4`
 - `Unk0f470c_Unk_0f4b80`: decompiler-derived (plain+fix cleanup)
 - `Unk0f470c_Unk_0f49f4`: hand-matched
-- `func_020f4a1c`: hand-matched
+- `Unk0f470c_Unk_0f4a1c`: hand-matched

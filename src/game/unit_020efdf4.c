@@ -3,11 +3,11 @@
 
 
 int func_020f8264();
-int func_020f8478();
+int Unk0f8448_Init();
 /* decompiler-derived */
 void Unk0efdf4_Unk_0eff1c(u32 arg0)
 {
-  func_020f8478(arg0,0);
+  Unk0f8448_Init(arg0,0);
   func_020f8264(arg0);
 }
 

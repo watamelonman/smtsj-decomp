@@ -7,10 +7,10 @@
 - `Unk0f81a4_Unk_0f81b4`: decompiler-derived
 
 ## Not done in M1-T217
-- `func_020f8224`
+- `Unk0f81a4_Init`
 - `func_020f81cc`
 - `func_020f8264`
 
 ## Not done in M1-T218
 - `func_020f82e0`
-- `func_020f8224`: hand-matched
+- `Unk0f81a4_Init`: hand-matched

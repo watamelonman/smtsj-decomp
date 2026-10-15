@@ -21,7 +21,7 @@ typedef struct Unk0f90dcWork {
 int func_020cb1a0();
 int Unk02e000_Thunk_0202e788();
 int Unk02e000_GetAreaRecord();
-int func_020f90dc(int a, u32 b)
+int Unk0f90dc_Unk_0f90dc(int a, u32 b)
 {
     u8 *e;
     int v;

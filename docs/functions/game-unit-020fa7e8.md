@@ -8,7 +8,7 @@
 - `Unk0fa7e8_Unk_0fa7e8`: decompiler-derived
 
 ## Not done in M1-T500
-- `func_020fb0e0`
+- `Unk0fa7e8_Unk_0fb0e0`
 - `func_020fa84c`
 
 ## Not done in M1-T501
@@ -19,4 +19,4 @@
 - `func_020fa8a8`
 - `func_020fae7c`
 - `func_020faa88`
-- `func_020fb0e0`: hand-matched
+- `Unk0fa7e8_Unk_0fb0e0`: hand-matched
