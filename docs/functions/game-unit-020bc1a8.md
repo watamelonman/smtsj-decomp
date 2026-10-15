@@ -44,3 +44,8 @@
 - `Unk0bc1a8_Unk_0bc6e8`: decompiler-derived (plain cleanup)
 - `Unk0bc1a8_Unk_0bc5d4`: decompiler-derived (plain+fix cleanup)
 - `Unk0bc1a8_SetPrevWord`: hand-matched
+- `func_020bc490`: hand-matched
+- `func_020bc4e0`: hand-matched
+- `func_020bc548`: hand-matched
+- `func_020bc570`: hand-matched
+- `func_020bc598`: hand-matched

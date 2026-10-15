@@ -14,6 +14,33 @@ void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1);
 /* returns 0 */
 int Unk0bc1a8_GetConst0(void) { return 0; }
 
+void Unk06ae94_Unk_06ae94();
+void func_020580ec();
+void Unk06ae94_Unk_06aeb4();
+u32 Unk0bc1a8_Unk_0bcc34(int arg0);
+typedef void (*Unk0bc1a8Fn)(u8 *);
+void func_020bc490(u8 *p)
+{
+    if (FIELD(u32, p, 24) == 0 || (FIELD(u32, p, 36) & 1) == 1) {
+        return;
+    }
+    Unk06ae94_Unk_06ae94(2);
+    func_020580ec(0);
+    FIELD(Unk0bc1a8Fn, p, 24)(p + 52);
+    func_020580ec(1);
+    Unk06ae94_Unk_06aeb4(2);
+}
+
+void func_020bc4e0(u8 *p)
+{
+    Unk0bc1a8Fn fn;
+    Unk0bc1a8_Unk_0bcc34((int)p);
+    fn = FIELD(Unk0bc1a8Fn, p, 28);
+    if (fn != 0) {
+        fn(p + 52);
+    }
+}
+
 /* decompiler-derived */
 void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 {
@@ -101,6 +128,42 @@ void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2)
   }
   tmp1 = func_020bc5ac(arg0);
   func_020bcacc(tmp1,arg2);
+}
+
+void func_020bc548(u8 *p, int on)
+{
+    u8 *q;
+    if (p == 0) {
+        return;
+    }
+    q = p - 16;
+    if (on) {
+        FIELD(u32, q, 4) &= ~4;
+    } else {
+        FIELD(u32, q, 4) |= 4;
+    }
+}
+
+void func_020bc570(u8 *p, int on)
+{
+    u8 *q;
+    if (p == 0) {
+        return;
+    }
+    q = p - 16;
+    if (on) {
+        FIELD(u32, q, 4) &= ~1;
+    } else {
+        FIELD(u32, q, 4) |= 1;
+    }
+}
+
+u32 func_020bc598(u8 *p)
+{
+    if (p == 0) {
+        return 0xffff;
+    }
+    return FIELD(u32, p, -8);
 }
 
 /* decompiler-derived */
