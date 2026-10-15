@@ -25,3 +25,4 @@
 - `func_0205b444`
 - `func_0205b154`
 - `func_0205b398`
+- `func_0205af2c`: decompiler-derived (chain+fix cleanup)
