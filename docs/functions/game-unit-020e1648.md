@@ -76,3 +76,5 @@
 - `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)
 - `Unk0e1648_Unk_0e48a8`: decompiler-derived (struct cleanup)
 - `Unk0e1648_IsUnkeecSet`: hand-matched
+- `func_020e1664`: hand-matched
+- `func_020e2d28`: hand-matched

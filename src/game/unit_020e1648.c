@@ -85,6 +85,15 @@ int Unk0e1648_Unk_0e1648(void)
   return *(int *)(((int)data_02176c78) + 4) == 0;
 }
 
+int Unk09974c_GetEntryUnk08();
+u32 func_020e1664(void)
+{
+    if (Unk0e1648_Unk_0e1648() != 0) {
+        return 0;
+    }
+    return FIELD(u32, FIELD(u8 *, data_02176c78, 4), 88);
+}
+
 /* decompiler-derived */
 int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,int arg1)
 {
@@ -183,6 +192,16 @@ void Unk0e1648_Unk_0e16f0(u8 *arg0)
 
 int func_0204faf0();
 int func_020e49cc();
+int func_020e2d28(u8 *p)
+{
+    u16 *e;
+    if (FIELD(u32, p, 104) != 1) {
+        return 0;
+    }
+    e = (u16 *)func_020f3de8(1, FIELD(u16, p + FIELD(u32, p, 124) * 8, 212));
+    return Unk09974c_GetEntryUnk08(*e) == 4;
+}
+
 /* decompiler-derived */
 void Unk0e1648_Unk_0e4964(u32 arg0)
 {
