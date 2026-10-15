@@ -36,3 +36,6 @@
 - `Unk0f3db4_Unk_0f4538`: decompiler-derived (plain+fix cleanup)
 - `Unk0f3db4_Unk_0f44b0`: hand-matched
 - `Unk0f3db4_Unk_0f44e4`: hand-matched
+- `func_020f4160`: hand-matched
+- `func_020f4398`: hand-matched
+- `func_020f4448`: hand-matched

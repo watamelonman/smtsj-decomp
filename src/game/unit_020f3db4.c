@@ -132,6 +132,47 @@ int Unk0f3db4_Unk_0f3ec8(u32 arg0)
 }
 
 
+extern char data_02150e24[];
+int func_020152cc();
+void func_02099b10();
+int Unk02e000_Thunk_0202e788();
+int func_0209993c();
+typedef struct Unk0f3db4Ent {
+    u16 id;
+    u16 n;
+} Unk0f3db4Ent;
+typedef struct Unk0f3db4Obj {
+    u8 pad[0xa];
+    Unk0f3db4Ent e[3];
+} Unk0f3db4Obj;
+int func_020f4160(const char *s)
+{
+    return func_020152cc(s, data_02150e24) == 0;
+}
+
+void func_020f4398(Unk0f3db4Obj *p, int k)
+{
+    int i;
+    for (i = 0; i < 3; i++) {
+        if (p->e[i].id != 0) {
+            func_02099b10(p->e[i].id, k * p->e[i].n);
+        }
+    }
+}
+
+int func_020f4448(int id)
+{
+    u16 *q = (u16 *)Unk02e000_Thunk_0202e788();
+    int n = func_0209993c(id);
+    if (n <= 0) {
+        return n;
+    }
+    if (id == q[0] || id == q[1] || id == q[2] || id == q[3]) {
+        n--;
+    }
+    return n;
+}
+
 /* decompiler-derived */
 void Unk0f3db4_Unk_0f4674(int arg0,int arg1)
 {
