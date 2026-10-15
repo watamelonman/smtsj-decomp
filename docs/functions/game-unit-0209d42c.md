@@ -46,3 +46,4 @@
 - `Unk09d42c_Unk_09df70`: hand-matched
 - `Unk09d42c_Unk_09e080`: hand-matched
 - `Unk09d42c_Unk_09e274`: hand-matched
+- `func_0209d73c`: hand-matched

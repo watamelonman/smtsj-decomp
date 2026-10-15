@@ -86,6 +86,34 @@ u8 *Unk09d42c_GetTable2Entry(int i)
     return base + i * 24;
 }
 
+typedef struct Unk09d42cList {
+    char names[64][32];         /* count from the +0x800 count offset */
+    s32 count;
+} Unk09d42cList;
+typedef struct Unk09d42cMap {
+    u16 flag;
+    u16 key;
+    u16 val;
+} Unk09d42cMap;
+extern char data_0214c9cc[];
+int func_020152cc();
+void func_02013c3c();
+int Unk0e651c_Unk_0e666c();
+
+u16 func_0209d73c(u16 id)
+{
+    int tab = func_020445d0(9, 4);
+    Unk09d42cMap *e = (Unk09d42cMap *)func_0204fde0(tab);
+    u32 n = func_0204fe18(tab);
+    u32 i;
+    for (i = 0; i < n; i++, e++) {
+        if (e->key == id && Unk0e651c_Unk_0e666c(e->flag) != 0) {
+            return e->val;
+        }
+    }
+    return id;
+}
+
 u8 *Unk09d42c_GetTable3Entry(int i)
 {
     int t = func_020445d0(9, 3);
