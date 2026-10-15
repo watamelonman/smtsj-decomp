@@ -15,6 +15,21 @@ typedef struct Unk0cd6ecWork {
     u32 unk_00f0;
 } Unk0cd6ecWork;
 
+int func_020cb5b4();
+void func_020ce2d8();
+void func_020ce33c();
+void func_020cddd0(u8 *p, u32 a)
+{
+    int r = func_020cb5b4(a, p + 1);
+    if (r == 1) {
+        func_020ce2d8(p);
+    } else if (r == 2) {
+        func_020ce33c(p);
+    } else if (r == 3) {
+        p[0] = p[2];
+    }
+}
+
 void Unk0cd6ec_Nop_0ce3ec(void) { }
 
 int Unk0a0ce4_Unk_0a0da4();
