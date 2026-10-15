@@ -104,3 +104,11 @@
 - `func_020e82c8`
 - `func_020e8a30`
 - `func_020e92a8`
+
+## Not done in M1-T908
+- `func_020e9de4`
+- `func_020e9ca8`
+- `func_020e9900`
+- `func_020e9060`
+- `func_020e94d8`
+- `func_020e8710`
