@@ -57,3 +57,6 @@
 - `Unk0d297c_LoadMissionLog`: decompiler-derived (plain cleanup)
 - `Unk0d297c_Unk_0d3308`: decompiler-derived (struct+fix cleanup)
 - `Unk0d297c_Unk_0d3358`: decompiler-derived (struct+fix cleanup)
+- `func_020d2aa4`: hand-matched
+- `func_020d2aec`: hand-matched
+- `func_020d322c`: hand-matched

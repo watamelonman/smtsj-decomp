@@ -16,9 +16,9 @@ typedef struct Unk0d297cWork {
 } Unk0d297cWork;
 
 
-void func_02095398(void);
+void func_02095398();
 void func_020953ac(void);
-void Unk0e5fb8_Unk_0e6448(void);
+int Unk0e5fb8_Unk_0e6448(void);
 void Unk0e5fb8_Unk_0e64c8(void);
 int Unk0e651c_Unk_0e651c();
 
@@ -98,7 +98,7 @@ void Unk0d297c_Unk_0d3290(int *arg0,u16 arg1)
 }
 
 int func_02053000();
-int func_020d322c();
+void func_020d322c();
 /* decompiler-derived */
 void Unk0d297c_Unk_0d33ac(Unk0d297cWork *work)
 {
@@ -142,7 +142,7 @@ void Unk0d297c_Unk_0d2f98(u32 arg0)
 
 int func_0202dfa0();
 int func_02095818();
-int func_020d2aa4();
+void func_020d2aa4();
 /* decompiler-derived */
 void Unk0d297c_Unk_0d2b70(u32 arg0)
 {
@@ -157,7 +157,7 @@ void Unk0d297c_Unk_0d2b70(u32 arg0)
 }
 
 int func_02095350();
-int func_020d2aec();
+void func_020d2aec();
 /* decompiler-derived */
 void Unk0d297c_Unk_0d2c1c(u32 arg0)
 {
@@ -290,4 +290,36 @@ void Unk0d297c_Unk_0d3358(int arg0, int arg1)
     ((Unk0d297cWork *)arg0)->unk_0014 = 1;
   }
   Unk0d297c_Unk_0d3330((Unk0d297cWork *)arg0);
+}
+
+void Unk0e5fb8_Unk_0e649c(u32 obj, int mode);
+
+/* Mode 1 setup unless Unk0e5fb8_Unk_0e6448 reports already active. */
+void func_020d2aa4(u32 obj)
+{
+    if (Unk0e5fb8_Unk_0e6448() != 0) {
+        return;
+    }
+    Unk0e5fb8_Unk_0e649c(obj, 1);
+    Unk0e651c_Unk_0e651c(obj, 1);
+    func_02095398(obj);
+}
+
+/* Switches to mode 2 when active. */
+void func_020d2aec(u32 obj)
+{
+    if (Unk0e5fb8_Unk_0e6448() == 0) {
+        return;
+    }
+    Unk0e5fb8_Unk_0e649c(obj, 2);
+}
+
+/* Frees *slot (if set) and clears it. */
+void func_020d322c(u32 *slot)
+{
+    if (*slot == 0) {
+        return;
+    }
+    func_02053000();
+    *slot = 0;
 }
