@@ -17,17 +17,17 @@ u32 Unk047338_Unk_047470(u16 *arg0)
   return 2;
 }
 
-int func_020aa224();
-int func_020aa264();
+int Unk0aa118_SortRemaining();
+int Unk0aa118_Advance();
 /* decompiler-derived */
 u32 Unk047338_Unk_047504(u16 *arg0)
 {
   int value;
   Unk044904_Unk_044fd8();
-  value = func_020aa264();
+  value = Unk0aa118_Advance();
   if (value != 0) {
     Unk044904_Unk_044fd8();
-    func_020aa224();
+    Unk0aa118_SortRemaining();
     *arg0 = 2;
   }
   return 2;

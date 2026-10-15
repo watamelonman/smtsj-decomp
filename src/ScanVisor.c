@@ -216,7 +216,7 @@ void ScanVisor_Unk_0a2b18(void)
   return;
 }
 
-int func_020a8b70();
+int Unk0a7d54_Unk_0a8b70();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2b38(void)
 {
@@ -225,7 +225,7 @@ void ScanVisor_Unk_0a2b38(void)
   if (tmp1 == 0) {
     return;
   }
-  func_020a8b70(tmp1 + 0x428);
+  Unk0a7d54_Unk_0a8b70(tmp1 + 0x428);
   return;
 }
 
@@ -330,7 +330,7 @@ int * ScanVisor_Unk_0a42c4(int arg0)
 }
 
 
-int func_020a8b00();
+int Unk0a7d54_Unk_0a8b00();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2ae8(u32 arg0,u32 arg1)
 {
@@ -339,7 +339,7 @@ void ScanVisor_Unk_0a2ae8(u32 arg0,u32 arg1)
   if (tmp1 == 0) {
     return;
   }
-  func_020a8b00(tmp1 + 0x428,arg0,arg1);
+  Unk0a7d54_Unk_0a8b00(tmp1 + 0x428,arg0,arg1);
   return;
 }
 
@@ -593,7 +593,7 @@ typedef struct ScanVisorBits {
 
 extern u8 data_0214ce2c[];
 int Unk0c855c_Unk_0c9bac();
-int func_020a8c04();
+int Unk0a7d54_Unk_0a8c04();
 void Unk0c855c_Unk_0c9890();
 int func_020c9db4();
 int func_020c9eb0();
@@ -615,7 +615,7 @@ int ScanVisor_Unk_0a2b58(void)
     if (v == 0) {
         return 1;
     }
-    return func_020a8c04(v + 40 + 1024);
+    return Unk0a7d54_Unk_0a8c04(v + 40 + 1024);
 }
 
 void ScanVisor_ResetBits(ScanVisorBits *p)
@@ -800,7 +800,7 @@ void func_02057e58(int a, int b, int c);
 void ScanVisor_Unk_0a3254(ScanVisor *sv);
 void func_020a32cc(ScanVisor *sv);
 void func_020a34ac(ScanVisor *sv);
-void func_020a8ad0(void *p);
+void Unk0a7d54_Unk_0a8ad0(void *p);
 void func_020572d8(void);
 
 /* Draws the visor layers; modes 1/3 use layer 2, modes 0/2 layer 1. */
@@ -838,7 +838,7 @@ void ScanVisor_Draw(ScanVisor *sv)
         func_02057eb8(1);
         func_020a34ac(sv);
         func_02057eb8(1);
-        func_020a8ad0((u8 *)sv + 0x428);
+        Unk0a7d54_Unk_0a8ad0((u8 *)sv + 0x428);
         func_02057eb8(1);
         ScanVisor_Unk_0a3620((int)sv);
         func_02057eb8(-1);

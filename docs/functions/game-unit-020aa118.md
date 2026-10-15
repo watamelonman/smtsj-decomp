@@ -6,25 +6,25 @@
 - `Unk0aa118_Unk_0ab4b8` (28 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020aa118`: no candidate matched locally
+- `Unk0aa118_Clear814`: no candidate matched locally
 - `Unk0aa118_PeekItem`: no candidate matched locally
 - `func_020ab4d4`: no candidate matched locally
 - `func_020afb40`: no candidate matched locally
 - `Unk0aa118_Unk_0afb64`: decompiler-derived
 
 ## Not done in M1-T1077
-- `func_020aa224`
+- `Unk0aa118_SortRemaining`
 - `func_020ab34c`
 - `func_020af7cc`
 - `func_020af7f8`
-- `func_020aa264`
+- `Unk0aa118_Advance`
 - `func_020af8d8`
 - `func_020ab8f8`
 - `Unk0aa118_Unk_0af824`: decompiler-derived
 
 ## Not done in M1-T1078
 - `func_020adaf4`
-- `func_020aa1e0`
+- `Unk0aa118_CompareItems`
 - `func_020afab0`
 - `func_020afaf8`
 - `func_020ab930`
@@ -72,7 +72,7 @@
 - `func_020aeb90`
 - `Unk0aa118_Unk_0acb74`: decompiler-derived (plain+fix cleanup)
 - `Unk0aa118_PeekItem`: hand-matched
-- `func_020aa118`: hand-matched
-- `func_020aa1e0`: hand-matched
-- `func_020aa224`: hand-matched
-- `func_020aa264`: hand-matched
+- `Unk0aa118_Clear814`: hand-matched
+- `Unk0aa118_CompareItems`: hand-matched
+- `Unk0aa118_SortRemaining`: hand-matched
+- `Unk0aa118_Advance`: hand-matched

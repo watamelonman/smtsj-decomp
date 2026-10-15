@@ -18,24 +18,24 @@
 - `Unk0a7d54_IsField8Is3`
 - `Unk0a7d54_Unk_0a84a4`
 - `Unk0a7d54_Unk_0a8534`
-- `func_020a9390`
+- `Unk0a7d54_Unk_0a9390`
 - `Unk0a7d54_Unk_0a7e8c`
 - `Unk0a7d54_Unk_0a8c40`: decompiler-derived
 - `Unk0a7d54_Unk_0a84cc`: decompiler-derived
 - `Unk0a7d54_Unk_0a8500`: decompiler-derived
 
 ## Not done in M1-T792
-- `func_020a8ad0`
-- `func_020a91d4`
-- `func_020a93b8`
+- `Unk0a7d54_Unk_0a8ad0`
+- `Unk0a7d54_AddSlot`
+- `Unk0a7d54_Unk_0a93b8`
 - `Unk0a7d54_FindByKey`
-- `func_020a8b70`
+- `Unk0a7d54_Unk_0a8b70`
 - `Unk0a7d54_Unk_0a8bac`: decompiler-derived
 - `Unk0a7d54_Unk_0a916c`: decompiler-derived
 
 ## Not done in M1-T793
-- `func_020a8c04`
-- `func_020a8b00`
+- `Unk0a7d54_Unk_0a8c04`
+- `Unk0a7d54_Unk_0a8b00`
 - `func_020a85ac`
 - `func_020a7d80`
 - `func_020a9218`
@@ -46,10 +46,10 @@
 - `Unk0a7d54_FindByKey`: hand-matched
 - `Unk0a7d54_HasField8`: hand-matched
 - `Unk0a7d54_IsField8Is3`: hand-matched
-- `func_020a8ad0`: hand-matched
-- `func_020a8b00`: hand-matched
-- `func_020a8b70`: hand-matched
-- `func_020a8c04`: hand-matched
-- `func_020a91d4`: hand-matched
-- `func_020a9390`: hand-matched
-- `func_020a93b8`: hand-matched
+- `Unk0a7d54_Unk_0a8ad0`: hand-matched
+- `Unk0a7d54_Unk_0a8b00`: hand-matched
+- `Unk0a7d54_Unk_0a8b70`: hand-matched
+- `Unk0a7d54_Unk_0a8c04`: hand-matched
+- `Unk0a7d54_AddSlot`: hand-matched
+- `Unk0a7d54_Unk_0a9390`: hand-matched
+- `Unk0a7d54_Unk_0a93b8`: hand-matched
