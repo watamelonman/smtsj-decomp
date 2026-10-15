@@ -52,3 +52,4 @@
 - `func_020c7304`
 - `Unk0bd5f0_SetCtxUnk1b8`: hand-matched
 - `Unk0bd5f0_IsSpecialId`: hand-matched
+- `func_020bd5f0`: hand-matched
