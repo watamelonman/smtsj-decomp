@@ -52,6 +52,65 @@ Many TUs still carry a local `<Module>Work` built from that file's field accesse
 types that happen to have a field there. Merge only when call-graph / type evidence
 shows they are the same.
 
-Still using raw `*(T*)(arg0+off)` / `FIELD` in ~120 files (~700 sites). Safe to
-convert file-by-file once each TU's Work struct is complete and call sites agree on
-the pointer type.
+## Work-struct expansion (2026-10-15)
+
+Raw `*(T*)(arg0+off)` / `FIELD` on the primary object was converted to
+`((<Mod>Work *)arg0)->unk_XXXX` (or a named field) in the files below. Layouts
+come only from matched accesses; names stay hedged unless a prior accessor
+already had a real name (`ScanVisor.rangeA`, `Worker.owner`, etc.).
+
+Shared globals stay in `GameState.h` / `Globals.h`. Per-TU Work structs stay
+per-file unless call-graph evidence shows they are the same object (CampStatus's
+`unk_7494` is **not** merged into `GameState` without that evidence).
+
+Converted this pass (46 sources; 414 matched funcs rechecked at 100%):
+- `src/BattleShowingTask.c`
+- `src/CampStatus.c`
+- `src/CaveArea.c`
+- `src/CaveNpc.c`
+- `src/ImageBgDual3D.c`
+- `src/SaveLoadTask.c`
+- `src/ScanVisor.c`
+- `src/StaffRoll.c`
+- `src/game/unit_0202dcfc.c`
+- `src/game/unit_02039774.c`
+- `src/game/unit_02039bb4.c`
+- `src/game/unit_0205ae50.c`
+- `src/game/unit_0206ae94.c`
+- `src/game/unit_0206e4d8.c`
+- `src/game/unit_020939f0.c`
+- `src/game/unit_02094fe0.c`
+- `src/game/unit_020aa118.c`
+- `src/game/unit_020c855c.c`
+- `src/game/unit_020cce38.c`
+- `src/game/unit_020cd6ec.c`
+- `src/game/unit_020cf5e8.c`
+- `src/game/unit_020e1648.c`
+- `src/game/unit_020e7290.c`
+- `src/game/unit_020e7ac4.c`
+- `src/game/unit_020edc78.c`
+- `src/game/unit_020ee6dc.c`
+- `src/game/unit_020ef248.c`
+- `src/game/unit_020efb90.c`
+- `src/game/unit_020efff4.c`
+- `src/game/unit_020f09b4.c`
+- `src/game/unit_020f470c.c`
+- `src/game/unit_020f81a4.c`
+- `src/game/unit_020f8448.c`
+- `src/game/unit_020f868c.c`
+- `src/game/unit_020fd9f0.c`
+- `src/game/unit_02100208.c`
+- `src/game/unit_0210947c.c`
+- `src/game/unit_02109dcc.c`
+- `src/game/unit_0210a034.c`
+- `src/game/unit_02113294.c`
+- `src/game/unit_02116598.c`
+- `src/game/unit_0211d120.c`
+- `src/game/unit_0211ec7c.c`
+- `src/game/unit_0211f2d0.c`
+- `src/game/unit_0211fc20.c`
+- `src/game/unit_02122e1c.c`
+
+Remaining raw primary-arg sites: ~28 (overlap/unaligned or codegen-sensitive).
+Other bases (`value`, `tmp1`, …) still use offset casts where the pointer is a
+transient local, not the file Work object.

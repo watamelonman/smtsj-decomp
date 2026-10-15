@@ -2,6 +2,18 @@
 #include "types.h"
 
 
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0edc78Work {
+    u8 pad_0000[0x58];
+    u16 unk_0058;
+    u8 pad_005a[0x4a];
+    u32 unk_00a4;
+    u8 pad_00a8[0x73e4];
+    u32 unk_748c;
+    u32 unk_7490;
+} Unk0edc78Work;
+
 int func_020edc78();
 /* decompiler-derived */
 u32 Unk0edc78_Unk_0ee00c(void)
@@ -26,8 +38,8 @@ void Unk0edc78_Unk_0edf98(int arg0)
   func_0209a7bc(value2,*(u8 *)(value1 + 0x19));
   *(u8 *)(value2 + 1) = 1;
   *(u16 *)(value2 + 2) = 0;
-  func_020a0da4(*(u16 *)(arg0 + 0x58));
-  func_02052d7c(arg0 + 0xa8,*(u32 *)(arg0 + 0xa4));
-  *(u32 *)(arg0 + 0x748c) = 1;
-  *(u32 *)(arg0 + 0x7490) = 1;
+  func_020a0da4(((Unk0edc78Work *)arg0)->unk_0058);
+  func_02052d7c(arg0 + 0xa8,((Unk0edc78Work *)arg0)->unk_00a4);
+  ((Unk0edc78Work *)arg0)->unk_748c = 1;
+  ((Unk0edc78Work *)arg0)->unk_7490 = 1;
 }

@@ -13,18 +13,16 @@ typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+/* Object passed as first arg; +0x13 is byte3 of unk_0010 (LE). */
 typedef struct Unk116598Work {
-    u8 unk_0000[0x4];
-    s32 UnkField0004;
-    u32 UnkField0008;
-    s32 UnkField000c;
-    u8 unk_0010[0x3];
-    u8 UnkField0013;
-    u32 UnkField0014;
-    s32 UnkField0018;
+    u8  pad_0000[0x4];
+    s32 unk_0004;
+    u32 unk_0008;
+    s32 unk_000c;
+    s32 unk_0010;
+    u32 unk_0014;
+    s32 unk_0018;
 } Unk116598Work;
-
-
 void func_021177e0(void);
 void func_02117808(void);
 void func_021172fc(void);
@@ -305,17 +303,17 @@ int func_021176c0();
 /* decompiler-derived */
 void Unk116598_Unk_117620(Unk116598Work *work)
 {
-  if (work->UnkField0018 != 0) {
+  if (work->unk_0018 != 0) {
     return;
   }
-  if (work->UnkField000c != 1 && work->UnkField000c != 2) {
+  if (work->unk_000c != 1 && work->unk_000c != 2) {
     return;
   }
-  if (work->UnkField0004 == 0) {
+  if (work->unk_0004 == 0) {
     return;
   }
-  func_02057524(work->UnkField0014);
-  func_021176c0(work->UnkField0008,work->UnkField0013,0x16);
+  func_02057524(work->unk_0014);
+  func_021176c0(work->unk_0008,((u8 *)&work->unk_0010)[3],0x16);
   func_02057534();
 }
 
@@ -323,17 +321,17 @@ void Unk116598_Unk_117620(Unk116598Work *work)
 /* decompiler-derived */
 void Unk116598_Unk_117670(Unk116598Work *work)
 {
-  if (work->UnkField0018 != 0) {
+  if (work->unk_0018 != 0) {
     return;
   }
-  if (work->UnkField000c != 1 && work->UnkField000c != 3) {
+  if (work->unk_000c != 1 && work->unk_000c != 3) {
     return;
   }
-  if (work->UnkField0004 == 0) {
+  if (work->unk_0004 == 0) {
     return;
   }
-  func_02057524(work->UnkField0014);
-  func_021176c0(work->UnkField0008,work->UnkField0013,0x16);
+  func_02057524(work->unk_0014);
+  func_021176c0(work->unk_0008,((u8 *)&work->unk_0010)[3],0x16);
   func_02057534();
 }
 
@@ -370,16 +368,16 @@ void Unk116598_Unk_116968(int arg0)
   func_021167e0();
   func_020956e8();
   Unk116598_Unk_1168b8();
-  if (*(int *)(arg0 + 0x10) != 0) {
+  if (((Unk116598Work *)arg0)->unk_0010 != 0) {
     func_02044534(0x1e);
   }
   Unk116598_Unk_1172bc();
   func_021177b8();
   *data_02176e5c = 0;
-  if (*(int *)(arg0 + 4) == 3) {
-    func_02035440(*(u32 *)(arg0 + 8));
+  if (((Unk116598Work *)arg0)->unk_0004 == 3) {
+    func_02035440(((Unk116598Work *)arg0)->unk_0008);
   }
-  Unk02cad4_Unk_02cbdc(*(u32 *)(arg0 + 4));
+  Unk02cad4_Unk_02cbdc(((Unk116598Work *)arg0)->unk_0004);
 }
 
 
@@ -389,16 +387,16 @@ void Unk116598_Unk_117b94(int arg0)
   func_02117a28();
   func_020956e8();
   Unk116598_Unk_117ae4();
-  if (*(int *)(arg0 + 0x10) != 0) {
+  if (((Unk116598Work *)arg0)->unk_0010 != 0) {
     func_02044534(0x1e);
   }
   Unk116598_Unk_1172bc();
   func_021177b8();
   *data_02176e68 = 0;
-  if (*(int *)(arg0 + 4) == 3) {
-    func_02035440(*(u32 *)(arg0 + 8));
+  if (((Unk116598Work *)arg0)->unk_0004 == 3) {
+    func_02035440(((Unk116598Work *)arg0)->unk_0008);
   }
-  Unk02cad4_Unk_02cbdc(*(u32 *)(arg0 + 4));
+  Unk02cad4_Unk_02cbdc(((Unk116598Work *)arg0)->unk_0004);
 }
 
 

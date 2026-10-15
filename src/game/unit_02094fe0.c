@@ -6,6 +6,13 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk094fe0Work {
+    u8 pad_0000[0x9a0];
+    u32 unk_09a0;
+} Unk094fe0Work;
+
 extern u8 data_02175dac[];
 void func_0202e8cc(void);
 
@@ -25,7 +32,7 @@ int Unk094fe0_Unk_095004(int arg0)
 }
 
 /* get u32 at +0x9a0 */
-u32 Unk094fe0_GetUnkField9a0(void *obj) { return FIELD(u32, obj, 0x9a0); }
+u32 Unk094fe0_GetUnkField9a0(void *obj) { return ((Unk094fe0Work *)obj)->unk_09a0; }
 
 /* forwards to `func_0202e8cc` */
 void Unk094fe0_Thunk_0202e8cc(void) { func_0202e8cc(); }

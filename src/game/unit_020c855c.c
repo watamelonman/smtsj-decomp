@@ -4,6 +4,20 @@
 
 
 /* decompiler-derived */
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0c855cWork {
+    u8 pad_0000[0x1c];
+    u32 unk_001c;
+    u8 pad_0020[0x10];
+    s32 unk_0030;
+    u8 pad_0034[0x174];
+    u32 unk_01a8;
+    u32 unk_01ac;
+    u32 unk_01b0;
+    u32 unk_01b4;
+} Unk0c855cWork;
+
 int Unk0c855c_Unk_0ca690(int arg0)
 {
   return arg0 + 0x6180;
@@ -34,8 +48,8 @@ void Unk0c855c_Unk_0c9d8c(int arg0)
   value = 0;
   do {
     value = value + 1;
-    if (*(int *)(arg0 + 0x30) != 0) {
-      *(u32 *)(arg0 + 0x1c) = 1;
+    if (((Unk0c855cWork *)arg0)->unk_0030 != 0) {
+      ((Unk0c855cWork *)arg0)->unk_001c = 1;
     }
     arg0 = arg0 + 0x60;
   } while (value < 4);
@@ -48,7 +62,7 @@ u32 Unk0c855c_Unk_0c9bac(int arg0)
   int value;
   value = 0;
   do {
-    if (*(int *)(arg0 + 0x30) == 0) {
+    if (((Unk0c855cWork *)arg0)->unk_0030 == 0) {
       return 0;
     }
     value = value + 1;
@@ -109,19 +123,19 @@ void Unk0c855c_Unk_0c855c(int arg0)
   int tmp1;
   tmp1 = func_020537b8(0,0x40);
   if (tmp1 != 0) {
-    *(u32 *)(arg0 + 0x1a8) = 1;
+    ((Unk0c855cWork *)arg0)->unk_01a8 = 1;
   }
   tmp1 = func_020537b8(0,0x80);
   if (tmp1 != 0) {
-    *(u32 *)(arg0 + 0x1ac) = 1;
+    ((Unk0c855cWork *)arg0)->unk_01ac = 1;
   }
   tmp1 = func_020537b8(0,0x20);
   if (tmp1 != 0) {
-    *(u32 *)(arg0 + 0x1b0) = 1;
+    ((Unk0c855cWork *)arg0)->unk_01b0 = 1;
   }
   tmp1 = func_020537b8(0,0x10);
   if (tmp1 != 0) {
-    *(u32 *)(arg0 + 0x1b4) = 1;
+    ((Unk0c855cWork *)arg0)->unk_01b4 = 1;
   }
   return;
 }

@@ -4,6 +4,13 @@
 
 
 /* empty callback */
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0f470cWork {
+    u8 pad_0000[0x50];
+    s32 unk_0050;
+} Unk0f470cWork;
+
 void Unk0f470c_Nop_0f4874(void) { }
 
 void func_020f7248(void);
@@ -63,7 +70,7 @@ void Unk0f470c_Unk_0f4958(int arg0)
   u32 value;
   value = Unk0f8448_GetUnkField10(arg0 + 0x54);
   func_020ea70c();
-  if (*(int *)(arg0 + 0x50) != 0) {
+  if (((Unk0f470cWork *)arg0)->unk_0050 != 0) {
     func_020ea828();
     return;
   }

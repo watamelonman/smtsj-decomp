@@ -6,14 +6,19 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
-typedef struct BattleShowingTaskWork {
-    u8 unk_0000[0x4];
-    s32 UnkField0004;
-    s32 UnkField0008;
-    s32 UnkField000c;
-} BattleShowingTaskWork;
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct BattleShowingTaskWork {
+    u8 pad_0000[0x4];
+    s32 unk_0004;
+    s32 unk_0008;
+    s32 unk_000c;
+    u8 pad_0010[0x8];
+    s32 unk_0018;
+    s32 unk_001c;
+    u8 pad_0020[0x8];
+    u32 unk_0028;
+} BattleShowingTaskWork;
 
 extern u32 data_02176e70[];
 int Unk0a0ce4_Unk_0a0d30();
@@ -41,7 +46,7 @@ void BattleShowingTask_Nop_11984c(void) { }
 void BattleShowingTask_Nop_119850(void) { }
 
 /* get u32 at +0x28 */
-u32 BattleShowingTask_GetUnkField28(void *obj) { return FIELD(u32, obj, 0x28); }
+u32 BattleShowingTask_GetUnkField28(void *obj) { return ((BattleShowingTaskWork *)obj)->unk_0028; }
 
 /* decompiler-derived */
 void BattleShowingTask_Unk_119834(void)
@@ -63,8 +68,8 @@ void BattleShowingTask_Unk_1196e0(u32 *arg0)
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work)
 {
   u32 value;
-  if (work->UnkField000c < work->UnkField0008) {
-    value = *(u32 *)(work->UnkField0004 + work->UnkField000c * 4);
+  if (work->unk_000c < work->unk_0008) {
+    value = *(u32 *)(work->unk_0004 + work->unk_000c * 4);
   }
   else {
     value = 0;
@@ -219,8 +224,8 @@ int Unk0a163c_Unk_0a1ae0();
 /* decompiler-derived */
 void BattleShowingTask_Unk_11ce80(int arg0)
 {
-  func_02053000(*(u32 *)(arg0 + 4));
-  *(u32 *)(arg0 + 4) = 0;
+  func_02053000(((BattleShowingTaskWork *)arg0)->unk_0004);
+  ((BattleShowingTaskWork *)arg0)->unk_0004 = 0;
   Unk0a163c_Unk_0a1ae0(arg0 + 0x10);
   *data_02176e74 = 0;
   return;
@@ -230,15 +235,15 @@ int func_0205c3dc();
 /* decompiler-derived */
 void BattleShowingTask_Unk_11a01c(int arg0)
 {
-  if (*(int *)(arg0 + 0x18) != 0) {
+  if (((BattleShowingTaskWork *)arg0)->unk_0018 != 0) {
     func_0205c3dc();
-    *(u32 *)(arg0 + 0x18) = 0;
+    ((BattleShowingTaskWork *)arg0)->unk_0018 = 0;
   }
-  if (*(int *)(arg0 + 0x1c) == 0) {
+  if (((BattleShowingTaskWork *)arg0)->unk_001c == 0) {
     return;
   }
   func_0205c3dc();
-  *(u32 *)(arg0 + 0x1c) = 0;
+  ((BattleShowingTaskWork *)arg0)->unk_001c = 0;
   return;
 }
 

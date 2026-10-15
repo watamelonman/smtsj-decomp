@@ -6,14 +6,28 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
-typedef struct Unk122e1cWork {
-    u8 unk_0000[0x14];
-    u32 UnkField0014;
-    u8 unk_0018[0x48];
-    char UnkField0060;
-} Unk122e1cWork;
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk122e1cWork {
+    u8 pad_0000[0x10];
+    u32 unk_0010;
+    u32 unk_0014;
+    u8 pad_0018[0x48];
+    u8 unk_0060;
+    u8 unk_0061;
+    u8 pad_0062[0x2];
+    u32 unk_0064;
+    u8 pad_0068[0x4];
+    u32 unk_006c;
+    u8 pad_0070[0x40];
+    u32 unk_00b0;
+    u8 pad_00b4[0x4];
+    u32 unk_00b8;
+    u8 pad_00bc[0x58];
+    u32 unk_0114;
+    u8 pad_0118[0x4];
+    s32 unk_011c;
+} Unk122e1cWork;
 
 int func_0205caa8();
 int Unk0cb32c_Unk_0cb57c();
@@ -29,8 +43,8 @@ void Unk122e1c_Unk_12332c(Unk122e1cWork *work);
 
 /* set +0x64 and +0xb0 */
 void Unk122e1c_SetUnkFields64_b0(void *obj, u32 a, u32 b) {
-    FIELD(u32, obj, 0x64) = a;
-    FIELD(u32, obj, 0xb0) = b;
+    ((Unk122e1cWork *)obj)->unk_0064 = a;
+    ((Unk122e1cWork *)obj)->unk_00b0 = b;
 }
 
 /* decompiler-derived */
@@ -54,25 +68,25 @@ void Unk122e1c_Unk_122fa0(int arg0,int arg1,u32 arg2)
 /* decompiler-derived */
 void Unk122e1c_Unk_12331c(Unk122e1cWork *work)
 {
-  Unk0cb32c_Unk_0cb57c(work->UnkField0014);
+  Unk0cb32c_Unk_0cb57c(work->unk_0014);
 }
 
 /* decompiler-derived */
 int Unk122e1c_Unk_122f54(Unk122e1cWork *work)
 {
-  return work->UnkField0060 == '\0';
+  return work->unk_0060 == '\0';
 }
 
 /* decompiler-derived */
 int Unk122e1c_Unk_122f68(Unk122e1cWork *work)
 {
-  return work->UnkField0060 == '\b';
+  return work->unk_0060 == '\b';
 }
 
 /* decompiler-derived */
 void Unk122e1c_Unk_12332c(Unk122e1cWork *work)
 {
-  func_0205caa8(work->UnkField0014,1);
+  func_0205caa8(work->unk_0014,1);
 }
 
 
@@ -81,9 +95,9 @@ int func_020fee98();
 void Unk122e1c_Unk_123024(int arg0)
 {
   func_020fee98();
-  *(u32 *)(arg0 + 0x114) = 0;
-  *(u8 *)(arg0 + 0x61) = 0;
-  *(u8 *)(arg0 + 0x60) = 1;
+  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0060 = 1;
   return;
 }
 
@@ -92,9 +106,9 @@ void Unk122e1c_Unk_123024(int arg0)
 void Unk122e1c_Unk_123048(int arg0)
 {
   func_020fee98();
-  *(u32 *)(arg0 + 0x114) = 0;
-  *(u8 *)(arg0 + 0x61) = 0;
-  *(u8 *)(arg0 + 0x60) = 2;
+  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0060 = 2;
   return;
 }
 
@@ -103,9 +117,9 @@ void Unk122e1c_Unk_123048(int arg0)
 void Unk122e1c_Unk_1232f8(int arg0)
 {
   func_020fee98();
-  *(u32 *)(arg0 + 0x114) = 0;
-  *(u8 *)(arg0 + 0x61) = 0;
-  *(u8 *)(arg0 + 0x60) = 6;
+  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0060 = 6;
   return;
 }
 
@@ -114,11 +128,11 @@ int func_020feec0();
 void Unk122e1c_Unk_1232c8(int arg0)
 {
   func_020feec0();
-  Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x14));
-  *(u32 *)(arg0 + 0x114) = 0;
-  *(u32 *)(arg0 + 0xb8) = 0xffffffa4;
-  *(u32 *)(arg0 + 0x6c) = 0xffffffa4;
-  *(u8 *)(arg0 + 0x60) = 0;
+  Unk0cb32c_Unk_0cb57c(((Unk122e1cWork *)arg0)->unk_0014);
+  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
+  ((Unk122e1cWork *)arg0)->unk_00b8 = 0xffffffa4;
+  ((Unk122e1cWork *)arg0)->unk_006c = 0xffffffa4;
+  ((Unk122e1cWork *)arg0)->unk_0060 = 0;
   return;
 }
 
@@ -128,10 +142,10 @@ void Unk122e1c_Unk_1232c8(int arg0)
 void Unk122e1c_Unk_122ff0(int arg0)
 {
   func_020feec0();
-  Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x10));
-  *(int *)(arg0 + 0x114) = *(int *)(arg0 + 0x11c) + -1;
-  *(u8 *)(arg0 + 0x61) = 0;
-  *(u8 *)(arg0 + 0x60) = 3;
+  Unk0cb32c_Unk_0cb57c(((Unk122e1cWork *)arg0)->unk_0010);
+  ((Unk122e1cWork *)arg0)->unk_0114 = ((Unk122e1cWork *)arg0)->unk_011c + -1;
+  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0060 = 3;
   return;
 }
 
@@ -140,10 +154,10 @@ void Unk122e1c_Unk_122ff0(int arg0)
 void Unk122e1c_Unk_123294(int arg0)
 {
   func_020feec0();
-  Unk0cb32c_Unk_0cb57c(*(u32 *)(arg0 + 0x14));
-  *(int *)(arg0 + 0x114) = *(int *)(arg0 + 0x11c) + -1;
-  *(u8 *)(arg0 + 0x61) = 0;
-  *(u8 *)(arg0 + 0x60) = 7;
+  Unk0cb32c_Unk_0cb57c(((Unk122e1cWork *)arg0)->unk_0014);
+  ((Unk122e1cWork *)arg0)->unk_0114 = ((Unk122e1cWork *)arg0)->unk_011c + -1;
+  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0060 = 7;
   return;
 }
 
@@ -153,9 +167,9 @@ void Unk122e1c_Unk_12306c(int arg0)
 {
   int tmp1;
   tmp1 = 0;
-  *(int *)(arg0 + 0x114) = *(int *)(arg0 + 0x11c) + -1;
-  *(u8 *)(arg0 + 0x61) = 0;
-  *(u8 *)(arg0 + 0x60) = 5;
+  ((Unk122e1cWork *)arg0)->unk_0114 = ((Unk122e1cWork *)arg0)->unk_011c + -1;
+  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
+  ((Unk122e1cWork *)arg0)->unk_0060 = 5;
   do {
     func_02122fac(arg0,tmp1,0);
     tmp1 = tmp1 + 1;

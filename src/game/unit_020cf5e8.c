@@ -6,17 +6,27 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
-typedef struct Unk0cf5e8Work {
-    u8 unk_0000[0xa0];
-    s32 UnkField00a0;
-    u8 unk_00a4[0xf0];
-    s32 UnkField0194;
-    u8 unk_0198[0xf0];
-    s32 UnkField0288;
-    s32 UnkField028c;
-} Unk0cf5e8Work;
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0cf5e8Work {
+    u8 pad_0000[0x4];
+    u32 unk_0004;
+    u8 pad_0008[0x4];
+    u32 unk_000c;
+    u8 pad_0010[0x10];
+    u32 unk_0020;
+    u8 pad_0024[0x7c];
+    s32 unk_00a0;
+    u8 pad_00a4[0xf0];
+    s32 unk_0194;
+    u8 pad_0198[0xf0];
+    s32 unk_0288;
+    s32 unk_028c;
+    u32 unk_0290;
+    u32 unk_0294;
+    u8 pad_0298[0xc4];
+    u32 unk_035c;
+} Unk0cf5e8Work;
 
 void Unk1241ec_Thunk_02124338(void);
 void Unk1241ec_Unk_124258(void);
@@ -47,13 +57,13 @@ void Unk0cf5e8_Thunk_0212424c(void) { Unk1241ec_Thunk_02124338(); }
 /* decompiler-derived */
 int Unk0cf5e8_Unk_0d139c(Unk0cf5e8Work *work)
 {
-  return work->UnkField028c < work->UnkField0194;
+  return work->unk_028c < work->unk_0194;
 }
 
 /* decompiler-derived */
 int Unk0cf5e8_Unk_0d13fc(Unk0cf5e8Work *work)
 {
-  return work->UnkField0288 < work->UnkField00a0;
+  return work->unk_0288 < work->unk_00a0;
 }
 
 
@@ -63,7 +73,7 @@ int Unk0de678_Unk_0dec94();
 void Unk0cf5e8_Unk_0d1470(int arg0)
 {
   Unk0de678_Unk_0dec94(((int)data_02150648));
-  *(u32 *)(arg0 + 0x290) = 1;
+  ((Unk0cf5e8Work *)arg0)->unk_0290 = 1;
   return;
 }
 
@@ -72,7 +82,7 @@ extern u8 data_02150654[];
 void Unk0cf5e8_Unk_0d14ac(int arg0)
 {
   Unk0de678_Unk_0dec94(((int)data_02150654));
-  *(u32 *)(arg0 + 0x294) = 1;
+  ((Unk0cf5e8Work *)arg0)->unk_0294 = 1;
   return;
 }
 
@@ -82,9 +92,9 @@ int func_020d1360();
 void Unk0cf5e8_Unk_0d0f94(int arg0,u32 arg1)
 {
   func_020a0da4(5);
-  *(u32 *)(arg0 + 4) = 4;
+  ((Unk0cf5e8Work *)arg0)->unk_0004 = 4;
   func_020d1360(arg0,0x14);
-  *(u32 *)(arg0 + 0xc) = arg1;
+  ((Unk0cf5e8Work *)arg0)->unk_000c = arg1;
   return;
 }
 
@@ -92,9 +102,9 @@ int Unk122e1c_Unk_123294();
 /* decompiler-derived */
 void Unk0cf5e8_Unk_0d0fc4(int arg0,u32 arg1)
 {
-  Unk122e1c_Unk_123294(*(u32 *)(arg0 + 0x20));
-  *(u32 *)(arg0 + 0x35c) = arg1;
-  *(u32 *)(arg0 + 4) = 1;
+  Unk122e1c_Unk_123294(((Unk0cf5e8Work *)arg0)->unk_0020);
+  ((Unk0cf5e8Work *)arg0)->unk_035c = arg1;
+  ((Unk0cf5e8Work *)arg0)->unk_0004 = 1;
   func_020d1360(arg0,3);
   return;
 }
@@ -145,10 +155,10 @@ void Unk0cf5e8_Unk_0d1414(int arg0)
 {
   u32 tmp1;
   int tmp2;
-  tmp1 = func_020f3f2c(*(u16 *)(arg0 + *(int *)(arg0 + 0x288) * 8 + 0xa8));
-  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + *(int *)(arg0 + 0x288) * 8 + 0xa6));
+  tmp1 = func_020f3f2c(*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_0288 * 8 + 0xa8));
+  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_0288 * 8 + 0xa6));
   Unk0de678_Unk_0dec94(tmp2 + 0x16);
-  *(int *)(arg0 + 0x288) = *(int *)(arg0 + 0x288) + 1;
+  ((Unk0cf5e8Work *)arg0)->unk_0288 = ((Unk0cf5e8Work *)arg0)->unk_0288 + 1;
   return;
 }
 
@@ -158,10 +168,10 @@ void Unk0cf5e8_Unk_0d13b4(int arg0)
 {
   u32 tmp1;
   int tmp2;
-  tmp1 = func_020f3f2c(*(u16 *)(arg0 + *(int *)(arg0 + 0x28c) * 8 + 0x19c));
-  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + *(int *)(arg0 + 0x28c) * 8 + 0x19a));
+  tmp1 = func_020f3f2c(*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_028c * 8 + 0x19c));
+  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_028c * 8 + 0x19a));
   Unk0de678_Unk_0dec94(tmp2 + 0x16);
-  *(int *)(arg0 + 0x28c) = *(int *)(arg0 + 0x28c) + 1;
+  ((Unk0cf5e8Work *)arg0)->unk_028c = ((Unk0cf5e8Work *)arg0)->unk_028c + 1;
   return;
 }
 
@@ -184,7 +194,7 @@ void Unk0cf5e8_Unk_0d0960(int arg0,u32 arg1)
   if (tmp1 != 3) {
     return;
   }
-  func_020d1360(arg0,*(u32 *)(arg0 + 4));
+  func_020d1360(arg0,((Unk0cf5e8Work *)arg0)->unk_0004);
   return;
 }
 

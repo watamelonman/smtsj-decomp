@@ -2,6 +2,17 @@
 #include "types.h"
 
 
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct CaveAreaWork {
+    u8 pad_0000[0xc8];
+    u8 unk_00c8;
+    u8 pad_00c9[0x5b];
+    s32 unk_0124;
+    u8 pad_0128[0x38];
+    u32 unk_0160;
+} CaveAreaWork;
+
 int func_0205bb68();
 /* decompiler-derived */
 void CaveArea_Unk_0ed354(void)
@@ -15,8 +26,8 @@ void CaveArea_Unk_0ed354(void)
 /* decompiler-derived */
 void CaveArea_Unk_0ec278(int arg0)
 {
-  *(u8 *)(arg0 + 200) = 2;
-  *(u32 *)(arg0 + 0x160) = 1;
+  ((CaveAreaWork *)arg0)->unk_00c8 = 2;
+  ((CaveAreaWork *)arg0)->unk_0160 = 1;
   return;
 }
 
@@ -45,11 +56,11 @@ void CaveArea_Unk_0eda18(u32 arg0)
 /* decompiler-derived */
 void CaveArea_Unk_0ed26c(int arg0)
 {
-  if (*(int *)(arg0 + 0x124) == 0) {
+  if (((CaveAreaWork *)arg0)->unk_0124 == 0) {
     return;
   }
   func_0205bb68();
-  *(u32 *)(arg0 + 0x124) = 0;
+  ((CaveAreaWork *)arg0)->unk_0124 = 0;
   return;
 }
 

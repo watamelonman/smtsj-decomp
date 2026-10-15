@@ -4,6 +4,13 @@
 
 
 /* decompiler-derived */
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk100208Work {
+    u8 pad_0000[0x2];
+    s32 unk_0002;
+} Unk100208Work;
+
 int Unk100208_Unk_100398(u16 *arg0,u16 *arg1)
 {
   int value;
@@ -19,7 +26,7 @@ int Unk100208_Unk_100398(u16 *arg0,u16 *arg1)
 int Unk100208_Unk_1003b8(u16 *arg0,u16 *arg1)
 {
   int value;
-  value = *(int *)(arg1 + 2) - *(int *)(arg0 + 2);
+  value = *(int *)(arg1 + 2) - ((Unk100208Work *)arg0)->unk_0002;
   if (value == 0) {
     value = (u32)*arg0 - (u32)*arg1;
   }

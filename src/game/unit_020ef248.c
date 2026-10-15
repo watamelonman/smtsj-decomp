@@ -4,6 +4,13 @@
 
 
 /* empty callback */
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0ef248Work {
+    u8 pad_0000[0x8];
+    s32 unk_0008;
+} Unk0ef248Work;
+
 void Unk0ef248_Nop_0ef4b4(void) { }
 
 void func_020f7248(void);
@@ -33,7 +40,7 @@ void Unk0ef248_Unk_0ef548(int arg0)
     return;
   }
   func_020f82e0(arg0 + 0x50);
-  if (*(int *)(arg0 + 8) != 10) {
+  if (((Unk0ef248Work *)arg0)->unk_0008 != 10) {
     return;
   }
   func_020feed4();

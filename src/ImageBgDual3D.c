@@ -14,14 +14,19 @@ typedef unsigned long long u64;
 typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
-typedef struct ImageBgDual3DWork {
-    u8 unk_0000[0x8c];
-    u32 UnkField008c;
-    u8 unk_0090[0x178];
-    u32 UnkField0208;
-} ImageBgDual3DWork;
 
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct ImageBgDual3DWork {
+    u8 pad_0000[0x4];
+    s32 unk_0004;
+    u32 unk_0008;
+    u8 pad_000c[0x80];
+    u32 unk_008c;
+    u8 pad_0090[0x5d];
+    u8 unk_00ed;
+    u8 pad_00ee[0x11a];
+    u32 unk_0208;
+} ImageBgDual3DWork;
 
 void func_021255b4(void);
 void func_021177e0(void);
@@ -169,9 +174,9 @@ int func_0205c6e0();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125650(ImageBgDual3DWork *work)
 {
-  func_0205c408(work->UnkField008c,0);
-  func_0205c6e0(work->UnkField008c);
-  work->UnkField0208 = 0;
+  func_0205c408(work->unk_008c,0);
+  func_0205c6e0(work->unk_008c);
+  work->unk_0208 = 0;
 }
 
 
@@ -185,7 +190,7 @@ u32 ImageBgDual3D_Unk_125618(int arg0)
   tmp2 = 0;
   if (0 < *v1) {
     do {
-      if (*(char *)(arg0 + 0xed) == '\0') {
+      if (((ImageBgDual3DWork *)arg0)->unk_00ed == '\0') {
         return 0;
       }
       tmp2 = tmp2 + 1;
@@ -261,10 +266,10 @@ void ImageBgDual3D_Unk_125b10(int arg0)
   Unk116598_Unk_1172bc();
   func_021177b8();
   *data_02176e94 = 0;
-  if (*(int *)(arg0 + 4) == 3) {
-    func_02035440(*(u32 *)(arg0 + 8));
+  if (((ImageBgDual3DWork *)arg0)->unk_0004 == 3) {
+    func_02035440(((ImageBgDual3DWork *)arg0)->unk_0008);
   }
-  Unk02cad4_Unk_02cbdc(*(u32 *)(arg0 + 4));
+  Unk02cad4_Unk_02cbdc(((ImageBgDual3DWork *)arg0)->unk_0004);
   return;
 }
 

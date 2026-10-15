@@ -2,12 +2,19 @@
 #include "types.h"
 
 
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk11d120Work {
+    u8 pad_0000[0x4];
+    u32 unk_0004;
+} Unk11d120Work;
+
 int func_02053000();
 /* decompiler-derived */
 void Unk11d120_Unk_11d288(int arg0)
 {
-  func_02053000(*(u32 *)(arg0 + 4));
-  *(u32 *)(arg0 + 4) = 0;
+  func_02053000(((Unk11d120Work *)arg0)->unk_0004);
+  ((Unk11d120Work *)arg0)->unk_0004 = 0;
   return;
 }
 

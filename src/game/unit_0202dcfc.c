@@ -12,24 +12,27 @@ typedef signed long long s64;
 typedef unsigned int u32;
 typedef unsigned char u8;
 
+/* Worker object for this TU (named fields from matched accessors). */
 typedef struct Worker {
-    u32 unk00[16];
-    u32 owner;          /* 0x40: set from the argument */
-    u32 state;          /* 0x44 */
-    u32 timer;          /* 0x48 */
-    u32 sub[2];         /* 0x4C: sub-object, has its own init */
-    u32 field54;
-    u32 field58;
-    u8  flag5C;
-    u8  pad5D[3];
+    u8  pad_0000[0x18];
+    u32 unk_0018;               /* +0x18 */
+    u32 unk_001c;               /* +0x1C */
+    u8  pad_0020[0x20];
+    u32 owner;                  /* +0x40 */
+    u32 state;                  /* +0x44 */
+    u32 timer;                  /* +0x48 */
+    u32 sub[2];                 /* +0x4C */
+    u32 field54;                /* +0x54 */
+    u32 field58;                /* +0x58 */
+    u8  flag5C;                 /* +0x5C */
+    u8  pad_005d[3];
     u32 field60;
     u32 field64;
     u32 field68;
     u32 unk6C;
-    u32 field70;
-    u32 slots[16];      /* 0x74 */
+    u32 field70;                /* +0x70 */
+    u32 slots[16];              /* +0x74 */
 } Worker;
-
 void func_020a2bb8(u32 *sub);
 
 /* Resets the object and attaches it to `owner`. */
@@ -61,8 +64,8 @@ void Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void) { Unk095560_GetManagerAlias
 /* decompiler-derived */
 void Unk02dcfc_Unk_02df00(int arg0,u32 arg1)
 {
-  *(u32 *)(arg0 + 0x18) = 0x15;
-  *(u32 *)(arg0 + 0x1c) = arg1;
+  ((Worker *)arg0)->unk_0018 = 0x15;
+  ((Worker *)arg0)->unk_001c = arg1;
   return;
 }
 
@@ -70,8 +73,8 @@ void Unk02dcfc_Unk_02df00(int arg0,u32 arg1)
 /* decompiler-derived */
 void Unk02dcfc_Unk_02de58(int arg0)
 {
-  *(u32 *)(arg0 + 0x18) = 0xc;
-  *(u32 *)(arg0 + 0x54) = 1;
+  ((Worker *)arg0)->unk_0018 = 0xc;
+  ((Worker *)arg0)->field54 = 1;
   return;
 }
 
@@ -83,10 +86,10 @@ int func_020a2c00();
 void Unk02dcfc_Unk_02dd9c(int arg0)
 {
   int tmp1;
-  *(u32 *)(arg0 + 0x18) = 0xb;
-  *(u32 *)(arg0 + 0x44) = 1;
+  ((Worker *)arg0)->unk_0018 = 0xb;
+  ((Worker *)arg0)->state = 1;
   tmp1 = func_0205e5b4();
-  *(u32 *)(arg0 + 0x48) = (u32)(tmp1 != -1);
+  ((Worker *)arg0)->timer = (u32)(tmp1 != -1);
   func_020a2c00(arg0 + 0x4c);
   return;
 }

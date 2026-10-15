@@ -2,6 +2,16 @@
 #include "types.h"
 
 
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0e7290Work {
+    u8 pad_0000[0x8];
+    u32 unk_0008;
+    u32 unk_000c;
+    u8 pad_0010[0x7c];
+    u32 unk_008c;
+} Unk0e7290Work;
+
 extern u32 data_02176cd8[];
 /* decompiler-derived */
 void Unk0e7290_Clear_data_02176cd8(void)
@@ -62,10 +72,10 @@ u32 Unk0e7290_Unk_0e747c(int arg0)
     }
   } while (value1 < 4);
   if (v2) {
-    func_02053000(*(u32 *)(arg0 + 0x8c));
-    *(u32 *)(arg0 + 0x8c) = 0;
-    *(u32 *)(arg0 + 8) = *(u32 *)(arg0 + 0xc);
-    *(u32 *)(arg0 + 0xc) = 0;
+    func_02053000(((Unk0e7290Work *)arg0)->unk_008c);
+    ((Unk0e7290Work *)arg0)->unk_008c = 0;
+    ((Unk0e7290Work *)arg0)->unk_0008 = ((Unk0e7290Work *)arg0)->unk_000c;
+    ((Unk0e7290Work *)arg0)->unk_000c = 0;
     return 1;
   }
   return 0;

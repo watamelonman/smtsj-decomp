@@ -6,6 +6,16 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk0aa118Work {
+    u8 pad_0000[0x4];
+    s32 unk_0004;
+    u8 pad_0008[0x10];
+    s32 unk_0018;
+    u32 unk_001c;
+} Unk0aa118Work;
+
 int Unk044904_Unk_04509c();
 void func_020af8d8(void);
 
@@ -75,14 +85,14 @@ u32 Unk0aa118_Unk_0afb90(int arg0)
   u32 value;
   value = func_02052fe0(0x90);
   func_02008848(value,0,0x90);
-  if (*(int *)(arg0 + 0x18) == 0) {
-    *(u32 *)(arg0 + 0x18) = value;
+  if (((Unk0aa118Work *)arg0)->unk_0018 == 0) {
+    ((Unk0aa118Work *)arg0)->unk_0018 = value;
   }
   else {
     **(u32 **)(arg0 + 0x1c) = value;
   }
-  *(u32 *)(arg0 + 0x1c) = value;
-  *(int *)(arg0 + 4) = *(int *)(arg0 + 4) + 1;
+  ((Unk0aa118Work *)arg0)->unk_001c = value;
+  ((Unk0aa118Work *)arg0)->unk_0004 = ((Unk0aa118Work *)arg0)->unk_0004 + 1;
   return value;
 }
 

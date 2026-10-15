@@ -2,6 +2,16 @@
 #include "types.h"
 
 
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk11fc20Work {
+    u8 pad_0000[0xc];
+    u32 unk_000c;
+    u32 unk_0010;
+    u8 pad_0014[0x194];
+    s32 unk_01a8;
+} Unk11fc20Work;
+
 extern u32 data_02176e7c[];
 /* decompiler-derived */
 void Unk11fc20_Clear_data_02176e7c(void)
@@ -41,7 +51,7 @@ int Unk11fc20_Unk_120944(int arg0)
   value2 = 0;
   do {
     value2 = value2 + 1;
-    if (*(int *)(arg0 + 0x1a8) != 0) {
+    if (((Unk11fc20Work *)arg0)->unk_01a8 != 0) {
       value1 = value1 + 1;
     }
     arg0 = arg0 + 0x2c;
@@ -54,7 +64,7 @@ int func_02120bd4();
 /* decompiler-derived */
 void Unk11fc20_Unk_12143c(int arg0,int arg1,u32 arg2)
 {
-  func_02120bd4(4,0,*(u32 *)(arg0 + 0xc),*(u32 *)(arg0 + 0x10),0x3000,
+  func_02120bd4(4,0,((Unk11fc20Work *)arg0)->unk_000c,((Unk11fc20Work *)arg0)->unk_0010,0x3000,
                 arg1 << 0xc,arg2,0,0);
   return;
 }

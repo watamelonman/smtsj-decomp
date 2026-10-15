@@ -4,6 +4,21 @@
 
 
 /* decompiler-derived */
+
+/* Object passed as first arg in this file; layout from observed accesses. */
+typedef struct Unk11f2d0Work {
+    u8 pad_0000[0x10];
+    s32 unk_0010;
+    u32 unk_0014;
+    u32 unk_0018;
+    u32 unk_001c;
+    u32 unk_0020;
+    s32 unk_0024;
+    s32 unk_0028;
+    s32 unk_002c;
+    s32 unk_0030;
+} Unk11f2d0Work;
+
 void Unk11f2d0_Unk_11f320(int *arg0)
 {
   if (*arg0 != 0) {
@@ -76,11 +91,11 @@ int func_02065fac();
 void Unk11f2d0_Unk_11f544(int arg0)
 {
   u32 *v1;
-  if (*(int *)(arg0 + 0x24) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0024 != 0) {
     return;
   }
   v1 = (u32 *)
-           func_02065fac(*(u32 *)(arg0 + 0x14),*(u32 *)(arg0 + 0x1c),1,0);
+           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
   *(u32 **)(arg0 + 0x24) = v1;
   func_0205c408(*v1,0);
   func_0205c6e0(**(u32 **)(arg0 + 0x24));
@@ -92,11 +107,11 @@ void Unk11f2d0_Unk_11f544(int arg0)
 void Unk11f2d0_Unk_11f58c(int arg0)
 {
   u32 *v1;
-  if (*(int *)(arg0 + 0x28) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0028 != 0) {
     return;
   }
   v1 = (u32 *)
-           func_02065fac(*(u32 *)(arg0 + 0x14),*(u32 *)(arg0 + 0x1c),1,0);
+           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
   *(u32 **)(arg0 + 0x28) = v1;
   func_0205c408(*v1,1);
   func_0205c6e0(**(u32 **)(arg0 + 0x28));
@@ -108,11 +123,11 @@ void Unk11f2d0_Unk_11f58c(int arg0)
 void Unk11f2d0_Unk_11f5d4(int arg0)
 {
   u32 *v1;
-  if (*(int *)(arg0 + 0x2c) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_002c != 0) {
     return;
   }
   v1 = (u32 *)
-           func_02065fac(*(u32 *)(arg0 + 0x14),*(u32 *)(arg0 + 0x1c),1,0);
+           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
   *(u32 **)(arg0 + 0x2c) = v1;
   func_0205c408(*v1,2);
   func_0205c6e0(**(u32 **)(arg0 + 0x2c));
@@ -124,11 +139,11 @@ void Unk11f2d0_Unk_11f5d4(int arg0)
 void Unk11f2d0_Unk_11f61c(int arg0)
 {
   u32 *v1;
-  if (*(int *)(arg0 + 0x30) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0030 != 0) {
     return;
   }
   v1 = (u32 *)
-           func_02065fac(*(u32 *)(arg0 + 0x18),*(u32 *)(arg0 + 0x20),0,0);
+           func_02065fac(((Unk11f2d0Work *)arg0)->unk_0018,((Unk11f2d0Work *)arg0)->unk_0020,0,0);
   *(u32 **)(arg0 + 0x30) = v1;
   func_0205c408(*v1,0);
   func_0205c6e0(**(u32 **)(arg0 + 0x30));
@@ -141,41 +156,41 @@ int func_0205c368();
 void Unk11f2d0_Unk_11f43c(int arg0)
 {
   u32 tmp1;
-  if (*(int *)(arg0 + 0x24) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0024 != 0) {
     func_02061424();
-    *(u32 *)(arg0 + 0x24) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_0024 = 0;
   }
-  if (*(int *)(arg0 + 0x28) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0028 != 0) {
     func_02061424();
-    *(u32 *)(arg0 + 0x28) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_0028 = 0;
   }
-  if (*(int *)(arg0 + 0x2c) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_002c != 0) {
     func_02061424();
-    *(u32 *)(arg0 + 0x2c) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_002c = 0;
   }
-  if (*(int *)(arg0 + 0x30) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0030 != 0) {
     func_02061424();
-    *(u32 *)(arg0 + 0x30) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_0030 = 0;
   }
-  if (*(int *)(arg0 + 0x1c) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_001c != 0) {
     func_0205c368();
-    *(u32 *)(arg0 + 0x1c) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_001c = 0;
   }
-  if (*(int *)(arg0 + 0x20) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0020 != 0) {
     func_0205c368();
-    *(u32 *)(arg0 + 0x20) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_0020 = 0;
   }
-  if (*(int *)(arg0 + 0x10) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0010 != 0) {
     func_0205ddb4();
-    *(u32 *)(arg0 + 0x10) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_0010 = 0;
   }
-  if (*(int *)(arg0 + 0x14) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0014 != 0) {
     func_0205ddb4();
-    *(u32 *)(arg0 + 0x14) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_0014 = 0;
   }
-  if (*(int *)(arg0 + 0x18) != 0) {
+  if (((Unk11f2d0Work *)arg0)->unk_0018 != 0) {
     func_0205ddb4();
-    *(u32 *)(arg0 + 0x18) = 0;
+    ((Unk11f2d0Work *)arg0)->unk_0018 = 0;
   }
   tmp1 = 0;
   do {

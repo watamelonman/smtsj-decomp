@@ -29,6 +29,8 @@ Every rename is checked by rebuilding: objdiff 100% for all matched functions, a
 - Shared globals go in `include/*.h` (`GameState.h`, `Globals.h`). See `docs/structs.md`.
 - Field names: `unk_XXXX` (offset in hex) or a real name when known. Padding: `pad_XXXX[N]`.
 - Prefer `GameState *gs` / `ScanVisor *sv` over `int arg0` once the TU is converted.
+- When forward decls make a signature change risky, use `((ModWork *)arg0)->unk_XXXX`
+  (typed struct cast, no raw offset). Same codegen as `*(T*)(arg0+off)` on this toolchain.
 - Do not invent shared structs from coincident offsets across unrelated files.
 
 ## Inferred so far

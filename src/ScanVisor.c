@@ -13,16 +13,31 @@ typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 typedef unsigned int u32;
 
-typedef struct ScanVisor {
-    u32 unk00[5];
-    u32 field14;            /* 0x14 */
-    u32 unk18;
-    u32 rangeA;             /* 0x1C: set together with rangeB */
-    u32 rangeB;             /* 0x20 */
-    u32 unk24[103];
-    u32 slots[16];          /* 0x1C0: indexed table */
-} ScanVisor;
 
+/* Scan visor UI object (name from assert). Named fields from matched accessors. */
+typedef struct ScanVisor {
+    u8  pad_0000[0x8];
+    u32 unk_0008;               /* +0x08 */
+    u8  pad_000c[0x4];
+    u32 unk_0010;               /* +0x10 */
+    u32 field14;                /* +0x14 */
+    u8  pad_0018[0x4];
+    u32 rangeA;                 /* +0x1C */
+    u32 rangeB;                 /* +0x20 */
+    u32 unk_0024;               /* +0x24 */
+    u32 unk_0028;               /* +0x28 */
+    u8  pad_002c[0x14];
+    u32 unk_0040;               /* +0x40 */
+    u8  pad_0044[0x18];
+    u32 unk_005c;               /* +0x5C */
+    u8  pad_0060[0x138];
+    u32 unk_0198;               /* +0x198 */
+    u8  pad_019c[0x20];
+    u32 unk_01bc;               /* +0x1BC */
+    u32 slots[16];              /* +0x1C0 */
+    u8  pad_0200[0x4c];
+    u32 unk_024c;               /* +0x24C */
+} ScanVisor;
 void func_020fc6b8(void);
 
 /* Empty callbacks (called from func_020a3114). */
@@ -53,15 +68,15 @@ void ScanVisor_SetRange(ScanVisor *sv, u32 a, u32 b) {
 
 /* set +0x24 and +0x28 */
 void ScanVisor_SetUnkFields24_28(void *obj, u32 a, u32 b) {
-    FIELD(u32, obj, 0x24) = a;
-    FIELD(u32, obj, 0x28) = b;
+    ((ScanVisor *)obj)->unk_0024 = a;
+    ((ScanVisor *)obj)->unk_0028 = b;
 }
 
 
 /* decompiler-derived */
 void ScanVisor_Unk_0a4904(int arg0)
 {
-  *(u32 *)(arg0 + 0x1bc) = 1;
+  ((ScanVisor *)arg0)->unk_01bc = 1;
   return;
 }
 
@@ -69,7 +84,7 @@ void ScanVisor_Unk_0a4904(int arg0)
 /* decompiler-derived */
 void ScanVisor_ClearUnkField198(int arg0)
 {
-  *(u32 *)(arg0 + 0x198) = 0;
+  ((ScanVisor *)arg0)->unk_0198 = 0;
   return;
 }
 
@@ -96,8 +111,8 @@ void ScanVisor_Unk_0a3620(int arg0)
 /* decompiler-derived */
 void ScanVisor_Unk_0a465c(int arg0)
 {
-  *(u32 *)(arg0 + 0x10) = 0;
-  *(u32 *)(arg0 + 0x14) = 0;
+  ((ScanVisor *)arg0)->unk_0010 = 0;
+  ((ScanVisor *)arg0)->field14 = 0;
   return;
 }
 
@@ -115,9 +130,9 @@ void ScanVisor_Unk_0a4a30(u32 arg0)
 void ScanVisor_Unk_0a4644(int arg0,int arg1)
 {
   if (arg1 != 0) {
-    *(u32 *)(arg0 + 0x10) = 0xd;
+    ((ScanVisor *)arg0)->unk_0010 = 0xd;
   }
-  *(u32 *)(arg0 + 0x14) = 1;
+  ((ScanVisor *)arg0)->field14 = 1;
   return;
 }
 
@@ -486,22 +501,22 @@ int Unk0fd9f0_Unk_0fda14();
 void ScanVisor_Unk_0a2e5c(int arg0)
 {
   int tmp1;
-  if (*(int *)(arg0 + 8) != 0) {
+  if (((ScanVisor *)arg0)->unk_0008 != 0) {
     func_0205ddb4();
-    *(u32 *)(arg0 + 8) = 0;
+    ((ScanVisor *)arg0)->unk_0008 = 0;
   }
-  if (*(int *)(arg0 + 0x24) != 0) {
+  if (((ScanVisor *)arg0)->unk_0024 != 0) {
     func_0205ddb4();
-    *(u32 *)(arg0 + 0x24) = 0;
+    ((ScanVisor *)arg0)->unk_0024 = 0;
   }
-  if (*(int *)(arg0 + 0x40) != 0) {
+  if (((ScanVisor *)arg0)->unk_0040 != 0) {
     func_0205ddb4();
-    *(u32 *)(arg0 + 0x40) = 0;
+    ((ScanVisor *)arg0)->unk_0040 = 0;
   }
-  *(u32 *)(arg0 + 0x5c) = 0;
-  if (*(int *)(arg0 + 0x24c) != 0) {
+  ((ScanVisor *)arg0)->unk_005c = 0;
+  if (((ScanVisor *)arg0)->unk_024c != 0) {
     func_0205ddb4();
-    *(u32 *)(arg0 + 0x24c) = 0;
+    ((ScanVisor *)arg0)->unk_024c = 0;
   }
   Unk0a7d54_Unk_0a8bac(arg0 + 0x428);
   Unk0fc584_Unk_0fc6a0();
