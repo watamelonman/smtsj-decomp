@@ -10,6 +10,33 @@ void Unk0a5680_Clear_data_02176b14(void)
 }
 
 extern u8 data_0213c3e0[];
+/* Entry returned by func_020a5680. */
+typedef struct Unk0a5680Entry {
+    u8 pad_0000[0x14];
+    s32 unk_0014;
+    u8 pad_0018[0x8];
+    u8 unk_0020[4];             /* +0x20 sub-block */
+} Unk0a5680Entry;
+
+Unk0a5680Entry *func_020a5680(u32 a, u32 b);
+s32 func_020a5e48(u32 a, u32 b)
+{
+    Unk0a5680Entry *e = func_020a5680(a, b);
+    if (e != 0) {
+        return e->unk_0014;
+    }
+    return -1;
+}
+
+u8 *func_020a5e60(u32 a, u32 b)
+{
+    Unk0a5680Entry *e = func_020a5680(a, b);
+    if (e != 0) {
+        return e->unk_0020;
+    }
+    return 0;
+}
+
 /* decompiler-derived */
 int Unk0a5680_Unk_0a5e78(int arg0)
 {
