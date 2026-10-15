@@ -95,4 +95,10 @@ u32 Unk0986ac_Unk_098918(void)
   return value3;
 }
 
-
+/* decompiler-derived */
+u8 func_02098980(void)
+{
+  int tmp1;
+  tmp1 = Unk0986ac_Unk_0986ac();
+  return *(u8 *)(tmp1 + 0xd);
+}
