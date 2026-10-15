@@ -45,3 +45,38 @@ u8 *Unk09727c_GetAreaSub48(void)
 {
     return Unk02e000_Thunk_0202e788()->unk_0048;
 }
+
+int func_020445d0();
+void func_0204fe18();
+int func_0204fde0();
+typedef struct Unk09727cPair {
+    u16 lo : 10;
+    u16 hi : 6;
+} Unk09727cPair;
+
+void func_02097340(Unk09727cPair *out, void *area);
+int func_02097308(int i)
+{
+    int t = func_020445d0(48, 0);
+    u16 *a;
+    func_0204fe18(t);
+    a = (u16 *)func_0204fde0(t);
+    if (i == 18) {
+        return 100;
+    }
+    return a[i];
+}
+
+int func_020974a4(int i)
+{
+    Unk09727cPair buf[20];
+    func_02097340(buf, Unk02e000_Thunk_0202e788());
+    return buf[i].lo;
+}
+
+int func_020974dc(int i)
+{
+    Unk09727cPair buf[20];
+    func_02097340(buf, Unk02e000_Thunk_0202e788());
+    return buf[i].hi;
+}
