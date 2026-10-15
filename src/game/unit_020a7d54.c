@@ -180,7 +180,7 @@ void Unk0a7d54_Unk_0a8500(int arg0)
 
 int func_0205c368();
 int func_0205ddb4();
-int func_020a8534();
+void func_020a8534();
 int func_020a93b8();
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a8bac(int arg0)
@@ -244,4 +244,50 @@ int Unk0a7d54_Unk_0a7e8c(int arg0)
     *(u32 *)(arg0 + 8) = 0;
   }
   Unk0a7d54_Unk_0a7e64((u32 *)arg0);
+}
+
+void func_020a84a4(u8 *p)
+{
+    int j;
+    u8 *e = p + 72;
+    for (j = 0; j < 32; j++, e += 40) {
+        Unk0a7d54_Unk_0a7e8c((int)e);
+    }
+}
+
+void func_020a8534(u8 *p)
+{
+    int j;
+    u8 *e = p + 72;
+    for (j = 0; j < 32; j++, e += 40) {
+        Unk0a7d54_Unk_0a7e8c((int)e);
+    }
+}
+
+int func_020a855c(u8 *p, u32 k)
+{
+    int j;
+    u8 *e = p + 72;
+    for (j = 0; j < 32; j++, e += 40) {
+        if (FIELD(u32, e, 0) != 0 && FIELD(u8, e, 12) == k) {
+            return (int)e;
+        }
+    }
+    return 0;
+}
+
+int func_020a8608(u8 *p)
+{
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 8) != 0;
+}
+
+int func_020a8628(u8 *p)
+{
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 8) == 3;
 }
