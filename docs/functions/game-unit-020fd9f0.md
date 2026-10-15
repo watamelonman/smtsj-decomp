@@ -31,3 +31,5 @@
 - `Unk0fd9f0_LoadBattleHelpTalk`: decompiler-derived (plain cleanup)
 - `Unk0fd9f0_Unk_0fdc18`: decompiler-derived (plain+fix cleanup)
 - `Unk0fd9f0_SetDir`: hand-matched
+- `func_020fde0c`: hand-matched
+- `func_020fe1c8`: hand-matched

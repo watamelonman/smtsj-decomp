@@ -177,3 +177,34 @@ void Unk0fd9f0_Unk_0fdc18(int *arg0)
   func_0205bb68();
   *data_02176e20 = 0;
 }
+
+void Unk0fd9f0_Unk_0fdc0c();
+void Unk0fd9f0_Unk_0fe33c();
+void func_020fde4c();
+void func_020fe004();
+void func_020fe1f8();
+void func_020fde0c(u8 *p)
+{
+    switch (FIELD(u32, p, 44)) {
+    case 0:
+        return;
+    case 1:
+        func_020fde4c(p);
+        func_020fe004(p);
+        return;
+    case 2:
+        func_020fe1f8(p);
+        return;
+    }
+}
+
+u32 func_020fe1c8(int x)
+{
+    switch (x) {
+    case 1:
+        return 0xff0000;
+    case 2:
+        return 0xff000000;
+    }
+    return 0x299ce700;
+}
