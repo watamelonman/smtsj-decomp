@@ -11,3 +11,6 @@
 - `func_0210ff80`
 - `func_0210fe48`
 - `func_0210fe48`: hand-written. Config screen (Data/Tex/Config/) setup.
+- `func_02110048`: hand-matched
+- `func_02110074`: hand-matched
+- `func_021102d4`: hand-matched
