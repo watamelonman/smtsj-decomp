@@ -4,6 +4,30 @@
 
 int Unk02e000_GetWorkArea();
 int func_021122bc();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int func_02035b08();
+int Unk0e651c_Unk_0e666c();
+int func_021122bc(int x)
+{
+    if (x == func_02035b08(8, 4)) {
+        if (Unk0e651c_Unk_0e666c(0x159) == 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int func_02112438(int x)
+{
+    int r = 0;
+    if (x == func_02035b08(8, 4)) {
+        r = 1;
+    }
+    return r;
+}
+
 /* decompiler-derived */
 u32 Unk1122bc_Unk_1124c8(void)
 {
@@ -35,4 +59,13 @@ u32 Unk1122bc_Unk_112460(void)
     }
   }
   return value2;
+}
+
+int func_021124a0(void)
+{
+    int r = 1;
+    if (func_021122bc(FIELD(u16, Unk02e000_GetWorkArea(), 860)) == 1) {
+        r = 0;
+    }
+    return r;
 }
