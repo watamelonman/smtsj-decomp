@@ -15,6 +15,29 @@ typedef struct Unk0f90dcWork {
 
 
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int func_020cb1a0();
+int Unk02e000_Thunk_0202e788();
+int Unk02e000_GetAreaRecord();
+int func_020f90dc(int a, u32 b)
+{
+    u8 *e;
+    int v;
+    int r = 0;
+    e = (u8 *)func_020cb1a0(b);
+    if (a < 0) {
+        v = FIELD(s16, Unk02e000_Thunk_0202e788(), 30);
+    } else {
+        v = FIELD(s16, Unk02e000_GetAreaRecord(a), 32);
+    }
+    if (v >= e[34]) {
+        r = 1;
+    }
+    return r;
+}
+
 /* empty callback */
 void Unk0f90dc_Nop_0f9ce4(void) { }
 
