@@ -57,4 +57,17 @@ u32 Unk0afc28_Unk_0afcd4(u32 arg0)
   }
 }
 
+typedef struct Unk0afc28Pos {
+    u8 pad_0000[0x4];
+    s8 x;                       /* +0x04 */
+    u8 pad_0005;
+    s8 y;                       /* +0x06 */
+} Unk0afc28Pos;
 
+int func_020b0914(Unk0afc28Pos *p)
+{
+    if (p->x == 0 && p->y == 0) {
+        return -1;
+    }
+    return 0;
+}
