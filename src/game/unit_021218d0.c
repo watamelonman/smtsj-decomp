@@ -27,3 +27,4 @@ u32 func_02122544(u32 arg0,u32 arg1)
   func_02121970(tmp2);
   return tmp3;
 }
+
