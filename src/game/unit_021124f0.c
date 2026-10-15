@@ -1,6 +1,19 @@
 #include "GameState.h"
 #include "types.h"
 
+int func_02035b08();
+int Unk0e651c_Unk_0e666c();
+int func_021124f0(u16 a, u32 b, u32 c)
+{
+    int r = 0;
+    if (a == func_02035b08(8, 10) && b == 23 && c == 10) {
+        if (Unk0e651c_Unk_0e666c(344) == 1) {
+            r = 1;
+        }
+    }
+    return r;
+}
+
 int Unk1124f0_GetConst1(void) { return 1; }
 
 extern u8 data_0213cb24[];
