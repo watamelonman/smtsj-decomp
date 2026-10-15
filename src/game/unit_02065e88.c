@@ -221,7 +221,7 @@ typedef struct Unk065e88Obj24 {
 void func_02072238();
 int Unk0e651c_Unk_0e666c();
 int func_020684c0();
-void func_020672b4(s32 *o, s32 v, int notify)
+void Unk065e88_SetMode(s32 *o, s32 v, int notify)
 {
     o[0] = v;
     if (notify == 0) {
@@ -240,7 +240,7 @@ void func_020672b4(s32 *o, s32 v, int notify)
     }
 }
 
-int func_02068564(Unk065e88Obj24 *o)
+int Unk065e88_Unk_068564(Unk065e88Obj24 *o)
 {
     if (!o->flag_0024_28 && (o->unk_002a == 0 || Unk0e651c_Unk_0e666c(o->unk_002a) != 0) && func_020684c0(o) != 0) {
         return 1;

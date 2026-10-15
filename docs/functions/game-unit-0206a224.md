@@ -8,12 +8,12 @@
 - `Unk06a224_GetUnk00`
 - `Unk06a224_SetUnk00`
 - `Unk06a224_Unk_06a9fc`
-- `func_0206a374`
-- `func_0206a264`
+- `Unk06a224_Unk_06a374`
+- `Unk06a224_CountUsedSlots`
 - `Unk06a224_Unk_06ae28`: decompiler-derived
 
 ## Not done in M1-T600
-- `func_0206a3a4`
+- `Unk06a224_Unk_06a3a4`
 - `func_0206a998`
 - `func_0206aa0c`
 - `func_0206aafc`
@@ -31,6 +31,6 @@
 - `Unk06a224_GetUnk00`: hand-matched; reads/writes data_0216b9b0.unk_00
 - `Unk06a224_SetUnk00`: hand-matched; reads/writes data_0216b9b0.unk_00
 - `Unk06a224_Unk_06a9fc`: hand-matched
-- `func_0206a264`: hand-matched
-- `func_0206a374`: hand-matched
-- `func_0206a3a4`: hand-matched
+- `Unk06a224_CountUsedSlots`: hand-matched
+- `Unk06a224_Unk_06a374`: hand-matched
+- `Unk06a224_Unk_06a3a4`: hand-matched

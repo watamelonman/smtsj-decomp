@@ -58,7 +58,7 @@ typedef struct Unk06a224Slot {
     u16 id;
     u16 pad_0002;
 } Unk06a224Slot;
-s16 func_0206a264(void)
+s16 Unk06a224_CountUsedSlots(void)
 {
     s16 n = 0;
     int i;
@@ -70,7 +70,7 @@ s16 func_0206a264(void)
     return n;
 }
 
-int func_0206a374(u8 *o)
+int Unk06a224_Unk_06a374(u8 *o)
 {
     if (FIELD(s16, o, 0x154) % 2 != 0) {
         return 1;
@@ -78,7 +78,7 @@ int func_0206a374(u8 *o)
     return FIELD(s16, o, 0x156) > 0;
 }
 
-int func_0206a3a4(u8 *o)
+int Unk06a224_Unk_06a3a4(u8 *o)
 {
     s16 a = FIELD(s16, o, 0x154);
     if (a % 2 == 0) {

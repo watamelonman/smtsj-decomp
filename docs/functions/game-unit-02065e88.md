@@ -23,8 +23,8 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 ## Not done in M1-T1019
 - `Unk065e88_GetTableCount`
 - `Unk065e88_GetTableEntry`
-- `func_020672b4`
-- `func_02068564`
+- `Unk065e88_SetMode`
+- `Unk065e88_Unk_068564`
 - `Unk065e88_Unk_065f30`: decompiler-derived
 
 ## Not done in M1-T1020
@@ -60,5 +60,5 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `Unk065e88_GetTable`: hand-matched
 - `Unk065e88_GetTableCount`: hand-matched
 - `Unk065e88_GetTableEntry`: hand-matched
-- `func_020672b4`: hand-matched
-- `func_02068564`: hand-matched
+- `Unk065e88_SetMode`: hand-matched
+- `Unk065e88_Unk_068564`: hand-matched

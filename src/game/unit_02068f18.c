@@ -3,7 +3,7 @@
 
 
 
-int func_02068f18(u8 *a, u8 *b)
+int Unk068f18_CompareKeyAsc(u8 *a, u8 *b)
 {
     int d = b[2] - a[2];
     if (d == 0) {
@@ -15,7 +15,7 @@ int func_02068f18(u8 *a, u8 *b)
     return d;
 }
 
-int func_02068f48(u8 *a, u8 *b)
+int Unk068f18_CompareKeyDesc(u8 *a, u8 *b)
 {
     int d = a[2] - b[2];
     if (d == 0) {

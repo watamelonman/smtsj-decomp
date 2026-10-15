@@ -95,7 +95,7 @@ int func_0206d4e8();
 int func_02071844();
 int func_02071d6c();
 void func_0206af04();
-void func_0206b0ac(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
+void Unk06ae94_Call_06af04(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
 {
     func_0206af04(a, b, c, d, e, f, 0, g, h, i);
 }

@@ -140,5 +140,13 @@
  "func_0205b560": "Unk05b540_Init",
  "func_020663d8": "Unk065e88_GetTable",
  "func_020663f8": "Unk065e88_GetTableCount",
- "func_0206641c": "Unk065e88_GetTableEntry"
+ "func_0206641c": "Unk065e88_GetTableEntry",
+ "func_020672b4": "Unk065e88_SetMode",
+ "func_02068564": "Unk065e88_Unk_068564",
+ "func_02068f18": "Unk068f18_CompareKeyAsc",
+ "func_02068f48": "Unk068f18_CompareKeyDesc",
+ "func_0206a264": "Unk06a224_CountUsedSlots",
+ "func_0206a374": "Unk06a224_Unk_06a374",
+ "func_0206a3a4": "Unk06a224_Unk_06a3a4",
+ "func_0206b0ac": "Unk06ae94_Call_06af04"
 }

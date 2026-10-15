@@ -76,11 +76,14 @@ def compare(fn, obj):
 
 DEF = re.compile(r'^[A-Za-z_][\w \*]*?\b([A-Za-z_]\w*)\s*\([^;{]*\)\s*\{', re.M)
 def insert(src, code, fn):
-    """Insert code before the first defined function with a higher address (keeps address order)."""
+    """Insert code just before the first defined function that follows the last lower-address function
+    (keeps address order in ordered files; in out-of-order files, lands next to its address neighbour)."""
     a = BYNAME[fn][0]
-    for m in DEF.finditer(src):
-        n = m.group(1)
-        if n in BYNAME and 'function' in BYNAME[n][1] and BYNAME[n][0] > a:
+    defs = [m for m in DEF.finditer(src) if m.group(1) in BYNAME and 'function' in BYNAME[m.group(1)][1]]
+    lower = [i for i, m in enumerate(defs) if BYNAME[m.group(1)][0] < a]
+    start = lower[-1] + 1 if lower else 0
+    for m in defs[start:]:
+        if BYNAME[m.group(1)][0] > a:
             st = m.start()
             while True:  # keep a preceding comment attached to its function
                 p = src.rfind('\n', 0, st - 1)
