@@ -148,5 +148,13 @@
  "func_0206a264": "Unk06a224_CountUsedSlots",
  "func_0206a374": "Unk06a224_Unk_06a374",
  "func_0206a3a4": "Unk06a224_Unk_06a3a4",
- "func_0206b0ac": "Unk06ae94_Call_06af04"
+ "func_0206b0ac": "Unk06ae94_Call_06af04",
+ "func_0206c0b0": "Unk06ae94_Unk_06c0b0",
+ "func_0206c0d4": "Unk06ae94_CompareU32",
+ "func_0206c0f4": "Unk06ae94_Call_06c130",
+ "func_0206c8f8": "Unk06ae94_Unk_06c8f8",
+ "func_0206ca30": "Unk06ae94_Call_06c938",
+ "func_0206dddc": "Unk06dddc_GetEntryUnk24",
+ "func_0206e39c": "Unk06e2a0_GetEntrySubUnk34",
+ "func_0206e3d8": "Unk06e2a0_CopyEntryName"
 }

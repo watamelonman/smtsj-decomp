@@ -12,7 +12,7 @@ int Unk06e2a0_Unk_06e2a0(int arg0)
 extern u32 data_0216bac4[];
 extern u8 data_0216bafc[];
 int func_020086bc();
-u32 func_0206e39c(int i, int j)
+u32 Unk06e2a0_GetEntrySubUnk34(int i, int j)
 {
     if ((s32)data_0216bac4[0] - 1 - i < 0) {
         return 0;
@@ -20,7 +20,7 @@ u32 func_0206e39c(int i, int j)
     return *(u32 *)(data_0216bafc + i * 328 + j * 24);
 }
 
-void func_0206e3d8(int i, void *dst)
+void Unk06e2a0_CopyEntryName(int i, void *dst)
 {
     if ((s32)data_0216bac4[0] - 1 - i < 0) {
         return;

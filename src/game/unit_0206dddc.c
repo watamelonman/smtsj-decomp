@@ -4,7 +4,7 @@
 
 extern u32 data_0216bac4[];
 extern u8 data_0216baec[];
-u32 func_0206dddc(int i)
+u32 Unk06dddc_GetEntryUnk24(int i)
 {
     if ((s32)data_0216bac4[0] - 1 - i < 0) {
         return 0;

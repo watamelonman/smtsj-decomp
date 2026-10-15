@@ -102,7 +102,7 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk06ae94_Unk_06aed4` (M1-T994): left out of the card
 - `Unk06ae94_Unk_06aeec` (M1-T994): left out of the card
 - `Unk06ae94_SetPair` (M1-T994): left out of the card
-- `func_0206c0d4` (M1-T994): left out of the card
+- `Unk06ae94_CompareU32` (M1-T994): left out of the card
 - `Unk0e5fb8_GetOffset800` (M1-T374): left out of the card
 
 ## 2026-10-14 batch 3 (1000-function run, stopped early)

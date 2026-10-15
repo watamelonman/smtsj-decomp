@@ -9,13 +9,13 @@
 - `Unk06ae94_Unk_06aed4`: no candidate matched locally
 - `Unk06ae94_Unk_06aeec`: no candidate matched locally
 - `Unk06ae94_SetPair`: no candidate matched locally
-- `func_0206c0d4`: no candidate matched locally
+- `Unk06ae94_CompareU32`: no candidate matched locally
 
 ## Not done in M1-T995
-- `func_0206c0b0`
-- `func_0206ca30`
-- `func_0206c0f4`
-- `func_0206c8f8`
+- `Unk06ae94_Unk_06c0b0`
+- `Unk06ae94_Call_06c938`
+- `Unk06ae94_Call_06c130`
+- `Unk06ae94_Unk_06c8f8`
 - `Unk06ae94_Call_06af04`
 - `func_0206d4e8`
 - `func_0206ca64`
@@ -44,8 +44,8 @@
 - `Unk06ae94_Unk_06aeec`: hand-matched
 - `Unk06ae94_SetPair`: hand-matched
 - `Unk06ae94_Call_06af04`: hand-matched
-- `func_0206c0b0`: hand-matched
-- `func_0206c0d4`: hand-matched
-- `func_0206c0f4`: hand-matched
-- `func_0206c8f8`: hand-matched
-- `func_0206ca30`: hand-matched
+- `Unk06ae94_Unk_06c0b0`: hand-matched
+- `Unk06ae94_CompareU32`: hand-matched
+- `Unk06ae94_Call_06c130`: hand-matched
+- `Unk06ae94_Unk_06c8f8`: hand-matched
+- `Unk06ae94_Call_06c938`: hand-matched
