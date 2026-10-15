@@ -9,7 +9,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 extern u8 data_02140ac8[];
 extern u32 data_0215dd24[];
 void Unk02e000_Unk_02e0cc(void);
-void func_0202e788(void);
+u8 *func_0202e788(void);
 int func_0205a9d0();
 
 void Unk02e000_Nop_02e3e0(void);
@@ -168,4 +168,10 @@ int Unk02e000_Unk_02e740(int arg0)
   int tmp1;
   tmp1 = Unk02e000_Unk_02e75c((int)arg0);
   return *(char *)(tmp1 + 0x28) != '\0';
+}
+
+/* Pointer to the +0x3A4 sub-block of the func_0202e788 work area. */
+u8 *func_0202e8e0(void)
+{
+    return func_0202e788() + 0x3a4;
 }

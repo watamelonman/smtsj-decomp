@@ -79,3 +79,4 @@
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
 - `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)
+- `func_0202e8e0`: hand-matched
