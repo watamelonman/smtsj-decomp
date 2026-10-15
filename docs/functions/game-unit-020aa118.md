@@ -70,3 +70,4 @@
 - `func_020acb74`
 - `func_020aa2f0`
 - `func_020aeb90`
+- `func_020acb74`: decompiler-derived (plain+fix cleanup)

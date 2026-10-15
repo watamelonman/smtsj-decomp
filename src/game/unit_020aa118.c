@@ -115,5 +115,65 @@ u32 Unk0aa118_Unk_0ab4f4(u32 arg0,u32 arg1,u32 arg2,int arg3)
   return value2;
 }
 
-
-
+int func_02044ec4();
+int func_0204abd8();
+int func_0204f108();
+int func_0209fd64();
+int func_020ab62c();
+int func_020ab8f8();
+int func_020af9f4();
+int func_020afbdc();
+int func_020b0930();
+int func_020cb084();
+/* decompiler-derived */
+void func_020acb74(u32 arg0,u32 arg1,u32 arg2)
+{
+  u32 *v1;
+  int tmp2;
+  u32 tmp3;
+  int tmp4;
+  u32 tmp5;
+  v1 = (u32 *)func_02044ec4(arg2);
+  tmp2 = func_0204abd8(v1,0);
+  if (tmp2 == 0) {
+    tmp2 = func_020cb084(arg1);
+    if (tmp2 != 0) {
+      func_0204f108(0,0x20,tmp2,0);
+    }
+    tmp2 = (int)Unk0aa118_Unk_0afb64(arg0);
+    tmp5 = arg0 >> 0x10 & 0xff;
+    if (tmp5 == 1) {
+      tmp3 = 2;
+    }
+    else if (tmp5 == 2) {
+      tmp3 = 1;
+    }
+    else {
+      tmp3 = 0;
+    }
+    tmp3 = func_020af9f4(tmp3,arg1,0);
+    *(u32 *)(tmp2 + 0x10) = tmp3;
+    if (tmp5 == 1) {
+      tmp3 = 2;
+    }
+    else if (tmp5 == 2) {
+      tmp3 = 1;
+    }
+    else {
+      tmp3 = 0;
+    }
+    tmp3 = func_020af9f4(tmp3,arg1,1);
+    *(u32 *)(tmp2 + 0x14) = tmp3;
+    *(u32 *)(tmp2 + 8) = *(u32 *)(tmp2 + 8) | 0x10;
+    tmp4 = Unk0aa118_Unk_0afb90(tmp2);
+    *(u32 *)(tmp4 + 0x84) = *(u32 *)(tmp4 + 0x84) & 0xffffff00 | 4;
+    *(u32 *)(tmp4 + 4) = *v1;
+    func_020b0930(tmp4 + 100,arg0,0,1);
+    func_020ab62c(tmp4,arg0,0xffffffff);
+    *(u32 *)(tmp4 + 0x84) = *(u32 *)(tmp4 + 0x84) | 0x1000;
+    func_020ab8f8(tmp2);
+    func_0209fd64(tmp2);
+    func_020afbdc(tmp2);
+    return;
+  }
+}
