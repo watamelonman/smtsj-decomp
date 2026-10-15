@@ -55,3 +55,4 @@
 - `func_020d314c`
 - `func_020d297c`
 - `Unk0d297c_LoadMissionLog`: decompiler-derived (plain cleanup)
+- `func_020d3308`: decompiler-derived (struct+fix cleanup)

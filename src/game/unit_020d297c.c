@@ -8,7 +8,8 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0d297cWork {
-    u8 pad_0000[0x18];
+    u8 pad_0000[0x14];
+    u32 unk_0014;
     u32 unk_0018;
     u32 unk_001c;
     s32 unk_0020;
@@ -262,4 +263,14 @@ u32 Unk0d297c_LoadMissionLog(void)
   tmp1 = func_02051610(data_02150680);
   *data_02176be0 = tmp1;
   return 1;
+}
+
+/* decompiler-derived */
+void func_020d3308(int arg0)
+{
+  Unk0d297c_Unk_0d31e8((u32 *)arg0);
+  ((Unk0d297cWork *)arg0)->unk_0014 = 0;
+  ((Unk0d297cWork *)arg0)->unk_0018 = 0;
+  ((Unk0d297cWork *)arg0)->unk_001c = 0;
+  ((Unk0d297cWork *)arg0)->unk_0020 = 0x100;
 }
