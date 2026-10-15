@@ -44,10 +44,10 @@ void Unk095560_Unk_095a2c();
 int func_020de8b0();
 void Unk0bc1a8_Unk_0bc928();
 void func_02044428();
-void func_02122a78();
+void Unk122a78_Unk_122a78();
 void Unk1241ec_Unk_1241ec();
 u32 func_020f4560();
-void func_02122fac();
+void Unk122e1c_SetSlot();
 typedef struct Unk0cf5e8Slots {
     u8 pad_000[0x20];
     u32 h;
@@ -62,7 +62,7 @@ void Unk0cf5e8_Enter(void)
         return;
     }
     func_02044428(30);
-    func_02122a78();
+    Unk122a78_Unk_122a78();
     Unk1241ec_Unk_1241ec();
     Unk0bc1a8_Unk_0bc928(21, 0xffff, 0);
 }
@@ -252,6 +252,6 @@ void Unk0cf5e8_InitSlots(Unk0cf5e8Slots *p)
         p->slot[j] = func_020f4560(j);
     }
     for (j = 0; j < 6; j++) {
-        func_02122fac(p->h, j, p->slot[j]);
+        Unk122e1c_SetSlot(p->h, j, p->slot[j]);
     }
 }

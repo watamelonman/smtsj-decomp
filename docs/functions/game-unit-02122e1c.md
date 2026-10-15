@@ -15,20 +15,20 @@
 
 ## Not done in M1-T748
 - `func_0212351c`
-- `func_02122fd0`
+- `Unk122e1c_ClearSlots`
 - `Unk122e1c_Unk_1241cc`
-- `func_02122fac`
+- `Unk122e1c_SetSlot`
 - `Unk122e1c_Unk_122ff0`: decompiler-derived
 - `Unk122e1c_Unk_123294`: decompiler-derived
 - `Unk122e1c_Unk_12306c`: decompiler-derived
 
 ## Not done in M1-T749
-- `func_02123534`
+- `Unk122e1c_Unk_123534`
 - `func_021230b4`
 - `func_02123340`
 - `func_02122e1c`
 - `func_021233e0`
 - `Unk122e1c_Unk_1241cc`: decompiler-derived (plain cleanup)
-- `func_02122fac`: hand-matched
-- `func_02122fd0`: hand-matched
-- `func_02123534`: hand-matched
+- `Unk122e1c_SetSlot`: hand-matched
+- `Unk122e1c_ClearSlots`: hand-matched
+- `Unk122e1c_Unk_123534`: hand-matched

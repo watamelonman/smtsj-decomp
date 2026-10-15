@@ -8,8 +8,8 @@
 - `Unk11f2d0_Unk_11f2d0`: decompiler-derived
 
 ## Not done in M1-T393
-- `func_0211f334`
-- `func_0211f39c`
+- `Unk11f2d0_IsFieldCSet`
+- `Unk11f2d0_IsState7`
 - `Unk11f2d0_Unk_11f544`: decompiler-derived
 - `Unk11f2d0_Unk_11f58c`: decompiler-derived
 - `Unk11f2d0_Unk_11f5d4`: decompiler-derived
@@ -20,5 +20,5 @@
 - `func_0211f3c8`
 - `func_0211f67c`
 - `func_0211f704`
-- `func_0211f334`: hand-matched
-- `func_0211f39c`: hand-matched
+- `Unk11f2d0_IsFieldCSet`: hand-matched
+- `Unk11f2d0_IsState7`: hand-matched

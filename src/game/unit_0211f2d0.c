@@ -91,7 +91,7 @@ int Unk065e88_Call_02065fc0();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-int func_0211f334(u8 *p)
+int Unk11f2d0_IsFieldCSet(u8 *p)
 {
     if (p == 0) {
         return 0;
@@ -99,7 +99,7 @@ int func_0211f334(u8 *p)
     return FIELD(u32, p, 12) != 0;
 }
 
-int func_0211f39c(void)
+int Unk11f2d0_IsState7(void)
 {
     u8 *p = (u8 *)*data_02176e78;
     if (p == 0) {

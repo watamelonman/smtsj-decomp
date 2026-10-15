@@ -10,7 +10,7 @@ int func_0205e484();
 int func_020cb3dc();
 int Unk0cb32c_Unk_0cb4e4(u32 arg0, u32 arg1);
 int Unk0cb32c_Unk_0cb564();
-int func_02122a78();
+int Unk122a78_Unk_122a78();
 int Unk122a78_Unk_122aa0();
 int Unk1241ec_Unk_1241ec();
 int Unk1241ec_Unk_124214();
@@ -46,7 +46,7 @@ void Unk0cb32c_Unk_0cb57c(u32 arg0)
 /* decompiler-derived */
 u32 Unk0cb32c_Unk_0cb32c(void)
 {
-  func_02122a78();
+  Unk122a78_Unk_122a78();
   Unk1241ec_Thunk_02124338();
   Unk1241ec_Unk_1241ec();
   return 1;

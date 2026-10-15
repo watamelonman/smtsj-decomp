@@ -7,15 +7,15 @@
 
 ## Not done in M1-T835
 - `Unk11fc20_Unk_11fc94`
-- `func_02120650`
-- `func_0211fc68`
-- `func_0212066c`
+- `Unk11fc20_Unk_120650`
+- `Unk11fc20_IsState4`
+- `Unk11fc20_Unk_12066c`
 - `Unk11fc20_Unk_12143c`: decompiler-derived
 - `Unk11fc20_Unk_11fd38`: decompiler-derived
 - `Unk11fc20_Unk_120b88`: decompiler-derived
 
 ## Not done in M1-T836
-- `func_02120898`
+- `Unk11fc20_Unk_120898`
 - `func_02120b30`
 - `func_021208dc`
 - `func_02121478`
@@ -35,7 +35,7 @@
 - `func_021206a8`
 - `func_0212034c`
 - `Unk11fc20_Unk_11fc94`: decompiler-derived (plain cleanup)
-- `func_0211fc68`: hand-matched
-- `func_02120650`: hand-matched
-- `func_0212066c`: hand-matched
-- `func_02120898`: hand-matched
+- `Unk11fc20_IsState4`: hand-matched
+- `Unk11fc20_Unk_120650`: hand-matched
+- `Unk11fc20_Unk_12066c`: hand-matched
+- `Unk11fc20_Unk_120898`: hand-matched

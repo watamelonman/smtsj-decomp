@@ -91,7 +91,7 @@ typedef struct Unk122e1cObj {
     u32 slot[6];
 } Unk122e1cObj;
 void Unk0cb32c_Unk_0cb504();
-void func_02122fac(Unk122e1cObj *p, int i, u32 v)
+void Unk122e1c_SetSlot(Unk122e1cObj *p, int i, u32 v)
 {
     if (p == 0) {
         return;
@@ -102,7 +102,7 @@ void func_02122fac(Unk122e1cObj *p, int i, u32 v)
     p->slot[i] = v;
 }
 
-void func_02122fd0(Unk122e1cObj *p)
+void Unk122e1c_ClearSlots(Unk122e1cObj *p)
 {
     int i;
     for (i = 0; i < 6; i++) {
@@ -188,7 +188,7 @@ void Unk122e1c_Unk_123294(int arg0)
   return;
 }
 
-void func_02122fac();
+void Unk122e1c_SetSlot();
 /* decompiler-derived */
 void Unk122e1c_Unk_12306c(int arg0)
 {
@@ -198,14 +198,14 @@ void Unk122e1c_Unk_12306c(int arg0)
   ((Unk122e1cWork *)arg0)->unk_0061 = 0;
   ((Unk122e1cWork *)arg0)->unk_0060 = 5;
   do {
-    func_02122fac(arg0,tmp1,0);
+    Unk122e1c_SetSlot(arg0,tmp1,0);
     tmp1 = tmp1 + 1;
   } while (tmp1 < 6);
   return;
 }
 
 extern u8 data_0213cd7c[];
-void func_02123534(Unk122e1cObj *p)
+void Unk122e1c_Unk_123534(Unk122e1cObj *p)
 {
     int i;
     for (i = 0; i < 2; i++) {

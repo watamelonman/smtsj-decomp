@@ -111,9 +111,9 @@ void Unk11ec7c_Nop_11ef08(void);
 void Unk11ec7c_Unk_11ef0c(int arg0);
 void Unk11ec7c_Unk_11ef2c(int arg0);
 void func_0211eea8();
-void func_0211ef74(u8 *p);
-void func_0211efb0(u8 *p);
-void func_0211ef74(u8 *p)
+void Unk11ec7c_ApplyNext(u8 *p);
+void Unk11ec7c_Dispatch(u8 *p);
+void Unk11ec7c_ApplyNext(u8 *p)
 {
     FIELD(int, p, 12) = FIELD(int, p, 16);
     FIELD(int, p, 16) = -1;
@@ -127,7 +127,7 @@ void func_0211ef74(u8 *p)
     }
 }
 
-void func_0211efb0(u8 *p)
+void Unk11ec7c_Dispatch(u8 *p)
 {
     switch (FIELD(u32, p, 12)) {
     case 0:
@@ -163,13 +163,13 @@ void Unk11ec7c_Unk_11f004(int *arg0)
   return;
 }
 
-void func_0211f06c(u8 *p)
+void Unk11ec7c_Update(u8 *p)
 {
     if (FIELD(u32, p, 0) == 0) {
         return;
     }
     if (FIELD(int, p, 16) != -1) {
-        func_0211ef74(p);
+        Unk11ec7c_ApplyNext(p);
     }
-    func_0211efb0(p);
+    Unk11ec7c_Dispatch(p);
 }

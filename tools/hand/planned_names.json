@@ -598,5 +598,18 @@
  "func_021196c0": "BattleShowingTask_Unk_1196c0",
  "func_0211d178": "Unk11d120_Init",
  "func_0211d7f4": "Unk11d520_AddUniqueId",
- "func_0211dde8": "Unk11d520_Unk_11dde8"
+ "func_0211dde8": "Unk11d520_Unk_11dde8",
+ "func_0211ef74": "Unk11ec7c_ApplyNext",
+ "func_0211efb0": "Unk11ec7c_Dispatch",
+ "func_0211f06c": "Unk11ec7c_Update",
+ "func_0211f334": "Unk11f2d0_IsFieldCSet",
+ "func_0211f39c": "Unk11f2d0_IsState7",
+ "func_0211fc68": "Unk11fc20_IsState4",
+ "func_02120650": "Unk11fc20_Unk_120650",
+ "func_0212066c": "Unk11fc20_Unk_12066c",
+ "func_02120898": "Unk11fc20_Unk_120898",
+ "func_02122a78": "Unk122a78_Unk_122a78",
+ "func_02122fac": "Unk122e1c_SetSlot",
+ "func_02122fd0": "Unk122e1c_ClearSlots",
+ "func_02123534": "Unk122e1c_Unk_123534"
 }
