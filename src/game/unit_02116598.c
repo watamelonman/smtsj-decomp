@@ -534,6 +534,19 @@ int Unk02f078_Unk_02f220();
 int func_02117208();
 int func_02051ba4();
 void Unk095560_Unk_0958a8();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+void func_021177e0(u32 a, u32 b)
+{
+    u8 *w = (u8 *)*data_02176e64;
+    FIELD(u32, w, 0) = 1;
+    w[8] = a;
+    FIELD(u32, w, 4) = b;
+    FIELD(u32, w, 12) = 0;
+}
+
 void Unk116598_Reset(void)
 {
     u8 *w = (u8 *)*data_02176e64;
