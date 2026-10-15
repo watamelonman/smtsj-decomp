@@ -41,7 +41,7 @@ int Unk09974c_HasFlagsMid();
 void func_020dde3c();
 void Unk0ddeb0_Unk_0ddeb0();
 void func_020c72a4();
-int func_020c1870(int i)
+int Unk0bd5f0_Unk_0c1870(int i)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     int j;
@@ -53,7 +53,7 @@ int func_020c1870(int i)
     return j;
 }
 
-int func_020c1918(int i)
+int Unk0bd5f0_Unk_0c1918(int i)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     s32 k = FIELD(s8, w + i + 768, 72);
@@ -150,7 +150,7 @@ typedef struct Unk0bd5f0Ctx {
 
 extern Unk0bd5f0Ctx *data_02176bb4;
 
-int func_020c20bc(void)
+int Unk0bd5f0_Unk_0c20bc(void)
 {
     if (func_020537b8(0, 64) != 0) {
         return 0;
@@ -158,7 +158,7 @@ int func_020c20bc(void)
     return func_020537b8(0, 128) == 0;
 }
 
-int func_020c7c44(void)
+int Unk0bd5f0_AnyIdWithFlagsMid(void)
 {
     u32 id;
     for (id = 111; id <= 210; id++) {
@@ -170,7 +170,7 @@ int func_020c7c44(void)
     return 0;
 }
 
-int func_020c7c90(void)
+int Unk0bd5f0_AnyIdWithoutFlagsMid(void)
 {
     u32 id;
     for (id = 111; id <= 210; id++) {
@@ -182,7 +182,7 @@ int func_020c7c90(void)
     return 0;
 }
 
-void func_020c7f70(u32 a, u32 b, u32 c, u32 d)
+void Unk0bd5f0_Unk_0c7f70(u32 a, u32 b, u32 c, u32 d)
 {
     if (data_02176bb4 == 0) {
         return;
@@ -190,7 +190,7 @@ void func_020c7f70(u32 a, u32 b, u32 c, u32 d)
     func_020dde3c(FIELD(u32, data_02176bb4, 264), a, b, c, d);
 }
 
-void func_020c7fbc(void)
+void Unk0bd5f0_Unk_0c7fbc(void)
 {
     if (data_02176bb4 == 0) {
         return;
@@ -202,7 +202,7 @@ void func_020c7fbc(void)
     FIELD(s32, data_02176bb4, 284) = 0;
 }
 
-void func_020c842c(void)
+void Unk0bd5f0_Unk_0c842c(void)
 {
     u8 *c = (u8 *)data_02176bb4;
     if (c == 0) {
@@ -211,7 +211,7 @@ void func_020c842c(void)
     Unk0ddeb0_Unk_0ddeb0(FIELD(u32, c, 256), FIELD(s32, c, 276) + 3, -2, 0, 12, 10);
 }
 
-int func_020c8478(void)
+int Unk0bd5f0_IsState22or24(void)
 {
     s32 v;
     if (data_02176bb4 == 0) {
@@ -226,7 +226,7 @@ void Unk0bd5f0_SetCtxUnk1b8(void)
     data_02176bb4->unk_01b8 = 1;
 }
 
-void func_020c8510(s32 *p, s32 b)
+void Unk0bd5f0_Unk_0c8510(s32 *p, s32 b)
 {
     func_020c72a4(p[64], FIELD(u8, p, 272), 0);
     p[0] = 20;

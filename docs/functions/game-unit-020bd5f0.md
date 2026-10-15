@@ -12,19 +12,19 @@
 - `func_020c1968`
 
 ## Not done in M1-T1135
-- `func_020c8478`
-- `func_020c8510`
-- `func_020c20bc`
-- `func_020c7c44`
-- `func_020c7c90`
-- `func_020c7f70`
-- `func_020c7fbc`
-- `func_020c842c`
+- `Unk0bd5f0_IsState22or24`
+- `Unk0bd5f0_Unk_0c8510`
+- `Unk0bd5f0_Unk_0c20bc`
+- `Unk0bd5f0_AnyIdWithFlagsMid`
+- `Unk0bd5f0_AnyIdWithoutFlagsMid`
+- `Unk0bd5f0_Unk_0c7f70`
+- `Unk0bd5f0_Unk_0c7fbc`
+- `Unk0bd5f0_Unk_0c842c`
 - `Unk0bd5f0_Unk_0c75a8`: decompiler-derived
 
 ## Not done in M1-T1136
-- `func_020c1870`
-- `func_020c1918`
+- `Unk0bd5f0_Unk_0c1870`
+- `Unk0bd5f0_Unk_0c1918`
 - `func_020c84c0`
 - `func_020bd9c4`
 - `func_020c18c0`
@@ -53,13 +53,13 @@
 - `Unk0bd5f0_SetCtxUnk1b8`: hand-matched
 - `Unk0bd5f0_IsSpecialId`: hand-matched
 - `Unk0bd5f0_Unk_0bd5f0`: hand-matched
-- `func_020c1870`: hand-matched
-- `func_020c1918`: hand-matched
-- `func_020c20bc`: hand-matched
-- `func_020c7c44`: hand-matched
-- `func_020c7c90`: hand-matched
-- `func_020c7f70`: hand-matched
-- `func_020c7fbc`: hand-matched
-- `func_020c842c`: hand-matched
-- `func_020c8478`: hand-matched
-- `func_020c8510`: hand-matched
+- `Unk0bd5f0_Unk_0c1870`: hand-matched
+- `Unk0bd5f0_Unk_0c1918`: hand-matched
+- `Unk0bd5f0_Unk_0c20bc`: hand-matched
+- `Unk0bd5f0_AnyIdWithFlagsMid`: hand-matched
+- `Unk0bd5f0_AnyIdWithoutFlagsMid`: hand-matched
+- `Unk0bd5f0_Unk_0c7f70`: hand-matched
+- `Unk0bd5f0_Unk_0c7fbc`: hand-matched
+- `Unk0bd5f0_Unk_0c842c`: hand-matched
+- `Unk0bd5f0_IsState22or24`: hand-matched
+- `Unk0bd5f0_Unk_0c8510`: hand-matched
