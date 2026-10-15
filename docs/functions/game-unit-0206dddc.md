@@ -20,3 +20,7 @@
 - `func_0206df10`
 - `func_0206e0dc`
 - `Unk06dddc_Unk_06dee8`: decompiler-derived (plain cleanup)
+- `func_0206dfc8`: decompiler-derived (plain cleanup)
+- `func_0206dfec`: decompiler-derived (plain cleanup)
+- `func_0206e010`: decompiler-derived (plain cleanup)
+- `func_0206e034`: decompiler-derived (plain cleanup)
