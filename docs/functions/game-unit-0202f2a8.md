@@ -199,3 +199,10 @@
 - `Unk02f2a8_Unk_030704`: hand-matched
 - `Unk02f2a8_Unk_0308c0`: hand-matched
 - `Unk02f2a8_Unk_0313a4`: hand-matched
+- `func_02034970`: hand-matched
+- `func_020349c4`: hand-matched
+- `func_02034b24`: hand-matched
+- `func_020351b4`: hand-matched
+- `func_0203550c`: hand-matched
+- `func_02035820`: hand-matched
+- `func_02035b08`: hand-matched
