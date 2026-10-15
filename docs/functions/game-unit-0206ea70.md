@@ -4,7 +4,7 @@
 
 ## Not done in M1-T603
 - `Unk06ea70_Unk_06ebb8`
-- `func_0206ebe8`
+- `Unk06ea70_ReleaseEntry`
 - `Unk06ea70_FindByMask`
 - `func_0206f5cc`
 - `func_0206eb54`
@@ -22,10 +22,10 @@
 - `Unk06ea70_GetTableEntry`: hand-matched
 - `Unk06ea70_FindByMask`: hand-matched
 - `Unk06ea70_Unk_06ebb8`: hand-matched
-- `func_0206ebe8`: hand-matched
-- `func_0206ec28`: hand-matched
-- `func_0206f620`: hand-matched
-- `func_0206f648`: hand-matched
-- `func_0206f674`: hand-matched
-- `func_0206f698`: hand-matched
-- `func_0206f6bc`: hand-matched
+- `Unk06ea70_ReleaseEntry`: hand-matched
+- `Unk06ea70_SetEntry`: hand-matched
+- `Unk06ea70_SetMask0cBit`: hand-matched
+- `Unk06ea70_ClearMask0cBit`: hand-matched
+- `Unk06ea70_GetBuf04Slot`: hand-matched
+- `Unk06ea70_GetBuf00Slot`: hand-matched
+- `Unk06ea70_SetMask10Bit`: hand-matched

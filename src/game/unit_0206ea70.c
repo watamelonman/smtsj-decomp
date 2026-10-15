@@ -18,7 +18,7 @@ extern Unk06ea70Globals data_02170ccc;
 
 extern u32 data_02170cd4[];
 extern u32 data_021457e8[];
-u8 *func_0206f674();
+u8 *Unk06ea70_GetBuf04Slot();
 u32 Unk06ea70_FindByMask(u32 mask)
 {
     int i;
@@ -36,7 +36,7 @@ int Unk06ea70_Unk_06ebb8(int i)
     if (t == 0 || t->entry[i] == 0) {
         return -1;
     }
-    return (int)func_0206f674(i);
+    return (int)Unk06ea70_GetBuf04Slot(i);
 }
 
 typedef struct Unk06ea70Bufs {
@@ -48,8 +48,8 @@ typedef struct Unk06ea70Bufs {
 } Unk06ea70Bufs;
 
 void func_02061424();
-void func_0206f620(int i);
-void func_0206ebe8(int i)
+void Unk06ea70_SetMask0cBit(int i);
+void Unk06ea70_ReleaseEntry(int i)
 {
     if (data_02170ccc.table->entry[i] == 0) {
         return;
@@ -58,13 +58,13 @@ void func_0206ebe8(int i)
     data_02170ccc.table->entry[i] = 0;
 }
 
-void func_0206ec28(int i, u32 p)
+void Unk06ea70_SetEntry(int i, u32 p)
 {
     if (p == 0) {
         return;
     }
     data_02170ccc.table->entry[i] = p;
-    func_0206f620(i);
+    Unk06ea70_SetMask0cBit(i);
 }
 
 u32 Unk06ea70_GetTableEntry(int i)
@@ -100,7 +100,7 @@ void Unk06ea70_Unk_06f4e4(void)
   data_02170ccc.unk_04 = 0;
 }
 
-void func_0206f620(int i)
+void Unk06ea70_SetMask0cBit(int i)
 {
     if (i < 0) {
         return;
@@ -108,7 +108,7 @@ void func_0206f620(int i)
     ((Unk06ea70Bufs *)data_02170ccc.unk_04)->mask_0c |= 1 << i;
 }
 
-void func_0206f648(int i)
+void Unk06ea70_ClearMask0cBit(int i)
 {
     if (i < 0) {
         return;
@@ -116,7 +116,7 @@ void func_0206f648(int i)
     ((Unk06ea70Bufs *)data_02170ccc.unk_04)->mask_0c &= ~(1 << i);
 }
 
-u8 *func_0206f674(int i)
+u8 *Unk06ea70_GetBuf04Slot(int i)
 {
     if (i < 0) {
         return 0;
@@ -124,7 +124,7 @@ u8 *func_0206f674(int i)
     return ((Unk06ea70Bufs *)data_02170ccc.unk_04)->buf_04 + i * 512;
 }
 
-u8 *func_0206f698(int i)
+u8 *Unk06ea70_GetBuf00Slot(int i)
 {
     if (i < 0) {
         return 0;
@@ -132,7 +132,7 @@ u8 *func_0206f698(int i)
     return ((Unk06ea70Bufs *)data_02170ccc.unk_04)->buf_00 + i * 512;
 }
 
-void func_0206f6bc(int i)
+void Unk06ea70_SetMask10Bit(int i)
 {
     if (i < 0) {
         return;

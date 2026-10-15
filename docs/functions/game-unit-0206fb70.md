@@ -4,7 +4,7 @@
 - `Unk06fb70_Unk_06fb70`: decompiler-derived
 
 ## Not done in M1-T934
-- `func_020713fc`
+- `Unk06fb70_AddClamped`
 - `func_02071508`
 - `func_02071974`
 - `func_02071d28`
@@ -50,4 +50,4 @@
 - `func_02070a6c`
 - `func_02070b88`
 - `func_02070cc0`
-- `func_020713fc`: hand-matched
+- `Unk06fb70_AddClamped`: hand-matched

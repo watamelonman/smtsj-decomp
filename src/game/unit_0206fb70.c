@@ -80,7 +80,7 @@ void Unk06fb70_Unk_06ff28(u32 arg0,u32 arg1)
   return;
 }
 
-void func_020713fc(s32 *p, s32 d, s32 lim)
+void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim)
 {
     *p += d;
     if (d >= 0) {

@@ -165,5 +165,13 @@
  "func_0206ea0c": "Unk06e4d8_Unk_06ea0c",
  "func_0206ea44": "Unk06e4d8_GetFlag6c",
  "func_0206ea70": "Unk06ea70_FindByMask",
- "func_0206ebb8": "Unk06ea70_Unk_06ebb8"
+ "func_0206ebb8": "Unk06ea70_Unk_06ebb8",
+ "func_0206ebe8": "Unk06ea70_ReleaseEntry",
+ "func_0206ec28": "Unk06ea70_SetEntry",
+ "func_0206f620": "Unk06ea70_SetMask0cBit",
+ "func_0206f648": "Unk06ea70_ClearMask0cBit",
+ "func_0206f674": "Unk06ea70_GetBuf04Slot",
+ "func_0206f698": "Unk06ea70_GetBuf00Slot",
+ "func_0206f6bc": "Unk06ea70_SetMask10Bit",
+ "func_020713fc": "Unk06fb70_AddClamped"
 }
