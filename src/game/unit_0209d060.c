@@ -17,6 +17,19 @@ void Unk09d060_Clear_data_02176274(void)
 }
 
 
+typedef struct Unk09d060Ctx {
+    u32 unk_00;
+} Unk09d060Ctx;
+
+u32 func_0209d194(void)
+{
+    Unk09d060Ctx *c = *(Unk09d060Ctx **)data_02176274;
+    if (c != 0) {
+        return c->unk_00;
+    }
+    return 0;
+}
+
 /* decompiler-derived */
 void Unk09d060_Unk_09d1b0(void)
 {
