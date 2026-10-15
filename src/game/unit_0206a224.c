@@ -159,7 +159,7 @@ void func_020bc9f4();
 void CampStatus_SetUnk1a8();
 void CampStatus_Copy12c();
 
-void func_0206ab64(void)
+void Unk06a224_Unk_06ab64(void)
 {
     Unk06a224Msg m;
     int i;
@@ -175,7 +175,7 @@ void func_0206ab64(void)
     func_020bcbc4(3, &m);
 }
 
-void func_0206ac54(u32 x)
+void Unk06a224_Unk_06ac54(u32 x)
 {
     Unk06a224Msg m;
     int i;
@@ -193,7 +193,7 @@ void func_0206ac54(u32 x)
     func_020bcbc4(3, &m);
 }
 
-void func_0206accc(u32 x)
+void Unk06a224_Unk_06accc(u32 x)
 {
     Unk06a224Msg m;
     int i;
@@ -209,7 +209,7 @@ void func_0206accc(u32 x)
     func_020bcbc4(3, &m);
 }
 
-void func_0206ad40(void)
+void Unk06a224_Unk_06ad40(void)
 {
     Unk06a224Msg m;
     int i;
@@ -227,7 +227,7 @@ void func_0206ad40(void)
     CampStatus_SetUnk1a8(0);
 }
 
-void func_0206adc0(u32 x)
+void Unk06a224_Unk_06adc0(u32 x)
 {
     Unk06a224Msg m;
     int i;
