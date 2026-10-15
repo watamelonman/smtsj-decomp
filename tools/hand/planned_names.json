@@ -538,5 +538,16 @@
  "func_020fed54": "Unk0feba0_Unk_0fed54",
  "func_020ffd14": "CaveNpc_SetActive",
  "func_021069c8": "Unk100810_Unk_1069c8",
- "func_021071b8": "Unk100810_IsField50One"
+ "func_021071b8": "Unk100810_IsField50One",
+ "func_021088fc": "Unk1071e4_Unk_1088fc",
+ "func_02108aec": "Unk1071e4_IsNot1or7",
+ "func_02108b08": "Unk1071e4_Unk_108b08",
+ "func_02108b94": "Unk1071e4_Unk_108b94",
+ "func_02108bc8": "Unk108bc8_Unk_108bc8",
+ "func_02108c00": "Unk108bc8_GetSize",
+ "func_02108c0c": "Unk108bc8_Alloc",
+ "func_02108c88": "Unk108bc8_GetHead",
+ "func_0210a08c": "Unk10a034_Unk_10a08c",
+ "func_0210ae84": "Unk10a034_HasId",
+ "func_0210aed0": "Unk10a034_ClearById"
 }

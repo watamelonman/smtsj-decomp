@@ -284,7 +284,7 @@ void func_020e1490(u32 entry, int a, int b);
 void Unk02e000_Unk_02e144(void);
 void Unk02f078_Unk_02f0b0(int kind);
 void func_02119390(void);
-void func_02108c0c(void);
+void Unk108bc8_Alloc(void);
 
 void SaveLoadTask_SelectEntry(u32 entry)
 {
@@ -298,7 +298,7 @@ void SaveLoadTask_SelectEntry(u32 entry)
         return;
     case 2:
     case 3:
-        func_02108c0c();
+        Unk108bc8_Alloc();
         func_020e1490(entry, 2, 4);
         return;
     case 4:

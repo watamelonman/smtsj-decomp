@@ -4,11 +4,11 @@
 - `Unk1071e4_Unk_1087f4`: decompiler-derived
 
 ## Not done in M1-T857
-- `func_02108aec`
-- `func_021088fc`
-- `func_02108b94`
+- `Unk1071e4_IsNot1or7`
+- `Unk1071e4_Unk_1088fc`
+- `Unk1071e4_Unk_108b94`
 - `func_02108928`
-- `func_02108b08`
+- `Unk1071e4_Unk_108b08`
 - `func_02108aa4`
 
 ## Not done in M1-T858
@@ -37,7 +37,7 @@
 - `func_021076f0`
 - `func_02108290`
 - `func_02107c60`
-- `func_021088fc`: hand-matched
-- `func_02108aec`: hand-matched
-- `func_02108b08`: hand-matched
-- `func_02108b94`: hand-matched
+- `Unk1071e4_Unk_1088fc`: hand-matched
+- `Unk1071e4_IsNot1or7`: hand-matched
+- `Unk1071e4_Unk_108b08`: hand-matched
+- `Unk1071e4_Unk_108b94`: hand-matched

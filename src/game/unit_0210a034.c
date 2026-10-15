@@ -135,7 +135,7 @@ typedef struct Unk10a034Obj {
     u8 pad[200];
     u16 ids[4];
 } Unk10a034Obj;
-int func_0210a08c(void)
+int Unk10a034_Unk_10a08c(void)
 {
     u32 p = Unk10a034_Get_data_02176e38();
     if (p == 0) {
@@ -295,7 +295,7 @@ void Unk10a034_Unk_10ac28(int arg0)
   } while (tmp3 < 0xc);
 }
 
-int func_0210ae84(Unk10a034Obj *p, u32 x)
+int Unk10a034_HasId(Unk10a034Obj *p, u32 x)
 {
     int i;
     for (i = 0; i < 4; i++) {
@@ -306,7 +306,7 @@ int func_0210ae84(Unk10a034Obj *p, u32 x)
     return 0;
 }
 
-void func_0210aed0(u8 *p, u32 id)
+void Unk10a034_ClearById(u8 *p, u32 id)
 {
     int i;
     Unk10a034Ent *e = (Unk10a034Ent *)(p + 36);
