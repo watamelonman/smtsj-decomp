@@ -40,3 +40,11 @@
 - `func_02099d78`
 - `func_02099ddc`
 - `func_02099e40`
+- `func_020997c8`: decompiler-derived
+
+## Not done in M1-T557
+- `func_02099ea4`
+- `func_02099a28`
+- `func_0209993c`
+- `func_02099b10`
+- `func_02099f7c`
