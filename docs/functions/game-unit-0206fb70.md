@@ -50,3 +50,4 @@
 - `func_02070a6c`
 - `func_02070b88`
 - `func_02070cc0`
+- `func_020713fc`: hand-matched
