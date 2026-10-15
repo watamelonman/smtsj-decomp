@@ -28,3 +28,12 @@ void Unk0e7ac4_Unk_0e7f0c(int arg0)
   return;
 }
 
+int func_020e7f44();
+/* decompiler-derived */
+void func_020e8198(void)
+{
+  int tmp1;
+  tmp1 = *data_02176cdc;
+  func_020e7f44(*(u32 *)(tmp1 + 0x24),*(u32 *)(tmp1 + 0x28),
+                  *(u32 *)(tmp1 + 0x2c),*(u32 *)(tmp1 + 0x30));
+}
