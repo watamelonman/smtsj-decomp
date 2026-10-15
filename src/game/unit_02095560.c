@@ -229,3 +229,60 @@ func_02095a60(u32 arg0,u32 arg1,u32 arg2,u32 arg3)
   func_02052f68();
   return value1;
 }
+
+extern char data_0214c6f8[];
+extern char data_0214c720[];
+extern char data_0214c750[];
+extern char data_0214c774[];
+extern char data_0214c798[];
+extern char data_0214c7bc[];
+extern char data_0214c7e4[];
+extern char data_0214c808[];
+extern char data_0214c830[];
+extern char data_0214c854[];
+extern char data_0214c874[];
+void func_02013c3c(char *buf, const char *fmt, ...);
+u8 *func_0202e788(void);
+u32 func_02035ab8(u16 n);
+int func_02096448(int id);
+
+/* Mission/progress record returned by func_0202dc44. */
+typedef struct MissionInfo {
+    u8  pad_0000[0x50];
+    u32 stage;                  /* +0x50 */
+} MissionInfo;
+
+/* Builds the event-message .bin path for event id `id` into `buf`. */
+void func_02095b48(char *buf, int id)
+{
+    u16 n;
+    u32 v;
+
+    if (func_02096448(id) != 0) {
+        func_02013c3c(buf, data_0214c6f8, ((MissionInfo *)func_0202dc44(id))->stage);
+        return;
+    }
+    if (id == 0) {
+        n = *(u16 *)(func_0202e788() + 0x35c);
+        v = func_02035ab8(n);
+        if (n >= 0x3d4) {
+            v = 99;
+        }
+        func_02013c3c(buf, data_0214c720, v);
+    } else if (id == 8) {
+        switch (((MissionInfo *)func_0202dc44(id))->stage) {
+        case 0: func_02013c3c(buf, data_0214c750); return;
+        case 1: func_02013c3c(buf, data_0214c774); return;
+        case 2: func_02013c3c(buf, data_0214c798); return;
+        case 3: func_02013c3c(buf, data_0214c7bc); return;
+        }
+    } else if (id == 1) {
+        switch (((MissionInfo *)func_0202dc44(id))->stage) {
+        case 0: func_02013c3c(buf, data_0214c7e4); return;
+        case 1: func_02013c3c(buf, data_0214c808); return;
+        case 2: func_02013c3c(buf, data_0214c830); return;
+        case 3: func_02013c3c(buf, data_0214c854); return;
+        case 4: func_02013c3c(buf, data_0214c874); return;
+        }
+    }
+}
