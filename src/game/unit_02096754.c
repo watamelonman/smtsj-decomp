@@ -216,3 +216,36 @@ void Unk096754_ClampField1e(int v)
     }
     FIELD(s16, p, 30) = m;
 }
+
+typedef struct Unk096754Work {
+    u8 pad_00[22];
+    u8 unk_16;
+    u8 unk_17;
+    u8 unk_18;
+    u8 unk_19;
+    u8 unk_1a;
+} Unk096754Work;
+void func_02096c8c();
+
+void func_02097220(int i, u8 v)
+{
+    Unk096754Work *w = (Unk096754Work *)Unk02e000_Thunk_0202e788();
+    switch (i) {
+    case 0:
+        w->unk_16 = v;
+        break;
+    case 1:
+        w->unk_17 = v;
+        break;
+    case 2:
+        w->unk_18 = v;
+        break;
+    case 3:
+        w->unk_19 = v;
+        break;
+    case 4:
+        w->unk_1a = v;
+        break;
+    }
+    func_02096c8c();
+}
