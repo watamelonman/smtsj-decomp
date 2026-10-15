@@ -27,6 +27,43 @@ typedef struct Unk096754Area {
     s16 unk_1e;
 } Unk096754Area;
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int Unk02e000_GetAreaRecord();
+int func_02096a60(int id);
+int func_02096754(u32 i)
+{
+    u8 *base;
+    s8 *t;
+    int j;
+    if (i >= 3) {
+        return 0;
+    }
+    base = (u8 *)Unk02e000_GetWorkArea();
+    t = (s8 *)(base + 852);
+    for (j = 0; j < 3; j++) {
+        if (t[j] >= 0 && i == j) {
+            return Unk02e000_GetAreaRecord();
+        }
+    }
+    return 0;
+}
+
+int func_02096898(void)
+{
+    u8 *base = (u8 *)Unk02e000_GetWorkArea();
+    int n = 0;
+    int j;
+    for (j = 0; j < 12; j++) {
+        if (FIELD(s8, base + j + 768, 72) < 0) {
+            break;
+        }
+        n++;
+    }
+    return n;
+}
+
 void Unk096754_CopyAreaPos(void)
 {
     Unk096754Area *a = (Unk096754Area *)Unk02e000_Thunk_0202e788();
@@ -110,4 +147,72 @@ int Unk096754_Unk_096a14(void)
   return -1;
 }
 
+int func_02096a60(int id)
+{
+    u8 *base = (u8 *)Unk02e000_GetWorkArea();
+    int j;
+    for (j = 0; j < 12; j++) {
+        s32 v = FIELD(s8, base + j + 768, 72);
+        if (v >= 0 && id == FIELD(u16, base + v * 60, 170)) {
+            return 1;
+        }
+    }
+    return 0;
+}
 
+int func_02096ab0(int i)
+{
+    u8 *base = (u8 *)Unk02e000_GetWorkArea();
+    u16 v;
+    if (i < 0 || i >= 12) {
+        return 1;
+    }
+    v = FIELD(u16, base + i * 60, 168);
+    if (v == 1 || v == 7) {
+        return 0;
+    }
+    return 1;
+}
+
+int func_02096b44(int id)
+{
+    if (Unk096754_Unk_0969f0() == 0) {
+        return 0;
+    }
+    return func_02096a60(id) != 1;
+}
+
+void func_02096f28(void)
+{
+    u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
+    FIELD(s16, p, 108) = 0;
+    Unk096754_CopyAreaPos();
+    FIELD(s16, p, 28) = FIELD(s16, p, 18);
+    FIELD(s16, p, 30) = FIELD(s16, p, 20);
+}
+
+void func_020970d4(int v)
+{
+    u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
+    s32 m = FIELD(s16, p, 18);
+    if (v <= m) {
+        if (v < 1) {
+            v = 1;
+        }
+        m = v;
+    }
+    FIELD(s16, p, 28) = m;
+}
+
+void func_02097120(int v)
+{
+    u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
+    s32 m = FIELD(s16, p, 20);
+    if (v <= m) {
+        if (v < 1) {
+            v = 1;
+        }
+        m = v;
+    }
+    FIELD(s16, p, 30) = m;
+}
