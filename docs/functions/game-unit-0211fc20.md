@@ -20,3 +20,7 @@
 - `func_021208dc`
 - `func_02121478`
 - `func_0211fcb0`
+
+## Not done in M1-T838
+- `func_0211ff14`
+- `func_02120d7c`
