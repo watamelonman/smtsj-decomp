@@ -36,3 +36,4 @@
 - `func_0210ad00`
 - `func_0210a0dc`
 - `func_0210b080`
+- `func_0210ac28`: decompiler-derived (struct cleanup)

@@ -14,7 +14,9 @@ typedef struct Unk10a034Work {
     u32 unk_0008;
     u8 pad_000c[0x4];
     u32 unk_0010;
-    u8 pad_0014[0x18];
+    u8 pad_0014[0x10];
+    u16 unk_0024;
+    u8 pad_0026[0x6];
     u32 unk_002c;
     u8 pad_0030[0x84];
     u16 unk_00b4;
@@ -233,3 +235,40 @@ void Unk10a034_Unk_10af0c(int arg0)
   return;
 }
 
+int func_0202e7a4();
+int func_0202e904();
+int func_02096ab0();
+int func_020a1428();
+/* decompiler-derived */
+void func_0210ac28(int arg0)
+{
+  int tmp1;
+  int tmp2;
+  int tmp3;
+  u16 *v4;
+  tmp3 = 0;
+  v4 = (u16 *)(arg0 + 0x24);
+  do {
+    tmp1 = func_0202e7a4(tmp3);
+    tmp2 = func_0202e904();
+    if (tmp2 == 0) {
+      *(u32 *)(v4 + 2) = 0;
+    }
+    else {
+      tmp2 = func_02096ab0(tmp3);
+      if (tmp2 == 0) {
+        *(u32 *)(v4 + 2) = 0;
+      }
+      else {
+        *(u32 *)(v4 + 2) = 1;
+        *(u32 *)(v4 + 4) = 0;
+        *v4 = *(u16 *)(tmp1 + 0x36);
+        tmp1 = func_020a1428(((Unk10a034Work *)arg0)->unk_0024);
+        v4[1] = (u16)*(u8 *)(tmp1 + 2);
+      }
+    }
+    tmp3 = tmp3 + 1;
+    v4 = v4 + 6;
+    arg0 = arg0 + 0xc;
+  } while (tmp3 < 0xc);
+}
