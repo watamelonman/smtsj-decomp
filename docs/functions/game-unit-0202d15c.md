@@ -38,3 +38,10 @@
 - `func_0202d390`
 - `Unk02d15c_Call_02d91c`: hand-matched
 - `Unk02d15c_GetManagerRecord`: hand-matched
+- `func_0202d30c`: hand-matched
+- `func_0202d348`: hand-matched
+- `func_0202d36c`: hand-matched
+- `func_0202d7f4`: hand-matched
+- `func_0202d830`: hand-matched
+- `func_0202d86c`: hand-matched
+- `func_0202dc60`: hand-matched
