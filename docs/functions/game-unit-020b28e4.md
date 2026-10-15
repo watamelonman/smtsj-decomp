@@ -10,3 +10,13 @@
 - `func_020b64f8`
 - `func_020b6338`
 - `func_020b6370`
+
+## Not done in M1-T1038
+- `func_020b6528`
+- `func_020b2d84`
+- `func_020b62e8`
+- `func_020b3d28`
+- `func_020b4fb4`
+- `func_020b3570`
+- `func_020b5264`
+- `func_020b5e2c`
