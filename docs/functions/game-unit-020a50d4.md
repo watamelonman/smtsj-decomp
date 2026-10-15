@@ -10,3 +10,5 @@
 - `func_020a554c`
 - `func_020a5124`
 - `Unk0a50d4_GetUnk06`: hand-matched
+- `func_020a50f4`: hand-matched
+- `func_020a5648`: hand-matched
