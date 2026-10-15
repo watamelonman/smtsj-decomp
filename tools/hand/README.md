@@ -104,3 +104,5 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   write cases in handler-address order and let shared-default cases fall to `return` after the switch.
 - Script-command shape (`cmp k,#0; beq; cmp k,#2; b X`): case 2 is an empty case; the call after the switch
   runs with a zero-initialised result (`r = 0; switch(k){case 0: r = ...; break; case 2: break;} use(r);`).
+- Loops over fixed-stride records: index a (local) struct array `((T *)p)[i].f` rather than `p + i*N`
+  so mwcc does its own strength reduction (pointer set up inside the loop guard, as in ROM).
