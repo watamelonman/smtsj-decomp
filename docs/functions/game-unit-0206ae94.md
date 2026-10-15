@@ -17,13 +17,13 @@
 - `Unk06ae94_Call_06c130`
 - `Unk06ae94_Unk_06c8f8`
 - `Unk06ae94_Call_06af04`
-- `func_0206d4e8`
+- `Unk06ae94_Unk_06d4e8`
 - `func_0206ca64`
-- `func_0206b8e4`
+- `Unk06ae94_Unk_06b8e4`
 - `Unk06ae94_Unk_06c76c`: decompiler-derived
 
 ## Not done in M1-T996
-- `func_0206c854`
+- `Unk06ae94_Unk_06c854`
 - `func_0206c6d8`
 - `func_0206c130`
 - `func_0206b958`
@@ -49,6 +49,6 @@
 - `Unk06ae94_Call_06c130`: hand-matched
 - `Unk06ae94_Unk_06c8f8`: hand-matched
 - `Unk06ae94_Call_06c938`: hand-matched
-- `func_0206b8e4`: hand-matched
-- `func_0206c854`: hand-matched
-- `func_0206d4e8`: hand-matched
+- `Unk06ae94_Unk_06b8e4`: hand-matched
+- `Unk06ae94_Unk_06c854`: hand-matched
+- `Unk06ae94_Unk_06d4e8`: hand-matched

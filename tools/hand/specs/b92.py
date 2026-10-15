@@ -77,17 +77,5 @@ SPECS=[
     }
     func_02061424(o);
 }'''),
-],FX+'typedef struct Unk06ae94Pt {\n    s16 x;\n    s16 y;\n    s16 z;\n    u8 pad_06[14];\n} Unk06ae94Pt;\ntypedef struct Unk06ae94Obj {\n    u8 pad_0000[0x258];\n    s32 unk_258;\n    s32 unk_25c;\n    u32 objs[50];\n} Unk06ae94Obj;\nvoid func_02000f10();\nint func_0206e334();\nint Unk0939f0_Get_data_02175d8c();\nvoid Unk0946e0_Unk_094704();\nvoid Unk06ae94_Unk_06c0b0();\nvoid func_02061424();\n'),
-('src/game/unit_0206dddc.c',[
-('func_0206e06c','''u8 func_0206e06c(int k)
-{
-    int i;
-    for (i = 0; i < (s32)data_0216bac4[0]; i++) {
-        if (func_020152cc(Unk06dddc_Unk_06e058((u8)i) + 1, k) == 0) {
-            return i;
-        }
-    }
-    return 255;
-}'''),
-],FX+'extern u32 data_0216bac4[];\nextern u8 data_0216baec[];\nextern u8 data_0216baf0[];\nint Unk06dddc_Unk_06e058(int arg0);\nint func_020152cc();\n'),
+],FX+'typedef struct Unk06ae94Pt {\n    s16 x;\n    s16 y;\n    s16 z;\n    u8 pad_06[14];\n} Unk06ae94Pt;\ntypedef struct Unk06ae94Obj {\n    u8 pad_00[0x24];\n    u32 unk_24;\n    u32 unk_28;\n    u32 unk_2c;\n    u32 unk_30;\n    u8 pad_34[0x14];\n    u32 unk_48;\n    u32 unk_4c;\n    u32 unk_50;\n    u8 pad_54[0x1fc];\n    u32 *unk_250;\n    u8 pad_254[4];\n    s32 unk_258;\n    s32 unk_25c;\n    u32 objs[50];\n} Unk06ae94Obj;\nvoid func_02000f10();\nint func_0206e334();\nint Unk0939f0_Get_data_02175d8c();\nvoid Unk0946e0_Unk_094704();\nvoid Unk06ae94_Unk_06c0b0();\nvoid func_02061424();\n'),
 ]

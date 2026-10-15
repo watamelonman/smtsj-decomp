@@ -91,7 +91,7 @@ void Unk06ae94_Unk_06aeb4(u32 arg0)
 
 
 void Unk06ae94_Unk_06c0b0();
-void func_0206d4e8();
+void Unk06ae94_Unk_06d4e8();
 int func_02071844();
 int func_02071d6c();
 void func_0206af04();
@@ -137,7 +137,7 @@ void Unk0946e0_Unk_094704();
 void Unk06ae94_Unk_06c0b0();
 void func_02061424();
 
-void func_0206b8e4(Unk06ae94Pt *p, void *m)
+void Unk06ae94_Unk_06b8e4(Unk06ae94Pt *p, void *m)
 {
     int i;
     for (i = 0; i < 4; i++, p++) {
@@ -199,7 +199,7 @@ void Unk06ae94_Unk_06c76c(u32 *arg0)
   value = 0;
   if (0 < (int)arg0[4]) {
     do {
-      func_0206d4e8(arg0[value + 0x24]);
+      Unk06ae94_Unk_06d4e8(arg0[value + 0x24]);
       value = value + 1;
     } while (value < (int)arg0[4]);
   }
@@ -228,7 +228,7 @@ void Unk06ae94_Unk_06c76c(u32 *arg0)
   }
 }
 
-void func_0206c854(u8 *p)
+void Unk06ae94_Unk_06c854(u8 *p)
 {
     u8 *e = (u8 *)func_0206e334(p[48], FIELD(u32, p, 4));
     u32 k;
@@ -265,7 +265,7 @@ void Unk06ae94_Call_06c938(int a, int b, int c, int d, int e, int f, int g)
     func_0206c938(a, b, c, d, e, 0, f, g);
 }
 
-void func_0206d4e8(Unk06ae94Obj *o)
+void Unk06ae94_Unk_06d4e8(Unk06ae94Obj *o)
 {
     int i;
     if (o == 0) {
