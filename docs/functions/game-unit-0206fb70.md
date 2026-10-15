@@ -45,11 +45,11 @@
 - `func_0207142c`
 - `func_02071898`
 - `func_0206ff9c`
-- `func_02070834`
-- `func_02070950`
-- `func_02070a6c`
-- `func_02070b88`
-- `func_02070cc0`
+- `Unk06fb70_Unk_070834`
+- `Unk06fb70_Unk_070950`
+- `Unk06fb70_Unk_070a6c`
+- `Unk06fb70_Unk_070b88`
+- `Unk06fb70_Unk_070cc0`
 - `Unk06fb70_AddClamped`: hand-matched
 - `Unk06fb70_Call_07142c`: hand-matched
 - `Unk06fb70_Call_071898`: hand-matched
@@ -65,10 +65,10 @@
 - `Unk06fb70_Unk_0702b8`: hand-matched
 - `Unk06fb70_Unk_07030c`: hand-matched
 - `Unk06fb70_Unk_070360`: hand-matched
-- `func_02070834`: hand-matched
-- `func_02070950`: hand-matched
-- `func_02070a6c`: hand-matched
-- `func_02070b88`: hand-matched
-- `func_02070cc0`: hand-matched
-- `func_02070df8`: hand-matched
-- `func_02070f30`: hand-matched
+- `Unk06fb70_Unk_070834`: hand-matched
+- `Unk06fb70_Unk_070950`: hand-matched
+- `Unk06fb70_Unk_070a6c`: hand-matched
+- `Unk06fb70_Unk_070b88`: hand-matched
+- `Unk06fb70_Unk_070cc0`: hand-matched
+- `Unk06fb70_Unk_070df8`: hand-matched
+- `Unk06fb70_Unk_070f30`: hand-matched
