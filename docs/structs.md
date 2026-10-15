@@ -114,3 +114,16 @@ Converted this pass (46 sources; 414 matched funcs rechecked at 100%):
 Remaining raw primary-arg sites: ~28 (overlap/unaligned or codegen-sensitive).
 Other bases (`value`, `tmp1`, …) still use offset casts where the pointer is a
 transient local, not the file Work object.
+
+## Structs added with pass-2 matches
+
+| Struct | File | Notes |
+|---|---|---|
+| `StaffRollWork` (+`StaffRollCmd`) | StaffRoll.c | `scrollY` +0xDC (starts 0x1F0), `firstTextCmd` +0xE4, `cmds`/`cmdCount` +0x2FC/+0x300 — medium |
+| `CaveNpcList` | CaveNpc.c | `scrollY` +8, set per row/visible count; separate from `CaveNpcWork` (different object) — medium |
+| `YdmFile` / `YdmHeader` | unit_020392f8.c | YDM dungeon file header counts at +6/+7/+8 and section pointers — medium (from `Data/Dungeon/Ydm/*` strings) |
+| `Unk0f7eb4Work.bfData/mbbData` | unit_020f7eb4.c | +0x74/+0x78 loaded `Data/Battle/Event/%s.bf/.mbb` — medium |
+| `Unk0b6570Work.model` | unit_020b6570.c | +0x208C title model set (titleModel.*) — medium |
+| `Unk10fe28Work` | unit_0210fe28.c | config screen object; fields +0x18..+0x54 hedged — none |
+| `MissionInfo.stage` | unit_02095560.c | +0x50 of `func_0202dc44` result — low |
+| `Unk112aa0Step` | WIP branch only | mode/step bytes, `menuId` +0x14 |

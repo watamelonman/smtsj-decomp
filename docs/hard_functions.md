@@ -186,3 +186,23 @@ WIP branches (near-misses, not on main):
 - `WIP-02112fb8` — `func_02112fb8` (~84%): one `ldrh` register differs.
 
 Tried raw Ghidra on ~12 other mid-size switch functions; none hit 100% within the attempt cap.
+
+## Complex-matching pass 2 (2026-10-15, after struct expansion)
+
+Merged at 100% via forge regate:
+| Function | TU | Size | Notes |
+|---|---|---|---|
+| `func_02100104` | CaveNpc.c | 200 | was WIP ~84%; key: case 3 is a nested `switch` (compare chain), not if/else |
+| `func_0211882c` | StaffRoll.c | 328 | was WIP ~72%; `for` over 20-byte `StaffRollCmd`, single `if (!found)`, decl order `c` before `j` |
+| `func_020f7f68` | unit_020f7eb4.c | 204 | battle event .bf/.mbb loader |
+| `func_020b75b0` | unit_020b6570.c | 284 | title model loader |
+| `func_02047898` | unit_02047788.c | 288 | `arg >= 0` instead of `-1 < arg` |
+| `func_0210fe48` | unit_0210fe28.c | 312 | real prototypes fixed regalloc |
+| `func_020392f8` | unit_020392f8.c | 348 | YDM loader; u32 count-down zero-fill, chained section pointer |
+| `func_02095b48` | unit_02095560.c | 400 | `else if` chain (not early returns) gives the `pop` in the jump-table default |
+
+Near-miss (branch `WIP-02112fb8`): `func_02112fb8` 97.3% (584/584 B), two scheduling diffs.
+
+Harness bug fixed: `objdump -d` hides all-zero words (`...`), so literal pools made up only
+of relocations looked "short" (e.g. 188 vs 204 B) and real matches were reported as misses.
+Local verify/cmp now use `-z`. The project gates (objdump-free objdiff) were never affected.
