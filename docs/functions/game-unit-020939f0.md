@@ -26,3 +26,4 @@
 - `func_020943dc`
 - `func_02093f70`
 - `Unk0939f0_Unk_093da4`: decompiler-derived (plain cleanup)
+- `func_02093ae4`: hand-matched

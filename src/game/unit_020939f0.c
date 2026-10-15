@@ -48,6 +48,15 @@ u32 Unk0939f0_Get_data_02175d8c(void)
 }
 
 extern u32 data_02175d90[];
+void Unk0939f0_Unk_093f0c(int arg0);
+void func_02093ae4(u8 *o)
+{
+    FIELD(u32, o, 0x08) = 0;
+    FIELD(u8, o, 0x6c) = 0;
+    FIELD(u32, o, 0x68) = 0;
+    Unk0939f0_Unk_093f0c((int)o);
+}
+
 /* decompiler-derived */
 void Unk0939f0_Clear_data_02175d90(void)
 {
