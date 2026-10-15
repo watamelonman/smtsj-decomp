@@ -206,3 +206,4 @@ void func_020d3200(u32 *arg0,int arg1)
   arg0[4] = 0;
   return;
 }
+

@@ -40,3 +40,7 @@
 - `func_020d2aa4`
 - `func_020d2f60`
 - `func_020d2b10`
+
+## Not done in M1-T572
+- `func_020d33cc`
+- `func_020d2c44`
