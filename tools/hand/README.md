@@ -106,3 +106,8 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   runs with a zero-initialised result (`r = 0; switch(k){case 0: r = ...; break; case 2: break;} use(r);`).
 - Loops over fixed-stride records: index a (local) struct array `((T *)p)[i].f` rather than `p + i*N`
   so mwcc does its own strength reduction (pointer set up inside the loop guard, as in ROM).
+- b96: unit_0206fb70 channel animator. The two "large" callees (func_020705f8, func_02070758) matched first try once
+  Unk06fb70_Unk_06fb70 was given its real int return. Defining them in address order dropped Unk06ff28 to 99.83%
+  (its other callees 0834..0f30 are soft-float and still asm); defining them plus the 9 small helpers at the END of the
+  file passes gatecheck (merge via hmerge.py with a hand-built candidate). Soft-float callees (func_0201e434 compare
+  returning flags, 0201eb70/de2c/ed5c/ea6c) are not reproducible without the float runtime symbol names; skip them.
