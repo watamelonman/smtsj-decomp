@@ -603,3 +603,59 @@ void ScanVisor_Unk_0a4864(int arg0)
   } while (tmp1 < 7);
   ((ScanVisor *)arg0)->unk_01bc = 0;
 }
+
+/* decompiler-derived */
+void func_020a4910(int arg0)
+{
+  int tmp1;
+  int *v2;
+  tmp1 = 0;
+  v2 = (int *)(arg0 + 0x20);
+  do {
+    if (*v2 != 0) {
+      ScanVisor_SetRange((ScanVisor *)v2, (u32)0, (u32)0);
+    }
+    tmp1 = tmp1 + 1;
+    v2 = v2 + 0xd;
+  } while (tmp1 < 7);
+}
+
+/* decompiler-derived */
+void func_020a48b4(int arg0)
+{
+  int tmp1;
+  int *v2;
+  tmp1 = 0;
+  v2 = (int *)(arg0 + 0x20);
+  do {
+    if (*v2 != 0) {
+      ScanVisor_SetRange((ScanVisor *)v2, (u32)0x50, (u32)0);
+    }
+    tmp1 = tmp1 + 1;
+    v2 = v2 + 0xd;
+  } while (tmp1 < 7);
+  *(u32 *)(arg0 + 0x1bc) = 0;
+}
+
+int func_020a4284();
+/* decompiler-derived */
+u32 * func_020a42f0(int arg0,u32 arg1)
+{
+  u32 *v1;
+  int tmp2;
+  v1 = (u32 *)ScanVisor_Unk_0a42c4((int)arg0);
+  if (v1 != (u32 *)0x0) {
+    *v1 = 1;
+    *(u8 *)(v1 + 6) = *(u8 *)(arg0 + 0x1c);
+    v1[1] = arg1;
+    tmp2 = func_020a4284(arg1);
+    v1[2] = *(u32 *)(tmp2 + 0xc);
+    v1[3] = *(u32 *)(tmp2 + 0x10);
+    v1[0xb] = *(u32 *)(tmp2 + 4);
+    v1[0xc] = *(u32 *)(tmp2 + 8);
+    ScanVisor_SetRange((ScanVisor *)v1, (u32)0x50, (u32)0);
+    ScanVisor_SetUnkFields24_28(v1,0,0);
+    return v1;
+  }
+  return (u32 *)0x0;
+}

@@ -98,3 +98,6 @@
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4950`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4864`: decompiler-derived (plain cleanup)
+- `func_020a4910`: decompiler-derived (plain+fix cleanup)
+- `func_020a48b4`: decompiler-derived (plain+fix cleanup)
+- `func_020a42f0`: decompiler-derived (plain+fix cleanup)
