@@ -73,3 +73,4 @@
 - `func_020e51f4`: decompiler-derived (proto cleanup)
 - `func_020e51cc`: decompiler-derived (proto cleanup)
 - `func_020e5214`: decompiler-derived (proto cleanup)
+- `func_020e5090`: decompiler-derived (plain cleanup)
