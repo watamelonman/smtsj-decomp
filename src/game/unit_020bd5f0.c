@@ -98,3 +98,14 @@ void Unk0bd5f0_Unk_0c2050(Unk0bd5f0Work *arg0){
   return;
 }
 
+typedef struct Unk0bd5f0Ctx {
+    u8 pad_0000[0x1b8];
+    u32 unk_01b8;
+} Unk0bd5f0Ctx;
+
+extern Unk0bd5f0Ctx *data_02176bb4;
+
+void func_020c84a8(void)
+{
+    data_02176bb4->unk_01b8 = 1;
+}
