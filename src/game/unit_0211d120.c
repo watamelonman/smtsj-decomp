@@ -10,6 +10,14 @@ typedef struct Unk11d120Work {
 } Unk11d120Work;
 
 int func_02053000();
+extern u32 data_02176e74[];
+void func_02008848();
+void func_0211d178(u32 x)
+{
+    *data_02176e74 = x;
+    func_02008848(x, 0, 176);
+}
+
 /* decompiler-derived */
 void Unk11d120_Unk_11d288(int arg0)
 {
