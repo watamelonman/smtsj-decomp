@@ -32,3 +32,4 @@
 - `func_020df8c4`
 
 - `SaveLoadTask_SelectEntry`: save/load menu entry dispatch (cases 0-7).
+- `func_020df814`: decompiler-derived (plain cleanup)

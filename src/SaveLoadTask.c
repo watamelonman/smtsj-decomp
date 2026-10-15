@@ -165,7 +165,7 @@ void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
 
 
 int func_0202cbec();
-int func_020df814();
+void func_020df814(void);
 int func_02124dac();
 /* decompiler-derived */
 void SaveLoadTask_Unk_0df94c(void)
@@ -311,4 +311,37 @@ void SaveLoadTask_SelectEntry(u32 entry)
         func_020e1490(entry, 1, 4);
         return;
     }
+}
+
+int func_020525cc();
+/* decompiler-derived */
+void func_020df814(void)
+{
+  u32 tmp1;
+  tmp1 = func_0202cbec();
+  switch(tmp1) {
+  case 0:
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    goto LAB_020df850;
+  case 6:
+    goto LAB_020df850;
+  case 7:
+    goto LAB_020df850;
+  case 8:
+    goto LAB_020df850;
+  case 9:
+LAB_020df850:
+    func_02124d8c(0,0x1f);
+    return;
+  }
+  func_020525cc(3);
 }
