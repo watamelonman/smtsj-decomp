@@ -11,3 +11,4 @@
 - `UniteEvent_LoadEffects`
 - `func_0210fa60`
 - `UniteEvent_LoadEffects`: decompiler-derived (plain cleanup)
+- `func_0210f9d8`: hand-matched

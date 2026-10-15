@@ -83,6 +83,20 @@ int func_02013c3c();
 int func_0206df10();
 int func_0206f6e4();
 int func_02071fcc();
+typedef struct UniteEventCtx {
+    u8 pad_0000[0x32c];
+    u32 unk_032c;
+} UniteEventCtx;
+
+extern UniteEventCtx *data_02176e48;
+
+void func_0210f9d8(void)
+{
+    if (data_02176e48 != 0) {
+        data_02176e48->unk_032c = 1;
+    }
+}
+
 /* Loads two Data/Effect/%s effects for the fusion event (medium). */
 void UniteEvent_LoadEffects(int arg0,u32 arg1,int arg2,u32 arg3)
 {
