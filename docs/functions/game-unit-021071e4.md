@@ -37,3 +37,7 @@
 - `func_021076f0`
 - `func_02108290`
 - `func_02107c60`
+- `func_021088fc`: hand-matched
+- `func_02108aec`: hand-matched
+- `func_02108b08`: hand-matched
+- `func_02108b94`: hand-matched
