@@ -102,7 +102,7 @@ void Unk0946e0_Unk_094704(u16 *arg0,u16 arg1,u16 arg2,u16 arg3,
 int func_02094750();
 int func_020949e0();
 int func_02094a90();
-void func_02094910(void)
+void Unk0946e0_ResetRect(void)
 {
     u8 *p = (u8 *)Unk0946e0_GetAddr_data_02175d94();
     FIELD(s16, p, 0x00) = 0;

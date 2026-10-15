@@ -368,10 +368,10 @@ extern u8 data_02145a88[];
 void func_02013c3c();
 int func_02095818();
 void Unk065e88_SetPair04();
-void func_02077efc(u32 o);
+void ImageObj_ReleaseField68(u32 o);
 void func_02077ea4();
 void func_020a1a24();
-int func_020777e0(void)
+int ImageObj_Unk_0777e0(void)
 {
     Unk077Tbl *t = (Unk077Tbl *)ImageObj_Get_data_0217231c();
     int i;
@@ -387,7 +387,7 @@ int func_020777e0(void)
     return 0;
 }
 
-void func_02077a4c(void *o, int kind)
+void ImageObj_Unk_077a4c(void *o, int kind)
 {
     switch (kind) {
     case 0:
@@ -402,7 +402,7 @@ void func_02077a4c(void *o, int kind)
     }
 }
 
-int func_02077d68(s32 *o)
+int ImageObj_Unk_077d68(s32 *o)
 {
     if (o == 0) {
         return 0;
@@ -413,7 +413,7 @@ int func_02077d68(s32 *o)
     return FIELD(s32, o, 0x50) < 600;
 }
 
-void func_02077d98(u8 *o)
+void ImageObj_Unk_077d98(u8 *o)
 {
     int v;
     switch (func_02095818()) {
@@ -475,7 +475,7 @@ void ImageObj_Release(ImageObjWork *work)
     work->unk_0000 = 0;
 }
 
-void func_02077efc(u32 o)
+void ImageObj_ReleaseField68(u32 o)
 {
     u8 *t = (u8 *)ImageObj_Get_data_0217231c();
     if (FIELD(u32, o, 0x68) == 0) {

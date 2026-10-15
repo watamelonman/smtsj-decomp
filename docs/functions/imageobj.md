@@ -24,25 +24,25 @@
 ## Not done in M1-T924
 - `ImageObj_Unk_079000`
 - `func_02077a9c`
-- `func_02077d68`
+- `ImageObj_Unk_077d68`
 - `ImageObj_Release`
 - `func_02077e74`
-- `func_02077efc`
+- `ImageObj_ReleaseField68`
 - `ImageObj_Unk_077228`: decompiler-derived
 - `ImageObj_Unk_077688`: decompiler-derived
 
 ## Not done in M1-T925
 - `ImageObj_Unk_0775a0`
 - `ImageObj_GetOrCreate`
-- `func_02077d98`
+- `ImageObj_Unk_077d98`
 - `ImageObj_Unk_077640`
 - `ImageObj_Unk_077708`
 - `ImageObj_Unk_077554`
 - `ImageObj_Unk_0779a0`: decompiler-derived
 
 ## Not done in M1-T926
-- `func_020777e0`
-- `func_02077a4c`
+- `ImageObj_Unk_0777e0`
+- `ImageObj_Unk_077a4c`
 - `func_020779f4`
 - `func_02077ea4`
 - `func_02077f30`
@@ -81,8 +81,8 @@
 - `ImageObj_GetOrCreate`: hand-matched
 - `ImageObj_Unk_077554`: hand-matched
 - `ImageObj_Unk_077708`: hand-matched
-- `func_020777e0`: hand-matched
-- `func_02077a4c`: hand-matched
-- `func_02077d68`: hand-matched
-- `func_02077d98`: hand-matched
-- `func_02077efc`: hand-matched
+- `ImageObj_Unk_0777e0`: hand-matched
+- `ImageObj_Unk_077a4c`: hand-matched
+- `ImageObj_Unk_077d68`: hand-matched
+- `ImageObj_Unk_077d98`: hand-matched
+- `ImageObj_ReleaseField68`: hand-matched

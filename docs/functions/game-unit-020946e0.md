@@ -13,7 +13,7 @@
 - `Unk0946e0_Unk_094704`: decompiler-derived
 
 ## Not done in M1-T493
-- `func_02094910`
+- `Unk0946e0_ResetRect`
 - `Unk0946e0_Unk_094b98`
 - `Unk0946e0_Unk_094d64`
 - `func_02094eb8`
@@ -33,4 +33,4 @@
 - `Unk0946e0_Unk_094b98`: decompiler-derived (proto cleanup)
 - `Unk0946e0_Unk_094d64`: decompiler-derived (proto cleanup)
 - `Unk0946e0_Clear12`: hand-matched
-- `func_02094910`: hand-matched
+- `Unk0946e0_ResetRect`: hand-matched
