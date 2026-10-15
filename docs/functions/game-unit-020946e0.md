@@ -16,9 +16,9 @@
 - `Unk0946e0_ResetRect`
 - `Unk0946e0_Unk_094b98`
 - `Unk0946e0_Unk_094d64`
-- `func_02094eb8`
-- `func_02094e30`
-- `func_02094e70`
+- `Unk0946e0_Unk_094eb8`
+- `Unk0946e0_Unk_094e30`
+- `Unk0946e0_Unk_094e70`
 - `func_02094a90`
 - `Unk0946e0_Unk_094958`: decompiler-derived
 
@@ -34,6 +34,6 @@
 - `Unk0946e0_Unk_094d64`: decompiler-derived (proto cleanup)
 - `Unk0946e0_Clear12`: hand-matched
 - `Unk0946e0_ResetRect`: hand-matched
-- `func_02094e30`: hand-matched
-- `func_02094e70`: hand-matched
-- `func_02094eb8`: hand-matched
+- `Unk0946e0_Unk_094e30`: hand-matched
+- `Unk0946e0_Unk_094e70`: hand-matched
+- `Unk0946e0_Unk_094eb8`: hand-matched

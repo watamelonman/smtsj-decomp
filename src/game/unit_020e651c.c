@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk094fe0_Thunk_0202e8cc();
-int func_0209500c();
+int Unk094fe0_Call_0209502c();
 int func_020e6100();
 int Unk0e5fb8_Unk_0e61b0();
 int Unk0e5fb8_Unk_0e61bc();
@@ -25,7 +25,7 @@ void Unk0e651c_Unk_0e654c(void)
 {
   u32 value;
   value = Unk0e5fb8_Unk_0e61b0();
-  func_0209500c(value,1);
+  Unk094fe0_Call_0209502c(value,1);
 }
 
 /* decompiler-derived */
@@ -33,7 +33,7 @@ void Unk0e651c_Unk_0e6560(void)
 {
   u32 value;
   value = Unk0e5fb8_Unk_0e61bc();
-  func_0209500c(value,1);
+  Unk094fe0_Call_0209502c(value,1);
 }
 
 /* decompiler-derived */
@@ -65,6 +65,6 @@ void Unk0e651c_Unk_0e651c(u32 arg0,u32 arg1)
 {
   int value;
   value = Unk0e5fb8_GetOffsetD80();
-  func_0209500c(value + 2,arg1 & 1);
-  func_0209500c(value + 3,(int)(arg1 & 2) >> 1);
+  Unk094fe0_Call_0209502c(value + 2,arg1 & 1);
+  Unk094fe0_Call_0209502c(value + 3,(int)(arg1 & 2) >> 1);
 }

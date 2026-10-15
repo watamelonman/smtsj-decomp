@@ -179,7 +179,7 @@ typedef struct Unk0946e0Pt {
 void func_02094da0();
 int func_02044ec4();
 void func_02049c28();
-void func_02094e30(int x, int b, int c)
+void Unk0946e0_Unk_094e30(int x, int b, int c)
 {
     if (x >= 64) {
         x = 64;
@@ -190,7 +190,7 @@ void func_02094e30(int x, int b, int c)
     func_02094da0(x, FIELD(s16, Unk0946e0_GetAddr_data_02175d94(), 2), b, c);
 }
 
-void func_02094e70(int a, int b, int c)
+void Unk0946e0_Unk_094e70(int a, int b, int c)
 {
     Unk0946e0Pt pt;
     func_02049c28(func_02044ec4(a), &pt);
@@ -199,7 +199,7 @@ void func_02094e70(int a, int b, int c)
     func_02094da0(pt.x, pt.y, b, c);
 }
 
-void func_02094eb8(int a, int b, int c)
+void Unk0946e0_Unk_094eb8(int a, int b, int c)
 {
     Unk0946e0Pt pt;
     func_02049c28(func_02044ec4(a), &pt);

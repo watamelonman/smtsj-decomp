@@ -31,11 +31,11 @@ int Unk094fe0_Unk_095004(int arg0)
   return arg0 + 0x990;
 }
 
-int func_020950b4(Unk094fe0Work *w, u32 a);
+int Unk094fe0_TestBit(Unk094fe0Work *w, u32 a);
 void func_02095320(Unk094fe0Work *w, u32 a);
 int Unk094fe0_Call_020950b4(u32 a)
 {
-    return func_020950b4(Unk094fe0_Thunk_0202e8cc(), a);
+    return Unk094fe0_TestBit(Unk094fe0_Thunk_0202e8cc(), a);
 }
 
 void Unk094fe0_Call_02095320(u32 a)
@@ -56,12 +56,12 @@ int Unk094fe0_Unk_094fec(int arg0)
 }
 
 void func_0209502c();
-void func_0209500c(int a, int b)
+void Unk094fe0_Call_0209502c(int a, int b)
 {
     func_0209502c(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
-int func_020950b4(Unk094fe0Work *w, u32 bit)
+int Unk094fe0_TestBit(Unk094fe0Work *w, u32 bit)
 {
     u32 sh = bit & 7;
     u32 idx = bit >> 3;

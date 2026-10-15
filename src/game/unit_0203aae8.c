@@ -14,13 +14,13 @@ u32 Unk03aae8_Unk_03ad14(void)
 }
 
 int func_0203ac00();
-int func_0209500c();
+int Unk094fe0_Call_0209502c();
 /* decompiler-derived */
 u32 Unk03aae8_Unk_03aef0(void)
 {
   short v1;
   v1 = func_0203ac00(0);
-  func_0209500c((int)v1,0);
+  Unk094fe0_Call_0209502c((int)v1,0);
   return 1;
 }
 
@@ -94,7 +94,7 @@ u32 Unk03aae8_Unk_03ae68(void)
 {
   short v1;
   v1 = func_0203ac00(0);
-  func_0209500c((int)v1,1);
+  Unk094fe0_Call_0209502c((int)v1,1);
   switch((int)v1) {
   case 0x733:
     func_020b8660(0);

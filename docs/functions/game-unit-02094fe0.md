@@ -13,7 +13,7 @@
 
 ## Not done in M1-T381
 - `Unk094fe0_Call_02095320`
-- `func_0209500c`
+- `Unk094fe0_Call_0209502c`
 - `func_02095350`
 - `func_020951b0`
 - `func_02095230`
@@ -27,7 +27,7 @@
 - `func_02095468`
 
 ## Not done in M1-T382
-- `func_020950b4`
+- `Unk094fe0_TestBit`
 - `func_020951d4`
 - `func_02095320`
 - `func_02095178`
@@ -39,5 +39,5 @@
 - `Unk094fe0_GetWorkUnkField9a0`: hand-matched
 - `Unk094fe0_Call_020950b4`: hand-matched
 - `Unk094fe0_Call_02095320`: hand-matched
-- `func_0209500c`: hand-matched
-- `func_020950b4`: hand-matched
+- `Unk094fe0_Call_0209502c`: hand-matched
+- `Unk094fe0_TestBit`: hand-matched

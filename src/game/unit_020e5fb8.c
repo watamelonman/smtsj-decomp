@@ -167,15 +167,15 @@ void Unk0e5fb8_Unk_0e622c(u32 arg0,u32 arg1,u32 arg2)
   func_0209502c(arg0,value,1);
 }
 
-int func_0209500c();
+int Unk094fe0_Call_0209502c();
 int Unk0e5fb8_GetOffset900();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e631c(u32 arg0,u32 arg1)
 {
   int value;
   value = Unk0e5fb8_GetOffset900();
-  func_0209500c(value,arg1 & 1);
-  func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
+  Unk094fe0_Call_0209502c(value,arg1 & 1);
+  Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
 int Unk0e5fb8_GetOffsetB00();
@@ -184,8 +184,8 @@ void Unk0e5fb8_Unk_0e639c(u32 arg0,u32 arg1)
 {
   int value;
   value = Unk0e5fb8_GetOffsetB00();
-  func_0209500c(value,arg1 & 1);
-  func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
+  Unk094fe0_Call_0209502c(value,arg1 & 1);
+  Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
 int Unk0e5fb8_GetOffsetD00();
@@ -194,8 +194,8 @@ void Unk0e5fb8_Unk_0e641c(u32 arg0,u32 arg1)
 {
   int value;
   value = Unk0e5fb8_GetOffsetD00();
-  func_0209500c(value,arg1 & 1);
-  func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
+  Unk094fe0_Call_0209502c(value,arg1 & 1);
+  Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
 
@@ -205,17 +205,17 @@ void Unk0e5fb8_Unk_0e649c(u32 arg0,u32 arg1)
 {
   int value;
   value = Unk0e5fb8_GetOffsetD80();
-  func_0209500c(value,arg1 & 1);
-  func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
+  Unk094fe0_Call_0209502c(value,arg1 & 1);
+  Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
-int func_020950b4();
+int Unk094fe0_TestBit();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = Unk0e5fb8_Unk_0e6158(arg1);
-  func_020950b4(arg0,tmp1);
+  Unk094fe0_TestBit(arg0,tmp1);
 }
 
 /* decompiler-derived */
@@ -223,7 +223,7 @@ void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 tmp1;
   tmp1 = Unk0e5fb8_GetOffset800(arg1,arg2);
-  func_020950b4(arg0,tmp1);
+  Unk094fe0_TestBit(arg0,tmp1);
 }
 
 /* decompiler-derived */

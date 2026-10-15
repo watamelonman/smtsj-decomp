@@ -188,5 +188,10 @@
  "func_02077d98": "ImageObj_Unk_077d98",
  "func_02077efc": "ImageObj_ReleaseField68",
  "func_02093ae4": "Unk0939f0_Reset",
- "func_02094910": "Unk0946e0_ResetRect"
+ "func_02094910": "Unk0946e0_ResetRect",
+ "func_02094e30": "Unk0946e0_Unk_094e30",
+ "func_02094e70": "Unk0946e0_Unk_094e70",
+ "func_02094eb8": "Unk0946e0_Unk_094eb8",
+ "func_0209500c": "Unk094fe0_Call_0209502c",
+ "func_020950b4": "Unk094fe0_TestBit"
 }
