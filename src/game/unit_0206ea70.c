@@ -22,3 +22,4 @@ void func_0206edf4(int *arg0,int *arg1,int *arg2,u16 *arg3)
   } while (tmp2 < 0x100);
   return;
 }
+

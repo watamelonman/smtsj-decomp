@@ -10,3 +10,11 @@
 - `func_0206eb54`
 - `func_0206f460`
 - `func_0206eab4`
+
+## Not done in M1-T604
+- `func_0206f508`
+- `func_0206ee3c`
+- `func_0206ef6c`
+- `func_0206ec68`
+- `func_0206f0a4`
+- `func_0206f24c`
