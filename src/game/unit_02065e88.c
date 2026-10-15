@@ -266,6 +266,32 @@ void Unk065e88_Unk_066078(u8 *p)
     }
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_020667d0();
+void Unk065e88_Nop_066c90();
+void func_02066c94();
+void func_02066d30();
+void func_020664c4();
+void func_02063920();
+int func_020445f4();
+int func_0204fed8();
+int func_02063a30();
+void func_02061f10();
+
+void func_0206646c(u32 *p)
+{
+    p[0] = 1104;
+    p[1] = 4;
+    p[3] = 0;
+    p[4] = (u32)func_020667d0;
+    p[5] = (u32)Unk065e88_Nop_066c90;
+    p[6] = (u32)func_02066c94;
+    p[7] = (u32)func_02066d30;
+    p[8] = (u32)func_020664c4;
+}
+
 void Unk065e88_SetMode(s32 *o, s32 v, int notify)
 {
     o[0] = v;
@@ -283,6 +309,19 @@ void Unk065e88_SetMode(s32 *o, s32 v, int notify)
         FIELD(u32, o, 0x2f0) = 1;
         break;
     }
+}
+
+void func_020672fc(u8 *p, int a, u32 n)
+{
+    int r;
+    int h;
+    u32 i;
+    func_02063920();
+    h = func_020445f4(12, a);
+    for (i = 0; i < n; i++) {
+        r = func_02063a30(func_0204fed8(h, i));
+    }
+    func_02061f10(FIELD(u32, p, 264), -1, 0, 0, r);
 }
 
 int Unk065e88_Unk_068564(Unk065e88Obj24 *o)

@@ -64,3 +64,5 @@ Setters on a shared game object (layout `GameObj`, field meanings unknown).
 - `Unk065e88_Unk_068564`: hand-matched
 - `Unk065e88_Unk_065ec0`: hand-matched
 - `Unk065e88_Unk_066078`: hand-matched
+- `func_0206646c`: hand-matched
+- `func_020672fc`: hand-matched
