@@ -76,3 +76,4 @@
 - `Unk09a268_SetCtxUnk2c30`: hand-matched
 - `Unk09a268_Unk_09c4a8`: hand-matched
 - `Unk09a268_IsType1`: hand-matched
+- `func_0209ae60`: hand-matched

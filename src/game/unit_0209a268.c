@@ -178,6 +178,37 @@ u32 Unk09a268_Unk_09a844(u32 arg0)
 
 int func_02057524();
 int func_02057534();
+typedef struct Unk09ae60Ops {
+    u32 size;
+    u32 unk_04;
+    u32 unk_08;
+    void (*fn_0c)();
+    void (*fn_10)();
+    void (*fn_14)();
+    void (*fn_18)();
+    void (*fn_1c)();
+    void (*fn_20)();
+} Unk09ae60Ops;
+int func_02058a64();
+void Unk09a268_Unk_09b3cc(Unk09a268Work *work);
+void func_02058944();
+void func_0209b1d4();
+void func_0209b3f8();
+void func_0209b5d8();
+void func_0209aebc();
+
+void func_0209ae60(Unk09ae60Ops *o)
+{
+    o->size = 60;
+    o->unk_04 = 0;
+    o->fn_0c = func_0209b1d4;
+    o->fn_10 = Unk09a268_Nop_09b3c8;
+    o->fn_14 = Unk09a268_Unk_09b3cc;
+    o->fn_18 = func_0209b3f8;
+    o->fn_1c = func_0209b5d8;
+    o->fn_20 = func_0209aebc;
+}
+
 /* decompiler-derived */
 void Unk09a268_Unk_09b3cc(Unk09a268Work *work)
 {
