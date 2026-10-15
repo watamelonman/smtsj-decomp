@@ -85,7 +85,7 @@ int Unk096754_Unk_0969f0(void)
 }
 
 
-int func_0202e904();
+int Unk02e000_HasField36();
 /* decompiler-derived */
 int Unk096754_Unk_096a14(void)
 {
@@ -100,7 +100,7 @@ int Unk096754_Unk_096a14(void)
   value1 = value1 + 0x74;
   value3 = 0;
   do {
-    value2 = func_0202e904(value1);
+    value2 = Unk02e000_HasField36(value1);
     if (value2 == 0) {
       return value3;
     }

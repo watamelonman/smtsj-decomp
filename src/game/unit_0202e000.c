@@ -113,7 +113,7 @@ u32 Unk02e000_GetAddr_data_02140ac8(void)
 void func_0202e4dc(u8 *rec);
 void func_0202e520(u8 *rec);
 
-int func_0202e440(int x)
+int Unk02e000_GetTier(int x)
 {
     if (x - 3 < 0) {
         return 0;
@@ -138,7 +138,7 @@ void Unk02e000_Call_02e520(u8 *base, int i)
     func_0202e520(base + 500 + i * 100);
 }
 
-int func_0202e5a8(void)
+int Unk02e000_Call_02008848(void)
 {
     return func_02008848(Unk02e000_Unk_02e884(), 0, 0x1148);
 }
@@ -183,7 +183,7 @@ u8 *Unk02e000_GetAreaRecord(int i)
     return Unk02e000_GetWorkArea() + 116 + i * 60;
 }
 
-u8 *func_0202e7c0(int i)
+u8 *Unk02e000_GetPartyEntry(int i)
 {
     u8 *w = Unk02e000_GetWorkArea();
     s8 idx = (w + i + 0x300)[0x54];
@@ -194,7 +194,7 @@ u8 *func_0202e7c0(int i)
     return r;
 }
 
-int func_0202e7f4(u8 *p)
+int Unk02e000_FindEntryIndex(u8 *p)
 {
     u8 *e;
     int i;
@@ -214,9 +214,9 @@ int func_0202e7f4(u8 *p)
     return -1;
 }
 
-int func_0202e840(u8 *p)
+int Unk02e000_IsEntryInParty(u8 *p)
 {
-    int idx = func_0202e7f4(p);
+    int idx = Unk02e000_FindEntryIndex(p);
     s8 *arr = (s8 *)(Unk02e000_GetWorkArea() + 0x354);
     int i;
     for (i = 0; i < 3; i++) {
@@ -244,7 +244,7 @@ int Unk02e000_Unk_02e8f0(void)
 
 void Unk02e000_Unk_02e180(void);
 int func_0202e23c();
-int func_0202e5a8();
+int Unk02e000_Call_02008848();
 void Unk02e000_Unk_02e5c4(int arg0);
 /* decompiler-derived */
 void Unk02e000_Unk_02e144(void)
@@ -252,7 +252,7 @@ void Unk02e000_Unk_02e144(void)
   int value;
   Unk02e000_Unk_02e180();
   func_0202e23c();
-  func_0202e5a8();
+  Unk02e000_Call_02008848();
   value = 0;
   do {
     Unk02e000_Unk_02e5c4(value);
@@ -350,7 +350,7 @@ u8 *Unk02e000_GetSubBlock3a4(void)
     return Unk02e000_GetWorkArea() + 0x3a4;
 }
 
-int func_0202e904(u8 *p)
+int Unk02e000_HasField36(u8 *p)
 {
     if (p == 0) {
         return 0;
@@ -358,7 +358,7 @@ int func_0202e904(u8 *p)
     return FIELD(u16, p, 0x36) != 0;
 }
 
-int func_0202e924(int i)
+int Unk02e000_TestFlag(int i)
 {
     if (i < 0) {
         return 0;

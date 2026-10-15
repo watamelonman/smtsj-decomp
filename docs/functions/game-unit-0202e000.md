@@ -22,9 +22,9 @@
 
 ## Not done in M1-T652
 - `Unk02e000_SetMgrUnk38`
-- `func_0202e904`
+- `Unk02e000_HasField36`
 - `Unk02e000_Unk_02e0cc`
-- `func_0202e440`
+- `Unk02e000_GetTier`
 - `Unk02e000_EnsureAlloc7718`
 - `Unk02e000_AddCounter5fc4`
 - `Unk02e000_SetSlot`
@@ -35,25 +35,25 @@
 ## Not done in M1-T651
 - `Unk02e000_Unk_02e5c4`
 - `Unk02e000_ClearMgrUnk38`
-- `func_0202e5a8`
+- `Unk02e000_Call_02008848`
 - `Unk02e000_Unk_02e740`
 - `Unk02e000_GetAreaRecord`
 
 ## Not done in M1-T653
-- `func_0202e7c0`
+- `Unk02e000_GetPartyEntry`
 - `Unk02e000_Unk_02e180`
 - `Unk02e000_GetSlot`
 - `func_0202eb0c`
 - `func_0202e1b8`
 - `func_0202e4dc`
-- `func_0202e840`
-- `func_0202e924`
+- `Unk02e000_IsEntryInParty`
+- `Unk02e000_TestFlag`
 
 ## Not done in M1-T654
 - `func_0202ebb8`
 - `func_0202ee18`
 - `func_0202e9c8`
-- `func_0202e7f4`
+- `Unk02e000_FindEntryIndex`
 - `func_0202ebfc`
 - `func_0202ecac`
 - `func_0202ed5c`
@@ -91,10 +91,10 @@
 - `Unk02e000_SetMgrUnk38`: hand-matched
 - `Unk02e000_EnsureAlloc7718`: hand-matched
 - `Unk02e000_AddCounter5fc4`: hand-matched
-- `func_0202e440`: hand-matched
-- `func_0202e5a8`: hand-matched
-- `func_0202e7c0`: hand-matched
-- `func_0202e7f4`: hand-matched
-- `func_0202e840`: hand-matched
-- `func_0202e904`: hand-matched
-- `func_0202e924`: hand-matched
+- `Unk02e000_GetTier`: hand-matched
+- `Unk02e000_Call_02008848`: hand-matched
+- `Unk02e000_GetPartyEntry`: hand-matched
+- `Unk02e000_FindEntryIndex`: hand-matched
+- `Unk02e000_IsEntryInParty`: hand-matched
+- `Unk02e000_HasField36`: hand-matched
+- `Unk02e000_TestFlag`: hand-matched

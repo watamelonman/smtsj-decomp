@@ -19,5 +19,12 @@
  "func_0202e034": "Unk02e000_GetSlot",
  "func_0202e070": "Unk02e000_SetMgrUnk38",
  "func_0202e114": "Unk02e000_EnsureAlloc7718",
- "func_0202e1f8": "Unk02e000_AddCounter5fc4"
+ "func_0202e1f8": "Unk02e000_AddCounter5fc4",
+ "func_0202e440": "Unk02e000_GetTier",
+ "func_0202e5a8": "Unk02e000_Call_02008848",
+ "func_0202e7c0": "Unk02e000_GetPartyEntry",
+ "func_0202e7f4": "Unk02e000_FindEntryIndex",
+ "func_0202e840": "Unk02e000_IsEntryInParty",
+ "func_0202e904": "Unk02e000_HasField36",
+ "func_0202e924": "Unk02e000_TestFlag"
 }

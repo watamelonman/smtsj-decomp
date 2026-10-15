@@ -236,7 +236,7 @@ void Unk10a034_Unk_10af0c(int arg0)
 }
 
 int Unk02e000_GetAreaRecord();
-int func_0202e904();
+int Unk02e000_HasField36();
 int func_02096ab0();
 int func_020a1428();
 /* decompiler-derived */
@@ -250,7 +250,7 @@ void Unk10a034_Unk_10ac28(int arg0)
   v4 = (u16 *)(arg0 + 0x24);
   do {
     tmp1 = Unk02e000_GetAreaRecord(tmp3);
-    tmp2 = func_0202e904();
+    tmp2 = Unk02e000_HasField36();
     if (tmp2 == 0) {
       *(u32 *)(v4 + 2) = 0;
     }
