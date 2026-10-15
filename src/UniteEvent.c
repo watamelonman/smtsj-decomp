@@ -76,3 +76,27 @@ void UniteEvent_HandleMessage(UniteEvent *ev, EventMsg *msg) {
         break;
     }
 }
+
+extern u8 data_02151418[];
+extern u8 data_02151428[];
+int func_02013c3c();
+int func_0206df10();
+int func_0206f6e4();
+int func_02071fcc();
+/* decompiler-derived; refs "Data/Effect/%s", "Data/Effect/%s" */
+void func_0210f9f4(int arg0,u32 arg1,int arg2,u32 arg3)
+{
+  u8 tmp1;
+  u8 auStack_98 [128];
+  u32 uStack_18;
+  uStack_18 = arg3;
+  func_0206df10();
+  Unk071dc0_Unk_072200();
+  func_02013c3c(auStack_98,data_02151418,arg1);
+  tmp1 = func_0206f6e4(auStack_98);
+  *(u8 *)(arg0 + 4) = tmp1;
+  func_02013c3c(auStack_98,data_02151428,arg3);
+  tmp1 = func_0206f6e4(auStack_98);
+  *(u8 *)(arg2 + 4) = tmp1;
+  func_02071fcc();
+}
