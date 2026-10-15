@@ -94,6 +94,12 @@ int func_0206c0b0();
 int func_0206d4e8();
 int func_02071844();
 int func_02071d6c();
+void func_0206af04();
+void func_0206b0ac(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
+{
+    func_0206af04(a, b, c, d, e, f, 0, g, h, i);
+}
+
 /* decompiler-derived */
 void Unk06ae94_Unk_06c76c(u32 *arg0)
 {
