@@ -20,3 +20,4 @@ void func_020e7f0c(int arg0)
   *data_02176cdc = 0;
   return;
 }
+
