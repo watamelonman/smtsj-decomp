@@ -24,3 +24,13 @@
 ## Not done in M1-T875
 - `func_020a7108`
 - `func_020a7474`
+
+## Not done in M1-T874
+- `func_020a7bd0`
+- `func_020a62ec`
+- `func_020a6468`
+- `func_020a7ae4`
+- `func_020a6ac0`
+- `func_020a6c98`
+- `func_020a6e94`
+- `func_020a65c4`
