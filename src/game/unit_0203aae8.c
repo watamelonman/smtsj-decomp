@@ -189,6 +189,70 @@ void *Unk03aae8_Unk_03ae10(u8 *p, int key)
     return r;
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int Unk094fe0_Unk_094fec();
+void Unk094fe0_SetSlot();
+int Unk094fe0_GetSlot();
+void func_0209512c();
+u32 Unk03aae8_Unk_03ad14(void);
+
+int func_0203b634(void)
+{
+    int r;
+    s16 a = func_0203ac00(0);
+    s16 b = func_0203ac00(1);
+    u8 *o = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);
+    r = 0;
+    switch (FIELD(s32, o, 8)) {
+    case 0:
+        r = Unk094fe0_Unk_094fec(FIELD(u32, o, 64));
+        break;
+    case 2:
+        break;
+    }
+    Unk094fe0_SetSlot(r, a, b);
+    return 1;
+}
+
+int func_0203b694(void)
+{
+    int r;
+    s16 a = func_0203ac00(0);
+    u8 *o = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);
+    r = 0;
+    switch (FIELD(s32, o, 8)) {
+    case 0:
+        r = (s16)Unk094fe0_GetSlot(Unk094fe0_Unk_094fec(FIELD(u32, o, 64)), a);
+        break;
+    case 2:
+        break;
+    }
+    Unk03aae8_Unk_03acf4(r);
+    return 1;
+}
+
+int func_0203b6ec(void)
+{
+    s16 a = func_0203ac00(0);
+    u8 *o = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);
+    switch (FIELD(s32, o, 8)) {
+    case 0:
+        func_0209512c(Unk094fe0_Unk_094fec(FIELD(u32, o, 64)), a, 1);
+        break;
+    case 1:
+        FIELD(u32, o, 64) |= 1 << a;
+        break;
+    case 2:
+        break;
+    case 3:
+        FIELD(u32, o, 64) |= 1 << a;
+        break;
+    }
+    return 1;
+}
+
 int Unk03aae8_Unk_03b89c(void)
 {
     u32 a = func_0203ac00(0);
