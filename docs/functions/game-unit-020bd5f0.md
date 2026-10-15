@@ -40,3 +40,13 @@
 - `func_020c1d88`
 - `func_020c7b30`
 - `func_020c1af4`
+
+## Not done in M1-T1138
+- `func_020c1fb0`
+- `func_020c1414`
+- `func_020c1b94`
+- `func_020c1cd0`
+- `func_020c67a0`
+- `func_020c0c5c`
+- `func_020c1770`
+- `func_020c7304`
