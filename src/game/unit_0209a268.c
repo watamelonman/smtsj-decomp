@@ -43,6 +43,20 @@ void Unk09a268_Unk_09a820(u32 arg0)
   func_0209a48c(arg0,4);
 }
 
+typedef struct Unk09a268Ctx {
+    u8 pad_0000[0x38];
+    u32 unk_0038;
+} Unk09a268Ctx;
+
+extern Unk09a268Ctx *data_02176270;
+
+void func_0209b73c(u32 value)
+{
+    if (data_02176270 != 0) {
+        data_02176270->unk_0038 = value;
+    }
+}
+
 /* decompiler-derived */
 void Unk09a268_Unk_09c498(void)
 {

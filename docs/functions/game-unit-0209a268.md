@@ -66,3 +66,4 @@
 - `func_0209c9bc`
 - `func_0209c854`
 - `Unk09a268_Unk_09beb0`: hand-matched
+- `func_0209b73c`: hand-matched
