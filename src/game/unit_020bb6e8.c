@@ -35,7 +35,7 @@ int Unk02e000_GetRecordFlag0();
 void func_0202ec48();
 u32 Unk0bac80_Unk_0badc0(void);
 int Unk0e5fb8_Unk_0e6254();
-u32 func_020bb770(void)
+u32 Unk0bb6e8_Unk_0bb770(void)
 {
     if (Unk02e000_GetRecordFlag0((u16)func_0203ac00(0)) != 0) {
         Unk03aae8_Unk_03acf4(1);
@@ -45,14 +45,14 @@ u32 func_020bb770(void)
     return 1;
 }
 
-u32 func_020bb7ac(void)
+u32 Unk0bb6e8_Unk_0bb7ac(void)
 {
     int on = func_0203ac00(1) != 0;
     func_0202ec48((u16)func_0203ac00(0), on);
     return 1;
 }
 
-u32 func_020bb880(void)
+u32 Unk0bb6e8_Unk_0bb880(void)
 {
     u32 v = FIELD(u32, Unk0bac80_Unk_0badc0(), 68);
     Unk03aae8_Unk_03acf4((v << 19) >> 24);
@@ -70,7 +70,7 @@ u32 Unk0bb6e8_Unk_0bb8a0(void)
   return 1;
 }
 
-u32 func_020bb8c0(void)
+u32 Unk0bb6e8_Unk_0bb8c0(void)
 {
     int a = func_0203ac00(0);
     if (a < 15) {

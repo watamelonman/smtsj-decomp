@@ -61,7 +61,7 @@ u32 Unk0bb908_Unk_0bb978(void)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 u32 Unk0bac80_Unk_0bae08(void);
-u32 func_020bb9e8(void)
+u32 Unk0bb908_Unk_0bb9e8(void)
 {
     u8 *p = (u8 *)Unk0bac80_Unk_0bae08();
     if (p != 0) {
@@ -72,7 +72,7 @@ u32 func_020bb9e8(void)
     return 1;
 }
 
-u32 func_020bba14(void)
+u32 Unk0bb908_Unk_0bba14(void)
 {
     u8 *p = (u8 *)Unk0bac80_Unk_0bae08();
     if (p != 0) {
@@ -83,7 +83,7 @@ u32 func_020bba14(void)
     return 1;
 }
 
-u32 func_020bba40(void)
+u32 Unk0bb908_Unk_0bba40(void)
 {
     u8 *p = (u8 *)Unk0bac80_Unk_0bae08();
     if (p != 0) {
@@ -94,7 +94,7 @@ u32 func_020bba40(void)
     return 1;
 }
 
-u32 func_020bba6c(void)
+u32 Unk0bb908_Unk_0bba6c(void)
 {
     u8 *p = (u8 *)Unk0bac80_Unk_0bae08();
     int i = func_0203ac00(0);
@@ -109,7 +109,7 @@ u32 func_020bba6c(void)
     return 1;
 }
 
-u32 func_020bbab4(void)
+u32 Unk0bb908_Unk_0bbab4(void)
 {
     u8 *p = (u8 *)Unk0bac80_Unk_0bae08();
     int i = func_0203ac00(0);
@@ -124,7 +124,7 @@ u32 func_020bbab4(void)
     return 1;
 }
 
-u32 func_020bbafc(void)
+u32 Unk0bb908_Unk_0bbafc(void)
 {
     u8 *p = (u8 *)Unk0bac80_Unk_0bae08();
     int i = func_0203ac00(0);
