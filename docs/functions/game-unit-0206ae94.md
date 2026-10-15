@@ -30,3 +30,13 @@
 - `func_0206c938`
 - `func_0206bb84`
 - `func_0206d3b4`
+
+## Not done in M1-T997
+- `func_0206ba4c`
+- `func_0206b0f0`
+- `func_0206d54c`
+- `func_0206d268`
+- `func_0206d7f4`
+- `func_0206d68c`
+- `func_0206ced4`
+- `func_0206cd30`
