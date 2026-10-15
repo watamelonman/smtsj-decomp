@@ -527,5 +527,9 @@ u32 Unk0e8228_Unk_0e85c8(void)
   return 0;
 }
 
-
-
+extern u8 data_02176ce4[];
+/* decompiler-derived */
+void func_020e8244(void)
+{
+  func_02008848(data_02176ce4,0,0xf8);
+}
