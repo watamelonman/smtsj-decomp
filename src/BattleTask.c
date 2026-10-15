@@ -53,3 +53,4 @@ int func_020481d4(void)
   tmp1 = Unk044904_Get_data_0215ee98();
   return tmp1 != 0;
 }
+
