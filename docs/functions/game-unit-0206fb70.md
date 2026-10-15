@@ -51,3 +51,6 @@
 - `func_02070b88`
 - `func_02070cc0`
 - `Unk06fb70_AddClamped`: hand-matched
+- `func_02071508`: hand-matched
+- `func_02071974`: hand-matched
+- `func_02071d28`: hand-matched

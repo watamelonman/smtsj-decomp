@@ -91,3 +91,21 @@ void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim)
         *p = lim;
     }
 }
+
+void func_0207142c();
+void func_02071898();
+void func_020703b4();
+void func_02071508(int a, int b, int c, int d, int e, int f, int g)
+{
+    func_0207142c(a, b, c, d, e, 0, f, g);
+}
+
+void func_02071974(int a, int b, int c, int d, int e, int f, int g)
+{
+    func_02071898(a, b, c, d, e, 0, f, g);
+}
+
+void func_02071d28(u8 *o)
+{
+    func_020703b4(o + 364, o + 44, o + 40, o + 48, o, o + 12, o + 24, o + 52);
+}
