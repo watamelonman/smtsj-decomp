@@ -31,6 +31,84 @@ void Unk0ea208_Unk_0eaca0(void);
 u32 Unk0ea208_Unk_0ea72c(void);
 void Unk0ea208_Unk_0ead4c(void);
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_02061f10();
+void func_020ea390(int i, u32 x)
+{
+    if (i < 0) {
+        return;
+    }
+    if (i >= 6) {
+        return;
+    }
+    func_02061f10(FIELD(u32, Unk0ea208_Get_data_02176ddc() + i * 4, 36), -1, 0, 0, x);
+}
+
+u32 func_020ea438(void)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 0);
+}
+
+u32 func_020ea460(void)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 4);
+}
+
+u32 func_020ea488(void)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 8);
+}
+
+u32 func_020ea4b0(void)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 12);
+}
+
+u32 func_020ea4d8(int i)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 5) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 4, 16);
+}
+
 /* decompiler-derived */
 void Unk0ea208_Unk_0ead3c(void)
 {

@@ -58,3 +58,9 @@
 - `Unk0ea208_Unk_0ea878`: decompiler-derived (plain cleanup)
 - `Unk0ea208_Unk_0ea984`: decompiler-derived (plain cleanup)
 - `Unk0ea208_Unk_0eb6cc`: decompiler-derived (struct+fix cleanup)
+- `func_020ea390`: hand-matched
+- `func_020ea438`: hand-matched
+- `func_020ea460`: hand-matched
+- `func_020ea488`: hand-matched
+- `func_020ea4b0`: hand-matched
+- `func_020ea4d8`: hand-matched
