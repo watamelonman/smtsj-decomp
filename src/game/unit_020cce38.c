@@ -59,3 +59,4 @@ void Unk0cce38_Unk_0ccfac(int arg0)
   *data_02176bc8 = 0;
   return;
 }
+

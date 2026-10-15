@@ -10,3 +10,8 @@
 ## Not done in M1-T407
 - `func_020cce38`
 - `func_020ccea0`
+
+## Not done in M1-T408
+- `func_020ccefc`
+- `func_020ccfe0`
+- `func_020cd200`
