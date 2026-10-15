@@ -471,3 +471,56 @@ void func_020a273c(u32 arg0)
 }
 
 
+
+
+int func_0202e0cc();
+int func_0205af2c();
+int func_0205bb68();
+int func_0205ddb4();
+int func_020a8bac();
+int func_020c8f08();
+int func_020ca648();
+int func_020fc6a0();
+int func_020fda14();
+/* decompiler-derived */
+void func_020a2e5c(int arg0)
+{
+  int tmp1;
+  if (*(int *)(arg0 + 8) != 0) {
+    func_0205ddb4();
+    *(u32 *)(arg0 + 8) = 0;
+  }
+  if (*(int *)(arg0 + 0x24) != 0) {
+    func_0205ddb4();
+    *(u32 *)(arg0 + 0x24) = 0;
+  }
+  if (*(int *)(arg0 + 0x40) != 0) {
+    func_0205ddb4();
+    *(u32 *)(arg0 + 0x40) = 0;
+  }
+  *(u32 *)(arg0 + 0x5c) = 0;
+  if (*(int *)(arg0 + 0x24c) != 0) {
+    func_0205ddb4();
+    *(u32 *)(arg0 + 0x24c) = 0;
+  }
+  func_020a8bac(arg0 + 0x428);
+  func_020fc6a0();
+  Unk0fd268_Unk_0fd3ac();
+  func_020fda14();
+  func_020c8f08(arg0 + 0x78);
+  tmp1 = 0;
+  do {
+    func_0205bb68();
+    tmp1 = tmp1 + 1;
+  } while (tmp1 < 10);
+  func_0205bb68();
+  func_0205bb68();
+  func_0205bb68();
+  func_0205bb68();
+  func_020ca648(2);
+  func_0202e0cc();
+  func_0205af2c(0xc2);
+  func_0205bb68();
+  *data_02176b04 = 0;
+  return;
+}

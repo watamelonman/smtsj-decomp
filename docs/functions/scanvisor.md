@@ -84,3 +84,13 @@
 - `func_020a2c90`
 - `func_020a4370`
 - `func_020a42f0`
+- `func_020a2e5c`: decompiler-derived
+
+## Not done in M1-T992
+- `func_020a2c00`
+- `func_020a269c`
+- `func_020a3008`
+- `func_020a2f3c`
+- `func_020a3630`
+- `func_020a3114`
+- `func_020a2d0c`
