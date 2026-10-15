@@ -75,3 +75,5 @@
 - `func_0202e5dc`
 - `func_0202e23c`
 - `func_0202e228`: decompiler-derived (plain cleanup)
+- `func_0202e0cc`: decompiler-derived (plain cleanup)
+- `func_0202e180`: decompiler-derived (plain cleanup)

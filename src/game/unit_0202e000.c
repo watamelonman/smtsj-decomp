@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 extern u8 data_02140ac8[];
 extern u32 data_0215dd24[];
-int func_0202e0cc();
+void func_0202e0cc(void);
 void func_0202e788(void);
 int func_0205a9d0();
 
@@ -81,7 +81,7 @@ int Unk02e000_Unk_02e8f0(void)
 }
 
 
-int func_0202e180();
+void func_0202e180(void);
 int func_0202e23c();
 int func_0202e5a8();
 int func_0202e5c4();
@@ -127,4 +127,29 @@ int func_0202e228(void)
   int tmp1;
   tmp1 = Unk02e000_Unk_02e774();
   return tmp1 + 0x5fc8;
+}
+
+extern u32 data_0213d89c[];
+int func_0205ad2c();
+int func_0205ad78();
+/* decompiler-derived; refs "Data/Tex/" */
+void func_0202e0cc(void)
+{
+  func_0205ad2c(*data_0213d89c);
+  func_0205ad78(data_02140ac8,0xde);
+}
+
+int func_02008848();
+int func_0202e1b8();
+/* decompiler-derived */
+void func_0202e180(void)
+{
+  u8 *v1;
+  v1 = (u8 *)Unk02e000_Unk_02e8f0();
+  func_02008848(v1,0,8);
+  *v1 = 2;
+  v1[1] = 2;
+  v1[2] = 1;
+  v1[3] = 1;
+  func_0202e1b8();
 }
