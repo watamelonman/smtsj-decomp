@@ -38,3 +38,13 @@
 - `func_0211c610`
 - `func_02119658`
 - `func_0211c4e0`
+
+## Not done in M1-T1033
+- `func_0211ce10`
+- `func_0211a864`
+- `func_0211aa24`
+- `func_0211aaa8`
+- `func_0211c548`
+- `func_0211a474`
+- `func_0211b1f4`
+- `func_02119940`
