@@ -20,3 +20,7 @@
 - `func_020a63cc`
 - `func_020a6934`
 - `func_020a7ca4`
+
+## Not done in M1-T875
+- `func_020a7108`
+- `func_020a7474`
