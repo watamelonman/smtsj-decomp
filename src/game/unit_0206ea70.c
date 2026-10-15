@@ -30,6 +30,22 @@ u32 Unk06ea70_FindByMask(u32 mask)
     return data_02170cd4[0];
 }
 
+int func_02053000();
+void Unk06ea70_Unk_06f4e4(void);
+
+void func_0206eb54(void)
+{
+    int i;
+    for (i = 0; i < 16; i++) {
+        data_02170cd4[i] = 0;
+    }
+    func_02053000(data_02170ccc.table->count);
+    data_02170ccc.table->count = 0;
+    func_02053000(data_02170ccc.table);
+    data_02170ccc.table = 0;
+    Unk06ea70_Unk_06f4e4();
+}
+
 int Unk06ea70_Unk_06ebb8(int i)
 {
     Unk06ea70Table *t = data_02170ccc.table;

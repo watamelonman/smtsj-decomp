@@ -29,3 +29,4 @@
 - `Unk06ea70_GetBuf04Slot`: hand-matched
 - `Unk06ea70_GetBuf00Slot`: hand-matched
 - `Unk06ea70_SetMask10Bit`: hand-matched
+- `func_0206eb54`: hand-matched
