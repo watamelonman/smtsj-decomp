@@ -62,3 +62,5 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
 - Bounds check `cmp i,#0; blt zero; cmp i,#N; blt load; zero: mov r0,#0`: write `if (i < 0 || i >= N) return 0; return load;`.
   The `if (i >= 0 && i < N) return load; return 0;` form lays out differently (b53).
 - A literal-pool load hoisted above the first branch: bind the global to a local first (`u8 *base = data_x;`) (b53).
+- Null-checked sub-object (`adds r1,r0,#392; bxeq lr`) whose loops still index from the outer pointer: embed the
+  sub-struct in a host struct and test `&p->sel == 0`, then write `p->sel.a[j]` (b54). A separate `q` pointer indexes from q.
