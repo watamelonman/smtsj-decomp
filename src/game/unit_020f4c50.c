@@ -47,3 +47,12 @@ void Unk0f4c50_Unk_0f51b0(Unk0f4c50Work *arg0, int arg1){
   return;
 }
 
+extern u32 data_02176e04[];
+int func_02008848();
+/* decompiler-derived */
+void func_020f4ca8(u32 arg0)
+{
+  func_02008848(arg0,0,0x14);
+  *data_02176e04 = arg0;
+  Unk0f4c50_Unk_0f4cd4((u32 *)arg0);
+}

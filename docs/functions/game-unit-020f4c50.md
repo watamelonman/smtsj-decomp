@@ -13,3 +13,4 @@
 
 ## Not done in M1-T385
 - `func_020f4d64`
+- `func_020f4ca8`: decompiler-derived (plain+fix cleanup)
