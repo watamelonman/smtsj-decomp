@@ -63,3 +63,21 @@ u32 Unk03c05c_Unk_03c0ec(void)
   func_0209ed78((int)v1,(int)v2,(int)v3);
   return 3;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int func_0203ac00();
+u32 Unk03aae8_Unk_03ad14();
+void func_0209e49c();
+
+int func_0203c144(void)
+{
+    s16 a = func_0203ac00(0);
+    s16 b = func_0203ac00(1);
+    s16 c = func_0203ac00(2);
+    u8 *o = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);
+    FIELD(u32, o, 24) = 15;
+    func_0209e49c(b, c, a);
+    return 3;
+}

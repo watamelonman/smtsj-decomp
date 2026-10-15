@@ -9,3 +9,4 @@
 ## Not done in M1-T064
 - `func_0203c144`
 - `func_0203c1a0`
+- `func_0203c144`: hand-matched
