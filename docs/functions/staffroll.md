@@ -29,3 +29,6 @@
 - `func_0211882c`: hand-written. Parses staff-roll command list and lays out text lines.
 - `StaffRoll_Unk_118620`: decompiler-derived (plain cleanup)
 - `StaffRoll_Unk_1186cc`: decompiler-derived (plain cleanup)
+- `func_02117cfc`: hand-matched
+- `func_02117d18`: hand-matched
+- `func_02117d38`: hand-matched
