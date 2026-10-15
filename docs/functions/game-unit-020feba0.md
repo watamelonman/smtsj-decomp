@@ -15,3 +15,4 @@
 - `func_020fec64`
 - `func_020fed54`
 - `func_020fec00`
+- `func_020febe8`: decompiler-derived (plain+fix cleanup)

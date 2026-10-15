@@ -65,3 +65,11 @@ void Unk0feba0_Unk_0feba0(void)
   value = func_020fec84();
   *data_02176e24 = value;
 }
+
+/* decompiler-derived */
+void func_020febe8(u32 arg0)
+{
+  u32 tmp1;
+  tmp1 = Unk0feba0_Get_data_02176e24();
+  Unk0feba0_Unk_0fed7c((u32 *)tmp1, (u32)arg0);
+}
