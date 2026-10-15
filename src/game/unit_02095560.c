@@ -22,6 +22,11 @@ void func_020961a0(void);
 /* Reads the signed byte at table[index]. */
 int Unk095560_GetSignedByte(const s8 *table, int index) { return table[index]; }
 
+u32 func_02095568(const u8 *p, int o)
+{
+    return p[o] | (p[o + 1] << 8) | (p[o + 2] << 16) | (p[o + 3] << 24);
+}
+
 /* Returns the static manager instance. */
 unsigned char *Unk095560_GetManager(void) { return gUnkManager_02175eb0; }
 
@@ -403,6 +408,23 @@ void Unk095560_Unk_095598(void)
     *v4 = 0xffffffff;
   } while (tmp5 < 9);
   *(u32 *)(tmp2 + 0x18) = 0xffffffff;
+}
+
+int func_02095b28(u32 x)
+{
+    return Unk095560_Unk_095950(8, x) != 0;
+}
+
+int func_02095cd8(u32 a, u32 b, u32 c, u32 d)
+{
+    u32 *q;
+    ((u32 *)data_02175ea8)[0] = c;
+    ((u32 *)data_02175ea8)[1] = d;
+    q = (u32 *)Unk095560_GetManagerSub3a8();
+    q[1] = a;
+    q[0] = b;
+    q[2] = -1;
+    return 1;
 }
 
 void Unk095560_Call_020773dc(void)
