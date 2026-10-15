@@ -54,3 +54,14 @@
 - `Unk06fb70_Call_07142c`: hand-matched
 - `Unk06fb70_Call_071898`: hand-matched
 - `Unk06fb70_Call_0703b4`: hand-matched
+- `func_020705f8`: hand-matched
+- `func_02070758`: hand-matched
+- `func_02070094`: hand-matched
+- `func_02070114`: hand-matched
+- `func_02070168`: hand-matched
+- `func_020701bc`: hand-matched
+- `func_02070210`: hand-matched
+- `func_02070264`: hand-matched
+- `func_020702b8`: hand-matched
+- `func_0207030c`: hand-matched
+- `func_02070360`: hand-matched
