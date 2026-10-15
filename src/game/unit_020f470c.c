@@ -121,3 +121,11 @@ void Unk0f470c_Unk_0f4ac0(void)
   }
   func_020f7e48(*(u32 *)(value4 + 0x40),0,8);
 }
+
+/* decompiler-derived */
+int func_020f4b80(void)
+{
+  u32 tmp1;
+  tmp1 = Unk0f8448_GetUnkField10();
+  Unk0e8228_Unk_0e8d90(*(u32 *)(*data_02176e00 + 0x44),tmp1);
+}
