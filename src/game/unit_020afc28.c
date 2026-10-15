@@ -23,3 +23,30 @@ void func_020afdd0(u32 arg0,u32 arg1,int arg2)
   func_020492ec(arg1,tmp1);
   return;
 }
+
+
+
+/* decompiler-derived */
+u32 func_020afcd4(u32 arg0)
+{
+  switch(arg0) {
+  case 0:
+    return 8;
+  case 1:
+    return 9;
+  case 2:
+    return 10;
+  case 3:
+    return 0xb;
+  case 4:
+    return 0xc;
+  case 5:
+    return 0xd;
+  case 6:
+    return 0xe;
+  case 7:
+    return 0xf;
+  default:
+    return 0x1a;
+  }
+}
