@@ -32,3 +32,6 @@
 - `StaffRoll_Unk_117cfc`: hand-matched
 - `StaffRoll_Unk_117d18`: hand-matched
 - `StaffRoll_Unk_117d38`: hand-matched
+- `func_02118174`: hand-matched
+- `func_02118490`: hand-matched
+- `func_021184d8`: hand-matched

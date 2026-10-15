@@ -66,6 +66,25 @@ int StaffRoll_Unk_117d38(u16 *p)
     return -1;
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int func_02117dd8();
+u32 StaffRoll_Unk_1181a0(int arg0);
+int func_02118424();
+void func_02118490(u8 *p);
+void func_02061424();
+void func_02118174(u8 *p)
+{
+    u32 n = FIELD(u32, p, 180) + 1;
+    FIELD(u32, p, 180) = n;
+    if (FIELD(u32, p, 196) > n) {
+        return;
+    }
+    FIELD(u32, p, 172) = 1;
+    FIELD(u32, p, 180) = 0;
+}
+
 /* decompiler-derived */
 void StaffRoll_Unk_11825c(int arg0)
 {
@@ -96,7 +115,7 @@ void StaffRoll_Unk_1182a4(int arg0)
 
 int func_02117f94();
 int func_021180e4();
-int func_02118174();
+void func_02118174();
 /* decompiler-derived */
 u32 StaffRoll_Unk_1181a0(int arg0)
 {
@@ -131,6 +150,35 @@ typedef struct StaffRollCmd {
 
 
 int func_02117d5c(StaffRollWork *w, u32 cmd, int line);
+
+void func_02118490(u8 *p)
+{
+    int a;
+    int b;
+    int c;
+    FIELD(u32, p, 8)++;
+    a = func_02117dd8(p);
+    b = StaffRoll_Unk_1181a0((int)p);
+    c = func_02118424(p);
+    if (a != 0 && b != 0 && c != 0) {
+        FIELD(u32, p, 0) = 2;
+    }
+}
+
+void func_021184d8(u8 *p)
+{
+    switch (FIELD(u32, p, 0)) {
+    case 0:
+        FIELD(u32, p, 0) = 1;
+        return;
+    case 1:
+        func_02118490(p);
+        return;
+    case 2:
+        func_02061424(p);
+        return;
+    }
+}
 
 /* Parses the staff-roll command list and lays out its text lines. */
 void func_0211882c(StaffRollWork *w)
