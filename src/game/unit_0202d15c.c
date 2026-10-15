@@ -85,3 +85,24 @@ u32 func_0202d9f8(u32 arg0)
     return 0x1b;
   }
 }
+
+
+
+/* decompiler-derived */
+u32 func_0202da48(u32 arg0)
+{
+  switch(arg0) {
+  case 0:
+    return 0x1c;
+  case 1:
+    return 0x1f;
+  case 2:
+    return 0x16;
+  case 3:
+    return 0x19;
+  case 4:
+    return 0;
+  default:
+    return 0x1c;
+  }
+}
