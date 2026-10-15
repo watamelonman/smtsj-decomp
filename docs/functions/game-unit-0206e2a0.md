@@ -4,14 +4,14 @@
 
 ## Not done in M1-T134
 - `Unk06e2a0_GetEntrySubUnk34`
-- `Unk06e2a0_CopyEntryName`
-- `func_0206e418`
-- `func_0206e458`
-- `func_0206e498`
+- `Unk06e2a0_CopyEntryBc`
+- `Unk06e2a0_CopyEntryDc`
+- `Unk06e2a0_CopyEntryFc`
+- `Unk06e2a0_CopyEntry11c`
 - `func_0206e334`
 - `func_0206e2b8`
 - `Unk06e2a0_GetEntrySubUnk34`: hand-matched
-- `Unk06e2a0_CopyEntryName`: hand-matched
-- `func_0206e418`: hand-matched
-- `func_0206e458`: hand-matched
-- `func_0206e498`: hand-matched
+- `Unk06e2a0_CopyEntryBc`: hand-matched
+- `Unk06e2a0_CopyEntryDc`: hand-matched
+- `Unk06e2a0_CopyEntryFc`: hand-matched
+- `Unk06e2a0_CopyEntry11c`: hand-matched

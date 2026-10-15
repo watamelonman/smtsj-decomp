@@ -156,5 +156,14 @@
  "func_0206ca30": "Unk06ae94_Call_06c938",
  "func_0206dddc": "Unk06dddc_GetEntryUnk24",
  "func_0206e39c": "Unk06e2a0_GetEntrySubUnk34",
- "func_0206e3d8": "Unk06e2a0_CopyEntryName"
+ "func_0206e3d8": "Unk06e2a0_CopyEntryName",
+ "Unk06e2a0_CopyEntryName": "Unk06e2a0_CopyEntryBc",
+ "func_0206e418": "Unk06e2a0_CopyEntryDc",
+ "func_0206e458": "Unk06e2a0_CopyEntryFc",
+ "func_0206e498": "Unk06e2a0_CopyEntry11c",
+ "func_0206e5a0": "Unk06e4d8_Reset",
+ "func_0206ea0c": "Unk06e4d8_Unk_06ea0c",
+ "func_0206ea44": "Unk06e4d8_GetFlag6c",
+ "func_0206ea70": "Unk06ea70_FindByMask",
+ "func_0206ebb8": "Unk06ea70_Unk_06ebb8"
 }

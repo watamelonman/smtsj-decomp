@@ -8,8 +8,8 @@
 - `Unk06e4d8_Unk_06e680`: decompiler-derived
 
 ## Not done in M1-T386
-- `func_0206e5a0`
-- `func_0206ea44`
+- `Unk06e4d8_Reset`
+- `Unk06e4d8_GetFlag6c`
 
 ## Not done in M1-T388
 - `func_0206e8b0`
@@ -17,12 +17,12 @@
 - `Unk06e4d8_Unk_06e814`: decompiler-derived
 
 ## Not done in M1-T387
-- `func_0206ea0c`
+- `Unk06e4d8_Unk_06ea0c`
 - `func_0206e854`
 - `func_0206e538`
 - `func_0206e790`
 - `func_0206e6e4`
 - `func_0206e5bc`
-- `func_0206e5a0`: hand-matched
-- `func_0206ea0c`: hand-matched
-- `func_0206ea44`: hand-matched
+- `Unk06e4d8_Reset`: hand-matched
+- `Unk06e4d8_Unk_06ea0c`: hand-matched
+- `Unk06e4d8_GetFlag6c`: hand-matched

@@ -19,7 +19,7 @@ extern Unk06ea70Globals data_02170ccc;
 extern u32 data_02170cd4[];
 extern u32 data_021457e8[];
 int func_0206f674();
-u32 func_0206ea70(u32 mask)
+u32 Unk06ea70_FindByMask(u32 mask)
 {
     int i;
     for (i = 0; i < 16; i++) {
@@ -30,7 +30,7 @@ u32 func_0206ea70(u32 mask)
     return data_02170cd4[0];
 }
 
-int func_0206ebb8(int i)
+int Unk06ea70_Unk_06ebb8(int i)
 {
     Unk06ea70Table *t = data_02170ccc.table;
     if (t == 0 || t->entry[i] == 0) {
