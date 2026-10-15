@@ -28,3 +28,9 @@ card each, apply names, rebuild, checksum + match_gate, commit). A spec entry ma
 `[(old, new)]` fixups to correct a stale declaration in the TU (e.g. `void f();` -> `int f();`).
 Files are not always in address order: if a new function calls one defined later, add a prototype in
 the prelude. Compiles happen in `$TMP/handwork/c/` (t.c is kept for inspecting error line numbers).
+
+Patterns found:
+- Script handlers storing to `ad14()->(+0xe8)->field`: write through a `static inline` setter taking
+  `(value, sub)` (see `fam.py`, specs/b11-b12); plain stores swap r0/r1.
+- Word tested as `(w >> 16) & 0xff` (lsr+tst) is not a bitfield; single-bit `lsl/lsr(s)` tests are.
+- `next.py N 0xADDR` lists candidates after an address (use this after renames).
