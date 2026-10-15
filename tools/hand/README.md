@@ -38,3 +38,8 @@ Patterns found:
 - Hardware register compares (e.g. VCOUNT at 0x04000006) are signed in the ROM: read into an `s32`.
 - A function with no return on some path (ROM falls through with the argument still in r0) is
   written without a final return and commented (func_020663d8).
+
+## Known blind spot (b24/b25)
+When you add a definition for a callee that lives in the same file as an existing matched caller
+(func_02077e74, func_02094a90), objdiff can drop that caller to about 99.7%, even though objdump
+bytes and relocations are identical. cmp.py does not catch this. Skip the function and move on.
