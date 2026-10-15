@@ -5,6 +5,16 @@ void func_02118c6c(void);
 void Unk09ee4c_Thunk_02118c6c(void) { func_02118c6c(); }
 
 extern u8 data_0213c190[];
+void func_0204f1f8(int v, u32 b, u32 c, u8 *d);
+void func_0209f0c0(int base, u32 b, u32 c, u8 *d)
+{
+    int v = d[1] + base;
+    if (v < 0) {
+        v = 0;
+    }
+    func_0204f1f8(v, b, c, d);
+}
+
 int Unk09ee4c_Unk_0a03b8(int arg0)
 {
     return arg0 * 0x18 + ((int)data_0213c190);
