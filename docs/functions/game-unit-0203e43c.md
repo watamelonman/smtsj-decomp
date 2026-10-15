@@ -52,3 +52,5 @@
 - `func_02043340`
 - `Unk03e43c_Call_02056cc0`: decompiler-derived (plain cleanup)
 - `Unk03e43c_CountDown`: hand-matched
+- `func_0203e7cc`: hand-matched
+- `func_0203e804`: hand-matched

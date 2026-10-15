@@ -23,6 +23,27 @@ typedef struct Unk03e43cTimer {
     u16 count;                  /* +0x58 */
 } Unk03e43cTimer;
 
+extern u8 data_0215e85c[];
+void func_0203e7cc(u8 *src, int idx)
+{
+    int i;
+    for (i = 0; i < 32; i += 2) {
+        data_0215e85c[idx * 32 + i + 2] = src[i];
+        data_0215e85c[idx * 32 + i + 3] = src[i + 1];
+    }
+}
+
+void func_0203e804(u8 *src)
+{
+    int i;
+    for (i = 0; i < 512; i += 2) {
+        if (src[i] != 0 || src[i + 1] != 0) {
+            data_0215e85c[i + 2] = src[i];
+            data_0215e85c[i + 3] = src[i + 1];
+        }
+    }
+}
+
 /* Counts down; returns 1 once the counter is already 0. */
 int Unk03e43c_CountDown(Unk03e43cTimer *t)
 {
