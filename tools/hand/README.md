@@ -16,3 +16,8 @@ Kept in-repo so they survive box resets. Low memory; one mwcc compile at a time,
 Rules learned: define new functions before existing callers (address order) or objdiff marks the
 caller ~98%; ninja does not track header deps (touch includers after editing include/*.h); keep
 `forge.toml` reviewer = "none" only during hand batches.
+
+Candidate list: `candidates.py [maxsize]` writes `small.json` (ARM `func_` <= 0x50 bytes in C TUs, not yet
+defined, minus `skips.json`). Specs for each batch live in `specs/`. `hmerge.py` refuses to run unless
+forge.toml reviewer = "none"; names are only queued after a merged regate. Pass ONE card id to
+`forge regate` (several cards can own the same TU).
