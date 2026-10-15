@@ -84,6 +84,18 @@ void Unk0a0ce4_Unk_0a0d04(void)
 extern u32 data_02176b00[];
 int func_0205bb68();
 int func_020629c4();
+/* a * scale / 1024 (fixed point 1.10), with 0 and 1024 short-cut. */
+int func_020a1140(int a, int scale)
+{
+    if (scale == 0) {
+        return 0;
+    }
+    if (scale != 1024) {
+        a = (a * scale) >> 10;
+    }
+    return a;
+}
+
 /* decompiler-derived */
 void Unk0a0ce4_Unk_0a12e8(Unk0a0ce4Work *work)
 {

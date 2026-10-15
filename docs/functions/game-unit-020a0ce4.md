@@ -28,3 +28,4 @@
 - `func_020a1214`
 - `func_020a1318`
 - `func_020a0fc0`
+- `func_020a1140`: hand-matched
