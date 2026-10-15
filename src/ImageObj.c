@@ -155,7 +155,7 @@ void ImageObj_Unk_079184(int arg0)
 }
 
 
-void func_02077554();
+void ImageObj_Unk_077554();
 /* decompiler-derived */
 void ImageObj_Unk_0775ec(void)
 {
@@ -168,7 +168,7 @@ void ImageObj_Unk_0775ec(void)
   value2 = 0;
   do {
     if (value1 != 0) {
-      func_02077554(value2);
+      ImageObj_Unk_077554(value2);
     }
     value2 = value2 + 1;
   } while (value2 < 3);
@@ -207,7 +207,7 @@ u32 ImageObj_Unk_077228(void)
       if (value1 != 0) {
         return 0;
       }
-      func_02077554(value2);
+      ImageObj_Unk_077554(value2);
     }
     value2 = value2 + 1;
   } while (value2 < 3);
@@ -225,7 +225,7 @@ u32 func_02077900();
 int func_02077a9c();
 void func_02077e74();
 void ImageObj_Unk_079184(int arg0);
-int func_02077478(int i, int b)
+int ImageObj_GetOrCreate(int i, int b)
 {
     Unk077Tbl *t = (Unk077Tbl *)ImageObj_Get_data_0217231c();
     if (t->e[i] != 0) {
@@ -234,7 +234,7 @@ int func_02077478(int i, int b)
     return t->e[i] = func_02077900(i, b);
 }
 
-void func_02077554(int i)
+void ImageObj_Unk_077554(int i)
 {
     Unk077Tbl *t = (Unk077Tbl *)ImageObj_Get_data_0217231c();
     u32 o;
@@ -298,7 +298,7 @@ void ImageObj_Unk_077620(void)
   int tmp1;
   tmp1 = 0;
   do {
-    func_02077554(tmp1);
+    ImageObj_Unk_077554(tmp1);
     tmp1 = tmp1 + 1;
   } while (tmp1 < 3);
 }
@@ -344,10 +344,10 @@ void ImageObj_Unk_077640(void)
   *(u32 *)(tmp1 + 0x14) = 0;
 }
 
-int func_02077478();
+int ImageObj_GetOrCreate();
 int func_020774b4();
 int func_02079268();
-int func_02077708(void)
+int ImageObj_Unk_077708(void)
 {
     int i;
     if (ImageObj_Get_data_0217231c() == 0) {
@@ -369,7 +369,7 @@ void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
   int tmp2;
   tmp1 = ImageObj_Unk_0778e8(arg0);
   if (tmp1 == 0) {
-    tmp1 = func_02077478(arg0,arg1);
+    tmp1 = ImageObj_GetOrCreate(arg0,arg1);
     func_02079268(tmp1,arg2);
   }
   else {

@@ -29,7 +29,7 @@ void Unk071dc0_Unk_071de4(void)
 }
 
 extern u8 data_02171d14[];
-void func_02071e24();
+void Unk071dc0_Clear();
 /* decompiler-derived */
 void Unk071dc0_Unk_072200(void)
 {
@@ -43,7 +43,7 @@ void Unk071dc0_Unk_072200(void)
       value2 = value2 + 1;
     } while (value2 < *(int *)(value1 + 0x600));
   }
-  func_02071e24();
+  Unk071dc0_Clear();
 }
 
 extern u8 data_021458d8[];
@@ -59,12 +59,12 @@ void Unk071dc0_Unk_071dc0(void)
 
 extern u8 data_02170d14[];
 int func_02008848();
-void func_02071e24(void)
+void Unk071dc0_Clear(void)
 {
     func_02008848(data_02170d14, 0, 0x1608);
 }
 
-int func_02072030(void)
+int Unk071dc0_GetMode604Sign(void)
 {
     switch (FIELD(s32, data_02171d14, 0x604)) {
     case 4:

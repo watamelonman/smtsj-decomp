@@ -5,9 +5,9 @@
 
 ## Not done in M1-T934
 - `Unk06fb70_AddClamped`
-- `func_02071508`
-- `func_02071974`
-- `func_02071d28`
+- `Unk06fb70_Call_07142c`
+- `Unk06fb70_Call_071898`
+- `Unk06fb70_Call_0703b4`
 - `func_02070114`
 - `func_02070168`
 
@@ -51,6 +51,6 @@
 - `func_02070b88`
 - `func_02070cc0`
 - `Unk06fb70_AddClamped`: hand-matched
-- `func_02071508`: hand-matched
-- `func_02071974`: hand-matched
-- `func_02071d28`: hand-matched
+- `Unk06fb70_Call_07142c`: hand-matched
+- `Unk06fb70_Call_071898`: hand-matched
+- `Unk06fb70_Call_0703b4`: hand-matched

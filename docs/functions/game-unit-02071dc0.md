@@ -5,9 +5,9 @@
 - `Unk071dc0_Unk_072200`: decompiler-derived
 
 ## Not done in M1-T328
-- `func_02071e24`
+- `Unk071dc0_Clear`
 - `Unk071dc0_Unk_071dc0`
-- `func_02072030`
+- `Unk071dc0_GetMode604Sign`
 - `func_02071fcc`
 - `func_02071e44`
 
@@ -15,5 +15,5 @@
 - `func_02071efc`
 - `func_02072068`
 - `Unk071dc0_Unk_071dc0`: decompiler-derived (plain cleanup)
-- `func_02071e24`: hand-matched
-- `func_02072030`: hand-matched
+- `Unk071dc0_Clear`: hand-matched
+- `Unk071dc0_GetMode604Sign`: hand-matched

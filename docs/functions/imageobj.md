@@ -33,11 +33,11 @@
 
 ## Not done in M1-T925
 - `ImageObj_Unk_0775a0`
-- `func_02077478`
+- `ImageObj_GetOrCreate`
 - `func_02077d98`
 - `ImageObj_Unk_077640`
-- `func_02077708`
-- `func_02077554`
+- `ImageObj_Unk_077708`
+- `ImageObj_Unk_077554`
 - `ImageObj_Unk_0779a0`: decompiler-derived
 
 ## Not done in M1-T926
@@ -78,6 +78,6 @@
 - `ImageObj_Unk_0791a8`: decompiler-derived (proto cleanup)
 - `ImageObj_Unk_079000`: decompiler-derived (plain cleanup)
 - `ImageObj_Release`: hand-matched
-- `func_02077478`: hand-matched
-- `func_02077554`: hand-matched
-- `func_02077708`: hand-matched
+- `ImageObj_GetOrCreate`: hand-matched
+- `ImageObj_Unk_077554`: hand-matched
+- `ImageObj_Unk_077708`: hand-matched

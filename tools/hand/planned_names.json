@@ -173,5 +173,13 @@
  "func_0206f674": "Unk06ea70_GetBuf04Slot",
  "func_0206f698": "Unk06ea70_GetBuf00Slot",
  "func_0206f6bc": "Unk06ea70_SetMask10Bit",
- "func_020713fc": "Unk06fb70_AddClamped"
+ "func_020713fc": "Unk06fb70_AddClamped",
+ "func_02071508": "Unk06fb70_Call_07142c",
+ "func_02071974": "Unk06fb70_Call_071898",
+ "func_02071d28": "Unk06fb70_Call_0703b4",
+ "func_02071e24": "Unk071dc0_Clear",
+ "func_02072030": "Unk071dc0_GetMode604Sign",
+ "func_02077478": "ImageObj_GetOrCreate",
+ "func_02077554": "ImageObj_Unk_077554",
+ "func_02077708": "ImageObj_Unk_077708"
 }
