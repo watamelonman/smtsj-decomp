@@ -44,7 +44,7 @@ extern u8 data_02151548[];
 extern u8 data_02151550[];
 void Unk02e000_Unk_02e0cc(void);
 void func_0205ad2c(u32 a);
-void func_0205b8c8(void *a);
+void Unk05b82c_CreateEntry(void *a);
 u32 func_0205c2c4(void *a);
 u32 func_0205c3c0(void);
 void func_0205c3fc(u32 a, u32 b, u32 c);
@@ -68,7 +68,7 @@ void func_0210fe48(Unk10fe28Work *w)
         n = 0;
     p = data_021514b0;
     do {
-        func_0205b8c8(p);
+        Unk05b82c_CreateEntry(p);
         n++;
         p += 0x18;
     } while (n < 6);

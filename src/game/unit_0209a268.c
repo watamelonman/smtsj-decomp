@@ -139,7 +139,7 @@ u32 func_02034970(void *table, u32 a, u32 b);
 u8 *func_02039160(u32 h, u32 a, u32 b);
 
 /* Byte +0x1B of the record for (a, b), or 0 when absent. */
-u8 func_0209beb0(u32 a, u32 b)
+u8 Unk09a268_Unk_09beb0(u32 a, u32 b)
 {
     u8 ret = 0;
     u8 *e = func_02039160(func_02034970(GetGameState() + 4, a, b), a, b);

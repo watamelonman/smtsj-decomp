@@ -171,7 +171,7 @@ int Unk02e000_Unk_02e740(int arg0)
 }
 
 /* Pointer to the +0x3A4 sub-block of the func_0202e788 work area. */
-u8 *func_0202e8e0(void)
+u8 *Unk02e000_GetSubBlock3a4(void)
 {
     return func_0202e788() + 0x3a4;
 }

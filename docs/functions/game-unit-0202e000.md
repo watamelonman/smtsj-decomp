@@ -13,7 +13,7 @@
 
 ## Hard list
 - `func_0202e788`: no candidate matched locally
-- `func_0202e8e0`: dropped when combining the TU
+- `Unk02e000_GetSubBlock3a4`: dropped when combining the TU
 - `func_0202e8cc`: no candidate matched locally
 - `func_0202e578`: no candidate matched locally
 - `func_0202e590`: no candidate matched locally
@@ -79,4 +79,4 @@
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
 - `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)
-- `func_0202e8e0`: hand-matched
+- `Unk02e000_GetSubBlock3a4`: hand-matched

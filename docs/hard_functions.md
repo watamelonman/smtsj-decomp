@@ -3,7 +3,7 @@
 Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 
 - `func_0202e788` (M1-T649): left out of the card
-- `func_0202e8e0` (M1-T649): left out of the card
+- `Unk02e000_GetSubBlock3a4` (M1-T649): left out of the card
 - `func_020bbed4` (M1-T136): card skipped
 - `func_020953ac` (M1-T380): left out of the card
 - `func_02095398` (M1-T380): left out of the card

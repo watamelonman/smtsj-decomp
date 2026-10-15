@@ -482,7 +482,7 @@ void Unk02d15c_Unk_02d91c(int a, int b);
 void func_0202d86c(int a, int b, int c, int d);
 void func_02095f94(void);
 
-void func_021168cc(Unk116598Work *work)
+void Unk116598_Unk_1168cc(Unk116598Work *work)
 {
     func_02077314();
     Unk116598_Unk_11689c();
@@ -502,7 +502,7 @@ void func_021168cc(Unk116598Work *work)
     Unk116598_Unk_116954(work);
 }
 
-void func_02117af8(Unk116598Work *work)
+void Unk116598_Unk_117af8(Unk116598Work *work)
 {
     func_02077314();
     Unk116598_Unk_117ac8();

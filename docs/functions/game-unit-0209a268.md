@@ -35,7 +35,7 @@
 ## Not done in M1-T1012
 - `func_0209a3a0`
 - `func_0209a53c`
-- `func_0209beb0`
+- `Unk09a268_Unk_09beb0`
 - `func_0209ae60`
 - `func_0209a3ec`
 - `func_0209a970`
@@ -65,4 +65,4 @@
 - `func_0209b5d8`
 - `func_0209c9bc`
 - `func_0209c854`
-- `func_0209beb0`: hand-matched
+- `Unk09a268_Unk_09beb0`: hand-matched

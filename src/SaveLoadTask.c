@@ -164,7 +164,7 @@ void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
 }
 
 
-int func_0202cbec();
+int Unk02cad4_GetUnk00();
 void SaveLoadTask_Unk_0df814(void);
 int func_02124dac();
 /* decompiler-derived */
@@ -172,7 +172,7 @@ void SaveLoadTask_Unk_0df94c(void)
 {
   u32 tmp1;
   int tmp2;
-  tmp1 = func_0202cbec();
+  tmp1 = Unk02cad4_GetUnk00();
   switch(tmp1) {
   case 0:
     break;
@@ -209,7 +209,7 @@ int func_02124d8c();
 void SaveLoadTask_Unk_0df86c(void)
 {
   u32 tmp1;
-  tmp1 = func_0202cbec();
+  tmp1 = Unk02cad4_GetUnk00();
   switch(tmp1) {
   case 0:
     break;
@@ -318,7 +318,7 @@ int func_020525cc();
 void SaveLoadTask_Unk_0df814(void)
 {
   u32 tmp1;
-  tmp1 = func_0202cbec();
+  tmp1 = Unk02cad4_GetUnk00();
   switch(tmp1) {
   case 0:
     break;

@@ -386,7 +386,7 @@ void Unk095560_Unk_095598(void)
   *(u32 *)(tmp2 + 0x18) = 0xffffffff;
 }
 
-void func_0209614c(void)
+void Unk095560_Call_020773dc(void)
 {
     func_020773dc(1);
 }

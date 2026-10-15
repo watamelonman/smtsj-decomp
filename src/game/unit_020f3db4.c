@@ -182,7 +182,7 @@ void Unk0f3db4_Unk_0f44b0(u32 arg0, int offset, u8 value)
 }
 
 /* Promotes state 2 to state 3. */
-void func_020f44e4(u32 arg0, int offset)
+void Unk0f3db4_Unk_0f44e4(u32 arg0, int offset)
 {
     if (Unk0f3db4_Unk_0f4490(arg0, offset) != 2) {
         return;

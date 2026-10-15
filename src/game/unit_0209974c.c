@@ -111,12 +111,12 @@ void Unk09974c_Unk_09974c(int *arg0)
 
 
 
-int func_0202e8e0();
+int Unk02e000_GetSubBlock3a4();
 /* decompiler-derived */
 int Unk09974c_Unk_0997c8(u32 arg0)
 {
   int value;
-  value = func_0202e8e0();
+  value = Unk02e000_GetSubBlock3a4();
   switch(arg0) {
   case 0:
     return value;

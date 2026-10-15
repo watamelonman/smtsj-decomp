@@ -3,7 +3,7 @@
 - `Unk05b82c_Unk_05b82c`: decompiler-derived
 
 ## Not done in M1-T011
-- `func_0205b8c8`
-- `func_0205b83c`
-- `func_0205b83c`: hand-matched
-- `func_0205b8c8`: hand-matched
+- `Unk05b82c_CreateEntry`
+- `Unk05b82c_CreateNamedEntry`
+- `Unk05b82c_CreateNamedEntry`: hand-matched
+- `Unk05b82c_CreateEntry`: hand-matched

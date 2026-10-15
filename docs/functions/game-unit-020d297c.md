@@ -18,7 +18,7 @@
 
 ## Not done in M1-T568
 - `func_020d2a8c`
-- `func_020d2aec`
+- `Unk0d297c_Unk_0d2aec`
 - `Unk0d297c_LoadMissionLog`
 - `Unk0d297c_Unk_0d2f18`: decompiler-derived
 - `Unk0d297c_Unk_0d2f3c`: decompiler-derived
@@ -29,7 +29,7 @@
 - `Unk0d297c_Unk_0d32c0`: decompiler-derived
 
 ## Not done in M1-T569
-- `func_020d322c`
+- `Unk0d297c_FreeSlot`
 - `Unk0d297c_Unk_0d3330`: decompiler-derived
 - `Unk0d297c_Unk_0d3200`: decompiler-derived
 
@@ -37,7 +37,7 @@
 - `Unk0d297c_Unk_0d3308`
 - `func_020d3264`
 - `func_020d3004`
-- `func_020d2aa4`
+- `Unk0d297c_Unk_0d2aa4`
 - `func_020d2f60`
 - `func_020d2b10`
 
@@ -57,6 +57,6 @@
 - `Unk0d297c_LoadMissionLog`: decompiler-derived (plain cleanup)
 - `Unk0d297c_Unk_0d3308`: decompiler-derived (struct+fix cleanup)
 - `Unk0d297c_Unk_0d3358`: decompiler-derived (struct+fix cleanup)
-- `func_020d2aa4`: hand-matched
-- `func_020d2aec`: hand-matched
-- `func_020d322c`: hand-matched
+- `Unk0d297c_Unk_0d2aa4`: hand-matched
+- `Unk0d297c_Unk_0d2aec`: hand-matched
+- `Unk0d297c_FreeSlot`: hand-matched

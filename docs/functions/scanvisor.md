@@ -22,7 +22,7 @@
 - `ScanVisor_Unk_0a2800`: decompiler-derived
 
 ## Not done in M1-T985
-- `func_020a4a18`
+- `ScanVisor_Unk_0a4a18`
 - `func_020a2980`
 - `ScanVisor_Unk_0a2b18`: decompiler-derived
 - `ScanVisor_Unk_0a2b38`: decompiler-derived
@@ -67,7 +67,7 @@
 
 ## Not done in M1-T990
 - `ScanVisor_Unk_0a4910`
-- `func_020a49d8`
+- `ScanVisor_SetById`
 - `func_020a3ac0`
 - `func_020a4600`
 - `func_020a2bb8`
@@ -92,7 +92,7 @@
 - `func_020a3008`
 - `func_020a2f3c`
 - `func_020a3630`
-- `func_020a3114`
+- `ScanVisor_Draw`
 - `func_020a2d0c`
 - `ScanVisor_LoadSearchParts`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
@@ -101,6 +101,6 @@
 - `ScanVisor_Unk_0a4910`: decompiler-derived (plain+fix cleanup)
 - `ScanVisor_Unk_0a48b4`: decompiler-derived (plain+fix cleanup)
 - `ScanVisor_Unk_0a42f0`: decompiler-derived (plain+fix cleanup)
-- `func_020a3114`: hand-matched
-- `func_020a49d8`: hand-matched
-- `func_020a4a18`: hand-matched
+- `ScanVisor_Draw`: hand-matched
+- `ScanVisor_SetById`: hand-matched
+- `ScanVisor_Unk_0a4a18`: hand-matched

@@ -98,11 +98,11 @@ void Unk0d297c_Unk_0d3290(int *arg0,u16 arg1)
 }
 
 int func_02053000();
-void func_020d322c();
+void Unk0d297c_FreeSlot();
 /* decompiler-derived */
 void Unk0d297c_Unk_0d33ac(Unk0d297cWork *work)
 {
-  func_020d322c();
+  Unk0d297c_FreeSlot();
   func_02053000(work->unk_0018);
   work->unk_0018 = 0;
 }
@@ -142,13 +142,13 @@ void Unk0d297c_Unk_0d2f98(u32 arg0)
 
 int func_0202dfa0();
 int func_02095818();
-void func_020d2aa4();
+void Unk0d297c_Unk_0d2aa4();
 /* decompiler-derived */
 void Unk0d297c_Unk_0d2b70(u32 arg0)
 {
   int value;
   Unk0e651c_Unk_0e654c();
-  func_020d2aa4(arg0);
+  Unk0d297c_Unk_0d2aa4(arg0);
   value = func_02095818();
   if (value == 1) {
     return;
@@ -157,13 +157,13 @@ void Unk0d297c_Unk_0d2b70(u32 arg0)
 }
 
 int func_02095350();
-void func_020d2aec();
+void Unk0d297c_Unk_0d2aec();
 /* decompiler-derived */
 void Unk0d297c_Unk_0d2c1c(u32 arg0)
 {
   Unk0e651c_Unk_0e6560();
   func_02095350(arg0,1);
-  func_020d2aec(arg0);
+  Unk0d297c_Unk_0d2aec(arg0);
   func_0202dfa0();
 }
 
@@ -295,7 +295,7 @@ void Unk0d297c_Unk_0d3358(int arg0, int arg1)
 void Unk0e5fb8_Unk_0e649c(u32 obj, int mode);
 
 /* Mode 1 setup unless Unk0e5fb8_Unk_0e6448 reports already active. */
-void func_020d2aa4(u32 obj)
+void Unk0d297c_Unk_0d2aa4(u32 obj)
 {
     if (Unk0e5fb8_Unk_0e6448() != 0) {
         return;
@@ -306,7 +306,7 @@ void func_020d2aa4(u32 obj)
 }
 
 /* Switches to mode 2 when active. */
-void func_020d2aec(u32 obj)
+void Unk0d297c_Unk_0d2aec(u32 obj)
 {
     if (Unk0e5fb8_Unk_0e6448() == 0) {
         return;
@@ -315,7 +315,7 @@ void func_020d2aec(u32 obj)
 }
 
 /* Frees *slot (if set) and clears it. */
-void func_020d322c(u32 *slot)
+void Unk0d297c_FreeSlot(u32 *slot)
 {
     if (*slot == 0) {
         return;

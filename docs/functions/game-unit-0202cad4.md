@@ -7,8 +7,8 @@
 - `Unk02cad4_Unk_02ce94`: decompiler-derived
 
 ## Not done in M1-T418
-- `func_0202cbec`
-- `func_0202cbc0`
+- `Unk02cad4_GetUnk00`
+- `Unk02cad4_ResetGlobals`
 - `func_0202cdf4`
 
 ## Not done in M1-T419
@@ -16,5 +16,5 @@
 - `func_0202cad4`
 - `func_0202cbfc`
 - `func_0202ceec`
-- `func_0202cbc0`: hand-matched
-- `func_0202cbec`: hand-matched
+- `Unk02cad4_ResetGlobals`: hand-matched
+- `Unk02cad4_GetUnk00`: hand-matched

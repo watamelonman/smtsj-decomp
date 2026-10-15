@@ -41,7 +41,7 @@ typedef struct ScanVisor {
 } ScanVisor;
 void func_020fc6b8(void);
 
-/* Empty callbacks (called from func_020a3114). */
+/* Empty callbacks (called from ScanVisor_Draw). */
 void ScanVisor_Nop_0a34a4(ScanVisor *sv) { }
 void ScanVisor_Nop_0a34a8(ScanVisor *sv) { }
 
@@ -255,7 +255,7 @@ void ScanVisor_Unk_0a29c4(u32 arg0)
   return;
 }
 
-void func_020a4a18();
+void ScanVisor_Unk_0a4a18();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2a8c(u32 arg0)
 {
@@ -264,11 +264,11 @@ void ScanVisor_Unk_0a2a8c(u32 arg0)
   if (tmp1 == 0) {
     return;
   }
-  func_020a4a18(tmp1 + 0x24c,arg0);
+  ScanVisor_Unk_0a4a18(tmp1 + 0x24c,arg0);
   return;
 }
 
-void func_020a49d8();
+void ScanVisor_SetById();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2a38(u32 arg0)
 {
@@ -277,7 +277,7 @@ void ScanVisor_Unk_0a2a38(u32 arg0)
   if (tmp1 == 0) {
     return;
   }
-  func_020a49d8(tmp1 + 0x24c,arg0,1);
+  ScanVisor_SetById(tmp1 + 0x24c,arg0,1);
   return;
 }
 
@@ -307,7 +307,7 @@ void ScanVisor_Unk_0a2a60(u32 arg0,u32 arg1)
   if (tmp1 == 0) {
     return;
   }
-  func_020a49d8(tmp1 + 0x24c,arg0,arg1);
+  ScanVisor_SetById(tmp1 + 0x24c,arg0,arg1);
   return;
 }
 
@@ -673,7 +673,7 @@ void func_020a8ad0(void *p);
 void func_020572d8(void);
 
 /* Draws the visor layers; modes 1/3 use layer 2, modes 0/2 layer 1. */
-void func_020a3114(ScanVisor *sv)
+void ScanVisor_Draw(ScanVisor *sv)
 {
     func_020580ec(0);
     func_02057e18(31);
@@ -721,7 +721,7 @@ ScanVisor *func_020a45c0(u32 list, u32 id);
 void func_020a0da4(int se);
 
 /* Looks up the visor entry; if idle, (optionally with SE 28) applies `on`. */
-void func_020a49d8(u32 list, u32 id, int on)
+void ScanVisor_SetById(u32 list, u32 id, int on)
 {
     ScanVisor *sv = func_020a45c0(list, id);
     if (sv == 0) {
@@ -736,7 +736,7 @@ void func_020a49d8(u32 list, u32 id, int on)
     ScanVisor_Unk_0a4644((int)sv, on);
 }
 
-void func_020a4a18(u32 list, u32 id)
+void ScanVisor_Unk_0a4a18(u32 list, u32 id)
 {
     ScanVisor *sv = func_020a45c0(list, id);
     if (sv == 0) {

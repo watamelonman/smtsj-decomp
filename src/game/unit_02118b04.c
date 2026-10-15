@@ -88,7 +88,7 @@ void Unk118b04_Unk_119434(u32 arg0,u32 arg1)
 u16 *func_02118f30(u32 id);
 int func_02036654(u16 key);
 
-int func_02119358(u32 id)
+int Unk118b04_Unk_119358(u32 id)
 {
     u16 *entry;
 

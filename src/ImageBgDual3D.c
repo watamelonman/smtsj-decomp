@@ -322,7 +322,7 @@ void Unk02d15c_Unk_02d91c(int a, int b);
 void func_0202d86c(int a, int b, int c, int d);
 void func_02095f94(void);
 
-void func_02125a90(ImageBgDual3DWork *work)
+void ImageBgDual3D_Unk_125a90(ImageBgDual3DWork *work)
 {
     func_02077314();
     ImageBgDual3D_Unk_125a68();

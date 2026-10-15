@@ -16,7 +16,7 @@
 
 ## Not done in M1-T564
 - `func_02118bcc`
-- `func_02119358`
+- `Unk118b04_Unk_119358`
 - `func_02118ef4`
 - `func_02118b30`
 - `func_02118da0`
@@ -39,4 +39,4 @@
 - `func_0211955c`
 - `func_02119080`
 - `func_02119178`
-- `func_02119358`: hand-matched
+- `Unk118b04_Unk_119358`: hand-matched

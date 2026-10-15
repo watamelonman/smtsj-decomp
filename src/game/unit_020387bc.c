@@ -138,14 +138,14 @@ u32 Unk0387bc_Unk_038df8(int *arg0)
 
 extern u32 data_02141f98[];
 int func_0205ad2c();
-int func_0205b8c8();
+int Unk05b82c_CreateEntry();
 /* decompiler-derived */
 void Unk0387bc_Unk_03883c(int *arg0,int arg1,int arg2)
 {
   func_0205ad2c(*data_02141f98);
   arg0[1] = arg2;
   *arg0 = arg1;
-  func_0205b8c8(arg0);
+  Unk05b82c_CreateEntry(arg0);
   *(u16 *)(arg1 + 4) = *(u16 *)(arg0[5] + 0x28);
   *(u16 *)(arg1 + 6) = *(u16 *)(arg0[5] + 0x2a);
 }

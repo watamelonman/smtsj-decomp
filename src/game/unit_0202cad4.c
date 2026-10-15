@@ -13,7 +13,7 @@ void func_0206148c(void);
 /* forwards to `func_0206148c` */
 void Unk02cad4_Thunk_0206148c(void) { func_0206148c(); }
 
-/* Three-word block at 0x0213d338; reset to -1 by func_0202cbc0. */
+/* Three-word block at 0x0213d338; reset to -1 by Unk02cad4_ResetGlobals. */
 typedef struct Unk02cad4Globals {
     u32 unk_00;
     u32 unk_04;
@@ -22,7 +22,7 @@ typedef struct Unk02cad4Globals {
 
 extern Unk02cad4Globals data_0213d338;
 
-void func_0202cbc0(void)
+void Unk02cad4_ResetGlobals(void)
 {
     Unk02cad4Globals *g = &data_0213d338;
     g->unk_00 = -1;
@@ -30,7 +30,7 @@ void func_0202cbc0(void)
     g->unk_08 = -1;
 }
 
-u32 func_0202cbec(void)
+u32 Unk02cad4_GetUnk00(void)
 {
     return data_0213d338.unk_00;
 }
