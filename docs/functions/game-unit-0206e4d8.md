@@ -26,3 +26,5 @@
 - `Unk06e4d8_Reset`: hand-matched
 - `Unk06e4d8_Unk_06ea0c`: hand-matched
 - `Unk06e4d8_GetFlag6c`: hand-matched
+- `func_0206e538`: hand-matched
+- `func_0206e854`: hand-matched

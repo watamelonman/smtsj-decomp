@@ -59,6 +59,21 @@ extern u32 data_0216bac4[];
 u8 *Unk06dddc_Unk_06e058();
 void Unk06e4d8_Unk_06e814(int arg0);
 u32 Unk06e4d8_Get_data_02170cc8(void);
+void *func_020611dc();
+void func_0206e5bc();
+void func_02008848();
+
+void func_0206e538(void)
+{
+    u8 *p = (u8 *)func_020611dc(func_0206e5bc, 0, 0, 0, 112, 3, 0, 0);
+    if (p == 0) {
+        return;
+    }
+    func_02008848(p, 0, 112);
+    *data_02170cc8 = (u32)p;
+    p[108] = 0;
+}
+
 void Unk06e4d8_Reset(u8 *o)
 {
     FIELD(u32, o, 0x08) = 0;
@@ -97,6 +112,16 @@ void Unk06e4d8_Unk_06e814(int arg0)
   ((Unk06e4d8Work *)arg0)->unk_0060 = 0;
   ((Unk06e4d8Work *)arg0)->unk_005c = 0;
   ((Unk06e4d8Work *)arg0)->unk_0064 = 0;
+}
+
+s32 func_0206e854(void)
+{
+    Unk06e4d8Work *w;
+    if (Unk06e4d8_Get_data_02170cc8() != 0 && ((u8 *)Unk06e4d8_Get_data_02170cc8())[108] != 0) {
+        w = (Unk06e4d8Work *)*data_02170cc8;
+        return (((s32)w->unk_002c >> 12) << 24) | (((s32)w->unk_0030 >> 12) << 16) | (((s32)w->unk_0034 >> 12) << 8);
+    }
+    return -1;
 }
 
 int Unk06e4d8_Unk_06ea0c(int i)
