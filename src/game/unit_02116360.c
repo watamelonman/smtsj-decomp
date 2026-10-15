@@ -11,12 +11,12 @@ typedef struct Unk116360Entry {
     u32 unk_04;
 } Unk116360Entry;
 void Unk116360_FillEntry();
-int func_02035b08();
+int Unk02f2a8_Unk_035b08();
 int Unk116360_Unk_116360(int a, int b, int c)
 {
     int r = 0;
     if (Unk03e43c_Unk_03fa28() == 0) {
-        if (a == func_02035b08(8, 6) && b == 36 && c == 18) {
+        if (a == Unk02f2a8_Unk_035b08(8, 6) && b == 36 && c == 18) {
             r = 1;
         }
     }
@@ -50,7 +50,7 @@ u32 Unk116360_Unk_116438(u32 arg0,u32 arg1)
 }
 
 int Unk03e43c_Unk_03fa28(void);
-int func_02035b08(int a, int b);
+int Unk02f2a8_Unk_035b08(int a, int b);
 
 /* Fills `e` when the (8,6) lookup equals `id` and the position is (36,18). */
 void Unk116360_FillEntry(Unk116360Entry *e, int id, int x, int y)
@@ -61,7 +61,7 @@ void Unk116360_FillEntry(Unk116360Entry *e, int id, int x, int y)
     if (Unk03e43c_Unk_03fa28() != 0) {
         return;
     }
-    if (id != func_02035b08(8, 6) || x != 36 || y != 18) {
+    if (id != Unk02f2a8_Unk_035b08(8, 6) || x != 36 || y != 18) {
         return;
     }
     e->id = id;

@@ -7,11 +7,11 @@ int Unk1122bc_Unk_1122bc();
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-int func_02035b08();
+int Unk02f2a8_Unk_035b08();
 int Unk0e651c_Unk_0e666c();
 int Unk1122bc_Unk_1122bc(int x)
 {
-    if (x == func_02035b08(8, 4)) {
+    if (x == Unk02f2a8_Unk_035b08(8, 4)) {
         if (Unk0e651c_Unk_0e666c(0x159) == 1) {
             return 1;
         }
@@ -22,7 +22,7 @@ int Unk1122bc_Unk_1122bc(int x)
 int Unk1122bc_IsCurrent(int x)
 {
     int r = 0;
-    if (x == func_02035b08(8, 4)) {
+    if (x == Unk02f2a8_Unk_035b08(8, 4)) {
         r = 1;
     }
     return r;

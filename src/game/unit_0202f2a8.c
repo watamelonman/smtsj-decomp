@@ -785,9 +785,9 @@ void *func_0204fe68();
 void *func_0204fed8();
 void func_0200866c();
 u32 func_0204fe18();
-u8 *func_02034970(u8 *p, int x, int y);
+u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y);
 
-u8 *func_02034970(u8 *p, int x, int y)
+u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y)
 {
     u8 *r = p + 572;
     u8 *o = (u8 *)func_02039160(r, x, y);
@@ -804,7 +804,7 @@ u8 *func_02034970(u8 *p, int x, int y)
     return r;
 }
 
-int func_020349c4(u8 *p, int x, int y)
+int Unk02f2a8_Unk_0349c4(u8 *p, int x, int y)
 {
     int r = FIELD(u16, (u8 *)Unk02e000_GetWorkArea() + 0x300, 92);
     u8 *o = (u8 *)func_02039160(p + 572, x, y);
@@ -824,7 +824,7 @@ int func_020349c4(u8 *p, int x, int y)
     return r;
 }
 
-int func_02034b24(void)
+int Unk02f2a8_Unk_034b24(void)
 {
     u8 *g = (u8 *)gGameState;
     u8 *q;
@@ -841,7 +841,7 @@ int func_02034b24(void)
     return FIELD(u32, q, 4) != 0;
 }
 
-int func_020351b4(int x, int y)
+int Unk02f2a8_Unk_0351b4(int x, int y)
 {
     int r;
     int n;
@@ -854,14 +854,14 @@ int func_020351b4(int x, int y)
         return 0;
     }
     r = 0;
-    n = Unk02f2a8_Unk_034a8c(func_02034970(g + 4, x, y), x, y);
+    n = Unk02f2a8_Unk_034a8c(Unk02f2a8_Unk_034970(g + 4, x, y), x, y);
     if (n > 0) {
         r = func_020987ac(3, FIELD(u8, FIELD(u8 *, g, 580) + n, 15));
     }
     return r;
 }
 
-int func_0203550c(void *dst, u32 n, int key)
+int Unk02f2a8_Unk_03550c(void *dst, u32 n, int key)
 {
     int r = 0;
     void *h;
@@ -881,7 +881,7 @@ int func_0203550c(void *dst, u32 n, int key)
     return r;
 }
 
-int func_02035820(int a)
+int Unk02f2a8_Unk_035820(int a)
 {
     void *h = func_020445d0(36, 0);
     u8 *t = func_0204fde0();
@@ -898,7 +898,7 @@ int func_02035820(int a)
     return r;
 }
 
-int func_02035b08(int a, int b)
+int Unk02f2a8_Unk_035b08(int a, int b)
 {
     int r;
     u32 i;

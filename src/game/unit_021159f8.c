@@ -4,11 +4,11 @@
 
 int Unk02e000_GetWorkArea();
 int func_021159f8();
-int func_02035b08();
+int Unk02f2a8_Unk_035b08();
 int Unk1159f8_IsCurrent(int x)
 {
     int r = 0;
-    if (x == func_02035b08(8, 3)) {
+    if (x == Unk02f2a8_Unk_035b08(8, 3)) {
         r = 1;
     }
     return r;

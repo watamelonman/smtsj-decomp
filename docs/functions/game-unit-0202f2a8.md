@@ -60,9 +60,9 @@
 - `Unk02f2a8_SetField35c`
 - `Unk02f2a8_SetGridPos`
 - `Unk02f2a8_GetSlot_02f2dc`
-- `func_02034970`
+- `Unk02f2a8_Unk_034970`
 - `Unk02f2a8_Unk_0302f4`
-- `func_02034b24`
+- `Unk02f2a8_Unk_034b24`
 - `Unk02f2a8_Unk_03064c`
 - `Unk02f2a8_Unk_0306a8`
 
@@ -77,14 +77,14 @@
 - `Unk02f2a8_Unk_030198`
 
 ## Not done in M1-T1112
-- `func_0203550c`
-- `func_02035b08`
-- `func_02035820`
+- `Unk02f2a8_Unk_03550c`
+- `Unk02f2a8_Unk_035b08`
+- `Unk02f2a8_Unk_035820`
 - `func_02036068`
 - `Unk02f2a8_Unk_03034c`
 - `Unk02f2a8_Unk_032f3c`
-- `func_020349c4`
-- `func_020351b4`
+- `Unk02f2a8_Unk_0349c4`
+- `Unk02f2a8_Unk_0351b4`
 
 ## Not done in M1-T1113
 - `func_020366dc`
@@ -199,10 +199,10 @@
 - `Unk02f2a8_Unk_030704`: hand-matched
 - `Unk02f2a8_Unk_0308c0`: hand-matched
 - `Unk02f2a8_Unk_0313a4`: hand-matched
-- `func_02034970`: hand-matched
-- `func_020349c4`: hand-matched
-- `func_02034b24`: hand-matched
-- `func_020351b4`: hand-matched
-- `func_0203550c`: hand-matched
-- `func_02035820`: hand-matched
-- `func_02035b08`: hand-matched
+- `Unk02f2a8_Unk_034970`: hand-matched
+- `Unk02f2a8_Unk_0349c4`: hand-matched
+- `Unk02f2a8_Unk_034b24`: hand-matched
+- `Unk02f2a8_Unk_0351b4`: hand-matched
+- `Unk02f2a8_Unk_03550c`: hand-matched
+- `Unk02f2a8_Unk_035820`: hand-matched
+- `Unk02f2a8_Unk_035b08`: hand-matched

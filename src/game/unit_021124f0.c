@@ -1,12 +1,12 @@
 #include "GameState.h"
 #include "types.h"
 
-int func_02035b08();
+int Unk02f2a8_Unk_035b08();
 int Unk0e651c_Unk_0e666c();
 int Unk1124f0_Unk_1124f0(u16 a, u32 b, u32 c)
 {
     int r = 0;
-    if (a == func_02035b08(8, 10) && b == 23 && c == 10) {
+    if (a == Unk02f2a8_Unk_035b08(8, 10) && b == 23 && c == 10) {
         if (Unk0e651c_Unk_0e666c(344) == 1) {
             r = 1;
         }
