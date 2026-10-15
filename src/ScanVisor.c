@@ -539,3 +539,21 @@ void ScanVisor_Unk_0a2e5c(int arg0)
   *data_02176b04 = 0;
   return;
 }
+
+extern u8 data_0214cddc[];
+extern u8 data_0214cdf0[];
+extern u8 data_0214ce08[];
+int func_0205dcd4();
+int func_020c8ce0();
+/* decompiler-derived; refs "Visor/e_appearance", "Visor/search_parts01" */
+void func_020a370c(int arg0,u32 arg1)
+{
+  u32 tmp1;
+  tmp1 = func_0205dcd4(data_0214cddc);
+  *(u32 *)(arg0 + 8) = tmp1;
+  tmp1 = func_0205dcd4(data_0214cdf0,arg1);
+  *(u32 *)(arg0 + 0x24) = tmp1;
+  tmp1 = func_0205dcd4(data_0214ce08,arg1);
+  *(u32 *)(arg0 + 0x24c) = tmp1;
+  func_020c8ce0(arg0 + 0x78,arg1);
+}
