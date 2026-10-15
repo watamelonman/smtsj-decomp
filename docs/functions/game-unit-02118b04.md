@@ -30,3 +30,12 @@
 - `func_02118e8c`
 - `func_02118c6c`
 - `func_02118d34`
+
+## Not done in M1-T566
+- `func_02118bec`
+- `func_02119390`
+- `func_02119460`
+- `func_02118fd8`
+- `func_0211955c`
+- `func_02119080`
+- `func_02119178`
