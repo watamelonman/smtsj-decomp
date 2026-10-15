@@ -31,3 +31,21 @@ void Unk0fbc74_Unk_0fbcd4(int *arg0,int arg1)
   }
   arg0[0xb] = arg1;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void Unk0a0ce4_Unk_0a0da4();
+int func_020fbd30(u8 *p)
+{
+    if (FIELD(u32, p, 0) != 4) {
+        return 0;
+    }
+    if (FIELD(u16, p, 56) == 0) {
+        return 1;
+    }
+    FIELD(u16, p, 56) = 0;
+    FIELD(u32, p, 0) = 7;
+    Unk0a0ce4_Unk_0a0da4(2);
+    return 0;
+}
