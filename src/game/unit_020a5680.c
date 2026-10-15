@@ -60,3 +60,4 @@ void func_020a611c(void)
   *(u8 *)(v1 + 0xe) = 0;
   return;
 }
+
