@@ -90,3 +90,25 @@ void func_02114488(char *arg0)
   func_02114a1c(arg0);
   return;
 }
+
+
+int func_02061e98();
+int func_02061f10();
+int func_02063920();
+int func_02063a30();
+/* decompiler-derived */
+void func_0211518c(u32 arg0)
+{
+  u32 tmp1;
+  int tmp2;
+  func_02061e98(arg0,0x10,1);
+  func_02063920();
+  tmp2 = 0;
+  do {
+    func_021150c8(0,tmp2 + 0x66U & 0xffff);
+    tmp1 = func_02063a30();
+    func_02061f10(arg0,0xffffffff,0,0,tmp1);
+    tmp2 = tmp2 + 1;
+  } while (tmp2 < 2);
+  return;
+}
