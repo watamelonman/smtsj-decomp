@@ -30,3 +30,9 @@
 - `func_0203b76c`
 - `func_0203aae8`
 - `func_0203ac00`
+
+## Not done in M1-T667
+- `func_0203aff0`
+- `func_0203b30c`
+- `func_0203b4a0`
+- `func_0203b158`
