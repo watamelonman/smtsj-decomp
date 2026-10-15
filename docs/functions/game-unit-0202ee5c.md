@@ -11,3 +11,5 @@
 - `func_0202efa4`
 - `Unk02ee5c_GetRecordFlagB`: hand-matched
 - `Unk02ee5c_GetTierFromField70`: hand-matched
+- `func_0202ee5c`: hand-matched
+- `func_0202ef34`: hand-matched
