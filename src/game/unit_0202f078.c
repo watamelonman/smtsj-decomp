@@ -115,6 +115,36 @@ void Unk02f078_Unk_02f08c(void)
   *(u8 *)(value + 1) = 100;
 }
 
+int func_0202f190(int a, int b)
+{
+    if (a == 0) {
+        return 1;
+    }
+    if (b == 0) {
+        return 0;
+    }
+    switch (a) {
+    case 2:
+        return 1;
+    case 5:
+        if (b != 2) {
+            return 1;
+        }
+        break;
+    case 1:
+        if (b == 3 || b == 4) {
+            return 1;
+        }
+        break;
+    case 3:
+        if (b == 4) {
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
+
 void Unk02f078_InitEntry5e12(int i)
 {
     if (i >= 64) {

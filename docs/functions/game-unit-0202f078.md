@@ -19,3 +19,4 @@
 - `Unk02f078_SetFlag380`: hand-matched
 - `Unk02f078_InitEntry5e12`: hand-matched
 - `Unk02f078_GetEntry5e12Bit0`: hand-matched
+- `func_0202f190`: hand-matched
