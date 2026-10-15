@@ -611,5 +611,14 @@
  "func_02122a78": "Unk122a78_Unk_122a78",
  "func_02122fac": "Unk122e1c_SetSlot",
  "func_02122fd0": "Unk122e1c_ClearSlots",
- "func_02123534": "Unk122e1c_Unk_123534"
+ "func_02123534": "Unk122e1c_Unk_123534",
+ "func_02124224": "Unk1241ec_Unk_124224",
+ "func_02124590": "Unk12449c_Unk_124590",
+ "func_02124cc4": "Unk124c5c_Unk_124cc4",
+ "func_02124dac": "Unk124c5c_IsKind0",
+ "func_02124dd8": "Unk124c5c_IsKind31",
+ "func_02124e04": "Unk124c5c_Unk_124e04",
+ "func_02124e68": "Unk124e68_Set",
+ "func_02125910": "ImageBgDual3D_Unk_125910",
+ "func_02125c68": "ImageBgDual3D_AllocBuf"
 }

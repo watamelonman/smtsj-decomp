@@ -175,7 +175,7 @@ void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
 
 int Unk02cad4_GetUnk00();
 void SaveLoadTask_Unk_0df814(void);
-int func_02124dac();
+int Unk124c5c_IsKind0();
 /* decompiler-derived */
 void SaveLoadTask_Unk_0df94c(void)
 {
@@ -203,7 +203,7 @@ void SaveLoadTask_Unk_0df94c(void)
     goto LAB_020df988;
   case 9:
 LAB_020df988:
-    tmp2 = func_02124dac();
+    tmp2 = Unk124c5c_IsKind0();
     if (tmp2 != 0) {
       return;
     }

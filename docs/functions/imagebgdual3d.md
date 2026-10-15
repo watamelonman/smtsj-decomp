@@ -29,8 +29,8 @@
 ## Not done in M1-T538
 - `ImageBgDual3D_Unk_1258e8`
 - `ImageBgDual3D_Unk_12594c`
-- `func_02125910`
-- `func_02125c68`
+- `ImageBgDual3D_Unk_125910`
+- `ImageBgDual3D_AllocBuf`
 - `ImageBgDual3D_Unk_125b10`: decompiler-derived
 
 ## Not done in M1-T539
@@ -53,5 +53,5 @@
 - `ImageBgDual3D_Unk_125a90`: hand-matched
 - `ImageBgDual3D_Call_02117360`: hand-matched
 - `ImageBgDual3D_Call_02117400`: hand-matched
-- `func_02125910`: hand-matched
-- `func_02125c68`: hand-matched
+- `ImageBgDual3D_Unk_125910`: hand-matched
+- `ImageBgDual3D_AllocBuf`: hand-matched

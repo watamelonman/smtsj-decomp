@@ -45,7 +45,7 @@ void Unk12449c_Unk_12449c(int *arg0)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void func_021245bc();
-void func_02124590(u8 *p)
+void Unk12449c_Unk_124590(u8 *p)
 {
     if (FIELD(u32, p, 60) == 0) {
         return;

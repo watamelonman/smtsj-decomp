@@ -5,8 +5,8 @@
 - `Unk124e68_Unk_124ff0`: decompiler-derived
 
 ## Not done in M1-T149
-- `func_02124e68`
+- `Unk124e68_Set`
 - `func_02124f4c`
 - `func_02125024`
 - `func_02124e9c`
-- `func_02124e68`: hand-matched
+- `Unk124e68_Set`: hand-matched

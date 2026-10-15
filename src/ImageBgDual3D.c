@@ -108,11 +108,11 @@ void ImageBgDual3D_Unk_1259e0(void)
 
 int Unk065e88_Unk_065e88();
 int func_020773dc();
-void func_02125c68();
+void ImageBgDual3D_AllocBuf();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125a68(void)
 {
-  func_02125c68();
+  ImageBgDual3D_AllocBuf();
   Unk065e88_Unk_065e88();
   func_020773dc(1);
 }
@@ -215,14 +215,14 @@ u32 ImageBgDual3D_Unk_125618(int arg0)
 
 extern u32 data_02176e98[];
 int func_021257f4();
-void func_02125910();
+void ImageBgDual3D_Unk_125910();
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125cd4(u32 arg0)
 {
   int tmp1;
   tmp1 = ImageBgDual3D_Unk_125cbc();
   if (tmp1 != 0) {
-    func_02125910(arg0);
+    ImageBgDual3D_Unk_125910(arg0);
     return;
   }
   func_021257f4(*data_02176e98,arg0,1);
@@ -343,7 +343,7 @@ int func_020616c0();
 extern u8 data_02152180[];
 u32 func_0205ba98();
 void ImageBgDual3D_Thunk_021255b4(void);
-void func_02125910(u32 x)
+void ImageBgDual3D_Unk_125910(u32 x)
 {
     u8 *q;
     if (func_02061698(data_02176e90) == 0) {
@@ -372,7 +372,7 @@ void ImageBgDual3D_Unk_125a90(ImageBgDual3DWork *work)
     ImageBgDual3D_Unk_125afc(work);
 }
 
-void func_02125c68(void)
+void ImageBgDual3D_AllocBuf(void)
 {
     if (*data_02176e98 != 0) {
         return;

@@ -8,17 +8,17 @@
 - `Unk124c5c_Unk_124e50`
 - `func_02124d6c`
 - `func_02124d8c`
-- `func_02124cc4`
-- `func_02124dac`
+- `Unk124c5c_Unk_124cc4`
+- `Unk124c5c_IsKind0`
 
 ## Not done in M1-T051
-- `func_02124dd8`
-- `func_02124e04`
+- `Unk124c5c_IsKind31`
+- `Unk124c5c_Unk_124e04`
 - `func_02124c5c`
 - `func_02124ce8`
 - `Unk124c5c_Unk_124d54`: decompiler-derived (plain cleanup)
 - `Unk124c5c_Unk_124e50`: decompiler-derived (plain cleanup)
-- `func_02124cc4`: hand-matched
-- `func_02124dac`: hand-matched
-- `func_02124dd8`: hand-matched
-- `func_02124e04`: hand-matched
+- `Unk124c5c_Unk_124cc4`: hand-matched
+- `Unk124c5c_IsKind0`: hand-matched
+- `Unk124c5c_IsKind31`: hand-matched
+- `Unk124c5c_Unk_124e04`: hand-matched

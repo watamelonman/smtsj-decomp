@@ -21,9 +21,9 @@ int func_02061424();
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void func_020e7f44();
-int func_02124dac(void);
-int func_02124dd8(void);
-void func_02124cc4(void)
+int Unk124c5c_IsKind0(void);
+int Unk124c5c_IsKind31(void);
+void Unk124c5c_Unk_124cc4(void)
 {
     func_020e7f44(0, 0, 0, 0);
     func_02124ce8(2);
@@ -35,7 +35,7 @@ void Unk124c5c_Unk_124d54(void)
   func_02061424(*data_02176e88);
 }
 
-int func_02124dac(void)
+int Unk124c5c_IsKind0(void)
 {
     u8 *p = (u8 *)*data_02176e88;
     if (p != 0 && FIELD(s8, p, 8) == 0) {
@@ -44,7 +44,7 @@ int func_02124dac(void)
     return 0;
 }
 
-int func_02124dd8(void)
+int Unk124c5c_IsKind31(void)
 {
     u8 *p = (u8 *)*data_02176e88;
     if (p != 0 && FIELD(s8, p, 8) == 31) {
@@ -53,7 +53,7 @@ int func_02124dd8(void)
     return 0;
 }
 
-int func_02124e04(void)
+int Unk124c5c_Unk_124e04(void)
 {
     u8 *p = (u8 *)*data_02176e88;
     if (p == 0) {
@@ -61,9 +61,9 @@ int func_02124e04(void)
     }
     switch (FIELD(u32, p, 4)) {
     case 0:
-        return func_02124dac();
+        return Unk124c5c_IsKind0();
     case 1:
-        return func_02124dd8();
+        return Unk124c5c_IsKind31();
     }
     return 1;
 }

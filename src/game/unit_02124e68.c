@@ -11,7 +11,7 @@ typedef struct Unk124e68Obj {
     u8 unk_1a;
 } Unk124e68Obj;
 extern Unk124e68Obj *data_02176e88;
-void func_02124e68(u32 a, u32 b, u32 c)
+void Unk124e68_Set(u32 a, u32 b, u32 c)
 {
     data_02176e88->unk_00 = a;
     data_02176e88->unk_18 = b;

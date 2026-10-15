@@ -111,7 +111,7 @@ void CaveArea_LoadAreaLayout(int arg0)
 }
 
 void func_0205de30();
-void func_02124224();
+void Unk1241ec_Unk_124224();
 void CaveArea_Unk_0ed364(u8 *p)
 {
     u32 c = FIELD(u32, p, 188);
@@ -145,5 +145,5 @@ void CaveArea_Unk_0edb4c(u8 *p)
     } else {
         x = b == 0 ? c + 10 : c + 16;
     }
-    func_02124224((u16)x);
+    Unk1241ec_Unk_124224((u16)x);
 }

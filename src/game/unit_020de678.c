@@ -10,7 +10,7 @@ extern u32 data_021508d4[];
 int func_02044428();
 int func_02044534();
 int Unk0e651c_Unk_0e666c();
-void func_02124e04(void);
+void Unk124c5c_Unk_124e04(void);
 
 void Unk0de678_Nop_0df05c(void);
 void Unk0de678_Nop_0df060(void);
@@ -27,8 +27,8 @@ void Unk0de678_Nop_0df05c(void) { }
 /* empty callback */
 void Unk0de678_Nop_0df060(void) { }
 
-/* forwards to `func_02124e04` */
-void Unk0de678_Thunk_02124e04(void) { func_02124e04(); }
+/* forwards to `Unk124c5c_Unk_124e04` */
+void Unk0de678_Thunk_02124e04(void) { Unk124c5c_Unk_124e04(); }
 
 /* decompiler-derived */
 u32 Unk0de678_Get_data_021508d4(void)
