@@ -123,7 +123,7 @@ void Unk095560_Unk_0957c0(u32 arg0)
   func_0204fed8(value,arg0);
 }
 
-int func_020956e8();
+u32 func_020956e8(void);
 int func_020958c8();
 int func_02095950();
 /* decompiler-derived */
@@ -293,4 +293,95 @@ void Unk095560_Unk_095728(void)
   ImageBg_Unk_0e5530();
   ImageObj_Unk_0775d8();
   Unk02d15c_Unk_02d81c();
+}
+
+/* decompiler-derived */
+u32 func_02095d1c(void)
+{
+  int tmp1;
+  tmp1 = (int)(Unk095560_GetManagerSub3a8());
+  return *(u32 *)(tmp1 + 4);
+}
+
+/* decompiler-derived */
+u32 func_02095d4c(void)
+{
+  int tmp1;
+  tmp1 = (int)(Unk095560_GetManagerSub3a8());
+  return *(u32 *)(tmp1 + 8);
+}
+
+/* decompiler-derived */
+void func_02095d08(u32 arg0)
+{
+  int tmp1;
+  tmp1 = (int)(Unk095560_GetManagerSub3a8());
+  *(u32 *)(tmp1 + 8) = arg0;
+}
+
+/* decompiler-derived */
+u32 func_020956a8(void)
+{
+  u32 tmp1;
+  func_020956e8();
+  Unk0964f8_Unk_0964f8();
+  tmp1 = (unsigned int)(Unk095560_GetManagerAlias());
+  Unk0202dcfc_InitWorker(tmp1,0);
+  return 1;
+}
+
+/* decompiler-derived */
+u32 func_020956c8(void)
+{
+  u32 tmp1;
+  func_020956e8();
+  Unk0964f8_Unk_0964f8();
+  tmp1 = (unsigned int)(Unk095560_GetManagerAlias());
+  Unk0202dcfc_InitWorker(tmp1,0);
+  return 1;
+}
+
+int func_0204af80();
+/* decompiler-derived */
+u32 func_020956e8(void)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = (int)(Unk095560_GetManagerAlias());
+  *(u32 *)(tmp1 + 0x14) = 0;
+  func_0204af80();
+  tmp1 = 0;
+  do {
+    tmp2 = func_0209560c(tmp1);
+    if (tmp2 == 0) {
+      return 0;
+    }
+    tmp1 = tmp1 + 1;
+  } while (tmp1 < 9);
+  return 1;
+}
+
+int func_02008848();
+int func_0204ae84();
+/* decompiler-derived */
+void func_02095598(void)
+{
+  u32 tmp1;
+  int tmp2;
+  int tmp3;
+  u32 *v4;
+  int tmp5;
+  tmp1 = (unsigned int)(Unk095560_GetManager());
+  tmp2 = (int)(Unk095560_GetManagerAlias());
+  func_02008848(tmp1,0,0x3c0);
+  tmp5 = 0;
+  do {
+    tmp3 = func_0202dc44(tmp5);
+    v4 = (u32 *)Unk094fe0_Unk_094fec(tmp5);
+    func_0204ae84(tmp3 + 0x10);
+    *(u32 *)(tmp3 + 0x50) = 0xffffffff;
+    tmp5 = tmp5 + 1;
+    *v4 = 0xffffffff;
+  } while (tmp5 < 9);
+  *(u32 *)(tmp2 + 0x18) = 0xffffffff;
 }
