@@ -72,3 +72,7 @@
 - `func_020aeb90`
 - `Unk0aa118_Unk_0acb74`: decompiler-derived (plain+fix cleanup)
 - `Unk0aa118_PeekItem`: hand-matched
+- `func_020aa118`: hand-matched
+- `func_020aa1e0`: hand-matched
+- `func_020aa224`: hand-matched
+- `func_020aa264`: hand-matched

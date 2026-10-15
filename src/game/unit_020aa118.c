@@ -30,12 +30,46 @@ typedef struct Unk0aa118List {
     u32 count;                  /* +0x84 */
 } Unk0aa118List;
 
+void func_02013c68();
+void func_020aa130();
+void func_020aa118(void *p)
+{
+    func_02008848(p, 0, 0x814);
+}
+
+int func_020aa1e0(u32 **a, u32 **b)
+{
+    if ((*b)[5] == (*a)[5]) {
+        if ((*a)[0] == (*b)[0]) {
+            return 0;
+        }
+        return (*a)[0] > (*b)[0] ? 1 : -1;
+    }
+    return (*b)[5] > (*a)[5] ? 1 : -1;
+}
+
+void func_020aa224(Unk0aa118List *l)
+{
+    func_02013c68(&l->item[l->pos], l->count - l->pos, 4, func_020aa1e0);
+}
+
 u32 Unk0aa118_PeekItem(Unk0aa118List *l)
 {
     if (l->pos >= l->count) {
         return 0;
     }
     return l->item[l->pos];
+}
+
+int func_020aa264(Unk0aa118List *l)
+{
+    l->pos++;
+    func_020aa130(l);
+    if (l->pos >= l->count) {
+        l->pos = l->count;
+        return 0;
+    }
+    return 1;
 }
 
 /* empty callback */
