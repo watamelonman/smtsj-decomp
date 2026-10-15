@@ -6,7 +6,7 @@
 - `Unk03be10_Unk_03be28`: decompiler-derived
 
 ## Not done in M1-T155
-- `func_0203bf34`
+- `Unk03be10_Unk_03bf34`
 - `func_0203bfbc`
 - `func_0203be54`
-- `func_0203bf34`: hand-matched
+- `Unk03be10_Unk_03bf34`: hand-matched

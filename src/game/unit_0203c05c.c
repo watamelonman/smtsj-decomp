@@ -71,7 +71,7 @@ int func_0203ac00();
 u32 Unk03aae8_Unk_03ad14();
 void func_0209e49c();
 
-int func_0203c144(void)
+int Unk03c05c_Unk_03c144(void)
 {
     s16 a = func_0203ac00(0);
     s16 b = func_0203ac00(1);

@@ -7,6 +7,6 @@
 - `Unk03c05c_Unk_03c0ec`: decompiler-derived
 
 ## Not done in M1-T064
-- `func_0203c144`
+- `Unk03c05c_Unk_03c144`
 - `func_0203c1a0`
-- `func_0203c144`: hand-matched
+- `Unk03c05c_Unk_03c144`: hand-matched

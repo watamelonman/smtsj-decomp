@@ -108,7 +108,7 @@ u32 Unk03c6a4_Unk_03c6a4(void)
 int func_0203ac00();
 int func_0203c748();
 
-int func_0203c954(void)
+int Unk03c6a4_Unk_03c954(void)
 {
     s16 a = func_0203ac00(0);
     int k = func_0203ac00(1);
@@ -127,7 +127,7 @@ int func_0203c954(void)
     return func_0203c748(m, a, 0, 0, 0x101);
 }
 
-int func_0203c9c0(void)
+int Unk03c6a4_Unk_03c9c0(void)
 {
     s16 a = func_0203ac00(0);
     int b = func_0203ac00(1);

@@ -13,9 +13,9 @@
 - `Unk03c6a4_Unk_03c6a4`: decompiler-derived
 
 ## Not done in M1-T297
-- `func_0203c954`
-- `func_0203c9c0`
+- `Unk03c6a4_Unk_03c954`
+- `Unk03c6a4_Unk_03c9c0`
 - `func_0203c748`
 - `Unk03c6a4_Unk_03c718`: hand-matched
-- `func_0203c954`: hand-matched
-- `func_0203c9c0`: hand-matched
+- `Unk03c6a4_Unk_03c954`: hand-matched
+- `Unk03c6a4_Unk_03c9c0`: hand-matched

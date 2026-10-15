@@ -33,7 +33,7 @@ int Unk0979d8_Unk_098154();
 int Unk096754_Unk_0970b4();
 int Unk096754_Unk_0970c4();
 
-int func_0203ca80(void)
+int Unk03ca38_Unk_03ca80(void)
 {
     int k = func_0203ac00(0);
     int r = 0;
@@ -46,7 +46,7 @@ int func_0203ca80(void)
     return 1;
 }
 
-int func_0203cad4(void)
+int Unk03ca38_Unk_03cad4(void)
 {
     int k = func_0203ac00(0);
     int r = 0;
@@ -59,7 +59,7 @@ int func_0203cad4(void)
     return 1;
 }
 
-int func_0203cb28(void)
+int Unk03ca38_Unk_03cb28(void)
 {
     int k = func_0203ac00(0);
     int r = 0;

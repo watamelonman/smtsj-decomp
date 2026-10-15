@@ -43,7 +43,7 @@ void Unk09e72c_Unk_09e8f0();
 void Unk02e000_SetSlot();
 int Unk09d42c_Unk_09e274();
 
-int func_0203bf34(void)
+int Unk03be10_Unk_03bf34(void)
 {
     if (func_0206552c() != 0) {
         return 0;
