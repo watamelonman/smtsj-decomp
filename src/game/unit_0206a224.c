@@ -16,19 +16,33 @@ void func_020d6cac(void);
 /* forwards to `func_020d6cac` */
 void Unk06a224_Thunk_020d6cac(void) { func_020d6cac(); }
 
-extern u8 data_0216b9b0[];
-/* decompiler-derived */
+/* Globals block at 0x0216b9b0; fields named by their accessors. */
+typedef struct Unk06a224Globals {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+} Unk06a224Globals;
+
+extern Unk06a224Globals data_0216b9b0;
+
 u32 Unk06a224_Unk_06a224(void)
 {
-  return *(u32 *)(((int)data_0216b9b0) + 8);
+    return data_0216b9b0.unk_08;
 }
 
+u32 func_0206a234(void)
+{
+    return data_0216b9b0.unk_00;
+}
 
-/* decompiler-derived */
 void Unk06a224_Unk_06a244(u32 arg0)
 {
-  *(u32 *)(((int)data_0216b9b0) + 8) = arg0;
-  return;
+    data_0216b9b0.unk_08 = arg0;
+}
+
+void func_0206a254(u32 arg0)
+{
+    data_0216b9b0.unk_00 = arg0;
 }
 
 

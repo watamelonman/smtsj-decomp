@@ -28,3 +28,5 @@
 - `func_0206aa70`
 - `func_0206a2ac`
 - `func_0206a3f4`
+- `func_0206a234`: hand-matched; reads/writes data_0216b9b0.unk_00
+- `func_0206a254`: hand-matched; reads/writes data_0216b9b0.unk_00
