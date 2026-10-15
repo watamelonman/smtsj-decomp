@@ -104,7 +104,7 @@ void ImageBgDual3D_Unk_125a68(void)
   func_020773dc(1);
 }
 
-int func_0212594c();
+u32 func_0212594c(void);
 /* decompiler-derived */
 int ImageBgDual3D_Unk_125ca4(void)
 {
@@ -122,7 +122,7 @@ int ImageBgDual3D_Unk_125cbc(void)
   return value == 1;
 }
 
-int func_021258e8();
+void func_021258e8(void);
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125d30(void)
 {
@@ -157,7 +157,7 @@ void ImageBgDual3D_Unk_125c40(void)
   *data_02176e94 = value;
 }
 
-int func_021258a0();
+void func_021258a0(u32 arg0);
 /* decompiler-derived */
 void ImageBgDual3D_Unk_125d10(u32 arg0)
 {
@@ -273,3 +273,44 @@ void ImageBgDual3D_Unk_125b10(int arg0)
   return;
 }
 
+extern u8 data_02176e90[];
+int func_02061698();
+int func_020616c0();
+/* decompiler-derived */
+void func_021258a0(u32 arg0)
+{
+  int tmp1;
+  tmp1 = func_02061698(data_02176e90);
+  if (tmp1 == 0) {
+    return;
+  }
+  tmp1 = func_020616c0(data_02176e90);
+  func_0205c408(*(u32 *)(tmp1 + 0x8c),arg0);
+  func_0205c6e0(*(u32 *)(tmp1 + 0x8c));
+  *(u32 *)(tmp1 + 0x208) = 1;
+}
+
+/* decompiler-derived */
+u32 func_0212594c(void)
+{
+  int tmp1;
+  int *v2;
+  tmp1 = func_02061698(data_02176e90);
+  if ((tmp1 != 0) && (v2 = (int *)func_020616c0(data_02176e90), *v2 == 5)) {
+    return 1;
+  }
+  return 0;
+}
+
+int func_02061424();
+/* decompiler-derived */
+void func_021258e8(void)
+{
+  int tmp1;
+  tmp1 = func_02061698(data_02176e90);
+  if (tmp1 == 0) {
+    return;
+  }
+  func_020616c0(data_02176e90);
+  func_02061424();
+}
