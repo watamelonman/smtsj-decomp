@@ -63,20 +63,20 @@ void ImageBg_Unk_0e550c(void)
 }
 
 
-int func_020e5484();
+int ImageBg_IsMode1or2();
 int func_020e5580();
-void func_020e55fc();
+void ImageBg_AllocBuf();
 /* decompiler-derived */
 void ImageBg_Unk_0e54d4(u32 arg0)
 {
   int value;
   u32 *v2;
   Unk0e7290_Unk_0e7790(0xffffffff);
-  value = func_020e5484();
+  value = ImageBg_IsMode1or2();
   if (value != 0) {
     return;
   }
-  func_020e55fc();
+  ImageBg_AllocBuf();
   func_020e5580();
   v2 = (u32 *)ImageBg_Get_data_02176ca4();
   *v2 = arg0;
@@ -100,7 +100,7 @@ void ImageBg_Release(void)
     Unk0e7290_Unk_0e7734();
 }
 
-int func_020e5484(void)
+int ImageBg_IsMode1or2(void)
 {
     u32 p = ImageBg_Get_data_02176ca4();
     if (p == 0) {
@@ -114,7 +114,7 @@ int func_020e5484(void)
     return 0;
 }
 
-void func_020e55fc(void)
+void ImageBg_AllocBuf(void)
 {
     if (data_02176ca4[1] != 0) {
         return;

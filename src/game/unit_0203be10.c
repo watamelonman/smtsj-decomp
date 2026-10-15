@@ -18,12 +18,12 @@ u32 Unk03be10_Unk_03bfa8(void)
   return 1;
 }
 
-int func_020e5484();
+int ImageBg_IsMode1or2();
 /* decompiler-derived */
 int Unk03be10_Unk_03be10(void)
 {
   int value;
-  value = func_020e5484();
+  value = ImageBg_IsMode1or2();
   return value != 1;
 }
 

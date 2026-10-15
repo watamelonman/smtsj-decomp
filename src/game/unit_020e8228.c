@@ -505,7 +505,7 @@ int Unk044904_Unk_0459fc();
 int func_02053800();
 int func_020e82c8();
 int Unk0e8228_IsField4One();
-int func_020fda58();
+int Unk0fd9f0_Unk_0fda58();
 int Unk100208_Unk_100208();
 /* decompiler-derived */
 u32 Unk0e8228_Unk_0e85c8(void)
@@ -520,7 +520,7 @@ u32 Unk0e8228_Unk_0e85c8(void)
     Unk044904_Unk_0459fc();
     Unk0e8228_Unk_0e8cd8();
     func_020e82c8();
-    func_020fda58(2);
+    Unk0fd9f0_Unk_0fda58(2);
     Unk100208_Unk_100208(7);
     return 1;
   }

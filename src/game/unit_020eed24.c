@@ -7,12 +7,12 @@ void func_020f7248(void);
 void Unk0eed24_Thunk_020f7248(void) { func_020f7248(); }
 
 int func_020d1e94();
-int func_020fda58();
+int Unk0fd9f0_Unk_0fda58();
 /* decompiler-derived */
 void Unk0eed24_Unk_0eeebc(void)
 {
   func_020d1e94(1);
-  func_020fda58(1);
+  Unk0fd9f0_Unk_0fda58(1);
 }
 
 int Unk0d1c98_Unk_0d1d94();
@@ -25,5 +25,5 @@ void Unk0eed24_Unk_0eee94(void)
   Unk0feba0_Unk_0febe8(0);
   value = func_020ea630(10);
   Unk0d1c98_Unk_0d1d94(value,0xffffffff);
-  func_020fda58(3);
+  Unk0fd9f0_Unk_0fda58(3);
 }

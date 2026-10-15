@@ -39,14 +39,14 @@ void Unk0efb90_Unk_0efb90(int arg0)
 
 int Unk0e8228_Unk_0e8374();
 int Unk0f8448_Init();
-int func_020fda58();
+int Unk0fd9f0_Unk_0fda58();
 int Unk0feba0_Unk_0febe8();
 /* decompiler-derived */
 void Unk0efb90_Unk_0efce8(int arg0)
 {
   u32 value;
   Unk0feba0_Unk_0febe8(1);
-  func_020fda58(0);
+  Unk0fd9f0_Unk_0fda58(0);
   value = Unk0e8228_Unk_0e8374(((Unk0efb90Work *)arg0)->unk_004c);
   Unk0f8448_Init(arg0 + 0x50,value);
 }

@@ -209,7 +209,7 @@ u32 Unk0fd9f0_GetColor(int x)
     return 0x299ce700;
 }
 
-void func_020fda58(u32 x)
+void Unk0fd9f0_Unk_0fda58(u32 x)
 {
     u32 p = Unk0fd9f0_Get_data_02176e20();
     if (p == 0) {

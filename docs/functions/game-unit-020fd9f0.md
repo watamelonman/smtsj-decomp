@@ -15,7 +15,7 @@
 
 ## Not done in M1-T509
 - `Unk0fd9f0_Update`
-- `func_020fda58`
+- `Unk0fd9f0_Unk_0fda58`
 - `Unk0fd9f0_LoadBattleHelpTalk`
 - `func_020fdaa8`
 - `func_020fdb14`
@@ -33,4 +33,4 @@
 - `Unk0fd9f0_SetDir`: hand-matched
 - `Unk0fd9f0_Update`: hand-matched
 - `Unk0fd9f0_GetColor`: hand-matched
-- `func_020fda58`: hand-matched; end-of-file placement
+- `Unk0fd9f0_Unk_0fda58`: hand-matched; end-of-file placement

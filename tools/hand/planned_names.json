@@ -582,5 +582,9 @@
  "func_02117808": "Unk116598_Reset",
  "func_02117cfc": "StaffRoll_Unk_117cfc",
  "func_02117d18": "StaffRoll_Unk_117d18",
- "func_02117d38": "StaffRoll_Unk_117d38"
+ "func_02117d38": "StaffRoll_Unk_117d38",
+ "func_020e5484": "ImageBg_IsMode1or2",
+ "func_020e55fc": "ImageBg_AllocBuf",
+ "func_020fda58": "Unk0fd9f0_Unk_0fda58",
+ "func_0211558c": "Unk113294_Unk_11558c"
 }
