@@ -68,3 +68,9 @@
 - `func_0202ec48`
 - `func_0202ecf8`
 - `func_0202eb48`
+
+## Not done in M1-T656
+- `func_0202eda8`
+- `func_0202e468`
+- `func_0202e5dc`
+- `func_0202e23c`
