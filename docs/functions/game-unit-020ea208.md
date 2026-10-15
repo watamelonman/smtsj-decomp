@@ -17,19 +17,19 @@
 
 ## Not done in M1-T770
 - `func_020ea70c`
-- `func_020ea438`
-- `func_020ea460`
-- `func_020ea488`
+- `Unk0ea208_GetField0`
+- `Unk0ea208_GetField4`
+- `Unk0ea208_GetField8`
 - `Unk0ea208_Unk_0eb2cc`: decompiler-derived
 - `Unk0ea208_Unk_0eb230`: decompiler-derived
 - `Unk0ea208_Unk_0eada8`: decompiler-derived
 
 ## Not done in M1-T771
-- `func_020ea4b0`
+- `Unk0ea208_GetFieldC`
 - `func_020ea570`
 - `func_020eb2a4`
 - `func_020ea828`
-- `func_020ea390`
+- `Unk0ea208_Unk_0ea390`
 - `Unk0ea208_Unk_0eade4`: decompiler-derived
 - `Unk0ea208_Unk_0eb264`: decompiler-derived
 - `Unk0ea208_Unk_0eae40`: decompiler-derived
@@ -37,7 +37,7 @@
 ## Not done in M1-T772
 - `func_020eac40`
 - `func_020ead64`
-- `func_020ea4d8`
+- `Unk0ea208_GetArr10`
 - `func_020ea524`
 - `func_020ea598`
 
@@ -58,9 +58,9 @@
 - `Unk0ea208_Unk_0ea878`: decompiler-derived (plain cleanup)
 - `Unk0ea208_Unk_0ea984`: decompiler-derived (plain cleanup)
 - `Unk0ea208_Unk_0eb6cc`: decompiler-derived (struct+fix cleanup)
-- `func_020ea390`: hand-matched
-- `func_020ea438`: hand-matched
-- `func_020ea460`: hand-matched
-- `func_020ea488`: hand-matched
-- `func_020ea4b0`: hand-matched
-- `func_020ea4d8`: hand-matched
+- `Unk0ea208_Unk_0ea390`: hand-matched
+- `Unk0ea208_GetField0`: hand-matched
+- `Unk0ea208_GetField4`: hand-matched
+- `Unk0ea208_GetField8`: hand-matched
+- `Unk0ea208_GetFieldC`: hand-matched
+- `Unk0ea208_GetArr10`: hand-matched

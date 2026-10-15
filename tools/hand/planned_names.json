@@ -469,5 +469,15 @@
  "func_020e8b54": "Unk0e8228_IsFieldCOne",
  "func_020e8be8": "Unk0e8228_Unk_0e8be8",
  "func_020e8c80": "Unk0e8228_Unk_0e8c80",
- "func_020e8ce8": "Unk0e8228_Unk_0e8ce8"
+ "func_020e8ce8": "Unk0e8228_Unk_0e8ce8",
+ "func_020e8e28": "Unk0e8228_IsState3",
+ "func_020e8fe4": "Unk0e8228_Unk_0e8fe4",
+ "func_020e9748": "Unk0e8228_GetCurEntry",
+ "func_020e9bc0": "Unk0e8228_ClearSel",
+ "func_020ea390": "Unk0ea208_Unk_0ea390",
+ "func_020ea438": "Unk0ea208_GetField0",
+ "func_020ea460": "Unk0ea208_GetField4",
+ "func_020ea488": "Unk0ea208_GetField8",
+ "func_020ea4b0": "Unk0ea208_GetFieldC",
+ "func_020ea4d8": "Unk0ea208_GetArr10"
 }

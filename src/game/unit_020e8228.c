@@ -542,7 +542,7 @@ void Unk0e8228_Unk_0e9f18(u32 *arg0);
 void Unk0e8228_Unk_0e9f38(u32 *arg0, u32 arg1);
 int func_020e9ca8();
 int func_020e9b54();
-int func_020e9748();
+int Unk0e8228_GetCurEntry();
 int func_02044ec4();
 int func_0204a244();
 u8 *func_020982c0();
@@ -657,7 +657,7 @@ int Unk0e8228_Unk_0e8c80(void)
     if (p == 0) {
         return 0;
     }
-    return func_020e9748(p);
+    return Unk0e8228_GetCurEntry(p);
 }
 
 int Unk0e8228_Unk_0e8ce8(u32 x)
@@ -706,7 +706,7 @@ typedef struct Unk0e8228SelHost {
     u8 pad[392];
     Unk0e8228Sel sel;
 } Unk0e8228SelHost;
-int func_020e8e28(void)
+int Unk0e8228_IsState3(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
@@ -715,7 +715,7 @@ int func_020e8e28(void)
     return FIELD(u32, p, 0) == 3;
 }
 
-int func_020e8fe4(u32 x)
+int Unk0e8228_Unk_0e8fe4(u32 x)
 {
     u32 h;
     if (x == 0) {
@@ -728,7 +728,7 @@ int func_020e8fe4(u32 x)
     return FIELD(u8, func_020cb1a0(h), 35) == 7;
 }
 
-int func_020e9748(u8 *p)
+int Unk0e8228_GetCurEntry(u8 *p)
 {
     int i = FIELD(int, p, 8);
     if (i <= -1) {
@@ -740,7 +740,7 @@ int func_020e9748(u8 *p)
     return FIELD(u32, p + i * 4, 64);
 }
 
-void func_020e9bc0(Unk0e8228SelHost *p)
+void Unk0e8228_ClearSel(Unk0e8228SelHost *p)
 {
     int j;
     int k;

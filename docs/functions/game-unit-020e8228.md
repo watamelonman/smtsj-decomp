@@ -60,18 +60,18 @@
 
 ## Not done in M1-T903
 - `Unk0e8228_Unk_0e8d90`
-- `func_020e8e28`
+- `Unk0e8228_IsState3`
 - `Unk0e8228_Unk_0e8ce8`
-- `func_020e9748`
+- `Unk0e8228_GetCurEntry`
 - `func_020e93d8`
 
 ## Not done in M1-T904
 - `Unk0e8228_GetArr30`
 - `Unk0e8228_GetArr58`
 - `Unk0e8228_GetArr40`
-- `func_020e8fe4`
+- `Unk0e8228_Unk_0e8fe4`
 - `func_020e942c`
-- `func_020e9bc0`
+- `Unk0e8228_ClearSel`
 - `Unk0e8228_Unk_0e8be8`
 - `func_020e9b10`
 - `Unk0e8228_Unk_0e85c8`: decompiler-derived
@@ -126,7 +126,7 @@
 - `Unk0e8228_Unk_0e8be8`: hand-matched
 - `Unk0e8228_Unk_0e8c80`: hand-matched
 - `Unk0e8228_Unk_0e8ce8`: hand-matched
-- `func_020e8e28`: hand-matched
-- `func_020e8fe4`: hand-matched
-- `func_020e9748`: hand-matched
-- `func_020e9bc0`: hand-matched
+- `Unk0e8228_IsState3`: hand-matched
+- `Unk0e8228_Unk_0e8fe4`: hand-matched
+- `Unk0e8228_GetCurEntry`: hand-matched
+- `Unk0e8228_ClearSel`: hand-matched

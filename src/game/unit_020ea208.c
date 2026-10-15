@@ -35,7 +35,7 @@ void Unk0ea208_Unk_0ead4c(void);
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 void func_02061f10();
-void func_020ea390(int i, u32 x)
+void Unk0ea208_Unk_0ea390(int i, u32 x)
 {
     if (i < 0) {
         return;
@@ -46,7 +46,7 @@ void func_020ea390(int i, u32 x)
     func_02061f10(FIELD(u32, Unk0ea208_Get_data_02176ddc() + i * 4, 36), -1, 0, 0, x);
 }
 
-u32 func_020ea438(void)
+u32 Unk0ea208_GetField0(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -58,7 +58,7 @@ u32 func_020ea438(void)
     return FIELD(u32, p, 0);
 }
 
-u32 func_020ea460(void)
+u32 Unk0ea208_GetField4(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -70,7 +70,7 @@ u32 func_020ea460(void)
     return FIELD(u32, p, 4);
 }
 
-u32 func_020ea488(void)
+u32 Unk0ea208_GetField8(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -82,7 +82,7 @@ u32 func_020ea488(void)
     return FIELD(u32, p, 8);
 }
 
-u32 func_020ea4b0(void)
+u32 Unk0ea208_GetFieldC(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
@@ -94,7 +94,7 @@ u32 func_020ea4b0(void)
     return FIELD(u32, p, 12);
 }
 
-u32 func_020ea4d8(int i)
+u32 Unk0ea208_GetArr10(int i)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p == 0) {
