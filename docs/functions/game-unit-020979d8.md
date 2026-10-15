@@ -40,3 +40,10 @@
 - `Unk0979d8_ClampField20`: hand-matched
 - `Unk0979d8_HasId`: hand-matched
 - `Unk0979d8_CopyIds`: hand-matched
+- `func_02097d54`: hand-matched
+- `func_02097d98`: hand-matched
+- `func_02097ddc`: hand-matched
+- `func_02097e1c`: hand-matched
+- `func_02097e6c`: hand-matched
+- `func_02097ebc`: hand-matched
+- `func_020980e8`: hand-matched
