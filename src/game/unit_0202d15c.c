@@ -33,7 +33,7 @@ int func_0202d390();
 int func_0204b01c();
 u8 *Unk02e000_GetWorkArea();
 int Unk02f2a8_Unk_035c14();
-int func_0202d22c(int x)
+int Unk02d15c_MapKind_02d22c(int x)
 {
     switch (x) {
     case 0: return 0;
@@ -48,7 +48,7 @@ int func_0202d22c(int x)
     return 0;
 }
 
-int func_0202d2a0(int x)
+int Unk02d15c_MapKind_02d2a0(int x)
 {
     switch (x) {
     case 0: return 0;
@@ -83,7 +83,7 @@ int Unk02d15c_IsStatus0OrNeg(int a)
     return Unk094fe0_Call_020950b4(a) == 0;
 }
 
-int func_0202d794(u32 a, u32 b)
+int Unk02d15c_Unk_02d794(u32 a, u32 b)
 {
     struct { u32 w[8]; } s;
     s.w[0] = Unk095560_Unk_095d1c();
@@ -140,7 +140,7 @@ void Unk02d15c_Unk_02d81c(void)
   *data_0213d898 = 0xffffffff;
 }
 
-int func_0202d8a8(int a, int b, int c)
+int Unk02d15c_Unk_02d8a8(int a, int b, int c)
 {
     u8 *r = Unk02d15c_GetManagerRecord(a);
     int i, e;
@@ -170,7 +170,7 @@ void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1)
 
 
 
-int func_0202d954(u8 *p)
+int Unk02d15c_Unk_02d954(u8 *p)
 {
     u16 v;
     if (FIELD(s16, p, 20) == 0) {

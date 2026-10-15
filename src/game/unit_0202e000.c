@@ -318,7 +318,7 @@ void Unk02e000_Unk_02e180(void)
 int func_020445d0();
 s16 *func_0204fde0();
 u32 func_0204fe18();
-int func_0202e3e4(int a)
+int Unk02e000_FindIndex_02e3e4(int a)
 {
     int h = func_020445d0(35, 0);
     s16 *t = func_0204fde0();

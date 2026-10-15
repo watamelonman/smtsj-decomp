@@ -63,7 +63,7 @@
 - `func_0202eab8`
 - `func_0202e520`
 - `func_0202ea10`
-- `func_0202e3e4`
+- `Unk02e000_FindIndex_02e3e4`
 - `func_0202e968`
 - `func_0202ec48`
 - `func_0202ecf8`
@@ -106,4 +106,4 @@
 - `Unk02e000_GetRecordFlag0`: hand-matched
 - `Unk02e000_GetRecordFlag1`: hand-matched
 - `Unk02e000_GetRecordUnk1f`: hand-matched
-- `func_0202e3e4`: hand-matched
+- `Unk02e000_FindIndex_02e3e4`: hand-matched

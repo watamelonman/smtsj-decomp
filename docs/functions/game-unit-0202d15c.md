@@ -24,11 +24,11 @@
 
 ## Not done in M1-T577
 - `Unk02d15c_FindRecordEntry`
-- `func_0202d954`
-- `func_0202d794`
-- `func_0202d2a0`
-- `func_0202d22c`
-- `func_0202d8a8`
+- `Unk02d15c_Unk_02d954`
+- `Unk02d15c_Unk_02d794`
+- `Unk02d15c_MapKind_02d2a0`
+- `Unk02d15c_MapKind_02d22c`
+- `Unk02d15c_Unk_02d8a8`
 - `func_0202d710`
 
 ## Not done in M1-T578
@@ -46,8 +46,8 @@
 - `Unk02d15c_Setup`: hand-matched
 - `Unk02d15c_ResetRecord`: hand-matched
 - `Unk02d15c_FindRecordEntry`: hand-matched
-- `func_0202d22c`: hand-matched
-- `func_0202d2a0`: hand-matched
-- `func_0202d794`: hand-matched
-- `func_0202d8a8`: hand-matched
-- `func_0202d954`: hand-matched
+- `Unk02d15c_MapKind_02d22c`: hand-matched
+- `Unk02d15c_MapKind_02d2a0`: hand-matched
+- `Unk02d15c_Unk_02d794`: hand-matched
+- `Unk02d15c_Unk_02d8a8`: hand-matched
+- `Unk02d15c_Unk_02d954`: hand-matched

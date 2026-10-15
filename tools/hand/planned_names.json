@@ -625,5 +625,11 @@
  "func_020e77f0": "Unk0e7290_Unk_0e77f0",
  "func_021242fc": "Unk1241ec_Unk_1242fc",
  "func_02124d6c": "Unk124c5c_Set_124d6c",
- "func_02124d8c": "Unk124c5c_Set_124d8c"
+ "func_02124d8c": "Unk124c5c_Set_124d8c",
+ "func_0202d22c": "Unk02d15c_MapKind_02d22c",
+ "func_0202d2a0": "Unk02d15c_MapKind_02d2a0",
+ "func_0202d794": "Unk02d15c_Unk_02d794",
+ "func_0202d8a8": "Unk02d15c_Unk_02d8a8",
+ "func_0202d954": "Unk02d15c_Unk_02d954",
+ "func_0202e3e4": "Unk02e000_FindIndex_02e3e4"
 }

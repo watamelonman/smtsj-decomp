@@ -150,7 +150,7 @@ void Unk0de678_Unk_0df064(void)
   Unk0a23f4_Unk_0a23f4(2);
 }
 
-int func_0202d8a8();
+int Unk02d15c_Unk_02d8a8();
 int Unk02d15c_Unk_02da48();
 int func_020cb3dc();
 /* decompiler-derived */
@@ -160,7 +160,7 @@ u32 Unk0de678_Unk_0dec94(u32 arg0)
   int value2;
   func_020cb3dc();
   value1 = Unk02d15c_Unk_02da48();
-  value2 = func_0202d8a8(1,value1,arg0);
+  value2 = Unk02d15c_Unk_02d8a8(1,value1,arg0);
   if (value2 != 0) {
     *(u32 *)(((int)data_021508d4) + 0xcc) = 0;
     return 1;
