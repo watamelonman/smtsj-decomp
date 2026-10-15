@@ -60,6 +60,33 @@ int Unk04bb9c_IsCtxUnk8Clear(void)
     return data_0215eea4->unk_0008 == 0;
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+typedef struct Unk04bb9cEnt {
+    u8 kind : 6;
+    u8 hi : 2;
+    u8 a;
+    u8 b;
+    u8 c;
+} Unk04bb9cEnt;
+Unk04bb9cEnt *Unk02e000_Unk_02e89c(int i);
+int GetGameState();
+int GameState_GetBody();
+u8 *Unk038fbc_Unk_039160(u8 **o, int x, int y);
+
+int func_0204c98c(int a, int b, int c)
+{
+    s8 i;
+    for (i = 0; i < 96; i++) {
+        Unk04bb9cEnt *e = Unk02e000_Unk_02e89c(i);
+        if (e->a == a && e->b == b && e->c == (c == 980 ? 0 : c)) {
+            return e->kind;
+        }
+    }
+    return 0;
+}
+
 void Unk04bb9c_SetCtxUnka14(u32 value)
 {
     if (data_0215eea4 != 0) {
@@ -73,4 +100,28 @@ u16 Unk04bb9c_GetCtxUnka20(void)
         return 0;
     }
     return data_0215eea4->unk_0a20;
+}
+
+u8 func_0204cbe8(int x, int y)
+{
+    u8 *g = (u8 *)GetGameState();
+    u8 *a = (u8 *)GameState_GetBody();
+    u8 *b = (u8 *)GameState_GetBody();
+    u8 *o = Unk038fbc_Unk_039160((u8 **)(g + 576), x + FIELD(u8, FIELD(u8 *, a, 572), 8), y + FIELD(u8, FIELD(u8 *, b, 572), 9));
+    if (o == 0) {
+        return 0;
+    }
+    return (FIELD(u32, o, 4) << 12) >> 28;
+}
+
+u8 func_0204cc4c(int x, int y)
+{
+    u8 *g = (u8 *)GetGameState();
+    u8 *a = (u8 *)GameState_GetBody();
+    u8 *b = (u8 *)GameState_GetBody();
+    u8 *o = Unk038fbc_Unk_039160((u8 **)(g + 856), x + FIELD(u8, FIELD(u8 *, a, 852), 8), y + FIELD(u8, FIELD(u8 *, b, 852), 9));
+    if (o == 0) {
+        return 0;
+    }
+    return (FIELD(u32, o, 4) << 12) >> 28;
 }
