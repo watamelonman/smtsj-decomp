@@ -42,7 +42,7 @@ u32 Unk10a034_Unk_10a0b4(void);
 int Unk10a034_Unk_10afc0(void);
 void Unk10a034_Unk_10b000(void);
 void Unk10a034_Unk_10b018(void);
-int Unk10a034_Unk_10b058(void);
+int Unk10a034_Unk_10b058(u32 id);
 void Unk10a034_Unk_10aeb0(int arg0);
 
 /* decompiler-derived */
@@ -195,10 +195,10 @@ void Unk10a034_Unk_10b018(void)
 }
 
 /* decompiler-derived */
-int Unk10a034_Unk_10b058(void)
+int Unk10a034_Unk_10b058(u32 id)
 {
   int value;
-  value = func_020a1740();
+  value = func_020a1740(id);
   return (u32)*(u8 *)(value + 2) * 300;
 }
 

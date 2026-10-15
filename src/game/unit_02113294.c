@@ -72,10 +72,9 @@ u32 Unk113294_GetUnkField20(void *obj) { return ((Unk113294Work *)obj)->unk_0020
 
 int func_021150e8();
 /* decompiler-derived */
-void Unk113294_Unk_115110(void)
+int Unk113294_Unk_115110(void)
 {
-  func_021150e8(1,0x35);
-  return;
+  return func_021150e8(1,0x35);
 }
 
 int func_020655b4();
@@ -93,20 +92,18 @@ void Unk113294_Unk_1156ec(void)
 int func_020445f4();
 int func_0204fed8();
 /* decompiler-derived */
-void Unk113294_Unk_1150c8(u32 arg0,u32 arg1)
+u16 *Unk113294_Unk_1150c8(u32 arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = func_020445f4(0x2a,arg0);
-  func_0204fed8(tmp1,arg1);
-  return;
+  return (u16 *)func_0204fed8(tmp1,arg1);
 }
 
 
 /* decompiler-derived */
-void Unk113294_Unk_115124(int arg0)
+int Unk113294_Unk_115124(int arg0)
 {
-  func_021150e8(((Unk113294Work *)arg0)->unk_0008 + 1,((Unk113294Work *)arg0)->unk_0010 & 0xffff);
-  return;
+  return func_021150e8(((Unk113294Work *)arg0)->unk_0008 + 1,((Unk113294Work *)arg0)->unk_0010 & 0xffff);
 }
 
 
