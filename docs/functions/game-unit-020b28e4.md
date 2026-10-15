@@ -30,3 +30,8 @@
 - `func_020b4dd8`
 - `func_020b49cc`
 - `func_020b5adc`
+- `func_020b2d84`: hand-matched
+- `func_020b5e10`: hand-matched
+- `func_020b62e8`: hand-matched
+- `func_020b6338`: hand-matched
+- `func_020b6370`: hand-matched
