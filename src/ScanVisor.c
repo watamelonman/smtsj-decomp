@@ -449,9 +449,9 @@ void ScanVisor_Unk_0a28b0(int arg0)
   return;
 }
 
-int func_020a277c();
-int func_020a2820();
-int func_020a2884();
+void func_020a277c();
+void func_020a2820();
+void func_020a2884();
 void ScanVisor_Unk_0a4864(int arg0);
 /* decompiler-derived */
 void ScanVisor_Unk_0a2660(void)
@@ -469,7 +469,7 @@ void ScanVisor_Unk_0a2660(void)
   return;
 }
 
-int func_020a2950();
+void func_020a2950();
 /* decompiler-derived */
 void ScanVisor_Unk_0a273c(u32 arg0)
 {
@@ -498,6 +498,75 @@ int func_020c8f08();
 int func_020ca648();
 int Unk0fc584_Unk_0fc6a0();
 int Unk0fd9f0_Unk_0fda14();
+void ScanVisor_Unk_0a4904();
+void ScanVisor_Unk_0a4864();
+void ScanVisor_Unk_0a4910();
+void ScanVisor_Unk_0a48b4();
+void func_020a277c(int on)
+{
+    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
+    if (v == 0) {
+        return;
+    }
+    if (on) {
+        FIELD(s32, v, 52) = -3;
+    } else {
+        FIELD(s32, v, 52) = 3;
+    }
+}
+
+void func_020a2820(int on)
+{
+    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
+    if (v == 0) {
+        return;
+    }
+    if (on) {
+        FIELD(s32, v, 28) = 2;
+    } else {
+        FIELD(s32, v, 28) = -2;
+    }
+}
+
+void func_020a2884(int on)
+{
+    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
+    if (v == 0) {
+        return;
+    }
+    if (on) {
+        FIELD(s32, v, 532) = -3;
+    } else {
+        FIELD(s32, v, 532) = 3;
+    }
+}
+
+void func_020a2920(int on)
+{
+    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
+    if (v == 0) {
+        return;
+    }
+    if (on) {
+        ScanVisor_Unk_0a4904(v + 588);
+    } else {
+        ScanVisor_Unk_0a4864(v + 588);
+    }
+}
+
+void func_020a2950(int on)
+{
+    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
+    if (v == 0) {
+        return;
+    }
+    if (on) {
+        ScanVisor_Unk_0a4910(v + 588);
+    } else {
+        ScanVisor_Unk_0a48b4(v + 588);
+    }
+}
+
 /* decompiler-derived */
 void ScanVisor_Unk_0a2e5c(int arg0)
 {

@@ -104,3 +104,8 @@
 - `ScanVisor_Draw`: hand-matched
 - `ScanVisor_SetById`: hand-matched
 - `ScanVisor_Unk_0a4a18`: hand-matched
+- `func_020a277c`: hand-matched
+- `func_020a2820`: hand-matched
+- `func_020a2884`: hand-matched
+- `func_020a2920`: hand-matched
+- `func_020a2950`: hand-matched
