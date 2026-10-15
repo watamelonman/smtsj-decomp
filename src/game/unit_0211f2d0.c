@@ -87,6 +87,27 @@ void Unk11f2d0_Unk_11f2d0(int *arg0)
 int func_0205c408();
 int func_0205c6e0();
 int Unk065e88_Call_02065fc0();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+int func_0211f334(u8 *p)
+{
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 12) != 0;
+}
+
+int func_0211f39c(void)
+{
+    u8 *p = (u8 *)*data_02176e78;
+    if (p == 0) {
+        return 1;
+    }
+    return FIELD(int, p, 0) == 7;
+}
+
 /* decompiler-derived */
 void Unk11f2d0_Unk_11f544(int arg0)
 {
