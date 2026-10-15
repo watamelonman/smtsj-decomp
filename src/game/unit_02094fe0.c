@@ -61,6 +61,31 @@ void Unk094fe0_Call_0209502c(int a, int b)
     func_0209502c(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
+void func_020950e4();
+void func_020e6708();
+void *Unk02e000_GetWorkArea();
+
+void func_0209502c(Unk094fe0Work *w, int a, int b)
+{
+    u8 v;
+    func_020950e4(Unk094fe0_Nop_095000(w), a, b);
+    func_020e6708(a, b);
+    v = ((u8 *)Unk02e000_GetWorkArea())[855];
+    switch (a) {
+    case 0x70c:
+        if (v < 10) {
+            v = 10;
+        }
+        break;
+    case 0x70d:
+        if (v < 12) {
+            v = 12;
+        }
+        break;
+    }
+    ((u8 *)Unk02e000_GetWorkArea())[855] = v;
+}
+
 int Unk094fe0_TestBit(Unk094fe0Work *w, u32 bit)
 {
     u32 sh = bit & 7;

@@ -49,3 +49,4 @@
 - `Unk094fe0_TestBit990`: hand-matched
 - `Unk094fe0_Call_02095370`: hand-matched
 - `Unk094fe0_Unk_095370`: hand-matched
+- `func_0209502c`: hand-matched
