@@ -130,3 +130,16 @@ u32 Unk0bcef4_Unk_0bd584(int arg0,u32 arg1)
   }
   return tmp2;
 }
+
+typedef struct Unk0bcef4State {
+    s32 state;
+} Unk0bcef4State;
+
+int func_020bd5d4(Unk0bcef4State *t)
+{
+    s32 s = t->state;
+    if (s == 1 || s == 0 || s == 5) {
+        return 1;
+    }
+    return 0;
+}
