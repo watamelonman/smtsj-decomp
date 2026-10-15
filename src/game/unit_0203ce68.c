@@ -3,6 +3,18 @@
 
 
 int func_02097ddc();
+int Unk096754_Unk_096a14();
+int func_0203cf48(void)
+{
+    int v = Unk096754_Unk_096a14(func_0203ac00(0));
+    int r = 1;
+    if (v == -1) {
+        r = 0;
+    }
+    Unk03aae8_Unk_03acf4(r);
+    return 1;
+}
+
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03cfb4(void)
 {
