@@ -34,6 +34,42 @@ int Unk0e5fb8_Unk_0e6158(int arg0)
   return arg0 + 0x8e0;
 }
 
+/* Table offset of entry `i` (256 entries of 2 bytes at 0x900); out of range maps to 0. */
+int func_020e6160(u32 i)
+{
+    if (i >= 256) {
+        i = 0;
+    }
+    return 0x900 + (i << 1);
+}
+
+/* Table offset of entry `i` (256 entries of 2 bytes at 0xb00); out of range maps to 0. */
+int func_020e6174(u32 i)
+{
+    if (i >= 256) {
+        i = 0;
+    }
+    return 0xb00 + (i << 1);
+}
+
+/* Table offset of entry `i` (64 entries of 2 bytes at 0xd00); out of range maps to 0. */
+int func_020e6188(u32 i)
+{
+    if (i >= 64) {
+        i = 0;
+    }
+    return 0xd00 + (i << 1);
+}
+
+/* Table offset of entry `i` (128 entries of 4 bytes at 0xd80); out of range maps to 0. */
+int func_020e619c(u32 i)
+{
+    if (i >= 128) {
+        i = 0;
+    }
+    return 0xd80 + (i << 2);
+}
+
 /* decompiler-derived */
 int Unk0e5fb8_Unk_0e61b0(int arg0)
 {

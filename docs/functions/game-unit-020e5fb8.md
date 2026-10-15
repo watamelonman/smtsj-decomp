@@ -44,3 +44,7 @@
 - `Unk0e5fb8_Unk_0e626c`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_Unk_0e61e8`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_Unk_0e62a4`: decompiler-derived (plain cleanup)
+- `func_020e6160`: hand-matched
+- `func_020e6174`: hand-matched
+- `func_020e6188`: hand-matched
+- `func_020e619c`: hand-matched
