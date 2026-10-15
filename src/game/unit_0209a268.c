@@ -114,3 +114,23 @@ u32 func_0209bb38(void)
   }
   return 0;
 }
+
+
+int func_02034a68();
+int func_0209a7bc();
+int func_0209c548();
+/* decompiler-derived */
+void func_0209cb10(u32 arg0)
+{
+  int tmp1;
+  int tmp2;
+  tmp1 = Unk09a268_Unk_09c484(5);
+  tmp2 = func_02034a68();
+  Unk09a268_Unk_09a80c(tmp2,1);
+  Unk09a268_Unk_09a830(tmp2,0);
+  func_0209a7bc(tmp2,*(u8 *)(tmp1 + 0x19));
+  *(u8 *)(tmp2 + 1) = 1;
+  *(u16 *)(tmp2 + 2) = 0;
+  func_0209c548(arg0);
+  return;
+}
