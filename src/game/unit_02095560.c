@@ -46,6 +46,13 @@ void Unk095560_Call_0a1834(int id)
 }
 
 void Unk095560_Thunk_020cb044(void) { Unk0caea8_Unk_0cb044(); }
+int func_02095d5c(u32 a, u32 b, int c);
+
+int func_02095950(u32 a, u32 b)
+{
+    return func_02095d5c(a, b, 1) != 0;
+}
+
 void Unk095560_Thunk_020773dc(void) { func_020773dc(); }
 void Unk095560_Thunk_020961a0(void) { func_020961a0(); }
 
