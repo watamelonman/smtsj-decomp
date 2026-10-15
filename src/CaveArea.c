@@ -126,12 +126,33 @@ void CaveArea_Unk_0ed364(u8 *p)
     func_0205de30(FIELD(u32, p, 4), c + 5, FIELD(u32, p, 128));
 }
 
+typedef struct CaveAreaUnk0ed9e8 {
+    u8 pad_000[296];
+    float t;
+} CaveAreaUnk0ed9e8;
+
+void func_020ed3cc(float *p)
+{
+    *p += 0.6f;
+    if (*p >= 32.0f) {
+        *p = 0.0f;
+    }
+}
+
 void CaveArea_InitParams(float *p)
 {
     p[0] = 96.0f;
     p[1] = 8.0f;
     p[2] = 0.0f;
     FIELD(u32, p, 12) = 16;
+}
+
+void func_020ed9e8(CaveAreaUnk0ed9e8 *o)
+{
+    o->t += 0.5f;
+    if (o->t >= 192.0f) {
+        o->t = 0.0f;
+    }
 }
 
 void CaveArea_Unk_0edb4c(u8 *p)

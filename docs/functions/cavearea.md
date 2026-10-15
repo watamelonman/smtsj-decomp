@@ -45,3 +45,5 @@
 - `CaveArea_Unk_0ed364`: hand-matched
 - `CaveArea_InitParams`: hand-matched
 - `CaveArea_Unk_0edb4c`: hand-matched
+- `func_020ed3cc`: hand-matched
+- `func_020ed9e8`: hand-matched
