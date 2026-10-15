@@ -100,6 +100,28 @@ u32 Unk0387bc_Unk_038edc(int *arg0)
 extern u8 data_02142064[];
 int func_020387bc();
 int func_0204fe68();
+u8 *func_02038f18(u32 *p, u32 i)
+{
+    if (p == 0) {
+        return 0;
+    }
+    if (func_0204fe18(p[1]) <= i) {
+        return 0;
+    }
+    return (u8 *)p[2] + i * 32;
+}
+
+u8 *func_02038f48(u32 *p, u32 i)
+{
+    if (p == 0) {
+        return 0;
+    }
+    if (func_0204fe18(p[3]) <= i) {
+        return 0;
+    }
+    return (u8 *)p[4] + i * 36;
+}
+
 /* decompiler-derived */
 u32 Unk0387bc_Unk_038f7c(int *arg0)
 {

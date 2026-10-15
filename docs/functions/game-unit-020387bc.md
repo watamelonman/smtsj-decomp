@@ -26,3 +26,5 @@
 - `func_02038934`
 - `Unk0387bc_GetEntry32`: hand-matched
 - `Unk0387bc_GetEntry36`: hand-matched
+- `func_02038f18`: hand-matched
+- `func_02038f48`: hand-matched
