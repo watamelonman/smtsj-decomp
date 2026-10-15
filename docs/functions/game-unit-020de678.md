@@ -46,3 +46,5 @@
 - `func_020de960`
 - `func_020def0c`
 - `func_020df0cc`
+- `func_020dea70`: hand-matched
+- `func_020debf8`: hand-matched

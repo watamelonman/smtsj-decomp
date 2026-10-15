@@ -108,6 +108,34 @@ int Unk0964f8_Unk_096508();
 int Unk0a23f4_Unk_0a23f4();
 int Unk0fc584_Unk_0fc674();
 int Unk0fc584_Unk_0fc84c();
+int func_020dec18();
+typedef struct Unk0de678Rec {
+    u8 pad_00[0xa];
+    u16 unk_0a;
+    u8 pad_0c[0xe];
+} Unk0de678Rec;
+int func_020dea70(Unk0de678Rec *p)
+{
+    int n = 0;
+    int i = 0;
+    for (; i < 4; i++) {
+        if (p[i].unk_0a == 0) {
+            break;
+        }
+        n++;
+    }
+    return n;
+}
+
+int func_020debf8(u32 a)
+{
+    int r = func_020dec18(a);
+    if (r != 0) {
+        *(u32 *)(((int)data_021508d4) + 0xcc) = 0;
+    }
+    return r;
+}
+
 /* decompiler-derived */
 void Unk0de678_Unk_0df064(void)
 {
