@@ -82,3 +82,4 @@ void func_020f4510(u32 arg0,int arg1)
   Unk0f3db4_Unk_0f4528(*(u8 *)(tmp1 + arg1));
   return;
 }
+

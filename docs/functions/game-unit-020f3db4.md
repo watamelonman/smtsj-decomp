@@ -18,3 +18,8 @@
 - `func_020f4398`
 - `func_020f4448`
 - `func_020f4070`
+
+## Not done in M1-T506
+- `func_020f3fcc`
+- `func_020f45c0`
+- `func_020f4180`
