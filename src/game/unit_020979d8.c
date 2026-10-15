@@ -207,25 +207,25 @@ void func_02097c18(Unk0979d8Pair *out, int a, u8 *b);
 int Unk02e000_GetWorkArea();
 int Unk02e000_GetAreaRecord();
 u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0);
-void func_02097ebc(void);
+void Unk0979d8_ResetAreaEntries(void);
 int Unk096754_ClampField1c();
 int Unk096754_ClampField1e();
 void Unk096754_ResetAreaPos(void);
-int func_02097d54(u8 *p, int i)
+int Unk0979d8_GetPairLo(u8 *p, int i)
 {
     Unk0979d8Pair buf[20];
     func_02097c18(buf, func_020a1428(FIELD(u16, p, 54)), p + 40);
     return buf[i].lo;
 }
 
-int func_02097d98(u8 *p, int i)
+int Unk0979d8_GetPairHi(u8 *p, int i)
 {
     Unk0979d8Pair buf[20];
     func_02097c18(buf, func_020a1428(FIELD(u16, p, 54)), p + 40);
     return buf[i].hi;
 }
 
-void func_02097ddc(void)
+void Unk0979d8_ResetAllEntries(void)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     int j;
@@ -236,10 +236,10 @@ void func_02097ddc(void)
         }
         Unk0979d8_Unk_0979fc((Unk0979d8Work *)Unk02e000_GetAreaRecord(k));
     }
-    func_02097ebc();
+    Unk0979d8_ResetAreaEntries();
 }
 
-void func_02097e1c(int v)
+void Unk0979d8_ClampAllField1e(int v)
 {
     u8 *w;
     int j;
@@ -254,7 +254,7 @@ void func_02097e1c(int v)
     }
 }
 
-void func_02097e6c(int v)
+void Unk0979d8_ClampAllField20(int v)
 {
     u8 *w;
     int j;
@@ -269,7 +269,7 @@ void func_02097e6c(int v)
     }
 }
 
-void func_02097ebc(void)
+void Unk0979d8_ResetAreaEntries(void)
 {
     s8 *t = (s8 *)((u8 *)Unk02e000_GetWorkArea() + 852);
     int j;
@@ -303,7 +303,7 @@ void Unk0979d8_Unk_097f34(u32 arg0)
   Unk0979d8_Unk_0981bc(2,arg0);
 }
 
-s32 func_020980e8(s32 d)
+s32 Unk0979d8_AddField344(s32 d)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     FIELD(s32, w, 836) += d;

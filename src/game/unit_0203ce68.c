@@ -2,7 +2,7 @@
 #include "types.h"
 
 
-int func_02097ddc();
+int Unk0979d8_ResetAllEntries();
 int Unk096754_Unk_096a14();
 int Unk03ce68_Unk_03cf48(void)
 {
@@ -18,7 +18,7 @@ int Unk03ce68_Unk_03cf48(void)
 /* decompiler-derived */
 u32 Unk03ce68_Unk_03cfb4(void)
 {
-  func_02097ddc();
+  Unk0979d8_ResetAllEntries();
   return 1;
 }
 

@@ -19,15 +19,15 @@
 - `Unk0979d8_ClampField1e`
 - `Unk0979d8_ClampField20`
 - `Unk0979d8_HasId`
-- `func_020980e8`
+- `Unk0979d8_AddField344`
 
 ## Not done in M1-T475
-- `func_02097ddc`
-- `func_02097d54`
-- `func_02097d98`
-- `func_02097ebc`
-- `func_02097e1c`
-- `func_02097e6c`
+- `Unk0979d8_ResetAllEntries`
+- `Unk0979d8_GetPairLo`
+- `Unk0979d8_GetPairHi`
+- `Unk0979d8_ResetAreaEntries`
+- `Unk0979d8_ClampAllField1e`
+- `Unk0979d8_ClampAllField20`
 - `func_02097ad0`
 - `func_02098050`
 
@@ -40,10 +40,10 @@
 - `Unk0979d8_ClampField20`: hand-matched
 - `Unk0979d8_HasId`: hand-matched
 - `Unk0979d8_CopyIds`: hand-matched
-- `func_02097d54`: hand-matched
-- `func_02097d98`: hand-matched
-- `func_02097ddc`: hand-matched
-- `func_02097e1c`: hand-matched
-- `func_02097e6c`: hand-matched
-- `func_02097ebc`: hand-matched
-- `func_020980e8`: hand-matched
+- `Unk0979d8_GetPairLo`: hand-matched
+- `Unk0979d8_GetPairHi`: hand-matched
+- `Unk0979d8_ResetAllEntries`: hand-matched
+- `Unk0979d8_ClampAllField1e`: hand-matched
+- `Unk0979d8_ClampAllField20`: hand-matched
+- `Unk0979d8_ResetAreaEntries`: hand-matched
+- `Unk0979d8_AddField344`: hand-matched

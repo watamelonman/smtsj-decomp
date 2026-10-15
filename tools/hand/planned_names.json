@@ -222,5 +222,12 @@
  "func_020974a4": "Unk09727c_GetPairLo",
  "func_020974dc": "Unk09727c_GetPairHi",
  "func_020949e0": "Unk0946e0_Unk_0949e0",
- "func_02094a90": "Unk0946e0_ApplyRect"
+ "func_02094a90": "Unk0946e0_ApplyRect",
+ "func_02097d54": "Unk0979d8_GetPairLo",
+ "func_02097d98": "Unk0979d8_GetPairHi",
+ "func_02097ddc": "Unk0979d8_ResetAllEntries",
+ "func_02097e1c": "Unk0979d8_ClampAllField1e",
+ "func_02097e6c": "Unk0979d8_ClampAllField20",
+ "func_02097ebc": "Unk0979d8_ResetAreaEntries",
+ "func_020980e8": "Unk0979d8_AddField344"
 }
