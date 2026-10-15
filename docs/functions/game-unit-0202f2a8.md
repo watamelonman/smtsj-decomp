@@ -23,7 +23,7 @@
 - `Unk02f2a8_GetCurrentCell38e8`
 - `Unk02f2a8_Unk_034a8c`
 - `Unk02f2a8_GetObj39160Bits16`
-- `func_02035c90`
+- `Unk02f2a8_GridIndex45`
 - `Unk02f2a8_GetRes36Unk19`
 
 ## Not done in M1-T1107
@@ -34,7 +34,7 @@
 - `Unk02f2a8_Call_02035db8`
 - `Unk02f2a8_ClearEntry5e12Bit0`
 - `Unk02f2a8_SetRootUnk60`
-- `func_02035c5c`
+- `Unk02f2a8_IsInGrid45x40`
 
 ## Not done in M1-T1108
 - `Unk02f2a8_Unk_036488`
@@ -49,16 +49,16 @@
 ## Not done in M1-T1109
 - `Unk02f2a8_Unk_02f8ac`
 - `Unk02f2a8_SetField7470`
-- `func_020360d8`
+- `Unk02f2a8_DirToAngle`
 - `Unk02f2a8_SetField6138`
 - `GameState_Shutdown`
 - `Unk02f2a8_Unk_035a70`
-- `func_02035c14`
+- `Unk02f2a8_Unk_035c14`
 - `Unk02f2a8_ResetField7478Ex`
 
 ## Not done in M1-T1110
-- `func_020362c8`
-- `func_02036318`
+- `Unk02f2a8_SetField35c`
+- `Unk02f2a8_SetGridPos`
 - `func_0202f2dc`
 - `func_02034970`
 - `Unk02f2a8_Unk_0302f4`
@@ -186,9 +186,9 @@
 - `Unk02f2a8_GetRes36Unk19`: hand-matched
 - `Unk02f2a8_GetRes36Unk1a`: hand-matched
 - `Unk02f2a8_GetRes36Unk1b`: hand-matched
-- `func_02035c14`: hand-matched
-- `func_02035c5c`: hand-matched
-- `func_02035c90`: hand-matched
-- `func_020360d8`: hand-matched
-- `func_020362c8`: hand-matched
-- `func_02036318`: hand-matched
+- `Unk02f2a8_Unk_035c14`: hand-matched
+- `Unk02f2a8_IsInGrid45x40`: hand-matched
+- `Unk02f2a8_GridIndex45`: hand-matched
+- `Unk02f2a8_DirToAngle`: hand-matched
+- `Unk02f2a8_SetField35c`: hand-matched
+- `Unk02f2a8_SetGridPos`: hand-matched

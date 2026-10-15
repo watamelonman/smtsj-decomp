@@ -45,7 +45,7 @@ u32 Unk0387bc_Unk_038d58(int *arg0)
 
 
 u32 func_0204fe18();
-u8 *func_02038d94(u32 *p, u32 i)
+u8 *Unk0387bc_GetEntry32(u32 *p, u32 i)
 {
     if (p == 0) {
         return 0;
@@ -56,7 +56,7 @@ u8 *func_02038d94(u32 *p, u32 i)
     return (u8 *)p[2] + i * 32;
 }
 
-u8 *func_02038dc4(u32 *p, u32 i)
+u8 *Unk0387bc_GetEntry36(u32 *p, u32 i)
 {
     if (p == 0) {
         return 0;

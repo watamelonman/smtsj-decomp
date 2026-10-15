@@ -39,13 +39,13 @@ void Unk02f2a8_SetField6138(int k, u32 v)
 void Unk02f2a8_Nop_0303c8(void) { }
 void Unk02f2a8_Nop_0303cc(void) { }
 void func_02035db8();
-int func_02036318();
+int Unk02f2a8_SetGridPos();
 void func_0209e0b0();
 int Unk095560_Thunk_020961a0();
 void func_020305a8();
 void func_020a269c();
 void Unk0a4e48_Unk_0a4e9c();
-int func_02035c90();
+int Unk02f2a8_GridIndex45();
 void Unk02f2a8_Unk_0306a8(int *arg0);
 
 typedef struct Unk02f2a8Obj39160 {
@@ -70,7 +70,7 @@ void Unk02f2a8_Call_02036318(GameState *gs)
     if (t != -1) {
         v = t;
     }
-    func_02036318(x, y, v);
+    Unk02f2a8_SetGridPos(x, y, v);
 }
 
 int Unk02f2a8_Unk_032a08(int *p)
@@ -119,7 +119,7 @@ u8 *GameState_GetBody(void)
 
 u32 *Unk02f2a8_GetCell38e8(int a, int b)
 {
-    return (u32 *)gGameState->unk_38e8 + func_02035c90(a, b);
+    return (u32 *)gGameState->unk_38e8 + Unk02f2a8_GridIndex45(a, b);
 }
 
 u32 *Unk02f2a8_GetCurrentCell38e8(void)
@@ -140,7 +140,7 @@ u32 Unk02f2a8_GetObj39160Bits16(void)
 void *func_020445d0();
 u8 *func_0204fde0();
 int func_02035890();
-int func_020362c8();
+int Unk02f2a8_SetField35c();
 
 typedef struct Unk02f2a8Res36 {
     u8 pad_0000[0x19];
@@ -217,13 +217,13 @@ void Unk02f2a8_Call_02057660(void) { func_02057660(2, 0); }
 
 u16 GameState_GetUnkField74f4(void) { return gGameState->unk_74f4; }
 
-int func_020360d8();
+int Unk02f2a8_DirToAngle();
 int Unk02f2a8_Unk_035a70(int a)
 {
     Unk02f2a8Pos pos = {0};
     int r = func_02035890(&pos, a);
-    func_020362c8(pos.unk_0000);
-    func_02036318(pos.unk_0002, pos.unk_0003, pos.unk_0004);
+    Unk02f2a8_SetField35c(pos.unk_0000);
+    Unk02f2a8_SetGridPos(pos.unk_0002, pos.unk_0003, pos.unk_0004);
     return r;
 }
 
@@ -251,7 +251,7 @@ int Unk02f2a8_GetRes36Unk1b(int i, int j)
 int Unk0e5fb8_Unk_0e63c8();
 int Unk02e000_TestFlag();
 void func_0202e968();
-int func_02035c14(int i, int j)
+int Unk02f2a8_Unk_035c14(int i, int j)
 {
     Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
     s8 v = e->unk_001b[j];
@@ -262,7 +262,7 @@ int func_02035c14(int i, int j)
     return r;
 }
 
-int func_02035c5c(int x, int y)
+int Unk02f2a8_IsInGrid45x40(int x, int y)
 {
     if (x < 0) {
         return 0;
@@ -276,9 +276,9 @@ int func_02035c5c(int x, int y)
     return y < 40;
 }
 
-int func_02035c90(int x, int y)
+int Unk02f2a8_GridIndex45(int x, int y)
 {
-    if (func_02035c5c(x, y) == 0) {
+    if (Unk02f2a8_IsInGrid45x40(x, y) == 0) {
         return 0;
     }
     return y * 45 + x;
@@ -288,7 +288,7 @@ int func_02035c90(int x, int y)
 void Unk02f2a8_Unk_035ec4(int arg0,u32 arg1)
 {
   u16 tmp1;
-  tmp1 = func_020360d8(arg1);
+  tmp1 = Unk02f2a8_DirToAngle(arg1);
   *(u16 *)(arg0 + 0x18) = tmp1;
 }
 
@@ -363,7 +363,7 @@ void Unk02f2a8_Unk_035440(int arg0)
 }
 
 int func_02050088();
-int func_020360d8(int dir)
+int Unk02f2a8_DirToAngle(int dir)
 {
     switch (dir) {
     case 1:
@@ -378,7 +378,7 @@ int func_020360d8(int dir)
     return 0;
 }
 
-int func_020362c8(u32 id)
+int Unk02f2a8_SetField35c(u32 id)
 {
     u8 *w;
     if (id >= 90) {
@@ -393,10 +393,10 @@ int func_020362c8(u32 id)
     return 1;
 }
 
-int func_02036318(int x, int y, u32 v)
+int Unk02f2a8_SetGridPos(int x, int y, u32 v)
 {
     u8 *w;
-    if (func_02035c5c(x, y) == 0) {
+    if (Unk02f2a8_IsInGrid45x40(x, y) == 0) {
         return 0;
     }
     w = (u8 *)Unk02e000_GetWorkArea();

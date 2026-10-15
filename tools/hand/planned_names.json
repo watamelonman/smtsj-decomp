@@ -60,5 +60,13 @@
  "func_02035a70": "Unk02f2a8_Unk_035a70",
  "func_02035ab8": "Unk02f2a8_GetRes36Unk19",
  "func_02035ae0": "Unk02f2a8_GetRes36Unk1a",
- "func_02035bd8": "Unk02f2a8_GetRes36Unk1b"
+ "func_02035bd8": "Unk02f2a8_GetRes36Unk1b",
+ "func_02035c14": "Unk02f2a8_Unk_035c14",
+ "func_02035c5c": "Unk02f2a8_IsInGrid45x40",
+ "func_02035c90": "Unk02f2a8_GridIndex45",
+ "func_020360d8": "Unk02f2a8_DirToAngle",
+ "func_020362c8": "Unk02f2a8_SetField35c",
+ "func_02036318": "Unk02f2a8_SetGridPos",
+ "func_02038d94": "Unk0387bc_GetEntry32",
+ "func_02038dc4": "Unk0387bc_GetEntry36"
 }

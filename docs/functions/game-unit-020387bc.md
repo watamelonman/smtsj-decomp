@@ -6,9 +6,9 @@
 - `Unk0387bc_Unk_038e40`: decompiler-derived
 
 ## Not done in M1-T468
-- `func_02038d94`
+- `Unk0387bc_GetEntry32`
 - `func_02038f18`
-- `func_02038dc4`
+- `Unk0387bc_GetEntry36`
 - `func_02038f48`
 - `Unk0387bc_Unk_038edc`: decompiler-derived
 - `Unk0387bc_Unk_038f7c`: decompiler-derived
@@ -24,5 +24,5 @@
 ## Not done in M1-T470
 - `func_02038888`
 - `func_02038934`
-- `func_02038d94`: hand-matched
-- `func_02038dc4`: hand-matched
+- `Unk0387bc_GetEntry32`: hand-matched
+- `Unk0387bc_GetEntry36`: hand-matched
