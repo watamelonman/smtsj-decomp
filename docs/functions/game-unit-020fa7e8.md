@@ -10,3 +10,12 @@
 ## Not done in M1-T500
 - `func_020fb0e0`
 - `func_020fa84c`
+
+## Not done in M1-T501
+- `func_020faa20`
+- `func_020fa92c`
+- `func_020fadf4`
+- `func_020fa9a0`
+- `func_020fa8a8`
+- `func_020fae7c`
+- `func_020faa88`

@@ -55,3 +55,4 @@ void Unk0fa7e8_Unk_0fa7e8(u32 *arg0)
   func_02065bc0();
   func_020655b4(0);
 }
+
