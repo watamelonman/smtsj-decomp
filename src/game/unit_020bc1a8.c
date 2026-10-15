@@ -166,6 +166,19 @@ u32 Unk0bc1a8_GetHeaderWord(u8 *p)
     return FIELD(u32, p, -8);
 }
 
+extern u32 data_02176ba8[];
+typedef struct Unk0bc1a8Slot {
+    u8 *obj;
+    u32 pad_04[2];
+} Unk0bc1a8Slot;
+int func_020bc5ac(u8 *p)
+{
+    if (p == 0) {
+        return 0xffff;
+    }
+    return FIELD(u32, p, -4);
+}
+
 /* decompiler-derived */
 void Unk0bc1a8_Unk_0bc6d4(u32 arg0)
 {
@@ -193,4 +206,25 @@ void Unk0bc1a8_Unk_0bc5d4(void)
   *data_02176ba8 = (int)v2;
   *v2 = tmp1;
   Unk0bc1a8_Unk_0bc6d4(1);
+}
+
+int func_020bc650(int i)
+{
+    if (i >= 41) {
+        return 1;
+    }
+    return (*(Unk0bc1a8Slot **)*data_02176ba8)[i].obj == 0;
+}
+
+int func_020bc688(int i)
+{
+    u8 *o;
+    if (i >= 41) {
+        return 1;
+    }
+    o = (*(Unk0bc1a8Slot **)*data_02176ba8)[i].obj;
+    if (o == 0) {
+        return 1;
+    }
+    return (FIELD(u32, o, 36) & 8) == 8;
 }

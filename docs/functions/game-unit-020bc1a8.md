@@ -49,3 +49,6 @@
 - `Unk0bc1a8_SetFlag4Inv`: hand-matched
 - `Unk0bc1a8_SetFlag1Inv`: hand-matched
 - `Unk0bc1a8_GetHeaderWord`: hand-matched
+- `func_020bc5ac`: hand-matched
+- `func_020bc650`: hand-matched
+- `func_020bc688`: hand-matched
