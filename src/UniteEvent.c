@@ -133,3 +133,9 @@ void UniteEvent_LoadEffects(int arg0,u32 arg1,int arg2,u32 arg3)
   *(u8 *)(arg2 + 4) = tmp1;
   func_02071fcc();
 }
+
+void UniteEvent_SetState(UniteEvent *ev, s32 state)
+{
+    ev->state = state;
+    FIELD(s32, ev, 604) = 0;
+}

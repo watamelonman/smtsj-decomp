@@ -14,3 +14,4 @@
 - `UniteEvent_SetCtxUnk32c`: hand-matched
 - `UniteEvent_CopyIds`: hand-matched
 - `UniteEvent_SetId`: hand-matched
+- `UniteEvent_SetState`: hand-matched; placed at end of file (objdiff placement artifact, see README)
