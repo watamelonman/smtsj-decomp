@@ -40,3 +40,6 @@
 - `Unk0a163c_Unk_0a1728`: hand-matched
 - `Unk0a163c_Call_020a1b08`: hand-matched
 - `Unk0a163c_Call_020a2218`: hand-matched
+- `func_020a1798`: hand-matched
+- `func_020a17d8`: hand-matched
+- `func_020a21f8`: hand-matched
