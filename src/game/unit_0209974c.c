@@ -236,6 +236,49 @@ void *func_0204fde0();
 int func_0204fe18();
 void *func_02011810();
 
+void Unk09974c_SetBit6ac(int id);
+
+u32 func_020999d4(int id)
+{
+    Unk09974cEntry *e = Unk09974c_FindEntry(id);
+    u16 *buf;
+    int off;
+    if (e == 0) {
+        return 0;
+    }
+    buf = (u16 *)Unk09974c_Unk_0997c8(e->unk_0008);
+    off = id - e->lo;
+    switch (e->unk_0009) {
+    case 0:
+    case 1:
+        break;
+    case 2:
+        return buf[off];
+    }
+    return 0;
+}
+
+void func_02099abc(int id, u16 v)
+{
+    Unk09974cEntry *e = Unk09974c_FindEntry(id);
+    u16 *buf;
+    int off;
+    if (e == 0 || v == 0) {
+        return;
+    }
+    buf = (u16 *)Unk09974c_Unk_0997c8(e->unk_0008);
+    off = id - e->lo;
+    switch (e->unk_0009) {
+    case 0:
+    case 1:
+        break;
+    case 2:
+        buf[off] = v;
+        break;
+    }
+    Unk09974c_SetBit6ac(id);
+}
+
 void *Unk09974c_Unk_099bfc(int id)
 {
     Unk09974cRec8 key;

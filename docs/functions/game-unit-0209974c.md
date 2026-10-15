@@ -63,3 +63,5 @@
 - `Unk09974c_Unk_099d14`: hand-matched
 - `Unk09974c_Unk_099d78`: hand-matched
 - `Unk09974c_Unk_099ddc`: hand-matched
+- `func_020999d4`: hand-matched
+- `func_02099abc`: hand-matched
