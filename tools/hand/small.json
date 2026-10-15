@@ -1,0 +1,4286 @@
+[
+{
+"fn": "func_0202d170",
+"addr": "0x202d170",
+"size": "0x28",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202d30c",
+"addr": "0x202d30c",
+"size": "0x3c",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202d348",
+"addr": "0x202d348",
+"size": "0x24",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202d36c",
+"addr": "0x202d36c",
+"size": "0x24",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202d7f4",
+"addr": "0x202d7f4",
+"size": "0x28",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202d830",
+"addr": "0x202d830",
+"size": "0x3c",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202d86c",
+"addr": "0x202d86c",
+"size": "0x3c",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202dc60",
+"addr": "0x202dc60",
+"size": "0x4c",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202dcac",
+"addr": "0x202dcac",
+"size": "0x50",
+"tu": "src/game/unit_0202d15c.c"
+},
+{
+"fn": "func_0202dcfc",
+"addr": "0x202dcfc",
+"size": "0x20",
+"tu": "src/game/unit_0202dcfc.c"
+},
+{
+"fn": "func_0202e000",
+"addr": "0x202e000",
+"size": "0x34",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e034",
+"addr": "0x202e034",
+"size": "0x3c",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e070",
+"addr": "0x202e070",
+"size": "0x20",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e114",
+"addr": "0x202e114",
+"size": "0x30",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e1b8",
+"addr": "0x202e1b8",
+"size": "0x40",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e1f8",
+"addr": "0x202e1f8",
+"size": "0x30",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e440",
+"addr": "0x202e440",
+"size": "0x28",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e4dc",
+"addr": "0x202e4dc",
+"size": "0x44",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e5a8",
+"addr": "0x202e5a8",
+"size": "0x1c",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e7c0",
+"addr": "0x202e7c0",
+"size": "0x34",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e7f4",
+"addr": "0x202e7f4",
+"size": "0x4c",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e840",
+"addr": "0x202e840",
+"size": "0x44",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e904",
+"addr": "0x202e904",
+"size": "0x20",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e924",
+"addr": "0x202e924",
+"size": "0x44",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202e9c8",
+"addr": "0x202e9c8",
+"size": "0x48",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202ea68",
+"addr": "0x202ea68",
+"size": "0x50",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202eb0c",
+"addr": "0x202eb0c",
+"size": "0x3c",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202ebb8",
+"addr": "0x202ebb8",
+"size": "0x44",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202ebfc",
+"addr": "0x202ebfc",
+"size": "0x4c",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202ecac",
+"addr": "0x202ecac",
+"size": "0x4c",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202ed5c",
+"addr": "0x202ed5c",
+"size": "0x4c",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202ee18",
+"addr": "0x202ee18",
+"size": "0x44",
+"tu": "src/game/unit_0202e000.c"
+},
+{
+"fn": "func_0202eec0",
+"addr": "0x202eec0",
+"size": "0x4c",
+"tu": "src/game/unit_0202ee5c.c"
+},
+{
+"fn": "func_0202ef0c",
+"addr": "0x202ef0c",
+"size": "0x28",
+"tu": "src/game/unit_0202ee5c.c"
+},
+{
+"fn": "func_0202f104",
+"addr": "0x202f104",
+"size": "0x48",
+"tu": "src/game/unit_0202f078.c"
+},
+{
+"fn": "func_0202f14c",
+"addr": "0x202f14c",
+"size": "0x44",
+"tu": "src/game/unit_0202f078.c"
+},
+{
+"fn": "func_0202f230",
+"addr": "0x202f230",
+"size": "0x38",
+"tu": "src/game/unit_0202f078.c"
+},
+{
+"fn": "func_0202f268",
+"addr": "0x202f268",
+"size": "0x40",
+"tu": "src/game/unit_0202f078.c"
+},
+{
+"fn": "func_0202f2a8",
+"addr": "0x202f2a8",
+"size": "0x34",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_0202f330",
+"addr": "0x202f330",
+"size": "0x48",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02030548",
+"addr": "0x2030548",
+"size": "0x30",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02031408",
+"addr": "0x2031408",
+"size": "0x40",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02032a08",
+"addr": "0x2032a08",
+"size": "0x38",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02032df4",
+"addr": "0x2032df4",
+"size": "0x24",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_020333b4",
+"addr": "0x20333b4",
+"size": "0x4c",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02034a44",
+"addr": "0x2034a44",
+"size": "0x24",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02034a68",
+"addr": "0x2034a68",
+"size": "0x24",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02034ab0",
+"addr": "0x2034ab0",
+"size": "0x24",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02034ad4",
+"addr": "0x2034ad4",
+"size": "0x34",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02034d5c",
+"addr": "0x2034d5c",
+"size": "0x44",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_020353cc",
+"addr": "0x20353cc",
+"size": "0x2c",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_020353f8",
+"addr": "0x20353f8",
+"size": "0x2c",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02035a70",
+"addr": "0x2035a70",
+"size": "0x48",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02035ab8",
+"addr": "0x2035ab8",
+"size": "0x28",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02035ae0",
+"addr": "0x2035ae0",
+"size": "0x28",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02035bd8",
+"addr": "0x2035bd8",
+"size": "0x3c",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02035c14",
+"addr": "0x2035c14",
+"size": "0x48",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02035c5c",
+"addr": "0x2035c5c",
+"size": "0x34",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02035c90",
+"addr": "0x2035c90",
+"size": "0x24",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_020360d8",
+"addr": "0x20360d8",
+"size": "0x44",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_020362c8",
+"addr": "0x20362c8",
+"size": "0x50",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02036318",
+"addr": "0x2036318",
+"size": "0x50",
+"tu": "src/game/unit_0202f2a8.c"
+},
+{
+"fn": "func_02038d94",
+"addr": "0x2038d94",
+"size": "0x30",
+"tu": "src/game/unit_020387bc.c"
+},
+{
+"fn": "func_02038dc4",
+"addr": "0x2038dc4",
+"size": "0x34",
+"tu": "src/game/unit_020387bc.c"
+},
+{
+"fn": "func_02038f18",
+"addr": "0x2038f18",
+"size": "0x30",
+"tu": "src/game/unit_020387bc.c"
+},
+{
+"fn": "func_02038f48",
+"addr": "0x2038f48",
+"size": "0x34",
+"tu": "src/game/unit_020387bc.c"
+},
+{
+"fn": "func_02039204",
+"addr": "0x2039204",
+"size": "0x44",
+"tu": "src/game/unit_02038fbc.c"
+},
+{
+"fn": "func_0203947c",
+"addr": "0x203947c",
+"size": "0x20",
+"tu": "src/game/unit_020392f8.c"
+},
+{
+"fn": "func_02039b74",
+"addr": "0x2039b74",
+"size": "0x40",
+"tu": "src/game/unit_02039774.c"
+},
+{
+"fn": "func_0203a0a0",
+"addr": "0x203a0a0",
+"size": "0x40",
+"tu": "src/game/unit_02039bb4.c"
+},
+{
+"fn": "func_0203af14",
+"addr": "0x203af14",
+"size": "0x3c",
+"tu": "src/game/unit_0203aae8.c"
+},
+{
+"fn": "func_0203b89c",
+"addr": "0x203b89c",
+"size": "0x48",
+"tu": "src/game/unit_0203aae8.c"
+},
+{
+"fn": "func_0203b93c",
+"addr": "0x203b93c",
+"size": "0x4c",
+"tu": "src/game/unit_0203aae8.c"
+},
+{
+"fn": "func_0203bab4",
+"addr": "0x203bab4",
+"size": "0x4c",
+"tu": "src/game/unit_0203b988.c"
+},
+{
+"fn": "func_0203bb00",
+"addr": "0x203bb00",
+"size": "0x2c",
+"tu": "src/game/unit_0203b988.c"
+},
+{
+"fn": "func_0203bba4",
+"addr": "0x203bba4",
+"size": "0x2c",
+"tu": "src/game/unit_0203bba4.c"
+},
+{
+"fn": "func_0203bc40",
+"addr": "0x203bc40",
+"size": "0x48",
+"tu": "src/game/unit_0203bba4.c"
+},
+{
+"fn": "func_0203c608",
+"addr": "0x203c608",
+"size": "0x30",
+"tu": "src/game/unit_0203c474.c"
+},
+{
+"fn": "func_0203c718",
+"addr": "0x203c718",
+"size": "0x30",
+"tu": "src/game/unit_0203c6a4.c"
+},
+{
+"fn": "func_0203cf48",
+"addr": "0x203cf48",
+"size": "0x30",
+"tu": "src/game/unit_0203ce68.c"
+},
+{
+"fn": "func_0203cfd4",
+"addr": "0x203cfd4",
+"size": "0x20",
+"tu": "src/game/unit_0203ce68.c"
+},
+{
+"fn": "func_0203d72c",
+"addr": "0x203d72c",
+"size": "0x30",
+"tu": "src/game/unit_0203d72c.c"
+},
+{
+"fn": "func_0203d7dc",
+"addr": "0x203d7dc",
+"size": "0x4c",
+"tu": "src/game/unit_0203d72c.c"
+},
+{
+"fn": "func_0203d890",
+"addr": "0x203d890",
+"size": "0x30",
+"tu": "src/game/unit_0203d72c.c"
+},
+{
+"fn": "func_0203d8c0",
+"addr": "0x203d8c0",
+"size": "0x30",
+"tu": "src/game/unit_0203d72c.c"
+},
+{
+"fn": "func_0203d930",
+"addr": "0x203d930",
+"size": "0x38",
+"tu": "src/game/unit_0203d930.c"
+},
+{
+"fn": "func_0203d968",
+"addr": "0x203d968",
+"size": "0x30",
+"tu": "src/game/unit_0203d930.c"
+},
+{
+"fn": "func_0203dbbc",
+"addr": "0x203dbbc",
+"size": "0x50",
+"tu": "src/game/unit_0203dbbc.c"
+},
+{
+"fn": "func_0203dfe0",
+"addr": "0x203dfe0",
+"size": "0x4c",
+"tu": "src/game/unit_0203de08.c"
+},
+{
+"fn": "func_0203e260",
+"addr": "0x203e260",
+"size": "0x30",
+"tu": "src/game/unit_0203e23c.c"
+},
+{
+"fn": "func_0203e290",
+"addr": "0x203e290",
+"size": "0x2c",
+"tu": "src/game/unit_0203e23c.c"
+},
+{
+"fn": "func_0203e2bc",
+"addr": "0x203e2bc",
+"size": "0x3c",
+"tu": "src/game/unit_0203e23c.c"
+},
+{
+"fn": "func_0203e36c",
+"addr": "0x203e36c",
+"size": "0x2c",
+"tu": "src/game/unit_0203e23c.c"
+},
+{
+"fn": "func_0203e398",
+"addr": "0x203e398",
+"size": "0x38",
+"tu": "src/game/unit_0203e23c.c"
+},
+{
+"fn": "func_0203e7cc",
+"addr": "0x203e7cc",
+"size": "0x38",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_0203e804",
+"addr": "0x203e804",
+"size": "0x44",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_0203e848",
+"addr": "0x203e848",
+"size": "0x30",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_0203e894",
+"addr": "0x203e894",
+"size": "0x38",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_0203fa08",
+"addr": "0x203fa08",
+"size": "0x20",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_0203fa58",
+"addr": "0x203fa58",
+"size": "0x2c",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_02041d70",
+"addr": "0x2041d70",
+"size": "0x28",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_02043410",
+"addr": "0x2043410",
+"size": "0x40",
+"tu": "src/game/unit_0203e43c.c"
+},
+{
+"fn": "func_020443e4",
+"addr": "0x20443e4",
+"size": "0x44",
+"tu": "src/game/unit_02044394.c"
+},
+{
+"fn": "func_02044904",
+"addr": "0x2044904",
+"size": "0x44",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_02044fa0",
+"addr": "0x2044fa0",
+"size": "0x38",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_0204527c",
+"addr": "0x204527c",
+"size": "0x48",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_020453ac",
+"addr": "0x20453ac",
+"size": "0x30",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_02045430",
+"addr": "0x2045430",
+"size": "0x30",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_020457a8",
+"addr": "0x20457a8",
+"size": "0x40",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_020459fc",
+"addr": "0x20459fc",
+"size": "0x34",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_02045c38",
+"addr": "0x2045c38",
+"size": "0x20",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_02045c58",
+"addr": "0x2045c58",
+"size": "0x24",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_02046468",
+"addr": "0x2046468",
+"size": "0x34",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_0204661c",
+"addr": "0x204661c",
+"size": "0x28",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_02046644",
+"addr": "0x2046644",
+"size": "0x44",
+"tu": "src/game/unit_02044904.c"
+},
+{
+"fn": "func_02047534",
+"addr": "0x2047534",
+"size": "0x34",
+"tu": "src/game/unit_02047338.c"
+},
+{
+"fn": "func_02047568",
+"addr": "0x2047568",
+"size": "0x28",
+"tu": "src/game/unit_02047568.c"
+},
+{
+"fn": "func_02047718",
+"addr": "0x2047718",
+"size": "0x38",
+"tu": "src/game/unit_02047568.c"
+},
+{
+"fn": "func_02047750",
+"addr": "0x2047750",
+"size": "0x38",
+"tu": "src/game/unit_02047568.c"
+},
+{
+"fn": "func_02047788",
+"addr": "0x2047788",
+"size": "0x4c",
+"tu": "src/game/unit_02047788.c"
+},
+{
+"fn": "func_020477e4",
+"addr": "0x20477e4",
+"size": "0x38",
+"tu": "src/game/unit_02047788.c"
+},
+{
+"fn": "func_02047834",
+"addr": "0x2047834",
+"size": "0x50",
+"tu": "src/game/unit_02047788.c"
+},
+{
+"fn": "func_02047fb4",
+"addr": "0x2047fb4",
+"size": "0x48",
+"tu": "src/game/unit_02047fb4.c"
+},
+{
+"fn": "func_020484d0",
+"addr": "0x20484d0",
+"size": "0x50",
+"tu": "src/BattleTask.c"
+},
+{
+"fn": "func_0204c13c",
+"addr": "0x204c13c",
+"size": "0x28",
+"tu": "src/game/unit_0204bb9c.c"
+},
+{
+"fn": "func_0204c464",
+"addr": "0x204c464",
+"size": "0x3c",
+"tu": "src/game/unit_0204bb9c.c"
+},
+{
+"fn": "func_0204c4a0",
+"addr": "0x204c4a0",
+"size": "0x2c",
+"tu": "src/game/unit_0204bb9c.c"
+},
+{
+"fn": "func_0204cbc8",
+"addr": "0x204cbc8",
+"size": "0x20",
+"tu": "src/game/unit_0204bb9c.c"
+},
+{
+"fn": "func_0205afec",
+"addr": "0x205afec",
+"size": "0x40",
+"tu": "src/game/unit_0205ae50.c"
+},
+{
+"fn": "func_0205b200",
+"addr": "0x205b200",
+"size": "0x28",
+"tu": "src/game/unit_0205ae50.c"
+},
+{
+"fn": "func_0205b30c",
+"addr": "0x205b30c",
+"size": "0x4c",
+"tu": "src/game/unit_0205ae50.c"
+},
+{
+"fn": "func_0205b540",
+"addr": "0x205b540",
+"size": "0x20",
+"tu": "src/game/unit_0205b540.c"
+},
+{
+"fn": "func_0205b560",
+"addr": "0x205b560",
+"size": "0x38",
+"tu": "src/game/unit_0205b540.c"
+},
+{
+"fn": "func_020663d8",
+"addr": "0x20663d8",
+"size": "0x20",
+"tu": "src/game/unit_02065e88.c"
+},
+{
+"fn": "func_020663f8",
+"addr": "0x20663f8",
+"size": "0x24",
+"tu": "src/game/unit_02065e88.c"
+},
+{
+"fn": "func_0206641c",
+"addr": "0x206641c",
+"size": "0x30",
+"tu": "src/game/unit_02065e88.c"
+},
+{
+"fn": "func_020672b4",
+"addr": "0x20672b4",
+"size": "0x48",
+"tu": "src/game/unit_02065e88.c"
+},
+{
+"fn": "func_02068564",
+"addr": "0x2068564",
+"size": "0x4c",
+"tu": "src/game/unit_02065e88.c"
+},
+{
+"fn": "func_02068f18",
+"addr": "0x2068f18",
+"size": "0x30",
+"tu": "src/game/unit_02068f18.c"
+},
+{
+"fn": "func_02068f48",
+"addr": "0x2068f48",
+"size": "0x30",
+"tu": "src/game/unit_02068f18.c"
+},
+{
+"fn": "func_0206a264",
+"addr": "0x206a264",
+"size": "0x48",
+"tu": "src/game/unit_0206a224.c"
+},
+{
+"fn": "func_0206a374",
+"addr": "0x206a374",
+"size": "0x30",
+"tu": "src/game/unit_0206a224.c"
+},
+{
+"fn": "func_0206a3a4",
+"addr": "0x206a3a4",
+"size": "0x50",
+"tu": "src/game/unit_0206a224.c"
+},
+{
+"fn": "func_0206b0ac",
+"addr": "0x206b0ac",
+"size": "0x44",
+"tu": "src/game/unit_0206ae94.c"
+},
+{
+"fn": "func_0206c0b0",
+"addr": "0x206c0b0",
+"size": "0x24",
+"tu": "src/game/unit_0206ae94.c"
+},
+{
+"fn": "func_0206c0d4",
+"addr": "0x206c0d4",
+"size": "0x20",
+"tu": "src/game/unit_0206ae94.c"
+},
+{
+"fn": "func_0206c0f4",
+"addr": "0x206c0f4",
+"size": "0x3c",
+"tu": "src/game/unit_0206ae94.c"
+},
+{
+"fn": "func_0206c8f8",
+"addr": "0x206c8f8",
+"size": "0x40",
+"tu": "src/game/unit_0206ae94.c"
+},
+{
+"fn": "func_0206ca30",
+"addr": "0x206ca30",
+"size": "0x34",
+"tu": "src/game/unit_0206ae94.c"
+},
+{
+"fn": "func_0206dddc",
+"addr": "0x206dddc",
+"size": "0x34",
+"tu": "src/game/unit_0206dddc.c"
+},
+{
+"fn": "func_0206e39c",
+"addr": "0x206e39c",
+"size": "0x3c",
+"tu": "src/game/unit_0206e2a0.c"
+},
+{
+"fn": "func_0206e3d8",
+"addr": "0x206e3d8",
+"size": "0x40",
+"tu": "src/game/unit_0206e2a0.c"
+},
+{
+"fn": "func_0206e418",
+"addr": "0x206e418",
+"size": "0x40",
+"tu": "src/game/unit_0206e2a0.c"
+},
+{
+"fn": "func_0206e458",
+"addr": "0x206e458",
+"size": "0x40",
+"tu": "src/game/unit_0206e2a0.c"
+},
+{
+"fn": "func_0206e498",
+"addr": "0x206e498",
+"size": "0x40",
+"tu": "src/game/unit_0206e2a0.c"
+},
+{
+"fn": "func_0206e5a0",
+"addr": "0x206e5a0",
+"size": "0x1c",
+"tu": "src/game/unit_0206e4d8.c"
+},
+{
+"fn": "func_0206ea0c",
+"addr": "0x206ea0c",
+"size": "0x38",
+"tu": "src/game/unit_0206e4d8.c"
+},
+{
+"fn": "func_0206ea44",
+"addr": "0x206ea44",
+"size": "0x2c",
+"tu": "src/game/unit_0206e4d8.c"
+},
+{
+"fn": "func_0206ea70",
+"addr": "0x206ea70",
+"size": "0x44",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206ebb8",
+"addr": "0x206ebb8",
+"size": "0x30",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206ebe8",
+"addr": "0x206ebe8",
+"size": "0x40",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206ec28",
+"addr": "0x206ec28",
+"size": "0x28",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206f620",
+"addr": "0x206f620",
+"size": "0x28",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206f648",
+"addr": "0x206f648",
+"size": "0x2c",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206f674",
+"addr": "0x206f674",
+"size": "0x24",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206f698",
+"addr": "0x206f698",
+"size": "0x24",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_0206f6bc",
+"addr": "0x206f6bc",
+"size": "0x28",
+"tu": "src/game/unit_0206ea70.c"
+},
+{
+"fn": "func_020713fc",
+"addr": "0x20713fc",
+"size": "0x30",
+"tu": "src/game/unit_0206fb70.c"
+},
+{
+"fn": "func_02071508",
+"addr": "0x2071508",
+"size": "0x34",
+"tu": "src/game/unit_0206fb70.c"
+},
+{
+"fn": "func_02071974",
+"addr": "0x2071974",
+"size": "0x34",
+"tu": "src/game/unit_0206fb70.c"
+},
+{
+"fn": "func_02071d28",
+"addr": "0x2071d28",
+"size": "0x44",
+"tu": "src/game/unit_0206fb70.c"
+},
+{
+"fn": "func_02071e24",
+"addr": "0x2071e24",
+"size": "0x20",
+"tu": "src/game/unit_02071dc0.c"
+},
+{
+"fn": "func_02072030",
+"addr": "0x2072030",
+"size": "0x38",
+"tu": "src/game/unit_02071dc0.c"
+},
+{
+"fn": "func_02077478",
+"addr": "0x2077478",
+"size": "0x3c",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02077554",
+"addr": "0x2077554",
+"size": "0x4c",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02077708",
+"addr": "0x2077708",
+"size": "0x48",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_020777e0",
+"addr": "0x20777e0",
+"size": "0x4c",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02077a4c",
+"addr": "0x2077a4c",
+"size": "0x50",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02077d68",
+"addr": "0x2077d68",
+"size": "0x30",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02077d98",
+"addr": "0x2077d98",
+"size": "0x44",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02077e74",
+"addr": "0x2077e74",
+"size": "0x30",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02077efc",
+"addr": "0x2077efc",
+"size": "0x34",
+"tu": "src/ImageObj.c"
+},
+{
+"fn": "func_02093ae4",
+"addr": "0x2093ae4",
+"size": "0x1c",
+"tu": "src/game/unit_020939f0.c"
+},
+{
+"fn": "func_02094910",
+"addr": "0x2094910",
+"size": "0x3c",
+"tu": "src/game/unit_020946e0.c"
+},
+{
+"fn": "func_02094a90",
+"addr": "0x2094a90",
+"size": "0x50",
+"tu": "src/game/unit_020946e0.c"
+},
+{
+"fn": "func_02094e30",
+"addr": "0x2094e30",
+"size": "0x40",
+"tu": "src/game/unit_020946e0.c"
+},
+{
+"fn": "func_02094e70",
+"addr": "0x2094e70",
+"size": "0x48",
+"tu": "src/game/unit_020946e0.c"
+},
+{
+"fn": "func_02094eb8",
+"addr": "0x2094eb8",
+"size": "0x3c",
+"tu": "src/game/unit_020946e0.c"
+},
+{
+"fn": "func_0209500c",
+"addr": "0x209500c",
+"size": "0x20",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_020950b4",
+"addr": "0x20950b4",
+"size": "0x30",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_020950e4",
+"addr": "0x20950e4",
+"size": "0x48",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_0209512c",
+"addr": "0x209512c",
+"size": "0x4c",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_02095178",
+"addr": "0x2095178",
+"size": "0x38",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_020951b0",
+"addr": "0x20951b0",
+"size": "0x24",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_020951d4",
+"addr": "0x20951d4",
+"size": "0x30",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_02095204",
+"addr": "0x2095204",
+"size": "0x2c",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_02095230",
+"addr": "0x2095230",
+"size": "0x28",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_02095320",
+"addr": "0x2095320",
+"size": "0x30",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_02095350",
+"addr": "0x2095350",
+"size": "0x20",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_02095370",
+"addr": "0x2095370",
+"size": "0x28",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_020953c4",
+"addr": "0x20953c4",
+"size": "0x2c",
+"tu": "src/game/unit_02094fe0.c"
+},
+{
+"fn": "func_02095568",
+"addr": "0x2095568",
+"size": "0x30",
+"tu": "src/game/unit_02095560.c"
+},
+{
+"fn": "func_02095b28",
+"addr": "0x2095b28",
+"size": "0x20",
+"tu": "src/game/unit_02095560.c"
+},
+{
+"fn": "func_02095cd8",
+"addr": "0x2095cd8",
+"size": "0x30",
+"tu": "src/game/unit_02095560.c"
+},
+{
+"fn": "func_02096754",
+"addr": "0x2096754",
+"size": "0x50",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02096898",
+"addr": "0x2096898",
+"size": "0x3c",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02096a60",
+"addr": "0x2096a60",
+"size": "0x50",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02096ab0",
+"addr": "0x2096ab0",
+"size": "0x44",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02096af4",
+"addr": "0x2096af4",
+"size": "0x50",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02096b44",
+"addr": "0x2096b44",
+"size": "0x30",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02096f28",
+"addr": "0x2096f28",
+"size": "0x2c",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_020970d4",
+"addr": "0x20970d4",
+"size": "0x2c",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02097120",
+"addr": "0x2097120",
+"size": "0x2c",
+"tu": "src/game/unit_02096754.c"
+},
+{
+"fn": "func_02097308",
+"addr": "0x2097308",
+"size": "0x38",
+"tu": "src/game/unit_0209727c.c"
+},
+{
+"fn": "func_020974a4",
+"addr": "0x20974a4",
+"size": "0x38",
+"tu": "src/game/unit_0209727c.c"
+},
+{
+"fn": "func_020974dc",
+"addr": "0x20974dc",
+"size": "0x38",
+"tu": "src/game/unit_0209727c.c"
+},
+{
+"fn": "func_02097824",
+"addr": "0x2097824",
+"size": "0x48",
+"tu": "src/game/unit_02097514.c"
+},
+{
+"fn": "func_020979d8",
+"addr": "0x20979d8",
+"size": "0x24",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097b54",
+"addr": "0x2097b54",
+"size": "0x30",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097b84",
+"addr": "0x2097b84",
+"size": "0x30",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097bb4",
+"addr": "0x2097bb4",
+"size": "0x38",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097bec",
+"addr": "0x2097bec",
+"size": "0x2c",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097d54",
+"addr": "0x2097d54",
+"size": "0x44",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097d98",
+"addr": "0x2097d98",
+"size": "0x44",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097ddc",
+"addr": "0x2097ddc",
+"size": "0x40",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097e1c",
+"addr": "0x2097e1c",
+"size": "0x50",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097e6c",
+"addr": "0x2097e6c",
+"size": "0x50",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02097ebc",
+"addr": "0x2097ebc",
+"size": "0x44",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_020980e8",
+"addr": "0x20980e8",
+"size": "0x3c",
+"tu": "src/game/unit_020979d8.c"
+},
+{
+"fn": "func_02098324",
+"addr": "0x2098324",
+"size": "0x38",
+"tu": "src/game/unit_020981dc.c"
+},
+{
+"fn": "func_020986d4",
+"addr": "0x20986d4",
+"size": "0x40",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_02098714",
+"addr": "0x2098714",
+"size": "0x2c",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_020989a4",
+"addr": "0x20989a4",
+"size": "0x38",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_020989dc",
+"addr": "0x20989dc",
+"size": "0x2c",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_02098aa8",
+"addr": "0x2098aa8",
+"size": "0x38",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_02098ae0",
+"addr": "0x2098ae0",
+"size": "0x34",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_02099234",
+"addr": "0x2099234",
+"size": "0x40",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_02099274",
+"addr": "0x2099274",
+"size": "0x3c",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_020992b0",
+"addr": "0x20992b0",
+"size": "0x50",
+"tu": "src/game/unit_020986ac.c"
+},
+{
+"fn": "func_02099780",
+"addr": "0x2099780",
+"size": "0x48",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_020998f0",
+"addr": "0x20998f0",
+"size": "0x4c",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_02099cc4",
+"addr": "0x2099cc4",
+"size": "0x50",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a090",
+"addr": "0x209a090",
+"size": "0x30",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a0c0",
+"addr": "0x209a0c0",
+"size": "0x34",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a0f4",
+"addr": "0x209a0f4",
+"size": "0x20",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a12c",
+"addr": "0x209a12c",
+"size": "0x2c",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a158",
+"addr": "0x209a158",
+"size": "0x48",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a1a0",
+"addr": "0x209a1a0",
+"size": "0x44",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a23c",
+"addr": "0x209a23c",
+"size": "0x2c",
+"tu": "src/game/unit_0209974c.c"
+},
+{
+"fn": "func_0209a3a0",
+"addr": "0x209a3a0",
+"size": "0x4c",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209a458",
+"addr": "0x209a458",
+"size": "0x34",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209a4a0",
+"addr": "0x209a4a0",
+"size": "0x24",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209a4c4",
+"addr": "0x209a4c4",
+"size": "0x38",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209a4fc",
+"addr": "0x209a4fc",
+"size": "0x40",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209a53c",
+"addr": "0x209a53c",
+"size": "0x4c",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209a77c",
+"addr": "0x209a77c",
+"size": "0x40",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209a7bc",
+"addr": "0x209a7bc",
+"size": "0x40",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209b754",
+"addr": "0x209b754",
+"size": "0x20",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209c4a8",
+"addr": "0x209c4a8",
+"size": "0x38",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209c4e0",
+"addr": "0x209c4e0",
+"size": "0x48",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209c528",
+"addr": "0x209c528",
+"size": "0x20",
+"tu": "src/game/unit_0209a268.c"
+},
+{
+"fn": "func_0209d13c",
+"addr": "0x209d13c",
+"size": "0x34",
+"tu": "src/game/unit_0209d060.c"
+},
+{
+"fn": "func_0209d170",
+"addr": "0x209d170",
+"size": "0x24",
+"tu": "src/game/unit_0209d060.c"
+},
+{
+"fn": "func_0209d42c",
+"addr": "0x209d42c",
+"size": "0x20",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209d4bc",
+"addr": "0x209d4bc",
+"size": "0x24",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209d60c",
+"addr": "0x209d60c",
+"size": "0x50",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209d65c",
+"addr": "0x209d65c",
+"size": "0x48",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209d6a4",
+"addr": "0x209d6a4",
+"size": "0x4c",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209d6f0",
+"addr": "0x209d6f0",
+"size": "0x4c",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209d7a8",
+"addr": "0x209d7a8",
+"size": "0x4c",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209df70",
+"addr": "0x209df70",
+"size": "0x40",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209e080",
+"addr": "0x209e080",
+"size": "0x30",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209e274",
+"addr": "0x209e274",
+"size": "0x30",
+"tu": "src/game/unit_0209d42c.c"
+},
+{
+"fn": "func_0209efb4",
+"addr": "0x209efb4",
+"size": "0x44",
+"tu": "src/game/unit_0209ee4c.c"
+},
+{
+"fn": "func_0209eff8",
+"addr": "0x209eff8",
+"size": "0x30",
+"tu": "src/game/unit_0209ee4c.c"
+},
+{
+"fn": "func_0209f298",
+"addr": "0x209f298",
+"size": "0x48",
+"tu": "src/game/unit_0209ee4c.c"
+},
+{
+"fn": "func_0209f5d8",
+"addr": "0x209f5d8",
+"size": "0x4c",
+"tu": "src/game/unit_0209ee4c.c"
+},
+{
+"fn": "func_0209fd14",
+"addr": "0x209fd14",
+"size": "0x50",
+"tu": "src/game/unit_0209ee4c.c"
+},
+{
+"fn": "func_020a0d68",
+"addr": "0x20a0d68",
+"size": "0x2c",
+"tu": "src/game/unit_020a0ce4.c"
+},
+{
+"fn": "func_020a0da4",
+"addr": "0x20a0da4",
+"size": "0x34",
+"tu": "src/game/unit_020a0ce4.c"
+},
+{
+"fn": "func_020a0dd8",
+"addr": "0x20a0dd8",
+"size": "0x34",
+"tu": "src/game/unit_020a0ce4.c"
+},
+{
+"fn": "func_020a0e0c",
+"addr": "0x20a0e0c",
+"size": "0x28",
+"tu": "src/game/unit_020a0ce4.c"
+},
+{
+"fn": "func_020a0e44",
+"addr": "0x20a0e44",
+"size": "0x50",
+"tu": "src/game/unit_020a0ce4.c"
+},
+{
+"fn": "func_020a1798",
+"addr": "0x20a1798",
+"size": "0x40",
+"tu": "src/game/unit_020a163c.c"
+},
+{
+"fn": "func_020a17d8",
+"addr": "0x20a17d8",
+"size": "0x3c",
+"tu": "src/game/unit_020a163c.c"
+},
+{
+"fn": "func_020a1b68",
+"addr": "0x20a1b68",
+"size": "0x38",
+"tu": "src/game/unit_020a163c.c"
+},
+{
+"fn": "func_020a21f8",
+"addr": "0x20a21f8",
+"size": "0x14",
+"tu": "src/game/unit_020a163c.c"
+},
+{
+"fn": "func_020a2218",
+"addr": "0x20a2218",
+"size": "0x38",
+"tu": "src/game/unit_020a163c.c"
+},
+{
+"fn": "func_020a2448",
+"addr": "0x20a2448",
+"size": "0x24",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a246c",
+"addr": "0x20a246c",
+"size": "0x24",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a2490",
+"addr": "0x20a2490",
+"size": "0x24",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a24b4",
+"addr": "0x20a24b4",
+"size": "0x28",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a24dc",
+"addr": "0x20a24dc",
+"size": "0x28",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a2510",
+"addr": "0x20a2510",
+"size": "0x28",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a2538",
+"addr": "0x20a2538",
+"size": "0x28",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a2560",
+"addr": "0x20a2560",
+"size": "0x28",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a2594",
+"addr": "0x20a2594",
+"size": "0x2c",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a25c0",
+"addr": "0x20a25c0",
+"size": "0x20",
+"tu": "src/game/unit_020a23f4.c"
+},
+{
+"fn": "func_020a277c",
+"addr": "0x20a277c",
+"size": "0x2c",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a2820",
+"addr": "0x20a2820",
+"size": "0x2c",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a2884",
+"addr": "0x20a2884",
+"size": "0x2c",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a2920",
+"addr": "0x20a2920",
+"size": "0x30",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a2950",
+"addr": "0x20a2950",
+"size": "0x30",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a2980",
+"addr": "0x20a2980",
+"size": "0x20",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a2b58",
+"addr": "0x20a2b58",
+"size": "0x24",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a2bb8",
+"addr": "0x20a2bb8",
+"size": "0x48",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a3254",
+"addr": "0x20a3254",
+"size": "0x20",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a3760",
+"addr": "0x20a3760",
+"size": "0x3c",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a379c",
+"addr": "0x20a379c",
+"size": "0x34",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a3ac0",
+"addr": "0x20a3ac0",
+"size": "0x44",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a4284",
+"addr": "0x20a4284",
+"size": "0x34",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a4578",
+"addr": "0x20a4578",
+"size": "0x48",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a45c0",
+"addr": "0x20a45c0",
+"size": "0x38",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a4600",
+"addr": "0x20a4600",
+"size": "0x44",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a4994",
+"addr": "0x20a4994",
+"size": "0x38",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a4df0",
+"addr": "0x20a4df0",
+"size": "0x50",
+"tu": "src/ScanVisor.c"
+},
+{
+"fn": "func_020a50f4",
+"addr": "0x20a50f4",
+"size": "0x30",
+"tu": "src/game/unit_020a50d4.c"
+},
+{
+"fn": "func_020a5648",
+"addr": "0x20a5648",
+"size": "0x38",
+"tu": "src/game/unit_020a50d4.c"
+},
+{
+"fn": "func_020a5680",
+"addr": "0x20a5680",
+"size": "0x4c",
+"tu": "src/game/unit_020a5680.c"
+},
+{
+"fn": "func_020a56cc",
+"addr": "0x20a56cc",
+"size": "0x4c",
+"tu": "src/game/unit_020a5680.c"
+},
+{
+"fn": "func_020a572c",
+"addr": "0x20a572c",
+"size": "0x4c",
+"tu": "src/game/unit_020a5680.c"
+},
+{
+"fn": "func_020a5778",
+"addr": "0x20a5778",
+"size": "0x50",
+"tu": "src/game/unit_020a5680.c"
+},
+{
+"fn": "func_020a59c4",
+"addr": "0x20a59c4",
+"size": "0x30",
+"tu": "src/game/unit_020a5680.c"
+},
+{
+"fn": "func_020a5e28",
+"addr": "0x20a5e28",
+"size": "0x20",
+"tu": "src/game/unit_020a5680.c"
+},
+{
+"fn": "func_020a60fc",
+"addr": "0x20a60fc",
+"size": "0x20",
+"tu": "src/game/unit_020a5680.c"
+},
+{
+"fn": "func_020a6174",
+"addr": "0x20a6174",
+"size": "0x2c",
+"tu": "src/game/unit_020a6174.c"
+},
+{
+"fn": "func_020a61f8",
+"addr": "0x20a61f8",
+"size": "0x2c",
+"tu": "src/game/unit_020a6174.c"
+},
+{
+"fn": "func_020a69d0",
+"addr": "0x20a69d0",
+"size": "0x38",
+"tu": "src/game/unit_020a6174.c"
+},
+{
+"fn": "func_020a84a4",
+"addr": "0x20a84a4",
+"size": "0x28",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a8534",
+"addr": "0x20a8534",
+"size": "0x28",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a855c",
+"addr": "0x20a855c",
+"size": "0x38",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a8608",
+"addr": "0x20a8608",
+"size": "0x20",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a8628",
+"addr": "0x20a8628",
+"size": "0x20",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a8ad0",
+"addr": "0x20a8ad0",
+"size": "0x30",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a8b00",
+"addr": "0x20a8b00",
+"size": "0x44",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a8b70",
+"addr": "0x20a8b70",
+"size": "0x3c",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a8c04",
+"addr": "0x20a8c04",
+"size": "0x3c",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a91d4",
+"addr": "0x20a91d4",
+"size": "0x30",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a9390",
+"addr": "0x20a9390",
+"size": "0x28",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a93b8",
+"addr": "0x20a93b8",
+"size": "0x30",
+"tu": "src/game/unit_020a7d54.c"
+},
+{
+"fn": "func_020a9e84",
+"addr": "0x20a9e84",
+"size": "0x30",
+"tu": "src/game/unit_020a9a90.c"
+},
+{
+"fn": "func_020aa118",
+"addr": "0x20aa118",
+"size": "0x18",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020aa1e0",
+"addr": "0x20aa1e0",
+"size": "0x44",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020aa224",
+"addr": "0x20aa224",
+"size": "0x28",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020aa264",
+"addr": "0x20aa264",
+"size": "0x34",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020ab34c",
+"addr": "0x20ab34c",
+"size": "0x28",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020ab468",
+"addr": "0x20ab468",
+"size": "0x50",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020ab4d4",
+"addr": "0x20ab4d4",
+"size": "0x20",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020ab8f8",
+"addr": "0x20ab8f8",
+"size": "0x38",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020ab930",
+"addr": "0x20ab930",
+"size": "0x4c",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020acb28",
+"addr": "0x20acb28",
+"size": "0x4c",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020adaf4",
+"addr": "0x20adaf4",
+"size": "0x3c",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020af780",
+"addr": "0x20af780",
+"size": "0x4c",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020af7cc",
+"addr": "0x20af7cc",
+"size": "0x2c",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020af7f8",
+"addr": "0x20af7f8",
+"size": "0x2c",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020af8d8",
+"addr": "0x20af8d8",
+"size": "0x34",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020afa60",
+"addr": "0x20afa60",
+"size": "0x50",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020afab0",
+"addr": "0x20afab0",
+"size": "0x48",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020afaf8",
+"addr": "0x20afaf8",
+"size": "0x48",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020afb40",
+"addr": "0x20afb40",
+"size": "0x24",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020afbdc",
+"addr": "0x20afbdc",
+"size": "0x4c",
+"tu": "src/game/unit_020aa118.c"
+},
+{
+"fn": "func_020afc38",
+"addr": "0x20afc38",
+"size": "0x48",
+"tu": "src/game/unit_020afc28.c"
+},
+{
+"fn": "func_020afd60",
+"addr": "0x20afd60",
+"size": "0x38",
+"tu": "src/game/unit_020afc28.c"
+},
+{
+"fn": "func_020afd98",
+"addr": "0x20afd98",
+"size": "0x38",
+"tu": "src/game/unit_020afc28.c"
+},
+{
+"fn": "func_020b0654",
+"addr": "0x20b0654",
+"size": "0x4c",
+"tu": "src/game/unit_020afc28.c"
+},
+{
+"fn": "func_020b0930",
+"addr": "0x20b0930",
+"size": "0x44",
+"tu": "src/game/unit_020afc28.c"
+},
+{
+"fn": "func_020b0c30",
+"addr": "0x20b0c30",
+"size": "0x48",
+"tu": "src/game/unit_020b0b5c.c"
+},
+{
+"fn": "func_020b0cac",
+"addr": "0x20b0cac",
+"size": "0x48",
+"tu": "src/game/unit_020b0b5c.c"
+},
+{
+"fn": "func_020b2d84",
+"addr": "0x20b2d84",
+"size": "0x4c",
+"tu": "src/game/unit_020b28e4.c"
+},
+{
+"fn": "func_020b5e10",
+"addr": "0x20b5e10",
+"size": "0x1c",
+"tu": "src/game/unit_020b28e4.c"
+},
+{
+"fn": "func_020b62e8",
+"addr": "0x20b62e8",
+"size": "0x50",
+"tu": "src/game/unit_020b28e4.c"
+},
+{
+"fn": "func_020b6338",
+"addr": "0x20b6338",
+"size": "0x38",
+"tu": "src/game/unit_020b28e4.c"
+},
+{
+"fn": "func_020b6370",
+"addr": "0x20b6370",
+"size": "0x44",
+"tu": "src/game/unit_020b28e4.c"
+},
+{
+"fn": "func_020b6528",
+"addr": "0x20b6528",
+"size": "0x48",
+"tu": "src/game/unit_020b28e4.c"
+},
+{
+"fn": "func_020bb144",
+"addr": "0x20bb144",
+"size": "0x48",
+"tu": "src/game/unit_020bac80.c"
+},
+{
+"fn": "func_020bb2b0",
+"addr": "0x20bb2b0",
+"size": "0x24",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb2ec",
+"addr": "0x20bb2ec",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb314",
+"addr": "0x20bb314",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb33c",
+"addr": "0x20bb33c",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb364",
+"addr": "0x20bb364",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb38c",
+"addr": "0x20bb38c",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb3b4",
+"addr": "0x20bb3b4",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb3dc",
+"addr": "0x20bb3dc",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb404",
+"addr": "0x20bb404",
+"size": "0x28",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb490",
+"addr": "0x20bb490",
+"size": "0x30",
+"tu": "src/game/unit_020bb2b0.c"
+},
+{
+"fn": "func_020bb6e8",
+"addr": "0x20bb6e8",
+"size": "0x3c",
+"tu": "src/game/unit_020bb6e8.c"
+},
+{
+"fn": "func_020bb724",
+"addr": "0x20bb724",
+"size": "0x4c",
+"tu": "src/game/unit_020bb6e8.c"
+},
+{
+"fn": "func_020bb770",
+"addr": "0x20bb770",
+"size": "0x3c",
+"tu": "src/game/unit_020bb6e8.c"
+},
+{
+"fn": "func_020bb7ac",
+"addr": "0x20bb7ac",
+"size": "0x38",
+"tu": "src/game/unit_020bb6e8.c"
+},
+{
+"fn": "func_020bb880",
+"addr": "0x20bb880",
+"size": "0x20",
+"tu": "src/game/unit_020bb6e8.c"
+},
+{
+"fn": "func_020bb8c0",
+"addr": "0x20bb8c0",
+"size": "0x48",
+"tu": "src/game/unit_020bb6e8.c"
+},
+{
+"fn": "func_020bb9e8",
+"addr": "0x20bb9e8",
+"size": "0x2c",
+"tu": "src/game/unit_020bb908.c"
+},
+{
+"fn": "func_020bba14",
+"addr": "0x20bba14",
+"size": "0x2c",
+"tu": "src/game/unit_020bb908.c"
+},
+{
+"fn": "func_020bba40",
+"addr": "0x20bba40",
+"size": "0x2c",
+"tu": "src/game/unit_020bb908.c"
+},
+{
+"fn": "func_020bba6c",
+"addr": "0x20bba6c",
+"size": "0x48",
+"tu": "src/game/unit_020bb908.c"
+},
+{
+"fn": "func_020bbab4",
+"addr": "0x20bbab4",
+"size": "0x48",
+"tu": "src/game/unit_020bb908.c"
+},
+{
+"fn": "func_020bbafc",
+"addr": "0x20bbafc",
+"size": "0x48",
+"tu": "src/game/unit_020bb908.c"
+},
+{
+"fn": "func_020bc17c",
+"addr": "0x20bc17c",
+"size": "0x2c",
+"tu": "src/game/unit_020bbfa4.c"
+},
+{
+"fn": "func_020bc490",
+"addr": "0x20bc490",
+"size": "0x50",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc4e0",
+"addr": "0x20bc4e0",
+"size": "0x24",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc548",
+"addr": "0x20bc548",
+"size": "0x28",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc570",
+"addr": "0x20bc570",
+"size": "0x28",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc598",
+"addr": "0x20bc598",
+"size": "0x14",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc5ac",
+"addr": "0x20bc5ac",
+"size": "0x14",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc614",
+"addr": "0x20bc614",
+"size": "0x3c",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc650",
+"addr": "0x20bc650",
+"size": "0x38",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bc688",
+"addr": "0x20bc688",
+"size": "0x4c",
+"tu": "src/game/unit_020bc1a8.c"
+},
+{
+"fn": "func_020bcd58",
+"addr": "0x20bcd58",
+"size": "0x4c",
+"tu": "src/game/unit_020bcc7c.c"
+},
+{
+"fn": "func_020bd034",
+"addr": "0x20bd034",
+"size": "0x3c",
+"tu": "src/game/unit_020bcef4.c"
+},
+{
+"fn": "func_020bd398",
+"addr": "0x20bd398",
+"size": "0x48",
+"tu": "src/game/unit_020bcef4.c"
+},
+{
+"fn": "func_020bd54c",
+"addr": "0x20bd54c",
+"size": "0x38",
+"tu": "src/game/unit_020bcef4.c"
+},
+{
+"fn": "func_020bd5f0",
+"addr": "0x20bd5f0",
+"size": "0x24",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c1870",
+"addr": "0x20c1870",
+"size": "0x50",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c1918",
+"addr": "0x20c1918",
+"size": "0x50",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c1968",
+"addr": "0x20c1968",
+"size": "0x28",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c20bc",
+"addr": "0x20c20bc",
+"size": "0x34",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c7c44",
+"addr": "0x20c7c44",
+"size": "0x4c",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c7c90",
+"addr": "0x20c7c90",
+"size": "0x4c",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c7f70",
+"addr": "0x20c7f70",
+"size": "0x4c",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c7fbc",
+"addr": "0x20c7fbc",
+"size": "0x4c",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c842c",
+"addr": "0x20c842c",
+"size": "0x4c",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c8478",
+"addr": "0x20c8478",
+"size": "0x30",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c84c0",
+"addr": "0x20c84c0",
+"size": "0x50",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c8510",
+"addr": "0x20c8510",
+"size": "0x30",
+"tu": "src/game/unit_020bd5f0.c"
+},
+{
+"fn": "func_020c9eb0",
+"addr": "0x20c9eb0",
+"size": "0x30",
+"tu": "src/game/unit_020c855c.c"
+},
+{
+"fn": "func_020ca550",
+"addr": "0x20ca550",
+"size": "0x3c",
+"tu": "src/game/unit_020c855c.c"
+},
+{
+"fn": "func_020ca648",
+"addr": "0x20ca648",
+"size": "0x48",
+"tu": "src/game/unit_020c855c.c"
+},
+{
+"fn": "func_020cae84",
+"addr": "0x20cae84",
+"size": "0x24",
+"tu": "src/game/unit_020ca69c.c"
+},
+{
+"fn": "func_020cb084",
+"addr": "0x20cb084",
+"size": "0x4c",
+"tu": "src/game/unit_020caea8.c"
+},
+{
+"fn": "func_020cb274",
+"addr": "0x20cb274",
+"size": "0x34",
+"tu": "src/game/unit_020cb0d0.c"
+},
+{
+"fn": "func_020cb2a8",
+"addr": "0x20cb2a8",
+"size": "0x44",
+"tu": "src/game/unit_020cb0d0.c"
+},
+{
+"fn": "func_020cb2ec",
+"addr": "0x20cb2ec",
+"size": "0x18",
+"tu": "src/game/unit_020cb0d0.c"
+},
+{
+"fn": "func_020cb504",
+"addr": "0x20cb504",
+"size": "0x48",
+"tu": "src/game/unit_020cb32c.c"
+},
+{
+"fn": "func_020cb58c",
+"addr": "0x20cb58c",
+"size": "0x28",
+"tu": "src/game/unit_020cb32c.c"
+},
+{
+"fn": "func_020cb7f0",
+"addr": "0x20cb7f0",
+"size": "0x20",
+"tu": "src/game/unit_020cb32c.c"
+},
+{
+"fn": "func_020cca80",
+"addr": "0x20cca80",
+"size": "0x28",
+"tu": "src/game/unit_020cb32c.c"
+},
+{
+"fn": "func_020ccc64",
+"addr": "0x20ccc64",
+"size": "0x50",
+"tu": "src/game/unit_020cb32c.c"
+},
+{
+"fn": "func_020cce38",
+"addr": "0x20cce38",
+"size": "0x38",
+"tu": "src/game/unit_020cce38.c"
+},
+{
+"fn": "func_020cd490",
+"addr": "0x20cd490",
+"size": "0xc",
+"tu": "src/game/unit_020cd470.c"
+},
+{
+"fn": "func_020cd49c",
+"addr": "0x20cd49c",
+"size": "0x34",
+"tu": "src/game/unit_020cd470.c"
+},
+{
+"fn": "func_020cd4d0",
+"addr": "0x20cd4d0",
+"size": "0x38",
+"tu": "src/game/unit_020cd470.c"
+},
+{
+"fn": "func_020cddd0",
+"addr": "0x20cddd0",
+"size": "0x4c",
+"tu": "src/game/unit_020cd6ec.c"
+},
+{
+"fn": "func_020ce3e0",
+"addr": "0x20ce3e0",
+"size": "0xc",
+"tu": "src/game/unit_020cd6ec.c"
+},
+{
+"fn": "func_020cf238",
+"addr": "0x20cf238",
+"size": "0x20",
+"tu": "src/game/unit_020ce578.c"
+},
+{
+"fn": "func_020cf4b8",
+"addr": "0x20cf4b8",
+"size": "0xc",
+"tu": "src/game/unit_020ce578.c"
+},
+{
+"fn": "func_020cf4c4",
+"addr": "0x20cf4c4",
+"size": "0xc",
+"tu": "src/game/unit_020ce578.c"
+},
+{
+"fn": "func_020cf5e8",
+"addr": "0x20cf5e8",
+"size": "0x44",
+"tu": "src/game/unit_020cf5e8.c"
+},
+{
+"fn": "func_020d1360",
+"addr": "0x20d1360",
+"size": "0x3c",
+"tu": "src/game/unit_020cf5e8.c"
+},
+{
+"fn": "func_020d185c",
+"addr": "0x20d185c",
+"size": "0x44",
+"tu": "src/game/unit_020cf5e8.c"
+},
+{
+"fn": "func_020d1908",
+"addr": "0x20d1908",
+"size": "0x50",
+"tu": "src/game/unit_020cf5e8.c"
+},
+{
+"fn": "func_020d19d4",
+"addr": "0x20d19d4",
+"size": "0x44",
+"tu": "src/game/unit_020cf5e8.c"
+},
+{
+"fn": "func_020d1d4c",
+"addr": "0x20d1d4c",
+"size": "0x48",
+"tu": "src/game/unit_020d1c98.c"
+},
+{
+"fn": "func_020d2b10",
+"addr": "0x20d2b10",
+"size": "0x48",
+"tu": "src/game/unit_020d297c.c"
+},
+{
+"fn": "func_020d2f60",
+"addr": "0x20d2f60",
+"size": "0x38",
+"tu": "src/game/unit_020d297c.c"
+},
+{
+"fn": "func_020d3004",
+"addr": "0x20d3004",
+"size": "0x30",
+"tu": "src/game/unit_020d297c.c"
+},
+{
+"fn": "func_020d3138",
+"addr": "0x20d3138",
+"size": "0x14",
+"tu": "src/game/unit_020d297c.c"
+},
+{
+"fn": "func_020d3264",
+"addr": "0x20d3264",
+"size": "0x2c",
+"tu": "src/game/unit_020d297c.c"
+},
+{
+"fn": "func_020d51cc",
+"addr": "0x20d51cc",
+"size": "0x30",
+"tu": "src/CampStatus.c"
+},
+{
+"fn": "func_020d6c88",
+"addr": "0x20d6c88",
+"size": "0x24",
+"tu": "src/CampStatus.c"
+},
+{
+"fn": "func_020d6cac",
+"addr": "0x20d6cac",
+"size": "0x38",
+"tu": "src/CampStatus.c"
+},
+{
+"fn": "func_020d6ce4",
+"addr": "0x20d6ce4",
+"size": "0x3c",
+"tu": "src/CampStatus.c"
+},
+{
+"fn": "func_020dbf24",
+"addr": "0x20dbf24",
+"size": "0x48",
+"tu": "src/CampStatus.c"
+},
+{
+"fn": "func_020dcaac",
+"addr": "0x20dcaac",
+"size": "0x28",
+"tu": "src/CampStatus.c"
+},
+{
+"fn": "func_020dddf4",
+"addr": "0x20dddf4",
+"size": "0x48",
+"tu": "src/CampStatus.c"
+},
+{
+"fn": "func_020ddf0c",
+"addr": "0x20ddf0c",
+"size": "0x2c",
+"tu": "src/game/unit_020ddeb0.c"
+},
+{
+"fn": "func_020ddf38",
+"addr": "0x20ddf38",
+"size": "0x44",
+"tu": "src/game/unit_020ddeb0.c"
+},
+{
+"fn": "func_020dea70",
+"addr": "0x20dea70",
+"size": "0x30",
+"tu": "src/game/unit_020de678.c"
+},
+{
+"fn": "func_020debf8",
+"addr": "0x20debf8",
+"size": "0x20",
+"tu": "src/game/unit_020de678.c"
+},
+{
+"fn": "func_020dedf8",
+"addr": "0x20dedf8",
+"size": "0x34",
+"tu": "src/game/unit_020de678.c"
+},
+{
+"fn": "func_020deedc",
+"addr": "0x20deedc",
+"size": "0x30",
+"tu": "src/game/unit_020de678.c"
+},
+{
+"fn": "func_020df348",
+"addr": "0x20df348",
+"size": "0x2c",
+"tu": "src/game/unit_020de678.c"
+},
+{
+"fn": "func_020df4cc",
+"addr": "0x20df4cc",
+"size": "0x24",
+"tu": "src/game/unit_020de678.c"
+},
+{
+"fn": "func_020df4f0",
+"addr": "0x20df4f0",
+"size": "0x30",
+"tu": "src/game/unit_020de678.c"
+},
+{
+"fn": "func_020df5b8",
+"addr": "0x20df5b8",
+"size": "0x30",
+"tu": "src/game/unit_020df5b8.c"
+},
+{
+"fn": "func_020df66c",
+"addr": "0x20df66c",
+"size": "0xc",
+"tu": "src/game/unit_020df5b8.c"
+},
+{
+"fn": "func_020df678",
+"addr": "0x20df678",
+"size": "0xc",
+"tu": "src/game/unit_020df5b8.c"
+},
+{
+"fn": "func_020df7c4",
+"addr": "0x20df7c4",
+"size": "0x34",
+"tu": "src/SaveLoadTask.c"
+},
+{
+"fn": "func_020dfeec",
+"addr": "0x20dfeec",
+"size": "0x34",
+"tu": "src/SaveLoadTask.c"
+},
+{
+"fn": "func_020dff20",
+"addr": "0x20dff20",
+"size": "0x48",
+"tu": "src/SaveLoadTask.c"
+},
+{
+"fn": "func_020e0034",
+"addr": "0x20e0034",
+"size": "0x38",
+"tu": "src/SaveLoadTask.c"
+},
+{
+"fn": "func_020e1664",
+"addr": "0x20e1664",
+"size": "0x24",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e2d28",
+"addr": "0x20e2d28",
+"size": "0x44",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e2db0",
+"addr": "0x20e2db0",
+"size": "0x3c",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e2dec",
+"addr": "0x20e2dec",
+"size": "0x20",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e2f54",
+"addr": "0x20e2f54",
+"size": "0x30",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e4c64",
+"addr": "0x20e4c64",
+"size": "0x40",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e5198",
+"addr": "0x20e5198",
+"size": "0x34",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e536c",
+"addr": "0x20e536c",
+"size": "0x28",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e544c",
+"addr": "0x20e544c",
+"size": "0x38",
+"tu": "src/game/unit_020e1648.c"
+},
+{
+"fn": "func_020e5484",
+"addr": "0x20e5484",
+"size": "0x34",
+"tu": "src/ImageBg.c"
+},
+{
+"fn": "func_020e55fc",
+"addr": "0x20e55fc",
+"size": "0x3c",
+"tu": "src/ImageBg.c"
+},
+{
+"fn": "func_020e5638",
+"addr": "0x20e5638",
+"size": "0x2c",
+"tu": "src/ImageBg.c"
+},
+{
+"fn": "func_020e60b4",
+"addr": "0x20e60b4",
+"size": "0x4c",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e6100",
+"addr": "0x20e6100",
+"size": "0x3c",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e620c",
+"addr": "0x20e620c",
+"size": "0x20",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e62e0",
+"addr": "0x20e62e0",
+"size": "0x3c",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e6360",
+"addr": "0x20e6360",
+"size": "0x3c",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e63e0",
+"addr": "0x20e63e0",
+"size": "0x3c",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e6460",
+"addr": "0x20e6460",
+"size": "0x3c",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e64e0",
+"addr": "0x20e64e0",
+"size": "0x3c",
+"tu": "src/game/unit_020e5fb8.c"
+},
+{
+"fn": "func_020e6574",
+"addr": "0x20e6574",
+"size": "0x20",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e6594",
+"addr": "0x20e6594",
+"size": "0x1c",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e65b0",
+"addr": "0x20e65b0",
+"size": "0x1c",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e65cc",
+"addr": "0x20e65cc",
+"size": "0x20",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e65ec",
+"addr": "0x20e65ec",
+"size": "0x44",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e6630",
+"addr": "0x20e6630",
+"size": "0x3c",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e6684",
+"addr": "0x20e6684",
+"size": "0x20",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e66a4",
+"addr": "0x20e66a4",
+"size": "0x1c",
+"tu": "src/game/unit_020e651c.c"
+},
+{
+"fn": "func_020e7770",
+"addr": "0x20e7770",
+"size": "0x20",
+"tu": "src/game/unit_020e7290.c"
+},
+{
+"fn": "func_020e77f0",
+"addr": "0x20e77f0",
+"size": "0x50",
+"tu": "src/game/unit_020e7290.c"
+},
+{
+"fn": "func_020e78b8",
+"addr": "0x20e78b8",
+"size": "0x2c",
+"tu": "src/game/unit_020e78b8.c"
+},
+{
+"fn": "func_020e8260",
+"addr": "0x20e8260",
+"size": "0x4c",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8374",
+"addr": "0x20e8374",
+"size": "0x24",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e83ac",
+"addr": "0x20e83ac",
+"size": "0x3c",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e83e8",
+"addr": "0x20e83e8",
+"size": "0x3c",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8424",
+"addr": "0x20e8424",
+"size": "0x3c",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e849c",
+"addr": "0x20e849c",
+"size": "0x48",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e85a0",
+"addr": "0x20e85a0",
+"size": "0x28",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8b54",
+"addr": "0x20e8b54",
+"size": "0x28",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8be8",
+"addr": "0x20e8be8",
+"size": "0x44",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8c80",
+"addr": "0x20e8c80",
+"size": "0x1c",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8ce8",
+"addr": "0x20e8ce8",
+"size": "0x30",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8e28",
+"addr": "0x20e8e28",
+"size": "0x28",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e8fe4",
+"addr": "0x20e8fe4",
+"size": "0x3c",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e93d8",
+"addr": "0x20e93d8",
+"size": "0x34",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e942c",
+"addr": "0x20e942c",
+"size": "0x40",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e9748",
+"addr": "0x20e9748",
+"size": "0x30",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e9b10",
+"addr": "0x20e9b10",
+"size": "0x44",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e9bc0",
+"addr": "0x20e9bc0",
+"size": "0x40",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020e9f58",
+"addr": "0x20e9f58",
+"size": "0x4c",
+"tu": "src/game/unit_020e8228.c"
+},
+{
+"fn": "func_020ea390",
+"addr": "0x20ea390",
+"size": "0x3c",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea438",
+"addr": "0x20ea438",
+"size": "0x28",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea460",
+"addr": "0x20ea460",
+"size": "0x28",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea488",
+"addr": "0x20ea488",
+"size": "0x28",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea4b0",
+"addr": "0x20ea4b0",
+"size": "0x28",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea4d8",
+"addr": "0x20ea4d8",
+"size": "0x4c",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea524",
+"addr": "0x20ea524",
+"size": "0x4c",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea570",
+"addr": "0x20ea570",
+"size": "0x28",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea598",
+"addr": "0x20ea598",
+"size": "0x4c",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea5e4",
+"addr": "0x20ea5e4",
+"size": "0x4c",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea70c",
+"addr": "0x20ea70c",
+"size": "0x20",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea828",
+"addr": "0x20ea828",
+"size": "0x34",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ea85c",
+"addr": "0x20ea85c",
+"size": "0x1c",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020eac24",
+"addr": "0x20eac24",
+"size": "0x1c",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020eac40",
+"addr": "0x20eac40",
+"size": "0x40",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ead64",
+"addr": "0x20ead64",
+"size": "0x44",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020eb2a4",
+"addr": "0x20eb2a4",
+"size": "0x28",
+"tu": "src/game/unit_020ea208.c"
+},
+{
+"fn": "func_020ed1a8",
+"addr": "0x20ed1a8",
+"size": "0x2c",
+"tu": "src/CaveArea.c"
+},
+{
+"fn": "func_020ed364",
+"addr": "0x20ed364",
+"size": "0x50",
+"tu": "src/CaveArea.c"
+},
+{
+"fn": "func_020ed3cc",
+"addr": "0x20ed3cc",
+"size": "0x30",
+"tu": "src/CaveArea.c"
+},
+{
+"fn": "func_020ed60c",
+"addr": "0x20ed60c",
+"size": "0x28",
+"tu": "src/CaveArea.c"
+},
+{
+"fn": "func_020ed9e8",
+"addr": "0x20ed9e8",
+"size": "0x30",
+"tu": "src/CaveArea.c"
+},
+{
+"fn": "func_020edb4c",
+"addr": "0x20edb4c",
+"size": "0x48",
+"tu": "src/CaveArea.c"
+},
+{
+"fn": "func_020ee844",
+"addr": "0x20ee844",
+"size": "0x3c",
+"tu": "src/game/unit_020ee6dc.c"
+},
+{
+"fn": "func_020ee8bc",
+"addr": "0x20ee8bc",
+"size": "0x48",
+"tu": "src/game/unit_020ee6dc.c"
+},
+{
+"fn": "func_020eeb20",
+"addr": "0x20eeb20",
+"size": "0x24",
+"tu": "src/game/unit_020eeb20.c"
+},
+{
+"fn": "func_020ef2cc",
+"addr": "0x20ef2cc",
+"size": "0x20",
+"tu": "src/game/unit_020ef248.c"
+},
+{
+"fn": "func_020ef2ec",
+"addr": "0x20ef2ec",
+"size": "0x44",
+"tu": "src/game/unit_020ef248.c"
+},
+{
+"fn": "func_020ef6fc",
+"addr": "0x20ef6fc",
+"size": "0x50",
+"tu": "src/game/unit_020ef248.c"
+},
+{
+"fn": "func_020ef74c",
+"addr": "0x20ef74c",
+"size": "0x40",
+"tu": "src/game/unit_020ef248.c"
+},
+{
+"fn": "func_020efd1c",
+"addr": "0x20efd1c",
+"size": "0x48",
+"tu": "src/game/unit_020efb90.c"
+},
+{
+"fn": "func_020eff38",
+"addr": "0x20eff38",
+"size": "0x24",
+"tu": "src/game/unit_020efdf4.c"
+},
+{
+"fn": "func_020f0078",
+"addr": "0x20f0078",
+"size": "0x20",
+"tu": "src/game/unit_020efff4.c"
+},
+{
+"fn": "func_020f0098",
+"addr": "0x20f0098",
+"size": "0x44",
+"tu": "src/game/unit_020efff4.c"
+},
+{
+"fn": "func_020f0b1c",
+"addr": "0x20f0b1c",
+"size": "0x48",
+"tu": "src/game/unit_020f09b4.c"
+},
+{
+"fn": "func_020f0b98",
+"addr": "0x20f0b98",
+"size": "0x48",
+"tu": "src/game/unit_020f09b4.c"
+},
+{
+"fn": "func_020f0f08",
+"addr": "0x20f0f08",
+"size": "0x24",
+"tu": "src/game/unit_020f0eac.c"
+},
+{
+"fn": "func_020f0fe0",
+"addr": "0x20f0fe0",
+"size": "0x20",
+"tu": "src/game/unit_020f0eac.c"
+},
+{
+"fn": "func_020f2d60",
+"addr": "0x20f2d60",
+"size": "0x20",
+"tu": "src/game/unit_020f1128.c"
+},
+{
+"fn": "func_020f4160",
+"addr": "0x20f4160",
+"size": "0x20",
+"tu": "src/game/unit_020f3db4.c"
+},
+{
+"fn": "func_020f4398",
+"addr": "0x20f4398",
+"size": "0x3c",
+"tu": "src/game/unit_020f3db4.c"
+},
+{
+"fn": "func_020f4448",
+"addr": "0x20f4448",
+"size": "0x48",
+"tu": "src/game/unit_020f3db4.c"
+},
+{
+"fn": "func_020f4928",
+"addr": "0x20f4928",
+"size": "0x24",
+"tu": "src/game/unit_020f470c.c"
+},
+{
+"fn": "func_020f49f4",
+"addr": "0x20f49f4",
+"size": "0x28",
+"tu": "src/game/unit_020f470c.c"
+},
+{
+"fn": "func_020f4a1c",
+"addr": "0x20f4a1c",
+"size": "0x44",
+"tu": "src/game/unit_020f470c.c"
+},
+{
+"fn": "func_020f57d4",
+"addr": "0x20f57d4",
+"size": "0x2c",
+"tu": "src/game/unit_020f51dc.c"
+},
+{
+"fn": "func_020f7210",
+"addr": "0x20f7210",
+"size": "0x38",
+"tu": "src/game/unit_020f7188.c"
+},
+{
+"fn": "func_020f7c64",
+"addr": "0x20f7c64",
+"size": "0x2c",
+"tu": "src/game/unit_020f7188.c"
+},
+{
+"fn": "func_020f8034",
+"addr": "0x20f8034",
+"size": "0x44",
+"tu": "src/game/unit_020f7eb4.c"
+},
+{
+"fn": "func_020f8224",
+"addr": "0x20f8224",
+"size": "0x28",
+"tu": "src/game/unit_020f81a4.c"
+},
+{
+"fn": "func_020f8478",
+"addr": "0x20f8478",
+"size": "0x30",
+"tu": "src/game/unit_020f8448.c"
+},
+{
+"fn": "func_020f84c0",
+"addr": "0x20f84c0",
+"size": "0x34",
+"tu": "src/game/unit_020f8448.c"
+},
+{
+"fn": "func_020f90dc",
+"addr": "0x20f90dc",
+"size": "0x4c",
+"tu": "src/game/unit_020f90dc.c"
+},
+{
+"fn": "func_020fb0e0",
+"addr": "0x20fb0e0",
+"size": "0x28",
+"tu": "src/game/unit_020fa7e8.c"
+},
+{
+"fn": "func_020fb1d0",
+"addr": "0x20fb1d0",
+"size": "0x20",
+"tu": "src/game/unit_020fb128.c"
+},
+{
+"fn": "func_020fb614",
+"addr": "0x20fb614",
+"size": "0x20",
+"tu": "src/game/unit_020fb128.c"
+},
+{
+"fn": "func_020fbd30",
+"addr": "0x20fbd30",
+"size": "0x44",
+"tu": "src/game/unit_020fbc74.c"
+},
+{
+"fn": "func_020fbd74",
+"addr": "0x20fbd74",
+"size": "0x50",
+"tu": "src/game/unit_020fbc74.c"
+},
+{
+"fn": "func_020fc584",
+"addr": "0x20fc584",
+"size": "0x50",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fc638",
+"addr": "0x20fc638",
+"size": "0x1c",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fc654",
+"addr": "0x20fc654",
+"size": "0x20",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fc6b8",
+"addr": "0x20fc6b8",
+"size": "0x2c",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fc6e4",
+"addr": "0x20fc6e4",
+"size": "0x28",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fc70c",
+"addr": "0x20fc70c",
+"size": "0x28",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fc7f4",
+"addr": "0x20fc7f4",
+"size": "0x30",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fc86c",
+"addr": "0x20fc86c",
+"size": "0x28",
+"tu": "src/game/unit_020fc584.c"
+},
+{
+"fn": "func_020fd364",
+"addr": "0x20fd364",
+"size": "0x1c",
+"tu": "src/game/unit_020fd268.c"
+},
+{
+"fn": "func_020fd3c4",
+"addr": "0x20fd3c4",
+"size": "0x2c",
+"tu": "src/game/unit_020fd268.c"
+},
+{
+"fn": "func_020fd428",
+"addr": "0x20fd428",
+"size": "0x28",
+"tu": "src/game/unit_020fd268.c"
+},
+{
+"fn": "func_020fd450",
+"addr": "0x20fd450",
+"size": "0x2c",
+"tu": "src/game/unit_020fd268.c"
+},
+{
+"fn": "func_020fda2c",
+"addr": "0x20fda2c",
+"size": "0x2c",
+"tu": "src/game/unit_020fd9f0.c"
+},
+{
+"fn": "func_020fda58",
+"addr": "0x20fda58",
+"size": "0x50",
+"tu": "src/game/unit_020fd9f0.c"
+},
+{
+"fn": "func_020fde0c",
+"addr": "0x20fde0c",
+"size": "0x40",
+"tu": "src/game/unit_020fd9f0.c"
+},
+{
+"fn": "func_020fe1c8",
+"addr": "0x20fe1c8",
+"size": "0x30",
+"tu": "src/game/unit_020fd9f0.c"
+},
+{
+"fn": "func_020fec64",
+"addr": "0x20fec64",
+"size": "0x20",
+"tu": "src/game/unit_020feba0.c"
+},
+{
+"fn": "func_020fed54",
+"addr": "0x20fed54",
+"size": "0x28",
+"tu": "src/game/unit_020feba0.c"
+},
+{
+"fn": "func_020fedf0",
+"addr": "0x20fedf0",
+"size": "0x28",
+"tu": "src/game/unit_020fedd4.c"
+},
+{
+"fn": "func_020ff120",
+"addr": "0x20ff120",
+"size": "0x20",
+"tu": "src/game/unit_020ff030.c"
+},
+{
+"fn": "func_020ffd14",
+"addr": "0x20ffd14",
+"size": "0x34",
+"tu": "src/CaveNpc.c"
+},
+{
+"fn": "func_021001cc",
+"addr": "0x21001cc",
+"size": "0x3c",
+"tu": "src/CaveNpc.c"
+},
+{
+"fn": "func_02100298",
+"addr": "0x2100298",
+"size": "0x50",
+"tu": "src/game/unit_02100208.c"
+},
+{
+"fn": "func_021002e8",
+"addr": "0x21002e8",
+"size": "0x50",
+"tu": "src/game/unit_02100208.c"
+},
+{
+"fn": "func_021065c8",
+"addr": "0x21065c8",
+"size": "0x34",
+"tu": "src/game/unit_02100810.c"
+},
+{
+"fn": "func_021069c8",
+"addr": "0x21069c8",
+"size": "0x28",
+"tu": "src/game/unit_02100810.c"
+},
+{
+"fn": "func_021071b8",
+"addr": "0x21071b8",
+"size": "0x2c",
+"tu": "src/game/unit_02100810.c"
+},
+{
+"fn": "func_021088fc",
+"addr": "0x21088fc",
+"size": "0x2c",
+"tu": "src/game/unit_021071e4.c"
+},
+{
+"fn": "func_02108928",
+"addr": "0x2108928",
+"size": "0x38",
+"tu": "src/game/unit_021071e4.c"
+},
+{
+"fn": "func_02108aa4",
+"addr": "0x2108aa4",
+"size": "0x48",
+"tu": "src/game/unit_021071e4.c"
+},
+{
+"fn": "func_02108aec",
+"addr": "0x2108aec",
+"size": "0x1c",
+"tu": "src/game/unit_021071e4.c"
+},
+{
+"fn": "func_02108b08",
+"addr": "0x2108b08",
+"size": "0x38",
+"tu": "src/game/unit_021071e4.c"
+},
+{
+"fn": "func_02108b94",
+"addr": "0x2108b94",
+"size": "0x34",
+"tu": "src/game/unit_021071e4.c"
+},
+{
+"fn": "func_02108bc8",
+"addr": "0x2108bc8",
+"size": "0x38",
+"tu": "src/game/unit_02108bc8.c"
+},
+{
+"fn": "func_02108c00",
+"addr": "0x2108c00",
+"size": "0xc",
+"tu": "src/game/unit_02108bc8.c"
+},
+{
+"fn": "func_02108c0c",
+"addr": "0x2108c0c",
+"size": "0x30",
+"tu": "src/game/unit_02108bc8.c"
+},
+{
+"fn": "func_02108c88",
+"addr": "0x2108c88",
+"size": "0x1c",
+"tu": "src/game/unit_02108bc8.c"
+},
+{
+"fn": "func_0210a034",
+"addr": "0x210a034",
+"size": "0x28",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210a08c",
+"addr": "0x210a08c",
+"size": "0x28",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210ae84",
+"addr": "0x210ae84",
+"size": "0x2c",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210aed0",
+"addr": "0x210aed0",
+"size": "0x3c",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210af8c",
+"addr": "0x210af8c",
+"size": "0x34",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210afd8",
+"addr": "0x210afd8",
+"size": "0x28",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210b030",
+"addr": "0x210b030",
+"size": "0x28",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210b484",
+"addr": "0x210b484",
+"size": "0x4c",
+"tu": "src/game/unit_0210a034.c"
+},
+{
+"fn": "func_0210b7bc",
+"addr": "0x210b7bc",
+"size": "0x28",
+"tu": "src/game/unit_0210b4d0.c"
+},
+{
+"fn": "UniteEvent_SetState",
+"addr": "0x210f960",
+"size": "0x10",
+"tu": "src/UniteEvent.c"
+},
+{
+"fn": "func_0210f970",
+"addr": "0x210f970",
+"size": "0x3c",
+"tu": "src/UniteEvent.c"
+},
+{
+"fn": "func_0210f9ac",
+"addr": "0x210f9ac",
+"size": "0x2c",
+"tu": "src/UniteEvent.c"
+},
+{
+"fn": "func_02110048",
+"addr": "0x2110048",
+"size": "0x2c",
+"tu": "src/game/unit_0210fe28.c"
+},
+{
+"fn": "func_02110074",
+"addr": "0x2110074",
+"size": "0x4c",
+"tu": "src/game/unit_0210fe28.c"
+},
+{
+"fn": "func_021102d4",
+"addr": "0x21102d4",
+"size": "0x38",
+"tu": "src/game/unit_0210fe28.c"
+},
+{
+"fn": "func_021122bc",
+"addr": "0x21122bc",
+"size": "0x3c",
+"tu": "src/game/unit_021122bc.c"
+},
+{
+"fn": "func_02112438",
+"addr": "0x2112438",
+"size": "0x28",
+"tu": "src/game/unit_021122bc.c"
+},
+{
+"fn": "func_021124a0",
+"addr": "0x21124a0",
+"size": "0x28",
+"tu": "src/game/unit_021122bc.c"
+},
+{
+"fn": "func_021124f0",
+"addr": "0x21124f0",
+"size": "0x48",
+"tu": "src/game/unit_021124f0.c"
+},
+{
+"fn": "func_02113e90",
+"addr": "0x2113e90",
+"size": "0x24",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02113eb4",
+"addr": "0x2113eb4",
+"size": "0x28",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_0211508c",
+"addr": "0x211508c",
+"size": "0x3c",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_021150e8",
+"addr": "0x21150e8",
+"size": "0x28",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02115144",
+"addr": "0x2115144",
+"size": "0x48",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_0211558c",
+"addr": "0x211558c",
+"size": "0x30",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_021155bc",
+"addr": "0x21155bc",
+"size": "0x24",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_021155e0",
+"addr": "0x21155e0",
+"size": "0x38",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02115618",
+"addr": "0x2115618",
+"size": "0x38",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02115658",
+"addr": "0x2115658",
+"size": "0x40",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02115708",
+"addr": "0x2115708",
+"size": "0x2c",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02115734",
+"addr": "0x2115734",
+"size": "0x20",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02115778",
+"addr": "0x2115778",
+"size": "0x34",
+"tu": "src/game/unit_02113294.c"
+},
+{
+"fn": "func_02115bcc",
+"addr": "0x2115bcc",
+"size": "0x28",
+"tu": "src/game/unit_021159f8.c"
+},
+{
+"fn": "func_02116360",
+"addr": "0x2116360",
+"size": "0x44",
+"tu": "src/game/unit_02116360.c"
+},
+{
+"fn": "func_02117170",
+"addr": "0x2117170",
+"size": "0x38",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_02117208",
+"addr": "0x2117208",
+"size": "0x48",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_02117250",
+"addr": "0x2117250",
+"size": "0x2c",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_02117550",
+"addr": "0x2117550",
+"size": "0x44",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_02117744",
+"addr": "0x2117744",
+"size": "0x4c",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_021177b8",
+"addr": "0x21177b8",
+"size": "0x14",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_021177e0",
+"addr": "0x21177e0",
+"size": "0x28",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_02117808",
+"addr": "0x2117808",
+"size": "0x2c",
+"tu": "src/game/unit_02116598.c"
+},
+{
+"fn": "func_02117cfc",
+"addr": "0x2117cfc",
+"size": "0x1c",
+"tu": "src/StaffRoll.c"
+},
+{
+"fn": "func_02117d18",
+"addr": "0x2117d18",
+"size": "0x20",
+"tu": "src/StaffRoll.c"
+},
+{
+"fn": "func_02117d38",
+"addr": "0x2117d38",
+"size": "0x24",
+"tu": "src/StaffRoll.c"
+},
+{
+"fn": "func_02118174",
+"addr": "0x2118174",
+"size": "0x2c",
+"tu": "src/StaffRoll.c"
+},
+{
+"fn": "func_02118270",
+"addr": "0x2118270",
+"size": "0x34",
+"tu": "src/StaffRoll.c"
+},
+{
+"fn": "func_02118490",
+"addr": "0x2118490",
+"size": "0x48",
+"tu": "src/StaffRoll.c"
+},
+{
+"fn": "func_021184d8",
+"addr": "0x21184d8",
+"size": "0x40",
+"tu": "src/StaffRoll.c"
+},
+{
+"fn": "func_02118b30",
+"addr": "0x2118b30",
+"size": "0x48",
+"tu": "src/game/unit_02118b04.c"
+},
+{
+"fn": "func_02118bcc",
+"addr": "0x2118bcc",
+"size": "0x20",
+"tu": "src/game/unit_02118b04.c"
+},
+{
+"fn": "func_02118da0",
+"addr": "0x2118da0",
+"size": "0x4c",
+"tu": "src/game/unit_02118b04.c"
+},
+{
+"fn": "func_02118ef4",
+"addr": "0x2118ef4",
+"size": "0x3c",
+"tu": "src/game/unit_02118b04.c"
+},
+{
+"fn": "func_02118f88",
+"addr": "0x2118f88",
+"size": "0x50",
+"tu": "src/game/unit_02118b04.c"
+},
+{
+"fn": "func_021196c0",
+"addr": "0x21196c0",
+"size": "0x20",
+"tu": "src/BattleShowingTask.c"
+},
+{
+"fn": "func_02119a10",
+"addr": "0x2119a10",
+"size": "0x50",
+"tu": "src/BattleShowingTask.c"
+},
+{
+"fn": "func_0211d178",
+"addr": "0x211d178",
+"size": "0x20",
+"tu": "src/game/unit_0211d120.c"
+},
+{
+"fn": "func_0211d7f4",
+"addr": "0x211d7f4",
+"size": "0x44",
+"tu": "src/game/unit_0211d520.c"
+},
+{
+"fn": "func_0211dde8",
+"addr": "0x211dde8",
+"size": "0x2c",
+"tu": "src/game/unit_0211d520.c"
+},
+{
+"fn": "func_0211ef74",
+"addr": "0x211ef74",
+"size": "0x3c",
+"tu": "src/game/unit_0211ec7c.c"
+},
+{
+"fn": "func_0211efb0",
+"addr": "0x211efb0",
+"size": "0x3c",
+"tu": "src/game/unit_0211ec7c.c"
+},
+{
+"fn": "func_0211f06c",
+"addr": "0x211f06c",
+"size": "0x34",
+"tu": "src/game/unit_0211ec7c.c"
+},
+{
+"fn": "func_0211f334",
+"addr": "0x211f334",
+"size": "0x20",
+"tu": "src/game/unit_0211f2d0.c"
+},
+{
+"fn": "func_0211f39c",
+"addr": "0x211f39c",
+"size": "0x2c",
+"tu": "src/game/unit_0211f2d0.c"
+},
+{
+"fn": "func_0211fc68",
+"addr": "0x211fc68",
+"size": "0x2c",
+"tu": "src/game/unit_0211fc20.c"
+},
+{
+"fn": "func_02120650",
+"addr": "0x2120650",
+"size": "0x1c",
+"tu": "src/game/unit_0211fc20.c"
+},
+{
+"fn": "func_0212066c",
+"addr": "0x212066c",
+"size": "0x3c",
+"tu": "src/game/unit_0211fc20.c"
+},
+{
+"fn": "func_02120898",
+"addr": "0x2120898",
+"size": "0x44",
+"tu": "src/game/unit_0211fc20.c"
+},
+{
+"fn": "func_021228ac",
+"addr": "0x21228ac",
+"size": "0x34",
+"tu": "src/game/unit_02122850.c"
+},
+{
+"fn": "func_02122a78",
+"addr": "0x2122a78",
+"size": "0x28",
+"tu": "src/game/unit_02122a78.c"
+},
+{
+"fn": "func_02122fac",
+"addr": "0x2122fac",
+"size": "0x24",
+"tu": "src/game/unit_02122e1c.c"
+},
+{
+"fn": "func_02122fd0",
+"addr": "0x2122fd0",
+"size": "0x20",
+"tu": "src/game/unit_02122e1c.c"
+},
+{
+"fn": "func_02123534",
+"addr": "0x2123534",
+"size": "0x38",
+"tu": "src/game/unit_02122e1c.c"
+},
+{
+"fn": "func_02124224",
+"addr": "0x2124224",
+"size": "0x28",
+"tu": "src/game/unit_021241ec.c"
+},
+{
+"fn": "func_021242fc",
+"addr": "0x21242fc",
+"size": "0x3c",
+"tu": "src/game/unit_021241ec.c"
+},
+{
+"fn": "func_02124590",
+"addr": "0x2124590",
+"size": "0x2c",
+"tu": "src/game/unit_0212449c.c"
+},
+{
+"fn": "func_02124cc4",
+"addr": "0x2124cc4",
+"size": "0x24",
+"tu": "src/game/unit_02124c5c.c"
+},
+{
+"fn": "func_02124d6c",
+"addr": "0x2124d6c",
+"size": "0x20",
+"tu": "src/game/unit_02124c5c.c"
+},
+{
+"fn": "func_02124d8c",
+"addr": "0x2124d8c",
+"size": "0x20",
+"tu": "src/game/unit_02124c5c.c"
+},
+{
+"fn": "func_02124dac",
+"addr": "0x2124dac",
+"size": "0x2c",
+"tu": "src/game/unit_02124c5c.c"
+},
+{
+"fn": "func_02124dd8",
+"addr": "0x2124dd8",
+"size": "0x2c",
+"tu": "src/game/unit_02124c5c.c"
+},
+{
+"fn": "func_02124e04",
+"addr": "0x2124e04",
+"size": "0x4c",
+"tu": "src/game/unit_02124c5c.c"
+},
+{
+"fn": "func_02124e68",
+"addr": "0x2124e68",
+"size": "0x34",
+"tu": "src/game/unit_02124e68.c"
+},
+{
+"fn": "func_02125910",
+"addr": "0x2125910",
+"size": "0x3c",
+"tu": "src/ImageBgDual3D.c"
+},
+{
+"fn": "func_02125c68",
+"addr": "0x2125c68",
+"size": "0x3c",
+"tu": "src/ImageBgDual3D.c"
+},
+{
+"fn": "func_02125d84",
+"addr": "0x2125d84",
+"size": "0x24",
+"tu": "src/game/unit_02125d84.c"
+},
+{
+"fn": "func_02125da8",
+"addr": "0x2125da8",
+"size": "0x24",
+"tu": "src/game/unit_02125d84.c"
+},
+{
+"fn": "func_02125f60",
+"addr": "0x2125f60",
+"size": "0x48",
+"tu": "src/game/unit_02125d84.c"
+},
+{
+"fn": "func_0212608c",
+"addr": "0x212608c",
+"size": "0x4c",
+"tu": "src/game/unit_02125d84.c"
+}
+]

@@ -2,6 +2,7 @@
 import sys, os, subprocess, re; sys.path.insert(0, os.path.dirname(__file__))
 from hl import *
 fn, path = sys.argv[1], sys.argv[2]
+if not os.path.exists(path): path = os.path.join(WORK, 'b', os.path.basename(path))  # bare name -> batch output
 obj, err = compile_(open(path).read())
 if not obj: print(err); sys.exit(1)
 ok, msg = compare(fn, obj); print(fn, 'OK' if ok else 'FAIL', msg)
