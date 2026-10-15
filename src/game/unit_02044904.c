@@ -412,7 +412,7 @@ int Unk044904_Unk_045c7c(void)
 
 int func_020452c4();
 int Unk0aa118_SortRemaining();
-void func_02045bd0();
+void Unk044904_Unk_045bd0();
 void func_020456d8();
 void func_020455cc();
 int Unk044904_Unk_046468(s16 *st)
@@ -429,7 +429,7 @@ int Unk044904_Unk_04661c(s16 *st)
     if (st[1] == 1) {
         st[0] = 2;
     } else {
-        func_02045bd0(0);
+        Unk044904_Unk_045bd0(0);
     }
     return 2;
 }
@@ -504,9 +504,9 @@ void func_020a609c();
 int func_020a4f3c();
 int func_02052728();
 int Unk09d060_Unk_09d13c();
-void func_02045480(void);
+void Unk044904_Unk_045480(void);
 
-void func_02045480(void)
+void Unk044904_Unk_045480(void)
 {
     Unk044904Bits *m = (Unk044904Bits *)Unk044904_Get_data_0215ee98();
     Unk044904Items *it = (Unk044904Items *)m;
@@ -603,7 +603,7 @@ void Unk044904_BuildEnemyAiPath(u32 arg0,u32 arg1)
   func_02013c3c(arg0,data_02142b64);
 }
 
-void func_02045b74(void)
+void Unk044904_Unk_045b74(void)
 {
     Unk044904Objs *m = (Unk044904Objs *)Unk044904_Get_data_0215ee98();
     int i;
@@ -615,7 +615,7 @@ void func_02045b74(void)
     }
 }
 
-void func_02045bd0(int f)
+void Unk044904_Unk_045bd0(int f)
 {
     Unk044904Bits *m = (Unk044904Bits *)Unk044904_Get_data_0215ee98();
     if (m->b3) {
@@ -632,7 +632,7 @@ void func_02045bd0(int f)
     }
 }
 
-int func_02045d38(void)
+int Unk044904_Unk_045d38(void)
 {
     Unk044904Bits *m = (Unk044904Bits *)Unk044904_Get_data_0215ee98();
     Unk09d42c_Init_data_02176278();
@@ -648,7 +648,7 @@ int func_02045d38(void)
     return 1;
 }
 
-int func_020460ac(void)
+int Unk044904_Unk_0460ac(void)
 {
     if (func_020a4f3c() != 0) {
         return 0;
@@ -662,6 +662,6 @@ int func_020460ac(void)
     if (func_0205e4f8(-1) != 0) {
         return 0;
     }
-    func_02045480();
+    Unk044904_Unk_045480();
     return 1;
 }
