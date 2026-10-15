@@ -13,3 +13,7 @@
 
 ## Not done in M1-T415
 - `func_02108ca4`
+- `func_02108bc8`: hand-matched
+- `func_02108c00`: hand-matched
+- `func_02108c0c`: hand-matched
+- `func_02108c88`: hand-matched
