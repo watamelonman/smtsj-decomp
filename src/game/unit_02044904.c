@@ -26,6 +26,24 @@ typedef struct Unk044904Rec {
 
 Unk044904Rec *func_02044948(u32 a, u32 b);
 
+typedef struct Unk044904Entry {
+    u16 id;
+    u8 pad_0002[10];
+} Unk044904Entry;
+
+Unk044904Entry *func_02044904(Unk044904Entry *tbl, u16 key)
+{
+    u32 i;
+    Unk044904Entry *e;
+    for (i = 0; i < FIELD(u32, tbl, 0x60); i++) {
+        e = &tbl[i];
+        if (key == e->id) {
+            return &tbl[i];
+        }
+    }
+    return 0;
+}
+
 void Unk044904_AddRecUnk08(u32 a, u32 b, int n)
 {
     Unk044904Rec *r = func_02044948(a, b);
