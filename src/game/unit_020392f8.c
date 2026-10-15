@@ -101,6 +101,14 @@ typedef struct Unk0392f8Set {
     Unk0392f8Entry *entries;    /* +0x0C */
 } Unk0392f8Set;
 
+u8 *func_0203947c(u32 *p, u32 i)
+{
+    if (((u8 *)p[0])[7] <= i) {
+        return 0;
+    }
+    return (u8 *)p[2] + i * 36;
+}
+
 Unk0392f8Entry *Unk0392f8_GetEntry(Unk0392f8Set *s, u32 i)
 {
     if (s->hdr->count <= i) {

@@ -9,3 +9,4 @@
 - `func_020392f8`
 - `func_020392f8`: hand-written. Loads Data/Dungeon/Ydm file and splits sections.
 - `Unk0392f8_GetEntry`: hand-matched
+- `func_0203947c`: hand-matched
