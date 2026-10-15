@@ -5,6 +5,24 @@
 int func_0203ac00();
 int Unk03aae8_Unk_03acf4();
 int func_0209993c();
+int func_0203ac00();
+int Unk03aae8_Unk_03acf4();
+int Unk096754_Unk_097110();
+int Unk0979d8_Unk_0981a4();
+
+int func_0203cc58(void)
+{
+    int k = func_0203ac00(0);
+    int r = 0;
+    if (k == 0) {
+        r = Unk096754_Unk_097110();
+    } else if (k >= 1 && k <= 3) {
+        r = Unk0979d8_Unk_0981a4((u8)(k - 1));
+    }
+    Unk03aae8_Unk_03acf4(r);
+    return 1;
+}
+
 /* decompiler-derived */
 u32 Unk03cc58_Unk_03cd34(void)
 {
