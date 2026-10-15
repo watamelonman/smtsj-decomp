@@ -171,3 +171,12 @@ void func_020ccaf8(int arg0,u32 arg1)
   *(u32 *)(arg0 + 8) = 1;
   Unk0cb32c_Unk_0ccaa8((int *)arg0, (int)3);
 }
+
+int func_0205c41c();
+int func_0205c6ec();
+/* decompiler-derived */
+int func_020cb564(u32 arg0)
+{
+  func_0205c41c();
+  func_0205c6ec(arg0);
+}
