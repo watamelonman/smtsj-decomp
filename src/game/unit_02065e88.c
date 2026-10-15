@@ -26,6 +26,12 @@ typedef struct GameObj {
     u32 field34;    /* 0x34 */
 } GameObj;
 
+void func_02065fc0(u32 a, u32 b, u32 c, int d, u32 e);
+void func_02065fac(u32 a, u32 b, u32 c, u32 d)
+{
+    func_02065fc0(a, b, c, 3, d);
+}
+
 /* Stores both halves of the 0x04/0x08 pair. */
 void Unk065e88_SetPair04(GameObj *obj, u32 a, u32 b) {
     obj->pairA = a;
@@ -39,6 +45,16 @@ void Unk065e88_SetUnkField24(GameObj *obj, u32 value) { obj->field24 = value; }
 void Unk065e88_SetUnkField2C(GameObj *obj, u32 value) { obj->field2C = value; }
 void Unk065e88_SetUnkField30(GameObj *obj, u32 value) { obj->field30 = value; }
 void Unk065e88_SetUnkField34(GameObj *obj, u32 value) { obj->field34 = value; }
+
+typedef struct Unk065e88Flag {
+    u8 pad_0000[0x3a];
+    u8 unk_003a;
+} Unk065e88Flag;
+
+void func_020662b8(Unk065e88Flag *o, int on)
+{
+    o->unk_003a = on != 0;
+}
 
 /* Empty callback (no callers; likely a function-table entry). */
 void Unk065e88_Nop_066c90(void) { }
