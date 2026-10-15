@@ -176,3 +176,11 @@ void Unk122e1c_Unk_12306c(int arg0)
   } while (tmp1 < 6);
   return;
 }
+
+extern u8 data_0213cd7c[];
+/* decompiler-derived */
+void func_021241cc(int arg0,int arg1)
+{
+  func_0205caa8(*(u32 *)(arg0 + arg1 * 4 + 0x10),
+                  *(u32 *)(data_0213cd7c + arg1 * 4));
+}
