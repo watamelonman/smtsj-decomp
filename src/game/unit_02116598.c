@@ -24,7 +24,7 @@ typedef struct Unk116598Work {
     s32 unk_0018;
 } Unk116598Work;
 void func_021177e0(void);
-void func_02117808(void);
+void Unk116598_Reset(void);
 void func_021172fc(void);
 
 void func_02117360(u32 a, u32 b, u32 c, u32 d, u8 e);
@@ -58,14 +58,14 @@ void Unk116598_Nop_117cd0(void) { }
 
 /* Forwarders: pass the caller's arguments straight through. */
 void Unk116598_Thunk_021177e0(void) { func_021177e0(); }
-void Unk116598_Unk_1166f4(void) { func_02117808(); }
+void Unk116598_Unk_1166f4(void) { Unk116598_Reset(); }
 void Unk116598_Unk_116804(void) { func_021172fc(); }
 void Unk116598_Unk_117950(void) { func_021177e0(); }
 
 
 
-/* forwards to `func_02117808` */
-void Unk116598_Thunk_02117808(void) { func_02117808(); }
+/* forwards to `Unk116598_Reset` */
+void Unk116598_Thunk_02117808(void) { Unk116598_Reset(); }
 
 
 /* forwards to `func_021172fc` */
@@ -534,7 +534,7 @@ int Unk02f078_Unk_02f220();
 int func_02117208();
 int func_02051ba4();
 void Unk095560_Unk_0958a8();
-void func_02117808(void)
+void Unk116598_Reset(void)
 {
     u8 *w = (u8 *)*data_02176e64;
     FIELD(u32, w, 0) = 0;

@@ -40,7 +40,7 @@ void Unk0ddeb0_Unk_0ddeb0(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
 }
 
 void func_02061f10();
-void func_020ddf0c(u32 a)
+void Unk0ddeb0_Unk_0ddf0c(u32 a)
 {
     u16 t[1] = {0};
     func_02061f10(a, -1, 0, 0, t);

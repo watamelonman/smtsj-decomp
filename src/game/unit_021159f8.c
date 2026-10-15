@@ -5,7 +5,7 @@
 int Unk02e000_GetWorkArea();
 int func_021159f8();
 int func_02035b08();
-int func_02115bcc(int x)
+int Unk1159f8_IsCurrent(int x)
 {
     int r = 0;
     if (x == func_02035b08(8, 3)) {

@@ -39,8 +39,8 @@ void StaffRoll_Nop_117cf8(void) { }
 
 
 int func_0204fed8();
-u32 func_02117cfc(u16 *p);
-u32 func_02117cfc(u16 *p)
+u32 StaffRoll_Unk_117cfc(u16 *p);
+u32 StaffRoll_Unk_117cfc(u16 *p)
 {
     u32 v = 0;
     if (*p == 0x8082) {
@@ -49,18 +49,18 @@ u32 func_02117cfc(u16 *p)
     return v;
 }
 
-u32 func_02117d18(u8 *p)
+u32 StaffRoll_Unk_117d18(u8 *p)
 {
     u16 *q = (u16 *)func_0204fed8(FIELD(u32, p, 772));
     if (q == 0) {
         return 0;
     }
-    return func_02117cfc(q);
+    return StaffRoll_Unk_117cfc(q);
 }
 
-int func_02117d38(u16 *p)
+int StaffRoll_Unk_117d38(u16 *p)
 {
-    if (func_02117cfc(p) == 0x8082) {
+    if (StaffRoll_Unk_117cfc(p) == 0x8082) {
         return 0x739cd6ff;
     }
     return -1;

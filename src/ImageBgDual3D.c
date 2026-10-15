@@ -59,9 +59,9 @@ void ImageBgDual3D_Thunk_021255b4(void) { func_021255b4(); }
 void ImageBgDual3D_Thunk_021177e0(void) { func_021177e0(); }
 
 
-void func_02117808(void);
-/* forwards to `func_02117808` */
-void ImageBgDual3D_Thunk_02117808(void) { func_02117808(); }
+void Unk116598_Reset(void);
+/* forwards to `Unk116598_Reset` */
+void ImageBgDual3D_Thunk_02117808(void) { Unk116598_Reset(); }
 
 extern u32 data_02176e94[];
 /* decompiler-derived */

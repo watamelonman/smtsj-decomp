@@ -5,9 +5,9 @@
 - `StaffRoll_Unk_11825c`: decompiler-derived
 
 ## Not done in M1-T640
-- `func_02117cfc`
-- `func_02117d18`
-- `func_02117d38`
+- `StaffRoll_Unk_117cfc`
+- `StaffRoll_Unk_117d18`
+- `StaffRoll_Unk_117d38`
 - `func_02118174`
 - `func_02118270`
 - `StaffRoll_Unk_1182a4`: decompiler-derived
@@ -29,6 +29,6 @@
 - `func_0211882c`: hand-written. Parses staff-roll command list and lays out text lines.
 - `StaffRoll_Unk_118620`: decompiler-derived (plain cleanup)
 - `StaffRoll_Unk_1186cc`: decompiler-derived (plain cleanup)
-- `func_02117cfc`: hand-matched
-- `func_02117d18`: hand-matched
-- `func_02117d38`: hand-matched
+- `StaffRoll_Unk_117cfc`: hand-matched
+- `StaffRoll_Unk_117d18`: hand-matched
+- `StaffRoll_Unk_117d38`: hand-matched

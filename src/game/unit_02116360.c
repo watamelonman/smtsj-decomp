@@ -12,7 +12,7 @@ typedef struct Unk116360Entry {
 } Unk116360Entry;
 void Unk116360_FillEntry();
 int func_02035b08();
-int func_02116360(int a, int b, int c)
+int Unk116360_Unk_116360(int a, int b, int c)
 {
     int r = 0;
     if (Unk03e43c_Unk_03fa28() == 0) {
@@ -34,7 +34,7 @@ void Unk116360_Unk_116404(int arg0,u32 arg1,u32 arg2)
   Unk116360_FillEntry(arg0,*(u16 *)(value + 0x35c),arg1,arg2);
 }
 
-int func_02116360();
+int Unk116360_Unk_116360();
 /* decompiler-derived */
 u32 Unk116360_Unk_116438(u32 arg0,u32 arg1)
 {
@@ -42,7 +42,7 @@ u32 Unk116360_Unk_116438(u32 arg0,u32 arg1)
   u32 value2;
   value2 = 0;
   value1 = Unk02e000_GetWorkArea();
-  value1 = func_02116360(*(u16 *)(value1 + 0x35c),arg0,arg1);
+  value1 = Unk116360_Unk_116360(*(u16 *)(value1 + 0x35c),arg0,arg1);
   if (value1 == 1) {
     value2 = 2;
   }
