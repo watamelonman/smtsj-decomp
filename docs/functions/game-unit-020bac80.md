@@ -33,3 +33,4 @@
 - `func_020bac80`
 - `func_020bad40`
 - `func_020bb18c`
+- `func_020bb144`: hand-matched

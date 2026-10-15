@@ -230,3 +230,15 @@ u32 Unk0bac80_Unk_0bb104(void)
   return 1;
 }
 
+int func_0203ac00();
+int Unk02e000_GetWorkArea();
+u32 func_020bb144(void)
+{
+    int a = func_0203ac00(0);
+    int b = func_0203ac00(1);
+    if (a < 15) {
+        u16 *t = (u16 *)((u8 *)Unk02e000_GetWorkArea() + 134 + 768);
+        t[a] += b;
+    }
+    return 1;
+}
