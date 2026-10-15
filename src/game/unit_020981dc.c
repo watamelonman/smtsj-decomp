@@ -47,7 +47,7 @@ void Unk0981dc_Unk_0981f4(u32 arg0,u32 arg1,u8 arg2)
 }
 
 int func_020982c0();
-int func_02098324(int a, int b)
+int Unk0981dc_Unk_098324(int a, int b)
 {
     if (b != 0) {
         s8 *pa = (s8 *)func_020982c0(a);

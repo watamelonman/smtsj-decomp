@@ -7,8 +7,8 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk02e000_Unk_02e774();
-void func_020986d4();
-int func_02098714(int bit);
+void Unk0986ac_SetFlagBit();
+int Unk0986ac_TestFlagBit(int bit);
 
 void Unk0986ac_Nop_099230(void);
 int Unk0986ac_Unk_098978(int arg0);
@@ -27,19 +27,19 @@ int Unk0986ac_Unk_098978(int arg0)
   return arg0 + -0x6f;
 }
 
-/* forwards to `func_02098714` */
-int Unk0986ac_Thunk_02098714(int bit) { return func_02098714(bit); }
+/* forwards to `Unk0986ac_TestFlagBit` */
+int Unk0986ac_Thunk_02098714(int bit) { return Unk0986ac_TestFlagBit(bit); }
 
 /* decompiler-derived */
 void Unk0986ac_Unk_09894c(u32 arg0)
 {
-  func_020986d4(arg0,1);
+  Unk0986ac_SetFlagBit(arg0,1);
 }
 
 /* decompiler-derived */
 void Unk0986ac_Unk_09895c(u32 arg0)
 {
-  func_020986d4(arg0,0);
+  Unk0986ac_SetFlagBit(arg0,0);
 }
 
 /* decompiler-derived */
@@ -62,7 +62,7 @@ int Unk0986ac_Unk_0986c0(int arg0)
 
 int func_0204fed8();
 void func_02061f10();
-void func_020986d4(int bit, int on)
+void Unk0986ac_SetFlagBit(int bit, int on)
 {
     u8 *p = (u8 *)Unk0986ac_Unk_0986c0(bit);
     u8 m = 1 << (bit & 7);
@@ -73,7 +73,7 @@ void func_020986d4(int bit, int on)
     }
 }
 
-int func_02098714(int bit)
+int Unk0986ac_TestFlagBit(int bit)
 {
     u8 *p = (u8 *)Unk0986ac_Unk_0986c0(bit);
     return (*p & (u8)(1 << (bit & 7))) != 0;
@@ -122,7 +122,7 @@ u8 Unk0986ac_Unk_098980(void)
   return *(u8 *)(tmp1 + 0xd);
 }
 
-void func_020989a4(int a, u8 *p, int c)
+void Unk0986ac_Unk_0989a4(int a, u8 *p, int c)
 {
     func_02061f10(a, -1, 0, 0, func_0204fed8(FIELD(u32, p, 4), c));
 }
@@ -132,7 +132,7 @@ typedef struct Unk0986acPair {
     s8 b;
 } Unk0986acPair;
 
-u32 func_020989dc(const Unk0986acPair *t)
+u32 Unk0986ac_FindEmpty(const Unk0986acPair *t)
 {
     u32 j;
     for (j = 0; j < 23; j++) {
@@ -143,7 +143,7 @@ u32 func_020989dc(const Unk0986acPair *t)
     return 23;
 }
 
-void func_02098aa8(u8 *p)
+void Unk0986ac_Unk_098aa8(u8 *p)
 {
     s32 n = FIELD(s32, p, 56);
     if (n <= 0) {
@@ -155,7 +155,7 @@ void func_02098aa8(u8 *p)
     FIELD(u8, p, 68) = n * 31;
 }
 
-int func_02098ae0(u8 *p)
+int Unk0986ac_IsMode012(u8 *p)
 {
     u32 v = FIELD(u32, p, 44);
     int r = 0;

@@ -229,5 +229,12 @@
  "func_02097e1c": "Unk0979d8_ClampAllField1e",
  "func_02097e6c": "Unk0979d8_ClampAllField20",
  "func_02097ebc": "Unk0979d8_ResetAreaEntries",
- "func_020980e8": "Unk0979d8_AddField344"
+ "func_020980e8": "Unk0979d8_AddField344",
+ "func_02098324": "Unk0981dc_Unk_098324",
+ "func_020986d4": "Unk0986ac_SetFlagBit",
+ "func_02098714": "Unk0986ac_TestFlagBit",
+ "func_020989a4": "Unk0986ac_Unk_0989a4",
+ "func_020989dc": "Unk0986ac_FindEmpty",
+ "func_02098aa8": "Unk0986ac_Unk_098aa8",
+ "func_02098ae0": "Unk0986ac_IsMode012"
 }
