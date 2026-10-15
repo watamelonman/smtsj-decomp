@@ -3,6 +3,21 @@
 
 
 
+int func_02049f24();
+int func_02049d80();
+int func_0204ab98();
+int func_0204ab14();
+int func_020b0c30(int a, int l)
+{
+    int x = func_02049f24(a, 0);
+    int y = func_02049d80(a, 0);
+    int r = x - (y - func_0204ab98(a));
+    if (r < l) {
+        l = r;
+    }
+    return l;
+}
+
 /* decompiler-derived */
 int Unk0b0b5c_Unk_0b0d28(int *arg0,int *arg1)
 {
@@ -32,6 +47,17 @@ int Unk0b0b5c_Unk_0b0c78(u32 arg0,int arg1)
 }
 
 int func_0204ab14();
+int func_020b0cac(int a, int l)
+{
+    int x = func_02049f24(a, 1);
+    int y = func_02049d80(a, 1);
+    int r = x - (y - func_0204ab14(a));
+    if (r < l) {
+        l = r;
+    }
+    return l;
+}
+
 /* decompiler-derived */
 int Unk0b0b5c_Unk_0b0cf4(u32 arg0,int arg1)
 {
