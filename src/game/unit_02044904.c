@@ -665,3 +665,26 @@ int Unk044904_Unk_0460ac(void)
     Unk044904_Unk_045480();
     return 1;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int Unk044904_Unk_045460();
+void func_020ae0d8();
+int Unk044904_Unk_044fd8();
+int Unk0aa118_Clear814();
+
+int func_020465c0(u16 *p)
+{
+    int f;
+    if (Unk044904_Unk_045460(1) != 0 && FIELD(u16, Unk044904_Get_data_0215ee98(), 56) == 0) {
+        f = 1;
+    } else {
+        f = 0;
+    }
+    func_020ae0d8(FIELD(u32, Unk044904_Get_data_0215ee98(), 140), f, 0);
+    *p = 2;
+    Unk044904_Unk_044fd8();
+    Unk0aa118_Clear814();
+    return 1;
+}
