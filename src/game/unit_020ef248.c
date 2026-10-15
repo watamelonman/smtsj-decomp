@@ -61,4 +61,10 @@ void Unk0ef248_Unk_0ef878(void)
   func_020f7e48(*(u32 *)(value + 0x40),0,1);
 }
 
-
+/* decompiler-derived */
+void func_020ef8ac(void)
+{
+  u32 tmp1;
+  tmp1 = Unk0f8448_GetUnkField10();
+  Unk0e8228_Unk_0e8d90(*(u32 *)(*data_02176df0 + 0x44),tmp1);
+}
