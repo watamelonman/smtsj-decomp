@@ -22,3 +22,18 @@ void Unk044394_Unk_044394(u32 *arg0)
   value2 = func_02051610(*arg0);
   arg0[1] = value2;
 }
+
+extern u8 data_0214283c[];
+int func_020443e4(int i)
+{
+    int ok;
+    if (i >= 0 && i < 49) {
+        ok = 1;
+    } else {
+        ok = 0;
+    }
+    if (ok == 0) {
+        return 0;
+    }
+    return FIELD(u32, data_0214283c + i * 16, 4) != 0;
+}
