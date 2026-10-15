@@ -66,3 +66,4 @@
 - `ExpGauge_PlayGaugeLevelUp`: hand-matched (ExpGauge)
 - `ExpGauge_GetExpForNextLevel`: hand-matched (ExpGauge)
 - `ExpGauge_UpdateToNextLevel`: hand-matched (ExpGauge)
+- `func_021196c0`: hand-matched
