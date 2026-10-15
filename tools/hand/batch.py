@@ -20,4 +20,11 @@ for tu, items, prelude, *fx in ns['SPECS']:
     if not obj: print(tu, 'FAIL compile\n   ', err.replace('\n', '\n    ')); res[tu] = False; continue
     bad = [(fn, m) for fn, _ in items for ok, m in [compare(fn, obj)] if not ok]
     print(tu, 'OK' if not bad else 'FAIL', ''.join(f'\n    {f}: {m}' for f, m in bad)); res[tu] = not bad
+# gate-equivalent check (objdiff via gatecheck.py): catches an existing caller dropping below 100%
+import subprocess
+for tu, ok in list(res.items()):
+    if ok and subprocess.run(['git', '-C', SJ, 'ls-files', '--error-unmatch', tu], capture_output=True).returncode == 0:
+        r = subprocess.run([sys.executable, f'{SJ}/tools/hand/gatecheck.py', f'{outd}/{os.path.basename(tu)}'],
+                           cwd=SJ, capture_output=True, text=True)
+        if r.returncode: print(tu, 'GATE FAIL\n   ', (r.stdout + r.stderr).strip().replace('\n', '\n    ')); res[tu] = False
 json.dump(res, open(f'{outd}/res.json', 'w'))

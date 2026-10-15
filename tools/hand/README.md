@@ -42,4 +42,7 @@ Patterns found:
 ## Known blind spot (b24/b25)
 When you add a definition for a callee that lives in the same file as an existing matched caller
 (func_02077e74, func_02094a90), objdiff can drop that caller to about 99.7%, even though objdump
-bytes and relocations are identical. cmp.py does not catch this. Skip the function and move on.
+bytes and relocations are identical. cmp.py does not catch this. Fixed: batch.py now runs gatecheck.py, which runs the real objdiff report, on every OK TU.
+Root cause (objdiff-cli diff): the caller's mismatched instructions are its `bl`s to a callee that is *defined in the
+target unit but still undefined (asm) in ours* (func_020949e0 for 094958). The arg diff appears once another local
+in that region gets defined. Remedy: match those still-undefined same-unit callees in the same batch, or skip.
