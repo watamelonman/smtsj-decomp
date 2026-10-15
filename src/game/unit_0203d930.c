@@ -63,3 +63,28 @@ u32 Unk03d930_Unk_03d998(void)
   Unk0a0ce4_Unk_0a0da4(0x28);
   return 3;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_020d2b98();
+int Unk10a034_Unk_10af40();
+int Unk0d297c_Unk_0d2f98();
+
+int func_0203da10(void)
+{
+    s16 a = func_0203ac00(0);
+    s16 b = func_0203ac00(1);
+    u8 *o;
+    func_020d2b98(a, (u8)b);
+    Unk10a034_Unk_10af40(a);
+    if (func_02065544() == 0) {
+        func_02065c10();
+    }
+    func_020656ac(Unk0d297c_Unk_0d2f98(24), -1);
+    o = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);
+    FIELD(u32, o, 24) = 30;
+    Unk0caea8_Unk_0caf98(1);
+    Unk0a0ce4_Unk_0a0da4(40);
+    return 3;
+}

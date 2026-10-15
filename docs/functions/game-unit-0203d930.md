@@ -11,3 +11,4 @@
 - `func_0203da90`
 - `Unk03d930_Unk_03d930`: hand-matched
 - `Unk03d930_Unk_03d968`: hand-matched
+- `func_0203da10`: hand-matched
