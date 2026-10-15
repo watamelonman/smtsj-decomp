@@ -69,6 +69,20 @@ int Unk0cf5e8_Unk_0d13fc(Unk0cf5e8Work *work)
 
 extern u8 data_02150648[];
 int Unk0de678_Unk_0dec94();
+typedef struct Unk0cf5e8Obj {
+    u8 pad_0000[0x98];
+    s32 unk_0098;
+    s32 unk_009c;
+    u8 pad_00a0[0x1f0];
+    s32 unk_0290;
+    s32 unk_0294;
+} Unk0cf5e8Obj;
+
+int func_020d1454(Unk0cf5e8Obj *o)
+{
+    return o->unk_009c == 1 && o->unk_0290 == 0;
+}
+
 /* decompiler-derived */
 void Unk0cf5e8_Unk_0d1470(int arg0)
 {
@@ -78,6 +92,11 @@ void Unk0cf5e8_Unk_0d1470(int arg0)
 }
 
 extern u8 data_02150654[];
+int func_020d1490(Unk0cf5e8Obj *o)
+{
+    return o->unk_0098 == 1 && o->unk_0294 == 0;
+}
+
 /* decompiler-derived */
 void Unk0cf5e8_Unk_0d14ac(int arg0)
 {
