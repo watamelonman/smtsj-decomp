@@ -461,3 +461,15 @@ void Unk116598_Unk_117790(void)
   tmp1 = func_021178c0();
   *data_02176e64 = tmp1;
 }
+
+/* decompiler-derived */
+void func_021174a0(void)
+{
+  *(u32 *)(*data_02176e60 + 0x18) = 1;
+}
+
+/* decompiler-derived */
+void func_021174b8(void)
+{
+  *(u32 *)(*data_02176e60 + 0x18) = 0;
+}
