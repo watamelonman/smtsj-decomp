@@ -105,3 +105,20 @@ u32 Unk0bc1a8_Unk_0bc6e8(void)
 {
   return *(u32 *)(*data_02176ba8 + 4);
 }
+
+extern u8 data_0215034c[];
+int func_02052fe0();
+/* decompiler-derived */
+void func_020bc5d4(void)
+{
+  u32 tmp1;
+  u32 *v2;
+  if (*data_02176ba8 != 0) {
+    return;
+  }
+  v2 = (u32 *)func_02052fe0(8);
+  tmp1 = (u32)(data_0215034c);
+  *data_02176ba8 = (int)v2;
+  *v2 = tmp1;
+  Unk0bc1a8_Unk_0bc6d4(1);
+}
