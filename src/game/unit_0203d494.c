@@ -34,7 +34,7 @@ u8 *Unk02e000_GetWorkArea();
 void func_0209e33c();
 u32 Unk03aae8_Unk_03ad14();
 
-int func_0203d618(void)
+int Unk03d494_Unk_03d618(void)
 {
     s16 a, b, c;
     u8 *o;

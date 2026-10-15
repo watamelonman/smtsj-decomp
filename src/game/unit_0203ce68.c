@@ -11,7 +11,7 @@ int Unk09727c_GetAreaS8();
 int func_02098258();
 u32 Unk03ce68_Unk_03d038(u32 arg0);
 
-int func_0203ce68(void)
+int Unk03ce68_Unk_03ce68(void)
 {
     int k = func_0203ac00(0);
     u16 *w;
@@ -126,7 +126,7 @@ u32 Unk03ce68_Unk_03d038(u32 arg0)
   }
 }
 
-int func_0203d088(void)
+int Unk03ce68_Unk_03d088(void)
 {
     int k = func_0203ac00(0);
     u32 y = Unk03ce68_Unk_03d038(func_0203ac00(1));

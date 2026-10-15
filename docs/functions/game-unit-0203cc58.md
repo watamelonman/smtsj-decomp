@@ -5,7 +5,7 @@
 - `Unk03cc58_Unk_03ce3c`: decompiler-derived
 
 ## Not done in M1-T054
-- `func_0203cc58`
+- `Unk03cc58_Unk_03cc58`
 - `func_0203ccac`
 - `func_0203cd50`
-- `func_0203cc58`: hand-matched
+- `Unk03cc58_Unk_03cc58`: hand-matched

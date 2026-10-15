@@ -77,7 +77,7 @@ int Unk03aae8_Unk_03acf4();
 int Unk096754_Unk_097100();
 int Unk0979d8_Unk_09818c();
 
-int func_0203cc04(void)
+int Unk03ca38_Unk_03cc04(void)
 {
     int k = func_0203ac00(0);
     int r = 0;

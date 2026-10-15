@@ -6,9 +6,9 @@
 - `Unk03ca38_Unk_03ca80`
 - `Unk03ca38_Unk_03cad4`
 - `Unk03ca38_Unk_03cb28`
-- `func_0203cc04`
+- `Unk03ca38_Unk_03cc04`
 - `func_0203cb7c`
 - `Unk03ca38_Unk_03ca80`: hand-matched
 - `Unk03ca38_Unk_03cad4`: hand-matched
 - `Unk03ca38_Unk_03cb28`: hand-matched
-- `func_0203cc04`: hand-matched
+- `Unk03ca38_Unk_03cc04`: hand-matched
