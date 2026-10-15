@@ -10,3 +10,13 @@
 - `func_0209f0c0`
 - `func_0209f534`
 - `func_0209eff8`
+
+## Not done in M1-T767
+- `func_0209efb4`
+- `func_0209f298`
+- `func_0209f5d8`
+- `func_0209fd14`
+- `func_0209f550`
+- `func_0209f034`
+- `func_0209f480`
+- `func_0209ee80`

@@ -52,3 +52,4 @@ void Unk09ee4c_Unk_09ef80(u32 arg0)
   Unk11f2d0_Unk_11f308(value + 0x7598,arg0);
   *(u32 *)(value + 0x73e8) = 0x15;
 }
+
