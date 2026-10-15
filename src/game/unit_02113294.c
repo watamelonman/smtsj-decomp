@@ -24,7 +24,7 @@ int Unk0a0ce4_Unk_0a0da4();
 #endif
 extern u32 data_02176e54[];
 int func_02061f10();
-int func_021155bc();
+int Unk113294_IsOtherId();
 int Unk113294_AnyHi();
 int Unk113294_AnyLo();
 int Unk02e000_Thunk_0202e788();
@@ -70,11 +70,11 @@ void Unk113294_Unk_115698(u8 *arg0)
 /* get u32 at +0x20 */
 u32 Unk113294_GetUnkField20(void *obj) { return ((Unk113294Work *)obj)->unk_0020; }
 
-int func_021150e8();
+int Unk113294_GetMsgKind();
 /* decompiler-derived */
 int Unk113294_Unk_115110(void)
 {
-  return func_021150e8(1,0x35);
+  return Unk113294_GetMsgKind(1,0x35);
 }
 
 int func_020655b4();
@@ -103,7 +103,7 @@ u16 *Unk113294_Unk_1150c8(u32 arg0,u32 arg1)
 /* decompiler-derived */
 int Unk113294_Unk_115124(int arg0)
 {
-  return func_021150e8(((Unk113294Work *)arg0)->unk_0008 + 1,((Unk113294Work *)arg0)->unk_0010 & 0xffff);
+  return Unk113294_GetMsgKind(((Unk113294Work *)arg0)->unk_0008 + 1,((Unk113294Work *)arg0)->unk_0010 & 0xffff);
 }
 
 
@@ -148,7 +148,7 @@ typedef struct Unk113294Pair {
     u16 a;
     u16 b;
 } Unk113294Pair;
-int func_021150e8(u32 a, u32 b)
+int Unk113294_GetMsgKind(u32 a, u32 b)
 {
     u16 *q = Unk113294_Unk_1150c8(a, b);
     u32 v = q[0];
@@ -158,7 +158,7 @@ int func_021150e8(u32 a, u32 b)
     return v;
 }
 
-void func_02115144(u8 *p)
+void Unk113294_Unk_115144(u8 *p)
 {
     Unk113294Pair t = {0, 0};
     t.a = Unk113294_Unk_115124((int)p);
@@ -183,7 +183,7 @@ void Unk113294_Unk_11518c(u32 arg0)
 }
 
 extern u8 data_0215159c[];
-int func_021155bc(u32 id)
+int Unk113294_IsOtherId(u32 id)
 {
     if (id == 0) {
         return 0;
@@ -195,7 +195,7 @@ int Unk113294_AnyLo(Unk113294Ids *p)
 {
     int i;
     for (i = 0; i < 8; i++) {
-        if (func_021155bc(p->ids[i]) != 0) {
+        if (Unk113294_IsOtherId(p->ids[i]) != 0) {
             return 1;
         }
     }
@@ -206,7 +206,7 @@ int Unk113294_AnyHi(Unk113294Ids *p)
 {
     int i;
     for (i = 8; i < 16; i++) {
-        if (func_021155bc(p->ids[i]) != 0) {
+        if (Unk113294_IsOtherId(p->ids[i]) != 0) {
             return 1;
         }
     }

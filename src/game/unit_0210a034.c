@@ -351,7 +351,7 @@ int Unk10a034_Unk_10b030(void)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
-int func_0210b484(u8 *p)
+int Unk10a034_Unk_10b484(u8 *p)
 {
     u8 *q;
     if (FIELD(u32, p, 24) == 0) {

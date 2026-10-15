@@ -30,7 +30,7 @@
 ## Not done in M1-T764
 - `Unk10a034_GetEntry8`
 - `Unk10a034_ClearById`
-- `func_0210b484`
+- `Unk10a034_Unk_10b484`
 - `func_0210acac`
 - `func_0210b42c`
 - `func_0210ad00`
@@ -43,4 +43,4 @@
 - `Unk10a034_GetEntry8`: hand-matched
 - `Unk10a034_Alloc`: hand-matched
 - `Unk10a034_Unk_10b030`: hand-matched
-- `func_0210b484`: hand-matched
+- `Unk10a034_Unk_10b484`: hand-matched
