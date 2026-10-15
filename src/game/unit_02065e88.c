@@ -173,7 +173,7 @@ void func_0205c704();
 int func_0205ca88();
 int func_0205caa0();
 
-void func_02065ec0(u32 *p)
+void Unk065e88_Unk_065ec0(u32 *p)
 {
     p[0] = 120;
     func_02095818();
@@ -249,7 +249,7 @@ typedef struct Unk065e88Obj24 {
 void func_02072238();
 int Unk0e651c_Unk_0e666c();
 int func_020684c0();
-void func_02066078(u8 *p)
+void Unk065e88_Unk_066078(u8 *p)
 {
     if (p[56] != 0) {
         func_0205c704(FIELD(u32, p, 0));

@@ -5,6 +5,6 @@
 - `Unk04bb9c_IsCtxUnk8Clear`: hand-matched
 - `Unk04bb9c_GetCtxUnka20`: hand-matched
 - `Unk04bb9c_Unk_04c404`: hand-matched
-- `func_0204c98c`: hand-matched
-- `func_0204cbe8`: hand-matched
-- `func_0204cc4c`: hand-matched
+- `Unk04bb9c_Unk_04c98c`: hand-matched
+- `Unk04bb9c_Unk_04cbe8`: hand-matched
+- `Unk04bb9c_Unk_04cc4c`: hand-matched

@@ -61,7 +61,7 @@ u32 Unk03dbbc_Unk_03dccc(void)
 #endif
 int func_0203ac00();
 int Unk02e000_GetWorkArea();
-int func_0204c98c();
+int Unk04bb9c_Unk_04c98c();
 void func_0204c804();
 void func_0204c564();
 int Unk02f2a8_Unk_035b08();

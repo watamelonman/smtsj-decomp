@@ -75,7 +75,7 @@ int GetGameState();
 int GameState_GetBody();
 u8 *Unk038fbc_Unk_039160(u8 **o, int x, int y);
 
-int func_0204c98c(int a, int b, int c)
+int Unk04bb9c_Unk_04c98c(int a, int b, int c)
 {
     s8 i;
     for (i = 0; i < 96; i++) {
@@ -102,7 +102,7 @@ u16 Unk04bb9c_GetCtxUnka20(void)
     return data_0215eea4->unk_0a20;
 }
 
-u8 func_0204cbe8(int x, int y)
+u8 Unk04bb9c_Unk_04cbe8(int x, int y)
 {
     u8 *g = (u8 *)GetGameState();
     u8 *a = (u8 *)GameState_GetBody();
@@ -114,7 +114,7 @@ u8 func_0204cbe8(int x, int y)
     return (FIELD(u32, o, 4) << 12) >> 28;
 }
 
-u8 func_0204cc4c(int x, int y)
+u8 Unk04bb9c_Unk_04cc4c(int x, int y)
 {
     u8 *g = (u8 *)GetGameState();
     u8 *a = (u8 *)GameState_GetBody();
