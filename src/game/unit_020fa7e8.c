@@ -56,3 +56,15 @@ void Unk0fa7e8_Unk_0fa7e8(u32 *arg0)
   func_020655b4(0);
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int Unk095560_Unk_0957c0();
+int func_020fb0e0(u8 *p, int i)
+{
+    int r = Unk095560_Unk_0957c0(FIELD(u32, p + i * 4, 16));
+    if (r != 0) {
+        return r;
+    }
+    return Unk095560_Unk_0957c0(0x259);
+}

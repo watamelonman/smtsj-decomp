@@ -19,3 +19,4 @@
 - `func_020fa8a8`
 - `func_020fae7c`
 - `func_020faa88`
+- `func_020fb0e0`: hand-matched
