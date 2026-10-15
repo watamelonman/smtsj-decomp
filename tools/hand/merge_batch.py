@@ -8,6 +8,7 @@ res = json.load(open(f'{WORK}/b/res.json'))
 env = dict(os.environ, PATH=os.path.expanduser('~/.local/bin') + ':' + os.environ['PATH'])
 run = lambda c: subprocess.run(c, shell=True, cwd=SJ, capture_output=True, text=True, env=env)
 for tu, items, *_ in ns['SPECS']:
+    if not items: print(tu, 'no functions; skipped'); continue
     if not res.get(tu): print(tu, 'not OK in last batch; skipped'); continue
     names = ','.join(f'{fn}={ren.get(fn, fn)}' for fn, _ in items)
     r = run(f'python3 tools/hand/hmerge.py {tu} {WORK}/b/{os.path.basename(tu)} "{names}"')
