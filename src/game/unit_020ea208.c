@@ -301,3 +301,12 @@ void Unk0ea208_Unk_0ea984(u32 arg0)
   func_0204faf0(1,tmp6);
   func_0204fed8(tmp1,0);
 }
+
+/* decompiler-derived */
+void func_020eb6cc(int arg0)
+{
+  if (((Unk0ea208Work *)arg0)->UnkField01c4 != 8) {
+    return;
+  }
+  Unk0ea208_Unk_0eb264((int)arg0);
+}

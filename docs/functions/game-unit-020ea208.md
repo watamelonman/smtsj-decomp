@@ -57,3 +57,4 @@
 - `func_020eb488`
 - `Unk0ea208_Unk_0ea878`: decompiler-derived (plain cleanup)
 - `Unk0ea208_Unk_0ea984`: decompiler-derived (plain cleanup)
+- `func_020eb6cc`: decompiler-derived (struct+fix cleanup)
