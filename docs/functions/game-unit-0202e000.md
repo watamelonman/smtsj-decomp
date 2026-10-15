@@ -106,3 +106,4 @@
 - `Unk02e000_GetRecordFlag0`: hand-matched
 - `Unk02e000_GetRecordFlag1`: hand-matched
 - `Unk02e000_GetRecordUnk1f`: hand-matched
+- `func_0202e3e4`: hand-matched

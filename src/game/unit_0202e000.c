@@ -315,6 +315,23 @@ void Unk02e000_Unk_02e180(void)
   func_0202e1b8();
 }
 
+int func_020445d0();
+s16 *func_0204fde0();
+u32 func_0204fe18();
+int func_0202e3e4(int a)
+{
+    int h = func_020445d0(35, 0);
+    s16 *t = func_0204fde0();
+    u32 n = func_0204fe18(h);
+    u32 i;
+    for (i = 0; i < n; i++) {
+        if (a == t[i]) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 /* decompiler-derived */
 void Unk02e000_Unk_02e5c4(int arg0)
 {
