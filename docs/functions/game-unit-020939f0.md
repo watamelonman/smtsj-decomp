@@ -9,7 +9,7 @@
 ## Not done in M1-T617
 - `Unk0939f0_Unk_093da4`
 - `Unk0939f0_Reset`
-- `func_02093b14`
+- `Unk0939f0_Unk_093b14`
 - `Unk0939f0_Unk_093ea8`: decompiler-derived
 - `Unk0939f0_Unk_093f0c`: decompiler-derived
 
@@ -27,4 +27,4 @@
 - `func_02093f70`
 - `Unk0939f0_Unk_093da4`: decompiler-derived (plain cleanup)
 - `Unk0939f0_Reset`: hand-matched
-- `func_02093b14`: hand-matched
+- `Unk0939f0_Unk_093b14`: hand-matched

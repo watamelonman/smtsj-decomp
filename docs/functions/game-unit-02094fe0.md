@@ -22,7 +22,7 @@
 - `func_020953c4`
 
 ## Not done in M1-T383
-- `func_0209502c`
+- `Unk094fe0_Unk_09502c`
 - `func_020953f0`
 - `func_02095468`
 
@@ -49,4 +49,4 @@
 - `Unk094fe0_TestBit990`: hand-matched
 - `Unk094fe0_Call_02095370`: hand-matched
 - `Unk094fe0_Unk_095370`: hand-matched
-- `func_0209502c`: hand-matched
+- `Unk094fe0_Unk_09502c`: hand-matched

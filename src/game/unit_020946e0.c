@@ -187,7 +187,7 @@ void *func_020611dc();
 void Unk0946e0_Unk_094b98(int arg0);
 void Unk09d060_Unk_09d170();
 
-void func_02094bd4(int a, u32 b, u8 c)
+void Unk0946e0_Unk_094bd4(int a, u32 b, u8 c)
 {
     Unk0946e0Task *t = (Unk0946e0Task *)func_020611dc(Unk0946e0_Unk_094b98, 0, 0, 0, 20, 0, 0, 0);
     t->unk_08 = -1;

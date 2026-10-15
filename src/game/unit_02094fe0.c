@@ -55,17 +55,17 @@ int Unk094fe0_Unk_094fec(int arg0)
   return arg0 * 0x1c + ((int)data_02175dac);
 }
 
-void func_0209502c();
+void Unk094fe0_Unk_09502c();
 void Unk094fe0_Call_0209502c(int a, int b)
 {
-    func_0209502c(Unk094fe0_Thunk_0202e8cc(), a, b);
+    Unk094fe0_Unk_09502c(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
 void func_020950e4();
 void func_020e6708();
 void *Unk02e000_GetWorkArea();
 
-void func_0209502c(Unk094fe0Work *w, int a, int b)
+void Unk094fe0_Unk_09502c(Unk094fe0Work *w, int a, int b)
 {
     u8 v;
     func_020950e4(Unk094fe0_Nop_095000(w), a, b);

@@ -72,7 +72,7 @@ typedef struct Unk0939f0Ents {
 } Unk0939f0Ents;
 void func_02093b6c();
 
-void func_02093b14(Unk0939f0Ents *p)
+void Unk0939f0_Unk_093b14(Unk0939f0Ents *p)
 {
     int i;
     Unk0939f0Ent *e;

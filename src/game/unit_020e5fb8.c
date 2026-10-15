@@ -177,14 +177,14 @@ void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1)
 
 
 
-int func_0209502c();
+int Unk094fe0_Unk_09502c();
 int Unk0e5fb8_GetOffset800();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e622c(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 value;
   value = Unk0e5fb8_GetOffset800(arg1,arg2);
-  func_0209502c(arg0,value,1);
+  Unk094fe0_Unk_09502c(arg0,value,1);
 }
 
 int Unk094fe0_Call_0209502c();
@@ -256,7 +256,7 @@ void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1)
 {
   u32 tmp1;
   tmp1 = Unk0e5fb8_Unk_0e6158(arg1);
-  func_0209502c(arg0,tmp1,1);
+  Unk094fe0_Unk_09502c(arg0,tmp1,1);
 }
 
 int Unk0e5fb8_Get2Bits(u32 a, u32 b)
