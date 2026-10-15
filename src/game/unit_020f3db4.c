@@ -18,7 +18,7 @@ int Unk0f3db4_Unk_0f4528(u32 arg0);
 void Unk0f3db4_Unk_0f4550(u8 *arg0);
 int Unk0f3db4_Unk_0f3db4(void);
 void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1);
-void Unk0f3db4_Unk_0f4490(u32 arg0,int arg1);
+u32 Unk0f3db4_Unk_0f4490(u32 arg0,int arg1);
 
 /* decompiler-derived */
 u32 Unk0f3db4_Unk_0f44a8(u32 arg0)
@@ -65,11 +65,12 @@ void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1)
 }
 
 /* decompiler-derived */
-void Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
+/* Low two bits of byte `offset` of the table. */
+u32 Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
 {
   int value;
   value = Unk0f3db4_Unk_0f3ec8();
-  Unk0f3db4_Unk_0f44a8(*(u8 *)(value + arg1));
+  return Unk0f3db4_Unk_0f44a8(*(u8 *)(value + arg1));
 }
 
 
@@ -178,4 +179,13 @@ void Unk0f3db4_Unk_0f4538(u32 arg0,int arg1)
 void Unk0f3db4_Unk_0f44b0(u32 arg0, int offset, u8 value)
 {
     Unk0f3db4_Unk_0f44d0((u8 *)Unk0f3db4_Unk_0f3ec8(arg0) + offset, value);
+}
+
+/* Promotes state 2 to state 3. */
+void func_020f44e4(u32 arg0, int offset)
+{
+    if (Unk0f3db4_Unk_0f4490(arg0, offset) != 2) {
+        return;
+    }
+    Unk0f3db4_Unk_0f44b0(arg0, offset, 3);
 }
