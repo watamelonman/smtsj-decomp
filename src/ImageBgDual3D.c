@@ -30,7 +30,7 @@ typedef struct ImageBgDual3DWork {
 } ImageBgDual3DWork;
 
 void func_021255b4(void);
-void func_021177e0(void);
+void func_021177e0(u32 a, u32 b);
 
 /* Empty per-frame / lifecycle callbacks (no direct callers; table entries). */
 void ImageBgDual3D_Nop_1252f4(void) { }
@@ -56,7 +56,7 @@ void ImageBgDual3D_Nop_125c64(void) { }
 void ImageBgDual3D_Thunk_021255b4(void) { func_021255b4(); }
 
 /* Forwards to func_021177e0 (shared helper also used by unit_02116598). */
-void ImageBgDual3D_Thunk_021177e0(void) { func_021177e0(); }
+void ImageBgDual3D_Thunk_021177e0(u32 a, u32 b) { func_021177e0(a, b); }
 
 
 void Unk116598_Reset(void);

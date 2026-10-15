@@ -23,7 +23,7 @@ typedef struct Unk116598Work {
     u32 unk_0014;
     s32 unk_0018;
 } Unk116598Work;
-void func_021177e0(void);
+void func_021177e0(u32 a, u32 b);
 void Unk116598_Reset(void);
 void func_021172fc(void);
 
@@ -57,10 +57,10 @@ void Unk116598_Call_02117400b(u32 a, u32 b, u32 c, u32 d, u8 e)
 void Unk116598_Nop_117cd0(void) { }
 
 /* Forwarders: pass the caller's arguments straight through. */
-void Unk116598_Thunk_021177e0(void) { func_021177e0(); }
+void Unk116598_Thunk_021177e0(u32 a, u32 b) { func_021177e0(a, b); }
 void Unk116598_Unk_1166f4(void) { Unk116598_Reset(); }
 void Unk116598_Unk_116804(void) { func_021172fc(); }
-void Unk116598_Unk_117950(void) { func_021177e0(); }
+void Unk116598_Unk_117950(u32 a, u32 b) { func_021177e0(a, b); }
 
 
 
