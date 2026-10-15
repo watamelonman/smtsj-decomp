@@ -84,7 +84,7 @@ int Unk02e000_Unk_02e8f0(void)
 void Unk02e000_Unk_02e180(void);
 int func_0202e23c();
 int func_0202e5a8();
-int func_0202e5c4();
+void func_0202e5c4(int arg0);
 /* decompiler-derived */
 void Unk02e000_Unk_02e144(void)
 {
@@ -152,4 +152,20 @@ void Unk02e000_Unk_02e180(void)
   v1[2] = 1;
   v1[3] = 1;
   func_0202e1b8();
+}
+
+/* decompiler-derived */
+void func_0202e5c4(int arg0)
+{
+  u32 tmp1;
+  tmp1 = Unk02e000_Unk_02e75c(arg0);
+  func_02008848(tmp1,0,0x48);
+}
+
+/* decompiler-derived */
+int func_0202e740(int arg0)
+{
+  int tmp1;
+  tmp1 = Unk02e000_Unk_02e75c((int)arg0);
+  return *(char *)(tmp1 + 0x28) != '\0';
 }

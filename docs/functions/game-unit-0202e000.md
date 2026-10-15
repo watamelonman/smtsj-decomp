@@ -77,3 +77,5 @@
 - `Unk02e000_Unk_02e228`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e0cc`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
+- `func_0202e5c4`: decompiler-derived (proto+fix cleanup)
+- `func_0202e740`: decompiler-derived (plain+fix cleanup)
