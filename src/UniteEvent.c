@@ -82,7 +82,7 @@ extern u8 data_02151428[];
 int func_02013c3c();
 int func_0206df10();
 int func_0206f6e4();
-int func_02071fcc();
+int Unk071dc0_Unk_071fcc();
 typedef struct UniteEventCtx {
     u8 pad_0000[0x32c];
     u32 unk_032c;
@@ -131,7 +131,7 @@ void UniteEvent_LoadEffects(int arg0,u32 arg1,int arg2,u32 arg3)
   func_02013c3c(auStack_98,data_02151428,arg3);
   tmp1 = func_0206f6e4(auStack_98);
   *(u8 *)(arg2 + 4) = tmp1;
-  func_02071fcc();
+  Unk071dc0_Unk_071fcc();
 }
 
 void UniteEvent_SetState(UniteEvent *ev, s32 state)

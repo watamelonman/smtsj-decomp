@@ -403,7 +403,7 @@ void Unk0a163c_Call_020a1b08();
 void func_020a1b68();
 void Unk0a163c_Unk_0a21f8();
 
-void func_020779f4(ImageObjNode *n)
+void ImageObj_Unk_0779f4(ImageObjNode *n)
 {
     s32 v;
     u32 c;
@@ -434,7 +434,7 @@ void ImageObj_Unk_077a4c(void *o, int kind)
     }
 }
 
-void func_02077c30(ImageObjNode *n)
+void ImageObj_Unk_077c30(ImageObjNode *n)
 {
     ImageObjWork *w = (ImageObjWork *)ImageObj_Get_data_0217231c();
     if (n == 0) {

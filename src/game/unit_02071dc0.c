@@ -69,7 +69,7 @@ typedef struct Unk071dc0Rec {
 } Unk071dc0Rec;
 int func_0205b36c();
 
-int func_02071fcc(void)
+int Unk071dc0_Unk_071fcc(void)
 {
     int i;
     FIELD(s32, data_02171d14, 0x604) = 0;
