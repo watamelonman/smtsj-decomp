@@ -102,6 +102,18 @@ void Unk0946e0_Unk_094704(u16 *arg0,u16 arg1,u16 arg2,u16 arg3,
 int func_02094750();
 int func_020949e0();
 int func_02094a90();
+void func_02094910(void)
+{
+    u8 *p = (u8 *)Unk0946e0_GetAddr_data_02175d94();
+    FIELD(s16, p, 0x00) = 0;
+    FIELD(s16, p, 0x02) = 0;
+    FIELD(s32, p, 0x04) = FIELD(s16, p, 0x00);
+    FIELD(s32, p, 0x08) = FIELD(s16, p, 0x02);
+    FIELD(u16, p, 0x10) = 256;
+    FIELD(u16, p, 0x12) = 192;
+    FIELD(u32, p, 0x14) = 0;
+}
+
 /* decompiler-derived */
 void Unk0946e0_Unk_094958(void)
 {
