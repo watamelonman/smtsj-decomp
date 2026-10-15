@@ -48,3 +48,7 @@
 - `func_020df0cc`
 - `Unk0de678_CountLeading`: hand-matched
 - `Unk0de678_Unk_0debf8`: hand-matched
+- `func_020dedf8`: hand-matched
+- `func_020df348`: hand-matched
+- `func_020df4cc`: hand-matched
+- `func_020df4f0`: hand-matched
