@@ -55,7 +55,7 @@ typedef struct Unk09727cPair {
 } Unk09727cPair;
 
 void func_02097340(Unk09727cPair *out, void *area);
-int func_02097308(int i)
+int Unk09727c_Unk_097308(int i)
 {
     int t = func_020445d0(48, 0);
     u16 *a;
@@ -67,14 +67,14 @@ int func_02097308(int i)
     return a[i];
 }
 
-int func_020974a4(int i)
+int Unk09727c_GetPairLo(int i)
 {
     Unk09727cPair buf[20];
     func_02097340(buf, Unk02e000_Thunk_0202e788());
     return buf[i].lo;
 }
 
-int func_020974dc(int i)
+int Unk09727c_GetPairHi(int i)
 {
     Unk09727cPair buf[20];
     func_02097340(buf, Unk02e000_Thunk_0202e788());

@@ -24,7 +24,7 @@ int func_0202d668();
 int Unk094fe0_Call_020950b4();
 void ImageObj_Unk_077894();
 void Unk02dcfc_SetField68();
-void func_02095cd8();
+void Unk095560_Unk_095cd8();
 void Unk095560_Unk_095d08();
 s32 *Unk094fe0_Unk_094fec();
 int Unk02d15c_IsMode0Match(int a)
@@ -64,7 +64,7 @@ int Unk02d15c_IsMode1Match(int a)
 int Unk02d15c_Setup(int a, int b, int c, int d)
 {
     Unk02dcfc_SetField68();
-    func_02095cd8(a, c, b, 0);
+    Unk095560_Unk_095cd8(a, c, b, 0);
     Unk095560_Unk_095d08(d);
     return 1;
 }

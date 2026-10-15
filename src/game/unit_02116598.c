@@ -500,7 +500,7 @@ void Unk116598_Unk_1174b8(void)
 void func_02077314(void);
 int Unk044394_HasEntry(int id);
 s32 func_02044428(int id);
-int func_02095b28(int id);
+int Unk095560_Unk_095b28(int id);
 void Unk02d15c_Unk_02d91c(int a, int b);
 void Unk02d15c_Setup(int a, int b, int c, int d);
 void func_02095f94(void);
@@ -512,7 +512,7 @@ void Unk116598_Unk_1168cc(Unk116598Work *work)
     if (Unk044394_HasEntry(30) == 0) {
         work->unk_0010 = func_02044428(30);
     }
-    if (func_02095b28(1) == 0) {
+    if (Unk095560_Unk_095b28(1) == 0) {
         return;
     }
     Unk02d15c_Unk_02d91c(8, 1);
@@ -532,7 +532,7 @@ void Unk116598_Unk_117af8(Unk116598Work *work)
     if (Unk044394_HasEntry(30) == 0) {
         work->unk_0010 = func_02044428(30);
     }
-    if (func_02095b28(2) == 0) {
+    if (Unk095560_Unk_095b28(2) == 0) {
         return;
     }
     Unk02d15c_Unk_02d91c(8, 2);

@@ -22,7 +22,7 @@ void func_020961a0(void);
 /* Reads the signed byte at table[index]. */
 int Unk095560_GetSignedByte(const s8 *table, int index) { return table[index]; }
 
-u32 func_02095568(const u8 *p, int o)
+u32 Unk095560_ReadU32LE(const u8 *p, int o)
 {
     return p[o] | (p[o + 1] << 8) | (p[o + 2] << 16) | (p[o + 3] << 24);
 }
@@ -410,12 +410,12 @@ void Unk095560_Unk_095598(void)
   *(u32 *)(tmp2 + 0x18) = 0xffffffff;
 }
 
-int func_02095b28(u32 x)
+int Unk095560_Unk_095b28(u32 x)
 {
     return Unk095560_Unk_095950(8, x) != 0;
 }
 
-int func_02095cd8(u32 a, u32 b, u32 c, u32 d)
+int Unk095560_Unk_095cd8(u32 a, u32 b, u32 c, u32 d)
 {
     u32 *q;
     ((u32 *)data_02175ea8)[0] = c;

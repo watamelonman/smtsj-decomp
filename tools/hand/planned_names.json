@@ -214,5 +214,11 @@
  "func_02097b54": "Unk0979d8_ClampField1e",
  "func_02097b84": "Unk0979d8_ClampField20",
  "func_02097bb4": "Unk0979d8_HasId",
- "func_02097bec": "Unk0979d8_CopyIds"
+ "func_02097bec": "Unk0979d8_CopyIds",
+ "func_02095568": "Unk095560_ReadU32LE",
+ "func_02095b28": "Unk095560_Unk_095b28",
+ "func_02095cd8": "Unk095560_Unk_095cd8",
+ "func_02097308": "Unk09727c_Unk_097308",
+ "func_020974a4": "Unk09727c_GetPairLo",
+ "func_020974dc": "Unk09727c_GetPairHi"
 }
