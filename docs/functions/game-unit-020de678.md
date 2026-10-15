@@ -28,3 +28,12 @@
 - `func_020df520`
 - `func_020de720`
 - `func_020de784`
+
+## Not done in M1-T689
+- `func_020dec18`
+- `func_020de7e8`
+- `func_020ded70`
+- `func_020deb68`
+- `func_020decd8`
+- `func_020dee40`
+- `func_020de8b0`
