@@ -26,3 +26,4 @@
 - `func_020cefac`
 - `func_020ced18`
 - `func_020ce868`
+- `func_020cf238`: hand-matched

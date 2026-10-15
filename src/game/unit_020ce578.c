@@ -27,7 +27,7 @@ void Unk0ce578_Unk_0cec98(Unk0ce578Work *arg0){
   return;
 }
 
-int func_020cf238();
+void func_020cf238();
 int Unk122e1c_Unk_123294();
 /* decompiler-derived */
 void Unk0ce578_Unk_0cf29c(Unk0ce578Work *arg0, u32 arg1){
@@ -61,6 +61,18 @@ void Unk0ce578_Unk_0ce5e8(void)
 }
 
 int Unk0a0ce4_Unk_0a0da4();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+void func_020cf238(Unk0ce578Work *p, int k)
+{
+    if (k == 2) {
+        Unk0ce578_Unk_0cec98(p);
+    }
+    FIELD(int, p, 0) = k;
+}
+
 /* decompiler-derived */
 void Unk0ce578_Unk_0cf258(Unk0ce578Work *arg0, int arg1){
   int tmp1;
