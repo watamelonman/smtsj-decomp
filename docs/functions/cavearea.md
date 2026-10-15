@@ -7,14 +7,14 @@
 - `CaveArea_Unk_0ed26c`: decompiler-derived
 
 ## Not done in M1-T971
-- `func_020ed60c`
+- `CaveArea_InitParams`
 - `CaveArea_AllocBuf`
 - `func_020ed3cc`
 
 ## Not done in M1-T972
 - `func_020ed9e8`
-- `func_020edb4c`
-- `func_020ed364`
+- `CaveArea_Unk_0edb4c`
+- `CaveArea_Unk_0ed364`
 - `func_020eb7e0`
 - `func_020ec440`
 - `func_020ec4a8`
@@ -42,6 +42,6 @@
 - `func_020eb83c`
 - `CaveArea_LoadAreaLayout`: decompiler-derived (struct cleanup)
 - `CaveArea_AllocBuf`: hand-matched
-- `func_020ed364`: hand-matched
-- `func_020ed60c`: hand-matched
-- `func_020edb4c`: hand-matched
+- `CaveArea_Unk_0ed364`: hand-matched
+- `CaveArea_InitParams`: hand-matched
+- `CaveArea_Unk_0edb4c`: hand-matched

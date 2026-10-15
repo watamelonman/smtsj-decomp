@@ -112,7 +112,7 @@ void CaveArea_LoadAreaLayout(int arg0)
 
 void func_0205de30();
 void func_02124224();
-void func_020ed364(u8 *p)
+void CaveArea_Unk_0ed364(u8 *p)
 {
     u32 c = FIELD(u32, p, 188);
     if (p[168] == 0) {
@@ -126,7 +126,7 @@ void func_020ed364(u8 *p)
     func_0205de30(FIELD(u32, p, 4), c + 5, FIELD(u32, p, 128));
 }
 
-void func_020ed60c(float *p)
+void CaveArea_InitParams(float *p)
 {
     p[0] = 96.0f;
     p[1] = 8.0f;
@@ -134,7 +134,7 @@ void func_020ed60c(float *p)
     FIELD(u32, p, 12) = 16;
 }
 
-void func_020edb4c(u8 *p)
+void CaveArea_Unk_0edb4c(u8 *p)
 {
     int x;
     s8 s = FIELD(s8, p, 356);

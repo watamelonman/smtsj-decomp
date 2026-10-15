@@ -479,7 +479,7 @@ void Unk0ea208_Unk_0eac40(u8 *p)
 int Unk0e8228_GetArr40();
 int func_02044ec4();
 void Unk0a163c_Unk_0a1814();
-void func_020ead64(void)
+void Unk0ea208_Unk_0ead64(void)
 {
     u8 *q = (u8 *)func_02044ec4(Unk0e8228_GetArr40(Unk0e8228_Unk_0e8374(5)));
     if (((u32)(q[642] << 29) >> 31) != 0) {

@@ -36,7 +36,7 @@
 
 ## Not done in M1-T772
 - `Unk0ea208_Unk_0eac40`
-- `func_020ead64`
+- `Unk0ea208_Unk_0ead64`
 - `Unk0ea208_GetArr10`
 - `Unk0ea208_GetArr24`
 - `Unk0ea208_GetArr40`
@@ -74,4 +74,4 @@
 - `Unk0ea208_Unk_0eac24`: hand-matched
 - `Unk0ea208_Unk_0eac40`: hand-matched
 - `Unk0ea208_ForEachSlot`: hand-matched
-- `func_020ead64`: hand-matched
+- `Unk0ea208_Unk_0ead64`: hand-matched

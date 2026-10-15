@@ -6,8 +6,8 @@
 - `Unk0eeb20_Unk_0eeb74`: decompiler-derived
 
 ## Not done in M1-T038
-- `func_020eeb20`
+- `Unk0eeb20_Unk_0eeb20`
 - `func_020eebc8`
 - `func_020eecbc`
 - `func_020eec4c`
-- `func_020eeb20`: hand-matched
+- `Unk0eeb20_Unk_0eeb20`: hand-matched

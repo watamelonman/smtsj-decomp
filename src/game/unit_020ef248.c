@@ -47,7 +47,7 @@ int Unk0e8228_Thunk_02045c38();
 int func_020e8f74();
 int Unk0e8228_Unk_0e8fe4();
 int Unk0e8228_GetArr88Field20();
-void func_020ef2cc(Unk0ef248Obj *p)
+void Unk0ef248_ClearArrF4(Unk0ef248Obj *p)
 {
     int i;
     for (i = 0; i < 6; i++) {
@@ -74,7 +74,7 @@ int func_02044ec4();
 int Unk0e8228_Unk_0e8c80();
 int func_020f7d14();
 int func_020f7e48();
-void func_020ef6fc(u8 *p)
+void Unk0ef248_Unk_0ef6fc(u8 *p)
 {
     func_020f8478(p + 80, Unk0e8228_Unk_0e8374(FIELD(u32, p, 68)));
     func_020ef8d0(p + 80);
@@ -83,10 +83,10 @@ void func_020ef6fc(u8 *p)
     } else {
         Unk0feba0_Unk_0febe8(2);
     }
-    func_020ef2cc((Unk0ef248Obj *)p);
+    Unk0ef248_ClearArrF4((Unk0ef248Obj *)p);
 }
 
-int func_020ef74c(u32 a, u32 b)
+int Unk0ef248_Unk_0ef74c(u32 a, u32 b)
 {
     if (Unk0e8228_Thunk_02045c38(a) != 0 || func_020e8f74() != 0) {
         if (Unk0e8228_Unk_0e8fe4(Unk0e8228_GetArr88Field20(b)) == 1) {

@@ -490,5 +490,13 @@
  "func_020eac24": "Unk0ea208_Unk_0eac24",
  "func_020eac40": "Unk0ea208_Unk_0eac40",
  "func_020eb2a4": "Unk0ea208_ForEachSlot",
- "func_020ed1a8": "CaveArea_AllocBuf"
+ "func_020ed1a8": "CaveArea_AllocBuf",
+ "func_020ead64": "Unk0ea208_Unk_0ead64",
+ "func_020ed364": "CaveArea_Unk_0ed364",
+ "func_020ed60c": "CaveArea_InitParams",
+ "func_020edb4c": "CaveArea_Unk_0edb4c",
+ "func_020eeb20": "Unk0eeb20_Unk_0eeb20",
+ "func_020ef2cc": "Unk0ef248_ClearArrF4",
+ "func_020ef6fc": "Unk0ef248_Unk_0ef6fc",
+ "func_020ef74c": "Unk0ef248_Unk_0ef74c"
 }
