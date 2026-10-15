@@ -60,18 +60,18 @@
 - `Unk02e000_SetSlot40`
 
 ## Not done in M1-T655
-- `func_0202eab8`
+- `Unk02e000_SetRecordUnk1c`
 - `func_0202e520`
-- `func_0202ea10`
+- `Unk02e000_GetRecord`
 - `Unk02e000_FindIndex_02e3e4`
-- `func_0202e968`
-- `func_0202ec48`
+- `Unk02e000_SetBit_02e968`
+- `Unk02e000_SetRecordFlag1f`
 - `func_0202ecf8`
-- `func_0202eb48`
+- `Unk02e000_SetRecordUnk1e`
 
 ## Not done in M1-T656
 - `func_0202eda8`
-- `func_0202e468`
+- `Unk02e000_GetSlotPtr`
 - `func_0202e5dc`
 - `func_0202e23c`
 - `Unk02e000_Unk_02e228`: decompiler-derived (plain cleanup)
@@ -107,9 +107,9 @@
 - `Unk02e000_GetRecordFlag1`: hand-matched
 - `Unk02e000_GetRecordUnk1f`: hand-matched
 - `Unk02e000_FindIndex_02e3e4`: hand-matched
-- `func_0202e468`: hand-matched
-- `func_0202e968`: hand-matched
-- `func_0202ea10`: hand-matched
-- `func_0202eab8`: hand-matched
-- `func_0202eb48`: hand-matched
-- `func_0202ec48`: hand-matched
+- `Unk02e000_GetSlotPtr`: hand-matched
+- `Unk02e000_SetBit_02e968`: hand-matched
+- `Unk02e000_GetRecord`: hand-matched
+- `Unk02e000_SetRecordUnk1c`: hand-matched
+- `Unk02e000_SetRecordUnk1e`: hand-matched
+- `Unk02e000_SetRecordFlag1f`: hand-matched

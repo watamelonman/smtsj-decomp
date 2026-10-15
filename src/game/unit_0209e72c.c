@@ -5,7 +5,7 @@
 void Unk09974c_Unk_09974c(void *sub);
 void Unk11f2d0_Unk_11f2d0(void *sub);
 void func_0203480c(void *obj, int a);
-void func_0202e968(u32 a, int b);
+void Unk02e000_SetBit_02e968(u32 a, int b);
 
 void Unk09e72c_Unk_09e72c(u32 arg0)
 {
@@ -38,7 +38,7 @@ void Unk09e72c_Unk_09e920(u32 arg0)
     gs->unk_73cc = 6;
     gs->root->unk_04 = 0;
     gs->unk_7480 = (u8)arg0;
-    func_0202e968(arg0, 1);
+    Unk02e000_SetBit_02e968(arg0, 1);
     gs->unk_73e8 = 0xd;
 }
 

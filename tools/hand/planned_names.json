@@ -631,5 +631,11 @@
  "func_0202d794": "Unk02d15c_Unk_02d794",
  "func_0202d8a8": "Unk02d15c_Unk_02d8a8",
  "func_0202d954": "Unk02d15c_Unk_02d954",
- "func_0202e3e4": "Unk02e000_FindIndex_02e3e4"
+ "func_0202e3e4": "Unk02e000_FindIndex_02e3e4",
+ "func_0202e468": "Unk02e000_GetSlotPtr",
+ "func_0202e968": "Unk02e000_SetBit_02e968",
+ "func_0202ea10": "Unk02e000_GetRecord",
+ "func_0202eab8": "Unk02e000_SetRecordUnk1c",
+ "func_0202eb48": "Unk02e000_SetRecordUnk1e",
+ "func_0202ec48": "Unk02e000_SetRecordFlag1f"
 }

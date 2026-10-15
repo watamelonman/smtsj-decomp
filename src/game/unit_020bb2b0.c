@@ -83,7 +83,7 @@ u32 Unk0bb2b0_Unk_0bb42c(void)
 }
 
 
-int func_0202eab8();
+int Unk02e000_SetRecordUnk1c();
 /* decompiler-derived */
 u32 Unk0bb2b0_Unk_0bb450(void)
 {
@@ -93,7 +93,7 @@ u32 Unk0bb2b0_Unk_0bb450(void)
   value1 = func_0203ac00(0);
   value2 = func_0203ac00(1);
   value3 = Unk02e000_GetRecordUnk1c(value1);
-  func_0202eab8(value1,value2 + value3);
+  Unk02e000_SetRecordUnk1c(value1,value2 + value3);
   return 1;
 }
 

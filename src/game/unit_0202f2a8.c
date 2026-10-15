@@ -250,7 +250,7 @@ int Unk02f2a8_GetRes36Unk1b(int i, int j)
 
 int Unk0e5fb8_Unk_0e63c8();
 int Unk02e000_TestFlag();
-void func_0202e968();
+void Unk02e000_SetBit_02e968();
 int Unk02f2a8_Unk_035c14(int i, int j)
 {
     Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
@@ -389,7 +389,7 @@ int Unk02f2a8_SetField35c(u32 id)
     if (Unk02e000_TestFlag(FIELD(u16, w, 0x35c)) != 0) {
         return 0;
     }
-    func_0202e968(FIELD(u16, w, 0x35c), 1);
+    Unk02e000_SetBit_02e968(FIELD(u16, w, 0x35c), 1);
     return 1;
 }
 
