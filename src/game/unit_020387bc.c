@@ -44,6 +44,29 @@ u32 Unk0387bc_Unk_038d58(int *arg0)
 }
 
 
+u32 func_0204fe18();
+u8 *func_02038d94(u32 *p, u32 i)
+{
+    if (p == 0) {
+        return 0;
+    }
+    if (func_0204fe18(p[1]) <= i) {
+        return 0;
+    }
+    return (u8 *)p[2] + i * 32;
+}
+
+u8 *func_02038dc4(u32 *p, u32 i)
+{
+    if (p == 0) {
+        return 0;
+    }
+    if (func_0204fe18(p[3]) <= i) {
+        return 0;
+    }
+    return (u8 *)p[4] + i * 36;
+}
+
 /* decompiler-derived */
 u32 Unk0387bc_Unk_038e40(int *arg0)
 {
