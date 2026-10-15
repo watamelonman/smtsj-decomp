@@ -90,7 +90,7 @@ void Unk06ae94_Unk_06aeb4(u32 arg0)
 
 
 
-int func_0206c0b0();
+void func_0206c0b0();
 int func_0206d4e8();
 int func_02071844();
 int func_02071d6c();
@@ -98,6 +98,36 @@ void func_0206af04();
 void Unk06ae94_Call_06af04(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
 {
     func_0206af04(a, b, c, d, e, f, 0, g, h, i);
+}
+
+void func_02061424();
+void func_0206c130();
+u32 func_0206e39c();
+void func_0206c938();
+void func_0206c0b0(u32 o)
+{
+    u32 *p;
+    if (o == 0) {
+        return;
+    }
+    p = FIELD(u32 *, o, 0x360);
+    if (p != 0) {
+        *p = 0;
+    }
+    func_02061424(o);
+}
+
+int func_0206c0d4(u32 *a, u32 *b)
+{
+    if (*a < *b) {
+        return -1;
+    }
+    return *a > *b;
+}
+
+void func_0206c0f4(int a, int b, int c, int d, int e, int f, int g, int h)
+{
+    func_0206c130(a, b, c, d, e, f, 0, g, h);
 }
 
 /* decompiler-derived */
@@ -146,3 +176,18 @@ void Unk06ae94_Unk_06c76c(u32 *arg0)
   }
 }
 
+int func_0206c8f8(int x)
+{
+    int i;
+    for (i = 0; i < 6; i++) {
+        if (func_0206e39c(x, i) & 0x1fffe000) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_0206ca30(int a, int b, int c, int d, int e, int f, int g)
+{
+    func_0206c938(a, b, c, d, e, 0, f, g);
+}

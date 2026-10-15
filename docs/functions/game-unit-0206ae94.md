@@ -44,3 +44,8 @@
 - `Unk06ae94_Unk_06aeec`: hand-matched
 - `Unk06ae94_SetPair`: hand-matched
 - `Unk06ae94_Call_06af04`: hand-matched
+- `func_0206c0b0`: hand-matched
+- `func_0206c0d4`: hand-matched
+- `func_0206c0f4`: hand-matched
+- `func_0206c8f8`: hand-matched
+- `func_0206ca30`: hand-matched
