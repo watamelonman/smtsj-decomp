@@ -92,5 +92,13 @@
  "func_0203d8c0": "Unk03d72c_Unk_03d8c0",
  "func_0203d930": "Unk03d930_Unk_03d930",
  "func_0203d968": "Unk03d930_Unk_03d968",
- "func_0203dbbc": "Unk03dbbc_Unk_03dbbc"
+ "func_0203dbbc": "Unk03dbbc_Unk_03dbbc",
+ "func_0203dfe0": "Unk03de08_Unk_03dfe0",
+ "func_0203e260": "Unk03e23c_Unk_03e260",
+ "func_0203e290": "Unk03e23c_Unk_03e290",
+ "func_0203e2bc": "Unk03e23c_Unk_03e2bc",
+ "func_0203e36c": "Unk03e23c_Unk_03e36c",
+ "func_0203e398": "Unk03e23c_Unk_03e398",
+ "func_0203e7cc": "Unk03e43c_CopyEntry32",
+ "func_0203e804": "Unk03e43c_MergeTable"
 }

@@ -4,14 +4,14 @@
 - `Unk03e23c_Unk_03e23c`: decompiler-derived
 
 ## Not done in M1-T018
-- `func_0203e290`
-- `func_0203e36c`
-- `func_0203e260`
-- `func_0203e398`
-- `func_0203e2bc`
+- `Unk03e23c_Unk_03e290`
+- `Unk03e23c_Unk_03e36c`
+- `Unk03e23c_Unk_03e260`
+- `Unk03e23c_Unk_03e398`
+- `Unk03e23c_Unk_03e2bc`
 - `func_0203e3e4`
-- `func_0203e260`: hand-matched
-- `func_0203e290`: hand-matched
-- `func_0203e2bc`: hand-matched
-- `func_0203e36c`: hand-matched
-- `func_0203e398`: hand-matched
+- `Unk03e23c_Unk_03e260`: hand-matched
+- `Unk03e23c_Unk_03e290`: hand-matched
+- `Unk03e23c_Unk_03e2bc`: hand-matched
+- `Unk03e23c_Unk_03e36c`: hand-matched
+- `Unk03e23c_Unk_03e398`: hand-matched

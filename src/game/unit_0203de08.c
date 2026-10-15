@@ -47,7 +47,7 @@ u32 Unk03de08_Unk_03df3c(void)
 int Unk03aae8_Unk_03acf4();
 int func_02035b08();
 int Unk02e000_TestFlag();
-int func_0203dfe0(void)
+int Unk03de08_Unk_03dfe0(void)
 {
     u8 a = func_0203ac00(0);
     u8 b = func_0203ac00(1);

@@ -24,7 +24,7 @@ typedef struct Unk03e43cTimer {
 } Unk03e43cTimer;
 
 extern u8 data_0215e85c[];
-void func_0203e7cc(u8 *src, int idx)
+void Unk03e43c_CopyEntry32(u8 *src, int idx)
 {
     int i;
     for (i = 0; i < 32; i += 2) {
@@ -33,7 +33,7 @@ void func_0203e7cc(u8 *src, int idx)
     }
 }
 
-void func_0203e804(u8 *src)
+void Unk03e43c_MergeTable(u8 *src)
 {
     int i;
     for (i = 0; i < 512; i += 2) {

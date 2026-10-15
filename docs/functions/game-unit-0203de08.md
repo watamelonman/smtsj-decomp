@@ -5,7 +5,7 @@
 - `Unk03de08_Unk_03df3c`: decompiler-derived
 
 ## Not done in M1-T085
-- `func_0203dfe0`
+- `Unk03de08_Unk_03dfe0`
 - `func_0203deac`
 - `func_0203de08`
-- `func_0203dfe0`: hand-matched
+- `Unk03de08_Unk_03dfe0`: hand-matched

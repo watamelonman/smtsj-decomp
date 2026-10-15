@@ -11,14 +11,14 @@ int func_02096af4();
 void func_02096958();
 void Unk0986ac_Unk_098978();
 int Unk0986ac_Thunk_02098714();
-int func_0203e260(void)
+int Unk03e23c_Unk_03e260(void)
 {
     int a = func_0203ac00(0);
     func_0202eda8((u16)a, func_0203ac00(1));
     return 1;
 }
 
-int func_0203e290(void)
+int Unk03e23c_Unk_03e290(void)
 {
     if (Unk096754_Unk_0969f0()) {
         Unk03aae8_Unk_03acf4(1);
@@ -28,7 +28,7 @@ int func_0203e290(void)
     return 1;
 }
 
-int func_0203e2bc(void)
+int Unk03e23c_Unk_03e2bc(void)
 {
     if (func_02096a60((u16)func_0203ac00(0))) {
         Unk03aae8_Unk_03acf4(1);
@@ -38,7 +38,7 @@ int func_0203e2bc(void)
     return 1;
 }
 
-int func_0203e36c(void)
+int Unk03e23c_Unk_03e36c(void)
 {
     if (func_02096af4((u16)func_0203ac00(0)) >= 0) {
         func_02096958();
@@ -46,7 +46,7 @@ int func_0203e36c(void)
     return 1;
 }
 
-int func_0203e398(void)
+int Unk03e23c_Unk_03e398(void)
 {
     Unk0986ac_Unk_098978(func_0203ac00(0));
     if (Unk0986ac_Thunk_02098714()) {

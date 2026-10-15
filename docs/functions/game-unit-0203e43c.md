@@ -22,10 +22,10 @@
 - `func_0203e848`
 
 ## Not done in M1-T1088
-- `func_0203e7cc`
+- `Unk03e43c_CopyEntry32`
 - `func_0203e894`
 - `func_02043410`
-- `func_0203e804`
+- `Unk03e43c_MergeTable`
 - `func_0203e8cc`
 - `func_02044194`
 - `func_02043450`
@@ -52,5 +52,5 @@
 - `func_02043340`
 - `Unk03e43c_Call_02056cc0`: decompiler-derived (plain cleanup)
 - `Unk03e43c_CountDown`: hand-matched
-- `func_0203e7cc`: hand-matched
-- `func_0203e804`: hand-matched
+- `Unk03e43c_CopyEntry32`: hand-matched
+- `Unk03e43c_MergeTable`: hand-matched
