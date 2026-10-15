@@ -55,3 +55,13 @@
 - `func_0209c548`
 - `func_0209aa00`
 - `func_0209c1a0`
+
+## Not done in M1-T1014
+- `func_0209bd08`
+- `func_0209ce30`
+- `func_0209cbf8`
+- `func_0209a268`
+- `func_0209a638`
+- `func_0209b5d8`
+- `func_0209c9bc`
+- `func_0209c854`
