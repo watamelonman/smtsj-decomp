@@ -180,3 +180,23 @@ int Unk02d15c_ResetRecord(int a, s32 b)
     }
     return 1;
 }
+
+int func_0202dcac(int a, int key)
+{
+    u8 *rec = Unk02d15c_GetManagerRecord(a);
+    u32 i;
+    u8 *p;
+    u32 n;
+    if (rec == 0) {
+        return -1;
+    }
+    p = FIELD(u8 *, rec, 0x0c);
+    n = FIELD(u32, rec, 0x08);
+    for (i = 0; i < n; i++) {
+        if (key == p[0]) {
+            return i;
+        }
+        p += 0x30;
+    }
+    return -1;
+}

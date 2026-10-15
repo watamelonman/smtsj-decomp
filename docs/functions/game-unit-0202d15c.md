@@ -45,3 +45,4 @@
 - `Unk02d15c_IsMode1Match`: hand-matched
 - `Unk02d15c_Setup`: hand-matched
 - `Unk02d15c_ResetRecord`: hand-matched
+- `func_0202dcac`: hand-matched
