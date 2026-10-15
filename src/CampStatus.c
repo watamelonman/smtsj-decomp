@@ -84,3 +84,29 @@ u32 func_020db394(int arg0,u32 arg1)
   return 1;
 }
 
+
+
+
+/* decompiler-derived */
+int func_020dd88c(int arg0,int arg1)
+{
+  int tmp1;
+  tmp1 = arg0;
+  if ((arg1 == 2) && (arg0 == 0 || arg0 == 2)) {
+    tmp1 = 2;
+  }
+  if ((arg1 == 5) && ((arg0 == 0 || arg0 == 2) || arg0 == 5)) {
+    tmp1 = 5;
+  }
+  if ((arg1 == 1) && (((arg0 == 0 || arg0 == 2) || arg0 == 5) || arg0 == 1)) {
+    tmp1 = 1;
+  }
+  if ((arg1 == 3) &&
+     ((((arg0 == 0 || arg0 == 2) || arg0 == 5) || arg0 == 1) || arg0 == 3)) {
+    tmp1 = 3;
+  }
+  if ((arg1 == 4) && (arg0 != 4)) {
+    tmp1 = 4;
+  }
+  return tmp1;
+}
