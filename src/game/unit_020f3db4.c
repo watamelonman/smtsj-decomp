@@ -83,3 +83,87 @@ void func_020f4510(u32 arg0,int arg1)
   return;
 }
 
+
+
+
+/* decompiler-derived */
+u32 func_020f3e6c(u32 arg0)
+{
+  switch(arg0) {
+  case 0:
+    return 0x32;
+  case 1:
+    return 0x32;
+  case 2:
+    return 0x32;
+  case 3:
+    return 0x32;
+  case 4:
+    return 100;
+  case 5:
+    return 0x3c;
+  default:
+    return 0;
+  }
+}
+
+
+/* decompiler-derived */
+int func_020f3ec8(u32 arg0)
+{
+  int tmp1;
+  tmp1 = Unk0f3db4_Unk_0f3db4();
+  switch(arg0) {
+  case 0:
+    return tmp1;
+  case 1:
+    return tmp1 + 0x32;
+  case 2:
+    return tmp1 + 100;
+  case 3:
+    return tmp1 + 0x96;
+  case 4:
+    return tmp1 + 200;
+  case 5:
+    return tmp1 + 300;
+  default:
+    return 0;
+  }
+}
+
+
+/* decompiler-derived */
+void func_020f4674(int arg0,int arg1)
+{
+  u8 tmp1;
+  int tmp2;
+  int tmp3;
+  tmp3 = 0;
+  do {
+    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3));
+    *(u8 *)(arg0 + tmp3) = tmp1;
+    tmp3 = tmp3 + 1;
+  } while (tmp3 < 100);
+  tmp3 = 0;
+  do {
+    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3 + 100));
+    tmp2 = arg0 + tmp3;
+    tmp3 = tmp3 + 1;
+    *(u8 *)(tmp2 + 100) = tmp1;
+  } while (tmp3 < 0x32);
+  tmp3 = 0;
+  do {
+    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3 + 0x96));
+    tmp2 = arg0 + tmp3;
+    tmp3 = tmp3 + 1;
+    *(u8 *)(tmp2 + 0x96) = tmp1;
+  } while (tmp3 < 0x32);
+  tmp3 = 0;
+  do {
+    tmp1 = Unk0f3db4_Unk_0f44a8(*(u8 *)(arg1 + tmp3 + 300));
+    tmp2 = arg0 + tmp3;
+    tmp3 = tmp3 + 1;
+    *(u8 *)(tmp2 + 300) = tmp1;
+  } while (tmp3 < 0x3c);
+  return;
+}

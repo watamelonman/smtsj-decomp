@@ -23,3 +23,13 @@
 - `func_020f3fcc`
 - `func_020f45c0`
 - `func_020f4180`
+- `func_020f3e6c`: decompiler-derived
+- `func_020f3ec8`: decompiler-derived
+- `func_020f4674`: decompiler-derived
+
+## Not done in M1-T505
+- `func_020f4560`
+- `func_020f43d4`
+- `func_020f3de8`
+- `func_020f40c8`
+- `func_020f3f2c`
