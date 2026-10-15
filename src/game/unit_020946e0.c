@@ -170,3 +170,39 @@ void Unk0946e0_Unk_094d64(int arg0)
   }
   func_02061424(arg0);
 }
+
+typedef struct Unk0946e0Pt {
+    s16 x;
+    s16 y;
+} Unk0946e0Pt;
+
+void func_02094da0();
+int func_02044ec4();
+void func_02049c28();
+void func_02094e30(int x, int b, int c)
+{
+    if (x >= 64) {
+        x = 64;
+    }
+    if (x <= -64) {
+        x = -64;
+    }
+    func_02094da0(x, FIELD(s16, Unk0946e0_GetAddr_data_02175d94(), 2), b, c);
+}
+
+void func_02094e70(int a, int b, int c)
+{
+    Unk0946e0Pt pt;
+    func_02049c28(func_02044ec4(a), &pt);
+    pt.x -= 128;
+    pt.y -= 96;
+    func_02094da0(pt.x, pt.y, b, c);
+}
+
+void func_02094eb8(int a, int b, int c)
+{
+    Unk0946e0Pt pt;
+    func_02049c28(func_02044ec4(a), &pt);
+    pt.x -= 128;
+    func_02094da0(pt.x, 0, b, c);
+}

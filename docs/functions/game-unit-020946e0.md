@@ -34,3 +34,6 @@
 - `Unk0946e0_Unk_094d64`: decompiler-derived (proto cleanup)
 - `Unk0946e0_Clear12`: hand-matched
 - `Unk0946e0_ResetRect`: hand-matched
+- `func_02094e30`: hand-matched
+- `func_02094e70`: hand-matched
+- `func_02094eb8`: hand-matched
