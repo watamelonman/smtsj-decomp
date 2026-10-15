@@ -15,3 +15,7 @@
 - `func_0202f14c`
 - `func_0202f104`
 - `func_0202f190`
+- `func_0202f104`: hand-matched
+- `func_0202f14c`: hand-matched
+- `func_0202f230`: hand-matched
+- `func_0202f268`: hand-matched

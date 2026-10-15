@@ -27,6 +27,37 @@ u8 Unk02f078_Unk_02f0d8(void)
   return *(u8 *)(value + 2);
 }
 
+int func_0202f104(int i)
+{
+    if (i <= 0) {
+        return 0;
+    }
+    if (i >= 37) {
+        return 0;
+    }
+    if (((u8 *)Unk02e000_GetWorkArea() + (i >> 3))[0x380] & (u8)(1 << (i & 7))) {
+        return 1;
+    }
+    return 0;
+}
+
+void func_0202f14c(int i)
+{
+    u8 mask;
+    u8 *p;
+    if (i <= 0) {
+        return;
+    }
+    if (i >= 37) {
+        return;
+    }
+    mask = 1 << (i & 7);
+    p = (u8 *)Unk02e000_GetWorkArea() + 0x380;
+    if ((mask & p[i >> 3]) == 0) {
+        p[i >> 3] += mask;
+    }
+}
+
 /* decompiler-derived */
 u8 Unk02f078_Unk_02f220(void)
 {
@@ -84,3 +115,32 @@ void Unk02f078_Unk_02f08c(void)
   *(u8 *)(value + 1) = 100;
 }
 
+void func_0202f230(int i)
+{
+    if (i >= 64) {
+        return;
+    }
+    if (i < 0) {
+        return;
+    }
+    {
+        u8 *p = (u8 *)Unk02e000_Unk_02e774() + 0x5e12;
+        if ((p[i] & 2) == 0) {
+            p[i] = 3;
+        }
+    }
+}
+
+int func_0202f268(int i)
+{
+    if (i >= 64) {
+        return 0;
+    }
+    if (i < 0) {
+        return 0;
+    }
+    if (((u8 *)Unk02e000_Unk_02e774() + i)[0x5e12] & 1) {
+        return 1;
+    }
+    return 0;
+}
