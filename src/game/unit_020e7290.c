@@ -81,10 +81,38 @@ u32 Unk0e7290_Unk_0e747c(int arg0)
   return 0;
 }
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+void func_020e7770(u32 a, u32 b)
+{
+    if (data_02176cd8 != 0) {
+        FIELD(u32, data_02176cd8, 0) = a;
+        FIELD(u32, data_02176cd8, 4) = b;
+    }
+}
+
 /* decompiler-derived */
 void Unk0e7290_Unk_0e7790(u32 arg0)
 {
   if (data_02176cd8 != 0) {
     *(u32 *)(data_02176cd8 + 0x204) = arg0;
   }
+}
+
+int func_020e77f0(u32 a)
+{
+    u32 k;
+    if (data_02176cd8 == 0) {
+        return 0;
+    }
+    k = FIELD(u32, data_02176cd8, 16);
+    if (k != 5 && k != 0) {
+        return 0;
+    }
+    FIELD(u32, data_02176cd8, 8) = 0;
+    FIELD(u32, data_02176cd8, 12) = a;
+    FIELD(u32, data_02176cd8, 16) = 0;
+    return 1;
 }
