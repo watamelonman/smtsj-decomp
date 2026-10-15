@@ -27,9 +27,51 @@ typedef struct Unk02e000Mgr {
     u8 pad_0000[0x38];
     u32 unk_0038;
     u32 unk_003c;
+    u8 pad_0040[0x34];
+    u32 slots[16];
 } Unk02e000Mgr;
 
 Unk02e000Mgr *Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void);
+
+u32 func_02052fe0();
+
+typedef struct Unk02e000Save {
+    u8 pad_0000[0x5fc4];
+    u32 counter_5fc4;          /* +0x5FC4, capped at 35999999 */
+} Unk02e000Save;
+
+void func_0202e000(int i, u32 v)
+{
+    Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (m == 0) {
+        return;
+    }
+    if (i < 0 || i >= 16) {
+        return;
+    }
+    m->slots[i] = v;
+}
+
+u32 func_0202e034(int i)
+{
+    Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (m == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 16) {
+        return 0;
+    }
+    return m->slots[i];
+}
+
+void func_0202e070(u32 a, u32 b)
+{
+    Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
+    if (m != 0) {
+        m->unk_0038 = a;
+        m->unk_003c = b;
+    }
+}
 
 void Unk02e000_ClearMgrUnk38(void)
 {
@@ -37,6 +79,25 @@ void Unk02e000_ClearMgrUnk38(void)
     if (m != 0) {
         m->unk_0038 = 0;
         m->unk_003c = 0;
+    }
+}
+
+void func_0202e114(void)
+{
+    if (data_0215dd24[1] != 0) {
+        return;
+    }
+    data_0215dd24[1] = func_02052fe0(0x7718);
+}
+
+void func_0202e1f8(int add)
+{
+    Unk02e000Save *w = (Unk02e000Save *)Unk02e000_Unk_02e774();
+    u32 v = w->counter_5fc4 + add;
+    if (v > 35999999) {
+        w->counter_5fc4 = 35999999;
+    } else {
+        w->counter_5fc4 = v;
     }
 }
 

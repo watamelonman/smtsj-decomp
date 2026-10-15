@@ -86,3 +86,8 @@
 - `Unk02e000_Call_02e4dc`: hand-matched
 - `Unk02e000_Call_02e520`: hand-matched
 - `Unk02e000_GetAreaRecord`: hand-matched
+- `func_0202e000`: hand-matched
+- `func_0202e034`: hand-matched
+- `func_0202e070`: hand-matched
+- `func_0202e114`: hand-matched
+- `func_0202e1f8`: hand-matched
