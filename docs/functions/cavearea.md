@@ -42,3 +42,6 @@
 - `func_020eb83c`
 - `CaveArea_LoadAreaLayout`: decompiler-derived (struct cleanup)
 - `CaveArea_AllocBuf`: hand-matched
+- `func_020ed364`: hand-matched
+- `func_020ed60c`: hand-matched
+- `func_020edb4c`: hand-matched
