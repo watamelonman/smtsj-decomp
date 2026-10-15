@@ -25,3 +25,13 @@
 - `func_020a587c`
 - `func_020a5e8c`
 - `func_020a59f4`
+
+## Not done in M1-T551
+- `func_020a6038`
+- `func_020a5fc8`
+- `func_020a594c`
+- `func_020a5b98`
+- `func_020a5dac`
+- `func_020a5d08`
+- `func_020a57c8`
+- `func_020a5c40`
