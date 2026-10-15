@@ -176,3 +176,61 @@ void func_020a8500(int arg0)
   } while (tmp1 < 0x20);
   return;
 }
+
+
+int func_0205c368();
+int func_0205ddb4();
+int func_020a8534();
+int func_020a93b8();
+/* decompiler-derived */
+void func_020a8bac(int arg0)
+{
+  if (arg0 == 0) {
+    return;
+  }
+  func_020a93b8();
+  func_020a8534(arg0);
+  *(u32 *)(arg0 + 8) = 0;
+  *(u32 *)(arg0 + 4) = 0;
+  if (*(int *)(arg0 + 0x14) != 0) {
+    func_0205ddb4();
+    *(u32 *)(arg0 + 0x14) = 0;
+  }
+  if (*(int *)(arg0 + 0x18) == 0) {
+    return;
+  }
+  func_0205c368();
+  *(u32 *)(arg0 + 0x18) = 0;
+  return;
+}
+
+
+/* decompiler-derived */
+u32 func_020a916c(u32 arg0)
+{
+  switch(arg0) {
+  case 0:
+    break;
+  case 1:
+    break;
+  case 2:
+    break;
+  case 3:
+    break;
+  case 4:
+    break;
+  case 5:
+    break;
+  case 6:
+    return 0x1a;
+  case 7:
+    return 0x1b;
+  case 8:
+    return 0x1c;
+  case 9:
+    return 0x1e;
+  case 10:
+    return 0x1f;
+  }
+  return 0;
+}
