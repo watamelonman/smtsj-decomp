@@ -4,6 +4,29 @@
 
 int func_020572d8();
 int func_02057eb8();
+typedef struct Unk0fd5a4Obj {
+    u8 pad_0000[0x2c];
+    s32 state;                  /* +0x2C */
+} Unk0fd5a4Obj;
+
+void func_020fd71c(Unk0fd5a4Obj *o);
+
+void func_020fd6ec(Unk0fd5a4Obj *o)
+{
+    if (o->state == 0) {
+        return;
+    }
+    func_020fd71c(o);
+}
+
+void func_020fd704(Unk0fd5a4Obj *o)
+{
+    if (o->state == 1) {
+        return;
+    }
+    func_020fd71c(o);
+}
+
 /* decompiler-derived */
 void Unk0fd5a4_Unk_0fd9dc(void)
 {
