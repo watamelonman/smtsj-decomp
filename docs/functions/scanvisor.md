@@ -39,11 +39,11 @@
 - `ScanVisor_Unk_0a42c4`: decompiler-derived
 
 ## Not done in M1-T987
-- `func_020a277c`
-- `func_020a2820`
-- `func_020a2884`
+- `ScanVisor_SetField34`
+- `ScanVisor_SetRangeA`
+- `ScanVisor_SetField214`
 - `ScanVisor_Unk_0a4a44`
-- `func_020a2920`
+- `ScanVisor_Unk_0a2920`
 - `ScanVisor_Unk_0a2ae8`: decompiler-derived
 - `ScanVisor_Unk_0a29e8`: decompiler-derived
 - `ScanVisor_Unk_0a2b7c`: decompiler-derived
@@ -51,7 +51,7 @@
 - `ScanVisor_Unk_0a27a8`: decompiler-derived
 
 ## Not done in M1-T988
-- `func_020a2950`
+- `ScanVisor_Unk_0a2950`
 - `func_020a379c`
 - `func_020a4284`
 - `ScanVisor_Unk_0a284c`: decompiler-derived
@@ -104,8 +104,8 @@
 - `ScanVisor_Draw`: hand-matched
 - `ScanVisor_SetById`: hand-matched
 - `ScanVisor_Unk_0a4a18`: hand-matched
-- `func_020a277c`: hand-matched
-- `func_020a2820`: hand-matched
-- `func_020a2884`: hand-matched
-- `func_020a2920`: hand-matched
-- `func_020a2950`: hand-matched
+- `ScanVisor_SetField34`: hand-matched
+- `ScanVisor_SetRangeA`: hand-matched
+- `ScanVisor_SetField214`: hand-matched
+- `ScanVisor_Unk_0a2920`: hand-matched
+- `ScanVisor_Unk_0a2950`: hand-matched

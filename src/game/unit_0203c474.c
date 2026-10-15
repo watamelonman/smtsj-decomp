@@ -19,13 +19,13 @@ int func_0206569c();
 int func_02065bc0();
 int func_020a269c();
 int ScanVisor_Unk_0a273c();
-int func_020a277c();
+int ScanVisor_SetField34();
 int ScanVisor_Unk_0a27e0();
-int func_020a2820();
-int func_020a2884();
+int ScanVisor_SetRangeA();
+int ScanVisor_SetField214();
 int ScanVisor_Unk_0a28b0();
 int ScanVisor_Thunk_020fc6b8();
-int func_020a2920();
+int ScanVisor_Unk_0a2920();
 
 u32 Unk03c474_Unk_03c4c8(void);
 u32 Unk03c474_Unk_03c4dc(void);
@@ -49,28 +49,28 @@ u32 Unk03c474_Unk_03c638(void);
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c4c8(void)
 {
-  func_020a2884(1);
+  ScanVisor_SetField214(1);
   return 1;
 }
 
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c4dc(void)
 {
-  func_020a2884(0);
+  ScanVisor_SetField214(0);
   return 1;
 }
 
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c4f0(void)
 {
-  func_020a2820(1);
+  ScanVisor_SetRangeA(1);
   return 1;
 }
 
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c504(void)
 {
-  func_020a2820(0);
+  ScanVisor_SetRangeA(0);
   return 1;
 }
 
@@ -141,16 +141,16 @@ u32 Unk03c474_Unk_03c540(void)
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c56c(void)
 {
-  func_020a277c(1);
-  func_020a2920(1);
+  ScanVisor_SetField34(1);
+  ScanVisor_Unk_0a2920(1);
   return 1;
 }
 
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c588(void)
 {
-  func_020a277c(0);
-  func_020a2920(0);
+  ScanVisor_SetField34(0);
+  ScanVisor_Unk_0a2920(0);
   return 1;
 }
 

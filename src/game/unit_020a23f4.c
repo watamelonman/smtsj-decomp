@@ -48,7 +48,7 @@ int func_020a8608();
 int func_020a8628();
 int Unk0a7d54_Unk_0a8648();
 int func_020a4994();
-int func_020a2448(void)
+int Unk0a23f4_Unk_0a2448(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -57,7 +57,7 @@ int func_020a2448(void)
     return func_020a8608(v + 40 + 1024);
 }
 
-int func_020a246c(void)
+int Unk0a23f4_Unk_0a246c(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -66,7 +66,7 @@ int func_020a246c(void)
     return func_020a8628(v + 40 + 1024);
 }
 
-int func_020a2490(void)
+int Unk0a23f4_Unk_0a2490(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -75,7 +75,7 @@ int func_020a2490(void)
     return Unk0a7d54_Unk_0a8648(v + 40 + 1024);
 }
 
-int func_020a24b4(void)
+int Unk0a23f4_IsField210Zero(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -84,7 +84,7 @@ int func_020a24b4(void)
     return FIELD(s32, v, 528) == 0;
 }
 
-int func_020a24dc(void)
+int Unk0a23f4_IsField2cZero(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -93,7 +93,7 @@ int func_020a24dc(void)
     return FIELD(s32, v, 44) == 0;
 }
 
-int func_020a2510(void)
+int Unk0a23f4_IsField14Zero(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -102,7 +102,7 @@ int func_020a2510(void)
     return FIELD(s32, v, 20) == 0;
 }
 
-int func_020a2538(void)
+int Unk0a23f4_IsField210Is50(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -111,7 +111,7 @@ int func_020a2538(void)
     return FIELD(s32, v, 528) == 50;
 }
 
-int func_020a2560(void)
+int Unk0a23f4_IsField2cIs81(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -120,7 +120,7 @@ int func_020a2560(void)
     return FIELD(s32, v, 44) == 81;
 }
 
-int func_020a2594(void)
+int Unk0a23f4_IsField14IsM54(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -129,7 +129,7 @@ int func_020a2594(void)
     return FIELD(s32, v, 20) == -54;
 }
 
-int func_020a25c0(void)
+int Unk0a23f4_Unk_0a25c0(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {

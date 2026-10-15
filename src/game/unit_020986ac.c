@@ -173,7 +173,7 @@ int Unk0986ac_IsMode012(u8 *p)
 
 void func_0209911c();
 void func_02099174();
-int func_020a246c();
+int Unk0a23f4_Unk_0a246c();
 void Unk0986ac_Unk_099234(u8 *p);
 void Unk0986ac_Unk_099234(u8 *p)
 {
@@ -209,7 +209,7 @@ void Unk0986ac_Unk_0992b0(u8 *p)
     case 0:
         break;
     case 1:
-        if (func_020a246c() == 1) {
+        if (Unk0a23f4_Unk_0a246c() == 1) {
             FIELD(s32, p, 24) = 2;
         }
         break;

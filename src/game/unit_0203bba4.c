@@ -89,7 +89,7 @@ u32 Unk03bba4_Unk_03bd7c(void)
 }
 
 int ImageObj_Unk_07782c();
-int func_020a2920();
+int ScanVisor_Unk_0a2920();
 /* decompiler-derived */
 u32 Unk03bba4_Unk_03bcd8(void)
 {
@@ -99,7 +99,7 @@ u32 Unk03bba4_Unk_03bcd8(void)
   v2 = func_0203ac00(1);
   ImageObj_Unk_07782c((int)v1,(int)v2);
   Unk02dcfc_SetCode8();
-  func_020a2920(0);
+  ScanVisor_Unk_0a2920(0);
   return 3;
 }
 
@@ -114,7 +114,7 @@ u32 Unk03bba4_Unk_03bd3c(void)
   v2 = func_0203ac00(1);
   ImageObj_Unk_077860((int)v1,(int)v2);
   Unk02dcfc_SetCode8();
-  func_020a2920(0);
+  ScanVisor_Unk_0a2920(0);
   return 3;
 }
 

@@ -280,5 +280,20 @@
  "func_020a0e44": "Unk0a0ce4_Unk_0a0e44",
  "func_020a1798": "Unk0a163c_Unk_0a1798",
  "func_020a17d8": "Unk0a163c_Unk_0a17d8",
- "func_020a21f8": "Unk0a163c_Unk_0a21f8"
+ "func_020a21f8": "Unk0a163c_Unk_0a21f8",
+ "func_020a2448": "Unk0a23f4_Unk_0a2448",
+ "func_020a246c": "Unk0a23f4_Unk_0a246c",
+ "func_020a2490": "Unk0a23f4_Unk_0a2490",
+ "func_020a24b4": "Unk0a23f4_IsField210Zero",
+ "func_020a24dc": "Unk0a23f4_IsField2cZero",
+ "func_020a2510": "Unk0a23f4_IsField14Zero",
+ "func_020a2538": "Unk0a23f4_IsField210Is50",
+ "func_020a2560": "Unk0a23f4_IsField2cIs81",
+ "func_020a2594": "Unk0a23f4_IsField14IsM54",
+ "func_020a25c0": "Unk0a23f4_Unk_0a25c0",
+ "func_020a277c": "ScanVisor_SetField34",
+ "func_020a2820": "ScanVisor_SetRangeA",
+ "func_020a2884": "ScanVisor_SetField214",
+ "func_020a2920": "ScanVisor_Unk_0a2920",
+ "func_020a2950": "ScanVisor_Unk_0a2950"
 }

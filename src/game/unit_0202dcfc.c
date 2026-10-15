@@ -118,7 +118,7 @@ typedef struct Unk02dcfcOwner {
 
 Unk02dcfcOwner *Unk03aae8_Unk_03ad14(void);
 void func_020a2c90(u32 *sub);
-void func_020a2950(int a);
+void ScanVisor_Unk_0a2950(int a);
 void Unk02dcfc_SetField70(u32 value);
 
 u32 Unk02dcfc_GetState(void)
@@ -138,7 +138,7 @@ void Unk02dcfc_Unk_02ddf4(void)
     }
     w->unk_0018 = 1;
     func_020a2c90(w->sub);
-    func_020a2950(0);
+    ScanVisor_Unk_0a2950(0);
     Unk02dcfc_SetField70(0);
 }
 

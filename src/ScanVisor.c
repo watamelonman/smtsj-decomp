@@ -449,9 +449,9 @@ void ScanVisor_Unk_0a28b0(int arg0)
   return;
 }
 
-void func_020a277c();
-void func_020a2820();
-void func_020a2884();
+void ScanVisor_SetField34();
+void ScanVisor_SetRangeA();
+void ScanVisor_SetField214();
 void ScanVisor_Unk_0a4864(int arg0);
 /* decompiler-derived */
 void ScanVisor_Unk_0a2660(void)
@@ -461,15 +461,15 @@ void ScanVisor_Unk_0a2660(void)
   if (tmp1 == 0) {
     return;
   }
-  func_020a277c(0);
+  ScanVisor_SetField34(0);
   ScanVisor_Unk_0a27e0(0);
-  func_020a2820(0);
-  func_020a2884(0);
+  ScanVisor_SetRangeA(0);
+  ScanVisor_SetField214(0);
   ScanVisor_Unk_0a4864(tmp1 + 0x24c);
   return;
 }
 
-void func_020a2950();
+void ScanVisor_Unk_0a2950();
 /* decompiler-derived */
 void ScanVisor_Unk_0a273c(u32 arg0)
 {
@@ -482,7 +482,7 @@ void ScanVisor_Unk_0a273c(u32 arg0)
   ScanVisor_Unk_0a2800(arg0);
   ScanVisor_Unk_0a284c(arg0);
   ScanVisor_Unk_0a28b0(arg0);
-  func_020a2950(arg0);
+  ScanVisor_Unk_0a2950(arg0);
   return;
 }
 
@@ -502,7 +502,7 @@ void ScanVisor_Unk_0a4904();
 void ScanVisor_Unk_0a4864();
 void ScanVisor_Unk_0a4910();
 void ScanVisor_Unk_0a48b4();
-void func_020a277c(int on)
+void ScanVisor_SetField34(int on)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -515,7 +515,7 @@ void func_020a277c(int on)
     }
 }
 
-void func_020a2820(int on)
+void ScanVisor_SetRangeA(int on)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -528,7 +528,7 @@ void func_020a2820(int on)
     }
 }
 
-void func_020a2884(int on)
+void ScanVisor_SetField214(int on)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -541,7 +541,7 @@ void func_020a2884(int on)
     }
 }
 
-void func_020a2920(int on)
+void ScanVisor_Unk_0a2920(int on)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {
@@ -554,7 +554,7 @@ void func_020a2920(int on)
     }
 }
 
-void func_020a2950(int on)
+void ScanVisor_Unk_0a2950(int on)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
     if (v == 0) {

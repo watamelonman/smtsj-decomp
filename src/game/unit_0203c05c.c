@@ -36,7 +36,7 @@ u32 Unk03c05c_Unk_03c05c(void)
   return 1;
 }
 
-int func_020a2920();
+int ScanVisor_Unk_0a2920();
 /* decompiler-derived */
 u32 Unk03c05c_Unk_03c088(void)
 {
@@ -46,7 +46,7 @@ u32 Unk03c05c_Unk_03c088(void)
   v2 = func_0203ac00(1);
   ImageObj_Unk_077894((int)v1,(int)v2);
   Unk02dcfc_SetCode8();
-  func_020a2920(0);
+  ScanVisor_Unk_0a2920(0);
   return 3;
 }
 
