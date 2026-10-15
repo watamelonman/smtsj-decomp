@@ -53,3 +53,13 @@
 - `Unk0bd5f0_SetCtxUnk1b8`: hand-matched
 - `Unk0bd5f0_IsSpecialId`: hand-matched
 - `Unk0bd5f0_Unk_0bd5f0`: hand-matched
+- `func_020c1870`: hand-matched
+- `func_020c1918`: hand-matched
+- `func_020c20bc`: hand-matched
+- `func_020c7c44`: hand-matched
+- `func_020c7c90`: hand-matched
+- `func_020c7f70`: hand-matched
+- `func_020c7fbc`: hand-matched
+- `func_020c842c`: hand-matched
+- `func_020c8478`: hand-matched
+- `func_020c8510`: hand-matched
