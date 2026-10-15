@@ -11,6 +11,19 @@ typedef struct CaveNpcWork {
     s32 unk_002c;
 } CaveNpcWork;
 
+void func_020ffd14(u8 *p, int f)
+{
+    if (f != 0) {
+        if (FIELD(u32, p, 16) != 0) {
+            return;
+        }
+        p[12] = 5;
+        FIELD(u32, p, 16) = 1;
+    } else {
+        FIELD(u32, p, 16) = 0;
+    }
+}
+
 void CaveNpc_Nop_0fff3c(void) { }
 
 extern u8 data_02151180[];
