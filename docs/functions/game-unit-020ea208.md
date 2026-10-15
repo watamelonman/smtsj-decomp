@@ -40,3 +40,13 @@
 - `func_020ea4d8`
 - `func_020ea524`
 - `func_020ea598`
+
+## Not done in M1-T773
+- `func_020ea5e4`
+- `func_020ea6ac`
+- `func_020eacb4`
+- `func_020ea3cc`
+- `func_020ea320`
+- `func_020eb034`
+- `func_020ea630`
+- `func_020ea208`

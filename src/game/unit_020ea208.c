@@ -227,3 +227,4 @@ void func_020eae40(u32 arg0,u32 arg1,u32 arg2,u32 arg3)
   Unk065e88_SetUnkField3c(arg0,2);
   return;
 }
+
