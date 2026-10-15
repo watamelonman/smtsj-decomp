@@ -665,7 +665,7 @@ void func_02039520();
 int Unk02e000_Unk_02e8b8();
 void func_020a7474();
 
-void Unk02f2a8_CallWithName16(int a, s8 *src, int unused, int c, u8 e)
+void Unk02f2a8_Unk_030704(int a, s8 *src, int unused, int c, u8 e)
 {
     s8 buf[17] = {0};
     int i;
@@ -675,7 +675,7 @@ void Unk02f2a8_CallWithName16(int a, s8 *src, int unused, int c, u8 e)
     func_02038ff8(a, buf, c, e);
 }
 
-void Unk02f2a8_CallWithName16_40(u8 *p)
+void Unk02f2a8_Unk_0308c0(u8 *p)
 {
     s8 buf[17] = {0};
     int i;
