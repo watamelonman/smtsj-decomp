@@ -4,7 +4,7 @@
 
 ## Not done in M1-T896
 - `func_020dfd9c`
-- `func_020e13ac`
+- `SaveLoadTask_SelectEntry`
 - `func_020e0080`
 - `func_020dfc64`
 - `func_020e1490`
@@ -31,4 +31,4 @@
 - `func_020df814`
 - `func_020df8c4`
 
-- `func_020e13ac`: save/load menu entry dispatch (cases 0-7).
+- `SaveLoadTask_SelectEntry`: save/load menu entry dispatch (cases 0-7).

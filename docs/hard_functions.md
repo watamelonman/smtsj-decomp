@@ -174,3 +174,15 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - card M1-T684: skipped (no function matched)
 - card M1-T529: skipped (no function matched)
 - card M1-T1129: skipped (no function matched)
+
+## Complex-matching attempts 2026-10-15
+
+Matched:
+- `SaveLoadTask_SelectEntry` (was `func_020e13ac`, 228 B) — save/load menu entry dispatch.
+
+WIP branches (near-misses, not on main):
+- `WIP-CaveNpc-02100104` — `func_02100104` (~84%): list scroll setter; switch codegen not exact.
+- `WIP-StaffRoll-0211882c` — `func_0211882c` (~72%): register allocation drift.
+- `WIP-02112fb8` — `func_02112fb8` (~84%): one `ldrh` register differs.
+
+Tried raw Ghidra on ~12 other mid-size switch functions; none hit 100% within the attempt cap.

@@ -277,7 +277,7 @@ void Unk02f078_Unk_02f0b0(int kind);
 void func_02119390(void);
 void func_02108c0c(void);
 
-void func_020e13ac(u32 entry)
+void SaveLoadTask_SelectEntry(u32 entry)
 {
     switch (entry) {
     case 0:
