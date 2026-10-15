@@ -17,10 +17,11 @@ typedef signed long long s64;
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct ImageBgDual3DWork {
-    u8 pad_0000[0x4];
+    u32 unk_0000;
     s32 unk_0004;
     u32 unk_0008;
-    u8 pad_000c[0x80];
+    u32 unk_000c;
+    u8 pad_0010[0x7c];
     u32 unk_008c;
     u8 pad_0090[0x5d];
     u8 unk_00ed;
@@ -76,7 +77,7 @@ void ImageBgDual3D_Clear_data_02176e8c(void)
 int Unk116598_Unk_1172dc();
 int Unk116598_Unk_1177cc();
 /* decompiler-derived */
-void ImageBgDual3D_Unk_125afc(void)
+void ImageBgDual3D_Unk_125afc(ImageBgDual3DWork *work)
 {
   Unk116598_Unk_1177cc(0);
   Unk116598_Unk_1172dc();
@@ -313,4 +314,27 @@ void ImageBgDual3D_Unk_1258e8(void)
   }
   func_020616c0(data_02176e90);
   func_02061424();
+}
+
+void func_02077314(void);
+int func_02095b28(int id);
+void Unk02d15c_Unk_02d91c(int a, int b);
+void func_0202d86c(int a, int b, int c, int d);
+void func_02095f94(void);
+
+void func_02125a90(ImageBgDual3DWork *work)
+{
+    func_02077314();
+    ImageBgDual3D_Unk_125a68();
+    if (func_02095b28(3) == 0) {
+        return;
+    }
+    Unk02d15c_Unk_02d91c(8, 3);
+    func_0202d86c(8, 42, 0, -1);
+    func_02095f94();
+    work->unk_0000 = 0;
+    work->unk_0004 = 13;
+    work->unk_0008 = 1;
+    work->unk_000c = 0;
+    ImageBgDual3D_Unk_125afc(work);
 }
