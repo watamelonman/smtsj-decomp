@@ -21,3 +21,10 @@ Candidate list: `candidates.py [maxsize]` writes `small.json` (ARM `func_` <= 0x
 defined, minus `skips.json`). Specs for each batch live in `specs/`. `hmerge.py` refuses to run unless
 forge.toml reviewer = "none"; names are only queued after a merged regate. Pass ONE card id to
 `forge regate` (several cards can own the same TU).
+
+Wave workflow: `candidates.py` -> `next.py 8` (disasm of the next candidates) -> write `specs/bNN.py` ->
+`batch.py specs/bNN.py` until all OK -> `merge_batch.py specs/bNN.py 'fn=Name,...'` (hmerge per TU, one
+card each, apply names, rebuild, checksum + match_gate, commit). A spec entry may carry a 4th element of
+`[(old, new)]` fixups to correct a stale declaration in the TU (e.g. `void f();` -> `int f();`).
+Files are not always in address order: if a new function calls one defined later, add a prototype in
+the prelude. Compiles happen in `$TMP/handwork/c/` (t.c is kept for inspecting error line numbers).
