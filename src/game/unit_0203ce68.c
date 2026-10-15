@@ -29,6 +29,34 @@ int Unk03ce68_Unk_03ce68(void)
     return 1;
 }
 
+int func_0203ac00();
+int Unk03aae8_Unk_03acf4();
+u8 *Unk02e000_Thunk_0202e788();
+int Unk09974c_GetEntryUnk08();
+void func_02097220();
+void Unk0981dc_Unk_0981f4();
+u32 Unk03ce68_Unk_03d038(u32 arg0);
+
+int func_0203ced0(void)
+{
+    u16 v;
+    u16 *w;
+    func_0203ac00(0);
+    v = func_0203ac00(1);
+    w = (u16 *)Unk02e000_Thunk_0202e788();
+    switch (Unk09974c_GetEntryUnk08(v)) {
+    case 0:
+    case 1:
+    case 2:
+        break;
+    case 3: w[0] = v; break;
+    case 4: w[1] = v; break;
+    case 5: w[2] = v; break;
+    case 6: w[3] = v; break;
+    }
+    return 1;
+}
+
 int Unk03ce68_Unk_03cf48(void)
 {
     int v = Unk096754_Unk_096a14(func_0203ac00(0));
@@ -137,5 +165,19 @@ int Unk03ce68_Unk_03d088(void)
         r = func_02098258((u8)(k - 1), y);
     }
     Unk03aae8_Unk_03acf4(r);
+    return 1;
+}
+
+int func_0203d0f0(void)
+{
+    int k = func_0203ac00(0);
+    int x = func_0203ac00(1);
+    int y = func_0203ac00(2);
+    u32 e = Unk03ce68_Unk_03d038(x);
+    if (k == 0) {
+        func_02097220(e, (s16)y);
+    } else if (k >= 1 && k <= 3) {
+        Unk0981dc_Unk_0981f4((u8)(k - 1), e, (s16)y);
+    }
     return 1;
 }
