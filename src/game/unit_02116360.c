@@ -11,6 +11,18 @@ typedef struct Unk116360Entry {
     u32 unk_04;
 } Unk116360Entry;
 void Unk116360_FillEntry();
+int func_02035b08();
+int func_02116360(int a, int b, int c)
+{
+    int r = 0;
+    if (Unk03e43c_Unk_03fa28() == 0) {
+        if (a == func_02035b08(8, 6) && b == 36 && c == 18) {
+            r = 1;
+        }
+    }
+    return r;
+}
+
 /* decompiler-derived */
 void Unk116360_Unk_116404(int arg0,u32 arg1,u32 arg2)
 {
