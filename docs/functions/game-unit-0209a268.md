@@ -40,3 +40,13 @@
 - `func_0209a3ec`
 - `func_0209a970`
 - `func_0209be20`
+
+## Not done in M1-T1013
+- `func_0209cb68`
+- `func_0209a588`
+- `func_0209a884`
+- `func_0209c768`
+- `func_0209cd24`
+- `func_0209cf54`
+- `func_0209aebc`
+- `func_0209c090`
