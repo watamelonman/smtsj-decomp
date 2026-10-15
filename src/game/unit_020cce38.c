@@ -17,6 +17,22 @@ typedef struct Unk0cce38Work {
     u32 unk_00c0;
 } Unk0cce38Work;
 
+void func_020cb3dc();
+void Unk095560_Unk_095a2c();
+int func_020de8b0();
+void Unk0cb32c_Unk_0cb32c();
+void Unk0bc1a8_Unk_0bc928();
+void func_020cce38(void)
+{
+    func_020cb3dc();
+    Unk095560_Unk_095a2c();
+    if (func_020de8b0(0) != 0) {
+        return;
+    }
+    Unk0cb32c_Unk_0cb32c();
+    Unk0bc1a8_Unk_0bc928(17, 0xffff, 0);
+}
+
 void Unk0cce38_Nop_0cce70(void) { }
 
 
