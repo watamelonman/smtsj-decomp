@@ -695,3 +695,62 @@ void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1)
   }
   func_020e9de4(tmp1,arg0,arg1);
 }
+
+int func_020cb1a0();
+typedef struct Unk0e8228Sel {
+    u8 a[2];
+    u8 pad[2];
+    u32 b[16];
+} Unk0e8228Sel;
+typedef struct Unk0e8228SelHost {
+    u8 pad[392];
+    Unk0e8228Sel sel;
+} Unk0e8228SelHost;
+int func_020e8e28(void)
+{
+    u32 p = Unk0e8228_Get_data_02176ce0();
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 0) == 3;
+}
+
+int func_020e8fe4(u32 x)
+{
+    u32 h;
+    if (x == 0) {
+        return 0;
+    }
+    h = FIELD(u16, func_02099d14(x), 34);
+    if (h == 0) {
+        return 0;
+    }
+    return FIELD(u8, func_020cb1a0(h), 35) == 7;
+}
+
+int func_020e9748(u8 *p)
+{
+    int i = FIELD(int, p, 8);
+    if (i <= -1) {
+        i = 0;
+    }
+    if (Unk0e8228_IsField4One() != 0) {
+        return FIELD(u32, p + i * 4, 48);
+    }
+    return FIELD(u32, p + i * 4, 64);
+}
+
+void func_020e9bc0(Unk0e8228SelHost *p)
+{
+    int j;
+    int k;
+    if (&p->sel == 0) {
+        return;
+    }
+    for (j = 0; j < 2; j++) {
+        p->sel.a[j] = 0;
+    }
+    for (k = 0; k < 16; k++) {
+        p->sel.b[k] = 0;
+    }
+}

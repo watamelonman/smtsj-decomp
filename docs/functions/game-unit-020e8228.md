@@ -126,3 +126,7 @@
 - `Unk0e8228_Unk_0e8be8`: hand-matched
 - `Unk0e8228_Unk_0e8c80`: hand-matched
 - `Unk0e8228_Unk_0e8ce8`: hand-matched
+- `func_020e8e28`: hand-matched
+- `func_020e8fe4`: hand-matched
+- `func_020e9748`: hand-matched
+- `func_020e9bc0`: hand-matched
