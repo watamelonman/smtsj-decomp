@@ -20,3 +20,7 @@
 
 ## Not done in M1-T469
 - `func_020387bc`
+
+## Not done in M1-T470
+- `func_02038888`
+- `func_02038934`

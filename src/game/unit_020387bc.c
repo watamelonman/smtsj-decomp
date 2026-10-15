@@ -198,3 +198,4 @@ u32 func_02038e7c(int *arg0)
   }
   return 0;
 }
+
