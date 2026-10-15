@@ -65,7 +65,7 @@ void ImageBg_Unk_0e550c(void)
 
 int func_020e5484();
 int func_020e5580();
-int func_020e55fc();
+void func_020e55fc();
 /* decompiler-derived */
 void ImageBg_Unk_0e54d4(u32 arg0)
 {
@@ -98,4 +98,26 @@ void ImageBg_Release(void)
     data_02176ca4[1] = 0;
     func_0205bb68();
     Unk0e7290_Unk_0e7734();
+}
+
+int func_020e5484(void)
+{
+    u32 p = ImageBg_Get_data_02176ca4();
+    if (p == 0) {
+        return 0;
+    }
+    switch (FIELD(u32, p, 4)) {
+    case 1:
+    case 2:
+        return 1;
+    }
+    return 0;
+}
+
+void func_020e55fc(void)
+{
+    if (data_02176ca4[1] != 0) {
+        return;
+    }
+    data_02176ca4[1] = func_0205ba98(0x1e000, 0x800, data_02150bd4, 216);
 }

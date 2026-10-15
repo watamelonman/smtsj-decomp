@@ -17,3 +17,5 @@
 - `func_020e5580`
 - `func_020e5664`
 - `ImageBg_Release`: hand-matched
+- `func_020e5484`: hand-matched; defined at end of file (objdiff placement artifact)
+- `func_020e55fc`: hand-matched; defined at end of file (objdiff placement artifact)
