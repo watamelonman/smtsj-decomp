@@ -177,6 +177,19 @@ u32 Unk03c474_Unk_03c474(void)
   return 3;
 }
 
+static inline void Unk03c474_SetSubUnkC(u16 v, u8 *sub)
+{
+    FIELD(u16, sub, 0x0c) = v;
+}
+int func_0203c608(void)
+{
+    int v = func_0203ac00(0);
+    if (v > 0) {
+        Unk03c474_SetSubUnkC(v - 1, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
+    }
+    return 1;
+}
+
 /* decompiler-derived */
 u32 Unk03c474_Unk_03c638(void)
 {

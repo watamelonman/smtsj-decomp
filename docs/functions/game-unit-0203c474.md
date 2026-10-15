@@ -21,3 +21,4 @@
 
 ## Hard list
 - `func_0203c608`: no candidate matched locally
+- `func_0203c608`: hand-matched
