@@ -159,6 +159,34 @@ void Unk065e88_Unk_065e88(void)
 }
 
 int func_0205c3dc();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+void func_02095818();
+void func_02063b80();
+void func_020640c0();
+void func_0206541c();
+void func_02065438();
+void func_02063b08();
+void func_02063b4c();
+void func_0205c704();
+int func_0205ca88();
+int func_0205caa0();
+
+void func_02065ec0(u32 *p)
+{
+    p[0] = 120;
+    func_02095818();
+    p[1] = 4;
+    FIELD(u16, p, 8) = 100;
+    p[3] = (u32)func_02063b80;
+    p[4] = (u32)func_020640c0;
+    p[5] = (u32)func_0206541c;
+    p[6] = (u32)func_02065438;
+    p[7] = (u32)func_02063b08;
+    p[8] = (u32)func_02063b4c;
+}
+
 /* decompiler-derived */
 void Unk065e88_Unk_066258(int *arg0)
 {
@@ -221,6 +249,23 @@ typedef struct Unk065e88Obj24 {
 void func_02072238();
 int Unk0e651c_Unk_0e666c();
 int func_020684c0();
+void func_02066078(u8 *p)
+{
+    if (p[56] != 0) {
+        func_0205c704(FIELD(u32, p, 0));
+    }
+    if (p[57] == 0) {
+        return;
+    }
+    {
+        int n = func_0205ca88(FIELD(u32, p, 0));
+        if (func_0205caa0(FIELD(u32, p, 0)) >= n - 1) {
+            p[56] = 0;
+            p[57] = 0;
+        }
+    }
+}
+
 void Unk065e88_SetMode(s32 *o, s32 v, int notify)
 {
     o[0] = v;
