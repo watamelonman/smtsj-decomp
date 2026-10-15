@@ -13,11 +13,31 @@ void func_0206148c(void);
 /* forwards to `func_0206148c` */
 void Unk02cad4_Thunk_0206148c(void) { func_0206148c(); }
 
-extern u8 data_0213d338[];
-/* decompiler-derived */
+/* Three-word block at 0x0213d338; reset to -1 by func_0202cbc0. */
+typedef struct Unk02cad4Globals {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+} Unk02cad4Globals;
+
+extern Unk02cad4Globals data_0213d338;
+
+void func_0202cbc0(void)
+{
+    Unk02cad4Globals *g = &data_0213d338;
+    g->unk_00 = -1;
+    g->unk_04 = -1;
+    g->unk_08 = -1;
+}
+
+u32 func_0202cbec(void)
+{
+    return data_0213d338.unk_00;
+}
+
 void Unk02cad4_Unk_02cbdc(u32 arg0)
 {
-  *(u32 *)(((int)data_0213d338) + 8) = arg0;
+    data_0213d338.unk_08 = arg0;
 }
 
 int Unk065e88_Unk_065e88();
