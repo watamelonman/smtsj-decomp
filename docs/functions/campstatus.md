@@ -16,10 +16,10 @@
 ## Not done in M1-T1123
 - `CampStatus_SetUnk240`
 - `CampStatus_GetLinkUnk14`
-- `func_020d6c88`
+- `CampStatus_Copy12c`
 - `CampStatus_IsUnkF4F8Set`
-- `func_020dcaac`
-- `func_020d51cc`
+- `CampStatus_Unk_0dcaac`
+- `CampStatus_Unk_0d51cc`
 - `CampStatus_Unk_0db338`: decompiler-derived
 - `CampStatus_Unk_0db394`: decompiler-derived
 
@@ -81,6 +81,6 @@
 - `CampStatus_SetUnk240`: hand-matched
 - `CampStatus_GetLinkUnk14`: hand-matched
 - `CampStatus_GetTableByte`: hand-matched
-- `func_020d51cc`: hand-matched
-- `func_020d6c88`: hand-matched
-- `func_020dcaac`: hand-matched
+- `CampStatus_Unk_0d51cc`: hand-matched
+- `CampStatus_Copy12c`: hand-matched
+- `CampStatus_Unk_0dcaac`: hand-matched

@@ -9,7 +9,7 @@
 - `Unk0d297c_Unk_0d32f8` (16 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020d3138`: no candidate matched locally
+- `Unk0d297c_Unk_0d3138`: no candidate matched locally
 - `Unk0d297c_Unk_0d3250`: decompiler-derived
 - `Unk0d297c_Unk_0d32ac`: decompiler-derived
 - `Unk0d297c_Unk_0d31e8`: decompiler-derived
@@ -35,8 +35,8 @@
 
 ## Not done in M1-T570
 - `Unk0d297c_Unk_0d3308`
-- `func_020d3264`
-- `func_020d3004`
+- `Unk0d297c_PushU16`
+- `Unk0d297c_Unk_0d3004`
 - `Unk0d297c_Unk_0d2aa4`
 - `func_020d2f60`
 - `func_020d2b10`
@@ -61,6 +61,6 @@
 - `Unk0d297c_Unk_0d2aec`: hand-matched
 - `Unk0d297c_FreeSlot`: hand-matched
 - `Unk0d297c_Call_020d297c`: hand-matched
-- `func_020d3004`: hand-matched
-- `func_020d3138`: hand-matched
-- `func_020d3264`: hand-matched
+- `Unk0d297c_Unk_0d3004`: hand-matched
+- `Unk0d297c_Unk_0d3138`: hand-matched
+- `Unk0d297c_PushU16`: hand-matched

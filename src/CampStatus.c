@@ -114,7 +114,7 @@ int func_0205b444();
 void Unk05b82c_Unk_05b82c();
 void func_020ca5a4();
 void func_020119a0();
-void func_020d51cc(void)
+void CampStatus_Unk_0d51cc(void)
 {
     int i;
     for (i = 59; i <= 64; i++) {
@@ -124,7 +124,7 @@ void func_020d51cc(void)
     func_020ca5a4(2);
 }
 
-void func_020d6c88(void *src)
+void CampStatus_Copy12c(void *src)
 {
     func_020119a0((u8 *)data_02176be4 + 300, src, 60);
 }
@@ -298,7 +298,7 @@ void CampStatus_GetLinkUnk14(u32 *out)
     *out = (*data_02176be4->unk_002c)->unk_0014;
 }
 
-void func_020dcaac(void)
+void CampStatus_Unk_0dcaac(void)
 {
     FIELD(u32, data_02176be4, 244) = 0;
     FIELD(s16, data_02176be4, 270) = -80;

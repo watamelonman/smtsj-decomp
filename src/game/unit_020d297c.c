@@ -326,7 +326,7 @@ typedef struct Unk0d297cU16Vec {
     int n;
     int cap;
 } Unk0d297cU16Vec;
-int func_020d3004(void)
+int Unk0d297c_Unk_0d3004(void)
 {
     int v;
     if (*data_02176be0 == 0) {
@@ -336,7 +336,7 @@ int func_020d3004(void)
     return func_0204fed8(v, 0);
 }
 
-int func_020d3138(void)
+int Unk0d297c_Unk_0d3138(void)
 {
     return Unk0e651c_Unk_0e666c(0x751);
 }
@@ -351,7 +351,7 @@ void Unk0d297c_FreeSlot(u32 *slot)
     *slot = 0;
 }
 
-void func_020d3264(Unk0d297cU16Vec *v, u16 x)
+void Unk0d297c_PushU16(Unk0d297cU16Vec *v, u16 x)
 {
     if (v->n < v->cap) {
         v->buf[v->n] = x;

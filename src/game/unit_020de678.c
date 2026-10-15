@@ -114,7 +114,7 @@ typedef struct Unk0de678Rec {
     u16 unk_0a;
     u8 pad_0c[0xe];
 } Unk0de678Rec;
-int func_020dea70(Unk0de678Rec *p)
+int Unk0de678_CountLeading(Unk0de678Rec *p)
 {
     int n = 0;
     int i = 0;
@@ -127,7 +127,7 @@ int func_020dea70(Unk0de678Rec *p)
     return n;
 }
 
-int func_020debf8(u32 a)
+int Unk0de678_Unk_0debf8(u32 a)
 {
     int r = func_020dec18(a);
     if (r != 0) {

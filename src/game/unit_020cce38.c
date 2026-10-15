@@ -92,7 +92,7 @@ void Unk0cce38_Unk_0ccfac(int arg0)
 int func_020525cc();
 int func_02052634();
 int func_020de960();
-int func_020dea70();
+int Unk0de678_CountLeading();
 int func_02122abc();
 /* decompiler-derived */
 void Unk0cce38_Unk_0ccefc(u8 *arg0)
@@ -102,7 +102,7 @@ void Unk0cce38_Unk_0ccefc(u8 *arg0)
   ImageBg_Unk_0e54d4(arg0[0x10]);
   func_02122abc(((Unk0cce38Work *)arg0)->unk_007c);
   Unk0bcef4_Unk_0bcef4(arg0 + 0x80,5,5,1);
-  tmp1 = func_020dea70(arg0 + 8);
+  tmp1 = Unk0de678_CountLeading(arg0 + 8);
   Unk0bcef4_Unk_0bcef4(arg0 + 0x9c,tmp1,tmp1,1);
   *data_02176bc8 = (u32)(arg0);
   func_02052634(1,0,0x1f);

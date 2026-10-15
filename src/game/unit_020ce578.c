@@ -18,11 +18,11 @@ typedef struct Unk0ce578Work {
 /* empty callback */
 void Unk0ce578_Nop_0ce5e4(void) { }
 
-int func_020d3138();
+int Unk0d297c_Unk_0d3138();
 /* decompiler-derived */
 void Unk0ce578_Unk_0cec98(Unk0ce578Work *arg0){
   u32 tmp1;
-  tmp1 = func_020d3138();
+  tmp1 = Unk0d297c_Unk_0d3138();
   Unk122e1c_Unk_122f88(arg0->unk_0010,0,tmp1);
   return;
 }
@@ -76,7 +76,7 @@ void Unk0ce578_SetState(Unk0ce578Work *p, int k)
 /* decompiler-derived */
 void Unk0ce578_Unk_0cf258(Unk0ce578Work *arg0, int arg1){
   int tmp1;
-  if ((arg1 == 2) && (tmp1 = func_020d3138(), tmp1 == 0)) {
+  if ((arg1 == 2) && (tmp1 = Unk0d297c_Unk_0d3138(), tmp1 == 0)) {
     return;
   }
   Unk0a0ce4_Unk_0a0da4(5);

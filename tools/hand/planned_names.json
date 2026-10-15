@@ -419,5 +419,13 @@
  "func_020cf238": "Unk0ce578_SetState",
  "func_020cf5e8": "Unk0cf5e8_Enter",
  "func_020d1908": "Unk0cf5e8_InitSlots",
- "func_020d1d4c": "Unk0d1c98_Release"
+ "func_020d1d4c": "Unk0d1c98_Release",
+ "func_020d3004": "Unk0d297c_Unk_0d3004",
+ "func_020d3138": "Unk0d297c_Unk_0d3138",
+ "func_020d3264": "Unk0d297c_PushU16",
+ "func_020d51cc": "CampStatus_Unk_0d51cc",
+ "func_020d6c88": "CampStatus_Copy12c",
+ "func_020dcaac": "CampStatus_Unk_0dcaac",
+ "func_020dea70": "Unk0de678_CountLeading",
+ "func_020debf8": "Unk0de678_Unk_0debf8"
 }

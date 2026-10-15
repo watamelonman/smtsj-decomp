@@ -13,10 +13,10 @@
 
 ## Not done in M1-T687
 - `func_020df330`
-- `func_020debf8`
+- `Unk0de678_Unk_0debf8`
 - `func_020df4cc`
 - `func_020df348`
-- `func_020dea70`
+- `Unk0de678_CountLeading`
 - `func_020deedc`
 - `Unk0de678_Unk_0de870`: decompiler-derived
 - `Unk0de678_Unk_0df064`: decompiler-derived
@@ -46,5 +46,5 @@
 - `func_020de960`
 - `func_020def0c`
 - `func_020df0cc`
-- `func_020dea70`: hand-matched
-- `func_020debf8`: hand-matched
+- `Unk0de678_CountLeading`: hand-matched
+- `Unk0de678_Unk_0debf8`: hand-matched
