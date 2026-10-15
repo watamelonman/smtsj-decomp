@@ -36,3 +36,4 @@
 - `func_020fca5c`
 - `func_020fcd18`
 - `Unk0fc584_LoadMoneyWindow`: decompiler-derived (plain cleanup)
+- `func_020fc7b8`: decompiler-derived (plain+fix cleanup)

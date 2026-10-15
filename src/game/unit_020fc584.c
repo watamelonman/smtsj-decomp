@@ -145,3 +145,23 @@ void Unk0fc584_LoadMoneyWindow(int arg0,int arg1)
   tmp1 = func_0205dcd4(data_0215106c,1);
   ((Unk0fc584Work *)arg0)->unk_0008 = tmp1;
 }
+
+int func_020fc734();
+int func_020fc86c();
+/* decompiler-derived */
+void func_020fc7b8(u32 arg0)
+{
+  int tmp1;
+  int *v2;
+  tmp1 = func_020fc6e4();
+  if (tmp1 == 0) {
+    return;
+  }
+  v2 = (int *)Unk0fc584_Get_data_02176e14();
+  if (*v2 == 1) {
+    Unk0fc584_Unk_0fc84c((u32)arg0);
+    func_020fc86c();
+    return;
+  }
+  func_020fc734(arg0);
+}
