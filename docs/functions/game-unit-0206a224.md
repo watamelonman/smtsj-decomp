@@ -30,3 +30,4 @@
 - `func_0206a3f4`
 - `Unk06a224_GetUnk00`: hand-matched; reads/writes data_0216b9b0.unk_00
 - `Unk06a224_SetUnk00`: hand-matched; reads/writes data_0216b9b0.unk_00
+- `func_0206a9fc`: hand-matched
