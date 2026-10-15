@@ -134,5 +134,17 @@ void Unk09a268_Unk_09cb10(u32 arg0)
   func_0209c548(arg0);
 }
 
+u8 *GetGameState(void);     /* GameState *, see include/GameState.h */
+u32 func_02034970(void *table, u32 a, u32 b);
+u8 *func_02039160(u32 h, u32 a, u32 b);
 
-
+/* Byte +0x1B of the record for (a, b), or 0 when absent. */
+u8 func_0209beb0(u32 a, u32 b)
+{
+    u8 ret = 0;
+    u8 *e = func_02039160(func_02034970(GetGameState() + 4, a, b), a, b);
+    if (e != 0) {
+        ret = ((u8 *)Unk09a268_Unk_09c484(func_0209bb68(*e)))[0x1b];
+    }
+    return ret;
+}
