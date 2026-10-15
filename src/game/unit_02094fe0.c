@@ -32,7 +32,7 @@ int Unk094fe0_Unk_095004(int arg0)
 }
 
 int Unk094fe0_TestBit(Unk094fe0Work *w, u32 a);
-int func_02095320(Unk094fe0Work *w, u32 a);
+int Unk094fe0_TestBit990(Unk094fe0Work *w, u32 a);
 int Unk094fe0_Call_020950b4(u32 a)
 {
     return Unk094fe0_TestBit(Unk094fe0_Thunk_0202e8cc(), a);
@@ -40,7 +40,7 @@ int Unk094fe0_Call_020950b4(u32 a)
 
 void Unk094fe0_Call_02095320(u32 a)
 {
-    func_02095320(Unk094fe0_Thunk_0202e8cc(), a);
+    Unk094fe0_TestBit990(Unk094fe0_Thunk_0202e8cc(), a);
 }
 
 /* get u32 at +0x9a0 */
@@ -73,8 +73,8 @@ int Unk094fe0_TestBit(Unk094fe0Work *w, u32 bit)
 }
 
 void func_020950e4();
-void func_02095370(Unk094fe0Work *w, u32 a, int b);
-int func_02095178(u8 *p, int bit)
+void Unk094fe0_Unk_095370(Unk094fe0Work *w, u32 a, int b);
+int Unk094fe0_TestFlag18(u8 *p, int bit)
 {
     if (p == 0) {
         return 0;
@@ -85,7 +85,7 @@ int func_02095178(u8 *p, int bit)
     return (FIELD(u32, p, 0x18) & (1 << bit)) != 0;
 }
 
-void func_020951b0(u8 *p, int i, u32 v)
+void Unk094fe0_SetSlot(u8 *p, int i, u32 v)
 {
     if (p == 0) {
         return;
@@ -96,7 +96,7 @@ void func_020951b0(u8 *p, int i, u32 v)
     ((u32 *)(p + 4))[i] = v;
 }
 
-u32 func_020951d4(u8 *p, int i)
+u32 Unk094fe0_GetSlot(u8 *p, int i)
 {
     if (p == 0) {
         return 0;
@@ -107,7 +107,7 @@ u32 func_020951d4(u8 *p, int i)
     return ((u32 *)(p + 4))[i];
 }
 
-void func_02095204(u32 a, int b)
+void Unk094fe0_Unk_095204(u32 a, int b)
 {
     if (a >= 15360) {
         return;
@@ -115,7 +115,7 @@ void func_02095204(u32 a, int b)
     func_020950e4((u8 *)Unk094fe0_Thunk_0202e8cc() + 512, a, b);
 }
 
-int func_02095230(Unk094fe0Work *w, u32 a)
+int Unk094fe0_TestBit200(Unk094fe0Work *w, u32 a)
 {
     if (a >= 15360) {
         return 0;
@@ -123,7 +123,7 @@ int func_02095230(Unk094fe0Work *w, u32 a)
     return (FIELD(u8, (u8 *)w + (a >> 3), 512) & (1 << (a & 7))) != 0;
 }
 
-int func_02095320(Unk094fe0Work *w, u32 a)
+int Unk094fe0_TestBit990(Unk094fe0Work *w, u32 a)
 {
     u32 i = a - 1;
     u8 *bits;
@@ -134,12 +134,12 @@ int func_02095320(Unk094fe0Work *w, u32 a)
     return (bits[i >> 3] & (1 << (i & 7))) != 0;
 }
 
-void func_02095350(u32 a, int b)
+void Unk094fe0_Call_02095370(u32 a, int b)
 {
-    func_02095370(Unk094fe0_Thunk_0202e8cc(), a, b);
+    Unk094fe0_Unk_095370(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
-void func_02095370(Unk094fe0Work *w, u32 a, int b)
+void Unk094fe0_Unk_095370(Unk094fe0Work *w, u32 a, int b)
 {
     u32 i = a - 1;
     if (i >= 128) {

@@ -162,13 +162,13 @@ void Unk0d297c_Unk_0d2b70(u32 arg0)
   Unk02dcfc_SetField64();
 }
 
-int func_02095350();
+int Unk094fe0_Call_02095370();
 void Unk0d297c_Unk_0d2aec();
 /* decompiler-derived */
 void Unk0d297c_Unk_0d2c1c(u32 arg0)
 {
   Unk0e651c_Unk_0e6560();
-  func_02095350(arg0,1);
+  Unk094fe0_Call_02095370(arg0,1);
   Unk0d297c_Unk_0d2aec(arg0);
   Unk02dcfc_SetField64();
 }

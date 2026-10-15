@@ -193,5 +193,13 @@
  "func_02094e70": "Unk0946e0_Unk_094e70",
  "func_02094eb8": "Unk0946e0_Unk_094eb8",
  "func_0209500c": "Unk094fe0_Call_0209502c",
- "func_020950b4": "Unk094fe0_TestBit"
+ "func_020950b4": "Unk094fe0_TestBit",
+ "func_02095178": "Unk094fe0_TestFlag18",
+ "func_020951b0": "Unk094fe0_SetSlot",
+ "func_020951d4": "Unk094fe0_GetSlot",
+ "func_02095204": "Unk094fe0_Unk_095204",
+ "func_02095230": "Unk094fe0_TestBit200",
+ "func_02095320": "Unk094fe0_TestBit990",
+ "func_02095350": "Unk094fe0_Call_02095370",
+ "func_02095370": "Unk094fe0_Unk_095370"
 }
