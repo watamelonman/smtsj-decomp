@@ -61,3 +61,6 @@
 - `Unk0d297c_Unk_0d2aec`: hand-matched
 - `Unk0d297c_FreeSlot`: hand-matched
 - `Unk0d297c_Call_020d297c`: hand-matched
+- `func_020d3004`: hand-matched
+- `func_020d3138`: hand-matched
+- `func_020d3264`: hand-matched

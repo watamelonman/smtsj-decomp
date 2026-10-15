@@ -320,6 +320,27 @@ void Unk0d297c_Unk_0d2aec(u32 obj)
     Unk0e5fb8_Unk_0e649c(obj, 2);
 }
 
+int Unk0e651c_Unk_0e666c();
+typedef struct Unk0d297cU16Vec {
+    u16 *buf;
+    int n;
+    int cap;
+} Unk0d297cU16Vec;
+int func_020d3004(void)
+{
+    int v;
+    if (*data_02176be0 == 0) {
+        return 0;
+    }
+    v = func_0204fe68(*data_02176be0, 0);
+    return func_0204fed8(v, 0);
+}
+
+int func_020d3138(void)
+{
+    return Unk0e651c_Unk_0e666c(0x751);
+}
+
 /* Frees *slot (if set) and clears it. */
 void Unk0d297c_FreeSlot(u32 *slot)
 {
@@ -328,4 +349,12 @@ void Unk0d297c_FreeSlot(u32 *slot)
     }
     func_02053000();
     *slot = 0;
+}
+
+void func_020d3264(Unk0d297cU16Vec *v, u16 x)
+{
+    if (v->n < v->cap) {
+        v->buf[v->n] = x;
+        v->n++;
+    }
 }
