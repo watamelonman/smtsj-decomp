@@ -15,3 +15,13 @@
 - `func_0205ae60`
 - `func_0205b234`
 - `func_0205b02c`
+- `func_0205af64`: decompiler-derived
+
+## Not done in M1-T426
+- `func_0205b200`
+- `func_0205afec`
+- `func_0205b30c`
+- `func_0205b4c4`
+- `func_0205b444`
+- `func_0205b154`
+- `func_0205b398`

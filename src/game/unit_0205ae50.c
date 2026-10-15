@@ -72,3 +72,34 @@ u32 Unk05ae50_Unk_05af3c(Unk05ae50Work *work)
   return 1;
 }
 
+
+
+int func_02005334();
+int func_02005390();
+int func_020054d0();
+int func_0200551c();
+int func_02005550();
+int func_020055bc();
+int func_02006c94();
+int func_02007a58();
+int func_02007a6c();
+/* decompiler-derived */
+void func_0205af64(int *arg0)
+{
+  u32 tmp1;
+  tmp1 = func_02007a58();
+  if (*arg0 != 0) {
+    func_02005334();
+    func_02006c94(*arg0,arg0[2]);
+    func_02005390(*arg0,arg0[1],arg0[2]);
+    func_020054d0();
+  }
+  if (arg0[3] != 0) {
+    func_0200551c();
+    func_02006c94(arg0[3],arg0[5]);
+    func_02005550(arg0[3],arg0[4],arg0[5]);
+    func_020055bc();
+  }
+  func_02007a6c(tmp1);
+  return;
+}
