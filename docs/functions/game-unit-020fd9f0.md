@@ -30,3 +30,4 @@
 - `func_020fe004`
 - `Unk0fd9f0_LoadBattleHelpTalk`: decompiler-derived (plain cleanup)
 - `Unk0fd9f0_Unk_0fdc18`: decompiler-derived (plain+fix cleanup)
+- `func_020fda2c`: hand-matched

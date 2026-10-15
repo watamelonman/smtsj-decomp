@@ -74,6 +74,23 @@ void Unk0fd9f0_Unk_0fd9f0(void)
 }
 
 
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+
+void func_020fda2c(int flag)
+{
+    u32 p = Unk0fd9f0_Get_data_02176e20();
+    if (p == 0) {
+        return;
+    }
+    if (flag != 0) {
+        FIELD(int, p, 20) = 1;
+    } else {
+        FIELD(int, p, 20) = -1;
+    }
+}
+
 /* decompiler-derived */
 void Unk0fd9f0_Unk_0fe33c(int arg0)
 {
