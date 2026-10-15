@@ -20,3 +20,13 @@
 - `func_020ec4a8`
 - `func_020edad8`
 - `func_020ed1d4`
+
+## Not done in M1-T973
+- `func_020ed768`
+- `func_020ecb88`
+- `func_020eda38`
+- `func_020ec28c`
+- `func_020eba60`
+- `func_020ed290`
+- `func_020ecf20`
+- `func_020edb94`
