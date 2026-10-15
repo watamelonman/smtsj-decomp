@@ -15,7 +15,7 @@ void Unk124c5c_Unk_124cb0(void)
   func_02124ce8(2);
 }
 
-extern u32 data_02176e88[];
+extern u8 *data_02176e88;
 int func_02061424();
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
@@ -32,12 +32,12 @@ void Unk124c5c_Unk_124cc4(void)
 /* decompiler-derived */
 void Unk124c5c_Unk_124d54(void)
 {
-  func_02061424(*data_02176e88);
+  func_02061424((u32)data_02176e88);
 }
 
 int Unk124c5c_IsKind0(void)
 {
-    u8 *p = (u8 *)*data_02176e88;
+    u8 *p = data_02176e88;
     if (p != 0 && FIELD(s8, p, 8) == 0) {
         return 1;
     }
@@ -46,7 +46,7 @@ int Unk124c5c_IsKind0(void)
 
 int Unk124c5c_IsKind31(void)
 {
-    u8 *p = (u8 *)*data_02176e88;
+    u8 *p = data_02176e88;
     if (p != 0 && FIELD(s8, p, 8) == 31) {
         return 1;
     }
@@ -55,7 +55,7 @@ int Unk124c5c_IsKind31(void)
 
 int Unk124c5c_Unk_124e04(void)
 {
-    u8 *p = (u8 *)*data_02176e88;
+    u8 *p = data_02176e88;
     if (p == 0) {
         return 1;
     }
@@ -71,7 +71,7 @@ int Unk124c5c_Unk_124e04(void)
 /* decompiler-derived */
 void Unk124c5c_Unk_124e50(u32 arg0)
 {
-  if (*data_02176e88 != 0) {
-    *(u32 *)(*data_02176e88 + 0x14) = arg0;
+  if (data_02176e88 != 0) {
+    *(u32 *)(data_02176e88 + 0x14) = arg0;
   }
 }

@@ -12,11 +12,11 @@ typedef struct Unk0e7290Work {
     u32 unk_008c;
 } Unk0e7290Work;
 
-extern u32 data_02176cd8[];
+extern u8 *data_02176cd8;
 /* decompiler-derived */
 void Unk0e7290_Clear_data_02176cd8(void)
 {
-  *data_02176cd8 = 0;
+  data_02176cd8 = 0;
 }
 
 int func_02061424();
@@ -24,7 +24,7 @@ int func_02061424();
 u32 Unk0e7290_Unk_0e7734(void)
 {
   int value;
-  value = *data_02176cd8;
+  value = (u32)data_02176cd8;
   if (value == 0) {
     return 0;
   }
@@ -84,7 +84,7 @@ u32 Unk0e7290_Unk_0e747c(int arg0)
 /* decompiler-derived */
 void Unk0e7290_Unk_0e7790(u32 arg0)
 {
-  if (*data_02176cd8 != 0) {
-    *(u32 *)(*data_02176cd8 + 0x204) = arg0;
+  if (data_02176cd8 != 0) {
+    *(u32 *)(data_02176cd8 + 0x204) = arg0;
   }
 }
