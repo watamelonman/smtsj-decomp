@@ -10,6 +10,19 @@ typedef struct Unk0979d8Work {
 
 
 int func_02096754();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int func_020979d8(u8 *p)
+{
+    if (p == 0) {
+        return 0;
+    }
+    FIELD(s16, p, 30) = FIELD(s16, p, 10);
+    FIELD(s16, p, 32) = FIELD(s16, p, 12);
+    return 1;
+}
+
 /* decompiler-derived */
 u8 Unk0979d8_Unk_098124(void)
 {
@@ -122,6 +135,65 @@ u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0){
 }
 
 int func_020970d4();
+int func_02097b54(u8 *p, int v)
+{
+    s32 m;
+    if (p == 0) {
+        return 0;
+    }
+    m = FIELD(s16, p, 10);
+    if (v <= m) {
+        if (v < 1) {
+            v = 1;
+        }
+        m = v;
+    }
+    FIELD(s16, p, 30) = m;
+    return FIELD(s16, p, 30);
+}
+
+int func_02097b84(u8 *p, int v)
+{
+    s32 m;
+    if (p == 0) {
+        return 0;
+    }
+    m = FIELD(s16, p, 12);
+    if (v <= m) {
+        if (v < 1) {
+            v = 1;
+        }
+        m = v;
+    }
+    FIELD(s16, p, 32) = m;
+    return FIELD(s16, p, 32);
+}
+
+int func_02097bb4(u8 *p, int id)
+{
+    int j;
+    if (p == 0) {
+        return 0;
+    }
+    for (j = 0; j < 6; j++) {
+        if (id == ((u16 *)(p + 40))[j]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_02097bec(u8 *p, u16 *out)
+{
+    int j;
+    if (p == 0) {
+        return;
+    }
+    for (j = 0; j < 6; j++) {
+        out[j] = ((u16 *)(p + 40))[j];
+    }
+}
+
 /* decompiler-derived */
 void Unk0979d8_Unk_097f00(u32 arg0)
 {
