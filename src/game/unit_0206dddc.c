@@ -22,3 +22,4 @@ u32 func_0206dfb0(int arg0)
 {
   return *(u32 *)(((int)data_0216baf0) + arg0 * 0x148);
 }
+

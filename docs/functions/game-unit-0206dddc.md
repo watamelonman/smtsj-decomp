@@ -10,3 +10,12 @@
 - `func_0206dfec`
 - `func_0206e010`
 - `func_0206e034`
+
+## Not done in M1-T339
+- `func_0206dee8`
+- `func_0206dddc`
+- `func_0206e06c`
+- `func_0206de10`
+- `func_0206de7c`
+- `func_0206df10`
+- `func_0206e0dc`
