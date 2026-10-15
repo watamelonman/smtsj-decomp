@@ -22,3 +22,5 @@
 - `func_0209ee80`
 - `Unk09ee4c_Call_0204f1f8`: hand-matched
 - `Unk09ee4c_Call_0204f68c`: hand-matched
+- `func_0209efb4`: hand-matched
+- `func_0209eff8`: hand-matched

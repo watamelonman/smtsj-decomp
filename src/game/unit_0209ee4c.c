@@ -67,3 +67,28 @@ void Unk09ee4c_Unk_09ef80(u32 arg0)
     Unk11f2d0_Unk_11f308(gs->unk_7598, arg0);
     gs->unk_73e8 = 0x15;
 }
+
+int Unk1124f0_Unk_11259c();
+void func_0209efb4(u32 id)
+{
+    u8 *gs = (u8 *)GetGameState();
+    void (**ent)(u32);
+    if (gs == 0) {
+        return;
+    }
+    ent = (void (**)(u32))Unk1124f0_Unk_11259c(id);
+    if (ent[0] != 0) {
+        ent[0](id);
+    }
+    FIELD(u32, gs + 28672, 1000) = 22;
+    FIELD(u32, gs + 28672, 1004) = id;
+}
+
+u16 func_0209eff8(void)
+{
+    u8 *gs = (u8 *)GetGameState();
+    if (gs == 0) {
+        return 0;
+    }
+    return (u16)((FIELD(u32, gs + 28672, 960) << 12) >> 22);
+}
