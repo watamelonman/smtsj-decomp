@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 int func_0205e484();
 int func_020cb3dc();
-int func_020cb4e4();
+void func_020cb4e4(u32 arg0,u32 arg1);
 int func_020cb564();
 int func_02122a78();
 int Unk122a78_Unk_122aa0();
@@ -143,4 +143,12 @@ void Unk0cb32c_Unk_0cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
   func_02059f70(*arg0,0,arg1,arg2,auStack_24,0,arg5);
 }
 
-
+int func_020445f4();
+int func_0204fed8();
+/* decompiler-derived */
+void func_020cb4e4(u32 arg0,u32 arg1)
+{
+  u32 tmp1;
+  tmp1 = func_020445f4(0x1e,arg0);
+  func_0204fed8(tmp1,arg1);
+}

@@ -43,3 +43,4 @@
 
 ## Not done in M1-T871
 - `func_020cbce4`
+- `func_020cb4e4`: decompiler-derived (plain cleanup)
