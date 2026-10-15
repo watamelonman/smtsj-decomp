@@ -163,3 +163,4 @@
 - `Unk02f2a8_Unk_02f378`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_032f3c`: decompiler-derived (plain cleanup)
 - `func_0203538c`: decompiler-derived (plain+fix cleanup)
+- `func_02030d20`: decompiler-derived (plain+fix cleanup)

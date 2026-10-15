@@ -299,3 +299,24 @@ void func_0203538c(void)
   }
   func_020952ac();
 }
+
+int func_0203480c();
+int func_02041d70();
+/* decompiler-derived */
+int func_02030d20(int arg0,int arg1)
+{
+  ScanVisor_Unk_0a2b38();
+  if (arg1 == 1) {
+    func_02041d70(1);
+  }
+  else {
+    func_02041d70(2);
+  }
+  func_0203480c(arg0 + 4,1);
+  Unk09974c_Unk_09974c(arg0 + 0x7550);
+  Unk11f2d0_Unk_11f2d0(arg0 + 0x7598);
+  Unk095560_Unk_096130();
+  Unk065e88_Unk_065eac();
+  Unk0964f8_Unk_0964f8();
+  Unk0a23f4_Unk_0a2414();
+}
