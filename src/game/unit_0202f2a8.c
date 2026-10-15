@@ -29,13 +29,13 @@ int func_0204b710();
 void func_0202f3d8();
 void func_0209aca0();
 void func_02116598();
-void func_02030294(u8 *p);
+void Unk02f2a8_ApplyPending(u8 *p);
 void Unk02f2a8_Unk_02fc10(int arg0);
 void Unk02f2a8_Unk_02f8ac(int arg0);
 void Unk02f2a8_Unk_0302f4(int arg0);
 void Unk02f2a8_Unk_02f378(int arg0);
 
-u32 func_0202f2dc(int i)
+u32 Unk02f2a8_GetSlot_02f2dc(int i)
 {
     u8 *w = (u8 *)Unk02e000_Unk_02e774();
     switch (i) {
@@ -596,7 +596,7 @@ void Unk02f2a8_Unk_02f378(int arg0)
 
 void Unk02f2a8_SetRootUnk60();
 int func_0205257c();
-int func_02030198(u8 *p)
+int Unk02f2a8_Unk_030198(u8 *p)
 {
     if (func_0204b4c4(p) == 0) {
         return 0;
@@ -617,7 +617,7 @@ int func_02030198(u8 *p)
     return 0;
 }
 
-void func_02030294(u8 *p)
+void Unk02f2a8_ApplyPending(u8 *p)
 {
     FIELD(s32, p, 16) = FIELD(s32, p, 20);
     FIELD(s32, p, 20) = -1;
@@ -640,13 +640,13 @@ void func_02030294(u8 *p)
     }
 }
 
-void func_0203034c(u8 *p)
+void Unk02f2a8_Unk_03034c(u8 *p)
 {
     u8 *w1;
     u8 *w2;
     if (FIELD(s32, p, 20) != -1) {
         if (func_0204b710() == 1 || func_0204ca1c() == -1) {
-            func_02030294(p);
+            Unk02f2a8_ApplyPending(p);
         }
     }
     Unk02f2a8_Unk_0302f4((int)p);

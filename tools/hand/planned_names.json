@@ -641,5 +641,10 @@
  "func_0202ecf8": "Unk02e000_SetRecordFlag1f_1",
  "func_0202eda8": "Unk02e000_SetRecordUnk1f_2",
  "func_0202ee5c": "Unk02ee5c_SetRecordFlag0b",
- "func_0202ef34": "Unk02ee5c_AddClamped70"
+ "func_0202ef34": "Unk02ee5c_AddClamped70",
+ "func_0202f190": "Unk02f078_IsAllowed_02f190",
+ "func_0202f2dc": "Unk02f2a8_GetSlot_02f2dc",
+ "func_02030198": "Unk02f2a8_Unk_030198",
+ "func_02030294": "Unk02f2a8_ApplyPending",
+ "func_0203034c": "Unk02f2a8_Unk_03034c"
 }

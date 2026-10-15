@@ -59,7 +59,7 @@
 ## Not done in M1-T1110
 - `Unk02f2a8_SetField35c`
 - `Unk02f2a8_SetGridPos`
-- `func_0202f2dc`
+- `Unk02f2a8_GetSlot_02f2dc`
 - `func_02034970`
 - `Unk02f2a8_Unk_0302f4`
 - `func_02034b24`
@@ -68,20 +68,20 @@
 
 ## Not done in M1-T1111
 - `Unk02f2a8_Unk_02f378`
-- `func_02030294`
+- `Unk02f2a8_ApplyPending`
 - `func_020308c0`
 - `Unk02f2a8_Unk_030d20`
 - `func_020313a4`
 - `func_02035b74`
 - `func_02030704`
-- `func_02030198`
+- `Unk02f2a8_Unk_030198`
 
 ## Not done in M1-T1112
 - `func_0203550c`
 - `func_02035b08`
 - `func_02035820`
 - `func_02036068`
-- `func_0203034c`
+- `Unk02f2a8_Unk_03034c`
 - `Unk02f2a8_Unk_032f3c`
 - `func_020349c4`
 - `func_020351b4`
@@ -192,7 +192,7 @@
 - `Unk02f2a8_DirToAngle`: hand-matched
 - `Unk02f2a8_SetField35c`: hand-matched
 - `Unk02f2a8_SetGridPos`: hand-matched
-- `func_0202f2dc`: hand-matched
-- `func_02030198`: hand-matched
-- `func_02030294`: hand-matched
-- `func_0203034c`: hand-matched
+- `Unk02f2a8_GetSlot_02f2dc`: hand-matched
+- `Unk02f2a8_Unk_030198`: hand-matched
+- `Unk02f2a8_ApplyPending`: hand-matched
+- `Unk02f2a8_Unk_03034c`: hand-matched

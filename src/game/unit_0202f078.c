@@ -115,7 +115,7 @@ void Unk02f078_Unk_02f08c(void)
   *(u8 *)(value + 1) = 100;
 }
 
-int func_0202f190(int a, int b)
+int Unk02f078_IsAllowed_02f190(int a, int b)
 {
     if (a == 0) {
         return 1;

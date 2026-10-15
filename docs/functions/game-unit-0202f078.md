@@ -14,9 +14,9 @@
 - `Unk02f078_GetEntry5e12Bit0`
 - `Unk02f078_SetFlag380`
 - `Unk02f078_TestFlag380`
-- `func_0202f190`
+- `Unk02f078_IsAllowed_02f190`
 - `Unk02f078_TestFlag380`: hand-matched
 - `Unk02f078_SetFlag380`: hand-matched
 - `Unk02f078_InitEntry5e12`: hand-matched
 - `Unk02f078_GetEntry5e12Bit0`: hand-matched
-- `func_0202f190`: hand-matched
+- `Unk02f078_IsAllowed_02f190`: hand-matched
