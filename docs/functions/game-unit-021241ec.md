@@ -16,3 +16,8 @@
 - `func_02124224`
 - `func_021242fc`
 - `func_02124338`
+- `func_02124284`: decompiler-derived (plain cleanup)
+- `func_0212429c`: decompiler-derived (plain cleanup)
+- `func_021242b4`: decompiler-derived (plain cleanup)
+- `func_021242cc`: decompiler-derived (plain cleanup)
+- `func_021242e4`: decompiler-derived (plain cleanup)
