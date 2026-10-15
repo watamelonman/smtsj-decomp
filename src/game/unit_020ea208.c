@@ -109,6 +109,78 @@ u32 Unk0ea208_GetArr10(int i)
     return FIELD(u32, p + i * 4, 16);
 }
 
+void func_020eb2a4(u8 *p);
+void func_020eb034();
+void func_020ea744();
+int Unk0e8228_Unk_0e8460();
+int Unk0e8228_GetArr40();
+int func_020445f4();
+int func_0204fed8();
+u32 func_020ea524(int i)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 6) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 4, 36);
+}
+
+u32 func_020ea570(void)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    return FIELD(u32, p, 60);
+}
+
+u32 func_020ea598(int i)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 6) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 4, 64);
+}
+
+u32 func_020ea5e4(int i)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p == 0) {
+        return 0;
+    }
+    if (FIELD(u32, p, 460) == 0) {
+        return 0;
+    }
+    if (i < 0 || i >= 6) {
+        return 0;
+    }
+    return FIELD(u32, p + i * 4, 88);
+}
+
+void func_020ea70c(void)
+{
+    u32 p = Unk0ea208_Get_data_02176ddc();
+    if (p != 0 && FIELD(u32, p, 460) != 0) {
+        func_020eb2a4((u8 *)p);
+    }
+}
+
 /* decompiler-derived */
 void Unk0ea208_Unk_0ead3c(void)
 {
@@ -142,6 +214,20 @@ u32 Unk0ea208_Unk_0ea72c(void)
     value2 = *(u32 *)(value1 + 0x1d4);
   }
   return value2;
+}
+
+void func_020ea828(void)
+{
+    int n = Unk0e8228_Unk_0e8460();
+    int i;
+    for (i = 0; i < n; i++) {
+        func_020ea744(Unk0e8228_GetArr40(i));
+    }
+}
+
+int func_020ea85c(void)
+{
+    return func_0204fed8(func_020445f4(39, 3), 1);
 }
 
 /* decompiler-derived */
@@ -378,6 +464,26 @@ void Unk0ea208_Unk_0ea984(u32 arg0)
   }
   func_0204faf0(1,tmp6);
   func_0204fed8(tmp1,0);
+}
+
+int func_020eac24(void)
+{
+    return func_0204fed8(func_020445f4(39, 4), 1);
+}
+
+void func_020eac40(u8 *p)
+{
+    func_02061f10(FIELD(u32, p, 60), -1, 0, 3, func_0204fed8(func_020445f4(39, 2), 1));
+}
+
+void func_020eb2a4(u8 *p)
+{
+    int i;
+    u8 *q = p + 112;
+    for (i = 0; i < 6; i++) {
+        func_020eb034(q);
+        q += 56;
+    }
 }
 
 /* decompiler-derived */

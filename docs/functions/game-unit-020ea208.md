@@ -64,3 +64,13 @@
 - `Unk0ea208_GetField8`: hand-matched
 - `Unk0ea208_GetFieldC`: hand-matched
 - `Unk0ea208_GetArr10`: hand-matched
+- `func_020ea524`: hand-matched
+- `func_020ea570`: hand-matched
+- `func_020ea598`: hand-matched
+- `func_020ea5e4`: hand-matched
+- `func_020ea70c`: hand-matched
+- `func_020ea828`: hand-matched
+- `func_020ea85c`: hand-matched
+- `func_020eac24`: hand-matched
+- `func_020eac40`: hand-matched
+- `func_020eb2a4`: hand-matched
