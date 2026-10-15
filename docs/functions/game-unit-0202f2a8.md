@@ -95,3 +95,13 @@
 - `func_02032c0c`
 - `func_02037054`
 - `func_0202fe08`
+
+## Not done in M1-T1114
+- `func_020352f4`
+- `func_02032a40`
+- `func_02032b70`
+- `func_02036fb8`
+- `func_0203546c`
+- `func_0202fd64`
+- `func_020305a8`
+- `func_020303d0`
