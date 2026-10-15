@@ -15,6 +15,20 @@ void Unk038fbc_Unk_039138(u32 *arg0)
 }
 
 
+typedef struct Unk038fbcNode {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+} Unk038fbcNode;
+
+u32 func_020391c8(Unk038fbcNode *node)
+{
+    if (node != 0) {
+        return node->unk_08;
+    }
+    return 0;
+}
+
 /* decompiler-derived */
 int Unk038fbc_Unk_0391d8(int *arg0)
 {
