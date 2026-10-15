@@ -134,3 +134,16 @@ int Unk03aae8_Unk_03b89c(void)
     }
     return 1;
 }
+
+int func_0203b93c(void)
+{
+    int v = func_0203ac00(0);
+    int lo = func_0203ac00(1);
+    int hi = func_0203ac00(2);
+    if (lo <= v && v <= hi) {
+        Unk03aae8_Unk_03acf4(1);
+    } else {
+        Unk03aae8_Unk_03acf4(0);
+    }
+    return 1;
+}
