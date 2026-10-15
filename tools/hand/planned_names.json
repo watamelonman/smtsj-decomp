@@ -561,5 +561,15 @@
  "func_021102d4": "Unk10fe28_Unk_1102d4",
  "func_021122bc": "Unk1122bc_Unk_1122bc",
  "func_02112438": "Unk1122bc_IsCurrent",
- "func_021124a0": "Unk1122bc_Unk_1124a0"
+ "func_021124a0": "Unk1122bc_Unk_1124a0",
+ "func_020fedf0": "Unk0fedd4_Alloc",
+ "func_021124f0": "Unk1124f0_Unk_1124f0",
+ "func_02113e90": "Unk113294_Unk_113e90",
+ "func_02113eb4": "Unk113294_Unk_113eb4",
+ "func_0211508c": "Unk113294_Unk_11508c",
+ "func_021155e0": "Unk113294_AnyLo",
+ "func_02115618": "Unk113294_AnyHi",
+ "func_02115658": "Unk113294_CopyIds",
+ "func_02115708": "Unk113294_FindEmpty",
+ "func_02115734": "Unk113294_Unk_115734"
 }

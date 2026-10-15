@@ -25,8 +25,8 @@ int Unk0a0ce4_Unk_0a0da4();
 extern u32 data_02176e54[];
 int func_02061f10();
 int func_021155bc();
-int func_02115618();
-int func_021155e0();
+int Unk113294_AnyHi();
+int Unk113294_AnyLo();
 int Unk02e000_Thunk_0202e788();
 void func_02008904();
 void func_0202efa4();
@@ -34,12 +34,12 @@ typedef struct Unk113294Ids {
     u8 pad[216];
     u16 ids[16];
 } Unk113294Ids;
-int func_02113e90(u8 *p)
+int Unk113294_Unk_113e90(u8 *p)
 {
     return FIELD(u16, p, 216) == 0 && FIELD(u32, p, 12) == 0 && FIELD(u32, p, 4) == 1;
 }
 
-void func_02113eb4(u8 *p)
+void Unk113294_Unk_113eb4(u8 *p)
 {
     p[0] = 5;
     *data_02176e54 = 0;
@@ -139,7 +139,7 @@ int func_02061e98();
 int func_02061f10();
 int func_02063920();
 int func_02063a30();
-void func_0211508c(u32 a, u32 b)
+void Unk113294_Unk_11508c(u32 a, u32 b)
 {
     func_02061f10(a, -1, 0, 0, func_0204fed8(func_020445f4(42, 0), b));
 }
@@ -162,7 +162,7 @@ void Unk113294_Unk_11518c(u32 arg0)
 }
 
 extern u8 data_0215159c[];
-int func_021155e0(Unk113294Ids *p)
+int Unk113294_AnyLo(Unk113294Ids *p)
 {
     int i;
     for (i = 0; i < 8; i++) {
@@ -173,7 +173,7 @@ int func_021155e0(Unk113294Ids *p)
     return 0;
 }
 
-int func_02115618(Unk113294Ids *p)
+int Unk113294_AnyHi(Unk113294Ids *p)
 {
     int i;
     for (i = 8; i < 16; i++) {
@@ -184,14 +184,14 @@ int func_02115618(Unk113294Ids *p)
     return 0;
 }
 
-void func_02115658(u8 *p)
+void Unk113294_CopyIds(u8 *p)
 {
     func_02008904(p + 232, (u8 *)Unk02e000_Thunk_0202e788() + 72, 16);
     func_02008904(p + 216, (u8 *)Unk02e000_Thunk_0202e788() + 90, 16);
     func_0202efa4();
 }
 
-int func_02115708(Unk113294Ids *p)
+int Unk113294_FindEmpty(Unk113294Ids *p)
 {
     int i;
     for (i = 0; i < 8; i++) {
@@ -202,7 +202,7 @@ int func_02115708(Unk113294Ids *p)
     return 7;
 }
 
-int func_02115734(u8 *p)
+int Unk113294_Unk_115734(u8 *p)
 {
     switch (p[8]) {
     case 0:

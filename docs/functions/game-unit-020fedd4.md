@@ -17,7 +17,7 @@
 ## Not done in M1-T168
 - `Unk0fedd4_SetUnk0c10`
 - `Unk0fedd4_SetState2`
-- `func_020fedf0`
+- `Unk0fedd4_Alloc`
 - `Unk0fedd4_Unk_0fee38`
 - `func_020fef0c`
 - `Unk0fedd4_Unk_0fee38`: hand-matched
@@ -28,4 +28,4 @@
 - `Unk0fedd4_SetState0`: hand-matched
 - `Unk0fedd4_SetState2`: hand-matched
 - `Unk0fedd4_GetObj`: hand-matched
-- `func_020fedf0`: hand-matched
+- `Unk0fedd4_Alloc`: hand-matched

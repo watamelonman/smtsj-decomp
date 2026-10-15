@@ -8,7 +8,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 int Unk0fedd4_Unk_0fedd4();
 int Unk0fedd4_Thunk_0205bb68();
-int func_020fedf0();
+int Unk0fedd4_Alloc();
 int Unk0fedd4_Unk_0fee18();
 int Unk0fedd4_SetUnk0c10();
 int Unk0fedd4_SetUnk1c();
@@ -32,7 +32,7 @@ void Unk1241ec_Unk_124214(void)
 void Unk1241ec_Unk_1241ec(void)
 {
   Unk0fedd4_Unk_0fedd4();
-  func_020fedf0(1);
+  Unk0fedd4_Alloc(1);
   Unk0fedd4_SetUnk0c10(0,0x2b);
   Unk0fedd4_SetUnk1c(5);
 }

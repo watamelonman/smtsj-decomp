@@ -7,7 +7,7 @@
 - `Unk1124f0_Unk_1125ac`: decompiler-derived
 
 ## Not done in M1-T094
-- `func_021124f0`
+- `Unk1124f0_Unk_1124f0`
 - `func_021126b4`
 - `func_021125e8`
-- `func_021124f0`: hand-matched
+- `Unk1124f0_Unk_1124f0`: hand-matched

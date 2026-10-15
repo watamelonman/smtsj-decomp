@@ -3,7 +3,7 @@
 
 int func_02035b08();
 int Unk0e651c_Unk_0e666c();
-int func_021124f0(u16 a, u32 b, u32 c)
+int Unk1124f0_Unk_1124f0(u16 a, u32 b, u32 c)
 {
     int r = 0;
     if (a == func_02035b08(8, 10) && b == 23 && c == 10) {
@@ -33,14 +33,14 @@ void Unk1124f0_Unk_112538(void)
 }
 
 u32 Unk02e000_GetWorkArea(void);
-int func_021124f0(u16 a, u32 b, u32 c);
+int Unk1124f0_Unk_1124f0(u16 a, u32 b, u32 c);
 u32 Unk1124f0_Unk_112564(u32 arg0, u32 arg1)
 {
     int value1;
     u32 value2;
     value2 = 0;
     value1 = Unk02e000_GetWorkArea();
-    value1 = func_021124f0(*(u16 *)(value1 + 0x35c), arg0, arg1);
+    value1 = Unk1124f0_Unk_1124f0(*(u16 *)(value1 + 0x35c), arg0, arg1);
     if (value1 == 1) {
         value2 = 2;
     }
