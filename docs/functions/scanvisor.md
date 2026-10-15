@@ -95,3 +95,6 @@
 - `func_020a3114`
 - `func_020a2d0c`
 - `func_020a370c`: decompiler-derived (plain cleanup)
+- `func_020a4a44`: decompiler-derived (plain cleanup)
+- `func_020a4950`: decompiler-derived (plain cleanup)
+- `func_020a4864`: decompiler-derived (plain cleanup)
