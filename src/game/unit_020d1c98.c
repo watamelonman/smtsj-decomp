@@ -24,3 +24,19 @@ void Unk0d1c98_Unk_0d1c98(Unk0d1c98Work *arg0){
   arg0->unk_0004 = 0;
   return;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern Unk0d1c98Work *data_02176bdc;
+void func_02061424();
+void func_020d1d4c(void)
+{
+    if (data_02176bdc == 0) {
+        return;
+    }
+    func_020629c4(data_02176bdc->unk_0004);
+    data_02176bdc->unk_0004 = 0;
+    func_02061424(data_02176bdc);
+    data_02176bdc = 0;
+}
