@@ -40,3 +40,28 @@ int Unk068f18_Unk_069afc(int arg0,int arg1,int arg2,int arg3)
   }
   return value;
 }
+
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+int Unk02e000_GetWorkArea();
+
+int func_0206a1a8(u8 *p, int key)
+{
+    int r;
+    u8 *w;
+    s8 i;
+    if (p[178] == 0) {
+        return -1;
+    }
+    r = -1;
+    w = (u8 *)Unk02e000_GetWorkArea();
+    for (i = 0; i < p[178]; i++) {
+        s8 k = FIELD(s8, w + i + 0x300, 72);
+        if (k >= 0 && key == FIELD(u16, FIELD(u8 *, p + k * 4, 288), 54)) {
+            r = k;
+            break;
+        }
+    }
+    return r;
+}

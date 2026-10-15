@@ -12,3 +12,4 @@
 - `func_0206902c`
 - `Unk068f18_CompareKeyAsc`: hand-matched
 - `Unk068f18_CompareKeyDesc`: hand-matched
+- `func_0206a1a8`: hand-matched
