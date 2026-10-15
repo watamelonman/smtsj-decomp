@@ -20,3 +20,11 @@
 - `func_020e6630`
 - `func_020e65ec`
 - `func_020e6708`
+- `func_020e6574`: hand-matched
+- `func_020e6594`: hand-matched
+- `func_020e65b0`: hand-matched
+- `func_020e65cc`: hand-matched
+- `func_020e65ec`: hand-matched
+- `func_020e6630`: hand-matched
+- `func_020e6684`: hand-matched
+- `func_020e66a4`: hand-matched
