@@ -93,7 +93,7 @@ int Unk06a224_Unk_06a3a4(u8 *o)
 
 typedef struct Unk06a224Ctl {
     u8 pad_0000[348];
-    u16 *slots[4];
+    u16 *slots[4]; /* count guessed; only the +348 offset is confirmed */
 } Unk06a224Ctl;
 void func_02099b10();
 void func_02067d54();
