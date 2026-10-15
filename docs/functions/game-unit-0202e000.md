@@ -107,3 +107,9 @@
 - `Unk02e000_GetRecordFlag1`: hand-matched
 - `Unk02e000_GetRecordUnk1f`: hand-matched
 - `Unk02e000_FindIndex_02e3e4`: hand-matched
+- `func_0202e468`: hand-matched
+- `func_0202e968`: hand-matched
+- `func_0202ea10`: hand-matched
+- `func_0202eab8`: hand-matched
+- `func_0202eb48`: hand-matched
+- `func_0202ec48`: hand-matched
