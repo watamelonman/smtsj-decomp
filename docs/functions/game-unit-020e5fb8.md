@@ -13,10 +13,10 @@
 - `Unk0e5fb8_Unk_0e61c8` (32 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020e6160`: no candidate matched locally
-- `func_020e6174`: no candidate matched locally
-- `func_020e6188`: no candidate matched locally
-- `func_020e619c`: no candidate matched locally
+- `Unk0e5fb8_GetOffset900`: no candidate matched locally
+- `Unk0e5fb8_GetOffsetB00`: no candidate matched locally
+- `Unk0e5fb8_GetOffsetD00`: no candidate matched locally
+- `Unk0e5fb8_GetOffsetD80`: no candidate matched locally
 - `func_020e613c`: no candidate matched locally
 
 ## Not done in M1-T377
@@ -44,7 +44,7 @@
 - `Unk0e5fb8_Unk_0e626c`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_Unk_0e61e8`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_Unk_0e62a4`: decompiler-derived (plain cleanup)
-- `func_020e6160`: hand-matched
-- `func_020e6174`: hand-matched
-- `func_020e6188`: hand-matched
-- `func_020e619c`: hand-matched
+- `Unk0e5fb8_GetOffset900`: hand-matched
+- `Unk0e5fb8_GetOffsetB00`: hand-matched
+- `Unk0e5fb8_GetOffsetD00`: hand-matched
+- `Unk0e5fb8_GetOffsetD80`: hand-matched

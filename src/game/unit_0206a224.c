@@ -15,7 +15,7 @@ typedef struct Unk06a224Work {
 void func_020d6cac(void);
 u32 Unk0986ac_Unk_098978(void);
 void Unk0986ac_Thunk_02098714(u32 a);
-void func_0206a9fc(void)
+void Unk06a224_Unk_06a9fc(void)
 {
     Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978());
 }

@@ -38,12 +38,12 @@ void ImageBgDual3D_Nop_1252f8(void) { }
 void ImageBgDual3D_Nop_1252fc(void) { }
 void func_02117360(u32 a, u32 b, u32 c, u32 d, u8 e);
 void func_02117400(u32 a, u32 b, u32 c, u32 d, u8 e);
-void func_02125984(u32 a, u32 b, u32 c, u32 d, u8 e)
+void ImageBgDual3D_Call_02117360(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117360(a, b, c, d, e);
 }
 
-void func_02125998(u32 a, u32 b, u32 c, u32 d, u8 e)
+void ImageBgDual3D_Call_02117400(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117400(a, b, c, d, e);
 }

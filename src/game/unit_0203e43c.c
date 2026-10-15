@@ -143,7 +143,7 @@ void Unk03e43c_Unk_03e794(int arg0,int arg1)
 
 
 
-int func_02034398();
+int GameState_GetBody();
 /* decompiler-derived */
 void Unk03e43c_Unk_0434b0(short *arg0,short *arg1)
 {
@@ -154,14 +154,14 @@ void Unk03e43c_Unk_0434b0(short *arg0,short *arg1)
   if (0x70 < *arg1) {
     *arg1 = 0x70;
   }
-  value = func_02034398();
+  value = GameState_GetBody();
   if ((int)*arg0 < (int)((*(u8 *)(*(int *)(value + 0x354) + 10) - 10) * -8)) {
-    value = func_02034398();
+    value = GameState_GetBody();
     *arg0 = (*(u8 *)(*(int *)(value + 0x354) + 10) - 10) * -8;
   }
-  value = func_02034398();
+  value = GameState_GetBody();
   if ((int)*arg1 < (int)((*(u8 *)(*(int *)(value + 0x354) + 0xb) - 10) * -8)) {
-    value = func_02034398();
+    value = GameState_GetBody();
     *arg1 = (*(u8 *)(*(int *)(value + 0x354) + 0xb) - 10) * -8;
     return;
   }

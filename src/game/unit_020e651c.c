@@ -59,12 +59,12 @@ void Unk0e651c_Unk_0e66f0(u32 arg0,u32 arg1)
 }
 
 
-int func_020e619c();
+int Unk0e5fb8_GetOffsetD80();
 /* decompiler-derived */
 void Unk0e651c_Unk_0e651c(u32 arg0,u32 arg1)
 {
   int value;
-  value = func_020e619c();
+  value = Unk0e5fb8_GetOffsetD80();
   func_0209500c(value + 2,arg1 & 1);
   func_0209500c(value + 3,(int)(arg1 & 2) >> 1);
 }

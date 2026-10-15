@@ -6,8 +6,8 @@
 - `Unk038fbc_Unk_039248`: decompiler-derived
 
 ## Not done in M1-T268
-- `func_020391c8`
+- `Unk038fbc_GetNodeUnk08`
 - `func_02039204`
 - `func_02039160`
 - `func_02038ff8`
-- `func_020391c8`: hand-matched
+- `Unk038fbc_GetNodeUnk08`: hand-matched

@@ -18,12 +18,12 @@ typedef struct GameStateRoot {
     u32 unk_18;
     u8  pad_1c[0x40];
     u32 unk_5c;
-    u32 unk_60;                 /* +0x60  cleared by func_02034b08 */
+    u32 unk_60;                 /* +0x60  cleared by GameState_ClearRootUnk60 */
 } GameStateRoot;
 
 typedef struct GameState {
     GameStateRoot *root;        /* +0x0000 */
-    u8  unk_0004[0x3130];       /* +0x0004  main body (returned by func_02034398) */
+    u8  unk_0004[0x3130];       /* +0x0004  main body (returned by GameState_GetBody) */
     u8  unk_3134[0xc];          /* +0x3134  sub-object, torn down by GameState_Shutdown */
     u8  unk_3140[0xc];          /* +0x3140  sub-object (Unk0387bc_*) */
     u8  unk_314c[0x79c];        /* +0x314C  sub-object (Unk038fbc_*); size unknown */

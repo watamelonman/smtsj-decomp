@@ -6,9 +6,9 @@
 - `Unk06ae94_Unk_06aeb4` (32 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_0206aed4`: no candidate matched locally
-- `func_0206aeec`: no candidate matched locally
-- `func_0206c8c8`: no candidate matched locally
+- `Unk06ae94_Unk_06aed4`: no candidate matched locally
+- `Unk06ae94_Unk_06aeec`: no candidate matched locally
+- `Unk06ae94_SetPair`: no candidate matched locally
 - `func_0206c0d4`: no candidate matched locally
 
 ## Not done in M1-T995
@@ -40,6 +40,6 @@
 - `func_0206d68c`
 - `func_0206ced4`
 - `func_0206cd30`
-- `func_0206aed4`: hand-matched
-- `func_0206aeec`: hand-matched
-- `func_0206c8c8`: hand-matched
+- `Unk06ae94_Unk_06aed4`: hand-matched
+- `Unk06ae94_Unk_06aeec`: hand-matched
+- `Unk06ae94_SetPair`: hand-matched

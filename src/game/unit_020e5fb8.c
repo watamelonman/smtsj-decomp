@@ -35,7 +35,7 @@ int Unk0e5fb8_Unk_0e6158(int arg0)
 }
 
 /* Table offset of entry `i` (256 entries of 2 bytes at 0x900); out of range maps to 0. */
-int func_020e6160(u32 i)
+int Unk0e5fb8_GetOffset900(u32 i)
 {
     if (i >= 256) {
         i = 0;
@@ -44,7 +44,7 @@ int func_020e6160(u32 i)
 }
 
 /* Table offset of entry `i` (256 entries of 2 bytes at 0xb00); out of range maps to 0. */
-int func_020e6174(u32 i)
+int Unk0e5fb8_GetOffsetB00(u32 i)
 {
     if (i >= 256) {
         i = 0;
@@ -53,7 +53,7 @@ int func_020e6174(u32 i)
 }
 
 /* Table offset of entry `i` (64 entries of 2 bytes at 0xd00); out of range maps to 0. */
-int func_020e6188(u32 i)
+int Unk0e5fb8_GetOffsetD00(u32 i)
 {
     if (i >= 64) {
         i = 0;
@@ -62,7 +62,7 @@ int func_020e6188(u32 i)
 }
 
 /* Table offset of entry `i` (128 entries of 4 bytes at 0xd80); out of range maps to 0. */
-int func_020e619c(u32 i)
+int Unk0e5fb8_GetOffsetD80(u32 i)
 {
     if (i >= 128) {
         i = 0;
@@ -159,43 +159,43 @@ void Unk0e5fb8_Unk_0e622c(u32 arg0,u32 arg1,u32 arg2)
 }
 
 int func_0209500c();
-int func_020e6160();
+int Unk0e5fb8_GetOffset900();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e631c(u32 arg0,u32 arg1)
 {
   int value;
-  value = func_020e6160();
+  value = Unk0e5fb8_GetOffset900();
   func_0209500c(value,arg1 & 1);
   func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
-int func_020e6174();
+int Unk0e5fb8_GetOffsetB00();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e639c(u32 arg0,u32 arg1)
 {
   int value;
-  value = func_020e6174();
+  value = Unk0e5fb8_GetOffsetB00();
   func_0209500c(value,arg1 & 1);
   func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
-int func_020e6188();
+int Unk0e5fb8_GetOffsetD00();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e641c(u32 arg0,u32 arg1)
 {
   int value;
-  value = func_020e6188();
+  value = Unk0e5fb8_GetOffsetD00();
   func_0209500c(value,arg1 & 1);
   func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
 
-int func_020e619c();
+int Unk0e5fb8_GetOffsetD80();
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e649c(u32 arg0,u32 arg1)
 {
   int value;
-  value = func_020e619c();
+  value = Unk0e5fb8_GetOffsetD80();
   func_0209500c(value,arg1 & 1);
   func_0209500c(value + 1,(int)(arg1 & 2) >> 1);
 }

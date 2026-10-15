@@ -30,12 +30,12 @@ void func_021172fc(void);
 void func_02117360(u32 a, u32 b, u32 c, u32 d, u8 e);
 void func_02117400(u32 a, u32 b, u32 c, u32 d, u8 e);
 
-void func_021166c0(u32 a, u32 b, u32 c, u32 d, u8 e)
+void Unk116598_Call_02117360(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117360(a, b, c, d, e);
 }
 
-void func_021166d4(u32 a, u32 b, u32 c, u32 d, u8 e)
+void Unk116598_Call_02117400(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117400(a, b, c, d, e);
 }
@@ -44,12 +44,12 @@ void func_021166d4(u32 a, u32 b, u32 c, u32 d, u8 e)
 void Unk116598_Nop_116b44(void) { }
 void Unk116598_Nop_116b68(void) { }
 void Unk116598_Nop_116b6c(void) { }
-void func_02117928(u32 a, u32 b, u32 c, u32 d, u8 e)
+void Unk116598_Call_02117360b(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117360(a, b, c, d, e);
 }
 
-void func_0211793c(u32 a, u32 b, u32 c, u32 d, u8 e)
+void Unk116598_Call_02117400b(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117400(a, b, c, d, e);
 }

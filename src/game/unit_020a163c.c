@@ -19,12 +19,12 @@ u32 func_020445d0(int kind, u32 id);
 void func_0204fe18(u32 h);
 void func_020a1b08(u32 a, u16 id);
 void func_020a2218(u32 a, u16 id);
-void func_020a1728(void)
+void Unk0a163c_Unk_0a1728(void)
 {
     func_0204fe18(func_020445d0(19, 1));
 }
 
-void func_020a1ba0(u32 a, int id)
+void Unk0a163c_Call_020a1b08(u32 a, int id)
 {
     func_020a1b08(a, (u16)(id + 500));
 }
@@ -67,7 +67,7 @@ u32 Unk0a163c_Unk_0a1ae0(u32 *arg0)
   return 1;
 }
 
-void func_020a22c8(u32 a, int id)
+void Unk0a163c_Call_020a2218(u32 a, int id)
 {
     func_020a2218(a, (u16)(id + 500));
 }

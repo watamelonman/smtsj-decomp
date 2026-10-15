@@ -8,7 +8,7 @@ typedef struct Unk04bb9cCtx {
 
 extern Unk04bb9cCtx *data_0215eea4;
 
-void func_0204ca04(u32 value)
+void Unk04bb9c_SetCtxUnka14(u32 value)
 {
     if (data_0215eea4 != 0) {
         data_0215eea4->unk_0a14 = value;

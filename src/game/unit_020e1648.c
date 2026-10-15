@@ -117,12 +117,12 @@ void Unk0e1648_Unk_0e50c8(u32 arg0)
   func_0204fed8(value,arg0);
 }
 
-int func_020998c0();
+int Unk09974c_GetEntryUnk08();
 /* decompiler-derived */
 int Unk0e1648_Unk_0e3f5c(int arg0)
 {
   int value;
-  value = func_020998c0(*(u16 *)(arg0 + ((Unk0e1648Work *)arg0)->unk_007c * 8 + 0xd6));
+  value = Unk09974c_GetEntryUnk08(*(u16 *)(arg0 + ((Unk0e1648Work *)arg0)->unk_007c * 8 + 0xd6));
   return value == 4;
 }
 
@@ -178,7 +178,7 @@ void Unk0e1648_Unk_0e4964(u32 arg0)
 {
   u32 tmp1;
   u32 tmp2;
-  tmp1 = func_020998c0();
+  tmp1 = Unk09974c_GetEntryUnk08();
   tmp2 = 0;
   switch(tmp1) {
   case 0:

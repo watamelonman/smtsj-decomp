@@ -7,9 +7,9 @@
 
 ## Hard list
 - `func_020a21f8`: no candidate matched locally
-- `func_020a1728`: no candidate matched locally
-- `func_020a1ba0`: no candidate matched locally
-- `func_020a22c8`: no candidate matched locally
+- `Unk0a163c_Unk_0a1728`: no candidate matched locally
+- `Unk0a163c_Call_020a1b08`: no candidate matched locally
+- `Unk0a163c_Call_020a2218`: no candidate matched locally
 - `Unk0a163c_Unk_0a1ae0`: decompiler-derived
 
 ## Not done in M1-T628
@@ -37,6 +37,6 @@
 - `func_020a18c8`
 - `func_020a208c`
 - `func_020a1d00`
-- `func_020a1728`: hand-matched
-- `func_020a1ba0`: hand-matched
-- `func_020a22c8`: hand-matched
+- `Unk0a163c_Unk_0a1728`: hand-matched
+- `Unk0a163c_Call_020a1b08`: hand-matched
+- `Unk0a163c_Call_020a2218`: hand-matched

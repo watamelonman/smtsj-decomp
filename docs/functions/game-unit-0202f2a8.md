@@ -7,13 +7,13 @@
 - `GameState_GetUnkField74f4`: read the u16 at +0x74F4 of the game state.
 
 ## Not done in M1-T1105
-- `func_02034db8`
+- `GameState_GetUnkField74f6`
 - `Unk02f2a8_Unk_035ec4`
 - `Unk02f2a8_Unk_030478`
 - `Unk02f2a8_Unk_030578`
-- `func_02034398`
+- `GameState_GetBody`
 - `GameState_Exists`
-- `func_02034b08`
+- `GameState_ClearRootUnk60`
 - `Unk02f2a8_Unk_033890`
 
 ## Not done in M1-T1106
@@ -165,6 +165,6 @@
 - `Unk02f2a8_Unk_03538c`: decompiler-derived (plain+fix cleanup)
 - `Unk02f2a8_Unk_030d20`: decompiler-derived (plain+fix cleanup)
 - `GameState_Shutdown`: hand-written. GameState_Shutdown + GameState_Exists (gGameState teardown / null check).
-- `func_02034398`: hand-matched
-- `func_02034b08`: hand-matched
-- `func_02034db8`: hand-matched
+- `GameState_GetBody`: hand-matched
+- `GameState_ClearRootUnk60`: hand-matched
+- `GameState_GetUnkField74f6`: hand-matched

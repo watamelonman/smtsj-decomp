@@ -15,7 +15,7 @@
 - `Unk09a268_Unk_09b3cc`: decompiler-derived
 
 ## Not done in M1-T1010
-- `func_0209b73c`
+- `Unk09a268_SetCtxUnk38`
 - `func_0209b720`
 - `func_0209b754`
 - `func_0209c528`
@@ -66,4 +66,4 @@
 - `func_0209c9bc`
 - `func_0209c854`
 - `Unk09a268_Unk_09beb0`: hand-matched
-- `func_0209b73c`: hand-matched
+- `Unk09a268_SetCtxUnk38`: hand-matched

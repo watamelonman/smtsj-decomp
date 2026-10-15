@@ -5,7 +5,7 @@
 - `Unk06dddc_Unk_06dfb0`: decompiler-derived
 
 ## Not done in M1-T338
-- `func_0206e0c4`
+- `Unk06dddc_Unk_06e0c4`
 - `Unk06dddc_Unk_06dfc8`
 - `Unk06dddc_Unk_06dfec`
 - `Unk06dddc_Unk_06e010`
@@ -24,4 +24,4 @@
 - `Unk06dddc_Unk_06dfec`: decompiler-derived (plain cleanup)
 - `Unk06dddc_Unk_06e010`: decompiler-derived (plain cleanup)
 - `Unk06dddc_Unk_06e034`: decompiler-derived (plain cleanup)
-- `func_0206e0c4`: hand-matched
+- `Unk06dddc_Unk_06e0c4`: hand-matched

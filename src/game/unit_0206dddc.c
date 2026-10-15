@@ -55,7 +55,7 @@ int Unk06dddc_Unk_06e034(int arg0,int arg1)
   return (int)*(short *)(arg1 * 0x14 + *(int *)(data_0216bc04 + arg0 * 0x148) + 6);
 }
 
-u8 *func_0206e0c4(u32 a)
+u8 *Unk06dddc_Unk_06e0c4(u32 a)
 {
     u8 *p = (u8 *)Unk06dddc_Unk_06e058(a);
     if (p != 0) {

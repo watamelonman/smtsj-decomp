@@ -33,12 +33,12 @@ int Unk094fe0_Unk_095004(int arg0)
 
 void func_020950b4(Unk094fe0Work *w, u32 a);
 void func_02095320(Unk094fe0Work *w, u32 a);
-void func_0209509c(u32 a)
+void Unk094fe0_Call_020950b4(u32 a)
 {
     func_020950b4(Unk094fe0_Thunk_0202e8cc(), a);
 }
 
-void func_02095308(u32 a)
+void Unk094fe0_Call_02095320(u32 a)
 {
     func_02095320(Unk094fe0_Thunk_0202e8cc(), a);
 }

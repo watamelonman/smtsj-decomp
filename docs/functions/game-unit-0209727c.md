@@ -1,5 +1,5 @@
 # src/game/unit_0209727c.c
-- `func_0209727c`: hand-matched
-- `func_020972d8`: hand-matched
-- `func_020972e8`: hand-matched
-- `func_020972f8`: hand-matched
+- `Unk09727c_GetAreaS8`: hand-matched
+- `Unk09727c_GetAreaSub24`: hand-matched
+- `Unk09727c_GetAreaSub5a`: hand-matched
+- `Unk09727c_GetAreaSub48`: hand-matched

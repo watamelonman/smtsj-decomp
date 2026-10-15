@@ -17,7 +17,7 @@ u32 Unk0a50d4_Unk_0a50d4(void)
     return data_02176b08.unk_08;
 }
 
-s8 func_020a50e4(void)
+s8 Unk0a50d4_GetUnk06(void)
 {
     return data_02176b08.unk_06;
 }

@@ -16,7 +16,7 @@ extern Unk06ea70Globals data_02170ccc;
 
 
 
-u32 func_0206ec50(int i)
+u32 Unk06ea70_GetTableEntry(int i)
 {
     return data_02170ccc.table->entry[i];
 }

@@ -5,8 +5,8 @@
 - `Unk0a5680_Unk_0a6150`: decompiler-derived
 
 ## Not done in M1-T549
-- `func_020a5e48`
-- `func_020a5e60`
+- `Unk0a5680_GetEntryUnk14`
+- `Unk0a5680_GetEntrySub20`
 - `Unk0a5680_Unk_0a5fb0`
 - `func_020a5e28`
 - `func_020a60fc`
@@ -36,5 +36,5 @@
 - `func_020a57c8`
 - `func_020a5c40`
 - `Unk0a5680_Unk_0a5fb0`: decompiler-derived (plain cleanup)
-- `func_020a5e48`: hand-matched
-- `func_020a5e60`: hand-matched
+- `Unk0a5680_GetEntryUnk14`: hand-matched
+- `Unk0a5680_GetEntrySub20`: hand-matched

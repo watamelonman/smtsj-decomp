@@ -19,7 +19,7 @@ typedef struct Unk0a5680Entry {
 } Unk0a5680Entry;
 
 Unk0a5680Entry *func_020a5680(u32 a, u32 b);
-s32 func_020a5e48(u32 a, u32 b)
+s32 Unk0a5680_GetEntryUnk14(u32 a, u32 b)
 {
     Unk0a5680Entry *e = func_020a5680(a, b);
     if (e != 0) {
@@ -28,7 +28,7 @@ s32 func_020a5e48(u32 a, u32 b)
     return -1;
 }
 
-u8 *func_020a5e60(u32 a, u32 b)
+u8 *Unk0a5680_GetEntrySub20(u32 a, u32 b)
 {
     Unk0a5680Entry *e = func_020a5680(a, b);
     if (e != 0) {

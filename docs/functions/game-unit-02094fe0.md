@@ -9,10 +9,10 @@
 ## Hard list
 - `Unk094fe0_GetWorkUnkField9a0`: no candidate matched locally
 - `Unk094fe0_SetUnkField9a0`: no candidate matched locally
-- `func_0209509c`: dropped when combining the TU
+- `Unk094fe0_Call_020950b4`: dropped when combining the TU
 
 ## Not done in M1-T381
-- `func_02095308`
+- `Unk094fe0_Call_02095320`
 - `func_0209500c`
 - `func_02095350`
 - `func_020951b0`
@@ -37,5 +37,5 @@
 - `func_020952ac`
 - `Unk094fe0_SetUnkField9a0`: hand-matched
 - `Unk094fe0_GetWorkUnkField9a0`: hand-matched
-- `func_0209509c`: hand-matched
-- `func_02095308`: hand-matched
+- `Unk094fe0_Call_020950b4`: hand-matched
+- `Unk094fe0_Call_02095320`: hand-matched

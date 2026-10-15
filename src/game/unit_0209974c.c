@@ -66,7 +66,7 @@ typedef struct Unk09974cEntry {
 
 Unk09974cEntry *func_02099780(u32 id);
 
-u8 func_020998c0(u32 id)
+u8 Unk09974c_GetEntryUnk08(u32 id)
 {
     Unk09974cEntry *e = func_02099780(id);
     if (e != 0) {
@@ -166,7 +166,7 @@ typedef struct Unk09974cFlags {
     u16 unk_04_hi : 4;
 } Unk09974cFlags;
 
-int func_0209a114(Unk09974cFlags *f)
+int Unk09974c_HasFlagsMid(Unk09974cFlags *f)
 {
     return f->unk_04_mid != 0;
 }

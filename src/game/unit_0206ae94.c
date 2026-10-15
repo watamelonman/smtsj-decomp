@@ -30,12 +30,12 @@ void Unk06ae94_Unk_06aeb4(u32 arg0);
 u32 func_020445d0(int kind, u32 id);
 void func_0204fde0(u32 h);
 void func_0204fe18(u32 h);
-void func_0206aed4(u32 id)
+void Unk06ae94_Unk_06aed4(u32 id)
 {
     func_0204fde0(func_020445d0(2, id));
 }
 
-void func_0206aeec(u32 id)
+void Unk06ae94_Unk_06aeec(u32 id)
 {
     func_0204fe18(func_020445d0(2, id));
 }
@@ -53,7 +53,7 @@ typedef struct Unk06ae94Pairs {
     Unk06ae94Pair pair[2];      /* +0x158 */
 } Unk06ae94Pairs;
 
-void func_0206c8c8(Unk06ae94Pairs *p, u32 a, u32 b, int i)
+void Unk06ae94_SetPair(Unk06ae94Pairs *p, u32 a, u32 b, int i)
 {
     if (i >= 2) {
         i = 1;

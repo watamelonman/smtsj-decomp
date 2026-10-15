@@ -21,7 +21,7 @@ typedef struct Unk038fbcNode {
     u32 unk_08;
 } Unk038fbcNode;
 
-u32 func_020391c8(Unk038fbcNode *node)
+u32 Unk038fbc_GetNodeUnk08(Unk038fbcNode *node)
 {
     if (node != 0) {
         return node->unk_08;

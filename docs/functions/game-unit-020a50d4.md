@@ -3,10 +3,10 @@
 - `Unk0a50d4_Unk_0a50d4`: decompiler-derived
 
 ## Not done in M1-T391
-- `func_020a50e4`
+- `Unk0a50d4_GetUnk06`
 - `func_020a50f4`
 - `func_020a5648`
 - `func_020a5490`
 - `func_020a554c`
 - `func_020a5124`
-- `func_020a50e4`: hand-matched
+- `Unk0a50d4_GetUnk06`: hand-matched

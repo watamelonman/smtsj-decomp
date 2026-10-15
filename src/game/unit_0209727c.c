@@ -13,7 +13,7 @@ typedef struct Unk02e000WorkArea {
 
 Unk02e000WorkArea *Unk02e000_Thunk_0202e788(void);
 
-s8 func_0209727c(int i)
+s8 Unk09727c_GetAreaS8(int i)
 {
     Unk02e000WorkArea *a = Unk02e000_Thunk_0202e788();
     switch (i) {
@@ -31,17 +31,17 @@ s8 func_0209727c(int i)
     return 0;
 }
 
-u8 *func_020972d8(void)
+u8 *Unk09727c_GetAreaSub24(void)
 {
     return Unk02e000_Thunk_0202e788()->unk_0024;
 }
 
-u8 *func_020972e8(void)
+u8 *Unk09727c_GetAreaSub5a(void)
 {
     return Unk02e000_Thunk_0202e788()->unk_005a;
 }
 
-u8 *func_020972f8(void)
+u8 *Unk09727c_GetAreaSub48(void)
 {
     return Unk02e000_Thunk_0202e788()->unk_0048;
 }

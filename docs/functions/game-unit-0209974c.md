@@ -9,13 +9,13 @@
 - `Unk09974c_Unk_0998d8` (24 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020998c0`: no candidate matched locally
+- `Unk09974c_GetEntryUnk08`: no candidate matched locally
 - `Unk09974c_Unk_099bac`: decompiler-derived
 - `Unk09974c_Unk_099bd4`: decompiler-derived
 - `Unk09974c_Unk_09974c`: decompiler-derived
 
 ## Not done in M1-T554
-- `func_0209a114`
+- `Unk09974c_HasFlagsMid`
 - `func_0209a0f4`
 - `func_0209a12c`
 - `func_0209a23c`
@@ -48,5 +48,5 @@
 - `func_0209993c`
 - `func_02099b10`
 - `func_02099f7c`
-- `func_020998c0`: hand-matched
-- `func_0209a114`: hand-matched
+- `Unk09974c_GetEntryUnk08`: hand-matched
+- `Unk09974c_HasFlagsMid`: hand-matched

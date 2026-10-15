@@ -7,7 +7,7 @@
 - `Unk09ee4c_Unk_09ef80`: decompiler-derived
 
 ## Not done in M1-T766
-- `func_0209f0c0`
+- `Unk09ee4c_Call_0204f1f8`
 - `func_0209f534`
 - `func_0209eff8`
 
@@ -20,4 +20,4 @@
 - `func_0209f034`
 - `func_0209f480`
 - `func_0209ee80`
-- `func_0209f0c0`: hand-matched
+- `Unk09ee4c_Call_0204f1f8`: hand-matched

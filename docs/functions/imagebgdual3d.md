@@ -11,8 +11,8 @@
 - `ImageBgDual3D_Unk_1259e0`: decompiler-derived
 
 ## Not done in M1-T536
-- `func_02125984`
-- `func_02125998`
+- `ImageBgDual3D_Call_02117360`
+- `ImageBgDual3D_Call_02117400`
 - `ImageBgDual3D_Unk_125a68`: decompiler-derived
 - `ImageBgDual3D_Unk_125ca4`: decompiler-derived
 - `ImageBgDual3D_Unk_125cbc`: decompiler-derived
@@ -51,5 +51,5 @@
 - `ImageBgDual3D_Unk_12594c`: decompiler-derived (plain cleanup)
 - `ImageBgDual3D_Unk_1258e8`: decompiler-derived (plain cleanup)
 - `ImageBgDual3D_Unk_125a90`: hand-matched
-- `func_02125984`: hand-matched
-- `func_02125998`: hand-matched
+- `ImageBgDual3D_Call_02117360`: hand-matched
+- `ImageBgDual3D_Call_02117400`: hand-matched

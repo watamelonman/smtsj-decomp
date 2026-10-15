@@ -50,7 +50,7 @@ typedef struct Unk09a268Ctx {
 
 extern Unk09a268Ctx *data_02176270;
 
-void func_0209b73c(u32 value)
+void Unk09a268_SetCtxUnk38(u32 value)
 {
     if (data_02176270 != 0) {
         data_02176270->unk_0038 = value;
@@ -90,13 +90,13 @@ int Unk09a268_Unk_09c484(int arg0)
   return arg0 * 0x1c + ((int)data_0213be64);
 }
 
-int func_02034398();
+int GameState_GetBody();
 /* decompiler-derived */
 u32 Unk09a268_Unk_09a844(u32 arg0)
 {
   int value1;
   u32 value2;
-  value1 = func_02034398();
+  value1 = GameState_GetBody();
   if (*(int *)(value1 + 0x3e0) != 0) {
     value2 = func_0209a48c(arg0,5);
     return value2;
