@@ -50,3 +50,13 @@
 - `func_020e4ca4`
 - `func_020e524c`
 - `func_020e41d0`
+
+## Not done in M1-T1047
+- `func_020e4f54`
+- `func_020e30f0`
+- `func_020e28a8`
+- `func_020e40a4`
+- `func_020e52b0`
+- `func_020e4ff8`
+- `func_020e2eb4`
+- `func_020e4130`
