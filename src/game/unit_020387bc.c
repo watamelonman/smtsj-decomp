@@ -3,6 +3,19 @@
 
 
 int func_020516d0();
+extern u32 data_02141f98[];
+void func_02015134();
+void func_0201524c();
+int func_02051610();
+
+int func_020387bc(u32 a)
+{
+    u8 buf[64] = {0};
+    func_02015134(buf, data_02141f98[2]);
+    func_0201524c(buf, a);
+    return func_02051610(buf);
+}
+
 /* decompiler-derived */
 u32 Unk0387bc_Unk_038820(int arg0)
 {
