@@ -11,7 +11,7 @@ typedef struct Unk039774Work {
     s32 unk_00dc;
 } Unk039774Work;
 
-/* intrusive list of objects (next at +0xe4, prev link at +0xe0/+0xe4). */
+/* intrusive list of objects: prev at +0xe0, next at +0xe4. */
 typedef struct Unk039774List {
     u8 *head;
     s32 count;
