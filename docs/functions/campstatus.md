@@ -84,3 +84,4 @@
 - `CampStatus_Unk_0d51cc`: hand-matched
 - `CampStatus_Copy12c`: hand-matched
 - `CampStatus_Unk_0dcaac`: hand-matched
+- `func_020dd308`: hand-matched

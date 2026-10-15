@@ -303,3 +303,18 @@ void CampStatus_Unk_0dcaac(void)
     FIELD(u32, data_02176be4, 244) = 0;
     FIELD(s16, data_02176be4, 270) = -80;
 }
+
+void func_020dd308(s32 *v, s32 add, int n, s32 *cnt, float *out)
+{
+    int i;
+    for (i = 0; i < n; i++) {
+        if (v[i] > 0) {
+            v[i] += add;
+        }
+    }
+    if (*cnt >= 10) {
+        return;
+    }
+    (*cnt)++;
+    *out = *cnt / 10.0f;
+}
