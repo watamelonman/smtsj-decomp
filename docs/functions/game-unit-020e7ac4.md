@@ -19,3 +19,8 @@
 - `func_020e7b80`
 - `func_020e7d40`
 - `Unk0e7ac4_Unk_0e8198`: decompiler-derived (plain cleanup)
+- `func_020e8014`: decompiler-derived (plain cleanup)
+- `func_020e8030`: decompiler-derived (plain cleanup)
+- `func_020e8060`: decompiler-derived (plain cleanup)
+- `func_020e8000`: decompiler-derived (plain cleanup)
+- `func_020e804c`: decompiler-derived (plain cleanup)
