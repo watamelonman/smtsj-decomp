@@ -22,3 +22,11 @@ void Unk06ea70_Unk_06edf4(int *arg0,int *arg1,int *arg2,u16 *arg3)
   } while (value2 < 0x100);
 }
 
+extern u8 data_02170ccc[];
+int func_02053000();
+/* decompiler-derived */
+void func_0206f4e4(void)
+{
+  func_02053000(*(u32 *)(data_02170ccc + 4));
+  *(u32 *)(data_02170ccc + 4) = 0;
+}
