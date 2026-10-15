@@ -19,6 +19,33 @@ typedef struct Unk113294Work {
 } Unk113294Work;
 
 int Unk0a0ce4_Unk_0a0da4();
+#ifndef FIELD
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#endif
+extern u32 data_02176e54[];
+int func_02061f10();
+int func_021155bc();
+int func_02115618();
+int func_021155e0();
+int Unk02e000_Thunk_0202e788();
+void func_02008904();
+void func_0202efa4();
+typedef struct Unk113294Ids {
+    u8 pad[216];
+    u16 ids[16];
+} Unk113294Ids;
+int func_02113e90(u8 *p)
+{
+    return FIELD(u16, p, 216) == 0 && FIELD(u32, p, 12) == 0 && FIELD(u32, p, 4) == 1;
+}
+
+void func_02113eb4(u8 *p)
+{
+    p[0] = 5;
+    *data_02176e54 = 0;
+    Unk0a0ce4_Unk_0a0da4(2);
+}
+
 /* decompiler-derived */
 void Unk113294_Unk_1156c4(u8 *arg0)
 {
@@ -112,6 +139,11 @@ int func_02061e98();
 int func_02061f10();
 int func_02063920();
 int func_02063a30();
+void func_0211508c(u32 a, u32 b)
+{
+    func_02061f10(a, -1, 0, 0, func_0204fed8(func_020445f4(42, 0), b));
+}
+
 /* decompiler-derived */
 void Unk113294_Unk_11518c(u32 arg0)
 {
@@ -130,6 +162,56 @@ void Unk113294_Unk_11518c(u32 arg0)
 }
 
 extern u8 data_0215159c[];
+int func_021155e0(Unk113294Ids *p)
+{
+    int i;
+    for (i = 0; i < 8; i++) {
+        if (func_021155bc(p->ids[i]) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+int func_02115618(Unk113294Ids *p)
+{
+    int i;
+    for (i = 8; i < 16; i++) {
+        if (func_021155bc(p->ids[i]) != 0) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void func_02115658(u8 *p)
+{
+    func_02008904(p + 232, (u8 *)Unk02e000_Thunk_0202e788() + 72, 16);
+    func_02008904(p + 216, (u8 *)Unk02e000_Thunk_0202e788() + 90, 16);
+    func_0202efa4();
+}
+
+int func_02115708(Unk113294Ids *p)
+{
+    int i;
+    for (i = 0; i < 8; i++) {
+        if (p->ids[i] == 0) {
+            return i;
+        }
+    }
+    return 7;
+}
+
+int func_02115734(u8 *p)
+{
+    switch (p[8]) {
+    case 0:
+    case 1:
+        return 0;
+    }
+    return 1;
+}
+
 /* decompiler-derived */
 u32 Unk113294_Unk_115754(int arg0,int arg1,int arg2)
 {
