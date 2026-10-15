@@ -3,6 +3,22 @@
 
 
 
+typedef struct Unk124e68Obj {
+    u32 unk_00;
+    u8 pad[0x14];
+    u8 unk_18;
+    u8 unk_19;
+    u8 unk_1a;
+} Unk124e68Obj;
+extern Unk124e68Obj *data_02176e88;
+void func_02124e68(u32 a, u32 b, u32 c)
+{
+    data_02176e88->unk_00 = a;
+    data_02176e88->unk_18 = b;
+    data_02176e88->unk_19 = c;
+    data_02176e88->unk_1a = 0;
+}
+
 /* empty callback */
 void Unk124e68_Nop_124f48(void) { }
 
