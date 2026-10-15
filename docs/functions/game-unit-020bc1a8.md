@@ -30,3 +30,12 @@
 - `func_020bc428`
 - `func_020bcbc4`
 - `func_020bc6fc`
+- `func_020bc928`: decompiler-derived
+
+## Not done in M1-T548
+- `func_020bc770`
+- `func_020bc814`
+- `func_020bc2fc`
+- `func_020bc9f4`
+- `func_020bcacc`
+- `func_020bc200`
