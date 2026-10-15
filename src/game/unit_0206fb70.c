@@ -21,13 +21,12 @@ void Unk06fb70_Unk_0717c0(Unk06fb70Work *arg0, u32 arg1){
 int func_0200219c();
 int func_02007e94();
 /* decompiler-derived */
-void Unk06fb70_Unk_06fb70(int arg0,int arg1,int arg2,int arg3)
+int Unk06fb70_Unk_06fb70(int arg0,int arg1,int arg2,int arg3)
 {
   if (arg1 - arg0 == 0) {
     func_02007e94();
   }
-  func_0200219c((arg3 - arg2) * 0x1000,(arg1 - arg0) * 0x1000);
-  return;
+  return func_0200219c((arg3 - arg2) * 0x1000,(arg1 - arg0) * 0x1000);
 }
 
 
