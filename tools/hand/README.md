@@ -59,3 +59,6 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   `switch` with fallthrough cases returning 1, then `return 0` (b51). The `if (a||b||c)` form folds into moveq/movne.
 - When a new function sits above existing ones, give any later-defined callee a full prototype in the prelude,
   otherwise the implicit `int f()` conflicts with the definition below.
+- Bounds check `cmp i,#0; blt zero; cmp i,#N; blt load; zero: mov r0,#0`: write `if (i < 0 || i >= N) return 0; return load;`.
+  The `if (i >= 0 && i < N) return load; return 0;` form lays out differently (b53).
+- A literal-pool load hoisted above the first branch: bind the global to a local first (`u8 *base = data_x;`) (b53).
