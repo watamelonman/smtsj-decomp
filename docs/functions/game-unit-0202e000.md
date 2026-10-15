@@ -91,3 +91,10 @@
 - `Unk02e000_SetMgrUnk38`: hand-matched
 - `Unk02e000_EnsureAlloc7718`: hand-matched
 - `Unk02e000_AddCounter5fc4`: hand-matched
+- `func_0202e440`: hand-matched
+- `func_0202e5a8`: hand-matched
+- `func_0202e7c0`: hand-matched
+- `func_0202e7f4`: hand-matched
+- `func_0202e840`: hand-matched
+- `func_0202e904`: hand-matched
+- `func_0202e924`: hand-matched
