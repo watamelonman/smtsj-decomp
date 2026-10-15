@@ -14,8 +14,8 @@
 ## Not done in M1-T687
 - `func_020df330`
 - `Unk0de678_Unk_0debf8`
-- `func_020df4cc`
-- `func_020df348`
+- `Unk0de678_Unk_0df4cc`
+- `Unk0de678_Unk_0df348`
 - `Unk0de678_CountLeading`
 - `func_020deedc`
 - `Unk0de678_Unk_0de870`: decompiler-derived
@@ -23,8 +23,8 @@
 - `Unk0de678_Unk_0dec94`: decompiler-derived
 
 ## Not done in M1-T688
-- `func_020df4f0`
-- `func_020dedf8`
+- `Unk0de678_Unk_0df4f0`
+- `Unk0de678_GetPair`
 - `func_020df520`
 - `func_020de720`
 - `func_020de784`
@@ -48,7 +48,7 @@
 - `func_020df0cc`
 - `Unk0de678_CountLeading`: hand-matched
 - `Unk0de678_Unk_0debf8`: hand-matched
-- `func_020dedf8`: hand-matched
-- `func_020df348`: hand-matched
-- `func_020df4cc`: hand-matched
-- `func_020df4f0`: hand-matched
+- `Unk0de678_GetPair`: hand-matched
+- `Unk0de678_Unk_0df348`: hand-matched
+- `Unk0de678_Unk_0df4cc`: hand-matched
+- `Unk0de678_Unk_0df4f0`: hand-matched

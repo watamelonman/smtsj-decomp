@@ -18,13 +18,13 @@ u32 Unk0b6570_Get_data_02176b88(void)
   return *data_02176b88;
 }
 
-int func_020df7c4();
+int SaveLoadTask_Unk_0df7c4();
 /* decompiler-derived */
 void Unk0b6570_Unk_0b65d0(Unk0b6570Work *arg0){
   int tmp1;
   arg0->unk_0008 = 1;
   arg0->unk_000c = 2;
-  tmp1 = func_020df7c4();
+  tmp1 = SaveLoadTask_Unk_0df7c4();
   if (tmp1 == 0) {
     return;
   }

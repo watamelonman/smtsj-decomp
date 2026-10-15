@@ -86,7 +86,7 @@ int Unk0e1648_Unk_0e1648(void)
 }
 
 int Unk09974c_GetEntryUnk08();
-u32 func_020e1664(void)
+u32 Unk0e1648_Unk_0e1664(void)
 {
     if (Unk0e1648_Unk_0e1648() != 0) {
         return 0;
@@ -192,7 +192,7 @@ void Unk0e1648_Unk_0e16f0(u8 *arg0)
 
 int func_0204faf0();
 int func_020e49cc();
-int func_020e2d28(u8 *p)
+int Unk0e1648_Unk_0e2d28(u8 *p)
 {
     u16 *e;
     if (FIELD(u32, p, 104) != 1) {

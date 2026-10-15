@@ -28,7 +28,7 @@ u32 Unk03b988_Unk_03b988(void)
 }
 
 int func_02095818();
-int func_020df348();
+int Unk0de678_Unk_0df348();
 void Unk02dcfc_SetCode25();
 int Unk116598_Unk_116738();
 void Unk0e651c_Unk_0e66f0();
@@ -37,7 +37,7 @@ int Unk03b988_Unk_03bab4(void)
     int x = func_0203ac00(0);
     switch (func_02095818()) {
     case 2:
-        Unk02dcfc_SetCode25(func_020df348(x));
+        Unk02dcfc_SetCode25(Unk0de678_Unk_0df348(x));
         break;
     case 3:
         Unk02dcfc_SetCode25(Unk116598_Unk_116738(x));

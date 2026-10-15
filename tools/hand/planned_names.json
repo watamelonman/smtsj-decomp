@@ -427,5 +427,13 @@
  "func_020d6c88": "CampStatus_Copy12c",
  "func_020dcaac": "CampStatus_Unk_0dcaac",
  "func_020dea70": "Unk0de678_CountLeading",
- "func_020debf8": "Unk0de678_Unk_0debf8"
+ "func_020debf8": "Unk0de678_Unk_0debf8",
+ "func_020dedf8": "Unk0de678_GetPair",
+ "func_020df348": "Unk0de678_Unk_0df348",
+ "func_020df4cc": "Unk0de678_Unk_0df4cc",
+ "func_020df4f0": "Unk0de678_Unk_0df4f0",
+ "func_020df5b8": "Unk0df5b8_GetEntry42",
+ "func_020df7c4": "SaveLoadTask_Unk_0df7c4",
+ "func_020e1664": "Unk0e1648_Unk_0e1664",
+ "func_020e2d28": "Unk0e1648_Unk_0e2d28"
 }

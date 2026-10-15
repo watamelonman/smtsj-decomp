@@ -52,7 +52,7 @@ void func_0205dee8(int screen, u32 obj, int frame, int x, int y, float sx, float
 void func_02060b60(int screen, u32 obj, int x, int y, int z, int prio);
 
 int func_02050628();
-int func_020df7c4(void)
+int SaveLoadTask_Unk_0df7c4(void)
 {
     if (func_02050628(4) != 0 || func_02050628(5) != 0) {
         return 1;

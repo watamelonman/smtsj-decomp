@@ -19,7 +19,7 @@
 ## Not done in M1-T1043
 - `func_020e2dec`
 - `Unk0e1648_Unk_0e51f4`
-- `func_020e1664`
+- `Unk0e1648_Unk_0e1664`
 - `Unk0e1648_Unk_0e533c`: decompiler-derived
 
 ## Not done in M1-T1044
@@ -35,7 +35,7 @@
 ## Not done in M1-T1045
 - `func_020e2db0`
 - `func_020e4c64`
-- `func_020e2d28`
+- `Unk0e1648_Unk_0e2d28`
 - `func_020e2e0c`
 - `func_020e2e60`
 - `func_020e1698`
@@ -76,5 +76,5 @@
 - `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)
 - `Unk0e1648_Unk_0e48a8`: decompiler-derived (struct cleanup)
 - `Unk0e1648_IsUnkeecSet`: hand-matched
-- `func_020e1664`: hand-matched
-- `func_020e2d28`: hand-matched
+- `Unk0e1648_Unk_0e1664`: hand-matched
+- `Unk0e1648_Unk_0e2d28`: hand-matched

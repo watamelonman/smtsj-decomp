@@ -18,7 +18,7 @@
 - `SaveLoadTask_Unk_0e137c`: decompiler-derived
 
 ## Not done in M1-T894
-- `func_020df7c4`
+- `SaveLoadTask_Unk_0df7c4`
 - `func_020dfeec`
 - `SaveLoadTask_Unk_0df94c`: decompiler-derived
 - `SaveLoadTask_Unk_0df86c`: decompiler-derived
@@ -33,4 +33,4 @@
 
 - `SaveLoadTask_SelectEntry`: save/load menu entry dispatch (cases 0-7).
 - `SaveLoadTask_Unk_0df814`: decompiler-derived (plain cleanup)
-- `func_020df7c4`: hand-matched
+- `SaveLoadTask_Unk_0df7c4`: hand-matched

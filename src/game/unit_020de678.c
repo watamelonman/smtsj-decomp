@@ -171,7 +171,7 @@ u32 Unk0de678_Unk_0dec94(u32 arg0)
 void Unk0bc1a8_Unk_0bc9b4();
 void func_020df330();
 void Unk095560_Unk_0958a8();
-void func_020dedf8(u8 *out)
+void Unk0de678_GetPair(u8 *out)
 {
     if (FIELD(u32, data_021508d4, 16) != 0) {
         out[0] = FIELD(u32, data_021508d4, 32);
@@ -182,14 +182,14 @@ void func_020dedf8(u8 *out)
     out[1] = 0;
 }
 
-void func_020df348(u32 a)
+void Unk0de678_Unk_0df348(u32 a)
 {
     FIELD(u32, data_021508d4, 4) = 1;
     func_020df330(3);
     FIELD(u32, data_021508d4, 12) = a;
 }
 
-void func_020df4cc(u32 a, u32 b)
+void Unk0de678_Unk_0df4cc(u32 a, u32 b)
 {
     FIELD(u32, data_021508d4, 16) = 1;
     FIELD(u8, data_021508d4, 24) = a;
@@ -197,7 +197,7 @@ void func_020df4cc(u32 a, u32 b)
     FIELD(u32, data_021508d4, 28) = 0;
 }
 
-void func_020df4f0(void)
+void Unk0de678_Unk_0df4f0(void)
 {
     FIELD(u32, data_021508d4, 32) = 0;
     FIELD(u32, data_021508d4, 36) = 0;

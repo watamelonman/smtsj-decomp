@@ -6,7 +6,7 @@
 u32 func_020445d0();
 void func_0204fe18();
 u8 *func_0204fde0();
-u8 *func_020df5b8(int i)
+u8 *Unk0df5b8_GetEntry42(int i)
 {
     u32 r = func_020445d0(32, 0);
     func_0204fe18(r);

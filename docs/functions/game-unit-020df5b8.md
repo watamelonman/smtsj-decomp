@@ -6,7 +6,7 @@
 ## Not done in M1-T047
 - `func_020df66c`
 - `func_020df678`
-- `func_020df5b8`
+- `Unk0df5b8_GetEntry42`
 - `func_020df5e8`
 - `func_020df6a8`
-- `func_020df5b8`: hand-matched
+- `Unk0df5b8_GetEntry42`: hand-matched
