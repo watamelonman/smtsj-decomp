@@ -41,3 +41,7 @@
 - `func_02119178`
 - `Unk118b04_Unk_119358`: hand-matched
 - `Unk118b04_GetEntryKey`: hand-matched
+- `func_02118b30`: hand-matched
+- `func_02118bcc`: hand-matched
+- `func_02118ef4`: hand-matched
+- `func_02118f88`: hand-matched

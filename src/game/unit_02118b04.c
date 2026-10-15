@@ -34,6 +34,23 @@ void Unk118b04_Set_data_02151b28(u32 arg0)
   *data_02151b28 = arg0;
 }
 
+u32 func_020445d0();
+int func_0204fde0();
+int func_0204fe18();
+u8 *func_02118ef4(int i);
+void func_02118b30(int i, int f)
+{
+    u8 *q = (u8 *)Unk02e000_Unk_02e228() + 148;
+    if (f != 0) {
+        if ((q[i] & 1) == 0) {
+            q[i] |= 2;
+        }
+        q[i] |= 1;
+    } else {
+        q[i] = 0;
+    }
+}
+
 /* decompiler-derived */
 /* Bit 0 of flag byte `arg0` in the 0x94 table. */
 int Unk118b04_Unk_118b78(u32 arg0)
@@ -68,6 +85,12 @@ int Unk118b04_Unk_118ba8(int arg0)
 }
 
 
+void func_02118bcc(int i)
+{
+    u8 *q = (u8 *)Unk02e000_Unk_02e228() + 148;
+    q[i] &= ~2;
+}
+
 /* decompiler-derived */
 void Unk118b04_Unk_118e50(int arg0,int arg1)
 {
@@ -78,6 +101,31 @@ void Unk118b04_Unk_118e50(int arg0,int arg1)
 
 int func_02008848();
 int func_02008904();
+u8 *func_02118ef4(int i)
+{
+    u32 h = func_020445d0(45, 0);
+    u8 *base = (u8 *)func_0204fde0(h);
+    if (i >= func_0204fe18(h)) {
+        return 0;
+    }
+    return base + i * 12;
+}
+
+int func_02118f88(u32 x)
+{
+    int i;
+    u8 *e;
+    for (i = 0; i < 106; i++) {
+        e = func_02118ef4(i);
+        if (e != 0 && e[9] == x) {
+            if (Unk118b04_Unk_118b78(i) == 0) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
 /* decompiler-derived */
 void Unk118b04_Unk_119434(u32 arg0,u32 arg1)
 {
