@@ -276,6 +276,22 @@ u32 Unk044904_Unk_04599c(u32 *arg0)
   return value2;
 }
 
-
-
-
+extern u8 data_02142b4c[];
+extern u8 data_02142b64[];
+int func_02013c3c();
+int func_020513d4();
+int func_020a1740();
+/* decompiler-derived; refs "Data/Enemy/AI/ai_%s.bf", "Data/Enemy/AI/ai_scr_test.bf" */
+void func_02045898(u32 arg0,u32 arg1)
+{
+  int tmp1;
+  tmp1 = func_020a1740(arg1);
+  if (tmp1 != 0) {
+    func_02013c3c(arg0,data_02142b4c,tmp1 + 0x6c);
+    tmp1 = func_020513d4(arg0);
+    if (tmp1 != 0) {
+      return;
+    }
+  }
+  func_02013c3c(arg0,data_02142b64);
+}
