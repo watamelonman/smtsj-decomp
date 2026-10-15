@@ -50,3 +50,8 @@
 - `func_0209cf54`
 - `func_0209aebc`
 - `func_0209c090`
+
+## Not done in M1-T1016
+- `func_0209c548`
+- `func_0209aa00`
+- `func_0209c1a0`
