@@ -103,3 +103,27 @@ void func_020fc674(u32 arg0)
   *data_02176e14 = tmp2;
   return;
 }
+
+
+int func_0205bb68();
+int func_0205ddb4();
+/* decompiler-derived */
+void func_020fc9fc(int *arg0)
+{
+  if (*arg0 == 0) {
+    if (arg0[2] != 0) {
+      func_0205ddb4();
+      arg0[2] = 0;
+    }
+    func_0205bb68();
+  }
+  else {
+    if (arg0[2] != 0) {
+      func_0205ddb4();
+      arg0[2] = 0;
+    }
+    func_0205bb68();
+  }
+  *data_02176e14 = 0;
+  return;
+}

@@ -20,3 +20,13 @@
 - `func_020fc6b8`
 - `func_020fc7f4`
 - `func_020fc7b8`
+- `func_020fc9fc`: decompiler-derived
+
+## Not done in M1-T527
+- `func_020fc584`
+- `func_020fc9ac`
+- `func_020fcf5c`
+- `func_020fc5d4`
+- `func_020fc944`
+- `func_020fc734`
+- `func_020fc8bc`
