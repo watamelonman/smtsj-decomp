@@ -35,6 +35,14 @@ typedef struct Worker {
 } Worker;
 void func_020a2bb8(u32 *sub);
 
+int func_0202dcfc(u8 *p)
+{
+    if (p == 0) {
+        return 0;
+    }
+    return FIELD(s32, p, 0x50) >= 0;
+}
+
 /* Resets the object and attaches it to `owner`. */
 void Unk0202dcfc_InitWorker(Worker *w, u32 owner) {
     int i;

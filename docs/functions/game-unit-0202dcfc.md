@@ -50,3 +50,4 @@
 - `Unk02dcfc_SetField68`: hand-matched
 - `Unk02dcfc_GetField70`: hand-matched
 - `Unk02dcfc_SetField70`: hand-matched
+- `func_0202dcfc`: hand-matched
