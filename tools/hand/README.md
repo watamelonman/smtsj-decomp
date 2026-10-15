@@ -55,3 +55,7 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
 - `u16` field shifted left then right: cast to u32 first (`((u32)x << 16) >> 28`), or int promotion makes the right shift `asr`.
 - ROM reloads a global object pointer after storing through it (`ldr r1,[r0]; str ..,[r1,#4]; ldr r0,[r0]`): declare the
   global as a typed struct pointer (`extern Work *g;`) and write `g->f = 0; call(g);`. The u32-array/FIELD form keeps it in a register (b48).
+- An `||` chain the ROM keeps as `cmp; cmpne; cmpne; bne` with separate `mov r0,#1`/`mov r0,#0` returns: write it as a
+  `switch` with fallthrough cases returning 1, then `return 0` (b51). The `if (a||b||c)` form folds into moveq/movne.
+- When a new function sits above existing ones, give any later-defined callee a full prototype in the prelude,
+  otherwise the implicit `int f()` conflicts with the definition below.
