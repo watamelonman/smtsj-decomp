@@ -23,7 +23,7 @@ int Unk04bb9c_IsKind02Or32to34(int x)
     return 0;
 }
 
-void Unk04bb9c_SetCtxUnk0c(u16 a, u16 b, u16 c)
+void Unk04bb9c_SetCtxUnk0c(s16 a, s16 b, u16 c)
 {
     if (data_0215eea4 == 0) {
         return;
