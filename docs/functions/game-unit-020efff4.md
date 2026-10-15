@@ -10,3 +10,9 @@
 - `func_020f0098`
 - `func_020efff4`
 - `func_020f04a4`
+
+## Not done in M1-T361
+- `func_020f0264`
+- `func_020f00dc`
+- `func_020f019c`
+- `func_020f0330`
