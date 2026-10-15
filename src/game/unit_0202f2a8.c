@@ -105,7 +105,7 @@ void Unk02f2a8_ResetField7478Ex(GameState *gs)
     func_020a269c(0);
     func_0205257c(3);
     Unk0a4e48_Unk_0a4e9c(2);
-    func_020a0da4(5);
+    Unk0a0ce4_Unk_0a0da4(5);
 }
 
 /* Main body at +4, or 0 when no GameState exists. */
@@ -451,7 +451,7 @@ void Unk02f2a8_Unk_033c94(u32 *arg0)
 }
 
 int func_020361ec();
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 /* decompiler-derived */
 void Unk02f2a8_Unk_02fc10(int arg0)
 {
@@ -465,7 +465,7 @@ void Unk02f2a8_Unk_02fc10(int arg0)
   *(u32 *)(arg0 + 0x1c) = 0;
   ScanVisor_Unk_0a2b38();
   Unk095560_Unk_09615c();
-  func_020a0da4(0x2c);
+  Unk0a0ce4_Unk_0a0da4(0x2c);
 }
 
 int func_021214e0();
@@ -483,7 +483,7 @@ void Unk02f2a8_Unk_02f8ac(int arg0)
     GetGameState();
     func_021215d4();
   }
-  func_020a0da4(0x1b);
+  Unk0a0ce4_Unk_0a0da4(0x1b);
 }
 
 int func_0202f530();
@@ -587,7 +587,7 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
   *(u32 *)(*arg0 + 0x14) = 1;
   *(u32 *)(*arg0 + 0x18) = 2;
   *(u32 *)(*arg0 + 0x1c) = 0;
-  func_020a0da4(8);
+  Unk0a0ce4_Unk_0a0da4(8);
 }
 
 int Unk03e43c_AdvanceCounter360();

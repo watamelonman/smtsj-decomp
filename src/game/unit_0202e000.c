@@ -374,7 +374,7 @@ int Unk02e000_TestFlag(int i)
 
 void func_02008904();
 u8 *func_020a1740();
-int func_020a17d8();
+int Unk0a163c_Unk_0a17d8();
 int Unk02e000_GetRecordUnk1f(u32 id);
 
 typedef struct Unk02e000Rec {
@@ -438,7 +438,7 @@ u32 Unk02e000_GetRecordUnk1e(u32 id)
 int Unk02e000_IsRecordAvailable(u32 id)
 {
     Unk02e000ObjFlags *o = (Unk02e000ObjFlags *)func_020a1740(id);
-    if (func_020a17d8(id) == 0 && o->flag_0016_0 && Unk02e000_GetRecordUnk1f(id) > 0) {
+    if (Unk0a163c_Unk_0a17d8(id) == 0 && o->flag_0016_0 && Unk02e000_GetRecordUnk1f(id) > 0) {
         return 1;
     }
     return 0;

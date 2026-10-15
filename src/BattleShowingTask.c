@@ -117,7 +117,7 @@ s32 func_0205c704(u32 anim);
 void func_0205c408(u32 anim, int seq);
 void func_0205c41c(u32 anim, int frame);
 void func_0205c6e0(u32 anim);
-void func_020a0da4(int se);
+void Unk0a0ce4_Unk_0a0da4(int se);
 void func_02061424(ExpGauge *g);
 void ExpGauge_PlayGaugeNormal(ExpGauge *g);
 void ExpGauge_PlayGaugeLevelUp(ExpGauge *g);
@@ -162,7 +162,7 @@ void ExpGauge_Update(ExpGauge *g) {
                 func_0205c41c(g->levelUpAnim, 0);
                 func_0205c6e0(g->levelUpAnim);
                 ExpGauge_PlayGaugeLevelUp(g);
-                func_020a0da4(0x29);
+                Unk0a0ce4_Unk_0a0da4(0x29);
             } else if (g->shown >= g->info->expGained) {
                 g->state = EXP_GAUGE_DONE;
             }

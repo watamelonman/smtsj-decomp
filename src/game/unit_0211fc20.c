@@ -69,7 +69,7 @@ void Unk11fc20_Unk_12143c(int arg0,int arg1,u32 arg2)
   return;
 }
 
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 /* decompiler-derived */
 void Unk11fc20_Unk_11fd38(u32 *arg0)
 {
@@ -80,7 +80,7 @@ void Unk11fc20_Unk_11fd38(u32 *arg0)
   arg0[10] = 0x40000;
   arg0[0xb] = 0xb8000;
   arg0[0x11] = 0x4000;
-  func_020a0da4(8);
+  Unk0a0ce4_Unk_0a0da4(8);
   return;
 }
 

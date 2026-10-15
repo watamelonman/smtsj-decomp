@@ -105,12 +105,12 @@ void Unk0cf5e8_Unk_0d14ac(int arg0)
   return;
 }
 
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 int func_020d1360();
 /* decompiler-derived */
 void Unk0cf5e8_Unk_0d0f94(int arg0,u32 arg1)
 {
-  func_020a0da4(5);
+  Unk0a0ce4_Unk_0a0da4(5);
   ((Unk0cf5e8Work *)arg0)->unk_0004 = 4;
   func_020d1360(arg0,0x14);
   ((Unk0cf5e8Work *)arg0)->unk_000c = arg1;

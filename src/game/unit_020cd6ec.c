@@ -17,11 +17,11 @@ typedef struct Unk0cd6ecWork {
 
 void Unk0cd6ec_Nop_0ce3ec(void) { }
 
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 /* decompiler-derived */
 void Unk0cd6ec_Unk_0ce280(u8 *arg0,u32 arg1)
 {
-  func_020a0da4(5);
+  Unk0a0ce4_Unk_0a0da4(5);
   arg0[2] = 4;
   *arg0 = 0xc;
   ((Unk0cd6ecWork *)arg0)->unk_0008 = arg1;

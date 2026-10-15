@@ -43,7 +43,7 @@ int func_02011804();
 extern u8 data_0213c258[];
 extern u8 data_0213c244[];
 int Unk02e000_GetRecordUnk1e();
-u16 func_020a1798(u32 id)
+u16 Unk0a163c_Unk_0a1798(u32 id)
 {
     s32 v = FIELD(s16, func_020a1740(id), 106);
     if (v < 0) {
@@ -52,7 +52,7 @@ u16 func_020a1798(u32 id)
     return data_0213c244[data_0213c258[v]];
 }
 
-int func_020a17d8(u32 id)
+int Unk0a163c_Unk_0a17d8(u32 id)
 {
     u8 *e = (u8 *)func_020a1740(id);
     if (FIELD(s16, e, 106) < 0) {
@@ -90,7 +90,7 @@ u32 Unk0a163c_Unk_0a1ae0(u32 *arg0)
   return 1;
 }
 
-void func_020a21f8(u8 *p)
+void Unk0a163c_Unk_0a21f8(u8 *p)
 {
     FIELD(u32, p, 12) = 1;
     func_020a208c();

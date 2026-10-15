@@ -39,7 +39,7 @@ int func_0203ac00();
 int func_02065544();
 int func_020656ac();
 int func_02065c10();
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 int Unk0caea8_Unk_0caf98();
 /* decompiler-derived */
 u32 Unk03d930_Unk_03d998(void)
@@ -60,6 +60,6 @@ u32 Unk03d930_Unk_03d998(void)
   func_020656ac(value1,0xffffffff);
   *(u32 *)(value3 + 0x18) = 0x1e;
   Unk0caea8_Unk_0caf98(1);
-  func_020a0da4(0x28);
+  Unk0a0ce4_Unk_0a0da4(0x28);
   return 3;
 }

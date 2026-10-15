@@ -126,7 +126,7 @@ extern u32 data_0214cc84[];
 int Unk0b6570_Get_data_02176b88();
 void func_020967a4();
 void Unk02cad4_Unk_02cbdc();
-void func_020a0d68(int x)
+void Unk0a0ce4_Unk_0a0d68(int x)
 {
     func_0205e65c();
     *data_02176afc = 5;
@@ -134,7 +134,7 @@ void func_020a0d68(int x)
     func_0205e5ec(x);
 }
 
-int func_020a0da4(int i)
+int Unk0a0ce4_Unk_0a0da4(int i)
 {
     u8 *p;
     if (i < 0 || i >= 300) {
@@ -144,7 +144,7 @@ int func_020a0da4(int i)
     return func_0205e6c0(p[1], p[0]);
 }
 
-int func_020a0dd8(int i)
+int Unk0a0ce4_Unk_0a0dd8(int i)
 {
     u8 *p;
     if (i < 0 || i >= 300) {
@@ -154,7 +154,7 @@ int func_020a0dd8(int i)
     return func_0205e740(p[1], p[0]);
 }
 
-u32 func_020a0e0c(int i)
+u32 Unk0a0ce4_GetTableEntry(int i)
 {
     if (i >= 0 && i < 29) {
         return data_0214cc84[i];
@@ -162,7 +162,7 @@ u32 func_020a0e0c(int i)
     return data_0214cc84[0];
 }
 
-void func_020a0e44(void)
+void Unk0a0ce4_Unk_0a0e44(void)
 {
     switch (Unk0b6570_Get_data_02176b88()) {
     case 2:

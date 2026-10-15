@@ -60,14 +60,14 @@ void Unk0ce578_Unk_0ce5e8(void)
   return;
 }
 
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 /* decompiler-derived */
 void Unk0ce578_Unk_0cf258(Unk0ce578Work *arg0, int arg1){
   int tmp1;
   if ((arg1 == 2) && (tmp1 = func_020d3138(), tmp1 == 0)) {
     return;
   }
-  func_020a0da4(5);
+  Unk0a0ce4_Unk_0a0da4(5);
   arg0->unk_0004 = 4;
   func_020cf238(arg0,9);
   arg0->unk_000c = arg1;

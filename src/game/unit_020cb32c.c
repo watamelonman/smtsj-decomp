@@ -153,11 +153,11 @@ void Unk0cb32c_Unk_0cb4e4(u32 arg0,u32 arg1)
   func_0204fed8(tmp1,arg1);
 }
 
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 /* decompiler-derived */
 void Unk0cb32c_Unk_0ccac8(int arg0,u32 arg1)
 {
-  func_020a0da4(5);
+  Unk0a0ce4_Unk_0a0da4(5);
   *(u32 *)(arg0 + 8) = 4;
   Unk0cb32c_Unk_0ccaa8((int *)arg0, (int)0xd);
   *(u32 *)(arg0 + 0xc) = arg1;

@@ -270,5 +270,15 @@
  "func_0209e080": "Unk09d42c_Unk_09e080",
  "func_0209e274": "Unk09d42c_Unk_09e274",
  "func_0209efb4": "Unk09ee4c_Unk_09efb4",
- "func_0209eff8": "Unk09ee4c_GetField3c0Bits"
+ "func_0209eff8": "Unk09ee4c_GetField3c0Bits",
+ "func_0209f5d8": "Unk09ee4c_Unk_09f5d8",
+ "func_0209fd14": "Unk09ee4c_Unk_09fd14",
+ "func_020a0d68": "Unk0a0ce4_Unk_0a0d68",
+ "func_020a0da4": "Unk0a0ce4_Unk_0a0da4",
+ "func_020a0dd8": "Unk0a0ce4_Unk_0a0dd8",
+ "func_020a0e0c": "Unk0a0ce4_GetTableEntry",
+ "func_020a0e44": "Unk0a0ce4_Unk_0a0e44",
+ "func_020a1798": "Unk0a163c_Unk_0a1798",
+ "func_020a17d8": "Unk0a163c_Unk_0a17d8",
+ "func_020a21f8": "Unk0a163c_Unk_0a21f8"
 }

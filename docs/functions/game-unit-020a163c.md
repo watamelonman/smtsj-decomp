@@ -6,7 +6,7 @@
 - `Unk0a163c_Unk_0a1834` (32 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_020a21f8`: no candidate matched locally
+- `Unk0a163c_Unk_0a21f8`: no candidate matched locally
 - `Unk0a163c_Unk_0a1728`: no candidate matched locally
 - `Unk0a163c_Call_020a1b08`: no candidate matched locally
 - `Unk0a163c_Call_020a2218`: no candidate matched locally
@@ -15,8 +15,8 @@
 ## Not done in M1-T628
 - `func_020a1b68`
 - `func_020a2218`
-- `func_020a17d8`
-- `func_020a1798`
+- `Unk0a163c_Unk_0a17d8`
+- `Unk0a163c_Unk_0a1798`
 - `func_020a22e0`
 - `func_020a1740`
 - `func_020a239c`
@@ -40,6 +40,6 @@
 - `Unk0a163c_Unk_0a1728`: hand-matched
 - `Unk0a163c_Call_020a1b08`: hand-matched
 - `Unk0a163c_Call_020a2218`: hand-matched
-- `func_020a1798`: hand-matched
-- `func_020a17d8`: hand-matched
-- `func_020a21f8`: hand-matched
+- `Unk0a163c_Unk_0a1798`: hand-matched
+- `Unk0a163c_Unk_0a17d8`: hand-matched
+- `Unk0a163c_Unk_0a21f8`: hand-matched

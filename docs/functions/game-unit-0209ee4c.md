@@ -14,8 +14,8 @@
 ## Not done in M1-T767
 - `Unk09ee4c_Unk_09efb4`
 - `func_0209f298`
-- `func_0209f5d8`
-- `func_0209fd14`
+- `Unk09ee4c_Unk_09f5d8`
+- `Unk09ee4c_Unk_09fd14`
 - `func_0209f550`
 - `func_0209f034`
 - `func_0209f480`
@@ -24,5 +24,5 @@
 - `Unk09ee4c_Call_0204f68c`: hand-matched
 - `Unk09ee4c_Unk_09efb4`: hand-matched
 - `Unk09ee4c_GetField3c0Bits`: hand-matched
-- `func_0209f5d8`: hand-matched
-- `func_0209fd14`: hand-matched
+- `Unk09ee4c_Unk_09f5d8`: hand-matched
+- `Unk09ee4c_Unk_09fd14`: hand-matched

@@ -126,16 +126,16 @@ void Unk0a7d54_Unk_0a8b44(int arg0)
 }
 
 
-int func_020a0da4();
-int func_020a0dd8();
+int Unk0a0ce4_Unk_0a0da4();
+int Unk0a0ce4_Unk_0a0dd8();
 int func_020a8b70();
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a8c40(u32 arg0)
 {
   int tmp1;
-  tmp1 = func_020a0dd8(0x1d);
+  tmp1 = Unk0a0ce4_Unk_0a0dd8(0x1d);
   if (tmp1 != 0) {
-    func_020a0da4(0x52);
+    Unk0a0ce4_Unk_0a0da4(0x52);
   }
   func_020a8b70(arg0);
   return;

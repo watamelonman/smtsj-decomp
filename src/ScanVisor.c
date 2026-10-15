@@ -718,7 +718,7 @@ void ScanVisor_Draw(ScanVisor *sv)
 }
 
 ScanVisor *func_020a45c0(u32 list, u32 id);
-void func_020a0da4(int se);
+void Unk0a0ce4_Unk_0a0da4(int se);
 
 /* Looks up the visor entry; if idle, (optionally with SE 28) applies `on`. */
 void ScanVisor_SetById(u32 list, u32 id, int on)
@@ -731,7 +731,7 @@ void ScanVisor_SetById(u32 list, u32 id, int on)
         return;
     }
     if (on != 0) {
-        func_020a0da4(28);
+        Unk0a0ce4_Unk_0a0da4(28);
     }
     ScanVisor_Unk_0a4644((int)sv, on);
 }

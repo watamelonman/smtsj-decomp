@@ -2,11 +2,11 @@
 #include "types.h"
 
 
-int func_020a0d68();
+int Unk0a0ce4_Unk_0a0d68();
 /* decompiler-derived */
 void Unk0bbfa4_Unk_0bc0a4(int arg0)
 {
-  func_020a0d68(arg0 + 6);
+  Unk0a0ce4_Unk_0a0d68(arg0 + 6);
 }
 
 int func_0203ac00();

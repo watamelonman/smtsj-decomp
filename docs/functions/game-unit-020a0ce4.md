@@ -15,11 +15,11 @@
 - `Unk0a0ce4_Unk_0a0d30`: decompiler-derived
 
 ## Not done in M1-T448
-- `func_020a0e0c`
-- `func_020a0d68`
-- `func_020a0da4`
-- `func_020a0dd8`
-- `func_020a0e44`
+- `Unk0a0ce4_GetTableEntry`
+- `Unk0a0ce4_Unk_0a0d68`
+- `Unk0a0ce4_Unk_0a0da4`
+- `Unk0a0ce4_Unk_0a0dd8`
+- `Unk0a0ce4_Unk_0a0e44`
 
 ## Not done in M1-T449
 - `func_020a0ebc`
@@ -29,8 +29,8 @@
 - `func_020a1318`
 - `func_020a0fc0`
 - `Unk0a0ce4_ScaleFx10`: hand-matched
-- `func_020a0d68`: hand-matched
-- `func_020a0da4`: hand-matched
-- `func_020a0dd8`: hand-matched
-- `func_020a0e0c`: hand-matched
-- `func_020a0e44`: hand-matched
+- `Unk0a0ce4_Unk_0a0d68`: hand-matched
+- `Unk0a0ce4_Unk_0a0da4`: hand-matched
+- `Unk0a0ce4_Unk_0a0dd8`: hand-matched
+- `Unk0a0ce4_GetTableEntry`: hand-matched
+- `Unk0a0ce4_Unk_0a0e44`: hand-matched

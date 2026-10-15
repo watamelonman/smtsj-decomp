@@ -98,7 +98,7 @@ int func_020a1740();
 int func_0209f550();
 void Unk044904_ClearSlotsUnk1de();
 void func_0209f034();
-int func_0209f5d8(u32 a, u32 id)
+int Unk09ee4c_Unk_09f5d8(u32 a, u32 id)
 {
     u8 *e;
     if (((id >> 16) & 0xff) != 2) {
@@ -109,7 +109,7 @@ int func_0209f5d8(u32 a, u32 id)
     return func_0209f550(a, id, e[3], 0);
 }
 
-void func_0209fd14(u32 a, u32 b)
+void Unk09ee4c_Unk_09fd14(u32 a, u32 b)
 {
     int j;
     Unk044904_ClearSlotsUnk1de(a);

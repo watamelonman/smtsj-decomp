@@ -18,11 +18,11 @@ typedef struct Unk113294Work {
     u32 unk_00d0;
 } Unk113294Work;
 
-int func_020a0da4();
+int Unk0a0ce4_Unk_0a0da4();
 /* decompiler-derived */
 void Unk113294_Unk_1156c4(u8 *arg0)
 {
-  func_020a0da4(0xb);
+  Unk0a0ce4_Unk_0a0da4(0xb);
   ((Unk113294Work *)arg0)->unk_00d0 = 0xffffffff;
   ((Unk113294Work *)arg0)->unk_001c = 3;
   *arg0 = 3;
@@ -32,7 +32,7 @@ void Unk113294_Unk_1156c4(u8 *arg0)
 /* decompiler-derived */
 void Unk113294_Unk_115698(u8 *arg0)
 {
-  func_020a0da4(0xb);
+  Unk0a0ce4_Unk_0a0da4(0xb);
   ((Unk113294Work *)arg0)->unk_00d0 = 0xffffffff;
   ((Unk113294Work *)arg0)->unk_001c = 2;
   *arg0 = 3;
