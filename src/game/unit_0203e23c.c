@@ -23,6 +23,8 @@ int Unk0986ac_Thunk_02098714(int bit);
 u16 Unk09ee4c_GetField3c0Bits(void);
 int BattleTask_Unk_0481d4(void);
 void func_020494d0(int id, int n);
+int Unk096754_Unk_096a14(void);
+void Unk097514_Unk_0977f0(u32 arg0, u32 arg1, int arg2);
 
 /* Script: result = record[arg0].unk_1f. */
 int Unk03e23c_Unk_03e23c(void)
@@ -58,6 +60,29 @@ int Unk03e23c_Unk_03e2bc(void)
         Unk03aae8_Unk_03acf4(1);
     } else {
         Unk03aae8_Unk_03acf4(0);
+    }
+    return 1;
+}
+
+/* Script: for the first free entry slot (Unk096754_Unk_096a14 >= 0) applies
+ * Unk097514_Unk_0977f0(slot, script arg 0, 0) and, in battle, forwards the resulting change in
+ * the record's unk_1e to func_020494d0. Returns 1 even when no slot is free. */
+int func_0203e2f8(void)
+{
+    int slot = Unk096754_Unk_096a14();
+    int before;
+    u16 id;
+    if (slot >= 0) {
+        before = 0;
+        id = func_0203ac00(0);
+        if (BattleTask_Unk_0481d4() != 0) {
+            before = Unk02e000_GetRecordUnk1e(id);
+        }
+        Unk097514_Unk_0977f0(slot, id, 0);
+        if (BattleTask_Unk_0481d4() != 0) {
+            int delta = Unk02e000_GetRecordUnk1e(id) - before;
+            func_020494d0(id, delta);
+        }
     }
     return 1;
 }

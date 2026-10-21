@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- `src/game/unit_0203e23c.c`: matched `func_0203e2f8` (free-slot entry operation plus battle delta forwarding) at 100% in objdiff, completing the TU; declaration and doc entry added.
 - Added documented, typed declarations and eight behaviour-based `ScriptCmd_*` aliases in `include/game/unit_0203e23c.h`, preserving the matching linker symbols.
 - `src/game/unit_0203e23c.c`: the eight script command handlers `Unk03e23c_Unk_03e23c`…`Unk03e23c_Unk_03e3e4` cleaned up with real callee prototypes, address order and per-function comments (still 100% in objdiff); doc entries in `docs/functions/game-unit-0203e23c.md`.
 - `src/game/unit_0203c274.c`: all four script command handlers (`func_0203c274` BGR555→RGBA colour command, `func_0203c320` mode switch, `Unk03c274_Unk_03c434`, `Unk03c274_Unk_03c45c`) in matching C with real prototypes (100% in objdiff); descriptive `ScriptCmd_*` aliases in `include/game/unit_0203c274.h`; doc entries in `docs/functions/game-unit-0203c274.md`.

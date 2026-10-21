@@ -16,6 +16,11 @@ int Unk03e23c_Unk_03e290(void);
 /* Stores whether the u16 id from script argument 0 occupies a slot, evidenced by Unk096754_HasEntryId. */
 int Unk03e23c_Unk_03e2bc(void);
 
+/* Applies Unk097514_Unk_0977f0(slot, script arg 0, 0) for the first free entry slot reported by
+ * Unk096754_Unk_096a14, and while BattleTask_Unk_0481d4 is set forwards the change in record
+ * unk_1e to func_020494d0; returns 1. Neutral name: no evidence establishes its opcode meaning. */
+int func_0203e2f8(void);
+
 /* Finds the slot for the u16 id from script argument 0 with func_02096af4 and clears it through func_02096958 if found. */
 int Unk03e23c_Unk_03e36c(void);
 
