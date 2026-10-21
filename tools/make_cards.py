@@ -21,7 +21,7 @@ def main():
     ap.add_argument("--limit", type=int, default=50)
     ap.add_argument("--skip-libs", action="store_true", help="no cards for libs/ units (SDK/middleware)")
     ap.add_argument("--hard-pct", type=float, default=0.0,
-                    help="also list functions whose last attempt stalled below this % in build/hard.txt")
+                    help="also list functions whose last attempt stalled below this %% in build/hard.txt")
     a = ap.parse_args()
     rep = json.load(open(a.report))
     gh = {}
