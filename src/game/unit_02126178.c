@@ -1,4 +1,4 @@
-#include "types.h"
+#include "game/unit_02126178.h"
 
 /* 8-byte entry of the table returned by func_02056110 (meaning unknown). */
 typedef struct Unk126178Entry {
@@ -27,16 +27,6 @@ typedef struct Unk126178Item {
     u8 pad_000c[4];
 } Unk126178Item;
 
-/* Work object shared by both functions of this TU (layout from field use only). */
-typedef struct Unk126178Work {
-    s32 count;
-    u32 unk_04;
-    u8 pad_0008[4];
-    u32 unk_0c;
-    void *unk_10;
-    u32 unk_14;
-    u32 unk_18;
-} Unk126178Work;
 
 /* Argument block passed by pointer to func_0205bf18. */
 typedef struct Unk126178Args {
@@ -63,7 +53,7 @@ void func_02056bbc(Unk126178Tmp *t, u32 a);
 void func_02056bd0(Unk126178Tmp *t, u32 a);
 void func_02056954(u32 a, Unk126178Tmp *t, u32 b, u32 c);
 
-/* Looks up the entry selected by w->unk_10->index in the table of w->unk_04 and passes it,
+/* Unk126178_SubmitSelectedEntry (alias in the header). Looks up the entry selected by w->unk_10->index in the table of w->unk_04 and passes it,
  * together with w->unk_14 and w->unk_18, to func_0205bf18. The two fields are read into locals
  * first; that is what gives the ROM's load order. */
 void func_02126178(Unk126178Work *w)
@@ -84,7 +74,7 @@ void func_02126178(Unk126178Work *w)
     func_0205bf18(entries, &args);
 }
 
-/* For each of w->count items, builds a temporary from the item, offsets it by (x, y),
+/* Unk126178_DrawItems (alias in the header). For each of w->count items, builds a temporary from the item, offsets it by (x, y),
  * applies a and b, and submits it to w->unk_04. */
 void func_021261d8(Unk126178Work *w, s32 x, s32 y, u32 a, u32 b)
 {
