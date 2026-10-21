@@ -41,8 +41,8 @@ extern void Unk0e8228_Unk_0e8cbc(void);
 extern void Unk0e8228_Unk_0e8b7c(void);
 extern void Unk0feba0_Unk_0febe8(s32 value);
 extern void Unk0fd9f0_Unk_0fda58(s32 value);
-extern void Unk0e8228_Unk_0e8c80(void);
-extern Unk0efdf4Context *func_02044ec4(void);
+extern s32 Unk0e8228_Unk_0e8c80(void);
+extern Unk0efdf4Context *func_02044ec4(s32 id);
 extern u32 func_020b0874(u32 value, s32 scale);
 extern u32 Unk044904_Unk_044fd8(void);
 extern void func_020aa188(u32 handle, Unk0efdf4Record *record);
@@ -70,6 +70,7 @@ void func_020efdf4(u32 handle)
     case 1:
         Unk0e8228_Unk_0e8b7c();
         Unk044904_Unk_045bd0(1);
+        /* 30 is the hard-coded id the original passes here, not the work handle. */
         func_020f7e48(30, 1, 8);
         func_020f7d7c(work->unk_0040, 30);
         func_020f7e48(work->unk_0040, 0, 1);
@@ -77,11 +78,11 @@ void func_020efdf4(u32 handle)
         Unk0fd9f0_Unk_0fda58(1);
         break;
     case 2:
-        Unk0e8228_Unk_0e8c80();
-        context = func_02044ec4();
+        context = func_02044ec4(Unk0e8228_Unk_0e8c80());
         context->unk_01e8.unk_0008 = 4;
         context->unk_01e8.unk_0000 = context->unk_0000;
         context->unk_01e8.unk_0004 = context->unk_0000;
+        /* 0x50000000 is a flag word the original ORs into the record; its meaning is unknown. */
         context->unk_01e8.unk_0014 = func_020b0874(context->unk_01e8.unk_0000, 100) | 0x50000000;
         func_020aa188(Unk044904_Unk_044fd8(), &context->unk_01e8);
         Unk0feba0_Unk_0febe8(0);

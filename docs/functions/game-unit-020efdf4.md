@@ -13,8 +13,9 @@ observed offsets, without claiming a complete shared object layout.
 - `Unk0efdf4_Unk_0eff1c` (0x020eff1c, 28 bytes): calls
   `Unk0f8448_Init(handle, 0)` followed by `func_020f8264(handle)`.
 - `Unk0efdf4_Unk_0eff38` (0x020eff38, 36 bytes): captures the global work
-  pointer before querying the handle's field 0x10, then forwards that value and
-  work field 0x4c to `Unk0e8228_Unk_0e8d90`.
+  pointer before querying the handle's field 0x10, then calls
+  `Unk0e8228_Unk_0e8d90` with work field 0x4c as the first argument and the
+  handle's field 0x10 as the second.
 - `Unk0efdf4_Unk_0eff5c` (0x020eff5c, 48 bytes): calls
   `func_020f7e48(work->unk_0040, 0, 7)` followed by
   `func_020f7d7c(work->unk_0040, 34)` using the captured work pointer.
