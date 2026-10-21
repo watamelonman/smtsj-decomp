@@ -10,7 +10,7 @@ Also writes config/checksums.sha1: every module (arm9, itcm, dtcm, overlays) aga
 extracted originals, plus the full ROM when arm7_bios.bin is present (the secure-area CRC at
 0x6C and header CRC at 0x15E cannot be recomputed without it, same as zeldaret).
 """
-import hashlib, json, pathlib, subprocess, tomllib
+import hashlib, json, os, pathlib, subprocess, tomllib
 
 ROOT = pathlib.Path(__file__).resolve().parent
 CFG = "config/arm9/config.yaml"
@@ -20,6 +20,15 @@ LDFLAGS = "-proc arm946e -nodead -nostdlib -interworking -map closure,unused -ms
 
 def sha1(p):
     return hashlib.sha1(pathlib.Path(p).read_bytes()).hexdigest()
+
+
+def rom_path(tgt):
+    """The base ROM: $SJ_ROM, else rom_path from config/target.toml, else ./baserom.nds (git-ignored
+    symlink made by tools/setup_local.sh, so a local checkout needs no edit to the tracked toml)."""
+    for p in (os.environ.get("SJ_ROM"), tgt.get("rom_path"), str(ROOT / "baserom.nds")):
+        if p and pathlib.Path(p).is_file():
+            return pathlib.Path(p)
+    return None
 
 
 def main():
@@ -72,9 +81,9 @@ def main():
     tgt = tomllib.loads((ROOT / "config/target.toml").read_text()) if (ROOT / "config/target.toml").exists() else {}
     if bios and tgt.get("rom_sha1"):
         sums.append(f"{tgt['rom_sha1']}  build/rom.nds")
-    elif tgt.get("rom_path") and pathlib.Path(tgt["rom_path"]).is_file():
+    elif rom_path(tgt):
         # without the BIOS: whole ROM with the 4 BIOS-dependent CRC bytes masked out
-        data = bytearray(pathlib.Path(tgt["rom_path"]).read_bytes())
+        data = bytearray(rom_path(tgt).read_bytes())
         for a, b in MASK:
             data[a:b + 1] = bytes(b - a + 1)
         sums.append(f"{hashlib.sha1(data).hexdigest()}  build/rom.nds  mask=" +
@@ -82,7 +91,7 @@ def main():
     else:
         sums.append("# full-ROM check off: set rom_path in config/target.toml or add arm7_bios.bin")
     (ROOT / "config/checksums.sha1").write_text("\n".join(sums) + "\n")
-    print(f"wrote build.ninja ({len(files)} delink units, {len(mods)} module checksums, rom check {'bios' if bios else ('masked' if tgt.get('rom_path') else 'off')})")
+    print(f"wrote build.ninja ({len(files)} delink units, {len(mods)} module checksums, rom check {'bios' if bios else ('masked' if rom_path(tgt) else 'off')})")
 
 
 if __name__ == "__main__":

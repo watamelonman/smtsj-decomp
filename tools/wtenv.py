@@ -2,7 +2,7 @@
 files) live only in the main checkout, so symlink them in and (re)generate build.ninja."""
 import os, pathlib, subprocess
 
-SHARED = ["dsd", "objdiff-cli", "tools/wibo", "tools/mwccarm", "extract"]
+SHARED = ["dsd", "objdiff-cli", "tools/wibo", "tools/mwccarm", "extract", "baserom.nds", "arm7_bios.bin"]
 
 
 def ensure():

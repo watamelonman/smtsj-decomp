@@ -1,12 +1,15 @@
 """hmerge.py tu newsrc 'fn=Name,...' [desc] : merge a hand-written TU through its forge card.
 Worktree off main -> write TU + docs line -> match_gate -> commit -> anticheat -> forge regate.
-On MERGED, planned renames go to tools/hand/planned_names.json (apply later with apply_names.py)."""
-import sys, os, re, json, subprocess; sys.path.insert(0, os.path.dirname(__file__))
+On MERGED, planned renames go to tools/hand/planned_names.json (apply later with apply_names.py).
+forge is found via $FORGE_BIN, then /workspace/re-forge/bin/forge, then `forge` on PATH. Without forge
+(e.g. a local laptop checkout) the same gates run and the branch is fast-forwarded into main directly."""
+import sys, os, re, json, shutil, subprocess; sys.path.insert(0, os.path.dirname(__file__))
 from hl import SJ
 sh = lambda c, cwd=SJ: subprocess.run(c, shell=True, cwd=cwd, capture_output=True, text=True)
 tu, src, ren = sys.argv[1:4]; desc = sys.argv[4] if len(sys.argv) > 4 else 'hand-matched'
 ren = dict(x.split('=') for x in ren.split(',') if x); fns = list(ren); new = open(src).read()
-if not re.search(r'^reviewer *= *"none"', open(f'{SJ}/forge.toml').read(), re.M):
+FORGE = os.environ.get('FORGE_BIN') or next((p for p in ['/workspace/re-forge/bin/forge'] if os.path.exists(p)), None) or shutil.which('forge')
+if FORGE and not re.search(r'^reviewer *= *"none"', open(f'{SJ}/forge.toml').read(), re.M):
     print('forge.toml reviewer must be "none" during hand batches'); sys.exit(1)
 card = None
 for x in sorted(os.listdir(f'{SJ}/tasks')):
@@ -26,7 +29,12 @@ sh(f'git add -A && git commit -qm "{tid}: hand-match {len(fns)} in {os.path.base
 a = sh('FORGE_BASE=main python3 tools/anticheat.py', cwd=wt)
 if g.returncode or a.returncode:
     print('GATE FAIL', a.stdout[-200:]); sh(f'git worktree remove --force {wt}; git branch -D forge/{tid}'); sys.exit(1)
-r = sh(f'nice -n 10 timeout 700 /workspace/re-forge/bin/forge regate {tid}'); out = (r.stdout + r.stderr).strip()
+if FORGE:
+    r = sh(f'nice -n 10 timeout 700 {FORGE} regate {tid}'); out = (r.stdout + r.stderr).strip()
+else:  # no orchestrator: gates above passed, so fast-forward main (must be checked out in SJ)
+    r = sh(f'git merge -q --ff-only forge/{tid}')
+    out = f'local: merged forge/{tid}' if r.returncode == 0 else f'local merge failed: {r.stderr.strip()}'
+    sh(f'git worktree remove --force {wt}; git branch -D forge/{tid}')
 print(out.splitlines()[-1] if out else 'no output')
 if 'MERGED' in out.upper():
     p = f'{SJ}/tools/hand/planned_names.json'; pl = json.load(open(p)) if os.path.exists(p) else {}

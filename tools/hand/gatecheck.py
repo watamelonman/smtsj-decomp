@@ -4,9 +4,10 @@ usage: gatecheck.py CANDIDATE.c [CANDIDATE.c ...]  (each replaces the tracked sr
 Temporarily copies the candidates into src/game, builds, runs ./objdiff-cli report generate
 (as tools/match_gate.py does), prints every function below 100% in those units, then restores the
 originals and rebuilds. Exit 1 if any C-defined function in them is below 100%."""
-import json, os, shutil, subprocess, sys
+import json, os, shutil, subprocess, sys, tempfile
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 from match_gate import c_functions
+GC = os.path.join(tempfile.gettempdir(), 'handwork', 'gc_report.json'); os.makedirs(os.path.dirname(GC), exist_ok=True)
 env = dict(os.environ, PATH=os.path.expanduser('~/.local/bin') + ':' + os.environ['PATH'])
 saved, bad = {}, []
 try:
@@ -14,8 +15,8 @@ try:
         dst = [f for f in subprocess.run(['git','ls-files','src'],capture_output=True,text=True).stdout.split() if os.path.basename(f) == os.path.basename(c)][0]
         saved[dst] = open(dst).read(); shutil.copy(c, dst)
     subprocess.run('nice ninja', shell=True, env=env, check=True, capture_output=True)
-    subprocess.run(['./objdiff-cli', 'report', 'generate', '-o', '/tmp/handwork/gc_report.json'], check=True, capture_output=True)
-    rep = {u['name']: u for u in json.load(open('/tmp/handwork/gc_report.json'))['units']}
+    subprocess.run(['./objdiff-cli', 'report', 'generate', '-o', GC], check=True, capture_output=True)
+    rep = {u['name']: u for u in json.load(open(GC))['units']}
     for dst in saved:
         cf = set(c_functions(dst))
         for f in rep[dst[:-2]].get('functions', []):
