@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- `src/game/unit_020bbfa4.c`: finished the enemy talk tone TU — `func_020bc0b4` (TalkTone/Tone set selection, named from the `Data/Enemy/Talk/*` format strings) matched at 100%, the eight M1-T036 handlers and the release/selector helpers documented with typed structs; doc entries in `docs/functions/game-unit-020bbfa4.md`.
 - Documented and typed the eight M1-T036 handlers in `src/game/unit_020bbfa4.c`, retaining their 100% objdiff matches.
 - Documented and typed all eight matching argument-forwarding handlers in `src/game/unit_0203d72c.c`, including partial context and work-area layouts.
 - Added documented, typed declarations and eight behaviour-based `ScriptCmd_*` aliases in `include/game/unit_0203e23c.h`, preserving the matching linker symbols.
