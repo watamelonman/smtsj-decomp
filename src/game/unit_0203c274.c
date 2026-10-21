@@ -42,7 +42,7 @@ int func_0203c274(void)
         r = (color >> 10) & 0x1f;
         g = (color >> 5) & 0x1f;
         bl = color & 0x1f;
-        func_020fd190((((r << 3) << 24) & 0xff000000) + (((g << 3) << 16) & 0xff0000) + (((bl << 3) << 8) & 0xff00) + 0xff, a, b);
+        func_020fd190(((((u32)r << 3) << 24) & 0xff000000) + ((((u32)g << 3) << 16) & 0xff0000) + ((((u32)bl << 3) << 8) & 0xff00) + 0xff, a, b);
         Unk02dcfc_Unk_02df00(w, (s16)((a + 1) * b));
     }
     return 3;
