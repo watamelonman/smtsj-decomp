@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- `src/game/unit_020b7898.c`: `Unk0b7898_Call_02052634` and `Unk0b7898_Unk_0b78b0` (callbacks in the function table at 0x0213d6f8) in matching C (100% in objdiff), with the real `Unk02cad4_Unk_02cbdc(u32)` prototype; doc entries in `docs/functions/game-unit-020b7898.md`.
 - `src/game/unit_0212f7e4.c`: `func_0212f7e4` (forwarding thunk to `func_021301f0`, plain `b` via `#pragma interworking off`) in matching C (100% in objdiff).
 - `src/game/unit_020fb634.c`: `func_020fb634` (paged list screen update state machine) in matching C with a typed `Unk0fb634Work` struct (100% in objdiff); proposed name `Unk0fb634_UpdateListScreen` as an alias in `include/game/unit_020fb634.h`.
 - `src/game/unit_020ee904.c`: `func_020ee904`, `func_020ee958`, `Unk0ee904_Unk_0eeadc` in matching C with typed work structs (100% in objdiff); descriptive aliases `Unk0ee904_IsModeAvailable`, `Unk0ee904_SetupForState`, `Unk0ee904_ResetWork` in `include/game/unit_020ee904.h`.
