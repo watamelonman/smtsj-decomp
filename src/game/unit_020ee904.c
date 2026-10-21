@@ -1,5 +1,5 @@
 /* src/game/unit_020ee904.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
-#include "types.h"
+#include "game/unit_020ee904.h"
 
 /* Work object behind data_02176de4 (shared with unit_020ee454/unit_020eeb20). */
 typedef struct Unk0ee904Work {
@@ -43,8 +43,8 @@ int Unk0e8228_Unk_0e8c9c(void);
 int func_020e852c(void);
 int Unk0e8228_Thunk_02045c38(void);
 
-/* Returns 0 when the given mode (1 or 2) is currently blocked by its 0e8228 check, else 1.
-   The first argument is unused (callback signature). */
+/* Unk0ee904_IsModeAvailable: returns 0 when the given mode (1 or 2) is currently blocked by
+   its 0e8228 check, else 1. The first argument is unused (callback signature). */
 int func_020ee904(void *self, int mode)
 {
     switch (mode) {
@@ -65,7 +65,7 @@ int func_020ee904(void *self, int mode)
     return 1;
 }
 
-/* Dispatches on the state field of obj (0..3) and drives the 0e8228/0f7xxx calls for that state. */
+/* Unk0ee904_SetupForState: dispatches on the state field of obj (0..3) and drives the 0e8228/0f7xxx calls for that state. */
 void func_020ee958(void *obj)
 {
     u32 state = Unk0f8448_GetUnkField10(obj);
@@ -117,7 +117,7 @@ void func_020ee958(void *obj)
     }
 }
 
-/* Unless Unk0e8228_Unk_0e82ac reports set, re-initialises the work object's 0x50 sub-object;
+/* Unk0ee904_ResetWork: unless Unk0e8228_Unk_0e82ac reports set, re-initialises the work object's 0x50 sub-object;
    then calls Unk0e8228_Unk_0e8d18(1) and func_020f7e48(handle, 0, 8). */
 void Unk0ee904_Unk_0eeadc(void)
 {
