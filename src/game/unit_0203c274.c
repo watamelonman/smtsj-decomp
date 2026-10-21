@@ -1,5 +1,5 @@
 /* src/game/unit_0203c274.c: script command handlers (read args via func_0203ac00). */
-#include "types.h"
+#include "game/unit_0203c274.h"
 
 /* Object returned by Unk03aae8_Unk_03ad14; only the pointer at +0xE8 is used here. */
 typedef struct Unk03c274Owner {
