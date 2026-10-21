@@ -4,7 +4,7 @@
  * entry 2 points at 0x020b78d8 in the next TU), so they are callbacks of one
  * table-driven object.
  */
-#include "types.h"
+#include "game/unit_020b7898.h"
 
 void func_02052634(int a, int b, int c);
 void Unk111400_Unk_111474(int a, int b, int c);
