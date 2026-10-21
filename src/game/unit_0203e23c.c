@@ -5,6 +5,7 @@
  * func_0203e2f8 (0x74) is still linked from the delink.
  */
 #include "types.h"
+#include "game/unit_0203e23c.h"
 
 int func_0203ac00(int idx);
 int Unk03aae8_Unk_03acf4(u32 value);
