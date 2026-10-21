@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- `src/game/unit_0203e23c.c`: the eight script command handlers `Unk03e23c_Unk_03e23c`…`Unk03e23c_Unk_03e3e4` cleaned up with real callee prototypes, address order and per-function comments (still 100% in objdiff); doc entries in `docs/functions/game-unit-0203e23c.md`.
 - `src/game/unit_0203c274.c`: all four script command handlers (`func_0203c274` BGR555→RGBA colour command, `func_0203c320` mode switch, `Unk03c274_Unk_03c434`, `Unk03c274_Unk_03c45c`) in matching C with real prototypes (100% in objdiff); descriptive `ScriptCmd_*` aliases in `include/game/unit_0203c274.h`; doc entries in `docs/functions/game-unit-0203c274.md`.
 - `src/game/unit_020b7898.c`: `Unk0b7898_Call_02052634` and `Unk0b7898_Unk_0b78b0` (callbacks in the function table at 0x0213d6f8) in matching C (100% in objdiff), with the real `Unk02cad4_Unk_02cbdc(u32)` prototype; doc entries in `docs/functions/game-unit-020b7898.md`.
 - `src/game/unit_0212f7e4.c`: `func_0212f7e4` (forwarding thunk to `func_021301f0`, plain `b` via `#pragma interworking off`) in matching C (100% in objdiff).
