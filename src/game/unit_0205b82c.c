@@ -1,8 +1,7 @@
-/* src/game/unit_0205b82c.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* src/game/unit_0205b82c.c: entry creation helpers (all three functions hand-matched). */
 #include "types.h"
 
 
-int func_0205ad9c();
 /* Entry returned by func_0205adb4; carries a 32-byte name at +0x2C. */
 typedef struct Unk05b82cEntry {
     u8 pad_0000[0x2c];
@@ -17,12 +16,13 @@ typedef struct Unk05b82cDesc {
     Unk05b82cEntry *entry;      /* +0x14 */
 } Unk05b82cDesc;
 
-Unk05b82cEntry *Unk05b82c_CreateEntry();
-/* decompiler-derived */
-void Unk05b82c_Unk_05b82c(void)
+Unk05b82cDesc *func_0205ad9c(int id);
+Unk05b82cEntry *Unk05b82c_CreateEntry(Unk05b82cDesc *desc);
+
+/* Looks up the descriptor for `id` (callers pass small ids such as 0xbc..0xbe) and creates its entry. */
+void Unk05b82c_Unk_05b82c(int id)
 {
-  func_0205ad9c();
-  Unk05b82c_CreateEntry();
+    Unk05b82c_CreateEntry(func_0205ad9c(id));
 }
 
 extern char data_02143be8[];    /* "no_name" */
@@ -60,6 +60,7 @@ Unk05b82cEntry *Unk05b82c_CreateNamedEntry(Unk05b82cDesc *desc, int unused, cons
     return e;
 }
 
+/* Creates the entry for `desc` (sized from func_0205ae60), then runs the post-create hooks on it. */
 Unk05b82cEntry *Unk05b82c_CreateEntry(Unk05b82cDesc *desc)
 {
     Unk05b82cEntry *ret = Unk05b82c_CreateNamedEntry(desc, func_0205ae60() + 0xc, 0);
