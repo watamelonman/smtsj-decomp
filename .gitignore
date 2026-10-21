@@ -13,3 +13,4 @@ __pycache__/
 /.forge/
 /baserom.nds
 /arm7_bios.bin
+/wip/

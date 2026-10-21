@@ -19,4 +19,6 @@ run('nice ninja')
 c = run('python3 tools/checksum.py').stdout.strip().splitlines()[-1]; print(c)
 g = run('FORGE_BASE=HEAD python3 tools/match_gate.py'); print(g.stdout.strip().splitlines()[-1])
 if 'byte-identical' not in c or g.returncode: sys.exit(1)
+keep = os.path.join(SJ, 'tools/hand/specs', os.path.basename(sys.argv[1]))  # specs written elsewhere (wip/) are archived
+if os.path.abspath(sys.argv[1]) != keep and not os.path.exists(keep): open(keep, 'w').write(open(sys.argv[1]).read())
 run(f'git add -A && git commit -qm "{msg}"'); print(run('git log --oneline -1').stdout.strip())

@@ -121,3 +121,5 @@ in that region gets defined. Remedy: match those still-undefined same-unit calle
   _ffix/_ffixu/_fflt/_ffltu/_f2d/_d2f, _dadd/_dmul/_ddiv/_dfix/_dflt/_dfltu, _dgr/_dgeq/_dls/_dleq/_deq/_dneq, _s32_div_f/_u32_div_f),
   mapped from an mwcc reloc probe + routine behaviour. Plain float C now matches (CaveArea_Unk_0ed3cc etc.).
   Unnamed still: 0201d458 (double->u64?), 0201d8c4 (sqrt-like), 0201e048, 0201efd4/0201f194 (64-bit div family, _ll_sdiv etc.).
+- Local/laptop use (LOCAL.md): `hmerge.py` finds forge via $FORGE_BIN, /workspace/re-forge/bin/forge or PATH; without it the
+  same gates run and main is fast-forwarded directly. Specs may live in git-ignored `wip/`; merge_batch archives them to specs/.

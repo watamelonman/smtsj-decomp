@@ -55,7 +55,7 @@ else ./dsd rom extract --rom "$ROM" --output-path extract; fi
 
 say "configure + build"
 python3 configure.py
-nice -n 10 ninja -j "$JOBS"
+nice -n 10 ninja -j "$JOBS" | tail -n 3
 
 say "checksum"
 python3 tools/checksum.py | tail -3
