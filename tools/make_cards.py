@@ -91,8 +91,10 @@ scene_edits = false
 - [ ] objdiff reports 100% for every function above (gate `match`).
 - [ ] Full build still produces the original image (gate `checksum`).
 - [ ] No inline asm, asm includes or byte blobs added (gate `anticheat`).
-- [ ] Every function has a descriptive name, typed params and a comment saying what it
-      does; `docs/functions/{slug}.md` has one entry per function.
+- [ ] Every function has typed params and a comment saying what it does. Use a descriptive
+      name only when evidence (strings, callers, data use) supports it, and cite it in the comment;
+      otherwise a neutral `UnkXXXXXX_Unk_<addr>` name is correct and is not grounds for rejection.
+       `docs/functions/{slug}.md` has one entry per function.
 
 ## Notes
 If a function will not match after real effort, leave it out (PS2: keep its `INCLUDE_ASM`), explain
