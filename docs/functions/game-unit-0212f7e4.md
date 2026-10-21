@@ -1,8 +1,8 @@
 # src/game/unit_0212f7e4.c
 
 - `func_0212f7e4` (4 B): forwarding thunk, a single `b func_021301f0`. Hand-matched.
-  Suggested shape-certain name: `Unk12f7e4_Thunk_021301f0` (rename left to the human merge,
-  since symbols.txt is protected).
+  Descriptive name: `Unk12f7e4_Thunk_021301f0`, a `#define` alias declared in
+  `include/game/unit_0212f7e4.h` (the definition keeps the symbols.txt name, which is protected).
   The project cflags use `-interworking`, which turns this tail call into `ldr ip, =func_021301f0; bx ip`
   (12 B). `#pragma interworking off` at the top of the TU gives the plain `b` the ROM has.
 
