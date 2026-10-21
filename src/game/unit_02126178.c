@@ -55,6 +55,10 @@ typedef struct Unk126178Tmp {
     u32 unk_04;
 } Unk126178Tmp;
 
+/* Descriptive source names; the linker symbols stay the original addresses (symbols.txt). */
+#define Unk126178_SubmitSelectedEntry func_02126178
+#define Unk126178_DrawItems func_021261d8
+
 Unk126178Table *func_02056110(u32 a);
 void func_0205bf18(Unk126178Entry *entries, Unk126178Args *args);
 void func_020569e4(Unk126178Tmp *t, u32 a, u32 b, u32 c, u32 d, u32 e);
@@ -66,7 +70,7 @@ void func_02056954(u32 a, Unk126178Tmp *t, u32 b, u32 c);
 /* Looks up the entry selected by w->unk_10->index in the table of w->unk_04 and passes it,
  * together with w->unk_14 and w->unk_18, to func_0205bf18. The two fields are read into locals
  * first; that is what gives the ROM's load order. */
-void func_02126178(Unk126178Work *w)
+void Unk126178_SubmitSelectedEntry(Unk126178Work *w)
 {
     Unk126178Table *tbl = func_02056110(w->unk_04);
     Unk126178Entry *entries = tbl->entries;
@@ -86,7 +90,7 @@ void func_02126178(Unk126178Work *w)
 
 /* For each of w->count items, builds a temporary from the item, offsets it by (x, y),
  * applies a and b, and submits it to w->unk_04. */
-void func_021261d8(Unk126178Work *w, s32 x, s32 y, u32 a, u32 b)
+void Unk126178_DrawItems(Unk126178Work *w, s32 x, s32 y, u32 a, u32 b)
 {
     Unk126178Tmp tmp;
     s32 i;
