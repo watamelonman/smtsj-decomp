@@ -38,15 +38,40 @@ comments. All eight are still at 100% in objdiff.
   +0x7481, +0x7484 and +0x7488. It uses `FIELD` because `include/GameState.h` (not owned by this
   card) still pads that range.
 
-## Not done in M1-T1106
-- `Unk02f2a8_Unk_033ac8`
-- `Unk02f2a8_ResetField7478`
-- `Unk02f2a8_GetCell38e8`
-- `Unk02f2a8_GetCurrentCell38e8`
-- `Unk02f2a8_Unk_034a8c`
-- `Unk02f2a8_GetObj39160Bits16`
-- `Unk02f2a8_GridIndex45`
-- `Unk02f2a8_GetRes36Unk19`
+## M1-T1106: 8 small functions
+
+All eight were already hand-matched; this card verified them at 100% in objdiff,
+gave each a typed signature and replaced the remaining raw offsets. Names stay
+neutral/hedged because no string or caller establishes a gameplay meaning
+beyond the observed field and grid uses below.
+- `Unk02f2a8_Unk_033ac8` (`0x02033ac8`, 32 bytes): zeroes the five grid fields at
+  +0x7478, +0x7480, +0x7481, +0x7484 and +0x7488 on the game state passed in r0
+  (offset 0x7000 plus 0x478/0x480/0x481/0x484/0x488 in the instruction stream).
+  The body is byte-identical to `Unk02f2a8_Unk_033890`; both addresses are kept
+  as separate symbols.
+- `Unk02f2a8_ResetField7478` (`0x02032df4`, 36 bytes): clears the u32 at +0x7478,
+  the byte at +0x7481 and the u32 at +0x7484, then calls
+  `Unk0a4e48_Unk_0a4e9c(2)`. Unlike `...ResetField7478Ex` it leaves +0x7480 and
+  +0x7488 untouched.
+- `Unk02f2a8_GetCell38e8` (`0x02034a44`, 36 bytes): calls `GridIndex45` and
+  returns a borrowed pointer to the 4-byte cell at `gGameState + 0x38E8 +
+  index * 4`. Out-of-range coordinates therefore alias cell 0.
+- `Unk02f2a8_GetCurrentCell38e8` (`0x02034a68`, 36 bytes): loads the signed
+  bytes at +0x7482/+0x7483 as the current coordinates and tail-calls
+  `Unk02f2a8_GetCell38e8`.
+- `Unk02f2a8_Unk_034a8c` (`0x02034a8c`, 36 bytes): grid lookup through
+  `Unk038fbc_Unk_039160`, then returns bits 12..15 of the looked-up object's u32
+  at +4 (`lsl #16; lsr #28`), or 0 when there is no object.
+- `Unk02f2a8_GetObj39160Bits16` (`0x02034ab0`, 36 bytes): the same lookup and
+  null handling, returning bits 16..19 instead (`lsl #12; lsr #28`). The bit
+  field meaning is not established, hence the neutral name.
+- `Unk02f2a8_GridIndex45` (`0x02035c90`, 36 bytes): returns `y * 45 + x` when
+  `Unk02f2a8_IsInGrid45x40` accepts the pair, else 0. Callers cannot distinguish
+  the valid cell (0, 0) from an out-of-range pair.
+- `Unk02f2a8_GetRes36Unk19` (`0x02035ab8`, 40 bytes): opens resource 36 with
+  `func_020445d0(36, 0)`, gets its 40-byte entry table from `func_0204fde0`
+  and returns the signed byte at +0x19 of entry `i`. The field meaning is not
+  established; callers use it as a small id/selector.
 
 ## Not done in M1-T1107
 - `Unk02f2a8_GetRes36Unk1a`

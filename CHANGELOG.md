@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the eight M1-T1106 grid/cell functions in `src/game/unit_0202f2a8.c` at 100% objdiff; replaced the last raw-offset bodies (`Unk_033ac8`, `Unk_034a8c`) with typed game-state/object accesses and gave every target a per-function doc entry.
 - Matched `func_021059ec` in `src/game/unit_02100810.c` (saved-record comparison) at 100% objdiff, using typed saved-id list access; documented the six remaining M1-T1096 functions and their trials on the unit hard list.
 
 - Matched `func_0204372c` (the 1916-byte 7x7 map-icon dispatcher) in `src/game/unit_0203e43c.c` at 100% objdiff; documented the four remaining M1-T1092 large update/draw functions and their measured candidates on the unit hard list.

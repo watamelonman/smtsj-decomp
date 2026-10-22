@@ -73,13 +73,15 @@ int Unk095560_Thunk_020961a0();
 void func_020305a8();
 void func_020a269c();
 void Unk0a4e48_Unk_0a4e9c();
-int Unk02f2a8_GridIndex45();
+int Unk02f2a8_GridIndex45(int x, int y);
 void Unk02f2a8_Unk_0306a8(int *arg0);
 
 typedef struct Unk02f2a8Obj39160 {
     u32 unk_0000;
-    u32 pad_0004_0 : 16;
+    u32 pad_0004_0 : 12;
+    u32 unk_0004_12 : 4;
     u32 unk_0004_16 : 4;
+    u32 pad_0004_20 : 12;
 } Unk02f2a8Obj39160;
 void Unk02f2a8_Call_02035db8(u8 *p)
 {
@@ -112,6 +114,9 @@ int Unk02f2a8_Unk_032a08(int *p)
     func_020a269c(1);
 }
 
+/* Reset the partial grid state on a game state: clears the u32 at +0x7478, the
+ * byte at +0x7481 and the u32 at +0x7484, then notifies subsystem 2. Unlike
+ * Unk02f2a8_ResetField7478Ex it leaves +0x7480 and +0x7488 alone. */
 void Unk02f2a8_ResetField7478(GameState *gs)
 {
     FIELD(u32, gs, 0x7478) = 0;
@@ -145,16 +150,22 @@ u8 *GameState_GetBody(void)
     return 0;
 }
 
-u32 *Unk02f2a8_GetCell38e8(int a, int b)
+/* Borrowed pointer to the 4-byte cell for grid coordinates (x, y) in the table
+ * at gGameState + 0x38E8. Out-of-range coordinates alias cell 0 because
+ * Unk02f2a8_GridIndex45 returns 0 for them. */
+u32 *Unk02f2a8_GetCell38e8(int x, int y)
 {
-    return (u32 *)gGameState->unk_38e8 + Unk02f2a8_GridIndex45(a, b);
+    return (u32 *)gGameState->unk_38e8 + Unk02f2a8_GridIndex45(x, y);
 }
 
+/* Cell for the current signed grid coordinates stored at +0x7482/+0x7483. */
 u32 *Unk02f2a8_GetCurrentCell38e8(void)
 {
     return Unk02f2a8_GetCell38e8(FIELD(s8, gGameState, 0x7482), FIELD(s8, gGameState, 0x7483));
 }
 
+/* Bits 16..19 of the u32 at +4 of the object at grid (x, y); 0 when the grid
+ * lookup returns no object. Bit meaning is not established. */
 u32 Unk02f2a8_GetObj39160Bits16(u8 *base, int x, int y)
 {
     u32 r = 0;
@@ -266,6 +277,8 @@ int Unk02f2a8_Unk_035a70(int a)
     return r;
 }
 
+/* Signed byte at +0x19 of entry i in resource 36 (40-byte entries). The field
+ * meaning is not established; callers use it as an id or selector. */
 s8 Unk02f2a8_GetRes36Unk19(int i)
 {
     return UNK02F2A8_RES36()[i].unk_0019;
@@ -315,6 +328,8 @@ int Unk02f2a8_IsInGrid45x40(int x, int y)
     return y < 40;
 }
 
+/* Linear index y * 45 + x in the 45x40 grid; 0 for coordinates outside it, so
+ * callers cannot distinguish row 0 from an invalid pair. */
 int Unk02f2a8_GridIndex45(int x, int y)
 {
     if (Unk02f2a8_IsInGrid45x40(x, y) == 0) {
@@ -376,28 +391,30 @@ void Unk02f2a8_Unk_033890(GameState *gs)
     FIELD(u32, gs, 0x7488) = 0;
 }
 
-/* decompiler-derived */
-void Unk02f2a8_Unk_033ac8(int arg0)
+/* Zero the five grid fields at +0x7478/+0x7480/+0x7481/+0x7484/+0x7488; it is
+ * the same body as Unk02f2a8_Unk_033890 and is kept as its own symbol because
+ * both addresses are called. */
+void Unk02f2a8_Unk_033ac8(GameState *gs)
 {
-  *(u32 *)(arg0 + 0x7478) = 0;
-  *(u8 *)(arg0 + 0x7480) = 0;
-  *(u8 *)(arg0 + 0x7481) = 0;
-  *(u32 *)(arg0 + 0x7484) = 0;
-  *(u32 *)(arg0 + 0x7488) = 0;
+    FIELD(u32, gs, 0x7478) = 0;
+    FIELD(u8, gs, 0x7480) = 0;
+    FIELD(u8, gs, 0x7481) = 0;
+    FIELD(u32, gs, 0x7484) = 0;
+    FIELD(u32, gs, 0x7488) = 0;
 }
 
 int Unk038fbc_Unk_039160();
-/* decompiler-derived */
+/* Bits 12..15 of the u32 at +4 of the object at grid (x, y); 0 when the grid
+ * lookup returns no object. It reads the nibble below the bits 16..19 that
+ * Unk02f2a8_GetObj39160Bits16 returns. */
 u32 Unk02f2a8_Unk_034a8c(u8 *base, int x, int y)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp2 = 0;
-  tmp1 = Unk038fbc_Unk_039160(base, x, y);
-  if (tmp1 != 0) {
-    tmp2 = (*(u32 *)(tmp1 + 4) & 0xffff) >> 0xc;
-  }
-  return tmp2;
+    u32 r = 0;
+    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)Unk038fbc_Unk_039160(base, x, y);
+    if (o != 0) {
+        r = o->unk_0004_12;
+    }
+    return r;
 }
 
 int Unk02f2a8_Unk_035a70();
