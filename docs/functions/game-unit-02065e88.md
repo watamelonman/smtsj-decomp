@@ -201,12 +201,72 @@ Hard list for M1-T1021: none. All eight functions and the earlier 32 definitions
 match at 100%. No runtime tests were added because the card waives them; the
 original object is the byte-level oracle. The TU remains linked from the delink.
 
-## Not done in M1-T1022
-- `func_02067564`
-- `func_020662d4`
-- `func_02068bf8`
-- `func_02067780`
-- `func_020666bc`
-- `func_02067888`
-- `func_02067634`
-- `func_02066d30`
+## M1-T1022 (verified at 100% objdiff)
+
+All eight missing bodies are implemented. Neutral names are retained because
+instruction/data evidence establishes operations without gameplay meanings.
+Partial owner and record structs describe only observed fields and loop extents.
+
+- `func_02067564` (208 bytes): resolves resource 19 by the incoming halfword
+  id. Zero record id and categories other than 4/5 select four 0x7b7b7bff
+  words; category 4 selects 0x18525aff, category 5 selects 0x5a3129ff.
+  Submits the caller descriptor, fourth argument and signed halfword fifth
+  argument through owner handle +0, with layer 10. Resource and handle must
+  be valid.
+- `func_020662d4` (232 bytes): obtains shared storage at 02140ac8, calls
+  0205ae50 with the index, then selects two tables and a count by mode.
+  Modes 0/1/2 select 193 entries, mode 3 selects 71. Calls 02052b58(0),
+  passing its result, the selected tables, two mode-indexed bytes from
+  02144814/02144815 and the indexed 24-byte shared record to 02061828.
+  Returns 1. Mode must be 0..3 and index must select valid shared storage;
+  the original does not validate either argument.
+- `func_02068bf8` (256 bytes): visits ids 0 through owner halfword +0xbc
+  minus one via 020de720. That helper searches resource 22/4 for matching
+  record ids and returns 28-byte records. For each, clears twelve local
+  flags and marks nonzero halfwords at +2 through +0x18 that occur in the
+  caller list; zero terminates the scan. Returns halfword +0x1a from the
+  first record with all flags set, otherwise zero. Every visited record
+  must exist. Count must be positive: the original leaves the cursor
+  uninitialized when the caller list is empty. An empty record matches.
+- `func_02067780` (264 bytes): resolves resource 19 and builds a 16-byte
+  descriptor with 02060dd4(owner, 0, fifth halfword argument, 5). Category
+  4 uses four 0x39dccbff words, category 5 uses 0xff7b63ff; others reset
+  dispatch state with 02057df8. Kind byte +2 equal to zero overrides this
+  with 0x7b7b7bff and increments the submitted value. Both paths submit
+  owner handle +0, the incoming third argument and layer 10.
+- `func_020666bc` (276 bytes): publishes the owner at 0216b9b4 and sets
+  adjacent shared words to 1; clears observed owner state, initializes
+  +0x400 via 0205e5b4, and obtains resources 22/4 and 23/1 with counts
+  stored at +0xbc/+0xc4. Copies twelve area-record pointers to +0x120,
+  clears 96 bytes at +0x15c, allocates 240 and 1956 bytes into +0x404/
+  +0x408, calls 02067d54, stores the used-slot count at +0x158, and
+  enables mode 1. Owner storage must cover +0x43c; allocations must succeed.
+- `func_02067888` (280 bytes): descriptor and kind-zero behavior match
+  02067780, while category 4 uses 0x18525aff, category 5 uses 0x5a3129ff,
+  and other categories explicitly select 0x7b7b7bff. Both descriptor
+  dispatch functions require valid resource records and owner handles.
+- `func_02067634` (332 bytes): resolves the halfword id at entry +0x36
+  and returns immediately if lookup fails. Zero record id selects
+  0x7b7b7bff. Category 4 chooses 0x18525aff for entry +0x34 equal to
+  1/7, otherwise 0x39dccbff. Category 5 similarly chooses 0x5a3129ff
+  or 0xff7b63ff. Other categories select 0x7b7b7bff for state 1/7,
+  otherwise reset dispatch state. Submits the incoming descriptor and
+  signed halfword value through owner +0 with layer 10.
+- `func_02066d30` (336 bytes): unconditionally calls 020629c4 for handles
+  +0x108/+0x10c/+0x110/+0x118/+0x11c/+0x114/+0x150, clearing nonzero
+  slots afterward. Conditionally releases +0x3b0 and +0x3b4 via distinct
+  helpers. Releases and clears twelve slots at +0x40c and eight at +0x3b8;
+  frees the two buffers at +0x404/+0x408 and clears the published owner.
+  Unconditional release helpers must accept zero, as in the original.
+
+The existing 02067d30 wrapper now returns 0204fde0's pointer explicitly:
+020666bc stores that return value. Its original call/return instructions already
+forwarded r0; the typed return fixes the prior declaration without changing bytes.
+No module boundary changes were needed; layouts remain local to this TU.
+
+Hard list for M1-T1022: none. All eight target functions are 100% in the
+objdiff report, as are the existing definitions checked by the match gate.
+Anticheat and all nine existing tests pass; checksum confirms all configured
+artifacts byte-identical. No runtime tests were added because the card waives
+them and the original object is the byte-level oracle. The TU remains linked
+from the original delink, pending human completion marking.

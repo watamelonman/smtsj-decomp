@@ -251,8 +251,8 @@ Unk065e88Resource *func_020445d0(u32 arg0, u32 arg1);
 void *func_0204fde0(Unk065e88Resource *resource);
 u32 func_0204fe18(Unk065e88Resource *resource);
 /* At 02067d30, forwards both inputs to 020445d0, writes the low halfword
- * of 0204fe18(resource) to the caller-owned output, then calls 0204fde0. */
-void Unk065e88_Unk_067d30(u32 arg0,u32 arg1,u16 *arg2)
+ * of 0204fe18(resource) to the caller-owned output, then returns 0204fde0. */
+void *Unk065e88_Unk_067d30(u32 arg0,u32 arg1,u16 *arg2)
 {
   u16 value1;
   Unk065e88Resource *value2;
@@ -330,7 +330,8 @@ void func_020667d0();
 void Unk065e88_Nop_066c90();
 typedef struct Unk065e88Work Unk065e88Work;
 void func_02066c94(Unk065e88Work *object);
-void func_02066d30();
+typedef struct Unk065e88Owner Unk065e88Owner;
+void func_02066d30(Unk065e88Owner *owner);
 void func_020664c4();
 void func_02063920(void);
 int func_020445f4(int resource, int index);
@@ -698,4 +699,294 @@ u16 func_02068658(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
         }
     }
     return result;
+}
+
+/* At 02067564, selects four dispatch words from resource-19 id/category,
+ * then submits the caller descriptor. Requires a valid id and owner handle. */
+void func_02067564(u32 *owner, const void *descriptor, u16 id, int arg, s16 value)
+{
+    const Unk065e88SelectionRecord *r = (const Unk065e88SelectionRecord *)func_020a1428(id);
+    if (r->id == 0) func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    else if (r->category == 4) func_02057dcc(0x18525aff, 0x18525aff, 0x18525aff, 0x18525aff);
+    else if (r->category == 5) func_02057dcc(0x5a3129ff, 0x5a3129ff, 0x5a3129ff, 0x5a3129ff);
+    else func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    func_02059f70(*owner, 0, arg, value, descriptor, 0, 10);
+}
+
+/* At 02067780, builds a 16-byte descriptor, selects category dispatch words,
+ * and increments value for kind zero. Requires a valid resource id/handle. */
+void func_02067780(u32 *owner, u16 id, int arg, int value, u16 offset)
+{
+    u8 local[16];
+    const Unk065e88SelectionRecord *r = (const Unk065e88SelectionRecord *)func_020a1428(id);
+    func_02060dd4(local, owner, 0, offset, 5);
+    if (r->category == 4) func_02057dcc(0x39dccbff, 0x39dccbff, 0x39dccbff, 0x39dccbff);
+    else if (r->category == 5) func_02057dcc(0xff7b63ff, 0xff7b63ff, 0xff7b63ff, 0xff7b63ff);
+    else func_02057df8();
+    if (r->kind == 0) {
+        func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+        func_02059f70(*owner, 0, arg, value + 1, local, 0, 10);
+        return;
+    }
+    func_02059f70(*owner, 0, arg, value, local, 0, 10);
+}
+
+/* At 02067888, builds a 16-byte descriptor, selects category dispatch words,
+ * and increments value for kind zero. Requires a valid resource id/handle. */
+void func_02067888(u32 *owner, u16 id, int arg, int value, u16 offset)
+{
+    u8 local[16];
+    const Unk065e88SelectionRecord *r = (const Unk065e88SelectionRecord *)func_020a1428(id);
+    func_02060dd4(local, owner, 0, offset, 5);
+    if (r->category == 4) func_02057dcc(0x18525aff, 0x18525aff, 0x18525aff, 0x18525aff);
+    else if (r->category == 5) func_02057dcc(0x5a3129ff, 0x5a3129ff, 0x5a3129ff, 0x5a3129ff);
+    else func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    if (r->kind == 0) {
+        func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+        func_02059f70(*owner, 0, arg, value + 1, local, 0, 10);
+        return;
+    }
+    func_02059f70(*owner, 0, arg, value, local, 0, 10);
+}
+
+/* Partial selected entry; only the two observed halfwords are established. */
+typedef struct Unk065e88DispatchEntry {
+    u8 pad_0000[0x34];
+    u16 unk_0034;
+    u16 id;
+} Unk065e88DispatchEntry;
+
+/* At 02067634, combines entry state and resource category to choose dispatch
+ * words before submitting the descriptor. A missing resource produces no call. */
+void func_02067634(u32 *owner, const void *descriptor,
+                   const Unk065e88DispatchEntry *entry, int arg, s16 value)
+{
+    const Unk065e88SelectionRecord *r = (const Unk065e88SelectionRecord *)func_020a1428(entry->id);
+    if (r == 0) return;
+    if (r->id == 0) func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    else if (r->category == 4) {
+        if (entry->unk_0034 == 1 || entry->unk_0034 == 7)
+            func_02057dcc(0x18525aff, 0x18525aff, 0x18525aff, 0x18525aff);
+        else func_02057dcc(0x39dccbff, 0x39dccbff, 0x39dccbff, 0x39dccbff);
+    } else if (r->category == 5) {
+        if (entry->unk_0034 == 1 || entry->unk_0034 == 7)
+            func_02057dcc(0x5a3129ff, 0x5a3129ff, 0x5a3129ff, 0x5a3129ff);
+        else func_02057dcc(0xff7b63ff, 0xff7b63ff, 0xff7b63ff, 0xff7b63ff);
+    } else if (entry->unk_0034 == 1 || entry->unk_0034 == 7)
+        func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    else func_02057df8();
+    func_02059f70(*owner, 0, arg, value, descriptor, 0, 10);
+}
+
+extern u8 data_02144b44[], data_021449c4[], data_02145148[], data_02144cc4[];
+extern u8 data_021448a8[], data_0214481c[], data_02144814[], data_02144815[];
+u8 *Unk02e000_GetAddr_data_02140ac8(void);
+void Unk05ae50_Unk_05ae50(int index);
+u32 func_02052b58(int value);
+void func_02061828(int mode, void *record, int a, int b, u32 handle,
+                   const void *table0, const void *table1, int count);
+/* At 020662d4, selects paired tables and submits a 24-byte indexed record.
+ * Mode must be 0..3 and index must address a valid record in shared storage. */
+int func_020662d4(u32 mode, int index)
+{
+    u8 *work = Unk02e000_GetAddr_data_02140ac8();
+    const void *a;
+    const void *b;
+    int count;
+    Unk05ae50_Unk_05ae50(index);
+    a = 0;
+    b = 0;
+    count = 0;
+    switch (mode) {
+    case 0: a = data_0214544c; b = data_02144b44; count = 193; break;
+    case 1: a = data_02144e44; b = data_021449c4; count = 193; break;
+    case 2: a = data_02145148; b = data_02144cc4; count = 193; break;
+    case 3: a = data_021448a8; b = data_0214481c; count = 71; break;
+    }
+    func_02061828(mode, work + index * 24, data_02144814[mode * 2],
+        data_02144815[mode * 2], func_02052b58(0), a, b, count);
+    return 1;
+}
+
+/* Partial callback owner; array extents follow the original loop bounds. */
+struct Unk065e88Owner {
+    u32 mode;
+    u8 pad_0004[144];
+    void * unk_0094;
+    u8 pad_0098[12];
+    void * unk_00a4;
+    u8 pad_00a8[20];
+    u16 unk_00bc;
+    u8 pad_00be[6];
+    u16 unk_00c4;
+    u8 pad_00c6[60];
+    u16 unk_0102;
+    u8 pad_0104[4];
+    u32 unk_0108;
+    u32 unk_010c;
+    u32 unk_0110;
+    u32 unk_0114;
+    u32 unk_0118;
+    u32 unk_011c;
+    u8 * entries[12];
+    u32 unk_0150;
+    u16 unk_0154;
+    u16 unk_0156;
+    s16 unk_0158;
+    u8 pad_015a[2];
+    u8 unk_015c[96];
+    u8 pad_01bc[500];
+    u32 unk_03b0;
+    u32 unk_03b4;
+    u32 unk_03b8[8];
+    u32 unk_03d8;
+    u8 pad_03dc[10];
+    u8 unk_03e6;
+    u8 pad_03e7[1];
+    u32 unk_03e8;
+    u32 unk_03ec;
+    u8 pad_03f0[8];
+    u32 unk_03f8;
+    u16 unk_03fc;
+    u8 pad_03fe[2];
+    u32 unk_0400;
+    void * unk_0404;
+    void * unk_0408;
+    u32 unk_040c[12];
+    u8 unk_043c;
+};
+
+/* The three shared words are published/cleared by these owner callbacks. */
+typedef struct Unk065e88OwnerState {
+    u32 unk_0000;
+    Unk065e88Owner *owner;
+    u32 unk_0008;
+} Unk065e88OwnerState;
+extern Unk065e88OwnerState data_0216b9b0;
+u32 func_0205e5b4(void);
+u8 *Unk02e000_GetAreaRecord(int index);
+void func_020086a0(u32 value, void *destination, u32 size);
+void *func_02052fe0(u32 size);
+void func_02067d54(Unk065e88Owner *owner);
+s16 Unk06a224_CountUsedSlots(void);
+/* At 020666bc, publishes and initializes a callback owner, loads resources
+ * 22/23, copies twelve area pointers, allocates buffers and enables mode 1.
+ * Caller supplies writable storage through +0x43c; allocations must succeed. */
+void func_020666bc(Unk065e88Owner *owner)
+{
+    int i;
+    data_0216b9b0.owner = owner;
+    data_0216b9b0.unk_0008 = 1;
+    data_0216b9b0.unk_0000 = 1;
+    owner->unk_03e6 = 0;
+    owner->unk_03d8 = 0;
+    owner->unk_03f8 = 0;
+    owner->mode = 0;
+    owner->unk_03fc = 0;
+    owner->unk_043c = 0;
+    owner->unk_0154 = 0;
+    owner->unk_0156 = 0;
+    owner->unk_03e8 = 0;
+    owner->unk_03ec = 1;
+    owner->unk_0102 = 0;
+    owner->unk_0400 = func_0205e5b4();
+    owner->unk_0108 = 0;
+    owner->unk_0110 = 0;
+    owner->unk_0118 = 0;
+    owner->unk_011c = 0;
+    owner->unk_0094 = Unk065e88_Unk_067d30(22, 4, &owner->unk_00bc);
+    owner->unk_00a4 = Unk065e88_Unk_067d30(23, 1, &owner->unk_00c4);
+    Unk02e000_GetWorkArea();
+    for (i = 0; i < 12; i++) owner->entries[i] = Unk02e000_GetAreaRecord(i);
+    func_020086a0(0, owner->unk_015c, 96);
+    owner->unk_0404 = func_02052fe0(240);
+    owner->unk_0408 = func_02052fe0(0x7a4);
+    func_02067d54(owner);
+    owner->unk_0158 = Unk06a224_CountUsedSlots();
+    Unk065e88_SetMode((s32 *)owner, 1, 1);
+}
+
+void func_020629c4(u32 handle);
+void func_0205ddb4(u32 handle);
+void func_0205c368(u32 handle);
+void func_02061424(u32 handle);
+void func_02053000(void *allocation);
+/* At 02066d30, releases the owner's handles and buffers and clears its
+ * published pointer. Release routines accept zero where calls are unconditional. */
+void func_02066d30(Unk065e88Owner *owner)
+{
+    int i;
+    func_020629c4(owner->unk_0108);
+    if (owner->unk_0108) owner->unk_0108 = 0;
+    func_020629c4(owner->unk_010c);
+    if (owner->unk_010c) owner->unk_010c = 0;
+    func_020629c4(owner->unk_0110);
+    if (owner->unk_0110) owner->unk_0110 = 0;
+    func_020629c4(owner->unk_0118);
+    if (owner->unk_0118) owner->unk_0118 = 0;
+    func_020629c4(owner->unk_011c);
+    if (owner->unk_011c) owner->unk_011c = 0;
+    func_020629c4(owner->unk_0114);
+    if (owner->unk_0114) owner->unk_0114 = 0;
+    func_020629c4(owner->unk_0150);
+    if (owner->unk_0150) owner->unk_0150 = 0;
+    if (owner->unk_03b0) {
+        func_0205ddb4(owner->unk_03b0);
+        owner->unk_03b0 = 0;
+    }
+    if (owner->unk_03b4) {
+        func_0205c368(owner->unk_03b4);
+        owner->unk_03b4 = 0;
+    }
+    for (i = 0; i < 12; i++) {
+        func_02061424(owner->unk_040c[i]);
+        owner->unk_040c[i] = 0;
+    }
+    for (i = 0; i <= 7; i++) {
+        func_02061424(owner->unk_03b8[i]);
+        owner->unk_03b8[i] = 0;
+    }
+    func_02053000(owner->unk_0404);
+    func_02053000(owner->unk_0408);
+    data_0216b9b0.owner = 0;
+}
+
+/* Resource-22 records expose twelve zero-terminated ids and a result id. */
+typedef struct Unk065e88SearchRecord {
+    u16 unk_0000;
+    u16 ids[12];
+    u16 result;
+} Unk065e88SearchRecord;
+const Unk065e88SearchRecord *func_020de720(u16 index);
+/* At 02068bf8, returns the first resource-22 result whose nonzero ids all
+ * occur in the caller's list. Owner count is +0xbc; zero ids end each scan.
+ * Records must exist; count must be positive because the original otherwise
+ * leaves the scan cursor uninitialized. */
+u16 func_02068bf8(Unk065e88Owner *owner, const u16 *ids, int count)
+{
+    int i;
+    for (i = 0; i < owner->unk_00bc; i++) {
+        u8 found[12];
+        const Unk065e88SearchRecord *r;
+        int j;
+        int n;
+        int all;
+        func_02008848(found, 0, 12);
+        r = func_020de720(i);
+        for (j = 0; j < count; j++) {
+            n = 0;
+            while (n < 12) {
+                u16 id = r->ids[n];
+                if (id == 0) break;
+                if (id == ids[j]) found[n] = 1;
+                n++;
+            }
+        }
+        all = 1;
+        for (j = 0; j < n; j++) {
+            if (found[j] == 0) all = 0;
+        }
+        if (all) return r->result;
+    }
+    return 0;
 }
