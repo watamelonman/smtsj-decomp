@@ -3,6 +3,9 @@
 ## Unreleased
 
 - Match three more game/unit_0203e43c functions: coordinate clamping, clipped byte-surface fill, and draw-entry selection; document five remaining hard targets.
+- Verified the eight M1-T1105 functions in `src/game/unit_0202f2a8.c` at 100% objdiff. The four decompiler-derived ones (035ec4, 030478, 030578, 033890) now have typed parameters with small local structs and per-function comments.
+- Corrected the M1-T1095 record window layout to hold its tenth populated id while preserving the nine-row drawing limit and +0x2000 flag offset.
+- Matched all eight M1-T1095 functions in `src/game/unit_02100810.c` at 100% objdiff (work release, list rebuilds, two record-save paths, the metadata row drawer, record sorting, and the nine-row window), with typed parameters and per-function documentation.
 - Matched both functions in `src/game/unit_020f8998.c` (empty callback and the 556-byte grid-interaction state machine) at 100% objdiff, with typed work/cell layouts and per-function documentation.
 - Matched all five M1-T119 functions in `src/game/unit_02047338.c` at 100% objdiff, including the 312-byte `func_02047338` state dispatcher, with typed parameters and per-function documentation.
 - Verified the eight M1-T116 scan-visor action handlers in `src/game/unit_0203c474.c` at 100% objdiff; added typed callee prototypes and behavior comments, with per-function evidence in `docs/functions/game-unit-0203c474.md`.
