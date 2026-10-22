@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Replaced M1-T1033 raw area/category offsets with typed fields and the fade alpha with a float, preserving all instruction matches.
 - Matched all eight M1-T1033 battle-showing functions at 100% objdiff: EXP-gauge state switch, party-slot EXP step, entry append, even/odd animation set starts, entry-category lookup, resource dispatch and fade-in display submission.
 - Matched all eight M1-T1032 battle-showing record dispatch, entry flag, task allocation and EXP threshold/increment functions at 100% objdiff, with typed contracts and assembly evidence.
 - Verified all eight M1-T1031 battle-showing cleanup/resource callbacks and EXP gauge helpers at 100% objdiff; added typed cleanup contracts and per-function evidence.

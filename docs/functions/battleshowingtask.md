@@ -66,6 +66,12 @@ behaviour is only structural.
   +0x7C (mode 5, eight entries, alpha 1.0 from literal 0x3F800000) between the
   `func_02057524(0)`/`func_02057534()` pair.
 
+Review follow-up: area-work, area-object, area-record and category-loader accesses now
+use typed fields with explicit padding. The three signed slot entries are sized from the
+loop bound in `func_0211a474`; the two 02e000 work helpers share that area-work layout.
+`func_0211ce10` passes alpha as `1.0f`. The duplicated dispatch branches in
+`func_0211c548` preserve original code generation. All eight targets remain 100%.
+
 Hard list for M1-T1033: none.
 
 ## Not done in M1-T1034

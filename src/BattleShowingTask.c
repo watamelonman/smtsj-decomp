@@ -54,23 +54,56 @@ void BattleShowingTask_Unk_119834(void);
 void BattleShowingTask_Unk_1196e0(BattleShowingTask *task);
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
+/* Area work returned by the 02e000 helpers; slot count comes from the
+ * three-iteration loop at 0x0211a474. Other fields remain unknown. */
+typedef struct BattleShowingAreaWork {
+    u8 pad_0000[0x20];
+    s32 unk_0020;
+    u8 pad_0024[0x330];
+    s8 unk_0354[3];
+} BattleShowingAreaWork;
+
+/* Current area object: only the budget read at 0x0211a474 is known. */
+typedef struct BattleShowingAreaObject {
+    u8 pad_0000[0x64];
+    u32 unk_0064;
+} BattleShowingAreaObject;
+
+/* Area record: baseline threshold consumed by 0x02119940. */
+typedef struct BattleShowingAreaRecord {
+    u8 pad_0000[0x24];
+    s32 unk_0024;
+} BattleShowingAreaRecord;
+
+/* Loader records expose the category byte read by 0x0211b1f4. */
+typedef struct BattleShowingCategoryRecord {
+    u8 pad_0000[3];
+    u8 unk_03;
+} BattleShowingCategoryRecord;
+
+/* Type-1 loader has its category byte at a different observed offset. */
+typedef struct BattleShowingCategoryRecord1 {
+    u8 pad_0000[0x2c];
+    u8 unk_2c;
+} BattleShowingCategoryRecord1;
+
 /* Display-list and area helpers used by the functions below. */
 void func_02057524(u32 arg);
 void func_02057534(void);
-void func_02058d04(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
-u8 *Unk02e000_GetWorkArea(void);
-u8 *Unk02e000_Thunk_0202e788(void);
-u8 *Unk02e000_GetAreaRecord(int i);
-u8 *Unk044904_Unk_04502c(void);
+void func_02058d04(u32 a, u32 b, u32 c, u32 d, float e, u32 f, u32 g, u32 h);
+BattleShowingAreaWork *Unk02e000_GetWorkArea(void);
+BattleShowingAreaWork *Unk02e000_Thunk_0202e788(void);
+BattleShowingAreaRecord *Unk02e000_GetAreaRecord(int i);
+BattleShowingAreaObject *Unk044904_Unk_04502c(void);
 int Unk0986ac_Unk_098978(int arg0);
 int Unk0986ac_Thunk_02098714(int bit);
 u8 Unk09974c_GetEntryUnk08(u32 id);
-void *Unk09974c_Unk_099bfc(int id);
-void *Unk09974c_Unk_099d14(int id);
-void *Unk09974c_Unk_099d78(int id);
-void *Unk09974c_Unk_099c60(int id);
-void *Unk09974c_Unk_099ddc(int id);
-void *Unk09974c_Unk_099e40(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099bfc(int id);
+BattleShowingCategoryRecord1 *Unk09974c_Unk_099d14(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099d78(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099c60(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099ddc(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099e40(int id);
 
 void Unk02cad4_Unk_02cbdc(u32 arg);
 /* Teardown hook: clear the live handle, then forward 1 (0x021196c0). */
@@ -310,7 +343,7 @@ void func_0211ce10(BattleShowingTaskWork *work)
         && work->unk_00a4->unk_0059 != 0) {
         func_02057524(0);
         func_02058d04((u32)work->unk_00a4, 0, work->unk_00a8 + 124, 5,
-                      0x3f800000, 0, 8, 0);
+                      1.0f, 0, 8, 0);
         func_02057534();
     }
 }
@@ -356,18 +389,18 @@ void BattleShowingTask_Unk_11a01c(ExpGauge *g)
  * (at least one) when the script flag 0xAB is set. Evidence: ARM 0x0211a474. */
 u32 func_0211a474(void)
 {
-    u8 *work = Unk02e000_GetWorkArea();
+    BattleShowingAreaWork *work = Unk02e000_GetWorkArea();
     s32 count = 1;
     u32 field;
     u32 result;
     int i;
 
     for (i = 0; i < 3; i++) {
-        if ((s8)work[0x354 + i] >= 0) {
+        if (work->unk_0354[i] >= 0) {
             count++;
         }
     }
-    field = *(u32 *)(Unk044904_Unk_04502c() + 0x64);
+    field = Unk044904_Unk_04502c()->unk_0064;
     result = 0;
     if (field != 0) {
         result = field / count;
@@ -551,22 +584,22 @@ u32 func_0211b1f4(u32 id)
     }
     switch (Unk09974c_GetEntryUnk08(id)) {
     case 0:
-        return ((u8 *)Unk09974c_Unk_099bfc(id))[3];
+        return Unk09974c_Unk_099bfc(id)->unk_03;
     case 1:
-        return ((u8 *)Unk09974c_Unk_099d14(id))[0x2c];
+        return Unk09974c_Unk_099d14(id)->unk_2c;
     case 2:
-        return ((u8 *)Unk09974c_Unk_099d78(id))[3];
+        return Unk09974c_Unk_099d78(id)->unk_03;
     case 3:
     case 4:
     case 5:
     case 6:
-        return ((u8 *)Unk09974c_Unk_099c60(id))[3];
+        return Unk09974c_Unk_099c60(id)->unk_03;
     case 7:
         return 7;
     case 8:
-        return ((u8 *)Unk09974c_Unk_099ddc(id))[3];
+        return Unk09974c_Unk_099ddc(id)->unk_03;
     case 9:
-        return ((u8 *)Unk09974c_Unk_099e40(id))[3];
+        return Unk09974c_Unk_099e40(id)->unk_03;
     }
     return 6;
 }
@@ -708,9 +741,9 @@ void func_02119940(ExpGauge *g, int action, s32 value)
         g->levelUps = g->info->unk02;
         ExpGauge_PlayGaugeNormal(g);
         if (g->info->unk00 < 0) {
-            base = *(u32 *)(Unk02e000_Thunk_0202e788() + 0x20);
+            base = Unk02e000_Thunk_0202e788()->unk_0020;
         } else {
-            base = *(u32 *)(Unk02e000_GetAreaRecord(g->info->unk00) + 0x24);
+            base = Unk02e000_GetAreaRecord(g->info->unk00)->unk_0024;
         }
         g->total = g->info->baseExp + g->shown - base;
         ExpGauge_UpdateToNextLevel(g);
@@ -776,6 +809,7 @@ void func_0211c548(BattleShowingTaskWork *work)
 
     func_0204faf0(6, record->id);
     func_0204faf0(7, resource->unk02);
+    /* Duplicated dispatch call preserves the original branch code generation. */
     if (record->unk24 != 0) {
         value = BattleShowingTask_Unk_11c4c4((resource->unk24 << 4) >> 25, 1);
     } else {
