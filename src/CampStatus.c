@@ -125,7 +125,7 @@ typedef struct CampStatusWork {
     u8 pad_00f2[0x2];
     u32 unk_00f4;
     u32 unk_00f8;
-    s16 unk_00fc[10];           /* +0xfc: slide-in offsets, all moved to 0 by func_020d5644: [0] y of the
+    s16 unk_00fc[10];           /* +0xfc: slide-in offsets, all moved to 0 by CampStatus_Unk_0d5644: [0] y of the
                                  * frame, [1] x of the status panel, [2..6] x of the five rows,
                                  * [7] x of the top bar, [8] y of the top panel, [9] title x */
     f32 unk_0110;               /* +0x110: alpha passed to func_0205dee8 */
@@ -463,7 +463,7 @@ typedef struct CampStatusEntry {
     u16 unk_002e[6];            /* +0x2e: id list, 0-terminated */
     CampStatusStateWord unk_003a[8];  /* +0x3a: per-slot base words for func_020dd364 */
 } CampStatusEntry;
-void func_020d5644();
+void CampStatus_Unk_0d5644();
 void CampStatus_Unk_0d5d44();
 void CampStatus_Unk_0d6120();
 void CampStatus_Unk_0d6948();
@@ -673,7 +673,7 @@ void CampStatus_Unk_0d3624(CampStatusOps *o)
 {
     o->size = 620;
     o->unk_04 = 4;
-    o->fn_0c = func_020d5644;
+    o->fn_0c = CampStatus_Unk_0d5644;
     o->fn_10 = CampStatus_Unk_0d5d44;
     o->fn_14 = CampStatus_Unk_0d6120;
     o->fn_18 = CampStatus_Unk_0d6948;
@@ -722,7 +722,7 @@ void Unk065e88_SetUnkFieldsc_10(CampStatusObj *obj, u32 v, u32 w);
  * fades in (unk_0110) until every offset is 0, then starts object [2]; loads and shows the
  * bust-up textures; handles the overlay animation, the top-panel slide and its request, the two
  * tab toggles (keys 0x200/0x100), mode 5's object, and in modes 6/8 the random idle animation. */
-void func_020d5644(CampStatusWork *work)
+void CampStatus_Unk_0d5644(CampStatusWork *work)
 {
     CampStatusRequest req;
     s32 i;
