@@ -2,3 +2,7 @@
 platform = "nds_arm9"
 compiler = "mwcc_30_131"
 compiler_flags = "-O4,p -proc arm946e -enum int -lang c99 -Cpp_exceptions off -interworking -gccinc -nolink -msgstyle gcc -sym on"
+
+# Every scratch is labelled with the game (decomp.me has no SJ preset yet; set preset = <id> once one exists).
+game = "Shin Megami Tensei: Strange Journey (NDS, USA, BMTE)"
+name_prefix = "SMT Strange Journey - "
