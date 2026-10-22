@@ -35,4 +35,4 @@ Purpose guesses come from strings referenced in the function or its TU; "callers
 | 27 | `func_0204295c` | 0x0204295c | 2532 | 53 | 51 | 0 | 1 | `game/unit_0203e43c.c` | Demonica terminal / map screen (Data/Terminal/map_parts*) | 1 jump table(s), case order/fallthrough must match |
 | 28 | `func_020b6608` | 0x020b6608 | 2336 | 28 | 106 | 0 | 1 | `game/unit_020b6570.c` | title screen (titleModel, titlelogo, titlemenu) | 1 jump table(s), case order/fallthrough must match; 106 calls with unknown prototypes; no direct callers (table entry), args unknown |
 | 29 | `func_020c6888` | 0x020c6888 | 2588 | 41 | 67 | 0 | 1 | `game/unit_020bd5f0.c` | camp menu (Camp/camp_01) main menus | 1 jump table(s), case order/fallthrough must match; no direct callers (table entry), args unknown |
-| 30 | `func_020e33b8` | 0x020e33b8 | 2744 | 33 | 107 | 0 | 0 | `game/unit_020e1648.c` | dungeon (Cave) list windows | 107 calls with unknown prototypes |
+| 30 | `Unk0e1648_Unk_0e33b8` | 0x020e33b8 | 2744 | 33 | 107 | 0 | 0 | `game/unit_020e1648.c` | dungeon (Cave) list windows | 107 calls with unknown prototypes |
