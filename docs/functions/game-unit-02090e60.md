@@ -140,3 +140,4 @@ are in missing states. Consequently these isolated cases cannot settle whole
 function register allocation. The next scratch must add state 0's branches
 at `0x02090f00` and the payload-building states 7/8 before tuning allocation.
 Remains on the hard list; no incomplete case implementation was installed.
+- `func_020937a0`: rebuilds the four text lists from +0x39c slots and the group ids
