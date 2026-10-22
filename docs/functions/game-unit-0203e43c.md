@@ -120,3 +120,48 @@ None for M1-T1087 or M1-T1088.
 - `Unk03e43c_Unk_043560`: hand-matched
 - `Unk03e43c_Unk_044194`: hand-matched
 - `Unk03e43c_Unk_0441ec`: hand-matched
+
+## M1-T1089
+
+Five of the eight card functions match the delinked original at 100% in objdiff
+(match gate, checksum and anticheat pass). Three are left as delinked asm (see hard list).
+
+- `func_0203e684` (108 B): gets a table from `func_02056110(id)`, calls its
+  callback at +0x201c with (4, b, c), and passes the args block
+  `{a, d, result, 0, 0, 0, 0}` plus the table's list at +8 to `func_0205bf18`.
+- `Unk03e43c_Unk_03f234` (120 B): unwraps two periodic s16 coordinates toward a
+  target (period 512 for the first, 256 for the second). Was already matched; comment added.
+- `Unk03e43c_Unk_0441ec` (120 B): resets fields of the object at
+  `data_0215ee60+0x34`, re-runs `Unk03e43c_Unk_044194` and calls
+  `Unk04bb9c_SetCtxUnka14(-1)`. Was already matched; comment added.
+- `Unk03e43c_Unk_041ce4` (128 B): cleanup callback registered by `func_0203fa84`;
+  releases four handles and clears the `data_0215ee60` +0x30/+0x34 words.
+  Was already matched; comment added.
+- `func_0203fa84` (144 B): creates a 0x299c-byte task via `func_020611dc`
+  (callbacks `func_02040064`, `func_020416bc`, -, `Unk03e43c_Unk_041ce4`), stores
+  the work area at +0x28dc, then calls `func_0203fb14` with either
+  `Unk04bb9c_GetCtxUnka20()` or the work-area u16 at +0x35c.
+- `func_02044114` (128 B): NOT MATCHED (see hard list).
+- `func_02044264` (152 B): NOT MATCHED (see hard list).
+- `func_020442fc` (152 B): NOT MATCHED (see hard list).
+
+### Hard list (for a decomp.me scratch)
+
+- `func_02044114(work, i)`: sets `work[0x2982 + i] = 1`, returns unless 0 <= i <= 3,
+  then clears one u16 of the table from `Unk03e43c_Unk_03f2ac(0)` via a 4-way
+  switch (0->[4], 1->[2], 2->[3], 3->[1]), then `Unk03e43c_MergeTable` and
+  `Unk03e43c_Call_02056cc0`. The ROM keeps a second `cmp r4,#3` before the jump
+  table; every form tried (`i < 0 || i > 3`, separate ifs, nested `if`, switch
+  in an inline helper) drops it (124 vs 128 B). `i >= 4` keeps it but emits `cmp #4`.
+- `func_02044264(work)`: switch on +0x28c4 (cases 1-5, 10-12) then
+  `if (+0x4 == 0 && (+0x28cc != 0 || (state == 1 && (q->+0x10 == 2 || == 4 || q->+0x4 == 0))))`
+  with `q = *(+0x28d8)`, calls `Unk03e43c_Unk_0441ec`. Ours reuses the
+  `w+0x2000` base for +0x28d8; the ROM recomputes it and uses r2/r3 instead of
+  r0/r2 (148 vs 152 B). Tried nested ifs, `||` chain, inline predicate helper.
+- `func_020442fc()`: reads Res36 fields 0x19/0x1a of the ctx, calls
+  `func_02051b18(&v, 1, 1, Unk02f2a8_Unk_035b74(..) + 1, 2)` on a fresh 0x1a value,
+  returns 0 if unchanged else `Unk02e000_TestFlag(Unk02f2a8_Unk_035b08(r19, v)) != 0`.
+  The ROM calls `Unk04bb9c_GetCtxUnka20` twice before the last read (reproduced
+  with an inline helper taking an unused ctx arg) and keeps 1, &v and 2 in
+  r4-r6 (push r3-r9); ours folds them into scratch registers (144 vs 152 B).
+  Tried constant locals, inline params, and a static helper (not inlined).

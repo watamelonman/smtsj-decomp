@@ -67,28 +67,90 @@ No algorithm or module boundary changed.
 
 None for M1-T1077 or M1-T1078.
 
-## Other pending functions
+- `func_020aa298` (M1-T1079): all instruction matches except one. The original
+  emits `mov r0,r6; popne` for the `y != 0` early return, while every C form
+  tried compiles to `movne r0,r6; popne`. Trials covered direct `return x`,
+  `if/else`, `switch`, `goto`, local result copies, pointer/small integer
+  parameter types, all installed mwccarm 1.2/2.0 service packs, and several
+  optimization/pragma variants. The rest of the function (record lookup,
+  `Unk044904_Unk_044f4c`, `func_0204a9ec`, fallback through `func_020b1144`)
+  was verified instruction-for-instruction with a `switch` on the
+  `func_0204a9ec` result. Left out of C so the delink remains authoritative.
 
-- `Unk0aa118_Unk_0afb90`: decompiler-derived.
-- `Unk0aa118_Unk_0ab4f4`: decompiler-derived.
+## M1-T1079 (verified at 100% objdiff unless noted)
 
-## Not done in M1-T1079
-- `func_020afbdc`
-- `Unk0aa118_AddUniqueId`
-- `Unk0aa118_Unk_0afa60`
-- `func_020aa130`
-- `func_020aa188`
-- `func_020aa298`
+- `Unk0aa118_Unk_0afb90` (76 B): allocates and clears a 0x90-byte node, links
+  it at the owner's +0x18 head / +0x1c tail, increments the +4 node count and
+  returns the node. The head/tail/link stores at 0x020afb90 support this.
+- `func_020afbdc` (76 B): walks the +0x18 node list, frees each node, decrements
+  the +4 count, stops after the +0x1c tail (or a null link), then frees the
+  owner. Head/tail accesses at 0x020afbdc support this contract.
+- `Unk0aa118_AddUniqueId` (80 B): adds an id to the global `Unk044904_Unk_04509c`
+  object's id array when absent, capped at six entries. The +0x18 count and
+  capacity check at 0x020ab468 support this.
+- `Unk0aa118_Unk_0afa60` (80 B): looks up the id through `Unk09974c_Unk_099d14`,
+  rejects entries that do not match `data_0214fef8` via `func_020152cc`, and
+  otherwise forwards to `Unk0aa118_Unk_0af8d8`. The `data_0214fef8` literal at
+  0x020afa60 supports the comparison.
+- `func_020aa130` (88 B): clears bit 15 of word +8 on each entry of the three
+  32-entry groups. Group k starts at +0x88 + k*0x284; the +0x308 count and
+  +0x14 entry stride at 0x020aa130 support this layout.
+- `func_020aa188` (88 B): inserts the borrowed entry pointer into the 32-entry
+  list when absent, re-sorts the unconsumed range and returns 1; returns 0 when
+  full. The +0x84 count, capacity check and `Unk0aa118_SortRemaining` call at
+  0x020aa188 support this contract. The caller at 0x020efdf4 passes a record
+  pointer, which fixes the pointer parameter type.
+- `func_020aa298` (88 B): not done; see the hard list above.
+- `Unk0aa118_Unk_0ab4f4` (88 B): returns 1 when the mode argument is 3;
+  otherwise rejects mode-2 records that fail `func_0204a0e8(record, 400)` and
+  forwards to `func_020b0310`. The mode check and calls at 0x020ab4f4 support
+  this contract.
 
-## Not done in M1-T1080
-- `func_020ae270`
-- `func_020af9f4`
-- `func_020ae16c`
-- `func_020af85c`
-- `func_020ae058`
-- `func_020ab2c8`
-- `func_020ae1e8`
-- `func_020ae0d8`
+## M1-T1080 (seven verified at 100% objdiff)
+
+Names remain the configured neutral symbols: the instruction sequences establish
+these operations but do not establish their wider gameplay purpose.
+
+- `func_020ae270` (104 B): resolves the category byte from the leading id
+  word, submits the corresponding table, flushes requests, then chooses request
+  16 or fallback `(0, 60, 17, 0)` using the two global queries. Evidence:
+  the category shifts and callee sequence at 0x020ae270.
+- `func_020af9f4` (108 B): tries `func_020cb1a0` then `func_020cb21c`,
+  returning table storage for the first nonzero resolved id. Both failing selects
+  `data_0214fef0`. Category and reversal pass through unchanged.
+- `func_020ae16c` (124 B): category 1 forwards to `func_020ae0d8`, bypassing
+  the counter check only when query 1 succeeds and global halfword +0x38 is
+  zero. Other categories submit request 8. Evidence: the branches and halfword
+  access at 0x020ae16c.
+- `func_020af85c` (124 B): finds `data_0214fee4`, resolves its first two bytes
+  to a table, then returns six-byte entries at index - 1, index + 2, or index + 5
+  for groups 1, 2, or 3. Other groups return the base; a missing record returns
+  null. Caller must provide valid group indices. Storage is borrowed.
+- `func_020ab2c8` (132 B): dispatches record kind +8 equal to 5 or 6 through
+  separate resolvers using id +12, then submits `(0, 32, result, 0)`; all other
+  kinds do nothing. The original jump table preserves distinct return groups.
+- `func_020ae1e8` (136 B): allocates temporary work, selects the
+  `data_0214d318` table and clears flag 0x10, then appends kind-2 nodes from
+  eight-byte records until their second word is UINT_MAX. It processes the
+  work and frees the nodes and owner. Input is borrowed and sentinel terminated.
+- `func_020ae0d8` (148 B): rejects global +0x40 bit 2 with request 6. When
+  bypass is zero it checks global halfword +0x3a, increments that halfword even
+  on failure, and rejects a failed query with request 5. Otherwise it calls
+  `func_020ae058` and returns 1. The third argument is unused in the original.
+
+### Hard list: M1-T1080
+
+- `func_020ae058` (128 B): retained in the delinked object, without a C body.
+  The assembly submits `(0, 32, 4, 0)`, loops over one eight-byte descriptor
+  at `data_0213c424` (operation byte +1), submits `(70, 3, 0, 1)`, flushes,
+  then submits `(0, id, 8)`. Compiled C trials with for/do loops at the default
+  optimization level fold the one-iteration loop (70.09%). A local optimization
+  level 2 trial retains the loop and reaches 93.22%, but generates separate
+  shift/add/indexed-load instructions instead of add plus byte load, and assigns
+  the cursor/counter registers differently. Typed byte and bitfield descriptors
+  reached 84.19% and 89.50%; optimization levels 1 and 3 also failed to match.
+  No trial body or compiler override is retained. A human can use
+  `tools/decompme.py` to investigate the address generation and loop optimization.
 
 ## Not done in M1-T1081
 - `func_020ae978`
@@ -122,3 +184,12 @@ None for M1-T1077 or M1-T1078.
 - `Unk0aa118_Unk_0afab0`: hand-matched
 - `Unk0aa118_Unk_0afaf8`: hand-matched
 - `Unk0aa118_Unk_0afb40`: hand-matched
+
+### M1-T1080 review corrections
+
+Node id (+0x04) and kind/flags (+0x84), work flags (+0x08) and table
+pointer (+0x10) now use typed members. The shared global prefix is declared
+in `include/game/unit_020aa118.h` and documented in `docs/structs.md`.
+`func_020af9f4` returns borrowed `u8 *` storage; existing integer-address
+consumers cast explicitly. The jump-table return groups and bit-2 shift test
+have source comments. The deferred `func_020ae058` trials above are unchanged.

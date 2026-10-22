@@ -232,6 +232,67 @@ int Unk03e43c_Unk_03e64c(u32 arg0,u32 arg1)
   return 0;
 }
 
+/* Work area returned by Unk02e000_GetWorkArea; only +0x35c is named here. */
+typedef struct Unk03e43cWorkArea {
+    u8 pad_0000[0x35c];
+    u16 unk_035c;               /* passed to func_0203fb14 when func_0204b4c4() is 0 */
+} Unk03e43cWorkArea;
+
+/* 0x299c-byte task object allocated by func_0203fa84 (size from its func_020611dc call);
+ * only the field written there is named. */
+typedef struct Unk03e43cTask {
+    u8 pad_0000[0x28dc];
+    Unk03e43cWorkArea *unk_28dc;
+} Unk03e43cTask;
+
+/* Header returned by func_02056110: list passed to func_0205bf18 at +8, callback at +0x201c. */
+typedef struct Unk03e684Table {
+    u8 pad_0000[8];
+    u8 unk_0008[0x201c - 0x8];  /* size runs up to the callback; real extent unknown */
+    u32 (*unk_201c)(int mode, u32 a, u32 b);
+} Unk03e684Table;
+
+/* Argument block passed by pointer to func_0205bf18. */
+typedef struct Unk03e684Args {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+    u32 unk_0c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+} Unk03e684Args;
+
+Unk03e684Table *func_02056110(u32 a);
+void func_0205bf18(u8 *list, Unk03e684Args *args);
+void *func_020611dc(void *update, void *hook1, void *hook2, void *cleanup,
+    u32 size, u32 arg5, u32 arg6, u32 arg7);
+void func_02040064(void);
+void func_020416bc(void);
+void Unk03e43c_Unk_041ce4(u8 *p);
+int func_0204b4c4(void);
+u16 Unk04bb9c_GetCtxUnka20(void);
+void func_0203fb14(Unk03e43cTask *task, u32 value);
+
+/*
+ * Looks up the table for `id` via func_02056110, asks its callback at +0x201c
+ * for a value (mode 4, args b and c), and passes {a, d, value, 0, 0, 0, 0} with
+ * the table's list at +8 to func_0205bf18. Meanings of the values are unknown.
+ */
+void func_0203e684(u32 id, u32 a, u32 b, u32 c, u32 d)
+{
+    Unk03e684Table *t = func_02056110(id);
+    Unk03e684Args args;
+    args.unk_08 = t->unk_201c(4, b, c);
+    args.unk_00 = a;
+    args.unk_04 = d;
+    args.unk_0c = 0;
+    args.unk_10 = 0;
+    args.unk_14 = 0;
+    args.unk_18 = 0;
+    func_0205bf18(t->unk_0008, &args);
+}
+
 /* Copies the 32 bytes at source +0x28 into table slot index. The paired
  * byte loads/stores establish the extent; callers must supply a valid slot. */
 void Unk03e43c_Unk_03e794(const u8 *source, int index)
@@ -339,6 +400,11 @@ int Unk03e43c_Unk_03e8cc(u8 *p)
     return 0;
 }
 
+/*
+ * Shifts *a by 512 (and *b by 256) toward x (y) when the distance between them
+ * exceeds half that period (256 / 128), i.e. unwraps two periodic coordinates
+ * so they lie on the same side as the target. The axis meanings are unknown.
+ */
 void Unk03e43c_Unk_03f234(s16 *a, s16 *b, int x, int y)
 {
     int v = *a;
@@ -376,6 +442,31 @@ void Unk03e43c_Unk_044194(u8 *p);
 void Unk03e43c_MergeTable(u8 *src);
 void Unk03e43c_Call_02056cc0(void);
 
+/*
+ * Creates a 0x299c-byte task through func_020611dc with callbacks
+ * func_02040064, func_020416bc and Unk03e43c_Unk_041ce4 (third slot empty),
+ * stores the work area in it, then calls func_0203fb14 with either
+ * Unk04bb9c_GetCtxUnka20() (when func_0204b4c4() is nonzero) or the work-area
+ * u16 at +0x35c. Reached through Unk03e43c_Thunk_0203fa84.
+ */
+void func_0203fa84(void)
+{
+    Unk03e43cTask *task = func_020611dc(func_02040064, func_020416bc, 0, Unk03e43c_Unk_041ce4,
+        0x299c, 0, 0, 0);
+    task->unk_28dc = (Unk03e43cWorkArea *)Unk02e000_GetWorkArea();
+    if (func_0204b4c4() != 0) {
+        func_0203fb14(task, Unk04bb9c_GetCtxUnka20());
+    } else {
+        func_0203fb14(task, task->unk_28dc->unk_035c);
+    }
+}
+
+/*
+ * Cleanup callback registered by func_0203fa84: releases four handles
+ * (+0xc, +0x2874, +0x2878, +0x287c) with func_020516d0, calls func_0204b6d0
+ * when the mode word at data_0215ee60+0x30 is 1, passes +0x298c to
+ * func_020629c4 and clears it, then clears data_0215ee60 +0x30/+0x34.
+ */
 void Unk03e43c_Unk_041ce4(u8 *p)
 {
     func_020516d0(FIELD(u32, p, 12));
@@ -460,6 +551,12 @@ void Unk03e43c_Unk_044194(u8 *p)
     Unk03e43c_Call_02056cc0();
 }
 
+/*
+ * Resets the object at data_0215ee60+0x34: clears the bytes at +0x2986, +0x2987,
+ * +0x28e3 and the words at +0x28cc, +0x4, +0x10, +0x28c4, re-runs
+ * Unk03e43c_Unk_044194 on it and sets the context field via
+ * Unk04bb9c_SetCtxUnka14(-1). Field meanings are unknown.
+ */
 void Unk03e43c_Unk_0441ec(void)
 {
     FIELD(u8, FIELD(u8 *, data_0215ee60, 52) + 0x2000, 2438) = 0;
