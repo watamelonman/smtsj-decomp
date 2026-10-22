@@ -10,13 +10,37 @@ void func_02057660(int a, int b);
 u8 *Unk02e000_Unk_02e774(void);
 
 /* Local typed view of the work area returned by Unk02e000_GetWorkArea.
- * include/ is not owned by this card, so only the cached grid coordinates read
- * here are typed; other members are still reached through byte offsets. */
+ * include/ is not owned by this card, so only the members read here are typed;
+ * other members are still reached through byte offsets. */
 typedef struct Unk02f2a8WorkArea {
-    u8 pad_0000[0x364];
-    s8 unk_0364;
+    u8 pad_0000[0x358];
+    u32 unk_0358;               /* direction/heading word */
+    u8 pad_035c[8];
+    s8 unk_0364;                /* cached grid coordinates set by SetGridPos */
     s8 unk_0365;
+    u8 pad_0366[0xaf2 - 0x366];
+    u16 unk_0af2;               /* 16-bit pair reset by Unk_036488 */
+    u16 unk_0af4;
 } Unk02f2a8WorkArea;
+
+/* Tail of GameState past the range declared by include/GameState.h (not owned
+ * by this card): the cached grid source and teardown counter live there. */
+typedef struct Unk02f2a8GameStateTail {
+    u8 pad_0000[0x744e];
+    s8 unk_744e;
+    s8 unk_744f;
+    s32 unk_7450;
+    u8 pad_7454[0x74f0 - 0x7454];
+    u32 unk_74f0;
+} Unk02f2a8GameStateTail;
+
+/* Local view of an action whose +0x18 word is folded into the work-area
+ * direction (+0x358); Unk02f2a8_Unk_02fc10 clears its +0x1c word. */
+typedef struct Unk02f2a8Action {
+    u8 pad_0000[0x18];
+    u32 unk_0018;
+    u32 unk_001c;
+} Unk02f2a8Action;
 
 Unk02f2a8WorkArea *Unk02e000_GetWorkArea(void);
 
@@ -47,7 +71,7 @@ void func_0202f3d8();
 void func_0209aca0();
 void func_02116598();
 void Unk02f2a8_ApplyPending(u8 *p);
-void Unk02f2a8_Unk_02fc10(int arg0);
+void Unk02f2a8_Unk_02fc10(Unk02f2a8Action *action);
 void Unk02f2a8_Unk_02f8ac(int arg0);
 void Unk02f2a8_Unk_0302f4(int arg0);
 void Unk02f2a8_Unk_02f378(int arg0);
@@ -84,11 +108,11 @@ void Unk02f2a8_Nop_0303c8(void) { }
 /* Empty callback paired with the slot above at 0x0303CC. */
 void Unk02f2a8_Nop_0303cc(void) { }
 void func_02035db8();
-int Unk02f2a8_SetGridPos();
-void func_0209e0b0();
-int Unk095560_Thunk_020961a0();
-void func_020305a8();
-void func_020a269c();
+int Unk02f2a8_SetGridPos(int x, int y, u32 v);
+void func_0209e0b0(void);
+int Unk095560_Thunk_020961a0(void);
+void func_020305a8(void *p, int v);
+void func_020a269c(int v);
 void Unk0a4e48_Unk_0a4e9c();
 int Unk02f2a8_GridIndex45(int x, int y);
 void Unk02f2a8_Unk_0306a8(int *arg0);
@@ -110,20 +134,27 @@ void Unk02f2a8_Call_02035db8(u8 *p)
     func_02035db8(p + 0x70, a->unk_0364, b->unk_0365);
 }
 
+/* Push the grid coordinates cached at +0x744e/+0x744f into the work area via
+ * SetGridPos. The direction word at +0x7450 wins when it is not the -1 sentinel;
+ * otherwise the current work-area word (+0x358) is kept. */
 void Unk02f2a8_Call_02036318(GameState *gs)
 {
-    s8 x = FIELD(s8, gs, 0x744e);
-    s8 y = FIELD(s8, gs, 0x744f);
-    u8 *w = (u8 *)Unk02e000_GetWorkArea();
-    s32 t = FIELD(s32, gs, 0x7450);
-    u32 v = FIELD(u32, w, 0x358);
-    if (t != -1) {
-        v = t;
+    Unk02f2a8GameStateTail *t = (Unk02f2a8GameStateTail *)gs;
+    s8 x = t->unk_744e;
+    s8 y = t->unk_744f;
+    Unk02f2a8WorkArea *w = Unk02e000_GetWorkArea();
+    u32 v = w->unk_0358;
+    if (t->unk_7450 != -1) {
+        v = t->unk_7450;
     }
     Unk02f2a8_SetGridPos(x, y, v);
 }
 
-int Unk02f2a8_Unk_032a08(int *p)
+/* Start the pending action for task `p`. The guard is a "still busy" check:
+ * when Unk095560_Thunk_020961a0 reports nonzero the call is dropped. Otherwise
+ * the task is armed through Unk02f2a8_Unk_0306a8, func_020305a8 runs its type-1
+ * branch, and subsystem 1 is notified. */
+void Unk02f2a8_Unk_032a08(int *p)
 {
     func_0209e0b0();
     if (Unk095560_Thunk_020961a0() != 0) {
@@ -340,6 +371,10 @@ s8 Unk02f2a8_GetRes36Unk1a(int i)
     return UNK02F2A8_RES36()[i].unk_001a;
 }
 
+/* Signed byte at +0x1b + j of entry i in resource 36 (40-byte entries). The
+ * caller supplies the sub-index j, so this is the indexed sibling of
+ * Unk02f2a8_GetRes36Unk19/1a. A negative byte is returned as -1, the invalid-id
+ * sentinel; Unk02f2a8_Unk_035c14 applies the same negative test but maps it to 0. */
 int Unk02f2a8_GetRes36Unk1b(int i, int j)
 {
     Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
@@ -423,15 +458,16 @@ void Unk02f2a8_Unk_030578(Unk02f2a8AngledOwner *obj)
     Unk02f2a8_Unk_035ec4(&obj->unk_007c, FIELD(u32, w, 0x358));
 }
 
-int func_02061424();
-/* Null-safe: sets obj+0x14 to 5, then calls func_02061424 (obj still in r0). */
+void func_02061424(void *obj);
+/* Null-safe: sets obj+0x14 to 5, then releases the same object through
+ * func_02061424. */
 void Unk02f2a8_Unk_030478(Unk02f2a8Obj14 *obj)
 {
     if (obj == 0) {
         return;
     }
     obj->unk_0014 = 5;
-    func_02061424();
+    func_02061424(obj);
 }
 
 /* Clears the GameState fields at +0x7478, +0x7480/+0x7481 (bytes), +0x7484 and +0x7488. */
@@ -488,7 +524,7 @@ void Unk02f2a8_Unk_035440(int arg0)
   func_020f43d4();
 }
 
-int func_02050088();
+int func_02050088(int mode, int lower, int upper);
 int Unk02f2a8_DirToAngle(int dir)
 {
     switch (dir) {
@@ -534,64 +570,76 @@ int Unk02f2a8_SetGridPos(int x, int y, u32 v)
     return 1;
 }
 
-/* decompiler-derived */
+/* Reset the two 16-bit work-area fields at +0xaf2/+0xaf4: the value at +0xaf2
+ * becomes zero and the value at +0xaf4 is reseeded with func_02050088(1, 50, 100),
+ * the shared random helper called with an inclusive 50..100 range (see
+ * func_02044488 in unit_02044394). */
 void Unk02f2a8_Unk_036488(void)
 {
-  u16 tmp1;
-  u8 *tmp2;
-  tmp2 = (u8 *)Unk02e000_GetWorkArea();
-  *(u16 *)(tmp2 + 0xaf2) = 0;
-  tmp1 = func_02050088(1,0x32,100);
-  *(u16 *)(tmp2 + 0xaf4) = tmp1;
+    Unk02f2a8WorkArea *w = Unk02e000_GetWorkArea();
+    w->unk_0af2 = 0;
+    w->unk_0af4 = func_02050088(1, 0x32, 100);
 }
 
-int func_0205bb68();
-/* decompiler-derived */
-void Unk02f2a8_Unk_0343b4(int arg0)
+void func_0205bb68(void);
+
+/* Local view of an object whose +8 word counts live entries. */
+typedef struct Unk02f2a8Counted {
+    u8 pad_0000[8];
+    s32 unk_0008;
+} Unk02f2a8Counted;
+
+/* Release the object's counted entries: call func_0205bb68 once per live entry,
+ * then zero the count. The count is re-read each iteration in the original, so
+ * a callee that changes it also changes the loop bound. */
+void Unk02f2a8_Unk_0343b4(Unk02f2a8Counted *obj)
 {
-  int tmp1;
-  tmp1 = 0;
-  if (0 < *(int *)(arg0 + 8)) {
-    do {
-      func_0205bb68();
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < *(int *)(arg0 + 8));
-  }
-  *(u32 *)(arg0 + 8) = 0;
+    s32 i = 0;
+    if (0 < obj->unk_0008) {
+        do {
+            func_0205bb68();
+            i++;
+        } while (i < obj->unk_0008);
+    }
+    obj->unk_0008 = 0;
 }
 
 int Unk02f2a8_Unk_030d20();
 int func_020572c0();
 int func_0205e590();
-int Unk095560_Unk_0956a8();
-/* decompiler-derived */
-void Unk02f2a8_Unk_033c94(u32 *arg0)
+u32 Unk095560_Unk_0956a8(void);
+/* Run the cleanup path for a task context: Unk02f2a8_Unk_030d20(ctx, 1) tears
+ * down the shared systems, Unk02f2a8_Unk_030478 resets the object in the
+ * context's first word, func_02061424 releases the context itself, and
+ * func_020572c0/func_0205e590(0) finish the sequence. */
+void Unk02f2a8_Unk_033c94(u32 *ctx)
 {
-  Unk02f2a8_Unk_030d20(arg0,1);
-  Unk095560_Unk_0956a8();
-  Unk044394_Unk_044534(0x24);
-  Unk02f2a8_Unk_030478((Unk02f2a8Obj14 *)*arg0);
-  func_02061424(arg0);
-  func_020572c0();
-  func_0205e590(0);
+    Unk02f2a8_Unk_030d20((int)ctx, 1);
+    Unk095560_Unk_0956a8();
+    Unk044394_Unk_044534(0x24);
+    Unk02f2a8_Unk_030478((Unk02f2a8Obj14 *)*ctx);
+    func_02061424(ctx);
+    func_020572c0();
+    func_0205e590(0);
 }
 
-int func_020361ec();
+int func_020361ec(int dir, int amount);
 int Unk0a0ce4_Unk_0a0da4();
-/* decompiler-derived */
-void Unk02f2a8_Unk_02fc10(int arg0)
+
+/* Advance the work-area direction by the action's +0x18 amount
+ * (func_020361ec returns the rotated direction), clear the word at +0x1c, then
+ * call ScanVisor_Unk_0a2b38 and Unk095560_Unk_09615c and post event
+ * 0x2c through Unk0a0ce4_Unk_0a0da4. */
+void Unk02f2a8_Unk_02fc10(Unk02f2a8Action *action)
 {
-  int tmp1;
-  int tmp2;
-  u32 tmp3;
-  tmp1 = (int)Unk02e000_GetWorkArea();
-  tmp2 = (int)Unk02e000_GetWorkArea();
-  tmp3 = func_020361ec(*(u32 *)(tmp2 + 0x358),*(u32 *)(arg0 + 0x18));
-  *(u32 *)(tmp1 + 0x358) = tmp3;
-  *(u32 *)(arg0 + 0x1c) = 0;
-  ScanVisor_Unk_0a2b38();
-  Unk095560_Unk_09615c();
-  Unk0a0ce4_Unk_0a0da4(0x2c);
+    Unk02f2a8WorkArea *dst = Unk02e000_GetWorkArea();
+    u32 dir = func_020361ec(((Unk02f2a8WorkArea *)Unk02e000_GetWorkArea())->unk_0358,
+                            action->unk_0018);
+    dst->unk_0358 = dir;
+    action->unk_001c = 0;
+    ScanVisor_Unk_0a2b38();
+    Unk095560_Unk_09615c();
+    Unk0a0ce4_Unk_0a0da4(0x2c);
 }
 
 int func_021214e0();
@@ -735,7 +783,7 @@ void Unk02f2a8_ApplyPending(u8 *p)
         Unk02f2a8_Unk_02f8ac((int)p);
         break;
     case 4:
-        Unk02f2a8_Unk_02fc10((int)p);
+        Unk02f2a8_Unk_02fc10((Unk02f2a8Action *)p);
         break;
     }
 }
@@ -805,24 +853,26 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
   Unk0a0ce4_Unk_0a0da4(8);
 }
 
-int Unk03e43c_AdvanceCounter360();
-int Unk094fe0_Unk_0952ac();
-/* decompiler-derived */
+int Unk03e43c_Unk_03fa28(void);
+void Unk03e43c_AdvanceCounter360(void);
+void Unk094fe0_Unk_0952ac(void);
+/* Detect whether advancing the shared frame counter (+0x360, see
+ * Unk03e43c_AdvanceCounter360) crossed a 0..15 table-slot boundary. The slot is
+ * sampled before and after; when it changed, Unk094fe0_Unk_0952ac ticks the
+ * slot timers. The game state and slot are re-read after the advance because
+ * the callee may recreate or rebase them. */
 void Unk02f2a8_Unk_03538c(void)
 {
-  int tmp1;
-  u32 tmp2;
-  int tmp3;
-  tmp1 = (int)GetGameState();
-  tmp2 = Unk03e43c_Unk_03fa28();
-  *(u32 *)(tmp1 + 0x74f0) = tmp2;
-  Unk03e43c_AdvanceCounter360();
-  tmp1 = (int)GetGameState();
-  tmp3 = Unk03e43c_Unk_03fa28();
-  if (*(int *)(tmp1 + 0x74f0) == tmp3) {
-    return;
-  }
-  Unk094fe0_Unk_0952ac();
+    GameState *gs = GetGameState();
+    Unk02f2a8GameStateTail *tail = (Unk02f2a8GameStateTail *)gs;
+    tail->unk_74f0 = Unk03e43c_Unk_03fa28();
+    Unk03e43c_AdvanceCounter360();
+    gs = GetGameState();
+    tail = (Unk02f2a8GameStateTail *)gs;
+    if (tail->unk_74f0 == (u32)Unk03e43c_Unk_03fa28()) {
+        return;
+    }
+    Unk094fe0_Unk_0952ac();
 }
 
 int func_0203480c();

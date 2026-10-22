@@ -110,15 +110,46 @@ establishes a gameplay meaning beyond the observations below.
   `0 <= x < 45` and `0 <= y < 40`; both comparisons are signed, so negative
   coordinates are rejected before `Unk02f2a8_GridIndex45` multiplies them.
 
-## Not done in M1-T1108
-- `Unk02f2a8_Unk_036488`
-- `Unk02f2a8_Unk_032a08`
-- `Unk02f2a8_Unk_0343b4`
-- `Unk02f2a8_Unk_033c94`
-- `Unk02f2a8_GetRes36Unk1b`
-- `Unk02f2a8_Unk_02fc10`
-- `Unk02f2a8_Call_02036318`
-- `Unk02f2a8_Unk_03538c`
+## M1-T1108: 8 functions
+
+All eight are at 100% in objdiff. The bodies were decompiler-derived; they now use
+typed local views and carry behaviour comments. Names stay neutral because no string or
+caller establishes a gameplay meaning beyond the observations below.
+- `Unk02f2a8_Unk_036488` (`0x02036488`, 52 bytes): resets the two 16-bit work-area
+  fields at +0xAF2/+0xAF4; the value at +0xAF2 becomes 0 and +0xAF4 is reseeded with
+  `func_02050088(1, 50, 100)`, the shared random helper called with an inclusive
+  50..100 range (same helper as `func_02044488` in `unit_02044394.c`).
+- `Unk02f2a8_Unk_032a08` (`0x02032A08`, 56 bytes): takes the task pointer `p`; calls
+  `func_0209e0b0`, bails out when `Unk095560_Thunk_020961a0` reports busy, otherwise
+  arms the task through `Unk02f2a8_Unk_0306a8`, runs the type-1 branch of
+  `func_020305a8(p, 1)` and notifies subsystem 1.
+- `Unk02f2a8_Unk_0343b4` (`0x020343B4`, 56 bytes): releases the counted entries of an
+  object whose count is the signed word at +8, calling `func_0205bb68` once per live
+  entry, then zeroes the count. The count is re-read every iteration.
+- `Unk02f2a8_Unk_033c94` (`0x02033C94`, 60 bytes): cleanup path for a task context.
+  It calls `Unk02f2a8_Unk_030d20(ctx, 1)`, `Unk095560_Unk_0956a8`,
+  `Unk044394_Unk_044534(0x24)`, resets the object in the context's first word through
+  `Unk02f2a8_Unk_030478`, releases the context with `func_02061424`, then calls
+  `func_020572c0` and `func_0205e590(0)`.
+- `Unk02f2a8_GetRes36Unk1b` (`0x02035BD8`, 60 bytes): returns the signed byte at
+  +0x1B + j of entry i in resource 36's 40-byte entry table. This is the indexed
+  sibling of `GetRes36Unk19`/`GetRes36Unk1a`; a negative byte becomes the -1 invalid-id
+  sentinel (`Unk02f2a8_Unk_035c14` applies the same test but maps it to 0).
+- `Unk02f2a8_Unk_02fc10` (`0x0202FC10`, 64 bytes): folds the action's +0x18 word into
+  the work-area direction word at +0x358 through `func_020361ec`, clears the action's
+  +0x1C word, then calls `ScanVisor_Unk_0a2b38`,
+  `Unk095560_Unk_09615c` and posts event 0x2C through `Unk0a0ce4_Unk_0a0da4`.
+  The work area accessor is called twice, once for the destination and once for the
+  source word, matching the original instruction stream.
+- `Unk02f2a8_Call_02036318` (`0x02031408`, 64 bytes; delink name retained): forwards
+  the signed grid coordinates cached at GameState +0x744E/+0x744F to
+  `Unk02f2a8_SetGridPos`. The direction word at +0x7450 overrides the work-area word
+  at +0x358 unless it equals the -1 sentinel.
+- `Unk02f2a8_Unk_03538c` (`0x0203538C`, 64 bytes): samples the shared 0..15 table slot
+  from `Unk03e43c_Unk_03fa28`, stores it at GameState +0x74F0, advances the frame
+  counter, and samples the slot again. If the slot changed, it calls
+  `Unk094fe0_Unk_0952ac` to tick the slot timers; both the game state and slot are
+  re-read after the advancing call.
 
 ## Not done in M1-T1109
 - `Unk02f2a8_Unk_02f8ac`
