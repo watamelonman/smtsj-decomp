@@ -100,3 +100,11 @@
 - `CampStatus_Unk_0ddb9c`: hand-matched
 - `CampStatus_Unk_0dddf4`: hand-matched
 - `CampStatus_Unk_0dde3c`: hand-matched
+- `func_020db3e0`: hand-matched
+- `func_020da670`: hand-matched
+- `func_020dbd04`: hand-matched
+- `func_020dc240`: hand-matched
+- `func_020dc4a8`: hand-matched
+- `func_020dc540`: hand-matched
+- `func_020dcb68`: hand-matched
+- `func_020ddb04`: hand-matched
