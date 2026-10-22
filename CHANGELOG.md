@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched six M1-T1052 UniteEvent functions at 100% objdiff (initialization, input transition, two draw callbacks, teardown and coordinate layout); documented the remaining update state machine in the hard list.
 - Matched all eight M1-T1051 functions in `src/UniteEvent.c` (fusion event descriptor, message handler, id/state setters, effect loader and slot loader) at 100% objdiff, with typed work layouts and per-function documentation.
 - Matched `func_020e1b10` and `func_020e2190` in `src/game/unit_020e1648.c` at 100% objdiff (work state machine and action state machine); documented `func_020e33b8`/`func_020e4344` and their register-allocation trials in the hard list.
 - Matched all seven script-command handlers in `src/game/unit_020bbb44.c` at 100% objdiff, with neutral symbol names and per-function documentation in `docs/functions/game-unit-020bbb44.md`.
