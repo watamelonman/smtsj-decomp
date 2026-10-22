@@ -97,7 +97,7 @@ typedef struct CampStatusWork {
     u32 unk_00f8;
     s16 unk_00fc;
     s16 unk_00fe;
-    s16 unk_0100[5];            /* +0x100: x of the five rows drawn by func_020d6e10 */
+    s16 unk_0100[5];            /* +0x100: x of the five rows drawn by CampStatus_Unk_0d6e10 */
     s16 unk_010a;
     s16 unk_010c;
     s16 unk_010e;
@@ -820,7 +820,7 @@ u32 Unk0c855c_Unk_0ca690(u32 id);
 /* Draw the main status panel: frames 5, 7, 8, 12-14 and the eight icons of data_0213c5b0 at
  * x unk_00fe, the five row frames 15-19 at x unk_0100[0..4], frame 33 at y unk_010c, then the
  * five row labels of unk_00b4. */
-void func_020d6e10(CampStatusWork *work)
+void CampStatus_Unk_0d6e10(CampStatusWork *work)
 {
     CampStatusIds8 icons;
     int i;
