@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T1077 list/table/work helpers at 100% objdiff and documented their parameter contracts and observed behavior.
 - `src/game/unit_020aa118.c`: added the matching `func_020ab4d4` record bit-set helper and completed the M1-T1076 eight-function set; documented every function in `docs/functions/game-unit-020aa118.md`.
 - Matched all eight M1-T1074 functions in `src/game/unit_02072238.c` (three empty callbacks, the VLA id-list builder and the panel/list drawing helpers) at 100% objdiff, with typed work/panel layouts and per-function documentation.
 - Finished `src/game/unit_020caea8.c`: added the `func_020cafbc` pair search and documented/types the seven other M1-T106 functions, all at 100% objdiff.

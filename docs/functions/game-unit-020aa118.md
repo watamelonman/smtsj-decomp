@@ -9,18 +9,39 @@
 - `func_020ab4d4` (32 B): looks up the record for id `a`, then applies bit `b` (masked to 8 bits) through `func_02049aec(record, mask, 1)` and returns its result.
 - `Unk0aa118_Unk_0afb40` (36 B): returns the table base for record id `data_0214d380[i]`, or 0 when `i` is 0.
 
-## Hard list
-- `Unk0aa118_Unk_0afb64`: decompiler-derived
+## M1-T1077 (all verified at 100% objdiff)
 
-## Not done in M1-T1077
-- `Unk0aa118_SortRemaining`
-- `Unk0aa118_Unk_0ab34c`
-- `Unk0aa118_Unk_0af7cc`
-- `Unk0aa118_Unk_0af7f8`
-- `Unk0aa118_Advance`
-- `Unk0aa118_Unk_0af8d8`
-- `Unk0aa118_Unk_0ab8f8`
-- `Unk0aa118_Unk_0af824`: decompiler-derived
+- `Unk0aa118_SortRemaining` (40 B): sorts four-byte list entries from cursor
+  (+0x80) to count (+0x84) with `Unk0aa118_CompareItems`. The call at
+  0x020aa224 and cursor-relative start support the descriptive name.
+- `Unk0aa118_Unk_0ab34c` (40 B): calls `func_020aa4f4(2, 0, 0, 0)`,
+  then `func_020ae1e8(data_02176b18)`; larger purpose remains unknown.
+- `Unk0aa118_Unk_0af7cc` (44 B): resolves a table through `func_020491b4`,
+  checks the unsigned index against `func_0205f2e4`, and selects index 0
+  when out of range before calling `func_0205f41c`.
+- `Unk0aa118_Unk_0af7f8` (44 B): resolves the first index with the preceding
+  helper, bounds-checks the second through `func_0204fd18`, then calls
+  `func_0204fdac`, substituting 0 for an out-of-range second index.
+- `Unk0aa118_Unk_0afb64` (44 B): allocates 0x94 bytes, clears them through
+  `func_02008848`, writes the argument to the first word, and returns storage.
+- `Unk0aa118_Advance` (52 B): increments the +0x80 cursor at 0x020aa264,
+  calls `func_020aa130`, clamps to +0x84 count and returns 0 at the end,
+  otherwise 1. These accesses support the descriptive name.
+- `Unk0aa118_Unk_0af8d8` (52 B): returns borrowed table storage for the id,
+  offset by 412 when `a == 1`, with the selection inverted for nonzero `c`.
+- `Unk0aa118_Unk_0ab8f8` (56 B): checks global +0x40 bit 11 and
+  `func_020b081c(2)` before OR-ing bit 3 into the caller's +8 word.
+
+These implementations were already present at task start. Rebuilding confirmed
+all eight matches; this task adds their contracts and corrects stale status.
+
+## Hard list
+
+None for M1-T1077.
+
+## Other pending functions
+
+- `Unk0aa118_Unk_0af824`: decompiler-derived; outside this card.
 
 ## Not done in M1-T1078
 - `Unk0aa118_GetTableD2f4`
@@ -74,18 +95,11 @@
 - `Unk0aa118_PeekItem`: hand-matched
 - `Unk0aa118_Clear814`: hand-matched
 - `Unk0aa118_CompareItems`: hand-matched
-- `Unk0aa118_SortRemaining`: hand-matched
-- `Unk0aa118_Advance`: hand-matched
-- `Unk0aa118_Unk_0ab34c`: hand-matched
 - `Unk0aa118_AddUniqueId`: hand-matched
-- `Unk0aa118_Unk_0ab8f8`: hand-matched
 - `Unk0aa118_Unk_0ab930`: hand-matched
 - `Unk0aa118_Unk_0acb28`: hand-matched
 - `Unk0aa118_GetTableD2f4`: hand-matched
 - `Unk0aa118_FindRecord`: hand-matched
-- `Unk0aa118_Unk_0af7cc`: hand-matched
-- `Unk0aa118_Unk_0af7f8`: hand-matched
-- `Unk0aa118_Unk_0af8d8`: hand-matched
 - `Unk0aa118_Unk_0afa60`: hand-matched
 - `Unk0aa118_Unk_0afab0`: hand-matched
 - `Unk0aa118_Unk_0afaf8`: hand-matched
