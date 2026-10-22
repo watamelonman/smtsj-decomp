@@ -305,3 +305,4 @@ after these edits.
   mwcc 2.0 service packs plus the 1.2 releases (1.2 produces a 164-byte
   frame, far from the original). A human can open a scratch with
   `tools/decompme.py`; the original delink remains linked.
+- `func_020b4040`: hand-matched
