@@ -96,9 +96,9 @@ typedef struct Unk100810Table {
     s8 unk_0058;
     u8 pad_0059[0x0f];
     Unk100810Record records[0x1eb];
-    /* Visible window uses nine entries; padding retains the observed +0x2000 word. */
-    u16 unk_1f18[9];
-    u8 pad_1f2a[0xd6];
+    /* Scans populate up to ten entries, drawing uses nine; retain the +0x2000 word. */
+    u16 unk_1f18[10];
+    u8 pad_1f2c[0xd4];
     u32 unk_2000;
 } Unk100810Table;
 
@@ -845,7 +845,7 @@ void func_02106b24(Unk100810Table *work)
     }
 }
 
-/* Rebuilds a nine-row available-record window and its metadata drawing; selected ids start at +0x1f18. */
+/* Populates up to ten ids at +0x1f18, then draws metadata for the first nine rows. */
 void func_021057ac(Unk100810Table *work)
 {
     u16 i;
