@@ -13,10 +13,10 @@ void func_0203fa84(void);
 int func_0205410c();
 
 void Unk03e43c_Thunk_0203fa84(void);
-int Unk03e43c_Unk_03f2ac(int arg0);
-void Unk03e43c_Unk_03fa28(void);
+u8 *Unk03e43c_Unk_03f2ac(int offset);
+int Unk03e43c_Unk_03fa28(void);
 void Unk03e43c_Unk_03f2bc(void);
-void Unk03e43c_Unk_03fa3c(char arg0);
+void Unk03e43c_Unk_03fa3c(u8 value);
 
 typedef struct Unk03e43cTimer {
     u8 pad_0000[0x58];
@@ -24,15 +24,26 @@ typedef struct Unk03e43cTimer {
 } Unk03e43cTimer;
 
 extern u8 data_0215e85c[];
-void Unk03e43c_CopyEntry32(u8 *src, int idx)
+/*
+ * Copies one 32-byte entry from `src` into table slot `slot`. The payload
+ * starts two bytes past the slot base because the u16 header at data_0215e85c
+ * precedes the 512-byte table at data_0215e85e; callers pass a resource entry
+ * and a slot number (func_020b5e2c loads consecutive slots).
+ */
+void Unk03e43c_CopyEntry32(u8 *src, int slot)
 {
     int i;
     for (i = 0; i < 32; i += 2) {
-        data_0215e85c[idx * 32 + i + 2] = src[i];
-        data_0215e85c[idx * 32 + i + 3] = src[i + 1];
+        data_0215e85c[slot * 32 + i + 2] = src[i];
+        data_0215e85c[slot * 32 + i + 3] = src[i + 1];
     }
 }
 
+/*
+ * Merges the nonzero u16 entries of the 512-byte `src` table into the shared
+ * table at data_0215e85c (payload at +2); zero entries leave the destination
+ * unchanged. Callers pass a scratch table of at least 512 bytes.
+ */
 void Unk03e43c_MergeTable(u8 *src)
 {
     int i;
@@ -44,13 +55,15 @@ void Unk03e43c_MergeTable(u8 *src)
     }
 }
 
-void func_02020f8c();
-void func_02008848();
+void func_02020f8c(void);
+void func_02008848(void *destination, int value, u32 size);
 int func_0202092c();
 void func_020211d8();
-void func_0204b6d0();
-void Unk03e43c_Unk_043450();
+void func_0204b6d0(void);
+void Unk03e43c_Unk_043450(s16 *x, s16 *y, u32 unused);
 extern u8 data_0215ee60[];
+/* Clears the 512-byte table and its leading u16 after func_02020f8c;
+ * the two global stores in the original establish the table extent. */
 void Unk03e43c_ClearTable(void)
 {
     func_02020f8c();
@@ -58,13 +71,23 @@ void Unk03e43c_ClearTable(void)
     *(u16 *)data_0215e85c = 0;
 }
 
-void Unk03e43c_Unk_03e894(u8 *o, int b, int c, int d)
+/*
+ * Initializes one 32-byte draw entry: derives a value with
+ * func_0202092c(resource, index) and passes it with the setup pointer `a` to
+ * func_020211d8, then clears the u16 countdown at entry + 0x58. The original
+ * truncates `index` to u16 before the helper call. Callers pass the resource
+ * handles from a setup record (func_020b28e8).
+ */
+void Unk03e43c_Unk_03e894(u8 *entry, void *a, void *b, int index)
 {
-    func_020211d8(o, func_0202092c(c, (u16)d), b);
-    FIELD(u16, o, 0x58) = 0;
+    func_020211d8(entry, func_0202092c(b, (u16)index), a);
+    FIELD(u16, entry, 0x58) = 0;
 }
 
-/* Counts down; returns 1 once the counter is already 0. */
+/*
+ * Decrements the 16-bit countdown at +0x58 of `t` when it is nonzero and
+ * returns 1 once the counter has already reached zero (so callers can stop).
+ */
 int Unk03e43c_CountDown(Unk03e43cTimer *t)
 {
     if (t->count == 0) {
@@ -74,6 +97,10 @@ int Unk03e43c_CountDown(Unk03e43cTimer *t)
     return 0;
 }
 
+/*
+ * Maps a 0..159 counter to a 0..15 table slot by dividing by 10. Quotients
+ * that would not fit in four bits (>= 16) return the -1 sentinel.
+ */
 int Unk03e43c_Div10Clamp16(int x)
 {
     int r = x / 10;
@@ -83,6 +110,8 @@ int Unk03e43c_Div10Clamp16(int x)
     return r;
 }
 
+/* The byte access at +0x360 and comparison with 160 establish this counter:
+ * increment with byte wrap, then subtract 160 if the stored value is >= 160. */
 void Unk03e43c_AdvanceCounter360(void)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
@@ -92,44 +121,48 @@ void Unk03e43c_AdvanceCounter360(void)
     }
 }
 
-/* forwards to `func_0203fa84` */
+/* Forwards to `func_0203fa84` (tail call in the original). */
 void Unk03e43c_Thunk_0203fa84(void) { func_0203fa84(); }
 
-/* decompiler-derived */
-int Unk03e43c_Unk_03f2ac(int arg0)
+/*
+ * Returns a byte pointer `offset` bytes into the shared table at data_0215e85e.
+ * Unk03e43c_Unk_044194 treats the result as a u16 array.
+ */
+u8 *Unk03e43c_Unk_03f2ac(int offset)
 {
-  return ((int)data_0215e85e) + arg0;
+  return data_0215e85e + offset;
 }
 
-/* decompiler-derived */
-void Unk03e43c_Unk_03fa28(void)
+/*
+ * Returns the work-area counter at +0x360 mapped through Unk03e43c_Div10Clamp16
+ * (a 0..15 table slot, or -1 when the counter is out of range).
+ */
+int Unk03e43c_Unk_03fa28(void)
 {
-  int value;
-  value = Unk02e000_GetWorkArea();
-  Unk03e43c_Div10Clamp16(*(u8 *)(value + 0x360));
+  u8 *work = (u8 *)Unk02e000_GetWorkArea();
+  return Unk03e43c_Div10Clamp16(work[0x360]);
 }
 
-/* decompiler-derived */
+/* Sets bit 1 of the byte at +0x10 in the object returned by func_0205410c. */
 void Unk03e43c_Unk_03f2bc(void)
 {
-  int value;
-  value = func_0205410c();
-  *(u8 *)(value + 0x10) = *(u8 *)(value + 0x10) | 2;
+  u8 *p = (u8 *)func_0205410c();
+  p[0x10] |= 2;
 }
 
-/* decompiler-derived */
-void Unk03e43c_Unk_03fa3c(char arg0)
+/* Stores `value * 10` in the work-area counter byte at +0x360 (inverse of /10). */
+void Unk03e43c_Unk_03fa3c(u8 value)
 {
-  int value;
-  value = Unk02e000_GetWorkArea();
-  *(char *)(value + 0x360) = arg0 * '\n';
+  u8 *work = (u8 *)Unk02e000_GetWorkArea();
+  work[0x360] = value * 10;
 }
 
 
-int func_02020974();
-int func_02051610();
-int func_020516d0();
-/* decompiler-derived */
+int func_02020974(int value, u32 argument);
+int func_02051610(u32 argument);
+int func_020516d0(u32 value);
+/* Obtains a value from arg1, validates it with func_02020974 and arg0,
+ * and releases it on validation failure. Returns zero on either failure. */
 int Unk03e43c_Unk_03e5a4(u32 arg0,u32 arg1)
 {
   int value1;
@@ -145,8 +178,9 @@ int Unk03e43c_Unk_03e5a4(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_020207d0();
-/* decompiler-derived */
+int func_020207d0(int value, u32 argument);
+/* Returns the acquired value when func_020207d0 accepts it with arg0;
+ * releases rejected values and returns zero on failure. */
 int Unk03e43c_Unk_03e5dc(u32 arg0,u32 arg1)
 {
   int value1;
@@ -162,8 +196,9 @@ int Unk03e43c_Unk_03e5dc(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_02020ac0();
-/* decompiler-derived */
+int func_02020ac0(int value, u32 argument);
+/* Returns the acquired value when func_02020ac0 accepts it with arg0;
+ * releases rejected values and returns zero on failure. */
 int Unk03e43c_Unk_03e614(u32 arg0,u32 arg1)
 {
   int value1;
@@ -179,8 +214,9 @@ int Unk03e43c_Unk_03e614(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_02020a74();
-/* decompiler-derived */
+int func_02020a74(int value, u32 argument);
+/* Returns the acquired value when func_02020a74 accepts it with arg0;
+ * releases rejected values and returns zero on failure. */
 int Unk03e43c_Unk_03e64c(u32 arg0,u32 arg1)
 {
   int value1;
@@ -196,28 +232,89 @@ int Unk03e43c_Unk_03e64c(u32 arg0,u32 arg1)
   return 0;
 }
 
-extern u8 data_0215e85c[];
-/* decompiler-derived */
-void Unk03e43c_Unk_03e794(int arg0,int arg1)
+/* Work area returned by Unk02e000_GetWorkArea; only +0x35c is named here. */
+typedef struct Unk03e43cWorkArea {
+    u8 pad_0000[0x35c];
+    u16 unk_035c;               /* passed to func_0203fb14 when func_0204b4c4() is 0 */
+} Unk03e43cWorkArea;
+
+/* 0x299c-byte task object allocated by func_0203fa84 (size from its func_020611dc call);
+ * only the field written there is named. */
+typedef struct Unk03e43cTask {
+    u8 pad_0000[0x28dc];
+    Unk03e43cWorkArea *unk_28dc;
+} Unk03e43cTask;
+
+/* Header returned by func_02056110: list passed to func_0205bf18 at +8, callback at +0x201c. */
+typedef struct Unk03e684Table {
+    u8 pad_0000[8];
+    u8 unk_0008[0x201c - 0x8];  /* size runs up to the callback; real extent unknown */
+    u32 (*unk_201c)(int mode, u32 a, u32 b);
+} Unk03e684Table;
+
+/* Argument block passed by pointer to func_0205bf18. */
+typedef struct Unk03e684Args {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+    u32 unk_0c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+} Unk03e684Args;
+
+Unk03e684Table *func_02056110(u32 a);
+void func_0205bf18(u8 *list, Unk03e684Args *args);
+void *func_020611dc(void *update, void *hook1, void *hook2, void *cleanup,
+    u32 size, u32 arg5, u32 arg6, u32 arg7);
+void func_02040064(void);
+void func_020416bc(void);
+void Unk03e43c_Unk_041ce4(u8 *p);
+int func_0204b4c4(void);
+u16 Unk04bb9c_GetCtxUnka20(void);
+void func_0203fb14(Unk03e43cTask *task, u32 value);
+
+/*
+ * Looks up the table for `id` via func_02056110, asks its callback at +0x201c
+ * for a value (mode 4, args b and c), and passes {a, d, value, 0, 0, 0, 0} with
+ * the table's list at +8 to func_0205bf18. Meanings of the values are unknown.
+ */
+void func_0203e684(u32 id, u32 a, u32 b, u32 c, u32 d)
 {
-  int value1;
-  int value2;
-  int value3;
-  value2 = 0;
-  value3 = ((int)data_0215e85c) + arg1 * 0x20;
-  do {
-    value1 = arg0 + value2;
-    value2 = value2 + 2;
-    *(u8 *)(value3 + 2) = *(u8 *)(value1 + 0x28);
-    *(u8 *)(value3 + 3) = *(u8 *)(value1 + 0x29);
-    value3 = value3 + 2;
-  } while (value2 < 0x20);
+    Unk03e684Table *t = func_02056110(id);
+    Unk03e684Args args;
+    args.unk_08 = t->unk_201c(4, b, c);
+    args.unk_00 = a;
+    args.unk_04 = d;
+    args.unk_0c = 0;
+    args.unk_10 = 0;
+    args.unk_14 = 0;
+    args.unk_18 = 0;
+    func_0205bf18(t->unk_0008, &args);
+}
+
+/* Copies the 32 bytes at source +0x28 into table slot index. The paired
+ * byte loads/stores establish the extent; callers must supply a valid slot. */
+void Unk03e43c_Unk_03e794(const u8 *source, int index)
+{
+    const u8 *pair;
+    int offset = 0;
+    u8 *destination = data_0215e85c + index * 32;
+    do {
+        pair = source + offset;
+        offset += 2;
+        destination[2] = pair[0x28];
+        destination[3] = pair[0x29];
+        destination += 2;
+    } while (offset < 32);
 }
 
 
 
 
 int GameState_GetBody();
+/* Stores mode at global +0x30; the original checks mode 1 and a zero
+ * word at +0x34 before calling func_0204b6d0. These accesses support the name. */
 void Unk03e43c_SetMode30(int mode)
 {
     FIELD(s32, data_0215ee60, 0x30) = mode;
@@ -226,11 +323,18 @@ void Unk03e43c_SetMode30(int mode)
     }
 }
 
+/*
+ * Recomputes the two s16 screen coordinates at +0x18/+0x1a through
+ * Unk03e43c_Unk_043450, forwarding the object's +0x2000:+0x8dc word as the
+ * helper's third argument. When either coordinate changed, sets the dirty
+ * flag word at +0x04 to 1; otherwise it leaves the object untouched.
+ */
 void Unk03e43c_UpdatePos18(u8 *o)
 {
     s16 x = FIELD(s16, o, 0x18);
     s16 y = FIELD(s16, o, 0x1a);
-    Unk03e43c_Unk_043450(o + 0x18, o + 0x1a, FIELD(u32, o, 0x28dc));
+    Unk03e43c_Unk_043450((s16 *)(o + 0x18), (s16 *)(o + 0x1a),
+                         FIELD(u32, o, 0x28dc));
     if (FIELD(s16, o, 0x18) != x || FIELD(s16, o, 0x1a) != y) {
         FIELD(u32, o, 0x04) = 1;
     }
@@ -259,8 +363,11 @@ void Unk03e43c_Unk_0434b0(short *arg0,short *arg1)
   }
 }
 
-int func_02056cc0();
-/* decompiler-derived */
+int func_02056cc0(int mode, int index, u8 *table);
+/*
+ * Registers the 512-byte table at data_0215e85e with func_02056cc0, passing the
+ * (1, 0, table) arguments seen in the original.
+ */
 void Unk03e43c_Call_02056cc0(void)
 {
   func_02056cc0(1,0,data_0215e85e);
@@ -272,6 +379,12 @@ void Unk03e43c_Call_02056cc0(void)
 
 typedef struct Unk03e43cEnt { u8 pad[4]; u16 unk_04; u8 pad2[2]; } Unk03e43cEnt;
 typedef struct Unk03e43cTab { u16 n; u8 pad[10]; Unk03e43cEnt *ents; } Unk03e43cTab;
+/*
+ * Advances the u16 counter at +0x58 by one until it reaches the sum of the
+ * u16 durations at +4 of every entry in the table referenced at +0x1c.
+ * Returns 1 when the counter is already at or above the total (no write), or
+ * 0 after incrementing it. The animation/timing meaning is not known.
+ */
 int Unk03e43c_Unk_03e8cc(u8 *p)
 {
     Unk03e43cTab *q = FIELD(Unk03e43cTab *, p, 28);
@@ -287,6 +400,11 @@ int Unk03e43c_Unk_03e8cc(u8 *p)
     return 0;
 }
 
+/*
+ * Shifts *a by 512 (and *b by 256) toward x (y) when the distance between them
+ * exceeds half that period (256 / 128), i.e. unwraps two periodic coordinates
+ * so they lie on the same side as the target. The axis meanings are unknown.
+ */
 void Unk03e43c_Unk_03f234(s16 *a, s16 *b, int x, int y)
 {
     int v = *a;
@@ -324,6 +442,31 @@ void Unk03e43c_Unk_044194(u8 *p);
 void Unk03e43c_MergeTable(u8 *src);
 void Unk03e43c_Call_02056cc0(void);
 
+/*
+ * Creates a 0x299c-byte task through func_020611dc with callbacks
+ * func_02040064, func_020416bc and Unk03e43c_Unk_041ce4 (third slot empty),
+ * stores the work area in it, then calls func_0203fb14 with either
+ * Unk04bb9c_GetCtxUnka20() (when func_0204b4c4() is nonzero) or the work-area
+ * u16 at +0x35c. Reached through Unk03e43c_Thunk_0203fa84.
+ */
+void func_0203fa84(void)
+{
+    Unk03e43cTask *task = func_020611dc(func_02040064, func_020416bc, 0, Unk03e43c_Unk_041ce4,
+        0x299c, 0, 0, 0);
+    task->unk_28dc = (Unk03e43cWorkArea *)Unk02e000_GetWorkArea();
+    if (func_0204b4c4() != 0) {
+        func_0203fb14(task, Unk04bb9c_GetCtxUnka20());
+    } else {
+        func_0203fb14(task, task->unk_28dc->unk_035c);
+    }
+}
+
+/*
+ * Cleanup callback registered by func_0203fa84: releases four handles
+ * (+0xc, +0x2874, +0x2878, +0x287c) with func_020516d0, calls func_0204b6d0
+ * when the mode word at data_0215ee60+0x30 is 1, passes +0x298c to
+ * func_020629c4 and clears it, then clears data_0215ee60 +0x30/+0x34.
+ */
 void Unk03e43c_Unk_041ce4(u8 *p)
 {
     func_020516d0(FIELD(u32, p, 12));
@@ -341,7 +484,13 @@ void Unk03e43c_Unk_041ce4(u8 *p)
     FIELD(u32, data_0215ee60, 52) = 0;
 }
 
-void Unk03e43c_Unk_043450(s16 *x, s16 *y)
+/*
+ * Computes the two s16 screen coordinates pointed to by `x` and `y` from the
+ * signed map bytes at work+0x300:+100/+101 and the matching GameState fields:
+ * coordinate = 128/96 - ((mapByte - gameField) * 8). The third argument is
+ * forwarded by Unk03e43c_UpdatePos18 but this body does not read it.
+ */
+void Unk03e43c_Unk_043450(s16 *x, s16 *y, u32 unused)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     *x = 128 - ((s8)(FIELD(s8, w + 0x300, 100) - GameState_GetUnkField74f4()) << 3);
@@ -349,6 +498,11 @@ void Unk03e43c_Unk_043450(s16 *x, s16 *y)
     *y = 96 - ((s8)(FIELD(s8, w + 0x300, 101) - GameState_GetUnkField74f6()) << 3);
 }
 
+/*
+ * Counts the 37 flags at indices 0..36 through Unk02f078_TestFlag380 and maps
+ * the total to a tier constant: >20 -> 48, >16 -> 24, >12 -> 23, >8 -> 22,
+ * >4 -> 21, otherwise 20. The flag/tier meanings are not known.
+ */
 int Unk03e43c_Unk_043560(void)
 {
     int n = 0;
@@ -376,6 +530,12 @@ int Unk03e43c_Unk_043560(void)
     return 20;
 }
 
+/*
+ * Resets the seven per-slot bytes at p+0x2000:+0x982, writes 0x73f5 into the
+ * four u16 table entries at slots 1..4, merges those nonzero entries into the
+ * shared table, and re-registers the table with the resource layer. The
+ * per-slot flag and value meanings are not known.
+ */
 void Unk03e43c_Unk_044194(u8 *p)
 {
     u16 *t;
@@ -391,6 +551,12 @@ void Unk03e43c_Unk_044194(u8 *p)
     Unk03e43c_Call_02056cc0();
 }
 
+/*
+ * Resets the object at data_0215ee60+0x34: clears the bytes at +0x2986, +0x2987,
+ * +0x28e3 and the words at +0x28cc, +0x4, +0x10, +0x28c4, re-runs
+ * Unk03e43c_Unk_044194 on it and sets the context field via
+ * Unk04bb9c_SetCtxUnka14(-1). Field meanings are unknown.
+ */
 void Unk03e43c_Unk_0441ec(void)
 {
     FIELD(u8, FIELD(u8 *, data_0215ee60, 52) + 0x2000, 2438) = 0;
