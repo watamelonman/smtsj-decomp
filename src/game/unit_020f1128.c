@@ -6,7 +6,7 @@
 /* empty callback */
 void Unk0f1128_Nop_0f21ac(void) { }
 
-int func_020dde3c();
+int CampStatus_Unk_0dde3c();
 /* decompiler-derived */
 void Unk0f1128_Unk_0f2d30(u32 arg0,int arg1,u32 arg2,u32 arg3)
 {
@@ -14,7 +14,7 @@ void Unk0f1128_Unk_0f2d30(u32 arg0,int arg1,u32 arg2,u32 arg3)
   u32 uStack_8;
   local_c = arg1 + 200;
   uStack_8 = arg3;
-  func_020dde3c(arg0,0xc,0x17,&local_c,1);
+  CampStatus_Unk_0dde3c(arg0,0xc,0x17,&local_c,1);
 }
 
 void Unk0bd5f0_Unk_0c7f70();

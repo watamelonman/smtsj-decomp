@@ -515,7 +515,7 @@ typedef struct Unk100810Message {
 } Unk100810Message;
 
 int Unk02e000_SetRecord(u16 id, Unk100810Saved *saved);
-void func_020d6cac(Unk100810Bytes *bytes);
+void CampStatus_Copy168(Unk100810Bytes *bytes);
 void CampStatus_Copy12c(Unk100810Result *record);
 void func_020bcbc4(int kind, Unk100810Message *message);
 
@@ -528,16 +528,16 @@ void func_021065fc(Unk100810Input *input)
     int i;
     if (input->id == 0) {
         func_02008848(&result, 0, 60);
-        func_020d6cac(&result.bytes_28);
+        CampStatus_Copy168(&result.bytes_28);
     } else if (Unk100810_IsField50One()) {
         if (Unk02e000_SetRecord(input->id, &saved)) {
             func_021067e8(&saved, input->id, &result);
-            func_020d6cac(&result.bytes_28);
+            CampStatus_Copy168(&result.bytes_28);
         }
         func_021066f0(input, &result);
     } else {
         func_021066f0(input, &result);
-        func_020d6cac(&result.bytes_28);
+        CampStatus_Copy168(&result.bytes_28);
     }
     CampStatus_Copy12c(&result);
     for (i = 0; i < 2; i++) message.flags[i] = 0;

@@ -520,7 +520,7 @@ void func_0205de40(int mode, u32 handle, int id, int x, int y,
  * and 020a9bb4 receives their values. x is not dereferenced as a pointer. */
 void func_020a9fd8(int mode, int x, int y, int a, int b, int layer,
                    const void *text, int value);
-void func_020dd910(u32 *object);
+void CampStatus_Unk_0dd910(u32 *object);
 void func_02060dd4(void *out, u32 *object, int a, int b, int c);
 void func_02059f70(u32 handle, int a, int id, int value,
                    const void *data, int b, int layer);
@@ -639,7 +639,7 @@ void func_02067c88(u32 *owner)
     u8 local[16];
     int value;
     Unk065e88TableEntry *entry;
-    func_020dd910(owner);
+    CampStatus_Unk_0dd910(owner);
     func_02060dd4(local, owner, 0, 0, 8);
     func_02059f70(*owner, 0, 161, 1, local, 0, 10);
     func_02057df8();
@@ -1002,7 +1002,7 @@ u16 func_02068bf8(Unk065e88Owner *owner, const u16 *ids, int count)
 }
 
 void func_0205c6f8(u32 handle);
-void func_020dc908(void);
+void CampStatus_Unk_0dc908(void);
 /* At 02067134, disables and releases twelve plus eight callback objects after
  * releasing owner handles. Every callback slot must contain a valid object. */
 void func_02067134(Unk065e88Owner *owner)
@@ -1043,7 +1043,7 @@ void func_02067134(Unk065e88Owner *owner)
         owner->unk_03b8[i] = 0;
     }
     func_0205bb68();
-    func_020dc908();
+    CampStatus_Unk_0dc908();
 }
 
 /* At 020679a0, selects category/state dispatch words, builds a descriptor and
