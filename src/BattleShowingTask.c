@@ -20,58 +20,87 @@ typedef struct BattleShowingTaskWork {
     u32 unk_0028;
 } BattleShowingTaskWork;
 
-extern u32 data_02176e70[];
-int Unk0a0ce4_Unk_0a0d30();
-int func_02119658();
+/* Handle of the live battle-showing task (bss); 0 when none is running. */
+extern u32 data_02176e70;
+/* Task-side call forwarded by BattleShowingTask_Unk_1196e0 during task init. */
+void Unk0a0ce4_Unk_0a0d30(u32 arg);
+/* Creates the task object through func_020611dc and returns it, or 0. */
+u32 func_02119658(void);
 
 void BattleShowingTask_Nop_11982c(void);
 void BattleShowingTask_Nop_119830(void);
 void BattleShowingTask_Nop_11984c(void);
 void BattleShowingTask_Nop_119850(void);
-u32 BattleShowingTask_GetUnkField28(void *obj);
+u32 BattleShowingTask_GetUnkField28(BattleShowingTaskWork *work);
 void BattleShowingTask_Unk_119834(void);
-void BattleShowingTask_Unk_1196e0(u32 *arg0);
+void BattleShowingTask_Unk_1196e0(u32 *task);
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
-void Unk02cad4_Unk_02cbdc();
+void Unk02cad4_Unk_02cbdc(u32 arg);
 void BattleShowingTask_Unk_1196c0(void)
 {
-    *data_02176e70 = 0;
+    data_02176e70 = 0;
     Unk02cad4_Unk_02cbdc(1);
 }
 
-/* empty callback */
+/*
+ * Task hooks for the battle-showing screen. These addresses are referenced as
+ * plain callback words in .data: the descriptor at 0x0213d7f4 is
+ * {0x02119834, 0x0211984c, 0x02119850, 1, 1, ...} and func_02119658's literal
+ * pool at 0x021196b4 holds 0x0211982c and 0x02119830, which it passes to
+ * func_020611dc (the call that returns the new task object). All four Nop
+ * hooks are empty (bx lr), so calling them has no effect.
+ */
+
+/* 0x0211982c: empty task callback (bx lr), passed to func_020611dc by func_02119658. */
 void BattleShowingTask_Nop_11982c(void) { }
 
-/* empty callback */
+/* 0x02119830: empty task callback (bx lr), passed to func_020611dc by func_02119658. */
 void BattleShowingTask_Nop_119830(void) { }
 
-/* empty callback */
+/* 0x0211984c: empty task callback (bx lr), slot 1 of the descriptor at 0x0213d7f4. */
 void BattleShowingTask_Nop_11984c(void) { }
 
-/* empty callback */
+/* 0x02119850: empty task callback (bx lr), slot 2 of the descriptor at 0x0213d7f4. */
 void BattleShowingTask_Nop_119850(void) { }
 
-/* get u32 at +0x28 */
-u32 BattleShowingTask_GetUnkField28(void *obj) { return ((BattleShowingTaskWork *)obj)->unk_0028; }
+/*
+ * Returns the dword at +0x28 of a battle-showing work object. The two callers
+ * at 0x0211adbc and 0x0211ae70 compare the result against 1 and 3, so +0x28 is
+ * a state value (the same slot is ExpGauge.state below).
+ */
+u32 BattleShowingTask_GetUnkField28(BattleShowingTaskWork *work) { return work->unk_0028; }
 
-/* decompiler-derived */
+/*
+ * Descriptor entry 0 at 0x0213d7f4: creates the battle-showing task with
+ * func_02119658 and publishes its handle in data_02176e70. That global is
+ * cleared again by BattleShowingTask_Unk_1196c0 when the task is torn down.
+ */
 void BattleShowingTask_Unk_119834(void)
 {
   u32 value;
   value = func_02119658();
-  *data_02176e70 = value;
+  data_02176e70 = value;
 }
 
-/* decompiler-derived */
-void BattleShowingTask_Unk_1196e0(u32 *arg0)
+/*
+ * Initializes a fresh task object: clears words +0x00 and +0x04 and forwards 1
+ * to Unk0a0ce4_Unk_0a0d30. Sole caller is func_02119658 (at 0x021196a0),
+ * which passes the object returned by func_020611dc and then returns it.
+ */
+void BattleShowingTask_Unk_1196e0(u32 *task)
 {
-  *arg0 = 0;
-  arg0[1] = 0;
+  task[0] = 0;
+  task[1] = 0;
   Unk0a0ce4_Unk_0a0d30(1);
 }
 
-/* decompiler-derived */
+/*
+ * Bounds-checked record lookup: returns work->unk_0004[work->unk_000c] while
+ * the index is below the count work->unk_0008, and 0 otherwise. The callers
+ * BattleShowingTask_Unk_11c5d0/11c610/11c670 use the result as a record and
+ * read u16 fields at +0x08, +0x1c and +0x1e from it.
+ */
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work)
 {
   u32 value;

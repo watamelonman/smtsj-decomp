@@ -1,13 +1,25 @@
 # src/BattleShowingTask.c
 
-- `BattleShowingTask_Nop_11982c` (4 B): empty callback
-- `BattleShowingTask_Nop_119830` (4 B): empty callback
-- `BattleShowingTask_Nop_11984c` (4 B): empty callback
-- `BattleShowingTask_Nop_119850` (4 B): empty callback
-- `BattleShowingTask_GetUnkField28` (8 B): get u32 at +0x28
-- `BattleShowingTask_Unk_119834` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `BattleShowingTask_Unk_1196e0` (28 B): decompiler-derived (Ghidra output, cleaned)
-- `BattleShowingTask_Unk_11c230` (28 B): decompiler-derived (Ghidra output, cleaned)
+- `BattleShowingTask_Nop_11982c` (4 B): empty task callback (`bx lr`); its address is in
+  `func_02119658`'s literal pool at `0x021196b4`, which passes it to `func_020611dc`
+  (the call that returns the new task object).
+- `BattleShowingTask_Nop_119830` (4 B): empty task callback (`bx lr`); passed to
+  `func_020611dc` from `func_02119658` (literal `0x021196b8`).
+- `BattleShowingTask_Nop_11984c` (4 B): empty task callback (`bx lr`); slot 1 of the callback
+  descriptor at `0x0213d7f4`.
+- `BattleShowingTask_Nop_119850` (4 B): empty task callback (`bx lr`); slot 2 of the callback
+  descriptor at `0x0213d7f4`.
+- `BattleShowingTask_GetUnkField28` (8 B): returns the dword at work `+0x28`; its callers
+  (`0x0211adbc`, `0x0211ae70`) compare it with 1 and 3, so it is a state value.
+- `BattleShowingTask_Unk_119834` (24 B): descriptor entry 0 at `0x0213d7f4`; calls
+  `func_02119658` to create the battle-showing task and stores the handle in
+  `data_02176e70` (cleared by `BattleShowingTask_Unk_1196c0` on teardown).
+- `BattleShowingTask_Unk_1196e0` (28 B): clears words `+0x00`/`+0x04` of a fresh task and
+  forwards 1 to `Unk0a0ce4_Unk_0a0d30`; sole caller `func_02119658` (at `0x021196a0`) passes
+  the object returned by `func_020611dc`.
+- `BattleShowingTask_Unk_11c230` (28 B): bounds-checked lookup of `unk_0004[unk_000c]` while
+  the index is below count `unk_0008`, else 0; callers `Unk_11c5d0`/`11c610`/`11c670` read
+  u16 fields at `+0x08`, `+0x1c` and `+0x1e` from the returned record.
 - `ExpGauge_Update`: hand-written (see comment in source)
 
 ## Not done in M1-T1035
