@@ -36,50 +36,76 @@ int Unk0e1648_Unk_0e2da0(int arg0);
 void Unk0e1648_Unk_0e2cb0(Unk0e1648Work *work);
 void Unk0e1648_Unk_0e5434(void);
 int Unk0e1648_Unk_0e1648(void);
-int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,int arg1);
+int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,Unk0e1648Work *other);
 
 typedef struct Unk0e1648Obj {
     u8 pad_0000[0xeec];
     u8 unk_0eec;
 } Unk0e1648Obj;
 
+/*
+ * Reports whether the byte at +0xeec is still in use. Both the initialiser
+ * (Unk0e1648_Unk_0e16f0) and the teardown path (Unk0e1648_Unk_0e2f54) store
+ * 0xff there, so 0xff is the "cleared" marker and any other value means set.
+ */
 int Unk0e1648_IsUnkeecSet(Unk0e1648Obj *o)
 {
     return o->unk_0eec != 0xff;
 }
 
-/* decompiler-derived */
-u32 Unk0e1648_Unk_0e5240(int arg0,int arg1)
+/*
+ * Reads entry `index` of the 32-bit table that starts at +0xc in the object at
+ * `base`. The 0e51cc/0e51f4/0e5214 helpers all use this to fetch the handle
+ * they pass to the 0205c41c/0205caa8/0205c6ec functions.
+ */
+u32 Unk0e1648_Unk_0e5240(int base,int index)
 {
-  return *(u32 *)(arg0 + arg1 * 4 + 0xc);
+  return *(u32 *)(base + index * 4 + 0xc);
 }
 
-/* decompiler-derived */
+/*
+ * Returns word 0 of the global state block data_02176c78. Word 1 of the same
+ * block is treated as a pointer by Unk0e1648_Unk_0e1664, so this is the plain
+ * first-word accessor.
+ */
 u32 Unk0e1648_Get_data_02176c78(void)
 {
   return *data_02176c78;
 }
 
-/* decompiler-derived */
-int Unk0e1648_Unk_0e2da0(int arg0)
+/*
+ * Returns the address of the 8-byte record selected by work->unk_007c in the
+ * table at +0xd2. Callers use it as a base for the u16 fields at +0xd4/+0xd6;
+ * Unk0e1648_Unk_0e2d80, for example, passes the u16 at +0xd4 to func_020f3de8.
+ */
+int Unk0e1648_Unk_0e2da0(int self)
 {
-  return arg0 + 0xd2 + ((Unk0e1648Work *)arg0)->unk_007c * 8;
+  return self + 0xd2 + ((Unk0e1648Work *)self)->unk_007c * 8;
 }
 
-/* decompiler-derived */
+/*
+ * Flips the boolean stored at work->unk_0ec0: zero becomes one and any non-zero
+ * value becomes zero.
+ */
 void Unk0e1648_Unk_0e2cb0(Unk0e1648Work *work)
 {
   work->unk_0ec0 = (u32)(work->unk_0ec0 == 0);
 }
 
-/* decompiler-derived */
+/*
+ * Forwards zero to both Unk0e7ac4_Unk_0e8014 and Unk0e7ac4_Unk_0e8030, i.e. it
+ * clears/resets those two subsystems in sequence.
+ */
 void Unk0e1648_Unk_0e5434(void)
 {
   Unk0e7ac4_Unk_0e8014(0);
   Unk0e7ac4_Unk_0e8030(0);
 }
 
-/* decompiler-derived */
+/*
+ * Returns 1 when word 1 of data_02176c78 is null, else 0. Unk0e1648_Unk_0e1664
+ * uses this as a guard before dereferencing that word.
+ */
 int Unk0e1648_Unk_0e1648(void)
 {
   return *(int *)(((int)data_02176c78) + 4) == 0;
@@ -94,13 +120,17 @@ u32 Unk0e1648_Unk_0e1664(void)
     return FIELD(u32, FIELD(u8 *, data_02176c78, 4), 88);
 }
 
-/* decompiler-derived */
-int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,int arg1)
+/*
+ * Lexicographic comparison of two work objects. Returns the difference of the
+ * unk_0006 words, or, when those are equal, the difference of the unk_0004
+ * words. A zero result therefore means both keys match.
+ */
+int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,Unk0e1648Work *other)
 {
   int value;
-  value = (u32)work->unk_0006 - (u32)((Unk0e1648Work *)arg1)->unk_0006;
+  value = (u32)work->unk_0006 - (u32)other->unk_0006;
   if (value == 0) {
-    value = (u32)work->unk_0004 - (u32)((Unk0e1648Work *)arg1)->unk_0004;
+    value = (u32)work->unk_0004 - (u32)other->unk_0004;
   }
   return value;
 }

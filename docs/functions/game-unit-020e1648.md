@@ -1,15 +1,25 @@
 # src/game/unit_020e1648.c
 
-- `Unk0e1648_Unk_0e5240` (12 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e1648_Get_data_02176c78` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e1648_Unk_0e2da0` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e1648_Unk_0e2cb0` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e1648_Unk_0e5434` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e1648_Unk_0e1648` (28 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e1648_Unk_0e2c90` (32 B): decompiler-derived (Ghidra output, cleaned)
+These eight functions are all hand-matched (100% in objdiff).
+
+- `Unk0e1648_Unk_0e5240` (12 B): reads the 32-bit entry `index` from the table at
+  `base + 0xc`; the 0e51cc/0e51f4/0e5214 helpers use it to fetch their handles.
+- `Unk0e1648_Get_data_02176c78` (16 B): returns word 0 of the global state block
+  `data_02176c78`.
+- `Unk0e1648_Unk_0e2da0` (16 B): returns the address of the 8-byte record selected by
+  `work->unk_007c` in the table at `+0xd2` (callers read its u16 fields at `+0xd4`/`+0xd6`).
+- `Unk0e1648_IsUnkeecSet` (20 B): returns non-zero when the mark byte at `+0xeec` is not
+  `0xff`; `0e16f0` and `0e2f54` both write `0xff` there to clear it.
+- `Unk0e1648_Unk_0e2cb0` (24 B): flips the boolean at `work->unk_0ec0` (zero becomes one,
+  non-zero becomes zero).
+- `Unk0e1648_Unk_0e5434` (24 B): forwards `0` to `Unk0e7ac4_Unk_0e8014` and
+  `Unk0e7ac4_Unk_0e8030`, resetting those two subsystems.
+- `Unk0e1648_Unk_0e1648` (28 B): returns 1 when word 1 of `data_02176c78` is null; `0e1664`
+  uses it as a guard before dereferencing that word.
+- `Unk0e1648_Unk_0e2c90` (32 B): lexicographic comparison of two work objects; returns the
+  `unk_0006` difference, or the `unk_0004` difference when the first key matches.
 
 ## Hard list
-- `Unk0e1648_IsUnkeecSet`: no candidate matched locally
 - `Unk0e1648_Unk_0e2d80`: decompiler-derived
 - `Unk0e1648_Unk_0e4f34`: decompiler-derived
 - `Unk0e1648_Unk_0e50c8`: decompiler-derived
