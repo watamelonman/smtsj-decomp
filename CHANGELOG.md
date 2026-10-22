@@ -2,6 +2,18 @@
 
 ## Unreleased
 - `src/game/unit_0209a268.c`: added the missing `func_0209a48c` bit test (typed, documented), so all eight M1-T1009 functions now match at 100% in objdiff.
+- Replaced unit_02090e60 refresh offsets with typed fields and pointer parameters, corrected the +0x3e0 helper flag description, and documented disassembly-led trials of the two large state functions.
+- `src/game/unit_02090e60.c`: matched `func_020934c8` (list refresh, 100% objdiff); documented `func_020935b8`, `func_020937a0`, `func_02092624` and `func_02090e60` as hard functions in `docs/functions/game-unit-02090e60.md`.
+- Corrected the YDM release function to accept its typed owner and added explicit helper prototypes.
+- Verified all five YDM loader/section accessors in `src/game/unit_020392f8.c` at 100% objdiff, with typed `YdmFile`/`YdmHeader` layouts, cited path format strings, and per-function documentation.
+- Matched all eight M1-T094 functions in `src/game/unit_021124f0.c` at 100% objdiff, including the event-flag position gate and the request-39 sender, with typed work/object/request layouts and per-function documentation.
+- Matched and documented all five `unit_020a1418` resource-19 lookups at 100% objdiff: binary search by id, scan by packed value, record validity predicate, and the kind-filtered id collector.
+- Matched all six functions in `src/game/unit_0203de08.c` at 100% objdiff, including the five- and four-selection `func_0204c804`/`func_0204c8f4` handlers, with per-function documentation.
+- Matched all eight M1-T083 functions in `src/game/unit_020bb6e8.c`, including the `func_020bb7e4` flag handler, with typed work/flag layouts and per-function documentation.
+- Matched and documented all five functions in `src/game/unit_02047fb4.c` (talk-tone and effect work handlers) at 100% objdiff, with typed work layouts and the effect spawn/teardown flow.
+- Matched all five functions in `src/game/unit_02047568.c` at 100% objdiff, with instruction-based comments and per-function documentation.
+- Matched all six functions in `src/game/unit_0203ca38.c` at 100% objdiff, including the 136-byte `func_0203cb7c` mode dispatcher, with per-function documentation.
+- Matched `func_0211f0a0` in `src/game/unit_0211f0a0.c` (three-entry gauge draw) at 100% objdiff, with a typed work layout and per-function documentation.
 - Matched all six functions in `src/game/unit_0203b988.c` at 100% objdiff, including the 216-byte `func_0203b9dc` mode dispatcher, with per-function documentation.
 - Verified six `unit_0202ee5c` accessors at 100% objdiff, added typed contracts, and documented the remaining list assembly function in the hard list.
 - Matched all seven M1-T064 handlers in `src/game/unit_0203c05c.c`, including mode dispatch, with typed work fields and documented argument contracts.
