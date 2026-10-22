@@ -32,18 +32,31 @@ void Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u32 d)
     func_02065fc0(a, b, c, 3, d);
 }
 
-/* Stores both halves of the 0x04/0x08 pair. */
+/*
+ * Stores both words of the 0x04/0x08 pair. The two are always written together,
+ * so they are kept adjacent in GameObj; callers use the pair as one record.
+ */
 void Unk065e88_SetPair04(GameObj *obj, u32 a, u32 b) {
     obj->pairA = a;
     obj->pairB = b;
 }
 
-/* Setters for single fields. */
+/* Stores value in the unknown u32 at +0x20. */
 void Unk065e88_SetUnkField20(GameObj *obj, u32 value) { obj->field20 = value; }
+
+/* Stores value in the unknown u32 at +0x28. */
 void Unk065e88_SetUnkField28(GameObj *obj, u32 value) { obj->field28 = value; }
+
+/* Stores value in the unknown u32 at +0x24. */
 void Unk065e88_SetUnkField24(GameObj *obj, u32 value) { obj->field24 = value; }
+
+/* Stores value in the unknown u32 at +0x2C. */
 void Unk065e88_SetUnkField2C(GameObj *obj, u32 value) { obj->field2C = value; }
+
+/* Stores value in the unknown u32 at +0x30. */
 void Unk065e88_SetUnkField30(GameObj *obj, u32 value) { obj->field30 = value; }
+
+/* Stores value in the unknown u32 at +0x34. */
 void Unk065e88_SetUnkField34(GameObj *obj, u32 value) { obj->field34 = value; }
 
 typedef struct Unk065e88Flag {
@@ -92,7 +105,10 @@ u32 *Unk065e88_GetTableEntry(int i, int n)
     return Unk065e88_GetTable(i) + n;
 }
 
-/* Empty callback (no callers; likely a function-table entry). */
+/*
+ * Empty callback (a bare return, 4 bytes). It has no direct callers but its address
+ * is stored in a callback table by Unk065e88_Unk_06646c, so the body stays empty.
+ */
 void Unk065e88_Nop_066c90(void) { }
 
 

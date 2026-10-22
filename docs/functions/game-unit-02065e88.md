@@ -2,9 +2,21 @@
 
 Setters on a shared game object (layout `GameObj`, field meanings unknown).
 
-- `Unk065e88_SetPair04`: set fields 0x04 and 0x08 together.
-- `Unk065e88_SetUnkField20`/`Unk065e88_SetUnkField24`/`Unk065e88_SetUnkField28`/`Unk065e88_SetUnkField2C`/`Unk065e88_SetUnkField30`/`Unk065e88_SetUnkField34`: set the u32 at 0x20/0x24/0x28/0x2C/0x30/0x34.
-- `Unk065e88_Nop_066c90`: empty stub, no direct callers.
+## M1-T1017 (verified at 100% objdiff)
+- `Unk065e88_Nop_066c90`: empty body (bare `bx lr`, 4 bytes); address is stored in the
+  callback table built by `Unk065e88_Unk_06646c`. No direct callers. Neutral name: nothing
+  in the callers or data says what the callback does.
+- `Unk065e88_SetPair04`: stores the two arguments in the adjacent u32 pair at +0x04/+0x08.
+- `Unk065e88_SetUnkField20`: stores the u32 argument at +0x20.
+- `Unk065e88_SetUnkField24`: stores the u32 argument at +0x24.
+- `Unk065e88_SetUnkField28`: stores the u32 argument at +0x28.
+- `Unk065e88_SetUnkField2C`: stores the u32 argument at +0x2C.
+- `Unk065e88_SetUnkField30`: stores the u32 argument at +0x30.
+- `Unk065e88_SetUnkField34`: stores the u32 argument at +0x34.
+
+All eight are single `str r1,[r0,#off]` stores (or two for the pair) and were already present
+and matching when the card started; this task added per-function contracts and re-verified
+them with objdiff.
 - `Unk065e88_SetUnkField3c`: decompiler-derived
 - `Unk065e88_SetUnkFieldsc_10`: decompiler-derived
 - `Unk065e88_Unk_068554`: decompiler-derived
