@@ -1,11 +1,26 @@
 /*
- * src/game/unit_020e1648.c: matched functions (see docs). Bodies marked 'decompiler-derived' were
- * lifted from Ghidra output and cleaned; field meanings are not known yet.
+ * src/game/unit_020e1648.c: matched functions (see docs/functions/game-unit-020e1648.md).
+ * Field meanings are not known yet, so layouts are modelled with typed structs and guessed
+ * sizes; functions that are still decompiler-derived are marked at their definitions.
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+
+/* One 8-byte entry of the record table at work->unk_00d2; entry count is guessed. */
+typedef struct Unk0e1648Slot {
+    u16 unk_0000;
+    u16 unk_0002;
+    u16 unk_0004;
+    u16 pad_0006;
+} Unk0e1648Slot;
+
+/* 32-bit handle table at +0xc of the object; the entry count is guessed. */
+typedef struct Unk0e1648Table {
+    u8 pad_0000[0xc];
+    u32 unk_000c[32];
+} Unk0e1648Table;
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0e1648Work {
@@ -18,7 +33,8 @@ typedef struct Unk0e1648Work {
     s32 unk_007c;
     u8 pad_0080[0x50];
     u16 unk_00d0;
-    u8 pad_00d2[0xdce];
+    Unk0e1648Slot unk_00d2[441]; /* 441 eight-byte entries fill the 0xdce-byte gap. */
+    u8 pad_0e9a[6];
     u32 unk_0ea0;
     u8 pad_0ea4[0x1c];
     s32 unk_0ec0;
@@ -27,12 +43,12 @@ typedef struct Unk0e1648Work {
 } Unk0e1648Work;
 
 extern u32 data_02176c78[];
-int Unk0e7ac4_Unk_0e8014();
-int Unk0e7ac4_Unk_0e8030();
+void Unk0e7ac4_Unk_0e8014(u32 arg0);
+void Unk0e7ac4_Unk_0e8030(u32 arg0);
 
-u32 Unk0e1648_Unk_0e5240(int arg0,int arg1);
+u32 Unk0e1648_Unk_0e5240(Unk0e1648Table *table, int index);
 u32 Unk0e1648_Get_data_02176c78(void);
-int Unk0e1648_Unk_0e2da0(int arg0);
+Unk0e1648Slot *Unk0e1648_Unk_0e2da0(Unk0e1648Work *work);
 void Unk0e1648_Unk_0e2cb0(Unk0e1648Work *work);
 void Unk0e1648_Unk_0e5434(void);
 int Unk0e1648_Unk_0e1648(void);
@@ -54,13 +70,13 @@ int Unk0e1648_IsUnkeecSet(Unk0e1648Obj *o)
 }
 
 /*
- * Reads entry `index` of the 32-bit table that starts at +0xc in the object at
- * `base`. The 0e51cc/0e51f4/0e5214 helpers all use this to fetch the handle
- * they pass to the 0205c41c/0205caa8/0205c6ec functions.
+ * Reads entry `index` of the Unk0e1648Table handle array. The 0e51cc/0e51f4/
+ * 0e5214 helpers all use this to fetch the handle they pass to the
+ * 0205c41c/0205caa8/0205c6ec functions.
  */
-u32 Unk0e1648_Unk_0e5240(int base,int index)
+u32 Unk0e1648_Unk_0e5240(Unk0e1648Table *table,int index)
 {
-  return *(u32 *)(base + index * 4 + 0xc);
+  return table->unk_000c[index];
 }
 
 /*
@@ -74,13 +90,13 @@ u32 Unk0e1648_Get_data_02176c78(void)
 }
 
 /*
- * Returns the address of the 8-byte record selected by work->unk_007c in the
- * table at +0xd2. Callers use it as a base for the u16 fields at +0xd4/+0xd6;
- * Unk0e1648_Unk_0e2d80, for example, passes the u16 at +0xd4 to func_020f3de8.
+ * Returns the Unk0e1648Slot selected by work->unk_007c. Callers read its
+ * unk_0002/unk_0004 fields; Unk0e1648_Unk_0e2d80, for example, passes
+ * unk_0002 to func_020f3de8.
  */
-int Unk0e1648_Unk_0e2da0(int self)
+Unk0e1648Slot *Unk0e1648_Unk_0e2da0(Unk0e1648Work *work)
 {
-  return self + 0xd2 + ((Unk0e1648Work *)self)->unk_007c * 8;
+  return &work->unk_00d2[work->unk_007c];
 }
 
 /*
@@ -108,7 +124,7 @@ void Unk0e1648_Unk_0e5434(void)
  */
 int Unk0e1648_Unk_0e1648(void)
 {
-  return *(int *)(((int)data_02176c78) + 4) == 0;
+  return data_02176c78[1] == 0;
 }
 
 int Unk09974c_GetEntryUnk08();
@@ -304,7 +320,7 @@ int func_0205caa8();
 void Unk0e1648_Unk_0e51f4(u32 arg0,int arg1)
 {
   u32 tmp1;
-  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
+  tmp1 = Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
   func_0205caa8(tmp1,*(u32 *)(data_0213c674 + arg1 * 4));
 }
 
@@ -313,7 +329,7 @@ int func_0205c41c();
 void Unk0e1648_Unk_0e51cc(u32 arg0,u32 arg1)
 {
   u32 tmp1;
-  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
+  tmp1 = Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
   func_0205c41c(tmp1,0);
   Unk0e1648_Unk_0e51f4(arg0,arg1);
 }
@@ -323,9 +339,9 @@ int func_0205c6ec();
 void Unk0e1648_Unk_0e5214(u32 arg0,u32 arg1)
 {
   u32 tmp1;
-  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
+  tmp1 = Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
   func_0205c41c(tmp1,0);
-  Unk0e1648_Unk_0e5240(arg0, arg1);
+  Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
   func_0205c6ec();
 }
 
