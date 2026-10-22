@@ -14,12 +14,13 @@
 - `BattleShowingTask_Unk_119834` (24 B): descriptor entry 0 at `0x0213d7f4`; calls
   `func_02119658` to create the battle-showing task and stores the handle in
   `data_02176e70` (cleared by `BattleShowingTask_Unk_1196c0` on teardown).
-- `BattleShowingTask_Unk_1196e0` (28 B): clears words `+0x00`/`+0x04` of a fresh task and
-  forwards 1 to `Unk0a0ce4_Unk_0a0d30`; sole caller `func_02119658` (at `0x021196a0`) passes
-  the object returned by `func_020611dc`.
-- `BattleShowingTask_Unk_11c230` (28 B): bounds-checked lookup of `unk_0004[unk_000c]` while
-  the index is below count `unk_0008`, else 0; callers `Unk_11c5d0`/`11c610`/`11c670` read
-  u16 fields at `+0x08`, `+0x1c` and `+0x1e` from the returned record.
+- `BattleShowingTask_Unk_1196e0` (28 B): clears words `+0x00`/`+0x04` of a fresh task (typed as
+  `BattleShowingTask`) and forwards 1 to `Unk0a0ce4_Unk_0a0d30`; sole caller `func_02119658`
+  (at `0x021196a0`) passes the object returned by `func_020611dc`.
+- `BattleShowingTask_Unk_11c230` (28 B): bounds-checked lookup of `unk_0004[unk_000c]` (a
+  `u32 *` record table) while the index is below count `unk_0008`, else 0; callers
+  `Unk_11c5d0`/`11c610`/`11c670` read u16 fields at `+0x08`, `+0x1c` and `+0x1e` from the
+  returned record.
 - `ExpGauge_Update`: hand-written (see comment in source)
 
 ## Not done in M1-T1035

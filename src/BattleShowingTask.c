@@ -1,6 +1,7 @@
 /*
- * src/BattleShowingTask.c: matched functions (see docs). Bodies marked 'decompiler-derived' were
- * lifted from Ghidra output and cleaned; field meanings are not known yet.
+ * src/BattleShowingTask.c: battle-showing task callbacks and the post-battle EXP gauge.
+ * The functions matched for this card are hand-written; the remaining decompiler-derived
+ * bodies are still being cleaned up. Field meanings are not all known yet.
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
@@ -10,7 +11,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct BattleShowingTaskWork {
     u8 pad_0000[0x4];
-    s32 unk_0004;
+    u32 *unk_0004;              /* 0x04: record table, unk_0008 entries */
     s32 unk_0008;
     s32 unk_000c;
     u8 pad_0010[0x8];
@@ -19,6 +20,12 @@ typedef struct BattleShowingTaskWork {
     u8 pad_0020[0x8];
     u32 unk_0028;
 } BattleShowingTaskWork;
+
+/* Task object created by func_020611dc; init only touches its first two words. */
+typedef struct BattleShowingTask {
+    u32 unk_0000;
+    u32 unk_0004;
+} BattleShowingTask;
 
 /* Handle of the live battle-showing task (bss); 0 when none is running. */
 extern u32 data_02176e70;
@@ -33,7 +40,7 @@ void BattleShowingTask_Nop_11984c(void);
 void BattleShowingTask_Nop_119850(void);
 u32 BattleShowingTask_GetUnkField28(BattleShowingTaskWork *work);
 void BattleShowingTask_Unk_119834(void);
-void BattleShowingTask_Unk_1196e0(u32 *task);
+void BattleShowingTask_Unk_1196e0(BattleShowingTask *task);
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
 void Unk02cad4_Unk_02cbdc(u32 arg);
@@ -88,10 +95,10 @@ void BattleShowingTask_Unk_119834(void)
  * to Unk0a0ce4_Unk_0a0d30. Sole caller is func_02119658 (at 0x021196a0),
  * which passes the object returned by func_020611dc and then returns it.
  */
-void BattleShowingTask_Unk_1196e0(u32 *task)
+void BattleShowingTask_Unk_1196e0(BattleShowingTask *task)
 {
-  task[0] = 0;
-  task[1] = 0;
+  task->unk_0000 = 0;
+  task->unk_0004 = 0;
   Unk0a0ce4_Unk_0a0d30(1);
 }
 
@@ -105,7 +112,7 @@ u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work)
 {
   u32 value;
   if (work->unk_000c < work->unk_0008) {
-    value = *(u32 *)(work->unk_0004 + work->unk_000c * 4);
+    value = work->unk_0004[work->unk_000c];
   }
   else {
     value = 0;
