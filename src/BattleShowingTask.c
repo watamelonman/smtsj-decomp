@@ -247,12 +247,14 @@ void ExpGauge_Update(ExpGauge *g) {
 
 /* Resource lookup and dispatch signatures observed at 0x0211c4c4. */
 u32 func_020445f4(u32 id);
-void func_0204fed8(u32 resource, u32 value);
-/* Forward value with resource 0x29; original calls at 0x0211c4d0/0x0211c4d8. */
-void BattleShowingTask_Unk_11c4c4(u32 value)
+u32 func_0204fed8(u32 resource, u32 value);
+/* Forward value with resource 0x29 and return the dispatch result; original calls
+ * at 0x0211c4d0/0x0211c4d8. The second argument is unused here but the caller
+ * at 0x0211c4e0 supplies 2. */
+u32 BattleShowingTask_Unk_11c4c4(u32 value, u32 unused)
 {
     u32 resource = func_020445f4(0x29);
-    func_0204fed8(resource, value);
+    return func_0204fed8(resource, value);
 }
 
 /* The caller at 0x0211b684 supplies these three resource IDs in order. */
@@ -301,74 +303,87 @@ void BattleShowingTask_Unk_11a01c(ExpGauge *g)
 
 
 
-/* decompiler-derived */
-void BattleShowingTask_Unk_11a8dc(int arg0,u32 arg1)
+/* Six-byte entries at +0x268; only the first matching ID gets flag bit 3.
+ * Entry count and flag offset are observed in the ARM loop at 0x0211a8dc. */
+typedef struct BattleShowingEntry {
+    u16 id;
+    u16 unk02;
+    u8 flags;
+    u8 unk05;
+} BattleShowingEntry;
+/* Only this entry window is known; the preceding work fields are opaque. */
+typedef struct BattleShowingEntryWork {
+    u8 pad000[0x268];
+    BattleShowingEntry entries[15];
+} BattleShowingEntryWork;
+
+/* Set bit 3 on the first of 15 entries with the supplied ID (0x0211a8dc). */
+void BattleShowingTask_Unk_11a8dc(BattleShowingEntryWork *work, u32 id)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = 0;
-  tmp2 = arg0;
-  do {
-    if (arg1 == *(u16 *)(tmp2 + 0x268)) {
-      *(u8 *)(arg0 + 0x26c + tmp1 * 6) = *(u8 *)(arg0 + 0x26c + tmp1 * 6) | 8;
-      return;
-    }
-    tmp1 = tmp1 + 1;
-    tmp2 = tmp2 + 6;
-  } while (tmp1 < 0xf);
-  return;
+    int i = 0;
+    BattleShowingEntryWork *cursor = work;
+    do {
+        if (id == cursor->entries[0].id) {
+            work->entries[i].flags |= 8;
+            return;
+        }
+        i++;
+        cursor = (BattleShowingEntryWork *)((u8 *)cursor + sizeof(BattleShowingEntry));
+    } while (i < 15);
 }
 
-int func_020493e0();
-int func_0204faf0();
-int func_02065628();
-int func_0206569c();
-int func_02065bc0();
-int func_02065cfc();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c670(int arg0)
+/* Record fields read by the resource dispatchers at 0x0211c4e0..0x0211c670. */
+typedef struct BattleShowingRecord {
+    u8 pad00[8];
+    u16 id;
+    u8 pad0a[0x12];
+    u16 unk1c;
+    u16 unk1e;
+} BattleShowingRecord;
+u32 func_020493e0(u32 id);
+void func_0204faf0(u32 slot, u32 value);
+void func_02065628(u32 value);
+void func_0206569c(u32 value);
+void func_02065bc0(void);
+void func_02065cfc(u32 mode, s32 value);
+void func_02065864(u32 value, u32 mode);
+void func_0204fcb0(u32 slot, u32 value);
+u32 Unk0caea8_Unk_0cb044(u32 value);
+
+/* Publish current record ID in slot 6, then dispatch resource 10; ARM 0x0211c670. */
+void BattleShowingTask_Unk_11c670(BattleShowingTaskWork *work)
 {
-  int tmp1;
-  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
-  func_0204faf0(6,*(u16 *)(tmp1 + 8));
-  func_02065bc0();
-  func_02065628(1);
-  func_020493e0(10);
-  func_0206569c();
-  func_02065cfc(1,0);
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    func_0204faf0(6, record->id);
+    func_02065bc0();
+    func_02065628(1);
+    func_0206569c(func_020493e0(10));
+    func_02065cfc(1, 0);
 }
 
-int func_02065864();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c5d0(int arg0)
+/* Publish current record ID, then pass resource 5 to the mode-1 helper; ARM 0x0211c5d0. */
+void BattleShowingTask_Unk_11c5d0(BattleShowingTaskWork *work)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
-  func_0204faf0(6,*(u16 *)(tmp1 + 8));
-  func_02065bc0();
-  func_02065628(1);
-  tmp2 = func_020493e0(5);
-  func_02065864(tmp2,1);
-  func_02065cfc(1,0);
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    func_0204faf0(6, record->id);
+    func_02065bc0();
+    func_02065628(1);
+    func_02065864(func_020493e0(5), 1);
+    func_02065cfc(1, 0);
 }
 
-int func_0204fcb0();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c610(int arg0)
+/* Publish ID/+0x1c and converted +0x1e before dispatching resource 6;
+ * field offsets and call order are from ARM 0x0211c610. Requires a current record. */
+void BattleShowingTask_Unk_11c610(BattleShowingTaskWork *work)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
-  func_0204faf0(6,*(u16 *)(tmp1 + 8));
-  func_0204faf0(10,*(u16 *)(tmp1 + 0x1c));
-  tmp2 = Unk0caea8_Unk_0cb044(*(u16 *)(tmp1 + 0x1e));
-  func_0204fcb0(1,tmp2);
-  func_02065bc0();
-  func_02065628(1);
-  func_020493e0(6);
-  func_0206569c();
-  func_02065cfc(1,0);
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    func_0204faf0(6, record->id);
+    func_0204faf0(10, record->unk1c);
+    func_0204fcb0(1, Unk0caea8_Unk_0cb044(record->unk1e));
+    func_02065bc0();
+    func_02065628(1);
+    func_0206569c(func_020493e0(6));
+    func_02065cfc(1, 0);
 }
 
 extern u8 data_0213ccc0[];
@@ -466,7 +481,9 @@ void ExpGauge_PlayGaugeLevelUp(ExpGauge *g)
     func_0205c6e0(g->gaugeAnim);
 }
 
-/* EXP needed for the next level (curve lookup unless unk00 < 0). */
+/* EXP threshold consumed by the count-up caller at 0x02119a60: use the
+ * alternate table for negative info +0, otherwise the curve ID at info +8.
+ * DONE or exhausted level-ups includes the level-up count in the third argument. */
 s32 ExpGauge_GetExpForNextLevel(ExpGauge *g)
 {
     s32 to;
@@ -485,4 +502,60 @@ s32 ExpGauge_GetExpForNextLevel(ExpGauge *g)
 void ExpGauge_UpdateToNextLevel(ExpGauge *g)
 {
     g->toNextLevel = ExpGauge_GetExpForNextLevel(g) - ((g->info->baseExp + g->shown) - g->total);
+}
+
+/* Set the count-up increment to one sixtieth of the next threshold, at least
+ * one; zero gained EXP instead sets zero. Called by the level-up path 0x02119a60. */
+void func_02119a10(ExpGauge *g)
+{
+    if (g->info->expGained == 0) {
+        g->step = 0;
+        return;
+    }
+    g->step = ExpGauge_GetExpForNextLevel(g) / 60;
+    if ((s32)g->step <= 0) {
+        g->step = 1;
+    }
+}
+
+void func_021196fc(BattleShowingTask *task);
+BattleShowingTask *func_020611dc(void (*update)(BattleShowingTask *),
+    void (*hook1)(void), void (*hook2)(void), void (*cleanup)(void),
+    u32 size, u32 arg5, u32 arg6, u32 arg7);
+/* Allocate an eight-byte task with the original four callbacks, initialize it,
+ * and return its nullable handle. Callback literals are at 0x021196b0..bc. */
+u32 func_02119658(void)
+{
+    BattleShowingTask *task = func_020611dc(func_021196fc,
+        BattleShowingTask_Nop_11982c, BattleShowingTask_Nop_119830,
+        BattleShowingTask_Unk_1196c0, 8, 0, 0, 1);
+    if (task == 0) {
+        return 0;
+    }
+    BattleShowingTask_Unk_1196e0(task);
+    return (u32)task;
+}
+
+/* Resource lookup returns a byte at +2 and a packed word at +0x24;
+ * only the fields consumed by ARM 0x0211c4e0 are represented. */
+typedef struct BattleShowingResource {
+    u8 pad00[2];
+    u8 unk02;
+    u8 pad03[0x21];
+    u32 unk24;
+} BattleShowingResource;
+BattleShowingResource *func_020a1428(u32 id);
+/* Publish record/resource fields, dispatch bits 21..27 through resource 0x29,
+ * and forward the signed record ID. Evidence: ARM loads/calls at 0x0211c4e0. */
+void func_0211c4e0(BattleShowingTaskWork *work)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    BattleShowingResource *resource = func_020a1428(record->id);
+    u32 value;
+    func_0204faf0(6, record->id);
+    func_0204faf0(7, resource->unk02);
+    value = BattleShowingTask_Unk_11c4c4((resource->unk24 << 4) >> 25, 2);
+    func_02065628(1);
+    func_0206569c(value);
+    func_02065cfc(1, (s16)record->id);
 }

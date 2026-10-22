@@ -32,18 +32,6 @@
 - `func_0211ceb4`
 - `BattleShowingTask_Unk_11b4e4`
 
-## Other pending functions
-- `BattleShowingTask_Unk_11a8dc`: decompiler-derived
-
-## Not done in M1-T1032
-- `BattleShowingTask_Unk_11c670`
-- `BattleShowingTask_Unk_11c5d0`
-- `func_02119a10`
-- `ExpGauge_GetExpForNextLevel`
-- `BattleShowingTask_Unk_11c610`
-- `func_02119658`
-- `func_0211c4e0`
-
 ## Not done in M1-T1033
 - `func_0211ce10`
 - `func_0211a864`
@@ -63,11 +51,7 @@
 - `func_0211b100`
 - `func_0211a924`
 - `func_0211c24c`
-- `BattleShowingTask_Unk_11c670`: decompiler-derived (proto cleanup)
-- `BattleShowingTask_Unk_11c5d0`: decompiler-derived (proto cleanup)
-- `BattleShowingTask_Unk_11c610`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11b4e4`: decompiler-derived (plain cleanup)
-- `ExpGauge_GetExpForNextLevel`: hand-matched (ExpGauge)
 
 ## M1-T1031 — verified matches
 
@@ -101,3 +85,41 @@ established. Evidence is the original ARM disassembly at each entry address.
   These offsets are the gauge and level-up animations used by `ExpGauge_Update`.
 
 Hard list for M1-T1031: none of the eight requested functions remain unmatched.
+
+## M1-T1032 — verified matches
+
+All eight targets match at 100% in objdiff. Evidence below is the original ARM
+instruction stream at each entry; unknown helper semantics retain neutral names.
+
+- `BattleShowingTask_Unk_11c670` (`0x0211c670`, 60 B): requires a current
+  record, publishes its unsigned +8 ID in slot 6, resets dispatch state, obtains
+  resource 10, forwards its result and finishes with arguments (1, 0).
+- `BattleShowingTask_Unk_11c5d0` (`0x0211c5d0`, 64 B): publishes the same
+  record ID, resets dispatch state and passes resource 5 to `func_02065864`
+  with mode 1 before finishing with (1, 0).
+- `BattleShowingTask_Unk_11a8dc` (`0x0211a8dc`, 72 B): scans 15 six-byte
+  entries starting at +0x268, setting flag bit 3 at entry +4 for the first ID
+  matching the incoming word. No match leaves the flags unchanged.
+- `func_02119a10` (`0x02119a10`, 80 B): sets the EXP increment to zero
+  when gained EXP is zero, otherwise signed next-level EXP divided by 60,
+  clamped to at least one. Called after a level-up by `ExpGauge_Update`.
+- `ExpGauge_GetExpForNextLevel` (`0x021198b4`, 92 B): negative info +0
+  selects `func_020b80c8` at initial level plus level-ups. Otherwise uses the
+  curve ID and `func_020b8154`; its third argument includes level-ups only
+  when state is DONE or info +2 equals the level-up count. EXP use is evidenced
+  by the count-up caller `ExpGauge_Update` at `0x02119a60`.
+- `BattleShowingTask_Unk_11c610` (`0x0211c610`, 96 B): publishes current
+  record +8/+0x1c in slots 6/10 and converted +0x1e in slot 1, resets dispatch
+  state and forwards resource 6 before finishing with (1, 0).
+- `func_02119658` (`0x02119658`, 104 B): allocates an eight-byte task
+  with four callback addresses from its literal pool and trailing arguments
+  (8, 0, 0, 1), returning zero on allocation failure; otherwise initializes
+  its two words through `BattleShowingTask_Unk_1196e0` and returns the handle.
+- `func_0211c4e0` (`0x0211c4e0`, 104 B): requires a current record,
+  looks up its resource, publishes ID/resource byte +2 in slots 6/7, dispatches
+  resource word +0x24 bits 21..27 through `BattleShowingTask_Unk_11c4c4`
+  with second argument 2, forwards the return value and finishes with the
+  signed record ID. The helper's unused second argument and returned word
+  are now explicit; its existing instructions remain identical.
+
+Hard list for M1-T1032: none.

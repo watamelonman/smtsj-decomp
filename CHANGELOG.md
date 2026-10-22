@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1032 battle-showing record dispatch, entry flag, task allocation and EXP threshold/increment functions at 100% objdiff, with typed contracts and assembly evidence.
 - Verified all eight M1-T1031 battle-showing cleanup/resource callbacks and EXP gauge helpers at 100% objdiff; added typed cleanup contracts and per-function evidence.
 - Documented and typed the eight M1-T1030 functions in `src/BattleShowingTask.c` (four empty task hooks, the `+0x28` state getter, task creation/initialization, and the bounds-checked record lookup), all verified at 100% objdiff; doc entries in `docs/functions/battleshowingtask.md`.
 - Matched M1-T1024 staged initialization and chance/rank selection at 100% objdiff; documented the remaining pair-selection routine and matching trials.
