@@ -1,6 +1,6 @@
 # src/game/unit_020e1648.c
 
-These eight functions are all hand-matched (100% in objdiff).
+The M1-T1042 and M1-T1043 functions below are verified at 100% in objdiff.
 
 - `Unk0e1648_Unk_0e5240` (12 B): reads entry `index` of `Unk0e1648Table.unk_000c` (the
   32-bit handle table at `+0xc`); the 0e51cc/0e51f4/0e5214 helpers use it to fetch their
@@ -22,18 +22,41 @@ These eight functions are all hand-matched (100% in objdiff).
 - `Unk0e1648_Unk_0e2c90` (32 B): lexicographic comparison of two work objects; returns the
   `unk_0006` difference, or the `unk_0004` difference when the first key matches.
 
-## Hard list
-- `Unk0e1648_Unk_0e2d80`: decompiler-derived
-- `Unk0e1648_Unk_0e4f34`: decompiler-derived
-- `Unk0e1648_Unk_0e50c8`: decompiler-derived
-- `Unk0e1648_Unk_0e3f5c`: decompiler-derived
-- `Unk0e1648_Unk_0e4fd0`: decompiler-derived
+## M1-T1043
 
-## Not done in M1-T1043
-- `Unk0e1648_IsId177to179`
-- `Unk0e1648_Unk_0e51f4`
-- `Unk0e1648_Unk_0e1664`
-- `Unk0e1648_Unk_0e533c`: decompiler-derived
+All eight functions match at 100%. Evidence is the delinked ARM instructions;
+neutral names are retained where subsystem meanings are unknown. This task extends
+the existing source rather than creating a replacement TU. No runtime tests were
+added: the card requires instruction matching and checksum validation.
+
+- `Unk0e1648_Unk_0e2d80` (32 B): tail-forwards work `+0x68` and the
+  halfword at `work + 8 * work->unk_007c + 0xd4` to `func_020f3de8`.
+  Uses the existing typed slot layout; the selected index must be valid.
+- `Unk0e1648_IsId177to179` (32 B): returns one for IDs 177, 178 and 179,
+  zero otherwise. The descriptive name is supported by the three immediate
+  comparisons at `020e2dec`, `020e2df0` and `020e2df4`.
+- `Unk0e1648_Unk_0e4f34` (32 B): forwards the ID to `func_0209993c`, then
+  reduces the requested signed increment to `99 - value` when their sum exceeds
+  99. The incoming ID is now explicit rather than relying on an unchanged r0.
+- `Unk0e1648_Unk_0e50c8` (32 B): obtains a handle from `func_020445f4(30, 3)`
+  and passes it with the incoming value to `func_0204fed8`.
+- `Unk0e1648_Unk_0e51f4` (32 B): fetches the indexed handle through
+  `Unk0e1648_Unk_0e5240`, then calls `func_0205caa8` with that handle and
+  `data_0213c674[index]`. The index must be valid in both tables.
+- `Unk0e1648_Unk_0e1664` (36 B): calls the global-null guard at `020e1648`;
+  returns zero if null, otherwise the word at offset `0x58` of the pointee in
+  `data_02176c78[1]`. Only the observed field is modelled in the private state type.
+- `Unk0e1648_Unk_0e3f5c` (36 B): loads the selected slot's halfword at
+  `+0xd6`, calls `Unk09974c_GetEntryUnk08`, and tests its result against 4.
+- `Unk0e1648_Unk_0e4fd0` (40 B): returns one only when its first argument is
+  4 and `func_0209993c` of the second argument returns a positive signed value;
+  other kinds bypass the lookup and return zero.
+
+## Hard list
+
+No M1-T1043 functions remain unresolved.
+
+- `Unk0e1648_Unk_0e533c`: decompiler-derived (outside M1-T1043).
 
 ## Not done in M1-T1044
 - `Unk0e1648_Unk_0e51cc`
@@ -83,7 +106,6 @@ These eight functions are all hand-matched (100% in objdiff).
 - `func_020e3e70`
 - `func_020e2fe8`
 - `func_020e4e28`
-- `Unk0e1648_Unk_0e51f4`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e51cc`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5214`: decompiler-derived (proto cleanup)
 - `Unk0e1648_Unk_0e5090`: decompiler-derived (plain cleanup)

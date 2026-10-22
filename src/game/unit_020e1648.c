@@ -127,13 +127,19 @@ int Unk0e1648_Unk_0e1648(void)
   return data_02176c78[1] == 0;
 }
 
-int Unk09974c_GetEntryUnk08();
+/* Pointee of global word 1; only the observed +0x58 word is modelled. */
+typedef struct Unk0e1648State {
+    u8 pad_0000[0x58];
+    u32 unk_0058;
+} Unk0e1648State;
+
+/* Returns the global pointee's +0x58 word, or zero while the global is null. */
 u32 Unk0e1648_Unk_0e1664(void)
 {
     if (Unk0e1648_Unk_0e1648() != 0) {
         return 0;
     }
-    return FIELD(u32, FIELD(u8 *, data_02176c78, 4), 88);
+    return ((Unk0e1648State *)data_02176c78[1])->unk_0058;
 }
 
 /*
@@ -153,28 +159,28 @@ int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,Unk0e1648Work *other)
 
 
 int func_020f3de8();
-/* decompiler-derived */
-void Unk0e1648_Unk_0e2d80(int arg0)
+/* Forwards +0x68 and the selected slot's +2 halfword to func_020f3de8.
+ * The caller must supply a work object with a valid selected slot index. */
+void Unk0e1648_Unk_0e2d80(Unk0e1648Work *work)
 {
-  func_020f3de8(((Unk0e1648Work *)arg0)->unk_0068,
-                  *(u16 *)(arg0 + ((Unk0e1648Work *)arg0)->unk_007c * 8 + 0xd4));
+  func_020f3de8(work->unk_0068, work->unk_00d2[work->unk_007c].unk_0002);
 }
 
-int func_0209993c();
-/* decompiler-derived */
+int func_0209993c(u32 id);
+/* Caps the requested signed increment so the lookup value plus it is at most 99. */
 int Unk0e1648_Unk_0e4f34(u32 arg0,int arg1)
 {
   int value;
-  value = func_0209993c();
+  value = func_0209993c(arg0);
   if (99 < value + arg1) {
     arg1 = 99 - value;
   }
   return arg1;
 }
 
-int func_020445f4();
-int func_0204fed8();
-/* decompiler-derived */
+u32 func_020445f4(u32 selector, u32 kind);
+void func_0204fed8(u32 handle, u32 value);
+/* Passes the supplied value to the handle obtained with selectors 30 and 3. */
 void Unk0e1648_Unk_0e50c8(u32 arg0)
 {
   u32 value;
@@ -183,16 +189,17 @@ void Unk0e1648_Unk_0e50c8(u32 arg0)
 }
 
 int Unk09974c_GetEntryUnk08();
-/* decompiler-derived */
-int Unk0e1648_Unk_0e3f5c(int arg0)
+/* Tests whether the selected slot's +4 halfword maps to entry field value 4.
+ * The selected slot index must be valid for work. */
+int Unk0e1648_Unk_0e3f5c(Unk0e1648Work *work)
 {
   int value;
-  value = Unk09974c_GetEntryUnk08(*(u16 *)(arg0 + ((Unk0e1648Work *)arg0)->unk_007c * 8 + 0xd6));
+  value = Unk09974c_GetEntryUnk08(work->unk_00d2[work->unk_007c].unk_0004);
   return value == 4;
 }
 
 
-/* decompiler-derived */
+/* Returns one only for kind 4 with a positive signed lookup result. */
 u32 Unk0e1648_Unk_0e4fd0(int arg0,u32 arg1)
 {
   int value;
@@ -263,6 +270,7 @@ int Unk0e1648_Unk_0e2db0(u16 *p)
     return b > a ? 1 : 2;
 }
 
+/* The three immediate comparisons at 020e2dec test IDs 177, 178 and 179. */
 int Unk0e1648_IsId177to179(int x)
 {
     switch (x) {
@@ -314,14 +322,15 @@ LAB_020e49b0:
   return;
 }
 
-extern u8 data_0213c674[];
-int func_0205caa8();
-/* decompiler-derived */
-void Unk0e1648_Unk_0e51f4(u32 arg0,int arg1)
+extern u32 data_0213c674[];
+void func_0205caa8(u32 handle, u32 value);
+/* Applies the indexed global word to the corresponding object handle.
+ * index must be valid for both the handle array and data_0213c674. */
+void Unk0e1648_Unk_0e51f4(Unk0e1648Table *table,int index)
 {
   u32 tmp1;
-  tmp1 = Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
-  func_0205caa8(tmp1,*(u32 *)(data_0213c674 + arg1 * 4));
+  tmp1 = Unk0e1648_Unk_0e5240(table, index);
+  func_0205caa8(tmp1, data_0213c674[index]);
 }
 
 int func_0205c41c();
@@ -331,7 +340,7 @@ void Unk0e1648_Unk_0e51cc(u32 arg0,u32 arg1)
   u32 tmp1;
   tmp1 = Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
   func_0205c41c(tmp1,0);
-  Unk0e1648_Unk_0e51f4(arg0,arg1);
+  Unk0e1648_Unk_0e51f4((Unk0e1648Table *)arg0,arg1);
 }
 
 int func_0205c6ec();

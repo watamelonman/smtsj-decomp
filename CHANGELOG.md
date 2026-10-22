@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T1043 functions at 100% objdiff; made lookup argument forwarding explicit, typed slot/global accesses, and documented each function’s instruction evidence.
 - Verified all eight M1-T1042 functions in `src/game/unit_020e1648.c` at 100% objdiff and documented each one, including the slot accessor, state-word accessors, boolean toggle, and two-key comparator.
 - Documented the three M1-T1041 callback functions `func_020b28e8`, `func_020b2dd0` and `func_020b363c`, verified at 100% objdiff, and the remaining rebuild function `func_020b4040` in the hard list with its measured matching trials.
 - Matched four more M1-T1040 status-icon list functions in `src/game/unit_020b28e4.c` (state dispatch, record-row drawing, type-1 roster paging and the reserved first row) at 100% objdiff; typed the 96-byte draw-resource array and documented the four remaining hard functions and their matching trials.
