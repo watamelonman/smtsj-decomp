@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- `src/game/unit_02090e60.c`: matched `func_020934c8` (list refresh, 100% objdiff); documented `func_020935b8`, `func_020937a0`, `func_02092624` and `func_02090e60` as hard functions in `docs/functions/game-unit-02090e60.md`.
 - Matched all six functions in `src/game/unit_0203b988.c` at 100% objdiff, including the 216-byte `func_0203b9dc` mode dispatcher, with per-function documentation.
 - Verified six `unit_0202ee5c` accessors at 100% objdiff, added typed contracts, and documented the remaining list assembly function in the hard list.
 - Matched all seven M1-T064 handlers in `src/game/unit_0203c05c.c`, including mode dispatch, with typed work fields and documented argument contracts.
