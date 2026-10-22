@@ -9,7 +9,7 @@
 - `func_020b64dc` (28 B): returns entry `index` (12 bytes each) of the table based at `+0x04`.
 - `func_020b64f8` (28 B): stores two words at `+0xc8c` and `+0xc90` of the object referenced by the word at `+0x00`.
 - `Unk0b28e4_Unk_0b6338` (56 B): releases the object cached at `+0x04`, clears the cache and restores callback set 13.
-- `Unk0b28e4_Unk_0b6370` (68 B): zeroes the command buffer at `+0x04` and its two payload areas.
+- `Unk0b28e4_Unk_0b6370` (68 B): zeroes the 44-byte block cached at `+0x04` (allocated by `Unk0b28e4_Unk_0b62e8`) and its two payload areas.
 
 ## Not done in M1-T1038
 - `Unk0b28e4_GetEntry34`
