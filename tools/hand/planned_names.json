@@ -823,5 +823,12 @@
  "func_020dc184": "CampStatus_Unk_0dc184",
  "func_020dc2ec": "CampStatus_Unk_0dc2ec",
  "func_020dc5dc": "CampStatus_Unk_0dc5dc",
- "func_020dd910": "CampStatus_Unk_0dd910"
+ "func_020dd910": "CampStatus_Unk_0dd910",
+ "func_020db910": "CampStatus_Unk_0db910",
+ "func_020dba84": "CampStatus_Unk_0dba84",
+ "func_020dbbbc": "CampStatus_Unk_0dbbbc",
+ "func_020dc3b8": "CampStatus_Unk_0dc3b8",
+ "func_020dc908": "CampStatus_Unk_0dc908",
+ "func_020dd9d8": "CampStatus_Unk_0dd9d8",
+ "func_020ddc20": "CampStatus_Unk_0ddc20"
 }

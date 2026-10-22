@@ -1002,7 +1002,7 @@ u16 func_02068bf8(Unk065e88Owner *owner, const u16 *ids, int count)
 }
 
 void func_0205c6f8(u32 handle);
-void func_020dc908(void);
+void CampStatus_Unk_0dc908(void);
 /* At 02067134, disables and releases twelve plus eight callback objects after
  * releasing owner handles. Every callback slot must contain a valid object. */
 void func_02067134(Unk065e88Owner *owner)
@@ -1043,7 +1043,7 @@ void func_02067134(Unk065e88Owner *owner)
         owner->unk_03b8[i] = 0;
     }
     func_0205bb68();
-    func_020dc908();
+    CampStatus_Unk_0dc908();
 }
 
 /* At 020679a0, selects category/state dispatch words, builds a descriptor and

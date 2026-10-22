@@ -68,9 +68,9 @@
 - `CampStatus_Unk_0d8d60`
 - `CampStatus_Unk_0dc5dc`
 - `CampStatus_Unk_0db824`
-- `func_020dc3b8`
-- `func_020ddc20`
-- `func_020dd9d8`
+- `CampStatus_Unk_0dc3b8`
+- `CampStatus_Unk_0ddc20`
+- `CampStatus_Unk_0dd9d8`
 - `CampStatus_Unk_0d71bc`: decompiler-derived (struct cleanup)
 - `CampStatus_Unk_0d7680`: decompiler-derived (struct cleanup)
 - `CampStatus_IsUnkF4F8Set`: hand-matched
@@ -117,10 +117,10 @@
 - `CampStatus_Unk_0dc2ec`: hand-matched
 - `CampStatus_Unk_0dc5dc`: hand-matched
 - `CampStatus_Unk_0dd910`: hand-matched
-- `func_020db910`: hand-matched
-- `func_020dba84`: hand-matched
-- `func_020dbbbc`: hand-matched
-- `func_020dc3b8`: hand-matched
-- `func_020dc908`: hand-matched
-- `func_020dd9d8`: hand-matched
-- `func_020ddc20`: hand-matched
+- `CampStatus_Unk_0db910`: hand-matched
+- `CampStatus_Unk_0dba84`: hand-matched
+- `CampStatus_Unk_0dbbbc`: hand-matched
+- `CampStatus_Unk_0dc3b8`: hand-matched
+- `CampStatus_Unk_0dc908`: hand-matched
+- `CampStatus_Unk_0dd9d8`: hand-matched
+- `CampStatus_Unk_0ddc20`: hand-matched
