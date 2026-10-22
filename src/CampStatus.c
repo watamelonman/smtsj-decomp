@@ -214,12 +214,12 @@ typedef struct CampStatusPlayer {
     char unk_0048[0x24];        /* +0x48: text passed to func_02061f10; size guessed */
     u16 unk_006c;               /* +0x6c: values 1 and 7 are treated alike by CampStatus_Unk_0dd910 */
 } CampStatusPlayer;
-/* Signed modifier halfword: 10-bit amount, 6-bit state code (see func_020dd500). */
+/* Signed modifier halfword: 10-bit amount, 6-bit state code (see CampStatus_Unk_0dd500). */
 typedef struct CampStatusStatMod {
     s16 value : 10;
     s16 state : 6;
 } CampStatusStatMod;
-/* Result halfword of func_020dd500: 10-bit total, 6-bit state code (as CampStatus_Unk_0dd88c). */
+/* Result halfword of CampStatus_Unk_0dd500: 10-bit total, 6-bit state code (as CampStatus_Unk_0dd88c). */
 typedef struct CampStatusStateWord {
     u16 value : 10;
     u16 state : 6;
@@ -296,7 +296,7 @@ typedef struct CampStatusRecordSet {
     u8 unk_001a;
     u8 pad_001b[0x2d];
     CampStatusRecord rec[3];
-    u8 unk_005a;                /* +0x5a/+0x5b: marks on the 0..100 gauge of func_020d9d54 */
+    u8 unk_005a;                /* +0x5a/+0x5b: marks on the 0..100 gauge of CampStatus_Unk_0d9d54 */
     u8 unk_005b;
 } CampStatusRecordSet;
 /* Work area from Unk02e000_GetWorkArea; only the flag-set word is used here. */
@@ -804,7 +804,7 @@ int Unk0e651c_Unk_0e666c(u32 flag);
 typedef struct CampStatusDrawParam {
     u32 unk_00[4];
     u32 pad_10_0 : 2;
-    u32 alpha : 8;              /* +0x10 bits 2..9: overlay alpha set by func_020d9d54 */
+    u32 alpha : 8;              /* +0x10 bits 2..9: overlay alpha set by CampStatus_Unk_0d9d54 */
     u32 pad_10_a : 22;
     u32 unk_14;
 } CampStatusDrawParam;
@@ -815,7 +815,7 @@ void func_0205e048(int screen, u32 obj, CampStatusDrawParam *param, int x, int y
 /* Draw the top panel (frames 53, 50-52 when unk_01a0 is set, else 34-39) at y unk_010c, then,
  * when unk_0004 is set (and not mode 3 with unk_0264 set), frames 26/27 at x unk_010a and
  * frame 67 when flag 0x706 is set. */
-void func_020d730c(CampStatusWork *work)
+void CampStatus_Unk_0d730c(CampStatusWork *work)
 {
     func_02057fd8();
     func_02057df8();
@@ -872,7 +872,7 @@ void CampStatus_Unk_0d8d60(CampStatusWork *work)
  * marks unk_005a/unk_005b (pieces 0x1dc1..0x1dc3, mark ticks 0x1dc4), or the full-gauge frame
  * 32 at 100. With flag 0x706 and Unk02ee5c_GetRecordFlagB(id), add frame 69 and the blinking
  * overlay (alpha ramp over a 28-tick cycle). */
-void func_020d9d54(u16 id)
+void CampStatus_Unk_0d9d54(u16 id)
 {
     CampStatusRecordSet *rs;
     s32 filled;
@@ -1834,7 +1834,7 @@ int CampStatus_Unk_0dcb68(CampStatusTableWork *work)
 /* Sum slot i of up to five records: the four ids[0..3] (each skipped when extra falls in that
  * id's 50-wide block starting at 211, 261, 311, 361) and extra itself. The total starts at 100;
  * the state codes merge through CampStatus_Unk_0dd88c, and slot 6 turns state 0/5 into 1. */
-CampStatusStateWord func_020dd500(const u16 *ids, s32 i, s32 extra)
+CampStatusStateWord CampStatus_Unk_0dd500(const u16 *ids, s32 i, s32 extra)
 {
     CampStatusStateWord w;
     CampStatusInfo *info;
