@@ -28,7 +28,7 @@ typedef struct CampStatusObj {
     u8 flag_3a;                 /* +0x3a: written by Unk065e88_SetFlag3a */
 } CampStatusObj;
 
-/* Bust-up picture set; func_020dc6c0 builds two from "Camp/Status/st_bu_anime" and the
+/* Bust-up picture set; CampStatus_Unk_0dc6c0 builds two from "Camp/Status/st_bu_anime" and the
  * "bust_up/st_bu_en%03d" / "st_bu_mt%03d" textures (CampStatus_Unk_0db338 / _0db394). */
 typedef struct CampStatusBustUp {
     u32 res;                    /* +0x00: func_0205dcd4 resource, freed by func_0205ddb4 */
@@ -417,7 +417,7 @@ void func_020d5644();
 void func_020d5d44();
 void func_020d6120();
 void CampStatus_Unk_0d6948();
-void func_020d6a24();
+void CampStatus_Unk_0d6a24();
 void func_020d3680();
 int func_02061698(void *obj);
 CampStatusFrame *func_020616c0(void *obj);
@@ -483,7 +483,7 @@ void CampStatus_Unk_0d3624(CampStatusOps *o)
     o->fn_10 = func_020d5d44;
     o->fn_14 = func_020d6120;
     o->fn_18 = CampStatus_Unk_0d6948;
-    o->fn_1c = func_020d6a24;
+    o->fn_1c = CampStatus_Unk_0d6a24;
     o->fn_20 = func_020d3680;
 }
 
@@ -523,7 +523,7 @@ void CampStatus_Unk_0d6948(CampStatusWork *work)
 
 /* Handler 0x1c of the CampStatus_Unk_0d3624 table: release everything the screen created
  * (resources, objects, both bust-ups, the six text objects) and unload groups 14, 13, 10. */
-void func_020d6a24(CampStatusWork *work)
+void CampStatus_Unk_0d6a24(CampStatusWork *work)
 {
     int i;
     for (i = 59; i <= 64; i++) {
@@ -1421,7 +1421,7 @@ void CampStatus_Unk_0dc5dc(const CampStatusStats *a, const CampStatusStats *b, C
 /* Build object [2] and both bust-ups (resource, animation, descriptor, texture, object) in the
  * shared work; objects use mode 0 when unk_018c is set, else 1. With unk_00f4 set, object [2]
  * starts on sequence 2. */
-void func_020dc6c0(void)
+void CampStatus_Unk_0dc6c0(void)
 {
     CampStatusDesc desc0;
     CampStatusDesc desc1;
