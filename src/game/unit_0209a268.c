@@ -4,7 +4,6 @@
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
 typedef struct Unk09a268Work {
@@ -16,9 +15,9 @@ typedef struct Unk09a268Work {
 
 
 int func_0209a48c(u32 p, int bit);
-void Unk09a268_SetBit();
+void Unk09a268_SetBit(u8 *p, int bit, int on);
 int func_0209bb68();
-int Unk09a268_Unk_09c484();
+int Unk09a268_Unk_09c484(int arg0);
 
 void Unk09a268_Nop_09b3c8(void);
 void Unk09a268_Unk_09a7fc(u32 arg0);
@@ -60,12 +59,12 @@ void Unk09a268_Unk_09a458(u8 *w, u32 a, u32 b, u32 c, u8 d, u32 e)
 }
 
 /* Sets bit `bit` of the byte at `p` when `on` is 1, otherwise clears it. */
-void Unk09a268_SetBit(u32 p, int bit, int on)
+void Unk09a268_SetBit(u8 *p, int bit, int on)
 {
     if (on == 1) {
-        *(u8 *)p |= 1 << bit;
+        *p |= 1 << bit;
     } else {
-        *(u8 *)p &= ~(1 << bit);
+        *p &= ~(1 << bit);
     }
 }
 
@@ -97,7 +96,7 @@ void Unk09a268_SetOnlyBit(u32 p, u32 v)
 {
     u32 j;
     for (j = 0; j < 3; j++) {
-        Unk09a268_SetBit(p, j, v == j ? 1 : 0);
+        Unk09a268_SetBit((u8 *)p, j, v == j ? 1 : 0);
     }
 }
 
@@ -154,45 +153,49 @@ void Unk09a268_SetCtxUnk38(u32 value)
 void Unk09a268_Unk_09c498(void)
 {
   func_0209bb68();
-  Unk09a268_Unk_09c484();
+  /* Original call supplies no index and discards the address. See DEC-002. */
+  ((int (*)(void))Unk09a268_Unk_09c484)();
 }
 
 /* Sets or clears the bit-3 flag of the state byte at `p` (`on` == 1 sets). */
 void Unk09a268_Unk_09a80c(u32 p,u32 on)
 {
-  Unk09a268_SetBit(p,3,on);
+  Unk09a268_SetBit((u8 *)p,3,on);
 }
 
 /* Sets or clears the bit-4 flag of the state byte at `p` (`on` == 1 sets). */
 void Unk09a268_Unk_09a830(u32 p,u32 on)
 {
-  Unk09a268_SetBit(p,4,on);
+  Unk09a268_SetBit((u8 *)p,4,on);
 }
 
 /* Sets or clears the bit-5 flag of the state byte at `p` (`on` == 1 sets). */
 void Unk09a268_Unk_09a870(u32 p,u32 on)
 {
-  Unk09a268_SetBit(p,5,on);
+  Unk09a268_SetBit((u8 *)p,5,on);
 }
 
 
 extern u8 data_0213be64[];
-/* decompiler-derived: address of the 0x1c-byte record at `arg0` in table data_0213be64. */
+/* Returns the address of the 0x1c-byte record at `arg0` in table data_0213be64. */
 int Unk09a268_Unk_09c484(int arg0)
 {
   return arg0 * 0x1c + ((int)data_0213be64);
 }
 
-int GameState_GetBody();
+/* Partial body layout: only the flag read by 09a844 is established here. */
+typedef struct Unk09a268GameStateBody {
+    u8 pad_0000[0x3e0];
+    s32 unk_03e0;
+} Unk09a268GameStateBody;
+
+Unk09a268GameStateBody *GameState_GetBody(void);
 /* Returns bit 5 of the state byte at `arg0` when GameState body +0x3e0 is nonzero, else 1. */
 u32 Unk09a268_Unk_09a844(u32 arg0)
 {
-  int value1;
-  u32 value2;
-  value1 = GameState_GetBody();
-  if (*(int *)(value1 + 0x3e0) != 0) {
-    value2 = func_0209a48c(arg0,5);
-    return value2;
+  Unk09a268GameStateBody *body = GameState_GetBody();
+  if (body->unk_03e0 != 0) {
+    return func_0209a48c(arg0,5);
   }
   return 1;
 }
@@ -230,7 +233,7 @@ void Unk09a268_Unk_09ae60(Unk09ae60Ops *o)
     o->fn_20 = func_0209aebc;
 }
 
-/* decompiler-derived: reloads the palette from the work's +0xc field when +0x2c is zero. */
+/* Reloads the palette from the work's +0xc field when +0x2c is zero. */
 void Unk09a268_Unk_09b3cc(Unk09a268Work *work)
 {
   func_02057524(0);

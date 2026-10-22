@@ -84,3 +84,13 @@
 - `Unk09a268_Unk_09c4a8`: hand-matched
 - `Unk09a268_IsType1`: hand-matched
 - `Unk09a268_Unk_09ae60`: hand-matched
+
+## M1-T1010 review corrections
+- `Unk09a268_SetBit` now accepts `u8 *` with a full forward prototype; existing
+  integer-address callers convert explicitly at the call boundary.
+- `Unk09a268_Unk_09a844` uses a typed partial GameState body layout for +0x3e0
+  and returns the bit-test result directly. `include/GameState.h` represents the
+  body as opaque bytes, so the accessed body field is described locally.
+- `Unk09a268_Unk_09c484` has a full index prototype. Its exceptional index-free
+  call in `Unk09a268_Unk_09c498` preserves the original ABI (see DEC-002).
+- All eight card functions and all 26 defined functions retain 100% objdiff matches.

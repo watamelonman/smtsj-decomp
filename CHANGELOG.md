@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Corrected M1-T1010 body-field access and bit-setter/record-lookup prototypes while preserving 100% instruction matches.
 - `src/game/unit_0209a268.c`: matched all eight M1-T1010 functions at 100% objdiff, including `func_0209b720`, with typed context fields and per-function documentation.
 - `src/game/unit_0209a268.c`: added the missing `func_0209a48c` bit test (typed, documented), so all eight M1-T1009 functions now match at 100% in objdiff.
 - Replaced unit_02090e60 refresh offsets with typed fields and pointer parameters, corrected the +0x3e0 helper flag description, and documented disassembly-led trials of the two large state functions.
