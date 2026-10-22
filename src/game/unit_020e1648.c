@@ -1566,7 +1566,7 @@ void func_020a9fd8(u32 mode, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5,
                    u32 resource, u32 value);
 int func_020a1554(void *table, int count, u16 id);
 void func_02096c8c(void);
-int func_020e4e28(Unk0e1648Work *work, u32 id);
+int Unk0e1648_Unk_0e4e28(Unk0e1648Work *work, u32 id);
 u32 Unk0ca69c_Unk_0ca69c(int id);
 void Unk0cb32c_Unk_0cb488(u32 handle, s32 x, s32 y, u32 index, u32 arg4, u32 arg5);
 void Unk0bc1a8_Unk_0bc9b4(u32 slot, u32 value);
@@ -1576,7 +1576,7 @@ int Unk09974c_Unk_0998d8(u32 id);
 int Unk0f3db4_Unk_0f44e4(u32 kind, u16 index);
 void func_020fa8a8(u32 resource, void *object, u32 mode);
 void func_020faa20(u32 value);
-void func_020e32e8(Unk0e1648Work *work);
+void Unk0e1648_Unk_0e32e8(Unk0e1648Work *work);
 int Unk0fc584_Unk_0fc7f4(void);
 extern u32 data_0213c65c[];
 extern u8 data_02150bac[], data_02150bb0[], data_02150bb4[], data_02150bb8[];
@@ -1678,7 +1678,7 @@ void func_020e1b10(Unk0e1648Work *work)
     case 10:
         if (work->unk_0ec8 == 0) {
             u16 id;
-            func_020e32e8(work);
+            Unk0e1648_Unk_0e32e8(work);
             work->unk_0000 = 20;
             slot = &work->unk_00d2[work->unk_007c];
             id = slot->unk_0004;
@@ -1876,7 +1876,7 @@ void func_020e2190(Unk0e1648Work *work)
             if (func_020e4d08(work, id) != 0) {
                 record = (Unk0e1648Rec *)func_020f3de8(work->unk_0068, id);
                 work->unk_00a4 = Unk0e1648_Unk_0e4f34(record->id,
-                    func_020e4e28(work, id));
+                    Unk0e1648_Unk_0e4e28(work, id));
                 work->unk_00c8 = func_020e49cc(0, record->id);
                 Unk0fc584_Unk_0fc84c(-work->unk_00c8);
                 if (work->unk_0068 == 4) {
@@ -2039,7 +2039,7 @@ void func_02099a28(u32 id, s32 count);
  * not yet in the 0f4510 set, none for one already in it), adds the units
  * with func_02099a28, then marks the record in the 0f4510 set and clears
  * +0xee8 when it was not there. */
-void func_020e32e8(Unk0e1648Work *work)
+void Unk0e1648_Unk_0e32e8(Unk0e1648Work *work)
 {
     s32 count = work->unk_0098;
     s32 value = work->unk_00c8 * count;
@@ -2261,7 +2261,7 @@ void Unk0e1648_Unk_0e33b8(Unk0e1648Work *work)
  * func_020e4ca4 reports the record or a flagged record leaves the
  * 0f4510 set, one count of each entry's material (stopping when an owned
  * amount would go negative). */
-int func_020e4e28(Unk0e1648Work *work, u32 id)
+int Unk0e1648_Unk_0e4e28(Unk0e1648Work *work, u32 id)
 {
     Unk0e1648Rec *record = (Unk0e1648Rec *)func_020f3de8(work->unk_0068, id);
     s32 budget = Unk02e000_GetWorkArea()->value;
