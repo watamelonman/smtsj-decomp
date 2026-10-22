@@ -192,20 +192,55 @@ tests are required: instruction identity is the acceptance oracle.
 
 No M1-T1047 functions remain on the hard list.
 
-## Not done in M1-T1048
-- `func_020e5394`
-- `func_020e4238`
-- `func_020e50e8`
-- `func_020e1a48`
-- `func_020e32e8`
-- `func_020e3e70`
-- `func_020e2fe8`
-- `func_020e4e28`
-- `Unk0e1648_Unk_0e48a8`: matched with typed slots in M1-T1046.
-- `Unk0e1648_IsUnkeecSet`: hand-matched
-- `Unk0e1648_Unk_0e1664`: hand-matched
-- `Unk0e1648_Unk_0e2d28`: hand-matched
-- `Unk0e1648_Unk_0e2db0`: hand-matched
-- `Unk0e1648_IsId177to179`: hand-matched
-- `Unk0e1648_Unk_0e4c64`: hand-matched
-- `Unk0e1648_Unk_0e4f54`: hand-matched
+## M1-T1048
+
+Six of the eight functions match at 100% in objdiff. Evidence is the delinked ARM
+instructions and relocations; the existing TU was extended in address-adjacent
+blocks. No runtime tests were added because this card's oracle is instruction
+identity plus the checksum gate.
+
+- `func_020e5394` (160 B): runs the next action step. For kinds accepted by
+  `func_020e544c` it first reports selector 5/6 from `+0xec0`, then checks the
+  `020e2cc8` and `020e2d28` predicates and reports 18, 8 or 0; other kinds use the
+  `020e3f5c` predicate and report 8 or 0.
+- `func_020e4238` (172 B): for work kind 7 with selected id 211..410, submits the
+  intermediate `020e524c` request and then a 0x82 request with value 18 and the
+  selected id in slot 7. An out-of-range id submits only `020e524c`.
+- `func_020e50e8` (176 B): applies an animation mode to one slot id. Modes 0/1
+  clear the id and apply group 6; mode 2 also applies group 10 and captures the
+  `02063a30` result; every mode except 2 also applies group 7. The captured
+  result becomes the fifth argument of `02061f10(handle, -1, 0, -1, result)`.
+- `func_020e1a48` (200 B): releases the seven handle words at `+0xe94..+0xeb4`,
+  the 23 handles at `+0xc`, the objects at `+0x8`/`+0x4` (the latter is the
+  `unk_0004`/`unk_0006` pair read as one 32-bit handle), and clears the global
+  work pointer at `data_02176c80+4`.
+- `func_020e3e70` (236 B): configures three sprite slots. It writes the `+0xac`
+  value as the record halfword at `+0xe`, submits an 11-argument `0205e048`
+  request and two 10-argument `0205de40` requests (ids 13 and 14) using the
+  `+0xa8` owner and the `+0xac`/`+0xb0` values.
+- `func_020e2fe8` (264 B): restarts the slot list. It saves the kind at `+0xcc`,
+  clears the count at `+0xd0`, appends the per-kind range from the `0f3db4`
+  table (50/50/50/50/100/60 ids), then resets the block at `+0x6c` when `+0xee4`
+  is clear and calls `020e3174`. The 9-entry jump table confirms cases 0..8.
+
+## Hard list
+
+These two are left undefined in C so the delink object links them unchanged.
+Both produce nearly identical code; the remaining difference is register
+allocation, not semantics, and the trials below were measured with the project
+compiler (`mwccarm 2.0/sp1p5`, `-O4,p`).
+
+- `func_020e32e8` (208 B): charges `+0x98 * +0xc8` to the shared accumulator,
+  applies the selected slot through `0f4398`/`099a28`, then `0f4538` and clears
+  `+0xee8` when `0f4510` rejects the id. Trials with the id as `u16`/`u32`, the
+  record as a typed/byte/void/integer pointer, several declaration orders, and
+  local flag/argument forms all put the id in r9 and the record in r6, whereas
+  the ROM keeps the id in r6 and the record in r7; the function body is otherwise
+  equivalent (same size and calls).
+- `func_020e4e28` (268 B): consumes up to 99 cost passes for the selected slot,
+  subtracting the three entry weights and stopping when one goes negative. Trials
+  with separate/reused loop counters, `do`/`while`/`for` loop forms, declaration
+  permutations, `u32`/`s32` cost arrays and a grouped cost/remaining struct all
+  leave one extra `add rN, sp, #0` setup: the compiler assigns the stack cost
+  array base and the remaining budget to r5/r4 instead of the ROM's r4/r6. The
+  rest of the instruction stream matches after that rotation.

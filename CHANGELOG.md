@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched six M1-T1048 unit_020e1648 functions at 100% objdiff (action step, range request, animation mode, resource teardown, sprite-slot setup and slot-list restart); `func_020e32e8` and `func_020e4e28` remain on the hard list with their matching trials documented.
 - Matched all eight M1-T1047 unit_020e1648 functions, including slot append/advance, request submission and visible-handle refresh.
 - Matched all eight M1-T1046 unit_020e1648 functions at 100% objdiff, with typed slot appending, state checks, request construction and capped shared-state updates.
 - Matched all eight M1-T1045 functions in `src/game/unit_020e1648.c` at 100% objdiff: the handler-table initialiser, slot rank/lookup helpers, cursor-driven table walk, entry dispatch, and appended-range sort; typed the work fields and documented each function.

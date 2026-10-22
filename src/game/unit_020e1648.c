@@ -27,9 +27,10 @@ typedef struct Unk0e1648Work {
     u8 unk_0001;
     u8 unk_0002;
     u8 pad_0003;
-    u16 unk_0004;
+    u16 unk_0004; /* low half of the 32-bit handle read by the render paths */
     u16 unk_0006;
-    u8 pad_0008[0x60];
+    u32 unk_0008;
+    u32 unk_000c[23]; /* handles released by func_020e1a48; count from its loop bound */
     u32 unk_0068;
     s32 unk_006c;
     u8 pad_0070[4];
@@ -38,9 +39,11 @@ typedef struct Unk0e1648Work {
     s32 unk_007c;
     u8 pad_0080[0x18];
     s32 unk_0098;
-    u8 pad_009c[0x10];
+    u8 pad_009c[0xc];
+    u32 unk_00a8;
     s32 unk_00ac;
-    u8 pad_00b0[0x18];
+    u32 unk_00b0;
+    u8 pad_00b4[0x14];
     s32 unk_00c8;
     u32 unk_00cc;
     u16 unk_00d0;
@@ -48,9 +51,11 @@ typedef struct Unk0e1648Work {
     u8 pad_0e92[2];
     u32 unk_0e94;
     u32 unk_0e98;
-    u8 pad_0e9c[4];
+    u32 unk_0e9c;
     u32 unk_0ea0;
-    u8 pad_0ea4[0x14];
+    u32 unk_0ea4[3];
+    u32 unk_0eb0;
+    u32 unk_0eb4;
     u8 unk_0eb8[8];
     s32 unk_0ec0;
     s32 unk_0ec4;
@@ -171,14 +176,14 @@ typedef struct Unk0e1648Vtable {
     void (*unk_0010)(void);
     void (*unk_0014)(Unk0e1648Work *);
     u32 unk_0018;
-    void (*unk_001c)(void);
+    void (*unk_001c)(Unk0e1648Work *);
     void (*unk_0020)(void);
 } Unk0e1648Vtable;
 
 void func_020e1b10(void);
 void func_020e2190(void);
 void func_020e28a8(Unk0e1648Work *work);
-void func_020e1a48(void);
+void func_020e1a48(Unk0e1648Work *work);
 void func_020e2a5c(void);
 /*
  * Fills the command/state table at `table`: constant 0xf08 in word 0, zeros in
@@ -843,4 +848,227 @@ int func_020e4130(Unk0e1648Work *work)
         }
     } else result = 0;
     return result;
+}
+
+/* External helpers used only by the functions below; prototypes follow the
+ * register use observed in the delinked instructions (argument counts and
+ * return values, not guessed field layouts). */
+void func_020629c4(u32 handle);
+void func_0205c3dc(u32 handle);
+void func_0205c368(u32 handle);
+void func_0205ddb4(u32 handle);
+u8 *func_0205e318(void *owner, int index);
+void func_0205e048(u32 arg0, u32 arg1, void *arg2, u32 arg3, u32 arg4,
+                   u32 arg5, u32 arg6, u32 arg7, u32 arg8, u32 arg9,
+                   u32 arg10);
+void func_02057e18(u32 value);
+void func_0205de40(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4,
+                   u32 arg5, u32 arg6, u32 arg7, u32 arg8, u32 arg9);
+void Unk0bcef4_Unk_0bcef4(void *base, u32 arg1, u32 arg2, u32 arg3);
+u8 *Unk0f3db4_Unk_0f3db4(void);
+
+/*
+ * Runs the next action step for a work object. For the ordinary kinds
+ * (func_020e544c) it updates the demo/effect selectors from unk_0ec0, then
+ * checks the two special action predicates and reports selector 18, 8 or 0.
+ * Other kinds use the 020e3f5c predicate and report 8 or 0.
+ */
+void func_020e5394(Unk0e1648Work *work)
+{
+    if (func_020e544c(work) != 0) {
+        if (work->unk_0ec0 == 0) {
+            Unk0e7ac4_Unk_0e8014(5);
+        } else {
+            Unk0e7ac4_Unk_0e8014(6);
+        }
+        if (func_020e2cc8(work) != 0) {
+            Unk0e7ac4_Unk_0e8030(18);
+            return;
+        }
+        if (Unk0e1648_Unk_0e2d28(work) != 0) {
+            Unk0e7ac4_Unk_0e8030(8);
+            return;
+        }
+        Unk0e7ac4_Unk_0e8030(0);
+        return;
+    }
+    if (Unk0e1648_Unk_0e3f5c(work) != 0) {
+        Unk0e7ac4_Unk_0e8030(8);
+        return;
+    }
+    Unk0e7ac4_Unk_0e8030(0);
+}
+
+/*
+ * Builds the 0x82 request used while work kind 7 has a selected slot id in
+ * the range 211..410. The 020e524c submission is also made for an id outside
+ * that range (and then no range request is built), so it sits on both paths.
+ */
+void func_020e4238(Unk0e1648Work *work)
+{
+    Unk0e1648Request request;
+    u16 id;
+    int i;
+
+    if (work->unk_0068 != 7) {
+        return;
+    }
+    id = work->unk_00d2[work->unk_007c].unk_0004;
+    if (id >= 211 && id <= 410) {
+        func_020e524c();
+        for (i = 0; i < 2; i++) {
+            request.flags[i] = 0;
+        }
+        for (i = 0; i < 16; i++) {
+            request.values[i] = 0;
+        }
+        request.values[1] = 18;
+        request.values[7] = id;
+        request.flags[0] |= 130;
+        func_020bcbc4(3, &request);
+        return;
+    }
+    func_020e524c();
+}
+
+/*
+ * Applies an animation mode to one slot id. Modes 0/1 clear the id and set
+ * animation group 6; mode 2 does both and captures the 02063a30 result. Any
+ * other mode skips the switch, and all modes except 2 also apply group 7.
+ * The captured result is the fifth argument of the 02061f10 submit call.
+ */
+void func_020e50e8(u32 handle, u16 id, u32 mode)
+{
+    u32 value;
+
+    func_02063920();
+    value = 0;
+    switch (mode) {
+    case 0:
+        Unk09974c_Unk_099bac(id);
+        func_02063a30();
+        break;
+    case 1:
+        Unk0e1648_Unk_0e50c8(6);
+        func_02063a30();
+        break;
+    case 2:
+        Unk09974c_Unk_099bac(id);
+        func_02063a30();
+        Unk0e1648_Unk_0e50c8(10);
+        value = func_02063a30();
+        break;
+    }
+    if (mode != 2) {
+        u32 group = func_020445f4(7, 0);
+        func_0204fed8(group, id);
+        value = func_02063a30();
+    }
+    func_02061f10(handle, -1, 0, -1, value);
+}
+
+/*
+ * Releases every resource owned by a work object: the seven handle words at
+ * +0xe94..+0xeb4, the 23 handles at +0xc, the two objects at +0x8/+0x4, and
+ * finally the global work pointer at data_02176c80+4. The +0x4 word is the
+ * pair unk_0004/unk_0006 viewed as one handle by this teardown path.
+ */
+void func_020e1a48(Unk0e1648Work *work)
+{
+    int i;
+
+    func_020629c4(work->unk_0eb4);
+    func_020629c4(work->unk_0eb0);
+    for (i = 0; i < 3; i++) {
+        func_020629c4(work->unk_0ea4[i]);
+    }
+    func_020629c4(work->unk_0ea0);
+    func_020629c4(work->unk_0e98);
+    func_020629c4(work->unk_0e9c);
+    func_020629c4(work->unk_0e94);
+    for (i = 0; i < 23; i++) {
+        if (work->unk_000c[i] != 0) {
+            func_0205c3dc(work->unk_000c[i]);
+            work->unk_000c[i] = 0;
+        }
+    }
+    if (work->unk_0008 != 0) {
+        func_0205c368(work->unk_0008);
+        work->unk_0008 = 0;
+    }
+    if (*(u32 *)&work->unk_0004 != 0) {
+        func_0205ddb4(*(u32 *)&work->unk_0004);
+        *(u32 *)&work->unk_0004 = 0;
+    }
+    *(u32 *)(data_02176c80 + 4) = 0;
+}
+
+/*
+ * Configures the three sprite slots used by a work kind: it writes the record
+ * halfword at +0xe, submits an 11-argument 0205e048 request, then two
+ * 10-argument 0205de40 requests that differ only by the +0xac/+0xb0 values.
+ * The +0x4 pair is passed as one 32-bit handle and +0xa8 is the shared owner.
+ */
+void func_020e3e70(Unk0e1648Work *work)
+{
+    u8 *object = func_0205e318((void *)*(u32 *)&work->unk_0004, 29);
+
+    *(u16 *)(object + 14) = (u16)work->unk_00ac;
+    func_0205e048(2, *(u32 *)&work->unk_0004, object, work->unk_00a8,
+                  0, 0x3f800000, 0x3f800000, 0, 0x3f800000, 1, 1);
+    func_02057e18(31);
+    func_02057df8();
+    func_0205de40(2, *(u32 *)&work->unk_0004, 13, work->unk_00a8,
+                  0, 0x3f800000, 0x3f800000, 0, work->unk_00b0, 1);
+    func_0205de40(2, *(u32 *)&work->unk_0004, 14, work->unk_00a8,
+                  work->unk_00ac, 0x3f800000, 0x3f800000, 0,
+                  work->unk_00b0, 1);
+}
+
+/*
+ * Restarts the slot list for the current work kind. It saves the kind at
+ * +0xcc, clears the count at +0xd0, then appends a per-kind range of ids from
+ * the 0f3db4 table. When +0xee4 is clear it resets the 24-byte block at +0x6c,
+ * clamping the range start to eight, and finally refreshes through 020e3174.
+ */
+void func_020e2fe8(Unk0e1648Work *work)
+{
+    u8 *ids = Unk0f3db4_Unk_0f3db4();
+    u16 count;
+
+    work->unk_00cc = work->unk_0068;
+    work->unk_00d0 = 0;
+    switch (work->unk_0068) {
+    case 0:
+        func_020e2f84(work, 50, ids);
+        break;
+    case 1:
+        func_020e2f84(work, 50, ids + 50);
+        break;
+    case 2:
+        func_020e2f84(work, 50, ids + 100);
+        break;
+    case 3:
+        func_020e2f84(work, 50, ids + 150);
+        break;
+    case 4:
+        func_020e2f84(work, 100, ids + 200);
+        break;
+    case 5:
+        func_020e2f84(work, 60, ids + 300);
+        break;
+    case 6:
+    case 7:
+    case 8:
+        break;
+    }
+    if (work->unk_0ee4 == 0) {
+        count = work->unk_00d0;
+        if (count >= 8) {
+            Unk0bcef4_Unk_0bcef4(&work->unk_006c, 8, count, 1);
+        } else {
+            Unk0bcef4_Unk_0bcef4(&work->unk_006c, count, count, 1);
+        }
+    }
+    func_020e3174(work);
 }
