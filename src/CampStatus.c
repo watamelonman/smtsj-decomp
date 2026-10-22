@@ -10,11 +10,17 @@ typedef float f32;
 typedef struct CampStatusLink {
     u8 pad_0000[0x14];
     u32 unk_0014;
+    u8 pad_0018[0x10];
+    u32 unk_0028;               /* +0x28: copied between the two bust-up animations */
 } CampStatusLink;
 /* Game object made by Unk065e88_Call_02065fc0 and released with func_02061424. */
 typedef struct CampStatusObj {
     CampStatusLink *link;
-    u8 pad_0004[0x1c];
+    u32 unk_0004;               /* +0x04/+0x08: position (set together, see Unk065e88_SetPair04) */
+    s32 unk_0008;
+    u32 unk_000c;
+    s32 unk_0010;
+    u8 pad_0014[0xc];
     f32 scale;                  /* +0x20: reset to 1.0 by CampStatus_ResetAnim */
     s32 unk_0024;
     s32 unk_0028;               /* +0x28: reset to -1 by CampStatus_ResetAnim */
@@ -25,10 +31,16 @@ typedef struct CampStatusObj {
 } CampStatusObj;
 /* Bust-up picture set; CampStatus_Unk_0dc6c0 builds two from "Camp/Status/st_bu_anime" and the
  * "bust_up/st_bu_en%03d" / "st_bu_mt%03d" textures (CampStatus_Unk_0db338 / _0db394). */
+/* Texture slot made by func_0205ba28; +0x59 is set once the texture is ready. */
+typedef struct CampStatusTexSlot {
+    u8 pad_0000[0x59];
+    u8 unk_59;
+} CampStatusTexSlot;
+
 typedef struct CampStatusBustUp {
     u32 res;                    /* +0x00: func_0205dcd4 resource, freed by func_0205ddb4 */
     u32 anim;                   /* +0x04: func_0205c2c4 animation, freed by func_0205c368 */
-    u32 unk_08;                 /* +0x08: from func_0205ba28 */
+    CampStatusTexSlot *unk_08;  /* +0x08: from func_0205ba28 */
     u32 tex;                    /* +0x0c: func_02051610 texture, freed by func_02053000 */
     CampStatusObj *obj;
     u32 unk_14;
@@ -84,14 +96,15 @@ typedef struct CampStatusWork {
     u8 pad_0001[0x3];
     u32 unk_0004;
     u32 unk_0008;
-    u32 unk_000c;
+    s16 unk_000c;               /* +0x0c: bust-up texture to load (0: first, > 0: number, < 0: loaded) */
+    s16 unk_000e;               /* +0x0e: frame delay before loading it */
     s32 unk_0010;               /* +0x10: frame counter for the blinking bar segments */
     u32 unk_0014;
     u32 unk_0018;               /* +0x18/+0x1c: resources (func_0205ddb4), +0x20 animation */
     u32 unk_001c;
     u32 unk_0020;
     CampStatusObj *unk_0024[22]; /* +0x24: objects; [2], [11..18] and [21] are used here */
-    u32 unk_007c;
+    CampStatusLink *unk_007c;   /* +0x7c: overlay animation (func_0205c3c0) */
     u32 unk_0080;
     CampStatusBustUp unk_0084[2];
     CampStatusText *unk_00b4;   /* +0xb4..+0xc8: text objects (func_020629ac), drawn with */
@@ -112,12 +125,9 @@ typedef struct CampStatusWork {
     u8 pad_00f2[0x2];
     u32 unk_00f4;
     u32 unk_00f8;
-    s16 unk_00fc;
-    s16 unk_00fe;
-    s16 unk_0100[5];            /* +0x100: x of the five rows drawn by CampStatus_Unk_0d6e10 */
-    s16 unk_010a;
-    s16 unk_010c;
-    s16 unk_010e;
+    s16 unk_00fc[10];           /* +0xfc: slide-in offsets, all moved to 0 by func_020d5644: [0] y of the
+                                 * frame, [1] x of the status panel, [2..6] x of the five rows,
+                                 * [7] x of the top bar, [8] y of the top panel, [9] title x */
     f32 unk_0110;               /* +0x110: alpha passed to func_0205dee8 */
     u32 unk_0114;               /* +0x114: set once unk_0118 matches the shown stats */
     s16 unk_0118[10];           /* +0x118: animated bar lengths: [row] current, [row + 5] target */
@@ -137,15 +147,16 @@ typedef struct CampStatusWork {
     u32 unk_01a8;
     u32 unk_01ac;               /* +0x1ac/+0x1b0: hide the two tabs drawn by CampStatus_Unk_0d6120 */
     u32 unk_01b0;
-    u8 pad_01b4[0x8c];
+    u8 unk_01b4[0x8c];          /* +0x1b4: object for func_020a208c / func_020a22e0 / func_020a2250 */
     u8 unk_0240;
     u8 unk_0241;
-    u8 pad_0242[0x6];
+    u8 pad_0242[0x2];
+    CampStatusObj *unk_0244;    /* +0x244: object from func_020a22e0 (mode 5) */
     u16 unk_0248;               /* +0x248: id for CampStatus_Unk_0dbd04 */
     s16 unk_024a;               /* +0x24a: negative selects the icon-only path of CampStatus_Unk_0db548 */
     u8 pad_024c[0x4];
     u32 unk_0250;               /* +0x250: written to 1 by func_020dcb44 */
-    u8 pad_0254[0x4];
+    u32 unk_0254;               /* +0x254: object [18] is hidden once its animation ends */
     u32 unk_0258;
     u32 unk_025c;               /* +0x25c: selects the id list in CampStatus_Unk_0dc3b8 */
     u32 unk_0260;
@@ -236,11 +247,11 @@ void func_0205c408(CampStatusLink *link, int seq);
 void func_0205c6e0(CampStatusLink *link);
 u32 func_0205dcd4(const char *path, u32 a);
 u32 func_0205c2c4(const char *path);
-u32 func_0205ba28(CampStatusDesc *desc, const char *file, u32 line);
-void func_0205de30(u32 res, u32 a, u32 b);
+CampStatusTexSlot *func_0205ba28(CampStatusDesc *desc, const char *file, u32 line);
+void func_0205de30(u32 res, u32 a, CampStatusTexSlot *slot);
 u32 CampStatus_Unk_0db338(CampStatusBustUp *b, u32 n);
 u32 CampStatus_Unk_0db394(CampStatusBustUp *b, u32 i);
-void func_0205c3dc(u32 handle);
+void func_0205c3dc(CampStatusLink *link);
 void func_020629c4(void *text);
 void Unk0c855c_Unk_0ca648(u32 a);
 void Unk044394_Unk_044534(u32 a);
@@ -684,6 +695,230 @@ void CampStatus_Unk_0d51cc(void)
  * the 3x2 cursor unk_00f0 (keys 0x40/0x80 change rows except in modes 1 and 18, 0x20/0x10
  * columns) and confirm with 0x800 or 2; otherwise (unk_01a0 and unk_00f8 set) move between the
  * two columns of the record and confirm with 0x400 or 2. */
+/* Records reached from func_020a2250's result. */
+typedef struct CampStatusPos {
+    u8 pad_0000[0x6];
+    s16 unk_06;
+} CampStatusPos;
+typedef struct CampStatusDemonData {
+    u8 pad_0000[0x18c];
+    CampStatusPos *unk_018c;
+} CampStatusDemonData;
+extern char data_021506f8[];
+extern char data_02150728[];
+int func_0205c704(CampStatusLink *link);
+void func_0205c41c(CampStatusLink *link, u32 v);
+int func_020537b8(u32 port, u32 mask);
+int func_020537dc(u32 port, u32 mask);
+int func_0205ca48(CampStatusLink *link);
+u32 Unk0a163c_Thunk_020a208c(u8 *obj);
+void Unk05ae50_Unk_05afd8(u32 v);
+CampStatusObj *func_020a22e0(u8 *obj, u16 id, u32 a);
+CampStatusDemonData *func_020a2250(u8 *obj, u16 id);
+void func_0205caa8(CampStatusLink *link, u32 v);
+int func_02050074(int first, int last);
+void Unk065e88_SetUnkFieldsc_10(CampStatusObj *obj, u32 v, u32 w);
+/* Handler 0x0c of the CampStatus_Unk_0d3624 table: per-frame update. Slides the panels in and
+ * fades in (unk_0110) until every offset is 0, then starts object [2]; loads and shows the
+ * bust-up textures; handles the overlay animation, the top-panel slide and its request, the two
+ * tab toggles (keys 0x200/0x100), mode 5's object, and in modes 6/8 the random idle animation. */
+void func_020d5644(CampStatusWork *work)
+{
+    CampStatusRequest req;
+    s32 i;
+    if (func_02052728() != 0) {
+        return;
+    }
+    if (work->unk_00f4 == 0) {
+        if (work->unk_00fc[0] < 0) {
+            work->unk_00fc[0]++;
+            work->unk_0024[21]->unk_0010 = work->unk_00fc[0];
+        }
+        if (work->unk_00fc[1] < 0) {
+            work->unk_00fc[1] += 16;
+        }
+        if (work->unk_00fc[2] < 0) {
+            work->unk_00fc[2] += 16;
+        }
+        if (work->unk_00fc[3] < 0) {
+            work->unk_00fc[3] += 16;
+        }
+        if (work->unk_00fc[4] < 0) {
+            work->unk_00fc[4] += 16;
+        }
+        if (work->unk_00fc[5] < 0) {
+            work->unk_00fc[5] += 16;
+        }
+        if (work->unk_00fc[6] < 0) {
+            work->unk_00fc[6] += 16;
+        }
+        if (work->unk_00fc[7] > 0) {
+            work->unk_00fc[7] -= 8;
+        }
+        if (work->unk_00fc[8] > 0) {
+            work->unk_00fc[8] -= 6;
+        }
+        if (work->unk_00fc[9] < 0) {
+            work->unk_00fc[9] += 8;
+        }
+        for (i = 0; i < 10; i++) {
+            if (work->unk_00fc[i] != 0) {
+                break;
+            }
+        }
+        if (work->unk_0010 < 10) {
+            work->unk_0110 = ++work->unk_0010 / 10.0f;
+        }
+        if (i == 10 && work->unk_0010 >= 10) {
+            work->unk_00f4 = 1;
+            work->unk_0010 = 0;
+            work->unk_0110 = 1.0f;
+            func_0205c408(work->unk_0024[2]->link, 2);
+            func_0205c6e0(work->unk_0024[2]->link);
+            work->unk_0024[2]->unk_0030 = 6;
+            work->unk_0024[2]->unk_0024 = 10;
+        }
+    }
+    if (work->unk_0114 != 0) {
+        work->unk_0010++;
+    }
+    if (work->unk_0084[0].unk_14 != 0) {
+        if (work->unk_000c == 0) {
+            if (work->unk_000e < 1) {
+                work->unk_000e++;
+            } else {
+                char path[64];
+                func_02013c3c(path, data_021506f8, 1);
+                work->unk_0084[0].tex = func_02051610(path);
+                func_0205b444(work->unk_0084[0].unk_08, work->unk_0084[0].tex);
+                work->unk_000c = -1;
+                work->unk_000e = 0;
+            }
+        } else if (work->unk_000c > 0) {
+            if (work->unk_000e < 1) {
+                work->unk_000e++;
+            } else {
+                char path[64];
+                func_02013c3c(path, data_02150728, work->unk_000c);
+                work->unk_0084[0].tex = func_02051610(path);
+                func_0205b444(work->unk_0084[0].unk_08, work->unk_0084[0].tex);
+                work->unk_000c = -1;
+                work->unk_000e = 0;
+            }
+        } else if (work->unk_0084[0].unk_08->unk_59 != 0) {
+            func_0205c408(work->unk_0084[0].obj->link, 0);
+            func_0205cac0(work->unk_0084[0].obj->link);
+            Unk065e88_SetFlag3a(work->unk_0084[0].obj, 1);
+            work->unk_0084[1].obj->unk_0030 = 2;
+            work->unk_0084[0].obj->unk_0024 = 1;
+            work->unk_0084[0].unk_14 = 0;
+            work->unk_0004 = 1;
+            work->unk_0008 = 1;
+        }
+    }
+    if (work->unk_0084[1].unk_14 != 0) {
+        if (work->unk_0084[1].unk_08->unk_59 != 0 && work->unk_0084[0].unk_14 == 0) {
+            func_0205c408(work->unk_0084[1].obj->link, 1);
+            func_0205cac0(work->unk_0084[1].obj->link);
+            Unk065e88_SetFlag3a(work->unk_0084[1].obj, 1);
+            work->unk_0084[1].obj->unk_0030 = 2;
+            work->unk_0084[1].obj->unk_0024 = 2;
+            work->unk_0084[1].unk_14 = 0;
+            Unk065e88_SetUnkFieldsc_10(work->unk_0084[1].obj, work->unk_0084[0].obj->link->unk_0014, 0);
+            work->unk_0084[1].obj->link->unk_0028 = work->unk_0084[0].obj->link->unk_0028;
+        }
+    } else if (work->unk_0000 == 10 && work->unk_0004 != 0) {
+        s32 frame = work->unk_0084[0].obj->link->unk_0014;
+        Unk065e88_SetUnkFieldsc_10(work->unk_0084[1].obj, frame, 0);
+        if (frame > 0) {
+            work->unk_0084[1].obj->link->unk_0028 = work->unk_0084[0].obj->link->unk_0028;
+        }
+    }
+    if (work->unk_00ec != 0 && func_0205c704(work->unk_007c) == 0) {
+        func_0205c408(work->unk_007c, 6);
+        func_0205c41c(work->unk_007c, 0);
+        func_0205c6e0(work->unk_007c);
+    }
+    if (work->unk_00f8 == 0) {
+        if (work->unk_00fc[8] > 0) {
+            work->unk_00fc[8] -= 6;
+        }
+        if (work->unk_00fc[8] <= 0) {
+            work->unk_00fc[8] = 0;
+            work->unk_00f8 = 1;
+            if (work->unk_01a0 == 0) {
+                for (i = 0; i < 2; i++) {
+                    req.flags[i] = 0;
+                }
+                for (i = 0; i < 16; i++) {
+                    req.values[i] = 0;
+                }
+                req.values[0] = 3;
+                req.flags[0] |= 1;
+                func_020bc9f4(3, &req);
+                func_020bcacc(work->unk_0014, &req);
+            }
+        }
+    }
+    if (work->unk_01a8 != 0) {
+        if (func_020537b8(0, 0x200)) {
+            work->unk_01ac = 1;
+        } else if (func_020537dc(0, 0x200)) {
+            work->unk_01ac = 0;
+        }
+        if (func_020537b8(0, 0x100)) {
+            work->unk_01b0 = 1;
+        } else if (func_020537dc(0, 0x100)) {
+            work->unk_01b0 = 0;
+        }
+    }
+    if (work->unk_0254 != 0 && func_0205ca48(work->unk_0024[18]->link) == 0) {
+        Unk065e88_SetFlag3a(work->unk_0024[18], 0);
+        work->unk_0254 = 0;
+    }
+    if (work->unk_0000 == 5 && (work->unk_0258 = Unk0a163c_Thunk_020a208c(work->unk_01b4)) != 0) {
+        Unk05ae50_Unk_05afd8(0x18000);
+        if (work->unk_0250 != 0) {
+            work->unk_0244 = func_020a22e0(work->unk_01b4, work->unk_00cc->unk_0036, 1);
+        } else {
+            work->unk_0244 = func_020a22e0(work->unk_01b4, work->unk_00da, 1);
+        }
+        if (work->unk_0244 != 0) {
+            CampStatusDemonData *d;
+            func_0205c408(work->unk_0244->link, 0);
+            func_0205c41c(work->unk_0244->link, 0);
+            func_0205cac0(work->unk_0244->link);
+            Unk065e88_SetFlag3a(work->unk_0244, 1);
+            work->unk_0244->unk_0024 = 8;
+            work->unk_0244->unk_0030 = 2;
+            if (work->unk_0250 != 0) {
+                d = func_020a2250(work->unk_01b4, work->unk_00cc->unk_0036);
+            } else {
+                d = func_020a2250(work->unk_01b4, work->unk_00da);
+            }
+            work->unk_0244->unk_0008 = d->unk_018c->unk_06 + 8;
+            work->unk_0244->unk_0004 = 64;
+            func_0205caa8(work->unk_0084[0].obj->link, 0);
+            work->unk_0000 = 6;
+        }
+    }
+    if (work->unk_0000 != 6 && work->unk_0000 != 8) {
+        return;
+    }
+    if (work->unk_0000 == 6) {
+        work->unk_0244->unk_000c = work->unk_0084[0].obj->link->unk_0014;
+    }
+    {
+        s32 pick = func_02050074(1, 99);
+        for (i = 12; i <= 17; i++) {
+            if (pick == i && func_0205ca48(work->unk_0024[i]->link) == 0) {
+                Unk065e88_SetFlag3a(work->unk_0024[i], 1);
+                func_0205cac0(work->unk_0024[i]->link);
+            }
+        }
+    }
+}
+
 void CampStatus_Unk_0d5d44(CampStatusWork *work)
 {
     CampStatusRequest req;
@@ -786,7 +1021,7 @@ void CampStatus_Unk_0d5d44(CampStatusWork *work)
     }
     work->unk_01a0 = 0;
     work->unk_00f8 = 0;
-    work->unk_010c = 60;
+    work->unk_00fc[8] = 60;
     func_02008644(0, work->unk_00dc, 12);
     if (func_020a18c8(work->unk_00da, work->unk_00dc, 6) != 0) {
         for (n = 0; n < 6; n++) {
@@ -822,7 +1057,7 @@ void CampStatus_Unk_0d9d54(u16 id);
 void CampStatus_Unk_0ddb9c(int id);
 /* Handler 0x14 of the CampStatus_Unk_0d3624 table: draw the screen. Common frame and the two
  * optional tabs (unk_01a8), then the page for the screen mode in unk_0000, then the title text
- * on unk_00b8 (centred in 108 px unless unk_0268 pins it at unk_010e). */
+ * on unk_00b8 (centred in 108 px unless unk_0268 pins it at unk_00fc[9]). */
 void CampStatus_Unk_0d6120(CampStatusWork *work)
 {
     CampStatusDrawParam param;
@@ -834,26 +1069,26 @@ void CampStatus_Unk_0d6120(CampStatusWork *work)
     func_02057df8();
     func_02057524(4);
     func_02057e18(31);
-    func_0205dee8(2, work->unk_0018, 0, 0, work->unk_00fc, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 0, 0, work->unk_00fc[0], 1.0f, 1.0f, 0, work->unk_0110, 2);
     if (work->unk_01a8 != 0) {
         func_02057fd8();
         func_02057ddc(0x00ffffff);
-        func_0205dee8(2, work->unk_0018, 1, 0, work->unk_00fc, 1.0f, 1.0f, 0, work->unk_0110, 3);
-        func_0205dee8(2, work->unk_0018, 2, 0, work->unk_00fc, 1.0f, 1.0f, 0, work->unk_0110, 3);
+        func_0205dee8(2, work->unk_0018, 1, 0, work->unk_00fc[0], 1.0f, 1.0f, 0, work->unk_0110, 3);
+        func_0205dee8(2, work->unk_0018, 2, 0, work->unk_00fc[0], 1.0f, 1.0f, 0, work->unk_0110, 3);
         func_02057fd8();
         func_02057df8();
         if (work->unk_01ac == 0) {
             if (work->unk_0110 == 1.0f) {
                 func_02057e18(func_020ddf7c(data_0215f05c.unk_0018));
             }
-            func_02058e9c(2, 0x1e80, 0, work->unk_00fc, 1.0f, 0, 4);
+            func_02058e9c(2, 0x1e80, 0, work->unk_00fc[0], 1.0f, 0, 4);
             func_02057e18(31);
         }
         if (work->unk_01b0 == 0) {
             if (work->unk_0110 == 1.0f) {
                 func_02057e18(func_020ddf7c(data_0215f05c.unk_0018));
             }
-            func_02058e9c(0x1002, 0x1e82, 0, work->unk_00fc, 1.0f, 0, 4);
+            func_02058e9c(0x1002, 0x1e82, 0, work->unk_00fc[0], 1.0f, 0, 4);
             func_02057e18(31);
         }
     }
@@ -948,10 +1183,10 @@ void CampStatus_Unk_0d6120(CampStatusWork *work)
         func_02057df8();
         func_02057dcc(0x052f62ff, 0x052f62ff, 0x186bdeff, 0x186bdeff);
         func_02057fd8();
-        func_0205dee8(2, work->unk_0018, 54, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 54, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
         func_02057df8();
         func_02057fd8();
-        func_0205dee8(2, work->unk_0018, 55, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 3);
+        func_0205dee8(2, work->unk_0018, 55, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 3);
         func_02008904(func_0205e318(work->unk_0018, 130), &param, sizeof(param));
         /* scrollbar: 145 px track, one page per 12 entries */
         if (work->unk_0240 < 1) {
@@ -963,8 +1198,8 @@ void CampStatus_Unk_0d6120(CampStatusWork *work)
         }
         param.unk_0e = (0x1000 / pages * 145) >> 12;
         param.unk_0a += (s16)(((145 - param.unk_0e) * ((work->unk_0241 / 12 << 12) / (pages - 1))) >> 12);
-        func_0205e048(2, work->unk_0018, &param, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 4, 0);
-        func_0205dee8(2, work->unk_0018, 57, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 4);
+        func_0205e048(2, work->unk_0018, &param, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 4, 0);
+        func_0205dee8(2, work->unk_0018, 57, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 4);
         if (work->unk_0000 != 8 && work->unk_00f4 != 0 && (work->unk_00da != 0 || work->unk_0250 != 0)) {
             if (work->unk_0250 != 0) {
                 CampStatus_Unk_0ddb9c(work->unk_00cc->unk_0036);
@@ -982,9 +1217,9 @@ void CampStatus_Unk_0d6120(CampStatusWork *work)
     {
         s32 x = (108 - func_02061a04(work->unk_00b8->unk_0028, work->unk_00b8->unk_0014, 0)) / 2;
         if (work->unk_0268 != 0) {
-            x = work->unk_010e;
+            x = work->unk_00fc[9];
         }
-        Unk0ddeb0_Unk_0ddeb0(work->unk_00b8, x + 2, work->unk_00fc - 2, 0, 11, 10);
+        Unk0ddeb0_Unk_0ddeb0(work->unk_00b8, x + 2, work->unk_00fc[0] - 2, 0, 11, 10);
     }
     func_02057534();
 }
@@ -1187,12 +1422,12 @@ void CampStatus_Unk_0d71bc(CampStatusWork *work)
 {
   func_02057fd8();
   func_02057df8();
-  func_0205dee8(2, work->unk_0018, 0x2b, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x2c, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x2d, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x2b, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x2c, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x2d, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
   func_02057e18(0x1f);
-  func_0205dee8(2, work->unk_0018, 0x2e, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x2f, 0, work->unk_010c, 1.0f, 1.0f, 0, 1.0f, 3);
+  func_0205dee8(2, work->unk_0018, 0x2e, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x2f, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, 1.0f, 3);
 }
 
 /* decompiler-derived */
@@ -1200,15 +1435,15 @@ void CampStatus_Unk_0d7680(CampStatusWork *work)
 {
   func_02057fd8();
   func_02057df8();
-  func_0205dee8(2, work->unk_0018, 5, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x41, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 3);
-  func_0205dee8(2, work->unk_0018, 0x22, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x23, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x24, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x25, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x26, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x27, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-  func_0205dee8(2, work->unk_0018, 0x21, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 5, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x41, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 3);
+  func_0205dee8(2, work->unk_0018, 0x22, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x23, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x24, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x25, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x26, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x27, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+  func_0205dee8(2, work->unk_0018, 0x21, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
   func_02057e18(0x1f);
 }
 
@@ -1261,7 +1496,7 @@ void CampStatus_GetLinkUnk14(u32 *out)
 }
 
 /* Draw the main status panel: frames 5, 7, 8, 12-14 and the eight icons of data_0213c5b0 at
- * x unk_00fe, the five row frames 15-19 at x unk_0100[0..4], frame 33 at y unk_010c, then the
+ * x unk_00fc[1], the five row frames 15-19 at x unk_00fc[2..6], frame 33 at y unk_00fc[8], then the
  * five row labels of unk_00b4. */
 void CampStatus_Unk_0d6e10(CampStatusWork *work)
 {
@@ -1269,50 +1504,50 @@ void CampStatus_Unk_0d6e10(CampStatusWork *work)
     int i;
     func_02057fd8();
     func_02057df8();
-    func_0205dee8(2, work->unk_0018, 5, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 5, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
     func_02057e18(31);
-    func_0205dee8(2, work->unk_0018, 7, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 8, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 12, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 13, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 7, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 8, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 12, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 13, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
     func_02057e18(31);
-    func_0205dee8(2, work->unk_0018, 14, work->unk_00fe, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 14, work->unk_00fc[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
     icons = data_0213c5b0;
     for (i = 0; i < 8; i++) {
-        func_02058e9c(2, Unk0c855c_Unk_0ca690(icons.v[i]), work->unk_00fe + (i * 14 + 5), 53, work->unk_0110, 0, 3);
+        func_02058e9c(2, Unk0c855c_Unk_0ca690(icons.v[i]), work->unk_00fc[1] + (i * 14 + 5), 53, work->unk_0110, 0, 3);
     }
-    func_0205dee8(2, work->unk_0018, 15, work->unk_0100[0], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 16, work->unk_0100[1], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 17, work->unk_0100[2], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 18, work->unk_0100[3], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 19, work->unk_0100[4], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 33, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 15, work->unk_00fc[2], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 16, work->unk_00fc[3], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 17, work->unk_00fc[4], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 18, work->unk_00fc[5], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 19, work->unk_00fc[6], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 33, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
     func_02057e18(31);
     func_02057fd8();
     for (i = 0; i <= 4; i++) {
-        Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, work->unk_0100[i] + 4, i * 11 + 82, i, 2, 10);
+        Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, work->unk_00fc[i + 2] + 4, i * 11 + 82, i, 2, 10);
     }
 }
 
-/* Draw the top panel (frames 53, 50-52 when unk_01a0 is set, else 34-39) at y unk_010c, then,
- * when unk_0004 is set (and not mode 3 with unk_0264 set), frames 26/27 at x unk_010a and
+/* Draw the top panel (frames 53, 50-52 when unk_01a0 is set, else 34-39) at y unk_00fc[8], then,
+ * when unk_0004 is set (and not mode 3 with unk_0264 set), frames 26/27 at x unk_00fc[7] and
  * frame 67 when flag 0x706 is set. */
 void CampStatus_Unk_0d730c(CampStatusWork *work)
 {
     func_02057fd8();
     func_02057df8();
     if (work->unk_01a0 != 0) {
-        func_0205dee8(2, work->unk_0018, 53, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 50, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 51, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 52, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 53, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 50, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 51, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 52, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
     } else {
-        func_0205dee8(2, work->unk_0018, 34, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 35, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 36, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 37, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 38, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
-        func_0205dee8(2, work->unk_0018, 39, 0, work->unk_010c, 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 34, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 35, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 36, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 37, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 38, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
+        func_0205dee8(2, work->unk_0018, 39, 0, work->unk_00fc[8], 1.0f, 1.0f, 0, work->unk_0110, 2);
     }
     func_02057e18(31);
     if (work->unk_0004 == 0) {
@@ -1321,12 +1556,12 @@ void CampStatus_Unk_0d730c(CampStatusWork *work)
     if (work->unk_0000 == 3 && work->unk_0264 != 0) {
         return;
     }
-    func_0205dee8(2, work->unk_0018, 26, work->unk_010a, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
-    func_0205dee8(2, work->unk_0018, 27, work->unk_010a, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 26, work->unk_00fc[7], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 27, work->unk_00fc[7], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
     if (Unk0e651c_Unk_0e666c(0x706) == 0) {
         return;
     }
-    func_0205dee8(2, work->unk_0018, 67, work->unk_010a, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
+    func_0205dee8(2, work->unk_0018, 67, work->unk_00fc[7], 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
 }
 
 /* Draw the labels on unk_00c0 (grey when Unk09974c_Unk_0998d8(unk_00d0) is 0), the list on
@@ -2826,22 +3061,22 @@ void CampStatus_Unk_0dc908(void)
 void CampStatus_Unk_0dca50(CampStatusWork *work)
 {
     work->unk_00f4 = 0;
-    work->unk_00fc = -12;
-    work->unk_00fe = -160;
-    work->unk_0100[0] = -224;
-    work->unk_0100[1] = -288;
-    work->unk_0100[2] = -352;
-    work->unk_0100[3] = -416;
-    work->unk_0100[4] = -480;
-    work->unk_010a = 80;
-    work->unk_010c = 60;
-    work->unk_010e = 0;
+    work->unk_00fc[0] = -12;
+    work->unk_00fc[1] = -160;
+    work->unk_00fc[2] = -224;
+    work->unk_00fc[3] = -288;
+    work->unk_00fc[4] = -352;
+    work->unk_00fc[5] = -416;
+    work->unk_00fc[6] = -480;
+    work->unk_00fc[7] = 80;
+    work->unk_00fc[8] = 60;
+    work->unk_00fc[9] = 0;
 }
 
 void CampStatus_Unk_0dcaac(void)
 {
     data_02176be4->unk_00f4 = 0;
-    data_02176be4->unk_010e = -80;
+    data_02176be4->unk_00fc[9] = -80;
 }
 
 /* Store on at +0x268, then switch the unk_0078 object on (flag 0x3a set + func_0205cac0, only
