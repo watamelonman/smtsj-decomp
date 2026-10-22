@@ -14,10 +14,28 @@ typedef struct Unk09a268Work {
 } Unk09a268Work;
 
 
+/* Partial work-area layout; only the accessed halfword and coordinates are known. */
+typedef struct Unk09a268WorkArea {
+    u8 pad_0000[0x35c];
+    u16 unk_035c;
+    u8 pad_035e[6];
+    s8 unk_0364;
+    s8 unk_0365;
+} Unk09a268WorkArea;
+
+/* Table records have a 0x1c-byte stride; only the last three bytes are used here. */
+typedef struct Unk09a268Rec {
+    u8 pad_00[0x19];
+    u8 unk_19;
+    u8 unk_1a;
+    u8 unk_1b;
+} Unk09a268Rec;
+
+
 int func_0209a48c(u32 p, int bit);
 void Unk09a268_SetBit(u8 *p, int bit, int on);
 int func_0209bb68();
-int Unk09a268_Unk_09c484(int arg0);
+Unk09a268Rec *Unk09a268_Unk_09c484(int arg0);
 
 void Unk09a268_Nop_09b3c8(void);
 void Unk09a268_Unk_09a7fc(u32 arg0);
@@ -44,7 +62,7 @@ void func_02058944(u8 *table, int index, u8 *src, u32 a, u32 b, u32 c, u8 d);
 u8 *GetGameState(void);
 u32 Unk02f2a8_Unk_034970(void *table, u32 a, u32 b);
 u8 *Unk038fbc_Unk_039160(u32 h, u32 a, u32 b);
-u8 *Unk02e000_GetWorkArea(void);
+Unk09a268WorkArea *Unk02e000_GetWorkArea(void);
 int Unk1122bc_Unk_1124a0(void);
 u32 Unk1122bc_Unk_112460(void);
 int Unk1124f0_Unk_1125ac(u32 a, u32 b, u32 c);
@@ -54,10 +72,11 @@ int Unk1124f0_Unk_1125ac(u32 a, u32 b, u32 c);
  * paired comparisons and the func_02058af8 call at 0209a3a0. */
 int Unk09a268_Unk_09a3a0(u8 *w, u32 id, u32 sub)
 {
+    Unk09a268Ent *base = (Unk09a268Ent *)(w + 164 + 9216);
     int j;
     for (j = 0; j < 128; j++) {
-        if (((Unk09a268Ent *)((u8 *)w + 164 + 9216))[j].id == id && ((Unk09a268Ent *)((u8 *)w + 164 + 9216))[j].sub == sub) {
-            return func_02058af8((u8 *)w + 164 + 9216, j);
+        if (base[j].id == id && base[j].sub == sub) {
+            return func_02058af8(base, j);
         }
     }
     return 1;
@@ -140,8 +159,8 @@ int func_0209a48c(u32 p, int bit)
     return (*(u8 *)p & (1 << bit)) != 0;
 }
 
-/* Returns the signed, 12-bit-shifted value of the first record whose +8 word equals
- * `id`, or 0 when none matches. Evidence: the 128-record scan at 0209a54c. */
+/* Returns the s32 pointed to by the first word of the record whose +8 word equals
+ * `id`, arithmetically shifted right by 12, or 0 when none matches. Evidence: the 128-record scan at 0209a54c. */
 int func_0209a53c(u8 *w, u32 id)
 {
     Unk09a268Ent *base = (Unk09a268Ent *)(w + 164 + 9216);
@@ -225,9 +244,9 @@ void Unk09a268_Unk_09a870(u32 p,u32 on)
 
 extern u8 data_0213be64[];
 /* Returns the address of the 0x1c-byte record at `arg0` in table data_0213be64. */
-int Unk09a268_Unk_09c484(int arg0)
+Unk09a268Rec *Unk09a268_Unk_09c484(int arg0)
 {
-  return arg0 * 0x1c + ((int)data_0213be64);
+  return (Unk09a268Rec *)(arg0 * 0x1c + ((int)data_0213be64));
 }
 
 /* Partial body layout: only the flag read by 09a844 is established here. */
@@ -272,7 +291,7 @@ void func_0209aebc();
 int func_0209a970(int x, int y, int z)
 {
     int ret;
-    u8 *work;
+    Unk09a268WorkArea *work;
     int dy;
     int dx;
     int distance;
@@ -283,11 +302,11 @@ int func_0209a970(int x, int y, int z)
     }
     ret = 0;
     work = Unk02e000_GetWorkArea();
-    dy = ((s8 *)(work + 768))[101] - z;
+    dy = work->unk_0365 - z;
     if (dy < 0) {
         dy = -dy;
     }
-    dx = ((s8 *)(work + 768))[100] - y;
+    dx = work->unk_0364 - y;
     if (dx < 0) {
         dx = -dx;
     }
@@ -375,28 +394,29 @@ int func_0209be20(u32 a, u32 b)
             ret = Unk1122bc_Unk_112460();
             break;
         case 23:
-            ret = Unk1124f0_Unk_1125ac(*(u16 *)(Unk02e000_GetWorkArea() + 768 + 92), a, b);
+            ret = Unk1124f0_Unk_1125ac(Unk02e000_GetWorkArea()->unk_035c, a, b);
             break;
         default:
-            ret = ((u8 *)Unk09a268_Unk_09c484(kind))[0x1a];
+            ret = Unk09a268_Unk_09c484(kind)->unk_1a;
             break;
         }
     }
     return ret;
 }
 
-/* Applies the selected record's state to the current cell: sets its single state
- * bit, sets flag +1, clears +2, then runs func_0209c548(arg0). Evidence: the
+/* Sets bit 3, clears bit 4, selects the state bit from record 5 byte +0x19,
+ * then writes current-cell byte +1 = 1 and halfword +2 = 0 before running
+ * func_0209c548(arg0). Evidence: the
  * Unk09a268_SetOnlyBit and Unk09a268_Unk_09a80c/a830 calls at 0209cb10. */
 void Unk09a268_Unk_09cb10(u32 arg0)
 {
-  int value1;
+  Unk09a268Rec *value1;
   int value2;
   value1 = Unk09a268_Unk_09c484(5);
   value2 = Unk02f2a8_GetCurrentCell38e8();
   Unk09a268_Unk_09a80c(value2,1);
   Unk09a268_Unk_09a830(value2,0);
-  Unk09a268_SetOnlyBit(value2,*(u8 *)(value1 + 0x19));
+  Unk09a268_SetOnlyBit(value2,value1->unk_19);
   *(u8 *)(value2 + 1) = 1;
   *(u16 *)(value2 + 2) = 0;
   func_0209c548(arg0);
@@ -408,7 +428,7 @@ u8 Unk09a268_Unk_09beb0(u32 a, u32 b)
     u8 ret = 0;
     u8 *e = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(GetGameState() + 4, a, b), a, b);
     if (e != 0) {
-        ret = ((u8 *)Unk09a268_Unk_09c484(func_0209bb68(*e)))[0x1b];
+        ret = Unk09a268_Unk_09c484(func_0209bb68(*e))->unk_1b;
     }
     return ret;
 }
@@ -427,7 +447,7 @@ int Unk09a268_Unk_09c4a8(u32 h, u32 a, u32 b)
     if (e != 0) {
         r = func_0209bb68(*e);
     }
-    return Unk09a268_Unk_09c484(r);
+    return (int)Unk09a268_Unk_09c484(r);
 }
 
 /* Returns 1 when `p` is non-null and its first byte equals 1, else 0. */

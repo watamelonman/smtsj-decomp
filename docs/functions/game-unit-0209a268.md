@@ -58,7 +58,8 @@
   match both arguments, forwarded to `func_02058af8` by index; returns 1 when
   the 128-record table has no match. Verified 100%.
 - `func_0209a53c` (76 B): scans the 128 records for the +8 word equal to the
-  argument and returns that record's first word shifted right by 12, or 0 when
+  argument and returns the s32 pointed to by the record's first word,
+  arithmetically shifted right by 12, or 0 when
   no record matches. Verified 100%.
 - `func_0209a3ec` (108 B): allocates a free 128-record slot through
   `func_02058a64`, fills it from the four arguments plus a byte through
@@ -75,9 +76,9 @@
 - `func_0209be20` (144 B): returns byte +0x1A of the record selected for the
   two arguments; kinds 20 and 23 are served by `Unk1122bc_Unk_112460` and
   `Unk1124f0_Unk_1125ac` instead, and an absent record returns 0. Verified 100%.
-- `Unk09a268_Unk_09cb10` (88 B): applies the selected record's state to the
-  current cell, sets flag +1, clears +2, and runs `func_0209c548` on its
-  argument. Verified 100%.
+- `Unk09a268_Unk_09cb10` (88 B): sets bit 3, clears bit 4, selects
+  the state bit from record 5 byte +0x19, then writes current-cell byte +1 = 1
+  and halfword +2 = 0, and runs `func_0209c548` on its argument. Verified 100%.
 
 ## Not done in M1-T1013
 - `func_0209cb68`
@@ -125,3 +126,6 @@
 - `Unk09a268_Unk_09c484` has a full index prototype. Its exceptional index-free
   call in `Unk09a268_Unk_09c498` preserves the original ABI (see DEC-002).
 - All eight card functions and all 26 defined functions retain 100% objdiff matches.
+
+- M1-T1012 review: work-area +0x35c/+0x364/+0x365 and table-record byte
+  accesses now use typed partial layouts; the entry lookup shares a local base.
