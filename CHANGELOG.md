@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Corrected the M1-T055 slot request prototype and documented its null request block.
 - Matched all six M1-T055 handlers in `src/game/unit_0203e02c.c`, with typed arguments and documented mode dispatch and worker control.
 - Matched five M1-T054 argument handlers in `src/game/unit_0203cc58.c`; documented the remaining shared helper in the hard list.
 - Completed M1-T051: all four task functions in `src/game/unit_02124c5c.c` match at 100%, including predicate-based argument selection and typed stack payload construction.

@@ -1,5 +1,8 @@
 #include "types.h"
 
+/* The matching toolchain does not provide standard headers. */
+#define NULL ((void *)0)
+
 /* Only the worker pointer at +0xe8 is accessed by these handlers. */
 typedef struct Unk03e02cContext {
     u8 pad_0000[0xe8];
@@ -14,8 +17,8 @@ int Unk09ee4c_Thunk_02118c6c(int value);
 void func_020953c4(u32 first, u32 second, u32 third);
 int Unk094fe0_Unk_0953f0(void);
 int Unk0bc1a8_IsSlotEmpty(int slot);
-/* This call site supplies only r0-r2; it does not initialize r3. */
-void Unk0bc1a8_Unk_0bc928(int slot, u32 value, u32 flags);
+struct Unk1250a8Req;
+void Unk0bc1a8_Unk_0bc928(u32 slot, u32 value, struct Unk1250a8Req *req);
 int func_02095818(void);
 void func_02116758(int value);
 void func_021179a0(int value);
@@ -60,7 +63,7 @@ int func_0203e078(void)
 int func_0203e0d8(void)
 {
     if (Unk0bc1a8_IsSlotEmpty(24)) {
-        Unk0bc1a8_Unk_0bc928(24, 0xffff, 0);
+        Unk0bc1a8_Unk_0bc928(24, 0xffff, NULL);
     }
     return 1;
 }
@@ -76,7 +79,7 @@ int func_0203e108(void)
     return 1;
 }
 
-/* Dispatch modes 3/4 to their operations, otherwise clear slot 24 through its setter. */
+/* Dispatch modes 3/4 to their operations, otherwise call Unk0bc1a8_Unk_0bc9b4(24, 0). */
 int func_0203e14c(void)
 {
     switch (func_02095818()) {
