@@ -40,3 +40,4 @@ Names describe only observed offsets and operations, without assigning gameplay 
   the target used ip/r1/r2/r3). No nonmatching definition is retained. It
   continues linking from the delinked object; no INCLUDE_ASM is used by this
   DS pipeline. A human can create a scratch with `tools/decompme.py`.
+- `func_0202efa4`: hand-matched
