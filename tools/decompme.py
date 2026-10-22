@@ -325,7 +325,11 @@ def build(func, use_stub=False):
         code = func_definition(src_path.read_text(errors="replace"), func) or ""
     if not code and use_stub:
         code = stub(func, ctx)
-    data = {"name": func, "diff_label": func, "platform": c["platform"], "compiler": c["compiler"],
+    game = c.get("game", "")
+    if game:
+        # Tag every scratch with the game: the name decomp.me lists, and a header in context.
+        ctx = f"/* {game}: {unit['name']} ({func}) */\n" + ctx
+    data = {"name": f"{c.get('name_prefix', '')}{func}", "diff_label": func, "platform": c["platform"], "compiler": c["compiler"],
             "compiler_flags": c["compiler_flags"], "target_asm": asm, "source_code": code,
             "context": ctx, **({"preset": c["preset"]} if c.get("preset") else {})}
     info = {"unit": unit["name"], "size": int(f.get("size", 0)), "match": f.get("fuzzy_match_percent", 0.0),
