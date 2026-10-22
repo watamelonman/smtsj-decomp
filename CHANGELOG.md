@@ -2,6 +2,21 @@
 
 ## Unreleased
 - Verified all eight M1-T1135 context and id-query functions in `src/game/unit_020bd5f0.c` at 100% objdiff; added behavior contracts and per-function documentation.
+- Verified the eight M1-T1108 decompiler-derived functions in `src/game/unit_0202f2a8.c` at 100% objdiff: typed the work-area meter/direction members and the action/count/GameState-tail views, gave every target a behaviour comment, and added a per-function doc entry.
+- Verified the eight M1-T1107 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: added typed local views for the borrowed work area and the GameState sub-blocks, gave `Unk02e000_GetWorkArea` and the other borrowed accessors real prototypes, added behaviour comments to the flag clear, optional-block getters, the 0x24-scoped selector call, grid forwarding call, root setter and 45x40 bounds test, and gave each a per-function doc entry.
+- Verified the eight M1-T1106 grid/cell functions in `src/game/unit_0202f2a8.c` at 100% objdiff; replaced the last raw-offset bodies (`Unk_033ac8`, `Unk_034a8c`) with typed game-state/object accesses and gave every target a per-function doc entry.
+- Matched `func_021059ec` in `src/game/unit_02100810.c` (saved-record comparison) at 100% objdiff, using typed saved-id list access; documented the six remaining M1-T1096 functions and their trials on the unit hard list.
+
+- Matched `func_0204372c` (the 1916-byte 7x7 map-icon dispatcher) in `src/game/unit_0203e43c.c` at 100% objdiff; documented the four remaining M1-T1092 large update/draw functions and their measured candidates on the unit hard list.
+- Matched two of the eight M1-T1091 targets in `src/game/unit_0203e43c.c` at 100% objdiff: the 392-byte context-checked icon drawer and the 620-byte icon-id dispatcher. Added typed prototypes for the two blit helpers and documented the six remaining hard targets.
+- Match three more game/unit_0203e43c functions: coordinate clamping, clipped byte-surface fill, and draw-entry selection; document five remaining hard targets.
+- Verified the eight M1-T1105 functions in `src/game/unit_0202f2a8.c` at 100% objdiff. The four decompiler-derived ones (035ec4, 030478, 030578, 033890) now have typed parameters with small local structs and per-function comments.
+- Corrected the M1-T1095 record window layout to hold its tenth populated id while preserving the nine-row drawing limit and +0x2000 flag offset.
+- Matched all eight M1-T1095 functions in `src/game/unit_02100810.c` at 100% objdiff (work release, list rebuilds, two record-save paths, the metadata row drawer, record sorting, and the nine-row window), with typed parameters and per-function documentation.
+- Matched both functions in `src/game/unit_020f8998.c` (empty callback and the 556-byte grid-interaction state machine) at 100% objdiff, with typed work/cell layouts and per-function documentation.
+- Matched all five M1-T119 functions in `src/game/unit_02047338.c` at 100% objdiff, including the 312-byte `func_02047338` state dispatcher, with typed parameters and per-function documentation.
+- Verified the eight M1-T116 scan-visor action handlers in `src/game/unit_0203c474.c` at 100% objdiff; added typed callee prototypes and behavior comments, with per-function evidence in `docs/functions/game-unit-0203c474.md`.
+- Verified and documented the eight M1-T114 accessors in `src/game/unit_0202f078.c` at 100% objdiff, replacing raw offsets with typed work-block fields in `docs/functions/game-unit-0202f078.md`.
 - `src/game/unit_020bd5f0.c`: M1-T1134 functions at 100% objdiff, including the work-area flag test `func_020c1968`; all eight have typed parameters, behaviour comments and doc entries.
 - Matched all seven M1-T113 functions in `src/game/unit_020f09b4.c` (empty callback, interworking thunk, two work-object callbacks, index mapping, per-entry list walk, and mode-filtered helper call) at 100% objdiff, with typed work fields and per-function documentation.
 - Matched `func_0203e684` and `func_0203fa84` in `src/game/unit_0203e43c.c` (100% objdiff), documented three already-matched M1-T1089 functions; `func_02044114`, `func_02044264`, `func_020442fc` are on the hard list in the unit doc.
