@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all seven M1-T113 functions in `src/game/unit_020f09b4.c` (empty callback, interworking thunk, two work-object callbacks, index mapping, per-entry list walk, and mode-filtered helper call) at 100% objdiff, with typed work fields and per-function documentation.
 - Matched all six functions in `src/game/unit_0203b988.c` at 100% objdiff, including the 216-byte `func_0203b9dc` mode dispatcher, with per-function documentation.
 - Verified six `unit_0202ee5c` accessors at 100% objdiff, added typed contracts, and documented the remaining list assembly function in the hard list.
 - Matched all seven M1-T064 handlers in `src/game/unit_0203c05c.c`, including mode dispatch, with typed work fields and documented argument contracts.
