@@ -281,3 +281,5 @@
 
 ### M1-T1016 hard list
 None.
+- `func_0209cbf8`: hand-matched
+- `func_0209ce30`: hand-matched
