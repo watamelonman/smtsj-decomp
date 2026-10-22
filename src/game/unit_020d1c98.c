@@ -95,14 +95,20 @@ void func_020d1da4(u32 arg0, u32 arg1, u32 arg2)
 /* In states 2/3, request state 4 or set +0xc according to the input flag. */
 void func_020d1e94(u32 arg0)
 {
-    if (data_02176bdc == 0) return;
+    Unk0d1c98Work *work = data_02176bdc;
+    if (work == 0) return;
     if (arg0 != 0) {
-        if (data_02176bdc->unk_0000 == 2 || data_02176bdc->unk_0000 == 3) {
-            data_02176bdc->unk_0000 = 4;
-            data_02176bdc->unk_0010 = 1;
+        switch (work->unk_0000) {
+        case 2: case 3:
+            work->unk_0000 = 4;
+            work->unk_0010 = 1;
+            break;
         }
     } else {
-        if (data_02176bdc->unk_0000 == 2 || data_02176bdc->unk_0000 == 3)
-            data_02176bdc->unk_000c = 1;
+        switch (work->unk_0000) {
+        case 2: case 3:
+            work->unk_000c = 1;
+            break;
+        }
     }
 }
