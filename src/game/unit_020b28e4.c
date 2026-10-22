@@ -1,36 +1,49 @@
 /* src/game/unit_020b28e4.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* 96-byte draw-resource entry. The stride is evidenced by the
+   `(page + 22) * 96` index at 0x020b37f4 and by every named offset in the block
+   from +0x30 to +0xc2f being 0x30 modulo 0x60. See DEC-004. */
+typedef struct Unk0b28e4Entry96 {
+    u8 data[0x60];
+} Unk0b28e4Entry96;
+
 /* Object referenced by the first word of data_02176b80. Fields and embedded
    blocks follow the cleanup, dispatch, paging and setter accesses; their gameplay
    meanings are unknown. Three resource slots follow the cleanup loop bound. */
 typedef struct Unk0b28e4Obj {
-    u8 pad_0000[4];
+    u32 unk_0000;               /* 0x000: screen/dispatch state, only values 0..5 observed */
     void *unk_0004;
     void *unk_0008;
-    u8 pad_000c[4];
+    s8 unk_000c;                /* 0x00c: page count that places the page 3/4 row at +96 */
+    u8 pad_000d[3];
     u8 unk_0010[0x14];
     void *unk_0024;
     void *unk_0028;
     void *unk_002c;
-    u8 unk_0030[0x180];
-    u8 unk_01b0[0x60];
-    u8 unk_0210[0xc0];
-    u8 unk_02d0[0xc30 - 0x2d0];
+    /* 0x030..0xc2f: 0x60-byte draw entries. Index 0 is the digit atlas read by
+       func_020b5ccc; the dispatch routine also references indices 2..9, 20 and 31. */
+    Unk0b28e4Entry96 unk_0030[32];
     void *unk_0c30;
     void *unk_0c34;
-    u8 pad_0c38[4];
+    u8 unk_0c38;                /* 0x0c38: entry count drawn by func_020b4674 */
+    u8 pad_0c39[3];
     void *unk_0c3c[3];
     void *unk_0c48[3];
     void *unk_0c54[3];
     void *unk_0c60[3];
-    s8 unk_0c6c;
-    u8 pad_0c6d[11];
+    s8 unk_0c6c;                /* 0x0c6c: roster page */
+    s8 unk_0c6d;                /* 0x0c6d: page counter used by the status bar */
+    u8 pad_0c6e[2];
+    u32 unk_0c70;               /* 0x0c70: set while a page rebuild is requested */
+    u32 unk_0c74;               /* 0x0c74: set while drawing is deferred */
     s8 unk_0c78[3];
-    u8 pad_0c7b[0x11];
+    u8 pad_0c7b;
+    u32 unk_0c7c[3];            /* 0x0c7c: per-slot record state last drawn */
+    u8 pad_0c88[4];
     u32 unk_0c8c;
     u32 unk_0c90;
-    u8 pad_0c94[0xc];
+    u32 unk_0c94[3];            /* 0x0c94: per-slot nonzero flag read in state 5 */
     u32 unk_0ca0;
     u32 unk_0ca4;
     u32 unk_0ca8;
@@ -66,7 +79,7 @@ typedef struct Unk0b28e4Globals {
 
 extern Unk0b28e4Globals data_02176b80;
 
-void func_020b32bc(void);
+void func_020b32bc(Unk0b28e4Obj *work);
 void func_020b363c(void);
 void func_020b3d28(Unk0b28e4Obj *work);
 void func_020b2dd0(void);
@@ -220,14 +233,14 @@ void func_020b3570(Unk0b28e4Obj *work)
 {
     if (work->unk_0ca4 != 0) {
         if (func_020537b8(0, 512) != 0) {
-            func_0203e93c(1, 128, 96, work->unk_0010, work->unk_01b0);
+            func_0203e93c(1, 128, 96, work->unk_0010, work->unk_0030[4].data);
         } else if (func_020537dc(0, 512) != 0) {
             work->unk_0ca4 = 0;
         }
     }
     if (work->unk_0ca8 != 0) {
         if (func_020537b8(0, 256) != 0) {
-            func_0203e93c(1, 128, 96, work->unk_0010, work->unk_0210);
+            func_0203e93c(1, 128, 96, work->unk_0010, work->unk_0030[5].data);
         } else if (func_020537dc(0, 256) != 0) {
             work->unk_0ca8 = 0;
         }
@@ -303,7 +316,7 @@ void func_020b5264(Unk0b28e4Obj *work)
 }
 
 const char *Unk0a163c_Unk_0a1798(u32 id);
-int func_02013c3c(char *dst, const char *format, const char *name);
+int func_02013c3c(char *dst, const char *format, ...);
 void *func_02051610(const char *path);
 void Unk03e43c_CopyEntry32(void *entry, u32 slot);
 void Unk03e43c_Call_02056cc0(void);
@@ -346,7 +359,7 @@ void *func_02056d88(u32 bank, void *target, void *data, u32 mode, u32 flags);
 
 /* Expands 128 signed packed bytes into 256 palette indices in caller-owned
  * storage, then uploads them. Paths and nibble order follow 0x020b6104. */
-void *func_020b6104(const char *name, u32 slot, u8 *dst)
+void *func_020b6104(u32 name, u32 slot, u8 *dst)
 {
     char pathA[40];
     char pathB[40];
@@ -375,7 +388,7 @@ void *func_020b6104(const char *name, u32 slot, u8 *dst)
 
 /* Expands the resource into the caller's 256-byte buffer and updates an
  * existing target; 0x020b61f0 clears the buffer before nibble conversion. */
-void *func_020b61f0(const char *name, u32 slot, void *target, u8 *dst)
+void *func_020b61f0(u32 name, u32 slot, void *target, u8 *dst)
 {
     char pathA[40];
     char pathB[40];
@@ -462,9 +475,9 @@ void func_020b593c(Unk0b28e4Obj *work)
     a = func_02049d80(record, 2);
     b = func_02049d80(record, 0);
     c = func_02049d80(record, 1);
-    func_020b5ccc(work->unk_0010, work->unk_0030, a, 49, 29, 2);
-    func_020b5ccc(work->unk_0010, work->unk_0030, b, 81, 29, 3);
-    func_020b5ccc(work->unk_0010, work->unk_0030, c, 121, 29, 3);
+    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, a, 49, 29, 2);
+    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, b, 81, 29, 3);
+    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, c, 121, 29, 3);
     state = func_0204a244(record);
     if (state < 1) return;
     if (state > 11) return;
@@ -495,11 +508,11 @@ void func_020b5adc(Unk0b28e4Obj *work, int id, int slot)
     b = func_02049d80(record, 0);
     c = func_02049d80(record, 1);
     y = row + 29;
-    func_020b5ccc(work->unk_0010, work->unk_0030, a, 49, y, 2);
-    func_020b5ccc(work->unk_0010, work->unk_0030, b, 81, y, 3);
-    func_020b5ccc(work->unk_0010, work->unk_0030, c, 121, y, 3);
+    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, a, 49, y, 2);
+    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, b, 81, y, 3);
+    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, c, 121, y, 3);
     if (Unk044904_Unk_044f4c(record[0]) >= 0)
-        func_0203e93c(1, 128, row + 96, work->unk_0010, work->unk_02d0);
+        func_0203e93c(1, 128, row + 96, work->unk_0010, work->unk_0030[7].data);
     state = func_0204a244(record);
     if (state < 1) return;
     if (state > 11) return;
@@ -586,3 +599,310 @@ void func_020b49cc(Unk0b28e4Obj *work)
     Unk0b28e4_Unk_0b5e10(work->unk_0c30, func_02049398(2), (u8)((256-width)/2), 0, 12, 10);
     Unk03e43c_Unk_03f2bc(6);
 }
+
+/* ------------------------------------------------------------------------- */
+/* Status-icon list: state dispatch, record rows and icon resource paging.    */
+/* The resource paths below are the strings at 0x0214ffec..0x02150170        */
+/* ("Data/Battle/Status/Icon/..."); the icon tables are the 12-byte           */
+/* permutations at 0x0213c470..0x0213c49f, indexed by the record state 1..11. */
+/* ------------------------------------------------------------------------- */
+
+/* 12-byte icon index table; index 0 is never read (states start at 1). */
+typedef struct Unk0b28e4IconIds {
+    u8 ids[12];
+} Unk0b28e4IconIds;
+
+/* Record returned by func_020a1740. Only the fields this TU reads are named. */
+typedef struct Unk0b28e4IconRecord {
+    u16 unk_00;                 /* 0x00: id tested by Unk0a163c_Unk_0a17d8 */
+    u8 unk_02;                  /* 0x02: value drawn at x=49 */
+    u8 pad_03;
+    u32 unk_04;                 /* 0x04: value drawn at x=81 */
+    u32 unk_08;                 /* 0x08: value drawn at x=121 */
+    u8 pad_0c[0xa];
+    u16 unk_16;                 /* 0x16: bit 1 selects the alternative number layout */
+} Unk0b28e4IconRecord;
+
+/* Category table returned by Unk09974c_Unk_099c60. */
+typedef struct Unk0b28e4Categories {
+    u8 pad_00[0x40];
+    u16 ids[3];                 /* 0x40: three category ids */
+} Unk0b28e4Categories;
+
+/* Area object returned by Unk02e000_Thunk_0202e788; only +2 and the label
+   source at +0x48 are read here. */
+typedef struct Unk0b28e4Area {
+    u8 pad_00[2];
+    u16 unk_02;                 /* 0x02: category set id */
+    u8 pad_04[0x44];
+    u8 unk_48[4];               /* 0x48: label source; extent unknown */
+} Unk0b28e4Area;
+
+extern const Unk0b28e4IconIds data_0213c494;
+
+Unk0b28e4IconRecord *func_020a1740(u32 id);
+int Unk0a163c_Unk_0a17d8(u32 id);
+u32 func_020445f4(u32 id, ...);
+u32 func_0204fed8(u32 resource, u32 value);
+u16 *func_0204a0d8(void *record);
+u32 Unk0caea8_Unk_0cb044(u32 value);
+Unk0b28e4Categories *Unk09974c_Unk_099c60(u32 id);
+Unk0b28e4Area *Unk02e000_Thunk_0202e788(void);
+void func_0202122c(void *buf, u32 size);
+int Unk03e43c_Unk_03e8cc(u8 *p);
+int Unk02ee5c_GetTierFromField70(void);
+int func_020b4040(Unk0b28e4Obj *work);
+void func_020b4674(Unk0b28e4Obj *work);
+void func_020b4bb8(Unk0b28e4Obj *work);
+void func_020b5070(Unk0b28e4Obj *work);
+void *func_020b5f08(u32 id, u32 slot, void *target, void *record, u32 pcIcon,
+                    u32 unknownIcon, u8 *dst);
+void func_020b3dc4(u32 id, void *dst, void *src, u32 x, s32 y);
+
+/* Draws the work->unk_0c38 record rows: an icon handle, the record's numbers
+   or its three category entries, with an alternate layout for flag bit 1. */
+void func_020b4674(Unk0b28e4Obj *work)
+{
+    u16 *list = (u16 *)Unk0b28e4_Unk_0b64c8();
+    int i;
+
+    for (i = 0; i < work->unk_0c38; i++) {
+        if (list[i] != 0) {
+            Unk0b28e4DrawRequest req;
+            Unk0b28e4IconRecord *record;
+            if (work->unk_0000 == 5 && work->unk_0c94[i] != 0) {
+                if (Unk03e43c_Unk_03e8cc(work->unk_0030[31].data) != 0) {
+                    func_0203e93c(1, 128, (u8)(i * 56 + 96), work->unk_0010,
+                                  work->unk_0030[8].data);
+                } else {
+                    func_0203e93c(1, 128, (u8)(i * 56 + 96), work->unk_0010,
+                                  work->unk_0030[31].data);
+                    func_0202122c(work->unk_0030[31].data, 4096);
+                }
+            }
+            func_020569e4(&req, 1, 0x80004000, work->unk_0c3c[i], 0, 0);
+            func_02056b94(&req, 1, i * 56 + 17);
+            func_02056bbc(&req, 2);
+            func_02056954(1, &req, 1, 0);
+            record = func_020a1740(list[i]);
+            if (Unk0a163c_Unk_0a17d8(record->unk_00) != 0) {
+                func_0203e93c(1, 49, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                func_0203e93c(1, 54, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                func_0203e93c(1, 81, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                func_0203e93c(1, 86, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                func_0203e93c(1, 91, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                func_0203e93c(1, 121, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                func_0203e93c(1, 126, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                func_0203e93c(1, 131, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+            } else {
+                func_020b5ccc(work->unk_0010, work->unk_0030[0].data, record->unk_02,
+                              49, (u8)(i * 56 + 29), 2);
+                if (((u32)record->unk_16 << 30) >> 31 != 0) {
+                    func_0203e93c(1, 81, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                    func_0203e93c(1, 86, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                    func_0203e93c(1, 91, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                    func_0203e93c(1, 121, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                    func_0203e93c(1, 126, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                    func_0203e93c(1, 131, (u8)(i * 56 + 29), work->unk_0010, work->unk_0030[20].data);
+                } else {
+                    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, record->unk_04,
+                                  81, (u8)(i * 56 + 29), 3);
+                    func_020b5ccc(work->unk_0010, work->unk_0030[0].data, record->unk_08,
+                                  121, (u8)(i * 56 + 29), 3);
+                }
+            }
+        }
+    }
+    if (work->unk_0000 == 5) {
+        func_0202122c(work->unk_0030[8].data, 4096);
+    }
+}
+
+/* Draws the work->unk_0c6c page of the type-1 roster: skips page*3 entries,
+   draws three rows and clears the rows past the roster end or a negative id.
+   Only records whose state is exactly 1 contribute to the page. */
+void func_020b5070(Unk0b28e4Obj *work)
+{
+    void *record;
+    int i = 0;
+    int slot = 0;
+    int count = 0;
+    Unk0b28e4Roster *roster;
+    int width;
+
+    func_020119c0(work->unk_0c78, -1, 3);
+    roster = Unk02e000_GetWorkArea();
+    for (; slot < 3; i++) {
+        if (i < roster->unk_357 && roster->unk_348[i] >= 0) {
+            record = func_02044ec4(
+                ((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c);
+            if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c >> 16 & 255) == 1
+                && func_0204a244(record) == 1) {
+                if (count >= work->unk_0c6c * 3) {
+                    func_020b5634(work, roster->unk_348[i], slot);
+                    work->unk_0c78[slot] = roster->unk_348[i];
+                    slot++;
+                }
+                count++;
+            }
+        } else {
+            func_0203f2d4(work->unk_0008, 0, slot * 56 + 16, work->unk_0004,
+                          0, 72, 256, 56);
+            slot++;
+        }
+    }
+    width = func_02061a04(1, func_02049398(3), 0);
+    func_0203f2d4(work->unk_0008, 64, 0, work->unk_0004, 0, 0, 64, 16);
+    func_0203f2d4(work->unk_0008, 128, 0, work->unk_0004, 0, 0, 64, 16);
+    Unk0b28e4_Unk_0b5e10(work->unk_0c30, func_02049398(3), (u8)((256 - width) / 2),
+                         0, 17, 10);
+    Unk03e43c_Unk_03f2bc(6);
+}
+
+/* Draws the reserved first row of page 1: the fixed first record's icon,
+   two labels, its three category entries and eight command buttons. */
+void func_020b5338(Unk0b28e4Obj *work)
+{
+    u32 resource = func_020445f4(18, 0);
+    void *record = func_02044ec4(
+        ((Unk0b28e4FirstRecord *)Unk044904_Get_data_0215ee98())->unk_08c);
+    int row;
+    u16 *list;
+    int index;
+    int col;
+    int drawn;
+    Unk0b28e4Categories *categories;
+    int state;
+    int tier;
+    int kind;
+    u32 label;
+    int y;
+    int i;
+
+    func_0203f2d4(work->unk_0008, 0, 16, work->unk_0004, 0, 16, 256, 56);
+    func_0203f2d4(work->unk_0008, 32, 37, work->unk_0004, 32, 93, 104, 7);
+    func_020b5f08(0, 7, work->unk_0c3c[0], record, 1, 0, work->unk_0c54[0]);
+    state = func_0204a244(record);
+    work->unk_0c7c[0] = state;
+    if (state >= 1 && state <= 11) {
+        Unk0b28e4IconIds ids = data_0213c494;
+        func_020b61f0(ids.ids[state], 13, work->unk_0c48[0], work->unk_0c60[0]);
+    }
+    tier = 1;
+    kind = Unk02ee5c_GetTierFromField70();
+    if (kind == 4) tier = 3;
+    if (kind == 5) tier = 5;
+    if (func_0204a244(record) == 1) tier++;
+    label = func_0204fed8(resource, 43);
+    Unk0b28e4_Unk_0b5e10(work->unk_0c34, label, 34, 19, 8, tier);
+    Unk0b28e4_Unk_0b5e10(work->unk_0c34, (u32)Unk02e000_Thunk_0202e788()->unk_48,
+                         74, 19, 8, tier);
+    drawn = 0;
+    list = func_0204a0d8(record);
+    categories = Unk09974c_Unk_099c60(Unk02e000_Thunk_0202e788()->unk_02);
+    row = 0;
+    index = 0;
+    for (; row < 2; row++, index += 3) {
+        for (col = 0; col < 3; col++) {
+            u16 entry = list[index + col];
+            if (entry != 0) {
+                int category;
+                for (category = 0; category < 3; category++) {
+                    u16 id = categories->ids[category];
+                    if (id == entry) break;
+                }
+                if (category < 3) {
+                    Unk0b28e4_Unk_0b5e10(work->unk_0c30, Unk0caea8_Unk_0cb044(entry),
+                                         (u8)(drawn % 3 * 83 + 6),
+                                         (u8)(drawn / 3 * 12 + 44), 16, 7);
+                    drawn++;
+                }
+            }
+        }
+    }
+    i = 0;
+    y = 143;
+    for (; i <= 7; i++) {
+        u32 value = Unk0b28e4_GetEntry34((u8 *)record, i + 8);
+        if (i == 6 && (value == 0 || value == 5)) {
+            value = 1;
+        }
+        Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_02049398(value + 5), (u8)y, 32, 2, 1);
+        y += 14;
+    }
+}
+
+/* State dispatch called from the main callback table (slot +0xc of the table
+   filled by Unk0b28e4_InitCallbacks). Each state rebuilds or draws its page.
+   Defined after its same-unit callees; see DEC-005. */
+void func_020b32bc(Unk0b28e4Obj *work)
+{
+    switch (work->unk_0000) {
+    case 0:
+        break;
+    case 1:
+        if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
+            work->unk_0c38 = func_020b4040(work);
+            work->unk_0c70 = 0;
+        }
+        if (work->unk_0c74 == 0) {
+            func_020b4674(work);
+        }
+        break;
+    case 2:
+        if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
+            func_020b49cc(work);
+            work->unk_0c70 = 0;
+        }
+        if (work->unk_0c74 == 0) {
+            func_020b4bb8(work);
+        }
+        break;
+    case 3:
+        if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
+            func_020b4dd8(work);
+            work->unk_0c70 = 0;
+        }
+        if (work->unk_0c74 == 0) {
+            func_020b4fb4(work);
+            func_0203e93c(1, 128, work->unk_000c * 56 + 96, work->unk_0010,
+                          work->unk_0030[6].data);
+            func_0202122c(work->unk_0030[6].data, 4096);
+        }
+        break;
+    case 4:
+        if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
+            func_020b5070(work);
+            work->unk_0c70 = 0;
+        }
+        if (work->unk_0c74 == 0) {
+            func_020b5264(work);
+            func_0203e93c(1, 128, work->unk_000c * 56 + 96, work->unk_0010,
+                          work->unk_0030[6].data);
+            func_0202122c(work->unk_0030[6].data, 4096);
+        }
+        break;
+    case 5:
+        if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
+            work->unk_0c38 = func_020b4040(work);
+            work->unk_0c70 = 0;
+        }
+        if (work->unk_0c74 == 0) {
+            func_020b4674(work);
+        }
+        break;
+    }
+    if (work->unk_0c6d > 1 && work->unk_0ca0 == 0) {
+        func_0203e93c(1, 128, 96, work->unk_0010, work->unk_0030[2].data);
+        func_0203e93c(1, 128, 96, work->unk_0010, work->unk_0030[3].data);
+        func_0203e93c(1, 128, 96, work->unk_0010, work->unk_0030[9].data);
+        func_0203e93c(1, 121, 186, work->unk_0010,
+                      work->unk_0030[work->unk_0c6c + 22].data);
+        func_0203e93c(1, 132, 186, work->unk_0010,
+                      work->unk_0030[work->unk_0c6d + 21].data);
+    }
+    if (work->unk_0c74 != 0) {
+        work->unk_0c74 = 0;
+    }
+}
+

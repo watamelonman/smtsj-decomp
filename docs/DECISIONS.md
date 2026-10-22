@@ -46,3 +46,36 @@ so both reads are emitted, matching the original instruction stream.
 field is engine-shared, so callers must not assume it is stable across calls.
 **What would make us revisit.** Evidence that the original field is not shared, or
 a non-volatile formulation that reproduces the same two loads.
+
+## DEC-004 — Model the +0x30 draw resources as 96-byte entries
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** `src/game/unit_020b28e4.c` accesses the block from +0x30 to +0xc2f
+through the offsets +0x30, +0xf0, +0x150, +0x1b0, +0x210, +0x270, +0x2d0,
++0x330, +0x390, +0x7b0 and +0xbd0, and the dispatch routine indexes digit
+entries with `(page + 22) * 96`. Every offset is 0x30 modulo 0x60 and the span
+is exactly 32 entries, so the block is one array of 96-byte draw resources.
+**Decision.** Replace the separate byte arrays with
+`Unk0b28e4Entry96 unk_0030[32]` and index it by the observed entry number.
+Offsets and generated code are unchanged for the already-matched functions;
+only the field names changed. Cited from the layout comment in
+`src/game/unit_020b28e4.c`.
+**Cost accepted.** The entry's internal layout stays opaque; only its size and
+the offsets of the resources within it are known.
+**What would make us revisit.** A string, caller or data table that identifies
+an individual field inside an entry.
+
+## DEC-005 — Define same-unit callees before their callers
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** objdiff's report (`fuzzy_match_percent`, used by `match_gate`)
+scores a caller below 100% when it is laid out before a same-unit callee that
+this change newly defines, even though `objdiff-cli diff` and a word-by-word
+comparison show identical instructions. `func_020b32bc` was 99.94% while it
+preceded `func_020b4674` and `func_020b5070` in the object, and 100% after it
+was moved after them.
+**Decision.** Order definitions so that every same-unit callee precedes its
+callers, even when the callee's ROM address is higher. The check uses the
+report, not the per-symbol diff.
+**Cost accepted.** Source order no longer follows ROM address order at the tail
+of this TU; the section order is not part of any gate.
+**What would make us revisit.** An objdiff release whose report resolves the
+relocations without the ordering constraint.

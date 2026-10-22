@@ -119,3 +119,92 @@ x=64 (the second at x=128), as evidenced by the argument registers.
   sizes were 260, 272 and 276 bytes; all instruction sequences were otherwise
   equivalent to the original. A human can use `tools/decompme.py` to open a
   scratch for this function.
+
+## M1-T1040 functions
+
+Four implementations are 100% in the objdiff report. Names remain those in the
+protected symbol table; the comments describe observed operations. Evidence is
+the ARM disassembly at each address.
+
+- `func_020b32bc` (692 B): state dispatcher for callback-table slot +0xc. The
+  switch on `work->unk_0000` (0..5) rebuilds or draws the page for states 1..5
+  through `func_020b4674`, `func_020b49cc`/`func_020b4bb8`,
+  `func_020b4dd8`/`func_020b4fb4`, `func_020b5070`/`func_020b5264`, with the
+  page-rebuild flag at +0xc70 and the defer flag at +0xc74. The shared tail
+  draws the status bar resources at entry indices 2, 3 and 9 when the +0xc6d
+  counter is greater than one and +0xca0 is clear.
+- `func_020b4674` (856 B): draws `work->unk_0c38` record rows. Each row draws
+  its icon handle, the record's numbers (`func_020b5ccc`) or its flag-selected
+  variant, and clears the state-5 page icons through `func_0202122c`.
+- `func_020b5070` (500 B): draws the `work->unk_0c6c` page of type-1 roster
+  entries. It skips `page*3` qualifying entries, forwards up to three to
+  `func_020b5634`, records their ids at +0xc78, clears rows past the roster end
+  or a negative id, and centres the resource-3 label using its width.
+- `func_020b5338` (764 B): draws the reserved first page-1 row for the fixed
+  first record: two background strips, the pc001 icon pair, two labels, the
+  record bar (`func_020b3dc4`), the three category entries and eight command
+  buttons. The button value at index 6 is forced to 1 when it is 0 or 5.
+
+The draw-resource block at +0x30..+0xc2f is now a 32-entry array of 96-byte
+entries (`Unk0b28e4Entry96`); every access through it is one of the observed
+indices. The repeated `(page + 22) * 96` and `(page + 21) * 96` index formulas,
+plus the older +0x01b0/+0x0210/+0x02d0 accesses, are congruent to 0x30 modulo
+0x60. See DEC-004.
+
+Matching trials: the dispatch switch needs an explicit `case 0: break;` to
+reproduce the six-entry jump table; states 1 and 5 are separate bodies even
+though they share a shape. Loop-local `u8` coordinates reproduce the byte
+wrapping, and multiplier/increment order controls whether the compiler keeps
+the row or the column counter in memory. `func_020b5338`'s grid uses a running
+count of *drawn* entries (not the loop indices) for its position; its
+category lookup compares through a local `u16` to reproduce the original
+operand order. The record fields come from `func_020a1740`, whose +0, +2, +4,
++8 and +0x16 members are the only ones this TU reads.
+
+### Hard list for M1-T1040
+
+These four functions remain in the delinked original and no nonmatching body is
+retained. Each is within a few instructions; the residue is register or stack
+assignment, not a behavioural difference.
+
+- `func_020b3dc4` (636 B): two-part progress bar. It scales the record count
+  and the two +0x5a/+0x5b thresholds by 6/10 in 12-bit fixed point, then draws
+  a filled part, a remainder and the overflow remainder. Best attempt was
+  636 B with identical instructions except the prologue: mwcc keeps the first
+  length (`filled`) in a callee-saved register and spills the second (`rest`)
+  to a sixth outgoing-looking word, so the frame is 24 bytes with `r3` pushed
+  instead of the original 20 bytes. The original reuses the fifth outgoing
+  argument slot for `filled` and keeps `rest` in the register freed by the
+  record pointer. Trials: `s16`/`u16` combinations for both length locals,
+  assignment before/after the draw call, passing the local versus a
+  recomputed cast as the ninth argument, `volatile` storage, and every
+  declaration order. A human can open a scratch with `tools/decompme.py`.
+- `func_020b4bb8` (544 B): per-slot redraw of the three rows after the page.
+  It copies two 12-byte icon-id tables at entry and copies the selected table
+  again inside each branch before indexing it by the record state. All
+  behaviour matches at 552 B; the original keeps all four 12-byte stack
+  copies, while mwcc 2.0/sp1p5 propagates the entry copies into the branch
+  locals and emits only two. Trials: address-taken source pointers, `volatile`
+  destination, `memcpy` (not inlined), assignment instead of initialization,
+  declaration reordering, and every toolchain 1.2/2.0/dsi release in
+  `tools/mwccarm` (all propagate). The remaining 8 bytes are the two missing
+  copy loops.
+- `func_020b5634` (776 B): one roster row, including background, icon, labels,
+  bar, category grid and eight command buttons. Best attempt was 780 B; the
+  only residue is register rotation in the grid and button loops (`col`/`x`
+  one register lower than the original) plus one hoisted `y & 255` mask.
+  Trials: per-row `u8 y` local, inline masked/unmasked coordinates, removing
+  the unused counter and label locals, declaration permutations, and template
+  order. The instruction sequence and structure are otherwise identical.
+- `func_020b5f08` (508 B): builds the two icon resource paths, optionally dims
+  the 32 BGR555 palette entries, copies two 32-byte entries, offsets the
+  512-byte colour page and uploads it. Best attempt was 476 B. The original
+  divides each 5-bit channel by 3 with a `smull` followed by `adds; movmi`
+  that clears negative quotients; mwcc emits that guarded sequence only when
+  it cannot prove the dividend non-negative, while the masked channel is
+  provably in 0..31. Trials: every integer width for the channels, inline and
+  local forms, explicit clamps and ternaries (only one of three survives
+  optimisation), fixed-point and multiply/divide rewrites, all optimisation
+  levels and all compiler releases. The guard is dead code for the observed
+  range, but it is required for a byte match. A human can open a scratch with
+  `tools/decompme.py`.
