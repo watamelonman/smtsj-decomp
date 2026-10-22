@@ -307,3 +307,4 @@ after these edits.
   `tools/decompme.py`; the original delink remains linked.
 - `Unk0b28e4_Unk_0b4040`: hand-matched
 - `Unk0b28e4_Unk_0b5634`: hand-matched
+- `func_020b3dc4`: hand-matched
