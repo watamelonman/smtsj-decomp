@@ -37,10 +37,21 @@ typedef struct Unk09a268Ent {
 } Unk09a268Ent;
 
 int func_02058af8();
-int func_0209a3ec();
 void func_02058b14();
 void func_02058a1c();
+int func_02058a64(u8 *table);
+void func_02058944(u8 *table, int index, u8 *src, u32 a, u32 b, u32 c, u8 d);
+u8 *GetGameState(void);
+u32 Unk02f2a8_Unk_034970(void *table, u32 a, u32 b);
 u8 *Unk038fbc_Unk_039160(u32 h, u32 a, u32 b);
+u8 *Unk02e000_GetWorkArea(void);
+int Unk1122bc_Unk_1124a0(void);
+u32 Unk1122bc_Unk_112460(void);
+int Unk1124f0_Unk_1125ac(u32 a, u32 b, u32 c);
+
+/* Returns the first record whose +8/+16 words both match id/sub, forwarded to
+ * func_02058af8 with its index; returns 1 when no record matches. Evidence: the
+ * paired comparisons and the func_02058af8 call at 0209a3a0. */
 int Unk09a268_Unk_09a3a0(u8 *w, u32 id, u32 sub)
 {
     int j;
@@ -50,6 +61,19 @@ int Unk09a268_Unk_09a3a0(u8 *w, u32 id, u32 sub)
         }
     }
     return 1;
+}
+
+/* Allocates a free entry in the 128-record table and fills it from a, b, c and d;
+ * returns the index, or -1 when the table is full. Evidence: the free-slot scan in
+ * func_02058a64 and the entry writes in func_02058944. */
+int func_0209a3ec(u8 *w, u32 a, u32 b, u32 c, u8 d)
+{
+    int i = func_02058a64(w + 164 + 9216);
+    if (i == -1) {
+        return -1;
+    }
+    func_02058944(w + 164 + 9216, i, w + 24 + 1024, a, b, c, d);
+    return i;
 }
 
 /* Finds or creates the (a, b) entry using c/d, then forwards e to its setter.
@@ -114,6 +138,20 @@ void Unk09a268_SetOnlyBit(u32 p, u32 v)
 int func_0209a48c(u32 p, int bit)
 {
     return (*(u8 *)p & (1 << bit)) != 0;
+}
+
+/* Returns the signed, 12-bit-shifted value of the first record whose +8 word equals
+ * `id`, or 0 when none matches. Evidence: the 128-record scan at 0209a54c. */
+int func_0209a53c(u8 *w, u32 id)
+{
+    Unk09a268Ent *base = (Unk09a268Ent *)(w + 164 + 9216);
+    int i;
+    for (i = 0; i < 128; i++) {
+        if (base[i].id == id) {
+            return *base[i].val >> 12;
+        }
+    }
+    return 0;
 }
 
 /* empty callback */
@@ -222,14 +260,59 @@ typedef struct Unk09ae60Ops {
     void (*fn_1c)();
     void (*fn_20)();
 } Unk09ae60Ops;
-int func_02058a64();
 void Unk09a268_Unk_09b3cc(Unk09a268Work *work);
-void func_02058944();
 void func_0209b1d4();
 void func_0209b3f8();
 void func_0209b5d8();
 void func_0209aebc();
 
+/* Classifies a position: 2 when the Manhattan distance from the work area's
+ * +0x364/+0x365 coordinates is at most the value selected by (x - 30), else 0.
+ * Evidence: the two signed byte reads and the (x - 30) jump table at 0209a9c0. */
+int func_0209a970(int x, int y, int z)
+{
+    int ret;
+    u8 *work;
+    int dy;
+    int dx;
+    int distance;
+    int limit;
+
+    if (Unk1122bc_Unk_1124a0() == 0) {
+        return 0;
+    }
+    ret = 0;
+    work = Unk02e000_GetWorkArea();
+    dy = ((s8 *)(work + 768))[101] - z;
+    if (dy < 0) {
+        dy = -dy;
+    }
+    dx = ((s8 *)(work + 768))[100] - y;
+    if (dx < 0) {
+        dx = -dx;
+    }
+    distance = dx + dy;
+    limit = 0;
+    switch (x - 30) {
+    case 0:
+    case 3:
+        limit = 1;
+        break;
+    case 1:
+    case 4:
+        limit = 2;
+        break;
+    case 2:
+        break;
+    }
+    if (distance <= limit) {
+        ret = 2;
+    }
+    return ret;
+}
+
+/* Fills the 60-byte handler table: size 60, a zero word at +4, and the six
+ * callbacks at +0x0c through +0x20. Evidence: the literal pool at 0209ae60. */
 void Unk09a268_Unk_09ae60(Unk09ae60Ops *o)
 {
     o->size = 60;
@@ -279,7 +362,32 @@ u32 Unk09a268_Unk_09bb38(void)
 int Unk02f2a8_GetCurrentCell38e8();
 void Unk09a268_SetOnlyBit();
 int func_0209c548();
-/* decompiler-derived */
+/* Reads byte +0x1A of the record selected for (a, b); kinds 20 and 23 are handled
+ * by their own helpers instead. Evidence: the two compared func_0209bb68 results. */
+int func_0209be20(u32 a, u32 b)
+{
+    int ret = 0;
+    u8 *e = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(GetGameState() + 4, a, b), a, b);
+    if (e != 0) {
+        int kind = func_0209bb68(*e);
+        switch (kind) {
+        case 20:
+            ret = Unk1122bc_Unk_112460();
+            break;
+        case 23:
+            ret = Unk1124f0_Unk_1125ac(*(u16 *)(Unk02e000_GetWorkArea() + 768 + 92), a, b);
+            break;
+        default:
+            ret = ((u8 *)Unk09a268_Unk_09c484(kind))[0x1a];
+            break;
+        }
+    }
+    return ret;
+}
+
+/* Applies the selected record's state to the current cell: sets its single state
+ * bit, sets flag +1, clears +2, then runs func_0209c548(arg0). Evidence: the
+ * Unk09a268_SetOnlyBit and Unk09a268_Unk_09a80c/a830 calls at 0209cb10. */
 void Unk09a268_Unk_09cb10(u32 arg0)
 {
   int value1;
@@ -293,10 +401,6 @@ void Unk09a268_Unk_09cb10(u32 arg0)
   *(u16 *)(value2 + 2) = 0;
   func_0209c548(arg0);
 }
-
-u8 *GetGameState(void);     /* GameState *, see include/GameState.h */
-u32 Unk02f2a8_Unk_034970(void *table, u32 a, u32 b);
-u8 *Unk038fbc_Unk_039160(u32 h, u32 a, u32 b);
 
 /* Byte +0x1B of the record for (a, b), or 0 when absent. */
 u8 Unk09a268_Unk_09beb0(u32 a, u32 b)

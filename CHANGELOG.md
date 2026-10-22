@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- `src/game/unit_0209a268.c`: matched all eight M1-T1012 functions at 100% objdiff (entry allocation, entry lookup, position classification, handler-table setup, and the kind-specific record byte readers), with typed prototypes and per-function documentation.
 - Verified seven M1-T1011 functions at 100% objdiff, added the nullable record classifier, and documented the remaining entry-scan register-allocation mismatch.
 - Corrected M1-T1010 body-field access and bit-setter/record-lookup prototypes while preserving 100% instruction matches.
 - `src/game/unit_0209a268.c`: matched all eight M1-T1010 functions at 100% objdiff, including `func_0209b720`, with typed context fields and per-function documentation.

@@ -53,17 +53,31 @@
   switch cases reproduces the original jump targets. Verified 100%.
 - No new descriptive names were introduced; unknown record semantics remain neutral.
 
-## Other existing bodies
-- `Unk09a268_Unk_09cb10`: decompiler-derived
-
-## Not done in M1-T1012
-- `Unk09a268_Unk_09a3a0`
-- `func_0209a53c`
-- `Unk09a268_Unk_09beb0`
-- `Unk09a268_Unk_09ae60`
-- `func_0209a3ec`
-- `func_0209a970`
-- `func_0209be20`
+## M1-T1012
+- `Unk09a268_Unk_09a3a0` (76 B): returns the first record whose +8/+16 words
+  match both arguments, forwarded to `func_02058af8` by index; returns 1 when
+  the 128-record table has no match. Verified 100%.
+- `func_0209a53c` (76 B): scans the 128 records for the +8 word equal to the
+  argument and returns that record's first word shifted right by 12, or 0 when
+  no record matches. Verified 100%.
+- `func_0209a3ec` (108 B): allocates a free 128-record slot through
+  `func_02058a64`, fills it from the four arguments plus a byte through
+  `func_02058944`, and returns the index (or -1 when the table is full).
+  Verified 100%.
+- `func_0209a970` (144 B): classifies a position from the work area's +0x364/
+  +0x365 coordinates. The (first argument - 30) jump table selects a distance
+  limit of 0, 1 or 2, and a Manhattan distance at or below that limit returns
+  2, otherwise 0. Verified 100%.
+- `Unk09a268_Unk_09ae60` (92 B): fills the 60-byte handler table's size, zero
+  word and six callbacks. Verified 100%.
+- `Unk09a268_Unk_09beb0` (80 B): returns byte +0x1B of the record selected for
+  the two arguments, or 0 when that record is absent. Verified 100%.
+- `func_0209be20` (144 B): returns byte +0x1A of the record selected for the
+  two arguments; kinds 20 and 23 are served by `Unk1122bc_Unk_112460` and
+  `Unk1124f0_Unk_1125ac` instead, and an absent record returns 0. Verified 100%.
+- `Unk09a268_Unk_09cb10` (88 B): applies the selected record's state to the
+  current cell, sets flag +1, clears +2, and runs `func_0209c548` on its
+  argument. Verified 100%.
 
 ## Not done in M1-T1013
 - `func_0209cb68`
