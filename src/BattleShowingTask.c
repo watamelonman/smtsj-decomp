@@ -563,14 +563,14 @@ typedef struct BattleShowingRecord {
     s8 unk17;
     s8 unk18;
     u8 pad19;
-    u8 unk1a_0 : 1;            /* +0x1A: dispatch flags; bits 1 and 2 are tested by func_0211c6ac */
+    u8 unk1a_0 : 1;            /* +0x1A: dispatch flags; bits 1 and 2 are tested by BattleShowingTask_Unk_11c6ac */
     u8 unk1a_1 : 1;
     u8 unk1a_2 : 1;
     u8 pad1a : 5;
     s8 selection;              /* +0x1B: area selection index */
     u16 unk1c;
     u16 unk1e;
-    u32 unk20;                  /* 0x20: resource refreshed by func_0211c6ac states 9..11 */
+    u32 unk20;                  /* 0x20: resource refreshed by BattleShowingTask_Unk_11c6ac states 9..11 */
     u32 unk24;                  /* 0x24: nonzero selects variant 1 in func_0211c548 */
 } BattleShowingRecord;
 u32 func_020493e0(u32 id);
@@ -1283,7 +1283,7 @@ s32 func_02053800(s32 arg0, u32 mask);
 void func_02065c30(void);
 int func_020bcacc(u32 slot, BattleShowingMessage *message);
 void func_020bc9f4(u32 slot, u32 value);
-void func_0211c6ac(BattleShowingTaskWork *work, u32 arg);
+void BattleShowingTask_Unk_11c6ac(BattleShowingTaskWork *work, u32 arg);
 
 /* Screen-level dispatch for states 6, 7 and 9. State 6 waits for the 020654CC
  * and 02053800(0,1) gates before continuing through func_0211C6AC. States 7
@@ -1301,7 +1301,7 @@ void func_0211ccf8(BattleShowingTaskWork *work)
         if (func_02053800(0, 1) == 0) {
             return;
         }
-        func_0211c6ac(work, 0);
+        BattleShowingTask_Unk_11c6ac(work, 0);
         return;
     case 7:
     case 9: {
@@ -1736,7 +1736,7 @@ void Unk02ee5c_SetRecordFlag0b(u16 id, u32 value);
  * record's selection, state 7 posts word 1 = 17 and then either starts the 0x0205264C fade
  * (arg != 0) or moves to state 10; states 9/10 refresh resource +0x20 and, with +0x1a bit 2,
  * store func_020e5e6c's value at +0x24. */
-void func_0211c6ac(BattleShowingTaskWork *work, u32 arg)
+void BattleShowingTask_Unk_11c6ac(BattleShowingTaskWork *work, u32 arg)
 {
     BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
     BattleShowingMessage message1;
@@ -1754,7 +1754,7 @@ void func_0211c6ac(BattleShowingTaskWork *work, u32 arg)
             return;
         }
         work->unk_0000 = 10;
-        func_0211c6ac(work, 0);
+        BattleShowingTask_Unk_11c6ac(work, 0);
         return;
     case 5:
         func_02065c30();
@@ -1871,21 +1871,21 @@ void func_0211c960(BattleShowingTaskWork *object)
             func_0209786c(area);
             area->savedX = area->x;
             area->savedY = area->y;
-            func_0211c6ac(object, 1);
-        } else func_0211c6ac(object, 0);
+            BattleShowingTask_Unk_11c6ac(object, 1);
+        } else BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 8:
-        if (!func_02052728()) func_0211c6ac(object, 0);
+        if (!func_02052728()) BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 9: case 10:
         if (!func_020654cc()) return;
         if (!func_02065cd0()) return;
-        func_0211c6ac(object, 0);
+        BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 4: case 5: case 11: case 12:
         if (!func_020654cc()) return;
         if (!func_02065cd0()) return;
-        func_0211c6ac(object, 0);
+        BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 13:
         func_02065c30();

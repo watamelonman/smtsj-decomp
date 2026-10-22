@@ -50,7 +50,7 @@ instruction stream at each entry address.
 - `func_0211ccf8` (`0x0211ccf8`, 280 B): screen dispatch for states 6, 7 and 9.
   States 7/9 wait on the 020654CC/02065E28 gates and 02053800(0, 0x800), post
   the type-37 options message with field 12, and clear slot 37; state 6 waits
-  on 02053800(0, 1) and continues through `func_0211c6ac`.
+  on 02053800(0, 1) and continues through `BattleShowingTask_Unk_11c6ac`.
 - `func_0211ceb4` (`0x0211ceb4`, 412 B): collects the nonzero selectable
   entries (the caller's first entry plus the `count` 0x28-byte entries),
   allocates and sorts the pointer list with `func_0211c160`, then starts the
@@ -282,7 +282,7 @@ retained C definitions and does not imply that all seven targets were recovered.
 - `func_0211c960` (`0x0211c960`, 920 B): sixteen-state record-screen update.
   Initializes the negative-ID display or the embedded loader's animation,
   interpolates entrance/exit over ten frames, publishes ranks, waits for
-  message/confirmation gates and calls `func_0211c6ac`. Confirmation copies
+  message/confirmation gates and calls `BattleShowingTask_Unk_11c6ac`. Confirmation copies
   record +0x1E into the area selection indexed by signed record +0x1B,
   updates saved coordinates and advances through the record list on exit.
   The trailing selection array has an unknown bound, and the original trusts
@@ -302,7 +302,7 @@ unmatched candidate bodies, fabricated stack stores or assembly were retained.
   initializer and explicit pointer stores (572 B), and a two-element loop
   (592 B). Candidate omitted; the empty-label initialization idiom remains
   unresolved. The same pattern occurs in `func_0211b6a8`.
-- `func_0211c6ac` (`0x0211c6ac`, 692 B): transition dispatcher for states
+- `BattleShowingTask_Unk_11c6ac` (`0x0211c6ac`, 692 B): transition dispatcher for states
   4..12, using record +0x1A bits 1/2, signed +0x1B selection and +0x20/+0x24
   resource values. A complete switch candidate using the shared message
   initializer and pointer-based message submission compiled to 664 B. The
@@ -315,7 +315,7 @@ unmatched candidate bodies, fabricated stack stores or assembly were retained.
   four EXP-gauge creations at work +0x300, staggered fade timers, count-up
   sound handle +0x320 and final selectable-record dispatch. Two message
   blocks retain the same unresolved initialization/stack-copy pattern as
-  `func_0211c6ac`. No complete C candidate or matching claim is made; full
+  `BattleShowingTask_Unk_11c6ac`. No complete C candidate or matching claim is made; full
   recovery of this function remains outstanding.
 - `func_0211b6a8` (`0x0211b6a8`, 2744 B): allocates the 804-byte task,
   initializes resources, processes six reward entries, constructs text,
@@ -327,4 +327,4 @@ unmatched candidate bodies, fabricated stack stores or assembly were retained.
   recovery. No complete C candidate was produced; recovery remains outstanding.
 - `BattleShowingTask_Unk_11c24c`: hand-matched
 - `BattleShowingTask_Unk_11d050`: hand-matched
-- `func_0211c6ac`: hand-matched
+- `BattleShowingTask_Unk_11c6ac`: hand-matched
