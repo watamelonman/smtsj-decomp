@@ -1402,7 +1402,7 @@ extern u8 data_02145788[], data_02145794[], data_021457b0[];
  * func_020667d0): submits a zeroed kind-3 request, creates the handles at
  * +0x108..+0x150 and the two descriptor handles, the twelve list slots
  * (rows 11 pixels apart) and eight objects, and shows the first two objects. */
-void func_02066e80(Unk065e88InitOwner *o)
+void Unk065e88_Unk_066e80(Unk065e88InitOwner *o)
 {
     Unk065e88Request request;
     int i;
