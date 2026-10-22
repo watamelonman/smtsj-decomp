@@ -922,7 +922,10 @@ typedef struct Unk100810Stats {
     s8 unk_04, unk_05, unk_06, unk_07, unk_08;
 } Unk100810Stats;
 
-/* CampStatusUnit view of a 60-byte area record (ids are u16 here, not opaque bytes). */
+/*
+ * CampStatusUnit view of a 60-byte area record (ids are u16 here, not opaque bytes).
+ * Only the fields read by func_021059ec are modelled; bytes 0x39..0x3b are not.
+ */
 typedef struct Unk100810Unit {
     u8 pad_00[0x0a];
     s16 unk_0a;
@@ -966,14 +969,16 @@ static inline u16 Unk100810_CalcMaxMp(u8 level, u8 ma, Unk100810Base base)
     return r;
 }
 
-/* Compares a live unit record with its saved record: level, level offset, derived HP/MP and
- * five stats must agree, and every non-zero id on the unit must exist in the saved id list. */
+/* Compares a live unit record with its saved record: level, saved +0x20 word vs unit +0x24
+ * word, derived HP/MP and five stats must agree, and every non-zero id on the unit must
+ * exist in the saved id list. */
 int func_021059ec(Unk100810Unit *unit, u16 id)
 {
     Unk100810Saved saved;
     Unk100810Base base;
     Unk100810Stats stats;
     int same;
+    int i, j;
 
     same = 1;
     base = func_020b8804(id);
@@ -998,17 +1003,13 @@ int func_021059ec(Unk100810Unit *unit, u16 id)
     if (saved.stats[2] != unit->unk_0f) same = 0;
     if (saved.stats[3] != unit->unk_10) same = 0;
     if (saved.stats[4] != unit->unk_11) same = 0;
-    {
-        int i;
-        for (i = 0; i < 6; i++) {
-        int j;
+    for (i = 0; i < 6; i++) {
         u16 unitId = unit->ids[i];
         if (unitId != 0) {
             for (j = 0; j < 6; j++) {
-                if (unitId == ((const u16 *)&saved)[8 + j]) break;
+                if (unitId == saved.bytes_10.ids[j]) break;
             }
             if (j == 6) { same = 0; break; }
-        }
         }
     }
     return same;

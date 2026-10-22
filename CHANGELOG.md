@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Matched `func_021059ec` in `src/game/unit_02100810.c` (saved-record comparison) at 100% objdiff; documented the six remaining M1-T1096 functions and their trials on the unit hard list.
+- Matched `func_021059ec` in `src/game/unit_02100810.c` (saved-record comparison) at 100% objdiff, using typed saved-id list access; documented the six remaining M1-T1096 functions and their trials on the unit hard list.
 
 - Matched `func_0204372c` (the 1916-byte 7x7 map-icon dispatcher) in `src/game/unit_0203e43c.c` at 100% objdiff; documented the four remaining M1-T1092 large update/draw functions and their measured candidates on the unit hard list.
 - Matched two of the eight M1-T1091 targets in `src/game/unit_0203e43c.c` at 100% objdiff: the 392-byte context-checked icon drawer and the 620-byte icon-id dispatcher. Added typed prototypes for the two blit helpers and documented the six remaining hard targets.
