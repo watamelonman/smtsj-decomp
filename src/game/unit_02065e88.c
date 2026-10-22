@@ -198,17 +198,19 @@ void func_0205c3dc(u32 handle);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-void func_02095818();
+int func_02095818(void);
 void func_02063b80();
 void func_020640c0();
 void func_0206541c();
 void func_02065438();
 void func_02063b08();
 void func_02063b4c();
-void func_0205c704();
-int func_0205ca88();
-int func_0205caa0();
+void func_0205c704(u32 handle);
+int func_0205ca88(u32 handle);
+int func_0205caa0(u32 handle);
 
+/* At 02065ec0, fills a caller-owned 36-byte callback descriptor with size
+ * 120, mode 4, halfword 100 and six callback addresses; calls 02095818. */
 void Unk065e88_Unk_065ec0(u32 *p)
 {
     p[0] = 120;
@@ -252,10 +254,12 @@ void Unk065e88_Unk_067d30(u32 arg0,u32 arg1,u16 *arg2)
 
 
 extern u8 data_0216b9a8[];
-int func_02008848();
-int func_020629ac();
-int func_02063a6c();
-/* decompiler-derived */
+void func_02008848(void *destination, int value, u32 size);
+int func_020629ac(int arg0, int arg1, int arg2, int arg3);
+void func_02063a6c(int *object);
+/* At 02065f30, clears 120 caller-owned bytes, allocates two handles and
+ * initializes the owner only when both succeed. Publishes it at 0216b9ac.
+ * A failed second allocation retains the first handle, as in the original. */
 void Unk065e88_Unk_065f30(int *arg0)
 {
   int value;
@@ -289,6 +293,9 @@ typedef struct Unk065e88Obj24 {
 void func_02072238(s32 *object);
 int Unk0e651c_Unk_0e666c(u32 id);
 int func_020684c0(const void *record);
+/* At 02066078, updates the handle when byte +0x38 is set; byte +0x39
+ * enables the end-position test, which clears both flags at count - 1.
+ * The owner must cover 0x3a bytes and contain a valid handle at +0. */
 void Unk065e88_Unk_066078(u8 *p)
 {
     if (p[56] != 0) {
@@ -311,15 +318,18 @@ void Unk065e88_Unk_066078(u8 *p)
 #endif
 void func_020667d0();
 void Unk065e88_Nop_066c90();
-void func_02066c94();
+typedef struct Unk065e88Work Unk065e88Work;
+void func_02066c94(Unk065e88Work *object);
 void func_02066d30();
 void func_020664c4();
-void func_02063920();
-int func_020445f4();
-int func_0204fed8();
-int func_02063a30();
-void func_02061f10();
+void func_02063920(void);
+int func_020445f4(int resource, int index);
+int func_0204fed8(int handle, u32 index);
+int func_02063a30(int entry);
+void func_02061f10(u32 handle, int arg1, int arg2, int arg3, int value);
 
+/* At 0206646c, fills a caller-owned 36-byte callback descriptor with size
+ * 1104, mode 4, a null slot and five callback addresses; leaves +8 intact. */
 void Unk065e88_Unk_06646c(u32 *p)
 {
     p[0] = 1104;
@@ -354,6 +364,9 @@ void Unk065e88_SetMode(s32 *o, s32 v, int notify)
     }
 }
 
+/* At 020672fc, converts n entries from resource 12 and submits the last
+ * value through the owner handle at +0x108. Requires n > 0 and an owner
+ * readable through +0x10b; the original leaves the value unset for n == 0. */
 void Unk065e88_Unk_0672fc(u8 *p, int a, u32 n)
 {
     int r;
@@ -375,5 +388,89 @@ int Unk065e88_Unk_068564(Unk065e88Obj24 *o)
     if (!o->flag_0024_28 && (o->unk_002a == 0 || Unk0e651c_Unk_0e666c(o->unk_002a) != 0) && func_020684c0(o) != 0) {
         return 1;
     }
+    return 0;
+}
+
+/* Partial owner layout: only offsets read by these callbacks are established. */
+struct Unk065e88Work {
+    u32 unk_0000;
+    u8 pad_0004[0xae];
+    u8 unk_00b2;
+    u8 pad_00b3[0x69];
+    u32 unk_011c;
+    u8 pad_0120[0x114];
+    u32 unk_0234;
+    u8 pad_0238[0x158];
+    u32 unk_0390;
+};
+
+typedef struct Unk065e88Record {
+    u16 unk_0000;
+    u8 pad_0002[0x26];
+    u16 flag_0028 : 1;
+    u16 id_0028 : 15;
+} Unk065e88Record;
+
+typedef struct Unk065e88LocalRecord {
+    u8 pad_0000[0x1f];
+    u8 pad_001f : 2;
+    u8 flags_001f : 6;
+    u8 pad_0020[4];
+} Unk065e88LocalRecord;
+int Unk02e000_SetRecord(u32 id, void *record);
+
+/* At 02067418, resolves each id through resource 19, uses its byte +2
+ * to index resource 18, and submits the last converted value to +0x11c.
+ * The owner count at +0xb2 must be positive and ids must cover that count. */
+void func_02067418(Unk065e88Work *object, const u16 *ids)
+{
+    int value;
+    int handle;
+    u16 i;
+    func_02063920();
+    handle = func_020445f4(18, 0);
+    for (i = 0; i < object->unk_00b2; i++) {
+        const u8 *record = (const u8 *)func_020a1428(ids[i]);
+        value = func_02063a30(func_0204fed8(handle, record[2]));
+    }
+    func_02061f10(object->unk_011c, -1, 0, 0, value);
+}
+
+void func_02057e58(int arg0, int arg1, int arg2);
+void func_02057eb8(int arg0);
+void Unk072238_Nop_072370(Unk065e88Work *object);
+void func_0207498c(Unk065e88Work *object);
+void func_02092624(Unk065e88Work *object);
+/* At 02066c94, skips owners with +0x234 == 11 or +0x390 == 8.
+ * Otherwise brackets mode-specific callbacks with 02057e58/02057eb8 calls.
+ * The owner must be readable through +0x393; no gameplay purpose is known. */
+void func_02066c94(Unk065e88Work *object)
+{
+    if (object->unk_0234 == 11 || object->unk_0390 == 8) return;
+    func_02057e58(4, 10, 30);
+    func_02057e58(5, 30, 10);
+    func_02057eb8(4);
+    switch (object->unk_0000) {
+    case 1: Unk072238_Nop_072370(object); break;
+    case 2:
+    case 3: func_0207498c(object); break;
+    case 4: func_02092624(object); break;
+    case 0:
+    case 5:
+    case 6: break;
+    }
+    func_02057eb8(-1);
+}
+
+/* At 020684c0, accepts an unflagged record immediately; otherwise either
+ * referenced record must have nonzero upper six bits at +0x1f. Both lookups
+ * write a caller-owned 36-byte temporary. The input must cover +0x29. */
+int func_020684c0(const void *record)
+{
+    const Unk065e88Record *r = record;
+    Unk065e88LocalRecord local;
+    if (!r->flag_0028) return 1;
+    if (Unk02e000_SetRecord(r->unk_0000, &local) && local.flags_001f) return 1;
+    if (r->id_0028 && Unk02e000_SetRecord(r->id_0028, &local) && local.flags_001f) return 1;
     return 0;
 }

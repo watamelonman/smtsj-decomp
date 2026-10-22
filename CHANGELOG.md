@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1020 callback, allocation, resource conversion and record predicate functions at 100% objdiff, with typed helper arguments and instruction-based contracts.
 - Verified all eight M1-T1019 functions at 100% objdiff, made handle/resource arguments explicit, and documented table indexing, mode dispatch and record predicate contracts.
 - Verified all eight M1-T1018 functions at 100% objdiff, with typed object fields, explicit lookup-result forwarding and table-selector fallback, and instruction-based contracts.
 - Re-verified the eight `src/game/unit_02065e88.c` object accessors (field setters and the empty `066c90` callback) at 100% objdiff and documented each function's stored offset and contract.

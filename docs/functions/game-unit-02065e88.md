@@ -93,17 +93,50 @@ No runtime tests were added: the task explicitly waives them and objdiff is the
 byte-level oracle. The existing source is extended rather than recreated to
 preserve the earlier cards and the remaining implementations.
 
-## Remaining functions
-- `Unk065e88_Unk_065f30`: decompiler-derived
+## M1-T1020 (verified at 100% objdiff)
 
-## Not done in M1-T1020
-- `Unk065e88_Unk_066078`
-- `Unk065e88_Unk_06646c`
-- `Unk065e88_Unk_065ec0`
-- `Unk065e88_Unk_0672fc`
-- `func_02067418`
-- `func_020684c0`
-- `func_02066c94`
+Five bodies were already present and matching. Three missing bodies were added;
+helper declarations now state their argument contracts. Names remain neutral
+because the instruction evidence does not establish gameplay semantics.
+
+- `Unk065e88_Unk_066078` (02066078, 84 bytes): byte +0x38 enables a
+  handle update; byte +0x39 enables a position/count comparison. Reaching
+  count minus one clears both bytes. The handle is the word at +0.
+- `Unk065e88_Unk_06646c` (0206646c, 88 bytes): writes size 1104,
+  mode 4, null at +0x0c and callbacks at +0x10 through +0x20. Leaves +8
+  untouched. The caller provides a writable 36-byte descriptor.
+- `Unk065e88_Unk_065ec0` (02065ec0, 112 bytes): writes size 120,
+  invokes 02095818, then writes mode 4, halfword 100 at +8, and six
+  callbacks at +0x0c through +0x20. The caller owns the descriptor.
+- `Unk065e88_Unk_0672fc` (020672fc, 116 bytes): resets 02063920's
+  shared state, looks up resource 12 with the incoming selector, converts
+  each of n entries, then passes the last result as the fifth argument to
+  02061f10 with the owner's +0x108 handle. Requires n > 0; the original
+  does not initialize the result when the count is zero.
+- `Unk065e88_Unk_065f30` (02065f30, 124 bytes): clears 120 bytes,
+  stores two allocation results, and returns immediately if either fails.
+  On success clears +8, +0x0c and +0x4c, calls 02063a6c and publishes
+  the owner at 0216b9ac. A failed second allocation retains the first.
+- `func_02067418` (02067418, 140 bytes): resolves incoming halfword
+  ids via 020a1428; each record's byte +2 indexes resource 18. Converts
+  each result, submitting the last through the owner's +0x11c handle.
+  The byte count at +0xb2 must be positive and the id array must cover it.
+- `func_020684c0` (020684c0, 148 bytes): returns 1 when bit 0 of
+  halfword +0x28 is clear. Otherwise looks up the id at +0, then the
+  upper 15 bits of +0x28 when nonzero, accepting either successful lookup
+  whose byte +0x1f has nonzero upper six bits. Returns 0 otherwise.
+  The temporary is 36 bytes: 0202e9c8 copies exactly 36 bytes, as its
+  implementation in unit_0202e000.c confirms. Bitfields reproduce the
+  original shifts. Keeping this definition last also avoids the documented
+  objdiff same-file caller scoring artifact (tools/hand/README.md).
+- `func_02066c94` (02066c94, 156 bytes): returns for +0x234 == 11
+  or +0x390 == 8. Otherwise calls 02057e58 twice, calls 02057eb8(4),
+  dispatches modes 1, 2/3, and 4 to 02072370, 0207498c, and 02092624
+  respectively, then calls 02057eb8(-1). Other modes have no callback.
+
+Hard list for M1-T1020: none. All eight match at 100%. No runtime tests
+were added because the card waives them; objdiff supplies the byte-level oracle.
+The translation unit remains linked from the original delink as required.
 
 ## Not done in M1-T1021
 - `func_02067370`
@@ -124,7 +157,3 @@ preserve the earlier cards and the remaining implementations.
 - `func_02067888`
 - `func_02067634`
 - `func_02066d30`
-- `Unk065e88_Unk_065ec0`: hand-matched
-- `Unk065e88_Unk_066078`: hand-matched
-- `Unk065e88_Unk_06646c`: hand-matched
-- `Unk065e88_Unk_0672fc`: hand-matched
