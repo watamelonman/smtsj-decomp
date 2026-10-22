@@ -41,7 +41,7 @@ int Unk02e000_GetWorkArea();
 int Unk09974c_Unk_099d78();
 int Unk09974c_Unk_0998d8();
 int Unk09974c_HasFlagsMid();
-void func_020dde3c();
+void CampStatus_Unk_0dde3c();
 void Unk0ddeb0_Unk_0ddeb0();
 void func_020c72a4();
 int Unk0bd5f0_Unk_0c1870(int i)
@@ -191,7 +191,7 @@ void Unk0bd5f0_Unk_0c7f70(u32 a, u32 b, u32 c, u32 d)
     if (data_02176bb4 == 0) {
         return;
     }
-    func_020dde3c(FIELD(u32, data_02176bb4, 264), a, b, c, d);
+    CampStatus_Unk_0dde3c(FIELD(u32, data_02176bb4, 264), a, b, c, d);
 }
 
 void Unk0bd5f0_Unk_0c7fbc(void)

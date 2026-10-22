@@ -5,7 +5,48 @@ void func_0203428c(void);
 void func_0206146c(void);
 void func_02057660(int a, int b);
 
-int Unk02e000_Unk_02e774();
+/* Block returned by the unit_0202e000 accessor. Several units borrow it, so
+ * this file only assumes the parts it actually reads. */
+u8 *Unk02e000_Unk_02e774(void);
+
+/* Local typed view of the work area returned by Unk02e000_GetWorkArea.
+ * include/ is not owned by this card, so only the members read here are typed;
+ * other members are still reached through byte offsets. */
+typedef struct Unk02f2a8WorkArea {
+    u8 pad_0000[0x358];
+    u32 unk_0358;               /* direction/heading word */
+    u8 pad_035c[8];
+    s8 unk_0364;                /* cached grid coordinates set by SetGridPos */
+    s8 unk_0365;
+    u8 pad_0366[0xaf2 - 0x366];
+    u16 unk_0af2;               /* 16-bit pair reset by Unk_036488 */
+    u16 unk_0af4;
+} Unk02f2a8WorkArea;
+
+/* Tail of GameState past the range declared by include/GameState.h (not owned
+ * by this card): the cached grid source and teardown counter live there. */
+typedef struct Unk02f2a8GameStateTail {
+    u8 pad_0000[0x744e];
+    s8 unk_744e;
+    s8 unk_744f;
+    s32 unk_7450;
+    u8 pad_7454[0x74f0 - 0x7454];
+    u32 unk_74f0;
+} Unk02f2a8GameStateTail;
+
+/* Local view of an action whose +0x18 word is folded into the work-area
+ * direction (+0x358); Unk02f2a8_Unk_02fc10 clears its +0x1c word. */
+typedef struct Unk02f2a8Action {
+    u8 pad_0000[0x18];
+    u32 unk_0018;
+    u32 unk_001c;
+} Unk02f2a8Action;
+
+Unk02f2a8WorkArea *Unk02e000_GetWorkArea(void);
+
+/* Clear bit 0 of the 64-entry byte table at the Unk02e000_Unk_02e774 block
+ * +0x5e12. Ids outside 0..63 are ignored, not clamped, so a bad selector
+ * leaves the table untouched. */
 void Unk02f2a8_ClearEntry5e12Bit0(int i)
 {
     if (i >= 64) {
@@ -30,7 +71,7 @@ void func_0202f3d8();
 void func_0209aca0();
 void func_02116598();
 void Unk02f2a8_ApplyPending(u8 *p);
-void Unk02f2a8_Unk_02fc10(int arg0);
+void Unk02f2a8_Unk_02fc10(Unk02f2a8Action *action);
 void Unk02f2a8_Unk_02f8ac(int arg0);
 void Unk02f2a8_Unk_0302f4(int arg0);
 void Unk02f2a8_Unk_02f378(int arg0);
@@ -67,41 +108,53 @@ void Unk02f2a8_Nop_0303c8(void) { }
 /* Empty callback paired with the slot above at 0x0303CC. */
 void Unk02f2a8_Nop_0303cc(void) { }
 void func_02035db8();
-int Unk02f2a8_SetGridPos();
-void func_0209e0b0();
-int Unk095560_Thunk_020961a0();
-void func_020305a8();
-void func_020a269c();
+int Unk02f2a8_SetGridPos(int x, int y, u32 v);
+void func_0209e0b0(void);
+int Unk095560_Thunk_020961a0(void);
+void func_020305a8(void *p, int v);
+void func_020a269c(int v);
 void Unk0a4e48_Unk_0a4e9c();
-int Unk02f2a8_GridIndex45();
+int Unk02f2a8_GridIndex45(int x, int y);
 void Unk02f2a8_Unk_0306a8(int *arg0);
 
 typedef struct Unk02f2a8Obj39160 {
     u32 unk_0000;
-    u32 pad_0004_0 : 16;
+    u32 pad_0004_0 : 12;
+    u32 unk_0004_12 : 4;
     u32 unk_0004_16 : 4;
+    u32 pad_0004_20 : 12;
 } Unk02f2a8Obj39160;
+/* Forward the grid coordinates cached at work-area +0x364/+0x365, plus the
+ * caller's object at p+0x70, to func_02035db8. The accessor is called twice,
+ * once per coordinate, matching the original instruction stream. */
 void Unk02f2a8_Call_02035db8(u8 *p)
 {
-    u8 *a = (u8 *)Unk02e000_GetWorkArea();
-    u8 *b = (u8 *)Unk02e000_GetWorkArea();
-    func_02035db8(p + 0x70, FIELD(s8, a, 0x364), FIELD(s8, b, 0x365));
+    Unk02f2a8WorkArea *a = Unk02e000_GetWorkArea();
+    Unk02f2a8WorkArea *b = Unk02e000_GetWorkArea();
+    func_02035db8(p + 0x70, a->unk_0364, b->unk_0365);
 }
 
+/* Push the grid coordinates cached at +0x744e/+0x744f into the work area via
+ * SetGridPos. The direction word at +0x7450 wins when it is not the -1 sentinel;
+ * otherwise the current work-area word (+0x358) is kept. */
 void Unk02f2a8_Call_02036318(GameState *gs)
 {
-    s8 x = FIELD(s8, gs, 0x744e);
-    s8 y = FIELD(s8, gs, 0x744f);
-    u8 *w = (u8 *)Unk02e000_GetWorkArea();
-    s32 t = FIELD(s32, gs, 0x7450);
-    u32 v = FIELD(u32, w, 0x358);
-    if (t != -1) {
-        v = t;
+    Unk02f2a8GameStateTail *t = (Unk02f2a8GameStateTail *)gs;
+    s8 x = t->unk_744e;
+    s8 y = t->unk_744f;
+    Unk02f2a8WorkArea *w = Unk02e000_GetWorkArea();
+    u32 v = w->unk_0358;
+    if (t->unk_7450 != -1) {
+        v = t->unk_7450;
     }
     Unk02f2a8_SetGridPos(x, y, v);
 }
 
-int Unk02f2a8_Unk_032a08(int *p)
+/* Start the pending action for task `p`. The guard is a "still busy" check:
+ * when Unk095560_Thunk_020961a0 reports nonzero the call is dropped. Otherwise
+ * the task is armed through Unk02f2a8_Unk_0306a8, func_020305a8 runs its type-1
+ * branch, and subsystem 1 is notified. */
+void Unk02f2a8_Unk_032a08(int *p)
 {
     func_0209e0b0();
     if (Unk095560_Thunk_020961a0() != 0) {
@@ -112,6 +165,9 @@ int Unk02f2a8_Unk_032a08(int *p)
     func_020a269c(1);
 }
 
+/* Reset the partial grid state on a game state: clears the u32 at +0x7478, the
+ * byte at +0x7481 and the u32 at +0x7484, then notifies subsystem 2. Unlike
+ * Unk02f2a8_ResetField7478Ex it leaves +0x7480 and +0x7488 alone. */
 void Unk02f2a8_ResetField7478(GameState *gs)
 {
     FIELD(u32, gs, 0x7478) = 0;
@@ -145,16 +201,22 @@ u8 *GameState_GetBody(void)
     return 0;
 }
 
-u32 *Unk02f2a8_GetCell38e8(int a, int b)
+/* Borrowed pointer to the 4-byte cell for grid coordinates (x, y) in the table
+ * at gGameState + 0x38E8. Out-of-range coordinates alias cell 0 because
+ * Unk02f2a8_GridIndex45 returns 0 for them. */
+u32 *Unk02f2a8_GetCell38e8(int x, int y)
 {
-    return (u32 *)gGameState->unk_38e8 + Unk02f2a8_GridIndex45(a, b);
+    return (u32 *)gGameState->unk_38e8 + Unk02f2a8_GridIndex45(x, y);
 }
 
+/* Cell for the current signed grid coordinates stored at +0x7482/+0x7483. */
 u32 *Unk02f2a8_GetCurrentCell38e8(void)
 {
     return Unk02f2a8_GetCell38e8(FIELD(s8, gGameState, 0x7482), FIELD(s8, gGameState, 0x7483));
 }
 
+/* Bits 16..19 of the u32 at +4 of the object at grid (x, y); 0 when the grid
+ * lookup returns no object. Bit meaning is not established. */
 u32 Unk02f2a8_GetObj39160Bits16(u8 *base, int x, int y)
 {
     u32 r = 0;
@@ -185,13 +247,28 @@ typedef struct Unk02f2a8Pos {
 } Unk02f2a8Pos;
 
 #define UNK02F2A8_RES36() ((Unk02f2a8Res36 *)func_0204fde0(func_020445d0(36, 0)))
+
+/* Local view of the GameStateRoot words past the end declared by
+ * include/GameState.h (the header is not owned by this card). */
+typedef struct Unk02f2a8RootTail {
+    u8 pad_0000[0x64];
+    u32 unk_0064;
+    u32 unk_0068;
+} Unk02f2a8RootTail;
+
+/* Arm the root request: set the flag at +0x60 and stash the two arguments at
+ * +0x64/+0x68. Requires gGameState and its root; GameState_ClearRootUnk60 is
+ * the matching disarm path. */
 void Unk02f2a8_SetRootUnk60(u32 a, u32 b)
 {
-    FIELD(u32, gGameState->root, 0x60) = 1;
-    FIELD(u32, gGameState->root, 0x64) = a;
-    FIELD(u32, gGameState->root, 0x68) = b;
+    gGameState->root->unk_60 = 1;
+    ((Unk02f2a8RootTail *)gGameState->root)->unk_0064 = a;
+    ((Unk02f2a8RootTail *)gGameState->root)->unk_0068 = b;
 }
 
+/* Clear the root flag at +0x60, paired with Unk02f2a8_SetRootUnk60 above.
+ * Requires gGameState and its root to exist; the paired setter establishes
+ * the field-access evidence for this name. */
 void GameState_ClearRootUnk60(void)
 {
     gGameState->root->unk_60 = 0;
@@ -205,31 +282,50 @@ void Unk02f2a8_SetField7470(u16 a, u8 b, u8 c)
     FIELD(u8, gGameState, 0x7477) = c;
 }
 
+/* Read the unsigned 16-bit field at gGameState +0x74f6, which supports the
+ * offset-based name. Requires gGameState to exist. */
 u16 GameState_GetUnkField74f6(void)
 {
     return gGameState->unk_74f6;
 }
 
+/* Local view of the GameState sub-block headers at +0x240 and +0x2cc;
+ * include/GameState.h (not owned by this card) pads both ranges. */
+typedef struct Unk02f2a8GameStateSubs {
+    u8 pad_0000[0x240];
+    u32 unk_0240;
+    u8 pad_0244[0x2cc - 0x244];
+    u32 unk_02cc;
+} Unk02f2a8GameStateSubs;
+
+/* Return the optional sub-block at +0x240 only when the game state exists and
+ * the block's first word is nonzero; otherwise null. The pointer is borrowed. */
 u8 *Unk02f2a8_GetOptSub240(void)
 {
     GameState *gs = gGameState;
+    Unk02f2a8GameStateSubs *view;
     if (gs == 0) {
         return 0;
     }
-    if (FIELD(u32, gs, 0x240) != 0) {
-        return (u8 *)gs + 0x240;
+    view = (Unk02f2a8GameStateSubs *)gs;
+    if (view->unk_0240 != 0) {
+        return (u8 *)&view->unk_0240;
     }
     return 0;
 }
 
+/* Same optional-block contract as Unk02f2a8_GetOptSub240, for the block at
+ * +0x2cc. Returns null when the game state or the block's first word is zero. */
 u8 *Unk02f2a8_GetOptSub2cc(void)
 {
     GameState *gs = gGameState;
+    Unk02f2a8GameStateSubs *view;
     if (gs == 0) {
         return 0;
     }
-    if (FIELD(u32, gs, 0x2cc) != 0) {
-        return (u8 *)gs + 0x2cc;
+    view = (Unk02f2a8GameStateSubs *)gs;
+    if (view->unk_02cc != 0) {
+        return (u8 *)&view->unk_02cc;
     }
     return 0;
 }
@@ -261,16 +357,24 @@ int Unk02f2a8_Unk_035a70(int a)
     return r;
 }
 
+/* Signed byte at +0x19 of entry i in resource 36 (40-byte entries). The field
+ * meaning is not established; callers use it as an id or selector. */
 s8 Unk02f2a8_GetRes36Unk19(int i)
 {
     return UNK02F2A8_RES36()[i].unk_0019;
 }
 
+/* Signed byte at +0x1a of entry i in resource 36 (40-byte entries). The field
+ * meaning is not established; callers use it as an id or selector. */
 s8 Unk02f2a8_GetRes36Unk1a(int i)
 {
     return UNK02F2A8_RES36()[i].unk_001a;
 }
 
+/* Signed byte at +0x1b + j of entry i in resource 36 (40-byte entries). The
+ * caller supplies the sub-index j, so this is the indexed sibling of
+ * Unk02f2a8_GetRes36Unk19/1a. A negative byte is returned as -1, the invalid-id
+ * sentinel; Unk02f2a8_Unk_035c14 applies the same negative test but maps it to 0. */
 int Unk02f2a8_GetRes36Unk1b(int i, int j)
 {
     Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
@@ -296,6 +400,9 @@ int Unk02f2a8_Unk_035c14(int i, int j)
     return r;
 }
 
+/* Bounds predicate for the 45x40 map grid: x must be 0..44 and y 0..39. Both
+ * tests are signed, so negative coordinates are rejected here and never reach
+ * the multiply in Unk02f2a8_GridIndex45. */
 int Unk02f2a8_IsInGrid45x40(int x, int y)
 {
     if (x < 0) {
@@ -310,6 +417,8 @@ int Unk02f2a8_IsInGrid45x40(int x, int y)
     return y < 40;
 }
 
+/* Linear index y * 45 + x in the 45x40 grid; 0 for coordinates outside it, so
+ * callers cannot distinguish row 0 from an invalid pair. */
 int Unk02f2a8_GridIndex45(int x, int y)
 {
     if (Unk02f2a8_IsInGrid45x40(x, y) == 0) {
@@ -318,73 +427,92 @@ int Unk02f2a8_GridIndex45(int x, int y)
     return y * 45 + x;
 }
 
-/* decompiler-derived */
-void Unk02f2a8_Unk_035ec4(int arg0,u32 arg1)
+/* Object whose u16 at +0x18 holds a 16-bit angle (0x10000 = full turn). */
+typedef struct Unk02f2a8Angled {
+    u8 pad_0000[0x18];
+    u16 unk_0018;
+} Unk02f2a8Angled;
+
+/* Owner of an Unk02f2a8Angled sub-object embedded at +0x7c. */
+typedef struct Unk02f2a8AngledOwner {
+    u8 pad_0000[0x7c];
+    Unk02f2a8Angled unk_007c;
+} Unk02f2a8AngledOwner;
+
+/* Object whose u32 at +0x14 is a state/mode word; 030478 sets it to 5. */
+typedef struct Unk02f2a8Obj14 {
+    u8 pad_0000[0x14];
+    u32 unk_0014;
+} Unk02f2a8Obj14;
+
+/* Stores the angle for direction `dir` (see Unk02f2a8_DirToAngle) at obj+0x18. */
+void Unk02f2a8_Unk_035ec4(Unk02f2a8Angled *obj, u32 dir)
 {
-  u16 tmp1;
-  tmp1 = Unk02f2a8_DirToAngle(arg1);
-  *(u16 *)(arg0 + 0x18) = tmp1;
+    obj->unk_0018 = Unk02f2a8_DirToAngle(dir);
 }
 
-int Unk02e000_GetWorkArea();
-/* decompiler-derived */
-void Unk02f2a8_Unk_030578(int arg0)
+/* Sets the angle of obj's +0x7c sub-object from the work area's direction word (+0x358). */
+void Unk02f2a8_Unk_030578(Unk02f2a8AngledOwner *obj)
 {
-  int tmp1;
-  tmp1 = Unk02e000_GetWorkArea();
-  Unk02f2a8_Unk_035ec4(arg0 + 0x7c,*(u32 *)(tmp1 + 0x358));
+    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    Unk02f2a8_Unk_035ec4(&obj->unk_007c, FIELD(u32, w, 0x358));
 }
 
-int func_02061424();
-/* decompiler-derived */
-void Unk02f2a8_Unk_030478(int arg0)
+void func_02061424(void *obj);
+/* Null-safe: sets obj+0x14 to 5, then releases the same object through
+ * func_02061424. */
+void Unk02f2a8_Unk_030478(Unk02f2a8Obj14 *obj)
 {
-  if (arg0 == 0) {
-    return;
-  }
-  *(u32 *)(arg0 + 0x14) = 5;
-  func_02061424();
+    if (obj == 0) {
+        return;
+    }
+    obj->unk_0014 = 5;
+    func_02061424(obj);
 }
 
-/* decompiler-derived */
-void Unk02f2a8_Unk_033890(int arg0)
+/* Clears the GameState fields at +0x7478, +0x7480/+0x7481 (bytes), +0x7484 and +0x7488. */
+void Unk02f2a8_Unk_033890(GameState *gs)
 {
-  *(u32 *)(arg0 + 0x7478) = 0;
-  *(u8 *)(arg0 + 0x7480) = 0;
-  *(u8 *)(arg0 + 0x7481) = 0;
-  *(u32 *)(arg0 + 0x7484) = 0;
-  *(u32 *)(arg0 + 0x7488) = 0;
+    FIELD(u32, gs, 0x7478) = 0;
+    FIELD(u8, gs, 0x7480) = 0;
+    FIELD(u8, gs, 0x7481) = 0;
+    FIELD(u32, gs, 0x7484) = 0;
+    FIELD(u32, gs, 0x7488) = 0;
 }
 
-/* decompiler-derived */
-void Unk02f2a8_Unk_033ac8(int arg0)
+/* Zero the five grid fields at +0x7478/+0x7480/+0x7481/+0x7484/+0x7488; it is
+ * the same body as Unk02f2a8_Unk_033890 and is kept as its own symbol because
+ * both addresses are called. */
+void Unk02f2a8_Unk_033ac8(GameState *gs)
 {
-  *(u32 *)(arg0 + 0x7478) = 0;
-  *(u8 *)(arg0 + 0x7480) = 0;
-  *(u8 *)(arg0 + 0x7481) = 0;
-  *(u32 *)(arg0 + 0x7484) = 0;
-  *(u32 *)(arg0 + 0x7488) = 0;
+    FIELD(u32, gs, 0x7478) = 0;
+    FIELD(u8, gs, 0x7480) = 0;
+    FIELD(u8, gs, 0x7481) = 0;
+    FIELD(u32, gs, 0x7484) = 0;
+    FIELD(u32, gs, 0x7488) = 0;
 }
 
 int Unk038fbc_Unk_039160();
-/* decompiler-derived */
+/* Bits 12..15 of the u32 at +4 of the object at grid (x, y); 0 when the grid
+ * lookup returns no object. It reads the nibble below the bits 16..19 that
+ * Unk02f2a8_GetObj39160Bits16 returns. */
 u32 Unk02f2a8_Unk_034a8c(u8 *base, int x, int y)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp2 = 0;
-  tmp1 = Unk038fbc_Unk_039160(base, x, y);
-  if (tmp1 != 0) {
-    tmp2 = (*(u32 *)(tmp1 + 4) & 0xffff) >> 0xc;
-  }
-  return tmp2;
+    u32 r = 0;
+    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)Unk038fbc_Unk_039160(base, x, y);
+    if (o != 0) {
+        r = o->unk_0004_12;
+    }
+    return r;
 }
 
-int Unk02f2a8_Unk_035a70();
-int Unk044394_Unk_044428();
-int Unk044394_Unk_044534();
-int func_020f43d4();
-/* decompiler-derived */
+int Unk044394_Unk_044428(int i);
+int Unk044394_Unk_044534(int i);
+void func_020f43d4(void);
+/* Apply pending state for one selector: 0 is remapped to 1, then
+ * Unk02f2a8_Unk_035a70 runs with 0x24 passed to Unk044394_Unk_044428 before it
+ * and to Unk044394_Unk_044534 after it, then func_020f43d4 is called. The
+ * selector and channel meanings are not established. */
 void Unk02f2a8_Unk_035440(int arg0)
 {
   if (arg0 == 0) {
@@ -396,7 +524,7 @@ void Unk02f2a8_Unk_035440(int arg0)
   func_020f43d4();
 }
 
-int func_02050088();
+int func_02050088(int mode, int lower, int upper);
 int Unk02f2a8_DirToAngle(int dir)
 {
     switch (dir) {
@@ -442,64 +570,76 @@ int Unk02f2a8_SetGridPos(int x, int y, u32 v)
     return 1;
 }
 
-/* decompiler-derived */
+/* Reset the two 16-bit work-area fields at +0xaf2/+0xaf4: the value at +0xaf2
+ * becomes zero and the value at +0xaf4 is reseeded with func_02050088(1, 50, 100),
+ * the shared random helper called with an inclusive 50..100 range (see
+ * func_02044488 in unit_02044394). */
 void Unk02f2a8_Unk_036488(void)
 {
-  u16 tmp1;
-  int tmp2;
-  tmp2 = Unk02e000_GetWorkArea();
-  *(u16 *)(tmp2 + 0xaf2) = 0;
-  tmp1 = func_02050088(1,0x32,100);
-  *(u16 *)(tmp2 + 0xaf4) = tmp1;
+    Unk02f2a8WorkArea *w = Unk02e000_GetWorkArea();
+    w->unk_0af2 = 0;
+    w->unk_0af4 = func_02050088(1, 0x32, 100);
 }
 
-int func_0205bb68();
-/* decompiler-derived */
-void Unk02f2a8_Unk_0343b4(int arg0)
+void func_0205bb68(void);
+
+/* Local view of an object whose +8 word counts live entries. */
+typedef struct Unk02f2a8Counted {
+    u8 pad_0000[8];
+    s32 unk_0008;
+} Unk02f2a8Counted;
+
+/* Release the object's counted entries: call func_0205bb68 once per live entry,
+ * then zero the count. The count is re-read each iteration in the original, so
+ * a callee that changes it also changes the loop bound. */
+void Unk02f2a8_Unk_0343b4(Unk02f2a8Counted *obj)
 {
-  int tmp1;
-  tmp1 = 0;
-  if (0 < *(int *)(arg0 + 8)) {
-    do {
-      func_0205bb68();
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < *(int *)(arg0 + 8));
-  }
-  *(u32 *)(arg0 + 8) = 0;
+    s32 i = 0;
+    if (0 < obj->unk_0008) {
+        do {
+            func_0205bb68();
+            i++;
+        } while (i < obj->unk_0008);
+    }
+    obj->unk_0008 = 0;
 }
 
 int Unk02f2a8_Unk_030d20();
 int func_020572c0();
 int func_0205e590();
-int Unk095560_Unk_0956a8();
-/* decompiler-derived */
-void Unk02f2a8_Unk_033c94(u32 *arg0)
+u32 Unk095560_Unk_0956a8(void);
+/* Run the cleanup path for a task context: Unk02f2a8_Unk_030d20(ctx, 1) tears
+ * down the shared systems, Unk02f2a8_Unk_030478 resets the object in the
+ * context's first word, func_02061424 releases the context itself, and
+ * func_020572c0/func_0205e590(0) finish the sequence. */
+void Unk02f2a8_Unk_033c94(u32 *ctx)
 {
-  Unk02f2a8_Unk_030d20(arg0,1);
-  Unk095560_Unk_0956a8();
-  Unk044394_Unk_044534(0x24);
-  Unk02f2a8_Unk_030478(*arg0);
-  func_02061424(arg0);
-  func_020572c0();
-  func_0205e590(0);
+    Unk02f2a8_Unk_030d20((int)ctx, 1);
+    Unk095560_Unk_0956a8();
+    Unk044394_Unk_044534(0x24);
+    Unk02f2a8_Unk_030478((Unk02f2a8Obj14 *)*ctx);
+    func_02061424(ctx);
+    func_020572c0();
+    func_0205e590(0);
 }
 
-int func_020361ec();
+int func_020361ec(int dir, int amount);
 int Unk0a0ce4_Unk_0a0da4();
-/* decompiler-derived */
-void Unk02f2a8_Unk_02fc10(int arg0)
+
+/* Advance the work-area direction by the action's +0x18 amount
+ * (func_020361ec returns the rotated direction), clear the word at +0x1c, then
+ * call ScanVisor_Unk_0a2b38 and Unk095560_Unk_09615c and post event
+ * 0x2c through Unk0a0ce4_Unk_0a0da4. */
+void Unk02f2a8_Unk_02fc10(Unk02f2a8Action *action)
 {
-  int tmp1;
-  int tmp2;
-  u32 tmp3;
-  tmp1 = Unk02e000_GetWorkArea();
-  tmp2 = Unk02e000_GetWorkArea();
-  tmp3 = func_020361ec(*(u32 *)(tmp2 + 0x358),*(u32 *)(arg0 + 0x18));
-  *(u32 *)(tmp1 + 0x358) = tmp3;
-  *(u32 *)(arg0 + 0x1c) = 0;
-  ScanVisor_Unk_0a2b38();
-  Unk095560_Unk_09615c();
-  Unk0a0ce4_Unk_0a0da4(0x2c);
+    Unk02f2a8WorkArea *dst = Unk02e000_GetWorkArea();
+    u32 dir = func_020361ec(((Unk02f2a8WorkArea *)Unk02e000_GetWorkArea())->unk_0358,
+                            action->unk_0018);
+    dst->unk_0358 = dir;
+    action->unk_001c = 0;
+    ScanVisor_Unk_0a2b38();
+    Unk095560_Unk_09615c();
+    Unk0a0ce4_Unk_0a0da4(0x2c);
 }
 
 int func_021214e0();
@@ -643,7 +783,7 @@ void Unk02f2a8_ApplyPending(u8 *p)
         Unk02f2a8_Unk_02f8ac((int)p);
         break;
     case 4:
-        Unk02f2a8_Unk_02fc10((int)p);
+        Unk02f2a8_Unk_02fc10((Unk02f2a8Action *)p);
         break;
     }
 }
@@ -713,24 +853,26 @@ void Unk02f2a8_Unk_032f3c(int *arg0)
   Unk0a0ce4_Unk_0a0da4(8);
 }
 
-int Unk03e43c_AdvanceCounter360();
-int Unk094fe0_Unk_0952ac();
-/* decompiler-derived */
+int Unk03e43c_Unk_03fa28(void);
+void Unk03e43c_AdvanceCounter360(void);
+void Unk094fe0_Unk_0952ac(void);
+/* Detect whether advancing the shared frame counter (+0x360, see
+ * Unk03e43c_AdvanceCounter360) crossed a 0..15 table-slot boundary. The slot is
+ * sampled before and after; when it changed, Unk094fe0_Unk_0952ac ticks the
+ * slot timers. The game state and slot are re-read after the advance because
+ * the callee may recreate or rebase them. */
 void Unk02f2a8_Unk_03538c(void)
 {
-  int tmp1;
-  u32 tmp2;
-  int tmp3;
-  tmp1 = (int)GetGameState();
-  tmp2 = Unk03e43c_Unk_03fa28();
-  *(u32 *)(tmp1 + 0x74f0) = tmp2;
-  Unk03e43c_AdvanceCounter360();
-  tmp1 = (int)GetGameState();
-  tmp3 = Unk03e43c_Unk_03fa28();
-  if (*(int *)(tmp1 + 0x74f0) == tmp3) {
-    return;
-  }
-  Unk094fe0_Unk_0952ac();
+    GameState *gs = GetGameState();
+    Unk02f2a8GameStateTail *tail = (Unk02f2a8GameStateTail *)gs;
+    tail->unk_74f0 = Unk03e43c_Unk_03fa28();
+    Unk03e43c_AdvanceCounter360();
+    gs = GetGameState();
+    tail = (Unk02f2a8GameStateTail *)gs;
+    if (tail->unk_74f0 == (u32)Unk03e43c_Unk_03fa28()) {
+        return;
+    }
+    Unk094fe0_Unk_0952ac();
 }
 
 int func_0203480c();
