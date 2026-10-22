@@ -7,13 +7,20 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 
+/* 0x90-byte list node allocated by Unk0aa118_Unk_0afb90; the first word
+ * links to the next node. The rest of the layout is not known yet. */
+typedef struct Unk0aa118Node {
+    struct Unk0aa118Node *next;     /* +0x00 */
+    u8 pad_0004[0x8c];
+} Unk0aa118Node;
+
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0aa118Work {
     u8 pad_0000[0x4];
-    s32 unk_0004;
+    s32 unk_0004;                   /* node count */
     u8 pad_0008[0x10];
-    s32 unk_0018;
-    u32 unk_001c;
+    Unk0aa118Node *unk_0018;        /* list head */
+    Unk0aa118Node *unk_001c;        /* list tail */
 } Unk0aa118Work;
 
 int Unk044904_Unk_04509c();
@@ -30,8 +37,27 @@ typedef struct Unk0aa118List {
     u32 count;                  /* +0x84 */
 } Unk0aa118List;
 
+/* Group storage that follows the list in the same outer object; the +0x308
+ * count and +0x14 entry stride in func_020aa130 support this layout. */
+typedef struct Unk0aa118GroupEntry {
+    u8 pad_000[8];
+    u32 flags;                  /* +0x08; bit 15 cleared by func_020aa130 */
+    u8 pad_00c[8];
+} Unk0aa118GroupEntry;
+
+typedef struct Unk0aa118Group {
+    Unk0aa118GroupEntry entry[32];  /* +0x000 */
+    u32 count;                      /* +0x280 */
+} Unk0aa118Group;
+
+/* Outer object: Advance receives a pointer to its leading list. */
+typedef struct Unk0aa118Groups {
+    Unk0aa118List list;         /* +0x000 */
+    Unk0aa118Group group[3];    /* +0x088 */
+} Unk0aa118Groups;
+
 void func_02013c68();
-void func_020aa130();
+void func_020aa130(Unk0aa118Groups *p);
 
 /* zero-fills the 0x814-byte structure at p */
 void Unk0aa118_Clear814(void *p)
@@ -74,7 +100,8 @@ u32 Unk0aa118_PeekItem(Unk0aa118List *l)
 int Unk0aa118_Advance(Unk0aa118List *l)
 {
     l->pos++;
-    func_020aa130(l);
+    /* l is the leading member of a Unk0aa118Groups object */
+    func_020aa130((Unk0aa118Groups *)l);
     if (l->pos >= l->count) {
         l->pos = l->count;
         return 0;
@@ -133,6 +160,8 @@ void Unk0aa118_Unk_0ab454(void)
   *(u32 *)(value + 0x18) = 0;
 }
 
+/* Appends x to the Unk044904_Unk_04509c id array when absent; the array
+ * holds at most 6 ids, with the count word at +0x18. */
 void Unk0aa118_AddUniqueId(u32 x)
 {
     u32 *t = (u32 *)Unk044904_Unk_04509c();
@@ -196,40 +225,39 @@ int Unk0aa118_Unk_0af824(u32 id)
 
 
 
-/* decompiler-derived */
-u32 Unk0aa118_Unk_0afb90(int arg0)
+/* Allocates and zeroes a 0x90-byte node, appends it to the +0x18/+0x1c
+ * head/tail list, increments the +4 count and returns the node. */
+Unk0aa118Node *Unk0aa118_Unk_0afb90(Unk0aa118Work *w)
 {
-  u32 value;
-  value = func_02052fe0(0x90);
-  func_02008848(value,0,0x90);
-  if (((Unk0aa118Work *)arg0)->unk_0018 == 0) {
-    ((Unk0aa118Work *)arg0)->unk_0018 = value;
+  Unk0aa118Node *node;
+  node = (Unk0aa118Node *)func_02052fe0(0x90);
+  func_02008848(node,0,0x90);
+  if (w->unk_0018 == 0) {
+    w->unk_0018 = node;
   }
   else {
-    **(u32 **)(arg0 + 0x1c) = value;
+    w->unk_001c->next = node;
   }
-  ((Unk0aa118Work *)arg0)->unk_001c = value;
-  ((Unk0aa118Work *)arg0)->unk_0004 = ((Unk0aa118Work *)arg0)->unk_0004 + 1;
-  return value;
+  w->unk_001c = node;
+  w->unk_0004 = w->unk_0004 + 1;
+  return node;
 }
 
 int func_0204a0e8();
 int func_0204a244();
 int func_020b0310();
-/* decompiler-derived */
-u32 Unk0aa118_Unk_0ab4f4(u32 arg0,u32 arg1,u32 arg2,int arg3)
+/* Returns 1 when mode == 3. Otherwise returns 0 for records whose
+ * func_0204a244 kind is 2 and that pass func_0204a0e8(record, 400), and
+ * forwards everything else to func_020b0310(a, b, record). */
+u32 Unk0aa118_Unk_0ab4f4(u32 a, u32 b, u32 record, int mode)
 {
-  int value1;
-  u32 value2;
-  if (arg3 == 3) {
+  if (mode == 3) {
     return 1;
   }
-  value1 = func_0204a244(arg2);
-  if ((value1 == 2) && (value1 = func_0204a0e8(arg2,400), value1 != 0)) {
+  if (func_0204a244(record) == 2 && func_0204a0e8(record, 400) != 0) {
     return 0;
   }
-  value2 = func_020b0310(arg0,arg1,arg2);
-  return value2;
+  return func_020b0310(a, b, record);
 }
 
 int func_0204abd8();
@@ -323,7 +351,7 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
     tmp3 = func_020af9f4(tmp3,arg1,1);
     *(u32 *)(tmp2 + 0x14) = tmp3;
     *(u32 *)(tmp2 + 8) = *(u32 *)(tmp2 + 8) | 0x10;
-    tmp4 = Unk0aa118_Unk_0afb90(tmp2);
+    tmp4 = (int)Unk0aa118_Unk_0afb90((Unk0aa118Work *)tmp2);
     *(u32 *)(tmp4 + 0x84) = *(u32 *)(tmp4 + 0x84) & 0xffffff00 | 4;
     *(u32 *)(tmp4 + 4) = *v1;
     Unk0afc28_Unk_0b0930(tmp4 + 100,arg0,0,1);
@@ -407,6 +435,9 @@ u8 *Unk0aa118_Unk_0af8d8(int a, u32 id, int c)
     return base + k * 412;
 }
 
+/* Looks up id through Unk09974c_Unk_099d14; returns 0 when absent or when
+ * func_020152cc(e, data_0214fef8) reports a match failure, otherwise forwards
+ * to Unk0aa118_Unk_0af8d8. */
 u8 *Unk0aa118_Unk_0afa60(int a, u32 id, int c)
 {
     u32 e = Unk09974c_Unk_099d14(id);
@@ -458,23 +489,7 @@ int Unk0aa118_Unk_0afb40(int i)
 
 /* Clears bit 15 of word +8 on every entry of the three 32-entry groups.
  * Group k starts at +0x88 + k*0x284; its count word follows the entries.
- * The +0x308 count and +0x14 entry stride in func_020aa130 support this layout. */
-typedef struct Unk0aa118GroupEntry {
-    u8 pad_000[8];
-    u32 flags;                  /* +0x08; bit 15 cleared here */
-    u8 pad_00c[8];
-} Unk0aa118GroupEntry;
-
-typedef struct Unk0aa118Group {
-    Unk0aa118GroupEntry entry[32];  /* +0x000 */
-    u32 count;                      /* +0x280 */
-} Unk0aa118Group;
-
-typedef struct Unk0aa118Groups {
-    u8 pad_000[0x88];
-    Unk0aa118Group group[3];    /* +0x088 */
-} Unk0aa118Groups;
-
+ * The +0x308 count and +0x14 entry stride support this layout. */
 void func_020aa130(Unk0aa118Groups *p)
 {
     int i;
@@ -491,7 +506,7 @@ void func_020aa130(Unk0aa118Groups *p)
 /* Adds the borrowed entry pointer v to the list when absent, unless the
  * 32-entry list is full. The +0x84 count and capacity check at 0x020aa188
  * support this contract; returns 1 when added (or already present) and 0
- * when full. The pointer parameter matches the caller at 0x020aa188. */
+ * when full. The pointer parameter matches the caller at 0x020efdf4. */
 int func_020aa188(Unk0aa118List *l, void *v)
 {
     u32 i;
@@ -511,18 +526,17 @@ int func_020aa188(Unk0aa118List *l, void *v)
 
 void func_02053000(void *p);
 
-/* Frees every node of the linked list at +0x18, leaving the tail node for
- * the final call, then frees the owner. The head/tail accesses at 0x020afbdc
- * and the node link at +0 support this contract. */
+/* Frees each node of the +0x18 list up to and including the +0x1c tail (or
+ * until a null link), decrementing the +4 count, then frees the owner. */
 void func_020afbdc(Unk0aa118Work *w)
 {
-    u32 *node = (u32 *)w->unk_0018;
+    Unk0aa118Node *node = w->unk_0018;
     while (node != 0) {
-        u32 *current = node;
-        node = (u32 *)node[0];
+        Unk0aa118Node *current = node;
+        node = node->next;
         func_02053000(current);
         w->unk_0004--;
-        if (current == (u32 *)w->unk_001c || node == 0) {
+        if (current == w->unk_001c || node == 0) {
             break;
         }
     }
