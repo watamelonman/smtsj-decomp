@@ -19,3 +19,91 @@ absent from the original. See `docs/functions/game-unit-020bb2b0.md`.
 rather than sharing the callee translation unit's narrower C parameter type.
 **What would make us revisit.** Evidence of a shared original prototype or a
 project-wide convention for reconciling these historical call boundaries.
+
+## DEC-002 — Preserve argument-free lookup calls
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** `Unk09a268_Unk_09c498` calls `Unk09a268_Unk_09c484` without
+initializing its index register and discards the returned address. Its preceding
+`func_0209bb68` call likewise supplies no encoded-cell argument and discards
+the kind result.
+**Decision.** Keep both lookups' full parameter prototypes, and explicitly cast
+their function pointers to no-argument signatures at these exceptional call sites.
+Supplying an invented index would change the original instructions.
+**Cost accepted.** This compiler-specific call boundary describes the observed ARM
+ABI rather than a portable C call; objdiff verifies its instructions at 100%.
+**What would make us revisit.** Evidence of an original shared declaration that
+explains the incompatible call signatures.
+
+## DEC-003 — Mark the work-area kind field volatile
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** `func_0209c854` switches on the shared work area's +0x358 kind word
+and then passes the same field to `func_02034b7c`. The original reloads the field
+for the call; a plain typed read is coalesced by mwccarm and produces one less
+instruction.
+**Decision.** Declare the +0x358 field `volatile` in the partial work-area layout
+so both reads are emitted, matching the original instruction stream.
+**Cost accepted.** The qualifier describes the observed reload requirement; the
+field is engine-shared, so callers must not assume it is stable across calls.
+**What would make us revisit.** Evidence that the original field is not shared, or
+a non-volatile formulation that reproduces the same two loads.
+
+## DEC-004 — Model the +0x30 draw resources as 96-byte entries
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** `src/game/unit_020b28e4.c` accesses the block from +0x30 to +0xc2f
+through the offsets +0x30, +0xf0, +0x150, +0x1b0, +0x210, +0x270, +0x2d0,
++0x330, +0x390, +0x7b0 and +0xbd0, and the dispatch routine indexes digit
+entries with `(page + 22) * 96`. Every offset is 0x30 modulo 0x60 and the span
+is exactly 32 entries, so the block is one array of 96-byte draw resources.
+**Decision.** Replace the separate byte arrays with
+`Unk0b28e4Entry96 unk_0030[32]` and index it by the observed entry number.
+Offsets and generated code are unchanged for the already-matched functions;
+only the field names changed. Cited from the layout comment in
+`src/game/unit_020b28e4.c`.
+**Cost accepted.** Most of the entry's internal layout stays opaque. The
+initialization loop reveals three fields at entry +0x5a..+0x5d, which are
+modelled in `Unk0b28e4Entry96`. That loop addresses them as
+`work + i*96 + 0x8a` (a 0x30-byte header precedes the entry array), and the
+cleaner `&work->unk_0030[i] + 0x5a` form changes mwcc's register allocation;
+the `Unk0b28e4EntryFlags` overlay therefore documents that anchor explicitly as
+a matching constraint.
+**What would make us revisit.** A string, caller or data table that identifies
+an individual field inside an entry, or a codegen change that lets the loop use
+the entry pointer directly.
+
+## DEC-005 — Define same-unit callees before their callers
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** objdiff's report (`fuzzy_match_percent`, used by `match_gate`)
+scores a caller below 100% when it is laid out before a same-unit callee that
+this change newly defines, even though `objdiff-cli diff` and a word-by-word
+comparison show identical instructions. `func_020b32bc` was 99.94% while it
+preceded `func_020b4674` and `func_020b5070` in the object, and 100% after it
+was moved after them.
+**Decision.** Order definitions so that every same-unit callee precedes its
+callers, even when the callee's ROM address is higher. The check uses the
+report, not the per-symbol diff.
+**Cost accepted.** Source order no longer follows ROM address order at the tail
+of this TU; the section order is not part of any gate.
+**What would make us revisit.** An objdiff release whose report resolves the
+relocations without the ordering constraint.
+
+
+## DEC-006 — Preserve the visible-count reload order in 020e40a4
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** The original reloads work +0x6c after the handle callbacks and
+before advancing the local slot cursor. Ordinary C reads compile with the
+cursor increment scheduled before the reload, leaving two instructions different.
+**Decision.** Use a volatile-qualified read of this single typed field at that
+point. The loop still uses the callback-updated count; no whole-object volatile
+qualification or guessed hardware ownership is implied.
+**Cost accepted.** A local code-generation constraint is explicit in the source.
+**What would make us revisit.** Compiler or original-type evidence that reproduces
+this ordering with an ordinary field read.
+
+## DEC-007 — Preserve the two submission views of work +0xb4
+
+`func_020e2930` passes the word at work `+0xb4` unchanged to both
+`func_0205de40` (an integer argument) and `func_0205e048` (a float argument).
+Model that field as a union of `u32 bits` and `float scale` so both calls
+preserve the original bits without numeric conversion. The initializer clears
+its integer view. The instruction evidence establishes the representation;
+it does not establish the field's game-level meaning.
