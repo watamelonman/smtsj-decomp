@@ -59,10 +59,16 @@ is exactly 32 entries, so the block is one array of 96-byte draw resources.
 Offsets and generated code are unchanged for the already-matched functions;
 only the field names changed. Cited from the layout comment in
 `src/game/unit_020b28e4.c`.
-**Cost accepted.** The entry's internal layout stays opaque; only its size and
-the offsets of the resources within it are known.
+**Cost accepted.** Most of the entry's internal layout stays opaque. The
+initialization loop reveals three fields at entry +0x5a..+0x5d, which are
+modelled in `Unk0b28e4Entry96`. That loop addresses them as
+`work + i*96 + 0x8a` (a 0x30-byte header precedes the entry array), and the
+cleaner `&work->unk_0030[i] + 0x5a` form changes mwcc's register allocation;
+the `Unk0b28e4EntryFlags` overlay therefore documents that anchor explicitly as
+a matching constraint.
 **What would make us revisit.** A string, caller or data table that identifies
-an individual field inside an entry.
+an individual field inside an entry, or a codegen change that lets the loop use
+the entry pointer directly.
 
 ## DEC-005 — Define same-unit callees before their callers
 **Date:** 2026-10-22 · **Status:** Active

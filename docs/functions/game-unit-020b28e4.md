@@ -221,33 +221,87 @@ Evidence for their contracts is the original ARM instructions at each address.
   selection state, caches the global work pointer, loads six resource paths,
   prepares 32 draw entries and seven palette entries, and allocates three
   pairs of 256/512-byte icon buffers. The active-context branch initializes
-  the background buffer and its two handles.
+  the background buffer and its two handles. The three byte fields written by
+  the draw-entry loop (+0x5a..+0x5d within each entry) are named in
+  `Unk0b28e4Entry96`; the loop itself uses the `Unk0b28e4EntryFlags` overlay
+  explained in DEC-004 because that is the only form whose address arithmetic
+  matches.
 - `func_020b2dd0` (1260 B, 100%): handles borrowed callback events of kinds
   1, 3 and 4. Each optional payload word has a presence bit in the first two
   bytes. Event values select states 1..5, set rebuild/defer flags, update
   page counts and scan displayed roster ids. State 5 advances the cached
   six-byte selection cursor; its three flags are represented as bitfields.
+  The one-element `value` array exists to force the stack slot the original
+  writes through.
 - `func_020b363c` (1772 B, 100%): processes page and row input after the
   rebuild/defer flags clear. Input masks 0x40/0x80 select rows, 0x100/0x200
   select pages, and 1/2 accept or cancel. Selection paths validate roster
-  records and construct callback-13 requests with optional-word flags.
-- `func_020b4040` (1588 B, not implemented): the existing state dispatcher
-  calls it during rebuilds in states 1 and 5 and saves its return value at
-  work +0xc38, which bounds the subsequent row drawing. This caller evidence
-  supports a borrowed work pointer and integer result, but does not establish
-  the full implementation. It continues to link from the delinked original.
+  records and construct callback-13 requests with optional-word flags. The
+  two accept paths and the cancel path repeat the page-restart sequence
+  deliberately: a helper changes register allocation and loses the match.
 
 Matching details in the retained attempt: initialization uses explicit byte
 casts for palette slots and icon indices; event payload reads are inline and
 preserve presence-bit tests; request clearing uses separate loops for two
-flag bytes and sixteen words. Verification on this retry rebuilt the existing
-source and regenerated the objdiff report without changing these bodies.
+flag bytes and sixteen words. The draw-entry loop keeps its `work + i*96`
+anchored overlay; replacing it with `&work->unk_0030[i]` compiles to a
+different loop prologue and drops `func_020b28e8` to 99%, so DEC-004 records
+the constraint. The three bodies were re-verified with `tools/hand/cmp.py`
+after these edits.
 
 ### Hard list for M1-T1041
 
-- `func_020b4040` (1588 B): no C candidate was retained by the interrupted
-  first attempt. This retry addresses its reported missing-documentation
-  failure and verifies the three completed bodies. Inspection of callers
-  establishes the rebuild/result contract above, but there is no measured
-  matching trial or partial-match percentage for this function. A human can
-  open a scratch with `tools/decompme.py`; the original delink remains linked.
+- `func_020b4040` (1588 B): a full C candidate was written and iterated with
+  `tools/hand/cmp.py` and `tools/hand/gatecheck.py` this attempt. Best measured
+  result was **96.05%** for a 1584-byte candidate (396 instructions versus the
+  original 397). The decisive change was giving `Unk0b28e4_Unk_0b5e10` a
+  `void *` label argument: with the existing `u32` argument, mwcc hoists the
+  label-array address into a callee-saved register and spills the row counter;
+  with an escaping pointer it rematerializes the stack address like the
+  original. That signature change left every other function in the unit at
+  100% in the gatecheck report. Secondary fixes were `func_020b64dc(i)` (not
+  `list[i]`), `col <= 7` for the button loops, and recomputing the direct-layout
+  label position from `i`. An otherwise identical variant that passes the
+  halfword directly scored 95.91%; the earlier hoisting version scored 88.42%.
+  None is merged, so the function still links from the delink.
+
+  Established contract: the function draws the three `func_020b64c8()` roster
+  rows, using `func_020a1740`/`func_020a1428` per id, `func_020b5f08` for the
+  icon, `func_0204fed8` for the two labels, `func_020b3dc4` for the bar and
+  `func_020b5e10` for the category/button grids. It clears `work->unk_0c78`,
+  draws an empty row for a zero id, selects between the direct-id and digit
+  layouts through `Unk0a163c_Unk_0a17d8`, switches the category source at
+  `record->unk_5b`, and finally draws the status label and returns 3 for
+  `work->unk_0c38`. The stack copies of `data_0213c468` (8 B) and
+  `data_0213c4a0` (16 B) are reproduced exactly by struct assignment.
+
+  Specific mismatches in the 96.05% candidate:
+  - The original materialises the `func_020dd364` argument through a 16-bit
+    scratch at `sp-4` (`sub r8, sp, #4; strh [r8]; ldr [r8]`). Every typed
+    form tried allocates a normal in-frame slot; the candidate keeps it at
+    `sp+52`, so the frame is 80 bytes instead of 76 and the label arrays sit
+    at +54/+62 instead of +52/+60.
+  - The direct-layout label position: the original recomputes `i*56`
+    (`mov/mul/add`) and masks the result again at each of the two calls; the
+    candidate reuses the `y` local (`add`) and masks once.
+  - The second-variant category/button loops rotate constants through
+    different saved registers (original r7=16, r6=7, r5=row base,
+    r8=table+row*6; candidate r6=16, r5=7, r8=row base, r7=table+row*6).
+  - The two row-base temporaries land at +44/+48 instead of +24/+28, which
+    moves table/record/list/resource slots to +24/+28/+32/+36/+40.
+  The last three items are the residue after the stack offsets; the behaviour
+  and call order already match.
+
+  Variants tried: struct assignment versus `memcpy` for both label arrays
+  (assignment matches the copy loop exactly); `u16[4]`/`u16[8]`,
+  `u16[12]`, and a single struct containing both arrays; `volatile` arrays;
+  pointer locals per region; declaration-order permutations; function-scope
+  versus loop-scope `u8 row`/`col` and both declaration orders; explicit
+  `base1`/`base2` locals in several declaration positions; reusing the dead
+  `base1` slot for the `func_020dd364` halfword; `int` versus `u32 i`;
+  `u8`, `u32`, `union`, `u16[1]`, `u16[2]`, compound-literal, by-value-union
+  and `*(u32 *)&record->unk_22[col]` forms for the `func_020dd364` argument;
+  `u32` versus `void *` for the `Unk0b28e4_Unk_0b5e10` label argument; and all
+  mwcc 2.0 service packs plus the 1.2 releases (1.2 produces a 164-byte
+  frame, far from the original). A human can open a scratch with
+  `tools/decompme.py`; the original delink remains linked.

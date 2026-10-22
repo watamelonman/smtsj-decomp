@@ -3,9 +3,14 @@
 
 /* 96-byte draw-resource entry. The stride is evidenced by the
    `(page + 22) * 96` index at 0x020b37f4 and by every named offset in the block
-   from +0x30 to +0xc2f being 0x30 modulo 0x60. See DEC-004. */
+   from +0x30 to +0xc2f being 0x30 modulo 0x60. Initialization writes the three
+   fields at +0x5a..+0x5d. See DEC-004. */
 typedef struct Unk0b28e4Entry96 {
-    u8 data[0x60];
+    u8 data[0x5a];
+    u16 unk_5a;                 /* 0x5a: cleared during initialization */
+    u8 unk_5c;                  /* 0x5c: cleared during initialization */
+    u8 unk_5d;                  /* 0x5d: set to 1 during initialization */
+    u8 pad_5e[2];
 } Unk0b28e4Entry96;
 
 /* Object referenced by the first word of data_02176b80. Fields and embedded
@@ -916,13 +921,19 @@ typedef struct Unk0b28e4Context {
     u8 pad_04[0x20];
     void *buffer;
 } Unk0b28e4Context;
-/* Initialization writes these fields within each 96-byte draw entry. */
+/* 0x90-byte overlay (0x30 header + one 96-byte entry) anchored at
+   `work + i*96`, used only by the initialization loop. The draw entry itself
+   starts 0x30 bytes into that span, so `unk_8a`/`unk_8c`/`unk_8d` are the
+   entry's +0x5a/+0x5c/+0x5d fields. The anchor and the 0x8a pad are a matching
+   constraint: mwcc addresses the fields from `work + i*96 + 0x8a` instead of
+   `&work->unk_0030[i] + 0x5a`, and the latter form changes the loop's register
+   allocation. See DEC-004. */
 typedef struct Unk0b28e4EntryFlags {
-    u8 pad_00[0x8a];
-    u16 unk_5a;
-    u8 unk_5c;
-    u8 unk_5d;
-    u8 pad_5e[2];
+    u8 header_and_pad[0x8a];
+    u16 unk_8a;
+    u8 unk_8c;
+    u8 unk_8d;
+    u8 pad_8e[2];
 } Unk0b28e4EntryFlags;
 /* The five words at work +0x10 are the resource-loader outputs and geometry. */
 typedef struct Unk0b28e4Setup {
@@ -1006,19 +1017,19 @@ void func_020b28e8(Unk0b28e4Obj *work)
                    &work->unk_0024, &work->unk_0028, &work->unk_002c,
                    &setup->unk_0c, &setup->unk_10);
     for (i = 0; i < 32; i++) {
-        Unk0b28e4EntryFlags *entry = (Unk0b28e4EntryFlags *)&((Unk0b28e4Entry96 *)work)[i];
-        entry->unk_5a = 0;
-        entry->unk_5c = 0;
-        entry->unk_5d = 1;
+        Unk0b28e4EntryFlags *entry = (Unk0b28e4EntryFlags *)((Unk0b28e4Entry96 *)work + i);
+        entry->unk_8a = 0;
+        entry->unk_8c = 0;
+        entry->unk_8d = 1;
         Unk03e43c_Unk_03e894(&work->unk_0030[i], setup->unk_0c, setup->unk_10, i);
     }
-{
-    void *palette;
-    palette = func_0203e6f0(data_0214ff70, data_0214ff84, 0);
-    for (i = 0; i < 7; i++) {
-        Unk03e43c_Unk_03e794((u8 *)palette + i * 32, i);
-    }
-    func_020516d0(palette);
+    {
+        void *palette;
+        palette = func_0203e6f0(data_0214ff70, data_0214ff84, 0);
+        for (i = 0; i < 7; i++) {
+            Unk03e43c_Unk_03e794((u8 *)palette + i * 32, i);
+        }
+        func_020516d0(palette);
     }
     Unk03e43c_Call_02056cc0();
     func_020119c0(work->unk_0c3c, -1, 12);
@@ -1080,6 +1091,8 @@ static inline int Unk0b28e4_ReadPayload(Unk0b28e4Payload *payload, int index, u3
  * The event is borrowed; state 5 advances the work-owned selection cursor. */
 void func_020b2dd0(Unk0b28e4Obj *work, Unk0b28e4Event *event)
 {
+    /* One-element array: the address forces a stack slot, and the helper below
+       writes through it only when the payload bit is present. */
     u32 value[1] = {0};
     Unk0b28e4Payload *payload = &event->payload;
     switch (event->kind) {
@@ -1212,7 +1225,10 @@ static inline void Unk0b28e4_ClearPayload(Unk0b28e4Payload *payload)
 
 /* Processes page and row input only after rebuilding/drawing completes.
  * Evidence: 0x020b363c tests +0xc70/+0xc74, reads masks 0x40/0x80/1/2/0x100/
- * 0x200, and constructs callback-13 payloads for accepted selections/cancel. */
+ * 0x200, and constructs callback-13 payloads for accepted selections/cancel.
+ * The accept/cancel request and page-restart sequences are written out at each
+ * site; folding them into a helper changes mwcc's register allocation and
+ * breaks the byte match. */
 void func_020b363c(Unk0b28e4Obj *work)
 {
     func_020b3570(work);
@@ -1314,11 +1330,11 @@ void func_020b363c(Unk0b28e4Obj *work)
                 request.flags[0] |= 1;
                 func_020bcacc(Unk0bc1a8_GetHeaderWord4(work), &request);
                 work->unk_0c70 = 1;
-                        work->unk_0c74 = 1;
-                        work->unk_0000 = 1;
-                        work->unk_0c6c = 0;
-                        if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
-                        else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+                work->unk_0c74 = 1;
+                work->unk_0000 = 1;
+                work->unk_0c6c = 0;
+                if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+                else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
                 Unk0a0ce4_Unk_0a0da4(2);
             } else {
                 if (work->unk_0c6d <= 1) return;
