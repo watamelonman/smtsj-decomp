@@ -9,7 +9,7 @@ void Unk0979d8_Unk_0981bc(u8 index, s16 value);
 void Unk0979d8_Unk_097f34(s16 value);
 void Unk0979d8_ClampAllField20(s16 value);
 s32 func_0209993c(s32 value);
-s32 func_0203cd50(s32 entry, s32 amount, s32 mode);
+s32 Unk03cc58_Unk_03cd50(s32 entry, s32 amount, s32 mode);
 
 /* Selector 0 reads the singleton; selectors 1..3 read indexed entries.
  * Evidence: the two getter calls and byte-sized selector adjustment below. */
@@ -79,7 +79,7 @@ void func_02099b10(s32 entry, s32 amount);
  * context subobject's +0x18 to 5 and returns 3. Otherwise entries of kinds
  * 3..6 are left alone and the rest are reduced through func_02099b10;
  * returns 1. */
-s32 func_0203cd50(s32 entry, s32 amount, s32 mode)
+s32 Unk03cc58_Unk_03cd50(s32 entry, s32 amount, s32 mode)
 {
     if (amount > 0) {
         /* The original calls func_02065c10 separately for result 1 and for
@@ -118,7 +118,7 @@ s32 Unk03cc58_Unk_03ce10(void)
 {
     s32 entry = func_0203ac00(0);
     s32 amount = func_0203ac00(1);
-    return func_0203cd50(entry, amount, 0);
+    return Unk03cc58_Unk_03cd50(entry, amount, 0);
 }
 
 /* Forwards two script arguments to the shared helper with mode 1. */
@@ -126,5 +126,5 @@ s32 Unk03cc58_Unk_03ce3c(void)
 {
     s32 entry = func_0203ac00(0);
     s32 amount = func_0203ac00(1);
-    return func_0203cd50(entry, amount, 1);
+    return Unk03cc58_Unk_03cd50(entry, amount, 1);
 }

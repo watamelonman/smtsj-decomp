@@ -81,7 +81,7 @@ void Unk02ee5c_AddClamped70(int d)
     w[112] = v;
 }
 
-/* View of the Unk02e000_Thunk_0202e788 work area used by func_0202efa4. */
+/* View of the Unk02e000_Thunk_0202e788 work area used by Unk02ee5c_Unk_02efa4. */
 typedef struct Unk02ee5cLists {
     u8 pad_00[0x24];
     u16 out[18];                /* 0x24: combined list */
@@ -93,7 +93,7 @@ typedef struct Unk02ee5cLists {
 /* Builds the 18-entry list at +0x24: the zero-terminated list at +0x5a
  * (at most eight ids), separator 1 in place of its terminator, the list at
  * +0x48 the same way, then zeros through entry 17. */
-void func_0202efa4(void)
+void Unk02ee5c_Unk_02efa4(void)
 {
     Unk02ee5cLists *w = (Unk02ee5cLists *)Unk02e000_Thunk_0202e788();
     int n = 0;
