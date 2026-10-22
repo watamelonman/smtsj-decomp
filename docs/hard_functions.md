@@ -214,7 +214,7 @@ Local verify/cmp now use `-z`. The project gates (objdump-free objdiff) were nev
 
 - `func_020935b8` (M1-T1008): left out; closest C was 496 vs 488 bytes, mwcc keeps the
   second argument in `r4` instead of the original `r7` and shifts the whole body.
-- `func_020937a0` (M1-T1008): left out; closest C was 612 vs 592 bytes, original spills the
+- `Unk090e60_Unk_0937a0` (M1-T1008): left out; closest C was 612 vs 592 bytes, original spills the
   list argument to the stack, mwcc kept it in `r9` and changed the loop colouring.
 - `func_02092624` (M1-T1008): left out; Ghidra loses multi-argument stack payloads
   (compiled 2344 vs 3748 bytes), needs call-site reconstruction.

@@ -1,6 +1,6 @@
 /* src/game/unit_02090e60.c: list screen helpers (work layout below).
  *
- * Matched so far: func_020937a0 (text list rebuild) and func_020934c8 (entry refresh).
+ * Matched so far: Unk090e60_Unk_0937a0 (text list rebuild) and func_020934c8 (entry refresh).
  * The remaining functions in this translation unit are still linked from the delinked
  * original; see docs/functions/game-unit-02090e60.md for the hard-function notes.
  */
@@ -115,7 +115,7 @@ typedef struct Unk090e60Work {
     u32 *unk_040c[12];
 } Unk090e60Work;
 
-void func_020937a0(Unk090e60Work *work, u8 group, int arg2, int arg3);
+void Unk090e60_Unk_0937a0(Unk090e60Work *work, u8 group, int arg2, int arg3);
 void func_0205c6f8(u32 value);
 void Unk065e88_SetFlag3a(u32 *entry, int flag);
 int Unk02f078_GetEntry5e12Bit0(u8 index);
@@ -146,7 +146,7 @@ int Unk02e000_GetRecordFlag1(u16 id);
  * The last func_02063a30 result goes to func_02061f10 (left unset when no id is visited,
  * as in the ROM). The final two parameters are unused.
  * Evidence: loads, loop bounds and calls in 0x020937a0..0x020939f0. */
-void func_020937a0(Unk090e60Work *work, u8 group, int arg2, int arg3)
+void Unk090e60_Unk_0937a0(Unk090e60Work *work, u8 group, int arg2, int arg3)
 {
     s32 i;
     int text;
@@ -219,7 +219,7 @@ void func_020934c8(Unk090e60Work *work, int mode, int arg2, int arg3)
     s32 start;
 
     work->unk_0353 = 0;
-    func_020937a0(work, work->unk_0354[work->unk_02f4], arg2, arg3);
+    Unk090e60_Unk_0937a0(work, work->unk_0354[work->unk_02f4], arg2, arg3);
 
     start = work->unk_039c;
     if (start - work->unk_03a0 != 0) {

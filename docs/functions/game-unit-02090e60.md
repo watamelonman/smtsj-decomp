@@ -8,7 +8,7 @@ the other four remain linked from the original delink object.
 
 ### `func_020934c8` — 0x020934c8, 240 bytes (100%)
 
-Clears `unk_0353` unconditionally, calls `func_020937a0` with the byte
+Clears `unk_0353` unconditionally, calls `Unk090e60_Unk_0937a0` with the byte
 selected by `unk_02f4` from `unk_0354`, then refreshes twelve `unk_040c`
 pointers when `unk_039c != unk_03a0`. It clears their flags and enables entries
 below `unk_0398` whose record predicate returns nonzero. Finally, **`unk_03e0`**
@@ -36,7 +36,7 @@ difference is mwcc register allocation at function entry: the original keeps
 shifts the whole body. Recommend a decomp.me scratch
 (`python3 tools/decompme.py --platform nds_arm9 ...`) to settle the allocation.
 
-### `func_020937a0` — 0x020937a0, 592 bytes
+### `Unk090e60_Unk_0937a0` — 0x020937a0, 592 bytes
 
 Rebuilds the three list panels (the `+0x114`, `+0x118`, `+0x110`/`+0x11c`
 groups): starts a draw list (`func_02063920`), optionally selects each of the 12
@@ -140,4 +140,4 @@ are in missing states. Consequently these isolated cases cannot settle whole
 function register allocation. The next scratch must add state 0's branches
 at `0x02090f00` and the payload-building states 7/8 before tuning allocation.
 Remains on the hard list; no incomplete case implementation was installed.
-- `func_020937a0`: rebuilds the four text lists from +0x39c slots and the group ids
+- `Unk090e60_Unk_0937a0`: rebuilds the four text lists from +0x39c slots and the group ids
