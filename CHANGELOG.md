@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched five M1-T145 transition helpers in `src/game/unit_0209e72c.c`; documented the remaining conditional-move ordering mismatch in the unit hard list.
 - Matched both functions in `src/game/unit_020f8998.c` (empty callback and the 556-byte grid-interaction state machine) at 100% objdiff, with typed work/cell layouts and per-function documentation.
 - Matched all five M1-T119 functions in `src/game/unit_02047338.c` at 100% objdiff, including the 312-byte `func_02047338` state dispatcher, with typed parameters and per-function documentation.
 - Verified the eight M1-T116 scan-visor action handlers in `src/game/unit_0203c474.c` at 100% objdiff; added typed callee prototypes and behavior comments, with per-function evidence in `docs/functions/game-unit-0203c474.md`.
