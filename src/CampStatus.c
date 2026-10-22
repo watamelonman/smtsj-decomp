@@ -269,7 +269,7 @@ typedef struct CampStatusInfo {
     u8 unk_0002;                /* +0x02: 3 and 4 select the slot set in CampStatus_Unk_0db910 */
     u8 pad_0003;
     u32 pad_04_0 : 10;
-    u32 unk_04_10 : 10;         /* +0x04 bits 10..19: bonus summed by func_020d78bc */
+    u32 unk_04_10 : 10;         /* +0x04 bits 10..19: bonus summed by CampStatus_Unk_0d78bc */
     u32 unk_04_20 : 12;         /* +0x04: top 12 bits */
     u8 lo : 4;                  /* +0x08: two nibbles compared by CampStatus_Unk_0db824 */
     u8 hi : 4;
@@ -1135,7 +1135,7 @@ CampStatusStateWord CampStatus_Unk_0dd500(const u16 *ids, s32 i, s32 extra);
  * vs current vs unk_0180, mode 18: current vs candidate), level line, the attack/defence lines
  * with the item bonuses, the eight slot states (mode 18 marks changed ones in orange) and the
  * id grid. */
-void func_020d78bc(CampStatusWork *work)
+void CampStatus_Unk_0d78bc(CampStatusWork *work)
 {
     CampStatusPlayer *p;
     CampStatusStateWord w0;
