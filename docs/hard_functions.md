@@ -52,10 +52,6 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk0e1648_IsUnkeecSet` (M1-T1042): left out of the card
 - `func_020bd3fc` (M1-T434): left out of the card
 - `Unk0bcef4_IsState015` (M1-T434): left out of the card
-- `Unk0aa118_Clear814` (M1-T1076): left out of the card
-- `Unk0aa118_PeekItem` (M1-T1076): left out of the card
-- `func_020ab4d4` (M1-T1076): left out of the card
-- `Unk0aa118_Unk_0afb40` (M1-T1076): left out of the card
 - `Unk0ea208_Unk_0eb6cc` (M1-T769): left out of the card
 - `Unk0ea208_Unk_0ea85c` (M1-T769): left out of the card
 - `Unk0ea208_Unk_0eac24` (M1-T769): left out of the card
@@ -213,3 +209,14 @@ Local verify/cmp now use `-z`. The project gates (objdump-free objdiff) were nev
   Unk118b04_Unk_118b78): returning the callee's value is byte-identical and unlocks callers.
 - ninja does not track header dependencies: after editing include/*.h, touch the including
   sources before running checksum.
+
+## M1-T1008 (unit_02090e60)
+
+- `func_020935b8` (M1-T1008): left out; closest C was 496 vs 488 bytes, mwcc keeps the
+  second argument in `r4` instead of the original `r7` and shifts the whole body.
+- `func_020937a0` (M1-T1008): left out; closest C was 612 vs 592 bytes, original spills the
+  list argument to the stack, mwcc kept it in `r9` and changed the loop colouring.
+- `func_02092624` (M1-T1008): left out; Ghidra loses multi-argument stack payloads
+  (compiled 2344 vs 3748 bytes), needs call-site reconstruction.
+- `func_02090e60` (M1-T1008): left out; 6 KB jump-table state machine, Ghidra skeleton only,
+  needs per-case disassembly for the stack payloads.

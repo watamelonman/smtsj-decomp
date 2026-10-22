@@ -32,11 +32,15 @@ typedef struct Unk0aa118List {
 
 void func_02013c68();
 void func_020aa130();
+
+/* zero-fills the 0x814-byte structure at p */
 void Unk0aa118_Clear814(void *p)
 {
     func_02008848(p, 0, 0x814);
 }
 
+/* Orders borrowed item pointers by descending word +0x14, then ascending
+ * word +0. The sorting callback passed at 0x020aa224 supports CompareItems. */
 int Unk0aa118_CompareItems(u32 **a, u32 **b)
 {
     if ((*b)[5] == (*a)[5]) {
@@ -48,11 +52,15 @@ int Unk0aa118_CompareItems(u32 **a, u32 **b)
     return (*b)[5] > (*a)[5] ? 1 : -1;
 }
 
+/* Sorts only the unconsumed entries; +0x80/+0x84 cursor/count accesses and
+ * the CompareItems callback at 0x020aa224 support the SortRemaining name.
+ * The caller must provide pos <= count <= 32. */
 void Unk0aa118_SortRemaining(Unk0aa118List *l)
 {
     func_02013c68(&l->item[l->pos], l->count - l->pos, 4, Unk0aa118_CompareItems);
 }
 
+/* returns the item at the list cursor, or 0 once the cursor is at/past the end */
 u32 Unk0aa118_PeekItem(Unk0aa118List *l)
 {
     if (l->pos >= l->count) {
@@ -61,6 +69,8 @@ u32 Unk0aa118_PeekItem(Unk0aa118List *l)
     return l->item[l->pos];
 }
 
+/* Advances the cursor, refreshes through func_020aa130, and clamps at count.
+ * The +0x80 increment at 0x020aa264 supports Advance; returns 0 at the end. */
 int Unk0aa118_Advance(Unk0aa118List *l)
 {
     l->pos++;
@@ -101,6 +111,8 @@ typedef struct Unk0aa118Ptrs {
     u8 pad_00[0x64];
     u32 *e[10];
 } Unk0aa118Ptrs;
+/* Requests (2, 0, 0, 0), then passes the global work area to func_020ae1e8;
+ * the callees' larger purpose is not established. No arguments are retained. */
 void Unk0aa118_Unk_0ab34c(void)
 {
     func_020aa4f4(2, 0, 0, 0);
@@ -113,7 +125,7 @@ void Unk0aa118_Nop_0ae054(void) { }
 /* forwards to `Unk0aa118_Unk_0af8d8` */
 u8 *Unk0aa118_Thunk_020af8d8(int a, u32 id, int c) { return Unk0aa118_Unk_0af8d8(a, id, c); }
 
-/* decompiler-derived */
+/* clears the +0x18 word of the object returned by Unk044904_Unk_04509c */
 void Unk0aa118_Unk_0ab454(void)
 {
   int value;
@@ -138,7 +150,7 @@ void Unk0aa118_AddUniqueId(u32 x)
     t[6]++;
 }
 
-/* decompiler-derived */
+/* returns non-zero when the +0x18 word of the Unk044904_Unk_04509c object is set */
 int Unk0aa118_Unk_0ab4b8(void)
 {
   int value;
@@ -146,10 +158,21 @@ int Unk0aa118_Unk_0ab4b8(void)
   return *(int *)(value + 0x18) != 0;
 }
 
+int func_02044ec4(int id);
+int func_02049aec(int obj, int mask, int set);
+
+/* looks up the record for id a and applies bit b (masked to 8 bits) with set=1 */
+int func_020ab4d4(int a, int b)
+{
+    int v = func_02044ec4(a);
+    return func_02049aec(v, (1 << b) & 255, 1);
+}
+
 
 int func_02008848();
 int func_02052fe0();
-/* decompiler-derived */
+/* Allocates and zeroes 0x94 bytes, then stores arg0 in the first word.
+ * Returns the allocated work area; allocation failure is handled by the allocator. */
 u32 * Unk0aa118_Unk_0afb64(u32 arg0)
 {
   u32 *v1;
@@ -160,8 +183,8 @@ u32 * Unk0aa118_Unk_0afb64(u32 arg0)
 }
 
 
-/* decompiler-derived */
-/* returns the table base for the record found by Unk0aa118_FindRecord (or for record 0,0) */
+/* Returns borrowed table storage selected by the first two bytes of the
+ * matching record; a missing id selects table (0, 0). */
 int Unk0aa118_Unk_0af824(u32 id)
 {
     u8 *v = Unk0aa118_FindRecord(id);
@@ -209,16 +232,17 @@ u32 Unk0aa118_Unk_0ab4f4(u32 arg0,u32 arg1,u32 arg2,int arg3)
   return value2;
 }
 
-int func_02044ec4();
 int func_0204abd8();
 int func_0204f108();
 int func_0209fd64();
 int func_020ab62c();
-void Unk0aa118_Unk_0ab8f8();
+void Unk0aa118_Unk_0ab8f8(u32 p);
 int func_020af9f4();
 int func_020afbdc();
 int Unk0afc28_Unk_0b0930();
 int Unk0caea8_GetInRange();
+/* Sets bit 3 at p+8 when global +0x40 bit 11 and query 2 are both set.
+ * p must address writable work storage containing that word. */
 void Unk0aa118_Unk_0ab8f8(u32 p)
 {
     u32 v = FIELD(u32, Unk044904_Get_data_0215ee98(), 64);
@@ -230,6 +254,8 @@ void Unk0aa118_Unk_0ab8f8(u32 p)
     }
 }
 
+/* Returns byte +58, +59, or +60 for id classifications 4, 1, or 5,
+ * respectively; other classifications return zero. p must contain these bytes. */
 u8 Unk0aa118_Unk_0ab930(u8 *p, u32 id)
 {
     switch (func_0204add4(id)) {
@@ -243,6 +269,8 @@ u8 Unk0aa118_Unk_0ab930(u8 *p, u32 id)
     return 0;
 }
 
+/* Visits the ten global pointers at +0x64 and requests operation 2 for
+ * non-null entries whose first word has a nonzero byte at bits 16..23. */
 void Unk0aa118_Unk_0acb28(void)
 {
     Unk0aa118Ptrs *g = (Unk0aa118Ptrs *)Unk044904_Get_data_0215ee98();
@@ -308,6 +336,9 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
   }
 }
 
+/* Reads data_0214d2f4 with one-based i and a three-word group offset
+ * for k == 2 or 3. The literal table access supports GetTableD2f4; the
+ * caller must supply an index within the table. Other k values use group 0. */
 u32 Unk0aa118_GetTableD2f4(int k, int i)
 {
     int b = 0;
@@ -324,6 +355,9 @@ u32 Unk0aa118_GetTableD2f4(int k, int i)
     return data_0214d2f4[b + (i - 1)];
 }
 
+/* Searches 326 records of 34 bytes by comparing id with each record +2
+ * through func_020152cc, supporting FindRecord. Returns borrowed
+ * storage for the first match, or null when absent. */
 u8 *Unk0aa118_FindRecord(u32 id)
 {
     u8 *e = data_0214d398;
@@ -336,6 +370,8 @@ u8 *Unk0aa118_FindRecord(u32 id)
     return 0;
 }
 
+/* Resolves the table selected by i; an out-of-range unsigned index uses 0.
+ * The returned handle is passed unchanged to the next table lookup. */
 int Unk0aa118_Unk_0af7cc(u32 i)
 {
     int t = func_020491b4(i);
@@ -345,6 +381,8 @@ int Unk0aa118_Unk_0af7cc(u32 i)
     return func_0205f41c(t, i);
 }
 
+/* Resolves table a, then selects entry b, using entry 0 when b is out of range.
+ * Both indices use the unsigned bounds observed in the original. */
 int Unk0aa118_Unk_0af7f8(u32 a, u32 b)
 {
     int t = Unk0aa118_Unk_0af7cc(a);
@@ -354,6 +392,8 @@ int Unk0aa118_Unk_0af7f8(u32 a, u32 b)
     return func_0204fdac(t, b);
 }
 
+/* Returns one of two 412-byte regions in the table for id. a == 1 selects
+ * the second region; any nonzero c reverses the selection. Storage is borrowed. */
 u8 *Unk0aa118_Unk_0af8d8(int a, u32 id, int c)
 {
     u8 *base = (u8 *)Unk0aa118_Unk_0af824(id);
@@ -379,6 +419,8 @@ u8 *Unk0aa118_Unk_0afa60(int a, u32 id, int c)
     return 0;
 }
 
+/* Returns borrowed 22-byte entries from table (39, 0); byte 2 of x equal
+ * to 1 selects the second half, using the unsigned entry count divided by 2. */
 u8 *Unk0aa118_Unk_0afab0(u32 x)
 {
     int t = Unk0aa118_Unk_0af7f8(39, 0);
@@ -391,6 +433,8 @@ u8 *Unk0aa118_Unk_0afab0(u32 x)
     return base + k * 22;
 }
 
+/* Returns borrowed 22-byte entries from table (0, 0); byte 2 of x equal
+ * to 1 selects the second half, using the unsigned entry count divided by 2. */
 u8 *Unk0aa118_Unk_0afaf8(u32 x)
 {
     int t = Unk0aa118_Unk_0af7f8(0, 0);
@@ -403,6 +447,7 @@ u8 *Unk0aa118_Unk_0afaf8(u32 x)
     return base + k * 22;
 }
 
+/* returns the table base for record id data_0214d380[i], or 0 for i == 0 */
 int Unk0aa118_Unk_0afb40(int i)
 {
     if (i == 0) {
