@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1046 unit_020e1648 functions at 100% objdiff, with typed slot appending, state checks, request construction and capped shared-state updates.
 - Matched all eight M1-T1045 functions in `src/game/unit_020e1648.c` at 100% objdiff: the handler-table initialiser, slot rank/lookup helpers, cursor-driven table walk, entry dispatch, and appended-range sort; typed the work fields and documented each function.
 - Matched all eight M1-T1044 functions at 100% objdiff, including six-argument conditional forwarding and the work-kind predicate; made handle forwarding and work fields explicit.
 - Verified all eight M1-T1043 functions at 100% objdiff; made lookup argument forwarding explicit, typed slot/global accesses, and documented each function’s instruction evidence.

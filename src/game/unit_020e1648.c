@@ -25,14 +25,19 @@ typedef struct Unk0e1648Table {
 typedef struct Unk0e1648Work {
     u8 unk_0000;
     u8 unk_0001;
-    u8 pad_0002[2];
+    u8 unk_0002;
+    u8 pad_0003;
     u16 unk_0004;
     u16 unk_0006;
     u8 pad_0008[0x60];
     u32 unk_0068;
     u8 pad_006c[0x10];
     s32 unk_007c;
-    u8 pad_0080[0x50];
+    u8 pad_0080[0x18];
+    s32 unk_0098;
+    u8 pad_009c[0x2c];
+    s32 unk_00c8;
+    u8 pad_00cc[4];
     u16 unk_00d0;
     Unk0e1648Slot unk_00d2[440]; /* 8-byte entries; count guessed from the following fields. */
     u8 pad_0e92[6];
@@ -397,12 +402,12 @@ void Unk0e1648_Unk_0e2f54(Unk0e1648Work *p)
 
 int func_0204faf0();
 int func_020e49cc();
-/* decompiler-derived */
+/* Maps entry kinds 3/4 to selector 6 and 5/6 to selector 7, then applies channel 1. */
 void Unk0e1648_Unk_0e4964(u32 arg0)
 {
   u32 tmp1;
   u32 tmp2;
-  tmp1 = Unk09974c_GetEntryUnk08();
+  tmp1 = Unk09974c_GetEntryUnk08(arg0);
   tmp2 = 0;
   switch(tmp1) {
   case 0:
@@ -473,8 +478,8 @@ void Unk0e1648_Unk_0e5090(u32 arg0,u32 arg1)
 }
 
 int Unk0f3db4_Unk_0f4448();
-/* decompiler-derived */
-void Unk0e1648_Unk_0e48a8(int arg0,u32 arg1)
+/* Appends an accepted id and its selector-4 value; caller provides table capacity. */
+void Unk0e1648_Unk_0e48a8(Unk0e1648Work *arg0,u32 arg1)
 {
   u16 tmp1;
   int tmp2;
@@ -486,10 +491,10 @@ void Unk0e1648_Unk_0e48a8(int arg0,u32 arg1)
   if (tmp2 != 0) {
     return;
   }
-  *(short *)(arg0 + (u32)((Unk0e1648Work *)arg0)->unk_00d0 * 8 + 0xd6) = (short)arg1;
+  arg0->unk_00d2[arg0->unk_00d0].unk_0004 = arg1;
   tmp1 = func_020e49cc(4,arg1);
-  *(u16 *)(arg0 + (u32)((Unk0e1648Work *)arg0)->unk_00d0 * 8 + 0xd8) = tmp1;
-  ((Unk0e1648Work *)arg0)->unk_00d0 = ((Unk0e1648Work *)arg0)->unk_00d0 + 1;
+  arg0->unk_00d2[arg0->unk_00d0].pad_0006 = tmp1;
+  arg0->unk_00d0 = arg0->unk_00d0 + 1;
 }
 
 void func_02013c68(void *base, int count, int size,
@@ -502,7 +507,7 @@ void func_020e490c(Unk0e1648Work *work, int first, int last)
 {
     u16 start = work->unk_00d0;
     while (first <= last) {
-        Unk0e1648_Unk_0e48a8((int)work, first);
+        Unk0e1648_Unk_0e48a8(work, first);
         first++;
     }
     func_02013c68(&work->unk_00d2[start], work->unk_00d0 - start, 8,
@@ -601,4 +606,95 @@ int func_020e544c(Unk0e1648Work *work)
     default:
         return 0;
     }
+}
+
+/* Requires mode 1 and a nonempty first entry; rejects an already accepted slot. */
+int func_020e2cc8(Unk0e1648Work *work)
+{
+    Unk0e1648Rec *entry;
+    if (work->unk_0ec0 != 1) return 0;
+    entry = (Unk0e1648Rec *)Unk0e1648_Unk_0e2d80(work);
+    if (entry->ents[0].a == 0) return 0;
+    if (entry->unk_03 == 0) return 1;
+    return Unk0f3db4_Unk_0f4510(work->unk_0068,
+        work->unk_00d2[work->unk_007c].unk_0002) == 0;
+}
+
+/* State bytes 17..19 permit the operation; state 20 also tests the +2 substate. */
+int func_020e42e4(Unk0e1648Work *work)
+{
+    if (work->unk_0000 < 17) return 0;
+    switch (work->unk_0000) {
+    case 17: case 18: case 19: return 1;
+    case 20:
+        switch (work->unk_0002) {
+        case 4: case 16: return 0;
+        default: return 1;
+        }
+    default: return 0;
+    }
+}
+
+u32 Unk0f3db4_Unk_0f44a8(u32 id);
+void func_020e30f0(Unk0e1648Work *work, u32 value, u16 index);
+/* Adds nonzero lookup results from count byte ids, then sorts all accumulated slots. */
+void func_020e2f84(Unk0e1648Work *work, int count, const u8 *ids)
+{
+    int i;
+    for (i = 0; i < count; i++) {
+        u32 value = Unk0f3db4_Unk_0f44a8(ids[i]);
+        if (value != 0) func_020e30f0(work, value, (u16)i);
+    }
+    func_02013c68(work->unk_00d2, work->unk_00d0, 8, Unk0e1648_Unk_0e2c90);
+}
+
+/* Accepts kind 2, an accepted id/value pair, or a record with three empty entries. */
+int func_020e4ca4(Unk0e1648Work *work, u32 value)
+{
+    Unk0e1648Rec *entry = (Unk0e1648Rec *)func_020f3de8(work->unk_0068);
+    if (entry->pad_02 == 2) return 1;
+    if (Unk0e1648_Unk_0e4c64(work, value) != 0) return 1;
+    return entry->ents[0].a == 0 && entry->ents[1].a == 0 && entry->ents[2].a == 0;
+}
+
+/* Stack-owned request layout observed in 020e524c; callee must consume it synchronously. */
+typedef struct Unk0e1648Request {
+    u8 flags[2];
+    u8 pad_0002[2];
+    u32 values[16];
+} Unk0e1648Request;
+void func_020bcbc4(u32 kind, Unk0e1648Request *request);
+/* Submits a zeroed request with flag bit 1 and second value 19 to kind 3. */
+void func_020e524c(void)
+{
+    Unk0e1648Request request;
+    int i;
+    for (i = 0; i < 2; i++) request.flags[i] = 0;
+    for (i = 0; i < 16; i++) request.values[i] = 0;
+    request.values[1] = 19;
+    request.flags[0] |= 2;
+    func_020bcbc4(3, &request);
+}
+
+/* Only the shared signed accumulator observed at +0x344 is modelled. */
+typedef struct Unk0e1648Shared {
+    u8 pad_0000[0x344];
+    s32 value;
+} Unk0e1648Shared;
+Unk0e1648Shared *Unk02e000_GetWorkArea(void);
+void Unk0fc584_Unk_0fc86c(void);
+void func_02099b10(u32 id, s32 value);
+/* Adds the work product to shared state, capped at 99999999, then applies the slot value. */
+void func_020e41d0(Unk0e1648Work *work)
+{
+    s32 value = work->unk_0098;
+    s32 product = work->unk_00c8 * value;
+    s32 index = work->unk_007c;
+    if (product + Unk02e000_GetWorkArea()->value > 99999999) {
+        Unk02e000_GetWorkArea()->value = 99999999;
+    } else {
+        Unk02e000_GetWorkArea()->value += product;
+    }
+    Unk0fc584_Unk_0fc86c();
+    func_02099b10(work->unk_00d2[index].unk_0004, value);
 }

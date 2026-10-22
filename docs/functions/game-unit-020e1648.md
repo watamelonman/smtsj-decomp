@@ -124,16 +124,44 @@ no runtime tests were added.
 No M1-T1045 functions remain unresolved.
 
 - `Unk0e1648_Unk_0e16f0`: matched in M1-T1045.
-- `Unk0e1648_Unk_0e4964`: decompiler-derived (outside M1-T1045).
+- `Unk0e1648_Unk_0e4964`: matched in M1-T1046.
 
-## Not done in M1-T1046
-- `func_020e2cc8`
-- `func_020e42e4`
-- `func_020e2f84`
-- `Unk0e1648_Unk_0e48a8`
-- `func_020e4ca4`
-- `func_020e524c`
-- `func_020e41d0`
+## M1-T1046
+
+All eight functions match at 100% in objdiff. Evidence is the delinked ARM
+instructions and relocations; neutral names are retained. Existing source was
+extended rather than replaced. No runtime tests were added because this card
+requires instruction identity and checksum validation.
+
+- `func_020e2cc8` (96 B): requires the signed word at `+0xec0` to be 1,
+  and a nonzero halfword at `+0xa` of the selected record. Returns 1 when its
+  `+3` flag is clear, otherwise tests whether `0f4510` rejects the work id and
+  selected slot's `+2` halfword. The selected index must be valid.
+- `func_020e42e4` (96 B): returns 1 for state bytes 17..19; state 20 returns
+  0 for substates 4 and 16 at `+2`, and 1 otherwise. Other states return 0.
+  The nested switch preserves the original branch layout.
+- `func_020e2f84` (100 B): looks up each of count byte ids through `0f44a8`,
+  appends nonzero results through `020e30f0` with the index narrowed to 16 bits,
+  then sorts the complete slot table using the existing comparator. Caller
+  supplies count readable bytes and enough slot capacity.
+- `Unk0e1648_Unk_0e48a8` (100 B): rejects ids whose `0f4448` result is below 1
+  or whose selector-3 lookup is nonzero. Appends the id at record `+4` and
+  selector-4 result at `+6`, then increments the count. Replaced integer address
+  arithmetic with the existing typed slot array; caller supplies capacity.
+- `func_020e4ca4` (100 B): accepts record kind 2 at `+2`, an accepted
+  `0e4c64` work/value pair, or three zero entry ids at `+0xa/+0xe/+0x12`.
+- `func_020e524c` (100 B): zeroes two flag bytes and sixteen request words,
+  sets word 1 to 19 and flag bit 1, and submits the stack request to
+  `020bcbc4(3, request)`. The callee must consume the request during the call.
+- `func_020e41d0` (104 B): multiplies signed work words `+0xc8` and `+0x98`,
+  adds the product to the shared `+0x344` word with upper cap 99999999, calls
+  `0fc86c`, then applies the saved `+0x98` value to the selected slot's `+4`
+  id through `02099b10`. Inputs must keep signed arithmetic representable.
+- `Unk0e1648_Unk_0e4964` (104 B): forwards its id explicitly to `09974c`;
+  entry kinds 3/4 use selector 6, kinds 5/6 use selector 7, and other kinds
+  use zero. Applies the result to channel 1 through `0204faf0`.
+
+No M1-T1046 functions remain on the hard list.
 
 ## Not done in M1-T1047
 - `Unk0e1648_Unk_0e4f54`
@@ -154,7 +182,7 @@ No M1-T1045 functions remain unresolved.
 - `func_020e3e70`
 - `func_020e2fe8`
 - `func_020e4e28`
-- `Unk0e1648_Unk_0e48a8`: decompiler-derived (struct cleanup)
+- `Unk0e1648_Unk_0e48a8`: matched with typed slots in M1-T1046.
 - `Unk0e1648_IsUnkeecSet`: hand-matched
 - `Unk0e1648_Unk_0e1664`: hand-matched
 - `Unk0e1648_Unk_0e2d28`: hand-matched
