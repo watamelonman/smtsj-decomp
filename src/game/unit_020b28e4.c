@@ -637,7 +637,7 @@ typedef struct Unk0b28e4IconRecord {
     u8 pad_18[0xa];
     Unk0b28e4StateWord unk_22[8]; /* 0x22: per-button words for func_020dd364 */
     u8 pad_32[0x28];
-    u8 unk_5a;                  /* 0x5a/0x5b: bar thresholds (func_020b3dc4) */
+    u8 unk_5a;                  /* 0x5a/0x5b: bar thresholds (Unk0b28e4_Unk_0b3dc4) */
     u8 unk_5b;
     u8 pad_5c[0xe];
     u16 unk_6a;                 /* 0x6a: icon id used when the id has no direct icon */
@@ -678,7 +678,7 @@ void func_020b4bb8(Unk0b28e4Obj *work);
 void func_020b5070(Unk0b28e4Obj *work);
 void *func_020b5f08(u32 id, u32 slot, void *target, void *record, u32 pcIcon,
                     u32 unknownIcon, u8 *dst);
-void func_020b3dc4(u32 id, void *dst, void *src, u32 x, s32 y);
+void Unk0b28e4_Unk_0b3dc4(u32 id, void *dst, void *src, u32 x, s32 y);
 
 /* Draws the work->unk_0c38 record rows: an icon handle, the record's numbers
    or its three category entries, with an alternate layout for flag bit 1. */
@@ -1411,7 +1411,7 @@ void func_0203f394(void *a, void *b, int x, int y, int sx, int sy, u16 width, in
  * fixed point. A count of 100 or more draws the full bar; otherwise a tick
  * marks each reached threshold and the three segments are drawn from
  * different source rows. */
-void func_020b3dc4(u32 id, void *dst, void *src, u32 x, s32 y)
+void Unk0b28e4_Unk_0b3dc4(u32 id, void *dst, void *src, u32 x, s32 y)
 {
     Unk0b28e4IconRecord *record = func_020a1740(id);
     s32 len = (Unk02e000_GetRecordUnk1e(id) * 0x1000 / 10 * 6) >> 12;
@@ -1500,7 +1500,7 @@ int Unk0b28e4_Unk_0b4040(Unk0b28e4Obj *work)
             if (((u32)record->unk_16 << 29) >> 31 != 0) {
                 func_0203f2d4(work->unk_0008, 32, (u8)(i * 56 + 37), work->unk_0004, 32, 93, 104, 7);
             } else {
-                func_020b3dc4(list[i], work->unk_0004, work->unk_0008, 75, (u8)(i * 56 + 39));
+                Unk0b28e4_Unk_0b3dc4(list[i], work->unk_0004, work->unk_0008, 75, (u8)(i * 56 + 39));
             }
         }
         if (Unk02e000_GetRecordUnk1e(list[i]) < record->unk_5b) {
@@ -1580,7 +1580,7 @@ void Unk0b28e4_Unk_0b5634(Unk0b28e4Obj *work, int id, int slot)
     ly = slot * 56 + 19;
     Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_0204fed8(res0, kind->unk_02), 34, ly, 8, tier);
     Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_0204fed8(res1, unit->unk_1d8), 74, ly, 16, tier);
-    func_020b3dc4(unit->unk_1d8, work->unk_0004, work->unk_0008, 75, (u8)(slot * 56 + 39));
+    Unk0b28e4_Unk_0b3dc4(unit->unk_1d8, work->unk_0004, work->unk_0008, 75, (u8)(slot * 56 + 39));
     list = func_0204a0d8(unit);
     for (row = 0, index = 0, gy = slot * 56 + 44; row < 2; row++, index += 3, gy += 12) {
         for (col = 0; col < 3; col++) {

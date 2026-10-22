@@ -142,7 +142,7 @@ the ARM disassembly at each address.
   or a negative id, and centres the resource-3 label using its width.
 - `func_020b5338` (764 B): draws the reserved first page-1 row for the fixed
   first record: two background strips, the pc001 icon pair, two labels, the
-  record bar (`func_020b3dc4`), the three category entries and eight command
+  record bar (`Unk0b28e4_Unk_0b3dc4`), the three category entries and eight command
   buttons. The button value at index 6 is forced to 1 when it is 0 or 5.
 
 The draw-resource block at +0x30..+0xc2f is now a 32-entry array of 96-byte
@@ -167,7 +167,7 @@ These four functions remain in the delinked original and no nonmatching body is
 retained. Each is within a few instructions; the residue is register or stack
 assignment, not a behavioural difference.
 
-- `func_020b3dc4` (636 B): two-part progress bar. It scales the record count
+- `Unk0b28e4_Unk_0b3dc4` (636 B): two-part progress bar. It scales the record count
   and the two +0x5a/+0x5b thresholds by 6/10 in 12-bit fixed point, then draws
   a filled part, a remainder and the overflow remainder. Best attempt was
   636 B with identical instructions except the prologue: mwcc keeps the first
@@ -267,7 +267,7 @@ after these edits.
 
   Established contract: the function draws the three `func_020b64c8()` roster
   rows, using `func_020a1740`/`func_020a1428` per id, `func_020b5f08` for the
-  icon, `func_0204fed8` for the two labels, `func_020b3dc4` for the bar and
+  icon, `func_0204fed8` for the two labels, `Unk0b28e4_Unk_0b3dc4` for the bar and
   `func_020b5e10` for the category/button grids. It clears `work->unk_0c78`,
   draws an empty row for a zero id, selects between the direct-id and digit
   layouts through `Unk0a163c_Unk_0a17d8`, switches the category source at
@@ -307,4 +307,4 @@ after these edits.
   `tools/decompme.py`; the original delink remains linked.
 - `Unk0b28e4_Unk_0b4040`: hand-matched
 - `Unk0b28e4_Unk_0b5634`: hand-matched
-- `func_020b3dc4`: hand-matched
+- `Unk0b28e4_Unk_0b3dc4`: hand-matched
