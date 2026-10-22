@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T117 handlers at 100% objdiff; typed their callee declarations, made the argument flow into `func_0205e590` explicit, and documented their observed behavior.
 - Verified the eight M1-T116 scan-visor action handlers in `src/game/unit_0203c474.c` at 100% objdiff; added typed callee prototypes and behavior comments, with per-function evidence in `docs/functions/game-unit-0203c474.md`.
 - Verified and documented the eight M1-T114 accessors in `src/game/unit_0202f078.c` at 100% objdiff, replacing raw offsets with typed work-block fields in `docs/functions/game-unit-0202f078.md`.
 - `src/game/unit_020bd5f0.c`: M1-T1134 functions at 100% objdiff, including the work-area flag test `func_020c1968`; all eight have typed parameters, behaviour comments and doc entries.
