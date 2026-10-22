@@ -15,7 +15,7 @@ typedef struct Unk09a268Work {
 } Unk09a268Work;
 
 
-int func_0209a48c();
+int func_0209a48c(u32 p, int bit);
 void Unk09a268_SetBit();
 int func_0209bb68();
 int Unk09a268_Unk_09c484();
@@ -79,7 +79,7 @@ int Unk09a268_FindEntry(u8 *w, u32 id, u32 sub)
     return -1;
 }
 
-u8 Unk09a268_Unk_09a77c(void *p)
+u8 Unk09a268_Unk_09a77c(u32 p)
 {
     u8 r = 0;
     u8 j;
@@ -100,19 +100,26 @@ void Unk09a268_SetOnlyBit(u32 p, u32 v)
     }
 }
 
+/* Reads a single bit of the byte at `p`. Callers use bits 0-2 to select one of the
+ * three state values and bits 3-5 for the flag setters (Unk09a268_Unk_09a80c/a830/a870). */
+int func_0209a48c(u32 p, int bit)
+{
+    return (*(u8 *)p & (1 << bit)) != 0;
+}
+
 /* empty callback */
 void Unk09a268_Nop_09b3c8(void) { }
 
-/* decompiler-derived */
-void Unk09a268_Unk_09a7fc(u32 arg0)
+/* Tests the bit-3 flag of the state byte at `p`; the result is discarded. */
+void Unk09a268_Unk_09a7fc(u32 p)
 {
-  func_0209a48c(arg0,3);
+  func_0209a48c(p,3);
 }
 
-/* decompiler-derived */
-void Unk09a268_Unk_09a820(u32 arg0)
+/* Tests the bit-4 flag of the state byte at `p`; the result is discarded. */
+void Unk09a268_Unk_09a820(u32 p)
 {
-  func_0209a48c(arg0,4);
+  func_0209a48c(p,4);
 }
 
 typedef struct Unk09a268Ctx {
@@ -129,29 +136,29 @@ void Unk09a268_SetCtxUnk38(u32 value)
     }
 }
 
-/* decompiler-derived */
+/* Runs the func_0209bb68 and Unk09a268_Unk_09c484 steps in sequence, discarding their results. */
 void Unk09a268_Unk_09c498(void)
 {
   func_0209bb68();
   Unk09a268_Unk_09c484();
 }
 
-/* decompiler-derived */
-void Unk09a268_Unk_09a80c(u32 arg0,u32 arg1)
+/* Sets or clears the bit-3 flag of the state byte at `p` (`on` == 1 sets). */
+void Unk09a268_Unk_09a80c(u32 p,u32 on)
 {
-  Unk09a268_SetBit(arg0,3,arg1);
+  Unk09a268_SetBit(p,3,on);
 }
 
-/* decompiler-derived */
-void Unk09a268_Unk_09a830(u32 arg0,u32 arg1)
+/* Sets or clears the bit-4 flag of the state byte at `p` (`on` == 1 sets). */
+void Unk09a268_Unk_09a830(u32 p,u32 on)
 {
-  Unk09a268_SetBit(arg0,4,arg1);
+  Unk09a268_SetBit(p,4,on);
 }
 
-/* decompiler-derived */
-void Unk09a268_Unk_09a870(u32 arg0,u32 arg1)
+/* Sets or clears the bit-5 flag of the state byte at `p` (`on` == 1 sets). */
+void Unk09a268_Unk_09a870(u32 p,u32 on)
 {
-  Unk09a268_SetBit(arg0,5,arg1);
+  Unk09a268_SetBit(p,5,on);
 }
 
 

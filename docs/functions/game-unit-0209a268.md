@@ -1,6 +1,8 @@
 # src/game/unit_0209a268.c
 
 - `Unk09a268_Nop_09b3c8` (4 B): empty callback
+- `func_0209a48c` (20 B): bit test. Returns 1 when bit `bit` of the byte at `p` is set, else 0;
+  callers use bits 0-2 as a 3-value state selector and bits 3-5 as flags.
 - `Unk09a268_Unk_09a7fc` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk09a268_Unk_09a820` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk09a268_Unk_09c498` (16 B): decompiler-derived (Ghidra output, cleaned)
@@ -9,7 +11,6 @@
 - `Unk09a268_Unk_09a870` (20 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `func_0209a48c`: no candidate matched locally
 - `Unk09a268_Unk_09c484`: decompiler-derived
 - `Unk09a268_Unk_09a844`: decompiler-derived
 - `Unk09a268_Unk_09b3cc`: decompiler-derived
