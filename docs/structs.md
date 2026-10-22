@@ -127,3 +127,11 @@ transient local, not the file Work object.
 | `Unk10fe28Work` | unit_0210fe28.c | config screen object; fields +0x18..+0x54 hedged — none |
 | `MissionInfo.stage` | unit_02095560.c | +0x50 of `Unk02d15c_GetManagerRecord` result — low |
 | `Unk112aa0Step` | WIP branch only | mode/step bytes, `menuId` +0x14 |
+
+## Unk0aa118Global
+
+`include/game/unit_020aa118.h` describes the borrowed global prefix returned by
+`Unk044904_Get_data_0215ee98`: halfwords at +0x38 and +0x3a, and flags at
++0x40. `func_020ae16c` checks +0x38; `func_020ae0d8` increments +0x3a
+and tests +0x40 bit 2. Padding preserves observed offsets, without claiming
+the size or meaning of the rest of the shared object.

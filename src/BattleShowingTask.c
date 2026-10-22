@@ -1,16 +1,23 @@
 /*
- * src/BattleShowingTask.c: matched functions (see docs). Bodies marked 'decompiler-derived' were
- * lifted from Ghidra output and cleaned; field meanings are not known yet.
+ * src/BattleShowingTask.c: battle-showing task callbacks and the post-battle EXP gauge.
+ * The functions matched for this card are hand-written; the remaining decompiler-derived
+ * bodies are still being cleaned up. Field meanings are not all known yet.
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 
+/* Sub-object at work +0xA4; only the flag read by func_0211ce10 is known. */
+typedef struct BattleShowingTaskSub {
+    u8 pad_0000[0x59];
+    u8 unk_0059;                /* 0x59: nonzero enables the fade-in call */
+} BattleShowingTaskSub;
+
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct BattleShowingTaskWork {
-    u8 pad_0000[0x4];
-    s32 unk_0004;
+    s32 unk_0000;               /* 0x00: screen state consumed by func_0211ccf8 */
+    u32 *unk_0004;              /* 0x04: record table, unk_0008 entries */
     s32 unk_0008;
     s32 unk_000c;
     u8 pad_0010[0x8];
@@ -18,65 +25,179 @@ typedef struct BattleShowingTaskWork {
     s32 unk_001c;
     u8 pad_0020[0x8];
     u32 unk_0028;
+    u8 pad_002c[0x78];
+    BattleShowingTaskSub *unk_00a4; /* 0xA4: optional sub-object, see func_0211ce10 */
+    u32 unk_00a8;               /* 0xA8: source-animation data base */
+    u8 pad_00ac[0x218];
+    u32 auxiliary[4];           /* 0x2C4: alternating display/source handles */
+    u32 anim[7];                /* 0x2D4: seven handles; first six used by func_0211aa24/aaa8 */
+    u32 handles[4];             /* 0x2F0: cleanup handles */
+    u8 pad_0300[0x10];
+    u32 tailHandles[2];         /* 0x310: cleanup handles */
 } BattleShowingTaskWork;
 
-extern u32 data_02176e70[];
-int Unk0a0ce4_Unk_0a0d30();
-int func_02119658();
+/* Task object created by func_020611dc; init only touches its first two words. */
+typedef struct BattleShowingTask {
+    s32 unk_0000;                /* 0x00: wraps at 0xFFFF */
+    s32 unk_0004;                /* 0x04: setup state 0..7 */
+} BattleShowingTask;
+
+/* Handle of the live battle-showing task (bss); 0 when none is running. */
+extern u32 data_02176e70;
+/* Task-side call forwarded by BattleShowingTask_Unk_1196e0 during task init. */
+void Unk0a0ce4_Unk_0a0d30(u32 arg);
+/* Creates the task object through func_020611dc and returns it, or 0. */
+u32 func_02119658(void);
 
 void BattleShowingTask_Nop_11982c(void);
 void BattleShowingTask_Nop_119830(void);
 void BattleShowingTask_Nop_11984c(void);
 void BattleShowingTask_Nop_119850(void);
-u32 BattleShowingTask_GetUnkField28(void *obj);
+u32 BattleShowingTask_GetUnkField28(BattleShowingTaskWork *work);
 void BattleShowingTask_Unk_119834(void);
-void BattleShowingTask_Unk_1196e0(u32 *arg0);
+void BattleShowingTask_Unk_1196e0(BattleShowingTask *task);
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
-void Unk02cad4_Unk_02cbdc();
+/* Shared rank view includes the four bytes preceding the five signed ranks.
+ * Embedded at +0x12 in work and +0x0A in records, per ARM 0x0211C350. */
+typedef struct BattleShowingRanks {
+    u8 pad_0000[4];
+    s8 rank0, rank1, rank2, rank3, rank4;
+} BattleShowingRanks;
+
+/* Area work returned by the 02e000 helpers; slot count comes from the
+ * three-iteration loop at 0x0211a474. Other fields remain unknown. */
+typedef struct BattleShowingAreaWork {
+    u8 pad_0000[0x12];
+    BattleShowingRanks ranks; /* signed rank bytes +0x16..+0x1A */
+    u8 pad_001b[5];
+    s32 unk_0020;
+    u8 pad_0024[0x48];
+    u16 unk_006c;               /* 0x6C: area kind for the negative-ID path */
+    u8 pad_006e[0x2DA];
+    s8 reserve[12];
+    s8 unk_0354[3];
+} BattleShowingAreaWork;
+
+/* Current area object: only the budget read at 0x0211a474 is known. */
+typedef struct BattleShowingAreaObject {
+    u8 pad_0000[0x64];
+    u32 unk_0064;
+} BattleShowingAreaObject;
+
+/* Area record: baseline threshold consumed by 0x02119940. */
+typedef struct BattleShowingAreaRecord {
+    u8 pad_0000[0x0A];
+    BattleShowingRanks ranks; /* signed rank bytes +0x0E..+0x12 */
+    u8 pad_0013[0x11];
+    s32 unk_0024;
+    u8 pad_0028[0x0C];
+    u16 unk_0034;               /* 0x34: area kind; 1/7 suppress EXP gain */
+    u8 pad_0036[2];
+    u8 unk_0038;                /* 0x38: level/curve index passed to 020b8240 */
+} BattleShowingAreaRecord;
+
+/* Loader records expose the category byte read by 0x0211b1f4. */
+typedef struct BattleShowingCategoryRecord {
+    u8 pad_0000[3];
+    u8 unk_03;
+} BattleShowingCategoryRecord;
+
+/* Type-1 loader has its category byte at a different observed offset. */
+typedef struct BattleShowingCategoryRecord1 {
+    u8 pad_0000[0x2c];
+    u8 unk_2c;
+} BattleShowingCategoryRecord1;
+
+/* Display-list and area helpers used by the functions below. */
+void func_02057524(u32 arg);
+void func_02057534(void);
+void func_02058d04(u32 a, u32 b, u32 c, u32 d, float e, u32 f, u32 g, u32 h);
+BattleShowingAreaWork *Unk02e000_GetWorkArea(void);
+BattleShowingAreaWork *Unk02e000_Thunk_0202e788(void);
+BattleShowingAreaRecord *Unk02e000_GetAreaRecord(int i);
+BattleShowingAreaObject *Unk044904_Unk_04502c(void);
+int Unk0986ac_Unk_098978(int arg0);
+int Unk0986ac_Thunk_02098714(int bit);
+u8 Unk09974c_GetEntryUnk08(u32 id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099bfc(int id);
+BattleShowingCategoryRecord1 *Unk09974c_Unk_099d14(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099d78(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099c60(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099ddc(int id);
+BattleShowingCategoryRecord *Unk09974c_Unk_099e40(int id);
+
+void Unk02cad4_Unk_02cbdc(u32 arg);
+/* Teardown hook: clear the live handle, then forward 1 (0x021196c0). */
 void BattleShowingTask_Unk_1196c0(void)
 {
-    *data_02176e70 = 0;
+    data_02176e70 = 0;
     Unk02cad4_Unk_02cbdc(1);
 }
 
-/* empty callback */
+/*
+ * Task hooks for the battle-showing screen. These addresses are referenced as
+ * plain callback words in .data: the descriptor at 0x0213d7f4 is
+ * {0x02119834, 0x0211984c, 0x02119850, 1, 1, ...} and func_02119658's literal
+ * pool at 0x021196b4 holds 0x0211982c and 0x02119830, which it passes to
+ * func_020611dc (the call that returns the new task object). All four Nop
+ * hooks are empty (bx lr), so calling them has no effect.
+ */
+
+/* 0x0211982c: empty task callback (bx lr), passed to func_020611dc by func_02119658. */
 void BattleShowingTask_Nop_11982c(void) { }
 
-/* empty callback */
+/* 0x02119830: empty task callback (bx lr), passed to func_020611dc by func_02119658. */
 void BattleShowingTask_Nop_119830(void) { }
 
-/* empty callback */
+/* 0x0211984c: empty task callback (bx lr), slot 1 of the descriptor at 0x0213d7f4. */
 void BattleShowingTask_Nop_11984c(void) { }
 
-/* empty callback */
+/* 0x02119850: empty task callback (bx lr), slot 2 of the descriptor at 0x0213d7f4. */
 void BattleShowingTask_Nop_119850(void) { }
 
-/* get u32 at +0x28 */
-u32 BattleShowingTask_GetUnkField28(void *obj) { return ((BattleShowingTaskWork *)obj)->unk_0028; }
+/*
+ * Returns the dword at +0x28 of a battle-showing work object. The two callers
+ * at 0x0211adbc and 0x0211ae70 compare the result against 1 and 3, so +0x28 is
+ * a state value (the same slot is ExpGauge.state below).
+ */
+u32 BattleShowingTask_GetUnkField28(BattleShowingTaskWork *work) { return work->unk_0028; }
 
-/* decompiler-derived */
+/*
+ * Descriptor entry 0 at 0x0213d7f4: creates the battle-showing task with
+ * func_02119658 and publishes its handle in data_02176e70. That global is
+ * cleared again by BattleShowingTask_Unk_1196c0 when the task is torn down.
+ */
 void BattleShowingTask_Unk_119834(void)
 {
   u32 value;
   value = func_02119658();
-  *data_02176e70 = value;
+  data_02176e70 = value;
 }
 
-/* decompiler-derived */
-void BattleShowingTask_Unk_1196e0(u32 *arg0)
+/*
+ * Initializes a fresh task object: clears words +0x00 and +0x04 and forwards 1
+ * to Unk0a0ce4_Unk_0a0d30. Sole caller is func_02119658 (at 0x021196a0),
+ * which passes the object returned by func_020611dc and then returns it.
+ */
+void BattleShowingTask_Unk_1196e0(BattleShowingTask *task)
 {
-  *arg0 = 0;
-  arg0[1] = 0;
+  task->unk_0000 = 0;
+  task->unk_0004 = 0;
   Unk0a0ce4_Unk_0a0d30(1);
 }
 
-/* decompiler-derived */
+/*
+ * Bounds-checked record lookup: returns work->unk_0004[work->unk_000c] while
+ * the index is below the count work->unk_0008, and 0 otherwise. The callers
+ * BattleShowingTask_Unk_11c5d0/11c610/11c670 use the result as a record and
+ * read u16 fields at +0x08, +0x1c and +0x1e from it.
+ */
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work)
 {
   u32 value;
   if (work->unk_000c < work->unk_0008) {
-    value = *(u32 *)(work->unk_0004 + work->unk_000c * 4);
+    value = work->unk_0004[work->unk_000c];
   }
   else {
     value = 0;
@@ -125,7 +246,8 @@ void func_0205c408(u32 anim, int seq);
 void func_0205c41c(u32 anim, int frame);
 void func_0205c6e0(u32 anim);
 void Unk0a0ce4_Unk_0a0da4(int se);
-void func_02061424(ExpGauge *g);
+/* Task scheduler accepts either task allocation layout without inspecting it here. */
+void func_02061424(void *task);
 void ExpGauge_PlayGaugeNormal(ExpGauge *g);
 void ExpGauge_PlayGaugeLevelUp(ExpGauge *g);
 s32 ExpGauge_GetExpForNextLevel(ExpGauge *g);
@@ -208,128 +330,270 @@ void ExpGauge_Update(ExpGauge *g) {
 }
 
 
-int func_020445f4();
-int func_0204fed8();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c4c4(u32 arg0)
+/* Resource lookup and dispatch signatures observed at 0x0211c4c4. */
+u32 func_020445f4(u32 id, ...);
+u32 func_0204fed8(u32 resource, u32 value);
+/* Forward value with resource 0x29 and return the dispatch result; original calls
+ * at 0x0211c4d0/0x0211c4d8. The second argument is unused here but the caller
+ * at 0x0211c4e0 supplies 2. */
+u32 BattleShowingTask_Unk_11c4c4(u32 value, u32 unused)
 {
-  u32 tmp1;
-  tmp1 = func_020445f4(0x29);
-  func_0204fed8(tmp1,arg0);
-  return;
+    u32 resource = func_020445f4(0x29);
+    return func_0204fed8(resource, value);
 }
 
-int Unk044394_Unk_044534();
-int func_0211a380();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11b684(void)
+/* The caller at 0x0211b684 supplies these three resource IDs in order. */
+void Unk044394_Unk_044534(u32 id);
+void func_0211a380(BattleShowingTaskWork *work);
+/* Run the local helper, then process IDs 0x17, 0x21 and 0x29 (0x0211b684). */
+void BattleShowingTask_Unk_11b684(BattleShowingTaskWork *work)
 {
-  func_0211a380();
-  Unk044394_Unk_044534(0x17);
-  Unk044394_Unk_044534(0x21);
-  Unk044394_Unk_044534(0x29);
-  return;
+    func_0211a380(work);
+    Unk044394_Unk_044534(0x17);
+    Unk044394_Unk_044534(0x21);
+    Unk044394_Unk_044534(0x29);
 }
 
-extern u32 data_02176e74[];
-int func_02053000();
-int Unk0a163c_Unk_0a1ae0();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11ce80(int arg0)
+/* Begin the fade-in display for the current showing record. Does nothing
+ * unless there is a current record, the optional +0xA4 sub-object exists and
+ * its +0x59 flag is set. Then submits a display list built from the +0xA8 data
+ * (offset +0x7C, mode 5, 8 entries, alpha 1.0) between the begin/end pair.
+ * Evidence: ARM 0x0211ce10 and its literal 0x3F800000 at 0x0211ce44. */
+void func_0211ce10(BattleShowingTaskWork *work)
 {
-  func_02053000(((BattleShowingTaskWork *)arg0)->unk_0004);
-  ((BattleShowingTaskWork *)arg0)->unk_0004 = 0;
-  Unk0a163c_Unk_0a1ae0(arg0 + 0x10);
-  *data_02176e74 = 0;
-  return;
-}
-
-int func_0205c3dc();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11a01c(int arg0)
-{
-  if (((BattleShowingTaskWork *)arg0)->unk_0018 != 0) {
-    func_0205c3dc();
-    ((BattleShowingTaskWork *)arg0)->unk_0018 = 0;
-  }
-  if (((BattleShowingTaskWork *)arg0)->unk_001c == 0) {
-    return;
-  }
-  func_0205c3dc();
-  ((BattleShowingTaskWork *)arg0)->unk_001c = 0;
-  return;
-}
-
-
-
-/* decompiler-derived */
-void BattleShowingTask_Unk_11a8dc(int arg0,u32 arg1)
-{
-  int tmp1;
-  int tmp2;
-  tmp1 = 0;
-  tmp2 = arg0;
-  do {
-    if (arg1 == *(u16 *)(tmp2 + 0x268)) {
-      *(u8 *)(arg0 + 0x26c + tmp1 * 6) = *(u8 *)(arg0 + 0x26c + tmp1 * 6) | 8;
-      return;
+    if (BattleShowingTask_Unk_11c230(work) != 0
+        && work->unk_00a4 != 0
+        && work->unk_00a4->unk_0059 != 0) {
+        func_02057524(0);
+        func_02058d04((u32)work->unk_00a4, 0, work->unk_00a8 + 124, 5,
+                      1.0f, 0, 8, 0);
+        func_02057534();
     }
-    tmp1 = tmp1 + 1;
-    tmp2 = tmp2 + 6;
-  } while (tmp1 < 0xf);
-  return;
 }
 
-int func_020493e0();
-int func_0204faf0();
-int func_02065628();
-int func_0206569c();
-int func_02065bc0();
-int func_02065cfc();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c670(int arg0)
+/* Separate live-work handle cleared by the cleanup at 0x0211ce80. */
+extern BattleShowingTaskWork *data_02176e74;
+/* Cleanup accepts the record-table pointer and the embedded object, respectively. */
+void func_02053000(u32 *records);
+void Unk0a163c_Unk_0a1ae0(void *object);
+/* Release +0x04, clean up the embedded +0x10 object, and clear the global handle.
+ * Offsets and call order are from 0x0211ce80; work must be a live work object. */
+void BattleShowingTask_Unk_11ce80(BattleShowingTaskWork *work)
 {
-  int tmp1;
-  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
-  func_0204faf0(6,*(u16 *)(tmp1 + 8));
-  func_02065bc0();
-  func_02065628(1);
-  func_020493e0(10);
-  func_0206569c();
-  func_02065cfc(1,0);
+    func_02053000(work->unk_0004);
+    work->unk_0004 = 0;
+    Unk0a163c_Unk_0a1ae0(work->pad_0010);
+    data_02176e74 = 0;
 }
 
-int func_02065864();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c5d0(int arg0)
+/* The original cleanup at 0x0211a01c passes each nonzero animation handle. */
+void func_0205c3dc(u32 anim);
+/* Release nonzero handles at +0x18/+0x1c and clear each after its call;
+ * these are gaugeAnim/levelUpAnim in the EXP update at 0x02119a60. */
+void BattleShowingTask_Unk_11a01c(ExpGauge *g)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
-  func_0204faf0(6,*(u16 *)(tmp1 + 8));
-  func_02065bc0();
-  func_02065628(1);
-  tmp2 = func_020493e0(5);
-  func_02065864(tmp2,1);
-  func_02065cfc(1,0);
+    if (g->gaugeAnim != 0) {
+        func_0205c3dc(g->gaugeAnim);
+        g->gaugeAnim = 0;
+    }
+    if (g->levelUpAnim == 0) {
+        return;
+    }
+    func_0205c3dc(g->levelUpAnim);
+    g->levelUpAnim = 0;
 }
 
-int func_0204fcb0();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c610(int arg0)
+
+
+/* Compute the EXP-gauge count-up step from the number of active party slots.
+ * The three signed slot indices at work+0x354 span the party; `count` starts at
+ * one and grows for every non-negative index. The current area object's +0x64
+ * budget is divided by that count (at least one), then increased by a tenth
+ * (at least one) when the script flag 0xAB is set. Evidence: ARM 0x0211a474. */
+u32 func_0211a474(void)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = BattleShowingTask_Unk_11c230((BattleShowingTaskWork *)arg0);
-  func_0204faf0(6,*(u16 *)(tmp1 + 8));
-  func_0204faf0(10,*(u16 *)(tmp1 + 0x1c));
-  tmp2 = Unk0caea8_Unk_0cb044(*(u16 *)(tmp1 + 0x1e));
-  func_0204fcb0(1,tmp2);
-  func_02065bc0();
-  func_02065628(1);
-  func_020493e0(6);
-  func_0206569c();
-  func_02065cfc(1,0);
+    BattleShowingAreaWork *work = Unk02e000_GetWorkArea();
+    s32 count = 1;
+    u32 field;
+    u32 result;
+    int i;
+
+    for (i = 0; i < 3; i++) {
+        if (work->unk_0354[i] >= 0) {
+            count++;
+        }
+    }
+    field = Unk044904_Unk_04502c()->unk_0064;
+    result = 0;
+    if (field != 0) {
+        result = field / count;
+        if (result == 0) {
+            result = 1;
+        }
+        if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(0xab)) != 0) {
+            u32 extra = result * 10 / 100;
+            if (extra == 0) {
+                extra = 1;
+            }
+            result += extra;
+        }
+    }
+    return result;
+}
+
+/* Six-byte entries at +0x268; only the first matching ID gets flag bit 3.
+ * Entry count and flag offset are observed in the ARM loop at 0x0211a8dc. */
+typedef struct BattleShowingEntry {
+    u16 id;
+    u16 unk02;
+    u8 flags;
+    u8 unk05;
+} BattleShowingEntry;
+/* Only this entry window is known; the preceding work fields are opaque. */
+typedef struct BattleShowingEntryWork {
+    u8 pad000[0x268];
+    BattleShowingEntry entries[15];
+} BattleShowingEntryWork;
+
+/* Append `delta` to the +2 counter of the entry for `id` among the 15
+ * six-byte entries at work+0x268. The first entry with the same ID is reused;
+ * otherwise the first empty entry is filled with `id` and a zero counter.
+ * Evidence: the search/fill loop and the final halfword add at 0x0211a864. */
+void func_0211a864(BattleShowingEntryWork *work, u32 id, s32 delta)
+{
+    BattleShowingEntry *entry = 0;
+    int i;
+
+    for (i = 0; i < 15; i++) {
+        if (work->entries[i].id == id) {
+            entry = &work->entries[i];
+            break;
+        }
+        if (work->entries[i].id == 0) {
+            work->entries[i].id = id;
+            entry = &work->entries[i];
+            entry->unk02 = 0;
+            break;
+        }
+    }
+    entry->unk02 += delta;
+}
+
+/* Set bit 3 on the first of 15 entries with the supplied ID (0x0211a8dc). */
+void BattleShowingTask_Unk_11a8dc(BattleShowingEntryWork *work, u32 id)
+{
+    int i = 0;
+    BattleShowingEntryWork *cursor = work;
+    do {
+        if (id == cursor->entries[0].id) {
+            work->entries[i].flags |= 8;
+            return;
+        }
+        i++;
+        cursor = (BattleShowingEntryWork *)((u8 *)cursor + sizeof(BattleShowingEntry));
+    } while (i < 15);
+}
+
+/* Start the six animation handles at work+0x2D4 on the even-numbered
+ * sequences 0,2,4,6,8,10, then reset each to frame 0 and run it.
+ * Evidence: the constant sequence loads and the 6-iteration loop at 0x0211aa24. */
+void func_0211aa24(BattleShowingTaskWork *work)
+{
+    int i;
+
+    func_0205c408(work->anim[0], 0);
+    func_0205c408(work->anim[1], 2);
+    func_0205c408(work->anim[2], 4);
+    func_0205c408(work->anim[3], 6);
+    func_0205c408(work->anim[4], 8);
+    func_0205c408(work->anim[5], 10);
+    for (i = 0; i < 6; i++) {
+        func_0205c41c(work->anim[i], 0);
+        func_0205c6e0(work->anim[i]);
+    }
+}
+
+/* Same as func_0211aa24 but selects the odd sequences 1,3,5,7,9,11
+ * (ARM 0x0211aaa8 supplies those six constants). */
+void func_0211aaa8(BattleShowingTaskWork *work)
+{
+    int i;
+
+    func_0205c408(work->anim[0], 1);
+    func_0205c408(work->anim[1], 3);
+    func_0205c408(work->anim[2], 5);
+    func_0205c408(work->anim[3], 7);
+    func_0205c408(work->anim[4], 9);
+    func_0205c408(work->anim[5], 11);
+    for (i = 0; i < 6; i++) {
+        func_0205c41c(work->anim[i], 0);
+        func_0205c6e0(work->anim[i]);
+    }
+}
+
+/* Record fields read by the resource dispatchers at 0x0211c4e0..0x0211c670. */
+typedef struct BattleShowingRecord {
+    s16 unk00;                  /* 0x00: area ID; negative selects the work area */
+    u8 pad02[6];
+    u16 id;                     /* 0x08: resource/entry ID */
+    u8 pad0a[0x0A];
+    s8 unk14;                   /* 0x14..0x18: five signed rank deltas */
+    s8 unk15;
+    s8 unk16;
+    s8 unk17;
+    s8 unk18;
+    u8 pad19;
+    u8 flags;                  /* +0x1A: dispatch flags */
+    s8 selection;              /* +0x1B: area selection index */
+    u16 unk1c;
+    u16 unk1e;
+    u8 pad20[4];
+    u32 unk24;                  /* 0x24: nonzero selects variant 1 in func_0211c548 */
+} BattleShowingRecord;
+u32 func_020493e0(u32 id);
+void func_0204faf0(u16 slot, u16 value);
+void func_02065628(u32 value);
+void func_0206569c(u32 value);
+void func_02065bc0(void);
+void func_02065cfc(u32 mode, s32 value);
+void func_02065864(u32 value, u32 mode);
+void func_0204fcb0(u32 slot, u32 value);
+u32 Unk0caea8_Unk_0cb044(u32 value);
+
+/* Publish current record ID in slot 6, then dispatch resource 10; ARM 0x0211c670. */
+void BattleShowingTask_Unk_11c670(BattleShowingTaskWork *work)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    func_0204faf0(6, record->id);
+    func_02065bc0();
+    func_02065628(1);
+    func_0206569c(func_020493e0(10));
+    func_02065cfc(1, 0);
+}
+
+/* Publish current record ID, then pass resource 5 to the mode-1 helper; ARM 0x0211c5d0. */
+void BattleShowingTask_Unk_11c5d0(BattleShowingTaskWork *work)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    func_0204faf0(6, record->id);
+    func_02065bc0();
+    func_02065628(1);
+    func_02065864(func_020493e0(5), 1);
+    func_02065cfc(1, 0);
+}
+
+/* Publish ID/+0x1c and converted +0x1e before dispatching resource 6;
+ * field offsets and call order are from ARM 0x0211c610. Requires a current record. */
+void BattleShowingTask_Unk_11c610(BattleShowingTaskWork *work)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    func_0204faf0(6, record->id);
+    func_0204faf0(10, record->unk1c);
+    func_0204fcb0(1, Unk0caea8_Unk_0cb044(record->unk1e));
+    func_02065bc0();
+    func_02065628(1);
+    func_0206569c(func_020493e0(6));
+    func_02065cfc(1, 0);
 }
 
 extern u8 data_0213ccc0[];
@@ -337,79 +601,116 @@ int func_02057df8();
 int func_02057e18();
 int func_02057fd8();
 int func_020580ec();
-int func_0205c848();
-int func_0205dee8();
+int func_0205c848(u32, u32, u32, u32, float, float, u32, float, u32);
+int func_0205dee8(u32, u32, u32, u32, u32, float, float, u32, float, u32);
 int func_0211b100();
-int func_0211b2ac();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11b4e4(u32 *arg0)
+void func_0211b2ac(void *object, s32 scale);
+/* Map an entry ID to a category byte through the Unk09974c record tables.
+ * The switch at 0x0211b1f4 selects a loader per entry type (0..9), reads a
+ * byte from the returned record (+3, or +0x2C for type 1), and returns 6 for
+ * a zero ID, 7 for type 7 and 6 for every other type. */
+u32 func_0211b1f4(u32 id)
 {
-  int tmp1;
-  u32 tmp2;
-  u8 *v3;
-  Unk044904_Unk_04502c();
-  func_02057e18(0x1f);
-  func_02057df8();
-  func_020580ec(0);
-  switch(*arg0) {
-  case 0:
-    goto LAB_0211b670;
-  case 1:
-    goto LAB_0211b670;
-  case 2:
-    goto LAB_0211b54c;
-  case 3:
-    break;
-  case 4:
-    break;
-  case 5:
-    break;
-  case 6:
-    break;
-  case 7:
-    break;
-  case 8:
-    break;
-  case 9:
-LAB_0211b54c:
-    func_02057fd8();
-    tmp1 = 0;
-    do {
-      if ((arg0[0x14] != 0 || tmp1 != 0) && (arg0[0x13] != 0 || tmp1 != 5)) {
-
-        func_0205c848(2,arg0[tmp1 + 0xb5],0,0,0x3f800000,0x3f800000,0,0x3f800000,0);
-      }
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < 6);
-    func_0211b100(arg0,*(u32 *)(arg0[0xb5] + 0x14),
-                  *(u32 *)(arg0[0xb5] + 0x28));
-    func_0211b2ac(arg0,*(u32 *)(arg0[0xb5] + 0x28));
-    goto LAB_0211b670;
-  case 10:
-    goto LAB_0211b670;
-  case 0xb:
-    goto LAB_0211b670;
-  case 0xc:
-    goto LAB_0211b670;
-  }
-  func_02057fd8();
-  tmp2 = 0;
-  v3 = data_0213ccc0;
-  do {
-    if ((arg0[0x14] != 0 || tmp2 != 0) && (arg0[0x13] != 0 || tmp2 != 3)) {
-
-      func_0205dee8(2,arg0[0xb1],*v3,0,0,0x3f800000,0x3f800000,0,0x3f800000,0);
+    if (id == 0) {
+        return 6;
     }
-    tmp2 = tmp2 + 1;
-    v3 = v3 + 1;
-  } while (tmp2 < 6);
-  func_0211b100(arg0,0,0x1000);
-  func_0211b2ac(arg0,0x1000);
-LAB_0211b670:
-  func_020580ec(1);
+    switch (Unk09974c_GetEntryUnk08(id)) {
+    case 0:
+        return Unk09974c_Unk_099bfc(id)->unk_03;
+    case 1:
+        return Unk09974c_Unk_099d14(id)->unk_2c;
+    case 2:
+        return Unk09974c_Unk_099d78(id)->unk_03;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        return Unk09974c_Unk_099c60(id)->unk_03;
+    case 7:
+        return 7;
+    case 8:
+        return Unk09974c_Unk_099ddc(id)->unk_03;
+    case 9:
+        return Unk09974c_Unk_099e40(id)->unk_03;
+    }
+    return 6;
 }
 
-/* Gauge back to its normal sequence after a level-up pause. */
+/* Animation fields forwarded by the state-2/9 draw path (ARM 0x0211B4E4). */
+typedef struct BattleShowingDrawHandle {
+    u8 pad_0000[0x14];
+    u32 unk_0014;
+    u8 pad_0018[0x10];
+    u32 unk_0028;
+} BattleShowingDrawHandle;
+
+/* Draw-only view; the seventh animation at +0x2EC is not submitted here. */
+typedef struct BattleShowingDrawWork {
+    s32 state;
+    u8 pad_0004[0x48];
+    u32 unk_004c;
+    u32 unk_0050;
+    u8 pad_0054[0x270];
+    u32 auxiliary;
+    u8 pad_02c8[0x0c];
+    BattleShowingDrawHandle *anim[6];
+} BattleShowingDrawWork;
+
+/* Submit six animations in states 2/9 or six auxiliary entries in states 3..8.
+ * Visibility flags omit entries 0 and 5 (auxiliary: 0 and 3). Forward the
+ * animation's +0x14/+0x28 values or fixed scale 0x1000 to the label helpers.
+ * Evidence: ARM 0x0211B4E4 and its state jump table. */
+void BattleShowingTask_Unk_11b4e4(BattleShowingDrawWork *work)
+{
+    int i;
+    u32 j;
+    u8 *entry;
+    Unk044904_Unk_04502c();
+    func_02057e18(0x1f);
+    func_02057df8();
+    func_020580ec(0);
+    switch (work->state) {
+    case 0:
+    case 1:
+    case 10:
+    case 11:
+    case 12:
+        break;
+    case 2:
+    case 9:
+        func_02057fd8();
+        i = 0;
+        do {
+            if ((work->unk_0050 != 0 || i != 0) &&
+                (work->unk_004c != 0 || i != 5)) {
+                func_0205c848(2, (u32)work->anim[i], 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+            }
+            i++;
+        } while (i < 6);
+        func_0211b100(work, work->anim[0]->unk_0014, work->anim[0]->unk_0028);
+        func_0211b2ac(work, work->anim[0]->unk_0028);
+        break;
+    default:
+        func_02057fd8();
+        j = 0;
+        entry = data_0213ccc0;
+        do {
+            if ((work->unk_0050 != 0 || j != 0) &&
+                (work->unk_004c != 0 || j != 3)) {
+                func_0205dee8(2, work->auxiliary, *entry, 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+            }
+            j++;
+            entry++;
+        } while (j < 6);
+        func_0211b100(work, 0, 0x1000);
+        func_0211b2ac(work, 0x1000);
+        break;
+    }
+    func_020580ec(1);
+}
+
+/* Select sequence 17, reset its frame, and start the gauge animation.
+ * Called after the level-up pause in ExpGauge_Update (0x02119a60). */
 void ExpGauge_PlayGaugeNormal(ExpGauge *g)
 {
     func_0205c408(g->gaugeAnim, 17);
@@ -417,7 +718,8 @@ void ExpGauge_PlayGaugeNormal(ExpGauge *g)
     func_0205c6e0(g->gaugeAnim);
 }
 
-/* Gauge level-up sequence. */
+/* Select sequence 16, reset its frame, and start the gauge animation.
+ * Called on level-up in ExpGauge_Update (0x02119a60). */
 void ExpGauge_PlayGaugeLevelUp(ExpGauge *g)
 {
     func_0205c408(g->gaugeAnim, 16);
@@ -425,7 +727,9 @@ void ExpGauge_PlayGaugeLevelUp(ExpGauge *g)
     func_0205c6e0(g->gaugeAnim);
 }
 
-/* EXP needed for the next level (curve lookup unless unk00 < 0). */
+/* EXP threshold consumed by the count-up caller at 0x02119a60: use the
+ * alternate table for negative info +0, otherwise the curve ID at info +8.
+ * DONE or exhausted level-ups includes the level-up count in the third argument. */
 s32 ExpGauge_GetExpForNextLevel(ExpGauge *g)
 {
     s32 to;
@@ -439,8 +743,1027 @@ s32 ExpGauge_GetExpForNextLevel(ExpGauge *g)
     return func_020b8154(g->info->unk08, g->info->level + g->levelUps, to);
 }
 
-/* Recompute EXP remaining until the next level. */
+/* Recompute remaining EXP as threshold - (base EXP + shown EXP - total).
+ * The count-up/level-up paths at 0x02119a60 call this after changing the gauge. */
 void ExpGauge_UpdateToNextLevel(ExpGauge *g)
 {
     g->toNextLevel = ExpGauge_GetExpForNextLevel(g) - ((g->info->baseExp + g->shown) - g->total);
+}
+
+/* Switch the result-screen state machine to action 0..4; out-of-range actions do
+ * nothing. Only the transitions observed at 0x02119940 are represented:
+ * 0 = fade in with `value` frames, 1 = count, 2 = no change, 3 = finish an
+ * immediate level-up (seed shown EXP/level-ups and the baseline threshold from
+ * the current area record at +0x24, or the work area at +0x20 for negative
+ * info +0), 4 = fade out with `value` frames. */
+void func_02119940(ExpGauge *g, int action, s32 value)
+{
+    s32 base;
+
+    switch (action) {
+    case 0:
+        g->timer = value;
+        g->state = EXP_GAUGE_FADE_IN;
+        break;
+    case 1:
+        g->timer = 0;
+        g->state = EXP_GAUGE_COUNT;
+        break;
+    case 2:
+        break;
+    case 3:
+        g->timer = 0;
+        g->state = EXP_GAUGE_DONE;
+        g->shown = g->info->expGained;
+        g->levelUps = g->info->unk02;
+        ExpGauge_PlayGaugeNormal(g);
+        if (g->info->unk00 < 0) {
+            base = Unk02e000_Thunk_0202e788()->unk_0020;
+        } else {
+            base = Unk02e000_GetAreaRecord(g->info->unk00)->unk_0024;
+        }
+        g->total = g->info->baseExp + g->shown - base;
+        ExpGauge_UpdateToNextLevel(g);
+        break;
+    case 4:
+        g->timer = value;
+        g->state = EXP_GAUGE_FADE_OUT;
+        break;
+    }
+}
+
+/* Set the count-up increment to one sixtieth of the next threshold, at least
+ * one; zero gained EXP instead sets zero. Called by the level-up path 0x02119a60. */
+void func_02119a10(ExpGauge *g)
+{
+    if (g->info->expGained == 0) {
+        g->step = 0;
+        return;
+    }
+    g->step = ExpGauge_GetExpForNextLevel(g) / 60;
+    if ((s32)g->step <= 0) {
+        g->step = 1;
+    }
+}
+
+void func_021196fc(BattleShowingTask *task);
+BattleShowingTask *func_020611dc(void (*update)(BattleShowingTask *),
+    void (*hook1)(void), void (*hook2)(void), void (*cleanup)(void),
+    u32 size, u32 arg5, u32 arg6, u32 arg7);
+/* Allocate an eight-byte task with the original four callbacks, initialize it,
+ * and return its nullable handle. Callback literals are at 0x021196b0..bc. */
+u32 func_02119658(void)
+{
+    BattleShowingTask *task = func_020611dc(func_021196fc,
+        BattleShowingTask_Nop_11982c, BattleShowingTask_Nop_119830,
+        BattleShowingTask_Unk_1196c0, 8, 0, 0, 1);
+    if (task == 0) {
+        return 0;
+    }
+    BattleShowingTask_Unk_1196e0(task);
+    return (u32)task;
+}
+
+/* Resource lookup returns a byte at +2 and a packed word at +0x24;
+ * only the fields consumed by ARM 0x0211c4e0 are represented. */
+typedef struct BattleShowingResource {
+    u8 pad00[2];
+    u8 unk02;
+    u8 pad03[2];
+    u8 tier;                   /* +5: color tier in func_02119c80 */
+    u8 pad06[0x1e];
+    u32 unk24;
+} BattleShowingResource;
+BattleShowingResource *func_020a1428(u32 id);
+
+/* Publish the current record ID and resource byte, then dispatch bits 21..27
+ * of the resource's +0x24 word through resource 0x29. The second dispatch
+ * argument is 1 when the record's +0x24 word is nonzero and 0 otherwise.
+ * Finishes with the signed record ID. Evidence: ARM 0x0211c548. */
+void func_0211c548(BattleShowingTaskWork *work)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    BattleShowingResource *resource = func_020a1428(record->id);
+    u32 value;
+
+    func_0204faf0(6, record->id);
+    func_0204faf0(7, resource->unk02);
+    /* Duplicated dispatch call preserves the original branch code generation. */
+    if (record->unk24 != 0) {
+        value = BattleShowingTask_Unk_11c4c4((resource->unk24 << 4) >> 25, 1);
+    } else {
+        value = BattleShowingTask_Unk_11c4c4((resource->unk24 << 4) >> 25, 0);
+    }
+    func_02065628(1);
+    func_0206569c(value);
+    func_02065cfc(1, (s16)record->id);
+}
+
+/* Publish record/resource fields, dispatch bits 21..27 through resource 0x29,
+ * and forward the signed record ID. Evidence: ARM loads/calls at 0x0211c4e0. */
+void func_0211c4e0(BattleShowingTaskWork *work)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    BattleShowingResource *resource = func_020a1428(record->id);
+    u32 value;
+    func_0204faf0(6, record->id);
+    func_0204faf0(7, resource->unk02);
+    value = BattleShowingTask_Unk_11c4c4((resource->unk24 << 4) >> 25, 2);
+    func_02065628(1);
+    func_0206569c(value);
+    func_02065cfc(1, (s16)record->id);
+}
+
+/* Cleanup helpers for live handles. The 0205bb68 helper takes no arguments:
+ * its callee 0205b724 loads the resource stack from global data_0216a730. */
+void func_0205ddb4(u32 handle);
+void func_0205c368(u32 handle);
+void func_0205bb68(void);
+void func_020629c4(u32 handle);
+
+/* Release the seven animation handles and auxiliary display resources.
+ * Evidence: cleanup calls and zero stores at ARM 0x0211a380; requires live work. */
+void func_0211a380(BattleShowingTaskWork *work)
+{
+    int i;
+    for (i = 0; i < 7; i++) {
+        if (work->anim[i] != 0) {
+            func_0205c3dc(work->anim[i]);
+            work->anim[i] = 0;
+        }
+    }
+    if (work->auxiliary[0] != 0) {
+        func_0205ddb4(work->auxiliary[0]);
+        work->auxiliary[0] = 0;
+    }
+    if (work->auxiliary[1] != 0) {
+        func_0205c368(work->auxiliary[1]);
+        work->auxiliary[1] = 0;
+    }
+    if (work->auxiliary[2] != 0) {
+        func_0205ddb4(work->auxiliary[2]);
+        work->auxiliary[2] = 0;
+    }
+    if (work->auxiliary[3] != 0) {
+        func_0205c368(work->auxiliary[3]);
+        work->auxiliary[3] = 0;
+    }
+    {
+        u32 j;
+        for (j = 0; j < 6; j++) {
+            func_0205bb68();
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (work->handles[i] != 0) {
+            func_0205bb68();
+            work->handles[i] = 0;
+        }
+    }
+    func_020629c4(work->tailHandles[0]);
+    func_020629c4(work->tailHandles[1]);
+    func_0205bb68();
+}
+
+/* Compare two record pointers by the signed slot IDs at record +0.
+ * Evidence: ARM 0x0211c160 scans party +0x354 first, then reserve +0x348.
+ * Negative IDs sort last; callers must supply valid record pointers. */
+s32 func_0211c160(const s16 *const *left, const s16 *const *right)
+{
+    s32 a = **left;
+    s32 b;
+    s32 ai, bi, i;
+    BattleShowingAreaWork *work;
+    if (a < 0) return -1;
+    b = **right;
+    if (b < 0) return 1;
+    ai = -1;
+    bi = -1;
+    work = Unk02e000_GetWorkArea();
+    for (i = 0; i < 3; i++) {
+        if (ai < 0 && a == work->unk_0354[i]) ai = i;
+        if (bi < 0 && b == work->unk_0354[i]) bi = i;
+    }
+    for (i = 0; i < 12; i++) {
+        if (ai < 0 && a == work->reserve[i]) ai = i + 3;
+        if (bi < 0 && b == work->reserve[i]) bi = i + 3;
+    }
+    return ai - bi;
+}
+
+void func_02119c80(ExpGauge *g);
+u32 func_0205c3c0(void);
+void func_0205c3fc(u32 handle, u32 source, u32 value);
+/* Allocate a 0x44-byte EXP gauge, populate its caller-owned information and
+ * resources, and start both animations. Evidence: ARM 0x0211a058 and gauge
+ * update's use of +0x18/+0x1C. Allocation is assumed to succeed in the original. */
+ExpGauge *func_0211a058(s32 slot, BattleResultInfo *info, u32 source, u32 value,
+                       u32 arg4, u32 arg5)
+{
+    ExpGauge *g = (ExpGauge *)func_020611dc(
+                       (void (*)(BattleShowingTask *))ExpGauge_Update,
+                       (void (*)(void))func_02119c80, 0,
+                       (void (*)(void))BattleShowingTask_Unk_11a01c, 0x44, 0, 0, 1);
+    g->info = info;
+    g->unk04[0] = source;
+    g->unk04[1] = value;
+    g->unk04[2] = arg4;
+    g->unk04[3] = arg5;
+    g->fade = 0;
+    g->unk24 = slot * 22;
+    g->unk04[4] = slot;
+    func_02119a10(g);
+    ExpGauge_UpdateToNextLevel(g);
+    g->gaugeAnim = func_0205c3c0();
+    func_0205c3fc(g->gaugeAnim, g->unk04[0], g->unk04[1]);
+    ExpGauge_PlayGaugeNormal(g);
+    g->levelUpAnim = func_0205c3c0();
+    func_0205c3fc(g->levelUpAnim, g->unk04[0], g->unk04[1]);
+    func_0205c408(g->levelUpAnim, 14);
+    func_0205c41c(g->levelUpAnim, 0);
+    func_0205c6e0(g->levelUpAnim);
+    return g;
+}
+
+/* Resource fields read by the entry threshold updater at 0x0211a924. */
+typedef struct BattleShowingThresholds {
+    u8 pad00[0x16];
+    u16 flags;
+    u8 pad18[0x42];
+    u8 threshold0, threshold1;
+} BattleShowingThresholds;
+/* Existing record contributes its +8 counter when resource bit 2 is clear. */
+typedef struct BattleShowingCounterRecord {
+    u8 pad00[8];
+    u16 count;
+} BattleShowingCounterRecord;
+BattleShowingThresholds *func_020a1740(u32 id);
+s32 Unk02e000_GetRecordUnk1e(u32 id);
+void Unk02e000_SetRecordUnk1e(u32 id, s32 count);
+BattleShowingCounterRecord *Unk044904_FindById(BattleShowingAreaObject *area, u32 id);
+/* Accumulate counters for all 15 entries and mark newly crossed thresholds
+ * (resource bytes +0x5A/+0x5B and 100). Evidence: ARM 0x0211a924. Empty IDs
+ * are skipped; nonempty IDs must have a valid threshold resource. */
+void func_0211a924(BattleShowingEntryWork *work)
+{
+    BattleShowingEntry *entry = work->entries;
+    int i;
+    for (i = 0; i < 15; i++, entry++) {
+        if (entry->id != 0) {
+            BattleShowingThresholds *resource = func_020a1740(entry->id);
+            s32 old = Unk02e000_GetRecordUnk1e(entry->id);
+            s32 count;
+            if (((u32)resource->flags << 29) >> 31 == 0) {
+                BattleShowingCounterRecord *record = Unk044904_FindById(Unk044904_Unk_04502c(), entry->id);
+                if (record != 0) {
+                    old -= record->count;
+                    entry->unk02 += record->count;
+                }
+            } else {
+                continue;
+            }
+            count = old + entry->unk02;
+            if (count >= resource->threshold0) entry->flags = (entry->flags & ~1) | 1;
+            if (count >= resource->threshold1) entry->flags |= 2;
+            if (count >= 100) entry->flags |= 4;
+            if (old >= resource->threshold0) entry->flags &= ~1;
+            if (old >= resource->threshold1) entry->flags &= ~2;
+            if (old >= 100) entry->flags &= ~4;
+            Unk02e000_SetRecordUnk1e(entry->id, count);
+        }
+    }
+}
+
+/* External helpers for the battle-showing screen's setup state machine. */
+void Unk11f2d0_Unk_11f354(void);
+int Unk11f2d0_IsState7(void);
+void Unk11f2d0_Unk_11f37c(void);
+void Unk05b82c_Unk_05b82c(u32 id);
+void Unk065e88_Unk_065e88(void);
+void Unk065e88_Unk_065eac(void);
+void Unk044394_Unk_044428(u32 id);
+u32 func_020656ac(u32 value, s32 arg);
+int func_02065cd0(void);
+void func_02065c58(void);
+int func_0206552c(void);
+void SaveLoadTask_SelectEntry(u32 entry);
+int Unk0e1648_Unk_0e1648(void);
+
+/* Advance the battle-showing task through its eight setup states, wrapping the
+ * frame counter at 0xFFFF. The state order and each external call are taken
+ * from the ARM instruction stream at 0x021196FC; this is installed as the
+ * task's update callback by func_02119658. */
+void func_021196fc(BattleShowingTask *task)
+{
+    task->unk_0000++;
+    if (task->unk_0000 >= 0xffff) {
+        task->unk_0000 = 0;
+    }
+    switch (task->unk_0004) {
+    case 0:
+        Unk11f2d0_Unk_11f354();
+        task->unk_0004 = 1;
+        break;
+    case 1:
+        if (Unk11f2d0_IsState7() == 0) {
+            return;
+        }
+        Unk11f2d0_Unk_11f37c();
+        task->unk_0004 = 2;
+        break;
+    case 2:
+        Unk05b82c_Unk_05b82c(0xc2);
+        Unk065e88_Unk_065e88();
+        Unk044394_Unk_044428(0x2f);
+        func_02065bc0();
+        func_020656ac(func_0204fed8(func_020445f4(0x2f, 0), 1), -1);
+        task->unk_0004 = 4;
+        break;
+    case 3:
+        break;
+    case 4:
+        if (func_02065cd0() == 0) {
+            return;
+        }
+        func_02065c58();
+        task->unk_0004 = 5;
+        break;
+    case 5:
+        if (func_0206552c() != 0) {
+            return;
+        }
+        SaveLoadTask_SelectEntry(7);
+        task->unk_0004 = 6;
+        break;
+    case 6:
+        if (Unk0e1648_Unk_0e1648() != 0) {
+            task->unk_0004 = 7;
+        }
+        break;
+    case 7:
+        func_0205bb68();
+        Unk065e88_Unk_065eac();
+        Unk044394_Unk_044534(0x2f);
+        func_02061424(task);
+        break;
+    }
+}
+
+/* Result-screen entry consumed by the EXP calculation; only fields used here
+ * are named. The signed +0 is the area/record ID, +0x1A bit 0 selects the
+ * level-scaled path. Layout from ARM 0x0211A504 and the caller at 0x0211B6A8. */
+typedef struct BattleShowingResultEntry {
+    s16 unk00;
+    s16 unk02;
+    u32 unk04;
+    u16 unk08;
+    u16 unk0a;
+    u32 unk0c;
+    u8 pad10[0x0A];
+    unsigned char scaled:1;     /* 0x1A bit 0: use level-scaled EXP */
+} BattleShowingResultEntry;
+
+/* Global sub-object gating the EXP entry scan through +0x3C. */
+typedef struct BattleShowingGlobalSub {
+    u8 pad00[0x3C];
+    u32 unk3c;                  /* 0x3C: bits 2..9 suppress the entry scan */
+} BattleShowingGlobalSub;
+
+/* Global resource-manager flags; EXP scaling tests bit 15 of +0x40. */
+typedef struct BattleShowingGlobalFlags {
+    u8 pad00[0x40];
+    u32 unk40;
+    u8 pad44[0x1C];
+    BattleShowingGlobalSub *unk60; /* 0x60: sub-object read by func_0211a6e4 */
+} BattleShowingGlobalFlags;
+
+int Unk0979d8_HasId(u8 *p, int id);
+BattleShowingGlobalFlags *Unk044904_Get_data_0215ee98(void);
+u32 func_020b8240(u32 level, u32 value);
+
+/* Compute one party member's EXP award. Bonuses 0x18E and 0x18F add 25% and
+ * 50% of bonus_base (with a minimum nonzero bonus of one); when the entry's +0x1A bit 0 is set
+ * the award is instead the incoming amount scaled by func_020b8240, unless the
+ * global +0x40 bit 15 bypasses scaling. Areas of kind 1 and 7 award nothing.
+ * level_arg is the second argument to the level-scaling helper.
+ * Evidence: ARM 0x0211A504 and the thresholds at 0x0211A608/0x0211A610. */
+u32 func_0211a504(BattleShowingResultEntry *entry, u32 amount, u32 level_arg, u32 bonus_base)
+{
+    u32 result = 0;
+    BattleShowingAreaRecord *area = Unk02e000_GetAreaRecord(entry->unk00);
+
+    if (area->unk_0034 == 1 || area->unk_0034 == 7) {
+        return 0;
+    }
+    if (entry->scaled == 0) {
+        if (Unk0979d8_HasId((u8 *)area, 0x18e) != 0) {
+            u32 bonus = bonus_base * 25 / 100;
+            if (bonus == 0 && bonus_base != 0) {
+                bonus = 1;
+            }
+            result += bonus;
+        }
+        if (Unk0979d8_HasId((u8 *)area, 0x18f) != 0) {
+            u32 bonus = bonus_base * 50 / 100;
+            if (bonus == 0 && bonus_base != 0) {
+                bonus = 1;
+            }
+            result += bonus;
+        }
+    } else if (((Unk044904_Get_data_0215ee98()->unk40 << 17) >> 31) == 0) {
+        result = amount * func_020b8240(area->unk_0038, level_arg) / 100;
+        if (result == 0) {
+            if (amount != 0) {
+                result = 1;
+            }
+        }
+    } else {
+        result = amount;
+    }
+    return result;
+}
+
+/* One row of the fixed rank-order table copied from data_0213cce0. The initial
+ * slots are 1,2,4,3,5; `value` is replaced by the delta between the source and
+ * destination rank bytes before being published. Evidence: ARM 0x0211C350 and
+ * the 60-byte table at 0x0213CCE0. */
+typedef struct BattleShowingSelectionEntry {
+    u32 id;
+    u32 slot;
+    u32 value;
+} BattleShowingSelectionEntry;
+
+/* The five-entry initial table lives at data_0213cce0; its rows are
+ * {0,1,0}, {1,2,0}, {3,4,0}, {2,3,0}, {4,5,0}. */
+typedef struct BattleShowingSelectionTable {
+    BattleShowingSelectionEntry entries[5];
+} BattleShowingSelectionTable;
+extern const BattleShowingSelectionTable data_0213cce0;
+
+int func_02063920(void);
+u32 func_02063a30(u32 id);
+u32 func_02063a44(u32 id, u32 value);
+
+/* Build and publish the five rank-order entries for the current record. A
+ * negative record ID uses the work-area rank bytes and first selects resource
+ * 12; otherwise the area record supplies them. Each entry with a nonzero delta
+ * publishes its slot/value pair, then selects its ID through the alternating
+ * 02063A30/02063A44 helpers. With no entries at all, resource 9 is selected.
+ * Evidence: ARM 0x0211C350 and the initializer at data_0213CCE0. */
+void func_0211c350(BattleShowingTaskWork *work)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    BattleShowingSelectionEntry entries[5];
+    u32 value = 0;
+    s32 count;
+    BattleShowingRanks *source;
+    int i;
+
+    func_02063920();
+    count = 0;
+    if (record->unk00 < 0) {
+        source = &Unk02e000_Thunk_0202e788()->ranks;
+        value = func_02063a30(func_020493e0(12));
+        count++;
+    } else {
+        source = &Unk02e000_GetAreaRecord(record->unk00)->ranks;
+    }
+    *(BattleShowingSelectionTable *)entries = data_0213cce0;
+    entries[0].value = source->rank0 - record->unk14;
+    entries[1].value = source->rank4 - record->unk18;
+    entries[2].value = source->rank1 - record->unk15;
+    entries[3].value = source->rank2 - record->unk16;
+    entries[4].value = source->rank3 - record->unk17;
+    for (i = 0; i < 5; i++) {
+        if (entries[i].value == 0) {
+            continue;
+        }
+        func_0204faf0((u16)entries[i].slot, (u16)entries[i].value);
+        if (count % 2 == 0) {
+            value = func_02063a44(func_020493e0(entries[i].id), 1);
+        } else {
+            value = func_02063a30(func_020493e0(entries[i].id));
+        }
+        count++;
+    }
+    if (count == 0) {
+        value = func_02063a30(func_020493e0(9));
+    }
+    func_02065bc0();
+    func_02065628(1);
+    func_0206569c(value);
+}
+
+/* Message/option block passed to the 020BCxxx UI helpers: two flag bytes
+ * followed by sixteen words. Same layout used by the 06A224 message helpers. */
+typedef struct BattleShowingMessage {
+    u8 flags[2];
+    u32 words[16];
+} BattleShowingMessage;
+
+/* Reset the message flags and optional words; inlined so each caller keeps its
+ * own loop counter, matching the original clearing layout. */
+static inline void BattleShowing_ClearMessage(BattleShowingMessage *message)
+{
+    int i;
+    for (i = 0; i < 2; i++) {
+        message->flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        message->words[i] = 0;
+    }
+}
+
+int func_020654cc(void);
+int func_02065e28(void);
+s32 func_02053800(s32 arg0, u32 mask);
+void func_02065c30(void);
+int func_020bcacc(u32 slot, BattleShowingMessage *message);
+void func_020bc9f4(u32 slot, u32 value);
+void func_0211c6ac(BattleShowingTaskWork *work, u32 arg);
+
+/* Screen-level dispatch for states 6, 7 and 9. State 6 waits for the 020654CC
+ * and 02053800(0,1) gates before continuing through func_0211C6AC. States 7
+ * and 9 wait for 020654CC/02065E28 and 02053800(0,0x800), then post the
+ * options message (type 37, field 12) and clear slot 37. Other states do
+ * nothing. Evidence: ARM 0x0211CCF8. */
+void func_0211ccf8(BattleShowingTaskWork *work)
+{
+    BattleShowingTask_Unk_11c230(work);
+    switch (work->unk_0000) {
+    case 6:
+        if (func_020654cc() == 0) {
+            return;
+        }
+        if (func_02053800(0, 1) == 0) {
+            return;
+        }
+        func_0211c6ac(work, 0);
+        return;
+    case 7:
+    case 9: {
+        BattleShowingMessage message;
+        if (func_020654cc() == 0) {
+            return;
+        }
+        if (func_02065e28() == 0) {
+            return;
+        }
+        if (func_02053800(0, 0x800) == 0) {
+            return;
+        }
+        func_02065c30();
+        BattleShowing_ClearMessage(&message);
+        message.words[3] = 12;
+        message.words[1] = 37;
+        message.flags[0] |= 10;
+        func_020bcacc(3, &message);
+        func_020bc9f4(37, 0);
+        return;
+    }
+    }
+}
+
+/* One selectable entry in the post-battle list. Only the signed active flag at
+ * +2 is used by func_0211ceb4; the stride is 0x28 (40 bytes). */
+typedef struct BattleShowingSelectable {
+    u8 pad00[2];
+    s16 active;
+    u8 pad04[0x24];
+} BattleShowingSelectable;
+
+void Unk0bc1a8_Unk_0bc928(u32 slot, u32 value, BattleShowingMessage *message);
+u32 *func_02052fe0(u32 size);
+void func_02013c68(void *base, s32 count, u32 size,
+                   s32 (*compare)(const s16 *const *, const s16 *const *));
+void func_020a19b4(void *object, u32 arg);
+void func_020bcbc4(u32 slot, BattleShowingMessage *message);
+void func_0211c24c(BattleShowingTaskWork *work);
+
+/* Collect the nonzero selectable entries into a freshly allocated list, sort
+ * them with func_0211C160, and start the current-record dispatch. The caller's
+ * first entry and the `count` entries at `list` are scanned in order. The
+ * options message is reset before both calls: the 020BC928 setup uses the
+ * cleared message, then the 020BCBC4 dispatch uses slot 37 with word 1 set.
+ * Evidence: ARM 0x0211CEB4. */
+BattleShowingTaskWork *func_0211ceb4(BattleShowingSelectable *first, BattleShowingSelectable *list, s32 count)
+{
+    BattleShowingMessage message;
+    s32 total = 0;
+    int i;
+    int j;
+    BattleShowingSelectable *entry;
+    /* The original writes this separate stack word before posting the message;
+     * volatile preserves that store in the instruction stream (0x0211CEC0). */
+    volatile u32 value;
+
+    if (first->active != 0) {
+        total++;
+    }
+    for (i = 0; i < count; i++) {
+        if (list[i].active != 0) {
+            total++;
+        }
+    }
+    if (total == 0) {
+        return 0;
+    }
+    BattleShowing_ClearMessage(&message);
+    Unk0bc1a8_Unk_0bc928(37, 0xffff, &message);
+    {
+        BattleShowingTaskWork *work = data_02176e74;
+        s32 index;
+
+        work->unk_0008 = total;
+        work->unk_0004 = func_02052fe0(work->unk_0008 * 4);
+        index = 0;
+        if (first->active != 0) {
+            work->unk_0004[index++] = (u32)first;
+        }
+        entry = list;
+        for (j = 0; j < count; j++) {
+            if (entry->active != 0) {
+                work->unk_0004[index++] = (u32)entry;
+            }
+            entry++;
+        }
+        func_02013c68(work->unk_0004, work->unk_0008, 4, func_0211c160);
+        func_020a19b4(work->pad_0010, 1);
+        BattleShowing_ClearMessage(&message);
+        value = 13;
+        message.words[1] = 13;
+        message.flags[0] |= 2;
+        func_020bcbc4(3, &message);
+        func_0211c24c(work);
+        work->unk_0000 = 0;
+        return work;
+    }
+}
+
+/* Entry resource whose +0x26 word holds a 3-bit category in bits 2..4. */
+typedef struct BattleShowingEntryType {
+    u8 pad00[0x26];
+    u16 flags;
+} BattleShowingEntryType;
+
+BattleShowingEntryType *func_020cb21c(u32 id);
+void Unk096754_Unk_097204(u16 *ids);
+void Unk0979d8_CopyIds(u8 *p, u16 *out);
+
+/* Compute the two result-screen EXP gauges for one party entry. A nonzero
+ * entry +2 means fully filled gauges. Otherwise the global +0x60/+0x3C gate
+ * and area kinds 1/7 suppress the award, script flags 0xAD/0xAE add 10 EXP and
+ * one level-up, and the entry's +0x1A bit 0 gates the per-party scan. The scan
+ * copies the six party IDs, then adds 10 EXP, one level-up, or fills both
+ * gauges according to each resource's category bits 2..4. Evidence: ARM
+ * 0x0211A6E4. */
+void func_0211a6e4(BattleShowingResultEntry *entry, s32 *out1, s32 *out2)
+{
+    u16 ids[6];
+    u16 kind;
+    int i;
+
+    if (entry->unk02 != 0) {
+        *out1 = 100;
+        *out2 = 100;
+        return;
+    }
+    *out1 = 0;
+    *out2 = 0;
+    if (((Unk044904_Get_data_0215ee98()->unk60->unk3c << 22) >> 24) != 0) {
+        return;
+    }
+    if (entry->unk00 < 0) {
+        kind = Unk02e000_Thunk_0202e788()->unk_006c;
+    } else {
+        kind = Unk02e000_GetAreaRecord(entry->unk00)->unk_0034;
+    }
+    if (kind == 1 || kind == 7) {
+        return;
+    }
+    if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(0xad)) != 0) {
+        *out1 += 10;
+    }
+    if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(0xae)) != 0) {
+        *out2 += 1;
+    }
+    if (entry->scaled == 0) {
+        return;
+    }
+    if (entry->unk00 < 0) {
+        Unk096754_Unk_097204(ids);
+    } else {
+        Unk0979d8_CopyIds((u8 *)Unk02e000_GetAreaRecord(entry->unk00), ids);
+    }
+    for (i = 0; i < 6; i++) {
+        u16 id = ids[i];
+        if (id != 0) {
+            BattleShowingEntryType *resource = func_020cb21c(id);
+            if (resource != 0) {
+                switch ((((u32)resource->flags << 27) >> 29)) {
+                case 1:
+                    *out1 += 10;
+                    break;
+                case 2:
+                    *out2 += 1;
+                    break;
+                case 3:
+                    *out1 = 100;
+                    *out2 = 100;
+                    break;
+                }
+            }
+        }
+    }
+}
+
+/* Twelve-byte display entry; widths follow the loads at ARM 0x0211B2AC. */
+typedef struct BattleShowingLabelEntry {
+    u16 unk_0000, count;
+    s16 id;
+    u16 unk_0006;
+    u32 visible;
+} BattleShowingLabelEntry;
+/* Drawing view of the six entries beginning at work +4. */
+typedef struct BattleShowingLabelWork {
+    u32 state;
+    BattleShowingLabelEntry entry[6];
+    u8 pad_004c[0x278];
+    u32 auxiliary;
+    u8 pad_02c8[0x24];
+    u32 animation;
+    u8 pad_02f0[0x24];
+    u32 *text;
+} BattleShowingLabelWork;
+/* Signed screen coordinates shared by the six label and animation slots. */
+typedef struct BattleShowingLabelPosition { s16 x, y; } BattleShowingLabelPosition;
+extern BattleShowingLabelPosition data_0213ccc8[];
+extern u8 data_02151cc0[];
+u32 Unk0ca69c_Unk_0ca69c(s32 id);
+void func_02058e9c(u32 mode, u32 resource, s32 x, s32 y, float alpha, u32 arg5, u32 arg6);
+void func_02060dd4(void *output, u32 *text, u32 arg2, s32 index, u32 arg4);
+void func_02059f70(u32 text, u32 arg1, s32 x, s32 y, void *options, u32 arg5, u32 arg6);
+void func_020a9fd8(u32 mode, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5, u32 resource, u32 count);
+/* Submit labels, counts and visible animations for six display entries.
+ * Coordinates, call order and 20.12 scale conversion are evidenced by ARM 0x0211B2AC. */
+void func_0211b2ac(void *object, s32 scale)
+{
+    BattleShowingLabelWork *work = object;
+    u32 options[4];
+    func_02057fd8();
+    {
+        int i;
+        for (i = 0; i < 6; i++) {
+            if (work->entry[i].count != 0) {
+                func_0205dee8(2, work->auxiliary, 12, data_0213ccc8[i].x,
+                    data_0213ccc8[i].y, 1.0f, 1.0f, 0, (float)scale / 4096.0f, 0);
+            }
+    }
+        }
+    func_02057fd8();
+    {
+        BattleShowingLabelEntry *entry = work->entry;
+        int i;
+        for (i = 0; i < 6; i++, entry++) {
+            if (entry->count != 0) {
+                u32 resource = Unk0ca69c_Unk_0ca69c(entry->id);
+                s32 y, x;
+                x = data_0213ccc8[i].x;
+                y = data_0213ccc8[i].y;
+                func_02058e9c(2, resource, x + 3, y + 145, 1.0f, 0, 1);
+                func_02060dd4(options, work->text, 0, i, 8);
+                func_02059f70(*work->text, 0, x + 21, y + 144, options, 0, 1);
+                func_02058e9c(2, 0x6117, x + 106, y + 148, 1.0f, 0, 1);
+                func_020a9fd8(2, x + 111, y + 148, 2, 8, 1, (u32)data_02151cc0, entry->count);
+            }
+    }
+        }
+    func_02057fd8();
+    {
+        int i;
+        BattleShowingLabelEntry *entry = work->entry;
+        for (i = 0; i < 6; i++, entry++) {
+            if (entry->visible != 0) {
+                func_0205c848(2, work->animation, data_0213ccc8[i].x,
+                    data_0213ccc8[i].y, 1.0f, 1.0f, 0, (float)scale / 4096.0f, 0);
+            }
+    }
+        }
+}
+
+/* Clipping rectangle copied as 24 bytes; signed width is at byte 12. */
+typedef struct BattleShowingGaugeClip {
+    u8 pad_0000[12];
+    s16 width;
+    u8 pad_000e[10];
+} BattleShowingGaugeClip;
+extern u8 data_0213ccbc[];
+extern u8 data_02151c44[], data_02151c48[];
+void func_0205de40(u32, u32, u32, s32, u32, float, float, u32, float, u32);
+void *func_0205e318(u32, u32);
+void func_02008904(const void *, void *, u32);
+void func_0205e048(u32, u32, BattleShowingGaugeClip *, s32, u32, float, float, u32, float, u32, u32);
+void func_02057ddc(u32 color);
+u32 Unk02ee5c_GetTierFromField70(void);
+/* Draw the EXP bar, labels and level-up overlay. ExpGauge_Update owns this
+ * gauge state; ARM 0x02119C80 selects sequence 9's clipped width from remaining EXP. */
+void func_02119c80(ExpGauge *g)
+{
+    u32 i;
+    u8 *part;
+    BattleShowingGaugeClip clip;
+    u32 options[4];
+    func_02057df8();
+    func_020580ec(0);
+    part = data_0213ccbc;
+    for (i = 0; i < 4; i++) {
+        func_0205de40(2, g->unk04[0], *part++, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    }
+    if (g->state == EXP_GAUGE_LEVEL_UP) {
+        func_0205de40(2, g->unk04[0], 7, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+        func_02057fd8();
+        func_0205c848(2, g->gaugeAnim, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    } else {
+        s32 threshold, gained;
+        func_02008904(func_0205e318(g->unk04[0], 9), &clip, 24);
+        threshold = ExpGauge_GetExpForNextLevel(g);
+        gained = threshold - g->toNextLevel;
+        clip.width = clip.width * gained / threshold;
+        if (gained != 0 && clip.width <= 0) clip.width = 1;
+        func_0205e048(2, g->unk04[0], &clip, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0, 0);
+        func_02057fd8();
+        func_0205c848(2, g->gaugeAnim, g->fade + clip.width, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    }
+    func_02057e18(31);
+    func_02058d04(g->unk04[2], 0, g->fade + 12, g->unk24 + 40, 1.0f, 0, 4, 0);
+    {
+        u32 tier;
+        if (g->info->unk00 < 0) tier = Unk02ee5c_GetTierFromField70();
+        else tier = func_020a1428(g->info->unk08)->tier;
+        switch (tier) {
+        case 4: func_02057ddc(0x39dccbff); break;
+        case 5: func_02057ddc(0xff7b63ff); break;
+        default: func_02057ddc(0xffffffff); break;
+        }
+    }
+    func_02060dd4(options, (u32 *)g->unk04[3], 0, g->unk04[4], 8);
+    func_02059f70(*(u32 *)g->unk04[3], 0, g->fade + 45, g->unk24 + 45, options, 0, 3);
+    func_02057df8();
+    if (g->levelUps != 0) {
+        func_02057ddc(0x8cff4aff);
+    }
+    func_020a9fd8(1, g->fade + 145, g->unk24 + 48, 2, 10, 4, (u32)data_02151c44, g->info->level + g->levelUps);
+    func_02057df8();
+    func_02057ddc(0x73ffbdff);
+    func_020a9fd8(1, g->fade + 205, g->unk24 + 46, 2, 35, 4, (u32)data_02151c48, g->toNextLevel);
+    func_02057df8();
+    if (g->levelUps != 0) {
+        func_02057fd8();
+        func_0205c848(2, g->levelUpAnim, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    }
+    func_020580ec(1);
+}
+/* Animation task fields used by the record-screen state machine. */
+typedef struct BattleShowingScreenAnimation {
+    u32 handle;
+    s32 x, y, offset;
+    u8 pad_0010[0x14];
+    s32 mode;
+    u8 pad_0028[8];
+    s32 unk_0030;
+} BattleShowingScreenAnimation;
+/* A screen uses an embedded loader through +0x9B and a frame counter at +0xAC. */
+typedef struct BattleShowingScreenWork {
+    s32 state;
+    u32 *records;
+    s32 count, index;
+    u8 loader[0x8c];
+    BattleShowingScreenAnimation *animation;
+    u32 *allocation;
+    BattleShowingTaskSub *sub;
+    s32 x, frame;
+} BattleShowingScreenWork;
+/* Loader result exposes a signed vertical coordinate through its +0x18C pointer. */
+typedef struct BattleShowingScreenPosition { u8 pad[6]; s16 y; } BattleShowingScreenPosition;
+typedef struct BattleShowingScreenResource {
+    u8 pad[0x18c];
+    BattleShowingScreenPosition *position;
+} BattleShowingScreenResource;
+s32 Unk0a163c_Thunk_020a208c(void *loader);
+BattleShowingScreenAnimation *func_020a22e0(void *loader, u32 id, u32 mode);
+BattleShowingScreenResource *func_020a2250(void *loader, u32 id);
+s32 func_0206559c(void);
+s32 func_02065e1c(void);
+s32 func_02052728(void);
+void func_0209786c(void *record);
+void func_020a1a24(void *loader);
+void Unk0bc1a8_Unk_0bc504(void *work, u32 mode);
+/* Area-record fields changed after confirmation; the selection index must
+ * address a live trailing entry, as in the original's unchecked +0x28 store. */
+typedef struct BattleShowingScreenAreaRecord {
+    u8 pad_0000[0x0a];
+    s16 x, y;
+    u8 pad_000e[0x10];
+    s16 savedX, savedY;
+    u8 pad_0022[6];
+    u16 selections[];
+} BattleShowingScreenAreaRecord;
+/* Drive record-screen entrance, message waits, confirmation and exit.
+ * State mapping and ten-frame interpolation are evidenced by ARM 0x0211C960. */
+void func_0211c960(BattleShowingTaskWork *object)
+{
+    BattleShowingScreenWork *work = (BattleShowingScreenWork *)object;
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(object);
+    switch (work->state) {
+    case 0:
+        if (record->unk00 < 0) {
+            if (work->sub->unk_0059 == 0) return;
+            func_02053000(work->allocation);
+            work->allocation = 0;
+            work->x = 128;
+            work->state = 1;
+        } else {
+            BattleShowingScreenResource *resource;
+            if (!Unk0a163c_Thunk_020a208c(work->loader)) return;
+            work->state = 1;
+            work->animation = func_020a22e0(work->loader, record->id, 1);
+            func_0205c408(work->animation->handle, 0);
+            func_0205c41c(work->animation->handle, 0);
+            func_0205c6e0(work->animation->handle);
+            work->animation->mode = 8;
+            work->animation->unk_0030 = 0;
+            resource = func_020a2250(work->loader, record->id);
+            work->animation->offset += 192;
+            work->animation->y = resource->position->y;
+            work->animation->x = 128;
+        }
+        break;
+    case 1:
+        work->frame = 0;
+        work->state = 2;
+    case 2:
+        if (work->animation) work->animation->x = Unk_InterpolateLinear(128, 0, 10, work->frame);
+        else work->x = Unk_InterpolateLinear(128, 0, 10, work->frame);
+        if (++work->frame >= 10) {
+            work->state = 3;
+            func_0211c350(object);
+            if (work->animation) work->animation->x = 0;
+            else work->x = 0;
+        }
+        break;
+    case 3:
+        if (func_020654cc()) work->state = 4;
+        break;
+    case 7:
+        if (!func_020654cc()) return;
+        if (!func_0206559c()) return;
+        if (!func_02065e1c()) {
+            BattleShowingScreenAreaRecord *area = (BattleShowingScreenAreaRecord *)Unk02e000_GetAreaRecord(record->unk00);
+            area->selections[record->selection] = record->unk1e;
+            func_0209786c(area);
+            area->savedX = area->x;
+            area->savedY = area->y;
+            func_0211c6ac(object, 1);
+        } else func_0211c6ac(object, 0);
+        break;
+    case 8:
+        if (!func_02052728()) func_0211c6ac(object, 0);
+        break;
+    case 9: case 10:
+        if (!func_020654cc()) return;
+        if (!func_02065cd0()) return;
+        func_0211c6ac(object, 0);
+        break;
+    case 4: case 5: case 11: case 12:
+        if (!func_020654cc()) return;
+        if (!func_02065cd0()) return;
+        func_0211c6ac(object, 0);
+        break;
+    case 13:
+        func_02065c30();
+        work->frame = 0;
+        work->state = 14;
+    case 14:
+        if (!func_020654cc()) return;
+        if (work->animation) work->animation->x = Unk_InterpolateLinear(0, 128, 10, work->frame);
+        else work->x = Unk_InterpolateLinear(0, 128, 10, work->frame);
+        if (++work->frame < 10) return;
+        if (record->unk00 < 0) {
+            func_0205bb68();
+            work->sub = 0;
+        } else {
+            func_02061424(work->animation);
+            work->animation = 0;
+            func_020a1a24(work->loader);
+        }
+        if (++work->index >= work->count) work->state = 15;
+        else {
+            func_0211c24c(object);
+            work->state = 0;
+        }
+        break;
+    case 15:
+        Unk0bc1a8_Unk_0bc504(work, 0);
+        break;
+    }
 }

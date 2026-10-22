@@ -1,15 +1,16 @@
 # src/CampStatus.c
 
-- `CampStatus_GetUnkField1c` (8 B): get u32 at +0x1c
-- `CampStatus_GetUnkField7494` (12 B): decompiler-derived (Ghidra output, cleaned)
+- `CampStatus_GetUnkField1c` (8 B): read the work word at +0x1c.
+- `CampStatus_GetUnkField7494` (12 B): read the word at +0x7494.
+- `CampStatus_GetUnk1a8` (20 B): read the shared-work word at +0x1a8.
+- `CampStatus_SetUnk1a8` (20 B): write the shared-work word at +0x1a8.
+- `CampStatus_GetUnk258` (20 B): read the shared-work word at +0x258.
+- `CampStatus_SetUnk260` (24 B): set the flag at +0x260 to 1.
+- `CampStatus_GetTableByte` (24 B): read `data_0213c60c[i]`, index 0 when `i >= 49`.
+- `func_020dcb44` (24 B): set the flag at +0x250 to 1; name kept neutral because no
+  caller or string evidence describes it.
 
 ## Hard list
-- `CampStatus_GetUnk1a8`: no candidate matched locally
-- `CampStatus_SetUnk1a8`: no candidate matched locally
-- `CampStatus_GetUnk258`: no candidate matched locally
-- `CampStatus_SetUnk260`: no candidate matched locally
-- `CampStatus_GetTableByte`: no candidate matched locally
-- `func_020dcb44`: no candidate matched locally
 - `CampStatus_Unk_0d34e4`: decompiler-derived
 - `CampStatus_Unk_0d3510`: decompiler-derived
 
