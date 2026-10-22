@@ -9,8 +9,8 @@ The M1-T1042 and M1-T1043 functions below are verified at 100% in objdiff.
   `data_02176c78`.
 - `Unk0e1648_Unk_0e2da0` (16 B): returns `&work->unk_00d2[work->unk_007c]`, i.e. the
   `Unk0e1648Slot` selected by `work->unk_007c` (callers read its `unk_0002`/`unk_0004`
-  fields, which sit at `+0xd4`/`+0xd6`). The array length (441 entries) is guessed from the
-  gap size and is commented in the struct.
+  fields, which sit at `+0xd4`/`+0xd6`). The array length (440 entries) is guessed from
+  the following field at `+0xe98` and is commented in the struct.
 - `Unk0e1648_IsUnkeecSet` (20 B): returns non-zero when the mark byte at `+0xeec` is not
   `0xff`; `0e16f0` and `0e2f54` both write `0xff` there to clear it.
 - `Unk0e1648_Unk_0e2cb0` (24 B): flips the boolean at `work->unk_0ec0` (zero becomes one,
@@ -83,21 +83,48 @@ objdiff verifies instruction and relocation identity.
   zero through five and zero otherwise. The six-entry ARM jump table supports
   the explicit switch; this is not a guessed interpretation of the kinds.
 
+## M1-T1045
+
+All eight functions match at 100% in objdiff. Evidence is the delinked ARM
+instructions; names remain neutral because the subsystem meanings are not
+established. The card requires instruction matching and checksum validation, so
+no runtime tests were added.
+
+- `func_020e1698` (88 B): initialises a nine-word command/handler table: constant
+  `0xf08` at `+0`, zeros at `+4`/`+0x18`, and the handlers `020e1b10`, `020e2190`,
+  `020e28a8`, `020e1a48`, `020e2a5c` at `+0xc`, `+0x10`, `+0x14`, `+0x1c`, `+0x20`.
+  `+0x8` is deliberately not written (no store targets it).
+- `Unk0e1648_Unk_0e2d28` (68 B): requires state kind 1 (`+0x68`), then fetches the
+  selected slot's `unk_0002` through `func_020f3de8` and reports whether the
+  `Unk09974c_GetEntryUnk08` kind of its first halfword is 4.
+- `Unk0e1648_Unk_0e2db0` (60 B): ranks a slot: returns 0 when the id's
+  `Unk09974c_Unk_09a1e4` lookup is non-zero, else 1 when `unk_0002` exceeds
+  `func_0209993c(unk_0000)` and 2 otherwise.
+- `func_020e2e0c` (84 B): walks the 12-halfword table at `+0xeee` using the `+0xeed`
+  cursor; rejects indexes past 11 and zero entries, arms `func_02065b10` with a new
+  `func_02065c10` context, advances the cursor by reloading it after the calls, and
+  returns 1.
+- `func_020e2e60` (84 B): takes the `func_020f3de8` base for the work, indexes the
+  4-byte entry selected by the `+0xeec` byte, ranks it with `0e2db0`, then applies
+  it through `func_020e50e8` (mode 2 for rank 0, mode 0 otherwise) and requests
+  animation id 1. The switch is required to match the ROM's branch layout.
+- `Unk0e1648_Unk_0e4c64` (64 B): returns 0 when the `func_020f3de8` object for the
+  work's `+0x68` id has a zero `+3` byte; otherwise forwards the id and value to
+  `Unk0f3db4_Unk_0f4510` and reports non-zero.
+- `func_020e490c` (88 B): appends slot entries `first..last` through
+  `Unk0e1648_Unk_0e48a8`, saving the initial `+0xd0` count, then sorts the appended
+  range with `func_02013c68` (record size 8) using `Unk0e1648_Unk_0e2c90`.
+- `Unk0e1648_Unk_0e16f0` (64 B): publishes the work pointer at
+  `data_02176c80 + 4`, resets the `02e000`/`0fc584` subsystems, clears `+0xee4`
+  and the two state bytes, sets state 1, and marks `+0xeec` as idle (`0xff`).
+  All fields now use the typed work layout.
+
 ## Hard list
 
-No M1-T1044 functions remain unresolved.
+No M1-T1045 functions remain unresolved.
 
-- `Unk0e1648_Unk_0e16f0`: decompiler-derived (outside M1-T1044).
-
-## Not done in M1-T1045
-- `Unk0e1648_Unk_0e2db0`
-- `Unk0e1648_Unk_0e4c64`
-- `Unk0e1648_Unk_0e2d28`
-- `func_020e2e0c`
-- `func_020e2e60`
-- `func_020e1698`
-- `func_020e490c`
-- `Unk0e1648_Unk_0e4964`: decompiler-derived
+- `Unk0e1648_Unk_0e16f0`: matched in M1-T1045.
+- `Unk0e1648_Unk_0e4964`: decompiler-derived (outside M1-T1045).
 
 ## Not done in M1-T1046
 - `func_020e2cc8`

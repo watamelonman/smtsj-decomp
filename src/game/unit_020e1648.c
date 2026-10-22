@@ -5,7 +5,6 @@
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 
 /* One 8-byte entry of the record table at work->unk_00d2; entry count is guessed. */
@@ -25,7 +24,8 @@ typedef struct Unk0e1648Table {
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0e1648Work {
     u8 unk_0000;
-    u8 pad_0001[3];
+    u8 unk_0001;
+    u8 pad_0002[2];
     u16 unk_0004;
     u16 unk_0006;
     u8 pad_0008[0x60];
@@ -34,8 +34,10 @@ typedef struct Unk0e1648Work {
     s32 unk_007c;
     u8 pad_0080[0x50];
     u16 unk_00d0;
-    Unk0e1648Slot unk_00d2[441]; /* 441 eight-byte entries fill the 0xdce-byte gap. */
-    u8 pad_0e9a[6];
+    Unk0e1648Slot unk_00d2[440]; /* 8-byte entries; count guessed from the following fields. */
+    u8 pad_0e92[6];
+    u32 unk_0e98;
+    u8 pad_0e9c[4];
     u32 unk_0ea0;
     u8 pad_0ea4[0x1c];
     s32 unk_0ec0;
@@ -44,6 +46,8 @@ typedef struct Unk0e1648Work {
     u32 unk_0ee4;
     u32 unk_0ee8;
     u8 unk_0eec;
+    u8 unk_0eed;
+    u16 unk_0eee[12]; /* halfword table at +0xeee read by func_020e2e0c */
 } Unk0e1648Work;
 
 extern u32 data_02176c78[];
@@ -146,6 +150,41 @@ u32 Unk0e1648_Unk_0e1664(void)
     return ((Unk0e1648State *)data_02176c78[1])->unk_0058;
 }
 
+/* Object initialised by func_020e1698; +0x8 is not written by that function. */
+typedef struct Unk0e1648Vtable {
+    u32 unk_0000;
+    u32 unk_0004;
+    u32 pad_0008;
+    void (*unk_000c)(void);
+    void (*unk_0010)(void);
+    void (*unk_0014)(void);
+    u32 unk_0018;
+    void (*unk_001c)(void);
+    void (*unk_0020)(void);
+} Unk0e1648Vtable;
+
+void func_020e1b10(void);
+void func_020e2190(void);
+void func_020e28a8(void);
+void func_020e1a48(void);
+void func_020e2a5c(void);
+/*
+ * Fills the command/state table at `table`: constant 0xf08 in word 0, zeros in
+ * words 1 and 6, and the 020e1b10/02190/028a8/01a48/02a5c handlers in the
+ * remaining slots. Word 2 is left untouched because no store writes +0x8.
+ */
+void func_020e1698(Unk0e1648Vtable *table)
+{
+    table->unk_0000 = 0xf08;
+    table->unk_0004 = 0;
+    table->unk_000c = func_020e1b10;
+    table->unk_0010 = func_020e2190;
+    table->unk_0014 = func_020e28a8;
+    table->unk_0018 = 0;
+    table->unk_001c = func_020e1a48;
+    table->unk_0020 = func_020e2a5c;
+}
+
 /*
  * Lexicographic comparison of two work objects. Returns the difference of the
  * unk_0006 words, or, when those are equal, the difference of the unk_0004
@@ -164,10 +203,11 @@ int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,Unk0e1648Work *other)
 
 int func_020f3de8();
 /* Forwards +0x68 and the selected slot's +2 halfword to func_020f3de8.
- * The caller must supply a work object with a valid selected slot index. */
-void Unk0e1648_Unk_0e2d80(Unk0e1648Work *work)
+ * The caller must supply a work object with a valid selected slot index.
+ * Returns func_020f3de8's result (020e2e60 adds to it). */
+int Unk0e1648_Unk_0e2d80(Unk0e1648Work *work)
 {
-  func_020f3de8(work->unk_0068, work->unk_00d2[work->unk_007c].unk_0002);
+  return func_020f3de8(work->unk_0068, work->unk_00d2[work->unk_007c].unk_0002);
 }
 
 int func_0209993c(u32 id);
@@ -233,30 +273,37 @@ void Unk0e1648_Unk_0e533c(Unk0e1648Work *arg0)
 extern u8 data_02176c80[];
 int Unk02e000_Unk_02e0cc();
 int Unk0fc584_Unk_0fc84c();
-/* decompiler-derived */
-void Unk0e1648_Unk_0e16f0(u8 *arg0)
+/*
+ * Initialises a work object: publishes it in the global at data_02176c80+4,
+ * resets the 02e000 subsystem and 0fc584, clears the +0xee4 word and the
+ * state bytes, sets state 1 and marks +0xeec idle (0xff).
+ */
+void Unk0e1648_Unk_0e16f0(Unk0e1648Work *work)
 {
-  *(u8 **)(((int)data_02176c80) + 4) = arg0;
+  *(u8 **)(((int)data_02176c80) + 4) = (u8 *)work;
   Unk02e000_Unk_02e0cc();
   Unk0fc584_Unk_0fc84c(0);
-  ((Unk0e1648Work *)arg0)->unk_0ee4 = 0;
-  arg0[1] = 0;
-  *arg0 = 1;
-  arg0[0xeec] = 0xff;
+  work->unk_0ee4 = 0;
+  work->unk_0001 = 0;
+  work->unk_0000 = 1;
+  work->unk_0eec = 0xff;
   return;
 }
 
 
-int func_0204faf0();
-int func_020e49cc();
-int Unk0e1648_Unk_0e2d28(u8 *p)
+/*
+ * Requires state kind 1, then looks up the selected slot's id in the 0f3de8
+ * table and reports whether its 09974c entry kind is 4. Returns 0 for any
+ * other state kind (or a missing entry).
+ */
+int Unk0e1648_Unk_0e2d28(Unk0e1648Work *work)
 {
-    u16 *e;
-    if (FIELD(u32, p, 104) != 1) {
+    u16 *entry;
+    if (work->unk_0068 != 1) {
         return 0;
     }
-    e = (u16 *)func_020f3de8(1, FIELD(u16, p + FIELD(u32, p, 124) * 8, 212));
-    return Unk09974c_GetEntryUnk08(*e) == 4;
+    entry = (u16 *)func_020f3de8(1, work->unk_00d2[work->unk_007c].unk_0002);
+    return Unk09974c_GetEntryUnk08(*entry) == 4;
 }
 
 void Unk0e1648_Unk_0e51cc(Unk0e1648Table *arg0, int arg1);
@@ -264,14 +311,65 @@ int Unk09974c_Unk_09a1e4();
 void func_020e3174(Unk0e1648Work *work);
 int Unk0f3db4_Unk_0f4510();
 void func_020e5394(Unk0e1648Work *work);
-int Unk0e1648_Unk_0e2db0(u16 *p)
+/*
+ * Ranks a selected record slot: 1 when its limit (unk_0002) exceeds the
+ * lookup value for its id (unk_0000), otherwise 2. Returns 0 when the id is
+ * not present in the 09974c table, as 020e2e60 treats zero as "no action".
+ */
+int Unk0e1648_Unk_0e2db0(Unk0e1648Slot *slot)
 {
-    int a = func_0209993c(p[0]);
-    int b = p[1];
-    if (Unk09974c_Unk_09a1e4(p[0]) != 0) {
+    int value = func_0209993c(slot->unk_0000);
+    int limit = slot->unk_0002;
+    if (Unk09974c_Unk_09a1e4(slot->unk_0000) != 0) {
         return 0;
     }
-    return b > a ? 1 : 2;
+    return limit > value ? 1 : 2;
+}
+
+void func_02065c10(void);
+void func_02065b10(u32 arg0, u16 arg1);
+/*
+ * Advances the +0xeed cursor through the 12-entry halfword table at +0xeee.
+ * Returns 0 at the end of the table or on a zero entry; otherwise arms 02065b10
+ * with a fresh 02065c10 context and returns 1.
+ */
+int func_020e2e0c(Unk0e1648Work *work)
+{
+    u8 index = work->unk_0eed;
+    u16 value;
+    if (index >= 12) {
+        return 0;
+    }
+    value = work->unk_0eee[index];
+    if (value == 0) {
+        return 0;
+    }
+    func_02065c10();
+    func_02065b10(0, value);
+    work->unk_0eed = work->unk_0eed + 1;
+    return 1;
+}
+
+void func_020e50e8(u32 arg0, u16 arg1, u32 arg2);
+void Unk0a0ce4_Unk_0a0da4(u32 arg0);
+/*
+ * Selects a 4-byte entry from the 0f3de8 table using the +0xeec index, applies
+ * it through the object at +0xe98 (mode 2 for rank 0, otherwise 0), then
+ * requests animation id 1.
+ */
+void func_020e2e60(Unk0e1648Work *work)
+{
+    Unk0e1648Slot *entry = (Unk0e1648Slot *)(Unk0e1648_Unk_0e2d80(work) + 10 + work->unk_0eec * 4);
+    int rank = Unk0e1648_Unk_0e2db0(entry);
+    switch (rank) {
+    case 0:
+        func_020e50e8(work->unk_0e98, entry->unk_0000, 2);
+        break;
+    default:
+        func_020e50e8(work->unk_0e98, entry->unk_0000, 0);
+        break;
+    }
+    Unk0a0ce4_Unk_0a0da4(1);
 }
 
 /* The three immediate comparisons at 020e2dec test IDs 177, 178 and 179. */
@@ -297,6 +395,8 @@ void Unk0e1648_Unk_0e2f54(Unk0e1648Work *p)
     p->unk_0eec = 255;
 }
 
+int func_0204faf0();
+int func_020e49cc();
 /* decompiler-derived */
 void Unk0e1648_Unk_0e4964(u32 arg0)
 {
@@ -392,12 +492,34 @@ void Unk0e1648_Unk_0e48a8(int arg0,u32 arg1)
   ((Unk0e1648Work *)arg0)->unk_00d0 = ((Unk0e1648Work *)arg0)->unk_00d0 + 1;
 }
 
-int Unk0e1648_Unk_0e4c64(u8 *p, u32 x)
+void func_02013c68(void *base, int count, int size,
+                   int (*compare)(Unk0e1648Work *, Unk0e1648Work *));
+/*
+ * Appends entries first..last through Unk0e1648_Unk_0e48a8, then sorts the newly
+ * appended range with func_02013c68 (record size 8) using the 0e2c90 comparator.
+ */
+void func_020e490c(Unk0e1648Work *work, int first, int last)
 {
-    if (((u8 *)func_020f3de8(FIELD(u32, p, 104)))[3] == 0) {
+    u16 start = work->unk_00d0;
+    while (first <= last) {
+        Unk0e1648_Unk_0e48a8((int)work, first);
+        first++;
+    }
+    func_02013c68(&work->unk_00d2[start], work->unk_00d0 - start, 8,
+                  Unk0e1648_Unk_0e2c90);
+}
+
+/*
+ * Looks up the work's +0x68 id through func_020f3de8 and returns 0 when the
+ * resulting object's +3 byte is clear; otherwise forwards the same id and the
+ * supplied value to Unk0f3db4_Unk_0f4510 and reports whether it accepted them.
+ */
+int Unk0e1648_Unk_0e4c64(Unk0e1648Work *work, u32 value)
+{
+    if (((u8 *)func_020f3de8(work->unk_0068))[3] == 0) {
         return 0;
     }
-    return Unk0f3db4_Unk_0f4510(FIELD(u32, p, 104), x) != 0;
+    return Unk0f3db4_Unk_0f4510(work->unk_0068, value) != 0;
 }
 
 typedef struct Unk0e1648Ent {
