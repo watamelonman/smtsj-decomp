@@ -126,3 +126,5 @@
 - `CampStatus_Unk_0ddc20`: hand-matched
 - `CampStatus_Unk_0da97c`: hand-matched
 - `CampStatus_Unk_0dbdac`: hand-matched
+- `func_020da0e0`: hand-matched
+- `func_020dbf6c`: hand-matched
