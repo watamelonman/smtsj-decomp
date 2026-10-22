@@ -192,6 +192,9 @@ void Unk02f2a8_SetRootUnk60(u32 a, u32 b)
     FIELD(u32, gGameState->root, 0x68) = b;
 }
 
+/* Clear the root flag at +0x60, paired with Unk02f2a8_SetRootUnk60 above.
+ * Requires gGameState and its root to exist; the paired setter establishes
+ * the field-access evidence for this name. */
 void GameState_ClearRootUnk60(void)
 {
     gGameState->root->unk_60 = 0;
@@ -205,6 +208,8 @@ void Unk02f2a8_SetField7470(u16 a, u8 b, u8 c)
     FIELD(u8, gGameState, 0x7477) = c;
 }
 
+/* Read the unsigned 16-bit field at gGameState +0x74f6, which supports the
+ * offset-based name. Requires gGameState to exist. */
 u16 GameState_GetUnkField74f6(void)
 {
     return gGameState->unk_74f6;
