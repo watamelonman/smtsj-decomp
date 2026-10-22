@@ -26,16 +26,24 @@ typedef struct Unk0bb2b0Lookup {
     u16 unk_14;
 } Unk0bb2b0Lookup;
 
-u8 *func_020a1428(u32 id);
+/* Borrowed lookup; only offsets evidenced by this unit are represented. */
+typedef struct Unk0bb2b0ByteLookup {
+    u8 pad_00[4];
+    u8 unk_04;
+    u8 unk_05;
+    u8 pad_06[0x1e];
+    u32 unk_24;
+} Unk0bb2b0ByteLookup;
+
+Unk0bb2b0ByteLookup *func_020a1428(u32 id);
 Unk0bb2b0Lookup *func_020a1740(u32 id);
 Unk0bb2b0Record *Unk0bac80_Thunk_02044ec4(u32 id);
 Unk0bb2b0Work *Unk0bac80_Unk_0badc0(void);
 u32 func_0203ac00(u32 index);
 u32 Unk02e000_GetRecordUnk1c(u32 id);
 void Unk03aae8_Unk_03acf4(u32 value);
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
+/* The original caller passes a full word sum; the callee stores its low halfword. See DEC-001. */
+int Unk02e000_SetRecordUnk1c(u32 id, u32 value);
 /* Forward the work-selected record's +0x1d8 halfword; return status 1. */
 u32 Unk0bb2b0_Unk_0bb2b0(void)
 {
@@ -44,7 +52,7 @@ u32 Unk0bb2b0_Unk_0bb2b0(void)
 }
 
 /* Preserve the id and borrowed record pointer when forwarding to 0x020a1428. */
-u8 *Unk0bb2b0_Thunk_020a1428(u32 id) { return func_020a1428(id); }
+Unk0bb2b0ByteLookup *Unk0bb2b0_Thunk_020a1428(u32 id) { return func_020a1428(id); }
 
 /* Preserve the id and borrowed record pointer when forwarding to 0x020a1740. */
 Unk0bb2b0Lookup *Unk0bb2b0_Thunk_020a1740(u32 id) { return func_020a1740(id); }
@@ -77,27 +85,31 @@ u32 Unk0bb2b0_Unk_0bb364(void)
     return 1;
 }
 
+/* Forward lookup +0x10 for the truncated argument-0 id; return 1. */
 u32 Unk0bb2b0_Unk_0bb38c(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 16));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0))->unk_10);
     return 1;
 }
 
+/* Forward lookup +0x12 for the truncated argument-0 id; return 1. */
 u32 Unk0bb2b0_Unk_0bb3b4(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 18));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0))->unk_12);
     return 1;
 }
 
+/* Forward lookup +0x04 for the truncated argument-0 id; return 1. */
 u32 Unk0bb2b0_Unk_0bb3dc(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u8, Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0)), 4));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0))->unk_04);
     return 1;
 }
 
+/* Forward lookup +0x05 for the truncated argument-0 id; return 1. */
 u32 Unk0bb2b0_Unk_0bb404(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u8, Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0)), 5));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0))->unk_05);
     return 1;
 }
 
@@ -111,23 +123,23 @@ u32 Unk0bb2b0_Unk_0bb42c(void)
 }
 
 
-int Unk02e000_SetRecordUnk1c();
-/* decompiler-derived */
+/* Add argument 1 to the selected record value; the setter receives a word sum. */
 u32 Unk0bb2b0_Unk_0bb450(void)
 {
-  u16 value1;
-  int value2;
-  int value3;
-  value1 = func_0203ac00(0);
-  value2 = func_0203ac00(1);
-  value3 = Unk02e000_GetRecordUnk1c(value1);
-  Unk02e000_SetRecordUnk1c(value1,value2 + value3);
-  return 1;
+    u16 id;
+    u32 delta;
+    u32 value;
+    id = func_0203ac00(0);
+    delta = func_0203ac00(1);
+    value = Unk02e000_GetRecordUnk1c(id);
+    Unk02e000_SetRecordUnk1c(id, delta + value);
+    return 1;
 }
 
+/* Forward bits 21..27 of lookup +0x24 for the 16-bit argument-0 id; return 1. */
 u32 Unk0bb2b0_Unk_0bb490(void)
 {
-    u32 v = FIELD(u32, Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0)), 36);
-    Unk03aae8_Unk_03acf4((v << 4) >> 25);
+    u32 value = Unk0bb2b0_Thunk_020a1428((u16)func_0203ac00(0))->unk_24;
+    Unk03aae8_Unk_03acf4((value << 4) >> 25);
     return 1;
 }

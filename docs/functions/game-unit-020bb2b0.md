@@ -24,18 +24,25 @@ callee prototypes replace unspecified argument lists for these handlers. In
 particular, `0bb42c` now expresses its result forwarding in C instead of relying
 on a value incidentally left in r0 by a preceding call.
 
-## Other existing functions (M1-T059 scope)
+## M1-T059
 
-These bodies were already present and are retained. The current report also
-shows 100% for them; they are not part of M1-T058's eight-function acceptance set.
+All six functions match at 100% in objdiff. They take no C parameters: arguments
+come from `func_0203ac00`. Each returns status 1. Names remain neutral because
+the original instructions establish field widths and offsets, not game meaning.
 
-- `Unk0bb2b0_Unk_0bb38c`: forwards the lookup halfword at +0x10.
-- `Unk0bb2b0_Unk_0bb3b4`: forwards the lookup halfword at +0x12.
-- `Unk0bb2b0_Unk_0bb3dc`: forwards the 0x020a1428 lookup byte at +0x04.
-- `Unk0bb2b0_Unk_0bb404`: forwards the 0x020a1428 lookup byte at +0x05.
-- `Unk0bb2b0_Unk_0bb450`: adds argument 1 to the selected record's +0x1c value.
-- `Unk0bb2b0_Unk_0bb490`: forwards bits 21 through 27 of the lookup word at +0x24.
+| Function | Observed behavior and evidence |
+| --- | --- |
+| `Unk0bb2b0_Unk_0bb38c` | Truncates argument 0 to a 16-bit id, calls the 0x020a1740 thunk and forwards +0x10 (`ldrh`) to `Unk03aae8_Unk_03acf4`. |
+| `Unk0bb2b0_Unk_0bb3b4` | Uses the same id lookup and forwards +0x12 (`ldrh`). |
+| `Unk0bb2b0_Unk_0bb3dc` | Truncates argument 0 to a 16-bit id, calls the 0x020a1428 thunk and forwards +0x04 (`ldrb`). |
+| `Unk0bb2b0_Unk_0bb404` | Uses the same id lookup and forwards +0x05 (`ldrb`). |
+| `Unk0bb2b0_Unk_0bb450` | Reads the truncated argument-0 id, then argument 1, then `Unk02e000_GetRecordUnk1c(id)`. Adds the latter two values and passes the full word sum to `Unk02e000_SetRecordUnk1c`; original `add r1, r4, r1` directly precedes the call. The callee stores the low halfword at +0x1c and caps it at 500. See DEC-001 for the caller declaration. |
+| `Unk0bb2b0_Unk_0bb490` | Uses the 0x020a1428 lookup, loads the word at +0x24 (`ldr`), and forwards unsigned bits 21..27, evidenced by `lsl #4` followed by `lsr #25`. |
+
+Partial lookup layouts describe borrowed records without assigning unsupported
+field meanings. Unsigned addition expresses the ARM word addition modulo 2^32.
+The existing matching bodies were retained with typed fields and callee arguments.
 
 ## Hard list
 
-None for M1-T058.
+None for M1-T058 or M1-T059.
