@@ -37,3 +37,4 @@ explicitly; all five implemented handlers return a status word.
   branch but added an instruction (196 bytes); it was discarded because the
   callee does not consume that argument. Leave the helper in the delink and
   investigate compiler control-flow settings in a human-created decomp.me scratch.
+- `func_0203cd50`: hand-matched
