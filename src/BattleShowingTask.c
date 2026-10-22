@@ -44,6 +44,7 @@ void BattleShowingTask_Unk_1196e0(BattleShowingTask *task);
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
 void Unk02cad4_Unk_02cbdc(u32 arg);
+/* Teardown hook: clear the live handle, then forward 1 (0x021196c0). */
 void BattleShowingTask_Unk_1196c0(void)
 {
     data_02176e70 = 0;
@@ -244,56 +245,58 @@ void ExpGauge_Update(ExpGauge *g) {
 }
 
 
-int func_020445f4();
-int func_0204fed8();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11c4c4(u32 arg0)
+/* Resource lookup and dispatch signatures observed at 0x0211c4c4. */
+u32 func_020445f4(u32 id);
+void func_0204fed8(u32 resource, u32 value);
+/* Forward value with resource 0x29; original calls at 0x0211c4d0/0x0211c4d8. */
+void BattleShowingTask_Unk_11c4c4(u32 value)
 {
-  u32 tmp1;
-  tmp1 = func_020445f4(0x29);
-  func_0204fed8(tmp1,arg0);
-  return;
+    u32 resource = func_020445f4(0x29);
+    func_0204fed8(resource, value);
 }
 
-int Unk044394_Unk_044534();
-int func_0211a380();
-/* decompiler-derived */
+/* The caller at 0x0211b684 supplies these three resource IDs in order. */
+void Unk044394_Unk_044534(u32 id);
+void func_0211a380(void);
+/* Run the local helper, then process IDs 0x17, 0x21 and 0x29 (0x0211b684). */
 void BattleShowingTask_Unk_11b684(void)
 {
-  func_0211a380();
-  Unk044394_Unk_044534(0x17);
-  Unk044394_Unk_044534(0x21);
-  Unk044394_Unk_044534(0x29);
-  return;
+    func_0211a380();
+    Unk044394_Unk_044534(0x17);
+    Unk044394_Unk_044534(0x21);
+    Unk044394_Unk_044534(0x29);
 }
 
-extern u32 data_02176e74[];
-int func_02053000();
-int Unk0a163c_Unk_0a1ae0();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11ce80(int arg0)
+/* Separate live-work handle cleared by the cleanup at 0x0211ce80. */
+extern u32 data_02176e74;
+/* Cleanup accepts the record-table pointer and the embedded object, respectively. */
+void func_02053000(u32 *records);
+void Unk0a163c_Unk_0a1ae0(void *object);
+/* Release +0x04, clean up the embedded +0x10 object, and clear the global handle.
+ * Offsets and call order are from 0x0211ce80; work must be a live work object. */
+void BattleShowingTask_Unk_11ce80(BattleShowingTaskWork *work)
 {
-  func_02053000(((BattleShowingTaskWork *)arg0)->unk_0004);
-  ((BattleShowingTaskWork *)arg0)->unk_0004 = 0;
-  Unk0a163c_Unk_0a1ae0(arg0 + 0x10);
-  *data_02176e74 = 0;
-  return;
+    func_02053000(work->unk_0004);
+    work->unk_0004 = 0;
+    Unk0a163c_Unk_0a1ae0(work->pad_0010);
+    data_02176e74 = 0;
 }
 
-int func_0205c3dc();
-/* decompiler-derived */
-void BattleShowingTask_Unk_11a01c(int arg0)
+/* The original cleanup at 0x0211a01c passes each nonzero animation handle. */
+void func_0205c3dc(u32 anim);
+/* Release nonzero handles at +0x18/+0x1c and clear each after its call;
+ * these are gaugeAnim/levelUpAnim in the EXP update at 0x02119a60. */
+void BattleShowingTask_Unk_11a01c(ExpGauge *g)
 {
-  if (((BattleShowingTaskWork *)arg0)->unk_0018 != 0) {
-    func_0205c3dc();
-    ((BattleShowingTaskWork *)arg0)->unk_0018 = 0;
-  }
-  if (((BattleShowingTaskWork *)arg0)->unk_001c == 0) {
-    return;
-  }
-  func_0205c3dc();
-  ((BattleShowingTaskWork *)arg0)->unk_001c = 0;
-  return;
+    if (g->gaugeAnim != 0) {
+        func_0205c3dc(g->gaugeAnim);
+        g->gaugeAnim = 0;
+    }
+    if (g->levelUpAnim == 0) {
+        return;
+    }
+    func_0205c3dc(g->levelUpAnim);
+    g->levelUpAnim = 0;
 }
 
 
@@ -445,7 +448,8 @@ LAB_0211b670:
   func_020580ec(1);
 }
 
-/* Gauge back to its normal sequence after a level-up pause. */
+/* Select sequence 17, reset its frame, and start the gauge animation.
+ * Called after the level-up pause in ExpGauge_Update (0x02119a60). */
 void ExpGauge_PlayGaugeNormal(ExpGauge *g)
 {
     func_0205c408(g->gaugeAnim, 17);
@@ -453,7 +457,8 @@ void ExpGauge_PlayGaugeNormal(ExpGauge *g)
     func_0205c6e0(g->gaugeAnim);
 }
 
-/* Gauge level-up sequence. */
+/* Select sequence 16, reset its frame, and start the gauge animation.
+ * Called on level-up in ExpGauge_Update (0x02119a60). */
 void ExpGauge_PlayGaugeLevelUp(ExpGauge *g)
 {
     func_0205c408(g->gaugeAnim, 16);
@@ -475,7 +480,8 @@ s32 ExpGauge_GetExpForNextLevel(ExpGauge *g)
     return func_020b8154(g->info->unk08, g->info->level + g->levelUps, to);
 }
 
-/* Recompute EXP remaining until the next level. */
+/* Recompute remaining EXP as threshold - (base EXP + shown EXP - total).
+ * The count-up/level-up paths at 0x02119a60 call this after changing the gauge. */
 void ExpGauge_UpdateToNextLevel(ExpGauge *g)
 {
     g->toNextLevel = ExpGauge_GetExpForNextLevel(g) - ((g->info->baseExp + g->shown) - g->total);

@@ -31,16 +31,8 @@
 - `func_0211a6e4`
 - `func_0211ceb4`
 - `BattleShowingTask_Unk_11b4e4`
-- `BattleShowingTask_Unk_11c4c4`: decompiler-derived
-- `BattleShowingTask_Unk_11b684`: decompiler-derived
-- `BattleShowingTask_Unk_11ce80`: decompiler-derived
-- `BattleShowingTask_Unk_11a01c`: decompiler-derived
 
-## Not done in M1-T1031
-- `BattleShowingTask_Unk_1196c0`
-- `ExpGauge_PlayGaugeNormal`
-- `ExpGauge_PlayGaugeLevelUp`
-- `ExpGauge_UpdateToNextLevel`
+## Other pending functions
 - `BattleShowingTask_Unk_11a8dc`: decompiler-derived
 
 ## Not done in M1-T1032
@@ -75,8 +67,37 @@
 - `BattleShowingTask_Unk_11c5d0`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11c610`: decompiler-derived (proto cleanup)
 - `BattleShowingTask_Unk_11b4e4`: decompiler-derived (plain cleanup)
-- `ExpGauge_PlayGaugeNormal`: hand-matched (ExpGauge)
-- `ExpGauge_PlayGaugeLevelUp`: hand-matched (ExpGauge)
 - `ExpGauge_GetExpForNextLevel`: hand-matched (ExpGauge)
-- `ExpGauge_UpdateToNextLevel`: hand-matched (ExpGauge)
-- `BattleShowingTask_Unk_1196c0`: hand-matched
+
+## M1-T1031 — verified matches
+
+All eight functions below are 100% in the objdiff report. Existing C bodies already
+matched; this card makes cleanup parameters and helper contracts explicit without
+changing instructions. Neutral names remain because the helper semantics are not
+established. Evidence is the original ARM disassembly at each entry address.
+
+- `BattleShowingTask_Unk_11c4c4` (`0x0211c4c4`, 28 B): obtain resource 0x29
+  through `func_020445f4`, then pass that result and the incoming word to
+  `func_0204fed8`.
+- `BattleShowingTask_Unk_1196c0` (`0x021196c0`, 32 B): clear the live-task
+  handle `data_02176e70`, then tail-call `Unk02cad4_Unk_02cbdc(1)`.
+- `BattleShowingTask_Unk_11b684` (`0x0211b684`, 36 B): call `func_0211a380`,
+  then `Unk044394_Unk_044534` with 0x17, 0x21 and 0x29 in order.
+- `ExpGauge_PlayGaugeNormal` (`0x0211985c`, 44 B): select sequence 17 on
+  the +0x18 gauge animation, reset its frame to zero and start it. The count-up
+  update at `0x02119a60` calls this after the level-up pause.
+- `ExpGauge_PlayGaugeLevelUp` (`0x02119888`, 44 B): select sequence 16 on
+  the same animation, reset its frame to zero and start it. The level-up path
+  at `0x02119a60` supplies the behavioral evidence for this name.
+- `ExpGauge_UpdateToNextLevel` (`0x02119910`, 48 B): store the next-level
+  threshold minus (base EXP + shown EXP - accumulated thresholds) at +0x40.
+  The count-up and level-up paths at `0x02119a60` call it after changing EXP.
+- `BattleShowingTask_Unk_11ce80` (`0x0211ce80`, 52 B): pass the +0x04
+  record-table pointer to `func_02053000`, clear it, clean up the embedded
+  +0x10 object through `Unk0a163c_Unk_0a1ae0`, then clear `data_02176e74`.
+  Requires a live work object; no null check precedes the first helper call.
+- `BattleShowingTask_Unk_11a01c` (`0x0211a01c`, 60 B): pass each nonzero
+  +0x18/+0x1c handle to `func_0205c3dc`, clearing each after its call.
+  These offsets are the gauge and level-up animations used by `ExpGauge_Update`.
+
+Hard list for M1-T1031: none of the eight requested functions remain unmatched.
