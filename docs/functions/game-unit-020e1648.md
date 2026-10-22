@@ -206,22 +206,23 @@ identity plus the checksum gate.
 - `func_020e4238` (172 B): for work kind 7 with selected id 211..410, submits the
   intermediate `020e524c` request and then a 0x82 request with value 18 and the
   selected id in slot 7. An out-of-range id submits only `020e524c`.
-- `func_020e50e8` (176 B): applies an animation mode to one slot id. Modes 0/1
-  clear the id and apply group 6; mode 2 also applies group 10 and captures the
-  `02063a30` result; every mode except 2 also applies group 7. The captured
+- `func_020e50e8` (176 B): applies an animation mode to one slot id. Mode 0
+  calls `099bac(id)`; mode 1 calls `0e50c8(6)`; mode 2 calls `099bac(id)` then
+  `0e50c8(10)` and retains the `02063a30` result; every mode except 2 also applies group 7. The captured
   result becomes the fifth argument of `02061f10(handle, -1, 0, -1, result)`.
-- `func_020e1a48` (200 B): releases the seven handle words at `+0xe94..+0xeb4`,
+- `func_020e1a48` (200 B): releases the nine handle words at `+0xe94..+0xeb4`,
   the 23 handles at `+0xc`, the objects at `+0x8`/`+0x4` (the latter is the
-  `unk_0004`/`unk_0006` pair read as one 32-bit handle), and clears the global
+  typed union of two halfword keys and one 32-bit handle), and clears the global
   work pointer at `data_02176c80+4`.
 - `func_020e3e70` (236 B): configures three sprite slots. It writes the `+0xac`
   value as the record halfword at `+0xe`, submits an 11-argument `0205e048`
   request and two 10-argument `0205de40` requests (ids 13 and 14) using the
-  `+0xa8` owner and the `+0xac`/`+0xb0` values.
+  `+0xa8` owner and the `+0xac`/`+0xb0` values. The returned record has a
+  typed halfword at `+0xe`; scale arguments are `1.0f`.
 - `func_020e2fe8` (264 B): restarts the slot list. It saves the kind at `+0xcc`,
   clears the count at `+0xd0`, appends the per-kind range from the `0f3db4`
   table (50/50/50/50/100/60 ids), then resets the block at `+0x6c` when `+0xee4`
-  is clear and calls `020e3174`. The 9-entry jump table confirms cases 0..8.
+  is clear, passing `min(count, 8)` as the range start, and calls `020e3174`. The 9-entry jump table confirms cases 0..8.
 
 ## Hard list
 

@@ -27,8 +27,15 @@ typedef struct Unk0e1648Work {
     u8 unk_0001;
     u8 unk_0002;
     u8 pad_0003;
-    u16 unk_0004; /* low half of the 32-bit handle read by the render paths */
-    u16 unk_0006;
+    /* Comparators use two halfword keys; render/teardown use the same word
+     * as a handle, so both views must preserve the observed +0x4 layout. */
+    union {
+        struct {
+            u16 unk_0004;
+            u16 unk_0006;
+        } half;
+        u32 handle;
+    } unk_0004;
     u32 unk_0008;
     u32 unk_000c[23]; /* handles released by func_020e1a48; count from its loop bound */
     u32 unk_0068;
@@ -210,9 +217,9 @@ void func_020e1698(Unk0e1648Vtable *table)
 int Unk0e1648_Unk_0e2c90(Unk0e1648Work *work,Unk0e1648Work *other)
 {
   int value;
-  value = (u32)work->unk_0006 - (u32)other->unk_0006;
+  value = (u32)work->unk_0004.half.unk_0006 - (u32)other->unk_0004.half.unk_0006;
   if (value == 0) {
-    value = (u32)work->unk_0004 - (u32)other->unk_0004;
+    value = (u32)work->unk_0004.half.unk_0004 - (u32)other->unk_0004.half.unk_0004;
   }
   return value;
 }
@@ -857,13 +864,18 @@ void func_020629c4(u32 handle);
 void func_0205c3dc(u32 handle);
 void func_0205c368(u32 handle);
 void func_0205ddb4(u32 handle);
-u8 *func_0205e318(void *owner, int index);
+/* Sprite request record: 020e3e70 stores the selected halfword at +0xe. */
+typedef struct Unk0e1648SpriteRecord {
+    u8 pad_0000[0xe];
+    u16 unk_000e;
+} Unk0e1648SpriteRecord;
+Unk0e1648SpriteRecord *func_0205e318(void *owner, int index);
 void func_0205e048(u32 arg0, u32 arg1, void *arg2, u32 arg3, u32 arg4,
-                   u32 arg5, u32 arg6, u32 arg7, u32 arg8, u32 arg9,
+                   float arg5, float arg6, u32 arg7, float arg8, u32 arg9,
                    u32 arg10);
 void func_02057e18(u32 value);
 void func_0205de40(u32 arg0, u32 arg1, u32 arg2, u32 arg3, u32 arg4,
-                   u32 arg5, u32 arg6, u32 arg7, u32 arg8, u32 arg9);
+                   float arg5, float arg6, u32 arg7, u32 arg8, u32 arg9);
 void Unk0bcef4_Unk_0bcef4(void *base, u32 arg1, u32 arg2, u32 arg3);
 u8 *Unk0f3db4_Unk_0f3db4(void);
 
@@ -932,9 +944,9 @@ void func_020e4238(Unk0e1648Work *work)
 }
 
 /*
- * Applies an animation mode to one slot id. Modes 0/1 clear the id and set
- * animation group 6; mode 2 does both and captures the 02063a30 result. Any
- * other mode skips the switch, and all modes except 2 also apply group 7.
+ * Applies an animation mode to one slot id. Mode 0 calls 099bac(id); mode 1
+ * applies group 6 through 0e50c8. Mode 2 calls 099bac(id), then 0e50c8(10),
+ * retaining the 02063a30 result. Every mode except 2 also applies group 7.
  * The captured result is the fifth argument of the 02061f10 submit call.
  */
 void func_020e50e8(u32 handle, u16 id, u32 mode)
@@ -968,7 +980,7 @@ void func_020e50e8(u32 handle, u16 id, u32 mode)
 }
 
 /*
- * Releases every resource owned by a work object: the seven handle words at
+ * Releases every resource owned by a work object: the nine handle words at
  * +0xe94..+0xeb4, the 23 handles at +0xc, the two objects at +0x8/+0x4, and
  * finally the global work pointer at data_02176c80+4. The +0x4 word is the
  * pair unk_0004/unk_0006 viewed as one handle by this teardown path.
@@ -996,9 +1008,9 @@ void func_020e1a48(Unk0e1648Work *work)
         func_0205c368(work->unk_0008);
         work->unk_0008 = 0;
     }
-    if (*(u32 *)&work->unk_0004 != 0) {
-        func_0205ddb4(*(u32 *)&work->unk_0004);
-        *(u32 *)&work->unk_0004 = 0;
+    if (work->unk_0004.handle != 0) {
+        func_0205ddb4(work->unk_0004.handle);
+        work->unk_0004.handle = 0;
     }
     *(u32 *)(data_02176c80 + 4) = 0;
 }
@@ -1011,25 +1023,25 @@ void func_020e1a48(Unk0e1648Work *work)
  */
 void func_020e3e70(Unk0e1648Work *work)
 {
-    u8 *object = func_0205e318((void *)*(u32 *)&work->unk_0004, 29);
+    Unk0e1648SpriteRecord *object = func_0205e318((void *)work->unk_0004.handle, 29);
 
-    *(u16 *)(object + 14) = (u16)work->unk_00ac;
-    func_0205e048(2, *(u32 *)&work->unk_0004, object, work->unk_00a8,
-                  0, 0x3f800000, 0x3f800000, 0, 0x3f800000, 1, 1);
+    object->unk_000e = (u16)work->unk_00ac;
+    func_0205e048(2, work->unk_0004.handle, object, work->unk_00a8,
+                  0, 1.0f, 1.0f, 0, 1.0f, 1, 1);
     func_02057e18(31);
     func_02057df8();
-    func_0205de40(2, *(u32 *)&work->unk_0004, 13, work->unk_00a8,
-                  0, 0x3f800000, 0x3f800000, 0, work->unk_00b0, 1);
-    func_0205de40(2, *(u32 *)&work->unk_0004, 14, work->unk_00a8,
-                  work->unk_00ac, 0x3f800000, 0x3f800000, 0,
+    func_0205de40(2, work->unk_0004.handle, 13, work->unk_00a8,
+                  0, 1.0f, 1.0f, 0, work->unk_00b0, 1);
+    func_0205de40(2, work->unk_0004.handle, 14, work->unk_00a8,
+                  work->unk_00ac, 1.0f, 1.0f, 0,
                   work->unk_00b0, 1);
 }
 
 /*
  * Restarts the slot list for the current work kind. It saves the kind at
  * +0xcc, clears the count at +0xd0, then appends a per-kind range of ids from
- * the 0f3db4 table. When +0xee4 is clear it resets the 24-byte block at +0x6c,
- * clamping the range start to eight, and finally refreshes through 020e3174.
+ * the 0f3db4 table. When +0xee4 is clear it resets the block at +0x6c,
+ * passing min(count, 8) as the range start, and finally refreshes through 020e3174.
  */
 void func_020e2fe8(Unk0e1648Work *work)
 {
