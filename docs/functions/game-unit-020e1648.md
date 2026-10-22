@@ -290,3 +290,43 @@ this card explicitly uses instruction identity and checksum validation.
 
 No M1-T1049 functions remain on the hard list. Earlier hard-list entries remain
 unchanged and undefined in C, so they continue linking from the delink object.
+
+## M1-T1050
+
+Two of the four functions match at 100% in objdiff; the other two remain
+undefined in C so the delink object still supplies them. Evidence is the
+delinked ARM instructions, literal pools and relocations. No runtime tests were
+added: the card's oracle is instruction identity plus the checksum gate.
+
+- `func_020e1b10` (1664 B): top-level work state machine. State 1 calls the
+  object initializer; state 2 arms the thirteen slot handles and the two extra
+  handles; state 3 waits on the entry animation and branches on the kind
+  predicate; state 4 releases eight visible handles and both extra handles;
+  state 5 saves the 28-byte cursor block into `data_02176c88` and restores the
+  saved mode byte. States 10..15 and 18..20 drive selection, the twelve-entry
+  cursor table, the score submission and the final substate dispatch. The
+  21-entry jump table at 020e1b24 fixes the state numbers.
+- `func_020e2190` (1508 B): action state machine for states 7, 9, 16 and 17.
+  State 7 consumes the 0x800/0x400/0x1/0x2 input masks, starts the selected
+  record and shares the state 9/19 transition; state 16 has its own
+  0x800/0x1/0x2 handling; state 9 and 17 consume the quantity cursor and finish
+  with the shared score update. All state, substate and handle fields use the
+  existing typed work layout.
+
+### Hard list
+
+- `func_020e33b8` (2744 B): draws the ordinary multi-slot list. The C body is
+  semantically equivalent and reaches the same 686-instruction length, but
+  mwcc places the loop index in r8 and the row counter in r9, while the ROM
+  keeps the index in r9 and the row in r8; it also chooses r7 rather than r6
+  for the work kind/base pointer. Trials with separate/scoped loop counters,
+  forward/backward declarations, `while`/`for` forms, explicit row induction,
+  `int`/`u32` row types, a base-slot pointer, and a hoisted `kind` local all
+  left the same two register swaps. The function is therefore left undefined
+  so it continues to link from the delink object.
+- `func_020e4344` (1380 B): draws the kind-4 list variant. The same register
+  allocation difference appears (offset in r9 instead of r6, index in r6
+  instead of r7, row in r7 instead of r9), plus two extra words from the
+  compiler's handling of the final threshold block. The function is left
+  undefined for the same reason and is available for a decomp.me scratch
+  (`tools/decompme.py`).

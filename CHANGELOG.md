@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_020e1b10` and `func_020e2190` in `src/game/unit_020e1648.c` at 100% objdiff (work state machine and action state machine); documented `func_020e33b8`/`func_020e4344` and their register-allocation trials in the hard list.
 - Matched all seven script-command handlers in `src/game/unit_020bbb44.c` at 100% objdiff, with neutral symbol names and per-function documentation in `docs/functions/game-unit-020bbb44.md`.
 - Matched all eight M1-T1049 unit_020e1648 functions at 100% objdiff, including initialization, event handling, slot refresh, quantity input, sprite scaling and property/resource checks.
 - Typed M1-T1048 shared handle/key views, sprite records and float scales; corrected animation-mode and teardown documentation.

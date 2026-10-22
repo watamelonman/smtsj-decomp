@@ -44,12 +44,13 @@ typedef struct Unk0e1648Work {
     s32 unk_0074;
     u8 pad_0078[4];
     s32 unk_007c;
-    u8 pad_0080[0xc];
+    u8 pad_0080[8];
+    u32 unk_0088;
     s32 unk_008c;
     u8 pad_0090[8];
     s32 unk_0098;
     u8 pad_009c[8];
-    u32 unk_00a4;
+    s32 unk_00a4;
     u32 unk_00a8;
     s32 unk_00ac;
     u32 unk_00b0;
@@ -75,7 +76,9 @@ typedef struct Unk0e1648Work {
     s32 unk_0ec0;
     s32 unk_0ec4;
     u32 unk_0ec8;
-    u8 pad_0ecc[0x18];
+    u32 unk_0ecc;
+    u32 unk_0ed0;
+    u8 pad_0ed4[0x10];
     u32 unk_0ee4;
     u32 unk_0ee8;
     u8 unk_0eec;
@@ -192,16 +195,16 @@ typedef struct Unk0e1648Vtable {
     u32 unk_0000;
     u32 unk_0004;
     u32 pad_0008;
-    void (*unk_000c)(void);
-    void (*unk_0010)(void);
+    void (*unk_000c)(Unk0e1648Work *);
+    void (*unk_0010)(Unk0e1648Work *);
     void (*unk_0014)(Unk0e1648Work *);
     u32 unk_0018;
     void (*unk_001c)(Unk0e1648Work *);
     void (*unk_0020)(Unk0e1648Work *, Unk0e1648Message *);
 } Unk0e1648Vtable;
 
-void func_020e1b10(void);
-void func_020e2190(void);
+void func_020e1b10(Unk0e1648Work *work);
+void func_020e2190(Unk0e1648Work *work);
 void func_020e28a8(Unk0e1648Work *work);
 void func_020e1a48(Unk0e1648Work *work);
 void func_020e2a5c(Unk0e1648Work *work, Unk0e1648Message *message);
@@ -849,7 +852,8 @@ int func_020e2eb4(Unk0e1648Work *work)
 
 void func_020e3f80(Unk0e1648Work *work, u32 value);
 void Unk0cb32c_Unk_0cb57c(u32 handle);
-void func_020bcc7c(s32 *value);
+int func_020bcc7c(s32 *value);
+int Unk0bcc7c_Unk_0bcdf8(s32 *value);
 /* Refreshes multi-slot state, hides unused handles through eight, and bounds the cursor. */
 int func_020e4130(Unk0e1648Work *work)
 {
@@ -1535,3 +1539,458 @@ void func_020e2a5c(Unk0e1648Work *work, Unk0e1648Message *message)
         break;
     }
 }
+
+/* External helpers for the four large state-machine functions below. Their
+ * prototypes follow the delinked register/stack use, not guessed parameter
+ * meanings; constants in the callers come from the literal pools. */
+void func_0205257c(u32 value);
+void func_020525cc(u32 value);
+int func_02052728(void);
+int func_02053800(s32 player, u32 mask);
+int func_02065cd0(void);
+void func_02065c30(void);
+int func_020654cc(void);
+void func_02057ddc(u32 value);
+void func_0205c748(u32 mode, u32 handle, u32 x, u32 y, float sx, float sy,
+                   u32 rot, float alpha, u32 priority);
+void func_0205c704(u32 handle);
+void func_02058e9c(u32 mode, u32 resource, s32 x, s32 y, float alpha,
+                   u32 arg5, u32 arg6);
+void func_020a9fd8(u32 mode, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5,
+                   u32 resource, u32 value);
+int func_020a1554(void *table, int count, u16 id);
+void func_02096c8c(void);
+int func_020e4e28(Unk0e1648Work *work, u32 id);
+u32 Unk0ca69c_Unk_0ca69c(void);
+void Unk0cb32c_Unk_0cb488(u32 handle, u32 resource, s32 x, s32 y);
+void Unk0bc1a8_Unk_0bc9b4(u32 slot, u32 value);
+int Unk09974c_Unk_099ea4(u32 id);
+void Unk09974c_Unk_099f24(u32 id);
+int Unk09974c_Unk_0998d8(u32 id);
+int Unk0f3db4_Unk_0f44e4(u32 kind, u16 index);
+void func_020fa8a8(u32 resource, void *object, u32 mode);
+void func_020faa20(u32 value);
+void func_020e32e8(Unk0e1648Work *work);
+int Unk0fc584_Unk_0fc7f4(void);
+extern u32 data_0213c65c[];
+extern u8 data_02150bac[], data_02150bb0[], data_02150bb4[], data_02150bb8[];
+extern u8 data_02150bbc[], data_02150bc0[], data_02150bc4[];
+extern u8 data_02150bc8[], data_02150bcc[], data_02150bd0[];
+
+/* Runs the top-level work state machine. State 1 initialises the object;
+ * states 2..3 arm the slot handles and wait for the entry animation; state 4
+ * releases them; state 5 saves the cursor block and resumes the prior state;
+ * states 10..15 and 18..20 drive selection, enumeration and the final result.
+ * The 21-entry jump table at 020e1b24 fixes the state numbers. */
+void func_020e1b10(Unk0e1648Work *work)
+{
+    Unk0e1648Request request;
+    Unk0e1648Slot *slot;
+    u32 handle;
+    int i;
+
+    switch (work->unk_0000) {
+    case 0:
+        break;
+    case 1:
+        func_020e1730(work);
+        break;
+    case 2:
+        work->unk_00a8 = 0;
+        work->unk_00b0 = 0x3f800000;
+        work->unk_00ac = work->unk_006c * 12;
+        for (i = 0; i < work->unk_006c; i++) {
+            work->unk_0eb8[i] = 1;
+            Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, i + 13);
+        }
+        Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 3);
+        Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 4);
+        work->unk_00b8 = 0;
+        work->unk_0001 = 0;
+        work->unk_0000 = 3;
+        break;
+    case 3:
+        work->unk_00b4.scale += work->unk_00c4;
+        Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 0);
+        work->unk_00b8 = 0;
+        work->unk_00b4.scale = 1.0f;
+        if (func_020e544c(work) != 0) {
+            if (work->unk_0ee4 != 0) {
+                func_020525cc(0);
+                work->unk_0000 = 6;
+            } else {
+                func_020e5394(work);
+                work->unk_0000 = 7;
+            }
+        } else {
+            func_020e5394(work);
+            work->unk_0000 = 16;
+        }
+        break;
+    case 4:
+        work->unk_00b8 = 0;
+        work->unk_00a8 = 0xffffff0f;
+        work->unk_00ac = 0;
+        work->unk_0001 = 0;
+        work->unk_00b4.bits = 0;
+        work->unk_0000 = 0;
+        for (i = 0; i < 8; i++) {
+            handle = Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, i + 13);
+            Unk0cb32c_Unk_0cb57c(handle);
+            work->unk_0eb8[i] = 0;
+        }
+        handle = Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, 3);
+        func_0205c41c(handle, work->unk_00b8);
+        handle = Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, 3);
+        func_0205c6ec(handle);
+        handle = Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, 4);
+        func_0205c41c(handle, work->unk_00b8);
+        handle = Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, 4);
+        func_0205c6ec(handle);
+        Unk0bc1a8_Unk_0bc9b4(22, 0);
+        break;
+    case 5: {
+        int j;
+        if (func_02052728() != 0) break;
+        work->unk_0000 = 0;
+        for (j = 0; j < 2; j++) request.flags[j] = 0;
+        for (j = 0; j < 16; j++) request.values[j] = 0;
+        request.values[7] = 1;
+        request.flags[0] |= 0x80;
+        func_020bcbc4(21, &request);
+        func_02008904(&work->unk_006c, data_02176c88, 28);
+        data_02176c80[0] = (u8)work->unk_0ec4;
+        break;
+    }
+    case 6:
+        if (func_02052728() == 0) work->unk_0000 = 7;
+        break;
+    case 7:
+    case 8:
+    case 9:
+        break;
+    case 10:
+        if (work->unk_0ec8 == 0) {
+            u16 id;
+            func_020e32e8(work);
+            work->unk_0000 = 20;
+            slot = &work->unk_00d2[work->unk_007c];
+            id = slot->unk_0004;
+            switch (work->unk_0068) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                if (Unk09974c_Unk_099ea4(id) != 0) {
+                    work->unk_0002 = 19;
+                } else {
+                    work->unk_0002 = 7;
+                }
+                break;
+            case 4:
+                if (Unk0e1648_IsId177to179(id) != 0) {
+                    work->unk_0000 = 11;
+                }
+                work->unk_0002 = 19;
+                break;
+            case 5:
+                work->unk_0002 = 7;
+                break;
+            }
+            work->unk_0098 = 1;
+        } else {
+            if (work->unk_0068 == 4) {
+                Unk0e1648_Unk_0e536c(work);
+                Unk0fc584_Unk_0fc84c(0);
+            } else {
+                work->unk_0000 = 9;
+            }
+        }
+        break;
+    case 11:
+        if (Unk0fc584_Unk_0fc7f4() == 0) {
+            Unk0fc584_Unk_0fc84c(0);
+            if (func_020a1554(work->unk_0eee, 12,
+                               work->unk_00d2[work->unk_007c].unk_0004) != 0) {
+                work->unk_0eed = 0;
+                if (func_020e2e0c(work) != 0) {
+                    work->unk_0000 = 12;
+                } else {
+                    work->unk_0000 = 20;
+                }
+            } else {
+                work->unk_0000 = 20;
+            }
+        }
+        break;
+    case 12:
+        if (func_02065cd0() != 0 && func_020e2e0c(work) == 0) {
+            work->unk_0000 = 13;
+            func_02065c30();
+        }
+        break;
+    case 13:
+        if (func_020654cc() != 0) work->unk_0000 = 20;
+        break;
+    case 14:
+        if (work->unk_0ec8 == 0) {
+            if (work->unk_0068 == 4) {
+                func_0205257c(0);
+                work->unk_0000 = 5;
+            } else {
+                Unk09974c_Unk_099f24(work->unk_00d2[work->unk_007c].unk_0004);
+                func_02096c8c();
+                Unk0a0ce4_Unk_0a0da4(37);
+                Unk0bc1a8_Unk_0bc928(23, 22, 0);
+                work->unk_0ecc = work->unk_00d2[work->unk_007c].unk_0004;
+                func_020fa8a8(102, &work->unk_0ecc, 0);
+                func_020faa20(1);
+                work->unk_0002 = 15;
+                work->unk_0000 = 19;
+            }
+        } else {
+            Unk0e1648_Unk_0e536c(work);
+        }
+        break;
+    case 15:
+        Unk0e1648_Unk_0e536c(work);
+        break;
+    case 16:
+    case 17:
+        break;
+    case 18:
+        if (work->unk_0ec8 == 0) {
+            func_020e41d0(work);
+            work->unk_0000 = 20;
+            if (Unk0f3db4_Unk_0f4448(work->unk_00d2[work->unk_007c].unk_0004) == 0) {
+                if (func_020e4130(work) == 0) {
+                    work->unk_0002 = 4;
+                } else {
+                    func_020e4238(work);
+                    work->unk_0002 = 16;
+                }
+            } else {
+                work->unk_0002 = 16;
+            }
+            work->unk_0098 = 1;
+        } else {
+            work->unk_0000 = 17;
+        }
+        break;
+    case 19:
+        break;
+    case 20:
+        if (Unk0fc584_Unk_0fc7f4() != 0) break;
+        Unk0fc584_Unk_0fc84c(0);
+        if (func_020e544c(work) != 0) {
+            slot = Unk0e1648_Unk_0e2da0(work);
+            if (*(u8 *)&slot->unk_0000 == 2) *(u8 *)&slot->unk_0000 = 3;
+            Unk0f3db4_Unk_0f44e4(work->unk_0068, slot->unk_0002);
+        }
+        work->unk_0000 = work->unk_0002;
+        switch (work->unk_0002) {
+        case 19:
+            Unk0bc1a8_Unk_0bc928(23, 22, 0);
+            work->unk_0ecc = work->unk_00d2[work->unk_007c].unk_0004;
+            func_020fa8a8(101, &work->unk_0ecc, 1);
+            func_020faa20(1);
+            work->unk_0002 = 14;
+            break;
+        case 7:
+            Unk0e1648_Unk_0e536c(work);
+            break;
+        case 4:
+            work->unk_00b8 = work->unk_00c0 - 1;
+            Unk0fc584_SetDir(0);
+            break;
+        case 16:
+            func_020e5394(work);
+            break;
+        }
+        break;
+    }
+    if (work->unk_0000 <= 1) return;
+    for (i = 0; i < 23; i++) {
+        handle = Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, i);
+        func_0205c704(handle);
+    }
+}
+
+/* Advances the normal action state machine. Only states 7, 9, 16 and 17 are
+ * handled; the others return. State 7 processes the primary input masks and
+ * starts the selected record; state 9 and 17 consume the quantity-cursor
+ * inputs and finish the shared score update; state 16 refreshes the list. */
+void func_020e2190(Unk0e1648Work *work)
+{
+    Unk0e1648Rec *record;
+    Unk0e1648Slot *slot;
+    u32 id;
+    int value;
+
+    switch (work->unk_0000) {
+    case 7:
+        if (work->unk_0070 > 1 && Unk0bcc7c_Unk_0bcdf8(&work->unk_006c) != 0) {
+            Unk0a0ce4_Unk_0a0da4(0);
+            func_020e3174(work);
+            func_020e4ff8(work);
+            func_020e5394(work);
+            Unk0e1648_Unk_0e2f54(work);
+            return;
+        }
+        if (func_02053800(0, 0x800) != 0) {
+            if (func_020e2cc8(work) != 0) {
+                if (work->unk_0eec == 0xff) {
+                    work->unk_0eec = 0;
+                    func_020e2e60(work);
+                    return;
+                }
+                if (func_020e2eb4(work) != 0) return;
+                Unk0a0ce4_Unk_0a0da4(1);
+                Unk0e1648_Unk_0e2f54(work);
+                return;
+            }
+            if (Unk0e1648_Unk_0e2d28(work) != 0) {
+                func_020e52b0((Unk0e1648Table *)work);
+                work->unk_0002 = 7;
+                work->unk_0000 = 8;
+            }
+            return;
+        }
+        if (func_02053800(0, 0x400) != 0) {
+            Unk0a0ce4_Unk_0a0da4(1);
+            Unk0e1648_Unk_0e2cb0(work);
+            func_020e5394(work);
+            Unk0e1648_Unk_0e2f54(work);
+            return;
+        }
+        if (func_02053800(0, 1) != 0) {
+            Unk0e1648_Unk_0e2f54(work);
+            slot = &work->unk_00d2[work->unk_007c];
+            id = slot->unk_0002;
+            if (func_020e4d08(work, id) != 0) {
+                record = (Unk0e1648Rec *)func_020f3de8(work->unk_0068, id);
+                work->unk_00a4 = Unk0e1648_Unk_0e4f34(record->id,
+                    func_020e4e28(work, id));
+                work->unk_00c8 = func_020e49cc(0, record->id);
+                Unk0fc584_Unk_0fc84c(-work->unk_00c8);
+                if (work->unk_0068 == 4) {
+                    Unk0bcef4_Unk_0bcef4(&work->unk_0088, 10, 1, 0);
+                    Unk0bc1a8_Unk_0bc928(23, 22, 0);
+                    work->unk_0ecc = work->unk_00d2[work->unk_007c].unk_0004;
+                    work->unk_0ed0 = work->unk_00c8;
+                    func_020fa8a8(100, &work->unk_0ecc, 1);
+                    work->unk_0002 = 10;
+                    work->unk_0000 = 19;
+                } else {
+                    Unk0bcef4_Unk_0bcef4(&work->unk_0088, 10,
+                        Unk0e1648_Unk_0e4f54(record), 0);
+                    work->unk_0000 = 9;
+                }
+                work->unk_0ec4 = work->unk_0ec0;
+                work->unk_0ec0 = 1;
+                Unk0e1648_Unk_0e5434();
+                work->unk_0098 = 1;
+                Unk0a0ce4_Unk_0a0da4(1);
+                return;
+            }
+            if (work->unk_0ec0 == 0) {
+                Unk0e1648_Unk_0e2cb0(work);
+                func_020e5394(work);
+            }
+            Unk0a0ce4_Unk_0a0da4(4);
+            return;
+        }
+        if (func_02053800(0, 2) != 0) {
+            Unk0a0ce4_Unk_0a0da4(2);
+            work->unk_00b8 = work->unk_00c0 - 1;
+            work->unk_0000 = 4;
+        }
+        return;
+    case 9:
+        if (func_020e2774(work) != 0) {
+            Unk0a0ce4_Unk_0a0da4(0);
+        } else if (func_02053800(0, 1) != 0) {
+            if (work->unk_0098 <= work->unk_00a4) {
+                Unk0a0ce4_Unk_0a0da4(1);
+                Unk0bc1a8_Unk_0bc928(23, 22, 0);
+                work->unk_0ecc = work->unk_00d2[work->unk_007c].unk_0004;
+                work->unk_0ed0 = work->unk_00c8 * work->unk_0098;
+                func_020fa8a8(100, &work->unk_0ecc, 1);
+                work->unk_0002 = 10;
+                work->unk_0000 = 19;
+            } else {
+                Unk0a0ce4_Unk_0a0da4(4);
+            }
+        } else if (func_02053800(0, 2) != 0) {
+            Unk0a0ce4_Unk_0a0da4(2);
+            work->unk_0098 = 1;
+            Unk0fc584_Unk_0fc84c(0);
+            Unk0e1648_Unk_0e536c(work);
+            return;
+        }
+        Unk0fc584_Unk_0fc84c(-(work->unk_00c8 * work->unk_0098));
+        return;
+    case 16:
+        if (work->unk_0070 > 1 && Unk0bcc7c_Unk_0bcdf8(&work->unk_006c) != 0) {
+            Unk0a0ce4_Unk_0a0da4(0);
+            func_020e40a4(work);
+            func_020e4238(work);
+            func_020e5394(work);
+            return;
+        }
+        if (func_02053800(0, 0x800) != 0) {
+            if (Unk0e1648_Unk_0e3f5c(work) == 0) return;
+            func_020e52b0((Unk0e1648Table *)work);
+            work->unk_0002 = 16;
+            work->unk_0000 = 8;
+            return;
+        }
+        if (func_02053800(0, 1) != 0) {
+            int selected;
+            Unk0a0ce4_Unk_0a0da4(1);
+            selected = work->unk_007c;
+            work->unk_00c8 = func_020e49cc(1,
+                work->unk_00d2[selected].unk_0004);
+            Unk0fc584_Unk_0fc84c(work->unk_00c8);
+            Unk0bcef4_Unk_0bcef4(&work->unk_0088, 10,
+                Unk0f3db4_Unk_0f4448(work->unk_00d2[selected].unk_0004), 0);
+            work->unk_0098 = 1;
+            Unk0e1648_Unk_0e5434();
+            work->unk_0000 = 17;
+            return;
+        }
+        if (func_02053800(0, 2) != 0) {
+            Unk0a0ce4_Unk_0a0da4(2);
+            work->unk_00b8 = work->unk_00c0 - 1;
+            Unk0fc584_SetDir(0);
+            work->unk_0000 = 4;
+        }
+        return;
+    case 17:
+        if (func_020e2774(work) != 0) {
+            Unk0a0ce4_Unk_0a0da4(0);
+        } else if (func_02053800(0, 1) != 0) {
+            Unk0a0ce4_Unk_0a0da4(1);
+            Unk0bc1a8_Unk_0bc928(23, 22, 0);
+            work->unk_0ecc = work->unk_00d2[work->unk_007c].unk_0004;
+            work->unk_0ed0 = work->unk_00c8 * work->unk_0098;
+            func_020fa8a8(103, &work->unk_0ecc, 1);
+            work->unk_0002 = 18;
+            work->unk_0000 = 19;
+        } else if (func_02053800(0, 2) != 0) {
+            Unk0a0ce4_Unk_0a0da4(2);
+            work->unk_0098 = 1;
+            Unk0fc584_Unk_0fc84c(0);
+            func_020e5394(work);
+            work->unk_0000 = 16;
+            return;
+        }
+        Unk0fc584_Unk_0fc84c(work->unk_00c8 * work->unk_0098);
+        return;
+    default:
+        return;
+    }
+}
+
+/* func_020e33b8 and func_020e4344 stay in the delink object; their matching
+ * trials are recorded in docs/functions/game-unit-020e1648.md. */
