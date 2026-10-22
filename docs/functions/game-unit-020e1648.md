@@ -331,3 +331,5 @@ added: the card's oracle is instruction identity plus the checksum gate.
   undefined for the same reason and is available for a decomp.me scratch
   (`tools/decompme.py`).
 - `Unk0e1648_Unk_0e33b8`: hand-matched
+- `func_020e32e8`: hand-matched
+- `func_020e4e28`: hand-matched
