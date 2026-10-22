@@ -7,21 +7,27 @@
 typedef struct Unk0b28e4Obj {
     u8 pad_0000[4];
     void *unk_0004;
-    u8 pad_0008[8];
+    void *unk_0008;
+    u8 pad_000c[4];
     u8 unk_0010[0x14];
     void *unk_0024;
     void *unk_0028;
     void *unk_002c;
-    u8 pad_0030[0x180];
+    u8 unk_0030[0x180];
     u8 unk_01b0[0x60];
-    u8 unk_0210[0xa20];
+    u8 unk_0210[0xc0];
+    u8 unk_02d0[0xc30 - 0x2d0];
     void *unk_0c30;
     void *unk_0c34;
-    u8 pad_0c38[0x1c];
+    u8 pad_0c38[4];
+    void *unk_0c3c[3];
+    void *unk_0c48[3];
     void *unk_0c54[3];
     void *unk_0c60[3];
     s8 unk_0c6c;
-    u8 pad_0c6d[0x1f];
+    u8 pad_0c6d[11];
+    s8 unk_0c78[3];
+    u8 pad_0c7b[0x11];
     u32 unk_0c8c;
     u32 unk_0c90;
     u8 pad_0c94[0xc];
@@ -40,7 +46,7 @@ typedef struct Unk0b28e4Entry {
 typedef struct Unk0b28e4Buf {
     u8 unk_00;
     u8 pad_01;
-    u8 unk_02[6];
+    u16 unk_02[3];
     Unk0b28e4Entry unk_08[3];
 } Unk0b28e4Buf;
 
@@ -132,7 +138,7 @@ void Unk0b28e4_Unk_0b6370(void)
 /* Returns the byte pointer cached at +0x04 advanced past its two-byte header. */
 u8 *Unk0b28e4_Unk_0b64c8(void)
 {
-    return data_02176b80.unk_0004->unk_02;
+    return (u8 *)data_02176b80.unk_0004->unk_02;
 }
 
 /* Returns a pointer to entry `index` (12 bytes each) of the table whose base is the word
@@ -331,4 +337,252 @@ void *func_020b5e2c(u32 id, u32 slot)
     result = func_02056c54(1, bytes, 4, 32, 16);
     func_020516d0(bytes);
     return result;
+}
+
+extern const char data_021500ec[], data_02150118[];
+extern const char data_02150144[], data_02150170[];
+void func_02008848(void *dst, int value, u32 size);
+void *func_02056d88(u32 bank, void *target, void *data, u32 mode, u32 flags);
+
+/* Expands 128 signed packed bytes into 256 palette indices in caller-owned
+ * storage, then uploads them. Paths and nibble order follow 0x020b6104. */
+void *func_020b6104(const char *name, u32 slot, u8 *dst)
+{
+    char pathA[40];
+    char pathB[40];
+    void *entry;
+    u8 offset;
+    s8 *bytes;
+    int i;
+    void *result;
+    func_02013c3c(pathA, data_021500ec, name);
+    func_02013c3c(pathB, data_02150118, name);
+    entry = func_02051610(pathA);
+    Unk03e43c_CopyEntry32(entry, slot);
+    func_020516d0(entry);
+    Unk03e43c_Call_02056cc0();
+    offset = slot << 4;
+    bytes = func_02051610(pathB);
+    for (i = 0; i < 256; i++) {
+        if (i % 2 == 0) dst[i] = bytes[i >> 1] & 15;
+        else dst[i] = (bytes[i >> 1] >> 4) & 15;
+        if (dst[i] != 0) dst[i] += offset;
+    }
+    result = func_02056c54(1, dst, 4, 16, 16);
+    func_020516d0(bytes);
+    return result;
+}
+
+/* Expands the resource into the caller's 256-byte buffer and updates an
+ * existing target; 0x020b61f0 clears the buffer before nibble conversion. */
+void *func_020b61f0(const char *name, u32 slot, void *target, u8 *dst)
+{
+    char pathA[40];
+    char pathB[40];
+    void *entry;
+    u8 offset;
+    s8 *bytes;
+    int i;
+    func_02013c3c(pathA, data_02150144, name);
+    func_02013c3c(pathB, data_02150170, name);
+    entry = func_02051610(pathA);
+    Unk03e43c_CopyEntry32(entry, slot);
+    func_020516d0(entry);
+    Unk03e43c_Call_02056cc0();
+    offset = slot << 4;
+    bytes = func_02051610(pathB);
+    func_02008848(dst, 0, 256);
+    for (i = 0; i < 256; i++) {
+        if (i % 2 == 0) dst[i] = bytes[i >> 1] & 15;
+        else dst[i] = (bytes[i >> 1] >> 4) & 15;
+        if (dst[i] != 0) dst[i] += offset;
+    }
+    func_020516d0(bytes);
+    return func_02056d88(1, target, dst, 0, 0);
+}
+
+/* Draws up to three decimal digits from 96-byte entries; values above 999
+ * use entry 20 three times. Coordinates wrap as bytes, as at 0x020b5ccc. */
+void func_020b5ccc(void *target, u8 *entries, u32 value, u8 x, u8 y, u8 align)
+{
+    int divisor;
+    if (value > 999) {
+        func_0203e93c(1, x, y, target, entries + 1920);
+        func_0203e93c(1, (u8)(x + 5), y, target, entries + 1920);
+        func_0203e93c(1, (u8)(x + 10), y, target, entries + 1920);
+        return;
+    }
+    divisor = 100;
+    if (value < 10) {
+        divisor = 1;
+        if (align == 2) x += 5;
+        else if (align == 3) x += 10;
+    } else if (value < 100) {
+        divisor = 10;
+        if (align == 3) x += 5;
+    }
+    for (; divisor > 0; divisor /= 10) {
+        u32 digit = value / divisor;
+        func_0203e93c(1, x, y, target, entries + (digit + 10) * 96);
+        value -= digit * divisor;
+        x += 5;
+    }
+}
+
+/* Eight-byte draw request passed by address to the 0x020569e4 family. */
+typedef struct Unk0b28e4DrawRequest { u32 words[2]; } Unk0b28e4DrawRequest;
+void func_020569e4(Unk0b28e4DrawRequest *req, u32 bank, u32 flags, void *resource, u32 a, u32 b);
+void func_02056b94(Unk0b28e4DrawRequest *req, u32 x, u32 y);
+void func_02056bbc(Unk0b28e4DrawRequest *req, u32 mode);
+void func_02056bec(Unk0b28e4DrawRequest *req);
+void func_02056954(u32 bank, Unk0b28e4DrawRequest *req, u32 mode, u32 flags);
+u32 func_02049d80(void *record, u32 field);
+int Unk044904_Unk_044f4c(u32 id);
+
+/* First record header: the type-bearing word is loaded at +0x8c by 0x020b593c. */
+typedef struct Unk0b28e4FirstRecord {
+    u8 pad_000[0x8c];
+    u32 unk_08c;
+} Unk0b28e4FirstRecord;
+
+/* Uses the first record header at +0x8c; the draw resources are caller-owned. */
+void func_020b593c(Unk0b28e4Obj *work)
+{
+    void *record;
+    u32 a, b, c;
+    int state;
+    Unk0b28e4DrawRequest req;
+    u32 id = ((Unk0b28e4FirstRecord *)Unk044904_Get_data_0215ee98())->unk_08c;
+    if (((id >> 16) & 255) != 1) return;
+    record = func_02044ec4(id);
+    func_020569e4(&req, 1, 0x80004000, work->unk_0c3c[0], 0, 0);
+    func_02056b94(&req, 1, 17);
+    func_02056bbc(&req, 2);
+    func_02056954(1, &req, 1, 0);
+    a = func_02049d80(record, 2);
+    b = func_02049d80(record, 0);
+    c = func_02049d80(record, 1);
+    func_020b5ccc(work->unk_0010, work->unk_0030, a, 49, 29, 2);
+    func_020b5ccc(work->unk_0010, work->unk_0030, b, 81, 29, 3);
+    func_020b5ccc(work->unk_0010, work->unk_0030, c, 121, 29, 3);
+    state = func_0204a244(record);
+    if (state < 1) return;
+    if (state > 11) return;
+    func_020569e4(&req, 1, 0x40000000, work->unk_0c48[0], 0, 0);
+    func_02056bec(&req);
+    func_02056b94(&req, 21, 29);
+    func_02056bbc(&req, 1);
+    func_02056954(1, &req, 1, 0);
+}
+
+/* Draws an indexed type-1 record in a 56-pixel row, with three numeric fields
+ * and conditional markers. Evidence: 0x020b5adc's stride and draw calls. */
+void func_020b5adc(Unk0b28e4Obj *work, int id, int slot)
+{
+    u32 key = ((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c;
+    u32 *record;
+    u32 a, b, c;
+    int row, y, state;
+    Unk0b28e4DrawRequest req;
+    if (((key >> 16) & 255) != 1) return;
+    record = func_02044ec4(key);
+    func_020569e4(&req, 1, 0x80004000, work->unk_0c3c[slot], 0, 0);
+    row = slot * 56;
+    func_02056b94(&req, 1, row + 17);
+    func_02056bbc(&req, 2);
+    func_02056954(1, &req, 1, 0);
+    a = func_02049d80(record, 2);
+    b = func_02049d80(record, 0);
+    c = func_02049d80(record, 1);
+    y = row + 29;
+    func_020b5ccc(work->unk_0010, work->unk_0030, a, 49, y, 2);
+    func_020b5ccc(work->unk_0010, work->unk_0030, b, 81, y, 3);
+    func_020b5ccc(work->unk_0010, work->unk_0030, c, 121, y, 3);
+    if (Unk044904_Unk_044f4c(record[0]) >= 0)
+        func_0203e93c(1, 128, row + 96, work->unk_0010, work->unk_02d0);
+    state = func_0204a244(record);
+    if (state < 1) return;
+    if (state > 11) return;
+    func_020569e4(&req, 1, 0x40000000, work->unk_0c48[slot], 0, 0);
+    func_02056bec(&req);
+    func_02056b94(&req, 21, y);
+    func_02056bbc(&req, 1);
+    func_02056954(1, &req, 1, 0);
+}
+
+void func_020119c0(void *dst, int value, u32 size);
+void func_020b5634(Unk0b28e4Obj *work, int id, int slot);
+void func_020b5338(Unk0b28e4Obj *work);
+void func_0203f2d4(void *a, int x, int y, void *b, int c, int d, int width, int height);
+u32 func_02049398(u32 id);
+int func_02061a04(u32 bank, u32 id, u32 flags);
+void Unk03e43c_Unk_03f2bc(u32 id);
+
+/* Scans type-1 roster entries using three-entry paging, clears other rows,
+ * and draws the page label. Out-of-range and negative ids clear a row. */
+void func_020b4dd8(Unk0b28e4Obj *work)
+{
+    int i = 0;
+    int slot = 0;
+    int count = 0;
+    Unk0b28e4Roster *roster;
+    int width;
+    func_020119c0(work->unk_0c78, -1, 3);
+    roster = Unk02e000_GetWorkArea();
+    for (; slot < 3; i++) {
+        int id;
+        if (i < roster->unk_357 && roster->unk_348[i] >= 0) {
+        func_02044ec4(((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c);
+        id = roster->unk_348[i];
+        if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c >> 16 & 255) == 1) {
+            if (count >= work->unk_0c6c * 3) {
+                func_020b5634(work, id, slot);
+                work->unk_0c78[slot] = roster->unk_348[i];
+                slot++;
+            }
+            count++;
+        }
+        } else {
+            func_0203f2d4(work->unk_0008, 0, slot * 56 + 16, work->unk_0004, 0, 72, 256, 56);
+            slot++;
+        }
+    }
+    width = func_02061a04(1, func_02049398(4), 0);
+    func_0203f2d4(work->unk_0008, 64, 0, work->unk_0004, 0, 0, 64, 16);
+    func_0203f2d4(work->unk_0008, 128, 0, work->unk_0004, 0, 0, 64, 16);
+    Unk0b28e4_Unk_0b5e10(work->unk_0c30, func_02049398(4), (u8)((256-width)/2), 0, 12, 10);
+    Unk03e43c_Unk_03f2bc(6);
+}
+
+/* Maps the work-selected page to three roster positions, reserving its first
+ * row on page 1, then draws the label. Evidence: 0x020b49cc's index formula. */
+void func_020b49cc(Unk0b28e4Obj *work)
+{
+    int slot;
+    Unk0b28e4Roster *roster;
+    int y, width;
+    func_020119c0(work->unk_0c78, -1, 3);
+    roster = Unk02e000_GetWorkArea();
+    for (slot = 0, y = 16; slot < 3; y += 56, slot++) {
+        int i = slot + (work->unk_0c6c - 1) * 3 - 1;
+        if (work->unk_0c6c == 1 && slot == 0) {
+            func_020b5338(work);
+        } else if (i < roster->unk_357 && roster->unk_348[i] >= 0) {
+            int id = roster->unk_348[i];
+            Unk044904_Get_data_0215ee98();
+            if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c >> 16 & 255) != 1) {
+                func_0203f2d4(work->unk_0008, 0, y, work->unk_0004, 0, 72, 256, 56);
+            } else {
+                func_020b5634(work, id, slot);
+                work->unk_0c78[slot] = id;
+            }
+        } else {
+            func_0203f2d4(work->unk_0008, 0, y, work->unk_0004, 0, 72, 256, 56);
+        }
+    }
+    width = func_02061a04(1, func_02049398(2), 0);
+    func_0203f2d4(work->unk_0008, 64, 0, work->unk_0004, 0, 0, 64, 16);
+    func_0203f2d4(work->unk_0008, 128, 0, work->unk_0004, 0, 0, 64, 16);
+    Unk0b28e4_Unk_0b5e10(work->unk_0c30, func_02049398(2), (u8)((256-width)/2), 0, 12, 10);
+    Unk03e43c_Unk_03f2bc(6);
 }

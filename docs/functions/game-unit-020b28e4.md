@@ -59,12 +59,51 @@ accesses, without assigning unsupported gameplay meanings.
 
 Hard list for M1-T1038: none.
 
-## Not done in M1-T1039
-- `func_020b6104`
-- `func_020b61f0`
-- `func_020b63b4`
-- `func_020b5ccc`
-- `func_020b593c`
-- `func_020b4dd8`
-- `func_020b49cc`
-- `func_020b5adc`
+## M1-T1039 functions
+
+Seven implementations are 100% in the full objdiff report. Names remain those
+in the protected symbol table; comments describe observed operations rather
+than inferring gameplay purposes. Evidence is ARM disassembly at each address.
+
+- `func_020b6104` (236 B): formats two resource paths into 40-byte buffers,
+  copies one 32-byte palette entry, expands 128 signed packed bytes into 256
+  caller-owned bytes (low nibble first), offsets nonzero indices by slot*16,
+  uploads a 16-by-16 resource, and frees the packed source.
+- `func_020b61f0` (248 B): the corresponding conversion into a caller-owned
+  256-byte buffer, cleared first; updates an existing target through
+  `func_02056d88` after freeing the packed source.
+- `func_020b5ccc` (324 B): draws decimal digits using 96-byte entries 10..19;
+  values above 999 use entry 20 three times. Byte coordinates wrap, alignment
+  controls the initial horizontal position, and digit spacing is five.
+- `func_020b593c` (416 B): checks the first header's type byte at +0x8c,
+  draws its resource, three numeric fields, and a marker for states 1..11.
+- `func_020b5adc` (496 B): draws the indexed type-1 record in a 56-pixel row,
+  including three numeric fields, an optional secondary marker, and the
+  state-1..11 marker. Resource arrays start at +0xc3c and +0xc48.
+- `func_020b4dd8` (476 B): scans the roster for type-1 entries with three-slot
+  paging, records displayed ids at +0xc78, clears rows beyond the roster or
+  negative sentinel, and draws resource 4's label centered using its width.
+- `func_020b49cc` (492 B): maps page and slot to roster positions, reserves
+  the first row of page 1 for `func_020b5338`, clears unavailable or non-type-1
+  rows, records displayed ids, and draws resource 2's centered label.
+- `func_020b63b4` (276 B): remains in the delinked original. It scans six
+  type-2 records at stride 0x2e0 beginning with the word at +0x25ec, rejects
+  duplicate +0x1d8 halfword ids, and copies 12-byte payloads to the cache.
+  Capacity is checked once at entry against three, as in the original.
+
+Matching trials: signed packed bytes and arithmetic `i >> 1` reproduce the
+nibble conversion; signed division by two emits an unwanted correction.
+Declaration order controls local register assignment. Explicit unsigned-byte
+coordinates reproduce wrapping. The two roster routines clear out-of-range
+rows rather than terminating immediately. Their first label clear starts at
+x=64 (the second at x=128), as evidenced by the argument registers.
+
+### Hard list for M1-T1039
+
+- `func_020b63b4`: tried typed cache fields, a 12-byte struct assignment,
+  separate source/destination locals, reordered declarations, and an explicit
+  byte-copy loop. Best struct-copy trial compiled to 272 bytes versus 276;
+  it cached a loop bound that the original reloads and kept the cache pointer
+  across the payload copy. The byte loop produced 260 bytes and different
+  scheduling. No nonmatching body is retained. A human can use
+  `tools/decompme.py` to open a scratch for this function.
