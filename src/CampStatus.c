@@ -244,7 +244,7 @@ void func_0205c3dc(u32 handle);
 void func_020629c4(void *text);
 void Unk0c855c_Unk_0ca648(u32 a);
 void Unk044394_Unk_044534(u32 a);
-void func_020dab5c(CampStatusWork *work, s16 cur, s32 next, s32 add, u8 row, u32 mode);
+void CampStatus_Unk_0dab5c(CampStatusWork *work, s16 cur, s32 next, s32 add, u8 row, u32 mode);
 /* Request block sent with func_020bc9f4 / func_020bcacc (same layout as unit_020e1648's). */
 typedef struct CampStatusRequest {
     u8 flags[2];
@@ -513,24 +513,24 @@ typedef struct CampStatusIds8 {
 } CampStatusIds8;
 extern const CampStatusIds8 data_0213c5b0;
 u32 Unk0c855c_Unk_0ca690(u32 id);
-/* Draw the five stat rows (order +4, +8, +5, +6, +7) via func_020dab5c, with the add values
+/* Draw the five stat rows (order +4, +8, +5, +6, +7) via CampStatus_Unk_0dab5c, with the add values
  * when add is given. The first time all ten shown values equal unk_0118, set unk_0114 and
  * call func_020bc9f4(3, 0) / func_020bcacc(unk_0014, 0). */
 void CampStatus_Unk_0da0e0(CampStatusWork *work, const CampStatusStats *cur, const CampStatusStats *next,
                    const CampStatusStats *add, u32 arg5)
 {
     if (add == 0) {
-        func_020dab5c(work, cur->unk_04, next->unk_04, 0, 0, arg5);
-        func_020dab5c(work, cur->unk_08, next->unk_08, 0, 1, arg5);
-        func_020dab5c(work, cur->unk_05, next->unk_05, 0, 2, arg5);
-        func_020dab5c(work, cur->unk_06, next->unk_06, 0, 3, arg5);
-        func_020dab5c(work, cur->unk_07, next->unk_07, 0, 4, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_04, next->unk_04, 0, 0, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_08, next->unk_08, 0, 1, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_05, next->unk_05, 0, 2, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_06, next->unk_06, 0, 3, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_07, next->unk_07, 0, 4, arg5);
     } else {
-        func_020dab5c(work, cur->unk_04, next->unk_04, add->unk_04, 0, arg5);
-        func_020dab5c(work, cur->unk_08, next->unk_08, add->unk_08, 1, arg5);
-        func_020dab5c(work, cur->unk_05, next->unk_05, add->unk_05, 2, arg5);
-        func_020dab5c(work, cur->unk_06, next->unk_06, add->unk_06, 3, arg5);
-        func_020dab5c(work, cur->unk_07, next->unk_07, add->unk_07, 4, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_04, next->unk_04, add->unk_04, 0, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_08, next->unk_08, add->unk_08, 1, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_05, next->unk_05, add->unk_05, 2, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_06, next->unk_06, add->unk_06, 3, arg5);
+        CampStatus_Unk_0dab5c(work, cur->unk_07, next->unk_07, add->unk_07, 4, arg5);
     }
     if (work->unk_0114 != 0) {
         return;
@@ -2022,7 +2022,7 @@ u8 CampStatus_Unk_0db2dc(s32 t);
  * and its bar. While unk_0114 is clear the bar animates towards cur/next (steps of a fifth of the
  * distance, at least 3); afterwards mode 2 shows the gain add blinking, mode 3 and the default
  * show the change with an arrow (resource 0x1f00). */
-void func_020dab5c(CampStatusWork *work, s16 cur, s32 next, s32 add, u8 row, u32 mode)
+void CampStatus_Unk_0dab5c(CampStatusWork *work, s16 cur, s32 next, s32 add, u8 row, u32 mode)
 {
     char *width = func_020a9e14(1, data_021507ec);
     s32 y = row * 11;
