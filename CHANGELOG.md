@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T1110 state, grid and dispatch helpers at 100% objdiff; added typed work-area/action/state views and per-function behavior documentation.
 - Verified the eight M1-T1109 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: replaced raw offsets with typed GameState-tail, action and slot-block views, gave `Unk02f2a8_Unk_02f8ac` and `Unk02f2a8_DirToAngle` real prototypes, commented each function and added a per-function doc entry.
 - Verified all five M1-T115 table, flag, and pair helpers at 100% objdiff; documented index contracts and instruction evidence.
 - Verified the eight M1-T1108 decompiler-derived functions in `src/game/unit_0202f2a8.c` at 100% objdiff: typed the work-area meter/direction members and the action/count/GameState-tail views, gave every target a behaviour comment, and added a per-function doc entry.
