@@ -270,3 +270,75 @@ Anticheat and all nine existing tests pass; checksum confirms all configured
 artifacts byte-identical. No runtime tests were added because the card waives
 them and the original object is the byte-level oracle. The TU remains linked
 from the original delink, pending human completion marking.
+
+## M1-T1023
+
+Four implementations were added with typed parameters and contracts derived from
+ARM loads, stores and calls. Neutral address names retain unknown gameplay
+semantics. The original delink remains the link source; no assembly stubs are
+needed in this repository's Nintendo DS workflow.
+
+- `func_020660cc` (396 bytes): skips zero scale (+0x20) or disabled byte
+  +0x3a, optionally selects the layer at +0x3c and state at +0x30, and
+  overrides each handle collection member's word +8 from object +0x34.
+  Dispatches modes 0/1 through 0205c748/0205c948 with summed position
+  offsets and the five stored scale/state arguments. Restores dispatch state
+  and the layer afterward. The object handle and collection members must exist.
+- `func_02067134` (384 bytes): releases seven owner handles and the two
+  auxiliary resources. For twelve slots at +0x40c and eight at +0x3b8,
+  calls 0205c6f8 with the nested handle, disables byte +0x3a, releases
+  the callback object and clears the slot. Calls 0205bb68 and 020dc908
+  afterward. All twenty callback pointers must be valid.
+- `func_020679a0` (392 bytes): builds a 16-byte descriptor from the fifth
+  halfword argument. Resource category 4/5 and entry state 1/7 select
+  the same color words as 02067634. Other states reset dispatch state.
+  Resource kind zero overrides the words with 0x7b7b7bff and increments
+  the submitted value. Requires valid entry/resource pointers and owner handle.
+- `func_02068cf8` (544 bytes): initializes thirty owner status bytes at
+  +0x372, then scans resource-22 records. Each nonzero component is checked
+  against the supplied ids and then its record flag. Zero components are
+  skipped; the scan still visits all twelve positions. Any available component
+  admits an otherwise eligible result. Writes result ids and status at +0x334;
+  complete component sets clear +0x372 and may initialize the entry returned
+  by 020de784. A component supplied by a record flag clears +0x334 even
+  for incomplete sets. Output/status capacity must cover all admitted records.
+- `func_02067d54` (416 bytes), **hard**: clears the 240/1956-byte buffers,
+  collects available ids 411..900, sorts four-byte id/rank pairs with
+  0206644c, then fills up to 24 ten-byte slots starting from signed +0x156
+  minus one. Tried indexed halfword buffers (432-byte output), then typed
+  pair/slot layouts (404-byte output). The latter matches the collection loop
+  but differs in the second loop's register allocation and folds the empty-id
+  load/store into a predicated store. Candidate was removed rather than
+  retaining a nonmatching implementation.
+- `func_02068a58` (416 bytes), **hard**: selects rank-matching resource-19
+  candidates excluding three indices and twelve selected entry ids, filters
+  the upper three bits of +0x24 against the shared mode, then chooses a
+  candidate through 02050074. Tried a typed 100-byte record with a three-bit
+  field, separate count increments and alternate local declaration order.
+  Output reaches 416 bytes but assigns count/mode/record/index to different
+  registers and differs in candidate append scheduling. Candidate was removed.
+- `func_020664c4` (504 bytes), **hard**: message types 1/3/4 notify, update
+  mode-specific states, or reset and switch modes. Reconstructed the jump table,
+  nullable payload checks and flag-guarded word extraction, using an aggregate
+  local initializer to reproduce the stack address store. Output reaches 504
+  bytes but uses r3/ip instead of r5/r3 for the valid flag/payload and schedules
+  conditional state stores differently. Reusing the flag for the type-4 mode
+  did not resolve allocation. Candidate was removed.
+- `func_02066e80` (692 bytes), **hard**: initializes owner handles and twenty
+  callback objects from literal tables 02145788/94/b0. Reconstructed all calls,
+  allocations and callback-field stores. Both direct and inline-helper local
+  descriptor initialization produce 628 bytes: the compiler eliminates the
+  unused descriptor initialization, while the original retains its loops and
+  72-byte stack frame. Candidate was removed; no volatile workaround or
+  artificial use was added to force otherwise dead stores.
+
+Hard list for M1-T1023: `func_02067d54`, `func_02068a58`, `func_020664c4`,
+`func_02066e80`. These require further matching work or human decomp.me scratches
+via `tools/decompme.py`. No runtime tests were added: the card waives them and
+objdiff compares the generated code with the original object.
+
+Validation: full `match_gate.py` build/report passes for all 51 C definitions in
+this TU, including all four new definitions at 100%. `anticheat.py` passes,
+all nine existing unit tests pass, and `checksum.py` reports all configured
+artifacts byte-identical to the original. The four hard-list functions remain
+supplied by the original delink and are not claimed as matched C.

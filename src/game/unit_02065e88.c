@@ -332,7 +332,8 @@ typedef struct Unk065e88Work Unk065e88Work;
 void func_02066c94(Unk065e88Work *object);
 typedef struct Unk065e88Owner Unk065e88Owner;
 void func_02066d30(Unk065e88Owner *owner);
-void func_020664c4();
+typedef struct Unk065e88Message Unk065e88Message;
+void func_020664c4(Unk065e88Work *owner, const Unk065e88Message *message);
 void func_02063920(void);
 int func_020445f4(int resource, int index);
 int func_0204fed8(int handle, u32 index);
@@ -840,7 +841,10 @@ struct Unk065e88Owner {
     s16 unk_0158;
     u8 pad_015a[2];
     u8 unk_015c[96];
-    u8 pad_01bc[500];
+    u8 pad_01bc[376];
+    u8 unk_0334[62];
+    u8 unk_0372[30];
+    u8 pad_0390[32];
     u32 unk_03b0;
     u32 unk_03b4;
     u32 unk_03b8[8];
@@ -994,4 +998,196 @@ u16 func_02068bf8(Unk065e88Owner *owner, const u16 *ids, int count)
         if (all) return r->result;
     }
     return 0;
+}
+
+void func_0205c6f8(u32 handle);
+void func_020dc908(void);
+/* At 02067134, disables and releases twelve plus eight callback objects after
+ * releasing owner handles. Every callback slot must contain a valid object. */
+void func_02067134(Unk065e88Owner *owner)
+{
+    int i;
+    func_020629c4(owner->unk_0108);
+    if (owner->unk_0108) owner->unk_0108 = 0;
+    func_020629c4(owner->unk_010c);
+    if (owner->unk_010c) owner->unk_010c = 0;
+    func_020629c4(owner->unk_0110);
+    if (owner->unk_0110) owner->unk_0110 = 0;
+    func_020629c4(owner->unk_0118);
+    if (owner->unk_0118) owner->unk_0118 = 0;
+    func_020629c4(owner->unk_011c);
+    if (owner->unk_011c) owner->unk_011c = 0;
+    func_020629c4(owner->unk_0114);
+    if (owner->unk_0114) owner->unk_0114 = 0;
+    func_020629c4(owner->unk_0150);
+    if (owner->unk_0150) owner->unk_0150 = 0;
+    if (owner->unk_03b0) {
+        func_0205ddb4(owner->unk_03b0);
+        owner->unk_03b0 = 0;
+    }
+    if (owner->unk_03b4) {
+        func_0205c368(owner->unk_03b4);
+        owner->unk_03b4 = 0;
+    }
+    for (i = 0; i < 12; i++) {
+        func_0205c6f8(((GameObj *)owner->unk_040c[i])->unk00);
+        Unk065e88_SetFlag3a((Unk065e88Flag *)owner->unk_040c[i], 0);
+        func_02061424(owner->unk_040c[i]);
+        owner->unk_040c[i] = 0;
+    }
+    for (i = 0; i <= 7; i++) {
+        func_0205c6f8(((GameObj *)owner->unk_03b8[i])->unk00);
+        Unk065e88_SetFlag3a((Unk065e88Flag *)owner->unk_03b8[i], 0);
+        func_02061424(owner->unk_03b8[i]);
+        owner->unk_03b8[i] = 0;
+    }
+    func_0205bb68();
+    func_020dc908();
+}
+
+/* At 020679a0, selects category/state dispatch words, builds a descriptor and
+ * increments the submitted value for kind zero. Entry and resource must exist. */
+void func_020679a0(u32 *owner, const Unk065e88DispatchEntry *entry, int arg, int value, u16 offset)
+{
+    u8 local[16];
+    const Unk065e88SelectionRecord *r = (const Unk065e88SelectionRecord *)func_020a1428(entry->id);
+    func_02060dd4(local, owner, 0, offset, 5);
+    if (r->category == 4) {
+        if (entry->unk_0034 == 1 || entry->unk_0034 == 7)
+            func_02057dcc(0x18525aff, 0x18525aff, 0x18525aff, 0x18525aff);
+        else func_02057dcc(0x39dccbff, 0x39dccbff, 0x39dccbff, 0x39dccbff);
+    } else if (r->category == 5) {
+        if (entry->unk_0034 == 1 || entry->unk_0034 == 7)
+            func_02057dcc(0x5a3129ff, 0x5a3129ff, 0x5a3129ff, 0x5a3129ff);
+        else func_02057dcc(0xff7b63ff, 0xff7b63ff, 0xff7b63ff, 0xff7b63ff);
+    } else if (entry->unk_0034 == 1 || entry->unk_0034 == 7)
+        func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    else func_02057df8();
+    if (r->kind == 0) {
+        func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+        func_02059f70(*owner, 0, arg, value + 1, local, 0, 10);
+        return;
+    }
+    func_02059f70(*owner, 0, arg, value, local, 0, 10);
+}
+
+
+/* The high three bits at +0x24 restrict candidates by the shared mode. */
+typedef struct Unk065e88CandidateRecord {
+    u16 id;
+    u8 kind;
+    u8 rank;
+    u8 pad_0004[32];
+    u32 low_0024 : 29;
+    u32 mode_0024 : 3;
+    u8 pad_0028[2];
+    u16 gate;
+    u8 pad_002c[56];
+} Unk065e88CandidateRecord;
+
+void func_02057524(int value);
+void func_02057534(void);
+void func_020580ec(int enabled);
+void func_02057ddc(u32 value);
+/* Handle +0x30 points to a counted collection used to override member +8. */
+typedef struct Unk065e88Collection { u32 pad[2]; u32 count; } Unk065e88Collection;
+void *func_0205e33c(Unk065e88Collection *collection, u32 index);
+void func_0205c748(u32 flags, u32 handle, u32 x, u32 y, float a, float b, float c, float d, s32 e);
+void func_0205c948(u32 flags, u32 handle, u32 x, u32 y, float a, float b, float c, float d, s32 e);
+/* At 020660cc, dispatches an enabled nonzero-scale object with offset position,
+ * optional member overrides and bracketed layer/state calls. Handle must exist. */
+void func_020660cc(u8 *object)
+{
+    GameObj *o = (GameObj *)object;
+    u32 flags;
+    if (o->field20.value == 0.0f || o->unk3A == 0) return;
+    if (o->field3C >= 0) func_02057eb8(o->field3C);
+    flags = 1;
+    if (o->field30 != -1) func_02057524(o->field30);
+    if (o->field34 >= 0) {
+        Unk065e88Collection *collection = FIELD(Unk065e88Collection *, o->unk00, 0x30);
+        u32 i;
+        flags |= 0x400000;
+        for (i = 0; i < collection->count; i++) {
+            void *item = func_0205e33c(collection, i);
+            FIELD(s32, FIELD(void *, item, 0x30), 8) = o->field34;
+        }
+    }
+    func_020580ec(0);
+    func_02057ddc(o->field28);
+    switch (o->field2C) {
+    case 0:
+        func_0205c748(flags, o->unk00, o->pairA + o->field0C, o->pairB + o->field10,
+            o->unk14[0], o->unk14[1], o->unk14[2], o->field20.value, o->field24);
+        break;
+    case 1:
+        func_0205c948(flags, o->unk00, o->pairA + o->field0C, o->pairB + o->field10,
+            o->unk14[0], o->unk14[1], o->unk14[2], o->field20.value, o->field24);
+        break;
+    }
+    func_02057df8();
+    func_020580ec(1);
+    func_02057534();
+    if (o->field3C >= 0) func_02057eb8(-1);
+}
+
+int Unk02e000_GetRecordFlag1(u16 id);
+int func_020de784(int index);
+void Unk02f078_InitEntry5e12(int index);
+/* At 02068cf8, gathers eligible resource-22 results with at least one available
+ * component; records all-component availability and clears newly unlocked flags.
+ * Output and owner status arrays must accommodate every matching record. */
+u8 func_02068cf8(Unk065e88Owner *owner, const u16 *ids, int count, u16 *out)
+{
+    u8 resultCount = 0;
+    int i;
+    func_02008848(owner->unk_0372, 1, 30);
+    for (i = 0; i < owner->unk_00bc; i++) {
+        u8 found[12];
+        u8 n = 0;
+        int hadFlag = 0;
+        const Unk065e88SearchRecord *r;
+        int j;
+        int any;
+        int all;
+        func_02008848(found, 0, 12);
+        r = func_020de720(i);
+        for (j = 0; j < 12; j++) {
+            int k;
+            u16 id = r->ids[j];
+            if (id == 0) continue;
+            for (k = 0; k < count; k++) {
+                if (id == ids[k]) { found[j] = 1; break; }
+            }
+            if (!found[j] && Unk02e000_GetRecordFlag1(r->ids[j])) {
+                hadFlag = 1;
+                found[j] = 1;
+            }
+            n++;
+        }
+        any = 0;
+        all = 1;
+        for (j = 0; j < n; j++) {
+            if (found[j] == 1) { any = 1; break; }
+        }
+        for (j = 0; j < n; j++) {
+            if (found[j] == 0) { all = 0; break; }
+        }
+        if (any) {
+            const Unk065e88CandidateRecord *record = (const Unk065e88CandidateRecord *)func_020a1428(r->result);
+            if ((record->gate == 0 || Unk0e651c_Unk_0e666c(record->gate)) && func_020684c0(record)) {
+                out[resultCount] = r->result;
+                owner->unk_0334[resultCount] = 1;
+                if (all) {
+                    int index;
+                    owner->unk_0372[resultCount] = 0;
+                    index = func_020de784(i);
+                    if (index >= 0) Unk02f078_InitEntry5e12(index);
+                }
+                if (hadFlag) owner->unk_0334[resultCount] = 0;
+                resultCount++;
+            }
+        }
+    }
+    return resultCount;
 }
