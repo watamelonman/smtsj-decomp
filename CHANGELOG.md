@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1044 functions at 100% objdiff, including six-argument conditional forwarding and the work-kind predicate; made handle forwarding and work fields explicit.
 - Verified all eight M1-T1043 functions at 100% objdiff; made lookup argument forwarding explicit, typed slot/global accesses, and documented each function’s instruction evidence.
 - Verified all eight M1-T1042 functions in `src/game/unit_020e1648.c` at 100% objdiff and documented each one, including the slot accessor, state-word accessors, boolean toggle, and two-key comparator.
 - Documented the three M1-T1041 callback functions `func_020b28e8`, `func_020b2dd0` and `func_020b363c`, verified at 100% objdiff, and the remaining rebuild function `func_020b4040` in the hard list with its measured matching trials.

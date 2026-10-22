@@ -24,7 +24,8 @@ typedef struct Unk0e1648Table {
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0e1648Work {
-    u8 pad_0000[0x4];
+    u8 unk_0000;
+    u8 pad_0001[3];
     u16 unk_0004;
     u16 unk_0006;
     u8 pad_0008[0x60];
@@ -38,8 +39,11 @@ typedef struct Unk0e1648Work {
     u32 unk_0ea0;
     u8 pad_0ea4[0x1c];
     s32 unk_0ec0;
-    u8 pad_0ec4[0x20];
+    s32 unk_0ec4;
+    u8 pad_0ec8[0x1c];
     u32 unk_0ee4;
+    u32 unk_0ee8;
+    u8 unk_0eec;
 } Unk0e1648Work;
 
 extern u32 data_02176c78[];
@@ -211,17 +215,17 @@ u32 Unk0e1648_Unk_0e4fd0(int arg0,u32 arg1)
 
 
 void Unk0e1648_Unk_0e5090(u32 arg0,u32 arg1);
-int func_020e544c();
-/* decompiler-derived */
-void Unk0e1648_Unk_0e533c(int arg0)
+int func_020e544c(Unk0e1648Work *work);
+/* Selects value 2 or 3 for the +0xea0 handle using the work-kind predicate. */
+void Unk0e1648_Unk_0e533c(Unk0e1648Work *arg0)
 {
   int tmp1;
-  tmp1 = func_020e544c();
+  tmp1 = func_020e544c(arg0);
   if (tmp1 != 0) {
-    Unk0e1648_Unk_0e5090(((Unk0e1648Work *)arg0)->unk_0ea0,2);
+    Unk0e1648_Unk_0e5090(arg0->unk_0ea0,2);
     return;
   }
-  Unk0e1648_Unk_0e5090(((Unk0e1648Work *)arg0)->unk_0ea0,3);
+  Unk0e1648_Unk_0e5090(arg0->unk_0ea0,3);
   return;
 }
 
@@ -255,11 +259,11 @@ int Unk0e1648_Unk_0e2d28(u8 *p)
     return Unk09974c_GetEntryUnk08(*e) == 4;
 }
 
-void Unk0e1648_Unk_0e51cc(u32 arg0, u32 arg1);
+void Unk0e1648_Unk_0e51cc(Unk0e1648Table *arg0, int arg1);
 int Unk09974c_Unk_09a1e4();
-void func_020e3174();
+void func_020e3174(Unk0e1648Work *work);
 int Unk0f3db4_Unk_0f4510();
-void func_020e5394();
+void func_020e5394(Unk0e1648Work *work);
 int Unk0e1648_Unk_0e2db0(u16 *p)
 {
     int a = func_0209993c(p[0]);
@@ -282,14 +286,15 @@ int Unk0e1648_IsId177to179(int x)
     return 0;
 }
 
-void Unk0e1648_Unk_0e2f54(u8 *p)
+/* Clears the +0xeec marker after cleanup and handle-zero reset; 0xff is idle. */
+void Unk0e1648_Unk_0e2f54(Unk0e1648Work *p)
 {
-    if (p[3820] == 255) {
+    if (p->unk_0eec == 255) {
         return;
     }
     func_020e3174(p);
-    Unk0e1648_Unk_0e51cc((u32)p, 0);
-    p[3820] = 255;
+    Unk0e1648_Unk_0e51cc((Unk0e1648Table *)p, 0);
+    p->unk_0eec = 255;
 }
 
 /* decompiler-derived */
@@ -333,31 +338,31 @@ void Unk0e1648_Unk_0e51f4(Unk0e1648Table *table,int index)
   func_0205caa8(tmp1, data_0213c674[index]);
 }
 
-int func_0205c41c();
-/* decompiler-derived */
-void Unk0e1648_Unk_0e51cc(u32 arg0,u32 arg1)
+void func_0205c41c(u32 handle, u32 value);
+/* Clears the indexed handle through 0205c41c, then reapplies its table value. */
+void Unk0e1648_Unk_0e51cc(Unk0e1648Table *arg0,int arg1)
 {
   u32 tmp1;
-  tmp1 = Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
+  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
   func_0205c41c(tmp1,0);
-  Unk0e1648_Unk_0e51f4((Unk0e1648Table *)arg0,arg1);
+  Unk0e1648_Unk_0e51f4(arg0,arg1);
 }
 
-int func_0205c6ec();
-/* decompiler-derived */
-void Unk0e1648_Unk_0e5214(u32 arg0,u32 arg1)
+void func_0205c6ec(u32 handle);
+/* Clears the indexed handle, then fetches it again for 0205c6ec. */
+void Unk0e1648_Unk_0e5214(Unk0e1648Table *arg0,int arg1)
 {
   u32 tmp1;
-  tmp1 = Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
+  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
   func_0205c41c(tmp1,0);
-  Unk0e1648_Unk_0e5240((Unk0e1648Table *)arg0, arg1);
-  func_0205c6ec();
+  tmp1 = Unk0e1648_Unk_0e5240(arg0, arg1);
+  func_0205c6ec(tmp1);
 }
 
-int func_02061f10();
-int func_02063920();
-int func_02063a30();
-/* decompiler-derived */
+void func_02061f10(u32 handle, s32 arg1, u32 arg2, u32 arg3, u32 arg4);
+void func_02063920(void);
+u32 func_02063a30(void);
+/* Resets the shared state, applies the value, and submits its result to handle. */
 void Unk0e1648_Unk_0e5090(u32 arg0,u32 arg1)
 {
   u32 tmp1;
@@ -434,10 +439,44 @@ int Unk0e1648_Unk_0e4f54(Unk0e1648Rec *p)
     return r;
 }
 
-void Unk0e1648_Unk_0e536c(u8 *p)
+/* Restores the saved +0xec4 state, updates the work, then enters state 7. */
+void Unk0e1648_Unk_0e536c(Unk0e1648Work *p)
 {
-    FIELD(u32, p, 3816) = 1;
-    FIELD(u32, p, 3776) = FIELD(u32, p, 3780);
+    p->unk_0ee8 = 1;
+    p->unk_0ec0 = p->unk_0ec4;
     func_020e5394(p);
-    p[0] = 7;
+    p->unk_0000 = 7;
+}
+
+/* Only the signed flag observed by 020e5198 is modelled; callers own the object. */
+typedef struct Unk0e1648FlagObject {
+    u8 pad_0000[0x40];
+    s8 unk_0040;
+} Unk0e1648FlagObject;
+
+void func_02060b60(u32 arg0, Unk0e1648FlagObject *object, u32 arg2,
+                   u32 arg3, u32 arg4, u32 arg5);
+/* Forwards all six arguments only while the object's signed +0x40 flag is zero. */
+void func_020e5198(u32 arg0, Unk0e1648FlagObject *object, u32 arg2, u32 arg3, u32 arg4, u32 arg5)
+{
+    if (object->unk_0040 != 0) {
+        return;
+    }
+    func_02060b60(arg0, object, arg2, arg3, arg4, arg5);
+}
+
+/* Tests work +0x68 against kinds 0 through 5, as the original jump table does. */
+int func_020e544c(Unk0e1648Work *work)
+{
+    switch (work->unk_0068) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        return 1;
+    default:
+        return 0;
+    }
 }
