@@ -160,7 +160,7 @@ for a scratch with the following instruction-level findings and trial results.
   constant variants as above. Ordinary C produced 252 B versus 244 B due to
   the same redundant high-word multiplication; explicit reconstruction was
   264/268 B. Candidate omitted.
-- `func_0211d050` (`0x0211d050`, 208 B): event switch 0..4. Event 3 dispatches
+- `BattleShowingTask_Unk_11d050` (`0x0211d050`, 208 B): event switch 0..4. Event 3 dispatches
   work states 7/9 through the existing 0x0211C5D0/0x0211C610 helpers after resetting
   dispatch state. Event 1 initializes two flag bytes and sixteen words on the
   stack, then calls `Unk0bc1a8_Unk_0bc514(work, 1)`. Explicit initialization
@@ -168,7 +168,7 @@ for a scratch with the following instruction-level findings and trial results.
   local is unused (128 B). Aggregate zero initialization retained the local
   but emitted block stores (200 B). A volatile initializer retained loops
   but differed in register allocation; volatile was not retained in source.
-- `func_0211c24c` (`0x0211c24c`, 260 B): current-record dispatch preparation.
+- `BattleShowingTask_Unk_11c24c` (`0x0211c24c`, 260 B): current-record dispatch preparation.
   Initializes the same options shape, calls `CampStatus_Copy176(record+0x10)`,
   loads alternate resources for negative record IDs or initializes the
   embedded work +0x10 object for other IDs, then calls `func_020bcbc4(3, options)`.
@@ -325,5 +325,5 @@ unmatched candidate bodies, fabricated stack stores or assembly were retained.
   empty-label initialization above and the message-construction pattern;
   the record-building and randomized award loops still need complete type
   recovery. No complete C candidate was produced; recovery remains outstanding.
-- `func_0211c24c`: hand-matched
-- `func_0211d050`: hand-matched
+- `BattleShowingTask_Unk_11c24c`: hand-matched
+- `BattleShowingTask_Unk_11d050`: hand-matched

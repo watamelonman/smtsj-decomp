@@ -853,5 +853,7 @@
  "func_020dab5c": "CampStatus_Unk_0dab5c",
  "func_020d5644": "CampStatus_Unk_0d5644",
  "func_020937a0": "Unk090e60_Unk_0937a0",
- "func_02092624": "Unk090e60_Unk_092624"
+ "func_02092624": "Unk090e60_Unk_092624",
+ "func_0211c24c": "BattleShowingTask_Unk_11c24c",
+ "func_0211d050": "BattleShowingTask_Unk_11d050"
 }

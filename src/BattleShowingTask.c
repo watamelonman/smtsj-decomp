@@ -1338,7 +1338,7 @@ void func_02013c68(void *base, s32 count, u32 size,
                    s32 (*compare)(const s16 *const *, const s16 *const *));
 void func_020a19b4(void *object, u32 arg);
 void func_020bcbc4(u32 slot, BattleShowingMessage *message);
-void func_0211c24c(BattleShowingTaskWork *work);
+void BattleShowingTask_Unk_11c24c(BattleShowingTaskWork *work);
 
 /* Collect the nonzero selectable entries into a freshly allocated list, sort
  * them with func_0211C160, and start the current-record dispatch. The caller's
@@ -1394,7 +1394,7 @@ BattleShowingTaskWork *func_0211ceb4(BattleShowingSelectable *first, BattleShowi
         message.words[1] = 13;
         message.flags[0] |= 2;
         func_020bcbc4(3, &message);
-        func_0211c24c(work);
+        BattleShowingTask_Unk_11c24c(work);
         work->unk_0000 = 0;
         return work;
     }
@@ -1690,7 +1690,7 @@ void Unk0a163c_Unk_0a21f8(void *loader);
  * data_02151cf4 and line 162 go to func_0205ba28) and sets message word 1 to 14; otherwise the
  * loader is started with the record's id and the message gets word 1 = 15 and word 7 = the
  * record id. */
-void func_0211c24c(BattleShowingTaskWork *object)
+void BattleShowingTask_Unk_11c24c(BattleShowingTaskWork *object)
 {
     BattleShowingScreenWork *work = (BattleShowingScreenWork *)object;
     BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(object);
@@ -1810,7 +1810,7 @@ void func_0211c960(BattleShowingTaskWork *object)
         }
         if (++work->index >= work->count) work->state = 15;
         else {
-            func_0211c24c(object);
+            BattleShowingTask_Unk_11c24c(object);
             work->state = 0;
         }
         break;
@@ -1823,7 +1823,7 @@ void func_0211c960(BattleShowingTaskWork *object)
 /* Event handler for the battle-showing screen (ARM 0x0211D050): *event 3 finishes the
  * current record (states 7 and 9 go through 0x0211C5D0 / 0x0211C610); event 1 hands a
  * cleared message to Unk0bc1a8_Unk_0bc514 with mode 1. Other events are ignored. */
-void func_0211d050(BattleShowingTaskWork *work, u32 *event)
+void BattleShowingTask_Unk_11d050(BattleShowingTaskWork *work, u32 *event)
 {
     BattleShowingMessage message;
 
