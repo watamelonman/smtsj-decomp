@@ -306,3 +306,4 @@ after these edits.
   frame, far from the original). A human can open a scratch with
   `tools/decompme.py`; the original delink remains linked.
 - `Unk0b28e4_Unk_0b4040`: hand-matched
+- `func_020b5634`: hand-matched
