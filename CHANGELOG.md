@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Matched seven of the eight M1-T1079 unit_020aa118 functions at 100% objdiff (node append/free, unique-id insert, record forwarding, group flag clear, list insert) and documented `func_020aa298` with its measured matching trials on the hard list.
+- Verified all eight M1-T1122 functions in `src/CampStatus.c` at 100% objdiff, adding the missing `func_020dcb44` flag setter, typed struct fields, and per-function doc entries.
+- Verified the eight M1-T1104 functions in `src/game/unit_0202f2a8.c` at 100% objdiff (three empty callbacks, two thunks, the game-state getter, the SDK range callback and the +0x74F4 field getter), with typed signatures and per-function comments.
+- Verified all eight M1-T1088 table, entry, coordinate, and flag-count functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented their contracts and typed the draw-entry setup parameters.
 - Verified all eight M1-T1087 functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented mode/counter/table operations and acquisition validation helpers, and typed the paired-byte copy.
 - Verified all eight M1-T1078 table, record, and item helpers at 100% objdiff; documented their contracts and corrected stale task status.
 - Verified all eight M1-T1077 list/table/work helpers at 100% objdiff and documented their parameter contracts and observed behavior.
