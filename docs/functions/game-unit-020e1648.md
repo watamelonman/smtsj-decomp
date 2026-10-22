@@ -315,7 +315,7 @@ added: the card's oracle is instruction identity plus the checksum gate.
 
 ### Hard list
 
-- `func_020e33b8` (2744 B): draws the ordinary multi-slot list. The C body is
+- `Unk0e1648_Unk_0e33b8` (2744 B): draws the ordinary multi-slot list. The C body is
   semantically equivalent and reaches the same 686-instruction length, but
   mwcc places the loop index in r8 and the row counter in r9, while the ROM
   keeps the index in r9 and the row in r8; it also chooses r7 rather than r6
@@ -330,4 +330,4 @@ added: the card's oracle is instruction identity plus the checksum gate.
   compiler's handling of the final threshold block. The function is left
   undefined for the same reason and is available for a decomp.me scratch
   (`tools/decompme.py`).
-- `func_020e33b8`: hand-matched
+- `Unk0e1648_Unk_0e33b8`: hand-matched

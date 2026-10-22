@@ -755,7 +755,7 @@ void func_020e30f0(Unk0e1648Work *work, u32 value, u16 index)
 
 void func_02057524(u32 value);
 void func_02057e58(u32 index, u32 value, u32 count);
-void func_020e33b8(Unk0e1648Work *work);
+void Unk0e1648_Unk_0e33b8(Unk0e1648Work *work);
 void func_020e4344(Unk0e1648Work *work);
 void func_02057df8(void);
 void func_02057eb8(s32 value);
@@ -769,7 +769,7 @@ void func_020e28a8(Unk0e1648Work *work)
     func_02057e58(0, 0, 15);
     func_02057e58(1, 15, 15);
     func_02057e58(2, 30, 15);
-    if (func_020e544c(work) != 0) func_020e33b8(work);
+    if (func_020e544c(work) != 0) Unk0e1648_Unk_0e33b8(work);
     else func_020e4344(work);
     func_02057df8();
     func_02057eb8(-1);
@@ -1998,7 +1998,7 @@ void func_020e2190(Unk0e1648Work *work)
     }
 }
 
-/* func_020e33b8 and func_020e4344 stay in the delink object; their matching
+/* Unk0e1648_Unk_0e33b8 and func_020e4344 stay in the delink object; their matching
  * trials are recorded in docs/functions/game-unit-020e1648.md. */
 
 void func_02057ddc(u32 value);
@@ -2028,7 +2028,7 @@ extern u8 data_02150bbc[], data_02150bc0[], data_02150bc4[];
 /* Draws the ordinary multi-slot list: one row per visible slot, the
  * quantity box once the work reaches state 9, then the detail panel for the
  * selected record (cost entries when +0xec0 is set). */
-void func_020e33b8(Unk0e1648Work *work)
+void Unk0e1648_Unk_0e33b8(Unk0e1648Work *work)
 {
     int sel = work->unk_007c;
     int first = work->unk_0074;
