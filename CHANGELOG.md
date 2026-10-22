@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T107 `func_020caea8`, including position-record path formatting, loading, and selector restoration.
 - Finished `src/game/unit_020caea8.c`: added the `func_020cafbc` pair search and documented/types the seven other M1-T106 functions, all at 100% objdiff.
 - Matched all eight M1-T1051 functions in `src/UniteEvent.c` (fusion event descriptor, message handler, id/state setters, effect loader and slot loader) at 100% objdiff, with typed work layouts and per-function documentation.
 - Matched `func_020e1b10` and `func_020e2190` in `src/game/unit_020e1648.c` at 100% objdiff (work state machine and action state machine); documented `func_020e33b8`/`func_020e4344` and their register-allocation trials in the hard list.

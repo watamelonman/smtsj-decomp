@@ -30,8 +30,18 @@ claimed where the disassembly/callers support them (noted per entry).
   into `u16` locals so mwcc emits the two unconditional `ldrh` loads and `cmpeq`, as in the
   ROM. A null `*data_02176bc0` returns 0 immediately.
 
-`func_020caea8` (size 0xa0) also lives in this TU but is not part of this card and remains
-undefined here.
+- `func_020caea8` (M1-T107, size 0xa0): matched at 100%. Releases the previous
+  active record, reads work-area halfword `+0x35c`, adds 50 with unsigned 16-bit
+  truncation, and subtracts 730 (again truncating) when the result is at least 980.
+  Formats `Data/Event/Position/%03d.tbb` (ROM string `data_02150628`) into a
+  zero-initialized 64-byte stack buffer. Sets `data_0215f4d8` to zero through
+  `func_02052f58`, loads the path through `func_02051610`, stores the returned
+  handle in `data_02176bc0`, and restores the selector through `func_02052f68`.
+  Returns 1 unconditionally. The local partial work-area layout preserves the
+  observed `+0x300` base adjustment and `+0x5c` halfword access.
+  Declaring the initialized buffer after the index calculation preserves the
+  original initialization order; declaring it at function entry did not match.
+  The original function symbol is retained without claiming a more specific purpose.
 
 ## Hard list
 - none
