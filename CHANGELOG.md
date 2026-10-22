@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Matched two of the eight M1-T1091 targets in `src/game/unit_0203e43c.c` at 100% objdiff: the 392-byte context-checked icon drawer and the 620-byte icon-id dispatcher. Added typed prototypes for the two blit helpers and documented the six remaining hard targets.
 - Match three more game/unit_0203e43c functions: coordinate clamping, clipped byte-surface fill, and draw-entry selection; document five remaining hard targets.
 - Verified the eight M1-T1105 functions in `src/game/unit_0202f2a8.c` at 100% objdiff. The four decompiler-derived ones (035ec4, 030478, 030578, 033890) now have typed parameters with small local structs and per-function comments.
 - Corrected the M1-T1095 record window layout to hold its tenth populated id while preserving the nine-row drawing limit and +0x2000 flag offset.

@@ -8,6 +8,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 void func_020119c0(void *dst, int value, u32 size);
 void func_0203e93c(int mode, int x, int y, void *resource, void *entry);
+void func_0203f394(const void *src, void *dst, int x, int y, int srcX, int srcY, int width, int height);
+void func_0203f450(const void *src, void *dst, int x, int y, int a, int b, int width, int height,
+                   int c, int d, int e);
 
 extern u8 data_0215e85e[];
 int Unk02e000_GetWorkArea();
@@ -524,6 +527,43 @@ void Unk03e43c_Unk_041ce4(u8 *p)
 
 /* Submits slot+3 and then one of entries 0..2 selected by the signed byte
  * at +0x2982+slot. Entry stride 96 and call coordinates come from the assembly. */
+/*
+ * Draws the 8x8 icon attached to `obj` at (x, y), choosing the blit path from
+ * the work-area mode at +0x358. The draw is skipped unless the work-area
+ * context id at +0x35c still matches the active context. Modes 1 and 2 pass
+ * a rotation (90 or 0 degrees) to func_0203f450; the fallback mirrors.
+ */
+void func_02041d98(u8 *obj, int x, int y)
+{
+    u8 *work = FIELD(u8 *, obj, 0x28dc);
+    int mode;
+    if (FIELD(u16, work, 0x35c) != Unk04bb9c_GetCtxUnka20()) {
+        return;
+    }
+    mode = FIELD(int, work, 0x358);
+    if (mode == 0) {
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14),
+                      x + FIELD(s16, obj, 0x1c) + 1, y + FIELD(s16, obj, 0x1e) + 1,
+                      0x20, 0, 8, 8);
+        return;
+    }
+    if (mode == 1) {
+        func_0203f450(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14),
+                      x + FIELD(s16, obj, 0x1c), y + FIELD(s16, obj, 0x1e) + 1,
+                      0x20, 0, 8, 8, 90, 0, 0);
+        return;
+    }
+    if (mode == 2) {
+        func_0203f450(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14),
+                      x + FIELD(s16, obj, 0x1c) + 1, y + FIELD(s16, obj, 0x1e),
+                      0x20, 0, 8, 8, 0, 1, 0);
+        return;
+    }
+    func_0203f450(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14),
+                  x + FIELD(s16, obj, 0x1c) + 1, y + FIELD(s16, obj, 0x1e) + 1,
+                  0x20, 0, 8, 8, 90, 0, 1);
+}
+
 void func_02043340(u8 *work, int slot)
 {
     int state;
@@ -591,6 +631,44 @@ int Unk03e43c_Unk_043560(void)
  * shared table, and re-registers the table with the resource layer. The
  * per-slot flag and value meanings are not known.
  */
+/* Draws a small 7x7 icon selected by `index` at (x, y). */
+void func_02043ea8(u8 *obj, int index, int x, int y)
+{
+    if (index <= 0) return;
+    if (index >= 37) return;
+    switch (index) {
+    case 2:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0x30, 0, 7, 7);
+        return;
+    case 13:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0x88, 0, 7, 7);
+        return;
+    case 18:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0xb0, 0, 7, 7);
+        return;
+    case 19:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0xb8, 0, 7, 7);
+        return;
+    case 23:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0x10, 8, 7, 7);
+        return;
+    case 24:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0x18, 8, 7, 7);
+        return;
+    case 21:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0, 8, 7, 7);
+        return;
+    case 22:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 8, 8, 7, 7);
+        return;
+    case 14:
+        func_0203f394(FIELD(void *, obj, 0xc), FIELD(void *, obj, 0x14), x + 1, y + 1, 0x90, 0, 7, 7);
+        break;
+    default:
+        return;
+    }
+}
+
 void Unk03e43c_Unk_044194(u8 *p)
 {
     u16 *t;

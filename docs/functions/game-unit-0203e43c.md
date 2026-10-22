@@ -218,3 +218,75 @@ difference is source shape, not the compiler service pack.
   row from `top + srcY` did not prevent the fold.
 - `func_0203eaf8`: not retried; the previous findings still apply.
 - `func_0203f394`: not retried; the previous findings still apply.
+
+## M1-T1091
+
+Two of the eight card targets match the delinked original at 100% in objdiff;
+the other six remain supplied by the delinked object and are on the hard list.
+`func_0203f450` and `func_0203f394` now have typed prototypes in the TU because
+the matched callers pass five and eight arguments respectively.
+
+- `func_0203e43c` (360 B): NOT MATCHED. Builds three resource paths from `a`,
+  `b` and the three `data_021421f*` suffixes, acquires them with
+  `Unk03e43c_Unk_03e5a4/03e5dc/03e64c`, stores the handles through `d`, `e`,
+  `c`, then submits setup slots 0/1 through `func_0203e684` for bank 2 or the
+  selected bank. A 356-byte candidate had the correct control flow. The
+  original zeroes its 64-byte scratch buffer as 16 iterations of four byte
+  stores with the pointer in `ip`; mwcc always chose a different loop form and
+  kept `bank` in r8 instead of r7. Tried simple/indexed/pointer loops and
+  four-byte unrolling.
+- `func_0203e93c` (444 B): NOT MATCHED. 452-byte candidate reproduces the
+  branches: flag bit 19 switches the bank and marks each built entry, otherwise
+  angle `+0x4c` builds a `func_02052dfc` matrix and scale `+0x40/+0x44` selects
+  identity or the angle matrix; the result count accumulates into
+  `data_0215e658`. mwcc emits a `count <= 0` pre-check that the original does
+  not, and assigns the seven saved registers differently throughout. Tried
+  `for`/indexed/u64-table forms, signed vs unsigned flag load, and reordered
+  `else if` branches.
+- `func_02041d98` (392 B): draws the object's 8x8 icon at (x, y). Skips the
+  draw unless the work-area context id at +0x35c matches
+  `Unk04bb9c_GetCtxUnka20`; mode 0 uses `func_0203f394`, modes 1/2 use
+  `func_0203f450` with a 90 or 0 degree transform, and the fallback passes the
+  mirror flag. The s16 offsets at +0x1c/+0x1e and +1 origin come from the
+  original call sites.
+- `func_020435c8` (356 B): NOT MATCHED. 352-byte candidate reads the 24-byte
+  id table at 0x0212cc0c, maps the object type at +0x28e9 to a starting y
+  (180/172/164/156/148/140), and draws up to 24 7x7 icons four per row through
+  `func_0203e93c`. The conditional category mapping (23->0x4a, 24->0x4b,
+  20->0x49) is reproduced; only register assignment and the two-byte copy
+  loop shape differ (r9/r6/r7 vs r4/r5/r9 etc.). Tried reversed declaration
+  order, pointer/indexed copy loops, explicit zero/category locals.
+- `func_02043ea8` (620 B): draws a 7x7 icon for an id in 2, 13, 14, 18, 19 or
+  21..24 from source-column/row pairs (0x30, 0x88, 0x90, 0xb0, 0xb8, 0,
+  8, 0x10, 0x18; rows 0 or 8) at (x+1, y+1). Ids outside 1..36 are ignored.
+  The case order follows the original handler order; case 14 is last and falls
+  through to the shared return.
+
+### Hard list (for a decomp.me scratch)
+
+- `func_0203e43c`: see the zero-loop/register notes above (356 B vs 360 B).
+- `func_0203e93c`: see the loop pre-check/register notes above (452 B vs 444 B).
+- `func_020435c8`: see the register/copy-loop notes above (352 B vs 356 B).
+- `func_0203eba4` (1488 B): not matched. Ghidra shows the entry builder:
+  mode must be 1; adds s16 offsets +0x4a/+0x48 to the position, applies
+  `func_0202128c` to the resource list and `func_0203f234`/`func_0203f174`
+  to the cached positions, computes rotated/translated quad corners from the
+  scale at +0x40/+0x44 and angle byte +0x5d, updates the two register words
+  at 0x0215e85c/0x0215e860 through bitfields, and increments the u16 count at
+  0x0215e858 by the built count. The stack-restarting decompiler output and
+  heavy bitfield/register mixing need a dedicated scratch.
+- `func_0203f450` (1296 B): not matched. Rotated/mirrored surface blit. It
+  normalises the angle through the 0x0203f958/0x0203f95c reciprocal, allocates
+  a `-(width*height) & ~7` stack buffer, copies the source through four
+  separate 0/90/180/270 paths, then composites with optional clipping and
+  transform flags (`param_9`..`param_11`). Callers pass 11 arguments.
+- `func_0203fb14` (1360 B): not matched. Initialises the 0x299c-byte task:
+  clears the +0x2000 work fields, stores the work-area pointer, seeds the
+  coordinate/camera fields through `GameState_*`/`Unk02e000_GetWorkArea`,
+  builds 76 + 32 draw entries via `Unk03e43c_Unk_03e894`, clears the shared
+  table, creates 16 slots through `func_0203e6f0`, three icon submissions,
+  and finishes with `func_02061f10`/`func_020442fc`.
+- `func_0203f450`/`func_0203fb14`/`func_0203eba4` source bodies are not retained
+  because the compiler-generated stack frames are large and the Ghidra output
+  loses the argument slots; no candidate reached a stable size. Open a
+  decomp.me scratch with the delinked body before retrying.
