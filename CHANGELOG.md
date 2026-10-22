@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Corrected the YDM release function to accept its typed owner and added explicit helper prototypes.
 - Verified all five YDM loader/section accessors in `src/game/unit_020392f8.c` at 100% objdiff, with typed `YdmFile`/`YdmHeader` layouts, cited path format strings, and per-function documentation.
 - Matched all eight M1-T094 functions in `src/game/unit_021124f0.c` at 100% objdiff, including the event-flag position gate and the request-39 sender, with typed work/object/request layouts and per-function documentation.
 - Matched and documented all five `unit_020a1418` resource-19 lookups at 100% objdiff: binary search by id, scan by packed value, record validity predicate, and the kind-filtered id collector.

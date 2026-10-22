@@ -15,10 +15,10 @@ returns. Path formats were read from the retail ARM9 image at `data_021420d8`,
 
 ## Functions
 
-- `func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int dark, int kind)`
+- `func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int variant, int kind)`
   — builds the YDM path selected by `kind`, maps the file, and fills `ydm`'s header and
   four section pointers. `kind == 0` uses the `_ydm` format, `kind == 1` uses `_dk` when
-  `dark == 1` and the dummy map otherwise, and `kind == 2` uses the two-index `_dm` format
+  `variant == 1` and the dummy map otherwise, and `kind == 2` uses the two-index `_dm` format
   with `floor` and `extra`. Returns 1 on success, 0 for a null output or a failed
   existence check/map. Section bases are chained from the header counts at +6/+7/+8 with
   a 4-byte terminator after each section.
@@ -29,7 +29,7 @@ returns. Path formats were read from the retail ARM9 image at `data_021420d8`,
 - `Unk0392f8_Unk_0394b8(YdmFile *ydm, int x, int y)` — converts grid coordinates to the
   16-bit cell in section 3. The header's +9/+10 bytes are the grid origin and +11/+12
   its width/height; returns NULL for a null object/file or coordinates outside the grid.
-- `Unk0392f8_Unk_039454(u32 *arg0)` — releases the mapped file at `*arg0` and clears the
+- `Unk0392f8_Unk_039454(YdmFile *ydm)` — releases the mapped file at `ydm->header` and clears the
   20-byte `YdmFile` object; a null object is a no-op.
 
 ## Hard functions

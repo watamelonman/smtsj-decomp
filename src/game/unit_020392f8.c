@@ -7,20 +7,8 @@
 #include "types.h"
 
 
-int func_02008848();
-int func_020516d0();
-
-/* Releases the mapped file held in *arg0 and then clears the whole 20-byte
- * YdmFile object (the object is passed as its first word).  A null object is
- * a no-op, matching the callers that release an optional resource. */
-void Unk0392f8_Unk_039454(u32 *arg0)
-{
-  if (arg0 == (u32 *)0x0) {
-    return;
-  }
-  func_020516d0(*arg0);
-  func_02008848(arg0,0,0x14);
-}
+void func_02008848(void *dst, int val, u32 size);
+void func_020516d0(void *file);
 
 /* Path format strings, read from the retail ARM9 image at these addresses. */
 extern char data_021420d8[];   /* "Data/Dungeon/Ydm/%s_%02d_ydm.cmp" */
@@ -55,12 +43,23 @@ typedef struct YdmFile {
     u8 *sec3;                   /* +0x10: 16-bit grid */
 } YdmFile;
 
+/* Releases the mapped header and clears its 20-byte owner object.
+ * A null object is a no-op for callers releasing an optional resource. */
+void Unk0392f8_Unk_039454(YdmFile *ydm)
+{
+    if (ydm == 0) {
+        return;
+    }
+    func_020516d0(ydm->header);
+    func_02008848(ydm, 0, sizeof(YdmFile));
+}
+
 /* Builds the YDM path selected by kind, maps it, and fills ydm's header and
  * section pointers.  Returns 1 on success and 0 for a null output, a missing
- * file, or a failed map.  kind 0 selects the stage file; kind 1 selects the
- * dark stage when dark == 1 and the dummy map otherwise; kind 2 selects the
+ * file, or a failed map.  kind 0 selects the single-index format; kind 1 selects the
+ * `_dk` format when variant == 1 and the dummy map otherwise; kind 2 selects the
  * two-index file using both floor and extra. */
-int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int dark, int kind)
+int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int variant, int kind)
 {
     char path[64];
     int i;
@@ -70,14 +69,24 @@ int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int dark
     if (ydm == 0) {
         return 0;
     }
-    { u32 n = 16; char *q = path;
-    do { q[0] = 0; q[1] = 0; q[2] = 0; q[3] = 0; q += 4; } while (--n != 0); }
+    /* Inline zeroing of path[64]: the original emits this unrolled loop. */
+    {
+        u32 n = 16;
+        char *q = path;
+        do {
+            q[0] = 0;
+            q[1] = 0;
+            q[2] = 0;
+            q[3] = 0;
+            q += 4;
+        } while (--n != 0);
+    }
     switch (kind) {
     case 0:
         func_02013c3c(path, data_021420d8, name, floor);
         break;
     case 1:
-        if (dark == 1) {
+        if (variant == 1) {
             func_02013c3c(path, data_021420fc, name, floor);
         } else {
             func_02013c3c(path, data_02142120);
