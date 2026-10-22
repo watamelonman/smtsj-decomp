@@ -42,7 +42,7 @@ typedef struct CampStatusFlagObj {
     u8 flag_3a;
 } CampStatusFlagObj;
 
-/* Unit record at CampStatusWork.unk_00cc (also the argument of func_020ddb04). */
+/* Unit record at CampStatusWork.unk_00cc (also the argument of CampStatus_Unk_0ddb04). */
 typedef struct CampStatusUnit {
     u8 pad_0000[0x28];
     u16 unk_0028[6];            /* +0x28: id list, 0-terminated */
@@ -119,7 +119,7 @@ typedef struct CampStatusCell {
 } CampStatusCell;
 
 /* Object handled by the four-entry table at 0x0213c1d8 (CampStatus_GetUnkField7494,
- * func_020dcb68, func_020dcc00, func_020dd0a4); a different object from CampStatusWork. */
+ * CampStatus_Unk_0dcb68, func_020dcc00, func_020dd0a4); a different object from CampStatusWork. */
 typedef struct CampStatusTableWork {
     u8 pad_0000[0x240];
     u8 unk_0240[0x7242];        /* +0x240: object passed to Unk038fbc_Unk_039160; size from the next field */
@@ -535,7 +535,7 @@ void CampStatus_GetLinkUnk14(u32 *out)
 /* Triangle-ish ramp over a 120-tick period: 11 rising to 31 over ticks 0..45, hold 31 to 74,
  * then fall back (4.12 fixed point, slope 0x71c). */
 /* Draw two numbers (a at x 24, b at x 86, y 27) with func_020a9fd8, after resetting the colour. */
-void func_020da670(u32 a, u32 b)
+void CampStatus_Unk_0da670(u32 a, u32 b)
 {
     func_02057df8();
     func_020a9fd8(1, 24, 27, 2, (u32)func_020a9e14(1, data_021507cc), 10, (u32)data_021507d0, a);
@@ -587,7 +587,7 @@ u8 CampStatus_Unk_0db2dc(s32 t)
 /* Set the text colour for a compared value: mode 1 compares b against a, mode 3 b against c
  * (green 0x8cff4a00 when larger, red 0xff290000 when smaller), mode 2 is green when c > 0.
  * Equal values (and other modes) keep the default colour from func_02057df8. */
-void func_020db3e0(s32 a, s32 b, s32 c, s32 mode)
+void CampStatus_Unk_0db3e0(s32 a, s32 b, s32 c, s32 mode)
 {
     func_02057df8();
     if (mode == 1) {
@@ -615,7 +615,7 @@ void func_020db3e0(s32 a, s32 b, s32 c, s32 mode)
 
 /* Show icon data_0213c568[3] on unk_00c8 when Unk09974c_Unk_0998d8(unk_00d0) is 0; otherwise
  * show data_0213c568[0], or 7 after func_0204faf0(10, id) when id is not 0xffff. */
-void func_020dbd04(CampStatusWork *work, u32 id)
+void CampStatus_Unk_0dbd04(CampStatusWork *work, u32 id)
 {
     u32 other;
     u32 icon;
@@ -648,7 +648,7 @@ void CampStatus_Unk_0dbf24(CampStatusWork *work, u32 id)
 
 /* Show the unit's entries: the byte at +2 of its func_020a1428 entry on unk_00bc, its id on
  * unk_00c0, and its 0-terminated id list (up to 6) on unk_00c4. */
-void func_020dc240(CampStatusWork *work)
+void CampStatus_Unk_0dc240(CampStatusWork *work)
 {
     u32 ids[6];
     u32 i;
@@ -667,7 +667,7 @@ void func_020dc240(CampStatusWork *work)
 
 /* On unk_00c4: entry 201 of group (12, 0), then each non-zero record id (up to 3) of
  * func_020a1740(unk_00da) from group (6, 0). */
-void func_020dc4a8(CampStatusWork *work)
+void CampStatus_Unk_0dc4a8(CampStatusWork *work)
 {
     u32 tabA = func_020445f4(6, 0);
     u32 tabB = func_020445f4(12, 0);
@@ -688,7 +688,7 @@ void func_020dc4a8(CampStatusWork *work)
 
 /* When unk_01a0 is set: show the selected record id (group 7) on unk_00c8 if the record exists
  * and Unk02e000_GetRecordUnk1e(unk_00da) is at least 100, else clear it via Unk0ddeb0_Unk_0ddf0c. */
-void func_020dc540(CampStatusWork *work)
+void CampStatus_Unk_0dc540(CampStatusWork *work)
 {
     CampStatusRecordSet *rs;
     u32 ids[1];
@@ -772,7 +772,7 @@ void func_020dcb44(void)
  * flag number n is non-zero and work-area flag n + 55 is not set yet, set it, call
  * ScanVisor_Unk_0a2ab0 and start the 60-tick unk_7484 timer. Always ends with
  * ScanVisor_Unk_0a2ae8(3, 2) and returns 1. */
-int func_020dcb68(CampStatusTableWork *work)
+int CampStatus_Unk_0dcb68(CampStatusTableWork *work)
 {
     CampStatusCell *c = Unk038fbc_Unk_039160(work->unk_0240, work->unk_7482, work->unk_7483);
     u32 n;
@@ -790,7 +790,7 @@ int func_020dcb68(CampStatusTableWork *work)
 
 /* Like CampStatus_Unk_0ddb9c with the unit's id: grey for an empty entry, own colours for
  * kinds 4 and 5, grey otherwise. */
-void func_020ddb04(CampStatusUnit *unit)
+void CampStatus_Unk_0ddb04(CampStatusUnit *unit)
 {
     CampStatusEntry *e = func_020a1428(unit->unk_0036);
     if (e->unk_00 == 0) {
