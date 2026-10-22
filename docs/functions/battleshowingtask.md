@@ -23,14 +23,47 @@
   returned record.
 - `ExpGauge_Update`: hand-written (see comment in source)
 
-## Not done in M1-T1035
-- `func_0211a504`
-- `func_0211ccf8`
-- `func_021196fc`
-- `func_0211c350`
-- `func_0211a6e4`
-- `func_0211ceb4`
-- `BattleShowingTask_Unk_11b4e4`
+## M1-T1035 — verified matches
+
+All eight targets are 100% in objdiff; the full-image checksum still matches. The
+existing hand-written `ExpGauge_Update` and `BattleShowingTask_Unk_11b4e4` were
+already present and remain instruction-identical. Evidence is the original ARM
+instruction stream at each entry address.
+
+- `func_021196fc` (`0x021196fc`, 304 B): eight-state setup machine installed as
+  the task update callback. It wraps a 16-bit frame counter, then advances
+  through initialization, gate checks, the 0x2F resource dispatch and the
+  save/load selection before running the final teardown calls.
+- `func_0211a504` (`0x0211a504`, 272 B): computes one party member's EXP award.
+  Areas of kind 1 and 7 award zero; flags 0x18E and 0x18F add 25%/50% of the
+  incoming amount (rounded up); entries with +0x1A bit 0 set instead scale the
+  amount through `func_020b8240`, unless global +0x40 bit 15 bypasses scaling.
+- `func_0211a6e4` (`0x0211a6e4`, 384 B): computes the two result-screen EXP
+  gauges. A nonzero entry +2 fills both; otherwise the global +0x60/+0x3C gate
+  and area kinds 1/7 suppress the award, script flags 0xAD/0xAE add 10 EXP and
+  one level-up, and the party ID scan maps resource +0x26 bits 2..4 to +10 EXP,
+  +1 level-up, or full gauges.
+- `func_0211c350` (`0x0211c350`, 372 B): copies the five-entry rank table from
+  `data_0213cce0`, replaces each value with the delta between the source and
+  destination rank bytes, publishes the nonzero entries, then selects their IDs
+  through the alternating 02063A30/02063A44 helpers (resource 9 when empty).
+- `func_0211ccf8` (`0x0211ccf8`, 280 B): screen dispatch for states 6, 7 and 9.
+  States 7/9 wait on the 020654CC/02065E28 gates and 02053800(0, 0x800), post
+  the type-37 options message with field 12, and clear slot 37; state 6 waits
+  on 02053800(0, 1) and continues through `func_0211c6ac`.
+- `func_0211ceb4` (`0x0211ceb4`, 412 B): collects the nonzero selectable
+  entries (the caller's first entry plus the `count` 0x28-byte entries),
+  allocates and sorts the pointer list with `func_0211c160`, then starts the
+  current-record dispatch and resets the work state.
+- `BattleShowingTask_Unk_11b4e4` (`0x0211b4e4`, 416 B): submits either the
+  seven-animation display path for states 2/9 or the six-handle auxiliary path
+  for the other states, then forwards the state-selected scale to
+  `func_0211b100`/`func_0211b2ac`.
+- `ExpGauge_Update` (`0x021198fc`, 544 B): per-frame EXP-gauge state machine:
+  fade in, count up with per-level pauses, level-up animation, done, and fade
+  out, plus the independent level-up animation restart.
+
+Hard list for M1-T1035: none.
 
 ## M1-T1033 — verified matches
 

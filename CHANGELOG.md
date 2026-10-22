@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1035 battle-showing functions at 100% objdiff (task setup machine, EXP award/gauge calculation, rank publication, screen dispatch, selectable-entry sort, render path and EXP-gauge update); documented each function and the `data_0213cce0` rank table.
 - Matched four M1-T1034 battle-showing functions (EXP-gauge creation, cleanup, entry thresholds and slot comparison) at 100% objdiff; documented matching trials and four remaining hard functions.
 - Replaced M1-T1033 raw area/category offsets with typed fields and the fade alpha with a float, preserving all instruction matches.
 - Matched all eight M1-T1033 battle-showing functions at 100% objdiff: EXP-gauge state switch, party-slot EXP step, entry append, even/odd animation set starts, entry-category lookup, resource dispatch and fade-in display submission.
