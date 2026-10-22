@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1094 functions in `src/game/unit_02100810.c` at 100% objdiff, including record conversions, percentage counters, drawing callback and wrappers.
 - Matched all eight M1-T1093 functions in `src/game/unit_02100810.c` at 100% objdiff, with typed work/table layouts and per-function documentation.
 - `src/game/unit_02122850.c`: completed the eight M1-T109 functions — the callback-table initializer, state dispatch, Camp/camp_BG setup, release path and four callbacks now all match at 100% objdiff, with typed work layout and per-function docs.
 - Typed and documented the eight M1-T1086 functions in `src/game/unit_0203e43c.c` (all 100% in objdiff), including the `/10` clamp helper, the counter setter/getter pair, and the table-registration thunk.

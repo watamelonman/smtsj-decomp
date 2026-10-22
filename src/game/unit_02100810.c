@@ -23,11 +23,14 @@ typedef struct Unk100810Ops {
  * func_021065c8 while the words after it hold handles and flags.
  */
 typedef struct Unk100810Work {
-    u8 pad_0000[0x48];
+    u8 pad_0000[0x2c];
+    u32 unk_002c;
+    u8 pad_0030[0x18];
     u32 unk_0048;
     u8 pad_004c[0x08];
     u32 unk_0054;
-    u8 pad_0058[0x1edc];
+    u8 pad_0058[0x1ed8];
+    u32 unk_1f30;
     u8 unk_1f34;
     u8 pad_1f35[0x03];
     u32 unk_1f38;
@@ -64,10 +67,119 @@ typedef struct Unk100810Table {
 
 void func_02102260();
 void func_02100870();
-void func_02103508();
+void func_02103508(Unk100810Work *work);
 void func_021035a0();
 void func_02104604();
 void func_02104780();
+
+
+/* Twelve opaque bytes copied with byte alignment. */
+typedef struct Unk100810Bytes { u8 bytes[12]; } Unk100810Bytes;
+
+/* Preserve byte alignment while copying the opaque payload. */
+static inline void CopyRecordBytes(Unk100810Bytes *dest, const Unk100810Bytes *source)
+{
+    u8 *d = dest->bytes;
+    const u8 *s = source->bytes;
+    u32 n = 6;
+    do {
+        u8 a = s[0];
+        u8 b = s[1];
+        s += 2;
+        d[0] = a;
+        d[1] = b;
+        d += 2;
+    } while (--n != 0);
+}
+
+/* Record metadata returned by the two table accessors; only observed fields are named. */
+typedef struct Unk100810Meta {
+    u16 id;
+    u8 unk_02, unk_03;
+    u8 pad_04[4];
+    u16 unk_08 : 1;
+    u16 pad_08 : 15;
+    u16 unk_0a : 1;
+    u16 pad_0a : 15;
+    u8 pad_0c[8];
+    u16 unk_14;
+    union { u16 value; struct { u16 low : 1; u16 rest : 15; } bits; } unk_16;
+    u8 pad_18[2];
+    u8 stats[5];
+    u8 pad_1f[15];
+    Unk100810Bytes bytes_2e;
+} Unk100810Meta;
+
+/* Working record layout consumed by func_0209786c (60 bytes). */
+typedef struct Unk100810Result {
+    u16 unk_00, unk_02;
+    u8 stats[5];
+    u8 pad_09;
+    s16 unk_0a, unk_0c;
+    u8 pad_0e[6];
+    u16 unk_14, unk_16;
+    u8 stats_18[5];
+    u8 pad_1d;
+    s16 unk_1e, unk_20;
+    u8 pad_22[2];
+    u32 unk_24;
+    Unk100810Bytes bytes_28;
+    u16 unk_34, id;
+    u8 unk_38;
+    u8 pad_39[3];
+} Unk100810Result;
+
+/* Compact saved record; field ordering is evidenced by the conversion loads. */
+typedef struct Unk100810Saved {
+    u8 unk_00;
+    u8 stats[5];
+    u8 stats_06[5];
+    u8 pad_0b;
+    u16 unk_0c, unk_0e;
+    Unk100810Bytes bytes_10;
+    u8 pad_1c[4];
+    u32 unk_20;
+} Unk100810Saved;
+
+/* Record with an explicit id followed by the saved fields. */
+typedef struct Unk100810Input {
+    u16 id;
+    u8 pad_02[2];
+    u8 unk_04;
+    u8 stats[5];
+    u8 stats_0a[5];
+    u8 pad_0f;
+    u16 unk_10, unk_12;
+    Unk100810Bytes bytes_14;
+    u8 pad_20[4];
+    u32 unk_24;
+} Unk100810Input;
+
+Unk100810Meta *func_020a1428(u16 id);
+Unk100810Meta *func_020a1740(u16 id);
+int Unk02e000_IsRecordAvailable(u16 id);
+void func_02008848(void *dest, int value, u32 size);
+void func_0209786c(Unk100810Result *record);
+int CampStatus_IsUnkF4F8Set(void);
+void func_02057524(int mode);
+void func_02057df8(void);
+void func_02057534(void);
+void Unk0ddeb0_Unk_0ddeb0(u32 handle, int a, int b, int c, int d, int e);
+
+/* Draws twelve entries for state 21 when the camp flag permits it and +0x1f30 is clear. */
+void func_02103508(Unk100810Work *work)
+{
+    int i, y;
+    if (work->unk_0048 != 21) return;
+    if (CampStatus_IsUnkF4F8Set() == 0) return;
+    if (work->unk_1f30 != 0) return;
+    func_02057524(6);
+    func_02057df8();
+    for (i = 0, y = 30; i < 12; i++, y += 13) {
+        Unk0ddeb0_Unk_0ddeb0(work->unk_002c, 3, y, i, 12, 10);
+    }
+    func_02057534();
+}
 
 /*
  * Stores 0x20d8 at +0, zero at +4, and six callback pointers from +0x0c. The
@@ -222,4 +334,202 @@ int Unk100810_IsField50One(void)
         return 0;
     }
     return FIELD(u32, data_02176e2c, 80) == 1;
+}
+
+/* Converts observed record fields to the 60-byte work record; a zero id leaves out untouched. */
+void func_021066f0(Unk100810Input *input, Unk100810Result *out)
+{
+    if (input->id == 0) return;
+    func_020a1428(input->id);
+    func_02008848(out, 0, 60);
+    out->unk_38 = input->unk_04;
+    CopyRecordBytes(&out->bytes_28, &input->bytes_14);
+    out->id = input->id;
+    out->unk_24 = input->unk_24;
+    out->unk_00 = input->unk_10;
+    out->unk_02 = input->unk_12;
+    out->stats[0] = input->stats[0];
+    out->stats[1] = input->stats[2];
+    out->stats[2] = input->stats[3];
+    out->stats[3] = input->stats[4];
+    out->stats[4] = input->stats[1];
+    out->unk_14 = 0;
+    out->unk_16 = 0;
+    out->stats_18[0] = input->stats_0a[0];
+    out->stats_18[1] = input->stats_0a[2];
+    out->stats_18[2] = input->stats_0a[3];
+    out->stats_18[3] = input->stats_0a[4];
+    out->stats_18[4] = input->stats_0a[1];
+    func_0209786c(out);
+    out->unk_1e = out->unk_0a;
+    out->unk_20 = out->unk_0c;
+}
+
+/* Converts observed record fields to the 60-byte work record; a zero id leaves out untouched. */
+void func_021067e8(Unk100810Saved *input, u16 id, Unk100810Result *out)
+{
+    if (id == 0) return;
+    func_020a1428(id);
+    func_02008848(out, 0, 60);
+    out->unk_38 = input->unk_00;
+    CopyRecordBytes(&out->bytes_28, &input->bytes_10);
+    out->id = id;
+    out->unk_24 = input->unk_20;
+    out->unk_00 = input->unk_0c;
+    out->unk_02 = input->unk_0e;
+    out->stats[0] = input->stats[0];
+    out->stats[1] = input->stats[2];
+    out->stats[2] = input->stats[3];
+    out->stats[3] = input->stats[4];
+    out->stats[4] = input->stats[1];
+    out->unk_14 = 0;
+    out->unk_16 = 0;
+    out->stats_18[0] = input->stats_06[0];
+    out->stats_18[1] = input->stats_06[2];
+    out->stats_18[2] = input->stats_06[3];
+    out->stats_18[3] = input->stats_06[4];
+    out->stats_18[4] = input->stats_06[1];
+    func_0209786c(out);
+    out->unk_1e = out->unk_0a;
+    out->unk_20 = out->unk_0c;
+}
+
+/* Converts observed record fields to the 60-byte work record; a zero id leaves out untouched. */
+void func_021068dc(u16 id, Unk100810Result *out)
+{
+    Unk100810Meta *meta;
+    if (id == 0) return;
+    meta = func_020a1428(id);
+    func_02008848(out, 0, 60);
+    out->unk_38 = meta->unk_03;
+    CopyRecordBytes(&out->bytes_28, &meta->bytes_2e);
+    out->id = id;
+    out->unk_24 = 0;
+    out->unk_00 = meta->unk_14;
+    out->unk_02 = meta->unk_16.value;
+    out->stats[0] = meta->stats[0];
+    out->stats[1] = meta->stats[1];
+    out->stats[2] = meta->stats[2];
+    out->stats[3] = meta->stats[3];
+    out->stats[4] = meta->stats[4];
+    out->unk_14 = 0;
+    out->unk_16 = 0;
+    out->stats_18[0] = meta->stats[0];
+    out->stats_18[1] = meta->stats[1];
+    out->stats_18[2] = meta->stats[2];
+    out->stats_18[3] = meta->stats[3];
+    out->stats_18[4] = meta->stats[4];
+    func_0209786c(out);
+    out->unk_1e = out->unk_0a;
+    out->unk_20 = out->unk_0c;
+}
+
+/* Counts observed record flags and returns their percentage, clamped to 100, with a minimum of one for a nonzero numerator. */
+u32 func_02106ec0(void)
+{
+    u32 count = 0;
+    u32 total = 0;
+    Unk100810Meta *meta;
+    u16 i;
+    for (i = 0; i < 0x1ea; i++) {
+        meta = func_020a1740((u16)(i + 1));
+        if (meta == 0) continue;
+        if (Unk02e000_IsRecordAvailable(meta->id) != 0) count++;
+        if (meta->unk_16.bits.low) total++;
+    }
+    {
+        u32 result = count * 100 / total;
+        if (result == 0 && count != 0) result = 1;
+        if (result > 100) result = 100;
+        return result;
+    }
+}
+
+/* Counts observed record flags and returns their percentage, clamped to 100, with a minimum of one for a nonzero numerator. */
+u32 func_02106e10(void)
+{
+    u32 count = 0;
+    u32 total = 0;
+    Unk100810Meta *meta;
+    u16 i;
+    for (i = 0; i < 0x1ea; i++) {
+        meta = func_020a1428((u16)(i + 1));
+        if (meta == 0) continue;
+        if (Unk02e000_GetRecordFlag1(meta->id) != 0) {
+            if (!meta->unk_0a) count++;
+        }
+        if (meta->unk_08) {
+            if (!meta->unk_0a) total++;
+        }
+    }
+    {
+        u32 result = count * 100 / total;
+        if (result == 0 && count != 0) result = 1;
+        if (result > 100) result = 100;
+        return result;
+    }
+}
+
+/* Message payload: two flag bytes and sixteen words, initialized by the wrapper. */
+typedef struct Unk100810Message {
+    u8 flags[2];
+    u8 pad_02[2];
+    u32 words[16];
+} Unk100810Message;
+
+int Unk02e000_SetRecord(u16 id, Unk100810Saved *saved);
+void func_020d6cac(Unk100810Bytes *bytes);
+void CampStatus_Copy12c(Unk100810Result *record);
+void func_020bcbc4(int kind, Unk100810Message *message);
+
+/* Builds the selected work record and publishes message kind 3 with word 1 set to 22. */
+void func_021065fc(Unk100810Input *input)
+{
+    Unk100810Result result;
+    Unk100810Saved saved;
+    Unk100810Message message;
+    int i;
+    if (input->id == 0) {
+        func_02008848(&result, 0, 60);
+        func_020d6cac(&result.bytes_28);
+    } else if (Unk100810_IsField50One()) {
+        if (Unk02e000_SetRecord(input->id, &saved)) {
+            func_021067e8(&saved, input->id, &result);
+            func_020d6cac(&result.bytes_28);
+        }
+        func_021066f0(input, &result);
+    } else {
+        func_021066f0(input, &result);
+        func_020d6cac(&result.bytes_28);
+    }
+    CampStatus_Copy12c(&result);
+    for (i = 0; i < 2; i++) message.flags[i] = 0;
+    for (i = 0; i < 16; i++) message.words[i] = 0;
+    message.words[1] = 22;
+    message.flags[0] |= 2;
+    func_020bcbc4(3, &message);
+}
+
+/* Drawing descriptor: signed position and width fields used by the fixed point calculations. */
+typedef struct Unk100810Draw {
+    u8 pad_00[10];
+    s16 x;
+    u8 pad_0c[2];
+    s16 width;
+    u8 pad_10[8];
+} Unk100810Draw;
+
+const Unk100810Draw *func_0205e318(u32 handle, int index);
+void func_0205e048(int kind, u32 handle, Unk100810Draw *draw, u32 arg,
+                  int zero, float a, float b, int zero2, float c, int mode, int zero3);
+
+/* Scales descriptor 105 to a 116-unit bar and positions it using signed 12-bit fixed point ratios. */
+void func_021069f0(u32 handle, s32 total, s32 value, s32 offset, u32 arg)
+{
+    Unk100810Draw draw;
+    func_02008904(func_0205e318(handle, 105), &draw, 24);
+    if (total < value) total = value;
+    draw.width = ((value << 12) / total * 116) >> 12;
+    draw.x += (((offset << 12) / (total - value) * (116 - draw.width)) << 4) >> 16;
+    func_0205e048(2, handle, &draw, arg, 0, 1.0f, 1.0f, 0, 1.0f, 4, 0);
 }
