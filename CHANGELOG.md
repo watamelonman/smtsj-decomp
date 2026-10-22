@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all four functions in `src/game/unit_020e78b8.c`, with typed work, message, and descriptor layouts.
 - `src/game/unit_020df5b8.c`: all seven functions now have matching C, including entry checks, overlay thunks, and six-descriptor initialization.
 - Match all six functions in `src/game/unit_020eed24.c`, with typed work layouts and documented callback/array operations.
 - Represented the talk-tone work state's +0x40 owner id with a typed field and removed unsupported timing claims from its comments.
