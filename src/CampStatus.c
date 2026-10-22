@@ -54,7 +54,7 @@ typedef struct CampStatusUnit {
 
 /* Camp status work; the first argument here and also *data_02176be4. */
 typedef struct CampStatusWork {
-    u8 unk_0000;                /* +0x00: screen mode; selects the id source in func_020dbf6c */
+    u8 unk_0000;                /* +0x00: screen mode; selects the id source in CampStatus_Unk_0dbf6c */
     u8 pad_0001[0x7];
     u32 unk_0008;
     u32 unk_000c;
@@ -680,7 +680,7 @@ void CampStatus_Unk_0d8d60(CampStatusWork *work)
 /* Draw the five stat rows (order +4, +8, +5, +6, +7) via func_020dab5c, with the add values
  * when add is given. The first time all ten shown values equal unk_0118, set unk_0114 and
  * call func_020bc9f4(3, 0) / func_020bcacc(unk_0014, 0). */
-void func_020da0e0(CampStatusWork *work, const CampStatusStats *cur, const CampStatusStats *next,
+void CampStatus_Unk_0da0e0(CampStatusWork *work, const CampStatusStats *cur, const CampStatusStats *next,
                    const CampStatusStats *add, u32 arg5)
 {
     if (add == 0) {
@@ -1068,7 +1068,7 @@ void CampStatus_Unk_0dbf24(CampStatusWork *work, u32 id)
  * list (up to 3) of the player's second record on unk_00c4. */
 /* Pick the id of the selected list entry for the current screen mode (unk_0000) and show it
  * (group 10) on unk_00c8, or clear unk_00c8 when there is none. */
-void func_020dbf6c(CampStatusWork *work)
+void CampStatus_Unk_0dbf6c(CampStatusWork *work)
 {
     CampStatusSavedRecord rec;
     u32 id;
