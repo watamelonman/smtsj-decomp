@@ -74,16 +74,77 @@ loop bound in `func_0211a474`; the two 02e000 work helpers share that area-work 
 
 Hard list for M1-T1033: none.
 
-## Not done in M1-T1034
-- `func_0211a614`
-- `func_0211c160`
-- `func_0211d050`
-- `func_0211a058`
-- `func_0211a380`
-- `func_0211b100`
-- `func_0211a924`
-- `func_0211c24c`
-- `BattleShowingTask_Unk_11b4e4`: decompiler-derived (plain cleanup)
+## M1-T1034 — verified matches and hard list
+
+Four targets are implemented and verified at 100% in objdiff. The original ARM
+instruction streams at the listed addresses are the evidence; identifiers remain
+neutral. The existing source file was extended rather than recreated.
+
+- `func_0211a058` (`0x0211a058`, 232 B): allocates a 0x44-byte EXP gauge
+  with update/draw/cleanup callbacks, stores the six incoming arguments,
+  initializes its EXP step and next-level threshold, then creates and starts the
+  gauge and level-up animations. Requires successful allocation, as the original
+  immediately dereferences the result. Callback casts adapt the existing generic
+  allocator declaration; the actual callbacks receive the allocated gauge.
+- `func_0211a380` (`0x0211a380`, 244 B): cleans up seven handles at +0x2D4,
+  alternating resource handles at +0x2C4..+0x2D0, six resource-stack entries,
+  four entries at +0x2F0, two handles at +0x310/+0x314, and one final stack entry.
+  Nonzero checked fields are cleared after cleanup. The existing caller
+  `BattleShowingTask_Unk_11b684` now explicitly forwards its incoming work pointer.
+  `func_0205bb68` takes no argument: its callee `func_0205b724` obtains the
+  resource stack from global `data_0216a730`, ignoring incoming r0.
+- `func_0211a924` (`0x0211a924`, 256 B): scans the fifteen six-byte entries
+  at +0x268. For nonempty IDs, loads resource thresholds and the stored counter.
+  Resource flag bit 2 skips further processing. Otherwise an existing area's
+  +8 counter is transferred from the stored counter into entry +2; bits 0/1/2
+  mark newly crossed resource +0x5A/+0x5B/100 thresholds, and the total is stored.
+- `func_0211c160` (`0x0211c160`, 208 B): compares two record pointers by
+  signed record +0 IDs. A negative left ID returns -1; a negative right ID
+  returns 1. Finds each nonnegative ID first among three party slots at +0x354,
+  then among twelve reserve slots at +0x348 (offsetting their ranks by three).
+  Returns the rank difference; unfound ranks remain -1.
+
+### Hard list for M1-T1034
+
+These four functions remain linked from the original delinked object. No
+unmatched candidate bodies were retained. A human can use `tools/decompme.py`
+for a scratch with the following instruction-level findings and trial results.
+
+- `func_0211a614` (`0x0211a614`, 208 B): derives an adjustment from signed
+  area byte +0x19 and unsigned byte +0x6E, multiplies an incoming integer in
+  20.12 fixed point by `func_020491cc`'s result, applies multiplier 0x1266 when
+  script flag 0xAC is set, then adds a randomly signed perturbation with range
+  0..0x19A before shifting to integer units. Tried signed 64-bit rounded
+  multiplication, an inline fixed-point helper, operand reversal, signed and
+  unsigned constant suffixes, and an explicit high/low reconstruction.
+  Ordinary C produced 216 B versus 208 B: constant multiplication retained
+  an extra zero-high-word multiply-accumulate. Explicit reconstruction grew
+  further (228/232 B). Candidate omitted.
+- `func_0211b100` (`0x0211b100`, 244 B): optional work +0x50 display;
+  computes an alpha byte from scale times 0x1F000, clamps it to 1..31, draws
+  `data_02151cbc` at x+62, and draws resource 0x611B (0x611A when flag 0x701
+  is clear) at x+107. Tried the same fixed-point expression/helper and
+  constant variants as above. Ordinary C produced 252 B versus 244 B due to
+  the same redundant high-word multiplication; explicit reconstruction was
+  264/268 B. Candidate omitted.
+- `func_0211d050` (`0x0211d050`, 208 B): event switch 0..4. Event 3 dispatches
+  work states 7/9 through the existing 0x0211C5D0/0x0211C610 helpers after resetting
+  dispatch state. Event 1 initializes two flag bytes and sixteen words on the
+  stack, then calls `Unk0bc1a8_Unk_0bc514(work, 1)`. Explicit initialization
+  loops, including an inline initializer, were optimized away because this
+  local is unused (128 B). Aggregate zero initialization retained the local
+  but emitted block stores (200 B). A volatile initializer retained loops
+  but differed in register allocation; volatile was not retained in source.
+- `func_0211c24c` (`0x0211c24c`, 260 B): current-record dispatch preparation.
+  Initializes the same options shape, calls `func_020d6ce4(record+0x10)`,
+  loads alternate resources for negative record IDs or initializes the
+  embedded work +0x10 object for other IDs, then calls `func_020bcbc4(3, options)`.
+  Trial loops/inline initialization and aggregate initialization differed in
+  stack layout and stores. Aggregate initialization plus temporary value
+  arrays produced 252 B with block zero stores instead of the original loops;
+  scalar argument trials produced 288 B. Original extra stack copies likely
+  require recovering the original option-construction/setter idiom. Candidate
+  omitted rather than retaining artificial stack writes.
 
 ## M1-T1031 — verified matches
 

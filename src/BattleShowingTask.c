@@ -28,8 +28,12 @@ typedef struct BattleShowingTaskWork {
     u8 pad_002c[0x78];
     BattleShowingTaskSub *unk_00a4; /* 0xA4: optional sub-object, see func_0211ce10 */
     u32 unk_00a8;               /* 0xA8: source-animation data base */
-    u8 pad_00ac[0x228];
-    u32 anim[6];                /* 0x2D4: six animation handles (func_0211aa24/aaa8) */
+    u8 pad_00ac[0x218];
+    u32 auxiliary[4];           /* 0x2C4: alternating display/source handles */
+    u32 anim[7];                /* 0x2D4: seven handles; first six used by func_0211aa24/aaa8 */
+    u32 handles[4];             /* 0x2F0: cleanup handles */
+    u8 pad_0300[0x10];
+    u32 tailHandles[2];         /* 0x310: cleanup handles */
 } BattleShowingTaskWork;
 
 /* Task object created by func_020611dc; init only touches its first two words. */
@@ -59,7 +63,8 @@ u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 typedef struct BattleShowingAreaWork {
     u8 pad_0000[0x20];
     s32 unk_0020;
-    u8 pad_0024[0x330];
+    u8 pad_0024[0x324];
+    s8 reserve[12];
     s8 unk_0354[3];
 } BattleShowingAreaWork;
 
@@ -321,11 +326,11 @@ u32 BattleShowingTask_Unk_11c4c4(u32 value, u32 unused)
 
 /* The caller at 0x0211b684 supplies these three resource IDs in order. */
 void Unk044394_Unk_044534(u32 id);
-void func_0211a380(void);
+void func_0211a380(BattleShowingTaskWork *work);
 /* Run the local helper, then process IDs 0x17, 0x21 and 0x29 (0x0211b684). */
-void BattleShowingTask_Unk_11b684(void)
+void BattleShowingTask_Unk_11b684(BattleShowingTaskWork *work)
 {
-    func_0211a380();
+    func_0211a380(work);
     Unk044394_Unk_044534(0x17);
     Unk044394_Unk_044534(0x21);
     Unk044394_Unk_044534(0x29);
@@ -833,4 +838,164 @@ void func_0211c4e0(BattleShowingTaskWork *work)
     func_02065628(1);
     func_0206569c(value);
     func_02065cfc(1, (s16)record->id);
+}
+
+/* Cleanup helpers for live handles. The 0205bb68 helper takes no arguments:
+ * its callee 0205b724 loads the resource stack from global data_0216a730. */
+void func_0205ddb4(u32 handle);
+void func_0205c368(u32 handle);
+void func_0205bb68(void);
+void func_020629c4(u32 handle);
+
+/* Release the seven animation handles and auxiliary display resources.
+ * Evidence: cleanup calls and zero stores at ARM 0x0211a380; requires live work. */
+void func_0211a380(BattleShowingTaskWork *work)
+{
+    int i;
+    for (i = 0; i < 7; i++) {
+        if (work->anim[i] != 0) {
+            func_0205c3dc(work->anim[i]);
+            work->anim[i] = 0;
+        }
+    }
+    if (work->auxiliary[0] != 0) {
+        func_0205ddb4(work->auxiliary[0]);
+        work->auxiliary[0] = 0;
+    }
+    if (work->auxiliary[1] != 0) {
+        func_0205c368(work->auxiliary[1]);
+        work->auxiliary[1] = 0;
+    }
+    if (work->auxiliary[2] != 0) {
+        func_0205ddb4(work->auxiliary[2]);
+        work->auxiliary[2] = 0;
+    }
+    if (work->auxiliary[3] != 0) {
+        func_0205c368(work->auxiliary[3]);
+        work->auxiliary[3] = 0;
+    }
+    {
+        u32 j;
+        for (j = 0; j < 6; j++) {
+            func_0205bb68();
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (work->handles[i] != 0) {
+            func_0205bb68();
+            work->handles[i] = 0;
+        }
+    }
+    func_020629c4(work->tailHandles[0]);
+    func_020629c4(work->tailHandles[1]);
+    func_0205bb68();
+}
+
+/* Compare two record pointers by the signed slot IDs at record +0.
+ * Evidence: ARM 0x0211c160 scans party +0x354 first, then reserve +0x348.
+ * Negative IDs sort last; callers must supply valid record pointers. */
+s32 func_0211c160(const s16 *const *left, const s16 *const *right)
+{
+    s32 a = **left;
+    s32 b;
+    s32 ai, bi, i;
+    BattleShowingAreaWork *work;
+    if (a < 0) return -1;
+    b = **right;
+    if (b < 0) return 1;
+    ai = -1;
+    bi = -1;
+    work = Unk02e000_GetWorkArea();
+    for (i = 0; i < 3; i++) {
+        if (ai < 0 && a == work->unk_0354[i]) ai = i;
+        if (bi < 0 && b == work->unk_0354[i]) bi = i;
+    }
+    for (i = 0; i < 12; i++) {
+        if (ai < 0 && a == work->reserve[i]) ai = i + 3;
+        if (bi < 0 && b == work->reserve[i]) bi = i + 3;
+    }
+    return ai - bi;
+}
+
+void func_02119c80(ExpGauge *g);
+u32 func_0205c3c0(void);
+void func_0205c3fc(u32 handle, u32 source, u32 value);
+/* Allocate a 0x44-byte EXP gauge, populate its caller-owned information and
+ * resources, and start both animations. Evidence: ARM 0x0211a058 and gauge
+ * update's use of +0x18/+0x1C. Allocation is assumed to succeed in the original. */
+ExpGauge *func_0211a058(s32 slot, BattleResultInfo *info, u32 source, u32 value,
+                       u32 arg4, u32 arg5)
+{
+    ExpGauge *g = (ExpGauge *)func_020611dc(
+                       (void (*)(BattleShowingTask *))ExpGauge_Update,
+                       (void (*)(void))func_02119c80, 0,
+                       (void (*)(void))BattleShowingTask_Unk_11a01c, 0x44, 0, 0, 1);
+    g->info = info;
+    g->unk04[0] = source;
+    g->unk04[1] = value;
+    g->unk04[2] = arg4;
+    g->unk04[3] = arg5;
+    g->fade = 0;
+    g->unk24 = slot * 22;
+    g->unk04[4] = slot;
+    func_02119a10(g);
+    ExpGauge_UpdateToNextLevel(g);
+    g->gaugeAnim = func_0205c3c0();
+    func_0205c3fc(g->gaugeAnim, g->unk04[0], g->unk04[1]);
+    ExpGauge_PlayGaugeNormal(g);
+    g->levelUpAnim = func_0205c3c0();
+    func_0205c3fc(g->levelUpAnim, g->unk04[0], g->unk04[1]);
+    func_0205c408(g->levelUpAnim, 14);
+    func_0205c41c(g->levelUpAnim, 0);
+    func_0205c6e0(g->levelUpAnim);
+    return g;
+}
+
+/* Resource fields read by the entry threshold updater at 0x0211a924. */
+typedef struct BattleShowingThresholds {
+    u8 pad00[0x16];
+    u16 flags;
+    u8 pad18[0x42];
+    u8 threshold0, threshold1;
+} BattleShowingThresholds;
+/* Existing record contributes its +8 counter when resource bit 2 is clear. */
+typedef struct BattleShowingCounterRecord {
+    u8 pad00[8];
+    u16 count;
+} BattleShowingCounterRecord;
+BattleShowingThresholds *func_020a1740(u32 id);
+s32 Unk02e000_GetRecordUnk1e(u32 id);
+void Unk02e000_SetRecordUnk1e(u32 id, s32 count);
+BattleShowingCounterRecord *Unk044904_FindById(BattleShowingAreaObject *area, u32 id);
+/* Accumulate counters for all 15 entries and mark newly crossed thresholds
+ * (resource bytes +0x5A/+0x5B and 100). Evidence: ARM 0x0211a924. Empty IDs
+ * are skipped; nonempty IDs must have a valid threshold resource. */
+void func_0211a924(BattleShowingEntryWork *work)
+{
+    BattleShowingEntry *entry = work->entries;
+    int i;
+    for (i = 0; i < 15; i++, entry++) {
+        if (entry->id != 0) {
+            BattleShowingThresholds *resource = func_020a1740(entry->id);
+            s32 old = Unk02e000_GetRecordUnk1e(entry->id);
+            s32 count;
+            if (((u32)resource->flags << 29) >> 31 == 0) {
+                BattleShowingCounterRecord *record = Unk044904_FindById(Unk044904_Unk_04502c(), entry->id);
+                if (record != 0) {
+                    old -= record->count;
+                    entry->unk02 += record->count;
+                }
+            } else {
+                continue;
+            }
+            count = old + entry->unk02;
+            if (count >= resource->threshold0) entry->flags = (entry->flags & ~1) | 1;
+            if (count >= resource->threshold1) entry->flags |= 2;
+            if (count >= 100) entry->flags |= 4;
+            if (old >= resource->threshold0) entry->flags &= ~1;
+            if (old >= resource->threshold1) entry->flags &= ~2;
+            if (old >= 100) entry->flags &= ~4;
+            Unk02e000_SetRecordUnk1e(entry->id, count);
+        }
+    }
 }
