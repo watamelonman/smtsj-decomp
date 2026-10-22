@@ -141,3 +141,4 @@ function register allocation. The next scratch must add state 0's branches
 at `0x02090f00` and the payload-building states 7/8 before tuning allocation.
 Remains on the hard list; no incomplete case implementation was installed.
 - `Unk090e60_Unk_0937a0`: rebuilds the four text lists from +0x39c slots and the group ids
+- `func_02092624`: per-frame draw: frame, scroll bar, row lists, group ids, 24-slot grid by state +0x390
