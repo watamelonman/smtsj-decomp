@@ -110,8 +110,8 @@ void func_02104604();
 void func_02104780();
 
 
-/* Twelve opaque bytes copied with byte alignment. */
-typedef struct Unk100810Bytes { u8 bytes[12]; } Unk100810Bytes;
+/* Twelve opaque bytes copied with byte alignment; the saved record reuses them as six ids. */
+typedef union Unk100810Bytes { u8 bytes[12]; u16 ids[6]; } Unk100810Bytes;
 
 /* Preserve byte alignment while copying the opaque payload. */
 static inline void CopyRecordBytes(Unk100810Bytes *dest, const Unk100810Bytes *source)
@@ -901,3 +901,116 @@ void func_021057ac(Unk100810Table *work)
     }
     work->unk_0038->unk_40 = 2;
 }
+
+/* ---- M1-T1096: list/scene handlers -------------------------------------- */
+
+/* Growth data returned by value from func_020b8804, as in CampStatus.c. */
+typedef struct Unk100810Base {
+    u8 hpRate;      /* +0x00 */
+    u8 mpRate;      /* +0x01 */
+    u16 unk_02;
+    u16 unk_04;
+    u16 unk_06;
+    u16 hpBase;     /* +0x08 */
+    u16 mpBase;     /* +0x0a */
+} Unk100810Base;
+
+/* Stat block consumed by func_0209835c (ten bytes). */
+typedef struct Unk100810Stats {
+    s16 unk_00;
+    s16 unk_02;
+    s8 unk_04, unk_05, unk_06, unk_07, unk_08;
+} Unk100810Stats;
+
+/* CampStatusUnit view of a 60-byte area record (ids are u16 here, not opaque bytes). */
+typedef struct Unk100810Unit {
+    u8 pad_00[0x0a];
+    s16 unk_0a;
+    s16 unk_0c;
+    s8 unk_0e, unk_0f, unk_10, unk_11, unk_12;
+    u8 pad_13[0x0b];
+    s16 unk_1e;
+    s16 unk_20;
+    u8 pad_22[2];
+    u32 unk_24;
+    u16 ids[6];     /* +0x28 */
+    u16 unk_34;
+    u16 id;         /* +0x36 */
+    u8 unk_38;      /* +0x38: level */
+} Unk100810Unit;
+
+Unk100810Base func_020b8804(u16 id);
+void func_0209835c(Unk100810Stats *stats, const u16 *ids);
+
+static inline u16 Unk100810_CalcMaxHp(u8 level, u8 vi, Unk100810Base base)
+{
+    u16 r;
+    s32 v = base.hpBase + (level * 6 + base.hpRate * (vi * 3) / 100);
+    if (v > 999) {
+        r = 999;
+    } else {
+        r = v;
+    }
+    return r;
+}
+
+static inline u16 Unk100810_CalcMaxMp(u8 level, u8 ma, Unk100810Base base)
+{
+    u16 r;
+    s32 v = base.mpBase + (level * 3 + base.mpRate * (ma * 2) / 100);
+    if (v > 999) {
+        r = 999;
+    } else {
+        r = v;
+    }
+    return r;
+}
+
+/* Compares a live unit record with its saved record: level, level offset, derived HP/MP and
+ * five stats must agree, and every non-zero id on the unit must exist in the saved id list. */
+int func_021059ec(Unk100810Unit *unit, u16 id)
+{
+    Unk100810Saved saved;
+    Unk100810Base base;
+    Unk100810Stats stats;
+    int same;
+
+    same = 1;
+    base = func_020b8804(id);
+    if (!Unk02e000_SetRecord(id, &saved)) return 0;
+    if (saved.unk_00 != unit->unk_38) {
+        same = 0;
+    } else if (saved.unk_20 != unit->unk_24) {
+        same = 0;
+    }
+    stats.unk_04 = saved.stats[0];
+    stats.unk_05 = saved.stats[2];
+    stats.unk_06 = saved.stats[3];
+    stats.unk_07 = saved.stats[4];
+    stats.unk_08 = saved.stats[1];
+    stats.unk_00 = Unk100810_CalcMaxHp(saved.unk_00, saved.stats[2], base);
+    stats.unk_02 = Unk100810_CalcMaxMp(saved.unk_00, saved.stats[1], base);
+    func_0209835c(&stats, saved.bytes_10.ids);
+    if (stats.unk_00 != unit->unk_0a) same = 0;
+    if (stats.unk_02 != unit->unk_0c) same = 0;
+    if (saved.stats[0] != unit->unk_0e) same = 0;
+    if (saved.stats[1] != unit->unk_12) same = 0;
+    if (saved.stats[2] != unit->unk_0f) same = 0;
+    if (saved.stats[3] != unit->unk_10) same = 0;
+    if (saved.stats[4] != unit->unk_11) same = 0;
+    {
+        int i;
+        for (i = 0; i < 6; i++) {
+        int j;
+        u16 unitId = unit->ids[i];
+        if (unitId != 0) {
+            for (j = 0; j < 6; j++) {
+                if (unitId == ((const u16 *)&saved)[8 + j]) break;
+            }
+            if (j == 6) { same = 0; break; }
+        }
+        }
+    }
+    return same;
+}
+

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_021059ec` in `src/game/unit_02100810.c` (saved-record comparison) at 100% objdiff; documented the six remaining M1-T1096 functions and their trials on the unit hard list.
 - Corrected the M1-T1095 record window layout to hold its tenth populated id while preserving the nine-row drawing limit and +0x2000 flag offset.
 - Matched all eight M1-T1095 functions in `src/game/unit_02100810.c` at 100% objdiff (work release, list rebuilds, two record-save paths, the metadata row drawer, record sorting, and the nine-row window), with typed parameters and per-function documentation.
 - Matched both functions in `src/game/unit_020f8998.c` (empty callback and the 556-byte grid-interaction state machine) at 100% objdiff, with typed work/cell layouts and per-function documentation.
