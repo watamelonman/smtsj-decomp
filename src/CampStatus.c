@@ -113,7 +113,7 @@ typedef struct CampStatusWork {
     u32 unk_0190;
     u8 pad_0194[0xc];
     u32 unk_01a0;
-    u32 unk_01a4;               /* +0x1a4: when set, func_020d5d44 skips one frame */
+    u32 unk_01a4;               /* +0x1a4: when set, CampStatus_Unk_0d5d44 skips one frame */
     u32 unk_01a8;
     u8 pad_01ac[0x94];
     u8 unk_0240;
@@ -434,7 +434,7 @@ typedef struct CampStatusEntry {
     u16 unk_002e[6];            /* +0x2e: id list, 0-terminated */
 } CampStatusEntry;
 void func_020d5644();
-void func_020d5d44();
+void CampStatus_Unk_0d5d44();
 void func_020d6120();
 void CampStatus_Unk_0d6948();
 void CampStatus_Unk_0d6a24();
@@ -500,7 +500,7 @@ void CampStatus_Unk_0d3624(CampStatusOps *o)
     o->size = 620;
     o->unk_04 = 4;
     o->fn_0c = func_020d5644;
-    o->fn_10 = func_020d5d44;
+    o->fn_10 = CampStatus_Unk_0d5d44;
     o->fn_14 = func_020d6120;
     o->fn_18 = CampStatus_Unk_0d6948;
     o->fn_1c = CampStatus_Unk_0d6a24;
@@ -533,7 +533,7 @@ void CampStatus_Unk_0dba84(CampStatusWork *work, u16 id);
  * the 3x2 cursor unk_00f0 (keys 0x40/0x80 change rows except in modes 1 and 18, 0x20/0x10
  * columns) and confirm with 0x800 or 2; otherwise (unk_01a0 and unk_00f8 set) move between the
  * two columns of the record and confirm with 0x400 or 2. */
-void func_020d5d44(CampStatusWork *work)
+void CampStatus_Unk_0d5d44(CampStatusWork *work)
 {
     CampStatusRequest req;
     u32 ids[6];

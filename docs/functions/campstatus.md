@@ -135,4 +135,4 @@
 - `CampStatus_Unk_0d9d54`: hand-matched
 - `CampStatus_Unk_0dd500`: hand-matched
 - `CampStatus_Unk_0d6e10`: hand-matched
-- `func_020d5d44`: hand-matched
+- `CampStatus_Unk_0d5d44`: hand-matched
