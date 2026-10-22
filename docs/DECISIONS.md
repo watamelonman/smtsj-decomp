@@ -98,3 +98,12 @@ qualification or guessed hardware ownership is implied.
 **Cost accepted.** A local code-generation constraint is explicit in the source.
 **What would make us revisit.** Compiler or original-type evidence that reproduces
 this ordering with an ordinary field read.
+
+## DEC-007 — Preserve the two submission views of work +0xb4
+
+`func_020e2930` passes the word at work `+0xb4` unchanged to both
+`func_0205de40` (an integer argument) and `func_0205e048` (a float argument).
+Model that field as a union of `u32 bits` and `float scale` so both calls
+preserve the original bits without numeric conversion. The initializer clears
+its integer view. The instruction evidence establishes the representation;
+it does not establish the field's game-level meaning.

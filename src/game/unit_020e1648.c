@@ -40,17 +40,25 @@ typedef struct Unk0e1648Work {
     u32 unk_000c[23]; /* handles released by func_020e1a48; count from its loop bound */
     u32 unk_0068;
     s32 unk_006c;
-    u8 pad_0070[4];
+    s32 unk_0070;
     s32 unk_0074;
     u8 pad_0078[4];
     s32 unk_007c;
-    u8 pad_0080[0x18];
+    u8 pad_0080[0xc];
+    s32 unk_008c;
+    u8 pad_0090[8];
     s32 unk_0098;
-    u8 pad_009c[0xc];
+    u8 pad_009c[8];
+    u32 unk_00a4;
     u32 unk_00a8;
     s32 unk_00ac;
     u32 unk_00b0;
-    u8 pad_00b4[0x14];
+    /* Submission helpers consume this word in different typed slots. See DEC-007. */
+    union { float scale; u32 bits; } unk_00b4;
+    u32 unk_00b8;
+    s32 unk_00bc;
+    s32 unk_00c0;
+    float unk_00c4;
     s32 unk_00c8;
     u32 unk_00cc;
     u16 unk_00d0;
@@ -66,7 +74,8 @@ typedef struct Unk0e1648Work {
     u8 unk_0eb8[8];
     s32 unk_0ec0;
     s32 unk_0ec4;
-    u8 pad_0ec8[0x1c];
+    u32 unk_0ec8;
+    u8 pad_0ecc[0x18];
     u32 unk_0ee4;
     u32 unk_0ee8;
     u8 unk_0eec;
@@ -174,7 +183,11 @@ u32 Unk0e1648_Unk_0e1664(void)
     return ((Unk0e1648State *)data_02176c78[1])->unk_0058;
 }
 
-/* Object initialised by func_020e1698; +0x8 is not written by that function. */
+/* Forward declaration for the synchronous event callback. */
+typedef struct Unk0e1648Message Unk0e1648Message;
+
+/* Object initialised by func_020e1698; +0x8 is not written by that function.
+ * The event callback receives the work and its synchronous message. */
 typedef struct Unk0e1648Vtable {
     u32 unk_0000;
     u32 unk_0004;
@@ -184,14 +197,14 @@ typedef struct Unk0e1648Vtable {
     void (*unk_0014)(Unk0e1648Work *);
     u32 unk_0018;
     void (*unk_001c)(Unk0e1648Work *);
-    void (*unk_0020)(void);
+    void (*unk_0020)(Unk0e1648Work *, Unk0e1648Message *);
 } Unk0e1648Vtable;
 
 void func_020e1b10(void);
 void func_020e2190(void);
 void func_020e28a8(Unk0e1648Work *work);
 void func_020e1a48(Unk0e1648Work *work);
-void func_020e2a5c(void);
+void func_020e2a5c(Unk0e1648Work *work, Unk0e1648Message *message);
 /*
  * Fills the command/state table at `table`: constant 0xf08 in word 0, zeros in
  * words 1 and 6, and the 020e1b10/02190/028a8/01a48/02a5c handlers in the
@@ -420,7 +433,7 @@ void Unk0e1648_Unk_0e2f54(Unk0e1648Work *p)
 }
 
 int func_0204faf0();
-int func_020e49cc();
+int func_020e49cc(u32 selector, u32 id);
 /* Maps entry kinds 3/4 to selector 6 and 5/6 to selector 7, then applies channel 1. */
 void Unk0e1648_Unk_0e4964(u32 arg0)
 {
@@ -1083,4 +1096,442 @@ void func_020e2fe8(Unk0e1648Work *work)
         }
     }
     func_020e3174(work);
+}
+
+void func_020bcfc4(void *cursor, int index);
+/* Rebuilds kind-specific slot ranges, preserving the prior cursor after removal.
+ * Ranges and cursor predicates are taken from the ARM body at 020e3f80. */
+void func_020e3f80(Unk0e1648Work *work, u32 value)
+{
+    int above, below, selected, offset;
+    int count, visible;
+    work->unk_00cc = work->unk_0068;
+    work->unk_00d0 = 0;
+    if (work->unk_00cc == 7) {
+        func_020e490c(work, 211, 260);
+        func_020e490c(work, 261, 310);
+        func_020e490c(work, 311, 360);
+        func_020e490c(work, 361, 410);
+        func_020e490c(work, 51, 110);
+    } else {
+        func_020e490c(work, 901, 1120);
+        func_020e490c(work, 1121, 1340);
+    }
+    offset = work->unk_0074;
+    above = offset > 0;
+    below = offset < work->unk_0070 - work->unk_006c;
+    count = work->unk_00d0;
+    selected = work->unk_007c;
+    visible = count;
+    if (count >= 8) visible = 8;
+    Unk0bcef4_Unk_0bcef4(&work->unk_006c, visible, count, 1);
+    if (value == 0) {
+        if (!below && above) offset--;
+        work->unk_0074 = offset;
+        func_020bcfc4(&work->unk_006c, selected - 1);
+    }
+    func_020e40a4(work);
+}
+
+int Unk09974c_Unk_0998f0(u32 id);
+/* Checks the id flags, shared unsigned budget and all three required quantities.
+ * The second argument is forwarded to the existing record-acceptance predicate. */
+int func_020e4d08(Unk0e1648Work *work, u32 value)
+{
+    Unk0e1648Rec *record = (Unk0e1648Rec *)func_020f3de8(work->unk_0068, value);
+    int quantities[3] = {0, 0, 0};
+    Unk0e1648Shared *shared;
+    int i;
+    if (Unk09974c_Unk_0998f0(record->id) != 0) return 0;
+    if (Unk0e1648_Unk_0e4fd0(work->unk_0068, record->id) != 0) return 0;
+    shared = Unk02e000_GetWorkArea();
+    if ((u32)shared->value < (u32)func_020e49cc(0, record->id)) return 0;
+    if (func_020e4ca4(work, value) != 0) return 1;
+    for (i = 0; i < 3; i++) {
+        if (record->ents[i].a != 0) quantities[i] = func_0209993c(record->ents[i].a);
+    }
+    for (i = 0; i < 3; i++) {
+        if (record->ents[i].a != 0) {
+            quantities[i] -= record->ents[i].b;
+            if (quantities[i] < 0) return 0;
+        }
+    }
+    return 1;
+}
+
+int func_02053824(u32 player, u32 mask);
+/* Adjusts +0x98 by one or ten within [1,+0x8c] and resets the changed handle.
+ * The input masks and bounds are the immediate values in 020e2774. */
+int func_020e2774(Unk0e1648Work *work)
+{
+    int changed = 0;
+    if (func_02053824(0, 64)) {
+        if (work->unk_0098 < work->unk_008c) {
+            work->unk_0098++;
+            Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 1);
+            changed = 1;
+        }
+    } else if (func_02053824(0, 128)) {
+        if (work->unk_0098 > 1) {
+            work->unk_0098--;
+            Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 2);
+            changed = 1;
+        }
+    } else if (func_02053824(0, 16)) {
+        int limit = work->unk_008c;
+        if (work->unk_0098 != limit) {
+            if (work->unk_0098 + 10 > limit) {
+                work->unk_0098 = limit;
+                Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 1);
+                changed = 1;
+            } else {
+                work->unk_0098 += 10;
+                Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 1);
+                changed = 1;
+            }
+        }
+    } else if (func_02053824(0, 32) && work->unk_0098 != 1) {
+        if (work->unk_0098 - 10 < 1) {
+            work->unk_0098 = 1;
+            Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 2);
+            changed = 1;
+        } else {
+            work->unk_0098 -= 10;
+            Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 2);
+            changed = 1;
+        }
+    }
+    return changed;
+}
+
+/* Scales sprite 30 to the visible fraction of the slot list, with height >=2.
+ * Caller supplies a nonempty slot list; constants 11.5 and 92 come from the pool. */
+void func_020e2930(Unk0e1648Work *work)
+{
+    int offset = work->unk_0074;
+    Unk0e1648SpriteRecord *sprite;
+    float scale;
+    func_0205de40(2, work->unk_0004.handle, 17, work->unk_00a8, 0,
+                  1.0f, 1.0f, 0, work->unk_00b4.bits, 1);
+    sprite = func_0205e318((void *)work->unk_0004.handle, 30);
+    scale = 92.0f / (11.5f * (float)work->unk_00d0);
+    sprite->unk_000e = (int)(0.5f + 92.0f * scale);
+    if ((s16)sprite->unk_000e <= 1) sprite->unk_000e = 2;
+    func_0205e048(2, work->unk_0004.handle, sprite, work->unk_00a8,
+                  (int)(0.5f + (11.5f * (float)offset) * scale),
+                  1.0f, 1.0f, 0, work->unk_00b4.scale, 1, 1);
+}
+
+int Unk0f3db4_Unk_0f4490(u32 kind, u16 index);
+/* Refreshes visible slot labels, the selected label, and three ingredient labels.
+ * All indices must address the work slot table and the returned three-entry record. */
+void func_020e3174(Unk0e1648Work *work)
+{
+    int first = work->unk_0074;
+    int selected = work->unk_007c;
+    int i;
+    Unk0e1648Rec *record;
+    func_02063920();
+    for (i = 0; i < work->unk_006c; i++) {
+        if (Unk0f3db4_Unk_0f4490(work->unk_0068, work->unk_00d2[first+i].unk_0002) != 1) {
+            Unk09974c_Unk_099bac(work->unk_00d2[first+i].unk_0004);
+            func_02061f10(work->unk_0e94, -1, 0, 0, func_02063a30());
+        } else {
+            func_0204fed8(func_020445f4(30, 3), 5);
+            func_02061f10(work->unk_0e94, -1, 0, 0, func_02063a30());
+        }
+    }
+    Unk0e1648_Unk_0e4964(work->unk_00d2[selected].unk_0004);
+    if (Unk0f3db4_Unk_0f4490(work->unk_0068, work->unk_00d2[selected].unk_0002) != 1) {
+        func_020e50e8(work->unk_0e98, work->unk_00d2[selected].unk_0004, 0);
+    } else {
+        func_020e50e8(work->unk_0e98, work->unk_00d2[selected].unk_0004, 1);
+    }
+    record = (Unk0e1648Rec *)func_020f3de8(work->unk_0068, work->unk_00d2[selected].unk_0002);
+    for (i = 0; i < 3; i++) {
+        if (record->ents[i].a != 0) {
+            func_02063920();
+            Unk09974c_Unk_099bac(record->ents[i].a);
+            func_02061f10(work->unk_0ea4[i], -1, 0, 0, func_02063a30());
+        }
+    }
+}
+
+/* Lookup layouts come from the field widths in 020e49cc, not shared type identity. */
+typedef struct Unk0e1648LookupA {
+    u8 pad_00[3]; u8 unk_03;
+    unsigned int pad_04a:10; unsigned int unk_04:10; unsigned int pad_04b:12;
+    u8 pad_08[0x3e];
+    unsigned short unk_46:14; unsigned short flag_46a:1; unsigned short flag_46b:1;
+    u32 unk_48; u32 unk_4c;
+} Unk0e1648LookupA;
+typedef struct Unk0e1648LookupB {
+    u8 pad_00[3]; u8 unk_03; u16 pad_04;
+    unsigned short unk_06:8; unsigned short pad_06:6;
+    unsigned short flag_06a:1; unsigned short flag_06b:1;
+    u32 unk_08; u32 unk_0c;
+} Unk0e1648LookupB;
+typedef struct Unk0e1648LookupC {
+    u8 pad_00[0x2c]; u8 unk_2c; u8 pad_2d; u8 unk_2e;
+    unsigned char pad_2fa:2; unsigned char flag_2fa:1;
+    unsigned char flag_2fb:1; unsigned char pad_2fb:4;
+    u32 unk_30; u32 unk_34;
+} Unk0e1648LookupC;
+typedef struct Unk0e1648LookupD {
+    u8 pad_00[3]; u8 unk_03; u16 unk_04; u8 unk_06; u8 unk_07;
+    u32 unk_08; u32 unk_0c;
+} Unk0e1648LookupD;
+Unk0e1648LookupA *Unk09974c_Unk_099c60(u32 id);
+Unk0e1648LookupB *Unk09974c_Unk_099d78(u32 id);
+Unk0e1648LookupC *Unk09974c_Unk_099d14(u32 id);
+Unk0e1648LookupD *Unk09974c_Unk_099ddc(u32 id);
+Unk0e1648LookupD *Unk09974c_Unk_099e40(u32 id);
+u32 Unk09974c_Unk_099cc4(Unk0e1648LookupA *record);
+/* Returns one selected property from the id's kind-specific record, or zero.
+ * Nested switches and bit widths are evidenced by 020e49cc's jump tables/loads. */
+int func_020e49cc(u32 selector, u32 id)
+{
+    u32 kind = Unk09974c_GetEntryUnk08(id);
+    u32 result = 0;
+    switch (kind) {
+    case 3: case 4: case 5: case 6: {
+        Unk0e1648LookupA *p = Unk09974c_Unk_099c60(id);
+        switch (selector) {
+        case 0: result = p->unk_48; break;
+        case 1: result = p->unk_4c; break;
+        case 2: result = p->flag_46a; break;
+        case 3: result = p->flag_46b; break;
+        case 4: result = p->unk_46; break;
+        case 5: result = p->unk_03; break;
+        case 6: result = Unk09974c_Unk_099cc4(p); break;
+        case 7: result = p->unk_04; break;
+        }
+        break;
+    }
+    case 2: {
+        Unk0e1648LookupB *p = Unk09974c_Unk_099d78(id);
+        switch (selector) {
+        case 0: result = p->unk_08; break;
+        case 1: result = p->unk_0c; break;
+        case 2: result = p->flag_06a; break;
+        case 3: result = p->flag_06b; break;
+        case 4: result = p->unk_06; break;
+        case 5: result = p->unk_03; break;
+        }
+        break;
+    }
+    case 1: {
+        Unk0e1648LookupC *p = Unk09974c_Unk_099d14(id);
+        switch (selector) {
+        case 0: result = p->unk_30; break;
+        case 1: result = p->unk_34; break;
+        case 2: result = p->flag_2fa; break;
+        case 3: result = p->flag_2fb; break;
+        case 4: result = p->unk_2e; break;
+        case 5: result = p->unk_2c; break;
+        }
+        break;
+    }
+    case 7:
+        if (selector == 3) result = 1;
+        break;
+    case 8: {
+        Unk0e1648LookupD *p = Unk09974c_Unk_099ddc(id);
+        switch (selector) {
+        case 0: result = p->unk_08; break;
+        case 1: result = p->unk_0c; break;
+        case 2: result = p->unk_06; break;
+        case 3: result = p->unk_07; break;
+        case 4: result = p->unk_04; break;
+        case 5: result = p->unk_03; break;
+        }
+        break;
+    }
+    case 9: {
+        Unk0e1648LookupD *p = Unk09974c_Unk_099e40(id);
+        switch (selector) {
+        case 0: result = p->unk_08; break;
+        case 1: result = p->unk_0c; break;
+        case 2: result = p->unk_06; break;
+        case 3: result = p->unk_07; break;
+        case 4: result = p->unk_04; break;
+        case 5: result = p->unk_03; break;
+        }
+        break;
+    }
+    case 0:
+        if (selector == 3) result = 1;
+        break;
+    }
+    return result;
+}
+
+extern u8 data_02150b7c[], data_02150b94[];
+u32 func_0205dcd4(void *data, u32 mode);
+u32 func_0205c2c4(void *data);
+u32 func_0205c3c0(void);
+void func_0205c3fc(u32 handle, u32 owner, u32 resource);
+u32 func_020629ac(u32 arg0, u32 arg1, u32 arg2, u32 arg3);
+int func_0205ca88(u32 handle);
+void Unk0fc584_SetDir(u32 value);
+/* Creates the work's handles and initial cursor/render state on substate zero.
+ * Resource tables, handle counts and initial values are from 020e1730. */
+void func_020e1730(Unk0e1648Work *work)
+{
+    int i;
+    if (work->unk_0001 != 0) return;
+    work->unk_0004.handle = func_0205dcd4(data_02150b7c, 1);
+    work->unk_0008 = func_0205c2c4(data_02150b94);
+    for (i = 0; i < 23; i++) {
+        work->unk_000c[i] = func_0205c3c0();
+        func_0205c3fc(work->unk_000c[i], work->unk_0004.handle, work->unk_0008);
+    }
+    work->unk_0e94 = func_020629ac(4, 4, 1, 0);
+    for (i = 0; i < 8; i++) work->unk_0eb8[i] = 0;
+    work->unk_0e98 = func_020629ac(5, 3, 1, 1);
+    Unk0e1648_Unk_0e5090(work->unk_0e98, 1);
+    work->unk_0e9c = func_020629ac(3, 1, 1, 1);
+    if (work->unk_0068 == 4) Unk0e1648_Unk_0e5090(work->unk_0e9c, 9);
+    else Unk0e1648_Unk_0e5090(work->unk_0e9c, 1);
+    work->unk_0ea0 = func_020629ac(5, 1, 1, 1);
+    Unk0e1648_Unk_0e5090(work->unk_0ea0, 2);
+    for (i = 0; i < 3; i++) work->unk_0ea4[i] = func_020629ac(4, 1, 1, 1);
+    work->unk_0eb0 = func_020629ac(5, 1, 1, 1);
+    Unk0e1648_Unk_0e5090(work->unk_0eb0, 7);
+    work->unk_0eb4 = func_020629ac(4, 1, 1, 1);
+    Unk0e1648_Unk_0e5090(work->unk_0eb4, 8);
+    if (work->unk_0ee4 == 0) Unk0bcef4_Unk_0bcef4(&work->unk_006c, 8, 8, 1);
+    work->unk_0098 = 1;
+    work->unk_00a4 = 0;
+    work->unk_0002 = 0;
+    work->unk_00a8 = -241;
+    work->unk_00ac = 0;
+    work->unk_00b0 = 0;
+    work->unk_00b4.bits = 0;
+    work->unk_00b8 = 0;
+    work->unk_00c8 = 0;
+    if (work->unk_0ec0 != 1) work->unk_0ec0 = 0;
+    work->unk_0ec4 = work->unk_0ec0;
+    work->unk_0ec8 = 0;
+    work->unk_0ee8 = 1;
+    Unk0e1648_Unk_0e51f4((Unk0e1648Table *)work, 21);
+    work->unk_00c0 = func_0205ca88(Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, 21)) - 1;
+    work->unk_00c4 = 1.0f / (float)work->unk_00c0;
+    Unk0e1648_Unk_0e51f4((Unk0e1648Table *)work, 22);
+    work->unk_00bc = func_0205ca88(Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, 22));
+    Unk0e1648_Unk_0e51f4((Unk0e1648Table *)work, 1);
+    Unk0e1648_Unk_0e51f4((Unk0e1648Table *)work, 2);
+    for (i = 0; i < work->unk_006c; i++) {
+        Unk0e1648_Unk_0e51f4((Unk0e1648Table *)work, i+5);
+        Unk0e1648_Unk_0e51f4((Unk0e1648Table *)work, i+13);
+        Unk0cb32c_Unk_0cb57c(Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, i+13));
+    }
+    work->unk_00b8 = 0;
+    if (func_020e544c(work) != 0) {
+        func_020e2fe8(work);
+        func_020e4ff8(work);
+    } else {
+        Unk0fc584_SetDir(1);
+        func_020e3f80(work, 1);
+        func_020e4238(work);
+    }
+    func_020e5394(work);
+    Unk0e1648_Unk_0e533c(work);
+    work->unk_0001 = 0;
+    work->unk_0000 = 2;
+}
+
+/* Bit i marks values[i] as present; layout agrees with the UniteEvent messages. */
+typedef struct Unk0e1648Params {
+    u8 flags;
+    u8 pad_01[3];
+    s32 values[8];
+} Unk0e1648Params;
+struct Unk0e1648Message {
+    u32 type;
+    Unk0e1648Params params;
+};
+/* Missing parameters leave the caller's default intact. */
+static inline int Unk0e1648_ReadParam(const Unk0e1648Params *params, int index, s32 *out)
+{
+    if (params == 0) return 0;
+    {
+        s32 value = params->values[index];
+        if (params->flags & (1 << index)) {
+            *out = value;
+            return 1;
+        }
+    }
+    return 0;
+}
+void Unk0bc1a8_Unk_0bc504(Unk0e1648Work *work, u32 value);
+void func_02008904(const void *source, void *dest, u32 size);
+extern u8 data_02176c88[];
+/* Handles message types 0..4, restoring saved state or cursor data as requested.
+ * State 19 uses flagged result parameters 2,7,6 and result codes 100..102;
+ * these contracts are evidenced by 020e2a5c's branches and field accesses. */
+void func_020e2a5c(Unk0e1648Work *work, Unk0e1648Message *message)
+{
+    Unk0e1648Params *params = &message->params;
+    s32 value[1] = {0};
+    switch (message->type) {
+    case 0: {
+        s32 kind = 0;
+        Unk0e1648_ReadParam(params, 3, &kind);
+        work->unk_0068 = kind;
+        break;
+    }
+    case 3:
+        switch (work->unk_0000) {
+        case 19:
+            Unk0e1648_ReadParam(params, 3, value);
+            work->unk_0ec8 = value[0];
+            work->unk_0000 = work->unk_0002;
+            break;
+        case 8:
+            work->unk_0000 = work->unk_0002;
+            if (Unk0e1648_Unk_0e2d28(work) != 0 || Unk0e1648_Unk_0e3f5c(work) != 0) {
+                func_020e5394(work);
+            }
+            Unk0e1648_Unk_0e51cc((Unk0e1648Table *)work, 0);
+            break;
+        }
+        break;
+    case 2:
+        if (work->unk_0068 != 8) func_020e524c();
+        work->unk_0000 = 0;
+        break;
+    case 1:
+        if (work->unk_0068 != 8) func_020e524c();
+        Unk0bc1a8_Unk_0bc504(work, 0);
+        break;
+    case 4:
+        if (work->unk_0000 == 19) {
+            s32 accepted = 0;
+            s32 kind = 0;
+            Unk0e1648_ReadParam(params, 2, value);
+            Unk0e1648_ReadParam(params, 7, &accepted);
+            Unk0e1648_ReadParam(params, 6, &kind);
+            switch (value[0]) {
+            case 100: break;
+            case 101:
+                if (accepted != 0 && kind == 1) {
+                    work->unk_0ec0 = work->unk_0ec4;
+                    work->unk_0ee8 = 1;
+                }
+                break;
+            case 102:
+                if (accepted != 0) {
+                    work->unk_0ec0 = work->unk_0ec4;
+                    work->unk_0ee8 = 1;
+                }
+                break;
+            }
+        } else {
+            work->unk_0ee4 = 1;
+            func_02008904(data_02176c88, &work->unk_006c, 28);
+            work->unk_0ec0 = data_02176c80[0];
+        }
+        break;
+    }
 }

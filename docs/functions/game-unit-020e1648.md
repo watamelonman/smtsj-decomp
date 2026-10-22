@@ -245,3 +245,48 @@ compiler (`mwccarm 2.0/sp1p5`, `-O4,p`).
   leave one extra `add rN, sp, #0` setup: the compiler assigns the stack cost
   array base and the remaining budget to r5/r4 instead of the ROM's r4/r6. The
   rest of the instruction stream matches after that rotation.
+
+## M1-T1049
+
+All eight functions match at 100% in objdiff. The source extends the existing
+TU; neutral linker names are retained. Typed work fields and private lookup
+records come from the delinked ARM loads/stores. No runtime tests were added:
+this card explicitly uses instruction identity and checksum validation.
+
+- `func_020e4d08` (288 B): resolves the record using work kind and the supplied
+  index, rejects its id flags or insufficient unsigned shared budget, then
+  accepts an exempt record or checks all three ingredient quantities against
+  their weights. Indices must be valid for the lookup tables.
+- `func_020e3f80` (292 B): saves the work kind and rebuilds the slot table from
+  five id ranges for kind 7, or two ranges otherwise. Resets visible count to
+  min(count,8), preserves/adjusts the prior cursor when the second argument is
+  zero, then refreshes the visible entries. Caller supplies table capacity.
+- `func_020e2930` (300 B): submits sprite 17, looks up sprite 30, computes
+  `92 / (11.5 * count)`, rounds its scaled height with a minimum of two,
+  and submits its scaled cursor offset. Count must be nonzero. The `+0xb4`
+  submission field has two bit-preserving views (See DEC-007).
+- `func_020e2774` (308 B): handles input masks 64/128/16/32 to change `+0x98`
+  by one or ten, bounded by one and `+0x8c`, resetting handle 1 or 2 on a
+  change. Returns whether the quantity changed.
+- `func_020e3174` (372 B): refreshes each visible slot's label through `+0xe94`,
+  using selector 5 for lookup result one; restores the selected id and its
+  mode through `+0xe98`, then refreshes three nonempty ingredient labels.
+  The selected index and visible range must address valid slots.
+- `func_020e2a5c` (564 B): dispatches message types 0..4. Type 0 sets the work
+  kind from flagged parameter 3; types 1/2 close or clear the work; type 3
+  restores states 8/19; type 4 consumes result codes 100..102 in state 19 or
+  restores the 28-byte cursor block and saved mode otherwise. Parameters use
+  the same presence-bit layout as `UniteEvent.c`; the callback consumes the
+  message synchronously. Its handler-table pointer now has typed parameters.
+- `func_020e49cc` (664 B): dispatches by id kind and selector to return fields
+  from five lookup record layouts. Returns zero for unsupported selectors;
+  kinds 0/7 return one only for selector 3. Bitfield widths follow the ARM
+  halfword/byte loads and shifts, including the 14-bit and 10-bit properties.
+- `func_020e1730` (792 B): on substate zero, creates the owner/resource pair,
+  23 object handles and nine label handles, initializes cursor and render
+  fields, derives timing from handles 21/22, refreshes visible handles and
+  dispatches kind-specific list setup before entering state 2. Resources and
+  counts are evidenced by the two resource globals and constant loop bounds.
+
+No M1-T1049 functions remain on the hard list. Earlier hard-list entries remain
+unchanged and undefined in C, so they continue linking from the delink object.
