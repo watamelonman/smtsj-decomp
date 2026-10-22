@@ -18,17 +18,35 @@
 
 All eight match the delinked original at 100% in objdiff.
 
-## Hard list
-- `Unk03e43c_Unk_03e5a4`: decompiler-derived
-- `Unk03e43c_Unk_03e5dc`: decompiler-derived
-- `Unk03e43c_Unk_03e614`: decompiler-derived
-- `Unk03e43c_Unk_03e64c`: decompiler-derived
-- `Unk03e43c_Unk_03e794`: decompiler-derived
+## M1-T1087
 
-## Not done in M1-T1087
-- `Unk03e43c_SetMode30`
-- `Unk03e43c_AdvanceCounter360`
-- `Unk03e43c_ClearTable`
+All eight functions below match the delinked original at 100% in objdiff.
+Existing matching bodies were retained and given explicit contracts and typed
+parameters; the table-copy routine now uses byte pointers rather than integers.
+
+- `Unk03e43c_SetMode30` (40 B): stores the mode word at `data_0215ee60 + 0x30`;
+  calls `func_0204b6d0` only when mode is 1 and the word at +0x34 is zero.
+  The stores and conditional comparisons support the existing name.
+- `Unk03e43c_AdvanceCounter360` (44 B): increments the work-area byte at +0x360
+  with byte wrap, then subtracts 160 if the stored value is at least 160.
+  The byte access and comparison support the existing name.
+- `Unk03e43c_ClearTable` (48 B): calls `func_02020f8c`, clears 512 bytes at
+  `data_0215e85e`, then clears the leading u16 at `data_0215e85c`.
+  The clear call's length and the separate halfword store establish the extent.
+- `Unk03e43c_Unk_03e5a4` (56 B): obtains a value with `func_02051610(arg1)`;
+  returns it if `func_02020974(value, arg0)` succeeds. Releases rejected values
+  with `func_020516d0` and returns zero on failure.
+- `Unk03e43c_Unk_03e5dc` (56 B): same acquire/validate/release contract, using
+  `func_020207d0` as the validator. The resource and argument meanings are unknown.
+- `Unk03e43c_Unk_03e614` (56 B): same contract, using `func_02020ac0`.
+- `Unk03e43c_Unk_03e64c` (56 B): same contract, using `func_02020a74`.
+- `Unk03e43c_Unk_03e794` (56 B): copies 32 bytes from source +0x28 to
+  `data_0215e85c + index * 32 + 2`, in pairs of byte loads/stores. The caller
+  supplies a readable source and a valid destination slot; no bounds check exists.
+
+## Hard list
+
+None for M1-T1087.
 
 ## Not done in M1-T1088
 - `Unk03e43c_CopyEntry32`
@@ -63,11 +81,8 @@ All eight match the delinked original at 100% in objdiff.
 - `Unk03e43c_CountDown`: hand-matched
 - `Unk03e43c_CopyEntry32`: hand-matched
 - `Unk03e43c_MergeTable`: hand-matched
-- `Unk03e43c_ClearTable`: hand-matched
 - `Unk03e43c_Unk_03e894`: hand-matched
 - `Unk03e43c_Div10Clamp16`: hand-matched
-- `Unk03e43c_AdvanceCounter360`: hand-matched
-- `Unk03e43c_SetMode30`: hand-matched
 - `Unk03e43c_UpdatePos18`: hand-matched
 - `Unk03e43c_Unk_03e8cc`: hand-matched
 - `Unk03e43c_Unk_03f234`: hand-matched

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T1087 functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented mode/counter/table operations and acquisition validation helpers, and typed the paired-byte copy.
 - Typed and documented the eight M1-T1086 functions in `src/game/unit_0203e43c.c` (all 100% in objdiff), including the `/10` clamp helper, the counter setter/getter pair, and the table-registration thunk.
 - Matched all seven M1-T108 callbacks in `src/game/unit_020ee6dc.c` at 100% objdiff, including the 300-byte list drawing callback, with typed work fields and per-function documentation.
 - `src/game/unit_020aa118.c`: added the matching `func_020ab4d4` record bit-set helper and completed the M1-T1076 eight-function set; documented every function in `docs/functions/game-unit-020aa118.md`.
