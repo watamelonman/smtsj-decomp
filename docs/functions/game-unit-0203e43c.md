@@ -193,3 +193,28 @@ bodies were retained. No assembly stub is needed in this project's pipeline.
   correct size and control flow but different register allocation from the
   first source-coordinate load onward. Reordering x/y declarations and moving
   destination coordinate temporaries to function scope did not resolve it.
+
+### Retry results (attempt 2)
+
+The three matching functions are unchanged. The remaining five were re-examined;
+none reached 100%, so no C body was retained (the delink supplies them). All 2.0
+service packs were checked for `func_0203f174` and produce identical code, so the
+difference is source shape, not the compiler service pack.
+
+- `func_0203e6f0`: declaring `u8 name[64] = {0}` before `u8 path[64]` puts the
+  zeroed buffer at sp+68 and gives the exact 164-byte layout (87.9%). The original
+  also keeps `a0` in r4 and `a1` in r6, while mwcc keeps `a0` in ip and `a1` in
+  r4; both values are dead after their call, so this is a register-allocation
+  choice.
+- `func_0203f174`: the angle reduction is `(u16)((theta + angle) % 65536) >> 4`;
+  `x % 65536` is what produces the original `lsr/rsb/ror` idiom, and the table is
+  `s16 *` at 0x0212629c indexed by `idx * 2`. The 192-byte body then differs only
+  in register naming: the original keeps `idx * 2` in r3 and fills r1/r0 with the
+  two byte offsets, while mwcc reuses r1.
+- `func_0203f2d4`: the 192-byte body and control flow are reproduced exactly.
+  The original keeps `src` in fp and `srcCol` in r8 and forms
+  `srcCol + (row << 8)` each row; mwcc folds `src + srcCol` into sl and
+  strength-reduces the row term. Parenthesizing the address and recomputing the
+  row from `top + srcY` did not prevent the fold.
+- `func_0203eaf8`: not retried; the previous findings still apply.
+- `func_0203f394`: not retried; the previous findings still apply.
