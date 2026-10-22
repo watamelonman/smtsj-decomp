@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Replaced M1-T1021 allocation, selection-work and dispatch-owner offsets with typed fields; documented the address-valued coordinate call while preserving all instruction matches.
 - Matched all eight M1-T1021 resource-selection, handle initialization and dispatch functions at 100% objdiff, with typed parameters and instruction-based contracts.
 - Matched all eight M1-T1020 callback, allocation, resource conversion and record predicate functions at 100% objdiff, with typed helper arguments and instruction-based contracts.
 - Verified all eight M1-T1019 functions at 100% objdiff, made handle/resource arguments explicit, and documented table indexing, mode dispatch and record predicate contracts.

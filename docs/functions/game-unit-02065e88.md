@@ -183,6 +183,20 @@ at 02065fac now types its final argument as a halfword, consistent with the call
   Submits the caller descriptor, signed halfword fifth argument and incoming
   fourth argument through the owner's handle with layer 10.
 
+Review corrections: the allocation now uses named `GameObj` fields, with float
+slots and separate flag bytes. The +0x20 slot retains a union word view because
+its pre-existing setter stores raw bits. Selection entries, shared work, and
++0x3b0 dispatch owners use partial structs with explicit padding. The 15-element
+selection span is inferred from the gap to the count byte; capacity is unproven.
+Bounds tables use neutral offset names because their gameplay meaning is unknown.
+
+The 02067c88 lookup result now has a named +0xf0 field. Inspection of
+020a9fd8 shows it saves the second/third arguments as words; 020a9f34 adjusts
+those saved coordinates arithmetically, and 020a9bb4 receives their values.
+Thus changing the second argument to a pointer would misrepresent the callee.
+The explicit address-to-coordinate conversion remains intentional: the original
+02067c88 uses `add r1, r0, #240`, without loading or dereferencing that address.
+
 Hard list for M1-T1021: none. All eight functions and the earlier 32 definitions
 match at 100%. No runtime tests were added because the card waives them; the
 original object is the byte-level oracle. The TU remains linked from the delink.

@@ -13,24 +13,33 @@ typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 typedef unsigned int u32;
 
+/* Float slots retain a word view for the existing bit-preserving setters. */
+typedef union Unk065e88FloatSlot {
+    u32 bits;
+    float value;
+} Unk065e88FloatSlot;
+
 typedef struct GameObj {
     u32 unk00;
     u32 pairA;      /* 0x04: first of a pair set together */
     u32 pairB;      /* 0x08: second of the pair */
     u32 field0C;    /* 0x0C */
     u32 field10;    /* 0x10 */
-    u32 unk14[3];
-    u32 field20;    /* 0x20 */
+    float unk14[3];
+    Unk065e88FloatSlot field20;    /* 0x20 */
     u32 field24;    /* 0x24 */
     u32 field28;    /* 0x28 */
     u32 field2C;    /* 0x2C */
     u32 field30;    /* 0x30 */
     u32 field34;    /* 0x34 */
-    u32 unk38;
+    u8 unk38;
+    u8 pad39;
+    u8 unk3A;
+    u8 pad3B;
     u32 field3C;    /* 0x3C */
 } GameObj;
 
-u8 *func_02065fc0(u32 a, u32 b, u32 c, int d, u16 e);
+GameObj *func_02065fc0(u32 a, u32 b, u32 c, int d, u16 e);
 /* At 02065fac, forwards three words and inserts mode 3 before the
  * halfword argument. The callee reads its fifth stack argument with ldrh. */
 void Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u16 d)
@@ -48,7 +57,7 @@ void Unk065e88_SetPair04(GameObj *obj, u32 a, u32 b) {
 }
 
 /* Stores value in the unknown u32 at +0x20. */
-void Unk065e88_SetUnkField20(GameObj *obj, u32 value) { obj->field20 = value; }
+void Unk065e88_SetUnkField20(GameObj *obj, u32 value) { obj->field20.bits = value; }
 
 /* Stores value in the unknown u32 at +0x28. */
 void Unk065e88_SetUnkField28(GameObj *obj, u32 value) { obj->field28 = value; }
@@ -484,14 +493,23 @@ typedef struct Unk065e88SelectionRecord {
     u8 rank;
     u8 unk04;
     u8 category;
-    u8 rest[94];
+    u8 pad_0006[94];
 } Unk065e88SelectionRecord;
 
-u8 *Unk02e000_GetWorkArea(void);
+/* Only the observed span is modeled; 15 selections are inferred from the
+ * distance between +0x348 and the count byte, not a proven capacity. */
+typedef struct Unk065e88SharedWork {
+    u8 pad_0000[0x348];
+    s8 unk_0348[15];
+    u8 unk_0357;
+} Unk065e88SharedWork;
+Unk065e88SharedWork *Unk02e000_GetWorkArea(void);
 void func_02057dcc(u32 a, u32 b, u32 c, u32 d);
 void func_02057df8(void);
 void func_0205de40(int mode, u32 handle, int id, int x, int y,
                    float a, float b, int c, float d, int layer);
+/* 020a9fd8 saves x/y as words; 020a9f34 adjusts those words arithmetically
+ * and 020a9bb4 receives their values. x is not dereferenced as a pointer. */
 void func_020a9fd8(int mode, int x, int y, int a, int b, int layer,
                    const void *text, int value);
 void func_020dd910(u32 *object);
@@ -499,7 +517,12 @@ void func_02060dd4(void *out, u32 *object, int a, int b, int c);
 void func_02059f70(u32 handle, int a, int id, int value,
                    const void *data, int b, int layer);
 u8 *Unk02e000_Thunk_0202e788(void);
-u8 *func_020a9e14(int kind, const void *table, int index);
+/* Lookup result extent is unknown; +0xf0 is used as an address-valued coordinate. */
+typedef struct Unk065e88TableEntry {
+    u8 pad_0000[0xf0];
+    u8 unk_00f0;
+} Unk065e88TableEntry;
+Unk065e88TableEntry *func_020a9e14(int kind, const void *table, int index);
 extern u8 data_021457cc[], data_021457d0[], data_021457d4[], data_021457dc[];
 void func_020660cc(u8 *object);
 u8 *func_020611dc(void (*a)(u8 *), void (*b)(u8 *), void (*c)(u8 *),
@@ -510,33 +533,39 @@ void func_0205c3fc(u32 handle, u32 a, u32 b);
 /* At 02065fc0, allocates a 64-byte owner, chooses callbacks by c, and
  * initializes its handle, unit scales, sentinel words and enabled bytes.
  * Returns the allocation; allocation and handle creation must succeed. */
-u8 *func_02065fc0(u32 a, u32 b, u32 c, int d, u16 e)
+GameObj *func_02065fc0(u32 a, u32 b, u32 c, int d, u16 e)
 {
-    u8 *p = func_020611dc(Unk065e88_Unk_066078,
+    GameObj *p = (GameObj *)func_020611dc(Unk065e88_Unk_066078,
         c ? func_020660cc : 0,
         c ? 0 : func_020660cc,
         Unk065e88_Unk_066258, 64, d, e, 1);
     u32 h = func_0205c3c0();
-    FIELD(u32, p, 0) = h;
+    p->unk00 = h;
     func_0205c3fc(h, a, b);
-    FIELD(float, p, 32) = 1.0f;
-    FIELD(float, p, 20) = 1.0f;
-    FIELD(float, p, 24) = 1.0f;
-    FIELD(int, p, 40) = -1;
-    FIELD(int, p, 48) = -1;
-    FIELD(int, p, 52) = -1;
-    p[56] = 1;
-    p[58] = 1;
-    FIELD(int, p, 60) = -1;
+    p->field20.value = 1.0f;
+    p->unk14[0] = 1.0f;
+    p->unk14[1] = 1.0f;
+    p->field28 = -1;
+    p->field30 = -1;
+    p->field34 = -1;
+    p->unk38 = 1;
+    p->unk3A = 1;
+    p->field3C = -1;
     return p;
 }
 
+/* The selected entry is only known through its resource id halfword. */
+typedef struct Unk065e88SelectionEntry {
+    u8 pad_0000[0x36];
+    u16 unk_0036;
+} Unk065e88SelectionEntry;
+
 /* Partial owner layout; callers provide the trailing array of entry pointers. */
 typedef struct Unk065e88SelectionOwner {
-    u8 pad[280];
+    u8 pad_0000[0x118];
     u32 handle;
     u32 unused;
-    u8 *entries[];
+    Unk065e88SelectionEntry *entries[];
 } Unk065e88SelectionOwner;
 
 /* At 02067370, converts resource-18 entries selected by the work area's
@@ -546,29 +575,35 @@ void func_02067370(Unk065e88SelectionOwner *owner)
 {
     int value;
     int handle;
-    u8 *work;
+    Unk065e88SharedWork *work;
     u16 i;
     func_02063920();
     handle = func_020445f4(18, 0);
     work = Unk02e000_GetWorkArea();
-    for (i = 0; i < work[855]; i++) {
-        int index = ((s8 *)work)[840 + i];
+    for (i = 0; i < work->unk_0357; i++) {
+        int index = work->unk_0348[i];
         if (index >= 0) {
-            const u8 *r = (const u8 *)func_020a1428(FIELD(u16, owner->entries[index], 54));
+            const u8 *r = (const u8 *)func_020a1428(owner->entries[index]->unk_0036);
             value = func_02063a30(func_0204fed8(handle, r[2]));
         }
     }
     func_02061f10(owner->handle, -1, 0, 0, value);
 }
 
+/* Partial owner: only the dispatch handle is established by these calls. */
+typedef struct Unk065e88DispatchOwner {
+    u8 pad_0000[0x3b0];
+    u32 unk_03b0;
+} Unk065e88DispatchOwner;
+
 /* At 02067b28, sets four identical dispatch words, then chooses the
  * handle-based call for zero value or text-table call otherwise.
  * A zero value requires a valid handle at owner +0x3b0. */
-void func_02067b28(u8 *owner, int value, int x, int y)
+void func_02067b28(Unk065e88DispatchOwner *owner, int value, int x, int y)
 {
     func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
     if (value == 0) {
-        func_0205de40(1, FIELD(u32, owner, 944), 25, x - 8, y, 1.0f, 1.0f, 0, 1.0f, 10);
+        func_0205de40(1, owner->unk_03b0, 25, x - 8, y, 1.0f, 1.0f, 0, 1.0f, 10);
     } else {
         func_020a9fd8(1, x, y, 2, 2, 10, data_021457cc, value);
     }
@@ -577,11 +612,11 @@ void func_02067b28(u8 *owner, int value, int x, int y)
 /* At 02067bd8, zero value uses the owner's +0x3b0 handle; nonzero
  * value resets dispatch state before submitting table 021457d0.
  * A zero value requires a valid handle at owner +0x3b0. */
-void func_02067bd8(u8 *owner, int value, int x, int y)
+void func_02067bd8(Unk065e88DispatchOwner *owner, int value, int x, int y)
 {
     if (value == 0) {
         func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
-        func_0205de40(1, FIELD(u32, owner, 944), 25, x - 8, y, 1.0f, 1.0f, 0, 1.0f, 10);
+        func_0205de40(1, owner->unk_03b0, 25, x - 8, y, 1.0f, 1.0f, 0, 1.0f, 10);
     } else {
         func_02057df8();
         func_020a9fd8(1, x, y, 2, 2, 10, data_021457d0, value);
@@ -595,14 +630,14 @@ void func_02067c88(u32 *owner)
 {
     u8 local[16];
     int value;
-    u8 *entry;
+    Unk065e88TableEntry *entry;
     func_020dd910(owner);
     func_02060dd4(local, owner, 0, 0, 8);
     func_02059f70(*owner, 0, 161, 1, local, 0, 10);
     func_02057df8();
     value = Unk02e000_Thunk_0202e788()[110];
     entry = func_020a9e14(2, data_021457d4, value);
-    func_020a9fd8(1, (int)(entry + 240), 1, 2, 2, 10, data_021457dc, value);
+    func_020a9fd8(1, (int)&entry->unk_00f0, 1, 2, 2, 10, data_021457dc, value);
 }
 
 /* At 020674a4, chooses dispatch words from record id/category and sends
@@ -620,14 +655,14 @@ void func_020674a4(u32 *owner, const void *descriptor, u16 id, int arg, s16 valu
 
 /* Partial bounds layout; the two byte tables occupy +4 and +0x44. */
 typedef struct Unk065e88SelectionBounds {
-    u8 pad[4];
-    u8 lower[64];
-    u8 upper[64];
-    u8 gap[44];
+    u8 pad_0000[4];
+    u8 unk_0004[64];
+    u8 unk_0044[64];
+    u8 pad_0084[44];
     u16 count;
 } Unk065e88SelectionBounds;
 
-/* At 020685b0, clamps rank to the owner's lower table then selects the
+/* At 020685b0, clamps rank to the owner's +4 table (downward) then selects the
  * nearest eligible record of this kind at or above rank. Requires kind < 64
  * and count valid resource records; ties keep the first, no match returns 0. */
 u16 func_020685b0(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
@@ -636,7 +671,7 @@ u16 func_020685b0(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
     u8 distance = 255;
     Unk065e88SelectionRecord *r = (Unk065e88SelectionRecord *)func_020a1428(0);
     int i;
-    if (rank > owner->lower[kind]) rank = owner->lower[kind];
+    if (rank > owner->unk_0004[kind]) rank = owner->unk_0004[kind];
     for (i = 0; i < owner->count; i++, r++) {
         if (r->kind == kind && r->rank >= rank && (int)(r->rank - rank) < distance && Unk065e88_Unk_068564((Unk065e88Obj24 *)r)) {
             result = i;
@@ -646,7 +681,7 @@ u16 func_020685b0(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
     return result;
 }
 
-/* At 02068658, clamps rank to the owner's upper table then selects the
+/* At 02068658, clamps rank to the owner's +0x44 table (upward) then selects the
  * nearest eligible record of this kind at or below rank. Requires kind < 64
  * and count valid resource records; ties keep the first, no match returns 0. */
 u16 func_02068658(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
@@ -655,7 +690,7 @@ u16 func_02068658(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
     u8 distance = 255;
     Unk065e88SelectionRecord *r = (Unk065e88SelectionRecord *)func_020a1428(0);
     int i;
-    if (rank < owner->upper[kind]) rank = owner->upper[kind];
+    if (rank < owner->unk_0044[kind]) rank = owner->unk_0044[kind];
     for (i = 0; i < owner->count; i++, r++) {
         if (r->kind == kind && r->rank <= rank && (int)(rank - r->rank) < distance && Unk065e88_Unk_068564((Unk065e88Obj24 *)r)) {
             result = i;
