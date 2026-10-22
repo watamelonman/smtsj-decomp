@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1038 targets in `src/game/unit_020b28e4.c`, including resource cleanup, input dispatch, roster paging, and resource upload; documented typed layouts and instruction evidence.
 - Matched all eight M1-T1037 functions in `src/game/unit_020b28e4.c` (100% objdiff), adding the entry-table lookup, two setters and their typed contracts.
 - Matched three M1-T1036 battle-showing functions (entry drawing, EXP-gauge drawing and record-screen update); documented four unresolved targets and matching trials.
 - Replaced M1-T1035 rank and draw offsets with typed layouts and structured draw dispatch; corrected EXP parameter documentation and reused message initialization while preserving matches.
