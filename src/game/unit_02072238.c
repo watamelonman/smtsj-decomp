@@ -5,7 +5,7 @@
    panel are used by this unit. */
 typedef struct Unk072238Slot {
     u8 pad_0000[52];
-    u8 unk_0034;        /* +0x34 replaces the definition byte +3 in func_02075fd0 */
+    u8 unk_0034;        /* +0x34 replaces the definition byte +3 in Unk072238_Unk_075fd0 */
     u8 pad_0035;
     u16 id;             /* +0x36 */
     u8 unk_0038;        /* +0x38 */
@@ -22,7 +22,7 @@ typedef struct Unk072238Def {
 } Unk072238Def;
 
 /* Second view of the same definition record (+2 class key, +3 rank), used where the
-   original reloads those bytes instead of reusing the Unk072238Def loads (func_02075fd0). */
+   original reloads those bytes instead of reusing the Unk072238Def loads (Unk072238_Unk_075fd0). */
 typedef struct Unk072238Rank {
     u8 pad_0000[2];
     u8 key;             /* +0x2 */
@@ -56,7 +56,7 @@ typedef struct Unk072238Display {
 
 /* Object passed as the first argument by Unk065e88_SetMode; layout from the observed accesses.
    The slot array size is guessed from the 12-entry panel arrays; only indices 0..11 are used. */
-/* Rule tables walked by func_02075fd0 (pointers at Work +0x88..+0x9c, counts at +0xb6..+0xc0). */
+/* Rule tables walked by Unk072238_Unk_075fd0 (pointers at Work +0x88..+0x9c, counts at +0xb6..+0xc0). */
 typedef struct Unk072238Rule4 {
     u8 a, b;            /* +0x0/+0x1 class keys (either order) */
     u8 result;          /* +0x2 resulting class key (+0x88 table) */
@@ -82,7 +82,7 @@ typedef struct Unk072238Rule8 {
 
 typedef struct Unk072238Work {
     u8 pad_0000[132];
-    u8 *unk_0084;       /* +0x84 base value added in func_02075fd0 */
+    u8 *unk_0084;       /* +0x84 base value added in Unk072238_Unk_075fd0 */
     Unk072238Rule4 *rules_088;
     Unk072238Rule4 *rules_08c;
     Unk072238RuleBits *rules_090;
@@ -368,7 +368,7 @@ void * func_020445f4(int a, int b);
 u32 func_0204fed8(void *p, int id);
 void Unk065e88_Unk_0672fc(void *p, int a, int b);
 /* Pair classifier (defined below, before func_02072374): returns classes 0..8. */
-int func_02075fd0(Unk072238Work *p, int a, int b);
+int Unk072238_Unk_075fd0(Unk072238Work *p, int a, int b);
 u16 func_020685b0(Unk072238Work *p, u32 key, u32 rank);
 u16 func_02068658(Unk072238Work *p, u32 key, u32 rank);
 u16 func_02068bf8(Unk072238Work *p, const u16 *ids, int count);
@@ -393,7 +393,7 @@ void Unk06a224_Unk_06adc0(int n);
 /* Classifies the pair (a, b) for the pair table built by func_02072374: 8 for the same
    definition, 6 when no result exists, 5/4/7 and 1..3 for the rule tables at +0x98/+0x8c/+0x9c
    and +0x90, 0 for a plain class-table result. */
-int func_02075fd0(Unk072238Work *p, int a, int b)
+int Unk072238_Unk_075fd0(Unk072238Work *p, int a, int b)
 {
     u16 result = 0;
     Unk072238Def *da;
@@ -516,7 +516,7 @@ int func_02075fd0(Unk072238Work *p, int a, int b)
 }
 
 /* Initializes the count-by-count pair table and display wrappers. The calls to
-   func_02067ef4/func_02075fd0 and the nested slot-id walk establish the pair-table role.
+   func_02067ef4/Unk072238_Unk_075fd0 and the nested slot-id walk establish the pair-table role.
    Requires a nonempty area whose first count keys refer to valid slots, as in the original;
    the last text handle from that walk is forwarded to the list without a zero-count fallback. */
 void func_02072374(Unk072238Work *p)
@@ -577,7 +577,7 @@ void func_02072374(Unk072238Work *p)
             def = (Unk072238Def *)func_020a1428(
                 func_02067ef4(p, p->slots[w->keys[i]]->id, p->slots[w->keys[j]]->id));
             p->panel.matrix[i *p->count + j]
-                = func_02075fd0(p, p->slots[w->keys[i]]->id, p->slots[w->keys[j]]->id);
+                = Unk072238_Unk_075fd0(p, p->slots[w->keys[i]]->id, p->slots[w->keys[j]]->id);
             if (!def->id)
                 p->panel.matrix[i *p->count + j] += 9;
             else {
