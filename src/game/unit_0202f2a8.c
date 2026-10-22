@@ -62,7 +62,9 @@ void Unk02f2a8_SetField6138(int k, u32 v)
     }
 }
 
+/* Empty callback; callers install these slots but the original does nothing. */
 void Unk02f2a8_Nop_0303c8(void) { }
+/* Empty callback paired with the slot above at 0x0303CC. */
 void Unk02f2a8_Nop_0303cc(void) { }
 void func_02035db8();
 int Unk02f2a8_SetGridPos();
@@ -232,15 +234,21 @@ u8 *Unk02f2a8_GetOptSub2cc(void)
     return 0;
 }
 
+/* Empty callback installed at 0x035430; the original body is a bare return. */
 void Unk02f2a8_Nop_035430(void) { }
 
+/* Entry-table thunk retained so the original call site keeps its target. */
 void Unk02f2a8_Thunk_0203428c(void) { func_0203428c(); }
+/* Entry-table thunk retained so the original call site keeps its target. */
 void Unk02f2a8_Thunk_0206146c(void) { func_0206146c(); }
 
+/* Global accessor: callers (e.g. 0x0202f378, 0x020352f4) use this singleton. */
 GameState *GetGameState(void) { return gGameState; }
 
+/* Range callback: func_02057660 is called with the SDK's fixed (2, 0) range. */
 void Unk02f2a8_Call_02057660(void) { func_02057660(2, 0); }
 
+/* Reads the u16 at +0x74F4 of the singleton; field meaning is not established. */
 u16 GameState_GetUnkField74f4(void) { return gGameState->unk_74f4; }
 
 int Unk02f2a8_DirToAngle();

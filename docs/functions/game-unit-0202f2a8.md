@@ -1,10 +1,22 @@
 # unit_0202f2a8
 
-- `Unk02f2a8_Nop_0303c8`, `Unk02f2a8_Nop_0303cc`, `Unk02f2a8_Nop_035430`: empty callbacks.
-- `Unk02f2a8_Thunk_0203428c` -> `func_0203428c`, `Unk02f2a8_Thunk_0206146c` -> `func_0206146c`: forwarders.
-- `GetGameState`: return the global game-state pointer `gGameState`.
-- `Unk02f2a8_Call_02057660`: call `func_02057660(2, 0)` (SDK range).
-- `GameState_GetUnkField74f4`: read the u16 at +0x74F4 of the game state.
+## M1-T1104: 8 small functions
+
+- `Unk02f2a8_Nop_0303c8` (4 bytes): empty callback; compiles to a bare return.
+- `Unk02f2a8_Nop_0303cc` (4 bytes): empty callback paired with the slot above.
+- `Unk02f2a8_Nop_035430` (4 bytes): empty callback at 0x035430.
+- `Unk02f2a8_Thunk_0203428c` (12 bytes): forwarder to `func_0203428c`; name is the
+  address of the target, no semantic evidence.
+- `Unk02f2a8_Thunk_0206146c` (12 bytes): forwarder to `func_0206146c`; same rationale.
+- `GetGameState` (16 bytes): returns the global game-state pointer `gGameState`
+  (BSS 0x0215DD2C); callers at 0x0202F378 and 0x020352F4 rely on the singleton.
+- `Unk02f2a8_Call_02057660` (20 bytes): invokes `func_02057660(2, 0)`; the constants
+  are the SDK call's fixed range, so the name stays neutral.
+- `GameState_GetUnkField74f4` (24 bytes): reads the u16 at `gGameState + 0x74F4`; a null
+  check would add code, so the original clearly assumes the singleton exists.
+
+All eight are hand-matched and at 100% in objdiff. The `Not done in ...` lists below
+record the other cards that worked on this translation unit.
 
 ## Not done in M1-T1105
 - `GameState_GetUnkField74f6`
