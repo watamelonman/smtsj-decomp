@@ -110,7 +110,7 @@ int Unk0aa118_Advance(Unk0aa118List *l)
 }
 
 void func_020aa4f4();
-void func_020ae1e8();
+void func_020ae1e8(u32 *p);
 extern u8 data_02176b18[];
 int Unk044904_Get_data_0215ee98();
 int func_020b081c();
@@ -143,7 +143,7 @@ typedef struct Unk0aa118Ptrs {
 void Unk0aa118_Unk_0ab34c(void)
 {
     func_020aa4f4(2, 0, 0, 0);
-    func_020ae1e8(data_02176b18);
+    func_020ae1e8((u32 *)data_02176b18);
 }
 
 /* empty callback */
@@ -265,7 +265,7 @@ int func_0204f108();
 int func_0209fd64();
 int func_020ab62c();
 void Unk0aa118_Unk_0ab8f8(u32 p);
-int func_020af9f4();
+int func_020af9f4(int category, u32 id, int reverse);
 void func_020afbdc(Unk0aa118Work *w);
 int Unk0afc28_Unk_0b0930();
 int Unk0caea8_GetInRange();
@@ -541,4 +541,148 @@ void func_020afbdc(Unk0aa118Work *w)
         }
     }
     func_02053000(w);
+}
+
+extern u8 data_0214d318[], data_0214fee4[], data_0214fef0[];
+void func_0204f158(int a, int b, int c, int d);
+void func_0204f0d4(void);
+void func_0204f728(int a, u32 b, int c);
+void func_0204f758(int a, u32 b);
+u32 func_020cb1a0(u32 id);
+u32 func_020cb21c(u32 id);
+int func_020afe64(u32 count);
+int Unk044904_Unk_045460(int mode);
+int Unk044904_Unk_045010(void);
+int Unk044904_Unk_04599c(int value);
+void Unk09ee4c_Unk_09fd14(u32 id, u8 *table);
+int Unk09974c_Unk_099bac(u32 id);
+int Unk0caea8_Unk_0cb044(u32 id);
+
+void func_020ae058(u32 id);
+
+/* Rejects global bit 2 or a failed counter query, otherwise submits id.
+ * A zero bypass increments the global 16-bit counter even when rejected. */
+int func_020ae0d8(u32 id, int bypass, int unused)
+{
+    if ((FIELD(u32, Unk044904_Get_data_0215ee98(), 64) << 29) >> 31) {
+        func_0204f158(0, 32, 6, 0);
+        return 0;
+    }
+    if (bypass == 0) {
+        u8 *g = (u8 *)Unk044904_Get_data_0215ee98();
+        int result = func_020afe64(FIELD(u16, g, 58));
+        FIELD(u16, g, 58)++;
+        if (result == 0) {
+            func_0204f158(0, 32, 5, 0);
+            return 0;
+        }
+    }
+    func_020ae058(id);
+    return 1;
+}
+
+/* For category 1, submits the leading id with a global-state bypass;
+ * other categories submit request 8 directly. p must contain its id word. */
+void func_020ae16c(u32 *p)
+{
+    if (((p[0] >> 16) & 255) == 1) {
+        int bypass;
+        if (Unk044904_Unk_045460(1) != 0 &&
+            FIELD(u16, Unk044904_Get_data_0215ee98(), 56) == 0) {
+            bypass = 1;
+        } else {
+            bypass = 0;
+        }
+        func_020ae0d8(p[0], bypass, 0);
+    } else {
+        func_0204f158(0, 32, 8, 0);
+        func_0204f728(0, p[0], 8);
+    }
+}
+
+/* Builds and processes a temporary node list from eight-byte records.
+ * The second word equal to UINT_MAX terminates the borrowed input array. */
+void func_020ae1e8(u32 *p)
+{
+    u32 *w = Unk0aa118_Unk_0afb64(p[0]);
+    w[4] = (u32)Unk0aa118_Unk_0af8d8(2, (u32)data_0214d318, 0);
+    w[2] &= ~16;
+    while (p[1] != ~0U) {
+        Unk0aa118Node *node = Unk0aa118_Unk_0afb90((Unk0aa118Work *)w);
+        FIELD(u32, node, 4) = p[0];
+        p += 2;
+        FIELD(u32, node, 132) = (FIELD(u32, node, 132) & ~255) | 2;
+    }
+    func_0209fd64(w);
+    func_020afbdc((Unk0aa118Work *)w);
+}
+
+/* Resolves a table using the category byte of p's id, processes it, then
+ * chooses request 16 or fallback request 17 from the global query. */
+void func_020ae270(u32 id, u32 *p)
+{
+    u8 *table = Unk0aa118_Thunk_020af8d8((p[0] >> 16) & 255, id, 0);
+    Unk09ee4c_Unk_09fd14(p[0], table);
+    func_0204f0d4();
+    if (Unk044904_Unk_04599c(Unk044904_Unk_045010()) != 0) {
+        func_0204f758(16, p[0]);
+    } else {
+        func_0204f158(0, 60, 17, 0);
+    }
+}
+
+/* Returns a borrowed six-byte table entry for group 1..3 and one-based
+ * index; other groups return the base, and a missing record returns null. */
+u8 *func_020af85c(int group, int index)
+{
+    u8 *record = Unk0aa118_FindRecord((u32)data_0214fee4);
+    if (record != 0) {
+        u8 *base = (u8 *)func_0204fde0(Unk0aa118_Unk_0af7f8(record[0], record[1]));
+        switch (group) {
+        case 1: return base + (index - 1) * 6;
+        case 2: return base + (index + 2) * 6;
+        case 3: base += (index + 5) * 6; break;
+        }
+        return base;
+    }
+    return 0;
+}
+
+/* Tries two id resolvers in order, then returns borrowed table storage;
+ * data_0214fef0 supplies the fallback id when both resolvers return zero. */
+int func_020af9f4(int category, u32 id, int reverse)
+{
+    u32 resolved = 0;
+    u32 found = func_020cb1a0(id);
+    if (found != 0) {
+        resolved = found;
+    } else {
+        found = func_020cb21c(id);
+        if (found != 0) {
+            resolved = found;
+        }
+    }
+    if (resolved != 0) {
+        return (int)Unk0aa118_Unk_0af8d8(category, resolved, reverse);
+    }
+    return (int)Unk0aa118_Unk_0af8d8(category, (u32)data_0214fef0, reverse);
+}
+
+/* Dispatches kinds 5 and 6 through separate id resolvers to request 32.
+ * The borrowed four-word record holds kind at +8 and id at +12. */
+void func_020ab2c8(u32 *p)
+{
+    switch (p[2]) {
+    case 0: break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 7:
+    case 10: return;
+    case 5: func_0204f108(0, 32, Unk09974c_Unk_099bac(p[3]), 0); break;
+    case 6: func_0204f108(0, 32, Unk0caea8_Unk_0cb044(p[3]), 0); break;
+    case 8: break;
+    case 9: break;
+    }
 }

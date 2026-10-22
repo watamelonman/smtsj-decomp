@@ -106,15 +106,51 @@ None for M1-T1077 or M1-T1078.
   forwards to `func_020b0310`. The mode check and calls at 0x020ab4f4 support
   this contract.
 
-## Not done in M1-T1080
-- `func_020ae270`
-- `func_020af9f4`
-- `func_020ae16c`
-- `func_020af85c`
-- `func_020ae058`
-- `func_020ab2c8`
-- `func_020ae1e8`
-- `func_020ae0d8`
+## M1-T1080 (seven verified at 100% objdiff)
+
+Names remain the configured neutral symbols: the instruction sequences establish
+these operations but do not establish their wider gameplay purpose.
+
+- `func_020ae270` (104 B): resolves the category byte from the leading id
+  word, submits the corresponding table, flushes requests, then chooses request
+  16 or fallback `(0, 60, 17, 0)` using the two global queries. Evidence:
+  the category shifts and callee sequence at 0x020ae270.
+- `func_020af9f4` (108 B): tries `func_020cb1a0` then `func_020cb21c`,
+  returning table storage for the first nonzero resolved id. Both failing selects
+  `data_0214fef0`. Category and reversal pass through unchanged.
+- `func_020ae16c` (124 B): category 1 forwards to `func_020ae0d8`, bypassing
+  the counter check only when query 1 succeeds and global halfword +0x38 is
+  zero. Other categories submit request 8. Evidence: the branches and halfword
+  access at 0x020ae16c.
+- `func_020af85c` (124 B): finds `data_0214fee4`, resolves its first two bytes
+  to a table, then returns six-byte entries at index - 1, index + 2, or index + 5
+  for groups 1, 2, or 3. Other groups return the base; a missing record returns
+  null. Caller must provide valid group indices. Storage is borrowed.
+- `func_020ab2c8` (132 B): dispatches record kind +8 equal to 5 or 6 through
+  separate resolvers using id +12, then submits `(0, 32, result, 0)`; all other
+  kinds do nothing. The original jump table preserves distinct return groups.
+- `func_020ae1e8` (136 B): allocates temporary work, selects the
+  `data_0214d318` table and clears flag 0x10, then appends kind-2 nodes from
+  eight-byte records until their second word is UINT_MAX. It processes the
+  work and frees the nodes and owner. Input is borrowed and sentinel terminated.
+- `func_020ae0d8` (148 B): rejects global +0x40 bit 2 with request 6. When
+  bypass is zero it checks global halfword +0x3a, increments that halfword even
+  on failure, and rejects a failed query with request 5. Otherwise it calls
+  `func_020ae058` and returns 1. The third argument is unused in the original.
+
+### Hard list: M1-T1080
+
+- `func_020ae058` (128 B): retained in the delinked object, without a C body.
+  The assembly submits `(0, 32, 4, 0)`, loops over one eight-byte descriptor
+  at `data_0213c424` (operation byte +1), submits `(70, 3, 0, 1)`, flushes,
+  then submits `(0, id, 8)`. Compiled C trials with for/do loops at the default
+  optimization level fold the one-iteration loop (70.09%). A local optimization
+  level 2 trial retains the loop and reaches 93.22%, but generates separate
+  shift/add/indexed-load instructions instead of add plus byte load, and assigns
+  the cursor/counter registers differently. Typed byte and bitfield descriptors
+  reached 84.19% and 89.50%; optimization levels 1 and 3 also failed to match.
+  No trial body or compiler override is retained. A human can use
+  `tools/decompme.py` to investigate the address generation and loop optimization.
 
 ## Not done in M1-T1081
 - `func_020ae978`
