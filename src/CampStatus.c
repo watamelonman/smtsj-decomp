@@ -83,7 +83,7 @@ typedef struct CampStatusWork {
     void *unk_00c8;
     CampStatusUnit *unk_00cc;
     u16 unk_00d0;
-    u8 unk_00d2[0x8];           /* +0xd2: passed to func_020da710; size from the next field */
+    u16 unk_00d2[4];            /* +0xd2: id list (4 slots, filled by func_020d3680) */
     u16 unk_00da;               /* +0xda: id passed to func_020a1740 */
     u16 unk_00dc[6];            /* +0xdc: id list filled by func_020a18c8 */
     u32 unk_00e8;
@@ -224,7 +224,7 @@ int func_020523a8(void);
 u32 Unk0ddeb0_Unk_0ddfd8(u32 i);
 u32 Unk0ca69c_Unk_0ca6a4(u32 v);
 void CampStatus_Unk_0db910(CampStatusInfo *info);
-void func_020da710();
+void func_020da710(void *obj, const u16 *ids, const u16 *ref, s32 sel);
 u8 CampStatus_Unk_0db288(s32 t);
 
 /* Record list returned by func_020a1740: three 6-byte records from +0x48. */
@@ -254,6 +254,10 @@ extern char data_021507cc[];
 extern char data_021507d0[];
 extern char data_021507d4[];
 extern char data_021507dc[];
+extern char data_021507e0[];
+extern char data_021507e4[];
+extern char data_021507e8[];
+void CampStatus_Unk_0db3e0(s32 a, s32 b, s32 c, s32 mode);
 extern u32 data_0213c568[];
 void func_02057ddc(u32 color);
 char *func_020a9e14(int mode, const char *format, ...);
@@ -690,6 +694,48 @@ void CampStatus_Unk_0da8c4(void *obj, u32 unused, s32 sel)
     }
 }
 
+/* Draw value b (mode 1) or a (other modes) in slot `slot` with the compare colour from
+ * CampStatus_Unk_0db3e0; in mode 1 a bobbing arrow (frame 48 up / 49 down, 24-tick cycle)
+ * shows whether b is above or below a. */
+void func_020da97c(u32 obj, s32 a, s32 b, s32 mode, u8 slot)
+{
+    char *width = func_020a9e14(1, data_021507e0);
+    CampStatus_Unk_0db3e0(a, b, 0, mode);
+    if (mode == 1) {
+        func_020a9fd8(1, slot * 85 + 64, 143, 2, (u32)width, 10, (u32)data_021507e4, b);
+        if (b > a) {
+            s32 t = data_0215f05c.unk_0018 % 24;
+            s32 dy;
+            if (t < 6) {
+                dy = 0;
+            } else if (t < 12) {
+                dy = -1;
+            } else if (t < 18) {
+                dy = -2;
+            } else {
+                dy = -1;
+            }
+            func_0205dee8(2, obj, 48, slot * 85, dy, 1.0f, 1.0f, 0, 1.0f, 4);
+        } else if (b < a) {
+            s32 t = data_0215f05c.unk_0018 % 24;
+            s32 dy;
+            if (t < 6) {
+                dy = -2;
+            } else if (t < 12) {
+                dy = -1;
+            } else if (t < 18) {
+                dy = 0;
+            } else {
+                dy = -1;
+            }
+            func_0205dee8(2, obj, 49, slot * 85, dy, 1.0f, 1.0f, 0, 1.0f, 4);
+        }
+    } else {
+        func_020a9fd8(1, slot * 85 + 64, 143, 2, (u32)width, 10, (u32)data_021507e8, a);
+    }
+    func_02057df8();
+}
+
 u8 CampStatus_Unk_0db214(s32 t)
 {
     s32 r = t % 120;
@@ -908,6 +954,56 @@ void CampStatus_Unk_0dbd04(CampStatusWork *work, u32 id)
         func_0204faf0(10, id);
     }
     CampStatus_Unk_0dde3c(work->unk_00c8, 14, 0, &icon, 1);
+}
+
+/* Icons for record id: unk_0002 3 fills the first icon from it and the second from the
+ * player's +0x02 record, 4 the other way round (player's +0x00 record); both then go to
+ * unk_00c8. Other values fall back to CampStatus_Unk_0db824. */
+void func_020dbdac(CampStatusWork *work, u32 id)
+{
+    u32 icons[2] = {0, 0};
+    CampStatusPlayer *p = Unk02e000_Thunk_0202e788();
+    CampStatusInfo *info = Unk09974c_Unk_099c60(id);
+    if (info == 0) {
+        return;
+    }
+    if (info->unk_0002 == 3) {
+        if (info->lo != info->hi) {
+            icons[0] = 1;
+        } else {
+            icons[0] = 0;
+        }
+        CampStatus_Unk_0db910(info);
+        if (p->unk_0002 != 0 && (info = Unk09974c_Unk_099c60(p->unk_0002)) != 0) {
+            if (info->lo != info->hi) {
+                icons[1] = 3;
+            } else {
+                icons[1] = 2;
+            }
+            CampStatus_Unk_0db910(info);
+        }
+        CampStatus_Unk_0dde3c(work->unk_00c8, 14, 0, icons, 2);
+        return;
+    }
+    if (info->unk_0002 == 4) {
+        if (info->lo != info->hi) {
+            icons[1] = 3;
+        } else {
+            icons[1] = 2;
+        }
+        CampStatus_Unk_0db910(info);
+        if (p->unk_0000 != 0 && (info = Unk09974c_Unk_099c60(p->unk_0000)) != 0) {
+            if (info->lo != info->hi) {
+                icons[0] = 1;
+            } else {
+                icons[0] = 0;
+            }
+            CampStatus_Unk_0db910(info);
+        }
+        CampStatus_Unk_0dde3c(work->unk_00c8, 14, 0, icons, 2);
+        return;
+    }
+    CampStatus_Unk_0db824(work);
 }
 
 /* For ids 8..10 only: show entry id of group (14, 0) on work->unk_00c8 via CampStatus_Unk_0dde3c. */
