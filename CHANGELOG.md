@@ -2,6 +2,14 @@
 
 ## Unreleased
 - Matched six M1-T1052 UniteEvent functions at 100% objdiff (initialization, input transition, two draw callbacks, teardown and coordinate layout); documented the remaining update state machine in the hard list.
+- Matched all eight M1-T1094 functions in `src/game/unit_02100810.c` at 100% objdiff, including record conversions, percentage counters, drawing callback and wrappers.
+- Matched all eight M1-T1093 functions in `src/game/unit_02100810.c` at 100% objdiff, with typed work/table layouts and per-function documentation.
+- `src/game/unit_02122850.c`: completed the eight M1-T109 functions — the callback-table initializer, state dispatch, Camp/camp_BG setup, release path and four callbacks now all match at 100% objdiff, with typed work layout and per-function docs.
+- Typed and documented the eight M1-T1086 functions in `src/game/unit_0203e43c.c` (all 100% in objdiff), including the `/10` clamp helper, the counter setter/getter pair, and the table-registration thunk.
+- Matched all seven M1-T108 callbacks in `src/game/unit_020ee6dc.c` at 100% objdiff, including the 300-byte list drawing callback, with typed work fields and per-function documentation.
+- `src/game/unit_020aa118.c`: added the matching `func_020ab4d4` record bit-set helper and completed the M1-T1076 eight-function set; documented every function in `docs/functions/game-unit-020aa118.md`.
+- Matched all eight M1-T1074 functions in `src/game/unit_02072238.c` (three empty callbacks, the VLA id-list builder and the panel/list drawing helpers) at 100% objdiff, with typed work/panel layouts and per-function documentation.
+- Finished `src/game/unit_020caea8.c`: added the `func_020cafbc` pair search and documented/types the seven other M1-T106 functions, all at 100% objdiff.
 - Matched all eight M1-T1051 functions in `src/UniteEvent.c` (fusion event descriptor, message handler, id/state setters, effect loader and slot loader) at 100% objdiff, with typed work layouts and per-function documentation.
 - Matched `func_020e1b10` and `func_020e2190` in `src/game/unit_020e1648.c` at 100% objdiff (work state machine and action state machine); documented `func_020e33b8`/`func_020e4344` and their register-allocation trials in the hard list.
 - Matched all seven script-command handlers in `src/game/unit_020bbb44.c` at 100% objdiff, with neutral symbol names and per-function documentation in `docs/functions/game-unit-020bbb44.md`.

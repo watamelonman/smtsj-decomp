@@ -1,15 +1,24 @@
 # src/game/unit_0203e43c.c
 
-- `Unk03e43c_Thunk_0203fa84` (12 B): forwards to `func_0203fa84`
-- `Unk03e43c_Unk_03f2ac` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk03e43c_Unk_03fa28` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk03e43c_Unk_03f2bc` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk03e43c_Unk_03fa3c` (28 B): decompiler-derived (Ghidra output, cleaned)
+- `Unk03e43c_Thunk_0203fa84` (12 B): tail-call thunk that forwards to `func_0203fa84`.
+- `Unk03e43c_Unk_03f2ac` (16 B): returns a pointer `offset` bytes into the shared
+  table at `data_0215e85e`; `Unk03e43c_Unk_044194` consumes the result as a u16 array.
+- `Unk03e43c_Unk_03fa28` (20 B): returns the work-area byte at +0x360 mapped through
+  `Unk03e43c_Div10Clamp16` (a 0..15 table slot, or the -1 sentinel).
+- `Unk03e43c_Unk_03f2bc` (24 B): sets bit 1 of the byte at +0x10 in the object returned
+  by `func_0205410c`.
+- `Unk03e43c_Call_02056cc0` (28 B): calls `func_02056cc0(1, 0, data_0215e85e)` to
+  register the 512-byte table.
+- `Unk03e43c_CountDown` (28 B): decrements the u16 count at +0x58 of the passed object;
+  returns 1 when it was already zero and 0 after a decrement.
+- `Unk03e43c_Unk_03fa3c` (28 B): stores `value * 10` in the work-area counter byte at
+  +0x360 (the inverse of the `/10` mapping above).
+- `Unk03e43c_Div10Clamp16` (32 B): returns `x / 10`, or -1 when the quotient is >= 16
+  (so a 0..159 counter maps to a 0..15 slot).
+
+All eight match the delinked original at 100% in objdiff.
 
 ## Hard list
-- `Unk03e43c_Call_02056cc0`: no candidate matched locally
-- `Unk03e43c_CountDown`: no candidate matched locally
-- `Unk03e43c_Div10Clamp16`: no candidate matched locally
 - `Unk03e43c_Unk_03e5a4`: decompiler-derived
 - `Unk03e43c_Unk_03e5dc`: decompiler-derived
 - `Unk03e43c_Unk_03e614`: decompiler-derived
