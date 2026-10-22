@@ -159,7 +159,7 @@
   scan-visor slots. Verified 100%.
 
 ### M1-T1014 hard list
-- `func_0209cbf8` (300 B) and `func_0209ce30` (292 B): not implemented in C.
+- `Unk09a268_Unk_09cbf8` (300 B) and `Unk09a268_Unk_09ce30` (292 B): not implemented in C.
   Both are the same 0x1c-record map test as `0209c090` but with element 7
   (word field, cbf8) or element 8 (byte field, ce30): they look up the map entry,
   read the two-bit field at the record's +25 byte, and on a value other than 3
@@ -281,5 +281,5 @@
 
 ### M1-T1016 hard list
 None.
-- `func_0209cbf8`: hand-matched
-- `func_0209ce30`: hand-matched
+- `Unk09a268_Unk_09cbf8`: hand-matched
+- `Unk09a268_Unk_09ce30`: hand-matched

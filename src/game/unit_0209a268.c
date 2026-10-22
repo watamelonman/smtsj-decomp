@@ -1717,7 +1717,7 @@ int Unk0e651c_Get2Bits(u32 value, u32 index);
  * bit 4, takes record 5's state bit and becomes kind 1 (type-1 record at
  * work +996) or kind 3, then func_0209c548 runs; otherwise the transition
  * kind becomes -1. */
-void func_0209cbf8(u8 *work)
+void Unk09a268_Unk_09cbf8(u8 *work)
 {
     Unk09a268Transition *w = (Unk09a268Transition *)work;
     u8 *entry;
@@ -1755,7 +1755,7 @@ void func_0209cbf8(u8 *work)
  * bit 4, takes record 5's state bit and becomes kind 1 (type-1 record at
  * work +996) or kind 3, then func_0209c548 runs; otherwise the transition
  * kind becomes -1. */
-void func_0209ce30(u8 *work)
+void Unk09a268_Unk_09ce30(u8 *work)
 {
     Unk09a268Transition *w = (Unk09a268Transition *)work;
     u8 *entry;
