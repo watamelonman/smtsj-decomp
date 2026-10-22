@@ -1,16 +1,40 @@
-/* src/game/unit_0203e23c.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/*
+ * src/game/unit_0203e23c.c: script command handlers. Each handler reads its arguments with
+ * func_0203ac00(i), does one game-state query or update, and returns 1 ("command done").
+ * Query handlers report their answer through Unk03aae8_Unk_03acf4 (stores the script result word).
+ * func_0203e2f8 (0x74) is still linked from the delink.
+ */
 #include "types.h"
+#include "game/unit_0203e23c.h"
 
+int func_0203ac00(int idx);
+int Unk03aae8_Unk_03acf4(u32 value);
+int Unk02e000_GetRecordUnk1f(u32 id);
+int Unk02e000_SetRecordUnk1f_2(u32 id, int v);
+u32 Unk02e000_GetRecordUnk1e(u32 id);
+/* defined with a u32 id; declared int here because the u32 form changes 03e3e4's register order */
+int Unk02e000_SetRecordUnk1e(int id, int v);
+int Unk096754_Unk_0969f0(void);
+int Unk096754_HasEntryId(int id);
+int func_02096af4(u16 id);          /* slot (0..11) holding entry `id`, or -1 */
+void func_02096958(int slot);
+int Unk0986ac_Unk_098978(int arg0);
+int Unk0986ac_Thunk_02098714(int bit);
+u16 Unk09ee4c_GetField3c0Bits(void);
+int BattleTask_Unk_0481d4(void);
+void func_020494d0(int id, int n);
+int Unk096754_Unk_096a14(void);
+void Unk097514_Unk_0977f0(u32 arg0, u32 arg1, int arg2);
 
-int Unk03aae8_Unk_03acf4();
-int Unk09ee4c_GetField3c0Bits();
-void Unk02e000_SetRecordUnk1f_2();
-int Unk096754_Unk_0969f0();
-int Unk096754_HasEntryId();
-int func_02096af4();
-void func_02096958();
-void Unk0986ac_Unk_098978();
-int Unk0986ac_Thunk_02098714();
+/* Script: result = record[arg0].unk_1f. */
+int Unk03e23c_Unk_03e23c(void)
+{
+    u16 id = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(Unk02e000_GetRecordUnk1f(id));
+    return 1;
+}
+
+/* Script: record[arg0].unk_1f = arg1. */
 int Unk03e23c_Unk_03e260(void)
 {
     int a = func_0203ac00(0);
@@ -18,6 +42,7 @@ int Unk03e23c_Unk_03e260(void)
     return 1;
 }
 
+/* Script: result = 1 if Unk096754_Unk_0969f0 (entry count below the work-area limit), else 0. */
 int Unk03e23c_Unk_03e290(void)
 {
     if (Unk096754_Unk_0969f0()) {
@@ -28,6 +53,7 @@ int Unk03e23c_Unk_03e290(void)
     return 1;
 }
 
+/* Script: result = 1 if an occupied slot holds entry id arg0, else 0. */
 int Unk03e23c_Unk_03e2bc(void)
 {
     if (Unk096754_HasEntryId((u16)func_0203ac00(0))) {
@@ -38,18 +64,43 @@ int Unk03e23c_Unk_03e2bc(void)
     return 1;
 }
 
-int Unk03e23c_Unk_03e36c(void)
+/* Script: for the first free entry slot (Unk096754_Unk_096a14 >= 0) applies
+ * Unk097514_Unk_0977f0(slot, script arg 0, 0) and, in battle, forwards the resulting change in
+ * the record's unk_1e to func_020494d0. Returns 1 even when no slot is free. */
+int func_0203e2f8(void)
 {
-    if (func_02096af4((u16)func_0203ac00(0)) >= 0) {
-        func_02096958();
+    int slot = Unk096754_Unk_096a14();
+    int before;
+    u16 id;
+    if (slot >= 0) {
+        before = 0;
+        id = func_0203ac00(0);
+        if (BattleTask_Unk_0481d4() != 0) {
+            before = Unk02e000_GetRecordUnk1e(id);
+        }
+        Unk097514_Unk_0977f0(slot, id, 0);
+        if (BattleTask_Unk_0481d4() != 0) {
+            int delta = Unk02e000_GetRecordUnk1e(id) - before;
+            func_020494d0(id, delta);
+        }
     }
     return 1;
 }
 
+/* Script: if entry id arg0 is in a slot, pass that slot to func_02096958 (clears it). */
+int Unk03e23c_Unk_03e36c(void)
+{
+    int slot = func_02096af4((u16)func_0203ac00(0));
+    if (slot >= 0) {
+        func_02096958(slot);
+    }
+    return 1;
+}
+
+/* Script: result = 1 if flag bit (arg0 - 0x6f) is set, else 0. */
 int Unk03e23c_Unk_03e398(void)
 {
-    Unk0986ac_Unk_098978(func_0203ac00(0));
-    if (Unk0986ac_Thunk_02098714()) {
+    if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(func_0203ac00(0)))) {
         Unk03aae8_Unk_03acf4(1);
     } else {
         Unk03aae8_Unk_03acf4(0);
@@ -57,34 +108,17 @@ int Unk03e23c_Unk_03e398(void)
     return 1;
 }
 
-/* decompiler-derived */
-u32 Unk03e23c_Unk_03e3d0(void)
+/* Script: result = Unk09ee4c_GetField3c0Bits(). */
+int Unk03e23c_Unk_03e3d0(void)
 {
-  Unk09ee4c_GetField3c0Bits();
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    Unk03aae8_Unk_03acf4(Unk09ee4c_GetField3c0Bits());
+    return 1;
 }
 
-int Unk02e000_GetRecordUnk1f();
-int func_0203ac00();
-/* decompiler-derived */
-u32 Unk03e23c_Unk_03e23c(void)
-{
-  u16 value;
-  value = func_0203ac00(0);
-  Unk02e000_GetRecordUnk1f(value);
-  Unk03aae8_Unk_03acf4();
-  return 1;
-}
-
-int func_0203ac00();
-int Unk096754_Unk_096a14();
-int BattleTask_Unk_0481d4();
-u32 Unk02e000_GetRecordUnk1e(u32 id);
-int Unk02e000_SetRecordUnk1e();
-void Unk097514_Unk_0977f0();
-void func_020494d0();
-
+/*
+ * Script: record[arg0].unk_1e += arg1. While BattleTask_Unk_0481d4 is set the change is also
+ * forwarded to func_020494d0 (id, delta) before the store.
+ */
 int Unk03e23c_Unk_03e3e4(void)
 {
     u16 id;
