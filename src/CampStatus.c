@@ -49,7 +49,9 @@ typedef struct CampStatusWork {
     u8 pad_01ac[0x94];
     u8 unk_0240;
     u8 unk_0241;
-    u8 pad_0242[0x16];
+    u8 pad_0242[0xe];
+    u32 unk_0250;               /* +0x250: written to 1 by func_020dcb44 */
+    u8 pad_0254[0x4];
     u32 unk_0258;
     u8 pad_025c[0x4];
     u32 unk_0260;
@@ -59,12 +61,13 @@ typedef struct CampStatusWork {
 
 extern CampStatusWork *data_02176be4;
 
-u32 CampStatus_GetUnkField1c(void *obj);
+u32 CampStatus_GetUnkField1c(CampStatusWork *work);
 u32 CampStatus_GetUnkField7494(CampStatusWork *work);
 
-/* get u32 at +0x1c */
-u32 CampStatus_GetUnkField1c(void *obj) { return ((CampStatusWork *)obj)->unk_001c; }
+/* Read the unidentified work word at +0x1c; no caller evidence for a better name. */
+u32 CampStatus_GetUnkField1c(CampStatusWork *work) { return work->unk_001c; }
 
+/* Read the 49-byte table at data_0213c60c; an out-of-range index reads entry 0. */
 extern u8 data_0213c60c[49];
 
 int CampStatus_GetTableByte(u32 i)
@@ -75,7 +78,7 @@ int CampStatus_GetTableByte(u32 i)
     return data_0213c60c[i];
 }
 
-/* decompiler-derived */
+/* Read the cached word at +0x7494 (shape only; purpose not evidenced). */
 u32 CampStatus_GetUnkField7494(CampStatusWork *work)
 {
   return work->unk_7494;
@@ -260,21 +263,25 @@ int CampStatus_IsUnkF4F8Set(void)
     return w->unk_00f4 != 0 && w->unk_00f8 != 0;
 }
 
+/* Read the unidentified word at +0x1a8 in the shared work. */
 u32 CampStatus_GetUnk1a8(void)
 {
     return data_02176be4->unk_01a8;
 }
 
+/* Write the unidentified word at +0x1a8 in the shared work. */
 void CampStatus_SetUnk1a8(u32 value)
 {
     data_02176be4->unk_01a8 = value;
 }
 
+/* Read the unidentified word at +0x258 in the shared work. */
 u32 CampStatus_GetUnk258(void)
 {
     return data_02176be4->unk_0258;
 }
 
+/* Raise the mode flag at +0x260; see CampStatus_ResetAnim for the clear. */
 void CampStatus_SetUnk260(void)
 {
     data_02176be4->unk_0260 = 1;
@@ -317,4 +324,10 @@ void CampStatus_Unk_0dd308(s32 *v, s32 add, int n, s32 *cnt, float *out)
     }
     (*cnt)++;
     *out = *cnt / 10.0f;
+}
+
+/* Set the unidentified flag at +0x250; neutral name kept from symbols.txt. */
+void func_020dcb44(void)
+{
+    data_02176be4->unk_0250 = 1;
 }
