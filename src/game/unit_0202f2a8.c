@@ -318,42 +318,57 @@ int Unk02f2a8_GridIndex45(int x, int y)
     return y * 45 + x;
 }
 
-/* decompiler-derived */
-void Unk02f2a8_Unk_035ec4(int arg0,u32 arg1)
+/* Object whose u16 at +0x18 holds a 16-bit angle (0x10000 = full turn). */
+typedef struct Unk02f2a8Angled {
+    u8 pad_0000[0x18];
+    u16 unk_0018;
+} Unk02f2a8Angled;
+
+/* Owner of an Unk02f2a8Angled sub-object embedded at +0x7c. */
+typedef struct Unk02f2a8AngledOwner {
+    u8 pad_0000[0x7c];
+    Unk02f2a8Angled unk_007c;
+} Unk02f2a8AngledOwner;
+
+/* Object whose u32 at +0x14 is a state/mode word; 030478 sets it to 5. */
+typedef struct Unk02f2a8Obj14 {
+    u8 pad_0000[0x14];
+    u32 unk_0014;
+} Unk02f2a8Obj14;
+
+/* Stores the angle for direction `dir` (see Unk02f2a8_DirToAngle) at obj+0x18. */
+void Unk02f2a8_Unk_035ec4(Unk02f2a8Angled *obj, u32 dir)
 {
-  u16 tmp1;
-  tmp1 = Unk02f2a8_DirToAngle(arg1);
-  *(u16 *)(arg0 + 0x18) = tmp1;
+    obj->unk_0018 = Unk02f2a8_DirToAngle(dir);
 }
 
 int Unk02e000_GetWorkArea();
-/* decompiler-derived */
-void Unk02f2a8_Unk_030578(int arg0)
+/* Sets the angle of obj's +0x7c sub-object from the work area's direction word (+0x358). */
+void Unk02f2a8_Unk_030578(Unk02f2a8AngledOwner *obj)
 {
-  int tmp1;
-  tmp1 = Unk02e000_GetWorkArea();
-  Unk02f2a8_Unk_035ec4(arg0 + 0x7c,*(u32 *)(tmp1 + 0x358));
+    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    Unk02f2a8_Unk_035ec4(&obj->unk_007c, FIELD(u32, w, 0x358));
 }
 
 int func_02061424();
-/* decompiler-derived */
-void Unk02f2a8_Unk_030478(int arg0)
+/* Null-safe: sets obj+0x14 to 5, then calls func_02061424 (obj still in r0). */
+void Unk02f2a8_Unk_030478(Unk02f2a8Obj14 *obj)
 {
-  if (arg0 == 0) {
-    return;
-  }
-  *(u32 *)(arg0 + 0x14) = 5;
-  func_02061424();
+    if (obj == 0) {
+        return;
+    }
+    obj->unk_0014 = 5;
+    func_02061424();
 }
 
-/* decompiler-derived */
-void Unk02f2a8_Unk_033890(int arg0)
+/* Clears the GameState fields at +0x7478, +0x7480/+0x7481 (bytes), +0x7484 and +0x7488. */
+void Unk02f2a8_Unk_033890(GameState *gs)
 {
-  *(u32 *)(arg0 + 0x7478) = 0;
-  *(u8 *)(arg0 + 0x7480) = 0;
-  *(u8 *)(arg0 + 0x7481) = 0;
-  *(u32 *)(arg0 + 0x7484) = 0;
-  *(u32 *)(arg0 + 0x7488) = 0;
+    FIELD(u32, gs, 0x7478) = 0;
+    FIELD(u8, gs, 0x7480) = 0;
+    FIELD(u8, gs, 0x7481) = 0;
+    FIELD(u32, gs, 0x7484) = 0;
+    FIELD(u32, gs, 0x7488) = 0;
 }
 
 /* decompiler-derived */
@@ -478,7 +493,7 @@ void Unk02f2a8_Unk_033c94(u32 *arg0)
   Unk02f2a8_Unk_030d20(arg0,1);
   Unk095560_Unk_0956a8();
   Unk044394_Unk_044534(0x24);
-  Unk02f2a8_Unk_030478(*arg0);
+  Unk02f2a8_Unk_030478((Unk02f2a8Obj14 *)*arg0);
   func_02061424(arg0);
   func_020572c0();
   func_0205e590(0);

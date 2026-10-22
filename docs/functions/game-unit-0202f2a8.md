@@ -18,15 +18,25 @@
 All eight are hand-matched and at 100% in objdiff. The `Not done in ...` lists below
 record the other cards that worked on this translation unit.
 
-## Not done in M1-T1105
-- `GameState_GetUnkField74f6`
-- `Unk02f2a8_Unk_035ec4`
-- `Unk02f2a8_Unk_030478`
-- `Unk02f2a8_Unk_030578`
-- `GameState_GetBody`
-- `GameState_Exists`
-- `GameState_ClearRootUnk60`
-- `Unk02f2a8_Unk_033890`
+## M1-T1105: 8 small functions
+
+Earlier hand-match waves had already brought all eight to 100%. This card gives the four
+decompiler-derived ones typed parameters (small local structs, no raw `int` offsets) and
+comments. All eight are still at 100% in objdiff.
+- `GameState_GetUnkField74f6` (24 bytes): returns the u16 `gGameState->unk_74f6`.
+- `Unk02f2a8_Unk_035ec4` (24 bytes): `obj->unk_0018 = Unk02f2a8_DirToAngle(dir)`. This stores
+  a 16-bit angle for a direction code 0..3. The name stays neutral because the object type is unknown.
+- `Unk02f2a8_Unk_030478` (28 bytes): if `obj` is non-null, sets `obj->unk_0014 = 5` and calls
+  `func_02061424` (obj still in r0). Its only caller is `Unk02f2a8_Unk_033c94`.
+- `Unk02f2a8_Unk_030578` (28 bytes): calls 035ec4 on `&obj->unk_007c` with the work-area
+  direction word at +0x358.
+- `GameState_GetBody` (28 bytes): returns `gGameState->unk_0004`, or 0 when no GameState exists.
+- `GameState_Exists` (28 bytes): `gGameState != 0`.
+- `GameState_ClearRootUnk60` (28 bytes): `gGameState->root->unk_60 = 0`. It undoes
+  `Unk02f2a8_SetRootUnk60`, which sets the flag to 1 and stores two args at +0x64/+0x68.
+- `Unk02f2a8_Unk_033890` (32 bytes): zeroes the GameState fields at +0x7478, +0x7480,
+  +0x7481, +0x7484 and +0x7488. It uses `FIELD` because `include/GameState.h` (not owned by this
+  card) still pads that range.
 
 ## Not done in M1-T1106
 - `Unk02f2a8_Unk_033ac8`

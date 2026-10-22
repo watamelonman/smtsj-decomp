@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the eight M1-T1105 functions in `src/game/unit_0202f2a8.c` at 100% objdiff. The four decompiler-derived ones (035ec4, 030478, 030578, 033890) now have typed parameters with small local structs and per-function comments.
 - Verified the eight M1-T1104 functions in `src/game/unit_0202f2a8.c` at 100% objdiff (three empty callbacks, two thunks, the game-state getter, the SDK range callback and the +0x74F4 field getter), with typed signatures and per-function comments.
 - Verified all eight M1-T1088 table, entry, coordinate, and flag-count functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented their contracts and typed the draw-entry setup parameters.
 - Verified all eight M1-T1087 functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented mode/counter/table operations and acquisition validation helpers, and typed the paired-byte copy.
