@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all seven M1-T064 handlers in `src/game/unit_0203c05c.c`, including mode dispatch, with typed work fields and documented argument contracts.
 - Verified all six M1-T059 handlers at 100% objdiff, with typed lookup fields, explicit setter arguments, and instruction-based documentation.
 - Matched and documented all eight M1-T058 functions in `src/game/unit_020bb2b0.c`, with typed lookup fields and explicit record-result forwarding.
 - Corrected the M1-T055 slot request prototype and documented its null request block.
