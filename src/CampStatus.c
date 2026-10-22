@@ -140,7 +140,7 @@ typedef struct CampStatusCell {
 } CampStatusCell;
 
 /* Object handled by the four-entry table at 0x0213c1d8 (CampStatus_GetUnkField7494,
- * CampStatus_Unk_0dcb68, func_020dcc00, func_020dd0a4); a different object from CampStatusWork. */
+ * CampStatus_Unk_0dcb68, CampStatus_Unk_0dcc00, func_020dd0a4); a different object from CampStatusWork. */
 /* Per-flag data reached from CampStatusGrid.info; one byte per 4-bit cell flag (1-based). */
 typedef struct CampStatusGridInfo {
     u8 pad_0000[0x10];
@@ -168,9 +168,9 @@ typedef struct CampStatusTableWork {
     CampStatusMapInfo *unk_03e4;
     u8 pad_03e8[0x20c0];
     u8 unk_24a8[0x4f98];        /* +0x24a8: Unk09a268 entry table (func_02058b14); size from the next field */
-    u32 unk_7440;               /* +0x7440: func_020dcc00 waits for it in state 5 */
+    u32 unk_7440;               /* +0x7440: CampStatus_Unk_0dcc00 waits for it in state 5 */
     u8 pad_7444[0x3d];
-    s8 unk_7481;                /* +0x7481: state of func_020dcc00 */
+    s8 unk_7481;                /* +0x7481: state of CampStatus_Unk_0dcc00 */
     s8 unk_7482;                /* +0x7482/+0x7483: (x, y) passed with unk_0240 */
     s8 unk_7483;
     s32 unk_7484;               /* +0x7484: set to 60 when a new flag is raised */
@@ -2060,7 +2060,7 @@ void ScanVisor_Unk_0a2920(u32 a);
 void GameState_ClearRootUnk60(void);
 /* Handler 3 of the table at 0x0213c1d8: step the event state machine in unk_7481 (0-8, and 100
  * for the cancel path) once per call; returns 1 when it has finished. */
-int func_020dcc00(CampStatusTableWork *work)
+int CampStatus_Unk_0dcc00(CampStatusTableWork *work)
 {
     int done = 0;
     switch (work->unk_7481) {
