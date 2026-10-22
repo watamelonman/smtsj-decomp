@@ -27,24 +27,24 @@ typedef struct GameObj {
     u32 field10;    /* 0x10 */
     float unk14[3];
     Unk065e88FloatSlot field20;    /* 0x20 */
-    u32 field24;    /* 0x24 */
+    s32 field24;    /* 0x24 */
     u32 field28;    /* 0x28 */
-    u32 field2C;    /* 0x2C */
-    u32 field30;    /* 0x30 */
-    u32 field34;    /* 0x34 */
+    s32 field2C;    /* 0x2C */
+    s32 field30;    /* 0x30 */
+    s32 field34;    /* 0x34 */
     u8 unk38;
     u8 pad39;
     u8 unk3A;
     u8 pad3B;
-    u32 field3C;    /* 0x3C */
+    s32 field3C;    /* 0x3C */
 } GameObj;
 
 GameObj *func_02065fc0(u32 a, u32 b, u32 c, int d, u16 e);
 /* At 02065fac, forwards three words and inserts mode 3 before the
  * halfword argument. The callee reads its fifth stack argument with ldrh. */
-void Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u16 d)
+GameObj *Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u16 d)
 {
-    func_02065fc0(a, b, c, 3, d);
+    return func_02065fc0(a, b, c, 3, d);
 }
 
 /*
@@ -413,6 +413,11 @@ struct Unk065e88Work {
     u32 unk_0234;
     u8 pad_0238[0x158];
     u32 unk_0390;
+    u8 pad_0394[0x52];
+    u8 unk_03e6;
+    u8 unk_03e7;
+    u8 pad_03e8[8];
+    s16 unk_03f0;
 };
 
 typedef struct Unk065e88Record {
