@@ -25,27 +25,27 @@
 - `CampStatus_Unk_0db394`: decompiler-derived
 
 ## Not done in M1-T1124
-- `func_020d6cac`
+- `CampStatus_Copy168`
 - `CampStatus_ResetAnim`
-- `func_020d6ce4`
-- `func_020dbf24`
-- `func_020dddf4`
-- `func_020db288`
+- `CampStatus_Copy176`
+- `CampStatus_Unk_0dbf24`
+- `CampStatus_Unk_0dddf4`
+- `CampStatus_Unk_0db288`
 
 ## Not done in M1-T1125
-- `func_020d3624`
-- `func_020db2dc`
-- `func_020dca50`
+- `CampStatus_Unk_0d3624`
+- `CampStatus_Unk_0db2dc`
+- `CampStatus_Unk_0dca50`
 - `CampStatus_Unk_0dd308`
-- `func_020d35c0`
-- `func_020dcad4`
-- `func_020db214`
-- `func_020dde3c`
+- `CampStatus_Unk_0d35c0`
+- `CampStatus_Unk_0dcad4`
+- `CampStatus_Unk_0db214`
+- `CampStatus_Unk_0dde3c`
 - `CampStatus_Unk_0dd88c`: decompiler-derived
 
 ## Not done in M1-T1126
-- `func_020d353c`
-- `func_020ddb9c`
+- `CampStatus_Unk_0d353c`
+- `CampStatus_Unk_0ddb9c`
 - `func_020db3e0`
 - `func_020dc4a8`
 - `func_020dcb68`
@@ -86,17 +86,17 @@
 - `CampStatus_Copy12c`: hand-matched
 - `CampStatus_Unk_0dcaac`: hand-matched
 - `CampStatus_Unk_0dd308`: hand-matched
-- `func_020d3624`: hand-matched
-- `func_020d35c0`: hand-matched
-- `func_020d353c`: hand-matched
-- `func_020d6cac`: hand-matched
-- `func_020d6ce4`: hand-matched
-- `func_020db214`: hand-matched
-- `func_020db288`: hand-matched
-- `func_020db2dc`: hand-matched
-- `func_020dbf24`: hand-matched
-- `func_020dca50`: hand-matched
-- `func_020dcad4`: hand-matched
-- `func_020ddb9c`: hand-matched
-- `func_020dddf4`: hand-matched
-- `func_020dde3c`: hand-matched
+- `CampStatus_Unk_0d3624`: hand-matched
+- `CampStatus_Unk_0d35c0`: hand-matched
+- `CampStatus_Unk_0d353c`: hand-matched
+- `CampStatus_Copy168`: hand-matched
+- `CampStatus_Copy176`: hand-matched
+- `CampStatus_Unk_0db214`: hand-matched
+- `CampStatus_Unk_0db288`: hand-matched
+- `CampStatus_Unk_0db2dc`: hand-matched
+- `CampStatus_Unk_0dbf24`: hand-matched
+- `CampStatus_Unk_0dca50`: hand-matched
+- `CampStatus_Unk_0dcad4`: hand-matched
+- `CampStatus_Unk_0ddb9c`: hand-matched
+- `CampStatus_Unk_0dddf4`: hand-matched
+- `CampStatus_Unk_0dde3c`: hand-matched

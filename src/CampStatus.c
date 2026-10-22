@@ -23,7 +23,7 @@ typedef struct CampStatusAnim {
     s32 unk_0028;               /* +0x28: reset to -1 */
 } CampStatusAnim;
 
-/* Byte pairs copied as a block (see func_020d6cac / func_020d6ce4). */
+/* Byte pairs copied as a block (see CampStatus_Copy168 / CampStatus_Copy176). */
 typedef struct CampStatusPair {
     u8 a;
     u8 b;
@@ -88,7 +88,7 @@ typedef struct CampStatusWork {
     u8 pad_025c[0x4];
     u32 unk_0260;
     u8 pad_0264[0x4];
-    s32 unk_0268;               /* +0x268: set by func_020dcad4 */
+    s32 unk_0268;               /* +0x268: set by CampStatus_Unk_0dcad4 */
     u8 pad_026c[0x7228];
     u32 unk_7494;
 } CampStatusWork;
@@ -151,7 +151,7 @@ int func_0205b444();
 void Unk05b82c_Unk_05b82c();
 void func_020ca5a4();
 void func_020119a0();
-/* Callback table filled by func_020d3624. */
+/* Callback table filled by CampStatus_Unk_0d3624. */
 typedef struct CampStatusOps {
     u32 size;
     u32 unk_04;
@@ -200,7 +200,7 @@ void func_020615ec(u32 *handle, void *task);
 s32 Unk06ae94_Unk_06aeec(void *obj);
 u32 Unk06ae94_Unk_06aed4(void *obj);
 void Unk09d060_Unk_09d170(void *task);
-void func_020dde3c(void *obj, u32 a, u32 b, const u32 *ids, u32 n);
+void CampStatus_Unk_0dde3c(void *obj, u32 a, u32 b, const u32 *ids, u32 n);
 void Unk065e88_SetFlag3a(CampStatusFlagObj *obj, int value);
 void func_0205cac0(u32 handle);
 void func_0205c6f8(u32 handle);
@@ -214,7 +214,7 @@ void func_02061f10();
 /* Read the current (x, y) offset pair of obj's frame, if it has one. Returns 0 when
  * func_02061698 says obj is not active (outputs stay 0), otherwise 1. */
 /* Start a 12-byte CampStatus_Unk_0d3510 task for obj and return the handle from func_020614b0. */
-u32 func_020d353c(void *obj)
+u32 CampStatus_Unk_0d353c(void *obj)
 {
     u32 handle;
     CampStatusTimer *t;
@@ -230,7 +230,7 @@ u32 func_020d353c(void *obj)
     return handle;
 }
 
-int func_020d35c0(void *obj, s32 *x, s32 *y)
+int CampStatus_Unk_0d35c0(void *obj, s32 *x, s32 *y)
 {
     CampStatusFrame *f;
     *x = 0;
@@ -248,7 +248,7 @@ int func_020d35c0(void *obj, s32 *x, s32 *y)
 }
 
 /* Fill the module's callback table: work size 620, then the six handlers (0x0c..0x20). */
-void func_020d3624(CampStatusOps *o)
+void CampStatus_Unk_0d3624(CampStatusOps *o)
 {
     o->size = 620;
     o->unk_04 = 4;
@@ -276,13 +276,13 @@ void CampStatus_Copy12c(void *src)
 }
 
 /* Copy six byte pairs into the shared work at +0x168. */
-void func_020d6cac(const CampStatusPairs6 *src)
+void CampStatus_Copy168(const CampStatusPairs6 *src)
 {
     data_02176be4->unk_0168 = *src;
 }
 
 /* Copy five byte pairs into the shared work at +0x176. */
-void func_020d6ce4(const CampStatusPairs5 *src)
+void CampStatus_Copy176(const CampStatusPairs5 *src)
 {
     data_02176be4->unk_0176 = *src;
 }
@@ -462,7 +462,7 @@ void CampStatus_GetLinkUnk14(u32 *out)
 
 /* Triangle-ish ramp over a 120-tick period: 11 rising to 31 over ticks 0..45, hold 31 to 74,
  * then fall back (4.12 fixed point, slope 0x71c). */
-u8 func_020db214(s32 t)
+u8 CampStatus_Unk_0db214(s32 t)
 {
     s32 r = t % 120;
     s32 v = 0xb000;
@@ -478,7 +478,7 @@ u8 func_020db214(s32 t)
 }
 
 /* Ramp over a 50-tick period: 31 falling to 16 over ticks 0..40, then back up (4.12 fixed point). */
-u8 func_020db288(s32 t)
+u8 CampStatus_Unk_0db288(s32 t)
 {
     s32 r = t % 50;
     s32 v = 0x1f000;
@@ -491,7 +491,7 @@ u8 func_020db288(s32 t)
 }
 
 /* Ramp over a 40-tick period: 18 rising to 31 over ticks 0..10, then falling (4.12 fixed point). */
-u8 func_020db2dc(s32 t)
+u8 CampStatus_Unk_0db2dc(s32 t)
 {
     s32 r = t % 40;
     s32 v;
@@ -504,8 +504,8 @@ u8 func_020db2dc(s32 t)
     return v >> 12;
 }
 
-/* For ids 8..10 only: show entry id of group (14, 0) on work->unk_00c8 via func_020dde3c. */
-void func_020dbf24(CampStatusWork *work, u32 id)
+/* For ids 8..10 only: show entry id of group (14, 0) on work->unk_00c8 via CampStatus_Unk_0dde3c. */
+void CampStatus_Unk_0dbf24(CampStatusWork *work, u32 id)
 {
     u32 ids[1];
     if (id < 8) {
@@ -515,11 +515,11 @@ void func_020dbf24(CampStatusWork *work, u32 id)
         return;
     }
     ids[0] = id;
-    func_020dde3c(work->unk_00c8, 14, 0, ids, 1);
+    CampStatus_Unk_0dde3c(work->unk_00c8, 14, 0, ids, 1);
 }
 
 /* Reset the flag at +0xf4 and the ten s16 values at +0xfc..+0x10e to their start values. */
-void func_020dca50(CampStatusWork *work)
+void CampStatus_Unk_0dca50(CampStatusWork *work)
 {
     work->unk_00f4 = 0;
     work->unk_00fc = -12;
@@ -542,7 +542,7 @@ void CampStatus_Unk_0dcaac(void)
 
 /* Store on at +0x268, then switch the unk_0078 object on (flag 0x3a set + func_0205cac0, only
  * if not already set) or off (func_0205c6f8 + flag cleared). */
-void func_020dcad4(s32 on)
+void CampStatus_Unk_0dcad4(s32 on)
 {
     CampStatusFlagObj *obj;
     data_02176be4->unk_0268 = on;
@@ -582,7 +582,7 @@ void func_020dcb44(void)
 
 /* Pick the four-corner colour for entry id: grey when its first u16 is 0, otherwise by the
  * kind byte at +5 (4 and 5 get their own colours, anything else the default via func_02057df8). */
-void func_020ddb9c(int id)
+void CampStatus_Unk_0ddb9c(int id)
 {
     CampStatusEntry *e = func_020a1428(id);
     if (e->unk_00 == 0) {
@@ -601,14 +601,14 @@ void func_020ddb9c(int id)
 }
 
 /* Draw frame 26 of obj at (x, 0) with the given alpha, prio 2 (func_0205dee8). */
-void func_020dddf4(u32 obj, int x, u32 alpha)
+void CampStatus_Unk_0dddf4(u32 obj, int x, u32 alpha)
 {
     func_0205dee8(2, obj, 0x1a, x, 0, 0x3f800000, 0x3f800000, 0, alpha, 2);
 }
 
 /* Look up group (a, b) and, after func_02063920, run each of the n ids through func_0204fed8 and
  * func_02063a30; the last result goes to func_02061f10 for obj. Does nothing when n is 0. */
-void func_020dde3c(void *obj, u32 a, u32 b, const u32 *ids, u32 n)
+void CampStatus_Unk_0dde3c(void *obj, u32 a, u32 b, const u32 *ids, u32 n)
 {
     u32 last;
     u32 tab;

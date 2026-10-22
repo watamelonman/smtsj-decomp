@@ -792,5 +792,19 @@
  "func_02099f24": "Unk09974c_Unk_099f24",
  "func_0209a1e4": "Unk09974c_Unk_09a1e4",
  "func_0209ae60": "Unk09a268_Unk_09ae60",
- "func_0209d73c": "Unk09d42c_Unk_09d73c"
+ "func_0209d73c": "Unk09d42c_Unk_09d73c",
+ "func_020d3624": "CampStatus_Unk_0d3624",
+ "func_020d35c0": "CampStatus_Unk_0d35c0",
+ "func_020d353c": "CampStatus_Unk_0d353c",
+ "func_020d6cac": "CampStatus_Copy168",
+ "func_020d6ce4": "CampStatus_Copy176",
+ "func_020db214": "CampStatus_Unk_0db214",
+ "func_020db288": "CampStatus_Unk_0db288",
+ "func_020db2dc": "CampStatus_Unk_0db2dc",
+ "func_020dbf24": "CampStatus_Unk_0dbf24",
+ "func_020dca50": "CampStatus_Unk_0dca50",
+ "func_020dcad4": "CampStatus_Unk_0dcad4",
+ "func_020ddb9c": "CampStatus_Unk_0ddb9c",
+ "func_020dddf4": "CampStatus_Unk_0dddf4",
+ "func_020dde3c": "CampStatus_Unk_0dde3c"
 }
