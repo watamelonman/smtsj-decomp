@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match three more game/unit_0203e43c functions: coordinate clamping, clipped byte-surface fill, and draw-entry selection; document five remaining hard targets.
 - Matched `func_0203e684` and `func_0203fa84` in `src/game/unit_0203e43c.c` (100% objdiff), documented three already-matched M1-T1089 functions; `func_02044114`, `func_02044264`, `func_020442fc` are on the hard list in the unit doc.
 - Replaced M1-T1080 raw node, work and global field accesses with typed layouts and made the fallback table resolver return a pointer.
 - Matched seven M1-T1080 unit_020aa118 dispatch, table and temporary-list functions at 100% objdiff; documented the remaining descriptor submission function and its measured trials on the hard list.

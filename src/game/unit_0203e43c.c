@@ -6,6 +6,9 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+void func_020119c0(void *dst, int value, u32 size);
+void func_0203e93c(int mode, int x, int y, void *resource, void *entry);
+
 extern u8 data_0215e85e[];
 int Unk02e000_GetWorkArea();
 int Unk03e43c_Div10Clamp16();
@@ -340,8 +343,10 @@ void Unk03e43c_UpdatePos18(u8 *o)
     }
 }
 
-/* decompiler-derived */
-void Unk03e43c_Unk_0434b0(short *arg0,short *arg1)
+/* Clamps the two signed coordinates to upper bounds 176/112 and lower
+ * bounds -8*(map dimension-10), using GameState_GetBody()+0x354 map bytes.
+ * Both coordinate pointers must be writable. */
+void Unk03e43c_Unk_0434b0(s16 *arg0,s16 *arg1)
 {
   int value;
   if (0xb0 < *arg0) {
@@ -442,6 +447,38 @@ void Unk03e43c_Unk_044194(u8 *p);
 void Unk03e43c_MergeTable(u8 *src);
 void Unk03e43c_Call_02056cc0(void);
 
+/* Fills a rectangle clipped to a 256 by 192 byte surface; negative origins
+ * discard the corresponding leading rows/columns. The caller owns the buffer. */
+void func_0203f960(u8 *dst, int x, int y, int width, u16 h, u8 color)
+{
+    int top, height, left, offset;
+    if (x >= 256 || x + width < 0 || y >= 192 || y + h < 0) {
+        return;
+    }
+    left = 0;
+    top = 0;
+    height = h;
+    if (x < 0) {
+        width += x;
+        left = -x;
+    }
+    if (x > 256 - width) {
+        width = 256 - x;
+    }
+    if (y < 0) {
+        height += y;
+        top = -y;
+    }
+    if (y > 192 - height) {
+        height = 192 - y;
+    }
+    y += top;
+    offset = x + left + (y << 8);
+    for (int row = top; row < top + height; row++, offset += 256) {
+        func_020119c0(dst + offset, color, width);
+    }
+}
+
 /*
  * Creates a 0x299c-byte task through func_020611dc with callbacks
  * func_02040064, func_020416bc and Unk03e43c_Unk_041ce4 (third slot empty),
@@ -449,6 +486,7 @@ void Unk03e43c_Call_02056cc0(void);
  * Unk04bb9c_GetCtxUnka20() (when func_0204b4c4() is nonzero) or the work-area
  * u16 at +0x35c. Reached through Unk03e43c_Thunk_0203fa84.
  */
+
 void func_0203fa84(void)
 {
     Unk03e43cTask *task = func_020611dc(func_02040064, func_020416bc, 0, Unk03e43c_Unk_041ce4,
@@ -484,12 +522,29 @@ void Unk03e43c_Unk_041ce4(u8 *p)
     FIELD(u32, data_0215ee60, 52) = 0;
 }
 
+/* Submits slot+3 and then one of entries 0..2 selected by the signed byte
+ * at +0x2982+slot. Entry stride 96 and call coordinates come from the assembly. */
+void func_02043340(u8 *work, int slot)
+{
+    int state;
+    func_0203e93c(1, 128, 96, work + 0x28a0, work + 32 + (slot + 3) * 96);
+    state = FIELD(s8, work + slot, 0x2982);
+    if (state == 0) {
+        func_0203e93c(1, 128 + (slot << 6), 96, work + 0x28a0, work + 32);
+    } else if (state == 1) {
+        func_0203e93c(1, 128 + (slot << 6), 96, work + 0x28a0, work + 128);
+    } else if (state == 2) {
+        func_0203e93c(1, 128 + (slot << 6), 96, work + 0x28a0, work + 224);
+    }
+}
+
 /*
  * Computes the two s16 screen coordinates pointed to by `x` and `y` from the
  * signed map bytes at work+0x300:+100/+101 and the matching GameState fields:
  * coordinate = 128/96 - ((mapByte - gameField) * 8). The third argument is
  * forwarded by Unk03e43c_UpdatePos18 but this body does not read it.
  */
+
 void Unk03e43c_Unk_043450(s16 *x, s16 *y, u32 unused)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();

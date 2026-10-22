@@ -96,30 +96,6 @@ None for M1-T1087 or M1-T1088.
 - `func_0203fa84`
 - `func_02044264`
 - `func_020442fc`
-- `Unk03e43c_Unk_0434b0`: decompiler-derived
-
-## Not done in M1-T1090
-- `func_0203e6f0`
-- `func_0203f960`
-- `func_0203eaf8`
-- `func_0203f394`
-- `func_0203f174`
-- `func_0203f2d4`
-- `func_02043340`
-- `Unk03e43c_Call_02056cc0`: decompiler-derived (plain cleanup)
-- `Unk03e43c_CountDown`: hand-matched
-- `Unk03e43c_CopyEntry32`: hand-matched
-- `Unk03e43c_MergeTable`: hand-matched
-- `Unk03e43c_Unk_03e894`: hand-matched
-- `Unk03e43c_Div10Clamp16`: hand-matched
-- `Unk03e43c_UpdatePos18`: hand-matched
-- `Unk03e43c_Unk_03e8cc`: hand-matched
-- `Unk03e43c_Unk_03f234`: hand-matched
-- `Unk03e43c_Unk_041ce4`: hand-matched
-- `Unk03e43c_Unk_043450`: hand-matched
-- `Unk03e43c_Unk_043560`: hand-matched
-- `Unk03e43c_Unk_044194`: hand-matched
-- `Unk03e43c_Unk_0441ec`: hand-matched
 
 ## M1-T1089
 
@@ -165,3 +141,55 @@ Five of the eight card functions match the delinked original at 100% in objdiff
   with an inline helper taking an unused ctx arg) and keeps 1, &v and 2 in
   r4-r6 (push r3-r9); ours folds them into scratch registers (144 vs 152 B).
   Tried constant locals, inline params, and a static helper (not inlined).
+
+## M1-T1090
+
+Three of eight targets match at 100% in objdiff. The existing source was extended;
+no delink configuration was changed. Neutral symbols are retained because the
+memory accesses establish operations but do not establish gameplay names.
+
+- `Unk03e43c_Unk_0434b0` (176 B): clamps two writable s16 coordinates to
+  upper bounds 176/112 and lower bounds `-8 * (dimension - 10)`. The dimensions
+  are bytes +10/+11 of the map referenced by `GameState_GetBody() + 0x354`.
+  The existing body matched; its parameter types and contract are now explicit.
+- `func_0203f960` (168 B): fills a clipped rectangle on a 256 by 192 byte
+  surface through `func_020119c0`. Negative origins discard leading columns
+  or rows. The caller supplies the surface storage and rectangle dimensions.
+- `func_02043340` (208 B): submits the 96-byte entry at index `slot + 3`
+  relative to object +32, using resource +0x28a0 and coordinates (128, 96).
+  Then the signed byte at +0x2982+slot selects entry 0, 1 or 2 for another
+  submission at (128 + slot*64, 96). Other byte values produce no second call.
+
+### Hard list (for a decomp.me scratch)
+
+These five functions remain supplied by the delinked object; no unmatched C
+bodies were retained. No assembly stub is needed in this project's pipeline.
+
+- `func_0203e6f0` (164 B): builds a path from its first two arguments and
+  `data_02142214`, acquires a resource through `Unk03e43c_Unk_03e614`, and
+  optionally merges the acquired header's +12 table. The candidate was 160 B;
+  reversing the two 64-byte local buffer declarations fixed their stack offsets,
+  but the compiler kept the initial path pointer in ip and loaded the extension
+  later, instead of preserving it in r4. Tried an explicit extension local.
+- `func_0203eaf8` (172 B): configures mode, builds entries through
+  `func_0203eba4`, marks each eight-byte entry through `func_02056bd0`, submits
+  them and increments `data_0215e658`. Candidates were 180/184 B. Tried for/while
+  loops, signed/unsigned indices, typed u64 entry indexing, and postincrement
+  in the address expression. The compiler strength-reduced the index into a
+  separate pointer cursor; the original retains an index shifted by three.
+- `func_0203f174` (192 B): transforms a point about a center, using the
+  distance from `func_020500bc`, angle from `func_020024f8`, and s16 table
+  `data_0212629c`. A 192-byte candidate reproduced the initial paired point
+  loads and signed angle modulo, but table-load scheduling and multiplication
+  registers differed. Tried paired temporary loads, separate products, reversed
+  declaration order and s16 versus int temporaries.
+- `func_0203f2d4` (192 B): clips a destination rectangle to 256 by 192 and
+  copies source rows through `func_02008904`, using 256-byte strides. Tried
+  separate end/row locals, while loops and source-row postincrement in the
+  address expression. The last candidate was 188 B; the compiler folded the
+  source base and row offset and used fewer saved registers than the original.
+- `func_0203f394` (188 B): copies nonzero source pixels into a clipped
+  destination rectangle on 256-byte-stride surfaces. The candidate had the
+  correct size and control flow but different register allocation from the
+  first source-coordinate load onward. Reordering x/y declarations and moving
+  destination coordinate temporaries to function scope did not resolve it.
