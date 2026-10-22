@@ -2,6 +2,11 @@
 
 ## Unreleased
 - Verified the eight M1-T1105 functions in `src/game/unit_0202f2a8.c` at 100% objdiff. The four decompiler-derived ones (035ec4, 030478, 030578, 033890) now have typed parameters with small local structs and per-function comments.
+- Matched `func_0203e684` and `func_0203fa84` in `src/game/unit_0203e43c.c` (100% objdiff), documented three already-matched M1-T1089 functions; `func_02044114`, `func_02044264`, `func_020442fc` are on the hard list in the unit doc.
+- Replaced M1-T1080 raw node, work and global field accesses with typed layouts and made the fallback table resolver return a pointer.
+- Matched seven M1-T1080 unit_020aa118 dispatch, table and temporary-list functions at 100% objdiff; documented the remaining descriptor submission function and its measured trials on the hard list.
+- Matched seven of the eight M1-T1079 unit_020aa118 functions at 100% objdiff (node append/free, unique-id insert, record forwarding, group flag clear, list insert) and documented `func_020aa298` with its measured matching trials on the hard list.
+- Verified all eight M1-T1122 functions in `src/CampStatus.c` at 100% objdiff, adding the missing `func_020dcb44` flag setter, typed struct fields, and per-function doc entries.
 - Verified the eight M1-T1104 functions in `src/game/unit_0202f2a8.c` at 100% objdiff (three empty callbacks, two thunks, the game-state getter, the SDK range callback and the +0x74F4 field getter), with typed signatures and per-function comments.
 - Verified all eight M1-T1088 table, entry, coordinate, and flag-count functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented their contracts and typed the draw-entry setup parameters.
 - Verified all eight M1-T1087 functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented mode/counter/table operations and acquisition validation helpers, and typed the paired-byte copy.
