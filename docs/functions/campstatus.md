@@ -57,17 +57,17 @@
 - `CampStatus_Unk_0da670`
 - `CampStatus_Unk_0dbd04`
 - `CampStatus_Unk_0dc240`
-- `func_020da8c4`
-- `func_020dc184`
-- `func_020dd910`
-- `func_020dc2ec`
+- `CampStatus_Unk_0da8c4`
+- `CampStatus_Unk_0dc184`
+- `CampStatus_Unk_0dd910`
+- `CampStatus_Unk_0dc2ec`
 
 ## Not done in M1-T1128
-- `func_020db478`
-- `func_020d6948`
-- `func_020d8d60`
-- `func_020dc5dc`
-- `func_020db824`
+- `CampStatus_Unk_0db478`
+- `CampStatus_Unk_0d6948`
+- `CampStatus_Unk_0d8d60`
+- `CampStatus_Unk_0dc5dc`
+- `CampStatus_Unk_0db824`
 - `func_020dc3b8`
 - `func_020ddc20`
 - `func_020dd9d8`
@@ -108,12 +108,12 @@
 - `CampStatus_Unk_0dc540`: hand-matched
 - `CampStatus_Unk_0dcb68`: hand-matched
 - `CampStatus_Unk_0ddb04`: hand-matched
-- `func_020d6948`: hand-matched
-- `func_020d8d60`: hand-matched
-- `func_020da8c4`: hand-matched
-- `func_020db478`: hand-matched
-- `func_020db824`: hand-matched
-- `func_020dc184`: hand-matched
-- `func_020dc2ec`: hand-matched
-- `func_020dc5dc`: hand-matched
-- `func_020dd910`: hand-matched
+- `CampStatus_Unk_0d6948`: hand-matched
+- `CampStatus_Unk_0d8d60`: hand-matched
+- `CampStatus_Unk_0da8c4`: hand-matched
+- `CampStatus_Unk_0db478`: hand-matched
+- `CampStatus_Unk_0db824`: hand-matched
+- `CampStatus_Unk_0dc184`: hand-matched
+- `CampStatus_Unk_0dc2ec`: hand-matched
+- `CampStatus_Unk_0dc5dc`: hand-matched
+- `CampStatus_Unk_0dd910`: hand-matched
