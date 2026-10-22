@@ -325,3 +325,5 @@ unmatched candidate bodies, fabricated stack stores or assembly were retained.
   empty-label initialization above and the message-construction pattern;
   the record-building and randomized award loops still need complete type
   recovery. No complete C candidate was produced; recovery remains outstanding.
+- `func_0211c24c`: hand-matched
+- `func_0211d050`: hand-matched
