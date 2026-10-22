@@ -47,7 +47,7 @@ typedef struct CampStatusPairs5 {
 /* Text object (func_020629ac); only the fields read in this file. */
 typedef struct CampStatusText {
     u8 pad_0000[0x14];
-    u16 *unk_0014;              /* +0x14: glyph codes; 0x8001 ends a line (see func_020d9830) */
+    u16 *unk_0014;              /* +0x14: glyph codes; 0x8001 ends a line (see CampStatus_Unk_0d9830) */
     u8 pad_0018[0x10];
     u32 unk_0028;
 } CampStatusText;
@@ -298,7 +298,7 @@ int func_020523a8(void);
 u32 Unk0ddeb0_Unk_0ddfd8(u32 i);
 u32 Unk0ca69c_Unk_0ca6a4(u32 v);
 void CampStatus_Unk_0db910(CampStatusInfo *info);
-void func_020da710(void *obj, const u16 *ids, const u16 *ref, s32 sel);
+void CampStatus_Unk_0da710(void *obj, const u16 *ids, const u16 *ref, s32 sel);
 u8 CampStatus_Unk_0db288(s32 t);
 /* Record list returned by func_020a1740: three 6-byte records from +0x48. */
 typedef struct CampStatusRecord {
@@ -309,7 +309,7 @@ typedef struct CampStatusRecordSet {
     u16 unk_0000;
     u8 unk_0002;
     u8 pad_0003;
-    u32 unk_0004;               /* +0x04/+0x08: current/max pair shown by func_020d9830 */
+    u32 unk_0004;               /* +0x04/+0x08: current/max pair shown by CampStatus_Unk_0d9830 */
     u32 unk_0008;
     u16 unk_000c[5];            /* +0x0c: five stats, copied to a CampStatusStats */
     u16 pad_16_0 : 1;           /* +0x16: flags and three small values */
@@ -1101,7 +1101,7 @@ void CampStatus_Unk_0d730c(CampStatusWork *work)
 }
 
 /* Draw the labels on unk_00c0 (grey when Unk09974c_Unk_0998d8(unk_00d0) is 0), the list on
- * unk_00c4 (func_020da710, selection unk_00f0 when unk_00e8 is set, else -1) and, when unk_0008
+ * unk_00c4 (CampStatus_Unk_0da710, selection unk_00f0 when unk_00e8 is set, else -1) and, when unk_0008
  * is set, two more labels on unk_00c8. */
 void CampStatus_Unk_0d8d60(CampStatusWork *work)
 {
@@ -1112,7 +1112,7 @@ void CampStatus_Unk_0d8d60(CampStatusWork *work)
     }
     Unk0ddeb0_Unk_0ddeb0(work->unk_00c0, 42, 14, 0, 8, 10);
     func_02057df8();
-    func_020da710(work->unk_00c4, work->unk_00d2, 0, work->unk_00e8 != 0 ? work->unk_00f0 : -1);
+    CampStatus_Unk_0da710(work->unk_00c4, work->unk_00d2, 0, work->unk_00e8 != 0 ? work->unk_00f0 : -1);
     if (work->unk_0008 == 0) {
         return;
     }
@@ -1135,7 +1135,7 @@ void CampStatus_Unk_0ddb9c(int id);
 /* Record page (mode 3): stats and value bars of record unk_00da, its level line, the eight
  * slot states (or "???" icons while the gauge is below unk_005b), and either the three record
  * entries with the pulsing cursor (unk_01a0 set), the empty grid, or the id grid. */
-void func_020d9830(CampStatusWork *work)
+void CampStatus_Unk_0d9830(CampStatusWork *work)
 {
     CampStatusRecordSet *rs;
     CampStatusStats stats;
@@ -1217,7 +1217,7 @@ void func_020d9830(CampStatusWork *work)
             }
         }
     } else {
-        func_020da710(work->unk_00c4, work->unk_00dc, 0, work->unk_00e8 != 0 ? work->unk_00f0 : -1);
+        CampStatus_Unk_0da710(work->unk_00c4, work->unk_00dc, 0, work->unk_00e8 != 0 ? work->unk_00f0 : -1);
     }
     if (work->unk_0008 == 0) {
         return;
@@ -1314,7 +1314,7 @@ void CampStatus_Unk_0da670(u32 a, u32 b)
 /* Draw the six slots of a 3x2 grid on obj (x 4 + 85 * col, y 140 + 13 * row) with a pulsing
  * cursor at sel when sel >= 0. With ref, each ref id not found in ids is drawn in orange
  * (0xff942100); empty slots are skipped. */
-void func_020da710(void *obj, const u16 *ids, const u16 *ref, s32 sel)
+void CampStatus_Unk_0da710(void *obj, const u16 *ids, const u16 *ref, s32 sel)
 {
     s32 row;
     s32 col;
