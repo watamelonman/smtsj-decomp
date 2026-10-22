@@ -10,17 +10,23 @@
 - `Unk09a268_Unk_09a830` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk09a268_Unk_09a870` (20 B): decompiler-derived (Ghidra output, cleaned)
 
+## M1-T1010
+- `Unk09a268_Unk_09c484` (20 B): returns the address of record `arg0` (stride 0x1c) in table
+  `data_0213be64`.
+- `Unk09a268_SetCtxUnk38` (24 B): stores its argument at +0x38 of the global context when present.
+- `func_0209b720` (28 B): returns the global context's +0x34 word, or 0 when it is null.
+- `Unk09a268_SetCtxUnk2c30` (32 B): stores two arguments at +0x2c and +0x30 of the global context
+  when present.
+- `Unk09a268_IsType1` (32 B): returns 1 when the pointer is non-null and its first byte is 1.
+- `Unk09a268_SetBit` (36 B): sets or clears bit `bit` of the byte at `p` depending on `on`.
+- `Unk09a268_Unk_09a844` (44 B): returns bit 5 of the state byte when GameState body +0x3e0 is
+  nonzero, otherwise 1.
+- `Unk09a268_Unk_09b3cc` (44 B): reloads the palette from the work's +0xc field when +0x2c is 0.
+
 ## Hard list
-- `Unk09a268_Unk_09c484`: decompiler-derived
-- `Unk09a268_Unk_09a844`: decompiler-derived
-- `Unk09a268_Unk_09b3cc`: decompiler-derived
+- None for this TU.
 
 ## Not done in M1-T1010
-- `Unk09a268_SetCtxUnk38`
-- `func_0209b720`
-- `Unk09a268_SetCtxUnk2c30`
-- `Unk09a268_IsType1`
-- `Unk09a268_SetBit`
 - `Unk09a268_Unk_09bb38`: decompiler-derived
 
 ## Not done in M1-T1011

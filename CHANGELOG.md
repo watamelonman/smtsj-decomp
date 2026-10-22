@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- `src/game/unit_0209a268.c`: matched all eight M1-T1010 functions at 100% objdiff, including `func_0209b720`, with typed context fields and per-function documentation.
 - `src/game/unit_0209a268.c`: added the missing `func_0209a48c` bit test (typed, documented), so all eight M1-T1009 functions now match at 100% in objdiff.
 - Replaced unit_02090e60 refresh offsets with typed fields and pointer parameters, corrected the +0x3e0 helper flag description, and documented disassembly-led trials of the two large state functions.
 - `src/game/unit_02090e60.c`: matched `func_020934c8` (list refresh, 100% objdiff); documented `func_020935b8`, `func_020937a0`, `func_02092624` and `func_02090e60` as hard functions in `docs/functions/game-unit-02090e60.md`.

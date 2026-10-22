@@ -59,6 +59,7 @@ void Unk09a268_Unk_09a458(u8 *w, u32 a, u32 b, u32 c, u8 d, u32 e)
     func_02058b14(w + 164 + 9216, i, e);
 }
 
+/* Sets bit `bit` of the byte at `p` when `on` is 1, otherwise clears it. */
 void Unk09a268_SetBit(u32 p, int bit, int on)
 {
     if (on == 1) {
@@ -123,12 +124,25 @@ void Unk09a268_Unk_09a820(u32 p)
 }
 
 typedef struct Unk09a268Ctx {
-    u8 pad_0000[0x38];
+    u8 pad_0000[0x2c];
+    u32 unk_002c;
+    u32 unk_0030;
+    u32 unk_0034;
     u32 unk_0038;
 } Unk09a268Ctx;
 
 extern Unk09a268Ctx *data_02176270;
 
+/* Returns the context's +0x34 word, or 0 when the global context is absent. */
+u32 func_0209b720(void)
+{
+    if (data_02176270 == 0) {
+        return 0;
+    }
+    return data_02176270->unk_0034;
+}
+
+/* Stores value at +0x38 of the global context when one is allocated. */
 void Unk09a268_SetCtxUnk38(u32 value)
 {
     if (data_02176270 != 0) {
@@ -163,14 +177,14 @@ void Unk09a268_Unk_09a870(u32 p,u32 on)
 
 
 extern u8 data_0213be64[];
-/* decompiler-derived */
+/* decompiler-derived: address of the 0x1c-byte record at `arg0` in table data_0213be64. */
 int Unk09a268_Unk_09c484(int arg0)
 {
   return arg0 * 0x1c + ((int)data_0213be64);
 }
 
 int GameState_GetBody();
-/* decompiler-derived */
+/* Returns bit 5 of the state byte at `arg0` when GameState body +0x3e0 is nonzero, else 1. */
 u32 Unk09a268_Unk_09a844(u32 arg0)
 {
   int value1;
@@ -216,7 +230,7 @@ void Unk09a268_Unk_09ae60(Unk09ae60Ops *o)
     o->fn_20 = func_0209aebc;
 }
 
-/* decompiler-derived */
+/* decompiler-derived: reloads the palette from the work's +0xc field when +0x2c is zero. */
 void Unk09a268_Unk_09b3cc(Unk09a268Work *work)
 {
   func_02057524(0);
@@ -228,11 +242,12 @@ void Unk09a268_Unk_09b3cc(Unk09a268Work *work)
 
 
 int Unk0bc1a8_IsSlotEmpty();
+/* Stores a and b at +0x2c/+0x30 of the global context when one is allocated. */
 void Unk09a268_SetCtxUnk2c30(u32 a, u32 b)
 {
     if (data_02176270 != 0) {
-        FIELD(u32, data_02176270, 44) = a;
-        FIELD(u32, data_02176270, 48) = b;
+        data_02176270->unk_002c = a;
+        data_02176270->unk_0030 = b;
     }
 }
 
@@ -296,6 +311,7 @@ int Unk09a268_Unk_09c4a8(u32 h, u32 a, u32 b)
     return Unk09a268_Unk_09c484(r);
 }
 
+/* Returns 1 when `p` is non-null and its first byte equals 1, else 0. */
 int Unk09a268_IsType1(const u8 *p)
 {
     if (p == 0) {
