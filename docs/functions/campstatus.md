@@ -86,3 +86,17 @@
 - `CampStatus_Copy12c`: hand-matched
 - `CampStatus_Unk_0dcaac`: hand-matched
 - `CampStatus_Unk_0dd308`: hand-matched
+- `func_020d3624`: hand-matched
+- `func_020d35c0`: hand-matched
+- `func_020d353c`: hand-matched
+- `func_020d6cac`: hand-matched
+- `func_020d6ce4`: hand-matched
+- `func_020db214`: hand-matched
+- `func_020db288`: hand-matched
+- `func_020db2dc`: hand-matched
+- `func_020dbf24`: hand-matched
+- `func_020dca50`: hand-matched
+- `func_020dcad4`: hand-matched
+- `func_020ddb9c`: hand-matched
+- `func_020dddf4`: hand-matched
+- `func_020dde3c`: hand-matched
