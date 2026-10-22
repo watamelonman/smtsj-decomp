@@ -2,6 +2,14 @@
 
 ## Unreleased
 - Verified the eight M1-T1105 functions in `src/game/unit_0202f2a8.c` at 100% objdiff. The four decompiler-derived ones (035ec4, 030478, 030578, 033890) now have typed parameters with small local structs and per-function comments.
+- Corrected the M1-T1095 record window layout to hold its tenth populated id while preserving the nine-row drawing limit and +0x2000 flag offset.
+- Matched all eight M1-T1095 functions in `src/game/unit_02100810.c` at 100% objdiff (work release, list rebuilds, two record-save paths, the metadata row drawer, record sorting, and the nine-row window), with typed parameters and per-function documentation.
+- Matched both functions in `src/game/unit_020f8998.c` (empty callback and the 556-byte grid-interaction state machine) at 100% objdiff, with typed work/cell layouts and per-function documentation.
+- Matched all five M1-T119 functions in `src/game/unit_02047338.c` at 100% objdiff, including the 312-byte `func_02047338` state dispatcher, with typed parameters and per-function documentation.
+- Verified the eight M1-T116 scan-visor action handlers in `src/game/unit_0203c474.c` at 100% objdiff; added typed callee prototypes and behavior comments, with per-function evidence in `docs/functions/game-unit-0203c474.md`.
+- Verified and documented the eight M1-T114 accessors in `src/game/unit_0202f078.c` at 100% objdiff, replacing raw offsets with typed work-block fields in `docs/functions/game-unit-0202f078.md`.
+- `src/game/unit_020bd5f0.c`: M1-T1134 functions at 100% objdiff, including the work-area flag test `func_020c1968`; all eight have typed parameters, behaviour comments and doc entries.
+- Matched all seven M1-T113 functions in `src/game/unit_020f09b4.c` (empty callback, interworking thunk, two work-object callbacks, index mapping, per-entry list walk, and mode-filtered helper call) at 100% objdiff, with typed work fields and per-function documentation.
 - Matched `func_0203e684` and `func_0203fa84` in `src/game/unit_0203e43c.c` (100% objdiff), documented three already-matched M1-T1089 functions; `func_02044114`, `func_02044264`, `func_020442fc` are on the hard list in the unit doc.
 - Replaced M1-T1080 raw node, work and global field accesses with typed layouts and made the fallback table resolver return a pointer.
 - Matched seven M1-T1080 unit_020aa118 dispatch, table and temporary-list functions at 100% objdiff; documented the remaining descriptor submission function and its measured trials on the hard list.
