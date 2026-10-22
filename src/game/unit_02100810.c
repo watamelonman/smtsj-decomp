@@ -659,8 +659,8 @@ void func_02105690(Unk100810Work *work)
     kinds = func_020445f4(18, 0);
     func_02008644(0, ids, 6);
     for (i = 0; i < 3; i++) {
-        u16 *base = (u16 *)Unk02e000_Unk_02e774()->records;
-        ids[i] = base[i * 20];
+        u8 *base = (u8 *)Unk02e000_Unk_02e774() + 0x5c08;
+        ids[i] = *(u16 *)(base + i * 40);
     }
     func_02063920();
     for (i = 0; i < 3; i++) {
@@ -837,13 +837,16 @@ void func_02106b24(Unk100810Table *work)
 /* Rebuilds a nine-row available-record window and its metadata drawing; selected ids start at +0x1f18. */
 void func_021057ac(Unk100810Table *work)
 {
-    int count = 0;
-    int first = work->unk_000c;
-    u32 text = 0;
-    u32 names, kinds;
     u16 i;
+    int count;
+    int first;
+    u32 text;
+    u32 names, kinds;
+    count = 0;
+    first = work->unk_000c;
     func_02063920();
-    func_02008644(0, work->unk_1f18, 18);
+    text = 0;
+    func_02008644(text, work->unk_1f18, 18);
     names = func_020445f4(18, 1);
     kinds = func_020445f4(18, 0);
     for (i = 0; i < 0x1eb; i++) {
@@ -859,15 +862,18 @@ void func_021057ac(Unk100810Table *work)
     }
     if (text) func_02061f10(work->unk_0024, -1, 0, 0, text);
     func_02063920();
-    count = 0;
-    for (i = 0; i < 0x1eb; i++) {
-        if (Unk02e000_IsRecordAvailable(work->records[i].id)) {
-            if (count >= first) {
-                func_0204fed8(kinds, work->records[i].unk_02);
-                text = func_02063a30();
+    {
+        u16 j;
+        int seen = 0;
+        for (j = 0; j < 0x1eb; j++) {
+            if (Unk02e000_IsRecordAvailable(work->records[j].id)) {
+                if (seen >= first) {
+                    func_0204fed8(kinds, work->records[j].unk_02);
+                    text = func_02063a30();
+                }
+                seen++;
+                if (seen - first > 9) break;
             }
-            count++;
-            if (count - first > 9) break;
         }
     }
     if (text) func_02061f10(work->unk_0028, -1, 0, 0, text);
