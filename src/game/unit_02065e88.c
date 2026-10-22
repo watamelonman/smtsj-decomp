@@ -30,9 +30,10 @@ typedef struct GameObj {
     u32 field3C;    /* 0x3C */
 } GameObj;
 
-void func_02065fc0(u32 a, u32 b, u32 c, int d, u32 e);
-/* At 02065fac, forwards three words and inserts mode 3 before the fourth. */
-void Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u32 d)
+u8 *func_02065fc0(u32 a, u32 b, u32 c, int d, u16 e);
+/* At 02065fac, forwards three words and inserts mode 3 before the
+ * halfword argument. The callee reads its fifth stack argument with ldrh. */
+void Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u16 d)
 {
     func_02065fc0(a, b, c, 3, d);
 }
@@ -473,4 +474,193 @@ int func_020684c0(const void *record)
     if (Unk02e000_SetRecord(r->unk_0000, &local) && local.flags_001f) return 1;
     if (r->id_0028 && Unk02e000_SetRecord(r->id_0028, &local) && local.flags_001f) return 1;
     return 0;
+}
+
+
+/* Partial resource record: lookups return consecutive 100-byte records. */
+typedef struct Unk065e88SelectionRecord {
+    u16 id;
+    u8 kind;
+    u8 rank;
+    u8 unk04;
+    u8 category;
+    u8 rest[94];
+} Unk065e88SelectionRecord;
+
+u8 *Unk02e000_GetWorkArea(void);
+void func_02057dcc(u32 a, u32 b, u32 c, u32 d);
+void func_02057df8(void);
+void func_0205de40(int mode, u32 handle, int id, int x, int y,
+                   float a, float b, int c, float d, int layer);
+void func_020a9fd8(int mode, int x, int y, int a, int b, int layer,
+                   const void *text, int value);
+void func_020dd910(u32 *object);
+void func_02060dd4(void *out, u32 *object, int a, int b, int c);
+void func_02059f70(u32 handle, int a, int id, int value,
+                   const void *data, int b, int layer);
+u8 *Unk02e000_Thunk_0202e788(void);
+u8 *func_020a9e14(int kind, const void *table, int index);
+extern u8 data_021457cc[], data_021457d0[], data_021457d4[], data_021457dc[];
+void func_020660cc(u8 *object);
+u8 *func_020611dc(void (*a)(u8 *), void (*b)(u8 *), void (*c)(u8 *),
+                   void (*d)(u32 *), int size, int mode, u16 value, int flag);
+u32 func_0205c3c0(void);
+void func_0205c3fc(u32 handle, u32 a, u32 b);
+
+/* At 02065fc0, allocates a 64-byte owner, chooses callbacks by c, and
+ * initializes its handle, unit scales, sentinel words and enabled bytes.
+ * Returns the allocation; allocation and handle creation must succeed. */
+u8 *func_02065fc0(u32 a, u32 b, u32 c, int d, u16 e)
+{
+    u8 *p = func_020611dc(Unk065e88_Unk_066078,
+        c ? func_020660cc : 0,
+        c ? 0 : func_020660cc,
+        Unk065e88_Unk_066258, 64, d, e, 1);
+    u32 h = func_0205c3c0();
+    FIELD(u32, p, 0) = h;
+    func_0205c3fc(h, a, b);
+    FIELD(float, p, 32) = 1.0f;
+    FIELD(float, p, 20) = 1.0f;
+    FIELD(float, p, 24) = 1.0f;
+    FIELD(int, p, 40) = -1;
+    FIELD(int, p, 48) = -1;
+    FIELD(int, p, 52) = -1;
+    p[56] = 1;
+    p[58] = 1;
+    FIELD(int, p, 60) = -1;
+    return p;
+}
+
+/* Partial owner layout; callers provide the trailing array of entry pointers. */
+typedef struct Unk065e88SelectionOwner {
+    u8 pad[280];
+    u32 handle;
+    u32 unused;
+    u8 *entries[];
+} Unk065e88SelectionOwner;
+
+/* At 02067370, converts resource-18 entries selected by the work area's
+ * signed indices, then submits the last value through owner +0x118.
+ * At least one nonnegative selection and valid entry pointers are required. */
+void func_02067370(Unk065e88SelectionOwner *owner)
+{
+    int value;
+    int handle;
+    u8 *work;
+    u16 i;
+    func_02063920();
+    handle = func_020445f4(18, 0);
+    work = Unk02e000_GetWorkArea();
+    for (i = 0; i < work[855]; i++) {
+        int index = ((s8 *)work)[840 + i];
+        if (index >= 0) {
+            const u8 *r = (const u8 *)func_020a1428(FIELD(u16, owner->entries[index], 54));
+            value = func_02063a30(func_0204fed8(handle, r[2]));
+        }
+    }
+    func_02061f10(owner->handle, -1, 0, 0, value);
+}
+
+/* At 02067b28, sets four identical dispatch words, then chooses the
+ * handle-based call for zero value or text-table call otherwise.
+ * A zero value requires a valid handle at owner +0x3b0. */
+void func_02067b28(u8 *owner, int value, int x, int y)
+{
+    func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    if (value == 0) {
+        func_0205de40(1, FIELD(u32, owner, 944), 25, x - 8, y, 1.0f, 1.0f, 0, 1.0f, 10);
+    } else {
+        func_020a9fd8(1, x, y, 2, 2, 10, data_021457cc, value);
+    }
+}
+
+/* At 02067bd8, zero value uses the owner's +0x3b0 handle; nonzero
+ * value resets dispatch state before submitting table 021457d0.
+ * A zero value requires a valid handle at owner +0x3b0. */
+void func_02067bd8(u8 *owner, int value, int x, int y)
+{
+    if (value == 0) {
+        func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+        func_0205de40(1, FIELD(u32, owner, 944), 25, x - 8, y, 1.0f, 1.0f, 0, 1.0f, 10);
+    } else {
+        func_02057df8();
+        func_020a9fd8(1, x, y, 2, 2, 10, data_021457d0, value);
+    }
+}
+
+/* At 02067c88, builds a 16-byte descriptor for id 161, then uses byte
+ * +0x6e of the shared work to select a table and dispatch its +0xf0 data.
+ * The owner handle and returned shared work/table entry must be valid. */
+void func_02067c88(u32 *owner)
+{
+    u8 local[16];
+    int value;
+    u8 *entry;
+    func_020dd910(owner);
+    func_02060dd4(local, owner, 0, 0, 8);
+    func_02059f70(*owner, 0, 161, 1, local, 0, 10);
+    func_02057df8();
+    value = Unk02e000_Thunk_0202e788()[110];
+    entry = func_020a9e14(2, data_021457d4, value);
+    func_020a9fd8(1, (int)(entry + 240), 1, 2, 2, 10, data_021457dc, value);
+}
+
+/* At 020674a4, chooses dispatch words from record id/category and sends
+ * the caller's descriptor with a signed halfword value through owner +0.
+ * Requires a valid owner handle, descriptor and resource-19 id. */
+void func_020674a4(u32 *owner, const void *descriptor, u16 id, int arg, s16 value)
+{
+    const Unk065e88SelectionRecord *r = (const Unk065e88SelectionRecord *)func_020a1428(id);
+    if (r->id == 0) func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
+    else if (r->category == 4) func_02057dcc(0x39dccbff, 0x39dccbff, 0x39dccbff, 0x39dccbff);
+    else if (r->category == 5) func_02057dcc(0xff7b63ff, 0xff7b63ff, 0xff7b63ff, 0xff7b63ff);
+    else func_02057df8();
+    func_02059f70(*owner, 0, arg, value, descriptor, 0, 10);
+}
+
+/* Partial bounds layout; the two byte tables occupy +4 and +0x44. */
+typedef struct Unk065e88SelectionBounds {
+    u8 pad[4];
+    u8 lower[64];
+    u8 upper[64];
+    u8 gap[44];
+    u16 count;
+} Unk065e88SelectionBounds;
+
+/* At 020685b0, clamps rank to the owner's lower table then selects the
+ * nearest eligible record of this kind at or above rank. Requires kind < 64
+ * and count valid resource records; ties keep the first, no match returns 0. */
+u16 func_020685b0(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
+{
+    u16 result = 0;
+    u8 distance = 255;
+    Unk065e88SelectionRecord *r = (Unk065e88SelectionRecord *)func_020a1428(0);
+    int i;
+    if (rank > owner->lower[kind]) rank = owner->lower[kind];
+    for (i = 0; i < owner->count; i++, r++) {
+        if (r->kind == kind && r->rank >= rank && (int)(r->rank - rank) < distance && Unk065e88_Unk_068564((Unk065e88Obj24 *)r)) {
+            result = i;
+            distance = r->rank - rank;
+        }
+    }
+    return result;
+}
+
+/* At 02068658, clamps rank to the owner's upper table then selects the
+ * nearest eligible record of this kind at or below rank. Requires kind < 64
+ * and count valid resource records; ties keep the first, no match returns 0. */
+u16 func_02068658(Unk065e88SelectionBounds *owner, u32 kind, u32 rank)
+{
+    u16 result = 0;
+    u8 distance = 255;
+    Unk065e88SelectionRecord *r = (Unk065e88SelectionRecord *)func_020a1428(0);
+    int i;
+    if (rank < owner->upper[kind]) rank = owner->upper[kind];
+    for (i = 0; i < owner->count; i++, r++) {
+        if (r->kind == kind && r->rank <= rank && (int)(rank - r->rank) < distance && Unk065e88_Unk_068564((Unk065e88Obj24 *)r)) {
+            result = i;
+            distance = rank - r->rank;
+        }
+    }
+    return result;
 }

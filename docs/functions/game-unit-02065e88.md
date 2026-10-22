@@ -138,15 +138,54 @@ Hard list for M1-T1020: none. All eight match at 100%. No runtime tests
 were added because the card waives them; objdiff supplies the byte-level oracle.
 The translation unit remains linked from the original delink as required.
 
-## Not done in M1-T1021
-- `func_02067370`
-- `func_02067c88`
-- `func_020685b0`
-- `func_02068658`
-- `func_02065fc0`
-- `func_02067b28`
-- `func_02067bd8`
-- `func_020674a4`
+## M1-T1021 (verified at 100% objdiff)
+
+All eight missing bodies are implemented with typed parameters and instruction-based
+contracts. Names remain neutral: the data accesses establish mechanics, without
+establishing gameplay meanings. Existing implementations are preserved. The wrapper
+at 02065fac now types its final argument as a halfword, consistent with the callee's
+`ldrh` of the fifth stack argument; both wrapper and callee match.
+
+- `func_02067370` (168 bytes): resets conversion state, opens resource 18,
+  and visits the signed selection indices at shared-work +0x348, with byte
+  count at +0x357. Nonnegative indices select owner pointers at +0x120;
+  each pointed record's halfword +0x36 resolves resource 19, whose byte +2
+  indexes resource 18. Submits the last converted value through owner +0x118.
+  Requires at least one nonnegative selection and valid referenced entries;
+  the original leaves the result uninitialized otherwise.
+- `func_02067c88` (168 bytes): calls 020dd910, builds a 16-byte local
+  descriptor, and submits id 161 with owner handle +0. Resets dispatch state,
+  reads shared-work byte +0x6e, resolves table 021457d4 with selector 2,
+  and submits the returned pointer +0xf0 with format/table 021457dc.
+- `func_020685b0` (168 bytes): clamps the incoming rank downward using
+  owner +4 indexed by kind. Scans count (+0xb0) consecutive 100-byte resource-19
+  records, requiring matching byte +2, byte +3 at or above rank, and a true
+  02068564 predicate. Returns the index with the smallest distance below 255;
+  ties retain the first result and no match returns zero. Kind must be <64.
+- `func_02068658` (168 bytes): uses owner +0x44 to clamp rank upward,
+  then selects the nearest eligible record at or below rank. Other selection,
+  validity, tie and zero-result contracts are identical to 020685b0.
+- `func_02065fc0` (176 bytes): allocates 64 bytes with 020611dc. The
+  first callback is always 02066078; nonzero input c puts 020660cc in the
+  second callback slot, zero puts it in the third. The fourth is 02066258.
+  Creates a handle, forwards a/b to 0205c3fc, stores unit float values at
+  +0x14/+0x18/+0x20, -1 at +0x28/+0x30/+0x34/+0x3c, and byte 1 at
+  +0x38/+0x3a. Returns the owner; original assumes allocation succeeds.
+- `func_02067b28` (176 bytes): submits four 0x7b7b7bff dispatch words.
+  Zero value uses owner handle +0x3b0, id 25, x minus 8, y, unit scales
+  and layer 10. Nonzero value submits table 021457cc through 020a9fd8.
+- `func_02067bd8` (176 bytes): uses the same handle path for zero value,
+  including the dispatch words. Nonzero value instead calls 02057df8 and
+  submits table 021457d0. Owner +0x3b0 must be valid for the zero path.
+- `func_020674a4` (192 bytes): resolves the incoming id via resource 19.
+  A zero record id uses four 0x7b7b7bff words; category byte +5 equal to
+  4 uses 0x39dccbff, category 5 uses 0xff7b63ff, otherwise calls 02057df8.
+  Submits the caller descriptor, signed halfword fifth argument and incoming
+  fourth argument through the owner's handle with layer 10.
+
+Hard list for M1-T1021: none. All eight functions and the earlier 32 definitions
+match at 100%. No runtime tests were added because the card waives them; the
+original object is the byte-level oracle. The TU remains linked from the delink.
 
 ## Not done in M1-T1022
 - `func_02067564`
