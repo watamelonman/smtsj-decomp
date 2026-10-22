@@ -85,20 +85,26 @@ establishes a gameplay meaning beyond the observations below.
   selector; the field itself is unnamed.
 - `Unk02f2a8_GetOptSub240` (`0x020353cc`, 44 bytes): returns a borrowed pointer
   to `gGameState + 0x240` when the game state exists and its word at +0x240 is
-  nonzero; otherwise null.
+  nonzero; otherwise null. A local typed view covers +0x240 because
+  `include/GameState.h` (not owned by this card) pads that range.
 - `Unk02f2a8_GetOptSub2cc` (`0x020353f8`, 44 bytes): the same optional-block
-  contract for `gGameState + 0x2cc`.
+  contract for `gGameState + 0x2cc`, through the same local typed view.
 - `Unk02f2a8_Unk_035440` (`0x02035440`, 44 bytes): maps selector 0 to 1, calls
-  `Unk02f2a8_Unk_035a70(selector)` between `Unk044394_Unk_044428(0x24)` and
-  `Unk044394_Unk_044534(0x24)`, then `func_020f43d4`. Its callers pass the work
-  word at +8 (`src/ImageBgDual3D.c`, `src/game/unit_02116598.c`).
+  `Unk02f2a8_Unk_035a70(selector)` with `0x24` passed to
+  `Unk044394_Unk_044428` before it and to `Unk044394_Unk_044534` after it, then
+  calls `func_020f43d4`. Its callers pass the work word at +8
+  (`src/ImageBgDual3D.c`, `src/game/unit_02116598.c`); the selector and channel
+  meanings are not established.
 - `Unk02f2a8_Call_02035db8` (`0x02030548`, 48 bytes): calls `func_02035db8`
-  with `p + 0x70` and the signed work bytes at +0x364/+0x365. The work-area
-  accessor is called twice, matching the original instruction stream.
+  with `p + 0x70` and the signed work bytes at +0x364/+0x365, read through a
+  local typed view of the work area. The work-area accessor is called twice,
+  once per coordinate, matching the original instruction stream.
 - `Unk02f2a8_ClearEntry5e12Bit0` (`0x0202f2a8`, 52 bytes): clears bit 0 of
-  byte `i` in the 64-entry table at work+0x5e12. Ids outside 0..63 are ignored.
+  byte `i` in the 64-entry table at the `Unk02e000_Unk_02e774` block +0x5e12.
+  Ids outside 0..63 are ignored.
 - `Unk02f2a8_SetRootUnk60` (`0x02034ad4`, 52 bytes): sets the root flag at
-  +0x60 to 1 and stores the two arguments at +0x64/+0x68. It is the setter
+  +0x60 to 1 via `gGameState->root->unk_60` and stores the two arguments at
+  +0x64/+0x68 through a local typed view of the root tail. It is the setter
   paired with `GameState_ClearRootUnk60`.
 - `Unk02f2a8_IsInGrid45x40` (`0x02035c5c`, 52 bytes): returns 1 exactly when
   `0 <= x < 45` and `0 <= y < 40`; both comparisons are signed, so negative

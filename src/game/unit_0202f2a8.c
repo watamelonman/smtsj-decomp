@@ -5,12 +5,24 @@ void func_0203428c(void);
 void func_0206146c(void);
 void func_02057660(int a, int b);
 
-/* Block returned by the unit_0202e000 accessor; this unit borrows it and only
- * touches the byte table at +0x5e12. */
+/* Block returned by the unit_0202e000 accessor. Several units borrow it, so
+ * this file only assumes the parts it actually reads. */
 u8 *Unk02e000_Unk_02e774(void);
 
-/* Clear bit 0 of the 64-entry byte table at work+0x5e12. Ids outside 0..63 are
- * ignored, not clamped, so a bad selector leaves the table untouched. */
+/* Local typed view of the work area returned by Unk02e000_GetWorkArea.
+ * include/ is not owned by this card, so only the cached grid coordinates read
+ * here are typed; other members are still reached through byte offsets. */
+typedef struct Unk02f2a8WorkArea {
+    u8 pad_0000[0x364];
+    s8 unk_0364;
+    s8 unk_0365;
+} Unk02f2a8WorkArea;
+
+Unk02f2a8WorkArea *Unk02e000_GetWorkArea(void);
+
+/* Clear bit 0 of the 64-entry byte table at the Unk02e000_Unk_02e774 block
+ * +0x5e12. Ids outside 0..63 are ignored, not clamped, so a bad selector
+ * leaves the table untouched. */
 void Unk02f2a8_ClearEntry5e12Bit0(int i)
 {
     if (i >= 64) {
@@ -88,14 +100,14 @@ typedef struct Unk02f2a8Obj39160 {
     u32 unk_0004_16 : 4;
     u32 pad_0004_20 : 12;
 } Unk02f2a8Obj39160;
-/* Forward the grid coordinates cached in work+0x364/+0x365, plus the caller's
- * object at p+0x70, to func_02035db8. The two work-area reads are separate in
- * the original; keeping them separate preserves the call sequence. */
+/* Forward the grid coordinates cached at work-area +0x364/+0x365, plus the
+ * caller's object at p+0x70, to func_02035db8. The accessor is called twice,
+ * once per coordinate, matching the original instruction stream. */
 void Unk02f2a8_Call_02035db8(u8 *p)
 {
-    u8 *a = (u8 *)Unk02e000_GetWorkArea();
-    u8 *b = (u8 *)Unk02e000_GetWorkArea();
-    func_02035db8(p + 0x70, FIELD(s8, a, 0x364), FIELD(s8, b, 0x365));
+    Unk02f2a8WorkArea *a = Unk02e000_GetWorkArea();
+    Unk02f2a8WorkArea *b = Unk02e000_GetWorkArea();
+    func_02035db8(p + 0x70, a->unk_0364, b->unk_0365);
 }
 
 void Unk02f2a8_Call_02036318(GameState *gs)
@@ -205,14 +217,22 @@ typedef struct Unk02f2a8Pos {
 
 #define UNK02F2A8_RES36() ((Unk02f2a8Res36 *)func_0204fde0(func_020445d0(36, 0)))
 
+/* Local view of the GameStateRoot words past the end declared by
+ * include/GameState.h (the header is not owned by this card). */
+typedef struct Unk02f2a8RootTail {
+    u8 pad_0000[0x64];
+    u32 unk_0064;
+    u32 unk_0068;
+} Unk02f2a8RootTail;
+
 /* Arm the root request: set the flag at +0x60 and stash the two arguments at
  * +0x64/+0x68. Requires gGameState and its root; GameState_ClearRootUnk60 is
  * the matching disarm path. */
 void Unk02f2a8_SetRootUnk60(u32 a, u32 b)
 {
-    FIELD(u32, gGameState->root, 0x60) = 1;
-    FIELD(u32, gGameState->root, 0x64) = a;
-    FIELD(u32, gGameState->root, 0x68) = b;
+    gGameState->root->unk_60 = 1;
+    ((Unk02f2a8RootTail *)gGameState->root)->unk_0064 = a;
+    ((Unk02f2a8RootTail *)gGameState->root)->unk_0068 = b;
 }
 
 /* Clear the root flag at +0x60, paired with Unk02f2a8_SetRootUnk60 above.
@@ -238,16 +258,27 @@ u16 GameState_GetUnkField74f6(void)
     return gGameState->unk_74f6;
 }
 
+/* Local view of the GameState sub-block headers at +0x240 and +0x2cc;
+ * include/GameState.h (not owned by this card) pads both ranges. */
+typedef struct Unk02f2a8GameStateSubs {
+    u8 pad_0000[0x240];
+    u32 unk_0240;
+    u8 pad_0244[0x2cc - 0x244];
+    u32 unk_02cc;
+} Unk02f2a8GameStateSubs;
+
 /* Return the optional sub-block at +0x240 only when the game state exists and
  * the block's first word is nonzero; otherwise null. The pointer is borrowed. */
 u8 *Unk02f2a8_GetOptSub240(void)
 {
     GameState *gs = gGameState;
+    Unk02f2a8GameStateSubs *view;
     if (gs == 0) {
         return 0;
     }
-    if (FIELD(u32, gs, 0x240) != 0) {
-        return (u8 *)gs + 0x240;
+    view = (Unk02f2a8GameStateSubs *)gs;
+    if (view->unk_0240 != 0) {
+        return (u8 *)&view->unk_0240;
     }
     return 0;
 }
@@ -257,11 +288,13 @@ u8 *Unk02f2a8_GetOptSub240(void)
 u8 *Unk02f2a8_GetOptSub2cc(void)
 {
     GameState *gs = gGameState;
+    Unk02f2a8GameStateSubs *view;
     if (gs == 0) {
         return 0;
     }
-    if (FIELD(u32, gs, 0x2cc) != 0) {
-        return (u8 *)gs + 0x2cc;
+    view = (Unk02f2a8GameStateSubs *)gs;
+    if (view->unk_02cc != 0) {
+        return (u8 *)&view->unk_02cc;
     }
     return 0;
 }
@@ -383,7 +416,6 @@ void Unk02f2a8_Unk_035ec4(Unk02f2a8Angled *obj, u32 dir)
     obj->unk_0018 = Unk02f2a8_DirToAngle(dir);
 }
 
-int Unk02e000_GetWorkArea();
 /* Sets the angle of obj's +0x7c sub-object from the work area's direction word (+0x358). */
 void Unk02f2a8_Unk_030578(Unk02f2a8AngledOwner *obj)
 {
@@ -438,13 +470,13 @@ u32 Unk02f2a8_Unk_034a8c(u8 *base, int x, int y)
     return r;
 }
 
-int Unk02f2a8_Unk_035a70();
-int Unk044394_Unk_044428();
-int Unk044394_Unk_044534();
-int func_020f43d4();
+int Unk044394_Unk_044428(int i);
+int Unk044394_Unk_044534(int i);
+void func_020f43d4(void);
 /* Apply pending state for one selector: 0 is remapped to 1, then
- * Unk02f2a8_Unk_035a70 runs between the acquire/release pair on channel 0x24.
- * The selector's meaning and the lock's purpose are not established. */
+ * Unk02f2a8_Unk_035a70 runs with 0x24 passed to Unk044394_Unk_044428 before it
+ * and to Unk044394_Unk_044534 after it, then func_020f43d4 is called. The
+ * selector and channel meanings are not established. */
 void Unk02f2a8_Unk_035440(int arg0)
 {
   if (arg0 == 0) {
@@ -506,8 +538,8 @@ int Unk02f2a8_SetGridPos(int x, int y, u32 v)
 void Unk02f2a8_Unk_036488(void)
 {
   u16 tmp1;
-  int tmp2;
-  tmp2 = Unk02e000_GetWorkArea();
+  u8 *tmp2;
+  tmp2 = (u8 *)Unk02e000_GetWorkArea();
   *(u16 *)(tmp2 + 0xaf2) = 0;
   tmp1 = func_02050088(1,0x32,100);
   *(u16 *)(tmp2 + 0xaf4) = tmp1;
@@ -552,8 +584,8 @@ void Unk02f2a8_Unk_02fc10(int arg0)
   int tmp1;
   int tmp2;
   u32 tmp3;
-  tmp1 = Unk02e000_GetWorkArea();
-  tmp2 = Unk02e000_GetWorkArea();
+  tmp1 = (int)Unk02e000_GetWorkArea();
+  tmp2 = (int)Unk02e000_GetWorkArea();
   tmp3 = func_020361ec(*(u32 *)(tmp2 + 0x358),*(u32 *)(arg0 + 0x18));
   *(u32 *)(tmp1 + 0x358) = tmp3;
   *(u32 *)(arg0 + 0x1c) = 0;
