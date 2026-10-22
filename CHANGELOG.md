@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Matched M1-T1075 `func_02072374` at 100% objdiff with typed pair-matrix and display state; documented the four remaining targets and matching trials in the unit hard list.
+- Matched M1-T1075 `func_02072374` at 100% objdiff with typed pair-matrix and display state; documented failed compiled C trials for all four deferred targets in the unit hard list (including three new decompiler-assisted trials).
 - Matched M1-T107 `func_020caea8`, including position-record path formatting, loading, and selector restoration.
 - Matched six M1-T1052 UniteEvent functions at 100% objdiff (initialization, input transition, two draw callbacks, teardown and coordinate layout); documented the remaining update state machine in the hard list.
 - Matched all eight M1-T1094 functions in `src/game/unit_02100810.c` at 100% objdiff, including record conversions, percentage counters, drawing callback and wrappers.

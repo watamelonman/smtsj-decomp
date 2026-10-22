@@ -316,7 +316,19 @@ int Unk0e651c_Unk_0e666c(int n);
 void * func_020445f4(int a, int b);
 u32 func_0204fed8(void *p, int id);
 void Unk065e88_Unk_0672fc(void *p, int a, int b);
+/* Deferred pair classifier: table walks compare definition ids/categories and return classes
+   0..8. Evidence: +0x88/+0x8c/+0x90/+0x98/+0x9c rule tables in the original.
+   Still supplied by the delink; the compiled candidate is not instruction-identical. */
 int func_02075fd0(Unk072238Work *p, int a, int b);
+/* Deferred draw dispatcher: reads panel.state after guarding +0x220 and +0x3b0;
+   calls the two row-list draw helpers. Still supplied by the original delink. */
+void func_0207498c(Unk072238Work *p);
+/* Deferred update dispatcher: resets through func_02072374, polls input, and dispatches
+   panel.state through 15. Still supplied by the original delink. */
+void func_0207283c(Unk072238Work *p);
+/* Deferred result-record builder: combines the two selected ids with func_02067ef4,
+   builds the 60-byte record, and optionally refreshes it. Still supplied by the delink. */
+void func_020765b0(Unk072238Work *p, int refresh);
 int func_020698e0(void *p, u16 *ids, int n, int result);
 void func_0205c408(void *p, int n);
 void func_0205c6e0(void *p);
@@ -332,7 +344,7 @@ void func_02072374(Unk072238Work *p)
 {
     Unk072238Area *w;
     int i;
-    u32 text;
+    u32 text; /* Empty areas forward an indeterminate handle, exactly as in the original. */
     void *first, *other;
     p->unk_03e2 = 0;
     p->panel.selected = 0;
