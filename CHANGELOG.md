@@ -2,6 +2,10 @@
 
 ## Unreleased
 - Matched all eight M1-T083 functions in `src/game/unit_020bb6e8.c`, including the `func_020bb7e4` flag handler, with typed work/flag layouts and per-function documentation.
+- Matched and documented all five functions in `src/game/unit_02047fb4.c` (talk-tone and effect work handlers) at 100% objdiff, with typed work layouts and the effect spawn/teardown flow.
+- Matched all five functions in `src/game/unit_02047568.c` at 100% objdiff, with instruction-based comments and per-function documentation.
+- Matched all six functions in `src/game/unit_0203ca38.c` at 100% objdiff, including the 136-byte `func_0203cb7c` mode dispatcher, with per-function documentation.
+- Matched `func_0211f0a0` in `src/game/unit_0211f0a0.c` (three-entry gauge draw) at 100% objdiff, with a typed work layout and per-function documentation.
 - Matched all six functions in `src/game/unit_0203b988.c` at 100% objdiff, including the 216-byte `func_0203b9dc` mode dispatcher, with per-function documentation.
 - Verified six `unit_0202ee5c` accessors at 100% objdiff, added typed contracts, and documented the remaining list assembly function in the hard list.
 - Matched all seven M1-T064 handlers in `src/game/unit_0203c05c.c`, including mode dispatch, with typed work fields and documented argument contracts.
