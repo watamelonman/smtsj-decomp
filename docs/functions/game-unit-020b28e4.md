@@ -251,7 +251,7 @@ after these edits.
 
 ### Hard list for M1-T1041
 
-- `func_020b4040` (1588 B): a full C candidate was written and iterated with
+- `Unk0b28e4_Unk_0b4040` (1588 B): a full C candidate was written and iterated with
   `tools/hand/cmp.py` and `tools/hand/gatecheck.py` this attempt. Best measured
   result was **96.05%** for a 1584-byte candidate (396 instructions versus the
   original 397). The decisive change was giving `Unk0b28e4_Unk_0b5e10` a
@@ -305,4 +305,4 @@ after these edits.
   mwcc 2.0 service packs plus the 1.2 releases (1.2 produces a 164-byte
   frame, far from the original). A human can open a scratch with
   `tools/decompme.py`; the original delink remains linked.
-- `func_020b4040`: hand-matched
+- `Unk0b28e4_Unk_0b4040`: hand-matched

@@ -54,7 +54,7 @@ typedef struct Unk0b28e4Obj {
     u32 unk_0ca8;
 } Unk0b28e4Obj;
 
-/* One 12-byte table slot: two rows of three category ids (func_020b4040). */
+/* One 12-byte table slot: two rows of three category ids (Unk0b28e4_Unk_0b4040). */
 typedef struct Unk0b28e4Entry {
     u16 ids[6];
 } Unk0b28e4Entry;
@@ -633,7 +633,7 @@ typedef struct Unk0b28e4IconRecord {
     u32 unk_08;                 /* 0x08: value drawn at x=121 */
     u8 pad_0c[0xa];
     u16 unk_16;                 /* 0x16: bit 1 selects the alternative number layout,
-                                   bit 2 hides the bar in func_020b4040 */
+                                   bit 2 hides the bar in Unk0b28e4_Unk_0b4040 */
     u8 pad_18[0xa];
     Unk0b28e4StateWord unk_22[8]; /* 0x22: per-button words for func_020dd364 */
     u8 pad_32[0x28];
@@ -672,7 +672,7 @@ void func_0202122c(void *buf, u32 size);
 int Unk03e43c_Unk_03e8cc(u8 *p);
 int Unk02ee5c_GetTierFromField70(void);
 /* Rebuild result bounds row drawing in states 1 and 5; work is borrowed. */
-int func_020b4040(Unk0b28e4Obj *work);
+int Unk0b28e4_Unk_0b4040(Unk0b28e4Obj *work);
 void func_020b4674(Unk0b28e4Obj *work);
 void func_020b4bb8(Unk0b28e4Obj *work);
 void func_020b5070(Unk0b28e4Obj *work);
@@ -863,7 +863,7 @@ void func_020b32bc(Unk0b28e4Obj *work)
         break;
     case 1:
         if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
-            work->unk_0c38 = func_020b4040(work);
+            work->unk_0c38 = Unk0b28e4_Unk_0b4040(work);
             work->unk_0c70 = 0;
         }
         if (work->unk_0c74 == 0) {
@@ -905,7 +905,7 @@ void func_020b32bc(Unk0b28e4Obj *work)
         break;
     case 5:
         if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
-            work->unk_0c38 = func_020b4040(work);
+            work->unk_0c38 = Unk0b28e4_Unk_0b4040(work);
             work->unk_0c70 = 0;
         }
         if (work->unk_0c74 == 0) {
@@ -1403,7 +1403,7 @@ s32 func_020dd364(Unk0b28e4StateWord w, const u16 *ids, s32 kind);
  * grid (while Unk02e000_GetRecordUnk1e is below record->unk_5b) or the
  * func_020b64dc categories and eight func_020dd364 button labels. Ends with
  * the centred title label and returns the row count (3). */
-int func_020b4040(Unk0b28e4Obj *work)
+int Unk0b28e4_Unk_0b4040(Unk0b28e4Obj *work)
 {
     u32 res0 = func_020445f4(18, 0);
     u32 res1 = func_020445f4(18, 1);
