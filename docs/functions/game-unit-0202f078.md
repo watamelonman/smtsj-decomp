@@ -27,6 +27,17 @@ gameplay meaning, so the symbols remain neutral.
 
 ## M1-T115 functions
 
+Reverified against `build/delinks/src/game/unit_0202f078.o` and a fresh objdiff
+report. These five implementations were already present in the inherited source;
+this card retains their matching code and clarifies the evidence and contracts.
+Invalid indices return before calling either work/save accessor. The flag helpers
+use the supplied bit number directly, leaving bit zero inaccessible. Entry
+initialization replaces the entire byte with 3 when bit 1 is clear.
+
+The descriptive names below refer only to instruction-level operations: byte
+loads/tests and conditional stores establish the table/flag names, while the
+comparison tree establishes the pair predicate. They imply no gameplay meaning.
+
 - `Unk02f078_TestFlag380` (`0x0202f104`, 100%): reports bit `i` of the 37-bit
   flag array at work `+0x380`; ids outside 1..36 return zero.
 - `Unk02f078_SetFlag380` (`0x0202f14c`, 100%): sets that bit for ids 1..36 and

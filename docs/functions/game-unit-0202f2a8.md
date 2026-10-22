@@ -151,15 +151,41 @@ caller establishes a gameplay meaning beyond the observations below.
   `Unk094fe0_Unk_0952ac` to tick the slot timers; both the game state and slot are
   re-read after the advancing call.
 
-## Not done in M1-T1109
-- `Unk02f2a8_Unk_02f8ac`
-- `Unk02f2a8_SetField7470`
-- `Unk02f2a8_DirToAngle`
-- `Unk02f2a8_SetField6138`
-- `GameState_Shutdown`
-- `Unk02f2a8_Unk_035a70`
-- `Unk02f2a8_Unk_035c14`
-- `Unk02f2a8_ResetField7478Ex`
+## M1-T1109: 8 functions
+
+These were already byte-matching in the TU; this card replaced the raw
+`FIELD`/pointer-offset accesses with typed struct views (`Unk02f2a8GameStateTail`
+now covers +0x73DC and +0x7470..+0x748B, `Unk02f2a8Action` gains +0x9C, new
+`Unk02f2a8Slots6138`), gave them real prototypes and comments. All 8 are 100%.
+
+- `Unk02f2a8_Unk_02f8ac` (`0x0202F8AC`, 68 bytes): action type 3 of the
+  dispatcher (type 4 is `Unk02f2a8_Unk_02fc10`, same `Unk02f2a8Action` object).
+  Clears +0x1C, runs `ScanVisor_Unk_0a2b38` + `Unk095560_Unk_09615c`; if
+  `func_021214e0(+0x18)` is nonzero, sets +0x9C to 1 and calls `func_021215d4`
+  (a `GetGameState` call with unused result sits in between). Posts event 0x1B.
+- `Unk02f2a8_SetField6138` (`0x0202F330`, 72 bytes): stores `v` in slot `k`
+  (1..3) of the `Unk02e000_Unk_02e774` block at +0x6138/+0x613C/+0x6140; the
+  setter of `Unk02f2a8_GetSlot_02f2dc`. Other `k` are ignored.
+- `Unk02f2a8_ResetField7478Ex` (`0x020333B4`, 76 bytes): clears GameState
+  +0x7478, +0x7480, +0x7481, +0x7484, +0x7488; unless +0x73DC is nonzero, calls
+  `func_020a269c(0)`, `func_0205257c(3)`, `Unk0a4e48_Unk_0a4e9c(2)` and
+  `Unk0a0ce4_Unk_0a0da4(5)`.
+- `GameState_Shutdown` (`0x02034244`, 72 bytes): releases the sub-objects at
+  +0x314C, +0x3140, +0x3134 and +0x73D0 in that order, then nulls `gGameState`
+  (so `GameState_Exists` returns 0). Does not free the GameState block itself.
+- `Unk02f2a8_SetField7470` (`0x02034D5C`, 68 bytes): sets gGameState +0x7470 to
+  1 and stores the (u16, u8, u8) argument triple at +0x7474/+0x7476/+0x7477.
+  The triple's meaning is not established.
+- `Unk02f2a8_Unk_035a70` (`0x02035A70`, 72 bytes): fills a zeroed 8-byte
+  `Unk02f2a8Pos` through `func_02035890(&pos, a)`, applies its id via
+  `Unk02f2a8_SetField35c` and its x/y/word via `Unk02f2a8_SetGridPos`, and
+  returns `func_02035890`'s result.
+- `Unk02f2a8_Unk_035c14` (`0x02035C14`, 72 bytes): reads the signed id byte
+  +0x1B+j of resource-36 entry i; negative gives 0, otherwise returns
+  `Unk0e5fb8_Unk_0e63c8(id)`.
+- `Unk02f2a8_DirToAngle` (`0x020360D8`, 68 bytes): direction index to 16-bit
+  binary angle (1→0, 2→0x4000, 3→0x8000, 0→0xC000, else 0). Name evidence:
+  `Unk02f2a8_Unk_035ec4` stores the result in a u16 angle field at +0x18.
 
 ## Not done in M1-T1110
 - `Unk02f2a8_SetField35c`
