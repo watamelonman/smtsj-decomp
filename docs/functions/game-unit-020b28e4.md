@@ -100,10 +100,22 @@ x=64 (the second at x=128), as evidenced by the argument registers.
 
 ### Hard list for M1-T1039
 
-- `func_020b63b4`: tried typed cache fields, a 12-byte struct assignment,
-  separate source/destination locals, reordered declarations, and an explicit
-  byte-copy loop. Best struct-copy trial compiled to 272 bytes versus 276;
-  it cached a loop bound that the original reloads and kept the cache pointer
-  across the payload copy. The byte loop produced 260 bytes and different
-  scheduling. No nonmatching body is retained. A human can use
-  `tools/decompme.py` to open a scratch for this function.
+- `func_020b63b4` (276 B): not matched; the function remains in the delinked
+  original and no nonmatching body is retained. Best attempt was 98.84%
+  (276 B) and differed only in register allocation. The original's duplicate-id
+  loop keeps the cache pointer in r3, the saved count in r12, the index in r1
+  and the id in r2, and reloads the count byte for the signed back-edge test.
+  Its 12-byte payload copy counts down six 2-byte pieces in r3 while the
+  destination stays in r12.
+  Trials: typed cache fields; 12-byte struct assignment; source/destination
+  pointer locals; declaration and assignment reordering; `for`, `while` and
+  `do`/`while` loop forms; saved-count locals; local vs global cache pointer
+  expressions; `u8`/`u16`/`u32` copy counters; 2-byte struct pair copies;
+  explicit two-byte copy loops; and a `volatile` count read in the loop bound.
+  The `volatile` form reproduced the missing back-edge reload, but mwcc then
+  assigned cache/count/id to r1/r2/r3 instead of r3/r12/r1/r2, and the
+  copy counter moved to r12 instead of r3. Other forms reproduced the
+  register roles but folded the back-edge load into the saved count. Overall
+  sizes were 260, 272 and 276 bytes; all instruction sequences were otherwise
+  equivalent to the original. A human can use `tools/decompme.py` to open a
+  scratch for this function.
