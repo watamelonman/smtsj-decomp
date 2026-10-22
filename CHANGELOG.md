@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T1135 context and id-query functions in `src/game/unit_020bd5f0.c` at 100% objdiff; added behavior contracts and per-function documentation.
 - `src/game/unit_020bd5f0.c`: M1-T1134 functions at 100% objdiff, including the work-area flag test `func_020c1968`; all eight have typed parameters, behaviour comments and doc entries.
 - Matched all seven M1-T113 functions in `src/game/unit_020f09b4.c` (empty callback, interworking thunk, two work-object callbacks, index mapping, per-entry list walk, and mode-filtered helper call) at 100% objdiff, with typed work fields and per-function documentation.
 - Matched `func_0203e684` and `func_0203fa84` in `src/game/unit_0203e43c.c` (100% objdiff), documented three already-matched M1-T1089 functions; `func_02044114`, `func_02044264`, `func_020442fc` are on the hard list in the unit doc.

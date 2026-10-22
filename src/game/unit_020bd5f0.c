@@ -154,6 +154,8 @@ typedef struct Unk0bd5f0Ctx {
 
 extern Unk0bd5f0Ctx *data_02176bb4;
 
+/* Returns true only when both func_020537b8 queries (group 0, masks 0x40 and
+   0x80) are clear; the second query is skipped when the first is set. */
 int Unk0bd5f0_Unk_0c20bc(void)
 {
     if (func_020537b8(0, 64) != 0) {
@@ -162,6 +164,9 @@ int Unk0bd5f0_Unk_0c20bc(void)
     return func_020537b8(0, 128) == 0;
 }
 
+/* Searches ids 111..210 inclusive for an accepted id whose record passes
+   Unk09974c_HasFlagsMid. Evidence for the name: the bounded id loop and
+   calls to Unk09974c_Unk_099d78, Unk09974c_Unk_0998d8 and HasFlagsMid. */
 int Unk0bd5f0_AnyIdWithFlagsMid(void)
 {
     u32 id;
@@ -174,6 +179,9 @@ int Unk0bd5f0_AnyIdWithFlagsMid(void)
     return 0;
 }
 
+/* Searches ids 111..210 inclusive for an accepted id whose record fails
+   Unk09974c_HasFlagsMid. Evidence for the name: the bounded id loop and
+   the negated HasFlagsMid result after Unk09974c_Unk_0998d8 accepts the id. */
 int Unk0bd5f0_AnyIdWithoutFlagsMid(void)
 {
     u32 id;
@@ -186,6 +194,8 @@ int Unk0bd5f0_AnyIdWithoutFlagsMid(void)
     return 0;
 }
 
+/* For a live global context, forwards its word at +0x108 and the four
+   caller-supplied words to func_020dde3c; a null context is a no-op. */
 void Unk0bd5f0_Unk_0c7f70(u32 a, u32 b, u32 c, u32 d)
 {
     if (data_02176bb4 == 0) {
@@ -194,6 +204,8 @@ void Unk0bd5f0_Unk_0c7f70(u32 a, u32 b, u32 c, u32 d)
     func_020dde3c(FIELD(u32, data_02176bb4, 264), a, b, c, d);
 }
 
+/* For a live global context, sets the first two words to 20 and 22, the
+   word at +0x118 to -110, and the words at +0x120 and +0x11c to zero. */
 void Unk0bd5f0_Unk_0c7fbc(void)
 {
     if (data_02176bb4 == 0) {
@@ -206,6 +218,8 @@ void Unk0bd5f0_Unk_0c7fbc(void)
     FIELD(s32, data_02176bb4, 284) = 0;
 }
 
+/* For a live global context, passes its +0x100 word and +0x114 word plus
+   three to Unk0ddeb0_Unk_0ddeb0, followed by constants -2, 0, 12 and 10. */
 void Unk0bd5f0_Unk_0c842c(void)
 {
     u8 *c = (u8 *)data_02176bb4;
@@ -215,6 +229,9 @@ void Unk0bd5f0_Unk_0c842c(void)
     Unk0ddeb0_Unk_0ddeb0(FIELD(u32, c, 256), FIELD(s32, c, 276) + 3, -2, 0, 12, 10);
 }
 
+/* Tests the global context's first word for 22 or 24, returning false for
+   a null context. Evidence for the name: the two equality comparisons in this function
+   and the state-word writes in Unk0bd5f0_Unk_0c7fbc. */
 int Unk0bd5f0_IsState22or24(void)
 {
     s32 v;
@@ -231,6 +248,9 @@ void Unk0bd5f0_SetCtxUnk1b8(void)
     data_02176bb4->unk_01b8 = 1;
 }
 
+/* Requires a writable object through +0x117. Calls func_020c72a4 with
+   its +0x100 word, +0x110 byte and zero, then sets the first two words
+   to 20 and b and the word at +0x114 to -110. */
 void Unk0bd5f0_Unk_0c8510(s32 *p, s32 b)
 {
     func_020c72a4(p[64], FIELD(u8, p, 272), 0);
