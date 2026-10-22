@@ -44,19 +44,48 @@ parameters; the table-copy routine now uses byte pointers rather than integers.
   `data_0215e85c + index * 32 + 2`, in pairs of byte loads/stores. The caller
   supplies a readable source and a valid destination slot; no bounds check exists.
 
+## M1-T1088
+
+All eight functions below match the delinked original at 100% in objdiff.
+The bodies came from the earlier hand-matching pass in this file; this card
+verified them, added explicit contracts and typed parameters, and checked the
+caller-supplied table/index contracts.
+
+- `Unk03e43c_CopyEntry32` (56 B): copies a 32-byte entry into table slot
+  `slot` (`data_0215e85c + slot*32 + 2`) in byte pairs, leaving the u16 header
+  at `data_0215e85c` intact. Callers such as `func_020b5e2c` load consecutive
+  resource entries into consecutive slots.
+- `Unk03e43c_Unk_03e894` (56 B): derives a value with
+  `func_0202092c(resource, index)`, passes it with the setup pointer `a` to
+  `func_020211d8`, then clears the u16 countdown at `entry + 0x58`. The
+  original truncates `index` to u16; callers pass two resource handles from a
+  setup record (`func_020b28e8`).
+- `Unk03e43c_UpdatePos18` (64 B): recomputes the s16 coordinates at
+  `+0x18/+0x1a` through `Unk03e43c_Unk_043450` (forwarding the
+  `+0x2000:+0x8dc` word as its third argument), then sets the dirty word at
+  `+0x04` when either coordinate changed.
+- `Unk03e43c_MergeTable` (68 B): copies the nonzero u16 entries of the
+  512-byte source table into the shared table at `data_0215e85c` (payload at
+  `+2`), leaving zero source entries unchanged.
+- `Unk03e43c_Unk_03e8cc` (84 B): advances the u16 counter at `+0x58` until it
+  reaches the sum of the u16 durations at `+4` of every entry in the table
+  referenced at `+0x1c`; returns 1 when already at/above the total, 0 after
+  incrementing. The animation/timing meaning is unknown.
+- `Unk03e43c_Unk_044194` (88 B): clears the seven per-slot bytes at
+  `p+0x2000:+0x982`, writes `0x73f5` to the four u16 table slots 1..4, merges
+  those entries, and re-registers the table via
+  `Unk03e43c_Call_02056cc0`.
+- `Unk03e43c_Unk_043450` (96 B): computes two s16 screen coordinates from the
+  signed map bytes at `work+0x300:+100/+101` and the matching GameState
+  fields: base 128/96 minus `(mapByte - gameField) * 8`. `UpdatePos18`
+  forwards a third argument that this body does not read.
+- `Unk03e43c_Unk_043560` (104 B): counts the 37 flags tested by
+  `Unk02f078_TestFlag380` and maps the total to 48 (`>20`), 24 (`>16`),
+  23 (`>12`), 22 (`>8`), 21 (`>4`), otherwise 20.
+
 ## Hard list
 
-None for M1-T1087.
-
-## Not done in M1-T1088
-- `Unk03e43c_CopyEntry32`
-- `Unk03e43c_Unk_03e894`
-- `Unk03e43c_UpdatePos18`
-- `Unk03e43c_MergeTable`
-- `Unk03e43c_Unk_03e8cc`
-- `Unk03e43c_Unk_044194`
-- `Unk03e43c_Unk_043450`
-- `Unk03e43c_Unk_043560`
+None for M1-T1087 or M1-T1088.
 
 ## Not done in M1-T1089
 - `func_0203e684`

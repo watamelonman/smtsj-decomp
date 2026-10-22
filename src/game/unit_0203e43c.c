@@ -24,15 +24,26 @@ typedef struct Unk03e43cTimer {
 } Unk03e43cTimer;
 
 extern u8 data_0215e85c[];
-void Unk03e43c_CopyEntry32(u8 *src, int idx)
+/*
+ * Copies one 32-byte entry from `src` into table slot `slot`. The payload
+ * starts two bytes past the slot base because the u16 header at data_0215e85c
+ * precedes the 512-byte table at data_0215e85e; callers pass a resource entry
+ * and a slot number (func_020b5e2c loads consecutive slots).
+ */
+void Unk03e43c_CopyEntry32(u8 *src, int slot)
 {
     int i;
     for (i = 0; i < 32; i += 2) {
-        data_0215e85c[idx * 32 + i + 2] = src[i];
-        data_0215e85c[idx * 32 + i + 3] = src[i + 1];
+        data_0215e85c[slot * 32 + i + 2] = src[i];
+        data_0215e85c[slot * 32 + i + 3] = src[i + 1];
     }
 }
 
+/*
+ * Merges the nonzero u16 entries of the 512-byte `src` table into the shared
+ * table at data_0215e85c (payload at +2); zero entries leave the destination
+ * unchanged. Callers pass a scratch table of at least 512 bytes.
+ */
 void Unk03e43c_MergeTable(u8 *src)
 {
     int i;
@@ -49,7 +60,7 @@ void func_02008848(void *destination, int value, u32 size);
 int func_0202092c();
 void func_020211d8();
 void func_0204b6d0(void);
-void Unk03e43c_Unk_043450();
+void Unk03e43c_Unk_043450(s16 *x, s16 *y, u32 unused);
 extern u8 data_0215ee60[];
 /* Clears the 512-byte table and its leading u16 after func_02020f8c;
  * the two global stores in the original establish the table extent. */
@@ -60,10 +71,17 @@ void Unk03e43c_ClearTable(void)
     *(u16 *)data_0215e85c = 0;
 }
 
-void Unk03e43c_Unk_03e894(u8 *o, int b, int c, int d)
+/*
+ * Initializes one 32-byte draw entry: derives a value with
+ * func_0202092c(resource, index) and passes it with the setup pointer `a` to
+ * func_020211d8, then clears the u16 countdown at entry + 0x58. The original
+ * truncates `index` to u16 before the helper call. Callers pass the resource
+ * handles from a setup record (func_020b28e8).
+ */
+void Unk03e43c_Unk_03e894(u8 *entry, void *a, void *b, int index)
 {
-    func_020211d8(o, func_0202092c(c, (u16)d), b);
-    FIELD(u16, o, 0x58) = 0;
+    func_020211d8(entry, func_0202092c(b, (u16)index), a);
+    FIELD(u16, entry, 0x58) = 0;
 }
 
 /*
@@ -244,11 +262,18 @@ void Unk03e43c_SetMode30(int mode)
     }
 }
 
+/*
+ * Recomputes the two s16 screen coordinates at +0x18/+0x1a through
+ * Unk03e43c_Unk_043450, forwarding the object's +0x2000:+0x8dc word as the
+ * helper's third argument. When either coordinate changed, sets the dirty
+ * flag word at +0x04 to 1; otherwise it leaves the object untouched.
+ */
 void Unk03e43c_UpdatePos18(u8 *o)
 {
     s16 x = FIELD(s16, o, 0x18);
     s16 y = FIELD(s16, o, 0x1a);
-    Unk03e43c_Unk_043450(o + 0x18, o + 0x1a, FIELD(u32, o, 0x28dc));
+    Unk03e43c_Unk_043450((s16 *)(o + 0x18), (s16 *)(o + 0x1a),
+                         FIELD(u32, o, 0x28dc));
     if (FIELD(s16, o, 0x18) != x || FIELD(s16, o, 0x1a) != y) {
         FIELD(u32, o, 0x04) = 1;
     }
@@ -293,6 +318,12 @@ void Unk03e43c_Call_02056cc0(void)
 
 typedef struct Unk03e43cEnt { u8 pad[4]; u16 unk_04; u8 pad2[2]; } Unk03e43cEnt;
 typedef struct Unk03e43cTab { u16 n; u8 pad[10]; Unk03e43cEnt *ents; } Unk03e43cTab;
+/*
+ * Advances the u16 counter at +0x58 by one until it reaches the sum of the
+ * u16 durations at +4 of every entry in the table referenced at +0x1c.
+ * Returns 1 when the counter is already at or above the total (no write), or
+ * 0 after incrementing it. The animation/timing meaning is not known.
+ */
 int Unk03e43c_Unk_03e8cc(u8 *p)
 {
     Unk03e43cTab *q = FIELD(Unk03e43cTab *, p, 28);
@@ -362,7 +393,13 @@ void Unk03e43c_Unk_041ce4(u8 *p)
     FIELD(u32, data_0215ee60, 52) = 0;
 }
 
-void Unk03e43c_Unk_043450(s16 *x, s16 *y)
+/*
+ * Computes the two s16 screen coordinates pointed to by `x` and `y` from the
+ * signed map bytes at work+0x300:+100/+101 and the matching GameState fields:
+ * coordinate = 128/96 - ((mapByte - gameField) * 8). The third argument is
+ * forwarded by Unk03e43c_UpdatePos18 but this body does not read it.
+ */
+void Unk03e43c_Unk_043450(s16 *x, s16 *y, u32 unused)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
     *x = 128 - ((s8)(FIELD(s8, w + 0x300, 100) - GameState_GetUnkField74f4()) << 3);
@@ -370,6 +407,11 @@ void Unk03e43c_Unk_043450(s16 *x, s16 *y)
     *y = 96 - ((s8)(FIELD(s8, w + 0x300, 101) - GameState_GetUnkField74f6()) << 3);
 }
 
+/*
+ * Counts the 37 flags at indices 0..36 through Unk02f078_TestFlag380 and maps
+ * the total to a tier constant: >20 -> 48, >16 -> 24, >12 -> 23, >8 -> 22,
+ * >4 -> 21, otherwise 20. The flag/tier meanings are not known.
+ */
 int Unk03e43c_Unk_043560(void)
 {
     int n = 0;
@@ -397,6 +439,12 @@ int Unk03e43c_Unk_043560(void)
     return 20;
 }
 
+/*
+ * Resets the seven per-slot bytes at p+0x2000:+0x982, writes 0x73f5 into the
+ * four u16 table entries at slots 1..4, merges those nonzero entries into the
+ * shared table, and re-registers the table with the resource layer. The
+ * per-slot flag and value meanings are not known.
+ */
 void Unk03e43c_Unk_044194(u8 *p)
 {
     u16 *t;
