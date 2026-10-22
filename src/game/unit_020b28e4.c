@@ -652,6 +652,8 @@ Unk0b28e4Area *Unk02e000_Thunk_0202e788(void);
 void func_0202122c(void *buf, u32 size);
 int Unk03e43c_Unk_03e8cc(u8 *p);
 int Unk02ee5c_GetTierFromField70(void);
+/* Rebuild result bounds row drawing in states 1 and 5; work is borrowed.
+ * Implementation remains in the delink; see the M1-T1041 hard list. */
 int func_020b4040(Unk0b28e4Obj *work);
 void func_020b4674(Unk0b28e4Obj *work);
 void func_020b4bb8(Unk0b28e4Obj *work);

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Documented the three M1-T1041 callback functions verified at 100% objdiff and the remaining rebuild function in the hard list.
 - Matched four more M1-T1040 status-icon list functions in `src/game/unit_020b28e4.c` (state dispatch, record-row drawing, type-1 roster paging and the reserved first row) at 100% objdiff; typed the 96-byte draw-resource array and documented the four remaining hard functions and their matching trials.
 - Matched all seven M1-T104 script handlers in `src/game/unit_020bb4c0.c` at 100% objdiff, including the 216-byte entry/weight selector, with typed record layouts and instruction-based documentation.
 

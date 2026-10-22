@@ -208,3 +208,46 @@ assignment, not a behavioural difference.
   levels and all compiler releases. The guard is dead code for the observed
   range, but it is required for a byte match. A human can open a scratch with
   `tools/decompme.py`.
+
+
+## M1-T1041 functions
+
+The retained C implementations below each report 100% in objdiff. Their typed
+work pointer is borrowed; initialization owns the resource buffers until
+`func_020b3d28` releases them. Names remain the protected symbol-table names.
+Evidence for their contracts is the original ARM instructions at each address.
+
+- `func_020b28e8` (1180 B, 100%): initializes work flags, page counts and
+  selection state, caches the global work pointer, loads six resource paths,
+  prepares 32 draw entries and seven palette entries, and allocates three
+  pairs of 256/512-byte icon buffers. The active-context branch initializes
+  the background buffer and its two handles.
+- `func_020b2dd0` (1260 B, 100%): handles borrowed callback events of kinds
+  1, 3 and 4. Each optional payload word has a presence bit in the first two
+  bytes. Event values select states 1..5, set rebuild/defer flags, update
+  page counts and scan displayed roster ids. State 5 advances the cached
+  six-byte selection cursor; its three flags are represented as bitfields.
+- `func_020b363c` (1772 B, 100%): processes page and row input after the
+  rebuild/defer flags clear. Input masks 0x40/0x80 select rows, 0x100/0x200
+  select pages, and 1/2 accept or cancel. Selection paths validate roster
+  records and construct callback-13 requests with optional-word flags.
+- `func_020b4040` (1588 B, not implemented): the existing state dispatcher
+  calls it during rebuilds in states 1 and 5 and saves its return value at
+  work +0xc38, which bounds the subsequent row drawing. This caller evidence
+  supports a borrowed work pointer and integer result, but does not establish
+  the full implementation. It continues to link from the delinked original.
+
+Matching details in the retained attempt: initialization uses explicit byte
+casts for palette slots and icon indices; event payload reads are inline and
+preserve presence-bit tests; request clearing uses separate loops for two
+flag bytes and sixteen words. Verification on this retry rebuilt the existing
+source and regenerated the objdiff report without changing these bodies.
+
+### Hard list for M1-T1041
+
+- `func_020b4040` (1588 B): no C candidate was retained by the interrupted
+  first attempt. This retry addresses its reported missing-documentation
+  failure and verifies the three completed bodies. Inspection of callers
+  establishes the rebuild/result contract above, but there is no measured
+  matching trial or partial-match percentage for this function. A human can
+  open a scratch with `tools/decompme.py`; the original delink remains linked.
