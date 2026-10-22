@@ -129,7 +129,7 @@ typedef struct CampStatusWork {
     u32 unk_01a0;
     u32 unk_01a4;               /* +0x1a4: when set, CampStatus_Unk_0d5d44 skips one frame */
     u32 unk_01a8;
-    u32 unk_01ac;               /* +0x1ac/+0x1b0: hide the two tabs drawn by func_020d6120 */
+    u32 unk_01ac;               /* +0x1ac/+0x1b0: hide the two tabs drawn by CampStatus_Unk_0d6120 */
     u32 unk_01b0;
     u8 pad_01b4[0x8c];
     u8 unk_0240;
@@ -434,7 +434,7 @@ typedef struct CampStatusEntry {
 } CampStatusEntry;
 void func_020d5644();
 void CampStatus_Unk_0d5d44();
-void func_020d6120();
+void CampStatus_Unk_0d6120();
 void CampStatus_Unk_0d6948();
 void CampStatus_Unk_0d6a24();
 void func_020d3680();
@@ -475,9 +475,9 @@ typedef struct CampStatusDrawParam {
     u32 unk_00;
     u32 unk_04;
     s16 unk_08;
-    s16 unk_0a;                 /* +0x0a: y, moved by the scrollbar in func_020d6120 */
+    s16 unk_0a;                 /* +0x0a: y, moved by the scrollbar in CampStatus_Unk_0d6120 */
     s16 unk_0c;
-    s16 unk_0e;                 /* +0x0e: height, set by the scrollbar in func_020d6120 */
+    s16 unk_0e;                 /* +0x0e: height, set by the scrollbar in CampStatus_Unk_0d6120 */
     u32 pad_10_0 : 2;
     u32 alpha : 8;              /* +0x10 bits 2..9: overlay alpha set by CampStatus_Unk_0d9d54 */
     u32 pad_10_a : 22;
@@ -644,7 +644,7 @@ void CampStatus_Unk_0d3624(CampStatusOps *o)
     o->unk_04 = 4;
     o->fn_0c = func_020d5644;
     o->fn_10 = CampStatus_Unk_0d5d44;
-    o->fn_14 = func_020d6120;
+    o->fn_14 = CampStatus_Unk_0d6120;
     o->fn_18 = CampStatus_Unk_0d6948;
     o->fn_1c = CampStatus_Unk_0d6a24;
     o->fn_20 = func_020d3680;
@@ -783,7 +783,7 @@ void CampStatus_Unk_0d5d44(CampStatusWork *work)
 }
 
 /* Handler 0x18 of the CampStatus_Unk_0d3624 table: when unk_018c is set and func_020523a8()
- * is 1, draw six grey gradient bars (frame 0, 32 px apart), then run func_020d6120. */
+ * is 1, draw six grey gradient bars (frame 0, 32 px apart), then run CampStatus_Unk_0d6120. */
 void func_02057524(u32 v);
 void func_02057534(void);
 u32 func_020ddf7c(s32 t);
@@ -803,7 +803,7 @@ void CampStatus_Unk_0ddb9c(int id);
 /* Handler 0x14 of the CampStatus_Unk_0d3624 table: draw the screen. Common frame and the two
  * optional tabs (unk_01a8), then the page for the screen mode in unk_0000, then the title text
  * on unk_00b8 (centred in 108 px unless unk_0268 pins it at unk_010e). */
-void func_020d6120(CampStatusWork *work)
+void CampStatus_Unk_0d6120(CampStatusWork *work)
 {
     CampStatusDrawParam param;
     if (work->unk_018c != 0 && func_020523a8() == 0) {
@@ -988,7 +988,7 @@ void CampStatus_Unk_0d6948(CampStatusWork *work)
         func_02057dcc(top, bottom, bottom, top);
         func_0205dee8(2, work->unk_001c, 0, 0, i * 32, 1.0f, 1.0f, 0, 1.0f, 0);
     }
-    func_020d6120(work);
+    CampStatus_Unk_0d6120(work);
 }
 
 /* Handler 0x1c of the CampStatus_Unk_0d3624 table: release everything the screen created
