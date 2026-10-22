@@ -163,15 +163,34 @@ requires instruction identity and checksum validation.
 
 No M1-T1046 functions remain on the hard list.
 
-## Not done in M1-T1047
-- `Unk0e1648_Unk_0e4f54`
-- `func_020e30f0`
-- `func_020e28a8`
-- `func_020e40a4`
-- `func_020e52b0`
-- `func_020e4ff8`
-- `func_020e2eb4`
-- `func_020e4130`
+## M1-T1047
+
+All eight functions match at 100% in objdiff. Evidence is the delinked ARM
+instructions and relocations; existing neutral names are retained. No runtime
+tests are required: instruction identity is the acceptance oracle.
+
+- `Unk0e1648_Unk_0e4f54` (124 B): divides 99 by the largest active entry
+  weight (flag +3 forces weight one), then caps it through the id lookup.
+  Existing matching implementation now has its missing contract comment.
+- `func_020e30f0` (132 B): resolves the record through work +0xcc and the
+  supplied index, rejects selector-2 matches, then appends the value byte,
+  index, record id and selector-4 result. Caller supplies slot capacity.
+- `func_020e28a8` (136 B): for states above one, configures three ranges,
+  dispatches by the work-kind predicate, and finalises the subsystem sequence.
+- `func_020e40a4` (140 B): applies visible slot ids through +0xe94 and restores
+  the selected id through +0xe98. Reloads callback-visible count before cursor
+  advancement, matching the load at 020e40fc; only this read is volatile.
+- `func_020e52b0` (140 B): submits a synchronous request with flags 0x0a,
+  values 22 and 12, then clears handle zero and two subsystems.
+- `func_020e4ff8` (152 B): for selected ids 211..410, submits a synchronous
+  request with flags 0x82, value 18 and the selected id.
+- `func_020e2eb4` (160 B): advances the three-entry cursor to a nonzero id,
+  applies its rank with mode 2 or 0, requests animation zero and returns success.
+- `func_020e4130` (160 B): refreshes multi-slot state; for fewer than eight
+  slots, stores twelve times the visible count, clears unused handles/flags,
+  and adjusts the count when the selected cursor is outside it.
+
+No M1-T1047 functions remain on the hard list.
 
 ## Not done in M1-T1048
 - `func_020e5394`

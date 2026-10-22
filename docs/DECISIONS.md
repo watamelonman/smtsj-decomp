@@ -85,3 +85,16 @@ report, not the per-symbol diff.
 of this TU; the section order is not part of any gate.
 **What would make us revisit.** An objdiff release whose report resolves the
 relocations without the ordering constraint.
+
+
+## DEC-006 — Preserve the visible-count reload order in 020e40a4
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** The original reloads work +0x6c after the handle callbacks and
+before advancing the local slot cursor. Ordinary C reads compile with the
+cursor increment scheduled before the reload, leaving two instructions different.
+**Decision.** Use a volatile-qualified read of this single typed field at that
+point. The loop still uses the callback-updated count; no whole-object volatile
+qualification or guessed hardware ownership is implied.
+**Cost accepted.** A local code-generation constraint is explicit in the source.
+**What would make us revisit.** Compiler or original-type evidence that reproduces
+this ordering with an ordinary field read.

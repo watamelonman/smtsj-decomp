@@ -31,20 +31,27 @@ typedef struct Unk0e1648Work {
     u16 unk_0006;
     u8 pad_0008[0x60];
     u32 unk_0068;
-    u8 pad_006c[0x10];
+    s32 unk_006c;
+    u8 pad_0070[4];
+    s32 unk_0074;
+    u8 pad_0078[4];
     s32 unk_007c;
     u8 pad_0080[0x18];
     s32 unk_0098;
-    u8 pad_009c[0x2c];
+    u8 pad_009c[0x10];
+    s32 unk_00ac;
+    u8 pad_00b0[0x18];
     s32 unk_00c8;
-    u8 pad_00cc[4];
+    u32 unk_00cc;
     u16 unk_00d0;
     Unk0e1648Slot unk_00d2[440]; /* 8-byte entries; count guessed from the following fields. */
-    u8 pad_0e92[6];
+    u8 pad_0e92[2];
+    u32 unk_0e94;
     u32 unk_0e98;
     u8 pad_0e9c[4];
     u32 unk_0ea0;
-    u8 pad_0ea4[0x1c];
+    u8 pad_0ea4[0x14];
+    u8 unk_0eb8[8];
     s32 unk_0ec0;
     s32 unk_0ec4;
     u8 pad_0ec8[0x1c];
@@ -162,7 +169,7 @@ typedef struct Unk0e1648Vtable {
     u32 pad_0008;
     void (*unk_000c)(void);
     void (*unk_0010)(void);
-    void (*unk_0014)(void);
+    void (*unk_0014)(Unk0e1648Work *);
     u32 unk_0018;
     void (*unk_001c)(void);
     void (*unk_0020)(void);
@@ -170,7 +177,7 @@ typedef struct Unk0e1648Vtable {
 
 void func_020e1b10(void);
 void func_020e2190(void);
-void func_020e28a8(void);
+void func_020e28a8(Unk0e1648Work *work);
 void func_020e1a48(void);
 void func_020e2a5c(void);
 /*
@@ -539,6 +546,8 @@ typedef struct Unk0e1648Rec {
     Unk0e1648Ent ents[3];
 } Unk0e1648Rec;
 
+/* Caps 99 divided by the maximum active entry weight using the id lookup limit.
+ * The +3 flag forces weight one; evidence is the entry loop at 020e4f70. */
 int Unk0e1648_Unk_0e4f54(Unk0e1648Rec *p)
 {
     int m = 0;
@@ -697,4 +706,141 @@ void func_020e41d0(Unk0e1648Work *work)
     }
     Unk0fc584_Unk_0fc86c();
     func_02099b10(work->unk_00d2[index].unk_0004, value);
+}
+
+/* Appends a record resolved by work +0xcc and index; caller supplies slot capacity. */
+void func_020e30f0(Unk0e1648Work *work, u32 value, u16 index)
+{
+    Unk0e1648Rec *record = (Unk0e1648Rec *)func_020f3de8(work->unk_00cc, index);
+    if (func_020e49cc(2, record->id) != 0) return;
+    *(u8 *)&work->unk_00d2[work->unk_00d0].unk_0000 = value;
+    work->unk_00d2[work->unk_00d0].unk_0002 = index;
+    work->unk_00d2[work->unk_00d0].unk_0004 = record->id;
+    work->unk_00d2[work->unk_00d0].pad_0006 = func_020e49cc(4, record->id);
+    work->unk_00d0++;
+}
+
+void func_02057524(u32 value);
+void func_02057e58(u32 index, u32 value, u32 count);
+void func_020e33b8(Unk0e1648Work *work);
+void func_020e4344(Unk0e1648Work *work);
+void func_02057df8(void);
+void func_02057eb8(s32 value);
+void func_02057fd8(void);
+void func_020572d8(void);
+/* For states above one, configures three ranges then dispatches by work kind. */
+void func_020e28a8(Unk0e1648Work *work)
+{
+    if (work->unk_0000 <= 1) return;
+    func_02057524(6);
+    func_02057e58(0, 0, 15);
+    func_02057e58(1, 15, 15);
+    func_02057e58(2, 30, 15);
+    if (func_020e544c(work) != 0) func_020e33b8(work);
+    else func_020e4344(work);
+    func_02057df8();
+    func_02057eb8(-1);
+    func_02057fd8();
+    func_02057df8();
+    func_020572d8();
+}
+
+void Unk09974c_Unk_099bac(u32 id);
+/* Applies each visible slot id and restores the selected slot's two handles. */
+void func_020e40a4(Unk0e1648Work *work)
+{
+    int first = work->unk_0074;
+    int i;
+    int count;
+    int selected = work->unk_007c;
+    func_02063920();
+    i = 0;
+    if (work->unk_006c > 0) do {
+        Unk09974c_Unk_099bac(work->unk_00d2[first + i].unk_0004);
+        func_02061f10(work->unk_0e94, -1, 0, 0, func_02063a30());
+    /* Reload callback-visible count before advancing the local cursor. See DEC-006. */
+        count = *(volatile s32 *)&work->unk_006c;
+        i++;
+    } while (i < count);
+    Unk0e1648_Unk_0e4964(work->unk_00d2[selected].unk_0004);
+    func_020e50e8(work->unk_0e98, work->unk_00d2[selected].unk_0004, 0);
+}
+
+void func_020bcacc(u32 kind, Unk0e1648Request *request);
+/* Submits flags 0x0a and values 22/12, then resets handle zero and two subsystems. */
+void func_020e52b0(Unk0e1648Table *table)
+{
+    Unk0e1648Request request;
+    int i;
+    for (i = 0; i < 2; i++) request.flags[i] = 0;
+    for (i = 0; i < 16; i++) request.values[i] = 0;
+    request.values[3] = 12;
+    request.values[1] = 22;
+    request.flags[0] |= 10;
+    func_020bcacc(3, &request);
+    Unk0e1648_Unk_0e5214(table, 0);
+    Unk0e7ac4_Unk_0e8014(0);
+    Unk0e7ac4_Unk_0e8030(0);
+}
+
+/* For selected ids 211..410, submits a synchronous request with flags 0x82. */
+void func_020e4ff8(Unk0e1648Work *work)
+{
+    Unk0e1648Request request;
+    u16 id = work->unk_00d2[work->unk_007c].unk_0004;
+    int i;
+    if (id < 211) return;
+    if (id > 410) return;
+    func_020e524c();
+    for (i = 0; i < 2; i++) request.flags[i] = 0;
+    for (i = 0; i < 16; i++) request.values[i] = 0;
+    request.values[1] = 18;
+    request.values[7] = id;
+    request.flags[0] |= 130;
+    func_020bcbc4(3, &request);
+}
+
+/* Advances the three-entry cursor to a nonzero id and applies its rank; returns success. */
+int func_020e2eb4(Unk0e1648Work *work)
+{
+    int found = 0;
+    Unk0e1648Rec *record = (Unk0e1648Rec *)Unk0e1648_Unk_0e2d80(work);
+    int i;
+    for (i = work->unk_0eec + 1; i < 3; i++) {
+        if (record->ents[i].a != 0) { found = 1; break; }
+    }
+    if (found) {
+        Unk0e1648Slot *entry;
+        work->unk_0eec = i;
+        entry = (Unk0e1648Slot *)(Unk0e1648_Unk_0e2d80(work) + 10 + work->unk_0eec * 4);
+        switch (Unk0e1648_Unk_0e2db0(entry)) {
+        case 0: func_020e50e8(work->unk_0e98, entry->unk_0000, 2); break;
+        default: func_020e50e8(work->unk_0e98, entry->unk_0000, 0); break;
+        }
+        Unk0a0ce4_Unk_0a0da4(0);
+    }
+    return found;
+}
+
+void func_020e3f80(Unk0e1648Work *work, u32 value);
+void Unk0cb32c_Unk_0cb57c(u32 handle);
+void func_020bcc7c(s32 *value);
+/* Refreshes multi-slot state, hides unused handles through eight, and bounds the cursor. */
+int func_020e4130(Unk0e1648Work *work)
+{
+    int result = 1;
+    if (work->unk_00d0 > 1) {
+        int i;
+        func_020e3f80(work, 0);
+        func_020e40a4(work);
+        if (work->unk_00d0 < 8) {
+            work->unk_00ac = work->unk_006c * 12;
+            for (i = work->unk_006c; i < 8; i++) {
+                Unk0cb32c_Unk_0cb57c(Unk0e1648_Unk_0e5240((Unk0e1648Table *)work, i + 13));
+                work->unk_0eb8[i] = 0;
+            }
+            if (work->unk_007c >= work->unk_006c) func_020bcc7c(&work->unk_006c);
+        }
+    } else result = 0;
+    return result;
 }
