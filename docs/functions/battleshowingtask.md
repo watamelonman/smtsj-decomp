@@ -32,15 +32,41 @@
 - `func_0211ceb4`
 - `BattleShowingTask_Unk_11b4e4`
 
-## Not done in M1-T1033
-- `func_0211ce10`
-- `func_0211a864`
-- `func_0211aa24`
-- `func_0211aaa8`
-- `func_0211c548`
-- `func_0211a474`
-- `func_0211b1f4`
-- `func_02119940`
+## M1-T1033 — verified matches
+
+All eight targets below are 100% in objdiff and the full-image checksum still matches.
+Evidence is the original ARM instruction stream at each entry; names stay neutral where the
+behaviour is only structural.
+
+- `func_02119940` (`0x02119940`, 208 B): switch on action 0..4. Actions 0/4 store the
+  incoming frame count in +0x2C and select fade-in/fade-out; action 1 zeroes the timer and
+  selects count-up; action 2 does nothing. Action 3 zeroes the timer, selects DONE, seeds
+  shown EXP from info +4 and level-ups from info +2, starts the normal gauge animation, then
+  computes total EXP from the area record +0x24 (or the work area +0x20 when info +0 is
+  negative) and refreshes the next-level threshold.
+- `func_0211a474` (`0x0211a474`, 144 B): counts the three non-negative slot indices at
+  work+0x354 (starting from one), divides the current area object's +0x64 value by that
+  count with a floor of one, then adds one tenth (also floored at one) when script flag
+  0xAB is set. Returns the resulting EXP step.
+- `func_0211a864` (`0x0211a864`, 120 B): searches the 15 six-byte entries at work+0x268;
+  reuses the first entry with the incoming ID or fills the first empty entry, then adds the
+  third argument to the entry's +2 counter.
+- `func_0211aa24` (`0x0211aa24`, 132 B): selects even animation sequences 0,2,4,6,8,10 on
+  the six handles at work+0x2D4, then resets and starts each.
+- `func_0211aaa8` (`0x0211aaa8`, 132 B): same as `func_0211aa24` with odd sequences
+  1,3,5,7,9,11.
+- `func_0211b1f4` (`0x0211b1f4`, 184 B): maps an entry ID to a category byte through the
+  Unk09974c tables. Zero returns 6, type 7 returns 7, types 0/2/3..6/8/9 read byte +3 from
+  their respective record, type 1 reads byte +0x2C, and every other type returns 6.
+- `func_0211c548` (`0x0211c548`, 136 B): publishes record ID and resource +2 in slots 6/7,
+  dispatches resource +0x24 bits 21..27 with second argument 1 when record +0x24 is nonzero
+  (else 0), forwards the result and finishes with the signed record ID.
+- `func_0211ce10` (`0x0211ce10`, 112 B): when a current record exists, work +0xA4 is
+  present and its +0x59 flag is set, submits a display list built from work +0xA8 offset
+  +0x7C (mode 5, eight entries, alpha 1.0 from literal 0x3F800000) between the
+  `func_02057524(0)`/`func_02057534()` pair.
+
+Hard list for M1-T1033: none.
 
 ## Not done in M1-T1034
 - `func_0211a614`
