@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all five M1-T119 functions in `src/game/unit_02047338.c` at 100% objdiff, including the 312-byte `func_02047338` state dispatcher, with typed parameters and per-function documentation.
 - Matched all six functions in `src/game/unit_0203b988.c` at 100% objdiff, including the 216-byte `func_0203b9dc` mode dispatcher, with per-function documentation.
 - Verified six `unit_0202ee5c` accessors at 100% objdiff, added typed contracts, and documented the remaining list assembly function in the hard list.
 - Matched all seven M1-T064 handlers in `src/game/unit_0203c05c.c`, including mode dispatch, with typed work fields and documented argument contracts.
