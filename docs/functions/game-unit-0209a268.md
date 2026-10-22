@@ -131,15 +131,48 @@
 - `func_0209aa00`
 - `func_0209c1a0`
 
-## Not done in M1-T1014
-- `func_0209bd08`
-- `func_0209ce30`
-- `func_0209cbf8`
-- `func_0209a268`
-- `func_0209a638`
-- `func_0209b5d8`
-- `func_0209c9bc`
-- `func_0209c854`
+## M1-T1014
+- `func_0209a268` (312 B): adds the seven fixed-size byte arrays of the second
+  work block into the first, then copies the 162-byte block at +0xa84 between
+  them through `func_02008904`. Verified 100%.
+- `func_0209a638` (324 B): removes an id's entries, looks up the four-byte
+  record for `index`, and re-inserts each of the three variants that is not -1.
+  When the caller's check flag is set it verifies variants 0-2 through
+  `Unk09a268_Unk_09a3a0` and clears the result on failure. Verified 100%.
+- `func_0209b5d8` (328 B): work teardown callback. Releases the seven resource
+  slots with the paired free calls, resets the shared engine state, re-arms the
+  seven scan-visor paths, then clears `data_02176270`. Verified 100%.
+- `func_0209bd08` (280 B): maps a cell kind and direction to the accepted
+  direction mask via the original 41-entry jump table (kinds 3/8-12/14/23-28/37
+  pass the mask, 4-7 filter by direction 0/2/3/1, 13/36 invert `mask == 1`,
+  everything else is 0). Verified 100%.
+- `func_0209c854` (360 B): kind-1 transition handler. Phase 0 waits 40 ticks,
+  clears the cell flag and enters owner state 2; phase 1 waits 10 ticks and steps
+  the work-area position by one cell according to the work-area kind 0-3 before
+  notifying `02034b7c`; phase 2 completes on a non-zero +0x7440 word. Verified
+  100%. The work-area kind field is volatile because the original re-reads it
+  after the engine calls; that keeps both reads.
+- `func_0209c9bc` (340 B): kind-2 transition handler. Phase 0 waits 40 ticks and
+  enters owner state 2; phase 1 waits for owner state 1, clears owner +0xc and
+  enters state 2; phase 2 waits for owner state 1, and once mode 13 matches,
+  raises +0x73e0, clears owner +4, sets +0x757c to 4 and re-arms the seven
+  scan-visor slots. Verified 100%.
+
+### M1-T1014 hard list
+- `func_0209cbf8` (300 B) and `func_0209ce30` (292 B): not implemented in C.
+  Both are the same 0x1c-record map test as `0209c090` but with element 7
+  (word field, cbf8) or element 8 (byte field, ce30): they look up the map entry,
+  read the two-bit field at the record's +25 byte, and on a value other than 3
+  store -1 at work +0x7480; otherwise they fetch record 5 and the current cell,
+  classify the record type, set the cell kind to 1 (type 1) or 3, zero the cell
+  counter and call `0209c548`. The candidates reproduce every instruction except
+  the register assignment of the two pointer locals: the target keeps record 5
+  in r6 and the current cell in r5, while mwccarm 2.0/sp1p5 consistently assigns
+  record 5 to r5 and the cell to r6. Declaration order, declaration scope,
+  pointer/scalar types, nested calls, const qualification and evaluation order
+  were tried; the branch/layout otherwise matches. A human can use
+  `tools/decompme.py` for a scratch (register allocation only).
+
 - `Unk09a268_Unk_09beb0`: hand-matched
 - `Unk09a268_SetCtxUnk38`: hand-matched
 - `Unk09a268_Unk_09a3a0`: hand-matched

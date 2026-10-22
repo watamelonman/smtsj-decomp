@@ -31,3 +31,16 @@ Supplying an invented index would change the original instructions.
 ABI rather than a portable C call; objdiff verifies its instructions at 100%.
 **What would make us revisit.** Evidence of an original shared declaration that
 explains the incompatible call signatures.
+
+## DEC-003 — Mark the work-area kind field volatile
+**Date:** 2026-10-22 · **Status:** Active
+**Context.** `func_0209c854` switches on the shared work area's +0x358 kind word
+and then passes the same field to `func_02034b7c`. The original reloads the field
+for the call; a plain typed read is coalesced by mwccarm and produces one less
+instruction.
+**Decision.** Declare the +0x358 field `volatile` in the partial work-area layout
+so both reads are emitted, matching the original instruction stream.
+**Cost accepted.** The qualifier describes the observed reload requirement; the
+field is engine-shared, so callers must not assume it is stable across calls.
+**What would make us revisit.** Evidence that the original field is not shared, or
+a non-volatile formulation that reproduces the same two loads.

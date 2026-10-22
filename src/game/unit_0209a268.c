@@ -17,9 +17,12 @@ typedef struct Unk09a268Work {
 } Unk09a268Work;
 
 
-/* Partial work-area layout; only the accessed halfword and coordinates are known. */
+/* Partial work-area layout; only the accessed halfword, kind and coordinates are known.
+ * unk_0358 is volatile because the transition handlers re-read it after engine calls;
+ * keeping those two reads distinct reproduces the original 0209c854 code. See DEC-003. */
 typedef struct Unk09a268WorkArea {
-    u8 pad_0000[0x35c];
+    u8 pad_0000[0x358];
+    volatile u32 unk_0358;
     u16 unk_035c;
     u8 pad_035e[6];
     s8 unk_0364;
@@ -57,6 +60,26 @@ typedef struct Unk09a268Ent {
     u32 pad_14;
 } Unk09a268Ent;
 
+/* Clearable resource slots released by the callback teardown in 0209b5d8. */
+typedef struct Unk09a268Cleanup {
+    u8 pad_0000[0xc];
+    void *unk_000c;
+    void *unk_0010;
+    void *unk_0014;
+    void *unk_0018;
+    void *unk_001c;
+    void *unk_0020;
+    void *unk_0024;
+} Unk09a268Cleanup;
+
+/* Four signed bytes per indexed record, fetched by 0392f8_GetEntry36. */
+typedef struct Unk09a268Entry4 {
+    s8 unk0;
+    s8 unk1;
+    s8 unk2;
+    s8 unk3;
+} Unk09a268Entry4;
+
 int func_02058af8();
 void func_02058b14();
 void func_02058a1c();
@@ -69,6 +92,24 @@ Unk09a268WorkArea *Unk02e000_GetWorkArea(void);
 int Unk1122bc_Unk_1124a0(void);
 u32 Unk1122bc_Unk_112460(void);
 int Unk1124f0_Unk_1125ac(u32 a, u32 b, u32 c);
+void func_02008904(void *dst, void *src, u32 size);
+Unk09a268Entry4 *Unk0392f8_GetEntry36(void *table, u32 index);
+int func_02034b7c(u16 a, int x, int y, u32 kind, int a5, int a6, int a7, int a8);
+void func_0205257c(int mode);
+int Unk02d15c_IsMode1Match(int a);
+void ScanVisor_Unk_0a2acc(void);
+void ScanVisor_Unk_0a2a8c(int index);
+void func_02095f94(void);
+void func_0205ddb4();
+void func_0205c368();
+void func_0205c3dc();
+void func_0205bb68(void);
+void Unk065e88_Unk_065eac(void);
+void Unk0fd268_Unk_0fd3ac(void);
+void Unk044394_Unk_044534(int index);
+void Unk02e000_Unk_02e0cc(void);
+void Unk05ae50_Unk_05af2c(int value);
+void Unk0c855c_Unk_0ca648(int value);
 
 /* Returns the first record whose +8/+16 words both match id/sub, forwarded to
  * func_02058af8 with its index; returns 1 when no record matches. Evidence: the
@@ -285,7 +326,7 @@ typedef struct Unk09ae60Ops {
 void Unk09a268_Unk_09b3cc(Unk09a268Work *work);
 void func_0209b1d4();
 void func_0209b3f8();
-void func_0209b5d8();
+void func_0209b5d8(Unk09a268Cleanup *work);
 typedef struct Unk09a268Message Unk09a268Message;
 void func_0209aebc(Unk09a268Work *work, Unk09a268Message *message);
 
@@ -503,19 +544,29 @@ void func_0209a588(u8 *work, u32 id, int a, int b, s8 c, u32 value)
     if (c != -1) Unk09a268_Unk_09a458(work, id, c, 2, 0, value);
 }
 
-/* Partial transition layout, established by the signed-byte state accesses and
- * the counter at +0x7484 in 0209c768. */
+/* Partial transition layout, established by the signed-byte state accesses, the
+ * counter at +0x7484 and the flag words written by the transition handlers. */
 typedef struct Unk09a268Transition {
     struct Unk09a268TransitionOwner *owner;
-    u8 pad_0004[0x747c];
+    u8 pad_0004[0x73dc];
+    u32 unk_73e0;
+    u8 pad_73e4[0x5c];
+    u32 unk_7440;
+    u8 pad_7444[0x3c];
     s8 kind;
     s8 phase;
     s8 x;
     s8 y;
     s32 counter;
+    u8 pad_7488[0xf4];
+    u32 unk_757c;
 } Unk09a268Transition;
 typedef struct Unk09a268TransitionOwner {
-    u8 pad_0000[20];
+    u8 pad_0000[4];
+    u32 unk_0004;
+    u8 pad_0008[4];
+    u32 unk_000c;
+    u8 pad_0010[4];
     s32 state;
     s32 next;
 } Unk09a268TransitionOwner;
@@ -780,4 +831,218 @@ void func_0209aebc(Unk09a268Work *work, Unk09a268Message *message)
     case 3: break;
     case 4: break;
     }
+}
+
+/* Adds each of the seven fixed-size byte arrays of `src` into `dst`, then copies
+ * the following 162-byte block from src to dst. Evidence: the seven counted
+ * ldrb/add/strb loops and the tail func_02008904(src+0xa84, dst+0xa84, 162). */
+void func_0209a268(u8 *dst, u8 *src)
+{
+    int i;
+    for (i = 0; i < 60; i++) dst[i + 15] += src[i + 15];
+    for (i = 0; i < 50; i++) dst[i + 88] += src[i + 88];
+    for (i = 0; i < 50; i++) dst[i + 138] += src[i + 138];
+    for (i = 0; i < 50; i++) dst[i + 188] += src[i + 188];
+    for (i = 0; i < 50; i++) dst[i + 238] += src[i + 238];
+    for (i = 0; i < 220; i++) dst[i + 1268] += src[i + 1268];
+    for (i = 0; i < 220; i++) dst[i + 1488] += src[i + 1488];
+    func_02008904(src + 1708, dst + 1708, 162);
+}
+
+/* Re-inserts the three indexed variants of an id: removes the old entries, looks
+ * up the four-byte record for `index` and, for each non -1 variant, calls the
+ * entry setter. When `check` is 1 it also verifies variant 0-2 through
+ * Unk09a268_Unk_09a3a0, clearing the result on failure. `index` selects the
+ * record; `a5` is stored as a byte. Evidence: the three unrolled blocks and the
+ * entry record reads at 0209a638. */
+int func_0209a638(u8 *work, u32 id, int index, u32 value, u32 a5, int check)
+{
+    int ok = 1;
+    Unk09a268Entry4 *entry;
+    func_0209a4fc(work, id);
+    entry = Unk0392f8_GetEntry36(work + 992, id) + index;
+    if (entry->unk0 != -1) {
+        Unk09a268_Unk_09a458(work, id, entry->unk0, 0, a5, value);
+        if (check == 1 && Unk09a268_Unk_09a3a0(work, id, 0) == 0) ok = 0;
+    }
+    if (entry->unk1 != -1) {
+        Unk09a268_Unk_09a458(work, id, entry->unk1, 1, a5, value);
+        if (check == 1 && ok == 1 && Unk09a268_Unk_09a3a0(work, id, 1) == 0) ok = 0;
+    }
+    if (entry->unk2 != -1) {
+        Unk09a268_Unk_09a458(work, id, entry->unk2, 2, a5, value);
+        if (check == 1 && ok == 1 && Unk09a268_Unk_09a3a0(work, id, 2) == 0) ok = 0;
+    }
+    return ok;
+}
+
+/* Releases the work's seven resource slots, resets the shared engine state and
+ * clears the global context pointer. Evidence: the paired free calls and the
+ * data_02176270 store at 0209b5d8. */
+void func_0209b5d8(Unk09a268Cleanup *work)
+{
+    int i;
+    Unk065e88_Unk_065eac();
+    Unk0fd268_Unk_0fd3ac();
+    Unk044394_Unk_044534(7);
+    Unk044394_Unk_044534(12);
+    Unk044394_Unk_044534(18);
+    Unk044394_Unk_044534(24);
+    Unk044394_Unk_044534(19);
+    Unk044394_Unk_044534(22);
+    Unk044394_Unk_044534(23);
+    Unk044394_Unk_044534(11);
+    if (work->unk_000c != 0) { func_0205ddb4(); work->unk_000c = 0; }
+    if (work->unk_0010 != 0) { func_0205ddb4(); work->unk_0010 = 0; }
+    if (work->unk_0014 != 0) { func_0205c368(); work->unk_0014 = 0; }
+    if (work->unk_0018 != 0) { func_0205c3dc(); work->unk_0018 = 0; }
+    if (work->unk_001c != 0) { func_0205c3dc(); work->unk_001c = 0; }
+    if (work->unk_0020 != 0) { func_0205c3dc(); work->unk_0020 = 0; }
+    if (work->unk_0024 != 0) { func_0205c3dc(); work->unk_0024 = 0; }
+    func_0205bb68();
+    func_0205bb68();
+    func_0205bb68();
+    func_0205bb68();
+    Unk02e000_Unk_02e0cc();
+    Unk05ae50_Unk_05af2c(194);
+    func_0205bb68();
+    for (i = 42; i <= 48; i++) func_0205bb68();
+    Unk0c855c_Unk_0ca648(1);
+    data_02176270 = 0;
+}
+
+/* Maps a cell kind and a direction to the direction mask accepted by that kind.
+ * Kinds 3, 8-12, 14, 23-28 and 37 accept the mask unchanged; kinds 4-7 accept it
+ * only for direction 0, 2, 3 or 1 respectively; kinds 13 and 36 invert the
+ * "mask == 1" test; every other kind yields 0. Evidence: the 41-entry jump table
+ * at 0209bd08. */
+int func_0209bd08(u32 kind, u32 direction, u32 mask)
+{
+    switch (kind) {
+    case 0: case 1: case 2:
+    case 15: case 16: case 17: case 18: case 19: case 20: case 21: case 22:
+    case 29: case 30: case 31: case 32: case 33: case 34: case 35:
+    case 38: case 39: case 40:
+        return 0;
+    case 13:
+    case 36:
+        return mask != 1;
+    case 3:
+    case 8: case 9: case 10: case 11: case 12:
+    case 14:
+    case 23: case 24: case 25: case 26: case 27: case 28:
+    case 37:
+        return mask;
+    case 4:
+        return direction == 0 ? mask : 0;
+    case 5:
+        return direction == 2 ? mask : 0;
+    case 6:
+        return direction == 3 ? mask : 0;
+    case 7:
+        return direction == 1 ? mask : 0;
+    }
+    return 0;
+}
+
+/* Advances the kind-1 transition: phase 0 waits 40 ticks, then clears the cell
+ * flag and enters owner state 2; phase 1 waits 10 ticks and steps the work-area
+ * position by one cell (kind 0-3 selects down/right/up/left) before notifying
+ * 02034b7c; phase 2 completes once the owner's +0x7440 word is non-zero.
+ * Evidence: the phase switch and position jump table at 0209c854. */
+int func_0209c854(u8 *work)
+{
+    Unk09a268Transition *w = (Unk09a268Transition *)work;
+    Unk09a268Cell *cell = (Unk09a268Cell *)Unk02f2a8_GetCurrentCell38e8();
+    int result = 0;
+    func_02052da0();
+    w->counter++;
+    cell->counter++;
+    switch (w->phase) {
+    case 0:
+        if (w->counter > 40) {
+            Unk09a268_Unk_09a870((u32)cell, 0);
+            w->owner->state = 2;
+            w->owner->next = 2;
+            w->counter = 0;
+            w->phase++;
+        }
+        break;
+    case 1:
+        if (w->counter > 10) {
+            Unk09a268WorkArea *area = Unk02e000_GetWorkArea();
+            int x = w->x;
+            int y = w->y;
+            switch (area->unk_0358) {
+            case 0: y--; break;
+            case 1: x++; break;
+            case 2: y++; break;
+            case 3: x--; break;
+            }
+            func_02034b7c(area->unk_035c, x, y, area->unk_0358, 3, 0, 0, 1);
+            w->phase++;
+        }
+        break;
+    case 2:
+        if (w->unk_7440 != 0) result = 1;
+        break;
+    default:
+        result = 1;
+        break;
+    }
+    return result;
+}
+
+/* Advances the kind-2 transition: phase 0 waits 40 ticks and enters owner state
+ * 2; phase 1 waits for owner state 1, clears owner +0xc and enters state 2;
+ * phase 2 waits for owner state 1, and once mode 13 matches, raises the +0x73e0
+ * flag, clears owner +4, sets +0x757c to 4 and re-arms the seven scan-visor
+ * slots. Evidence: the phase switch and the calls at 0209c9bc. */
+int func_0209c9bc(u8 *work)
+{
+    Unk09a268Transition *w = (Unk09a268Transition *)work;
+    Unk09a268Cell *cell = (Unk09a268Cell *)Unk02f2a8_GetCurrentCell38e8();
+    int result = 0;
+    int i;
+    func_02052da0();
+    w->counter++;
+    cell->counter++;
+    switch (w->phase) {
+    case 0:
+        if (w->counter > 40) {
+            Unk09a268_Unk_09a870((u32)cell, 0);
+            w->owner->state = 2;
+            w->owner->next = 2;
+            func_0205257c(3);
+            w->phase++;
+        }
+        break;
+    case 1:
+        if (w->owner->state == 1) {
+            w->owner->unk_000c = 0;
+            w->owner->state = 2;
+            w->owner->next = 2;
+            w->phase++;
+        }
+        break;
+    case 2:
+        if (w->owner->state == 1) {
+            if (Unk02d15c_IsMode1Match(13) == 1) {
+                w->unk_73e0 = 1;
+                w->owner->unk_0004 = 0;
+                w->unk_757c = 4;
+                ScanVisor_Unk_0a2acc();
+                for (i = 0; i < 7; i++) {
+                    ScanVisor_Unk_0a2a8c(i);
+                }
+                func_02095f94();
+            }
+            result = 1;
+        }
+        break;
+    default:
+        result = 1;
+        break;
+    }
+    return result;
 }
