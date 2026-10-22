@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T1018 functions at 100% objdiff, with typed object fields, explicit lookup-result forwarding and table-selector fallback, and instruction-based contracts.
 - Re-verified the eight `src/game/unit_02065e88.c` object accessors (field setters and the empty `066c90` callback) at 100% objdiff and documented each function's stored offset and contract.
 - Matched all three M1-T1016 transition, neighborhood update and cell-kind dispatcher functions at 100% objdiff, with typed layouts and per-function documentation.
 - Matched seven M1-T1015 cell-kind, directional map, slot setup and resource callback functions at 100% objdiff; documented the remaining area update routine and its register-allocation mismatch in the hard list.

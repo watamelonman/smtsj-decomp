@@ -17,16 +17,21 @@ typedef struct GameObj {
     u32 unk00;
     u32 pairA;      /* 0x04: first of a pair set together */
     u32 pairB;      /* 0x08: second of the pair */
-    u32 unk0C[5];
+    u32 field0C;    /* 0x0C */
+    u32 field10;    /* 0x10 */
+    u32 unk14[3];
     u32 field20;    /* 0x20 */
     u32 field24;    /* 0x24 */
     u32 field28;    /* 0x28 */
     u32 field2C;    /* 0x2C */
     u32 field30;    /* 0x30 */
     u32 field34;    /* 0x34 */
+    u32 unk38;
+    u32 field3C;    /* 0x3C */
 } GameObj;
 
 void func_02065fc0(u32 a, u32 b, u32 c, int d, u32 e);
+/* At 02065fac, forwards three words and inserts mode 3 before the fourth. */
 void Unk065e88_Call_02065fc0(u32 a, u32 b, u32 c, u32 d)
 {
     func_02065fc0(a, b, c, 3, d);
@@ -64,6 +69,7 @@ typedef struct Unk065e88Flag {
     u8 unk_003a;
 } Unk065e88Flag;
 
+/* At 020662b8, cmp/movne/moveq normalize any nonzero input to byte 1. */
 void Unk065e88_SetFlag3a(Unk065e88Flag *o, int on)
 {
     o->unk_003a = on != 0;
@@ -71,6 +77,8 @@ void Unk065e88_SetFlag3a(Unk065e88Flag *o, int on)
 
 extern u8 data_0214544c[];
 extern u8 data_02144e44[];
+/* At 020663d8, selectors 0 and 1 load the two literal table addresses.
+ * Other selectors retain their incoming r0 value and are not valid tables. */
 u32 *Unk065e88_GetTable(int i)
 {
     if (i == 0) {
@@ -79,7 +87,7 @@ u32 *Unk065e88_GetTable(int i)
     if (i == 1) {
         return (u32 *)data_02144e44;
     }
-    /* no return for other i: the ROM falls through with i still in r0 */
+    return (u32 *)i;
 }
 
 int Unk065e88_GetTableCount(int i)
@@ -113,41 +121,46 @@ void Unk065e88_Nop_066c90(void) { }
 
 
 
-/* set u32 at +0x3c */
-void Unk065e88_SetUnkField3c(void *obj, u32 value) { FIELD(u32, obj, 0x3c) = value; }
-
-
-/* set +0xc and +0x10 */
-void Unk065e88_SetUnkFieldsc_10(void *obj, u32 a, u32 b) {
-    FIELD(u32, obj, 0xc) = a;
-    FIELD(u32, obj, 0x10) = b;
-}
-
-int func_020684c0();
-int func_020a1428();
-/* decompiler-derived */
-void Unk065e88_Unk_068554(void)
+/* At 020662cc, stores one word at +0x3c; the field meaning is unknown. */
+void Unk065e88_SetUnkField3c(GameObj *obj, u32 value)
 {
-  func_020a1428();
-  func_020684c0();
+    obj->field3C = value;
 }
 
-int func_0205bb68();
-/* decompiler-derived */
+/* At 02066284, stores the two words at +0x0c and +0x10 in that order. */
+void Unk065e88_SetUnkFieldsc_10(GameObj *obj, u32 a, u32 b)
+{
+    obj->field0C = a;
+    obj->field10 = b;
+}
+
+typedef struct Unit020a1418Entry Unit020a1418Entry;
+int func_020684c0(const void *record);
+Unit020a1418Entry *func_020a1428(u16 id);
+/* At 02068554, passes the resource-19 lookup result directly to 020684c0.
+ * The caller must supply an id whose lookup produces a valid record. */
+int Unk065e88_Unk_068554(u16 id)
+{
+    return func_020684c0(func_020a1428(id));
+}
+
+void func_0205bb68(void);
+/* At 02065eac, invokes 0205bb68 three times without setting arguments. */
 void Unk065e88_Unk_065eac(void)
 {
-  func_0205bb68();
-  func_0205bb68();
-  func_0205bb68();
+    func_0205bb68();
+    func_0205bb68();
+    func_0205bb68();
 }
 
-int Unk05ae50_Unk_05af2c();
-int func_020617c8();
-/* decompiler-derived */
-void Unk065e88_Unk_0663bc(u32 arg0,u32 arg1)
+/* This entry receives a word in r0 even though its current callee ignores it. */
+void Unk05ae50_Unk_05af2c(u32 value);
+void func_020617c8(u32 value);
+/* At 020663bc, forwards arg1 to 0205af2c, then saved arg0 to 020617c8. */
+void Unk065e88_Unk_0663bc(u32 arg0, u32 arg1)
 {
-  Unk05ae50_Unk_05af2c(arg1);
-  func_020617c8(arg0);
+    Unk05ae50_Unk_05af2c(arg1);
+    func_020617c8(arg0);
 }
 
 
@@ -264,7 +277,7 @@ typedef struct Unk065e88Obj24 {
 
 void func_02072238();
 int Unk0e651c_Unk_0e666c();
-int func_020684c0();
+int func_020684c0(const void *record);
 void Unk065e88_Unk_066078(u8 *p)
 {
     if (p[56] != 0) {
