@@ -810,8 +810,8 @@ u32 func_020ddf7c(s32 t);
 s32 func_02061a04(u32 a, const u16 *text, u32 c);
 void CampStatus_Unk_0d78bc(CampStatusWork *work);
 void func_020d80cc(CampStatusWork *work, CampStatusUnit *unit);
-void func_020d8e3c(CampStatusWork *work);
-void func_020d9388(CampStatusWork *work, CampStatusUnit *unit);
+void CampStatus_Unk_0d8e3c(CampStatusWork *work);
+void CampStatus_Unk_0d9388(CampStatusWork *work, CampStatusUnit *unit);
 void CampStatus_Unk_0d9830(CampStatusWork *work);
 void CampStatus_Unk_0d6e10(CampStatusWork *work);
 void CampStatus_Unk_0d71bc(CampStatusWork *work);
@@ -898,7 +898,7 @@ void CampStatus_Unk_0d6120(CampStatusWork *work)
             break;
         }
         if (work->unk_0004 != 0 && work->unk_00da != 0) {
-            func_020d8e3c(work);
+            CampStatus_Unk_0d8e3c(work);
             CampStatus_Unk_0d9d54(work->unk_00da);
         } else
         if (work->unk_0008 != 0 && work->unk_00e8 == 0) {
@@ -914,7 +914,7 @@ void CampStatus_Unk_0d6120(CampStatusWork *work)
             break;
         }
         if (work->unk_0004 != 0 && work->unk_00cc->unk_0036 != 0) {
-            func_020d9388(work, work->unk_00cc);
+            CampStatus_Unk_0d9388(work, work->unk_00cc);
             CampStatus_Unk_0d9d54(work->unk_00cc->unk_0036);
         } else
         if (work->unk_0008 != 0 && work->unk_00e8 == 0) {
@@ -1551,7 +1551,7 @@ CampStatusBase func_020b8804(u16 id);
 void func_0209835c(CampStatusStats *stats, const u16 *ids);
 
 /* Max HP for a level and Vi stat (capped at 999). Shared by the unit pages; the formula is
- * read from func_020d8e3c / func_020d9388 (hpBase + 6 per level + hpRate% of Vi * 3). */
+ * read from CampStatus_Unk_0d8e3c / CampStatus_Unk_0d9388 (hpBase + 6 per level + hpRate% of Vi * 3). */
 static inline u16 CampStatus_CalcMaxHp(u8 level, u8 vi, CampStatusBase base)
 {
     u16 r;
@@ -1582,7 +1582,7 @@ extern char data_0215079c[];
 extern char data_021507a4[];
 /* Unit page (mode 20): stats, HP/MP bars and level line of unit unk_00da, from its entry
  * (unk_025c set) or from its saved record, then the eight slot states and the id grid. */
-void func_020d8e3c(CampStatusWork *work)
+void CampStatus_Unk_0d8e3c(CampStatusWork *work)
 {
     CampStatusStats stats;
     CampStatusBase base;
@@ -1656,7 +1656,7 @@ void func_020d8e3c(CampStatusWork *work)
 /* Unit compare page (mode 21): the unit's stats against its saved record (max HP/MP from
  * CampStatus_CalcMaxHp/Mp, current HP/MP clamped to the new maxima), level and exp lines
  * coloured by the change, and the eight slot states (changed ones in orange). */
-void func_020d9388(CampStatusWork *work, CampStatusUnit *unit)
+void CampStatus_Unk_0d9388(CampStatusWork *work, CampStatusUnit *unit)
 {
     CampStatusSavedRecord rec;
     CampStatusStats stats;
