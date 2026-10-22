@@ -160,7 +160,7 @@ u32 Unk0c855c_Unk_0c92dc(int arg0)
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-u32 func_020d353c();
+u32 CampStatus_Unk_0d353c();
 void func_020616c0();
 void func_020ca2e4();
 void func_020c9ee0();
