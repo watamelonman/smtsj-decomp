@@ -327,3 +327,4 @@ unmatched candidate bodies, fabricated stack stores or assembly were retained.
   recovery. No complete C candidate was produced; recovery remains outstanding.
 - `BattleShowingTask_Unk_11c24c`: hand-matched
 - `BattleShowingTask_Unk_11d050`: hand-matched
+- `func_0211c6ac`: hand-matched
