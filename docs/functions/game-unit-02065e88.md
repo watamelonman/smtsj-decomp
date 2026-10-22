@@ -394,3 +394,4 @@ Validation: `match_gate.py` builds successfully and reports all 53 C definitions
 in this TU at 100%, including both new targets. `anticheat.py` passes, all nine
 unit tests pass, and `checksum.py` confirms all configured artifacts are
 byte-identical. The hard-list target is not claimed as matched C.
+- `func_02066e80`: hand-matched
