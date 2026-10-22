@@ -697,7 +697,7 @@ void CampStatus_Unk_0da8c4(void *obj, u32 unused, s32 sel)
 /* Draw value b (mode 1) or a (other modes) in slot `slot` with the compare colour from
  * CampStatus_Unk_0db3e0; in mode 1 a bobbing arrow (frame 48 up / 49 down, 24-tick cycle)
  * shows whether b is above or below a. */
-void func_020da97c(u32 obj, s32 a, s32 b, s32 mode, u8 slot)
+void CampStatus_Unk_0da97c(u32 obj, s32 a, s32 b, s32 mode, u8 slot)
 {
     char *width = func_020a9e14(1, data_021507e0);
     CampStatus_Unk_0db3e0(a, b, 0, mode);
@@ -959,7 +959,7 @@ void CampStatus_Unk_0dbd04(CampStatusWork *work, u32 id)
 /* Icons for record id: unk_0002 3 fills the first icon from it and the second from the
  * player's +0x02 record, 4 the other way round (player's +0x00 record); both then go to
  * unk_00c8. Other values fall back to CampStatus_Unk_0db824. */
-void func_020dbdac(CampStatusWork *work, u32 id)
+void CampStatus_Unk_0dbdac(CampStatusWork *work, u32 id)
 {
     u32 icons[2] = {0, 0};
     CampStatusPlayer *p = Unk02e000_Thunk_0202e788();
