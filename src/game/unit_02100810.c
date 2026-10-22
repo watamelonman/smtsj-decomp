@@ -23,9 +23,18 @@ typedef struct Unk100810Ops {
  * func_021065c8 while the words after it hold handles and flags.
  */
 typedef struct Unk100810Work {
-    u8 pad_0000[0x2c];
+    u32 unk_0000;
+    u32 unk_0004;
+    u32 unk_0008;
+    s32 unk_000c;
+    u32 unk_0010;
+    s32 unk_0014;
+    u8 pad_0018[8];
+    u32 unk_0020, unk_0024, unk_0028;
     u32 unk_002c;
-    u8 pad_0030[0x18];
+    u32 unk_0030, unk_0034;
+    u32 *unk_0038;
+    u32 unk_003c, unk_0040, unk_0044;
     u32 unk_0048;
     u8 pad_004c[0x08];
     u32 unk_0054;
@@ -33,9 +42,16 @@ typedef struct Unk100810Work {
     u32 unk_1f30;
     u8 unk_1f34;
     u8 pad_1f35[0x03];
-    u32 unk_1f38;
-    u32 unk_1f3c;
-    u8 pad_1f40[0x17c];
+    union { u32 handles[2]; struct { u32 first, second; } fields; } handles_1f38;
+    u8 pad_1f40[0xc0];
+    u32 unk_2000;
+    u8 unk_2004[0x24];
+    s8 unk_2028;
+    u8 pad_2029[3];
+    s32 unk_202c;
+    u8 pad_2030[0x84];
+    u32 unk_20b4;
+    u8 pad_20b8[4];
     u32 unk_20bc;
     u32 unk_20c0;
     u32 unk_20c4;
@@ -50,19 +66,30 @@ typedef struct Unk100810Work {
  */
 typedef struct Unk100810Record {
     u16 id;
-    u8 pad_0002[0x0e];
+    u8 unk_02;
+    u8 pad_0003[0x0d];
 } Unk100810Record;
 
 typedef struct Unk100810Table {
     u8 pad_0000[0x04];
     u32 unk_0004;
-    u8 pad_0008[0x04];
+    s32 unk_0008;
     u32 unk_000c;
     u8 pad_0010[0x04];
     u32 unk_0014;
-    u8 pad_0018[0x50];
+    u8 pad_0018[0x0c];
+    u32 unk_0024, unk_0028;
+    u8 pad_002c[0x0c];
+    u32 *unk_0038;
+    u32 unk_003c;
+    u8 pad_0040[0x18];
+    s8 unk_0058;
+    u8 pad_0059[0x0f];
     Unk100810Record records[0x1eb];
-    u16 unk_1f18[1];
+    /* Visible window uses nine entries; padding retains the observed +0x2000 word. */
+    u16 unk_1f18[9];
+    u8 pad_1f2a[0xd6];
+    u32 unk_2000;
 } Unk100810Table;
 
 void func_02102260();
@@ -96,14 +123,11 @@ static inline void CopyRecordBytes(Unk100810Bytes *dest, const Unk100810Bytes *s
 typedef struct Unk100810Meta {
     u16 id;
     u8 unk_02, unk_03;
-    u8 pad_04[4];
-    u16 unk_08 : 1;
-    u16 pad_08 : 15;
-    u16 unk_0a : 1;
-    u16 pad_0a : 15;
+    u32 unk_04;
+    union { u32 value; struct { u16 low : 1; u16 rest : 15; u16 high_low : 1; u16 high_rest : 15; } bits; } unk_08;
     u8 pad_0c[8];
     u16 unk_14;
-    union { u16 value; struct { u16 low : 1; u16 rest : 15; } bits; } unk_16;
+    union { u16 value; struct { u16 low : 1; u16 second : 1; u16 rest : 14; } bits; } unk_16;
     u8 pad_18[2];
     u8 stats[5];
     u8 pad_1f[15];
@@ -137,7 +161,10 @@ typedef struct Unk100810Saved {
     u8 pad_0b;
     u16 unk_0c, unk_0e;
     Unk100810Bytes bytes_10;
-    u8 pad_1c[4];
+    u8 pad_1c[2];
+    u8 unk_1e : 7;
+    u8 flag_1e : 1;
+    u8 pad_1f;
     u32 unk_20;
 } Unk100810Saved;
 
@@ -315,13 +342,13 @@ void Unk100810_Unk_107154(Unk100810Work *arg0, int arg1)
 {
   if (arg1 != 0) {
     arg0->unk_20cc = 1;
-    Unk065e88_SetFlag3a(arg0->unk_1f38);
-    Unk065e88_SetFlag3a(arg0->unk_1f3c,1);
+    Unk065e88_SetFlag3a(arg0->handles_1f38.fields.first);
+    Unk065e88_SetFlag3a(arg0->handles_1f38.fields.second,1);
     return;
   }
   arg0->unk_20cc = 0;
-  Unk065e88_SetFlag3a(arg0->unk_1f38);
-  Unk065e88_SetFlag3a(arg0->unk_1f3c,0);
+  Unk065e88_SetFlag3a(arg0->handles_1f38.fields.first);
+  Unk065e88_SetFlag3a(arg0->handles_1f38.fields.second,0);
   return;
 }
 
@@ -456,10 +483,10 @@ u32 func_02106e10(void)
         meta = func_020a1428((u16)(i + 1));
         if (meta == 0) continue;
         if (Unk02e000_GetRecordFlag1(meta->id) != 0) {
-            if (!meta->unk_0a) count++;
+            if (!meta->unk_08.bits.high_low) count++;
         }
-        if (meta->unk_08) {
-            if (!meta->unk_0a) total++;
+        if (meta->unk_08.bits.low) {
+            if (!meta->unk_08.bits.high_low) total++;
         }
     }
     {
@@ -532,4 +559,328 @@ void func_021069f0(u32 handle, s32 total, s32 value, s32 offset, u32 arg)
     draw.width = ((value << 12) / total * 116) >> 12;
     draw.x += (((offset << 12) / (total - value) * (116 - draw.width)) << 4) >> 16;
     func_0205e048(2, handle, &draw, arg, 0, 1.0f, 1.0f, 0, 1.0f, 4, 0);
+}
+
+/* Signed byte view of the 60-byte record, evidenced by the save-path ldrsb instructions. */
+typedef struct Unk100810SaveSource {
+    u8 pad_00[14];
+    s8 stats[5];
+    u8 pad_13[5];
+    s8 stats_18[5];
+    u8 pad_1d[7];
+    u32 unk_24;
+    Unk100810Bytes bytes_28;
+    u16 unk_34, id;
+    u8 unk_38;
+    u8 pad_39[3];
+} Unk100810SaveSource;
+
+/* The work area has 60-byte records at +0x74 and signed slot indices at +0x348. */
+typedef struct Unk100810Area {
+    u8 pad_00[0x74];
+    Unk100810Result records[12];
+    u8 pad_344[4];
+    s8 slots[15];
+    u8 count;
+} Unk100810Area;
+
+/* Three 40-byte saved records begin at +0x5c08 in this accessor's object. */
+typedef struct Unk100810Storage {
+    u8 pad_00[0x5c08];
+    Unk100810Input records[3];
+} Unk100810Storage;
+
+Unk100810Storage *Unk02e000_Unk_02e774(void);
+Unk100810Area *Unk02e000_GetWorkArea(void);
+Unk100810SaveSource *Unk02e000_GetAreaRecord(int index);
+void Unk02e000_GetRecord(u16 id, Unk100810Saved *saved);
+u32 Unk02e000_GetRecordUnk1e(u16 id);
+void func_0200866c(const void *source, void *dest, u32 size);
+void func_02008644(int value, void *dest, u32 size);
+u32 func_0204fe68(u32 handle, int index);
+void Unk0d297c_Unk_0d33ac(void *list);
+void Unk0d297c_Unk_0d3308(void *list);
+void func_020d33cc(void *list, u32 value);
+s32 CampStatus_GetUnkField1c(void *list);
+int CampStatus_Unk_0d34e4(void *list, u16 index);
+void func_02053000(u32 handle);
+void Unk044394_Unk_044534(int id);
+void func_0205bb68(void);
+void func_0205ddb4(u32 handle);
+void func_0205c368(u32 handle);
+void func_0205c3dc(u32 handle);
+void func_020629c4(u32 handle);
+void func_02061424(u32 handle);
+
+/* Releases observed work handles and the embedded list; clears the global work pointer. */
+void func_02104604(Unk100810Work *work)
+{
+    int i;
+    Unk0d297c_Unk_0d33ac(work->unk_2004);
+    func_02053000(work->unk_20b4);
+    work->unk_20b4 = 0;
+    Unk044394_Unk_044534(21);
+    Unk044394_Unk_044534(17);
+    Unk044394_Unk_044534(16);
+    func_0205bb68();
+    func_0205bb68();
+    if (work->unk_0000) { func_0205ddb4(work->unk_0000); work->unk_0000 = 0; }
+    if (work->unk_0040) { func_0205c368(work->unk_0040); work->unk_0040 = 0; }
+    if (work->unk_0044) { func_0205c3dc(work->unk_0044); work->unk_0044 = 0; }
+    func_020629c4(work->unk_0020);
+    if (work->unk_0020) work->unk_0020 = 0;
+    func_020629c4(work->unk_0024);
+    if (work->unk_0024) work->unk_0024 = 0;
+    func_020629c4(work->unk_0028);
+    if (work->unk_0028) work->unk_0028 = 0;
+    func_020629c4(work->unk_0030);
+    if (work->unk_0030) work->unk_0030 = 0;
+    func_020629c4(work->unk_0034);
+    if (work->unk_0034) work->unk_0034 = 0;
+    func_020629c4(work->unk_002c);
+    if (work->unk_002c) work->unk_002c = 0;
+    func_020629c4((u32)work->unk_0038);
+    if (work->unk_0038) work->unk_0038 = 0;
+    for (i = 0; i < 2; i++) {
+        func_02061424(work->handles_1f38.handles[i]);
+        work->handles_1f38.handles[i] = 0;
+    }
+    data_02176e2c = 0;
+}
+
+/* Builds two three-entry text lists from the saved ids and their metadata byte at +2. */
+void func_02105690(Unk100810Work *work)
+{
+    u32 names, kinds;
+    int i;
+    u16 ids[3];
+    u32 text;
+    names = func_020445f4(18, 1);
+    kinds = func_020445f4(18, 0);
+    func_02008644(0, ids, 6);
+    for (i = 0; i < 3; i++) {
+        u16 *base = (u16 *)Unk02e000_Unk_02e774()->records;
+        ids[i] = base[i * 20];
+    }
+    func_02063920();
+    for (i = 0; i < 3; i++) {
+        func_0204fed8(names, ids[i]);
+        text = func_02063a30();
+    }
+    if (text) func_02061f10(work->unk_0030, -1, 0, 0, text);
+    func_02063920();
+    for (i = 0; i < 3; i++) {
+        func_0204fed8(kinds, func_020a1428(ids[i])->unk_02);
+        text = func_02063a30();
+    }
+    if (text) func_02061f10(work->unk_0034, -1, 0, 0, text);
+}
+
+/* Rebuilds up to twelve visible list entries; a missing key resets the embedded list to key zero. */
+void func_02106d0c(Unk100810Work *work, u32 key)
+{
+    u32 table, text;
+    int count, i;
+    table = func_0204fe68(work->unk_20b4, 0);
+    i = func_0204fed8(table, key);
+    if (!i) {
+        i = func_0204fed8(table, 0);
+    }
+    Unk0d297c_Unk_0d33ac(work->unk_2004);
+        Unk0d297c_Unk_0d3308(work->unk_2004);
+        func_020d33cc(work->unk_2004, i);
+    work->unk_202c = CampStatus_GetUnkField1c(work->unk_2004);
+    func_02063920();
+    count = 0;
+    for (i = work->unk_2028; i < work->unk_2028 + 12; i++) {
+        if (i >= work->unk_202c) break;
+        if (!CampStatus_Unk_0d34e4(work->unk_2004, (u16)i)) continue;
+        text = func_02063a30();
+        if (++count >= 12) break;
+    }
+    func_02061f10(work->unk_002c, -1, 0, 0, text);
+}
+
+/* Updates the saved record from its matching active slot; absent ids leave storage untouched. */
+void func_02105c44(u16 id)
+{
+    Unk100810Area *area;
+    int i;
+    Unk100810SaveSource *record;
+    Unk100810Saved saved;
+    area = Unk02e000_GetWorkArea();
+    for (i = 0; i < area->count; i++) {
+        int index = area->slots[i];
+        if (index < 0) continue;
+        if (id == area->records[index].id) break;
+    }
+    if (i == area->count) return;
+    record = Unk02e000_GetAreaRecord(area->slots[i]);
+    if (!Unk02e000_SetRecord(id, &saved)) return;
+    saved.unk_00 = record->unk_38;
+    saved.unk_20 = record->unk_24;
+    saved.stats[0] = record->stats[0];
+    saved.stats_06[0] = record->stats_18[0];
+    saved.stats[1] = record->stats[4];
+    saved.stats_06[1] = record->stats_18[4];
+    saved.stats[2] = record->stats[1];
+    saved.stats_06[2] = record->stats_18[1];
+    saved.stats[3] = record->stats[2];
+    saved.stats_06[3] = record->stats_18[2];
+    saved.stats[4] = record->stats[3];
+    saved.stats_06[4] = record->stats_18[3];
+    func_0200866c(&record->bytes_28, &saved.bytes_10, 12);
+    Unk02e000_GetRecord(id, &saved);
+}
+
+/* Writes one of three saved slots from the observed signed fields; indices must be 0..2. */
+void func_02105d54(Unk100810SaveSource *record, int index)
+{
+    Unk100810Input *slot;
+    Unk100810Saved saved;
+    if (index < 0) return;
+    if (index >= 3) return;
+    slot = &Unk02e000_Unk_02e774()->records[index];
+    func_02008848(&saved, 0, 36);
+    saved.unk_00 = record->unk_38;
+    saved.unk_20 = record->unk_24;
+    saved.stats[0] = record->stats[0];
+    saved.stats_06[0] = record->stats_18[0];
+    saved.stats[1] = record->stats[4];
+    saved.stats_06[1] = record->stats_18[4];
+    saved.stats[2] = record->stats[1];
+    saved.stats_06[2] = record->stats_18[1];
+    saved.stats[3] = record->stats[2];
+    saved.stats_06[3] = record->stats_18[2];
+    saved.stats[4] = record->stats[3];
+    saved.stats_06[4] = record->stats_18[3];
+    func_0200866c(&record->bytes_28, &saved.bytes_10, 12);
+    saved.unk_1e = (u8)Unk02e000_GetRecordUnk1e(record->id);
+    func_02008848(&slot->unk_04, 0, 36);
+    slot->id = record->id;
+    func_02008904(&saved, &slot->unk_04, 36);
+}
+
+extern const char data_02151230[], data_02151234[], data_02151238[], data_0215123c[];
+extern const char data_02151240[], data_02151244[];
+void func_020aa078(u32 handle, int kind, int x, int y, int zero,
+                   int width, u32 style, const char *format, ...);
+
+/* Draws two values (??? above 999), a two-digit field and an eight-digit hex field; formats are original strings. */
+void func_02106f50(u32 *handle, u32 a, u32 b, u32 c, u32 d, u8 row, u32 style)
+{
+    int y;
+    if (a > 999) {
+        y = row * 10;
+        func_020aa078(*handle, 1, 4, y, 0, 3, style, data_02151230);
+    } else {
+        y = row * 10;
+        func_020aa078(*handle, 1, 4, y, 0, 3, style, data_02151234, a);
+    }
+    if (b > 999) {
+        func_020aa078(*handle, 1, 26, y, 0, 3, style, data_02151238);
+    } else {
+        func_020aa078(*handle, 1, 26, y, 0, 3, style, data_0215123c, b);
+    }
+    func_020aa078(*handle, 1, 48, y, 0, 2, style, data_02151240, c);
+    func_020aa078(*handle, 1, 71, y, 0, 9, style, data_02151244, d);
+}
+
+int func_021002e8(const Unk100810Record *a, const Unk100810Record *b);
+int func_02100298(const Unk100810Record *a, const Unk100810Record *b);
+int Unk100208_Unk_1003d8(const Unk100810Record *a, const Unk100810Record *b);
+int Unk100208_Unk_100398(const Unk100810Record *a, const Unk100810Record *b);
+int Unk100414_Unk_100414(const Unk100810Record *a, const Unk100810Record *b);
+int Unk100208_Unk_1003b8(const Unk100810Record *a, const Unk100810Record *b);
+void func_02013c68(Unk100810Record *records, u32 count, u32 stride,
+                   int (*compare)(const Unk100810Record *, const Unk100810Record *));
+void func_02104f88(Unk100810Table *work);
+
+/* Sorts 0x1eb records using the selected mode, then publishes the current selection or saved slot. */
+void func_02106b24(Unk100810Table *work)
+{
+    Unk100810Message message;
+    int i, boundary, selected;
+    if (work->unk_0058 == 0) {
+        if (work->unk_2000) func_02013c68(work->records, 0x1eb, 16, func_021002e8);
+        else func_02013c68(work->records, 0x1eb, 16, func_02100298);
+    } else if (work->unk_0058 == 1) {
+        if (work->unk_2000) func_02013c68(work->records, 0x1eb, 16, Unk100208_Unk_1003d8);
+        else func_02013c68(work->records, 0x1eb, 16, Unk100208_Unk_100398);
+        func_02106aac(work);
+    } else if (work->unk_0058 == 2) {
+    } else if (work->unk_0058 == 3) {
+        if (work->unk_2000) func_02013c68(work->records, 0x1eb, 16, Unk100414_Unk_100414);
+        else func_02013c68(work->records, 0x1eb, 16, Unk100208_Unk_1003b8);
+        func_02106aac(work);
+    }
+    for (i = 0; i < 2; i++) message.flags[i] = 0;
+    for (i = 0; i < 16; i++) message.words[i] = 0;
+    func_02104f88(work);
+    boundary = work->unk_0008 - 3;
+    selected = work->unk_0014;
+    if (selected < boundary) {
+        message.words[1] = 20;
+        message.flags[0] |= 2;
+        message.words[7] = work->unk_1f18[work->unk_0014 - work->unk_000c];
+        message.flags[0] |= 128;
+        if (work->unk_2000) {
+            message.words[6] = 1;
+            message.flags[0] |= 64;
+        }
+        func_020bcbc4(3, &message);
+    } else {
+        func_021065fc(&Unk02e000_Unk_02e774()->records[selected - boundary]);
+    }
+}
+
+/* Rebuilds a nine-row available-record window and its metadata drawing; selected ids start at +0x1f18. */
+void func_021057ac(Unk100810Table *work)
+{
+    int count = 0;
+    int first = work->unk_000c;
+    u32 text = 0;
+    u32 names, kinds;
+    u16 i;
+    func_02063920();
+    func_02008644(0, work->unk_1f18, 18);
+    names = func_020445f4(18, 1);
+    kinds = func_020445f4(18, 0);
+    for (i = 0; i < 0x1eb; i++) {
+        if (Unk02e000_IsRecordAvailable(work->records[i].id)) {
+            if (count >= first) {
+                work->unk_1f18[count - first] = work->records[i].id;
+                func_0204fed8(names, work->records[i].id);
+                text = func_02063a30();
+            }
+            count++;
+            if (count - first > 9) break;
+        }
+    }
+    if (text) func_02061f10(work->unk_0024, -1, 0, 0, text);
+    func_02063920();
+    count = 0;
+    for (i = 0; i < 0x1eb; i++) {
+        if (Unk02e000_IsRecordAvailable(work->records[i].id)) {
+            if (count >= first) {
+                func_0204fed8(kinds, work->records[i].unk_02);
+                text = func_02063a30();
+            }
+            count++;
+            if (count - first > 9) break;
+        }
+    }
+    if (text) func_02061f10(work->unk_0028, -1, 0, 0, text);
+    for (i = 0; i < 9; i++) {
+        if (Unk02e000_IsRecordAvailable(work->unk_1f18[i])) {
+            Unk100810Meta *meta = func_020a1740(work->unk_1f18[i]);
+            if (meta->unk_16.bits.second) {
+                func_02106f50(work->unk_0038, 1000, 1000, meta->unk_02, 0, (u8)i, work->unk_003c);
+            } else {
+                func_02106f50(work->unk_0038, (u16)meta->unk_04, (u16)meta->unk_08.value,
+                              meta->unk_02, 0, (u8)i, work->unk_003c);
+            }
+        }
+    }
+    ((u8 *)work->unk_0038)[64] = 2;
 }
