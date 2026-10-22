@@ -40,7 +40,7 @@ typedef struct Unk0b28e4Obj {
     s8 unk_0c78[3];
     u8 pad_0c7b;
     u32 unk_0c7c[3];            /* 0x0c7c: per-slot record state last drawn */
-    u8 pad_0c88[4];
+    u32 unk_0c88;
     u32 unk_0c8c;
     u32 unk_0c90;
     u32 unk_0c94[3];            /* 0x0c94: per-slot nonzero flag read in state 5 */
@@ -80,9 +80,10 @@ typedef struct Unk0b28e4Globals {
 extern Unk0b28e4Globals data_02176b80;
 
 void func_020b32bc(Unk0b28e4Obj *work);
-void func_020b363c(void);
+void func_020b363c(Unk0b28e4Obj *work);
 void func_020b3d28(Unk0b28e4Obj *work);
-void func_020b2dd0(void);
+typedef struct Unk0b28e4Event Unk0b28e4Event;
+void func_020b2dd0(Unk0b28e4Obj *work, Unk0b28e4Event *event);
 void func_0205f7f4(Unk0b28e4Fields *fields, u32 a, u32 b, u32 c);
 void func_020552ec(int a, int b);
 void *func_02052fe0(u32 size);
@@ -906,3 +907,445 @@ void func_020b32bc(Unk0b28e4Obj *work)
     }
 }
 
+
+/* Resource context: +0 is tested before using the buffer at +0x24. */
+typedef struct Unk0b28e4Context {
+    u32 active;
+    u8 pad_04[0x20];
+    void *buffer;
+} Unk0b28e4Context;
+/* Initialization writes these fields within each 96-byte draw entry. */
+typedef struct Unk0b28e4EntryFlags {
+    u8 pad_00[0x8a];
+    u16 unk_5a;
+    u8 unk_5c;
+    u8 unk_5d;
+    u8 pad_5e[2];
+} Unk0b28e4EntryFlags;
+/* The five words at work +0x10 are the resource-loader outputs and geometry. */
+typedef struct Unk0b28e4Setup {
+    u32 unk_00, width, height;
+    void *unk_0c;
+    void *unk_10;
+} Unk0b28e4Setup;
+int Unk096754_CountEntries(void);
+Unk0b28e4Context *func_0205410c(u32 id);
+void func_020559e8(u32 bank, u32 slot, void *resource);
+void func_0203f450(void *src, void *dst, u32 x, u32 y, u32 a, u32 b,
+                   u32 width, u32 height, u32 c, u32 d, u32 e);
+void *func_0205f70c(u32 id, u32 a, u32 b);
+void func_0205fc10(void *resource, u32 flag);
+void Unk03e43c_ClearTable(void);
+void func_0203e43c(u32 bank, const char *a, const char *b, void *setup,
+                   void **c, void **d, void **e, void **f, void **g);
+void Unk03e43c_Unk_03e894(void *entry, void *a, void *b, u32 index);
+void *func_0203e6f0(const char *a, const char *b, u32 c);
+void Unk03e43c_Unk_03e794(void *entry, u8 index);
+extern const char data_0214ff00[], data_0214ff24[], data_0214ff4c[];
+extern const char data_0214ff60[], data_0214ff70[], data_0214ff84[];
+
+/* Initializes the callback work, 32 draw entries and three icon slots. Evidence:
+ * 0x020b28e8 stores the global work pointer, loads the six resource paths and
+ * allocates the per-slot 256/512-byte buffers; ownership ends at 0x020b3d28. */
+void func_020b28e8(Unk0b28e4Obj *work)
+{
+    int i;
+    int slot;
+    void *resource;
+    Unk0b28e4Context *context;
+    Unk0b28e4Setup *setup;
+    data_02176b80.unk_0000 = work;
+    work->unk_000c = 0;
+    work->unk_0c88 = 0;
+    work->unk_0c70 = 1;
+    work->unk_0c38 = 0;
+    work->unk_0c74 = 0;
+    func_020119c0(work->unk_0c78, -1, 3);
+    work->unk_0c8c = 0;
+    work->unk_0c90 = 0;
+    work->unk_0c94[0] = 0;
+    work->unk_0c94[1] = 0;
+    work->unk_0c94[2] = 0;
+    work->unk_0ca0 = 0;
+    work->unk_0ca4 = 0;
+    work->unk_0ca8 = 0;
+    work->unk_0c6c = 0;
+    if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+    else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+    work->unk_0000 = 1;
+    context = func_0205410c(6);
+    if (context->active != 0) {
+        work->unk_0008 = context->buffer;
+        func_020119c0(work->unk_0008, 0, 0xc000);
+        resource = func_02051610(data_0214ff00);
+        func_020559e8(1, 0, resource);
+        func_020516d0(resource);
+        work->unk_0004 = func_02051610(data_0214ff24);
+        func_0203f2d4(work->unk_0008, 0, 0, work->unk_0004, 0, 0, 64, 16);
+        func_0203f2d4(work->unk_0008, 64, 0, work->unk_0004, 0, 0, 64, 16);
+        func_0203f2d4(work->unk_0008, 128, 0, work->unk_0004, 0, 0, 64, 16);
+        func_0203f2d4(work->unk_0008, 192, 0, work->unk_0004, 0, 0, 64, 16);
+        func_0203f450(work->unk_0004, work->unk_0008, 0, 184, 0, 0, 64, 16, 0, 1, 0);
+        func_0203f450(work->unk_0004, work->unk_0008, 64, 184, 0, 0, 64, 16, 0, 1, 0);
+        func_0203f450(work->unk_0004, work->unk_0008, 128, 184, 0, 0, 64, 16, 0, 1, 0);
+        func_0203f450(work->unk_0004, work->unk_0008, 192, 184, 0, 0, 64, 16, 0, 1, 0);
+        work->unk_0c30 = func_0205f70c(6, 0, 1);
+        work->unk_0c34 = func_0205f70c(6, 0, 0);
+        func_0205fc10(work->unk_0c30, 1);
+        func_0205fc10(work->unk_0c34, 1);
+        Unk03e43c_Unk_03f2bc(6);
+    }
+    Unk03e43c_ClearTable();
+    setup = (Unk0b28e4Setup *)work->unk_0010;
+    setup->unk_00 = 0;
+    setup->width = 256;
+    setup->height = 88;
+    func_0203e43c(1, data_0214ff4c, data_0214ff60, work->unk_0010,
+                   &work->unk_0024, &work->unk_0028, &work->unk_002c,
+                   &setup->unk_0c, &setup->unk_10);
+    for (i = 0; i < 32; i++) {
+        Unk0b28e4EntryFlags *entry = (Unk0b28e4EntryFlags *)&((Unk0b28e4Entry96 *)work)[i];
+        entry->unk_5a = 0;
+        entry->unk_5c = 0;
+        entry->unk_5d = 1;
+        Unk03e43c_Unk_03e894(&work->unk_0030[i], setup->unk_0c, setup->unk_10, i);
+    }
+{
+    void *palette;
+    palette = func_0203e6f0(data_0214ff70, data_0214ff84, 0);
+    for (i = 0; i < 7; i++) {
+        Unk03e43c_Unk_03e794((u8 *)palette + i * 32, i);
+    }
+    func_020516d0(palette);
+    }
+    Unk03e43c_Call_02056cc0();
+    func_020119c0(work->unk_0c3c, -1, 12);
+    func_020119c0(work->unk_0c48, -1, 12);
+    slot = 7;
+    for (i = 0; i < 3; i++) {
+        work->unk_0c60[i] = func_02052fe0(256);
+        func_02008848(work->unk_0c60[i], 0, 256);
+        work->unk_0c48[i] = func_020b6104(1, (u8)(i + 13), work->unk_0c60[i]);
+        work->unk_0c54[i] = func_02052fe0(512);
+        func_02008848(work->unk_0c54[i], 0, 512);
+        work->unk_0c3c[i] = func_020b5e2c(0, (u8)slot);
+        slot += 2;
+    }
+}
+
+/* Optional callback payload: each flag bit validates its corresponding word.
+ * The byte tests and +4/+8/+0x10/+0x20 loads are observed in 0x020b2dd0. */
+typedef struct Unk0b28e4Payload {
+    u8 flags[2];
+    u8 pad_02[2];
+    u32 words[16];
+} Unk0b28e4Payload;
+struct Unk0b28e4Event {
+    u32 kind;
+    Unk0b28e4Payload payload;
+};
+/* Six-byte input entries consumed by state 5; only id and three flag bits matter. */
+typedef struct Unk0b28e4Selection {
+    u16 id;
+    u16 unk_02;
+    u8 flag0 : 1;
+    u8 flag1 : 1;
+    u8 flag2 : 1;
+    u8 rest : 5;
+    u8 unk_05;
+} Unk0b28e4Selection;
+int Unk0bc1a8_SetPrevWord(void *work, u32 value);
+void Unk0bc1a8_Unk_0bc504(void *work, u32 value);
+
+/* Returns whether the optional word is present, leaving the destination unchanged
+ * when absent. Callers initialize that destination before examining the payload. */
+static inline int Unk0b28e4_ReadPayload(Unk0b28e4Payload *payload, int index, u32 *dst)
+{
+    u8 flags;
+    u32 word;
+    if (payload == 0) return 0;
+    flags = payload->flags[index / 8];
+    word = payload->words[index];
+    if (flags & (1 << (index % 8))) {
+        *dst = word;
+        return 1;
+    }
+    return 0;
+}
+
+/* Handles callback event kinds 1, 3 and 4. Evidence: 0x020b2dd0's event switch,
+ * optional-word masks and roster scans select states 1..5 and their page counts.
+ * The event is borrowed; state 5 advances the work-owned selection cursor. */
+void func_020b2dd0(Unk0b28e4Obj *work, Unk0b28e4Event *event)
+{
+    u32 value[1] = {0};
+    Unk0b28e4Payload *payload = &event->payload;
+    switch (event->kind) {
+    case 0: break;
+    case 2: break;
+    case 3:
+        {
+            u32 previous;
+            if (Unk0b28e4_ReadPayload(payload, 0, &previous)) {
+                Unk0bc1a8_SetPrevWord(work, previous);
+            }
+        }
+        Unk0b28e4_ReadPayload(payload, 1, value);
+        if (value[0] == 0) {
+            int count = 0;
+            Unk0b28e4Roster *roster;
+            int i;
+            work->unk_0000 = 3;
+            work->unk_0c70 = 1;
+            work->unk_0c74 = 1;
+            roster = Unk02e000_GetWorkArea();
+            for (i = 0; i < roster->unk_357; i++) {
+                if (roster->unk_348[i] >= 0) {
+                    func_02044ec4(((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c);
+                    if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c >> 16 & 255) == 1) count++;
+                }
+            }
+            work->unk_000c = 0;
+            work->unk_0c6c = 0;
+            if (count <= 0) work->unk_0c6d = 0;
+            else work->unk_0c6d = (count - 1) / 3 + 1;
+            Unk0b28e4_ReadPayload(payload, 3, value);
+            work->unk_0c88 = value[0];
+        } else if (value[0] == 1) {
+            int count = 0;
+            Unk0b28e4Roster *roster;
+            int i;
+            work->unk_0000 = 4;
+            work->unk_0c70 = 1;
+            work->unk_0c74 = 1;
+            roster = Unk02e000_GetWorkArea();
+            for (i = 0; i < roster->unk_357; i++) {
+                if (roster->unk_348[i] >= 0) {
+                    void *record = func_02044ec4(((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c);
+                    if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c >> 16 & 255) == 1 && func_0204a244(record) == 1) count++;
+                }
+            }
+            work->unk_000c = 0;
+            work->unk_0c6c = 0;
+            if (count <= 0) work->unk_0c6d = 0;
+            else work->unk_0c6d = (count - 1) / 3 + 1;
+        } else if (value[0] == 2) {
+            u16 *ids;
+            int i;
+            work->unk_0000 = 5;
+            work->unk_0c70 = 1;
+            work->unk_0c74 = 1;
+            work->unk_0c6c = 0;
+            work->unk_0c6d = 0;
+            ids = (u16 *)Unk0b28e4_Unk_0b64c8();
+            if (work->unk_0c8c != 0) {
+                for (i = 0; i < (s32)work->unk_0c90; i++) {
+                    Unk0b28e4Selection *selection = (Unk0b28e4Selection *)work->unk_0c8c;
+                    if (selection->flag0 || selection->flag1 || selection->flag2) {
+                        if (ids[0] != 0 && ids[0] == selection->id) work->unk_0c94[0] = 1;
+                        if (ids[1] != 0 && ids[1] == ((Unk0b28e4Selection *)work->unk_0c8c)->id) work->unk_0c94[1] = 1;
+                        if (ids[2] != 0 && ids[2] == ((Unk0b28e4Selection *)work->unk_0c8c)->id) work->unk_0c94[2] = 1;
+                    }
+                    work->unk_0c8c = (u32)((Unk0b28e4Selection *)work->unk_0c8c + 1);
+                }
+            }
+        }
+        break;
+    case 1:
+        Unk0bc1a8_Unk_0bc504(work, 0);
+        break;
+    case 4:
+        if (Unk0b28e4_ReadPayload(payload, 1, value)) {
+            if (value[0] == 2) {
+                work->unk_0000 = 1;
+                work->unk_0c70 = 1;
+                work->unk_0c74 = 1;
+                work->unk_0c6c = 0;
+                if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+                else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+            }
+            if (value[0] == 3 && work->unk_0c6c == 1) {
+                work->unk_0000 = 2;
+                work->unk_0c70 = 1;
+                work->unk_0c74 = 1;
+                work->unk_0c6c = 1;
+                if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+                else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+            }
+            if (value[0] == 4) {
+                if (Unk0b28e4_ReadPayload(payload, 7, value)) {
+                    Unk0b28e4Record *records = Unk044904_Get_data_0215ee98();
+                    int i;
+                    for (i = 0; i < 3; i++) {
+                        if (work->unk_0c78[i] >= 0 && value[0] == ((Unk0b28e4RecordBase *)&records[work->unk_0c78[i]])->unk_36c) {
+                            work->unk_0000 = 2;
+                            work->unk_0c70 = 1;
+                            work->unk_0c74 = 1;
+                            if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+                            else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+                        }
+                    }
+                }
+            }
+        }
+        break;
+    }
+}
+
+int func_02053800(u32 port, u32 mask);
+int func_02053824(u32 port, u32 mask);
+void func_0202126c(void *entry);
+void Unk0a0ce4_Unk_0a0da4(u32 id);
+u32 Unk0bc1a8_GetHeaderWord4(void *work);
+int func_020bcacc(u32 header, Unk0b28e4Payload *payload);
+
+/* Clears the two flag bytes and sixteen optional words before constructing an
+ * event; the two alignment bytes are not part of the payload contract. */
+static inline void Unk0b28e4_ClearPayload(Unk0b28e4Payload *payload)
+{
+    int i;
+    for (i = 0; i < 2; i++) payload->flags[i] = 0;
+    for (i = 0; i < 16; i++) payload->words[i] = 0;
+}
+
+/* Processes page and row input only after rebuilding/drawing completes.
+ * Evidence: 0x020b363c tests +0xc70/+0xc74, reads masks 0x40/0x80/1/2/0x100/
+ * 0x200, and constructs callback-13 payloads for accepted selections/cancel. */
+void func_020b363c(Unk0b28e4Obj *work)
+{
+    func_020b3570(work);
+    if (work->unk_0c70 != 0 || work->unk_0c74 != 0) return;
+    switch (work->unk_0000) {
+    case 0: break;
+    case 1:
+    case 2:
+        if (work->unk_0c6d <= 1) return;
+        if (work->unk_0ca0 != 0) return;
+        if (func_02053800(0, 512)) {
+            work->unk_0c70 = 1;
+            work->unk_0c74 = 1;
+            work->unk_0c6c--;
+            if (work->unk_0c6c < 0) work->unk_0c6c = work->unk_0c6d - 1;
+            if (work->unk_0c6c == 0) work->unk_0000 = 1;
+            else work->unk_0000 = 2;
+            Unk0a0ce4_Unk_0a0da4(11);
+            work->unk_0ca4 = 1;
+            func_020b3570(work);
+        } else if (func_02053800(0, 256)) {
+            work->unk_0c70 = 1;
+            work->unk_0c74 = 1;
+            work->unk_0c6c++;
+            if (work->unk_0c6c >= work->unk_0c6d) work->unk_0c6c = 0;
+            if (work->unk_0c6c == 0) work->unk_0000 = 1;
+            else work->unk_0000 = 2;
+            Unk0a0ce4_Unk_0a0da4(11);
+            work->unk_0ca8 = 1;
+            func_020b3570(work);
+        }
+        break;
+    case 3:
+    case 4:
+        {
+            int previous = work->unk_000c;
+            if (func_02053824(0, 64)) {
+                do {
+                    work->unk_000c--;
+                    if (work->unk_000c < 0) work->unk_000c = 2;
+                } while (work->unk_0c78[work->unk_000c] < 0 && previous != work->unk_000c);
+                if (previous != work->unk_000c) func_0202126c(work->unk_0030[6].data);
+                Unk0a0ce4_Unk_0a0da4(0);
+            } else if (func_02053824(0, 128)) {
+                do {
+                    work->unk_000c++;
+                    if (work->unk_000c > 2) work->unk_000c = 0;
+                } while (work->unk_0c78[work->unk_000c] < 0 && previous != work->unk_000c);
+                if (previous != work->unk_000c) func_0202126c(work->unk_0030[6].data);
+                Unk0a0ce4_Unk_0a0da4(0);
+            } else if (func_02053800(0, 1)) {
+                u32 *record;
+                Unk044904_Get_data_0215ee98();
+                record = func_02044ec4(((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[work->unk_0c78[work->unk_000c]])->unk_36c);
+                if (work->unk_0000 == 3) {
+                    if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[work->unk_0c78[work->unk_000c]])->unk_36c >> 16 & 255) == 1 &&
+                        (work->unk_0c88 == record[0] || Unk044904_Unk_044f4c(record[0]) < 0) && func_0204a244(record) != 1) {
+                        Unk0b28e4Payload request;
+                        Unk0b28e4_ClearPayload(&request);
+                        request.words[0] = 13;
+                        request.flags[0] |= 1;
+                        request.words[4] = ((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[work->unk_0c78[work->unk_000c]])->unk_36c;
+                        request.flags[0] |= 16;
+                        func_020bcacc(Unk0bc1a8_GetHeaderWord4(work), &request);
+                        work->unk_0c70 = 1;
+                        work->unk_0c74 = 1;
+                        work->unk_0000 = 1;
+                        work->unk_0c6c = 0;
+                        if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+                        else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+                        Unk0a0ce4_Unk_0a0da4(1);
+                    } else {
+                        Unk0a0ce4_Unk_0a0da4(4);
+                    }
+                } else {
+                    if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[work->unk_0c78[work->unk_000c]])->unk_36c >> 16 & 255) == 1 && func_0204a244(record) == 1) {
+                        Unk0b28e4Payload request;
+                        Unk0b28e4_ClearPayload(&request);
+                        request.words[0] = 13;
+                        request.flags[0] |= 1;
+                        request.words[4] = ((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[work->unk_0c78[work->unk_000c]])->unk_36c;
+                        request.flags[0] |= 16;
+                        func_020bcacc(Unk0bc1a8_GetHeaderWord4(work), &request);
+                        work->unk_0c70 = 1;
+                        work->unk_0c74 = 1;
+                        work->unk_0000 = 1;
+                        work->unk_0c6c = 0;
+                        if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+                        else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+                        Unk0a0ce4_Unk_0a0da4(1);
+                    } else {
+                        Unk0a0ce4_Unk_0a0da4(4);
+                    }
+                }
+            } else if (func_02053800(0, 2)) {
+                Unk0b28e4Payload request;
+                Unk0b28e4_ClearPayload(&request);
+                request.words[0] = 13;
+                request.flags[0] |= 1;
+                func_020bcacc(Unk0bc1a8_GetHeaderWord4(work), &request);
+                work->unk_0c70 = 1;
+                        work->unk_0c74 = 1;
+                        work->unk_0000 = 1;
+                        work->unk_0c6c = 0;
+                        if (Unk096754_CountEntries() <= 0) work->unk_0c6d = 2;
+                        else work->unk_0c6d = Unk096754_CountEntries() / 3 + 2;
+                Unk0a0ce4_Unk_0a0da4(2);
+            } else {
+                if (work->unk_0c6d <= 1) return;
+                if (work->unk_0ca0 != 0) return;
+                if (func_02053800(0, 512)) {
+                    int previous;
+                    work->unk_0c70 = 1;
+                    work->unk_0c74 = 1;
+                    previous = work->unk_0c6c;
+                    work->unk_0c6c--;
+                    if (work->unk_0c6c < 0) work->unk_0c6c = work->unk_0c6d - 1;
+                    if (previous != work->unk_0c6c) work->unk_000c = 0;
+                    Unk0a0ce4_Unk_0a0da4(11);
+                    work->unk_0ca4 = 1;
+                    func_020b3570(work);
+                } else if (func_02053800(0, 256)) {
+                    int previous;
+                    work->unk_0c70 = 1;
+                    work->unk_0c74 = 1;
+                    previous = work->unk_0c6c;
+                    work->unk_0c6c++;
+                    if (work->unk_0c6c >= work->unk_0c6d) work->unk_0c6c = 0;
+                    if (previous != work->unk_0c6c) work->unk_000c = 0;
+                    Unk0a0ce4_Unk_0a0da4(11);
+                    work->unk_0ca8 = 1;
+                    func_020b3570(work);
+                }
+            }
+        }
+        break;
+    }
+}
