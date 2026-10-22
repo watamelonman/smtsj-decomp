@@ -5,16 +5,12 @@
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-
-
 typedef float f32;
-
 /* First word of a CampStatusObj; also the handle the func_0205c* helpers take. */
 typedef struct CampStatusLink {
     u8 pad_0000[0x14];
     u32 unk_0014;
 } CampStatusLink;
-
 /* Game object made by Unk065e88_Call_02065fc0 and released with func_02061424. */
 typedef struct CampStatusObj {
     CampStatusLink *link;
@@ -27,7 +23,6 @@ typedef struct CampStatusObj {
     u8 pad_0034[0x6];
     u8 flag_3a;                 /* +0x3a: written by Unk065e88_SetFlag3a */
 } CampStatusObj;
-
 /* Bust-up picture set; CampStatus_Unk_0dc6c0 builds two from "Camp/Status/st_bu_anime" and the
  * "bust_up/st_bu_en%03d" / "st_bu_mt%03d" textures (CampStatus_Unk_0db338 / _0db394). */
 typedef struct CampStatusBustUp {
@@ -38,7 +33,6 @@ typedef struct CampStatusBustUp {
     CampStatusObj *obj;
     u32 unk_14;
 } CampStatusBustUp;
-
 /* Byte pairs copied as a block (see CampStatus_Copy168 / CampStatus_Copy176). */
 typedef struct CampStatusPair {
     u8 a;
@@ -50,6 +44,13 @@ typedef struct CampStatusPairs6 {
 typedef struct CampStatusPairs5 {
     CampStatusPair p[5];
 } CampStatusPairs5;
+/* Text object (func_020629ac); only the fields read in this file. */
+typedef struct CampStatusText {
+    u8 pad_0000[0x14];
+    u16 *unk_0014;              /* +0x14: glyph codes; 0x8001 ends a line (see func_020d9830) */
+    u8 pad_0018[0x10];
+    u32 unk_0028;
+} CampStatusText;
 
 /* Unit record at CampStatusWork.unk_00cc (also the argument of CampStatus_Unk_0ddb04). */
 typedef struct CampStatusUnit {
@@ -60,7 +61,6 @@ typedef struct CampStatusUnit {
     u16 unk_0034;               /* +0x34: values 1 and 7 are treated alike by CampStatus_Unk_0dd9d8 */
     u16 unk_0036;               /* +0x36: id passed to func_020a1428 */
 } CampStatusUnit;
-
 /* Camp status work; the first argument here and also *data_02176be4. */
 typedef struct CampStatusWork {
     u8 unk_0000;                /* +0x00: screen mode; selects the id source in CampStatus_Unk_0dbf6c */
@@ -77,12 +77,12 @@ typedef struct CampStatusWork {
     u32 unk_007c;
     u32 unk_0080;
     CampStatusBustUp unk_0084[2];
-    void *unk_00b4;             /* +0xb4..+0xc8: text objects released by func_020629c4 */
-    void *unk_00b8;
-    void *unk_00bc;             /* +0xbc..+0xc8: draw objects passed to CampStatus_Unk_0dde3c */
-    void *unk_00c0;
-    void *unk_00c4;
-    void *unk_00c8;
+    CampStatusText *unk_00b4;   /* +0xb4..+0xc8: text objects (func_020629ac), drawn with */
+    CampStatusText *unk_00b8;   /* CampStatus_Unk_0dde3c / Unk0ddeb0_Unk_0ddeb0, released by */
+    CampStatusText *unk_00bc;   /* func_020629c4 */
+    CampStatusText *unk_00c0;
+    CampStatusText *unk_00c4;
+    CampStatusText *unk_00c8;
     CampStatusUnit *unk_00cc;
     u16 unk_00d0;
     u16 unk_00d2[4];            /* +0xd2: id list (4 slots, filled by func_020d3680) */
@@ -138,7 +138,6 @@ typedef struct CampStatusCell {
     u32 flag : 4;
     u32 pad_hi : 16;
 } CampStatusCell;
-
 /* Object handled by the four-entry table at 0x0213c1d8 (CampStatus_GetUnkField7494,
  * CampStatus_Unk_0dcb68, CampStatus_Unk_0dcc00, func_020dd0a4); a different object from CampStatusWork. */
 /* Per-flag data reached from CampStatusGrid.info; one byte per 4-bit cell flag (1-based). */
@@ -146,19 +145,16 @@ typedef struct CampStatusGridInfo {
     u8 pad_0000[0x10];
     u8 unk_0010[15];
 } CampStatusGridInfo;
-
 /* Grid looked up by Unk038fbc_Unk_039160 (only the fields used here). */
 typedef struct CampStatusGrid {
     u32 unk_0000;
     CampStatusGridInfo *info;
 } CampStatusGrid;
-
 /* Record at CampStatusTableWork.unk_03e4; +7 selects the entry ids. */
 typedef struct CampStatusMapInfo {
     u8 pad_0000[0x7];
     u8 unk_0007;
 } CampStatusMapInfo;
-
 typedef struct CampStatusTableWork {
     u32 unk_0000;
     u8 unk_0004[0x23c];         /* +0x004: Unk09a268 work (Unk09a268_FindEntry); it extends past the
@@ -177,9 +173,7 @@ typedef struct CampStatusTableWork {
     u8 pad_7488[0xc];
     u32 unk_7494;
 } CampStatusTableWork;
-
 extern CampStatusWork *data_02176be4;
-
 /* Record buffer filled by Unk02e000_SetRecord (36 bytes on the stack in CampStatus_Unk_0dc3b8). */
 typedef struct CampStatusSavedRecord {
     u8 pad_0000[0x10];
@@ -230,7 +224,6 @@ typedef struct CampStatusRequest {
 } CampStatusRequest;
 void func_020bc9f4(u32 kind, CampStatusRequest *req);
 void func_020bcacc(u32 kind, CampStatusRequest *req);
-
 /* Opaque grey RGBA: v in all three colour bytes, alpha 0xff. */
 #define CAMP_GREY(v) (((v) << 24) + ((v) << 16) + ((v) << 8) + 0xff)
 /* Player-side record from Unk02e000_Thunk_0202e788 (fields as used in this file). */
@@ -307,15 +300,21 @@ u32 Unk0ca69c_Unk_0ca6a4(u32 v);
 void CampStatus_Unk_0db910(CampStatusInfo *info);
 void func_020da710(void *obj, const u16 *ids, const u16 *ref, s32 sel);
 u8 CampStatus_Unk_0db288(s32 t);
-
 /* Record list returned by func_020a1740: three 6-byte records from +0x48. */
 typedef struct CampStatusRecord {
     u16 id;
     u8 pad_02[0x4];
 } CampStatusRecord;
 typedef struct CampStatusRecordSet {
-    u8 pad_0000[0x16];
-    u16 pad_16_0 : 5;           /* +0x16: three small values */
+    u16 unk_0000;
+    u8 unk_0002;
+    u8 pad_0003;
+    u32 unk_0004;               /* +0x04/+0x08: current/max pair shown by func_020d9830 */
+    u32 unk_0008;
+    u16 unk_000c[5];            /* +0x0c: five stats, copied to a CampStatusStats */
+    u16 pad_16_0 : 1;           /* +0x16: flags and three small values */
+    u16 unk_16_1 : 1;           /* "???" mode for func_020da2cc */
+    u16 pad_16_2 : 3;
     u16 unk_16_5 : 4;
     u16 unk_16_9 : 3;
     u16 unk_16_c : 3;
@@ -323,7 +322,9 @@ typedef struct CampStatusRecordSet {
     u8 unk_0018;
     u8 pad_0019;
     u8 unk_001a;
-    u8 pad_001b[0x2d];
+    u8 pad_001b[0x7];
+    CampStatusStateWord unk_0022[8];  /* +0x22: per-slot base words for func_020dd364 */
+    u8 pad_0032[0x16];
     CampStatusRecord rec[3];
     u8 unk_005a;                /* +0x5a/+0x5b: marks on the 0..100 gauge of CampStatus_Unk_0d9d54 */
     u8 unk_005b;
@@ -360,55 +361,10 @@ int Unk0e651c_TestFlag(u32 set, u32 bit);
 void Unk0e651c_SetFlag(u32 set, u32 bit, int value);
 void ScanVisor_Unk_0a2ab0(void);
 void ScanVisor_Unk_0a2ae8(u32 a, int b);
-
 u32 CampStatus_GetUnkField1c(CampStatusWork *work);
 u32 CampStatus_GetUnkField7494(CampStatusTableWork *work);
-
-/* Read the unidentified work word at +0x1c; no caller evidence for a better name. */
-u32 CampStatus_GetUnkField1c(CampStatusWork *work) { return work->unk_001c; }
-
 /* Read the 49-byte table at data_0213c60c; an out-of-range index reads entry 0. */
 extern u8 data_0213c60c[49];
-
-int CampStatus_GetTableByte(u32 i)
-{
-    if (i >= 49) {
-        i = 0;
-    }
-    return data_0213c60c[i];
-}
-
-/* Read the cached word at +0x7494 (shape only; purpose not evidenced). */
-u32 CampStatus_GetUnkField7494(CampStatusTableWork *work)
-{
-  return work->unk_7494;
-}
-
-
-
-/* decompiler-derived */
-int CampStatus_Unk_0d34e4(int *arg0,int arg1)
-{
-  if (arg1 < arg0[7]) {
-    return *arg0 + *(int *)(arg0[6] + arg1 * 4) * 2;
-  }
-  return 0;
-}
-
-/* decompiler-derived */
-void CampStatus_Unk_0d3510(int *arg0)
-{
-  int value;
-  value = *arg0;
-  *arg0 = value + 1;
-  if (value + 1 < arg0[1]) {
-    return;
-  }
-  arg0[2] = 0;
-  func_02061424();
-}
-
-
 extern u8 data_021507f4[];
 int func_02013c3c();
 int func_02051610();
@@ -489,8 +445,138 @@ void func_02063920(void);
 u32 func_0204fed8(u32 tab, u32 id);
 u32 func_02063a30(u32 v);
 void func_02061f10();
-/* Read the current (x, y) offset pair of obj's frame, if it has one. Returns 0 when
- * func_02061698 says obj is not active (outputs stay 0), otherwise 1. */
+int func_02053824(u32 player, u32 mask);
+int func_02053800(u32 player, u32 mask);
+void Unk0a0ce4_Unk_0a0da4(u32 se);
+int Unk0e8228_IsSet_data_02176cdc(void);
+int Unk0e7ac4_Unk_0e8060(void);
+void Unk0e7ac4_Unk_0e8198(void);
+void CampStatus_Unk_0dbf6c(CampStatusWork *work);
+void CampStatus_Unk_0dc540(CampStatusWork *work);
+void CampStatus_Unk_0db548(CampStatusWork *work);
+void CampStatus_Unk_0dba84(CampStatusWork *work, u16 id);
+extern u8 data_02150824[];
+int CampStatus_GetTableByte();
+int Unk0e651c_Unk_0e666c(u32 flag);
+/* 24-byte draw record copied out of func_0205e318 and passed to func_0205e048. */
+typedef struct CampStatusDrawParam {
+    u32 unk_00[4];
+    u32 pad_10_0 : 2;
+    u32 alpha : 8;              /* +0x10 bits 2..9: overlay alpha set by CampStatus_Unk_0d9d54 */
+    u32 pad_10_a : 22;
+    u32 unk_14;
+} CampStatusDrawParam;
+int Unk02ee5c_GetRecordFlagB(u16 id);
+void *func_0205e318(u32 obj, u32 idx);
+void func_02008904(const void *src, void *dst, u32 size);
+void func_0205e048(int screen, u32 obj, CampStatusDrawParam *param, int x, int y, float sx, float sy, int rot, float alpha, int prio, int a);
+/* Eight icon ids copied from data_0213c5b0. */
+typedef struct CampStatusIds8 {
+    u32 v[8];
+} CampStatusIds8;
+extern const CampStatusIds8 data_0213c5b0;
+u32 Unk0c855c_Unk_0ca690(u32 id);
+/* Draw the five stat rows (order +4, +8, +5, +6, +7) via func_020dab5c, with the add values
+ * when add is given. The first time all ten shown values equal unk_0118, set unk_0114 and
+ * call func_020bc9f4(3, 0) / func_020bcacc(unk_0014, 0). */
+void CampStatus_Unk_0da0e0(CampStatusWork *work, const CampStatusStats *cur, const CampStatusStats *next,
+                   const CampStatusStats *add, u32 arg5)
+{
+    if (add == 0) {
+        func_020dab5c(work, cur->unk_04, next->unk_04, 0, 0, arg5);
+        func_020dab5c(work, cur->unk_08, next->unk_08, 0, 1, arg5);
+        func_020dab5c(work, cur->unk_05, next->unk_05, 0, 2, arg5);
+        func_020dab5c(work, cur->unk_06, next->unk_06, 0, 3, arg5);
+        func_020dab5c(work, cur->unk_07, next->unk_07, 0, 4, arg5);
+    } else {
+        func_020dab5c(work, cur->unk_04, next->unk_04, add->unk_04, 0, arg5);
+        func_020dab5c(work, cur->unk_08, next->unk_08, add->unk_08, 1, arg5);
+        func_020dab5c(work, cur->unk_05, next->unk_05, add->unk_05, 2, arg5);
+        func_020dab5c(work, cur->unk_06, next->unk_06, add->unk_06, 3, arg5);
+        func_020dab5c(work, cur->unk_07, next->unk_07, add->unk_07, 4, arg5);
+    }
+    if (work->unk_0114 != 0) {
+        return;
+    }
+    if (work->unk_0118[0] == cur->unk_04 && work->unk_0118[1] == cur->unk_08 &&
+        work->unk_0118[2] == cur->unk_05 && work->unk_0118[3] == cur->unk_06 &&
+        work->unk_0118[4] == cur->unk_07 && work->unk_0118[5] == next->unk_04 &&
+        work->unk_0118[6] == next->unk_08 && work->unk_0118[7] == next->unk_05 &&
+        work->unk_0118[8] == next->unk_06 && work->unk_0118[9] == next->unk_07) {
+        work->unk_0114 = 1;
+        func_020bc9f4(3, 0);
+        func_020bcacc(work->unk_0014, 0);
+    }
+}
+void CampStatus_Unk_0db824(CampStatusWork *work);
+void CampStatus_Unk_0dba84(CampStatusWork *work, u16 id);
+void CampStatus_Unk_0dbbbc(CampStatusWork *work, u16 id);
+void CampStatus_Unk_0dbd04(CampStatusWork *work, u32 id);
+void CampStatus_Unk_0dbdac(CampStatusWork *work, u32 id);
+void CampStatus_Unk_0dbf24(CampStatusWork *work, u32 id);
+/* Like func_020dc240 for record unk_00da: its entry byte on unk_00bc, the id on unk_00c0, and
+ * the id list func_020a18c8 writes to unk_00dc (up to 6) on unk_00c4. */
+/* Like func_020dc2ec, but needs the saved record for unk_00da; the id list comes from the
+ * entry (+0x2e) when unk_025c is set, else from the saved record (+0x10). */
+int Unk0a23f4_Unk_0a246c(void);
+int Unk0a23f4_Unk_0a2490(void);
+int Unk0a23f4_Unk_0a2448(void);
+void func_02034dd0(void);
+int ScanVisor_GetConst20(void);
+int func_020a03cc(void);
+int Unk09a268_FindEntry(u8 *w, u32 id, u32 sub);
+void func_02058b14(u8 *table, s32 i, u32 v);
+int func_02052728(void);
+void func_02034b7c(u16 id, int x, int y, u32 v, u32 a, u32 b, u32 c, u32 d);
+void func_02065bc0(void);
+int func_020654cc(void);
+void func_0206597c(u32 v);
+int func_02065cd0(void);
+void func_02065c58(void);
+void func_0205264c(u32 a, u32 b, u32 c, u32 d, u32 e);
+void ScanVisor_Unk_0a2b7c(void);
+void ScanVisor_Unk_0a2920(u32 a);
+void GameState_ClearRootUnk60(void);
+
+/* Read the unidentified work word at +0x1c; no caller evidence for a better name. */
+u32 CampStatus_GetUnkField1c(CampStatusWork *work) { return work->unk_001c; }
+
+int CampStatus_GetTableByte(u32 i)
+{
+    if (i >= 49) {
+        i = 0;
+    }
+    return data_0213c60c[i];
+}
+
+/* Read the cached word at +0x7494 (shape only; purpose not evidenced). */
+u32 CampStatus_GetUnkField7494(CampStatusTableWork *work)
+{
+  return work->unk_7494;
+}
+
+/* decompiler-derived */
+int CampStatus_Unk_0d34e4(int *arg0,int arg1)
+{
+  if (arg1 < arg0[7]) {
+    return *arg0 + *(int *)(arg0[6] + arg1 * 4) * 2;
+  }
+  return 0;
+}
+
+/* decompiler-derived */
+void CampStatus_Unk_0d3510(int *arg0)
+{
+  int value;
+  value = *arg0;
+  *arg0 = value + 1;
+  if (value + 1 < arg0[1]) {
+    return;
+  }
+  arg0[2] = 0;
+  func_02061424();
+}
+
 /* Start a 12-byte CampStatus_Unk_0d3510 task for obj and return the handle from func_020614b0. */
 u32 CampStatus_Unk_0d353c(void *obj)
 {
@@ -508,6 +594,8 @@ u32 CampStatus_Unk_0d353c(void *obj)
     return handle;
 }
 
+/* Read the current (x, y) offset pair of obj's frame, if it has one. Returns 0 when
+ * func_02061698 says obj is not active (outputs stay 0), otherwise 1. */
 int CampStatus_Unk_0d35c0(void *obj, s32 *x, s32 *y)
 {
     CampStatusFrame *f;
@@ -548,18 +636,6 @@ void CampStatus_Unk_0d51cc(void)
     func_020ca5a4(2);
 }
 
-/* Handler 0x18 of the CampStatus_Unk_0d3624 table: when unk_018c is set and func_020523a8()
- * is 1, draw six grey gradient bars (frame 0, 32 px apart), then run func_020d6120. */
-int func_02053824(u32 player, u32 mask);
-int func_02053800(u32 player, u32 mask);
-void Unk0a0ce4_Unk_0a0da4(u32 se);
-int Unk0e8228_IsSet_data_02176cdc(void);
-int Unk0e7ac4_Unk_0e8060(void);
-void Unk0e7ac4_Unk_0e8198(void);
-void CampStatus_Unk_0dbf6c(CampStatusWork *work);
-void CampStatus_Unk_0dc540(CampStatusWork *work);
-void CampStatus_Unk_0db548(CampStatusWork *work);
-void CampStatus_Unk_0dba84(CampStatusWork *work, u16 id);
 /* Handler 0x10 of the CampStatus_Unk_0d3624 table: per-frame input. With unk_00e8 set, move
  * the 3x2 cursor unk_00f0 (keys 0x40/0x80 change rows except in modes 1 and 18, 0x20/0x10
  * columns) and confirm with 0x800 or 2; otherwise (unk_01a0 and unk_00f8 set) move between the
@@ -682,6 +758,8 @@ void CampStatus_Unk_0d5d44(CampStatusWork *work)
     Unk0e7ac4_Unk_0e8198();
 }
 
+/* Handler 0x18 of the CampStatus_Unk_0d3624 table: when unk_018c is set and func_020523a8()
+ * is 1, draw six grey gradient bars (frame 0, 32 px apart), then run func_020d6120. */
 void CampStatus_Unk_0d6948(CampStatusWork *work)
 {
     int i;
@@ -831,8 +909,6 @@ u32 CampStatus_Unk_0db338(CampStatusBustUp *b, u32 n)
   return 1;
 }
 
-extern u8 data_02150824[];
-int CampStatus_GetTableByte();
 /* Same for "st_bu_mt%03d" (data_02150824), numbered through CampStatus_GetTableByte(i). */
 u32 CampStatus_Unk_0db394(CampStatusBustUp *b, u32 i)
 {
@@ -842,9 +918,6 @@ u32 CampStatus_Unk_0db394(CampStatusBustUp *b, u32 i)
   func_0205b444(b->unk_08, b->tex);
   return 1;
 }
-
-
-
 
 /* decompiler-derived */
 int CampStatus_Unk_0dd88c(int arg0,int arg1)
@@ -869,7 +942,6 @@ int CampStatus_Unk_0dd88c(int arg0,int arg1)
   }
   return tmp1;
 }
-
 
 /* decompiler-derived: frames 0x10..0x12 of obj at (x, 0), alpha a. */
 void CampStatus_Unk_0ddd2c(u32 obj, int x, float alpha)
@@ -959,33 +1031,6 @@ void CampStatus_GetLinkUnk14(u32 *out)
     *out = data_02176be4->unk_0024[2]->link->unk_0014;
 }
 
-/* Triangle-ish ramp over a 120-tick period: 11 rising to 31 over ticks 0..45, hold 31 to 74,
- * then fall back (4.12 fixed point, slope 0x71c). */
-/* Draw the labels on unk_00c0 (grey when Unk09974c_Unk_0998d8(unk_00d0) is 0), the list on
- * unk_00c4 (func_020da710, selection unk_00f0 when unk_00e8 is set, else -1) and, when unk_0008
- * is set, two more labels on unk_00c8. */
-int Unk0e651c_Unk_0e666c(u32 flag);
-/* 24-byte draw record copied out of func_0205e318 and passed to func_0205e048. */
-typedef struct CampStatusDrawParam {
-    u32 unk_00[4];
-    u32 pad_10_0 : 2;
-    u32 alpha : 8;              /* +0x10 bits 2..9: overlay alpha set by CampStatus_Unk_0d9d54 */
-    u32 pad_10_a : 22;
-    u32 unk_14;
-} CampStatusDrawParam;
-int Unk02ee5c_GetRecordFlagB(u16 id);
-void *func_0205e318(u32 obj, u32 idx);
-void func_02008904(const void *src, void *dst, u32 size);
-void func_0205e048(int screen, u32 obj, CampStatusDrawParam *param, int x, int y, float sx, float sy, int rot, float alpha, int prio, int a);
-/* Draw the top panel (frames 53, 50-52 when unk_01a0 is set, else 34-39) at y unk_010c, then,
- * when unk_0004 is set (and not mode 3 with unk_0264 set), frames 26/27 at x unk_010a and
- * frame 67 when flag 0x706 is set. */
-/* Eight icon ids copied from data_0213c5b0. */
-typedef struct CampStatusIds8 {
-    u32 v[8];
-} CampStatusIds8;
-extern const CampStatusIds8 data_0213c5b0;
-u32 Unk0c855c_Unk_0ca690(u32 id);
 /* Draw the main status panel: frames 5, 7, 8, 12-14 and the eight icons of data_0213c5b0 at
  * x unk_00fe, the five row frames 15-19 at x unk_0100[0..4], frame 33 at y unk_010c, then the
  * five row labels of unk_00b4. */
@@ -1020,6 +1065,9 @@ void CampStatus_Unk_0d6e10(CampStatusWork *work)
     }
 }
 
+/* Draw the top panel (frames 53, 50-52 when unk_01a0 is set, else 34-39) at y unk_010c, then,
+ * when unk_0004 is set (and not mode 3 with unk_0264 set), frames 26/27 at x unk_010a and
+ * frame 67 when flag 0x706 is set. */
 void CampStatus_Unk_0d730c(CampStatusWork *work)
 {
     func_02057fd8();
@@ -1052,6 +1100,9 @@ void CampStatus_Unk_0d730c(CampStatusWork *work)
     func_0205dee8(2, work->unk_0018, 67, work->unk_010a, 0, 1.0f, 1.0f, 0, work->unk_0110, 2);
 }
 
+/* Draw the labels on unk_00c0 (grey when Unk09974c_Unk_0998d8(unk_00d0) is 0), the list on
+ * unk_00c4 (func_020da710, selection unk_00f0 when unk_00e8 is set, else -1) and, when unk_0008
+ * is set, two more labels on unk_00c8. */
 void CampStatus_Unk_0d8d60(CampStatusWork *work)
 {
     if (Unk09974c_Unk_0998d8(work->unk_00d0) == 0) {
@@ -1070,13 +1121,117 @@ void CampStatus_Unk_0d8d60(CampStatusWork *work)
     Unk0ddeb0_Unk_0ddeb0(work->unk_00c8, 13, 180, 1, 23, 10);
 }
 
-/* Draw the five stat rows (order +4, +8, +5, +6, +7) via func_020dab5c, with the add values
- * when add is given. The first time all ten shown values equal unk_0118, set unk_0114 and
- * call func_020bc9f4(3, 0) / func_020bcacc(unk_0014, 0). */
 /* Draw the 0..100 gauge of record id as a 60-pixel bar (value * 6 / 10) split at the two
  * marks unk_005a/unk_005b (pieces 0x1dc1..0x1dc3, mark ticks 0x1dc4), or the full-gauge frame
  * 32 at 100. With flag 0x706 and Unk02ee5c_GetRecordFlagB(id), add frame 69 and the blinking
  * overlay (alpha ramp over a 28-tick cycle). */
+s32 func_020dd364(CampStatusStateWord w, const u16 *ids, s32 kind);
+u32 func_020b8144(u16 id, u8 level);
+void CampStatus_Unk_0da670(u32 a, u32 b);
+void CampStatus_Unk_0da0e0(CampStatusWork *work, const CampStatusStats *cur, const CampStatusStats *next,
+                           const CampStatusStats *add, u32 arg5);
+void func_020da2cc(s32 hp, s32 mp, const s16 *ref, const s16 *max, const s16 *prev, s32 mode);
+void CampStatus_Unk_0ddb9c(int id);
+/* Record page (mode 3): stats and value bars of record unk_00da, its level line, the eight
+ * slot states (or "???" icons while the gauge is below unk_005b), and either the three record
+ * entries with the pulsing cursor (unk_01a0 set), the empty grid, or the id grid. */
+void func_020d9830(CampStatusWork *work)
+{
+    CampStatusRecordSet *rs;
+    CampStatusStats stats;
+    s32 i;
+    func_02057fd8();
+    CampStatus_Unk_0ddb9c(work->unk_00da);
+    Unk0ddeb0_Unk_0ddeb0(work->unk_00bc, 2, 15, 0, 5, 10);
+    Unk0ddeb0_Unk_0ddeb0(work->unk_00c0, 42, 15, 0, 8, 10);
+    func_02057df8();
+    rs = func_020a1740(work->unk_00da);
+    stats.unk_00 = rs->unk_0004;
+    stats.unk_02 = rs->unk_0008;
+    stats.unk_04 = rs->unk_000c[0];
+    stats.unk_05 = rs->unk_000c[1];
+    stats.unk_06 = rs->unk_000c[2];
+    stats.unk_07 = rs->unk_000c[3];
+    stats.unk_08 = rs->unk_000c[4];
+    CampStatus_Unk_0da0e0(work, &stats, &stats, 0, 0);
+    if (rs->unk_16_1) {
+        func_020da2cc(stats.unk_00, stats.unk_02, &stats.unk_00, &stats.unk_00, 0, 4);
+    } else {
+        func_020da2cc(stats.unk_00, stats.unk_02, &stats.unk_00, &stats.unk_00, 0, 0);
+    }
+    CampStatus_Unk_0da670(rs->unk_0002, func_020b8144(rs->unk_0000, rs->unk_0002));
+    for (i = 0; i <= 7; i++) {
+        if (Unk02e000_GetRecordUnk1e(work->unk_00da) < rs->unk_005b) {
+            Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, i * 14 + 7, 67, 11, 1, 10);
+        } else {
+            Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, i * 14 + 7, 67, func_020dd364(rs->unk_0022[i], work->unk_00dc, i) + 5, 2, 10);
+        }
+    }
+    if (work->unk_00f8 == 0) {
+        return;
+    }
+    if (work->unk_01a0 != 0) {
+        s32 n = 0;
+        s32 k;
+        s8 len;
+        s32 j;
+        for (k = 0; k < 3; k++) {
+            if (Unk02e000_GetRecordUnk1e(work->unk_00da) < 100) {
+                if (rs->rec[k].id != 0) {
+                    n++;
+                }
+                Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, k * 85 + 4, 155, 11, 1, 10);
+                Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, k * 85 + 14, 155, 11, 1, 10);
+                Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, k * 85 + 24, 155, 11, 1, 10);
+            } else if (rs->rec[k].id != 0) {
+                Unk0ddeb0_Unk_0ddeb0(work->unk_00c4, n * 85 + 4, 155, n + 1, 8, 10);
+                n++;
+            }
+        }
+        len = 0;
+        for (j = 0; j < 10; j++) {
+            if (work->unk_00c4->unk_0014[j] == 0x8001) {
+                break;
+            }
+            len++;
+        }
+        Unk0ddeb0_Unk_0ddeb0(work->unk_00c4, 128 - len * 10 / 2, 142, 0, 10, 10);
+        func_02057fd8();
+        func_02057df8();
+        func_02057e18(CampStatus_Unk_0db288(data_0215f05c.unk_0018));
+        func_02058f10(2, 0x1dd4, (work->unk_00f0 % 3) * 85, 13, 83, 12, 9);
+        func_02057e18(31);
+    } else if (Unk02e000_GetRecordUnk1e(work->unk_00da) < rs->unk_005b) {
+        /* "???" in every grid slot: x0..x2 are the three glyph columns of slot k */
+        s32 row;
+        s32 k;
+        s32 x0;
+        s32 x1;
+        s32 x2;
+        s32 y;
+        for (row = 0, y = 140; row < 2; row++, y += 13) {
+            for (k = 0, x0 = 4, x1 = 14, x2 = 24; k < 3; x0 += 85, x1 += 85, x2 += 85, k++) {
+                Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, x0, y, 11, 1, 10);
+                Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, x1, y, 11, 1, 10);
+                Unk0ddeb0_Unk_0ddeb0(work->unk_00b4, x2, y, 11, 1, 10);
+            }
+        }
+    } else {
+        func_020da710(work->unk_00c4, work->unk_00dc, 0, work->unk_00e8 != 0 ? work->unk_00f0 : -1);
+    }
+    if (work->unk_0008 == 0) {
+        return;
+    }
+    if (work->unk_00e8 != 0 || work->unk_01a0 != 0) {
+        func_02057df8();
+    } else {
+        CampStatus_Unk_0ddb9c(work->unk_00da);
+    }
+    Unk0ddeb0_Unk_0ddeb0(work->unk_00c8, 13, 168, 0, 23, 10);
+    func_02057df8();
+    Unk0ddeb0_Unk_0ddeb0(work->unk_00c8, 13, 180, 1, 23, 10);
+}
+
 void CampStatus_Unk_0d9d54(u16 id)
 {
     CampStatusRecordSet *rs;
@@ -1146,36 +1301,6 @@ void CampStatus_Unk_0d9d54(u16 id)
     func_02057e18(31);
 }
 
-void CampStatus_Unk_0da0e0(CampStatusWork *work, const CampStatusStats *cur, const CampStatusStats *next,
-                   const CampStatusStats *add, u32 arg5)
-{
-    if (add == 0) {
-        func_020dab5c(work, cur->unk_04, next->unk_04, 0, 0, arg5);
-        func_020dab5c(work, cur->unk_08, next->unk_08, 0, 1, arg5);
-        func_020dab5c(work, cur->unk_05, next->unk_05, 0, 2, arg5);
-        func_020dab5c(work, cur->unk_06, next->unk_06, 0, 3, arg5);
-        func_020dab5c(work, cur->unk_07, next->unk_07, 0, 4, arg5);
-    } else {
-        func_020dab5c(work, cur->unk_04, next->unk_04, add->unk_04, 0, arg5);
-        func_020dab5c(work, cur->unk_08, next->unk_08, add->unk_08, 1, arg5);
-        func_020dab5c(work, cur->unk_05, next->unk_05, add->unk_05, 2, arg5);
-        func_020dab5c(work, cur->unk_06, next->unk_06, add->unk_06, 3, arg5);
-        func_020dab5c(work, cur->unk_07, next->unk_07, add->unk_07, 4, arg5);
-    }
-    if (work->unk_0114 != 0) {
-        return;
-    }
-    if (work->unk_0118[0] == cur->unk_04 && work->unk_0118[1] == cur->unk_08 &&
-        work->unk_0118[2] == cur->unk_05 && work->unk_0118[3] == cur->unk_06 &&
-        work->unk_0118[4] == cur->unk_07 && work->unk_0118[5] == next->unk_04 &&
-        work->unk_0118[6] == next->unk_08 && work->unk_0118[7] == next->unk_05 &&
-        work->unk_0118[8] == next->unk_06 && work->unk_0118[9] == next->unk_07) {
-        work->unk_0114 = 1;
-        func_020bc9f4(3, 0);
-        func_020bcacc(work->unk_0014, 0);
-    }
-}
-
 /* Draw two numbers (a at x 24, b at x 86, y 27) with func_020a9fd8, after resetting the colour. */
 void CampStatus_Unk_0da670(u32 a, u32 b)
 {
@@ -1186,6 +1311,49 @@ void CampStatus_Unk_0da670(u32 a, u32 b)
 
 /* When sel >= 0, draw the pulsing cursor bar at row sel (85 px per row, alpha from the
  * CampStatus_Unk_0db288 ramp); then draw the three slots of obj. */
+/* Draw the six slots of a 3x2 grid on obj (x 4 + 85 * col, y 140 + 13 * row) with a pulsing
+ * cursor at sel when sel >= 0. With ref, each ref id not found in ids is drawn in orange
+ * (0xff942100); empty slots are skipped. */
+void func_020da710(void *obj, const u16 *ids, const u16 *ref, s32 sel)
+{
+    s32 row;
+    s32 col;
+    s32 k;
+    s32 b;                      /* row * 3: index of the row's first slot */
+    s32 x;
+    s32 y;
+    if (sel >= 0) {
+        func_02057fd8();
+        func_02057df8();
+        func_02057e18(CampStatus_Unk_0db288(data_0215f05c.unk_0018));
+        func_02058f10(2, 0x1dd4, (sel % 3) * 85, (sel / 3) * 13, 83, 12, 9);
+        func_02057e18(31);
+    }
+    func_02057fd8();
+    for (row = 0, b = 0, y = 140; row < 2; row++, b += 3, y += 13) {
+        for (col = 0, x = 4; col < 3; x += 85, col++) {
+            func_02057df8();
+            if (ref != 0) {
+                for (k = 0; k < 6; k++) {
+                    if (ids[k] == ref[b + col]) {
+                        break;
+                    }
+                }
+                if (k == 6) {
+                    func_02057ddc(0xff942100);
+                }
+                if (ref[b + col] != 0) {
+                    Unk0ddeb0_Unk_0ddeb0(obj, x, y, col + b, 8, 10);
+                }
+            } else if (ids != 0) {
+                if (ids[b + col] != 0) {
+                    Unk0ddeb0_Unk_0ddeb0(obj, x, y, col + b, 8, 10);
+                }
+            }
+        }
+    }
+}
+
 void CampStatus_Unk_0da8c4(void *obj, u32 unused, s32 sel)
 {
     s32 i;
@@ -1244,6 +1412,8 @@ void CampStatus_Unk_0da97c(u32 obj, s32 a, s32 b, s32 mode, u8 slot)
     func_02057df8();
 }
 
+/* Triangle-ish ramp over a 120-tick period: 11 rising to 31 over ticks 0..45, hold 31 to 74,
+ * then fall back (4.12 fixed point, slope 0x71c). */
 u8 CampStatus_Unk_0db214(s32 t)
 {
     s32 r = t % 120;
@@ -1315,8 +1485,6 @@ void CampStatus_Unk_0db3e0(s32 a, s32 b, s32 c, s32 mode)
     }
 }
 
-/* Show icon data_0213c568[3] on unk_00c8 when Unk09974c_Unk_0998d8(unk_00d0) is 0; otherwise
- * show data_0213c568[0], or 7 after func_0204faf0(10, id) when id is not 0xffff. */
 /* For a non-zero idx: draw frame 6 of obj, the resource for Unk0ddeb0_Unk_0ddfd8(idx) at
  * (109, 13), and frame data_0213c600[idx] of obj2. */
 void CampStatus_Unk_0db478(u32 obj, u32 obj2, u32 idx)
@@ -1331,15 +1499,6 @@ void CampStatus_Unk_0db478(u32 obj, u32 obj2, u32 idx)
     func_0205de40(2, obj2, data_0213c600[idx], 0, 0, 1.0f, 1.0f, 0, 1.0f, 3);
 }
 
-/* For both player ids (+0x00, +0x02): pick icon 1/0 (resp. 3/2) by whether the record's two
- * nibbles differ and run CampStatus_Unk_0db910 on it; show both icons on unk_00c8 only when both ids
- * are set, else clear it. */
-void CampStatus_Unk_0db824(CampStatusWork *work);
-void CampStatus_Unk_0dba84(CampStatusWork *work, u16 id);
-void CampStatus_Unk_0dbbbc(CampStatusWork *work, u16 id);
-void CampStatus_Unk_0dbd04(CampStatusWork *work, u32 id);
-void CampStatus_Unk_0dbdac(CampStatusWork *work, u32 id);
-void CampStatus_Unk_0dbf24(CampStatusWork *work, u32 id);
 /* Refresh the icon line on unk_00c8 for the current screen mode: with unk_024a < 0 only the
  * placeholder icons (CampStatus_Unk_0dbf24) or a clear; otherwise the per-mode detail
  * helpers. */
@@ -1452,6 +1611,9 @@ void CampStatus_Unk_0db548(CampStatusWork *work)
     }
 }
 
+/* For both player ids (+0x00, +0x02): pick icon 1/0 (resp. 3/2) by whether the record's two
+ * nibbles differ and run CampStatus_Unk_0db910 on it; show both icons on unk_00c8 only when both ids
+ * are set, else clear it. */
 void CampStatus_Unk_0db824(CampStatusWork *work)
 {
     u32 icons[2] = {0, 0};
@@ -1565,6 +1727,8 @@ void CampStatus_Unk_0dbbbc(CampStatusWork *work, u16 id)
     CampStatus_Unk_0dde3c(work->unk_00c8, 14, 0, &icon, 1);
 }
 
+/* Show icon data_0213c568[3] on unk_00c8 when Unk09974c_Unk_0998d8(unk_00d0) is 0; otherwise
+ * show data_0213c568[0], or 7 after func_0204faf0(10, id) when id is not 0xffff. */
 void CampStatus_Unk_0dbd04(CampStatusWork *work, u32 id)
 {
     u32 other;
@@ -1646,10 +1810,6 @@ void CampStatus_Unk_0dbf24(CampStatusWork *work, u32 id)
     CampStatus_Unk_0dde3c(work->unk_00c8, 14, 0, ids, 1);
 }
 
-/* Show the unit's entries: the byte at +2 of its func_020a1428 entry on unk_00bc, its id on
- * unk_00c0, and its 0-terminated id list (up to 6) on unk_00c4. */
-/* Show icon 43 on unk_00bc, the player's text (+0x48) on unk_00c0, and the 0-terminated id
- * list (up to 3) of the player's second record on unk_00c4. */
 /* Pick the id of the selected list entry for the current screen mode (unk_0000) and show it
  * (group 10) on unk_00c8, or clear unk_00c8 when there is none. */
 void CampStatus_Unk_0dbf6c(CampStatusWork *work)
@@ -1708,6 +1868,8 @@ void CampStatus_Unk_0dbf6c(CampStatusWork *work)
     Unk0ddeb0_Unk_0ddf0c(work->unk_00c8);
 }
 
+/* Show icon 43 on unk_00bc, the player's text (+0x48) on unk_00c0, and the 0-terminated id
+ * list (up to 3) of the player's second record on unk_00c4. */
 void CampStatus_Unk_0dc184(CampStatusWork *work)
 {
     CampStatusPlayer *p = Unk02e000_Thunk_0202e788();
@@ -1733,6 +1895,8 @@ void CampStatus_Unk_0dc184(CampStatusWork *work)
     CampStatus_Unk_0dde3c(work->unk_00c4, 10, 0, ids, i);
 }
 
+/* Show the unit's entries: the byte at +2 of its func_020a1428 entry on unk_00bc, its id on
+ * unk_00c0, and its 0-terminated id list (up to 6) on unk_00c4. */
 void CampStatus_Unk_0dc240(CampStatusWork *work)
 {
     u32 ids[6];
@@ -1750,9 +1914,7 @@ void CampStatus_Unk_0dc240(CampStatusWork *work)
     CampStatus_Unk_0dde3c(work->unk_00c4, 10, 0, ids, i);
 }
 
-/* On unk_00c4: entry 201 of group (12, 0), then each non-zero record id (up to 3) of
- * func_020a1740(unk_00da) from group (6, 0). */
-/* Like func_020dc240 for record unk_00da: its entry byte on unk_00bc, the id on unk_00c0, and
+/* Like CampStatus_Unk_0dc240 for record unk_00da: its entry byte on unk_00bc, the id on unk_00c0, and
  * the id list func_020a18c8 writes to unk_00dc (up to 6) on unk_00c4. */
 void CampStatus_Unk_0dc2ec(CampStatusWork *work)
 {
@@ -1775,7 +1937,7 @@ void CampStatus_Unk_0dc2ec(CampStatusWork *work)
     CampStatus_Unk_0dde3c(work->unk_00c4, 10, 0, ids, i);
 }
 
-/* Like func_020dc2ec, but needs the saved record for unk_00da; the id list comes from the
+/* Like CampStatus_Unk_0dc2ec, but needs the saved record for unk_00da; the id list comes from the
  * entry (+0x2e) when unk_025c is set, else from the saved record (+0x10). */
 void CampStatus_Unk_0dc3b8(CampStatusWork *work)
 {
@@ -1808,6 +1970,8 @@ void CampStatus_Unk_0dc3b8(CampStatusWork *work)
     CampStatus_Unk_0dde3c(work->unk_00c4, 10, 0, ids, i);
 }
 
+/* On unk_00c4: entry 201 of group (12, 0), then each non-zero record id (up to 3) of
+ * func_020a1740(unk_00da) from group (6, 0). */
 void CampStatus_Unk_0dc4a8(CampStatusWork *work)
 {
     u32 tabA = func_020445f4(6, 0);
@@ -1878,8 +2042,6 @@ void CampStatus_Unk_0dc5dc(const CampStatusStats *a, const CampStatusStats *b, C
     }
 }
 
-/* Release the shared work's resources (two sets of three handles plus three tasks) and clear
- * each field. */
 /* Build object [2] and both bust-ups (resource, animation, descriptor, texture, object) in the
  * shared work; objects use mode 0 when unk_018c is set, else 1. With unk_00f4 set, object [2]
  * starts on sequence 2. */
@@ -1916,6 +2078,8 @@ void CampStatus_Unk_0dc6c0(void)
     data_02176be4->unk_0084[1].unk_14 = 0;
 }
 
+/* Release the shared work's resources (two sets of three handles plus three tasks) and clear
+ * each field. */
 void CampStatus_Unk_0dc908(void)
 {
     func_0205bb68();
@@ -2010,8 +2174,6 @@ void func_020dcb44(void)
     data_02176be4->unk_0250 = 1;
 }
 
-/* Pick the four-corner colour for entry id: grey when its first u16 is 0, otherwise by the
- * kind byte at +5 (4 and 5 get their own colours, anything else the default via func_02057df8). */
 /* Handler 2 of the table at 0x0213c1d8: look up the cell at (unk_7482, unk_7483); if its 4-bit
  * flag number n is non-zero and work-area flag n + 55 is not set yet, set it, call
  * ScanVisor_Unk_0a2ab0 and start the 60-tick unk_7484 timer. Always ends with
@@ -2032,32 +2194,6 @@ int CampStatus_Unk_0dcb68(CampStatusTableWork *work)
     return 1;
 }
 
-/* Like CampStatus_Unk_0ddb9c with the unit's id: grey for an empty entry, own colours for
- * kinds 4 and 5, grey otherwise. */
-/* Colour for the player's line by tier (4, 5, other): the first colour when status +0x6c is
- * 1 or 7 or +0x1c is not positive, the second otherwise (default colour for other tiers). */
-/* Sum slot i of up to five records: the four ids[0..3] (each skipped when extra falls in that
- * id's 50-wide block starting at 211, 261, 311, 361) and extra itself. The total starts at 100;
- * the state codes merge through CampStatus_Unk_0dd88c, and slot 6 turns state 0/5 into 1. */
-int Unk0a23f4_Unk_0a246c(void);
-int Unk0a23f4_Unk_0a2490(void);
-int Unk0a23f4_Unk_0a2448(void);
-void func_02034dd0(void);
-int ScanVisor_GetConst20(void);
-int func_020a03cc(void);
-int Unk09a268_FindEntry(u8 *w, u32 id, u32 sub);
-void func_02058b14(u8 *table, s32 i, u32 v);
-int func_02052728(void);
-void func_02034b7c(u16 id, int x, int y, u32 v, u32 a, u32 b, u32 c, u32 d);
-void func_02065bc0(void);
-int func_020654cc(void);
-void func_0206597c(u32 v);
-int func_02065cd0(void);
-void func_02065c58(void);
-void func_0205264c(u32 a, u32 b, u32 c, u32 d, u32 e);
-void ScanVisor_Unk_0a2b7c(void);
-void ScanVisor_Unk_0a2920(u32 a);
-void GameState_ClearRootUnk60(void);
 /* Handler 3 of the table at 0x0213c1d8: step the event state machine in unk_7481 (0-8, and 100
  * for the cancel path) once per call; returns 1 when it has finished. */
 int CampStatus_Unk_0dcc00(CampStatusTableWork *work)
@@ -2188,6 +2324,9 @@ int CampStatus_Unk_0dcc00(CampStatusTableWork *work)
     return done;
 }
 
+/* Sum slot i of up to five records: the four ids[0..3] (each skipped when extra falls in that
+ * id's 50-wide block starting at 211, 261, 311, 361) and extra itself. The total starts at 100;
+ * the state codes merge through CampStatus_Unk_0dd88c, and slot 6 turns state 0/5 into 1. */
 CampStatusStateWord CampStatus_Unk_0dd500(const u16 *ids, s32 i, s32 extra)
 {
     CampStatusStateWord w;
@@ -2224,6 +2363,8 @@ CampStatusStateWord CampStatus_Unk_0dd500(const u16 *ids, s32 i, s32 extra)
     return w;
 }
 
+/* Colour for the player's line by tier (4, 5, other): the first colour when status +0x6c is
+ * 1 or 7 or +0x1c is not positive, the second otherwise (default colour for other tiers). */
 void CampStatus_Unk_0dd910(void)
 {
     s32 tier = Unk02ee5c_GetTierFromField70();
@@ -2284,6 +2425,8 @@ void CampStatus_Unk_0dd9d8(CampStatusUnit *unit)
     }
 }
 
+/* Like CampStatus_Unk_0ddb9c with the unit's id: grey for an empty entry, own colours for
+ * kinds 4 and 5, grey otherwise. */
 void CampStatus_Unk_0ddb04(CampStatusUnit *unit)
 {
     CampStatusEntry *e = func_020a1428(unit->unk_0036);
@@ -2302,6 +2445,8 @@ void CampStatus_Unk_0ddb04(CampStatusUnit *unit)
     func_02057dcc(0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff, 0x7b7b7bff);
 }
 
+/* Pick the four-corner colour for entry id: grey when its first u16 is 0, otherwise by the
+ * kind byte at +5 (4 and 5 get their own colours, anything else the default via func_02057df8). */
 void CampStatus_Unk_0ddb9c(int id)
 {
     CampStatusEntry *e = func_020a1428(id);
