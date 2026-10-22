@@ -2,6 +2,16 @@
 
 ## Unreleased
 - Match all six functions in `src/game/unit_020eed24.c`, with typed work layouts and documented callback/array operations.
+- Represented the talk-tone work state's +0x40 owner id with a typed field and removed unsupported timing claims from its comments.
+- `src/game/unit_020bbfa4.c`: finished the enemy talk tone TU — `func_020bc0b4` (TalkTone/Tone set selection, named from the `Data/Enemy/Talk/*` format strings) matched at 100%, the eight M1-T036 handlers and the release/selector helpers documented with typed structs; doc entries in `docs/functions/game-unit-020bbfa4.md`.
+- Matched all five functions in `src/game/unit_02044394.c`, including shuffled entry initialization, with typed records and external call prototypes.
+- Matched all eight functions in `src/game/unit_020eeb20.c`, with typed work layouts, callback setup, initialization, and state dispatch.
+- Matched all five functions in `src/game/unit_020efdf4.c`, with typed parameters, partial object layouts, and per-function documentation.
+- `src/game/unit_0203e23c.c`: matched `func_0203e2f8` (free-slot entry operation plus battle delta forwarding) at 100% in objdiff, completing the TU; declaration and doc entry added.
+- Documented and typed the eight M1-T036 handlers in `src/game/unit_020bbfa4.c`, retaining their 100% objdiff matches.
+- Documented and typed all eight matching argument-forwarding handlers in `src/game/unit_0203d72c.c`, including partial context and work-area layouts.
+- Added documented, typed declarations and eight behaviour-based `ScriptCmd_*` aliases in `include/game/unit_0203e23c.h`, preserving the matching linker symbols.
+- `src/game/unit_0203e23c.c`: the eight script command handlers `Unk03e23c_Unk_03e23c`…`Unk03e23c_Unk_03e3e4` cleaned up with real callee prototypes, address order and per-function comments (still 100% in objdiff); doc entries in `docs/functions/game-unit-0203e23c.md`.
 - `src/game/unit_0203c274.c`: all four script command handlers (`func_0203c274` BGR555→RGBA colour command, `func_0203c320` mode switch, `Unk03c274_Unk_03c434`, `Unk03c274_Unk_03c45c`) in matching C with real prototypes (100% in objdiff); descriptive `ScriptCmd_*` aliases in `include/game/unit_0203c274.h`; doc entries in `docs/functions/game-unit-0203c274.md`.
 - `src/game/unit_020b7898.c`: `Unk0b7898_Call_02052634` and `Unk0b7898_Unk_0b78b0` (callbacks in the function table at 0x0213d6f8) in matching C (100% in objdiff), with the real `Unk02cad4_Unk_02cbdc(u32)` prototype; doc entries in `docs/functions/game-unit-020b7898.md`.
 - `src/game/unit_0212f7e4.c`: `func_0212f7e4` (forwarding thunk to `func_021301f0`, plain `b` via `#pragma interworking off`) in matching C (100% in objdiff).
