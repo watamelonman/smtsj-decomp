@@ -22,6 +22,8 @@ protected, and the match gate looks definitions up by name.
 - `Unk0bbfa4_Unk_0bc17c`: takes the work object's +0x40 owner (`func_02044ec4`), reads its +0x1D8
   halfword as an id for `func_020a1428`, and returns bits 21..27 (7 bits) of the returned entry's
   +0x24 word. Callers use it as a table selector; the exact meaning is not established.
+  The shared work-state layout represents the +0x40 owner id as a typed field alongside the
+  +0x58 tone selector and file pointers; no update frequency is inferred for this object.
 - `func_020bc0b4`: selects talk tone set `index` (0..14). Returns immediately when that set is
   already active. Otherwise calls `Unk0bbfa4_Unk_0bc144`, then for in-range indices formats
   `data_02150310` ("Data/Enemy/Talk/TalkTone%s.mbb") and `data_02150330`

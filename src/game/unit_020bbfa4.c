@@ -9,7 +9,7 @@ void Unk118b04_Unk_118e50(int slot, int value);
 u32 Unk118b04_Unk_118e74(int slot);
 /* Publishes the command result and clears the wait byte. The stored word is interpreted as signed. */
 int Unk03aae8_Unk_03acf4(u32 value);
-/* Returns the per-frame work object that owns the talk-tone selector at +0x58. */
+/* Returns the work object that holds the owner id at +0x40 and talk-tone selector at +0x58. */
 int Unk044904_Unk_045048(void);
 
 void Unk0a0ce4_Unk_0a0d68(int value);
@@ -101,10 +101,13 @@ u32 Unk0bbfa4_Unk_0bc084(void)
     return 1;
 }
 
-/* Per-frame enemy talk tone state returned by Unk044904_Unk_045048. The index at +0x58 is 0..14
+/* Enemy talk tone state returned by Unk044904_Unk_045048, including the owner id at +0x40.
+ * The index at +0x58 is 0..14
  * while a set is loaded and 15 when nothing is loaded; the two file pointers are then null. */
 typedef struct Unk0bbfa4ToneState {
-    u8 pad_0000[0x58];
+    u8 pad_0000[0x40];
+    u32 unk_0040;               /* +0x40: owner id passed to func_02044ec4 */
+    u8 pad_0044[0x14];
     s32 index;                  /* +0x58: loaded tone set, or 15 for none */
     void *talkTone;             /* +0x5C: TalkTone%s.mbb data from func_02051610 */
     void *tone;                 /* +0x60: Tone%s.tbb data from func_02051610 */
@@ -145,7 +148,7 @@ void Unk0bbfa4_Unk_0bc144(void)
 u32 Unk0bbfa4_Unk_0bc17c(void)
 {
     Unk0bbfa4ToneState *state = (Unk0bbfa4ToneState *)Unk044904_Unk_045048();
-    Unk0bbfa4Obj *obj = (Unk0bbfa4Obj *)func_02044ec4(*(u32 *)((u8 *)state + 0x40));
+    Unk0bbfa4Obj *obj = (Unk0bbfa4Obj *)func_02044ec4(state->unk_0040);
     Unk0bbfa4Entry *entry = func_020a1428(obj->unk_01d8);
     u32 v = entry->unk_0024;
     return (v << 4) >> 25;

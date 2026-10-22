@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Represented the talk-tone work state's +0x40 owner id with a typed field and removed unsupported timing claims from its comments.
 - `src/game/unit_020bbfa4.c`: finished the enemy talk tone TU — `func_020bc0b4` (TalkTone/Tone set selection, named from the `Data/Enemy/Talk/*` format strings) matched at 100%, the eight M1-T036 handlers and the release/selector helpers documented with typed structs; doc entries in `docs/functions/game-unit-020bbfa4.md`.
 - Matched all five functions in `src/game/unit_020efdf4.c`, with typed parameters, partial object layouts, and per-function documentation.
 - `src/game/unit_0203e23c.c`: matched `func_0203e2f8` (free-slot entry operation plus battle delta forwarding) at 100% in objdiff, completing the TU; declaration and doc entry added.
