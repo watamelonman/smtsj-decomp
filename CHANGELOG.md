@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all seven functions in `src/game/unit_02100208.c`, with typed comparator records and documented ordering.
 - Matched all four functions in `src/game/unit_020e78b8.c`, with typed work, message, and descriptor layouts.
 - `src/game/unit_020df5b8.c`: all seven functions now have matching C, including entry checks, overlay thunks, and six-descriptor initialization.
 - Match all six functions in `src/game/unit_020eed24.c`, with typed work layouts and documented callback/array operations.
