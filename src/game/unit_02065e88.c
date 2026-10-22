@@ -458,7 +458,7 @@ void func_02057e58(int arg0, int arg1, int arg2);
 void func_02057eb8(int arg0);
 void Unk072238_Nop_072370(Unk065e88Work *object);
 void func_0207498c(Unk065e88Work *object);
-void func_02092624(Unk065e88Work *object);
+void Unk090e60_Unk_092624(Unk065e88Work *object);
 /* At 02066c94, skips owners with +0x234 == 11 or +0x390 == 8.
  * Otherwise brackets mode-specific callbacks with 02057e58/02057eb8 calls.
  * The owner must be readable through +0x393; no gameplay purpose is known. */
@@ -472,7 +472,7 @@ void func_02066c94(Unk065e88Work *object)
     case 1: Unk072238_Nop_072370(object); break;
     case 2:
     case 3: func_0207498c(object); break;
-    case 4: func_02092624(object); break;
+    case 4: Unk090e60_Unk_092624(object); break;
     case 0:
     case 5:
     case 6: break;

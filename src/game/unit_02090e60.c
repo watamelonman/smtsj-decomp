@@ -1,6 +1,6 @@
 /* src/game/unit_02090e60.c: list screen helpers (work layout below).
  *
- * Matched so far: func_02092624 (per-frame draw), Unk090e60_Unk_0937a0 (text list rebuild)
+ * Matched so far: Unk090e60_Unk_092624 (per-frame draw), Unk090e60_Unk_0937a0 (text list rebuild)
  * and func_020934c8 (entry refresh).
  * The remaining functions in this translation unit are still linked from the delinked
  * original; see docs/functions/game-unit-02090e60.md for the hard-function notes.
@@ -116,7 +116,7 @@ typedef struct Unk090e60Work {
     s16 unk_0154;
     s16 unk_0156;
     u8 pad_0158[0x4];
-    Unk090e60Slot *unk_015c[24]; /* Twenty-four slots: func_02092624 loops i < 24. */
+    Unk090e60Slot *unk_015c[24]; /* Twenty-four slots: Unk090e60_Unk_092624 loops i < 24. */
     u8 pad_01bc[0x134];
     u32 unk_02f0;
     s16 unk_02f4;
@@ -210,7 +210,7 @@ int Unk096754_Unk_096ab0(int index);
  * fade-in rectangle in states 5/6 from +0x3e7; states 1/2 draw the 24-slot grid (+0x15c)
  * and its cursor (+0x154/+0x156); states 3/4/7 draw the dimming rectangle.
  * Evidence: the jump table at 0x020926a4 and the call sequence through 0x020934ac. */
-void func_02092624(Unk090e60Work *work)
+void Unk090e60_Unk_092624(Unk090e60Work *work)
 {
     u8 text[16];
     Unk090e60Clip clip;
