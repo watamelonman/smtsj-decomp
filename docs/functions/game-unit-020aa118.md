@@ -184,3 +184,12 @@ these operations but do not establish their wider gameplay purpose.
 - `Unk0aa118_Unk_0afab0`: hand-matched
 - `Unk0aa118_Unk_0afaf8`: hand-matched
 - `Unk0aa118_Unk_0afb40`: hand-matched
+
+### M1-T1080 review corrections
+
+Node id (+0x04) and kind/flags (+0x84), work flags (+0x08) and table
+pointer (+0x10) now use typed members. The shared global prefix is declared
+in `include/game/unit_020aa118.h` and documented in `docs/structs.md`.
+`func_020af9f4` returns borrowed `u8 *` storage; existing integer-address
+consumers cast explicitly. The jump-table return groups and bit-2 shift test
+have source comments. The deferred `func_020ae058` trials above are unchanged.

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Replaced M1-T1080 raw node, work and global field accesses with typed layouts and made the fallback table resolver return a pointer.
 - Matched seven M1-T1080 unit_020aa118 dispatch, table and temporary-list functions at 100% objdiff; documented the remaining descriptor submission function and its measured trials on the hard list.
 - Matched seven of the eight M1-T1079 unit_020aa118 functions at 100% objdiff (node append/free, unique-id insert, record forwarding, group flag clear, list insert) and documented `func_020aa298` with its measured matching trials on the hard list.
 - Verified all eight M1-T1122 functions in `src/CampStatus.c` at 100% objdiff, adding the missing `func_020dcb44` flag setter, typed struct fields, and per-function doc entries.

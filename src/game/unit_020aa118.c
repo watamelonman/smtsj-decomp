@@ -1,3 +1,5 @@
+#include "game/unit_020aa118.h"
+
 /*
  * src/game/unit_020aa118.c: matched functions (see docs). Bodies marked 'decompiler-derived' were
  * lifted from Ghidra output and cleaned; field meanings are not known yet.
@@ -8,17 +10,23 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 
 /* 0x90-byte list node allocated by Unk0aa118_Unk_0afb90; the first word
- * links to the next node. The rest of the layout is not known yet. */
+ * links to the next node; +4 holds an id and +0x84 holds kind/flags. */
 typedef struct Unk0aa118Node {
     struct Unk0aa118Node *next;     /* +0x00 */
-    u8 pad_0004[0x8c];
+    u32 unk_0004;
+    u8 pad_0008[0x7c];
+    u32 unk_0084;
+    u8 pad_0088[0x8];
 } Unk0aa118Node;
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0aa118Work {
     u8 pad_0000[0x4];
     s32 unk_0004;                   /* node count */
-    u8 pad_0008[0x10];
+    u32 unk_0008;
+    u8 pad_000c[4];
+    u8 *unk_0010;
+    u8 pad_0014[4];
     Unk0aa118Node *unk_0018;        /* list head */
     Unk0aa118Node *unk_001c;        /* list tail */
 } Unk0aa118Work;
@@ -112,7 +120,7 @@ int Unk0aa118_Advance(Unk0aa118List *l)
 void func_020aa4f4();
 void func_020ae1e8(u32 *p);
 extern u8 data_02176b18[];
-int Unk044904_Get_data_0215ee98();
+u32 Unk044904_Get_data_0215ee98(void);
 int func_020b081c();
 int func_0204add4();
 void func_0204a7b4();
@@ -265,7 +273,7 @@ int func_0204f108();
 int func_0209fd64();
 int func_020ab62c();
 void Unk0aa118_Unk_0ab8f8(u32 p);
-int func_020af9f4(int category, u32 id, int reverse);
+u8 *func_020af9f4(int category, u32 id, int reverse);
 void func_020afbdc(Unk0aa118Work *w);
 int Unk0afc28_Unk_0b0930();
 int Unk0caea8_GetInRange();
@@ -337,7 +345,7 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
     else {
       tmp3 = 0;
     }
-    tmp3 = func_020af9f4(tmp3,arg1,0);
+    tmp3 = (u32)func_020af9f4(tmp3,arg1,0);
     *(u32 *)(tmp2 + 0x10) = tmp3;
     if (tmp5 == 1) {
       tmp3 = 2;
@@ -348,7 +356,7 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
     else {
       tmp3 = 0;
     }
-    tmp3 = func_020af9f4(tmp3,arg1,1);
+    tmp3 = (u32)func_020af9f4(tmp3,arg1,1);
     *(u32 *)(tmp2 + 0x14) = tmp3;
     *(u32 *)(tmp2 + 8) = *(u32 *)(tmp2 + 8) | 0x10;
     tmp4 = (int)Unk0aa118_Unk_0afb90((Unk0aa118Work *)tmp2);
@@ -564,14 +572,15 @@ void func_020ae058(u32 id);
  * A zero bypass increments the global 16-bit counter even when rejected. */
 int func_020ae0d8(u32 id, int bypass, int unused)
 {
-    if ((FIELD(u32, Unk044904_Get_data_0215ee98(), 64) << 29) >> 31) {
+    /* The shifts test bit 2 while retaining the original instruction sequence. */
+    if ((((Unk0aa118Global *)Unk044904_Get_data_0215ee98())->unk_0040 << 29) >> 31) {
         func_0204f158(0, 32, 6, 0);
         return 0;
     }
     if (bypass == 0) {
-        u8 *g = (u8 *)Unk044904_Get_data_0215ee98();
-        int result = func_020afe64(FIELD(u16, g, 58));
-        FIELD(u16, g, 58)++;
+        Unk0aa118Global *g = (Unk0aa118Global *)Unk044904_Get_data_0215ee98();
+        int result = func_020afe64(g->unk_003a);
+        g->unk_003a++;
         if (result == 0) {
             func_0204f158(0, 32, 5, 0);
             return 0;
@@ -588,7 +597,7 @@ void func_020ae16c(u32 *p)
     if (((p[0] >> 16) & 255) == 1) {
         int bypass;
         if (Unk044904_Unk_045460(1) != 0 &&
-            FIELD(u16, Unk044904_Get_data_0215ee98(), 56) == 0) {
+            ((Unk0aa118Global *)Unk044904_Get_data_0215ee98())->unk_0038 == 0) {
             bypass = 1;
         } else {
             bypass = 0;
@@ -604,17 +613,17 @@ void func_020ae16c(u32 *p)
  * The second word equal to UINT_MAX terminates the borrowed input array. */
 void func_020ae1e8(u32 *p)
 {
-    u32 *w = Unk0aa118_Unk_0afb64(p[0]);
-    w[4] = (u32)Unk0aa118_Unk_0af8d8(2, (u32)data_0214d318, 0);
-    w[2] &= ~16;
+    Unk0aa118Work *w = (Unk0aa118Work *)Unk0aa118_Unk_0afb64(p[0]);
+    w->unk_0010 = Unk0aa118_Unk_0af8d8(2, (u32)data_0214d318, 0);
+    w->unk_0008 &= ~0x10;
     while (p[1] != ~0U) {
-        Unk0aa118Node *node = Unk0aa118_Unk_0afb90((Unk0aa118Work *)w);
-        FIELD(u32, node, 4) = p[0];
+        Unk0aa118Node *node = Unk0aa118_Unk_0afb90(w);
+        node->unk_0004 = p[0];
         p += 2;
-        FIELD(u32, node, 132) = (FIELD(u32, node, 132) & ~255) | 2;
+        node->unk_0084 = (node->unk_0084 & ~0xff) | 2;
     }
     func_0209fd64(w);
-    func_020afbdc((Unk0aa118Work *)w);
+    func_020afbdc(w);
 }
 
 /* Resolves a table using the category byte of p's id, processes it, then
@@ -650,7 +659,7 @@ u8 *func_020af85c(int group, int index)
 
 /* Tries two id resolvers in order, then returns borrowed table storage;
  * data_0214fef0 supplies the fallback id when both resolvers return zero. */
-int func_020af9f4(int category, u32 id, int reverse)
+u8 *func_020af9f4(int category, u32 id, int reverse)
 {
     u32 resolved = 0;
     u32 found = func_020cb1a0(id);
@@ -663,15 +672,16 @@ int func_020af9f4(int category, u32 id, int reverse)
         }
     }
     if (resolved != 0) {
-        return (int)Unk0aa118_Unk_0af8d8(category, resolved, reverse);
+        return Unk0aa118_Unk_0af8d8(category, resolved, reverse);
     }
-    return (int)Unk0aa118_Unk_0af8d8(category, (u32)data_0214fef0, reverse);
+    return Unk0aa118_Unk_0af8d8(category, (u32)data_0214fef0, reverse);
 }
 
 /* Dispatches kinds 5 and 6 through separate id resolvers to request 32.
  * The borrowed four-word record holds kind at +8 and id at +12. */
 void func_020ab2c8(u32 *p)
 {
+    /* Empty cases preserve the original jump table's distinct return groups. */
     switch (p[2]) {
     case 0: break;
     case 1:
