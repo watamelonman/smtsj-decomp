@@ -46,15 +46,41 @@ No assembly or fallback bodies were needed.
 Hard list for M1-T1135: none.
 `Unk0bd5f0_Unk_0c75a8` remains decompiler-derived and outside this card.
 
-## Not done in M1-T1136
-- `Unk0bd5f0_Unk_0c1870`
-- `Unk0bd5f0_Unk_0c1918`
-- `func_020c84c0`
-- `func_020bd9c4`
-- `func_020c18c0`
-- `func_020c2578`
-- `func_020c72a4`
-- `Unk0bd5f0_Unk_0c2050`: decompiler-derived
+## M1-T1136
+Seven targets match at 100% with the configured MWCC compiler and objdiff.
+Names are retained because the instruction accesses establish behavior but not domain meaning.
+
+- `Unk0bd5f0_Unk_0c1870` (80 B): searches the signed-byte list at work-area
+  +0x348 for the signed value at +0x354+i; returns the count at +0x357 on failure.
+  The caller must provide a readable mapping index.
+- `Unk0bd5f0_Unk_0c1918` (80 B): maps i through the signed byte at +0x348;
+  returns false for a negative mapping, otherwise tests the mapped 60-byte record's
+  +0xa8 halfword for 1 or its signed +0x92 halfword for a nonpositive value.
+- `func_020c84c0` (80 B): calls `func_020c7304`, decrements the byte stack
+  count at +0x124, restores the selected +0x128 entry through `func_020bcfc4`,
+  forwards +0x108, +0x110 and the low byte of (+0x54 + 100) to `func_020c72a4`,
+  then calls `Unk0a0ce4_Unk_0a0da4(2)`. Requires a populated selection stack.
+- `func_020bd9c4` (84 B): initializes the descriptor size to 352 and kind to 0,
+  clears +0x14 and stores five callback addresses; preserves +8.
+- `func_020c2578` (88 B): initializes the descriptor size to 448 and kind to 3,
+  clears +0x14 and stores its five callback addresses; preserves +8.
+- `func_020c72a4` (96 B): looks up group 12 with the caller's selector; rejects
+  indices at or above table word +12, otherwise resets conversion state, looks up
+  and converts the entry, then forwards it to the borrowed object with (-1, 0, 0).
+- `Unk0bd5f0_Unk_0c75a8` (100 B): compares readable halfword pairs, putting
+  accepted ids first, then ordering by the second halfword and finally the id.
+
+### Hard list for M1-T1136
+- `func_020c18c0` (88 B): remains linked from the original delinked object.
+  C trials implemented the signed mapping lookup at +0x348+i, a three-entry
+  reverse scan at +0x354 and -1 for a negative or absent mapping. Best measured
+  objdiff was 96.59%. MWCC emitted `sublt r0, r2, #1` for the early -1 return
+  instead of `mvnlt r0, #0`, and reversed the loop equality operands.
+  Tried signed/unsigned counters, signed-byte/int keys, declaration and initializer
+  ordering, explicit result locals, conditional returns and integer-address forms.
+  No nonmatching body is retained; a human can use `tools/decompme.py` for a scratch.
+
+`Unk0bd5f0_Unk_0c2050` remains decompiler-derived and outside this card.
 
 ## Not done in M1-T1137
 - `func_020c1f40`

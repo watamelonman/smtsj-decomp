@@ -44,6 +44,8 @@ int Unk09974c_HasFlagsMid(void *f);
 void CampStatus_Unk_0dde3c(void *obj, u32 a, u32 b, const u32 *ids, u32 n);
 void Unk0ddeb0_Unk_0ddeb0(void *obj, int a, int b, int c, int d, int e);
 void func_020c72a4(void *obj, u32 a, u32 b);
+/* Returns the first matching signed-byte entry at +0x348, or the count at +0x357.
+   i indexes the caller-owned three-entry mapping at +0x354. */
 int Unk0bd5f0_Unk_0c1870(int i)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
@@ -56,6 +58,8 @@ int Unk0bd5f0_Unk_0c1870(int i)
     return j;
 }
 
+/* For a nonnegative signed mapping at +0x348+i, tests the mapped 60-byte
+   record: true when its +0xa8 halfword is 1 or its signed +0x92 halfword is <= 0. */
 int Unk0bd5f0_Unk_0c1918(int i)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
@@ -103,7 +107,8 @@ int Unk0bd5f0_Unk_0c7588(u16 *arg0,u16 *arg1)
 
 
 
-/* decompiler-derived */
+/* Orders accepted ids before unaccepted ids, then compares the second halfword
+   and finally the id. Each argument borrows a readable pair of halfwords. */
 int Unk0bd5f0_Unk_0c75a8(u16 *arg0,u16 *arg1)
 {
   int tmp1;
@@ -297,4 +302,88 @@ int func_020c1968(int idx)
 {
     s8 *flags = (s8 *)((u32)Unk02e000_GetWorkArea() + (u32)idx + 0x300);
     return flags[0x48] >= 0;
+}
+
+/* Callback addresses are stored here without invoking them; their full calling
+   contracts are not established by these descriptor initializers. */
+typedef struct Unk0bd5f0Descriptor {
+    u32 size;
+    u32 kind;
+    u32 unk_0008;
+    void (*unk_000c)(void *);
+    void (*unk_0010)(void *);
+    u32 unk_0014;
+    void (*unk_0018)(void *);
+    void (*unk_001c)(void *);
+    void (*unk_0020)(void *);
+} Unk0bd5f0Descriptor;
+
+extern void func_020bf240(void *);
+extern void func_020bda18(void *);
+extern void func_020bfddc(void *);
+extern void func_020c0c5c(void *);
+extern void func_020c0d48(void *);
+extern void func_020c5094(void *);
+extern void func_020c25d0(void *);
+extern void func_020c5dc0(void *);
+extern void func_020c67a0(void *);
+extern void func_020c6888(void *);
+
+/* Initializes a 352-byte, kind-zero callback descriptor, preserving +8. */
+void func_020bd9c4(Unk0bd5f0Descriptor *p)
+{
+    p->size = 352;
+    p->kind = 0;
+    p->unk_000c = func_020bf240;
+    p->unk_0010 = func_020bda18;
+    p->unk_0014 = 0;
+    p->unk_0018 = func_020bfddc;
+    p->unk_001c = func_020c0c5c;
+    p->unk_0020 = func_020c0d48;
+}
+
+/* Initializes a 448-byte, kind-three callback descriptor, preserving +8. */
+void func_020c2578(Unk0bd5f0Descriptor *p)
+{
+    p->size = 448;
+    p->kind = 3;
+    p->unk_000c = func_020c5094;
+    p->unk_0010 = func_020c25d0;
+    p->unk_0014 = 0;
+    p->unk_0018 = func_020c5dc0;
+    p->unk_001c = func_020c67a0;
+    p->unk_0020 = func_020c6888;
+}
+
+extern u32 *func_020445f4(u32 group, u32 selector);
+extern void func_02063920(void);
+extern u32 func_0204fed8(u32 *table, u32 index);
+extern u32 func_02063a30(u32 value);
+extern void func_02061f10(void *obj, int a, int b, int c, u32 value);
+
+/* Uses group 12 and the supplied selector; only indices below table word +12
+   are converted and forwarded to obj. The table and obj are borrowed. */
+void func_020c72a4(void *obj, u32 selector, u32 index)
+{
+    u32 *table = func_020445f4(12, selector);
+    if (index >= table[3]) return;
+    func_02063920();
+    func_02061f10(obj, -1, 0, 0, func_02063a30(func_0204fed8(table, index)));
+}
+
+extern void func_020c7304(void *obj);
+extern void func_020bcfc4(void *obj, u32 value);
+extern void Unk0a0ce4_Unk_0a0da4(u32 value);
+
+/* Pops the byte-sized selection stack at +0x124 after func_020c7304, restores
+   its value through +0x44, updates the +0x108 object and signals value 2.
+   Requires a populated stack and readable entries starting at +0x128. */
+void func_020c84c0(u8 *obj)
+{
+    func_020c7304(obj);
+    FIELD(u8, obj, 292)--;
+    func_020bcfc4(obj + 68, FIELD(u32, obj + FIELD(u8, obj, 292) * 4, 296));
+    func_020c72a4(FIELD(void *, obj, 264), FIELD(u8, obj, 272),
+                  (u8)(FIELD(u32, obj, 84) + 100));
+    Unk0a0ce4_Unk_0a0da4(2);
 }
