@@ -304,9 +304,13 @@ Unk09a268Rec *Unk09a268_Unk_09c484(int arg0)
   return (Unk09a268Rec *)(arg0 * 0x1c + ((int)data_0213be64));
 }
 
-/* Partial body layout: only the flag read by 09a844 is established here. */
+/* Partial body layout: notification halfwords at +0x50/+0x52 and the flag
+ * read by 09a844 are established by their respective field accesses. */
 typedef struct Unk09a268GameStateBody {
-    u8 pad_0000[0x3e0];
+    u8 pad_0000[0x50];
+    s16 unk_0050;
+    s16 unk_0052;
+    u8 pad_0054[0x38c];
     s32 unk_03e0;
 } Unk09a268GameStateBody;
 
@@ -437,7 +441,8 @@ u32 Unk09a268_Unk_09bb38(void)
 
 int Unk02f2a8_GetCurrentCell38e8();
 void Unk09a268_SetOnlyBit();
-int func_0209c548();
+typedef struct Unk09a268MapWork Unk09a268MapWork;
+void func_0209c548(Unk09a268MapWork *work);
 /* Reads byte +0x1A of the record selected for (a, b); kinds 20 and 23 are handled
  * by their own helpers instead. Evidence: the two compared func_0209bb68 results. */
 int func_0209be20(u32 a, u32 b)
@@ -476,7 +481,7 @@ void Unk09a268_Unk_09cb10(u32 arg0)
   Unk09a268_SetOnlyBit(value2,value1->unk_19);
   *(u8 *)(value2 + 1) = 1;
   *(u16 *)(value2 + 2) = 0;
-  func_0209c548(arg0);
+  func_0209c548((Unk09a268MapWork *)arg0);
 }
 
 /* Byte +0x1B of the record for (a, b), or 0 when absent. */
@@ -1421,4 +1426,284 @@ void func_0209b3f8(Unk09a268Work *work)
                       16, 2, text, 10, data_0214c9b4, work->unk_0038);
     }
     func_02057eb8(-1);
+}
+
+/* Only fields observed by the transition update are represented. */
+typedef struct Unk09a268PendingOwner {
+    u8 pad_0000[0x5c];
+    u32 unk_005c;
+} Unk09a268PendingOwner;
+typedef struct Unk09a268MapWork {
+    Unk09a268PendingOwner *unk_0000;
+    u8 pad_0004[0x30];
+    s8 unk_0034[0x24];
+    u16 unk_0058;
+    u8 pad_005a[0x4a];
+    u32 unk_00a4;
+    u8 unk_00a8[0x198];
+    u8 unk_0240[0x7240];
+    u8 unk_7480;
+    u8 pad_7481[1];
+    s8 unk_7482;
+    s8 unk_7483;
+    u8 pad_7484[8];
+    u32 unk_748c;
+    u32 unk_7490;
+} Unk09a268MapWork;
+/* Packed map flags are nibbles 3, 4 and 5 in entry word +4. */
+typedef struct Unk09a268MapEntry {
+    u32 unk_0000;
+    u32 pad:12;
+    u32 unk_0004_12:4;
+    u32 unk_0004_16:4;
+    u32 unk_0004_20:4;
+    u32 rest:8;
+} Unk09a268MapEntry;
+void Unk0a0ce4_Unk_0a0da4(int value);
+void func_02052d7c(void *dst, u32 value);
+void Unk02d15c_Call_02d91c(void);
+int func_0202d170(void);
+void func_0202d198(void);
+int Unk02d15c_Unk_02d794(int x, int y);
+int Unk0e5fb8_Unk_0e63c8(int value);
+/* Updates the pending transition from adjacent-cell flag differences. Evidence:
+ * direction at work-area +0x358 selects the neighbor; entry word +4 nibbles
+ * select writes to +0x7480/+0x748c/+0x7490. The work object is writable. */
+void func_0209c548(Unk09a268MapWork *work)
+{
+    int x, y, changed;
+    Unk09a268MapEntry *current, *next;
+    int pending;
+    work->unk_0000->unk_005c = 1;
+    Unk0a0ce4_Unk_0a0da4(work->unk_0058);
+    func_02052d7c(work->unk_00a8, work->unk_00a4);
+    work->unk_7480 = 0;
+    x = work->unk_7482;
+    y = work->unk_7483;
+    switch (Unk02e000_GetWorkArea()->unk_0358) {
+    case 0: y--; break;
+    case 1: x++; break;
+    case 2: y++; break;
+    case 3: x--; break;
+    }
+    changed = 0;
+    Unk02d15c_Call_02d91c();
+    if (func_0202d170() != 0) {
+        do {
+            if (Unk02d15c_Unk_02d794(x, y) == 1) {
+                work->unk_7480 = 2;
+                changed = 1;
+                work->unk_748c = 1;
+                work->unk_7490 = 1;
+                break;
+            } else {
+                func_0202d198();
+            }
+        } while (func_0202d170() != 0);
+    }
+    if (changed == 0) {
+        current = (Unk09a268MapEntry *)Unk038fbc_Unk_039160((u32)work->unk_0240,
+            Unk02e000_GetWorkArea()->unk_0364, Unk02e000_GetWorkArea()->unk_0365);
+        next = (Unk09a268MapEntry *)Unk038fbc_Unk_039160((u32)work->unk_0240, x, y);
+        if (current == 0 || next == 0) return;
+        pending = 0;
+        if (current->unk_0004_12 != next->unk_0004_12) {
+            work->unk_7480 = 1;
+            work->unk_748c = 1;
+            if (current->unk_0004_12 == 0) work->unk_7490 = 1;
+            pending = 1;
+        }
+        if (pending == 0) {
+            u32 b = next->unk_0004_16;
+            u32 a = current->unk_0004_16;
+            if (a != b) {
+                int value = 0;
+                if (b != 0) value = work->unk_0034[b - 1];
+                else if (a != 0) value = work->unk_0034[a - 1];
+                if (value >= 0 && Unk0e5fb8_Unk_0e63c8(value) != 0) {
+                    pending = 1;
+                    work->unk_7480 = 1;
+                    work->unk_748c = 1;
+                    work->unk_7490 = 1;
+                }
+            }
+        }
+        if (pending == 0 && current->unk_0004_20 != next->unk_0004_20) {
+            work->unk_7480 = 1;
+            work->unk_748c = 1;
+            work->unk_7490 = 1;
+        }
+    }
+}
+
+/* Word-backed element indices retain the packed field access width. */
+typedef struct Unk09a268PackedElement {
+    u32 low:8;
+    u32 index:8;
+    u32 rest:16;
+} Unk09a268PackedElement;
+int Unk116598_Unk_117050(int x, int y);
+int Unk0e651c_TestFlag(u32 value, u32 bit);
+int func_021227fc(int x, int y);
+int Unk1124f0_Unk_112564(int x, int y);
+int Unk116360_Unk_116438(int x, int y);
+int Unk10b4d0_Unk_10b7bc(void);
+int func_0210b6c8(u32 value);
+int Unk10b4d0_Unk_10b794(void);
+int Unk1122bc_IsCurrent(u32 value);
+int Unk1122bc_Unk_1124c8(void);
+int Unk1159f8_IsCurrent(u32 value);
+int Unk1159f8_Unk_115c68(int x, int y);
+/* Dispatches the located cell's kind to its state predicate, returning zero for
+ * absent maps/cells and unsupported kinds. Evidence: 09bb68's kind mapping and
+ * the element-flag tests in the 0209c1e4 jump table. Coordinates are map cells. */
+int func_0209c1a0(u32 handle, void *table, int x, int y)
+{
+    int result;
+    u8 *entry;
+    u32 encoded;
+    if (handle == 0) return 0;
+    result = 0;
+    entry = Unk038fbc_Unk_039160(handle, x, y);
+    if (entry != 0) {
+        encoded = *entry;
+        switch (func_0209bb68(encoded)) {
+        case 1: result = Unk116598_Unk_117050(x, y); break;
+        case 3: {
+            u8 *element = (u8 *)Unk038fbc_GetElement(handle, 0, entry[1]);
+            if (Unk0e651c_TestFlag(Unk02f2a8_Unk_0349c4(GetGameState() + 4, x, y), element[26]) == 1)
+                result = 2;
+            break;
+        }
+        case 5: result = func_021227fc(x, y); break;
+        case 8: result = Unk1124f0_Unk_112564(x, y); break;
+        case 11: result = Unk116360_Unk_116438(x, y); break;
+        case 12: result = Unk10b4d0_Unk_10b7bc(); break;
+        case 16: {
+            Unk09a268PackedElement *element = (Unk09a268PackedElement *)Unk038fbc_GetElement(handle, 7, entry[1]);
+            if (Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4(GetGameState() + 4, x, y), element->index) == 3) {
+                u8 *cell = Unk0392f8_Unk_0394b8(table, x, y);
+                if (cell != 0) result = func_0209c4e0(cell) == 1 ? -1 : 2;
+            }
+            break;
+        }
+        case 17: {
+            u8 *element = (u8 *)Unk038fbc_GetElement(handle, 8, entry[1]);
+            if (Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4(GetGameState() + 4, x, y), *element) == 3) {
+                u8 *cell = Unk0392f8_Unk_0394b8(table, x, y);
+                if (cell != 0) result = func_0209c4e0(cell) == 1 ? -1 : 2;
+            }
+            break;
+        }
+        case 19:
+            if (func_0210b6c8(Unk02e000_GetWorkArea()->unk_035c) == 1) {
+                result = Unk10b4d0_Unk_10b794();
+                break;
+            }
+            if (Unk1122bc_IsCurrent(Unk02e000_GetWorkArea()->unk_035c) == 1) {
+                result = Unk1122bc_Unk_1124c8();
+                break;
+            }
+            if (Unk1159f8_IsCurrent(Unk02e000_GetWorkArea()->unk_035c) == 1)
+                result = Unk1159f8_Unk_115c68(x, y);
+            break;
+        case 20:
+        case 22: result = func_0209a970(encoded, x, y); break;
+        case 23: {
+            Unk09a268PackedElement *element = (Unk09a268PackedElement *)Unk038fbc_GetElement(handle, 11, entry[1]);
+            result = Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4(GetGameState() + 4, x, y), element->low) * 2;
+            break;
+        }
+        }
+    }
+    return result;
+}
+
+Unk09a268Cell *Unk02f2a8_GetCell38e8(int x, int y);
+/* Updates kinds 30/31/33/34 in the clipped seven-by-seven neighborhood.
+ * Evidence: encoded cell kinds select Manhattan radii 1/2, record 20 supplies
+ * state bits, and body +0x50/+0x52 supplies the once-per-call notification.
+ * Coordinates are cells within the 45 by 40 map. */
+void func_0209aa00(u32 handle, int x, int y)
+{
+    Unk09a268GameStateBody *body;
+    Unk09a268Rec *record;
+    int notified;
+    int left, top, right, bottom;
+    int column, row;
+    if (Unk1122bc_Unk_1124a0() == 0) return;
+    body = GameState_GetBody();
+    record = Unk09a268_Unk_09c484(20);
+    left = x - 3;
+    top = y - 3;
+    right = x + 3;
+    bottom = y + 3;
+    if (left < 0) left = 0;
+    if (top < 0) top = 0;
+    if (right > 44) right = 44;
+    if (bottom > 39) bottom = 39;
+    notified = 0;
+    for (row = top; row <= bottom; row++) {
+        column = left;
+        if (column <= right) {
+            int dy = y - row;
+            int negative_dy = -dy;
+            do {
+                u8 *entry = Unk038fbc_Unk_039160(handle, column, row);
+                if (entry != 0) {
+                    int radius = 0;
+                    int notification = -1;
+                    switch (*entry) {
+                    case 30:
+                        radius = 1;
+                        if (body != 0) notification = body->unk_0050;
+                        break;
+                    case 31:
+                        radius = 2;
+                        if (body != 0) notification = body->unk_0050;
+                        break;
+                    case 33:
+                        radius = 1;
+                        if (body != 0) notification = body->unk_0052;
+                        break;
+                    case 34:
+                        radius = 2;
+                        if (body != 0) notification = body->unk_0052;
+                        break;
+                    }
+                    if (radius > 0) {
+                        Unk09a268Cell *cell = Unk02f2a8_GetCell38e8(column, row);
+                        int distance_y = dy >= 0 ? dy : negative_dy;
+                        int dx = x - column;
+                        if (dx < 0) dx = -dx;
+                        if (dx + distance_y <= radius) {
+                            if (cell->kind == 3 || cell->kind == 0) {
+                                Unk09a268_Unk_09a80c((u32)cell, 1);
+                                Unk09a268_Unk_09a830((u32)cell, 0);
+                                Unk09a268_Unk_09a870((u32)cell, 0);
+                                Unk09a268_SetOnlyBit((u32)cell, record->unk_19);
+                                cell->kind = 1;
+                                cell->counter = 0;
+                                if (notification >= 0 && notified == 0) {
+                                    Unk0a0ce4_Unk_0a0da4(notification);
+                                    notified = 1;
+                                }
+                            }
+                        } else if (cell->kind == 1 || cell->kind == 2) {
+                            Unk09a268_Unk_09a80c((u32)cell, 1);
+                            Unk09a268_Unk_09a830((u32)cell, 0);
+                            Unk09a268_Unk_09a870((u32)cell, 0);
+                            Unk09a268_SetOnlyBit((u32)cell, record->unk_19);
+                            cell->kind = 3;
+                            cell->counter = 0;
+                            if (notification >= 0 && notified == 0) {
+                                Unk0a0ce4_Unk_0a0da4(notification);
+                                notified = 1;
+                            }
+                        }
+                    }
+                }
+            } while (++column <= right);
+        }
+    }
 }

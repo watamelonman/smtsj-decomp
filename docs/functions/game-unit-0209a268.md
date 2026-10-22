@@ -249,3 +249,35 @@
   the row/column registers throughout the loop. No differing C body is
   retained. A human can use `tools/decompme.py` for a register-allocation
   scratch; no upload was made.
+
+
+## M1-T1016
+- `func_0209c548` (544 B): sets owner +0x5c, forwards work +0x58 and
+  +0xa4 to the setup helpers, and chooses the adjacent cell using direction
+  0/1/2/3 (north/east/south/west). The engine predicate loop either arms
+  transition kind 2 or advances until its predicate clears. Otherwise, compares
+  current/adjacent entry word +4 nibbles at bits 12, 16 and 20 to arm kind 1
+  and its +0x748c/+0x7490 flags. The middle nibble indexes signed bytes at
+  work +0x34 and consults `0e63c8`. Typed partial layouts and packed fields
+  preserve the observed access widths. Verified 100% objdiff.
+- `func_0209aa00` (672 B): when `1124a0` permits, visits the clipped
+  seven-by-seven neighborhood within x=0..44, y=0..39. Encoded kinds 30/33
+  use Manhattan radius 1; 31/34 use radius 2. Inside the radius, cell kinds
+  0/3 become 1; outside it, kinds 1/2 become 3. Both transitions set flag 3,
+  clear flags 4/5, select record 20's state bits and clear the counter.
+  Body +0x50 supplies the notification for 30/31, +0x52 for 33/34; only the
+  first nonnegative notification is sent. The guarded inner loop computes
+  row distance once, after checking that the column range is nonempty.
+  Verified 100% objdiff.
+- `func_0209c1a0` (740 B): returns zero for null handles, absent entries and
+  unsupported mapped kinds; dispatches other kinds to their state predicates.
+  Kind 3 tests element 0 byte +26 as a flag. Kinds 16/17 test packed two-bit
+  flags for 3, then return -1 or 2 from the located cell classifier. Kind 19
+  tries the three current-area predicates in order. Kinds 20/22 delegate to
+  `09a970`; kind 23 doubles the packed two-bit flag selected by element 11.
+  Verified 100% objdiff. Existing symbols remain because the symbol config
+  is human-owned; the comments describe only behavior supported by accesses
+  and calls, without assigning inferred gameplay names.
+
+### M1-T1016 hard list
+None.
