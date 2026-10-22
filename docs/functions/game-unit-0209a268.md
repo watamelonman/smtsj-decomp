@@ -24,19 +24,36 @@
 - `Unk09a268_Unk_09b3cc` (44 B): reloads the palette from the work's +0xc field when +0x2c is 0.
 
 ## Hard list
-- None for this TU.
+- `func_0209a4fc` (64 B): not implemented in C. The original scans 128 records
+  (24-byte stride) at work +0x24a4, compares each +8 word to the supplied ID,
+  and calls `func_02058a1c(table, index)` for every match. Indexed struct, explicit
+  cursor, byte/word addressing, split-base, integer-address and embedded-table
+  formulations were compiled with mwccarm 2.0/sp1p5. The closest builds were
+  68 B: they retain the full table address and emit an extra register move;
+  the original retains work +0xa4 and adds 0x2400 at the call. Leave the delinked
+  implementation in place; a human can use `tools/decompme.py` for a scratch.
 
-## Not done in M1-T1010
-- `Unk09a268_Unk_09bb38`: decompiler-derived
+## M1-T1011
+- `Unk09a268_Unk_09bb38` (48 B): returns 1 when slots 0 and 9 are both empty,
+  using the two `Unk0bc1a8_IsSlotEmpty` calls. Verified 100%.
+- `Unk09a268_Unk_09a458` (52 B): forwards the index from `func_0209a3ec`
+  to `func_02058b14`, with the table at work +0x24a4. Verified 100%.
+- `Unk09a268_FindEntry` (56 B): scans the 128 records for the first pair of
+  matching +8/+16 words; returns the index or -1. Verified 100%.
+- `Unk09a268_Unk_09c4a8` (56 B): null handle returns 0; otherwise looks up an
+  entry, maps its first byte through `func_0209bb68` (or uses index 0 when
+  absent), then returns that 0x1c-byte table record. Verified 100%.
+- `func_0209a4fc` (64 B): unmatched; see the hard list above.
+- `Unk09a268_Unk_09a77c` (64 B): tests bits 0-2 and returns the first set
+  index, defaulting to 0 when none is set. Verified 100%.
+- `Unk09a268_SetOnlyBit` (64 B): selects one of bits 0-2 using `SetBit`,
+  preserving bits 3-7; values outside 0-2 clear all three. Verified 100%.
+- `func_0209c4e0` (72 B): nullable record classifier. Its original jump table
+  returns 1 for first-byte values 1, 3, 4, 5 and 6, otherwise 0. Grouping shared
+  switch cases reproduces the original jump targets. Verified 100%.
+- No new descriptive names were introduced; unknown record semantics remain neutral.
 
-## Not done in M1-T1011
-- `Unk09a268_Unk_09a458`
-- `Unk09a268_FindEntry`
-- `Unk09a268_Unk_09c4a8`
-- `func_0209a4fc`
-- `Unk09a268_Unk_09a77c`
-- `Unk09a268_SetOnlyBit`
-- `func_0209c4e0`
+## Other existing bodies
 - `Unk09a268_Unk_09cb10`: decompiler-derived
 
 ## Not done in M1-T1012

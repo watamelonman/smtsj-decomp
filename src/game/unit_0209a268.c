@@ -52,6 +52,8 @@ int Unk09a268_Unk_09a3a0(u8 *w, u32 id, u32 sub)
     return 1;
 }
 
+/* Finds or creates the (a, b) entry using c/d, then forwards e to its setter.
+ * Evidence: 0209a458 calls 0209a3ec and passes its index to 02058b14. */
 void Unk09a268_Unk_09a458(u8 *w, u32 a, u32 b, u32 c, u8 d, u32 e)
 {
     int i = func_0209a3ec(w, a, b, c, d);
@@ -68,6 +70,8 @@ void Unk09a268_SetBit(u8 *p, int bit, int on)
     }
 }
 
+/* Returns the first matching (id, sub) index in the 128-entry table, or -1.
+ * Evidence: the paired +8/+16 comparisons and 24-byte stride at 0209a4c4. */
 int Unk09a268_FindEntry(u8 *w, u32 id, u32 sub)
 {
     int j;
@@ -79,6 +83,8 @@ int Unk09a268_FindEntry(u8 *w, u32 id, u32 sub)
     return -1;
 }
 
+/* Returns the first set bit index among bits 0-2 of the byte at p, or 0.
+ * Evidence: the bit-test loop at 0209a77c; p must address a readable byte. */
 u8 Unk09a268_Unk_09a77c(u32 p)
 {
     u8 r = 0;
@@ -92,6 +98,9 @@ u8 Unk09a268_Unk_09a77c(u32 p)
     return r;
 }
 
+/* Selects bit v among bits 0-2, clearing the other two and preserving bits 3-7.
+ * Evidence: the three SetBit calls in the 0209a7bc loop; v >= 3 clears all three.
+ * p must address a writable byte. */
 void Unk09a268_SetOnlyBit(u32 p, u32 v)
 {
     u32 j;
@@ -254,7 +263,8 @@ void Unk09a268_SetCtxUnk2c30(u32 a, u32 b)
     }
 }
 
-/* decompiler-derived */
+/* Returns 1 only when slots 0 and 9 are both empty.
+ * Evidence: the two Unk0bc1a8_IsSlotEmpty calls at 0209bb38. */
 u32 Unk09a268_Unk_09bb38(void)
 {
   int value;
@@ -299,6 +309,8 @@ u8 Unk09a268_Unk_09beb0(u32 a, u32 b)
     return ret;
 }
 
+/* Returns 0 for a null handle, otherwise the table record selected by the
+ * located entry byte (index 0 when absent). Evidence: calls at 0209c4a8. */
 int Unk09a268_Unk_09c4a8(u32 h, u32 a, u32 b)
 {
     int r;
@@ -321,4 +333,25 @@ int Unk09a268_IsType1(const u8 *p)
         return 0;
     }
     return *p == 1;
+}
+
+/* Classifies a record's first byte: 1 and 3 through 6 return 1, all other
+ * values return 0. Null is accepted. Evidence: the switch at 0209c4f0. */
+int func_0209c4e0(const u8 *record)
+{
+    if (record == 0) {
+        return 0;
+    }
+    switch (*record) {
+    case 1:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        return 1;
+    case 0:
+    case 2:
+    default:
+        return 0;
+    }
 }
