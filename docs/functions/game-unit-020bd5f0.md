@@ -1,15 +1,19 @@
 # src/game/unit_020bd5f0.c
 
-- `Unk0bd5f0_Unk_0bd614`: decompiler-derived
-- `Unk0bd5f0_Unk_0c1ad8`: decompiler-derived
-- `Unk0bd5f0_Unk_0c20f0`: decompiler-derived
-- `Unk0bd5f0_Unk_0c7588`: decompiler-derived
-
-## Not done in M1-T1134
-- `Unk0bd5f0_SetCtxUnk1b8`
-- `Unk0bd5f0_IsSpecialId`
-- `Unk0bd5f0_Unk_0bd5f0`
-- `func_020c1968`
+## M1-T1134 (all 100% in objdiff)
+- `Unk0bd5f0_Unk_0bd5f0` (36 B): predicate over two words of the object in r0; true only when the
+  word at +8 is 2 and the word at +4 is >= 2.
+- `Unk0bd5f0_Unk_0bd614` (28 B): loads the word at `data_0213c4d4[index]` and forwards it to
+  `func_02057ddc`, which stores it into four consecutive words of `data_02168b24`; returns 0.
+- `Unk0bd5f0_Unk_0c1ad8` (28 B): tail-calls `func_020c8008(0, 0, 0, 0)`.
+- `Unk0bd5f0_IsSpecialId` (28 B): membership test for ids 5, 6, 8 and 22.
+- `Unk0bd5f0_Unk_0c20f0` (32 B): calls `func_020c1b94` with the object in `data_02176bb0` when that
+  pointer is non-null.
+- `Unk0bd5f0_Unk_0c7588` (32 B): lexicographic comparison of two 16-bit key pairs (word at +2 first,
+  then word at +0); returns the difference.
+- `Unk0bd5f0_SetCtxUnk1b8` (24 B): sets the word at +0x1b8 of the context in `data_02176bb4` to 1.
+- `func_020c1968` (40 B): returns whether the signed byte at offset `0x348 + index` of the shared
+  work area (`Unk02e000_GetWorkArea`) is non-negative.
 
 ## Not done in M1-T1135
 - `Unk0bd5f0_IsState22or24`
