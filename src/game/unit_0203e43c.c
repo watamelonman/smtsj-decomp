@@ -44,13 +44,15 @@ void Unk03e43c_MergeTable(u8 *src)
     }
 }
 
-void func_02020f8c();
-void func_02008848();
+void func_02020f8c(void);
+void func_02008848(void *destination, int value, u32 size);
 int func_0202092c();
 void func_020211d8();
-void func_0204b6d0();
+void func_0204b6d0(void);
 void Unk03e43c_Unk_043450();
 extern u8 data_0215ee60[];
+/* Clears the 512-byte table and its leading u16 after func_02020f8c;
+ * the two global stores in the original establish the table extent. */
 void Unk03e43c_ClearTable(void)
 {
     func_02020f8c();
@@ -90,6 +92,8 @@ int Unk03e43c_Div10Clamp16(int x)
     return r;
 }
 
+/* The byte access at +0x360 and comparison with 160 establish this counter:
+ * increment with byte wrap, then subtract 160 if the stored value is >= 160. */
 void Unk03e43c_AdvanceCounter360(void)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
@@ -136,10 +140,11 @@ void Unk03e43c_Unk_03fa3c(u8 value)
 }
 
 
-int func_02020974();
-int func_02051610();
-int func_020516d0();
-/* decompiler-derived */
+int func_02020974(int value, u32 argument);
+int func_02051610(u32 argument);
+int func_020516d0(u32 value);
+/* Obtains a value from arg1, validates it with func_02020974 and arg0,
+ * and releases it on validation failure. Returns zero on either failure. */
 int Unk03e43c_Unk_03e5a4(u32 arg0,u32 arg1)
 {
   int value1;
@@ -155,8 +160,9 @@ int Unk03e43c_Unk_03e5a4(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_020207d0();
-/* decompiler-derived */
+int func_020207d0(int value, u32 argument);
+/* Returns the acquired value when func_020207d0 accepts it with arg0;
+ * releases rejected values and returns zero on failure. */
 int Unk03e43c_Unk_03e5dc(u32 arg0,u32 arg1)
 {
   int value1;
@@ -172,8 +178,9 @@ int Unk03e43c_Unk_03e5dc(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_02020ac0();
-/* decompiler-derived */
+int func_02020ac0(int value, u32 argument);
+/* Returns the acquired value when func_02020ac0 accepts it with arg0;
+ * releases rejected values and returns zero on failure. */
 int Unk03e43c_Unk_03e614(u32 arg0,u32 arg1)
 {
   int value1;
@@ -189,8 +196,9 @@ int Unk03e43c_Unk_03e614(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_02020a74();
-/* decompiler-derived */
+int func_02020a74(int value, u32 argument);
+/* Returns the acquired value when func_02020a74 accepts it with arg0;
+ * releases rejected values and returns zero on failure. */
 int Unk03e43c_Unk_03e64c(u32 arg0,u32 arg1)
 {
   int value1;
@@ -206,28 +214,28 @@ int Unk03e43c_Unk_03e64c(u32 arg0,u32 arg1)
   return 0;
 }
 
-extern u8 data_0215e85c[];
-/* decompiler-derived */
-void Unk03e43c_Unk_03e794(int arg0,int arg1)
+/* Copies the 32 bytes at source +0x28 into table slot index. The paired
+ * byte loads/stores establish the extent; callers must supply a valid slot. */
+void Unk03e43c_Unk_03e794(const u8 *source, int index)
 {
-  int value1;
-  int value2;
-  int value3;
-  value2 = 0;
-  value3 = ((int)data_0215e85c) + arg1 * 0x20;
-  do {
-    value1 = arg0 + value2;
-    value2 = value2 + 2;
-    *(u8 *)(value3 + 2) = *(u8 *)(value1 + 0x28);
-    *(u8 *)(value3 + 3) = *(u8 *)(value1 + 0x29);
-    value3 = value3 + 2;
-  } while (value2 < 0x20);
+    const u8 *pair;
+    int offset = 0;
+    u8 *destination = data_0215e85c + index * 32;
+    do {
+        pair = source + offset;
+        offset += 2;
+        destination[2] = pair[0x28];
+        destination[3] = pair[0x29];
+        destination += 2;
+    } while (offset < 32);
 }
 
 
 
 
 int GameState_GetBody();
+/* Stores mode at global +0x30; the original checks mode 1 and a zero
+ * word at +0x34 before calling func_0204b6d0. These accesses support the name. */
 void Unk03e43c_SetMode30(int mode)
 {
     FIELD(s32, data_0215ee60, 0x30) = mode;

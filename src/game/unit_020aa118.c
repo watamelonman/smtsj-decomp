@@ -39,6 +39,8 @@ void Unk0aa118_Clear814(void *p)
     func_02008848(p, 0, 0x814);
 }
 
+/* Orders borrowed item pointers by descending word +0x14, then ascending
+ * word +0. The sorting callback passed at 0x020aa224 supports CompareItems. */
 int Unk0aa118_CompareItems(u32 **a, u32 **b)
 {
     if ((*b)[5] == (*a)[5]) {
@@ -181,8 +183,8 @@ u32 * Unk0aa118_Unk_0afb64(u32 arg0)
 }
 
 
-/* decompiler-derived */
-/* returns the table base for the record found by Unk0aa118_FindRecord (or for record 0,0) */
+/* Returns borrowed table storage selected by the first two bytes of the
+ * matching record; a missing id selects table (0, 0). */
 int Unk0aa118_Unk_0af824(u32 id)
 {
     u8 *v = Unk0aa118_FindRecord(id);
@@ -252,6 +254,8 @@ void Unk0aa118_Unk_0ab8f8(u32 p)
     }
 }
 
+/* Returns byte +58, +59, or +60 for id classifications 4, 1, or 5,
+ * respectively; other classifications return zero. p must contain these bytes. */
 u8 Unk0aa118_Unk_0ab930(u8 *p, u32 id)
 {
     switch (func_0204add4(id)) {
@@ -265,6 +269,8 @@ u8 Unk0aa118_Unk_0ab930(u8 *p, u32 id)
     return 0;
 }
 
+/* Visits the ten global pointers at +0x64 and requests operation 2 for
+ * non-null entries whose first word has a nonzero byte at bits 16..23. */
 void Unk0aa118_Unk_0acb28(void)
 {
     Unk0aa118Ptrs *g = (Unk0aa118Ptrs *)Unk044904_Get_data_0215ee98();
@@ -330,6 +336,9 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
   }
 }
 
+/* Reads data_0214d2f4 with one-based i and a three-word group offset
+ * for k == 2 or 3. The literal table access supports GetTableD2f4; the
+ * caller must supply an index within the table. Other k values use group 0. */
 u32 Unk0aa118_GetTableD2f4(int k, int i)
 {
     int b = 0;
@@ -346,6 +355,9 @@ u32 Unk0aa118_GetTableD2f4(int k, int i)
     return data_0214d2f4[b + (i - 1)];
 }
 
+/* Searches 326 records of 34 bytes by comparing id with each record +2
+ * through func_020152cc, supporting FindRecord. Returns borrowed
+ * storage for the first match, or null when absent. */
 u8 *Unk0aa118_FindRecord(u32 id)
 {
     u8 *e = data_0214d398;
@@ -407,6 +419,8 @@ u8 *Unk0aa118_Unk_0afa60(int a, u32 id, int c)
     return 0;
 }
 
+/* Returns borrowed 22-byte entries from table (39, 0); byte 2 of x equal
+ * to 1 selects the second half, using the unsigned entry count divided by 2. */
 u8 *Unk0aa118_Unk_0afab0(u32 x)
 {
     int t = Unk0aa118_Unk_0af7f8(39, 0);
@@ -419,6 +433,8 @@ u8 *Unk0aa118_Unk_0afab0(u32 x)
     return base + k * 22;
 }
 
+/* Returns borrowed 22-byte entries from table (0, 0); byte 2 of x equal
+ * to 1 selects the second half, using the unsigned entry count divided by 2. */
 u8 *Unk0aa118_Unk_0afaf8(u32 x)
 {
     int t = Unk0aa118_Unk_0af7f8(0, 0);

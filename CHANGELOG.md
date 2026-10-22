@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched all eight M1-T1095 functions in `src/game/unit_02100810.c` at 100% objdiff (work release, list rebuilds, two record-save paths, the metadata row drawer, record sorting, and the nine-row window), with typed parameters and per-function documentation.
+- Verified all eight M1-T1087 functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented mode/counter/table operations and acquisition validation helpers, and typed the paired-byte copy.
+- Verified all eight M1-T1078 table, record, and item helpers at 100% objdiff; documented their contracts and corrected stale task status.
 - Verified all eight M1-T1077 list/table/work helpers at 100% objdiff and documented their parameter contracts and observed behavior.
 - Matched M1-T1075 `func_02072374` at 100% objdiff with typed pair-matrix and display state; documented failed compiled C trials for all four deferred targets in the unit hard list (including three new decompiler-assisted trials).
 - Matched M1-T107 `func_020caea8`, including position-record path formatting, loading, and selector restoration.
