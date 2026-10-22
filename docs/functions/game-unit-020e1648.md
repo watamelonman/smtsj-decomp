@@ -330,3 +330,4 @@ added: the card's oracle is instruction identity plus the checksum gate.
   compiler's handling of the final threshold block. The function is left
   undefined for the same reason and is available for a decomp.me scratch
   (`tools/decompme.py`).
+- `func_020e33b8`: hand-matched
