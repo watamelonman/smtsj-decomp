@@ -4,19 +4,30 @@
 /* A record referenced from the slot table at +0x120. Only the id and the byte copied to the
    panel are used by this unit. */
 typedef struct Unk072238Slot {
-    u8 pad_0000[54];
+    u8 pad_0000[52];
+    u8 unk_0034;        /* +0x34 replaces the definition byte +3 in func_02075fd0 */
+    u8 pad_0035;
     u16 id;             /* +0x36 */
     u8 unk_0038;        /* +0x38 */
+    u8 pad_0039[3];
 } Unk072238Slot;
 
 /* Definition view used by the id list and pair classifier; category is read at +5. */
 typedef struct Unk072238Def {
     u16 id;             /* +0x0 */
-    u8 pad_0002;
+    u8 unk_0002;        /* +0x2 class key matched by the rule tables */
     u8 unk_0003;        /* +0x3 */
     u8 pad_0004;
     u8 category;
 } Unk072238Def;
+
+/* Second view of the same definition record (+2 class key, +3 rank), used where the
+   original reloads those bytes instead of reusing the Unk072238Def loads (func_02075fd0). */
+typedef struct Unk072238Rank {
+    u8 pad_0000[2];
+    u8 key;             /* +0x2 */
+    u8 rank;            /* +0x3 */
+} Unk072238Rank;
 
 /* Per-row state of the panel; `ids` and `flags` share indices 0..count-1. */
 typedef struct Unk072238Panel {
@@ -45,10 +56,49 @@ typedef struct Unk072238Display {
 
 /* Object passed as the first argument by Unk065e88_SetMode; layout from the observed accesses.
    The slot array size is guessed from the 12-entry panel arrays; only indices 0..11 are used. */
+/* Rule tables walked by func_02075fd0 (pointers at Work +0x88..+0x9c, counts at +0xb6..+0xc0). */
+typedef struct Unk072238Rule4 {
+    u8 a, b;            /* +0x0/+0x1 class keys (either order) */
+    u8 result;          /* +0x2 resulting class key (+0x88 table) */
+    u8 kind;            /* +0x3 rule condition (+0x88 table) */
+} Unk072238Rule4;
+
+typedef struct Unk072238RuleBits {
+    u32 key : 8;        /* bits 0-7 class key */
+    u32 id : 16;        /* bits 8-23 definition id */
+    u32 kind : 8;       /* bits 24-31 rule kind 1..3 */
+} Unk072238RuleBits;
+
+typedef struct Unk072238Rule6 {
+    u16 a, b;           /* +0x0/+0x2 definition ids (either order) */
+    u16 unk_4;
+} Unk072238Rule6;
+
+typedef struct Unk072238Rule8 {
+    u16 id;             /* +0x0 definition id */
+    u8 pad_2[5];
+    u8 key;             /* +0x7 class key */
+} Unk072238Rule8;
+
 typedef struct Unk072238Work {
-    u8 pad_0000[178];
+    u8 pad_0000[132];
+    u8 *unk_0084;       /* +0x84 base value added in func_02075fd0 */
+    Unk072238Rule4 *rules_088;
+    Unk072238Rule4 *rules_08c;
+    Unk072238RuleBits *rules_090;
+    u8 pad_0094[4];
+    Unk072238Rule6 *rules_098;
+    Unk072238Rule8 *rules_09c;
+    u8 pad_00a0[18];
     u8 count;           /* +0xb2 */
-    u8 pad_00b3[93];
+    u8 pad_00b3[3];
+    u16 n_088;          /* +0xb6 */
+    u16 n_08c;          /* +0xb8 */
+    u16 n_090;          /* +0xba */
+    u8 pad_00bc[2];
+    u16 n_098;          /* +0xbe */
+    u16 n_09c;          /* +0xc0 */
+    u8 pad_00c2[78];
     void *names;
     void *list;         /* +0x114 */
     u8 pad_0118[8];
@@ -77,7 +127,8 @@ typedef struct Unk072238Work {
 
 /* Work area returned by Unk02e000_GetWorkArea; keys map a slot index to an entry id. */
 typedef struct Unk072238Area {
-    u8 pad_0000[840];
+    u8 pad_0000[120];
+    Unk072238Slot records[12]; /* +0x78, 60 bytes each */
     s8 keys[12];        /* +0x348 */
     u8 pad_0354[3];
     u8 entry_count;
@@ -316,10 +367,13 @@ int Unk0e651c_Unk_0e666c(int n);
 void * func_020445f4(int a, int b);
 u32 func_0204fed8(void *p, int id);
 void Unk065e88_Unk_0672fc(void *p, int a, int b);
-/* Deferred pair classifier: table walks compare definition ids/categories and return classes
-   0..8. Evidence: +0x88/+0x8c/+0x90/+0x98/+0x9c rule tables in the original.
-   Still supplied by the delink; the compiled candidate is not instruction-identical. */
+/* Pair classifier (defined below, before func_02072374): returns classes 0..8. */
 int func_02075fd0(Unk072238Work *p, int a, int b);
+u16 func_020685b0(Unk072238Work *p, u32 key, u32 rank);
+u16 func_02068658(Unk072238Work *p, u32 key, u32 rank);
+u16 func_02068bf8(Unk072238Work *p, const u16 *ids, int count);
+int Unk03e43c_Unk_03fa28(void);
+int Unk06a224_Unk_06a9fc(int id);
 /* Deferred draw dispatcher: reads panel.state after guarding +0x220 and +0x3b0;
    calls the two row-list draw helpers. Still supplied by the original delink. */
 void func_0207498c(Unk072238Work *p);
@@ -335,6 +389,131 @@ void func_0205c6e0(void *p);
 void func_0205c6f8(void *p);
 void Unk065e88_SetFlag3a(void *p, int n);
 void Unk06a224_Unk_06adc0(int n);
+
+/* Classifies the pair (a, b) for the pair table built by func_02072374: 8 for the same
+   definition, 6 when no result exists, 5/4/7 and 1..3 for the rule tables at +0x98/+0x8c/+0x9c
+   and +0x90, 0 for a plain class-table result. */
+int func_02075fd0(Unk072238Work *p, int a, int b)
+{
+    u16 result = 0;
+    Unk072238Def *da;
+    Unk072238Def *db;
+    u16 pair[2];
+    int i;
+    int phase;
+    int ia, ib;
+    u8 ra, rb;
+    int rank, key;
+
+    da = (Unk072238Def *)func_020a1428(a);
+    db = (Unk072238Def *)func_020a1428(b);
+    if (da->id == db->id) {
+        return 8;
+    }
+    pair[0] = a;
+    pair[1] = b;
+    if (func_02068bf8(p, pair, 2)) {
+        return 6;
+    }
+    for (i = 0; i < p->n_098; i++) {
+        if ((da->id == p->rules_098[i].a && db->id == p->rules_098[i].b) ||
+            (db->id == p->rules_098[i].a && da->id == p->rules_098[i].b)) {
+            return 5;
+        }
+    }
+    for (i = 0; i < p->n_09c; i++) {
+        if (da->id == p->rules_09c[i].id && db->unk_0002 != p->rules_09c[i].key) {
+            return da->unk_0002 == db->unk_0002 ? 6 : 7;
+        }
+        if (db->id == p->rules_09c[i].id && da->unk_0002 != p->rules_09c[i].key) {
+            return da->unk_0002 == db->unk_0002 ? 6 : 7;
+        }
+    }
+    for (i = 0; i < p->n_08c; i++) {
+        if ((da->unk_0002 == p->rules_08c[i].a && db->unk_0002 == p->rules_08c[i].b) ||
+            (db->unk_0002 == p->rules_08c[i].a && da->unk_0002 == p->rules_08c[i].b)) {
+            return 4;
+        }
+    }
+    for (i = 0; i < p->n_090; i++) {
+        if ((da->unk_0002 == p->rules_090[i].key && db->id == p->rules_090[i].id) ||
+            (db->unk_0002 == p->rules_090[i].key && da->id == p->rules_090[i].id)) {
+            u32 kind = p->rules_090[i].kind;
+            u16 r;
+            u8 lv;
+            if (kind == 1) {
+                if (da->id == p->rules_090[i].id) {
+                    lv = ((Unk072238Rank *)db)->rank + 1; key = ((Unk072238Rank *)db)->key;
+                } else {
+                    lv = ((Unk072238Rank *)da)->rank + 1; key = ((Unk072238Rank *)da)->key;
+                }
+                r = func_020685b0(p, key, lv);
+                if (r == 0 || r == da->id || r == db->id) return 6;
+                return 1;
+            }
+            if (kind == 2) {
+                if (da->id == p->rules_090[i].id) {
+                    lv = ((Unk072238Rank *)db)->rank + 1; key = ((Unk072238Rank *)db)->key;
+                } else {
+                    lv = ((Unk072238Rank *)da)->rank + 1; key = ((Unk072238Rank *)da)->key;
+                }
+                r = func_020685b0(p, key, lv);
+                if (r == 0) return 0;
+                r = func_020685b0(p, key, (u8)(((Unk072238Def *)func_020a1428(r))->unk_0003 + 1));
+                if (r == 0 || r == da->id || r == db->id) return 6;
+                return 2;
+            }
+            if (kind == 3) {
+                if (da->id == p->rules_090[i].id) {
+                    lv = ((Unk072238Rank *)db)->rank - 1; key = ((Unk072238Rank *)db)->key;
+                } else {
+                    lv = ((Unk072238Rank *)da)->rank - 1; key = ((Unk072238Rank *)da)->key;
+                }
+                r = func_02068658(p, key, lv);
+                if (r == 0 || r == da->id || r == db->id) return 6;
+                return 3;
+            }
+        }
+    }
+    phase = Unk03e43c_Unk_03fa28();
+    ia = Unk068f18_Unk_06a1a8((u8 *)p, da->id);
+    ib = Unk068f18_Unk_06a1a8((u8 *)p, db->id);
+    ra = da->unk_0003;
+    rb = db->unk_0003;
+    if (ia >= 0) {
+        ra = ((Unk072238Area *)Unk02e000_GetWorkArea())->records[ia].unk_0034;
+    }
+    if (ib >= 0) {
+        rb = ((Unk072238Area *)Unk02e000_GetWorkArea())->records[ib].unk_0034;
+    }
+    for (i = 0; i < p->n_088; i++) {
+        if ((da->unk_0002 == p->rules_088[i].a && db->unk_0002 == p->rules_088[i].b) ||
+            (db->unk_0002 == p->rules_088[i].a && da->unk_0002 == p->rules_088[i].b)) {
+            u8 kind = p->rules_088[i].kind;
+            if ((kind == 1 && phase == 8) || (kind == 9 && phase == 0) || kind == 0) {
+                u8 key = p->rules_088[i].result;
+                u8 rank;
+                int sum;
+                if (Unk06a224_Unk_06a9fc(177) && key == 17) key = 41;
+                if (Unk06a224_Unk_06a9fc(178) && key == 15) key = 39;
+                if (Unk06a224_Unk_06a9fc(179) && key == 12) key = 40;
+                if (Unk06a224_Unk_06a9fc(184)) {
+                    sum = ra + rb;
+                    if (sum % 2 == 1) rank = *p->unk_0084 + (sum + 1) / 2;
+                    else rank = *p->unk_0084 + sum / 2;
+                } else {
+                    sum = da->unk_0003 + db->unk_0003;
+                    if (sum % 2 == 1) rank = *p->unk_0084 + (sum + 1) / 2;
+                    else rank = *p->unk_0084 + sum / 2;
+                }
+                if (Unk06a224_Unk_06a9fc(183)) rank += 3;
+                result = func_020685b0(p, key, rank);
+                break;
+            }
+        }
+    }
+    return result == 0 ? 6 : 0;
+}
 
 /* Initializes the count-by-count pair table and display wrappers. The calls to
    func_02067ef4/func_02075fd0 and the nested slot-id walk establish the pair-table role.
