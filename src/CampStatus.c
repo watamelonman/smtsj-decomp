@@ -124,7 +124,7 @@ typedef struct CampStatusWork {
     u8 unk_0241;
     u8 pad_0242[0x6];
     u16 unk_0248;               /* +0x248: id for CampStatus_Unk_0dbd04 */
-    s16 unk_024a;               /* +0x24a: negative selects the icon-only path of func_020db548 */
+    s16 unk_024a;               /* +0x24a: negative selects the icon-only path of CampStatus_Unk_0db548 */
     u8 pad_024c[0x4];
     u32 unk_0250;               /* +0x250: written to 1 by func_020dcb44 */
     u8 pad_0254[0x4];
@@ -1003,7 +1003,7 @@ void CampStatus_Unk_0dbf24(CampStatusWork *work, u32 id);
 /* Refresh the icon line on unk_00c8 for the current screen mode: with unk_024a < 0 only the
  * placeholder icons (CampStatus_Unk_0dbf24) or a clear; otherwise the per-mode detail
  * helpers. */
-void func_020db548(CampStatusWork *work)
+void CampStatus_Unk_0db548(CampStatusWork *work)
 {
     if (work->unk_024a < 0) {
         if (work->unk_0008 != 0) {
