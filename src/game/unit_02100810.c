@@ -18,6 +18,16 @@ typedef struct Unk100810Ops {
 } Unk100810Ops;
 
 /*
+ * Draw handle held at +0x38 of the work objects: func_02106f50 passes the word at +0
+ * to func_020aa078, and func_021057ac stores 2 into the byte at +0x40.
+ */
+typedef struct Unk100810Handle {
+    u32 unk_00;
+    u8 pad_04[0x3c];
+    u8 unk_40;
+} Unk100810Handle;
+
+/*
  * Work object passed to the state setters in this file. Layout comes from the
  * observed accesses; the byte-sized field at +0x1f34 is a toggle cleared by
  * func_021065c8 while the words after it hold handles and flags.
@@ -33,7 +43,7 @@ typedef struct Unk100810Work {
     u32 unk_0020, unk_0024, unk_0028;
     u32 unk_002c;
     u32 unk_0030, unk_0034;
-    u32 *unk_0038;
+    Unk100810Handle *unk_0038;
     u32 unk_003c, unk_0040, unk_0044;
     u32 unk_0048;
     u8 pad_004c[0x08];
@@ -80,7 +90,7 @@ typedef struct Unk100810Table {
     u8 pad_0018[0x0c];
     u32 unk_0024, unk_0028;
     u8 pad_002c[0x0c];
-    u32 *unk_0038;
+    Unk100810Handle *unk_0038;
     u32 unk_003c;
     u8 pad_0040[0x18];
     s8 unk_0058;
@@ -659,8 +669,9 @@ void func_02105690(Unk100810Work *work)
     kinds = func_020445f4(18, 0);
     func_02008644(0, ids, 6);
     for (i = 0; i < 3; i++) {
-        u8 *base = (u8 *)Unk02e000_Unk_02e774() + 0x5c08;
-        ids[i] = *(u16 *)(base + i * 40);
+        /* Taking the array base first matches; indexing ->records[i] directly reorders the adds. */
+        Unk100810Input *records = Unk02e000_Unk_02e774()->records;
+        ids[i] = records[i].id;
     }
     func_02063920();
     for (i = 0; i < 3; i++) {
@@ -687,8 +698,8 @@ void func_02106d0c(Unk100810Work *work, u32 key)
         i = func_0204fed8(table, 0);
     }
     Unk0d297c_Unk_0d33ac(work->unk_2004);
-        Unk0d297c_Unk_0d3308(work->unk_2004);
-        func_020d33cc(work->unk_2004, i);
+    Unk0d297c_Unk_0d3308(work->unk_2004);
+    func_020d33cc(work->unk_2004, i);
     work->unk_202c = CampStatus_GetUnkField1c(work->unk_2004);
     func_02063920();
     count = 0;
@@ -767,23 +778,23 @@ void func_020aa078(u32 handle, int kind, int x, int y, int zero,
                    int width, u32 style, const char *format, ...);
 
 /* Draws two values (??? above 999), a two-digit field and an eight-digit hex field; formats are original strings. */
-void func_02106f50(u32 *handle, u32 a, u32 b, u32 c, u32 d, u8 row, u32 style)
+void func_02106f50(Unk100810Handle *handle, u32 a, u32 b, u32 c, u32 d, u8 row, u32 style)
 {
     int y;
     if (a > 999) {
         y = row * 10;
-        func_020aa078(*handle, 1, 4, y, 0, 3, style, data_02151230);
+        func_020aa078(handle->unk_00, 1, 4, y, 0, 3, style, data_02151230);
     } else {
         y = row * 10;
-        func_020aa078(*handle, 1, 4, y, 0, 3, style, data_02151234, a);
+        func_020aa078(handle->unk_00, 1, 4, y, 0, 3, style, data_02151234, a);
     }
     if (b > 999) {
-        func_020aa078(*handle, 1, 26, y, 0, 3, style, data_02151238);
+        func_020aa078(handle->unk_00, 1, 26, y, 0, 3, style, data_02151238);
     } else {
-        func_020aa078(*handle, 1, 26, y, 0, 3, style, data_0215123c, b);
+        func_020aa078(handle->unk_00, 1, 26, y, 0, 3, style, data_0215123c, b);
     }
-    func_020aa078(*handle, 1, 48, y, 0, 2, style, data_02151240, c);
-    func_020aa078(*handle, 1, 71, y, 0, 9, style, data_02151244, d);
+    func_020aa078(handle->unk_00, 1, 48, y, 0, 2, style, data_02151240, c);
+    func_020aa078(handle->unk_00, 1, 71, y, 0, 9, style, data_02151244, d);
 }
 
 int func_021002e8(const Unk100810Record *a, const Unk100810Record *b);
@@ -888,5 +899,5 @@ void func_021057ac(Unk100810Table *work)
             }
         }
     }
-    ((u8 *)work->unk_0038)[64] = 2;
+    work->unk_0038->unk_40 = 2;
 }
