@@ -13,10 +13,10 @@ void func_0203fa84(void);
 int func_0205410c();
 
 void Unk03e43c_Thunk_0203fa84(void);
-int Unk03e43c_Unk_03f2ac(int arg0);
-void Unk03e43c_Unk_03fa28(void);
+u8 *Unk03e43c_Unk_03f2ac(int offset);
+int Unk03e43c_Unk_03fa28(void);
 void Unk03e43c_Unk_03f2bc(void);
-void Unk03e43c_Unk_03fa3c(char arg0);
+void Unk03e43c_Unk_03fa3c(u8 value);
 
 typedef struct Unk03e43cTimer {
     u8 pad_0000[0x58];
@@ -64,7 +64,10 @@ void Unk03e43c_Unk_03e894(u8 *o, int b, int c, int d)
     FIELD(u16, o, 0x58) = 0;
 }
 
-/* Counts down; returns 1 once the counter is already 0. */
+/*
+ * Decrements the 16-bit countdown at +0x58 of `t` when it is nonzero and
+ * returns 1 once the counter has already reached zero (so callers can stop).
+ */
 int Unk03e43c_CountDown(Unk03e43cTimer *t)
 {
     if (t->count == 0) {
@@ -74,6 +77,10 @@ int Unk03e43c_CountDown(Unk03e43cTimer *t)
     return 0;
 }
 
+/*
+ * Maps a 0..159 counter to a 0..15 table slot by dividing by 10. Quotients
+ * that would not fit in four bits (>= 16) return the -1 sentinel.
+ */
 int Unk03e43c_Div10Clamp16(int x)
 {
     int r = x / 10;
@@ -92,37 +99,40 @@ void Unk03e43c_AdvanceCounter360(void)
     }
 }
 
-/* forwards to `func_0203fa84` */
+/* Forwards to `func_0203fa84` (tail call in the original). */
 void Unk03e43c_Thunk_0203fa84(void) { func_0203fa84(); }
 
-/* decompiler-derived */
-int Unk03e43c_Unk_03f2ac(int arg0)
+/*
+ * Returns a byte pointer `offset` bytes into the shared table at data_0215e85e.
+ * Unk03e43c_Unk_044194 treats the result as a u16 array.
+ */
+u8 *Unk03e43c_Unk_03f2ac(int offset)
 {
-  return ((int)data_0215e85e) + arg0;
+  return data_0215e85e + offset;
 }
 
-/* decompiler-derived */
-void Unk03e43c_Unk_03fa28(void)
+/*
+ * Returns the work-area counter at +0x360 mapped through Unk03e43c_Div10Clamp16
+ * (a 0..15 table slot, or -1 when the counter is out of range).
+ */
+int Unk03e43c_Unk_03fa28(void)
 {
-  int value;
-  value = Unk02e000_GetWorkArea();
-  Unk03e43c_Div10Clamp16(*(u8 *)(value + 0x360));
+  u8 *work = (u8 *)Unk02e000_GetWorkArea();
+  return Unk03e43c_Div10Clamp16(work[0x360]);
 }
 
-/* decompiler-derived */
+/* Sets bit 1 of the byte at +0x10 in the object returned by func_0205410c. */
 void Unk03e43c_Unk_03f2bc(void)
 {
-  int value;
-  value = func_0205410c();
-  *(u8 *)(value + 0x10) = *(u8 *)(value + 0x10) | 2;
+  u8 *p = (u8 *)func_0205410c();
+  p[0x10] |= 2;
 }
 
-/* decompiler-derived */
-void Unk03e43c_Unk_03fa3c(char arg0)
+/* Stores `value * 10` in the work-area counter byte at +0x360 (inverse of /10). */
+void Unk03e43c_Unk_03fa3c(u8 value)
 {
-  int value;
-  value = Unk02e000_GetWorkArea();
-  *(char *)(value + 0x360) = arg0 * '\n';
+  u8 *work = (u8 *)Unk02e000_GetWorkArea();
+  work[0x360] = value * 10;
 }
 
 
@@ -259,8 +269,11 @@ void Unk03e43c_Unk_0434b0(short *arg0,short *arg1)
   }
 }
 
-int func_02056cc0();
-/* decompiler-derived */
+int func_02056cc0(int mode, int index, u8 *table);
+/*
+ * Registers the 512-byte table at data_0215e85e with func_02056cc0, passing the
+ * (1, 0, table) arguments seen in the original.
+ */
 void Unk03e43c_Call_02056cc0(void)
 {
   func_02056cc0(1,0,data_0215e85e);
