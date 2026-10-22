@@ -530,7 +530,7 @@ void func_020b5adc(Unk0b28e4Obj *work, int id, int slot)
 }
 
 void func_020119c0(void *dst, int value, u32 size);
-void func_020b5634(Unk0b28e4Obj *work, int id, int slot);
+void Unk0b28e4_Unk_0b5634(Unk0b28e4Obj *work, int id, int slot);
 void func_020b5338(Unk0b28e4Obj *work);
 void func_0203f2d4(void *a, int x, int y, void *b, int c, int d, int width, int height);
 const u16 *func_02049398(u32 id);
@@ -555,7 +555,7 @@ void func_020b4dd8(Unk0b28e4Obj *work)
         id = roster->unk_348[i];
         if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c >> 16 & 255) == 1) {
             if (count >= work->unk_0c6c * 3) {
-                func_020b5634(work, id, slot);
+                Unk0b28e4_Unk_0b5634(work, id, slot);
                 work->unk_0c78[slot] = roster->unk_348[i];
                 slot++;
             }
@@ -592,7 +592,7 @@ void func_020b49cc(Unk0b28e4Obj *work)
             if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c >> 16 & 255) != 1) {
                 func_0203f2d4(work->unk_0008, 0, y, work->unk_0004, 0, 72, 256, 56);
             } else {
-                func_020b5634(work, id, slot);
+                Unk0b28e4_Unk_0b5634(work, id, slot);
                 work->unk_0c78[slot] = id;
             }
         } else {
@@ -760,7 +760,7 @@ void func_020b5070(Unk0b28e4Obj *work)
             if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c >> 16 & 255) == 1
                 && func_0204a244(record) == 1) {
                 if (count >= work->unk_0c6c * 3) {
-                    func_020b5634(work, roster->unk_348[i], slot);
+                    Unk0b28e4_Unk_0b5634(work, roster->unk_348[i], slot);
                     work->unk_0c78[slot] = roster->unk_348[i];
                     slot++;
                 }
@@ -1499,7 +1499,7 @@ extern const Unk0b28e4IconIds data_0213c488;
 /* Draws one roster row for roster entry `id` in row `slot`: background, icon,
  * state icon (states 1..11), the two labels, the bar, the category grid and
  * the eight command buttons. Same layout as func_020b5338. */
-void func_020b5634(Unk0b28e4Obj *work, int id, int slot)
+void Unk0b28e4_Unk_0b5634(Unk0b28e4Obj *work, int id, int slot)
 {
     u32 res0 = func_020445f4(18, 0);
     u32 res1 = func_020445f4(18, 1);

@@ -138,7 +138,7 @@ the ARM disassembly at each address.
   variant, and clears the state-5 page icons through `func_0202122c`.
 - `func_020b5070` (500 B): draws the `work->unk_0c6c` page of type-1 roster
   entries. It skips `page*3` qualifying entries, forwards up to three to
-  `func_020b5634`, records their ids at +0xc78, clears rows past the roster end
+  `Unk0b28e4_Unk_0b5634`, records their ids at +0xc78, clears rows past the roster end
   or a negative id, and centres the resource-3 label using its width.
 - `func_020b5338` (764 B): draws the reserved first page-1 row for the fixed
   first record: two background strips, the pc001 icon pair, two labels, the
@@ -189,7 +189,7 @@ assignment, not a behavioural difference.
   declaration reordering, and every toolchain 1.2/2.0/dsi release in
   `tools/mwccarm` (all propagate). The remaining 8 bytes are the two missing
   copy loops.
-- `func_020b5634` (776 B): one roster row, including background, icon, labels,
+- `Unk0b28e4_Unk_0b5634` (776 B): one roster row, including background, icon, labels,
   bar, category grid and eight command buttons. Best attempt was 780 B; the
   only residue is register rotation in the grid and button loops (`col`/`x`
   one register lower than the original) plus one hoisted `y & 255` mask.
@@ -306,4 +306,4 @@ after these edits.
   frame, far from the original). A human can open a scratch with
   `tools/decompme.py`; the original delink remains linked.
 - `Unk0b28e4_Unk_0b4040`: hand-matched
-- `func_020b5634`: hand-matched
+- `Unk0b28e4_Unk_0b5634`: hand-matched
