@@ -11,6 +11,7 @@ void func_0203e93c(int mode, int x, int y, void *resource, void *entry);
 void func_0203f394(const void *src, void *dst, int x, int y, int srcX, int srcY, int width, int height);
 void func_0203f450(const void *src, void *dst, int x, int y, int a, int b, int width, int height,
                    int c, int d, int e);
+void func_0203f2d4(const void *src, int x, int y, void *dst, int srcX, int srcY, int width, int height);
 
 extern u8 data_0215e85e[];
 int Unk02e000_GetWorkArea();
@@ -623,6 +624,114 @@ int Unk03e43c_Unk_043560(void)
         return 21;
     }
     return 20;
+}
+
+/*
+ * Draws the icon selected by `id` (1..40) at (x+1, y+1). The id maps to one of
+ * the sprite-sheet regions in the ROM: some ids blit a 7x7 cell directly via
+ * func_0203f960, others combine the background blit with a 7x7 source rect
+ * (func_0203f394/func_0203f450/func_0203f2d4). `color` is forwarded to the
+ * background blit. Ids outside 1..40 draw nothing.
+ */
+void func_0204372c(void *p, int id, int x, int y, u8 color)
+{
+    if (id <= 0) return;
+    if (id >= 0x29) return;
+    switch (id) {
+    case 1:
+    case 29:
+    case 30:
+    case 31:
+    case 40:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        break;
+    case 3:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f394(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x28, 0, 7, 7);
+        break;
+    case 8:
+    case 24:
+    case 26:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f394(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x38, 0, 7, 7);
+        break;
+    case 9:
+    case 25:
+    case 27:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f450(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x38, 0, 7, 7, 0x5a, 0, 0);
+        break;
+    case 10:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x48, 0, 7, 7);
+        break;
+    case 11:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x50, 0, 7, 7);
+        break;
+    case 4:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f394(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x40, 0, 7, 7);
+        break;
+    case 5:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f450(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x40, 0, 7, 7, 0, 1, 0);
+        break;
+    case 6:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f450(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x40, 0, 7, 7, 0x5a, 0, 1);
+        break;
+    case 7:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f450(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x40, 0, 7, 7, 0x5a, 0, 0);
+        break;
+    case 16:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x80, 0, 7, 7);
+        break;
+    case 17:
+        func_0203f450(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x80, 0, 7, 7, 0, 1, 0);
+        break;
+    case 18:
+        func_0203f450(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x80, 0, 7, 7, 0x10e, 0, 0);
+        break;
+    case 19:
+        func_0203f450(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x80, 0, 7, 7, 0x5a, 0, 0);
+        break;
+    case 20:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f394(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x90, 0, 7, 7);
+        break;
+    case 12:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x58, 0, 7, 7);
+        break;
+    case 13:
+        func_0203f960(FIELD(void *, p, 0x14), x + 1, y + 1, 7, 7, color);
+        func_0203f394(FIELD(void *, p, 0xc), FIELD(void *, p, 0x14), x + 1, y + 1, 0x60, 0, 7, 7);
+        break;
+    case 15:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x70, 0, 7, 7);
+        break;
+    case 21:
+    case 22:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x98, 0, 7, 7);
+        break;
+    case 38:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0xa0, 0, 7, 7);
+        break;
+    case 39:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0xa8, 0, 7, 7);
+        break;
+    case 23:
+    case 37:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x68, 0, 7, 7);
+        break;
+    case 36:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0xc0, 0, 7, 7);
+        break;
+    case 14:
+        func_0203f2d4(FIELD(void *, p, 0x14), x + 1, y + 1, FIELD(void *, p, 0xc), 0x78, 0, 7, 7);
+        break;
+    default:
+        break;
+    }
 }
 
 /* Draws a small 7x7 icon selected by `index` at (x, y). */

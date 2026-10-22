@@ -290,3 +290,87 @@ the matched callers pass five and eight arguments respectively.
   because the compiler-generated stack frames are large and the Ghidra output
   loses the argument slots; no candidate reached a stable size. Open a
   decomp.me scratch with the delinked body before retrying.
+
+## M1-T1092
+
+One of the five card targets matches the delinked original at 100% in objdiff.
+The other four remain supplied by the delinked object and are on the hard list
+below with the measured candidates and their differences.
+
+- `func_0204372c` (1916 B): draws the 7x7 map icon selected by `id` at
+  `(x+1, y+1)`. The id range 1..40 selects between a plain `func_0203f960`
+  background blit, a background plus a `func_0203f394` source rectangle, or a
+  rotated/mirrored `func_0203f450`/`func_0203f2d4` blit. The fifth parameter is
+  the background colour forwarded to `func_0203f960` (a `u8`, so the caller
+  passes it untruncated). Cases 21/22, 23/37, 8/24/26 and 9/25/27 share bodies;
+  the switch order follows the original body order so the jump table matches.
+  Matched with a 1916-byte body; the only prototype change was adding
+  `func_0203f2d4` with its eight arguments (source, x, y, destination,
+  source x/y, width, height).
+
+- `func_02040064` (5712 B): NOT MATCHED. The task update callback. It bails out
+  through `func_02061424` while `data_0215ee60+0x30` is set and otherwise
+  requires a loaded body; it refreshes `+0x2990` from `Unk0986ac_TestFlagBit`,
+  maps `func_0204ca1c()` to the state word at `+0x28c4` (0..3 -> 5/3/4/2,
+  4/5 -> the two context paths, -1 -> the reset path), and handles the selected
+  map record at `+0x28c0` (moving to state 8/12 and seeding the +0x2970..
+  +0x297c interpolation from the record's target, duration and current
+  position). It then calls `func_02044264`, reads the context word through
+  `+0x28d8`, picks a camera object through `func_02053c98`, and dispatches the
+  ~10 state values at `+0x28c4` to the map/path/object update, draw and sound
+  helpers (`func_02041f20`, `func_0204295c`, `func_0204d214`,
+  `func_02053d8c`, `func_0203f960`, `func_02043ea8`, ...). The function spans
+  1428 ARM instructions with a 40-byte stack scratch, several nested switches
+  and many call-argument stack slots; Ghidra's 708-line output is usable as a
+  guide but every candidate differed in register assignment and stack frame
+  from the first instruction block.
+
+- `func_020416bc` (1576 B): NOT MATCHED. The task draw/update callback. It
+  scrolls six 0x60-byte entries through the background ring at `+0x7d`, wraps
+  the background offset at `+0x28e6` every 0x180, animates the entry selected
+  by `+0x28e9` (callbacks through `func_0203eaf8`, `Unk03e43c_Unk_03e8cc`,
+  `Unk03e43c_CountDown` and `Unk03e43c_Unk_03e894`), updates the four icon
+  slots at +0x2c0/+0x320/+0x380/+0x3e0, then walks 32 map-object records
+  through `+0x28c0` (state counter at +0x8b4, positions at +0x28ee/+0x292e,
+  per-object tile/context checks) and finally draws the two cursor icons and
+  calls `func_02060170`. A 1480-1548-byte candidate reproduced the control
+  flow, but mwcc chose a different register split (the original keeps
+  `state=p+0x2800`, `work=p+0x8a0`, `entry=p+0x20`, i and the background
+  offset in r4-r9, with 2 and 0x60 in r7/fp) and re-materialised several
+  pointers between blocks. Also tried: direct `FIELD` expressions without
+  locals (1644 B, 24-byte frame), explicit base/entry locals (1480 B, correct
+  8-byte frame), and moving the loop value inside the block. The remaining
+  differences are register allocation and block ordering, not semantics.
+
+- `func_02041f20` (2620 B): NOT MATCHED. One of the two map-layer update
+  routines. `param_2` selects a phase: 0 builds the 16-element tile origin
+  table at `data_02142954` from the signed screen position at +0x18/+0x1a
+  (rounding to 8-pixel tiles, with the +1/negate split), 1..4 clear one
+  0x3000-byte layer buffer at +0x14, 5..8 scroll one tile row/column and call
+  `func_0204372c` for every visible tile after `func_0204c074` and the
+  `+0x358`/`+0x360` map probes, 9 walks 32 map records and draws their icons,
+  and 10..20 draw the object/marker layers (the cases share bodies). The
+  decompiled body is ~330 lines; no candidate was attempted to a stable size
+  because the same `data_02142954` pointer, tile-index and register split as
+  `func_0204295c` has to be reproduced first.
+
+- `func_0204295c` (2532 B): NOT MATCHED. The sibling map-layer update routine
+  using `data_02143338` instead of `data_02142954` and a 0xc000-byte clear
+  instead of 0x3000. Its case map is 0 -> seed tile table and clear the layer,
+  1/2 -> scroll and draw tiles, 3 -> draw the 32 map-record icons plus the
+  0x60 object entries and the border lines, and 4/5/... -> the second tile
+  plane (same `func_0204372c` per-tile call chain). It shares the register/
+  layout problem with `func_02041f20`; the two bodies should be recovered
+  together.
+
+### Hard list (M1-T1092, for a decomp.me scratch)
+
+- `func_02040064`: 1428-instruction update state machine, 40-byte stack scratch,
+  many 5/6-argument calls; need a scratch with the full delinked body.
+- `func_020416bc`: candidate reproduces the flow but not register allocation;
+  the original keeps r4=+0x2800, r5=+0x8a0, r6=+0x20, r7=2, r8=i, r9=offset,
+  fp=0x60 across the first loop, and re-materialises `p+0x2800`/`p+0x28a0`
+  between the switch and the 32-record loop.
+- `func_02041f20` / `func_0204295c`: recover the shared tile-layer dispatcher
+  (case map, `data_02142954`/`data_02143338` origins, tile probe call chain)
+  as one scratch; both are too large to hand-match independently.
