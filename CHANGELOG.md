@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_0203e684` and `func_0203fa84` in `src/game/unit_0203e43c.c` (100% objdiff), documented three already-matched M1-T1089 functions; `func_02044114`, `func_02044264`, `func_020442fc` are on the hard list in the unit doc.
 - Verified all eight M1-T1088 table, entry, coordinate, and flag-count functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented their contracts and typed the draw-entry setup parameters.
 - Verified all eight M1-T1087 functions in `src/game/unit_0203e43c.c` at 100% objdiff; documented mode/counter/table operations and acquisition validation helpers, and typed the paired-byte copy.
 - Verified all eight M1-T1078 table, record, and item helpers at 100% objdiff; documented their contracts and corrected stale task status.
