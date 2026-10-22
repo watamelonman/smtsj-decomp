@@ -259,8 +259,8 @@ the matched callers pass five and eight arguments respectively.
 - `func_02043ea8` (620 B): draws a 7x7 icon for an id in 2, 13, 14, 18, 19 or
   21..24 from source-column/row pairs (0x30, 0x88, 0x90, 0xb0, 0xb8, 0,
   8, 0x10, 0x18; rows 0 or 8) at (x+1, y+1). Ids outside 1..36 are ignored.
-  The case order follows the original handler order; case 14 is last and falls
-  through to the shared return.
+  The case order follows the original handler order; case 14 is last and
+  breaks to the shared return.
 
 ### Hard list (for a decomp.me scratch)
 

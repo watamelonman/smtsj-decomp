@@ -525,8 +525,6 @@ void Unk03e43c_Unk_041ce4(u8 *p)
     FIELD(u32, data_0215ee60, 52) = 0;
 }
 
-/* Submits slot+3 and then one of entries 0..2 selected by the signed byte
- * at +0x2982+slot. Entry stride 96 and call coordinates come from the assembly. */
 /*
  * Draws the 8x8 icon attached to `obj` at (x, y), choosing the blit path from
  * the work-area mode at +0x358. The draw is skipped unless the work-area
@@ -564,6 +562,8 @@ void func_02041d98(u8 *obj, int x, int y)
                   0x20, 0, 8, 8, 90, 0, 1);
 }
 
+/* Submits slot+3 and then one of entries 0..2 selected by the signed byte
+ * at +0x2982+slot. Entry stride 96 and call coordinates come from the assembly. */
 void func_02043340(u8 *work, int slot)
 {
     int state;
@@ -625,12 +625,6 @@ int Unk03e43c_Unk_043560(void)
     return 20;
 }
 
-/*
- * Resets the seven per-slot bytes at p+0x2000:+0x982, writes 0x73f5 into the
- * four u16 table entries at slots 1..4, merges those nonzero entries into the
- * shared table, and re-registers the table with the resource layer. The
- * per-slot flag and value meanings are not known.
- */
 /* Draws a small 7x7 icon selected by `index` at (x, y). */
 void func_02043ea8(u8 *obj, int index, int x, int y)
 {
@@ -669,6 +663,12 @@ void func_02043ea8(u8 *obj, int index, int x, int y)
     }
 }
 
+/*
+ * Resets the seven per-slot bytes at p+0x2000:+0x982, writes 0x73f5 into the
+ * four u16 table entries at slots 1..4, merges those nonzero entries into the
+ * shared table, and re-registers the table with the resource layer. The
+ * per-slot flag and value meanings are not known.
+ */
 void Unk03e43c_Unk_044194(u8 *p)
 {
     u16 *t;
