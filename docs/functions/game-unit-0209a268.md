@@ -80,15 +80,51 @@
   the state bit from record 5 byte +0x19, then writes current-cell byte +1 = 1
   and halfword +2 = 0, and runs `func_0209c548` on its argument. Verified 100%.
 
-## Not done in M1-T1013
-- `func_0209cb68`
-- `func_0209a588`
-- `func_0209a884`
-- `func_0209c768`
-- `func_0209cd24`
-- `func_0209cf54`
-- `func_0209aebc`
-- `func_0209c090`
+## M1-T1013
+- `func_0209a588` (176 B): removes an id's entries through `0209a4fc`, then
+  inserts variants 0, 1 and 2 through `Unk09a268_Unk_09a458`. Each argument
+  equal to -1 is omitted; the third argument is a signed byte. Verified 100%.
+- `func_0209c768` (236 B): increments the work and current-cell counters.
+  Phase 0 waits until the work counter exceeds 40, clears cell bit 5 and
+  sets owner words +20/+24 to 2. Phase 1 waits for owner word +20 = 1 and
+  sets both words to 2 again. Phase 2 completes at owner state 1; other
+  phases complete immediately. Verified 100%.
+- `func_0209cb68` (144 B): dispatches signed transition kind 0/1/other to
+  `0209c768`/`0209c854`/`0209c9bc`. On result 1 it calls record lookup 5,
+  clears current-cell bits 3-5 and state bits 0-2, and zeros byte +1 and
+  halfword +2. Verified 100%.
+- `func_0209cd24` and `func_0209cf54` (268 B each): identical transition
+  dispatchers; kind -1 completes immediately. After handler completion,
+  record lookup at work +996 uses signed coordinates +0x7482/+0x7483.
+  A type-1 record clears the cell as above; otherwise bits 3/4 are set,
+  bit 5 and state bits are cleared, byte +1 becomes 2, and halfword +2
+  becomes 0. Verified 100% for both. Keeping counter stores in their
+  respective branches reproduces the original shared instruction suffix.
+- `func_0209c090` (272 B): returns the inverse of a directional map-entry
+  test, including true for an absent entry. Kind 16 maps directions 0-3
+  to masks 2/4/1/8 and tests element 7's low nibble unless the selected
+  map two-bit field equals 3. Other kinds delegate to `0209bd08`.
+  Verified 100%.
+- `func_0209aebc` (272 B): callback handling message types 0, 1 and 2.
+  Type 0 calls mode setter `020525cc(0)` when payload +16 is absent or
+  zero, then copies flagged payload +20 to work +52. Type 1 forwards the
+  work to `Unk0bc1a8_Unk_0bc504(work, 0)`. Type 2 sets work +40 from
+  message +16 == 1, clears +44/+48, then sets both when flagged payload
+  +16 equals 1. Types 3/4 and out-of-range types do nothing. Verified 100%.
+- Names remain neutral because the underlying transition meanings are unknown.
+
+### M1-T1013 hard list
+- `func_0209a884` (236 B): left undefined in C, retaining the delinked
+  original. Reconstruction cleared 7200 bytes and visited a 45-by-40 grid,
+  obtaining counts from `0209c1a0`. Positive counts filled cell byte +1,
+  set bits 3/4 and selected state bits from record +25; count -1 marked
+  the source record's first byte as 1. The candidate compiled to the exact
+  original size but reached only 98.05% objdiff: target uses r6/r7/r8 for
+  row/column/cell, whereas the candidate uses r8/r6/r7. Tried declaration
+  order, narrower and unsigned coordinates, pointer/address forms, nested
+  declaration scopes, register hints and for/while/do loop forms; no exact
+  match. A human can use `tools/decompme.py` for further register-allocation
+  investigation. No nonmatching implementation was retained.
 
 ## Not done in M1-T1016
 - `func_0209c548`

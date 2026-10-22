@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched seven M1-T1013 entry, transition, map-test and message functions at 100% objdiff; documented the remaining grid initializer in the hard list.
 - Corrected M1-T1012 work-area and record accesses to typed fields and clarified record-value and state-update documentation.
 - `src/game/unit_0209a268.c`: matched all eight M1-T1012 functions at 100% objdiff (entry allocation, entry lookup, position classification, handler-table setup, and the kind-specific record byte readers), with typed prototypes and per-function documentation.
 - Verified seven M1-T1011 functions at 100% objdiff, added the nullable record classifier, and documented the remaining entry-scan register-allocation mismatch.

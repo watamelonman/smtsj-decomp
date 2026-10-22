@@ -9,8 +9,11 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 typedef struct Unk09a268Work {
     u8 unk_0000[0xc];
     u32 UnkField000c;
-    u8 unk_0010[0x1c];
+    u8 unk_0010[0x18];
+    s32 unk_0028;
     s32 UnkField002c;
+    s32 unk_0030;
+    s32 unk_0034;
 } Unk09a268Work;
 
 
@@ -283,7 +286,8 @@ void Unk09a268_Unk_09b3cc(Unk09a268Work *work);
 void func_0209b1d4();
 void func_0209b3f8();
 void func_0209b5d8();
-void func_0209aebc();
+typedef struct Unk09a268Message Unk09a268Message;
+void func_0209aebc(Unk09a268Work *work, Unk09a268Message *message);
 
 /* Classifies a position: 2 when the Manhattan distance from the work area's
  * +0x364/+0x365 coordinates is at most the value selected by (x - 30), else 0.
@@ -477,5 +481,303 @@ int func_0209c4e0(const u8 *record)
     case 2:
     default:
         return 0;
+    }
+}
+
+/* Entry removal and transition helpers retain neutral names until their callers
+ * establish the meaning of the state values. */
+void func_0209a4fc(u8 *work, u32 id);
+int func_0209c854(u8 *work);
+int func_0209c9bc(u8 *work);
+void func_02052da0(void);
+u8 *Unk0392f8_Unk_0394b8(void *table, int x, int y);
+
+/* Replaces the three indexed entry variants, omitting each -1 argument.
+ * Evidence: 0209a588 removes id first, then inserts variants 0, 1 and 2.
+ * work must contain the 128-entry table; c is a signed byte sentinel/index. */
+void func_0209a588(u8 *work, u32 id, int a, int b, s8 c, u32 value)
+{
+    func_0209a4fc(work, id);
+    if (a != -1) Unk09a268_Unk_09a458(work, id, a, 0, 0, value);
+    if (b != -1) Unk09a268_Unk_09a458(work, id, b, 1, 0, value);
+    if (c != -1) Unk09a268_Unk_09a458(work, id, c, 2, 0, value);
+}
+
+/* Partial transition layout, established by the signed-byte state accesses and
+ * the counter at +0x7484 in 0209c768. */
+typedef struct Unk09a268Transition {
+    struct Unk09a268TransitionOwner *owner;
+    u8 pad_0004[0x747c];
+    s8 kind;
+    s8 phase;
+    s8 x;
+    s8 y;
+    s32 counter;
+} Unk09a268Transition;
+typedef struct Unk09a268TransitionOwner {
+    u8 pad_0000[20];
+    s32 state;
+    s32 next;
+} Unk09a268TransitionOwner;
+typedef struct Unk09a268Cell {
+    u8 flags;
+    u8 kind;
+    u16 counter;
+} Unk09a268Cell;
+
+/* Advances a three-phase transition and its cell counter; phase zero waits
+ * for 40 ticks, and later phases wait for owner state 1. Evidence: 0209c768.
+ * work and its owner must be allocated; the current cell must be available. */
+int func_0209c768(u8 *work)
+{
+    Unk09a268Transition *w = (Unk09a268Transition *)work;
+    Unk09a268Cell *cell = (Unk09a268Cell *)Unk02f2a8_GetCurrentCell38e8();
+    int result = 0;
+    func_02052da0();
+    w->counter++;
+    cell->counter++;
+    switch (w->phase) {
+    case 0:
+        if (w->counter > 40) {
+            Unk09a268_Unk_09a870((u32)cell, 0);
+            w->owner->state = 2;
+            w->owner->next = 2;
+            w->phase++;
+        }
+        break;
+    case 1:
+        if (w->owner->state == 1) {
+            w->owner->state = 2;
+            w->owner->next = 2;
+            w->phase++;
+        }
+        break;
+    case 2:
+        if (w->owner->state == 1) result = 1;
+        break;
+    default:
+        result = 1;
+        break;
+    }
+    return result;
+}
+
+/* Dispatches by signed transition kind and clears the current cell on
+ * completion. Evidence: 0209cb68 calls the three transition handlers.
+ * work must address the transition layout and a current cell must exist. */
+int func_0209cb68(u8 *work)
+{
+    int result;
+    Unk09a268Cell *cell;
+    switch (((Unk09a268Transition *)work)->kind) {
+    case 0: result = func_0209c768(work); break;
+    case 1: result = func_0209c854(work); break;
+    default: result = func_0209c9bc(work); break;
+    }
+    if (result != 1) return 0;
+    Unk09a268_Unk_09c484(5);
+    cell = (Unk09a268Cell *)Unk02f2a8_GetCurrentCell38e8();
+    Unk09a268_Unk_09a80c((u32)cell, 0);
+    Unk09a268_Unk_09a830((u32)cell, 0);
+    Unk09a268_Unk_09a870((u32)cell, 0);
+    Unk09a268_SetOnlyBit((u32)cell, 0);
+    cell->kind = 0;
+    cell->counter = 0;
+    return 1;
+}
+
+/* Dispatches the transition, then selects cleared or kind-2 cell state from
+ * the type-1 record at work +996 and signed coordinates +0x7482/+0x7483.
+ * work must include the transition layout and its embedded record table.
+ * Evidence: the record lookup and flag writes at 0209cd24. */
+int func_0209cd24(u8 *work)
+{
+    int result;
+    Unk09a268Cell *cell;
+    switch (((Unk09a268Transition *)work)->kind) {
+    case -1: return 1;
+    case 0: result = func_0209c768(work); break;
+    case 1: result = func_0209c854(work); break;
+    default: result = func_0209c9bc(work); break;
+    }
+    if (result == 1) {
+        Unk09a268_Unk_09c484(5);
+        cell = (Unk09a268Cell *)Unk02f2a8_GetCurrentCell38e8();
+        if (Unk09a268_IsType1(Unk0392f8_Unk_0394b8(work + 996,
+            ((Unk09a268Transition *)work)->x, ((Unk09a268Transition *)work)->y)) == 1) {
+            Unk09a268_Unk_09a80c((u32)cell, 0);
+            Unk09a268_Unk_09a830((u32)cell, 0);
+            Unk09a268_Unk_09a870((u32)cell, 0);
+            Unk09a268_SetOnlyBit((u32)cell, 0);
+            cell->kind = 0;
+            cell->counter = 0;
+        } else {
+            Unk09a268_Unk_09a80c((u32)cell, 1);
+            Unk09a268_Unk_09a830((u32)cell, 1);
+            Unk09a268_Unk_09a870((u32)cell, 0);
+            Unk09a268_SetOnlyBit((u32)cell, 0);
+            cell->kind = 2;
+            cell->counter = 0;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+/* Dispatches the transition, then selects cleared or kind-2 cell state from
+ * the type-1 record at work +996 and signed coordinates +0x7482/+0x7483.
+ * work must include the transition layout and its embedded record table.
+ * Evidence: the record lookup and flag writes at 0209cf54. */
+int func_0209cf54(u8 *work)
+{
+    int result;
+    Unk09a268Cell *cell;
+    switch (((Unk09a268Transition *)work)->kind) {
+    case -1: return 1;
+    case 0: result = func_0209c768(work); break;
+    case 1: result = func_0209c854(work); break;
+    default: result = func_0209c9bc(work); break;
+    }
+    if (result == 1) {
+        Unk09a268_Unk_09c484(5);
+        cell = (Unk09a268Cell *)Unk02f2a8_GetCurrentCell38e8();
+        if (Unk09a268_IsType1(Unk0392f8_Unk_0394b8(work + 996,
+            ((Unk09a268Transition *)work)->x, ((Unk09a268Transition *)work)->y)) == 1) {
+            Unk09a268_Unk_09a80c((u32)cell, 0);
+            Unk09a268_Unk_09a830((u32)cell, 0);
+            Unk09a268_Unk_09a870((u32)cell, 0);
+            Unk09a268_SetOnlyBit((u32)cell, 0);
+            cell->kind = 0;
+            cell->counter = 0;
+        } else {
+            Unk09a268_Unk_09a80c((u32)cell, 1);
+            Unk09a268_Unk_09a830((u32)cell, 1);
+            Unk09a268_Unk_09a870((u32)cell, 0);
+            Unk09a268_SetOnlyBit((u32)cell, 0);
+            cell->kind = 2;
+            cell->counter = 0;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+s32 *Unk038fbc_GetElement(u32 handle, u32 kind, u32 index);
+u32 Unk02f2a8_Unk_0349c4(void *map, int x, int y);
+int Unk0e651c_Get2Bits(u32 value, u32 index);
+int func_0209bd08(u32 kind, u32 direction, u32 mask);
+
+/* Returns the inverse of the directional test for a located map entry.
+ * Kind 16 uses its element-7 low nibble and packed two-bit map field;
+ * other kinds use 0209bd08. Evidence: the kind comparison at 0209c0e0.
+ * x/y are map coordinates; directions 0-3 select masks 2, 4, 1 and 8. */
+int func_0209c090(int x, int y, u32 direction, u32 mask)
+{
+    int result = 0;
+    u32 handle;
+    u8 *entry;
+    u32 kind;
+    s32 *element;
+    handle = Unk02f2a8_Unk_034970(GetGameState() + 4, x, y);
+    entry = Unk038fbc_Unk_039160(handle, x, y);
+    if (entry != 0) {
+        kind = *entry;
+        if (func_0209bb68(kind) == 16) {
+            mask = 0;
+            switch (direction) {
+            case 1: mask = 4; break;
+            case 2: mask = 1; break;
+            case 3: mask = 8; break;
+            case 0: mask = 2; break;
+            }
+            element = Unk038fbc_GetElement(handle, 7, entry[1]);
+            if (Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4(GetGameState() + 4, x, y),
+                (u32)(*element << 16) >> 24) == 3) {
+                result = 1;
+            } else if (mask & ((u32)(*element << 28) >> 28)) {
+                result = 1;
+            }
+        } else {
+            result = func_0209bd08(kind, direction, mask);
+        }
+    }
+    return result == 0;
+}
+
+/* Message payload words are valid only when their corresponding flag is set. */
+typedef struct Unk09a268Payload {
+    u8 flags;
+    u8 pad_0001[11];
+    u32 unk_000c;
+    u32 unk_0010;
+    u32 unk_0014;
+} Unk09a268Payload;
+struct Unk09a268Message {
+    u32 type;
+    Unk09a268Payload payload;
+};
+void func_020525cc(int mode);
+void Unk0bc1a8_Unk_0bc504(Unk09a268Work *work, u32 value);
+
+/* Preserves the caller's output when payload word +16 is not flagged valid. */
+static inline int Unk09a268_Payload16(Unk09a268Payload *p, u32 *out)
+{
+    u32 value;
+    if (p == 0) return 0;
+    value = p->unk_0010;
+    if (p->flags & 8) {
+        *out = value;
+        return 1;
+    }
+    return 0;
+}
+
+/* Preserves the caller's output when payload word +20 is not flagged valid. */
+static inline int Unk09a268_Payload20(Unk09a268Payload *p, u32 *out)
+{
+    u32 value;
+    if (p == 0) return 0;
+    value = p->unk_0014;
+    if (p->flags & 16) {
+        *out = value;
+        return 1;
+    }
+    return 0;
+}
+
+/* Handles messages 0 (mode/payload), 1 (release request), and 2 (state flags).
+ * Evidence: 0209aebc's switch and flag-qualified payload reads; words +40,
+ * +44, +48 and +52 belong to the 60-byte callback work allocation.
+ * Both pointers must be valid; message types outside 0-4 are ignored. */
+void func_0209aebc(Unk09a268Work *work, Unk09a268Message *message)
+{
+    u32 type = message->type;
+    Unk09a268Payload *payload = &message->payload;
+    u32 value;
+    switch (type) {
+    case 0:
+        if (Unk09a268_Payload16(payload, &value)) {
+            if (value == 0) func_020525cc(0);
+        } else {
+            func_020525cc(0);
+        }
+        if (Unk09a268_Payload20(payload, &value)) work->unk_0034 = value;
+        break;
+    case 2:
+        work->unk_0028 = message->payload.unk_000c == 1;
+        work->UnkField002c = 0;
+        work->unk_0030 = 0;
+        if (Unk09a268_Payload16(payload, &value)) {
+            if (value == 1) {
+                work->UnkField002c = 1;
+                work->unk_0030 = 1;
+            }
+        }
+        break;
+    case 1:
+        Unk0bc1a8_Unk_0bc504(work, 0);
+        break;
+    case 3: break;
+    case 4: break;
     }
 }
