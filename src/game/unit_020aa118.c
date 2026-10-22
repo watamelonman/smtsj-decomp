@@ -238,7 +238,7 @@ int func_0209fd64();
 int func_020ab62c();
 void Unk0aa118_Unk_0ab8f8(u32 p);
 int func_020af9f4();
-int func_020afbdc();
+void func_020afbdc(Unk0aa118Work *w);
 int Unk0afc28_Unk_0b0930();
 int Unk0caea8_GetInRange();
 /* Sets bit 3 at p+8 when global +0x40 bit 11 and query 2 are both set.
@@ -331,7 +331,7 @@ void Unk0aa118_Unk_0acb74(u32 arg0,u32 arg1,u32 arg2)
     *(u32 *)(tmp4 + 0x84) = *(u32 *)(tmp4 + 0x84) | 0x1000;
     Unk0aa118_Unk_0ab8f8(tmp2);
     func_0209fd64(tmp2);
-    func_020afbdc(tmp2);
+    func_020afbdc((Unk0aa118Work *)tmp2);
     return;
   }
 }
@@ -454,4 +454,77 @@ int Unk0aa118_Unk_0afb40(int i)
         return 0;
     }
     return Unk0aa118_Unk_0af824(data_0214d380[i]);
+}
+
+/* Clears bit 15 of word +8 on every entry of the three 32-entry groups.
+ * Group k starts at +0x88 + k*0x284; its count word follows the entries.
+ * The +0x308 count and +0x14 entry stride in func_020aa130 support this layout. */
+typedef struct Unk0aa118GroupEntry {
+    u8 pad_000[8];
+    u32 flags;                  /* +0x08; bit 15 cleared here */
+    u8 pad_00c[8];
+} Unk0aa118GroupEntry;
+
+typedef struct Unk0aa118Group {
+    Unk0aa118GroupEntry entry[32];  /* +0x000 */
+    u32 count;                      /* +0x280 */
+} Unk0aa118Group;
+
+typedef struct Unk0aa118Groups {
+    u8 pad_000[0x88];
+    Unk0aa118Group group[3];    /* +0x088 */
+} Unk0aa118Groups;
+
+void func_020aa130(Unk0aa118Groups *p)
+{
+    int i;
+    for (i = 0; i < 3; i++) {
+        u32 count = p->group[i].count;
+        Unk0aa118GroupEntry *e = p->group[i].entry;
+        u32 j;
+        for (j = 0; j < count; j++, e++) {
+            e->flags &= ~0x8000;
+        }
+    }
+}
+
+/* Adds the borrowed entry pointer v to the list when absent, unless the
+ * 32-entry list is full. The +0x84 count and capacity check at 0x020aa188
+ * support this contract; returns 1 when added (or already present) and 0
+ * when full. The pointer parameter matches the caller at 0x020aa188. */
+int func_020aa188(Unk0aa118List *l, void *v)
+{
+    u32 i;
+    if (l->count >= 32) {
+        return 0;
+    }
+    for (i = 0; i < l->count; i++) {
+        if ((void *)l->item[i] == v) {
+            return 1;
+        }
+    }
+    l->item[l->count] = (u32)v;
+    l->count++;
+    Unk0aa118_SortRemaining(l);
+    return 1;
+}
+
+void func_02053000(void *p);
+
+/* Frees every node of the linked list at +0x18, leaving the tail node for
+ * the final call, then frees the owner. The head/tail accesses at 0x020afbdc
+ * and the node link at +0 support this contract. */
+void func_020afbdc(Unk0aa118Work *w)
+{
+    u32 *node = (u32 *)w->unk_0018;
+    while (node != 0) {
+        u32 *current = node;
+        node = (u32 *)node[0];
+        func_02053000(current);
+        w->unk_0004--;
+        if (current == (u32 *)w->unk_001c || node == 0) {
+            break;
+        }
+    }
+    func_02053000(w);
 }

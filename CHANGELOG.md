@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched seven of the eight M1-T1079 unit_020aa118 functions at 100% objdiff (node append/free, unique-id insert, record forwarding, group flag clear, list insert) and documented `func_020aa298` with its measured matching trials on the hard list.
 - Verified all eight M1-T1078 table, record, and item helpers at 100% objdiff; documented their contracts and corrected stale task status.
 - Verified all eight M1-T1077 list/table/work helpers at 100% objdiff and documented their parameter contracts and observed behavior.
 - Matched M1-T1075 `func_02072374` at 100% objdiff with typed pair-matrix and display state; documented failed compiled C trials for all four deferred targets in the unit hard list (including three new decompiler-assisted trials).

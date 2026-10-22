@@ -67,18 +67,44 @@ No algorithm or module boundary changed.
 
 None for M1-T1077 or M1-T1078.
 
-## Other pending functions
+- `func_020aa298` (M1-T1079): all instruction matches except one. The original
+  emits `mov r0,r6; popne` for the `y != 0` early return, while every C form
+  tried compiles to `movne r0,r6; popne`. Trials covered direct `return x`,
+  `if/else`, `switch`, `goto`, local result copies, pointer/small integer
+  parameter types, all installed mwccarm 1.2/2.0 service packs, and several
+  optimization/pragma variants. The rest of the function (record lookup,
+  `Unk044904_Unk_044f4c`, `func_0204a9ec`, fallback through `func_020b1144`)
+  was verified instruction-for-instruction with a `switch` on the
+  `func_0204a9ec` result. Left out of C so the delink remains authoritative.
 
-- `Unk0aa118_Unk_0afb90`: decompiler-derived.
-- `Unk0aa118_Unk_0ab4f4`: decompiler-derived.
+## M1-T1079 (verified at 100% objdiff unless noted)
 
-## Not done in M1-T1079
-- `func_020afbdc`
-- `Unk0aa118_AddUniqueId`
-- `Unk0aa118_Unk_0afa60`
-- `func_020aa130`
-- `func_020aa188`
-- `func_020aa298`
+- `Unk0aa118_Unk_0afb90` (76 B): allocates and clears a 0x90-byte node, links
+  it at the owner's +0x18 head / +0x1c tail, increments the +4 node count and
+  returns the node. The head/tail/link stores at 0x020afb90 support this.
+- `func_020afbdc` (76 B): walks the +0x18 node list, frees each node, decrements
+  the +4 count, stops after the +0x1c tail (or a null link), then frees the
+  owner. Head/tail accesses at 0x020afbdc support this contract.
+- `Unk0aa118_AddUniqueId` (80 B): adds an id to the global `Unk044904_Unk_04509c`
+  object's id array when absent, capped at six entries. The +0x18 count and
+  capacity check at 0x020ab468 support this.
+- `Unk0aa118_Unk_0afa60` (80 B): looks up the id through `Unk09974c_Unk_099d14`,
+  rejects entries that do not match `data_0214fef8` via `func_020152cc`, and
+  otherwise forwards to `Unk0aa118_Unk_0af8d8`. The `data_0214fef8` literal at
+  0x020afa60 supports the comparison.
+- `func_020aa130` (88 B): clears bit 15 of word +8 on each entry of the three
+  32-entry groups. Group k starts at +0x88 + k*0x284; the +0x308 count and
+  +0x14 entry stride at 0x020aa130 support this layout.
+- `func_020aa188` (88 B): inserts the borrowed entry pointer into the 32-entry
+  list when absent, re-sorts the unconsumed range and returns 1; returns 0 when
+  full. The +0x84 count, capacity check and `Unk0aa118_SortRemaining` call at
+  0x020aa188 support this contract. The caller at 0x020efdf4 passes a record
+  pointer, which fixes the pointer parameter type.
+- `func_020aa298` (88 B): not done; see the hard list above.
+- `Unk0aa118_Unk_0ab4f4` (88 B): returns 1 when the mode argument is 3;
+  otherwise rejects mode-2 records that fail `func_0204a0e8(record, 400)` and
+  forwards to `func_020b0310`. The mode check and calls at 0x020ab4f4 support
+  this contract.
 
 ## Not done in M1-T1080
 - `func_020ae270`
