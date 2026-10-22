@@ -14,7 +14,7 @@ cromper/cromper/compilers.py; objdiff-core create_scratch.rs):
     `mwcc_30_131` exist in the compiler table.
 ASSUMED / UNTESTED:
   * Not exercised end to end: decomp.me is behind Cloudflare and rejected requests from the
-    build box (HTTP 403 challenge). Run from the maintainer's machine; may need a browser-like UA.
+    build box (HTTP 403 challenge). Run from a local machine; may need a browser-like UA.
   * Whether the API is rate-limited for anonymous creation.
 Scratches are PUBLIC. Asm of retail code gets uploaded: the maintainer must opt in (FORGE_DECOMPME_OK=1),
 and agents may not set it. Results are appended to config/scratches.tsv.
