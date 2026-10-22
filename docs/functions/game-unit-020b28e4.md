@@ -1,15 +1,15 @@
 # src/game/unit_020b28e4.c
 
-- `Unk0b28e4_Nop_0b28e4`: decompiler-derived
-- `Unk0b28e4_Unk_0b64c8`: decompiler-derived
+## M1-T1037 functions
 
-## Not done in M1-T1037
-- `func_020b6514`
-- `Unk0b28e4_Unk_0b5e10`
-- `func_020b64dc`
-- `func_020b64f8`
-- `Unk0b28e4_Unk_0b6338`
-- `Unk0b28e4_Unk_0b6370`
+- `Unk0b28e4_Nop_0b28e4` (4 B): empty callback.
+- `Unk0b28e4_Unk_0b64c8` (20 B): returns the byte pointer cached at `+0x04` plus its two-byte header.
+- `func_020b6514` (20 B): stores one word at `+0xca0` of the object referenced by the word at `+0x00`.
+- `Unk0b28e4_Unk_0b5e10` (28 B): sets the byte at `+0x37` and word at `+0x2c`, then forwards to `func_0205f7f4`.
+- `func_020b64dc` (28 B): returns entry `index` (12 bytes each) of the table based at `+0x04`.
+- `func_020b64f8` (28 B): stores two words at `+0xc8c` and `+0xc90` of the object referenced by the word at `+0x00`.
+- `Unk0b28e4_Unk_0b6338` (56 B): releases the object cached at `+0x04`, clears the cache and restores callback set 13.
+- `Unk0b28e4_Unk_0b6370` (68 B): zeroes the command buffer at `+0x04` and its two payload areas.
 
 ## Not done in M1-T1038
 - `Unk0b28e4_GetEntry34`
