@@ -5,7 +5,12 @@ void func_0203428c(void);
 void func_0206146c(void);
 void func_02057660(int a, int b);
 
-int Unk02e000_Unk_02e774();
+/* Block returned by the unit_0202e000 accessor; this unit borrows it and only
+ * touches the byte table at +0x5e12. */
+u8 *Unk02e000_Unk_02e774(void);
+
+/* Clear bit 0 of the 64-entry byte table at work+0x5e12. Ids outside 0..63 are
+ * ignored, not clamped, so a bad selector leaves the table untouched. */
 void Unk02f2a8_ClearEntry5e12Bit0(int i)
 {
     if (i >= 64) {
@@ -83,6 +88,9 @@ typedef struct Unk02f2a8Obj39160 {
     u32 unk_0004_16 : 4;
     u32 pad_0004_20 : 12;
 } Unk02f2a8Obj39160;
+/* Forward the grid coordinates cached in work+0x364/+0x365, plus the caller's
+ * object at p+0x70, to func_02035db8. The two work-area reads are separate in
+ * the original; keeping them separate preserves the call sequence. */
 void Unk02f2a8_Call_02035db8(u8 *p)
 {
     u8 *a = (u8 *)Unk02e000_GetWorkArea();
@@ -196,6 +204,10 @@ typedef struct Unk02f2a8Pos {
 } Unk02f2a8Pos;
 
 #define UNK02F2A8_RES36() ((Unk02f2a8Res36 *)func_0204fde0(func_020445d0(36, 0)))
+
+/* Arm the root request: set the flag at +0x60 and stash the two arguments at
+ * +0x64/+0x68. Requires gGameState and its root; GameState_ClearRootUnk60 is
+ * the matching disarm path. */
 void Unk02f2a8_SetRootUnk60(u32 a, u32 b)
 {
     FIELD(u32, gGameState->root, 0x60) = 1;
@@ -226,6 +238,8 @@ u16 GameState_GetUnkField74f6(void)
     return gGameState->unk_74f6;
 }
 
+/* Return the optional sub-block at +0x240 only when the game state exists and
+ * the block's first word is nonzero; otherwise null. The pointer is borrowed. */
 u8 *Unk02f2a8_GetOptSub240(void)
 {
     GameState *gs = gGameState;
@@ -238,6 +252,8 @@ u8 *Unk02f2a8_GetOptSub240(void)
     return 0;
 }
 
+/* Same optional-block contract as Unk02f2a8_GetOptSub240, for the block at
+ * +0x2cc. Returns null when the game state or the block's first word is zero. */
 u8 *Unk02f2a8_GetOptSub2cc(void)
 {
     GameState *gs = gGameState;
@@ -284,6 +300,8 @@ s8 Unk02f2a8_GetRes36Unk19(int i)
     return UNK02F2A8_RES36()[i].unk_0019;
 }
 
+/* Signed byte at +0x1a of entry i in resource 36 (40-byte entries). The field
+ * meaning is not established; callers use it as an id or selector. */
 s8 Unk02f2a8_GetRes36Unk1a(int i)
 {
     return UNK02F2A8_RES36()[i].unk_001a;
@@ -314,6 +332,9 @@ int Unk02f2a8_Unk_035c14(int i, int j)
     return r;
 }
 
+/* Bounds predicate for the 45x40 map grid: x must be 0..44 and y 0..39. Both
+ * tests are signed, so negative coordinates are rejected here and never reach
+ * the multiply in Unk02f2a8_GridIndex45. */
 int Unk02f2a8_IsInGrid45x40(int x, int y)
 {
     if (x < 0) {
@@ -421,7 +442,9 @@ int Unk02f2a8_Unk_035a70();
 int Unk044394_Unk_044428();
 int Unk044394_Unk_044534();
 int func_020f43d4();
-/* decompiler-derived */
+/* Apply pending state for one selector: 0 is remapped to 1, then
+ * Unk02f2a8_Unk_035a70 runs between the acquire/release pair on channel 0x24.
+ * The selector's meaning and the lock's purpose are not established. */
 void Unk02f2a8_Unk_035440(int arg0)
 {
   if (arg0 == 0) {

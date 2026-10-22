@@ -73,15 +73,36 @@ beyond the observed field and grid uses below.
   and returns the signed byte at +0x19 of entry `i`. The field meaning is not
   established; callers use it as a small id/selector.
 
-## Not done in M1-T1107
-- `Unk02f2a8_GetRes36Unk1a`
-- `Unk02f2a8_GetOptSub240`
-- `Unk02f2a8_GetOptSub2cc`
-- `Unk02f2a8_Unk_035440`
-- `Unk02f2a8_Call_02035db8`
-- `Unk02f2a8_ClearEntry5e12Bit0`
-- `Unk02f2a8_SetRootUnk60`
-- `Unk02f2a8_IsInGrid45x40`
+## M1-T1107: 8 small functions
+
+All eight are at 100% in objdiff, with typed signatures and behaviour comments in
+`src/game/unit_0202f2a8.c`. The names stay neutral because no string or caller
+establishes a gameplay meaning beyond the observations below.
+- `Unk02f2a8_GetRes36Unk1a` (`0x02035ae0`, 40 bytes): opens resource 36 with
+  `func_020445d0(36, 0)`, fetches the 40-byte entry table via `func_0204fde0`
+  and returns the signed byte at +0x1a of entry `i`. The caller in
+  `src/game/unit_021124f0.c` compares it with 1, so it acts as a small
+  selector; the field itself is unnamed.
+- `Unk02f2a8_GetOptSub240` (`0x020353cc`, 44 bytes): returns a borrowed pointer
+  to `gGameState + 0x240` when the game state exists and its word at +0x240 is
+  nonzero; otherwise null.
+- `Unk02f2a8_GetOptSub2cc` (`0x020353f8`, 44 bytes): the same optional-block
+  contract for `gGameState + 0x2cc`.
+- `Unk02f2a8_Unk_035440` (`0x02035440`, 44 bytes): maps selector 0 to 1, calls
+  `Unk02f2a8_Unk_035a70(selector)` between `Unk044394_Unk_044428(0x24)` and
+  `Unk044394_Unk_044534(0x24)`, then `func_020f43d4`. Its callers pass the work
+  word at +8 (`src/ImageBgDual3D.c`, `src/game/unit_02116598.c`).
+- `Unk02f2a8_Call_02035db8` (`0x02030548`, 48 bytes): calls `func_02035db8`
+  with `p + 0x70` and the signed work bytes at +0x364/+0x365. The work-area
+  accessor is called twice, matching the original instruction stream.
+- `Unk02f2a8_ClearEntry5e12Bit0` (`0x0202f2a8`, 52 bytes): clears bit 0 of
+  byte `i` in the 64-entry table at work+0x5e12. Ids outside 0..63 are ignored.
+- `Unk02f2a8_SetRootUnk60` (`0x02034ad4`, 52 bytes): sets the root flag at
+  +0x60 to 1 and stores the two arguments at +0x64/+0x68. It is the setter
+  paired with `GameState_ClearRootUnk60`.
+- `Unk02f2a8_IsInGrid45x40` (`0x02035c5c`, 52 bytes): returns 1 exactly when
+  `0 <= x < 45` and `0 <= y < 40`; both comparisons are signed, so negative
+  coordinates are rejected before `Unk02f2a8_GridIndex45` multiplies them.
 
 ## Not done in M1-T1108
 - `Unk02f2a8_Unk_036488`
@@ -198,7 +219,6 @@ beyond the observed field and grid uses below.
 - `Unk02f2a8_Unk_033890`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_033ac8`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_034a8c`: decompiler-derived (plain cleanup)
-- `Unk02f2a8_Unk_035440`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_036488`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_0343b4`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_033c94`: decompiler-derived (plain cleanup)
@@ -215,9 +235,7 @@ beyond the observed field and grid uses below.
 - `GameState_GetBody`: hand-matched
 - `GameState_ClearRootUnk60`: hand-matched
 - `GameState_GetUnkField74f6`: hand-matched
-- `Unk02f2a8_ClearEntry5e12Bit0`: hand-matched
 - `Unk02f2a8_SetField6138`: hand-matched
-- `Unk02f2a8_Call_02035db8`: hand-matched
 - `Unk02f2a8_Call_02036318`: hand-matched
 - `Unk02f2a8_Unk_032a08`: hand-matched
 - `Unk02f2a8_ResetField7478`: hand-matched
@@ -225,16 +243,11 @@ beyond the observed field and grid uses below.
 - `Unk02f2a8_GetCell38e8`: hand-matched
 - `Unk02f2a8_GetCurrentCell38e8`: hand-matched
 - `Unk02f2a8_GetObj39160Bits16`: hand-matched
-- `Unk02f2a8_SetRootUnk60`: hand-matched
 - `Unk02f2a8_SetField7470`: hand-matched
-- `Unk02f2a8_GetOptSub240`: hand-matched
-- `Unk02f2a8_GetOptSub2cc`: hand-matched
 - `Unk02f2a8_Unk_035a70`: hand-matched
 - `Unk02f2a8_GetRes36Unk19`: hand-matched
-- `Unk02f2a8_GetRes36Unk1a`: hand-matched
 - `Unk02f2a8_GetRes36Unk1b`: hand-matched
 - `Unk02f2a8_Unk_035c14`: hand-matched
-- `Unk02f2a8_IsInGrid45x40`: hand-matched
 - `Unk02f2a8_GridIndex45`: hand-matched
 - `Unk02f2a8_DirToAngle`: hand-matched
 - `Unk02f2a8_SetField35c`: hand-matched

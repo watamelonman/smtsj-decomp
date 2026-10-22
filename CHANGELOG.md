@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the eight M1-T1107 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: typed the work-area accessor, added behaviour comments to the flag clear, optional-block getters, lock-wrapped selector call, grid forwarding call, root setter and 45x40 bounds test, and gave each a per-function doc entry.
 - Verified the eight M1-T1106 grid/cell functions in `src/game/unit_0202f2a8.c` at 100% objdiff; replaced the last raw-offset bodies (`Unk_033ac8`, `Unk_034a8c`) with typed game-state/object accesses and gave every target a per-function doc entry.
 - Matched `func_021059ec` in `src/game/unit_02100810.c` (saved-record comparison) at 100% objdiff, using typed saved-id list access; documented the six remaining M1-T1096 functions and their trials on the unit hard list.
 
