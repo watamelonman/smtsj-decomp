@@ -542,7 +542,9 @@ typedef struct BattleShowingRecord {
     s8 unk16;
     s8 unk17;
     s8 unk18;
-    u8 pad19[3];
+    u8 pad19;
+    u8 flags;                  /* +0x1A: dispatch flags */
+    s8 selection;              /* +0x1B: area selection index */
     u16 unk1c;
     u16 unk1e;
     u8 pad20[4];
@@ -602,7 +604,7 @@ int func_020580ec();
 int func_0205c848(u32, u32, u32, u32, float, float, u32, float, u32);
 int func_0205dee8(u32, u32, u32, u32, u32, float, float, u32, float, u32);
 int func_0211b100();
-int func_0211b2ac();
+void func_0211b2ac(void *object, s32 scale);
 /* Map an entry ID to a category byte through the Unk09974c record tables.
  * The switch at 0x0211b1f4 selects a loader per entry type (0..9), reads a
  * byte from the returned record (+3, or +0x2C for type 1), and returns 6 for
@@ -827,7 +829,9 @@ u32 func_02119658(void)
 typedef struct BattleShowingResource {
     u8 pad00[2];
     u8 unk02;
-    u8 pad03[0x21];
+    u8 pad03[2];
+    u8 tier;                   /* +5: color tier in func_02119c80 */
+    u8 pad06[0x1e];
     u32 unk24;
 } BattleShowingResource;
 BattleShowingResource *func_020a1428(u32 id);
@@ -1470,5 +1474,296 @@ void func_0211a6e4(BattleShowingResultEntry *entry, s32 *out1, s32 *out2)
                 }
             }
         }
+    }
+}
+
+/* Twelve-byte display entry; widths follow the loads at ARM 0x0211B2AC. */
+typedef struct BattleShowingLabelEntry {
+    u16 unk_0000, count;
+    s16 id;
+    u16 unk_0006;
+    u32 visible;
+} BattleShowingLabelEntry;
+/* Drawing view of the six entries beginning at work +4. */
+typedef struct BattleShowingLabelWork {
+    u32 state;
+    BattleShowingLabelEntry entry[6];
+    u8 pad_004c[0x278];
+    u32 auxiliary;
+    u8 pad_02c8[0x24];
+    u32 animation;
+    u8 pad_02f0[0x24];
+    u32 *text;
+} BattleShowingLabelWork;
+/* Signed screen coordinates shared by the six label and animation slots. */
+typedef struct BattleShowingLabelPosition { s16 x, y; } BattleShowingLabelPosition;
+extern BattleShowingLabelPosition data_0213ccc8[];
+extern u8 data_02151cc0[];
+u32 Unk0ca69c_Unk_0ca69c(s32 id);
+void func_02058e9c(u32 mode, u32 resource, s32 x, s32 y, float alpha, u32 arg5, u32 arg6);
+void func_02060dd4(void *output, u32 *text, u32 arg2, s32 index, u32 arg4);
+void func_02059f70(u32 text, u32 arg1, s32 x, s32 y, void *options, u32 arg5, u32 arg6);
+void func_020a9fd8(u32 mode, s32 x, s32 y, u32 arg3, u32 arg4, u32 arg5, u32 resource, u32 count);
+/* Submit labels, counts and visible animations for six display entries.
+ * Coordinates, call order and 20.12 scale conversion are evidenced by ARM 0x0211B2AC. */
+void func_0211b2ac(void *object, s32 scale)
+{
+    BattleShowingLabelWork *work = object;
+    u32 options[4];
+    func_02057fd8();
+    {
+        int i;
+        for (i = 0; i < 6; i++) {
+            if (work->entry[i].count != 0) {
+                func_0205dee8(2, work->auxiliary, 12, data_0213ccc8[i].x,
+                    data_0213ccc8[i].y, 1.0f, 1.0f, 0, (float)scale / 4096.0f, 0);
+            }
+    }
+        }
+    func_02057fd8();
+    {
+        BattleShowingLabelEntry *entry = work->entry;
+        int i;
+        for (i = 0; i < 6; i++, entry++) {
+            if (entry->count != 0) {
+                u32 resource = Unk0ca69c_Unk_0ca69c(entry->id);
+                s32 y, x;
+                x = data_0213ccc8[i].x;
+                y = data_0213ccc8[i].y;
+                func_02058e9c(2, resource, x + 3, y + 145, 1.0f, 0, 1);
+                func_02060dd4(options, work->text, 0, i, 8);
+                func_02059f70(*work->text, 0, x + 21, y + 144, options, 0, 1);
+                func_02058e9c(2, 0x6117, x + 106, y + 148, 1.0f, 0, 1);
+                func_020a9fd8(2, x + 111, y + 148, 2, 8, 1, (u32)data_02151cc0, entry->count);
+            }
+    }
+        }
+    func_02057fd8();
+    {
+        int i;
+        BattleShowingLabelEntry *entry = work->entry;
+        for (i = 0; i < 6; i++, entry++) {
+            if (entry->visible != 0) {
+                func_0205c848(2, work->animation, data_0213ccc8[i].x,
+                    data_0213ccc8[i].y, 1.0f, 1.0f, 0, (float)scale / 4096.0f, 0);
+            }
+    }
+        }
+}
+
+/* Clipping rectangle copied as 24 bytes; signed width is at byte 12. */
+typedef struct BattleShowingGaugeClip {
+    u8 pad_0000[12];
+    s16 width;
+    u8 pad_000e[10];
+} BattleShowingGaugeClip;
+extern u8 data_0213ccbc[];
+extern u8 data_02151c44[], data_02151c48[];
+void func_0205de40(u32, u32, u32, s32, u32, float, float, u32, float, u32);
+void *func_0205e318(u32, u32);
+void func_02008904(const void *, void *, u32);
+void func_0205e048(u32, u32, BattleShowingGaugeClip *, s32, u32, float, float, u32, float, u32, u32);
+void func_02057ddc(u32 color);
+u32 Unk02ee5c_GetTierFromField70(void);
+/* Draw the EXP bar, labels and level-up overlay. ExpGauge_Update owns this
+ * gauge state; ARM 0x02119C80 selects sequence 9's clipped width from remaining EXP. */
+void func_02119c80(ExpGauge *g)
+{
+    u32 i;
+    u8 *part;
+    BattleShowingGaugeClip clip;
+    u32 options[4];
+    func_02057df8();
+    func_020580ec(0);
+    part = data_0213ccbc;
+    for (i = 0; i < 4; i++) {
+        func_0205de40(2, g->unk04[0], *part++, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    }
+    if (g->state == EXP_GAUGE_LEVEL_UP) {
+        func_0205de40(2, g->unk04[0], 7, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+        func_02057fd8();
+        func_0205c848(2, g->gaugeAnim, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    } else {
+        s32 threshold, gained;
+        func_02008904(func_0205e318(g->unk04[0], 9), &clip, 24);
+        threshold = ExpGauge_GetExpForNextLevel(g);
+        gained = threshold - g->toNextLevel;
+        clip.width = clip.width * gained / threshold;
+        if (gained != 0 && clip.width <= 0) clip.width = 1;
+        func_0205e048(2, g->unk04[0], &clip, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0, 0);
+        func_02057fd8();
+        func_0205c848(2, g->gaugeAnim, g->fade + clip.width, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    }
+    func_02057e18(31);
+    func_02058d04(g->unk04[2], 0, g->fade + 12, g->unk24 + 40, 1.0f, 0, 4, 0);
+    {
+        u32 tier;
+        if (g->info->unk00 < 0) tier = Unk02ee5c_GetTierFromField70();
+        else tier = func_020a1428(g->info->unk08)->tier;
+        switch (tier) {
+        case 4: func_02057ddc(0x39dccbff); break;
+        case 5: func_02057ddc(0xff7b63ff); break;
+        default: func_02057ddc(0xffffffff); break;
+        }
+    }
+    func_02060dd4(options, (u32 *)g->unk04[3], 0, g->unk04[4], 8);
+    func_02059f70(*(u32 *)g->unk04[3], 0, g->fade + 45, g->unk24 + 45, options, 0, 3);
+    func_02057df8();
+    if (g->levelUps != 0) {
+        func_02057ddc(0x8cff4aff);
+    }
+    func_020a9fd8(1, g->fade + 145, g->unk24 + 48, 2, 10, 4, (u32)data_02151c44, g->info->level + g->levelUps);
+    func_02057df8();
+    func_02057ddc(0x73ffbdff);
+    func_020a9fd8(1, g->fade + 205, g->unk24 + 46, 2, 35, 4, (u32)data_02151c48, g->toNextLevel);
+    func_02057df8();
+    if (g->levelUps != 0) {
+        func_02057fd8();
+        func_0205c848(2, g->levelUpAnim, g->fade, g->unk24, 1.0f, 1.0f, 0, 1.0f, 0);
+    }
+    func_020580ec(1);
+}
+/* Animation task fields used by the record-screen state machine. */
+typedef struct BattleShowingScreenAnimation {
+    u32 handle;
+    s32 x, y, offset;
+    u8 pad_0010[0x14];
+    s32 mode;
+    u8 pad_0028[8];
+    s32 unk_0030;
+} BattleShowingScreenAnimation;
+/* A screen uses an embedded loader through +0x9B and a frame counter at +0xAC. */
+typedef struct BattleShowingScreenWork {
+    s32 state;
+    u32 *records;
+    s32 count, index;
+    u8 loader[0x8c];
+    BattleShowingScreenAnimation *animation;
+    u32 *allocation;
+    BattleShowingTaskSub *sub;
+    s32 x, frame;
+} BattleShowingScreenWork;
+/* Loader result exposes a signed vertical coordinate through its +0x18C pointer. */
+typedef struct BattleShowingScreenPosition { u8 pad[6]; s16 y; } BattleShowingScreenPosition;
+typedef struct BattleShowingScreenResource {
+    u8 pad[0x18c];
+    BattleShowingScreenPosition *position;
+} BattleShowingScreenResource;
+s32 Unk0a163c_Thunk_020a208c(void *loader);
+BattleShowingScreenAnimation *func_020a22e0(void *loader, u32 id, u32 mode);
+BattleShowingScreenResource *func_020a2250(void *loader, u32 id);
+s32 func_0206559c(void);
+s32 func_02065e1c(void);
+s32 func_02052728(void);
+void func_0209786c(void *record);
+void func_020a1a24(void *loader);
+void Unk0bc1a8_Unk_0bc504(void *work, u32 mode);
+/* Area-record fields changed after confirmation; the selection index must
+ * address a live trailing entry, as in the original's unchecked +0x28 store. */
+typedef struct BattleShowingScreenAreaRecord {
+    u8 pad_0000[0x0a];
+    s16 x, y;
+    u8 pad_000e[0x10];
+    s16 savedX, savedY;
+    u8 pad_0022[6];
+    u16 selections[];
+} BattleShowingScreenAreaRecord;
+/* Drive record-screen entrance, message waits, confirmation and exit.
+ * State mapping and ten-frame interpolation are evidenced by ARM 0x0211C960. */
+void func_0211c960(BattleShowingTaskWork *object)
+{
+    BattleShowingScreenWork *work = (BattleShowingScreenWork *)object;
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(object);
+    switch (work->state) {
+    case 0:
+        if (record->unk00 < 0) {
+            if (work->sub->unk_0059 == 0) return;
+            func_02053000(work->allocation);
+            work->allocation = 0;
+            work->x = 128;
+            work->state = 1;
+        } else {
+            BattleShowingScreenResource *resource;
+            if (!Unk0a163c_Thunk_020a208c(work->loader)) return;
+            work->state = 1;
+            work->animation = func_020a22e0(work->loader, record->id, 1);
+            func_0205c408(work->animation->handle, 0);
+            func_0205c41c(work->animation->handle, 0);
+            func_0205c6e0(work->animation->handle);
+            work->animation->mode = 8;
+            work->animation->unk_0030 = 0;
+            resource = func_020a2250(work->loader, record->id);
+            work->animation->offset += 192;
+            work->animation->y = resource->position->y;
+            work->animation->x = 128;
+        }
+        break;
+    case 1:
+        work->frame = 0;
+        work->state = 2;
+    case 2:
+        if (work->animation) work->animation->x = Unk_InterpolateLinear(128, 0, 10, work->frame);
+        else work->x = Unk_InterpolateLinear(128, 0, 10, work->frame);
+        if (++work->frame >= 10) {
+            work->state = 3;
+            func_0211c350(object);
+            if (work->animation) work->animation->x = 0;
+            else work->x = 0;
+        }
+        break;
+    case 3:
+        if (func_020654cc()) work->state = 4;
+        break;
+    case 7:
+        if (!func_020654cc()) return;
+        if (!func_0206559c()) return;
+        if (!func_02065e1c()) {
+            BattleShowingScreenAreaRecord *area = (BattleShowingScreenAreaRecord *)Unk02e000_GetAreaRecord(record->unk00);
+            area->selections[record->selection] = record->unk1e;
+            func_0209786c(area);
+            area->savedX = area->x;
+            area->savedY = area->y;
+            func_0211c6ac(object, 1);
+        } else func_0211c6ac(object, 0);
+        break;
+    case 8:
+        if (!func_02052728()) func_0211c6ac(object, 0);
+        break;
+    case 9: case 10:
+        if (!func_020654cc()) return;
+        if (!func_02065cd0()) return;
+        func_0211c6ac(object, 0);
+        break;
+    case 4: case 5: case 11: case 12:
+        if (!func_020654cc()) return;
+        if (!func_02065cd0()) return;
+        func_0211c6ac(object, 0);
+        break;
+    case 13:
+        func_02065c30();
+        work->frame = 0;
+        work->state = 14;
+    case 14:
+        if (!func_020654cc()) return;
+        if (work->animation) work->animation->x = Unk_InterpolateLinear(0, 128, 10, work->frame);
+        else work->x = Unk_InterpolateLinear(0, 128, 10, work->frame);
+        if (++work->frame < 10) return;
+        if (record->unk00 < 0) {
+            func_0205bb68();
+            work->sub = 0;
+        } else {
+            func_02061424(work->animation);
+            work->animation = 0;
+            func_020a1a24(work->loader);
+        }
+        if (++work->index >= work->count) work->state = 15;
+        else {
+            func_0211c24c(object);
+            work->state = 0;
+        }
+        break;
+    case 15:
+        Unk0bc1a8_Unk_0bc504(work, 0);
+        break;
     }
 }

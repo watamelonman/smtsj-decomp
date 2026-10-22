@@ -258,3 +258,70 @@ animations, and passes floating-point unity. Message dispatch uses the shared
 clear helper. Scheduler cleanup accepts either task layout via `void *`.
 Direct `cmp.py` checks preserve exact matches for rank publication, drawing and
 message dispatch. The fixed delink translation-unit boundary is retained.
+
+## M1-T1036 — verified matches and hard list
+
+Three targets are implemented in readable C and match the original ARM instructions
+exactly. The four remaining targets are omitted, so they continue to link from the
+original delinked object. This card is incomplete; a successful match gate checks
+retained C definitions and does not imply that all seven targets were recovered.
+
+- `func_0211b2ac` (`0x0211b2ac`, 568 B): three six-entry drawing passes.
+  Entries with nonzero +6 counts submit resource 12, an ID-derived label,
+  per-entry text, resource 0x6117 and their count. Entries with nonzero +0x0C
+  submit the animation at work +0x2EC. Coordinates come from `data_0213ccc8`;
+  scale is converted from 20.12 to float. The second pass uses explicit
+  entry pointers; separate loop scopes preserve the original register allocation.
+- `func_02119c80` (`0x02119c80`, 924 B): EXP-gauge drawing callback installed
+  by `func_0211a058`. Draws four background parts, the clipped EXP bar (or
+  sequence 7 during the level-up state), labels, level and remaining EXP,
+  and an optional level-up animation. Sequence 9 supplies a 24-byte clipping
+  record whose signed width is scaled by gained/required EXP and floored at
+  one for a nonzero gain. Resource byte +5 chooses label color. The level-up
+  count controls the level color and overlay; the level number is always drawn.
+- `func_0211c960` (`0x0211c960`, 920 B): sixteen-state record-screen update.
+  Initializes the negative-ID display or the embedded loader's animation,
+  interpolates entrance/exit over ten frames, publishes ranks, waits for
+  message/confirmation gates and calls `func_0211c6ac`. Confirmation copies
+  record +0x1E into the area selection indexed by signed record +0x1B,
+  updates saved coordinates and advances through the record list on exit.
+  The trailing selection array has an unknown bound, and the original trusts
+  the index. Separate identical dispatch cases preserve the original branches.
+
+### Hard list for M1-T1036
+
+A human can use `tools/decompme.py` to open scratches for these targets. No
+unmatched candidate bodies, fabricated stack stores or assembly were retained.
+
+- `func_0211a140` (`0x0211a140`, 576 B): resource/animation initialization.
+  Recovered two text allocations, party label selection, formatted resource
+  paths, six 24-byte entry registrations, four animation sources and seven
+  animation handles. A full C candidate compiled to 572 B: the original
+  computes the empty two-code-unit label's address before its two halfword
+  stores, whereas C addresses the stack directly. Tried a struct, inline
+  initializer and explicit pointer stores (572 B), and a two-element loop
+  (592 B). Candidate omitted; the empty-label initialization idiom remains
+  unresolved. The same pattern occurs in `func_0211b6a8`.
+- `func_0211c6ac` (`0x0211c6ac`, 692 B): transition dispatcher for states
+  4..12, using record +0x1A bits 1/2, signed +0x1B selection and +0x20/+0x24
+  resource values. A complete switch candidate using the shared message
+  initializer and pointer-based message submission compiled to 664 B. The
+  original retains extra stack copies around the two message submissions,
+  as in the M1-T1034 hard functions. A by-value message declaration conflicts
+  with the existing helper contract; it was rejected and removed. Recover
+  the option setter/construction contract before further instruction tuning.
+- `func_0211ab2c` (`0x0211ab2c`, 1492 B): thirteen-state result-screen
+  update. Instruction analysis identifies six-animation completion loops,
+  four EXP-gauge creations at work +0x300, staggered fade timers, count-up
+  sound handle +0x320 and final selectable-record dispatch. Two message
+  blocks retain the same unresolved initialization/stack-copy pattern as
+  `func_0211c6ac`. No complete C candidate or matching claim is made; full
+  recovery of this function remains outstanding.
+- `func_0211b6a8` (`0x0211b6a8`, 2744 B): allocates the 804-byte task,
+  initializes resources, processes six reward entries, constructs text,
+  aggregates fifteen auxiliary entries and computes party/reserve result
+  records before publishing the task. Instruction analysis identifies
+  twelve-byte source entries and twelve reserve slots. It shares both the
+  empty-label initialization above and the message-construction pattern;
+  the record-building and randomized award loops still need complete type
+  recovery. No complete C candidate was produced; recovery remains outstanding.
