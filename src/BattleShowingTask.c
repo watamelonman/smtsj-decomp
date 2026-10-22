@@ -58,10 +58,19 @@ void BattleShowingTask_Unk_119834(void);
 void BattleShowingTask_Unk_1196e0(BattleShowingTask *task);
 u32 BattleShowingTask_Unk_11c230(BattleShowingTaskWork *work);
 
+/* Shared rank view includes the four bytes preceding the five signed ranks.
+ * Embedded at +0x12 in work and +0x0A in records, per ARM 0x0211C350. */
+typedef struct BattleShowingRanks {
+    u8 pad_0000[4];
+    s8 rank0, rank1, rank2, rank3, rank4;
+} BattleShowingRanks;
+
 /* Area work returned by the 02e000 helpers; slot count comes from the
  * three-iteration loop at 0x0211a474. Other fields remain unknown. */
 typedef struct BattleShowingAreaWork {
-    u8 pad_0000[0x20];
+    u8 pad_0000[0x12];
+    BattleShowingRanks ranks; /* signed rank bytes +0x16..+0x1A */
+    u8 pad_001b[5];
     s32 unk_0020;
     u8 pad_0024[0x48];
     u16 unk_006c;               /* 0x6C: area kind for the negative-ID path */
@@ -78,7 +87,9 @@ typedef struct BattleShowingAreaObject {
 
 /* Area record: baseline threshold consumed by 0x02119940. */
 typedef struct BattleShowingAreaRecord {
-    u8 pad_0000[0x24];
+    u8 pad_0000[0x0A];
+    BattleShowingRanks ranks; /* signed rank bytes +0x0E..+0x12 */
+    u8 pad_0013[0x11];
     s32 unk_0024;
     u8 pad_0028[0x0C];
     u16 unk_0034;               /* 0x34: area kind; 1/7 suppress EXP gain */
@@ -235,7 +246,8 @@ void func_0205c408(u32 anim, int seq);
 void func_0205c41c(u32 anim, int frame);
 void func_0205c6e0(u32 anim);
 void Unk0a0ce4_Unk_0a0da4(int se);
-void func_02061424(ExpGauge *g);
+/* Task scheduler accepts either task allocation layout without inspecting it here. */
+void func_02061424(void *task);
 void ExpGauge_PlayGaugeNormal(ExpGauge *g);
 void ExpGauge_PlayGaugeLevelUp(ExpGauge *g);
 s32 ExpGauge_GetExpForNextLevel(ExpGauge *g);
@@ -587,8 +599,8 @@ int func_02057df8();
 int func_02057e18();
 int func_02057fd8();
 int func_020580ec();
-int func_0205c848();
-int func_0205dee8();
+int func_0205c848(u32, u32, u32, u32, float, float, u32, float, u32);
+int func_0205dee8(u32, u32, u32, u32, u32, float, float, u32, float, u32);
 int func_0211b100();
 int func_0211b2ac();
 /* Map an entry ID to a category byte through the Unk09974c record tables.
@@ -622,79 +634,77 @@ u32 func_0211b1f4(u32 id)
     return 6;
 }
 
-/*
- * Submit the display lists for the current battle-showing state. States 2 and 9
- * run the seven-handle animation path at +0x2D4 (skipping handles 0 and 5 when
- * the visibility flags at +0x50/+0x4C are clear); every other state runs the
- * six-handle auxiliary path at +0x2C4. Both paths finish by forwarding the
- * selected scale (+0x14/+0x28 or 0x1000) to func_0211B100 and func_0211B2AC.
- * Evidence: ARM 0x0211B4E4 and its state jump table.
- */
-void BattleShowingTask_Unk_11b4e4(u32 *work)
+/* Animation fields forwarded by the state-2/9 draw path (ARM 0x0211B4E4). */
+typedef struct BattleShowingDrawHandle {
+    u8 pad_0000[0x14];
+    u32 unk_0014;
+    u8 pad_0018[0x10];
+    u32 unk_0028;
+} BattleShowingDrawHandle;
+
+/* Draw-only view; the seventh animation at +0x2EC is not submitted here. */
+typedef struct BattleShowingDrawWork {
+    s32 state;
+    u8 pad_0004[0x48];
+    u32 unk_004c;
+    u32 unk_0050;
+    u8 pad_0054[0x270];
+    u32 auxiliary;
+    u8 pad_02c8[0x0c];
+    BattleShowingDrawHandle *anim[6];
+} BattleShowingDrawWork;
+
+/* Submit six animations in states 2/9 or six auxiliary entries in states 3..8.
+ * Visibility flags omit entries 0 and 5 (auxiliary: 0 and 3). Forward the
+ * animation's +0x14/+0x28 values or fixed scale 0x1000 to the label helpers.
+ * Evidence: ARM 0x0211B4E4 and its state jump table. */
+void BattleShowingTask_Unk_11b4e4(BattleShowingDrawWork *work)
 {
-  int tmp1;
-  u32 tmp2;
-  u8 *v3;
-  Unk044904_Unk_04502c();
-  func_02057e18(0x1f);
-  func_02057df8();
-  func_020580ec(0);
-  switch(*work) {
-  case 0:
-    goto LAB_0211b670;
-  case 1:
-    goto LAB_0211b670;
-  case 2:
-    goto LAB_0211b54c;
-  case 3:
-    break;
-  case 4:
-    break;
-  case 5:
-    break;
-  case 6:
-    break;
-  case 7:
-    break;
-  case 8:
-    break;
-  case 9:
-LAB_0211b54c:
-    func_02057fd8();
-    tmp1 = 0;
-    do {
-      if ((work[0x14] != 0 || tmp1 != 0) && (work[0x13] != 0 || tmp1 != 5)) {
-
-        func_0205c848(2,work[tmp1 + 0xb5],0,0,0x3f800000,0x3f800000,0,0x3f800000,0);
-      }
-      tmp1 = tmp1 + 1;
-    } while (tmp1 < 6);
-    func_0211b100(work,*(u32 *)(work[0xb5] + 0x14),
-                  *(u32 *)(work[0xb5] + 0x28));
-    func_0211b2ac(work,*(u32 *)(work[0xb5] + 0x28));
-    goto LAB_0211b670;
-  case 10:
-    goto LAB_0211b670;
-  case 0xb:
-    goto LAB_0211b670;
-  case 0xc:
-    goto LAB_0211b670;
-  }
-  func_02057fd8();
-  tmp2 = 0;
-  v3 = data_0213ccc0;
-  do {
-    if ((work[0x14] != 0 || tmp2 != 0) && (work[0x13] != 0 || tmp2 != 3)) {
-
-      func_0205dee8(2,work[0xb1],*v3,0,0,0x3f800000,0x3f800000,0,0x3f800000,0);
+    int i;
+    u32 j;
+    u8 *entry;
+    Unk044904_Unk_04502c();
+    func_02057e18(0x1f);
+    func_02057df8();
+    func_020580ec(0);
+    switch (work->state) {
+    case 0:
+    case 1:
+    case 10:
+    case 11:
+    case 12:
+        break;
+    case 2:
+    case 9:
+        func_02057fd8();
+        i = 0;
+        do {
+            if ((work->unk_0050 != 0 || i != 0) &&
+                (work->unk_004c != 0 || i != 5)) {
+                func_0205c848(2, (u32)work->anim[i], 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+            }
+            i++;
+        } while (i < 6);
+        func_0211b100(work, work->anim[0]->unk_0014, work->anim[0]->unk_0028);
+        func_0211b2ac(work, work->anim[0]->unk_0028);
+        break;
+    default:
+        func_02057fd8();
+        j = 0;
+        entry = data_0213ccc0;
+        do {
+            if ((work->unk_0050 != 0 || j != 0) &&
+                (work->unk_004c != 0 || j != 3)) {
+                func_0205dee8(2, work->auxiliary, *entry, 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+            }
+            j++;
+            entry++;
+        } while (j < 6);
+        func_0211b100(work, 0, 0x1000);
+        func_0211b2ac(work, 0x1000);
+        break;
     }
-    tmp2 = tmp2 + 1;
-    v3 = v3 + 1;
-  } while (tmp2 < 6);
-  func_0211b100(work,0,0x1000);
-  func_0211b2ac(work,0x1000);
-LAB_0211b670:
-  func_020580ec(1);
+    func_020580ec(1);
 }
 
 /* Select sequence 17, reset its frame, and start the gauge animation.
@@ -1090,7 +1100,7 @@ void func_021196fc(BattleShowingTask *task)
         func_0205bb68();
         Unk065e88_Unk_065eac();
         Unk044394_Unk_044534(0x2f);
-        func_02061424((ExpGauge *)task);
+        func_02061424(task);
         break;
     }
 }
@@ -1109,13 +1119,13 @@ typedef struct BattleShowingResultEntry {
     unsigned char scaled:1;     /* 0x1A bit 0: use level-scaled EXP */
 } BattleShowingResultEntry;
 
-/* Global resource-manager word read by the EXP calculation; only bit 15 of
- * +0x40 is used here. */
+/* Global sub-object gating the EXP entry scan through +0x3C. */
 typedef struct BattleShowingGlobalSub {
     u8 pad00[0x3C];
     u32 unk3c;                  /* 0x3C: bits 2..9 suppress the entry scan */
 } BattleShowingGlobalSub;
 
+/* Global resource-manager flags; EXP scaling tests bit 15 of +0x40. */
 typedef struct BattleShowingGlobalFlags {
     u8 pad00[0x40];
     u32 unk40;
@@ -1128,11 +1138,12 @@ BattleShowingGlobalFlags *Unk044904_Get_data_0215ee98(void);
 u32 func_020b8240(u32 level, u32 value);
 
 /* Compute one party member's EXP award. Bonuses 0x18E and 0x18F add 25% and
- * 50% of the incoming amount (rounded up); when the entry's +0x1A bit 0 is set
+ * 50% of bonus_base (with a minimum nonzero bonus of one); when the entry's +0x1A bit 0 is set
  * the award is instead the incoming amount scaled by func_020b8240, unless the
  * global +0x40 bit 15 bypasses scaling. Areas of kind 1 and 7 award nothing.
+ * level_arg is the second argument to the level-scaling helper.
  * Evidence: ARM 0x0211A504 and the thresholds at 0x0211A608/0x0211A610. */
-u32 func_0211a504(BattleShowingResultEntry *entry, u32 amount, u32 arg2, u32 arg3)
+u32 func_0211a504(BattleShowingResultEntry *entry, u32 amount, u32 level_arg, u32 bonus_base)
 {
     u32 result = 0;
     BattleShowingAreaRecord *area = Unk02e000_GetAreaRecord(entry->unk00);
@@ -1142,21 +1153,21 @@ u32 func_0211a504(BattleShowingResultEntry *entry, u32 amount, u32 arg2, u32 arg
     }
     if (entry->scaled == 0) {
         if (Unk0979d8_HasId((u8 *)area, 0x18e) != 0) {
-            u32 bonus = arg3 * 25 / 100;
-            if (bonus == 0 && arg3 != 0) {
+            u32 bonus = bonus_base * 25 / 100;
+            if (bonus == 0 && bonus_base != 0) {
                 bonus = 1;
             }
             result += bonus;
         }
         if (Unk0979d8_HasId((u8 *)area, 0x18f) != 0) {
-            u32 bonus = arg3 * 50 / 100;
-            if (bonus == 0 && arg3 != 0) {
+            u32 bonus = bonus_base * 50 / 100;
+            if (bonus == 0 && bonus_base != 0) {
                 bonus = 1;
             }
             result += bonus;
         }
     } else if (((Unk044904_Get_data_0215ee98()->unk40 << 17) >> 31) == 0) {
-        result = amount * func_020b8240(area->unk_0038, arg2) / 100;
+        result = amount * func_020b8240(area->unk_0038, level_arg) / 100;
         if (result == 0) {
             if (amount != 0) {
                 result = 1;
@@ -1201,24 +1212,24 @@ void func_0211c350(BattleShowingTaskWork *work)
     BattleShowingSelectionEntry entries[5];
     u32 value = 0;
     s32 count;
-    s8 *source;
+    BattleShowingRanks *source;
     int i;
 
     func_02063920();
     count = 0;
     if (record->unk00 < 0) {
-        source = (s8 *)Unk02e000_Thunk_0202e788() + 0x12;
+        source = &Unk02e000_Thunk_0202e788()->ranks;
         value = func_02063a30(func_020493e0(12));
         count++;
     } else {
-        source = (s8 *)Unk02e000_GetAreaRecord(record->unk00) + 0x0A;
+        source = &Unk02e000_GetAreaRecord(record->unk00)->ranks;
     }
     *(BattleShowingSelectionTable *)entries = data_0213cce0;
-    entries[0].value = source[4] - ((s8 *)record)[20];
-    entries[1].value = source[8] - ((s8 *)record)[24];
-    entries[2].value = source[5] - ((s8 *)record)[21];
-    entries[3].value = source[6] - ((s8 *)record)[22];
-    entries[4].value = source[7] - ((s8 *)record)[23];
+    entries[0].value = source->rank0 - record->unk14;
+    entries[1].value = source->rank4 - record->unk18;
+    entries[2].value = source->rank1 - record->unk15;
+    entries[3].value = source->rank2 - record->unk16;
+    entries[4].value = source->rank3 - record->unk17;
     for (i = 0; i < 5; i++) {
         if (entries[i].value == 0) {
             continue;
@@ -1288,7 +1299,6 @@ void func_0211ccf8(BattleShowingTaskWork *work)
     case 7:
     case 9: {
         BattleShowingMessage message;
-        int i;
         if (func_020654cc() == 0) {
             return;
         }
@@ -1299,12 +1309,7 @@ void func_0211ccf8(BattleShowingTaskWork *work)
             return;
         }
         func_02065c30();
-        for (i = 0; i < 2; i++) {
-            message.flags[i] = 0;
-        }
-        for (i = 0; i < 16; i++) {
-            message.words[i] = 0;
-        }
+        BattleShowing_ClearMessage(&message);
         message.words[3] = 12;
         message.words[1] = 37;
         message.flags[0] |= 10;

@@ -36,7 +36,7 @@ instruction stream at each entry address.
   save/load selection before running the final teardown calls.
 - `func_0211a504` (`0x0211a504`, 272 B): computes one party member's EXP award.
   Areas of kind 1 and 7 award zero; flags 0x18E and 0x18F add 25%/50% of the
-  incoming amount (rounded up); entries with +0x1A bit 0 set instead scale the
+  bonus-base parameter (minimum one for a nonzero base); entries with +0x1A bit 0 set instead scale the
   amount through `func_020b8240`, unless global +0x40 bit 15 bypasses scaling.
 - `func_0211a6e4` (`0x0211a6e4`, 384 B): computes the two result-screen EXP
   gauges. A nonzero entry +2 fills both; otherwise the global +0x60/+0x3C gate
@@ -56,7 +56,7 @@ instruction stream at each entry address.
   allocates and sorts the pointer list with `func_0211c160`, then starts the
   current-record dispatch and resets the work state.
 - `BattleShowingTask_Unk_11b4e4` (`0x0211b4e4`, 416 B): submits either the
-  seven-animation display path for states 2/9 or the six-handle auxiliary path
+  six-animation display path for states 2/9 or the six-entry auxiliary path
   for the other states, then forwards the state-selected scale to
   `func_0211b100`/`func_0211b2ac`.
 - `ExpGauge_Update` (`0x021198fc`, 544 B): per-frame EXP-gauge state machine:
@@ -249,3 +249,12 @@ instruction stream at each entry; unknown helper semantics retain neutral names.
   are now explicit; its existing instructions remain identical.
 
 Hard list for M1-T1032: none.
+
+M1-T1035 review follow-up: rank sources share a typed padded rank view embedded
+at work +0x12 / record +0x0A; the five ranks occupy +0x16..+0x1A /
++0x0E..+0x12. Destination ranks use the existing record fields. The draw callback
+uses a dedicated typed work/handle view and a structured switch, submits six
+animations, and passes floating-point unity. Message dispatch uses the shared
+clear helper. Scheduler cleanup accepts either task layout via `void *`.
+Direct `cmp.py` checks preserve exact matches for rank publication, drawing and
+message dispatch. The fixed delink translation-unit boundary is retained.
