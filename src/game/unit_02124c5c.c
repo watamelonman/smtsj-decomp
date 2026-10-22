@@ -106,3 +106,52 @@ void Unk124c5c_Unk_124e50(u32 arg0)
     data_02176e88->unk_14 = arg0;
   }
 }
+
+int Unk0d297c_Unk_0d3138(void);
+int Unk0e651c_Unk_0e666c(u32 flag);
+int Unk0cb32c_Unk_0cb7f0(void);
+
+/* Select three arguments from predicate results; call relocations and 0x705
+ * in the original establish the order and flag, but not their higher-level use. */
+void func_02124c5c(void)
+{
+    u32 a = 13;
+    u32 b = 7;
+    u32 c = 10;
+    if (Unk0d297c_Unk_0d3138() == 0) {
+        a = 0;
+    }
+    if (Unk0e651c_Unk_0e666c(0x705) == 0) {
+        c = 0;
+    }
+    if (Unk0cb32c_Unk_0cb7f0() == 0) {
+        b = 0;
+    }
+    func_020e7f44(a, b, c, 0);
+}
+
+/* Stack payload layout follows STRB at +0/+1 and sixteen STRs at +4..+64. */
+typedef struct Unk124c5cPayload {
+    u8 flags[2];
+    u8 padding_02[2];
+    u32 words[16];
+} Unk124c5cPayload;
+
+void func_020bcbc4(u32 kind, const Unk124c5cPayload *payload);
+
+/* Forward value in payload word 1 with flag bit 1 and kind 10; the original
+ * stack stores and call relocation establish the payload fields and callee. */
+void func_02124ce8(u32 value)
+{
+    Unk124c5cPayload payload;
+    int i;
+    for (i = 0; i < 2; i++) {
+        payload.flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        payload.words[i] = 0;
+    }
+    payload.flags[0] |= 2;
+    payload.words[1] = value;
+    func_020bcbc4(10, &payload);
+}

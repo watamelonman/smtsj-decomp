@@ -19,14 +19,24 @@ word accesses and signed byte at +8; the remaining three bytes are padding.
 | `Unk124c5c_IsKind0` | Returns 1 exactly when work exists and its signed byte at +8 is zero; otherwise 0. LDRSB and comparison with zero support the existing name. |
 | `Unk124c5c_Unk_124e50` | If work exists, stores its word argument at +0x14. |
 
-## Existing M1-T051 bodies
+## M1-T051
 
-These existing definitions remain at 100%; they were not newly implemented here.
+All four task functions match at 100% in objdiff; the full unit now has twelve
+matching C functions. Evidence is the ARM instructions and relocations in
+`build/delinks/src/game/unit_02124c5c.o`, checked against the compiled object.
 
-- `Unk124c5c_IsKind31`: tests the signed byte at +8 against 31, returning false for null work.
-- `Unk124c5c_Unk_124e04`: dispatches on word +4: 0 selects `IsKind0`, 1 selects `IsKind31`; absent work and other values return 1.
-- `func_02124c5c` and `func_02124ce8`: external declarations only; original implementations remain in the delink.
+| Function | Observed behavior and contract |
+| --- | --- |
+| `Unk124c5c_IsKind31` | Existing implementation verified: returns 1 exactly when work exists and signed byte +8 equals 31, otherwise 0. The LDRSB/CMP supports the existing name. |
+| `Unk124c5c_Unk_124e04` | Existing implementation verified: null work returns 1; word +4 selects `IsKind0` for 0 and `IsKind31` for 1; other values return 1. |
+| `func_02124c5c` | Starts with arguments 13, 7, 10. Calls `Unk0d297c_Unk_0d3138`, `Unk0e651c_Unk_0e666c(0x705)`, and `Unk0cb32c_Unk_0cb7f0` in order, clearing the first, third, and second arguments respectively when the corresponding result is zero. Passes those arguments and a fourth zero to `func_020e7f44`. Higher-level meanings remain unknown. |
+| `func_02124ce8` | Builds a stack payload: clears two flag bytes and sixteen words at +4, sets flag bit 1, stores the input at +8, then calls `func_020bcbc4(10, &payload)`. Padding bytes +2/+3 are untouched, as in the original. The local payload type models only this observed layout. |
+
+Validation: standalone instruction/relocation comparisons for both newly added
+bodies, objdiff for all twelve C functions, nine repository unit tests,
+anticheat, and full-image checksum all pass. No new tests are required by the
+card; binary comparison supplies the behavior equivalence check.
 
 ## Hard list
 
-None for M1-T050. No unmatched implementation was added.
+None. All M1-T050 and M1-T051 functions match.
