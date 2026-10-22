@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all five M1-T115 table, flag, and pair helpers at 100% objdiff; documented index contracts and instruction evidence.
 - Verified and documented the eight M1-T114 accessors in `src/game/unit_0202f078.c` at 100% objdiff, replacing raw offsets with typed work-block fields in `docs/functions/game-unit-0202f078.md`.
 - `src/game/unit_020bd5f0.c`: M1-T1134 functions at 100% objdiff, including the work-area flag test `func_020c1968`; all eight have typed parameters, behaviour comments and doc entries.
 - Matched all seven M1-T113 functions in `src/game/unit_020f09b4.c` (empty callback, interworking thunk, two work-object callbacks, index mapping, per-entry list walk, and mode-filtered helper call) at 100% objdiff, with typed work fields and per-function documentation.
