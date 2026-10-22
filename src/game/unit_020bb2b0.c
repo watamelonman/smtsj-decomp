@@ -1,50 +1,79 @@
-/* src/game/unit_020bb2b0.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Field meanings remain unknown; layouts follow the original ARM loads. */
 #include "types.h"
 
 
+/* Only the +0x40 field of the caller-owned work is established here. */
+typedef struct Unk0bb2b0Work {
+    u8 pad_00[0x40];
+    u32 unk_40;
+} Unk0bb2b0Work;
+
+/* The original reads a halfword at +0x1d8 of this borrowed record. */
+typedef struct Unk0bb2b0Record {
+    u8 pad_000[0x1d8];
+    u16 unk_1d8;
+} Unk0bb2b0Record;
+
+/* Partial lookup record; byte and halfword widths follow ldrb/ldrh. */
+typedef struct Unk0bb2b0Lookup {
+    u8 pad_00[2];
+    u8 unk_02;
+    u8 pad_03[9];
+    u16 unk_0c;
+    u16 unk_0e;
+    u16 unk_10;
+    u16 unk_12;
+    u16 unk_14;
+} Unk0bb2b0Lookup;
+
 u8 *func_020a1428(u32 id);
+Unk0bb2b0Lookup *func_020a1740(u32 id);
+Unk0bb2b0Record *Unk0bac80_Thunk_02044ec4(u32 id);
+Unk0bb2b0Work *Unk0bac80_Unk_0badc0(void);
+u32 func_0203ac00(u32 index);
+u32 Unk02e000_GetRecordUnk1c(u32 id);
+void Unk03aae8_Unk_03acf4(u32 value);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-u8 *Unk0bac80_Thunk_02044ec4(u32 id);
-u32 Unk0bac80_Unk_0badc0(void);
+/* Forward the work-selected record's +0x1d8 halfword; return status 1. */
 u32 Unk0bb2b0_Unk_0bb2b0(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bac80_Thunk_02044ec4(FIELD(u32, Unk0bac80_Unk_0badc0(), 64)) + 256, 216));
+    Unk03aae8_Unk_03acf4(Unk0bac80_Thunk_02044ec4(Unk0bac80_Unk_0badc0()->unk_40)->unk_1d8);
     return 1;
 }
 
-/* forwards to `func_020a1428` */
+/* Preserve the id and borrowed record pointer when forwarding to 0x020a1428. */
 u8 *Unk0bb2b0_Thunk_020a1428(u32 id) { return func_020a1428(id); }
 
-u8 *func_020a1740(u32 id);
-/* forwards to `func_020a1740` */
-u8 *Unk0bb2b0_Thunk_020a1740(u32 id) { return func_020a1740(id); }
+/* Preserve the id and borrowed record pointer when forwarding to 0x020a1740. */
+Unk0bb2b0Lookup *Unk0bb2b0_Thunk_020a1740(u32 id) { return func_020a1740(id); }
 
-int Unk02e000_GetRecordUnk1c();
-int func_0203ac00();
-int Unk03aae8_Unk_03acf4();
+/* Truncate argument 0 to a 16-bit id; forward lookup +0x02; return 1. */
 u32 Unk0bb2b0_Unk_0bb2ec(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u8, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 2));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0))->unk_02);
     return 1;
 }
 
+/* Truncate argument 0 to a 16-bit id; forward lookup +0x0c; return 1. */
 u32 Unk0bb2b0_Unk_0bb314(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 12));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0))->unk_0c);
     return 1;
 }
 
+/* Truncate argument 0 to a 16-bit id; forward lookup +0x14; return 1. */
 u32 Unk0bb2b0_Unk_0bb33c(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 20));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0))->unk_14);
     return 1;
 }
 
+/* Truncate argument 0 to a 16-bit id; forward lookup +0x0e; return 1. */
 u32 Unk0bb2b0_Unk_0bb364(void)
 {
-    Unk03aae8_Unk_03acf4(FIELD(u16, Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0)), 14));
+    Unk03aae8_Unk_03acf4(Unk0bb2b0_Thunk_020a1740((u16)func_0203ac00(0))->unk_0e);
     return 1;
 }
 
@@ -72,13 +101,12 @@ u32 Unk0bb2b0_Unk_0bb404(void)
     return 1;
 }
 
-/* decompiler-derived */
+/* Forward GetRecordUnk1c for the 16-bit argument-0 id; return status 1. */
 u32 Unk0bb2b0_Unk_0bb42c(void)
 {
   u16 value;
   value = func_0203ac00(0);
-  Unk02e000_GetRecordUnk1c(value);
-  Unk03aae8_Unk_03acf4();
+  Unk03aae8_Unk_03acf4(Unk02e000_GetRecordUnk1c(value));
   return 1;
 }
 
