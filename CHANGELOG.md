@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T1075 `func_02072374` at 100% objdiff with typed pair-matrix and display state; documented the four remaining targets and matching trials in the unit hard list.
 - Matched all eight M1-T1074 functions in `src/game/unit_02072238.c` (three empty callbacks, the VLA id-list builder and the panel/list drawing helpers) at 100% objdiff, with typed work/panel layouts and per-function documentation.
 - Finished `src/game/unit_020caea8.c`: added the `func_020cafbc` pair search and documented/types the seven other M1-T106 functions, all at 100% objdiff.
 - Matched all eight M1-T1051 functions in `src/UniteEvent.c` (fusion event descriptor, message handler, id/state setters, effect loader and slot loader) at 100% objdiff, with typed work layouts and per-function documentation.
