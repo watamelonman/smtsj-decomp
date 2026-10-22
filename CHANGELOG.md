@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the eight M1-T1109 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: replaced raw offsets with typed GameState-tail, action and slot-block views, gave `Unk02f2a8_Unk_02f8ac` and `Unk02f2a8_DirToAngle` real prototypes, commented each function and added a per-function doc entry.
 - Verified the eight M1-T1108 decompiler-derived functions in `src/game/unit_0202f2a8.c` at 100% objdiff: typed the work-area meter/direction members and the action/count/GameState-tail views, gave every target a behaviour comment, and added a per-function doc entry.
 - Verified the eight M1-T1107 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: added typed local views for the borrowed work area and the GameState sub-blocks, gave `Unk02e000_GetWorkArea` and the other borrowed accessors real prototypes, added behaviour comments to the flag clear, optional-block getters, the 0x24-scoped selector call, grid forwarding call, root setter and 45x40 bounds test, and gave each a per-function doc entry.
 - Verified the eight M1-T1106 grid/cell functions in `src/game/unit_0202f2a8.c` at 100% objdiff; replaced the last raw-offset bodies (`Unk_033ac8`, `Unk_034a8c`) with typed game-state/object accesses and gave every target a per-function doc entry.
