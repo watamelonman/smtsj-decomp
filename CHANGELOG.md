@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched seven M1-T1015 cell-kind, directional map, slot setup and resource callback functions at 100% objdiff; documented the remaining area update routine and its register-allocation mismatch in the hard list.
 - Matched six M1-T1014 functions in `src/game/unit_0209a268.c` at 100% objdiff (work-array add/copy, variant re-insertion, callback teardown, the 41-kind mask jump table, and the kind-1/kind-2 transition handlers); documented the two remaining map-test functions with their single register-allocation mismatch in the hard list.
 - Matched seven M1-T1013 entry, transition, map-test and message functions at 100% objdiff; documented the remaining grid initializer in the hard list.
 - Corrected M1-T1012 work-area and record accesses to typed fields and clarified record-value and state-update documentation.

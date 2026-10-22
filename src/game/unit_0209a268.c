@@ -7,13 +7,21 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
 typedef struct Unk09a268Work {
-    u8 unk_0000[0xc];
+    s32 unk_0000;
+    s32 unk_0004;
+    s32 unk_0008;
     u32 UnkField000c;
-    u8 unk_0010[0x18];
+    void *unk_0010;
+    void *unk_0014;
+    void *unk_0018;
+    void *unk_001c;
+    void *unk_0020;
+    void *unk_0024;
     s32 unk_0028;
     s32 UnkField002c;
     s32 unk_0030;
     s32 unk_0034;
+    s32 unk_0038;
 } Unk09a268Work;
 
 
@@ -21,7 +29,9 @@ typedef struct Unk09a268Work {
  * unk_0358 is volatile because the transition handlers re-read it after engine calls;
  * keeping those two reads distinct reproduces the original 0209c854 code. See DEC-003. */
 typedef struct Unk09a268WorkArea {
-    u8 pad_0000[0x358];
+    u8 pad_0000[0x344];
+    u32 unk_0344;
+    u8 pad_0348[0x10];
     volatile u32 unk_0358;
     u16 unk_035c;
     u8 pad_035e[6];
@@ -40,7 +50,7 @@ typedef struct Unk09a268Rec {
 
 int func_0209a48c(u32 p, int bit);
 void Unk09a268_SetBit(u8 *p, int bit, int on);
-int func_0209bb68();
+int func_0209bb68(u32 encoded);
 Unk09a268Rec *Unk09a268_Unk_09c484(int arg0);
 
 void Unk09a268_Nop_09b3c8(void);
@@ -262,7 +272,8 @@ void Unk09a268_SetCtxUnk38(u32 value)
 /* Runs the func_0209bb68 and Unk09a268_Unk_09c484 steps in sequence, discarding their results. */
 void Unk09a268_Unk_09c498(void)
 {
-  func_0209bb68();
+  /* Both original lookup calls omit their argument and discard the result. See DEC-002. */
+  ((int (*)(void))func_0209bb68)();
   /* Original call supplies no index and discards the address. See DEC-002. */
   ((int (*)(void))Unk09a268_Unk_09c484)();
 }
@@ -310,6 +321,7 @@ u32 Unk09a268_Unk_09a844(u32 arg0)
   return 1;
 }
 
+void Unk_LoadPalette_020de678(u32 palette);
 int func_02057524();
 int func_02057534();
 typedef struct Unk09ae60Ops {
@@ -324,8 +336,8 @@ typedef struct Unk09ae60Ops {
     void (*fn_20)();
 } Unk09ae60Ops;
 void Unk09a268_Unk_09b3cc(Unk09a268Work *work);
-void func_0209b1d4();
-void func_0209b3f8();
+void func_0209b1d4(Unk09a268Work *work);
+void func_0209b3f8(Unk09a268Work *work);
 void func_0209b5d8(Unk09a268Cleanup *work);
 typedef struct Unk09a268Message Unk09a268Message;
 void func_0209aebc(Unk09a268Work *work, Unk09a268Message *message);
@@ -1045,4 +1057,368 @@ int func_0209c9bc(u8 *work)
         break;
     }
     return result;
+}
+
+/* Maps the encoded cell byte to its 0x1c-byte record kind. The original
+ * 41-way switch groups the directional variants; out-of-range values use 0. */
+int func_0209bb68(u32 encoded)
+{
+    switch (encoded) {
+    case 0: return 0;
+    case 1: return 1;
+    case 2: return 2;
+    case 3: return 3;
+    case 4: case 5: case 6: case 7: return 4;
+    case 8: case 9: return 5;
+    case 10: return 6;
+    case 11: return 7;
+    case 12: return 8;
+    case 13: return 9;
+    case 14: return 10;
+    case 15: return 11;
+    case 16: case 17: case 18: case 19: return 12;
+    case 20: return 13;
+    case 21: case 22: return 14;
+    case 23: return 15;
+    case 24: case 25: return 16;
+    case 26: case 27: return 17;
+    case 28: return 18;
+    case 29: return 19;
+    case 30: case 31: return 20;
+    case 32: return 21;
+    case 33: case 34: return 22;
+    case 35: return 23;
+    case 36: return 24;
+    case 37: return 25;
+    case 38: return 26;
+    case 39: return 27;
+    case 40: return 28;
+    }
+    return 0;
+}
+
+/* Tests the map entry at (x,y) against direction/mask. Kinds 9, 16 and 17
+ * inspect element 3, 7 and 8 respectively; other kinds use 0209bd08. */
+int func_0209bf00(u32 x, u32 y, u32 direction, u32 mask)
+{
+    int result = 0;
+    u32 handle = Unk02f2a8_Unk_034970(GetGameState() + 4, x, y);
+    u8 *entry = Unk038fbc_Unk_039160(handle, x, y);
+    if (entry != 0) {
+        u32 encoded = *entry;
+        switch (func_0209bb68(encoded)) {
+        case 9:
+            if (mask == 0) {
+                s32 *element = Unk038fbc_GetElement(handle, 3, entry[1]);
+                if (element != 0) {
+                    u32 bits = 0;
+                    switch (direction) {
+                    case 1: bits = 4; break;
+                    case 2: bits = 1; break;
+                    case 3: bits = 8; break;
+                    case 0: bits = 2; break;
+                    }
+                    if (bits & ((u32)(*element << 28) >> 28)) result = 1;
+                }
+            }
+            break;
+        case 16:
+            if (mask == 1) {
+                s32 *element = Unk038fbc_GetElement(handle, 7, entry[1]);
+                if (element != 0) {
+                    if (Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4(GetGameState() + 4, x, y),
+                                         ((u32)*element << 16) >> 24) == 3) result = 1;
+                }
+            }
+            break;
+        case 17:
+            if (mask == 1) {
+                u8 *element = (u8 *)Unk038fbc_GetElement(handle, 8, entry[1]);
+                if (element != 0) {
+                    if (Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4(GetGameState() + 4, x, y),
+                                         *element) == 3) result = 1;
+                }
+            }
+            break;
+        default:
+            result = func_0209bd08(encoded, direction, mask);
+            break;
+        }
+    }
+    return result;
+}
+
+/* Slot messages contain two flag bytes and sixteen optional word values. */
+typedef struct Unk09a268SlotMessage {
+    u8 flags[2];
+    u8 pad_02[2];
+    u32 words[16];
+} Unk09a268SlotMessage;
+void Unk0bc1a8_Unk_0bc928(u32 slot, u32 value, Unk09a268SlotMessage *message);
+void CampStatus_Unk_0d51cc(void);
+void func_020bc9f4(u32 slot, u32 value);
+void func_020bcbc4(u32 slot, Unk09a268SlotMessage *message);
+void func_020e7f44(u32 a, u32 b, u32 c, u32 d);
+
+static inline void Unk09a268_ClearSlotMessage(Unk09a268SlotMessage *message)
+{
+    int i;
+    for (i = 0; i < 2; i++) message->flags[i] = 0;
+    for (i = 0; i < 16; i++) message->words[i] = 0;
+}
+
+/* Resets slots 0/2/1/3/10 and sends their flagged setup values. The stack
+ * message flags and slot constants are established by the calls at 0209b960. */
+void func_0209b960(void)
+{
+    Unk09a268SlotMessage message;
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[3] = 1;
+    message.words[4] = 1;
+    message.flags[0] |= 0x18;
+    Unk0bc1a8_Unk_0bc928(0, 0xffff, &message);
+    Unk0bc1a8_Unk_0bc928(2, 0, &message);
+    Unk0bc1a8_Unk_0bc928(1, 2, 0);
+    CampStatus_Unk_0d51cc();
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[3] = 2;
+    message.words[5] = 0;
+    message.flags[0] |= 0x28;
+    Unk0bc1a8_Unk_0bc928(3, 0, &message);
+    Unk0bc1a8_Unk_0bc928(10, 0, 0);
+    func_020bc9f4(0, 0);
+    func_020bc9f4(2, 0);
+    func_020bc9f4(1, 0);
+    func_020bc9f4(3, 0);
+    func_020bc9f4(10, 0);
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[1] = 1;
+    message.flags[0] |= 2;
+    func_020bcbc4(3, &message);
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[1] = 1;
+    message.flags[0] |= 2;
+    func_020bcbc4(10, &message);
+}
+
+/* Sets slot 0's flagged value, resets the other slots, then configures the
+ * 0/14/9/12 selection. Evidence: 0209b774's message stores and call constants. */
+void func_0209b774(u32 value)
+{
+    Unk09a268SlotMessage message;
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[4] = value;
+    message.flags[0] |= 0x10;
+    Unk0bc1a8_Unk_0bc928(0, 0xffff, &message);
+    Unk0bc1a8_Unk_0bc928(2, 0, 0);
+    Unk0bc1a8_Unk_0bc928(1, 2, 0);
+    CampStatus_Unk_0d51cc();
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[3] = 2;
+    message.words[5] = 0;
+    message.flags[0] |= 0x28;
+    Unk0bc1a8_Unk_0bc928(3, 0, &message);
+    Unk0bc1a8_Unk_0bc928(10, 0, 0);
+    func_020bc9f4(0, 0);
+    func_020bc9f4(2, 0);
+    func_020bc9f4(1, 0);
+    func_020bc9f4(3, 0);
+    func_020bc9f4(10, 0);
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[1] = 1;
+    message.flags[0] |= 2;
+    func_020bcbc4(3, &message);
+    func_020e7f44(0, 14, 9, 12);
+    Unk09a268_ClearSlotMessage(&message);
+    message.words[1] = 1;
+    message.flags[0] |= 2;
+    func_020bcbc4(10, &message);
+}
+
+int func_02052728(void);
+void func_0205c6e0(void *resource);
+void func_0205c704(void *resource);
+/* Drives callback states 0, 2 and 14. State 2 advances the work counter and
+ * sends flagged slot messages at counters 0 and 5; state 14 waits for the
+ * engine transition before restoring the saved state at +8. */
+void func_0209b1d4(Unk09a268Work *work)
+{
+    switch (work->unk_0004) {
+    case 0:
+        if (func_02052728() != 0) return;
+        work->unk_0004 = 2;
+        func_0205c6e0(work->unk_0018);
+        func_0205c6e0(work->unk_001c);
+        func_0205c6e0(work->unk_0020);
+        break;
+    case 2:
+        if (work->unk_0028 == 0) {
+            func_0205c704(work->unk_0018);
+            func_0205c704(work->unk_001c);
+            func_0205c704(work->unk_0020);
+            func_0205c704(work->unk_0024);
+        }
+        if (work->unk_0000 == 0) {
+            Unk09a268SlotMessage message;
+            Unk09a268_ClearSlotMessage(&message);
+            message.words[7] = 1;
+            message.flags[0] |= 0x80;
+            func_020bcbc4(1, &message);
+        }
+        if (work->unk_0000 == 5) {
+            Unk09a268SlotMessage message;
+            Unk09a268_ClearSlotMessage(&message);
+            message.words[7] = 1;
+            message.flags[0] |= 0x80;
+            func_020bcbc4(2, &message);
+            Unk09a268_ClearSlotMessage(&message);
+            message.words[7] = 6;
+            message.flags[0] |= 0x80;
+            func_020bcbc4(1, &message);
+        }
+        if (work->unk_0000 == 10) func_0205c6e0(work->unk_0024);
+        work->unk_0000++;
+        break;
+    case 14:
+        if (func_02052728() != 0) return;
+        work->unk_0004 = work->unk_0008;
+        func_020525cc(0);
+        break;
+    }
+}
+
+extern char data_0214c964[], data_0214c974[], data_0214c984[];
+void func_020ca5a4(int value);
+void Unk05b82c_Unk_05b82c(int id);
+u32 func_0205dcd4(const char *path, int mode);
+void *func_0205c2c4(const char *path);
+void *func_0205c3c0(void);
+void func_0205c3fc(void *resource, void *data, void *table);
+void func_0205c408(void *resource, int value);
+void func_0205c41c(void *resource, int value);
+void Unk05ae50_Unk_05ae50(int id);
+u32 func_0205b97c(int id);
+void func_02052634(int a, int b, int c);
+void Unk044394_Unk_044428(int id);
+void Unk0a0ce4_Unk_0a0d30(int value);
+void Unk0fd268_Unk_0fd380(int value);
+void Unk0fd268_Unk_0fd47c(void);
+void Unk0fd268_Unk_0fd494(int a, int b);
+void Unk065e88_Unk_065e88(void);
+/* Only the word at +0x1244 is established by the initialization callback. */
+typedef struct Unk09a268SharedArea {
+    u8 pad_0000[0x1244];
+    u32 unk_1244;
+} Unk09a268SharedArea;
+Unk09a268SharedArea *Unk02e000_GetAddr_data_02140ac8(void);
+
+/* Initializes the callback work and its four resources, loads the three
+ * data_0214c964/974/984 assets, and arms the fixed engine paths. Evidence:
+ * resource setup calls and literal references in 0209afcc. Work is 60 bytes. */
+void func_0209afcc(Unk09a268Work *work)
+{
+    Unk09a268SharedArea *shared;
+    int i;
+    data_02176270 = (Unk09a268Ctx *)work;
+    work->unk_0000 = 0;
+    work->unk_0004 = 0;
+    work->unk_0028 = 0;
+    work->UnkField002c = 0;
+    work->unk_0030 = 0;
+    work->unk_0038 = 0;
+    Unk09a268_SetCtxUnk38(Unk02e000_GetWorkArea()->unk_0344);
+    func_020ca5a4(1);
+    Unk05b82c_Unk_05b82c(57);
+    work->UnkField000c = func_0205dcd4(data_0214c964, 1);
+    Unk05b82c_Unk_05b82c(58);
+    Unk05b82c_Unk_05b82c(61);
+    Unk05b82c_Unk_05b82c(64);
+    work->unk_0010 = (void *)func_0205dcd4(data_0214c974, 1);
+    work->unk_0014 = func_0205c2c4(data_0214c984);
+    work->unk_0018 = func_0205c3c0();
+    func_0205c3fc(work->unk_0018, work->unk_0010, work->unk_0014);
+    func_0205c408(work->unk_0018, 3);
+    func_0205c41c(work->unk_0018, 0);
+    work->unk_001c = func_0205c3c0();
+    func_0205c3fc(work->unk_001c, work->unk_0010, work->unk_0014);
+    func_0205c408(work->unk_001c, 4);
+    func_0205c41c(work->unk_001c, 0);
+    work->unk_0020 = func_0205c3c0();
+    func_0205c3fc(work->unk_0020, work->unk_0010, work->unk_0014);
+    func_0205c408(work->unk_0020, 5);
+    func_0205c41c(work->unk_0020, 0);
+    work->unk_0024 = func_0205c3c0();
+    func_0205c3fc(work->unk_0024, work->unk_0010, work->unk_0014);
+    func_0205c408(work->unk_0024, 2);
+    func_0205c41c(work->unk_0024, 0);
+    Unk02e000_Unk_02e0cc();
+    Unk05ae50_Unk_05ae50(194);
+    shared = Unk02e000_GetAddr_data_02140ac8();
+    shared->unk_1244 = func_0205b97c(194);
+    work->unk_0008 = 2;
+    func_02052634(1, 0, 31);
+    Unk044394_Unk_044428(18);
+    Unk044394_Unk_044428(24);
+    Unk044394_Unk_044428(19);
+    Unk044394_Unk_044428(22);
+    Unk044394_Unk_044428(23);
+    for (i = 42; i <= 48; i++) Unk05b82c_Unk_05b82c(i);
+    Unk044394_Unk_044428(12);
+    Unk044394_Unk_044428(7);
+    Unk044394_Unk_044428(11);
+    Unk0a0ce4_Unk_0a0d30(1);
+    Unk0fd268_Unk_0fd380(3);
+    Unk0fd268_Unk_0fd47c();
+    Unk0fd268_Unk_0fd494(-3, 58);
+    Unk065e88_Unk_065e88();
+}
+
+void func_02057e58(int a, int b, int c);
+void func_02057fd8(void);
+void func_0205c848(int mode, void *resource, int x, int y,
+                  float scaleX, float scaleY, int rotation, float alpha, int layer);
+char *func_020a9e14(int mode, const char *format, ...);
+void func_020a9fd8(int mode, void *target, int x, int y, const char *text,
+                  int value, const char *format, ...);
+int Unk0e651c_Unk_0e666c(u32 flag);
+void func_02057eb8(int value);
+extern char data_0214c994[], data_0214c9a0[], data_0214c9a4[];
+extern char data_0214c9a8[], data_0214c9b4[];
+/* Resource +0x14 points to the byte-addressed draw target used by this callback. */
+typedef struct Unk09a268DrawResource {
+    u8 pad_0000[0x14];
+    u8 *target;
+} Unk09a268DrawResource;
+
+/* Draws the four initialized resources when enabled, then formats the two
+ * text overlays. Evidence: palette/draw calls, flag 0x701, and the six string
+ * literals at 0209b5c0; text semantics remain unknown. */
+void func_0209b3f8(Unk09a268Work *work)
+{
+    char *text;
+    func_02057e58(1, 0, 10);
+    if (work->unk_0030 == 0) {
+        Unk_LoadPalette_020de678(work->UnkField000c);
+    }
+    if (work->unk_0028 == 0) {
+        func_02057fd8();
+        func_0205c848(2, work->unk_0018, 0, 0, 1.0f, 1.0f, 0, 1.0f, 2);
+        func_0205c848(2, work->unk_001c, 0, 0, 1.0f, 1.0f, 0, 1.0f, 2);
+        func_0205c848(2, work->unk_0020, 0, 0, 1.0f, 1.0f, 0, 1.0f, 2);
+        func_02057fd8();
+        func_0205c848(2, work->unk_0024, 0, 0, 1.0f, 1.0f, 0, 1.0f, 3);
+        func_02057fd8();
+        text = func_020a9e14(1, data_0214c994);
+        if (Unk0e651c_Unk_0e666c(0x701) != 0) {
+            func_020a9fd8(1, ((Unk09a268DrawResource *)work->unk_0020)->target + 45,
+                          16, 2, text, 10, data_0214c9a0);
+        } else {
+            func_020a9fd8(1, ((Unk09a268DrawResource *)work->unk_0020)->target + 45,
+                          16, 2, text, 10, data_0214c9a4);
+        }
+        text = func_020a9e14(1, data_0214c9a8, Unk02e000_GetWorkArea()->unk_0344);
+        func_020a9fd8(1, ((Unk09a268DrawResource *)work->unk_0020)->target + 45,
+                      16, 2, text, 10, data_0214c9b4, work->unk_0038);
+    }
+    func_02057eb8(-1);
 }

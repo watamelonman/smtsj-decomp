@@ -198,3 +198,54 @@
 
 - M1-T1012 review: work-area +0x35c/+0x364/+0x365 and table-record byte
   accesses now use typed partial layouts; the entry lookup shares a local base.
+
+## M1-T1015
+- `func_0209bb68` (416 B): maps encoded cell values 0-40 to record kinds 0-28,
+  grouping directional variants through the original jump table. Other values
+  return 0. Verified byte-identical and 100% objdiff.
+- `func_0209bf00` (400 B): tests the entry at the supplied coordinates against
+  direction/mask. Kind 9 uses element 3's low nibble with direction masks
+  2/4/1/8 and requires mask 0. Kinds 16/17 require mask 1 and test the packed
+  map field indexed by element 7's second byte / element 8's first byte for 3.
+  Other kinds delegate to `0209bd08`. Verified byte-identical and 100% objdiff.
+- `func_0209b960` (472 B): resets slots 0/2/1/3/10, sends the flagged setup
+  messages, and sets message word 1 to 1 for slots 3/10. Verified byte-identical
+  and 100% objdiff.
+- `func_0209b774` (492 B): similar slot setup, forwarding the argument as
+  flagged word 4 for slot 0, then calling `020e7f44(0,14,9,12)` between the
+  final slot-3 and slot-10 messages. Verified byte-identical and 100% objdiff.
+- `func_0209b1d4` (500 B): callback state 0 waits for the engine transition
+  and starts three resources; state 2 updates four resources unless disabled,
+  sends flagged word-7 messages at counters 0/5, starts the fourth resource at
+  counter 10 and increments the counter. State 14 waits for the transition,
+  restores state from work +8 and calls `020525cc(0)`. Verified byte-identical
+  and 100% objdiff.
+- `func_0209afcc` (520 B): initialization callback for the 60-byte work object.
+  Registers the global context, clears state, loads the three referenced assets,
+  allocates/configures four resources, and arms fixed engine paths. Resource
+  purposes remain unknown. Verified byte-identical and 100% objdiff.
+- `func_0209b3f8` (480 B): drawing callback. Conditionally loads the palette,
+  draws four resources, and adds two formatted overlays using the referenced
+  strings, flag 0x701 and work +56. Verified byte-identical and 100% objdiff.
+- Existing symbol names are retained because `config/arm9/symbols.txt` is
+  human-owned. The new signatures describe observed fields and call arguments.
+
+### M1-T1015 hard list
+- `func_0209aca0` (448 B): left undefined in C, retaining the delinked original.
+  The reconstruction visits the clipped seven-by-seven area around (x,y),
+  bounded by x=0..44 and y=0..39, for encoded kinds 30/33/31/34. Cell kind 1
+  transitions to kind 2 with flags 3/4 set, flag 5 and state bits cleared, and
+  counter zero when `09a844` returns 1; otherwise its counter increments.
+  Cell kind 3 clears all those flags, kind and counter when the predicate
+  returns 1, otherwise increments its counter. Null handles and a false
+  `1124a0` predicate return immediately; record lookup 20 precedes traversal.
+  The first candidate reached 98.35% objdiff. Tried separate/reused bounds
+  and loop variables, bound-evaluation order, declaration permutations,
+  scope changes, initializers, register hints and signed/unsigned locals.
+  The closest 448-byte candidate reproduces every instruction except three
+  register operands: the original preserves incoming x in r5 for computing
+  the two bounds, while the candidate preserves it in r9 and later reuses
+  r9 as the column counter. Keeping a separate column local instead swaps
+  the row/column registers throughout the loop. No differing C body is
+  retained. A human can use `tools/decompme.py` for a register-allocation
+  scratch; no upload was made.

@@ -20,12 +20,14 @@ rather than sharing the callee translation unit's narrower C parameter type.
 **What would make us revisit.** Evidence of a shared original prototype or a
 project-wide convention for reconciling these historical call boundaries.
 
-## DEC-002 — Preserve the index-free record lookup call
+## DEC-002 — Preserve argument-free lookup calls
 **Date:** 2026-10-22 · **Status:** Active
 **Context.** `Unk09a268_Unk_09c498` calls `Unk09a268_Unk_09c484` without
-initializing its index register and discards the returned address.
-**Decision.** Keep the lookup's full `int` parameter prototype, and explicitly cast
-its function pointer to a no-argument signature at this exceptional call site.
+initializing its index register and discards the returned address. Its preceding
+`func_0209bb68` call likewise supplies no encoded-cell argument and discards
+the kind result.
+**Decision.** Keep both lookups' full parameter prototypes, and explicitly cast
+their function pointers to no-argument signatures at these exceptional call sites.
 Supplying an invented index would change the original instructions.
 **Cost accepted.** This compiler-specific call boundary describes the observed ARM
 ABI rather than a portable C call; objdiff verifies its instructions at 100%.
