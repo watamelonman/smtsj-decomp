@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T1024 staged initialization and chance/rank selection at 100% objdiff; documented the remaining pair-selection routine and matching trials.
 - Added four M1-T1023 callback cleanup, object dispatch and resource-selection implementations; documented four remaining hard functions and matching trials.
 - Matched all eight M1-T1022 owner initialization/cleanup, record-search and dispatch functions at 100% objdiff, with typed layouts and per-function contracts.
 - Replaced M1-T1021 allocation, selection-work and dispatch-owner offsets with typed fields; documented the address-valued coordinate call while preserving all instruction matches.

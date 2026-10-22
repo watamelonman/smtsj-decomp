@@ -326,7 +326,8 @@ void Unk065e88_Unk_066078(u8 *p)
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-void func_020667d0();
+typedef struct Unk065e88InitOwner Unk065e88InitOwner;
+void func_020667d0(Unk065e88InitOwner *owner);
 void Unk065e88_Nop_066c90();
 typedef struct Unk065e88Work Unk065e88Work;
 void func_02066c94(Unk065e88Work *object);
@@ -1190,4 +1191,289 @@ u8 func_02068cf8(Unk065e88Owner *owner, const u16 *ids, int count, u16 *out)
         }
     }
     return resultCount;
+}
+
+/* Resource-19 stride and initializer-owned fields follow the ARM accesses. */
+typedef struct Unk065e88InitRecord {
+    u16 id;
+    u8 kind, rank;
+    u8 pad[32];
+    u32 flags;
+    u8 tail[60];
+} Unk065e88InitRecord;
+/* Caller-owned initialization state; arrays retain their observed capacities. */
+struct Unk065e88InitOwner {
+    u32 mode;
+    u8 hi[64], lo[64];
+    void *tables[11];
+    u16 count, counts[12];
+    u8 pca[62];
+    u32 h108, h10c, h110, h114, h118, h11c;
+    u8 p120[48];
+    u32 h150;
+    u8 p154[604];
+    u32 h3b0, h3b4;
+    GameObj *objs[8];
+    u8 p3d8[14];
+    s8 stage;
+    u8 p3e7[37];
+    GameObj *slots[12];
+};
+
+void func_02061e98(u32 handle, int mode, int enabled);
+extern u8 data_02145750[], data_0214576c[];
+u32 func_0205dcd4(const void *descriptor, int mode);
+u32 func_0205c2c4(const void *descriptor);
+void func_0205c408(u32 handle, int index);
+void func_0206a2ac(Unk065e88InitOwner *owner);
+void Unk072238_Nop_07236c(Unk065e88InitOwner *owner);
+void func_0207283c(Unk065e88InitOwner *owner);
+void func_02090e60(Unk065e88InitOwner *owner);
+
+/* At 020667d0, advances initialization stages 0..8, then dispatches modes
+ * 1, 2 and 4. Requires a 1104-byte owner and valid resource/callback results.
+ * Stage 2 requires resource kinds < 64 and builds per-kind rank bounds;
+ * stage 6 creates 8 and 12 callbacks. */
+void func_020667d0(Unk065e88InitOwner *o)
+{
+    Unk065e88InitRecord *r;
+    int i;
+    if (o->stage < 9) {
+        r = (Unk065e88InitRecord *)func_020a1428(0);
+        switch (o->stage) {
+        case 0:
+            break;
+        case 1:
+            o->h108 = func_020629ac(5, 4, 1, 1);
+            break;
+        case 2:
+            o->count = func_0204fe18(func_020445d0(19, 0));
+            func_02008848(o->hi, 0, 64);
+            func_02008848(o->lo, 255, 64);
+            for (i = 0; i < o->count; i++, r++) {
+                if (r->rank > o->hi[r->kind] && !((r->flags << 3) >> 31) &&
+                    Unk065e88_Unk_068564((Unk065e88Obj24 *)r))
+                    o->hi[r->kind] = r->rank;
+                if (r->rank < o->lo[r->kind] && !((r->flags << 3) >> 31) &&
+                    Unk065e88_Unk_068564((Unk065e88Obj24 *)r))
+                    o->lo[r->kind] = r->rank;
+            }
+            o->h10c = func_020629ac(3, 1, 0, 0);
+            o->h114 = func_020629ac(3, 4, 0, 0);
+            o->h110 = func_020629ac(3, 4, 0, 0);
+            o->h150 = func_020629ac(4, 5, 1, 0);
+            func_02061e98(o->h10c, 16, 1);
+            func_02061e98(o->h114, 16, 1);
+            func_02061e98(o->h110, 16, 1);
+            func_02061e98(o->h150, 16, 1);
+            func_02061f10(o->h10c, -1, 0, 0, (int)(Unk02e000_Thunk_0202e788() + 72));
+            break;
+        case 3:
+            o->h118 = func_020629ac(3, 4, 1, 0);
+            o->h11c = func_020629ac(3, 4, 1, 0);
+            func_02061e98(o->h118, 16, 1);
+            func_02061e98(o->h11c, 16, 1);
+            break;
+        case 4:
+            o->tables[0] = Unk065e88_Unk_067d30(22, 0, &o->counts[1]);
+            o->tables[1] = Unk065e88_Unk_067d30(22, 1, &o->counts[2]);
+            o->tables[2] = Unk065e88_Unk_067d30(22, 2, &o->counts[3]);
+            o->tables[3] = Unk065e88_Unk_067d30(22, 3, &o->counts[4]);
+            o->tables[5] = Unk065e88_Unk_067d30(22, 5, &o->counts[6]);
+            o->tables[6] = Unk065e88_Unk_067d30(22, 6, &o->counts[7]);
+            o->tables[7] = Unk065e88_Unk_067d30(23, 0, &o->counts[8]);
+            o->tables[9] = Unk065e88_Unk_067d30(23, 2, &o->counts[10]);
+            o->tables[10] = Unk065e88_Unk_067d30(23, 3, &o->counts[11]);
+            break;
+        case 5:
+            o->h3b0 = func_0205dcd4(data_02145750, 1);
+            break;
+        case 6:
+            o->h3b4 = func_0205c2c4(data_0214576c);
+            for (i = 0; i <= 7; i++)
+                o->objs[i] = Unk065e88_Call_02065fc0(o->h3b0, o->h3b4, 0, 0);
+            {
+                int j;
+                for (i = 0, j = 0; i < 12; i++) {
+                    o->slots[i] = Unk065e88_Call_02065fc0(o->h3b0, o->h3b4, 0, 0);
+                    func_0205c408(o->slots[i]->unk00, 8);
+                    func_0205c6f8(o->slots[i]->unk00);
+                    Unk065e88_SetFlag3a((Unk065e88Flag *)o->slots[i], 0);
+                    o->slots[i]->field30 = 2;
+                    o->slots[i]->field24 = 11;
+                    o->slots[i]->field10 = j;
+                    j += 11;
+                }
+            }
+            break;
+        case 7:
+            func_0205c408(o->objs[0]->unk00, 0);
+            func_0205c6f8(o->objs[0]->unk00);
+            func_0205c408(o->objs[1]->unk00, 1);
+            func_0205c6f8(o->objs[1]->unk00);
+            break;
+        case 8:
+            func_0206a2ac(o);
+            break;
+        }
+        o->stage++;
+    }
+    switch (o->mode) {
+    case 0:
+        break;
+    case 1:
+        Unk072238_Nop_07236c(o);
+        break;
+    case 2:
+        func_0207283c(o);
+        break;
+    case 3:
+        break;
+    case 4:
+        func_02090e60(o);
+        break;
+    case 5:
+        break;
+    case 6:
+        break;
+    }
+}
+
+/* Selection-rule spans established by 02068700 loads and resource stride. */
+typedef struct Unk065e88ChoiceRecord {
+    u16 id;
+    u8 kind, rank;
+    u8 pad4[4];
+    u16 flag8 : 1;
+    u16 rest8 : 15;
+    u8 padA[26];
+    u32 flags24;
+    u8 pad28[2];
+    u16 check;
+    u8 pad2c[56];
+} Unk065e88ChoiceRecord;
+/* Ten resource-22 rule bytes: six chances and three rank limits. */
+typedef struct Unk065e88ChoiceParams {
+    u8 pad;
+    u8 chances[6];
+    u8 max, up, down;
+} Unk065e88ChoiceParams;
+/* Only the selected resource id at +0x36 is read here. */
+typedef struct Unk065e88ChoiceEntry {
+    u8 pad[54];
+    u16 id;
+} Unk065e88ChoiceEntry;
+/* Partial owner view; the twelve pointers correspond to the selection scan. */
+typedef struct Unk065e88ChoiceOwner {
+    u8 pad[132];
+    Unk065e88ChoiceParams *param;
+    u8 pad88[40];
+    u16 count;
+    u8 padb2[110];
+    Unk065e88ChoiceEntry *entries[12];
+} Unk065e88ChoiceOwner;
+/* Negative indices denote inactive selection slots and must not be dereferenced. */
+typedef struct Unk065e88ChoiceShared {
+    u8 pad[840];
+    s8 ids[12];
+} Unk065e88ChoiceShared;
+
+int Unk03e43c_Unk_03fa28(void);
+int func_02050074(int mode, int bound);
+int Unk06a224_Unk_06a9fc(int id);
+void Unk0e651c_SetBitChecked(u32 id, int value);
+u16 func_02068a58(Unk065e88ChoiceOwner *owner, u16 a, u16 b, u16 c, u8 rank);
+/* At 02068700, applies mode-specific chances and flags 180..182/1855,
+ * then searches eligible kind-42 records or nearest available ranks.
+ * Requires valid owner tables, twelve selection slots and resource ids. */
+u16 func_02068700(Unk065e88ChoiceOwner *o, u16 a, u16 b, u16 c, int flag)
+{
+    u8 offset = 0;
+    int pick;
+    s16 low, high;
+    u8 rank;
+    u16 result;
+    if (flag)
+        offset = 3;
+    {
+        int mode = Unk03e43c_Unk_03fa28();
+        if (mode == 8)
+            offset++;
+        else if (mode == 0)
+            offset += 2;
+    }
+    pick = func_02050074(1, o->param->chances[offset] - 1);
+    if (Unk06a224_Unk_06a9fc(180))
+        pick = 1;
+    if (Unk06a224_Unk_06a9fc(181))
+        pick = 0;
+    if (Unk0e651c_Unk_0e666c(0x73f)) {
+        pick = 0;
+        Unk0e651c_SetBitChecked(0x73f, 0);
+    }
+    if (pick != 1)
+        return c;
+    {
+        Unk065e88ChoiceRecord *r = (Unk065e88ChoiceRecord *)func_020a1428(c);
+        low = r->rank - o->param->down;
+        high = r->rank + o->param->up;
+    }
+    if (low < 0)
+        low = 0;
+    if (low > 99)
+        low = 99;
+    if (high < 0)
+        high = 0;
+    if (high > 99)
+        high = 99;
+    if (Unk06a224_Unk_06a9fc(182)) {
+        Unk065e88ChoiceShared *s = (Unk065e88ChoiceShared *)Unk02e000_GetWorkArea();
+        Unk065e88ChoiceRecord *r = (Unk065e88ChoiceRecord *)func_020a1428(0);
+        u16 i;
+        for (i = 0; i < o->count; i++, r++) {
+            if (r->kind == 42 && r->rank >= low && r->rank <= high && i != a && i != b &&
+                (r->check == 0 || Unk0e651c_Unk_0e666c(r->check)) && func_020684c0(r) &&
+                r->flag8 && !(r->flags24 >> 29)) {
+                int j;
+                for (j = 0; j < 12; j++) {
+                    if (s->ids[j] < 0)
+                        continue;
+                    if (r->id == o->entries[s->ids[j]]->id)
+                        break;
+                }
+                if (j == 12)
+                    return i;
+            }
+        }
+    }
+    pick = (s16)(low + func_02050074(1, o->param->up + o->param->down));
+    if (pick > o->param->max)
+        pick = o->param->max;
+    if (pick < 0)
+        pick = 0;
+    if (Unk06a224_Unk_06a9fc(180)) {
+        s16 v = low + func_02050074(1, o->param->up + o->param->down);
+        if (v > o->param->max)
+            v = o->param->max;
+        if (v < 0)
+            v = 0;
+        if (v < pick)
+            pick = v;
+    }
+    rank = pick;
+    result = 0;
+    while (rank) {
+        result = func_02068a58(o, a, b, c, rank);
+        if (result)
+            break;
+        rank--;
+    }
+    if (rank == 0 && result == 0) {
+        for (rank = pick; rank <= o->param->max; rank++) {
+            result = func_02068a58(o, a, b, c, rank);
+            if (result)
+                break;
+        }
+    }
+    return result;
 }

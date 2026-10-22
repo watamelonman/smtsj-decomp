@@ -342,3 +342,55 @@ this TU, including all four new definitions at 100%. `anticheat.py` passes,
 all nine existing unit tests pass, and `checksum.py` reports all configured
 artifacts byte-identical to the original. The four hard-list functions remain
 supplied by the original delink and are not claimed as matched C.
+
+## M1-T1024
+
+- `func_020667d0` (1216 bytes), **matched**: advances signed initialization
+  byte +0x3e6 through stages 0..8, then dispatches owner modes 1, 2 and 4.
+  Stage 1 allocates +0x108; stage 2 reads the resource-19 count, scans
+  100-byte records for per-kind maximum/minimum eligible ranks in the two
+  64-byte arrays, and allocates/configures four more handles. Stage 3 creates
+  two handles; stage 4 loads resource-22/23 tables and counts; stages 5/6
+  load descriptors 02145750/6c and create eight plus twelve callback objects.
+  Stage 7 configures the first two callbacks; stage 8 calls 0206a2ac.
+  The owner must cover 1104 bytes and resource/callback allocation must succeed.
+  Typed local layouts describe only the accessed fields. Initial standalone
+  output differed in the two loop-variable initialization instructions;
+  initializing the index before the position accumulator reproduces the original.
+- `func_02068700` (856 bytes), **matched**: selects a chance byte from
+  owner +0x84 using the fifth argument and 0203fa28 result. Flags 180/181
+  override the choice; flag 1855 forces the original id and is cleared.
+  A successful choice clamps the resource record's rank window to 0..99.
+  Flag 182 first searches kind-42 records, excluding two indices and the
+  twelve active selection ids, checking record eligibility and bits at +8/+0x24.
+  Otherwise it samples a rank (twice with flag 180, retaining the minimum),
+  searches down through positive ranks with 02068a58, then searches upward
+  through the configured maximum. The returned value is an id or zero.
+  Requires valid owner tables, resource ids and active selection pointers.
+  Explicit bitfields and separate chance-array layout reproduce the original
+  shift tests and indexed load; inactive selection slots are skipped.
+- `func_02067ef4` (1484 bytes), **hard**: resolves two resource-19 ids,
+  rejects equal records and 02068bf8 failures, then checks symmetric id-pair,
+  special-id/kind, kind-pair and packed kind/id/mode tables. Packed modes
+  select the next rank, second next rank or previous rank, rejecting either
+  input id as a result. The final kind table uses mode conditions, flag-based
+  kind substitutions (177..179), rank averaging with rounding, optional saved
+  ranks (flag 184), and a three-rank bonus (flag 183) before 020685b0.
+  Reconstructed the full routine with typed six/eight/four-byte table entries
+  and 8/16/8-bit packed fields. A common averaging calculation produced 1420
+  bytes; preserving the original separate averaging branches produced 1504.
+  Factoring each mode's argument selection before its call and indexing packed
+  entries directly reached 1480 bytes. The packed-rule loop still assigns its
+  base/kind/mode to different registers and schedules conditional loads and
+  argument setup differently. The nonmatching candidate is omitted.
+
+Hard list for M1-T1024: `func_02067ef4`; a human can create a public scratch
+with `tools/decompme.py`. The Nintendo DS delink continues to supply this
+function; no assembly stubs or configuration edits were added. No runtime tests
+were added because the card waives them; original-object comparison is the
+acceptance oracle. No module boundaries changed.
+
+Validation: `match_gate.py` builds successfully and reports all 53 C definitions
+in this TU at 100%, including both new targets. `anticheat.py` passes, all nine
+unit tests pass, and `checksum.py` confirms all configured artifacts are
+byte-identical. The hard-list target is not claimed as matched C.
