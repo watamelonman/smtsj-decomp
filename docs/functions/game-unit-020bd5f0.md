@@ -23,9 +23,10 @@ No assembly or fallback bodies were needed.
 - `Unk0bd5f0_IsState22or24` (48 B): returns false for a null global context;
   otherwise tests its first word for 22 or 24. The comparisons and the first-word
   writes in `Unk0bd5f0_Unk_0c7fbc` support the existing state predicate name.
-- `Unk0bd5f0_Unk_0c8510` (48 B): requires an object writable through +0x117;
-  calls `func_020c72a4` with its +0x100 word, +0x110 byte and zero, then writes
-  20, the caller's second argument and -110 at +0, +4 and +0x114 respectively.
+- `Unk0bd5f0_Unk_0c8510` (48 B): takes an `Unk0bd5f0Obj *`; reads `unk_0100`
+  and the byte `unk_0110` and passes them with zero to `func_020c72a4`, then writes
+  `unk_0000 = 20`, `unk_0004 =` the caller's second argument and `unk_0114 = -110`.
+  Kept separate from `Unk0bd5f0Ctx` (its -110 field is at +0x114, not +0x118).
 - `Unk0bd5f0_Unk_0c20bc` (52 B): tests group 0 masks 0x40 and 0x80 with
   `func_020537b8`; returns true only if both are clear, short-circuiting the second query.
 - `Unk0bd5f0_AnyIdWithFlagsMid` (76 B): scans ids 111 through 210 inclusive;
@@ -35,7 +36,7 @@ No assembly or fallback bodies were needed.
 - `Unk0bd5f0_AnyIdWithoutFlagsMid` (76 B): same scan, requiring the record to
   fail `Unk09974c_HasFlagsMid`; the negated helper result supports the name.
 - `Unk0bd5f0_Unk_0c7f70` (76 B): no-op for a null global context; otherwise
-  forwards the +0x108 word and all four caller arguments to `func_020dde3c`.
+  forwards `unk_0108` and all four caller arguments to `CampStatus_Unk_0dde3c`.
 - `Unk0bd5f0_Unk_0c7fbc` (76 B): no-op for a null global context; otherwise
   writes 20 at +0, 22 at +4, -110 at +0x118, and zero at +0x120 and +0x11c.
 - `Unk0bd5f0_Unk_0c842c` (76 B): no-op for a null global context; otherwise
