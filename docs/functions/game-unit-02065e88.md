@@ -53,17 +53,47 @@ Hard list for M1-T1018: none. All eight match including the explicit fallback
 return and typed lookup-result forwarding. No runtime tests were added because
 this matching card uses the original object as the byte-level oracle.
 
-## Remaining functions
-- `Unk065e88_Unk_06644c`: decompiler-derived
-- `Unk065e88_Unk_065e88`: decompiler-derived
-- `Unk065e88_Unk_066258`: decompiler-derived
-- `Unk065e88_Unk_067d30`: decompiler-derived
+## M1-T1019 (verified at 100% objdiff)
 
-## Not done in M1-T1019
-- `Unk065e88_GetTableCount`
-- `Unk065e88_GetTableEntry`
-- `Unk065e88_SetMode`
-- `Unk065e88_Unk_068564`
+All eight bodies were present on entry and already matched. This card makes
+argument forwarding explicit, types the helper declarations used by these
+functions, and records contracts from the original ARM instructions.
+
+- `Unk065e88_Unk_06644c` (0206644c, 32 bytes): compares readable pairs
+  of unsigned halfwords, second halfword first and first halfword on ties.
+  The signed difference is returned without normalizing its magnitude.
+- `Unk065e88_Unk_065e88` (02065e88, 36 bytes): calls 0202e0cc, then
+  calls 0205b82c with ids 188, 189 and 190. No gameplay meaning is inferred.
+- `Unk065e88_Unk_066258` (02066258, 36 bytes): reads a caller-owned
+  handle slot, forwards a nonzero handle to 0205c3dc, then zeros the slot.
+  The original ldr into r0 before the branch establishes the forwarded argument.
+- `Unk065e88_GetTableCount` (020663f8, 36 bytes): returns 193 for
+  selectors 0 and 1, otherwise zero. The constants and GetTableEntry's word
+  indexing support the table name.
+- `Unk065e88_Unk_067d30` (02067d30, 36 bytes): forwards r0/r1 to
+  020445d0, passes the returned resource to 0204fe18, stores the low halfword
+  of that result through the incoming r2, then passes the resource to 0204fde0.
+  Explicit arguments replace the old implicit register forwarding.
+- `Unk065e88_GetTableEntry` (0206641c, 48 bytes): subtracts one from
+  the incoming index; offsets >= count - 1 become zero, while negative
+  offsets survive. Returns GetTable(selector) plus that word offset. Callers
+  must provide a valid table selector and index; this preserves the original
+  signed comparison and its unusual exclusion of the last table word.
+- `Unk065e88_SetMode` (020672b4, 72 bytes): stores the mode at +0,
+  then returns if notification is disabled. Otherwise mode 1 calls 02072238,
+  mode 2 stores 1 at +0x220, and mode 4 stores 1 at +0x2f0. The store and
+  dispatch support the existing name; the caller owns the selected fields.
+- `Unk065e88_Unk_068564` (02068564, 76 bytes): returns false if bit
+  28 at +0x24 is set. Otherwise it requires either a zero halfword at +0x2a
+  or a nonzero 020e666c result, followed by a nonzero 020684c0 result.
+  The result is normalized to 0/1; the partial struct follows these loads.
+
+Hard list for M1-T1019: none. All eight match the original object at 100%.
+No runtime tests were added: the task explicitly waives them and objdiff is the
+byte-level oracle. The existing source is extended rather than recreated to
+preserve the earlier cards and the remaining implementations.
+
+## Remaining functions
 - `Unk065e88_Unk_065f30`: decompiler-derived
 
 ## Not done in M1-T1020
@@ -94,10 +124,6 @@ this matching card uses the original object as the byte-level oracle.
 - `func_02067888`
 - `func_02067634`
 - `func_02066d30`
-- `Unk065e88_GetTableCount`: hand-matched
-- `Unk065e88_GetTableEntry`: hand-matched
-- `Unk065e88_SetMode`: hand-matched
-- `Unk065e88_Unk_068564`: hand-matched
 - `Unk065e88_Unk_065ec0`: hand-matched
 - `Unk065e88_Unk_066078`: hand-matched
 - `Unk065e88_Unk_06646c`: hand-matched

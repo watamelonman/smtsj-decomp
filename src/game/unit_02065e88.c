@@ -90,6 +90,8 @@ u32 *Unk065e88_GetTable(int i)
     return (u32 *)i;
 }
 
+/* At 020663f8, selectors 0 and 1 each have 193 words; others have none.
+ * The two return constants and GetTableEntry indexing support the table name. */
 int Unk065e88_GetTableCount(int i)
 {
     int n = 0;
@@ -104,6 +106,9 @@ int Unk065e88_GetTableCount(int i)
     return n;
 }
 
+/* At 0206641c, converts a one-based index to a word offset in GetTable.
+ * Offsets >= count - 1 select word zero; negative offsets are not clamped.
+ * Callers must supply selector 0 or 1 and an index valid for the table. */
 u32 *Unk065e88_GetTableEntry(int i, int n)
 {
     n--;
@@ -165,8 +170,9 @@ void Unk065e88_Unk_0663bc(u32 arg0, u32 arg1)
 
 
 
-/* decompiler-derived */
-int Unk065e88_Unk_06644c(u16 *arg0,u16 *arg1)
+/* At 0206644c, compares two readable halfword pairs by second word, then
+ * first word on ties. Returns the signed difference, not a normalized sign. */
+int Unk065e88_Unk_06644c(const u16 *arg0, const u16 *arg1)
 {
   int value;
   value = (u32)arg0[1] - (u32)arg1[1];
@@ -176,9 +182,10 @@ int Unk065e88_Unk_06644c(u16 *arg0,u16 *arg1)
   return value;
 }
 
-int Unk02e000_Unk_02e0cc();
-int Unk05b82c_Unk_05b82c();
-/* decompiler-derived */
+void Unk02e000_Unk_02e0cc(void);
+void Unk05b82c_Unk_05b82c(int id);
+/* At 02065e88, calls 0202e0cc, then submits ids 188, 189 and 190 to
+ * 0205b82c in that order. No broader initialization purpose is established. */
 void Unk065e88_Unk_065e88(void)
 {
   Unk02e000_Unk_02e0cc();
@@ -187,7 +194,7 @@ void Unk065e88_Unk_065e88(void)
   Unk05b82c_Unk_05b82c(0xbe);
 }
 
-int func_0205c3dc();
+void func_0205c3dc(u32 handle);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
@@ -216,26 +223,29 @@ void Unk065e88_Unk_065ec0(u32 *p)
     p[8] = (u32)func_02063b4c;
 }
 
-/* decompiler-derived */
-void Unk065e88_Unk_066258(int *arg0)
+/* At 02066258, forwards a nonzero handle to 0205c3dc and clears its slot.
+ * The caller owns a writable slot; zero requires no call. */
+void Unk065e88_Unk_066258(u32 *arg0)
 {
   if (*arg0 == 0) {
     return;
   }
-  func_0205c3dc();
+  func_0205c3dc(*arg0);
   *arg0 = 0;
 }
 
-int func_020445d0();
-int func_0204fde0();
-int func_0204fe18();
-/* decompiler-derived */
+typedef struct Unk065e88Resource Unk065e88Resource;
+Unk065e88Resource *func_020445d0(u32 arg0, u32 arg1);
+void *func_0204fde0(Unk065e88Resource *resource);
+u32 func_0204fe18(Unk065e88Resource *resource);
+/* At 02067d30, forwards both inputs to 020445d0, writes the low halfword
+ * of 0204fe18(resource) to the caller-owned output, then calls 0204fde0. */
 void Unk065e88_Unk_067d30(u32 arg0,u32 arg1,u16 *arg2)
 {
   u16 value1;
-  u32 value2;
-  value2 = func_020445d0();
-  value1 = func_0204fe18();
+  Unk065e88Resource *value2;
+  value2 = func_020445d0(arg0, arg1);
+  value1 = func_0204fe18(value2);
   *arg2 = value1;
   func_0204fde0(value2);
 }
@@ -267,6 +277,7 @@ void Unk065e88_Unk_065f30(int *arg0)
   *(int **)(((int)data_0216b9a8) + 4) = arg0;
 }
 
+/* Partial readable record layout established by the loads at 02068564. */
 typedef struct Unk065e88Obj24 {
     u8 pad_0000[0x24];
     u32 pad_0024_0 : 28;
@@ -275,8 +286,8 @@ typedef struct Unk065e88Obj24 {
     u16 unk_002a;
 } Unk065e88Obj24;
 
-void func_02072238();
-int Unk0e651c_Unk_0e666c();
+void func_02072238(s32 *object);
+int Unk0e651c_Unk_0e666c(u32 id);
 int func_020684c0(const void *record);
 void Unk065e88_Unk_066078(u8 *p)
 {
@@ -321,6 +332,9 @@ void Unk065e88_Unk_06646c(u32 *p)
     p[8] = (u32)func_020664c4;
 }
 
+/* At 020672b4, stores the mode word, then optionally dispatches mode 1
+ * to 02072238 or sets a word at +0x220 (mode 2) / +0x2f0 (mode 4).
+ * Those stores and dispatch establish the name; o must cover the selected field. */
 void Unk065e88_SetMode(s32 *o, s32 v, int notify)
 {
     o[0] = v;
@@ -353,6 +367,9 @@ void Unk065e88_Unk_0672fc(u8 *p, int a, u32 n)
     func_02061f10(FIELD(u32, p, 264), -1, 0, 0, r);
 }
 
+/* At 02068564, rejects bit 28 at +0x24, then requires either a zero id
+ * at +0x2a or a nonzero 020e666c result, and a nonzero 020684c0 result.
+ * The caller supplies a readable record; the returned predicate is 0 or 1. */
 int Unk065e88_Unk_068564(Unk065e88Obj24 *o)
 {
     if (!o->flag_0024_28 && (o->unk_002a == 0 || Unk0e651c_Unk_0e666c(o->unk_002a) != 0) && func_020684c0(o) != 0) {
