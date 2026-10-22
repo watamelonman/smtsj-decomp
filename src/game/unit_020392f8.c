@@ -1,46 +1,65 @@
-/* src/game/unit_020392f8.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* src/game/unit_020392f8.c: YDM dungeon resource loading and section accessors.
+ *
+ * YDM files are the per-dungeon resources named by the "Data/Dungeon/Ydm/..."
+ * strings below.  This TU builds the requested path, maps the file, and keeps
+ * pointers to the file's four variable-length sections.
+ */
 #include "types.h"
 
 
-int func_02008848();
-int func_020516d0();
-/* decompiler-derived */
-void Unk0392f8_Unk_039454(u32 *arg0)
-{
-  if (arg0 == (u32 *)0x0) {
-    return;
-  }
-  func_020516d0(*arg0);
-  func_02008848(arg0,0,0x14);
-}
+void func_02008848(void *dst, int val, u32 size);
+void func_020516d0(void *file);
 
+/* Path format strings, read from the retail ARM9 image at these addresses. */
 extern char data_021420d8[];   /* "Data/Dungeon/Ydm/%s_%02d_ydm.cmp" */
 extern char data_021420fc[];   /* "Data/Dungeon/Ydm/%s_dk%02d_ydm.cmp" */
-extern char data_02142120[];
-extern char data_02142148[];
+extern char data_02142120[];   /* "Data/Dungeon/Ydm/Map_dk_dummy_ydm.cmp" */
+extern char data_02142148[];   /* "Data/Dungeon/Ydm/%s_dm%02d_%02d_ydm.cmp" */
 void func_02013c3c(char *buf, const char *fmt, ...);
 int func_020513d4(const char *path);
 u8 *func_02051610(const char *path);
 
-/* Dungeon YDM file header (only the counts read here). */
+/* Header of a mapped YDM file.  The counts are read by func_020392f8 to walk
+ * the sections; the grid rectangle is used by Unk0392f8_Unk_0394b8. */
 typedef struct YdmHeader {
     u8 pad_00[6];
-    s8 count6;                  /* +6: 16-byte records */
-    u8 count7;                  /* +7: 36-byte records */
-    u8 count8;                  /* +8: 8-byte records */
+    s8 count6;                  /* +6: number of 16-byte records */
+    u8 count7;                  /* +7: number of 36-byte records */
+    u8 count8;                  /* +8: number of 8-byte records */
+    u8 gridX;                   /* +9: section-3 grid origin */
+    u8 gridY;                   /* +10 */
+    u8 gridW;                   /* +11 */
+    u8 gridH;                   /* +12 */
 } YdmHeader;
 
-/* Pointers into a loaded YDM file's sections. */
+/* A mapped YDM file: header first, then the four section base pointers.
+ * Every section starts after the preceding section's records plus a 4-byte
+ * terminator, as computed by func_020392f8. */
 typedef struct YdmFile {
-    YdmHeader *header;
-    u8 *sec0;
-    u8 *sec1;
-    u8 *sec2;
-    u8 *sec3;
+    YdmHeader *header;          /* +0x00 */
+    u8 *sec0;                   /* +0x04: 16-byte records */
+    u8 *sec1;                   /* +0x08: 36-byte records */
+    u8 *sec2;                   /* +0x0C: 8-byte records */
+    u8 *sec3;                   /* +0x10: 16-bit grid */
 } YdmFile;
 
-/* Loads Data/Dungeon/Ydm/<name>... and splits it into sections. Returns 1 on success. */
-int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int dark, int kind)
+/* Releases the mapped header and clears its 20-byte owner object.
+ * A null object is a no-op for callers releasing an optional resource. */
+void Unk0392f8_Unk_039454(YdmFile *ydm)
+{
+    if (ydm == 0) {
+        return;
+    }
+    func_020516d0(ydm->header);
+    func_02008848(ydm, 0, sizeof(YdmFile));
+}
+
+/* Builds the YDM path selected by kind, maps it, and fills ydm's header and
+ * section pointers.  Returns 1 on success and 0 for a null output, a missing
+ * file, or a failed map.  kind 0 selects the single-index format; kind 1 selects the
+ * `_dk` format when variant == 1 and the dummy map otherwise; kind 2 selects the
+ * two-index file using both floor and extra. */
+int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int variant, int kind)
 {
     char path[64];
     int i;
@@ -50,14 +69,24 @@ int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int dark
     if (ydm == 0) {
         return 0;
     }
-    { u32 n = 16; char *q = path;
-    do { q[0] = 0; q[1] = 0; q[2] = 0; q[3] = 0; q += 4; } while (--n != 0); }
+    /* Inline zeroing of path[64]: the original emits this unrolled loop. */
+    {
+        u32 n = 16;
+        char *q = path;
+        do {
+            q[0] = 0;
+            q[1] = 0;
+            q[2] = 0;
+            q[3] = 0;
+            q += 4;
+        } while (--n != 0);
+    }
     switch (kind) {
     case 0:
         func_02013c3c(path, data_021420d8, name, floor);
         break;
     case 1:
-        if (dark == 1) {
+        if (variant == 1) {
             func_02013c3c(path, data_021420fc, name, floor);
         } else {
             func_02013c3c(path, data_02142120);
@@ -85,51 +114,47 @@ int func_020392f8(YdmFile *ydm, const char *name, int floor, int extra, int dark
     return 1;
 }
 
-typedef struct Unk0392f8Hdr {
-    u8 pad_0000[0x8];
-    u8 count;                   /* +0x08 */
-} Unk0392f8Hdr;
-
 typedef struct Unk0392f8Entry {
     u32 unk_00;
     u32 unk_04;
 } Unk0392f8Entry;
 
-typedef struct Unk0392f8Set {
-    Unk0392f8Hdr *hdr;          /* +0x00 */
-    u8 pad_0004[0x8];
-    Unk0392f8Entry *entries;    /* +0x0C */
-} Unk0392f8Set;
-
-u8 *Unk0392f8_GetEntry36(u32 *p, u32 i)
+/* Returns the i-th 36-byte record of section 1, or NULL when i is past the
+ * header's section-1 count (byte at +7). */
+u8 *Unk0392f8_GetEntry36(YdmFile *ydm, u32 i)
 {
-    if (((u8 *)p[0])[7] <= i) {
+    if (ydm->header->count7 <= i) {
         return 0;
     }
-    return (u8 *)p[2] + i * 36;
+    return ydm->sec1 + i * 36;
 }
 
-Unk0392f8Entry *Unk0392f8_GetEntry(Unk0392f8Set *s, u32 i)
+/* Returns the i-th 8-byte record of section 2, or NULL when i is past the
+ * header's section-2 count (byte at +8). */
+Unk0392f8Entry *Unk0392f8_GetEntry(YdmFile *ydm, u32 i)
 {
-    if (s->hdr->count <= i) {
+    if (ydm->header->count8 <= i) {
         return 0;
     }
-    return &s->entries[i];
+    return (Unk0392f8Entry *)ydm->sec2 + i;
 }
 
-u8 *Unk0392f8_Unk_0394b8(u8 **o, int x, int y)
+/* Converts grid coordinates to the 16-bit map cell in section 3, or returns
+ * NULL when the object/file is null or (x, y) lies outside the header's grid
+ * rectangle.  dx/dy are relative to the grid origin at header +9/+10. */
+u8 *Unk0392f8_Unk_0394b8(YdmFile *ydm, int x, int y)
 {
-    u8 *h;
+    YdmHeader *h;
     int dx, dy;
-    if (o == 0) {
+    if (ydm == 0) {
         return 0;
     }
-    h = o[0];
+    h = ydm->header;
     if (h != 0) {
-        dx = x - h[9];
-        dy = y - h[10];
-        if (dx >= 0 && dx < h[11] && dy >= 0 && dy < h[12]) {
-            return o[4] + (h[11] * dy + dx) * 2;
+        dx = x - h->gridX;
+        dy = y - h->gridY;
+        if (dx >= 0 && dx < h->gridW && dy >= 0 && dy < h->gridH) {
+            return ydm->sec3 + (h->gridW * dy + dx) * 2;
         }
     }
     return 0;
