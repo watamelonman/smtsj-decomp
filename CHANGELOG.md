@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T050 functions in `src/game/unit_02124c5c.c` at 100%, with typed work fields, explicit callee parameters, and instruction-based documentation.
 - Matched all seven functions in `src/game/unit_02100208.c`, with typed comparator records and documented ordering.
 - Matched all four functions in `src/game/unit_020e78b8.c`, with typed work, message, and descriptor layouts.
 - `src/game/unit_020df5b8.c`: all seven functions now have matching C, including entry checks, overlay thunks, and six-descriptor initialization.
