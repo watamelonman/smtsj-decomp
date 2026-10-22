@@ -121,3 +121,47 @@ u32 Unk0caea8_GetInRange(u32 i)
     }
     return 0;
 }
+
+/* Only the halfword at +0x35c is used here; the surrounding work area is
+ * owned by unit_0202e000. */
+typedef struct Unk0caea8WorkArea {
+    u8 pad_0000[0x300];
+    struct {
+        u8 pad_0300[0x5c];
+        u16 unk_035c;
+    } block_0300;
+} Unk0caea8WorkArea;
+
+/* Borrows the persistent work area; this unit does not own its storage. */
+Unk0caea8WorkArea *Unk02e000_GetWorkArea(void);
+/* Formats a resource path into caller-owned storage. */
+int func_02013c3c(char *destination, const char *format, ...);
+/* Selects the halfword at data_0215f4d8 before loading a record. */
+void func_02052f58(u32 value);
+/* Restores that halfword from the saved halfword at +2. */
+void func_02052f68(void);
+/* Loads the named record; the caller retains the returned handle. */
+u32 func_02051610(const char *path);
+/* ROM string: Data/Event/Position/%03d.tbb. */
+extern const char data_02150628[];
+
+/* Replaces the active position record using work-area halfword +0x35c.
+ * The path string at data_02150628 identifies the resource category. Index
+ * arithmetic wraps to 16 bits before each comparison/subtraction result.
+ * Returns 1 after loading; record lifetime ends in Unk0caea8_Unk_0caf48. */
+u32 func_020caea8(void)
+{
+    u16 index;
+
+    Unk0caea8_Unk_0caf48();
+    index = Unk02e000_GetWorkArea()->block_0300.unk_035c + 50;
+    if (index >= 980) {
+        index -= 730;
+    }
+    char path[64] = {0};
+    func_02013c3c(path, data_02150628, index);
+    func_02052f58(0);
+    *data_02176bc0 = func_02051610(path);
+    func_02052f68();
+    return 1;
+}

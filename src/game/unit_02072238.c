@@ -9,48 +9,78 @@ typedef struct Unk072238Slot {
     u8 unk_0038;        /* +0x38 */
 } Unk072238Slot;
 
-/* Definition returned by func_020a1428 for an id; the original reads the id and the byte at +3. */
+/* Definition view used by the id list and pair classifier; category is read at +5. */
 typedef struct Unk072238Def {
     u16 id;             /* +0x0 */
-    u8 pad_0002[1];
+    u8 pad_0002;
     u8 unk_0003;        /* +0x3 */
+    u8 pad_0004;
+    u8 category;
 } Unk072238Def;
 
 /* Per-row state of the panel; `ids` and `flags` share indices 0..count-1. */
 typedef struct Unk072238Panel {
-    u8 pad_0000[40];
+    u8 pad_0000[36];
+    int unk_0024;
     s16 selected;       /* +0x28 */
-    u8 pad_002a[160];
+    s16 second;
+    u16 result_id;
+    s16 unk_002e;
+    u8 pad_0030[4];
+    u32 state;
+    u8 mode;
+    /* Guessed capacity: the 12 slot pointers bound the count-by-count table. */
+    u8 matrix[144];
+    u8 pad_00c9;
     u16 ids[12];        /* +0xca */
     u8 flags[12];       /* +0xe2 */
 } Unk072238Panel;
+
+/* Display resource wrapper: resource is passed to the drawing helpers; the initialized word is +0x24. */
+typedef struct Unk072238Display {
+    void *resource;
+    u8 pad_0004[32];
+    int unk_0024;
+} Unk072238Display;
 
 /* Object passed as the first argument by Unk065e88_SetMode; layout from the observed accesses.
    The slot array size is guessed from the 12-entry panel arrays; only indices 0..11 are used. */
 typedef struct Unk072238Work {
     u8 pad_0000[178];
     u8 count;           /* +0xb2 */
-    u8 pad_00b3[97];
+    u8 pad_00b3[93];
+    void *names;
     void *list;         /* +0x114 */
     u8 pad_0118[8];
     Unk072238Slot *slots[12]; /* +0x120 */
-    u8 pad_0150[8];
+    void *row_list;
+    s16 row;
+    s16 row_base;
     s16 unk_0158;       /* +0x158 */
-    u8 pad_015a[166];
+    u8 pad_015a[2];
+    u16 *rows[24]; /* Initializer walks all 24 pointers; null rows are permitted. */
+    u8 pad_01bc[68];
     Unk072238Panel panel;     /* +0x200 */
-    u8 pad_02ee[10];
+    u8 pad_02f0[8];
     u8 data[60];        /* +0x2f8 */
     u8 pad_0334[30];
     u8 unk_0352;        /* +0x352 */
-    u8 pad_0353[142];
+    u8 pad_0353[101];
+    Unk072238Display *handles[8];
+    u8 pad_03d8[8];
+    u8 mode;
     u8 unk_03e1;        /* +0x3e1 */
     u16 unk_03e2;       /* +0x3e2 */
+    u8 pad_03e4[16];
+    int unk_03f4;
 } Unk072238Work;
 
 /* Work area returned by Unk02e000_GetWorkArea; keys map a slot index to an entry id. */
 typedef struct Unk072238Area {
     u8 pad_0000[840];
     s8 keys[12];        /* +0x348 */
+    u8 pad_0354[3];
+    u8 entry_count;
 } Unk072238Area;
 
 void func_02057dcc(u32 a, u32 b, u32 c, u32 d);
@@ -277,4 +307,136 @@ void func_02076fcc(u8 *p)
     func_0205dee8(1, FIELD(void *, p, 944), (FIELD(u8, w, 855) - 6) / 2 + 42, 0, 0,
                   1.0f, 1.0f, 0, 1.0f, 10);
     func_02067c88(FIELD(void *, p, 268));
+}
+
+Unk072238Slot *Unk02e000_GetAreaRecord(int n);
+void func_02067370(void *p);
+int Unk06a224_Unk_06a224(void);
+int Unk0e651c_Unk_0e666c(int n);
+void * func_020445f4(int a, int b);
+u32 func_0204fed8(void *p, int id);
+void Unk065e88_Unk_0672fc(void *p, int a, int b);
+/* Deferred pair classifier: table walks compare definition ids/categories and return classes
+   0..8. Evidence: +0x88/+0x8c/+0x90/+0x98/+0x9c rule tables in the original.
+   Still supplied by the delink; the compiled candidate is not instruction-identical. */
+int func_02075fd0(Unk072238Work *p, int a, int b);
+/* Deferred draw dispatcher: reads panel.state after guarding +0x220 and +0x3b0;
+   calls the two row-list draw helpers. Still supplied by the original delink. */
+void func_0207498c(Unk072238Work *p);
+/* Deferred update dispatcher: resets through func_02072374, polls input, and dispatches
+   panel.state through 15. Still supplied by the original delink. */
+void func_0207283c(Unk072238Work *p);
+/* Deferred result-record builder: combines the two selected ids with func_02067ef4,
+   builds the 60-byte record, and optionally refreshes it. Still supplied by the delink. */
+void func_020765b0(Unk072238Work *p, int refresh);
+int func_020698e0(void *p, u16 *ids, int n, int result);
+void func_0205c408(void *p, int n);
+void func_0205c6e0(void *p);
+void func_0205c6f8(void *p);
+void Unk065e88_SetFlag3a(void *p, int n);
+void Unk06a224_Unk_06adc0(int n);
+
+/* Initializes the count-by-count pair table and display wrappers. The calls to
+   func_02067ef4/func_02075fd0 and the nested slot-id walk establish the pair-table role.
+   Requires a nonempty area whose first count keys refer to valid slots, as in the original;
+   the last text handle from that walk is forwarded to the list without a zero-count fallback. */
+void func_02072374(Unk072238Work *p)
+{
+    Unk072238Area *w;
+    int i;
+    u32 text; /* Empty areas forward an indeterminate handle, exactly as in the original. */
+    void *first, *other;
+    p->unk_03e2 = 0;
+    p->panel.selected = 0;
+    p->panel.second = 0;
+    p->panel.result_id = 0;
+    p->panel.unk_002e = 0;
+    p->panel.state = 0;
+    p->panel.unk_0024 = 0;
+    p->mode = 0;
+    p->unk_03f4 = 0;
+    p->panel.mode = 0;
+    p->row = 0;
+    p->row_base = 0;
+    p->count = 0;
+    w = (Unk072238Area *)Unk02e000_GetWorkArea();
+    for (i = 0; i < w->entry_count; i++)
+        if (w->keys[i] >= 0)
+            p->count++;
+    for (i = 0; i < 12; i++)
+        p->slots[i] = Unk02e000_GetAreaRecord(i);
+    func_02067370(p);
+    func_02063920();
+    for (i = 0; i < p->count; i++) {
+        Unk072238Def *def = (Unk072238Def *)func_020a1428(p->slots[w->keys[i]]->id);
+        text = func_02063a30(Unk0a163c_Unk_0a1814(def->id));
+    }
+    func_02061f10(p->names, -1, 0, 0, text);
+    if (Unk06a224_Unk_06a224()) {
+        if (p->unk_0158 <= 0 || !Unk0e651c_Unk_0e666c(0x702))
+            Unk06a224_Unk_06a244(0);
+        else {
+            func_02063920();
+            first = func_020445f4(12, 17);
+            other = func_020445f4(24, 0);
+            for (i = 0; i < 24; i++) {
+                u16 *row = p->rows[i];
+                if (!row) {
+                    if (i == 0)
+                        text = func_02063a30(func_0204fed8(first, 5));
+                } else if (*row)
+                    text = func_02063a30(func_0204fed8(other, *row));
+            }
+            func_02061f10(p->row_list, -1, 0, 0, text);
+        }
+    }
+    Unk065e88_Unk_0672fc(p, 17, 6);
+    for (i = 0; i < p->count; i++) {
+        Unk072238Def *def;
+        int j;
+        for (j = 0; j < p->count; j++) {
+            def = (Unk072238Def *)func_020a1428(
+                func_02067ef4(p, p->slots[w->keys[i]]->id, p->slots[w->keys[j]]->id));
+            p->panel.matrix[i *p->count + j]
+                = func_02075fd0(p, p->slots[w->keys[i]]->id, p->slots[w->keys[j]]->id);
+            if (!def->id)
+                p->panel.matrix[i *p->count + j] += 9;
+            else {
+                u16 pair[2];
+                pair[0] = p->slots[w->keys[i]]->id;
+                pair[1] = p->slots[w->keys[j]]->id;
+                if (!func_020698e0(p, pair, 2, def->id))
+                    p->panel.matrix[i *p->count + j] += 9;
+                if (def->category == 4)
+                    p->panel.matrix[i *p->count + j] += 18;
+                else if (def->category == 5)
+                    p->panel.matrix[i *p->count + j] += 36;
+            }
+        }
+    }
+    func_0205c408(p->handles[0]->resource, 0);
+    func_0205c6e0(p->handles[0]->resource);
+    Unk065e88_SetFlag3a(p->handles[0], 1);
+    p->handles[0]->unk_0024 = 18;
+    func_0205c408(p->handles[1]->resource, 1);
+    func_0205c6e0(p->handles[1]->resource);
+    Unk065e88_SetFlag3a(p->handles[1], 1);
+    p->handles[1]->unk_0024 = 18;
+    func_0205c408(p->handles[2]->resource, 2);
+    func_0205c6e0(p->handles[2]->resource);
+    Unk065e88_SetFlag3a(p->handles[2], 0);
+    p->handles[2]->unk_0024 = 18;
+    func_0205c408(p->handles[5]->resource, 5);
+    func_0205c6e0(p->handles[5]->resource);
+    Unk065e88_SetFlag3a(p->handles[5], 0);
+    p->handles[5]->unk_0024 = 18;
+    func_0205c408(p->handles[6]->resource, 6);
+    func_0205c6f8(p->handles[6]->resource);
+    Unk065e88_SetFlag3a(p->handles[6], 0);
+    p->handles[6]->unk_0024 = 18;
+    func_0205c408(p->handles[7]->resource, 7);
+    func_0205c6f8(p->handles[7]->resource);
+    Unk065e88_SetFlag3a(p->handles[7], 0);
+    p->handles[7]->unk_0024 = 18;
+    Unk06a224_Unk_06adc0(2);
 }
