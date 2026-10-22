@@ -35,24 +35,42 @@
 These implementations were already present at task start. Rebuilding confirmed
 all eight matches; this task adds their contracts and corrects stale status.
 
+## M1-T1078 (all verified at 100% objdiff)
+
+The eight C bodies were already present at task start. Rebuilding verified
+all eight matches; this task documents their contracts and corrects stale status.
+No algorithm or module boundary changed.
+
+- `Unk0aa118_Unk_0af824` (56 B): finds a record for the id and uses its
+  first two bytes to select borrowed table storage. Missing ids use table (0, 0).
+- `Unk0aa118_GetTableD2f4` (60 B): reads `data_0214d2f4` at one-based index
+  `i`, with offsets 3 and 6 for `k == 2` and `k == 3`; other k values use 0.
+  The literal data-symbol access supports the name. The index must be in bounds.
+- `Unk0aa118_CompareItems` (68 B): compares borrowed item pointers by descending
+  unsigned word +0x14, breaking ties by ascending unsigned word +0. The callback
+  passed to sorting at 0x020aa224 supports the name; equal keys return zero.
+- `Unk0aa118_Unk_0afab0` (72 B): returns table (39, 0) storage, advanced by
+  half its unsigned entry count times 22 when bits 16..23 of x equal 1.
+- `Unk0aa118_Unk_0afaf8` (72 B): the same selection for table (0, 0).
+- `Unk0aa118_Unk_0ab930` (76 B): returns byte +58, +59, or +60 of p for
+  id classifications 4, 1, or 5 from `func_0204add4`; otherwise returns zero.
+  The caller supplies storage containing these bytes.
+- `Unk0aa118_Unk_0acb28` (76 B): visits ten global pointers at +0x64;
+  non-null entries with nonzero bits 16..23 in their first word receive
+  `func_0204a7b4(entry, 2)`. The broader purpose remains unknown.
+- `Unk0aa118_FindRecord` (76 B): scans 326 records of 34 bytes in
+  `data_0214d398`, comparing id against each record +2 via `func_020152cc`.
+  The comparison in FindRecord at 0x020af780 supports the name. Returns the first matching
+  borrowed record, or null if absent.
+
 ## Hard list
 
-None for M1-T1077.
+None for M1-T1077 or M1-T1078.
 
 ## Other pending functions
 
-- `Unk0aa118_Unk_0af824`: decompiler-derived; outside this card.
-
-## Not done in M1-T1078
-- `Unk0aa118_GetTableD2f4`
-- `Unk0aa118_CompareItems`
-- `Unk0aa118_Unk_0afab0`
-- `Unk0aa118_Unk_0afaf8`
-- `Unk0aa118_Unk_0ab930`
-- `Unk0aa118_Unk_0acb28`
-- `Unk0aa118_FindRecord`
-- `Unk0aa118_Unk_0afb90`: decompiler-derived
-- `Unk0aa118_Unk_0ab4f4`: decompiler-derived
+- `Unk0aa118_Unk_0afb90`: decompiler-derived.
+- `Unk0aa118_Unk_0ab4f4`: decompiler-derived.
 
 ## Not done in M1-T1079
 - `func_020afbdc`
