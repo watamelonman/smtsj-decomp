@@ -119,3 +119,13 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Preserve VER record-count observations
+
+`func_0206f778` reloads the file header's record count at loop tests and again
+when preparing the subsequent copies or installation calls. Ordinary C lets
+mwcc retain the final loop-test value and removes two original loads. Qualify
+only the typed count field as volatile to preserve these observations and their
+instruction order. This is a matching constraint, not evidence of hardware or
+concurrent ownership. Revisit if original type or compiler evidence reproduces
+the reloads without the qualifier.
