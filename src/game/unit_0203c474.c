@@ -1,37 +1,39 @@
 /*
  * src/game/unit_0203c474.c: handlers reached from the 8-byte-entry table at
  * 0x0212b624 (relocs point the entry's second word at the handler). Handlers
- * take no C arguments because the table call is indirect; they return 1, except
- * Unk03c474_Unk_03c474 and Unk03c474_Unk_03c4a0, which return 3. The meaning of
+ * take no C arguments; these entries return 1, except
+ * Unk03c474_Unk_03c474, Unk03c474_Unk_03c4a0, Unk03c474_Unk_03c540 and
+ * Unk03c474_Unk_03c638, which return 3. The meaning of
  * the return value is not established.
  */
 #include "types.h"
 
-int Unk02dcfc_Unk_02df00();
-int Unk02dcfc_SetOwnerCode26();
-int func_0203ac00();
-int Unk03aae8_Unk_03ad14();
+void Unk02dcfc_Unk_02df00(int worker, u32 code);
+void Unk02dcfc_SetOwnerCode26(void);
+int func_0203ac00(int index);
+u32 Unk03aae8_Unk_03ad14(void);
 int Unk03aae8_Unk_03ad24();
 int Unk03aae8_Unk_03ad98();
 int func_0205e484();
-int func_0205e590();
+/* Consumes the value left in r0 by func_0203ac00 in the original handler. */
+void func_0205e590(int value);
 int func_02065544();
 int func_0206569c();
 int func_02065bc0();
 /* Applies `on` to the visor setters selected by the current visor mode (+0). */
 void func_020a269c(u32 on);
-int ScanVisor_Unk_0a273c();
-int ScanVisor_SetField34();
+void ScanVisor_Unk_0a273c(u32 on);
+void ScanVisor_SetField34(s32 on);
 /* Forwards `on` to Unk0fd268_SetDir after a null check on the visor data. */
 void ScanVisor_Unk_0a27e0(u32 on);
 /* 1 writes visor +0x1c = 2, 0 writes visor +0x1c = -2. */
 void ScanVisor_SetRangeA(s32 on);
 /* 1 writes visor +0x214 = -3, 0 writes visor +0x214 = 3. */
 void ScanVisor_SetField214(s32 on);
-int ScanVisor_Unk_0a28b0();
+void ScanVisor_Unk_0a28b0(s32 on);
 /* Thunk to Unk0fc584_SetDir (takes no arguments); callers still load r0. */
 void ScanVisor_Thunk_020fc6b8(u32 ignored);
-int ScanVisor_Unk_0a2920();
+void ScanVisor_Unk_0a2920(s32 on);
 
 u32 Unk03c474_Unk_03c5b8(void);
 u32 Unk03c474_Unk_03c5cc(void);
@@ -103,35 +105,35 @@ u32 Unk03c474_Unk_03c5a4(void)
   return 1;
 }
 
-/* decompiler-derived */
+/* Passes 0 to the current-mode visor setters via func_020a269c; returns 1. */
 u32 Unk03c474_Unk_03c5b8(void)
 {
   func_020a269c(0);
   return 1;
 }
 
-/* decompiler-derived */
+/* Passes 1 to the five visor setters called by ScanVisor_Unk_0a273c; returns 1. */
 u32 Unk03c474_Unk_03c5cc(void)
 {
   ScanVisor_Unk_0a273c(1);
   return 1;
 }
 
-/* decompiler-derived */
+/* Passes 0 to the five visor setters called by ScanVisor_Unk_0a273c; returns 1. */
 u32 Unk03c474_Unk_03c5e0(void)
 {
   ScanVisor_Unk_0a273c(0);
   return 1;
 }
 
-/* decompiler-derived */
+/* Selects visor +0x210 = 50 and +0x214 = 0 via ScanVisor_Unk_0a28b0; returns 1. */
 u32 Unk03c474_Unk_03c5f4(void)
 {
   ScanVisor_Unk_0a28b0(0);
   return 1;
 }
 
-/* decompiler-derived */
+/* Calls the direction thunk with 1, then sets owner worker +0x18 to 26; returns 3. */
 u32 Unk03c474_Unk_03c540(void)
 {
   ScanVisor_Thunk_020fc6b8(1);
@@ -139,7 +141,7 @@ u32 Unk03c474_Unk_03c540(void)
   return 3;
 }
 
-/* decompiler-derived */
+/* Selects visor +0x34 = -3 and calls the +0x24c helper with 1; returns 1. */
 u32 Unk03c474_Unk_03c56c(void)
 {
   ScanVisor_SetField34(1);
@@ -147,7 +149,7 @@ u32 Unk03c474_Unk_03c56c(void)
   return 1;
 }
 
-/* decompiler-derived */
+/* Selects visor +0x34 = 3 and calls the +0x24c helper with 0; returns 1. */
 u32 Unk03c474_Unk_03c588(void)
 {
   ScanVisor_SetField34(0);
@@ -155,14 +157,19 @@ u32 Unk03c474_Unk_03c588(void)
   return 1;
 }
 
-/* decompiler-derived */
+/* Only the owner field read by this handler is modeled; other fields are opaque. */
+typedef struct Unk03c474Owner {
+  u8 pad_0000[0xe8];
+  int worker;
+} Unk03c474Owner;
+
+/* Forwards script argument index 0 to func_0205e590, then sets worker state 21/code 1; returns 3. */
 u32 Unk03c474_Unk_03c4a0(void)
 {
-  int value;
-  func_0203ac00(0);
-  func_0205e590();
-  value = Unk03aae8_Unk_03ad14();
-  Unk02dcfc_Unk_02df00(*(u32 *)(value + 0xe8),1);
+  Unk03c474Owner *owner;
+  func_0205e590(func_0203ac00(0));
+  owner = (Unk03c474Owner *)Unk03aae8_Unk_03ad14();
+  Unk02dcfc_Unk_02df00(owner->worker, 1);
   return 3;
 }
 
