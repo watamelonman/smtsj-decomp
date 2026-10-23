@@ -25,52 +25,52 @@
 - `CampStatus_Unk_0db394`: decompiler-derived
 
 ## Not done in M1-T1124
-- `func_020d6cac`
+- `CampStatus_Copy168`
 - `CampStatus_ResetAnim`
-- `func_020d6ce4`
-- `func_020dbf24`
-- `func_020dddf4`
-- `func_020db288`
+- `CampStatus_Copy176`
+- `CampStatus_Unk_0dbf24`
+- `CampStatus_Unk_0dddf4`
+- `CampStatus_Unk_0db288`
 
 ## Not done in M1-T1125
-- `func_020d3624`
-- `func_020db2dc`
-- `func_020dca50`
+- `CampStatus_Unk_0d3624`
+- `CampStatus_Unk_0db2dc`
+- `CampStatus_Unk_0dca50`
 - `CampStatus_Unk_0dd308`
-- `func_020d35c0`
-- `func_020dcad4`
-- `func_020db214`
-- `func_020dde3c`
+- `CampStatus_Unk_0d35c0`
+- `CampStatus_Unk_0dcad4`
+- `CampStatus_Unk_0db214`
+- `CampStatus_Unk_0dde3c`
 - `CampStatus_Unk_0dd88c`: decompiler-derived
 
 ## Not done in M1-T1126
-- `func_020d353c`
-- `func_020ddb9c`
-- `func_020db3e0`
-- `func_020dc4a8`
-- `func_020dcb68`
-- `func_020ddb04`
-- `func_020dc540`
+- `CampStatus_Unk_0d353c`
+- `CampStatus_Unk_0ddb9c`
+- `CampStatus_Unk_0db3e0`
+- `CampStatus_Unk_0dc4a8`
+- `CampStatus_Unk_0dcb68`
+- `CampStatus_Unk_0ddb04`
+- `CampStatus_Unk_0dc540`
 - `CampStatus_Unk_0ddd2c`: decompiler-derived
 
 ## Not done in M1-T1127
-- `func_020da670`
-- `func_020dbd04`
-- `func_020dc240`
-- `func_020da8c4`
-- `func_020dc184`
-- `func_020dd910`
-- `func_020dc2ec`
+- `CampStatus_Unk_0da670`
+- `CampStatus_Unk_0dbd04`
+- `CampStatus_Unk_0dc240`
+- `CampStatus_Unk_0da8c4`
+- `CampStatus_Unk_0dc184`
+- `CampStatus_Unk_0dd910`
+- `CampStatus_Unk_0dc2ec`
 
 ## Not done in M1-T1128
-- `func_020db478`
-- `func_020d6948`
-- `func_020d8d60`
-- `func_020dc5dc`
-- `func_020db824`
-- `func_020dc3b8`
-- `func_020ddc20`
-- `func_020dd9d8`
+- `CampStatus_Unk_0db478`
+- `CampStatus_Unk_0d6948`
+- `CampStatus_Unk_0d8d60`
+- `CampStatus_Unk_0dc5dc`
+- `CampStatus_Unk_0db824`
+- `CampStatus_Unk_0dc3b8`
+- `CampStatus_Unk_0ddc20`
+- `CampStatus_Unk_0dd9d8`
 - `CampStatus_Unk_0d71bc`: decompiler-derived (struct cleanup)
 - `CampStatus_Unk_0d7680`: decompiler-derived (struct cleanup)
 - `CampStatus_IsUnkF4F8Set`: hand-matched
@@ -86,3 +86,62 @@
 - `CampStatus_Copy12c`: hand-matched
 - `CampStatus_Unk_0dcaac`: hand-matched
 - `CampStatus_Unk_0dd308`: hand-matched
+- `CampStatus_Unk_0d3624`: hand-matched
+- `CampStatus_Unk_0d35c0`: hand-matched
+- `CampStatus_Unk_0d353c`: hand-matched
+- `CampStatus_Copy168`: hand-matched
+- `CampStatus_Copy176`: hand-matched
+- `CampStatus_Unk_0db214`: hand-matched
+- `CampStatus_Unk_0db288`: hand-matched
+- `CampStatus_Unk_0db2dc`: hand-matched
+- `CampStatus_Unk_0dbf24`: hand-matched
+- `CampStatus_Unk_0dca50`: hand-matched
+- `CampStatus_Unk_0dcad4`: hand-matched
+- `CampStatus_Unk_0ddb9c`: hand-matched
+- `CampStatus_Unk_0dddf4`: hand-matched
+- `CampStatus_Unk_0dde3c`: hand-matched
+- `CampStatus_Unk_0db3e0`: hand-matched
+- `CampStatus_Unk_0da670`: hand-matched
+- `CampStatus_Unk_0dbd04`: hand-matched
+- `CampStatus_Unk_0dc240`: hand-matched
+- `CampStatus_Unk_0dc4a8`: hand-matched
+- `CampStatus_Unk_0dc540`: hand-matched
+- `CampStatus_Unk_0dcb68`: hand-matched
+- `CampStatus_Unk_0ddb04`: hand-matched
+- `CampStatus_Unk_0d6948`: hand-matched
+- `CampStatus_Unk_0d8d60`: hand-matched
+- `CampStatus_Unk_0da8c4`: hand-matched
+- `CampStatus_Unk_0db478`: hand-matched
+- `CampStatus_Unk_0db824`: hand-matched
+- `CampStatus_Unk_0dc184`: hand-matched
+- `CampStatus_Unk_0dc2ec`: hand-matched
+- `CampStatus_Unk_0dc5dc`: hand-matched
+- `CampStatus_Unk_0dd910`: hand-matched
+- `CampStatus_Unk_0db910`: hand-matched
+- `CampStatus_Unk_0dba84`: hand-matched
+- `CampStatus_Unk_0dbbbc`: hand-matched
+- `CampStatus_Unk_0dc3b8`: hand-matched
+- `CampStatus_Unk_0dc908`: hand-matched
+- `CampStatus_Unk_0dd9d8`: hand-matched
+- `CampStatus_Unk_0ddc20`: hand-matched
+- `CampStatus_Unk_0da97c`: hand-matched
+- `CampStatus_Unk_0dbdac`: hand-matched
+- `CampStatus_Unk_0da0e0`: hand-matched
+- `CampStatus_Unk_0dbf6c`: hand-matched
+- `CampStatus_Unk_0d6a24`: hand-matched
+- `CampStatus_Unk_0dc6c0`: hand-matched
+- `CampStatus_Unk_0db548`: hand-matched
+- `CampStatus_Unk_0d730c`: hand-matched
+- `CampStatus_Unk_0d9d54`: hand-matched
+- `CampStatus_Unk_0dd500`: hand-matched
+- `CampStatus_Unk_0d6e10`: hand-matched
+- `CampStatus_Unk_0d5d44`: hand-matched
+- `CampStatus_Unk_0dcc00`: hand-matched
+- `CampStatus_Unk_0d9830`: hand-matched
+- `CampStatus_Unk_0da710`: hand-matched
+- `CampStatus_Unk_0d78bc`: hand-matched
+- `CampStatus_Unk_0d6120`: hand-matched
+- `CampStatus_Unk_0d8e3c`: hand-matched
+- `CampStatus_Unk_0d9388`: hand-matched
+- `CampStatus_Unk_0dab5c`: hand-matched
+- `CampStatus_Unk_0d5644`: hand-matched
