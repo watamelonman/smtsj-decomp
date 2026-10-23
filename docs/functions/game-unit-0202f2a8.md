@@ -492,3 +492,45 @@ no new test files are required by this card.
 Validation: all eight card functions are 100% in the generated objdiff report;
 match gate passes for the changed C file, checksum reports all artifacts
 byte-identical, anticheat passes, and all nine existing unit tests pass.
+
+## M1-T1114: grid handlers, counters, a task creator and a record sort
+
+Names stay `func_<addr>`: no strings or callers establish a purpose, and
+renaming would touch config/arm9/symbols.txt (protected).
+
+- `func_0202fd64` (164 bytes): turns the cached heading by `turn` via
+  `func_020361ec`, steps one cell from the cached work-area position (same
+  direction table as `func_0202fe08`), returns 0 out of grid, 1 when
+  `probe == 0`, else `func_0209be20(x, y)`.
+- `func_020303d0` (168 bytes): allocates a 0xa0-byte task through
+  `func_020611dc` with `Unk02f2a8_Unk_03034c` and the two empty callbacks,
+  stores the argument and initial words (+8/+0xc = 1, +0x18 = 2), then runs
+  `Call_02035db8`, `Unk_030578` and `Unk_02f378` on it. Returns 0 on failure.
+- `func_020305a8` (164 bytes): picks an id from the s16 table at body+0x24 by
+  bits 20..23 of the current cell word; ids >= 29 are ignored. Forced (1) calls
+  `func_0205e484(id, 9)` and latches the id at +0x73d4; otherwise skipped when
+  +0x73e0 is 1 or the id is already latched.
+- `func_02032a40`, `func_02032b70` (156 bytes each, identical bodies): look up
+  the handler slot for the cached cell (+0x7482/+0x7483) with
+  `Unk09a268_Unk_09c4a8`, latch the cell's leading byte at +0x7478, clear
+  +0x7480..+0x7488 and call the handler if set.
+- `func_020352f4` (152 bytes): kind 0 bumps the u16 at +0x754e; other kinds
+  bump row `kind`, column `slot` of the u16[3] rows at +0x751e when the enable
+  byte at +0x33+kind is nonnegative; both report through `func_02030d84` with
+  the work-area id at +0x35c.
+- `func_0203546c` (160 bytes): zeroes `count` u16s at `dst`, then (resource 37
+  loaded) copies up to 15 u16s from entry `GetRes36Unk19(idx) - 1`, holding
+  resource 36 during the lookup. Returns 1 when copied.
+- `func_02036fb8` (156 bytes): stable insertion sort of the 16-byte records
+  after the count word, ascending by their +4 key.
+
+Shared types: the map-block/body typedefs moved above their first use, the
+body gained the s16 table at +0x24 (size guessed), `Unk02f2a8Obj39160` names
+bits 20..23, and the new `Unk02f2a8GridState` view types the state that
+`Unk02f2a8_Unk_034970` callers pass. The sort only matched without an explicit
+`count <= 1` early return (the loop's entry test produces it).
+
+Hard list for M1-T1114: none.
+
+Validation: match gate (all 175 C functions in the changed file 100%), checksum
+byte-identical, anticheat clean, 9 unit tests pass.
