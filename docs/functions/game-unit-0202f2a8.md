@@ -331,3 +331,42 @@ now covers +0x73DC and +0x7470..+0x748B, `Unk02f2a8Action` gains +0x9C, new
 - `Unk02f2a8_Unk_035b08`: hand-matched
 - `Unk02f2a8_Unk_035b74`: hand-matched
 - `Unk02f2a8_Unk_0366dc`: hand-matched
+
+## M1-T1110: eight state, grid and dispatch helpers
+
+All eight C bodies are at 100% objdiff and read their fields through typed views:
+the work area, `Unk02f2a8Action`, `Unk02f2a8State`/`Unk02f2a8StateRoot` (034b24,
+03064c, 0306a8), `Unk02f2a8Slots6138` (GetSlot_02f2dc) and `Unk02f2a8Body` with its
+s8 id array at +0x30 and two `Unk02f2a8MapBlock`s at +0x23c/+0x2c8 (034970, cell
+bits via `Unk02f2a8Obj39160`). In 0302f4 the empty `case 5` is kept so the jump
+table spans 0..5 like the original. The names are retained;
+neutral names indicate that field semantics are not established. No hard functions
+remain for this card. No module boundary changes were needed.
+
+- `Unk02f2a8_SetField35c` (80 bytes): rejects unsigned ids >=90, stores the id
+  at work-area +0x35c, tests its flag and sets it when clear. Returns one only
+  when setting a previously clear flag. The store offset supports the name.
+- `Unk02f2a8_SetGridPos` (80 bytes): `IsInGrid45x40` validates x/y before stores
+  to signed bytes +0x364/+0x365 and +0x366/+0x367, followed by the direction
+  word at +0x358. Returns one on success and zero without stores on failure.
+  The validation and paired coordinate stores support the grid name.
+- `Unk02f2a8_GetSlot_02f2dc` (84 bytes): reads words +0x6138/+0x613c/+0x6140
+  from the borrowed 02e774 block for selectors 1/2/3; other selectors return
+  zero. The paired `SetField6138` writes the same offsets.
+- `Unk02f2a8_Unk_034970` (84 bytes): returns borrowed p+572 by default. The
+  grid object at x/y supplies bits 16..19 of its +4 word; a nonzero value n
+  selects signed byte p+48+n-1. When that id is nonnegative and 0e63c8 returns
+  nonzero, returns p+712 instead. The map-block semantics remain unknown.
+- `Unk02f2a8_Unk_0302f4` (88 bytes): dispatches action +0x10: zero sets +0x14
+  to one; 1/2/3/4 call 030204/02f530/02f8f0/02fc50 respectively. All other
+  selectors return without a handler. Requires a valid action pointer.
+- `Unk02f2a8_Unk_034b24` (88 bytes): returns zero if state +0x73e0 equals
+  one, +0x73c8 differs from two, or root +0x10 differs from one; otherwise
+  returns whether root +4 is nonzero. Requires the singleton and its root.
+- `Unk02f2a8_Unk_03064c` (92 bytes): sets state +0x73e0 to one, clears root
+  +4/+0x4c, sets state +0x757c to four, resets the object at +0x7598, calls
+  the visor refresh pair, then calls 0a2a8c for indices 0 through 6.
+- `Unk02f2a8_Unk_0306a8` (92 bytes): sets root +0x4c/+0x54/+0x44/+0x50
+  to one, clears root +0x38/+0x34 and state +0x73e0/+0x73e4, then calls
+  0caf78, 0a0d30(1) and 0caf88 in order. The caller 032a08 uses this before
+  invoking 0305a8 with type one; no stronger semantic name is established.
