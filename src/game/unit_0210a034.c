@@ -45,37 +45,37 @@ void Unk10a034_Unk_10b018(void);
 int Unk10a034_Unk_10b058(u32 id);
 void Unk10a034_Unk_10aeb0(int arg0);
 
-/* decompiler-derived */
+/* Returns the word at 0x02176e38; the original loads this global directly. */
 u32 Unk10a034_Get_data_02176e38(void)
 {
   return *data_02176e38;
 }
 
-/* decompiler-derived */
+/* Returns the first word at 0x02176e3c; the original loads this global directly. */
 u32 Unk10a034_Get_data_02176e3c(void)
 {
   return *data_02176e3c;
 }
 
-/* decompiler-derived */
+/* Returns the word at +4 from data_02176e3c, as observed in the original load. */
 u32 Unk10a034_Unk_10af7c(void)
 {
-  return *(u32 *)(((int)data_02176e3c) + 4);
+  return data_02176e3c[1];
 }
 
-/* decompiler-derived */
+/* Returns the word at 0x02176e44; the original loads this global directly. */
 u32 Unk10a034_Get_data_02176e44(void)
 {
   return *data_02176e44;
 }
 
-/* decompiler-derived */
+/* Clears the word at 0x02176e38; the original stores zero to this global. */
 void Unk10a034_Clear_data_02176e38(void)
 {
   *data_02176e38 = 0;
 }
 
-/* decompiler-derived */
+/* Requires writable work: preserves arg1 at +0x10 and sets +8 to arg1 or, when arg2 is zero, 0x11. Evidence: original stores and conditional move at 0x0210a9a4. */
 void Unk10a034_Unk_10a9a4(Unk10a034Work *work,u32 arg1,int arg2)
 {
   work->unk_0010 = arg1;
@@ -85,13 +85,13 @@ void Unk10a034_Unk_10a9a4(Unk10a034Work *work,u32 arg1,int arg2)
   work->unk_0008 = arg1;
 }
 
-/* decompiler-derived */
+/* Clears the word at 0x02176e44; the original stores zero to this global. */
 void Unk10a034_Clear_data_02176e44(void)
 {
   *data_02176e44 = 0;
 }
 
-/* decompiler-derived */
+/* Requires writable work: preserves arg1 at +0x10 and sets +8 to arg1 or, when arg2 is zero, 8. Evidence: original stores and conditional move at 0x0210b394. */
 void Unk10a034_Unk_10b394(Unk10a034Work *work,u32 arg1,int arg2)
 {
   work->unk_0010 = arg1;
