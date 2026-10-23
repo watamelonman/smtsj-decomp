@@ -1,6 +1,5 @@
-/*
- * src/game/unit_020a0ce4.c: matched functions (see docs). Bodies marked 'decompiler-derived' were
- * lifted from Ghidra output and cleaned; field meanings are not known yet.
+/* Matching routines; instruction evidence is recorded in
+ * docs/functions/game-unit-020a0ce4.md. Unknown field meanings stay neutral.
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
@@ -14,13 +13,13 @@ typedef struct Unk0a0ce4Work {
 
 
 extern u32 data_02176afc[];
-int func_020445d0();
-int func_0204fde0();
-int func_02052528();
-int func_02053048();
-int func_0205e590();
-int func_020a1318();
-int func_020b72a8();
+int func_020445d0(int arg0, int arg1);
+int func_0204fde0(void);
+int func_02052528(int arg0);
+int func_02053048(void);
+int func_0205e590(int arg0);
+int func_020a1318(void);
+int func_020b72a8(void);
 
 void Unk0a0ce4_Nop_0a0e94(void);
 void Unk0a0ce4_Nop_0a0eb4(void);
@@ -30,37 +29,40 @@ void Unk0a0ce4_Unk_0a0e34(void);
 void Unk0a0ce4_Unk_0a0e98(void);
 int Unk0a0ce4_Unk_0a0ce4(int arg0);
 
-/* empty callback */
+/* Intentionally does nothing: the original entry consists only of bx lr. */
 void Unk0a0ce4_Nop_0a0e94(void) { }
 
-/* empty callback */
+/* Intentionally does nothing: the original entry consists only of bx lr. */
 void Unk0a0ce4_Nop_0a0eb4(void) { }
 
-/* empty callback */
+/* Intentionally does nothing: the original entry consists only of bx lr. */
 void Unk0a0ce4_Nop_0a0eb8(void) { }
 
-/* decompiler-derived */
+/* Returns the shared word: original 0x020a0d94 loads data_02176afc once. */
 u32 Unk0a0ce4_Get_data_02176afc(void)
 {
   return *data_02176afc;
 }
 
-/* decompiler-derived */
+/* Calls 02053048 then 020b72a8; the original forwards no arguments. */
 void Unk0a0ce4_Unk_0a0e34(void)
 {
   func_02053048();
   func_020b72a8();
 }
 
-/* decompiler-derived */
+/* Original call sequence supplies -1 to 02052528, then zero to 0205e590,
+ * and finally calls 020a1318. Their broader purpose remains unknown. */
 void Unk0a0ce4_Unk_0a0e98(void)
 {
-  func_02052528(0xffffffff);
+  func_02052528(-1);
   func_0205e590(0);
   func_020a1318();
 }
 
-/* decompiler-derived */
+/* Returns the base from 0204fde0 plus a 32-byte index offset after calling
+ * 020445d0(0, 0); evidence: original add r0, r0, r4, lsl #5.
+ * Callers 020a0da4/020a0dd8 validate indices and read bytes of this address. */
 int Unk0a0ce4_Unk_0a0ce4(int arg0)
 {
   int value;
@@ -84,7 +86,10 @@ void Unk0a0ce4_Unk_0a0d04(void)
 extern u32 data_02176b00[];
 int func_0205bb68();
 int func_020629c4();
-/* a * scale / 1024 (fixed point 1.10), with 0 and 1024 short-cut. */
+/* Scales a by scale/1024, preserving a for scale == 1024. Evidence:
+ * 020a1140 compares against 0 and 1024, then multiplies and arithmetic-shifts
+ * the low 32 product bits by 10. Callers 020a115c/020a1214 use the low byte.
+ * Callers must keep the signed product representable; negatives round down. */
 int Unk0a0ce4_ScaleFx10(int a, int scale)
 {
     if (scale == 0) {
