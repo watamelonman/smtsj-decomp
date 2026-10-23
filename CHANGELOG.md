@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched seven M1-T1139 numeric-output and selection routines at 100% objdiff; documented the remaining record collector on the hard list.
 - Matched all eight M1-T1138 game/unit_020bd5f0 cleanup, mapping, record refresh and selection setup routines at 100% objdiff.
 - Matched M1-T223 `func_020b0d48` at 100% objdiff; documented its ten-entry filtering, fallback, and random-selection contract.
 - Verified the four M1-T181 game/unit_0203bba4 callbacks at 100% objdiff; added typed helper declarations and documented argument conversions, substate updates and readiness checks.
