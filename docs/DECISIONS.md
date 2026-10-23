@@ -119,3 +119,14 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Variadic argument cursors in game/unit_020a9a90
+
+The original formatting wrappers align the address of the last named argument
+to four bytes and advance one word to obtain the variadic cursor. Express that
+32-bit ARM ABI operation directly in C, passing the borrowed cursor to
+`func_02013b94`. The compiler distribution has no standard headers in this
+project; `__builtin_next_arg` compiled as an external call rather than an
+intrinsic. The explicit cursor expression matches all four wrappers exactly.
+This is target-specific and should be revisited if standard library headers
+become available or the target ABI changes.
