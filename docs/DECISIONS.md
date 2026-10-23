@@ -119,3 +119,13 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Preserve work-relative entry flag views in 020fbed4
+
+The initializer and wrapping draw callback address entry flags as
+`work + index * 96 + 0x6d`, while entry submissions use a base at work +0x10.
+Keep a shifted private work view for the flag accesses and the separately based
+entry addresses for submissions. These are views into the same allocated work
+block, not separately allocated work objects. Collapsing both expressions into
+ordinary entry-array indexing changes multiplication and register allocation;
+the separate views reproduce the original instructions at 100% objdiff.
