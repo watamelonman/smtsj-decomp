@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_020fef0c` (singleton task creation) in `src/game/unit_020fedd4.c` and typed the TU's 36-byte task object; all 16 functions there are at 100% objdiff.
 - Verified all eight M1-T167 singleton accessors and forwarding helpers at 100% objdiff; added typed callee parameters, contracts, and instruction evidence.
 - Matched all eight M1-T165 record lookup, comparison and packed-field helpers in `src/game/unit_020cb0d0.c` at 100% objdiff with typed contracts and per-function documentation.
 - Matched all three game/unit_020964f8 functions, including the six-ID packed-record selector, with typed views and per-function documentation.
