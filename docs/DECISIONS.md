@@ -119,3 +119,14 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Model 0206dafc interior symbols as one record array
+
+`func_0206dafc` clears 328 bytes at `data_0216bac8 + index * 328` and
+initializes bytes within that same record. The delinker labels those bytes
+with individual data symbols. Represent them as fields in one typed record
+rather than independent strided arrays: the latter imply unrelated objects
+and produce different register allocation. The unified layout matches all
+instructions, and objdiff resolves its interior relocations at 100%. Padding
+records only observed offsets; the table capacity and field meanings remain
+unknown. Revisit if further data-layout evidence changes the record boundary.
