@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T202 ImageBg helpers at 100% objdiff; added typed work fields, explicit call contracts, and per-function assembly evidence.
 - Verified all eight M1-T1135 context and id-query functions in `src/game/unit_020bd5f0.c` at 100% objdiff; added behavior contracts and per-function documentation.
 - Verified the eight M1-T1109 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: replaced raw offsets with typed GameState-tail, action and slot-block views, gave `Unk02f2a8_Unk_02f8ac` and `Unk02f2a8_DirToAngle` real prototypes, commented each function and added a per-function doc entry.
 - Verified all five M1-T115 table, flag, and pair helpers at 100% objdiff; documented index contracts and instruction evidence.
