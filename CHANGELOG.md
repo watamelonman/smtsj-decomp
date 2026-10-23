@@ -2,6 +2,25 @@
 
 ## Unreleased
 - Matched all five M1-T137 functions in `src/game/unit_020ef958.c` at 100% objdiff, with typed work/descriptor layouts and per-function documentation.
+- Matched all eight M1-T135 handlers in `src/game/unit_020bbd6c.c` at 100% objdiff, with typed work/record layouts and per-function evidence.
+- Matched all eight M1-T134 entry access, key search, and block copy functions in `src/game/unit_0206e2a0.c`, with typed layouts and per-function contracts.
+- Matched all seven M1-T131 functions in `src/game/unit_021122bc.c` at 100% objdiff, with typed cell/work/resource layouts and per-function documentation.
+- Matched all eight M1-T129 shared-work functions in `src/game/unit_020feba0.c` at 100% objdiff, including the completion predicate, with typed parameters and per-function documentation.
+- Verified all eight M1-T117 handlers at 100% objdiff; typed their callee declarations, made the argument flow into `func_0205e590` explicit, and documented their observed behavior.
+- Verified all eight M1-T1135 context and id-query functions in `src/game/unit_020bd5f0.c` at 100% objdiff; added behavior contracts and per-function documentation.
+- Verified the eight M1-T1109 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: replaced raw offsets with typed GameState-tail, action and slot-block views, gave `Unk02f2a8_Unk_02f8ac` and `Unk02f2a8_DirToAngle` real prototypes, commented each function and added a per-function doc entry.
+- Verified all five M1-T115 table, flag, and pair helpers at 100% objdiff; documented index contracts and instruction evidence.
+- Verified the eight M1-T1108 decompiler-derived functions in `src/game/unit_0202f2a8.c` at 100% objdiff: typed the work-area meter/direction members and the action/count/GameState-tail views, gave every target a behaviour comment, and added a per-function doc entry.
+- Verified the eight M1-T1107 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: added typed local views for the borrowed work area and the GameState sub-blocks, gave `Unk02e000_GetWorkArea` and the other borrowed accessors real prototypes, added behaviour comments to the flag clear, optional-block getters, the 0x24-scoped selector call, grid forwarding call, root setter and 45x40 bounds test, and gave each a per-function doc entry.
+- Verified the eight M1-T1106 grid/cell functions in `src/game/unit_0202f2a8.c` at 100% objdiff; replaced the last raw-offset bodies (`Unk_033ac8`, `Unk_034a8c`) with typed game-state/object accesses and gave every target a per-function doc entry.
+- Matched `func_021059ec` in `src/game/unit_02100810.c` (saved-record comparison) at 100% objdiff, using typed saved-id list access; documented the six remaining M1-T1096 functions and their trials on the unit hard list.
+
+- Matched `func_0204372c` (the 1916-byte 7x7 map-icon dispatcher) in `src/game/unit_0203e43c.c` at 100% objdiff; documented the four remaining M1-T1092 large update/draw functions and their measured candidates on the unit hard list.
+- Matched two of the eight M1-T1091 targets in `src/game/unit_0203e43c.c` at 100% objdiff: the 392-byte context-checked icon drawer and the 620-byte icon-id dispatcher. Added typed prototypes for the two blit helpers and documented the six remaining hard targets.
+- Match three more game/unit_0203e43c functions: coordinate clamping, clipped byte-surface fill, and draw-entry selection; document five remaining hard targets.
+- Verified the eight M1-T1105 functions in `src/game/unit_0202f2a8.c` at 100% objdiff. The four decompiler-derived ones (035ec4, 030478, 030578, 033890) now have typed parameters with small local structs and per-function comments.
+- Corrected the M1-T1095 record window layout to hold its tenth populated id while preserving the nine-row drawing limit and +0x2000 flag offset.
+- Matched all eight M1-T1095 functions in `src/game/unit_02100810.c` at 100% objdiff (work release, list rebuilds, two record-save paths, the metadata row drawer, record sorting, and the nine-row window), with typed parameters and per-function documentation.
 - Matched both functions in `src/game/unit_020f8998.c` (empty callback and the 556-byte grid-interaction state machine) at 100% objdiff, with typed work/cell layouts and per-function documentation.
 - Matched all five M1-T119 functions in `src/game/unit_02047338.c` at 100% objdiff, including the 312-byte `func_02047338` state dispatcher, with typed parameters and per-function documentation.
 - Verified the eight M1-T116 scan-visor action handlers in `src/game/unit_0203c474.c` at 100% objdiff; added typed callee prototypes and behavior comments, with per-function evidence in `docs/functions/game-unit-0203c474.md`.
