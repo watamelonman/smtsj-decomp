@@ -88,7 +88,8 @@ void Unk02f078_Unk_02f08c(void)
 
 /* ARM 0x0202f190: allowed-pair predicate over two small ids. Id 0 is always
  * accepted; a zero second id is accepted only when the first id is zero.
- * No caller establishes what the ids represent. */
+ * The comparisons and switch at 0x0202f190..0x0202f208 establish this
+ * predicate name; no caller establishes what the ids represent. Returns 0 or 1. */
 int Unk02f078_IsAllowed_02f190(int a, int b)
 {
     if (a == 0) {
@@ -120,7 +121,9 @@ int Unk02f078_IsAllowed_02f190(int a, int b)
 }
 
 /* ARM 0x0202f230: set byte i of the table at save+0x5E12 to 3 unless it
- * already has bit 1 set. Indices outside 0..63 are ignored. */
+ * already has bit 1 set. Indices outside 0..63 are ignored without acquiring
+ * the save block. The ldrb/tst #2/strbeq sequence at 0x0202f254..0x0202f260
+ * establishes the entry operation; other bits are replaced, not preserved. */
 void Unk02f078_InitEntry5e12(int i)
 {
     if (i >= 64) {
@@ -138,7 +141,9 @@ void Unk02f078_InitEntry5e12(int i)
 }
 
 /* ARM 0x0202f268: return bit 0 of byte i in the table at save+0x5E12.
- * Indices outside 0..63 yield zero. */
+ * Indices outside 0..63 yield zero without acquiring the save block.
+ * The byte load and tst #1 at 0x0202f294..0x0202f298 establish the name.
+ * Returns an int 0 or 1 rather than the full entry byte. */
 int Unk02f078_GetEntry5e12Bit0(int i)
 {
     if (i >= 64) {
@@ -154,7 +159,9 @@ int Unk02f078_GetEntry5e12Bit0(int i)
 }
 
 /* ARM 0x0202f104: test bit i of the 37-bit flag array at work+0x380.
- * Ids outside 1..36 return zero. */
+ * Ids outside 1..36 return zero without acquiring the work area. The byte
+ * load at 0x0202f138 and masked test at 0x0202f140 establish the name.
+ * Bit numbers are used directly (bit 0 is not exposed); returns int 0 or 1. */
 int Unk02f078_TestFlag380(int i)
 {
     if (i <= 0) {
@@ -170,7 +177,9 @@ int Unk02f078_TestFlag380(int i)
 }
 
 /* ARM 0x0202f14c: set bit i of the flag array at work+0x380.
- * Ids outside 1..36 are ignored; already-set bits are left untouched. */
+ * Ids outside 1..36 are ignored without acquiring the work area; already-set
+ * bits are left untouched. The conditional add/store at 0x0202f184..0x0202f188
+ * establishes the name. Addition is safe because the tested bit is clear. */
 void Unk02f078_SetFlag380(int i)
 {
     u8 mask;
