@@ -7,11 +7,11 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u8 data_02175d94[];
-int func_02008848();
-int func_02052ff0();
+void func_02008848(void *destination, int value, u32 size);
+void *func_02052ff0(u32 size);
 void func_02053000(void);
-int func_02057628();
-int func_02057678();
+void func_02057628(u32 index, s32 x, s32 y);
+void func_02057678(u32 index, s32 x, s32 y);
 
 int Unk0946e0_Unk_0948fc(int arg0);
 void Unk0946e0_Thunk_02053000(void);
@@ -21,6 +21,7 @@ u32 Unk0946e0_Unk_0946e0(void);
 void Unk0946e0_Unk_094c50(int *arg0);
 void Unk0946e0_Unk_094a64(u32 arg0);
 
+/* Clear the caller-owned 12-byte record; the null guard is present at 0x02094734. */
 void Unk0946e0_Clear12(void *p)
 {
     if (p == 0) {
@@ -29,22 +30,25 @@ void Unk0946e0_Clear12(void *p)
     func_02008848(p, 0, 12);
 }
 
-/* decompiler-derived */
+/* Return the address four bytes into a record (ADD r0, r0, #4 at 0x020948fc).
+ * Addresses use the DS 32-bit integer representation; no fields are read here. */
 int Unk0946e0_Unk_0948fc(int arg0)
 {
   return arg0 + 4;
 }
 
-/* forwards to `func_02053000` */
+/* Forward to func_02053000 without arguments, as the sole BL at 0x02094908 shows. */
 void Unk0946e0_Thunk_02053000(void) { func_02053000(); }
 
-/* decompiler-derived */
+/* Expose the shared record address; the literal at 0x02094954 names data_02175d94.
+ * The returned address remains owned by this module. */
 u32 Unk0946e0_GetAddr_data_02175d94(void)
 {
   return ((int)data_02175d94);
 }
 
-/* decompiler-derived */
+/* Copy the signed halfword at shared-record offset 0x10 into a non-null output.
+ * LDRSH at 0x02094aec establishes the signed widening contract. */
 void Unk0946e0_Unk_094ae0(int *arg0)
 {
   int value;
@@ -52,16 +56,18 @@ void Unk0946e0_Unk_094ae0(int *arg0)
   *arg0 = (int)*(short *)(value + 0x10);
 }
 
-/* decompiler-derived */
+/* Allocate and zero 12 bytes, returning the allocator address to the caller.
+ * The size and unconditional clear follow the calls at 0x020946e8 and 0x020946f8. */
 u32 Unk0946e0_Unk_0946e0(void)
 {
   u32 value;
-  value = func_02052ff0(0xc);
-  func_02008848(value,0,0xc);
+  value = (u32)func_02052ff0(0xc);
+  func_02008848((void *)value,0,0xc);
   return value;
 }
 
-/* decompiler-derived */
+/* Copy shared-record halfwords at offsets 0 and 2 to two signed word outputs.
+ * The two LDRSH instructions at 0x02094c5c/0x02094c68 establish sign extension. */
 void Unk0946e0_Unk_094c50(int *arg0)
 {
   short *v1;
@@ -72,7 +78,8 @@ void Unk0946e0_Unk_094c50(int *arg0)
   arg0[1] = (int)*(short *)(value + 2);
 }
 
-/* decompiler-derived */
+/* Forward shared-record words at +4/+8 to func_02057678, then pass zeroes to
+ * func_02057628 for the same index (calls at 0x02094a78/0x02094a88). */
 void Unk0946e0_Unk_094a64(u32 arg0)
 {
   int value;
