@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1138 game/unit_020bd5f0 cleanup, mapping, record refresh and selection setup routines at 100% objdiff.
 - Matched eight additional game/unit_020bd5f0 input, list, range and setup routines.
 - Matched `func_02036068` and rewrote the seven other M1-T1112 functions in `src/game/unit_0202f2a8.c` on typed struct views with contract comments, replacing their raw `FIELD` offsets. All eight are at 100% objdiff.
 - Matched seven M1-T222 arithmetic, query-limit, and comparison functions in `src/game/unit_020b0b5c.c`; documented the remaining fixed-point function and its 99.33% candidate on the hard list.

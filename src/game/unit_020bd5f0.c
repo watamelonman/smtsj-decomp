@@ -73,8 +73,8 @@ extern void func_020c67a0(void *);
 extern void func_020c6888(void *);
 extern u32 *func_020445f4(u32 group, u32 selector);
 extern void func_02063920(void);
-extern u32 func_0204fed8(u32 *table, u32 index);
-extern u32 func_02063a30(u32 value);
+extern const u16 *func_0204fed8(u32 *table, u32 index);
+extern u32 func_02063a30(const u16 *value);
 extern void func_02061f10(void *obj, int a, int b, int c, u32 value);
 extern void func_020c7304(void *obj);
 extern void func_020bcfc4(void *obj, u32 value);
@@ -144,14 +144,14 @@ void Unk0bd5f0_Unk_0c1ad8(void)
 }
 
 extern u32 data_02176bb0[];
-int func_020c1b94();
+void func_020c1b94(void *obj);
 /* Calls func_020c1b94 on the object stored in data_02176bb0 when that pointer is non-null. */
 void Unk0bd5f0_Unk_0c20f0(void)
 {
   if (*data_02176bb0 == 0) {
     return;
   }
-  func_020c1b94();
+  func_020c1b94((void *)*data_02176bb0);
 }
 
 
@@ -554,4 +554,214 @@ void func_020c1f40(Unk0bd5f0Work *obj)
     desc.flags[0] |= 2;
     func_020bcbc4(3, &desc);
     Unk0bd5f0_Unk_0c2050(obj);
+}
+
+/* Borrowed word-aligned object view; field offsets follow the original loads. */
+typedef struct Unk0bd5f0Panel {
+    s32 state, next, mode, kind;
+    void *resource10, *resource14, *items18[2];
+    u8 sub20[0x10];
+    s32 index30;
+    u8 pad34[8];
+    void *resource3c, *resource40;
+    u8 sub44[0x10];
+    u32 index54;
+    u8 pad58[8];
+    s32 count60;
+    u8 pad64[0x48];
+    void *outputac, *outputb0, *outputb4;
+    u8 padb8[8];
+    u32 valuesc0[8], valuese0[8];
+    void *output100, *output104, *output108, *output10c;
+    u8 selector;
+    u8 pad111[3];
+    s32 value114, value118, value11c, value120;
+    u8 pad124[0x14];
+    u8 *output138;
+    u32 value13c, value140;
+    u8 *output144;
+    u32 value148, value14c;
+    u8 pad150[0x38];
+    void *resource188, *resources18c[2];
+    u8 pad194[8];
+    void *resource19c;
+} Unk0bd5f0Panel;
+
+extern void func_0205ddb4(void *resource);
+extern void func_0205c368(void *resource);
+extern void func_02061424(void *resource);
+extern void func_020629c4(void *output);
+extern void Unk044394_Unk_044534(u32 value);
+extern void func_020c1990(s32 index);
+extern void func_020c1e18(void *output, const void *record, s32 a, s32 b,
+                         u8 slot, u32 c, u32 d);
+extern void func_020bcf14(void *obj, u32 count);
+extern void Unk0bcef4_Unk_0bcef4(void *obj, u32 a, u32 b, u32 c);
+extern void Unk0bcef4_Unk_0bd29c(void *dest, const void *source);
+extern void func_020bd1a8(void *dest, const void *source, const u32 *values, u32 flag);
+extern s32 func_020c7cdc(void *obj);
+extern s32 func_0204ff64(const u32 *table);
+
+/* Releases the observed resource slots, clearing each released handle. */
+void func_020c0c5c(void *obj)
+{
+    Unk0bd5f0Panel *p = obj;
+    int i;
+    if (p->resource10) { func_0205ddb4(p->resource10); p->resource10 = 0; }
+    if (p->resource14) { func_0205c368(p->resource14); p->resource14 = 0; }
+    func_020629c4(p->output144);
+    if (p->output144) p->output144 = 0;
+    func_020629c4(p->output138);
+    if (p->output138) p->output138 = 0;
+    for (i = 0; i < 2; i++) { func_02061424(p->items18[i]); p->items18[i] = 0; }
+    func_020629c4(p->outputac);
+    if (p->outputac) p->outputac = 0;
+    func_020629c4(p->outputb4);
+    if (p->outputb4) p->outputb4 = 0;
+    func_020629c4(p->outputb0);
+    if (p->outputb0) p->outputb0 = 0;
+    *data_02176bb0 = 0;
+}
+
+/* Releases the second object's observed resource slots after signaling 30. */
+void func_020c67a0(void *obj)
+{
+    Unk0bd5f0Panel *p = obj;
+    int i;
+    Unk044394_Unk_044534(30);
+    if (p->resource3c) { func_0205ddb4(p->resource3c); p->resource3c = 0; }
+    if (p->resource40) { func_0205c368(p->resource40); p->resource40 = 0; }
+    func_02061424(p->resource188); p->resource188 = 0;
+    for (i = 0; i < 2; i++) { func_02061424(p->resources18c[i]); p->resources18c[i] = 0; }
+    func_02061424(p->resource19c); p->resource19c = 0;
+    func_020629c4(p->output100); if (p->output100) p->output100 = 0;
+    func_020629c4(p->output104); if (p->output104) p->output104 = 0;
+    func_020629c4(p->output108); if (p->output108) p->output108 = 0;
+    func_020629c4(p->output10c); if (p->output10c) p->output10c = 0;
+}
+
+/* Dispatches a signed mapping for kind 37; negative mappings clear via the helper. */
+void func_020c1fb0(Unk0bd5f0Panel *p)
+{
+    s32 index;
+    if (p->kind != 37) return;
+    if (p->mode == 25) {
+        index = p->index30;
+        if (index == 0) { func_020c1990(-1); return; }
+        index = *((s8 *)Unk02e000_GetWorkArea() + index + 0x353);
+        if (index >= 0) func_020c1990(index);
+        else Unk0bd5f0_Unk_0c1ad8();
+    } else if (p->mode == 26) {
+        index = *(s32 *)((u8 *)p + 0x4c);
+        if (*(s8 *)((u32)index + (u32)Unk02e000_GetWorkArea() + 0x348) >= 0)
+            func_020c1990(*(s8 *)((u32)index + (u32)Unk02e000_GetWorkArea() + 0x348));
+        else Unk0bd5f0_Unk_0c1ad8();
+    }
+}
+
+/* Submits the base record and three valid mapped records, then marks output +64. */
+void func_020c1b94(void *obj)
+{
+    Unk0bd5f0Panel *p = obj;
+    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    u32 i;
+    func_020c1e18(p->output138, w + 0x12, *(s16 *)(w + 0x1c), *(s16 *)(w + 0x1e), 0, p->value13c, p->value140);
+    for (i = 0; i < 3; i++) {
+        s32 index = *(s8 *)(w + i + 0x354);
+        if (index >= 0) {
+            u32 offset = index * 60;
+            func_020c1e18(p->output138, w + 0x7e + offset, *(s16 *)(w + offset + 0x92), *(s16 *)(w + offset + 0x94), (u8)(i + 1), p->value13c, p->value140);
+        }
+    }
+    p->output138[0x40] = 2;
+}
+
+/* Refreshes six borrowed ids from matching 60-byte records and marks output +64. */
+void func_020c1cd0(Unk0bd5f0List *obj, const u32 *ids)
+{
+    Unk0bd5f0Panel *p = (Unk0bd5f0Panel *)obj;
+    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    u32 i;
+    for (i = 0; i < 6; i++) {
+        if (ids[i] != 0) {
+            u8 j;
+            for (j = 0; j < w[0x357]; j++) {
+                u32 offset = j * 60;
+                if (*(u16 *)(w + offset + 0xaa) == ids[i]) {
+                    func_020c1e18(p->output144, w + 0x7e + offset, *(s16 *)(w + offset + 0x92), *(s16 *)(w + offset + 0x94), (u8)i, p->value148, p->value14c);
+                    break;
+                }
+            }
+        }
+    }
+    p->output144[0x40] = 2;
+}
+
+/* Converts the base text and three mapped ids, substituting an empty halfword. */
+void func_020c1414(void *obj, void *output)
+{
+    u16 *blank;
+    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    u32 *table = func_020445f4(18, 1);
+    u32 text, i;
+    func_02063920();
+    text = func_02063a30((const u16 *)(w + 0x48));
+    u16 empty[1] = {0};
+    blank = empty;
+    for (i = 0; i < 3; i++) {
+        s32 index = *(s8 *)(w + i + 0x354);
+        if (index >= 0) text = func_02063a30(func_0204fed8(table, *(u16 *)(w + index * 60 + 0xaa)));
+        else text = func_02063a30(blank);
+    }
+    func_02061f10(output, -1, 0, 0, text);
+    func_020c1b94(obj);
+}
+
+/* Recounts valid mappings and refreshes the six visible ids; mappings must be readable. */
+void func_020c1770(Unk0bd5f0Panel *p)
+{
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
+    s32 j;
+    u32 ids[6], i, start, end;
+    p->count60 = 0;
+    for (j = 0; j < w->unk_0357; j++) if (w->unk_0348[j] >= 0) p->count60++;
+    func_020bcf14(p->sub20, 4);
+    Unk0bcef4_Unk_0bcef4(&p->resource3c, 6, w->unk_0357, 0);
+    func_02008644(0, ids, sizeof(ids));
+    start = *(u32 *)p->sub44;
+    end = start + 6;
+    for (i = start; i < end; i++) {
+        s32 index = w->unk_0348[i];
+        if (index < 0) break;
+        ids[i - start] = w->unk_0078[index].unk_0032;
+    }
+    CampStatus_Unk_0dde3c(p->outputb4, 18, 1, ids, i - start);
+    func_020c1cd0((Unk0bd5f0List *)p, ids);
+}
+
+/* Rebuilds selection rows and text, then initializes state 20 toward state 24. */
+void func_020c7304(void *obj)
+{
+    Unk0bd5f0Panel *p = obj;
+    s32 override = func_020c7cdc(p);
+    s32 count = func_0204ff64(func_020445f4(12, p->selector)) - 99;
+    u32 rows[8], i;
+    if (override > 0) count = override;
+    Unk0bcef4_Unk_0bcef4(p->sub44, count, count, 1);
+    Unk0bcef4_Unk_0bd29c(&p->count60, p->sub44);
+    func_020bd1a8(&p->count60, p->sub44, p->valuesc0, 1);
+    func_020c72a4(p->output100, p->selector, 0);
+    for (i = 0; i < 8; i++) {
+        if (p->valuese0[i] == 0) rows[i] = 10;
+        else rows[i] = i + 1;
+    }
+    CampStatus_Unk_0dde3c(p->output104, 12, p->selector, rows, count);
+    if (p->valuese0[p->index54] == 0) func_020c72a4(p->output108, p->selector, 10);
+    else func_020c72a4(p->output108, p->selector, (u8)(p->index54 + 100));
+    p->state = 20;
+    p->next = 24;
+    p->value118 = -110;
+    p->value114 = -110;
+    p->value120 = 0;
+    p->value11c = 0;
 }
