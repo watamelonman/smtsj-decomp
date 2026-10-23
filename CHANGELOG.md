@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_020f82e0` (M1-T218), the per-frame state update in `src/game/unit_020f81a4.c`, at 100% objdiff; the callback fields at +0x8c..+0xa0 are now typed.
 - Matched all eight M1-T217 functions in `src/game/unit_020f81a4.c` at 100% objdiff, with typed object fields and callbacks and per-function evidence.
 - Matched all eight work-area and packed-pair functions in `src/game/unit_0209727c.c` at 100% objdiff; added typed contracts and per-function evidence.
 - Matched all four M1-T212 script handlers in `game/unit_0203d494` at 100% objdiff; documented query counting, numeric conversion, and state-setting argument forwarding.
