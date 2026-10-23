@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched the M1-T130 record factory `func_020fec84` and per-frame step `func_020fecfc` in `src/game/unit_020feba0.c` at 100% objdiff (with `Unk0feba0_Unk_0fed7c`, all three task functions now in C).
 - Matched all eight M1-T129 shared-work functions in `src/game/unit_020feba0.c` at 100% objdiff, including the completion predicate, with typed parameters and per-function documentation.
 - Verified all eight M1-T117 handlers at 100% objdiff; typed their callee declarations, made the argument flow into `func_0205e590` explicit, and documented their observed behavior.
 - Verified all eight M1-T1135 context and id-query functions in `src/game/unit_020bd5f0.c` at 100% objdiff; added behavior contracts and per-function documentation.

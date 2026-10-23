@@ -23,12 +23,17 @@ initialization: mode 0 sets word 0 to -66 and word 2 to zero; mode 1 sets
 word 2 to 20; modes 2 through 4 set word 0 to zero and word 5 to 100.
 Every mode, including other values, is stored in word 3.
 
-## Outside M1-T129
+## M1-T130
 
-- `func_020fec84`: factory body remains supplied by the original delink.
-- `func_020fecfc`: update body remains supplied by the original delink.
+All three functions match at 100% in objdiff.
+
+| Function | Contract and evidence from original ARM |
+| --- | --- |
+| `Unk0feba0_Unk_0fed7c` | See above; given six-word work and an unsigned mode, initializes per mode and stores the mode in word 3. |
+| `func_020fecfc` | Given writable six-word work: if word 2 is positive, add it to word 0 and clear words 0 and 2 once word 0 passes zero; then, if word 5 is positive, replace it with `word5 * 50 / 100` (signed). Passed as the update callback by `func_020fec84`. |
+| `func_020fec84` | Call `func_020611dc` with `func_020fecfc`, `Unk0feba0_Unk_0fed54`, a null hook, `Unk0feba0_Clear_data_02176e24`, size 24 and flags 3, 0, 1. Return 0 on failure; otherwise run `Unk0feba0_Reset` on the record and return it. |
 
 ## Hard list
 
-None for M1-T129. The original object and compiled C were compared directly;
+None for M1-T129 or M1-T130. The original object and compiled C were compared directly;
 no assembly substitutions or instruction bytes were added.
