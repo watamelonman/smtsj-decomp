@@ -27,6 +27,11 @@ and shared work accessor. Return values are the original handler status codes.
   loads/stores and aggregate argument copy.
 - `Unk0bbd6c_Unk_0bbec0` (20 bytes): publishes zero through
   `Unk03aae8_Unk_03acf4` and returns 1.
+- `func_020bbed4` (112 bytes, M1-T136): takes argument 0 modulo 65536 and
+  searches the same twelve 0x2e0-byte records as `func_020bbf44`. For the
+  first kind-1 record whose +0x1d8 halfword matches, calls `func_0204a9ec` on
+  it and publishes 1 if that returns nonzero, else 0; a miss publishes 0
+  through `Unk03aae8_Unk_03acf4`. Returns 1.
 - `func_020bbf44` (96 bytes): takes argument 0 modulo 65536, then searches
   twelve records at global accessor result +0x36c, stride 0x2e0. For the
   first record whose key bits 16..23 equal 1 and whose +0x1d8 halfword
@@ -35,5 +40,5 @@ and shared work accessor. Return values are the original handler status codes.
 
 ## Hard list
 
-None for M1-T135. `func_020bbed4` belongs to the separate M1-T136 card and is
-still supplied by the delinked object.
+None. `func_020bbed4` (M1-T136) also matches at 100%, so all nine functions
+in this TU are written in C.
