@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched M1-T223 `func_020b0d48` at 100% objdiff; documented its ten-entry filtering, fallback, and random-selection contract.
+- Verified the four M1-T181 game/unit_0203bba4 callbacks at 100% objdiff; added typed helper declarations and documented argument conversions, substate updates and readiness checks.
+- Matched all eight M1-T1113 resource, action, state-reset and grid helpers at 100% objdiff, with typed contracts and per-function documentation.
 - Matched `func_020f82e0` (M1-T218), the per-frame state update in `src/game/unit_020f81a4.c`, at 100% objdiff; the callback fields at +0x8c..+0xa0 are now typed.
 - M1-T203: `src/ImageBg.c` now has matching C for `func_020e5580` (work-task creation) and `func_020e5664` (mode-dispatch update callback); all 13 ImageBg functions are at 100%.
 - Matched all eight M1-T190 callbacks and state initialization functions in `src/game/unit_020cd470.c` at 100% objdiff, with typed layouts and per-function evidence.
