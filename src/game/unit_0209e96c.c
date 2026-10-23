@@ -49,7 +49,8 @@ typedef struct TransitionState {
     u16 notification;
     u8 pad_005a[0x4a];
     u32 argument;
-    u8 payload[0x73e8 - 0xa8];
+    u8 payload[0x3e4 - 0xa8];
+    u8 unk_03e4[0x73e8 - 0x3e4]; /* +0x3e4 table for Unk0392f8_Unk_0394b8; size unknown */
     u32 mode;
     u8 pad_73ec[0x96];
     u8 x;
@@ -90,12 +91,13 @@ void func_0209ea18(int x, int y)
     u8 *source;
     u8 *entry;
     TransitionRecord *record;
+    TransitionCell *cell;
     u32 kind;
     state = (TransitionState *)GetGameState();
     if (state == 0) return;
     entry = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(state->body, x, y), x, y);
     if (entry == 0) return;
-    source = Unk0392f8_Unk_0394b8((u8 *)state + 0x3e4, x, y);
+    source = Unk0392f8_Unk_0394b8(state->unk_03e4, x, y);
     if (source == 0) return;
     record = 0;
     kind = 0;
@@ -118,12 +120,12 @@ void func_0209ea18(int x, int y)
         break;
     }
     if (record == 0) return;
-    source = (u8 *)Unk02f2a8_GetCell38e8(x, y);
-    Unk09a268_Unk_09a80c((TransitionCell *)source, 1);
-    Unk09a268_Unk_09a830((TransitionCell *)source, 0);
-    Unk09a268_SetOnlyBit((TransitionCell *)source, record->bit);
-    ((TransitionCell *)source)->kind = kind;
-    ((TransitionCell *)source)->counter = 0;
+    cell = Unk02f2a8_GetCell38e8(x, y);
+    Unk09a268_Unk_09a80c(cell, 1);
+    Unk09a268_Unk_09a830(cell, 0);
+    Unk09a268_SetOnlyBit(cell, record->bit);
+    cell->kind = kind;
+    cell->counter = 0;
     state->root->unk_5c = 1;
     Unk0a0ce4_Unk_0a0da4(state->notification);
     func_02052d7c((u32)state->payload, state->argument);

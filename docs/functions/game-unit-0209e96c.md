@@ -26,8 +26,10 @@ Names remain neutral because the specific gameplay meaning is not established.
 Evidence is the original instruction stream's accessor calls, byte/halfword
 loads and stores, and mode constants. Local partial views describe the touched
 fields without changing shared GameState ownership. The switch omits inactive
-cases and reuses the source pointer for the destination, reproducing the original
-branch table and register lifetimes with ordinary C.
+cases, reproducing the original branch table with ordinary C. The +0x3e4 table is
+a typed `unk_03e4` member (size unknown) and the destination cell uses its own
+typed local; both still match at 100%. The offsets are listed in docs/structs.md
+for later folding into `GameState`.
 
 Validation: project build and objdiff match gate; anticheat, unittest and ROM
 checksum gates. No additional behavior tests are required by this matching card.
