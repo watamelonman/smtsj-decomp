@@ -119,3 +119,10 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Preserve the final comparison in 020f4928
+
+The original callback calls two accessors, loads work +8, compares it to 1,
+and returns unconditionally. Express the comparison as an early return in C:
+MWCC retains the original comparison even though both paths return. Removing
+it loses instruction equivalence. No game meaning is inferred from this test.
