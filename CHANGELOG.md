@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_02036068` and rewrote the seven other M1-T1112 functions in `src/game/unit_0202f2a8.c` on typed struct views with contract comments, replacing their raw `FIELD` offsets. All eight are at 100% objdiff.
 - Verified all eight M1-T1111 counter, pending-action, buffer and resource helpers at 100% objdiff; documented their contracts and replaced integer context addresses with typed pointers.
 - Matched all three M1-T172 mode-transition functions in `src/game/unit_0209e96c.c` at 100% objdiff, with typed cell/record views and per-function contracts.
 - Matched `func_020fef0c` (singleton task creation) in `src/game/unit_020fedd4.c` and typed the TU's 36-byte task object; all 16 functions there are at 100% objdiff.
