@@ -169,7 +169,7 @@ for a scratch with the following instruction-level findings and trial results.
   but emitted block stores (200 B). A volatile initializer retained loops
   but differed in register allocation; volatile was not retained in source.
 - `func_0211c24c` (`0x0211c24c`, 260 B): current-record dispatch preparation.
-  Initializes the same options shape, calls `func_020d6ce4(record+0x10)`,
+  Initializes the same options shape, calls `CampStatus_Copy176(record+0x10)`,
   loads alternate resources for negative record IDs or initializes the
   embedded work +0x10 object for other IDs, then calls `func_020bcbc4(3, options)`.
   Trial loops/inline initialization and aggregate initialization differed in
