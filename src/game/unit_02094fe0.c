@@ -26,22 +26,23 @@ extern u8 data_02175dac[];
 Unk094fe0Work *Unk02e000_GetUnk094fe0Work(void);
 
 u8 *Unk094fe0_Nop_095000(Unk094fe0Work *w);
-int Unk094fe0_Unk_095004(int arg0);
-u32 Unk094fe0_GetUnkField9a0(void *obj);
+u8 *Unk094fe0_Unk_095004(Unk094fe0Work *w);
+u32 Unk094fe0_GetUnkField9a0(const Unk094fe0Work *obj);
 Unk094fe0Work *Unk094fe0_Thunk_0202e8cc(void);
-int Unk094fe0_Unk_094fec(int arg0);
+u8 *Unk094fe0_Unk_094fec(int index);
 
-/* returns its argument (the ROM body is just `bx lr`) */
+/* Borrow the work byte view unchanged: 0x02095000 is only bx lr. */
 u8 *Unk094fe0_Nop_095000(Unk094fe0Work *w) { return (u8 *)w; }
 
-/* decompiler-derived */
-int Unk094fe0_Unk_095004(int arg0)
+/* Borrow the +0x990 bit-array view; the add at 0x02095004 proves the offset. */
+u8 *Unk094fe0_Unk_095004(Unk094fe0Work *w)
 {
-  return arg0 + 0x990;
+    return (u8 *)w + 0x990;
 }
 
 int Unk094fe0_TestBit(Unk094fe0Work *w, u32 a);
 int Unk094fe0_TestBit990(Unk094fe0Work *w, u32 a);
+/* Query the work bit selected by a; 0x020950ac calls TestBit with that index. */
 int Unk094fe0_Call_020950b4(u32 a)
 {
     return Unk094fe0_TestBit(Unk094fe0_Thunk_0202e8cc(), a);
@@ -52,16 +53,18 @@ void Unk094fe0_Call_02095320(u32 a)
     Unk094fe0_TestBit990(Unk094fe0_Thunk_0202e8cc(), a);
 }
 
-/* get u32 at +0x9a0 */
-u32 Unk094fe0_GetUnkField9a0(void *obj) { return ((Unk094fe0Work *)obj)->unk_09a0; }
+/* Read a valid borrowed work object; ldr at 0x020953bc proves the +0x9a0 field. */
+u32 Unk094fe0_GetUnkField9a0(const Unk094fe0Work *obj) { return obj->unk_09a0; }
 
-/* forwards to `Unk02e000_GetUnk094fe0Work` */
+/* Borrow the shared work pointer via the tail-call literal at 0x02094fe8. */
 Unk094fe0Work *Unk094fe0_Thunk_0202e8cc(void) { return Unk02e000_GetUnk094fe0Work(); }
 
-/* decompiler-derived */
-int Unk094fe0_Unk_094fec(int arg0)
+/* Borrow an unchecked record address; 0x02094ff4 scales index by 28.
+ * The table extent and record meaning are unknown; callers must supply a valid index.
+ */
+u8 *Unk094fe0_Unk_094fec(int index)
 {
-  return arg0 * 0x1c + ((int)data_02175dac);
+    return data_02175dac + index * 0x1c;
 }
 
 void Unk094fe0_Unk_09502c();
@@ -200,7 +203,7 @@ int Unk094fe0_TestBit990(Unk094fe0Work *w, u32 a)
     if (i >= 128) {
         return 0;
     }
-    bits = (u8 *)Unk094fe0_Unk_095004((int)w);
+    bits = Unk094fe0_Unk_095004(w);
     return (bits[i >> 3] & (1 << (i & 7))) != 0;
 }
 
@@ -215,14 +218,16 @@ void Unk094fe0_Unk_095370(Unk094fe0Work *w, u32 a, int b)
     if (i >= 128) {
         return;
     }
-    func_020950e4((u8 *)Unk094fe0_Unk_095004((int)w), i, b);
+    func_020950e4(Unk094fe0_Unk_095004(w), i, b);
 }
 
+/* Store a word in shared work; str at 0x020953a4 proves the +0x9a0 field. */
 void Unk094fe0_SetUnkField9a0(u32 value)
 {
     Unk094fe0_Thunk_0202e8cc()->unk_09a0 = value;
 }
 
+/* Read shared work through the getter, as the two calls at 0x020953b0 show. */
 u32 Unk094fe0_GetWorkUnkField9a0(void)
 {
     return Unk094fe0_GetUnkField9a0(Unk094fe0_Thunk_0202e8cc());
