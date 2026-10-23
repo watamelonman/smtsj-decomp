@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T1111 counter, pending-action, buffer and resource helpers at 100% objdiff; documented their contracts and replaced integer context addresses with typed pointers.
 - Verified all eight M1-T1110 state, grid and dispatch helpers at 100% objdiff; added typed work-area/action/state views and per-function behavior documentation.
 - Matched all seven M1-T173 functions in `src/game/unit_020efb90.c` at 100% objdiff, including the row submission loop and event/mode filters; added typed contracts and per-function documentation.
 - Matched all six M1-T169 work-block functions in `src/game/unit_020fbc74.c` at 100% objdiff, with typed fields and per-function contracts.

@@ -127,7 +127,7 @@ void Unk02f2a8_ApplyPending(u8 *p);
 void Unk02f2a8_Unk_02fc10(Unk02f2a8Action *action);
 void Unk02f2a8_Unk_02f8ac(Unk02f2a8Action *action);
 void Unk02f2a8_Unk_0302f4(Unk02f2a8Action *action);
-void Unk02f2a8_Unk_02f378(int arg0);
+void Unk02f2a8_Unk_02f378(u8 *p);
 
 /* Typed view of the three slot words in the Unk02e000_Unk_02e774 block that
  * Unk02f2a8_SetField6138 writes. */
@@ -695,7 +695,7 @@ void Unk02f2a8_Unk_0343b4(Unk02f2a8Counted *obj)
     obj->unk_0008 = 0;
 }
 
-int Unk02f2a8_Unk_030d20();
+void Unk02f2a8_Unk_030d20(u8 *p, int mode);
 int func_020572c0();
 int func_0205e590();
 u32 Unk095560_Unk_0956a8(void);
@@ -705,7 +705,7 @@ u32 Unk095560_Unk_0956a8(void);
  * func_020572c0/func_0205e590(0) finish the sequence. */
 void Unk02f2a8_Unk_033c94(u32 *ctx)
 {
-    Unk02f2a8_Unk_030d20((int)ctx, 1);
+    Unk02f2a8_Unk_030d20((u8 *)ctx, 1);
     Unk095560_Unk_0956a8();
     Unk044394_Unk_044534(0x24);
     Unk02f2a8_Unk_030478((Unk02f2a8Obj14 *)*ctx);
@@ -824,24 +824,27 @@ void Unk02f2a8_Unk_0306a8(Unk02f2a8State *state)
 
 int func_02035edc();
 int func_02036368();
-/* decompiler-derived */
-void Unk02f2a8_Unk_02f378(int arg0)
+/* Move the counter at +0x6c toward the unsigned limit at +0x68 when
+ * +0x60 is one; otherwise decrement a positive signed counter. Requires a
+ * context through +0x7c; the two callees consume its updated counter/block. */
+void Unk02f2a8_Unk_02f378(u8 *p)
 {
-  if (*(int *)(arg0 + 0x60) == 1) {
-    if (*(u32 *)(arg0 + 0x6c) < *(u32 *)(arg0 + 0x68)) {
-      *(u32 *)(arg0 + 0x6c) = *(u32 *)(arg0 + 0x6c) + 1;
+    if (FIELD(s32, p, 0x60) == 1) {
+        if (FIELD(u32, p, 0x6c) < FIELD(u32, p, 0x68)) {
+            FIELD(u32, p, 0x6c)++;
+        }
+    } else if (FIELD(s32, p, 0x6c) > 0) {
+        FIELD(s32, p, 0x6c)--;
     }
-  }
-  else if (0 < *(int *)(arg0 + 0x6c)) {
-    *(int *)(arg0 + 0x6c) = *(int *)(arg0 + 0x6c) + -1;
-  }
-  func_02036368(arg0 + 0x7c,*(u32 *)(arg0 + 100),*(u32 *)(arg0 + 0x68),
-                *(u32 *)(arg0 + 0x6c));
-  func_02035edc(arg0 + 0x7c,arg0 + 0x70);
+    func_02036368(p + 0x7c, FIELD(u32, p, 0x64),
+                 FIELD(u32, p, 0x68), FIELD(u32, p, 0x6c));
+    func_02035edc(p + 0x7c, p + 0x70);
 }
 
 void Unk02f2a8_SetRootUnk60();
 int func_0205257c();
+/* If 04b4c4 accepts the context, set its +0x20/+0x28/+0x2c flag for
+ * selectors 0..2/5/4 respectively. Return one only for a handled selector. */
 int Unk02f2a8_Unk_030198(u8 *p)
 {
     if (func_0204b4c4(p) == 0) {
@@ -863,6 +866,9 @@ int Unk02f2a8_Unk_030198(u8 *p)
     return 0;
 }
 
+/* Consume pending action +0x14 into current action +0x10 and restore the
+ * -1 sentinel. The dispatch and paired 03034c pending check support the name;
+ * action one arms +0x5c/+0x50, while actions 2..4 call their setup handlers. */
 void Unk02f2a8_ApplyPending(u8 *p)
 {
     FIELD(s32, p, 16) = FIELD(s32, p, 20);
@@ -896,7 +902,7 @@ void Unk02f2a8_Unk_03034c(u8 *p)
         }
     }
     Unk02f2a8_Unk_0302f4((Unk02f2a8Action *)p);
-    Unk02f2a8_Unk_02f378((int)p);
+    Unk02f2a8_Unk_02f378(p);
     w1 = (u8 *)Unk02e000_GetWorkArea();
     w2 = (u8 *)Unk02e000_GetWorkArea();
     func_0209aca0(FIELD(u32, p, 0), FIELD(s8, w1 + 0x300, 100), FIELD(s8, w2 + 0x300, 101));
@@ -911,6 +917,8 @@ void func_02039520();
 int Unk02e000_Unk_02e8b8();
 void func_020a7474();
 
+/* Pass a zero-terminated copy of exactly 16 source bytes to 038ff8.
+ * src must provide 16 readable bytes; the third ABI argument is unused. */
 void Unk02f2a8_Unk_030704(int a, s8 *src, int unused, int c, u8 e)
 {
     s8 buf[17] = {0};
@@ -921,6 +929,8 @@ void Unk02f2a8_Unk_030704(int a, s8 *src, int unused, int c, u8 e)
     func_02038ff8(a, buf, c, e);
 }
 
+/* Copy context bytes +0x40..+0x4f to a zero-terminated local buffer for
+ * 039520. Requires that context range; the callee borrows the stack buffer. */
 void Unk02f2a8_Unk_0308c0(u8 *p)
 {
     s8 buf[17] = {0};
@@ -975,23 +985,24 @@ void Unk02f2a8_Unk_03538c(void)
 
 int func_0203480c();
 int Unk03e43c_SetMode30();
-/* decompiler-derived */
-int Unk02f2a8_Unk_030d20(int arg0,int arg1)
+/* Select mode one only for argument one, otherwise mode two, then reset
+ * the context blocks at +4/+0x7550/+0x7598 and notify the remaining subsystems.
+ * Called by the 033c94 cleanup path; requires a live context and returns void. */
+void Unk02f2a8_Unk_030d20(u8 *p, int mode)
 {
-  ScanVisor_Unk_0a2b38();
-  if (arg1 == 1) {
-    Unk03e43c_SetMode30(1);
-  }
-  else {
-    Unk03e43c_SetMode30(2);
-  }
-  func_0203480c(arg0 + 4,1);
-  Unk09974c_Unk_09974c(arg0 + 0x7550);
-  Unk11f2d0_Unk_11f2d0(arg0 + 0x7598);
-  Unk095560_Unk_096130();
-  Unk065e88_Unk_065eac();
-  Unk0964f8_Unk_0964f8();
-  Unk0a23f4_Unk_0a2414();
+    ScanVisor_Unk_0a2b38();
+    if (mode == 1) {
+        Unk03e43c_SetMode30(1);
+    } else {
+        Unk03e43c_SetMode30(2);
+    }
+    func_0203480c(p + 4, 1);
+    Unk09974c_Unk_09974c(p + 0x7550);
+    Unk11f2d0_Unk_11f2d0(p + 0x7598);
+    Unk095560_Unk_096130();
+    Unk065e88_Unk_065eac();
+    Unk0964f8_Unk_0964f8();
+    Unk0a23f4_Unk_0a2414();
 }
 
 u32 Unk038fbc_Unk_038fbc(int *obj);
@@ -999,6 +1010,9 @@ u32 Unk0387bc_Unk_038e40(int *obj);
 u32 Unk0387bc_Unk_038cbc(int *obj);
 void Unk02cad4_Unk_02cbdc(u32 a);
 
+/* Submit context blocks +0x5508/+0x240/+0x18 to 0a7474 with the current
+ * map-cell bits, 02e8b8 result and work-area halfword +0x35c. Coordinates
+ * are signed bytes at +0x744e/+0x744f; all supplied blocks are borrowed. */
 void Unk02f2a8_Unk_0313a4(u8 *p)
 {
     int bits = Unk02f2a8_GetObj39160Bits16(p + 576, FIELD(s8, p + 0x7400, 78), FIELD(s8, p + 0x7400, 79));
@@ -1190,6 +1204,8 @@ int Unk02f2a8_Unk_035b08(int a, int b)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
+/* Count resource 36 records whose signed byte +0x19 equals a. Records are
+ * 40 bytes; the original u8 index wraps, so the resource must have <256 rows. */
 int Unk02f2a8_Unk_035b74(int a)
 {
     void *h = func_020445d0(36, 0);
