@@ -37,6 +37,7 @@ extern void *func_02044ec4(u32 key);
 extern void func_02049c28(void *record, Pair *out);
 extern void func_020b1f48(Pair value, int zero, int kind);
 extern u8 *Unk044904_Get_data_0215ee98(void);
+extern int func_0204a9ec(Record *record);
 
 /* Original calls select table 3, offset its generated index by argument 0,
  * clamp to [0, count-1], and publish the selected halfword. Count must be positive. */
@@ -102,6 +103,25 @@ u32 func_020bbe50(void)
 u32 Unk0bbd6c_Unk_0bbec0(void)
 {
     Unk03aae8_Unk_03acf4(0);
+    return 1;
+}
+
+/* Original searches the same twelve records as func_020bbf44. The first kind-1
+ * record whose ID matches argument 0 is tested with func_0204a9ec; its nonzero
+ * status is published as 1, and a miss publishes 0. */
+u32 func_020bbed4(void)
+{
+    u16 id = func_0203ac00(0);
+    int result = 0;
+    int i;
+    Record *record = (Record *)(Unk044904_Get_data_0215ee98() + 0x36c);
+    for (i = 0; i < 12; i++, record++) {
+        if (((record->key >> 16) & 255) == 1 && record->id == id) {
+            if (func_0204a9ec(record) != 0) result = 1;
+            break;
+        }
+    }
+    Unk03aae8_Unk_03acf4(result);
     return 1;
 }
 
