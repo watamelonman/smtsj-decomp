@@ -23,9 +23,23 @@ The local `ImageBgWork` view describes only the observed 20-byte callback
 payload. The unidentified words retain offset names. It introduces no allocation
 or ownership transfer. There are no hard-list targets for M1-T202.
 
+## M1-T203
+
+All four targets match the delinked object at 100% in objdiff (`tools/match_gate.py`).
+
+| Function | Address / bytes | Observed contract and evidence |
+| --- | --- | --- |
+| `ImageBg_Unk_0e54d4` | 0x020e54d4 / 56 | Calls `Unk0e7290_Unk_0e7790(-1)`; unless mode 1 or 2 is active, allocates the buffer, creates the work task, then stores the opaque argument at +0 and mode 1 at +4. Already present from earlier work; verified at 100%. |
+| `ImageBg_AllocBuf` | 0x020e55fc / 60 | If the second global word is zero, fills it from `func_0205ba98(0x1e000, 0x800, data_02150bd4, 216)`. The name is supported by the allocator call and the matching free in `ImageBg_Release`. Verified at 100%. |
+| `func_020e5580` | 0x020e5580 / 124 | If no work exists, creates it with `func_020611dc(func_020e5664, 0, 0, ImageBg_Unk_0e56f4, 20, 1, 0, 1)` (literal pool at 0x020e55f0..f8); on success stores it in the first global word and calls `func_020e7658(second word, 0)`. Size 20 matches the `ImageBgWork` view. |
+| `func_020e5664` | 0x020e5664 / 144 | Task update callback (registered above). Jump table on mode at +4: 0 idle; 1 calls `func_020e7840` (when `Unk02dcfc_GetField70() == 2`) or `Unk0e7290_Unk_0e77f0` with the +0 word, then sets mode 2 on nonzero, else 0; 2 waits for `Unk0e78b8_IsState5`, sets mode 3 and calls `Unk0e7290_Set_0e7770(0, 0)`; 3 calls `Unk0e7290_Set_0e7770(+12, +16)`. Matching needed an explicit `case 0: break;` (inline pop in the table) and separate `return`s per mode-1 outcome (strne/streq). |
+
+The two `func_` names are kept: the purpose of the mode states is not established
+beyond the call shapes above. There are no hard-list targets for M1-T203.
+
 ## Existing adjacent implementations
 
 `ImageBg_Unk_0e54d4` and `ImageBg_AllocBuf` are already present and also match
 at 100%. The former initializes mode 1; the latter populates the second global
 word using the original allocator arguments. `func_020e5580` and
-`func_020e5664` remain supplied by the delink and are outside this card.
+`func_020e5664` were matched in M1-T203 (above).
