@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T203: `src/ImageBg.c` now has matching C for `func_020e5580` (work-task creation) and `func_020e5664` (mode-dispatch update callback); all 13 ImageBg functions are at 100%.
 - Verified all eight M1-T202 ImageBg helpers at 100% objdiff; added typed work fields, explicit call contracts, and per-function assembly evidence.
 - Matched all five `game/unit_020a4e48` brightness-state functions at 100% objdiff, with typed parameters and per-function evidence.
 - Matched all seven M1-T200 functions in `game/unit_0203d930`, with typed borrowed work views and per-function evidence documentation.
