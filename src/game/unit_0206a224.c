@@ -12,7 +12,7 @@ typedef struct Unk06a224Work {
 
 
 
-void func_020d6cac(void);
+void CampStatus_Copy168(void);
 u32 Unk0986ac_Unk_098978(void);
 void Unk0986ac_Thunk_02098714(u32 a);
 void Unk06a224_Unk_06a9fc(void)
@@ -20,8 +20,8 @@ void Unk06a224_Unk_06a9fc(void)
     Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978());
 }
 
-/* forwards to `func_020d6cac` */
-void Unk06a224_Thunk_020d6cac(void) { func_020d6cac(); }
+/* forwards to `CampStatus_Copy168` */
+void Unk06a224_Thunk_020d6cac(void) { CampStatus_Copy168(); }
 
 /* Globals block at 0x0216b9b0; fields named by their accessors. */
 typedef struct Unk06a224Globals {

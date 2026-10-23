@@ -15,16 +15,36 @@
 - `func_020c1968` (40 B): returns whether the signed byte at offset `0x348 + index` of the shared
   work area (`Unk02e000_GetWorkArea`) is non-negative.
 
-## Not done in M1-T1135
-- `Unk0bd5f0_IsState22or24`
-- `Unk0bd5f0_Unk_0c8510`
-- `Unk0bd5f0_Unk_0c20bc`
-- `Unk0bd5f0_AnyIdWithFlagsMid`
-- `Unk0bd5f0_AnyIdWithoutFlagsMid`
-- `Unk0bd5f0_Unk_0c7f70`
-- `Unk0bd5f0_Unk_0c7fbc`
-- `Unk0bd5f0_Unk_0c842c`
-- `Unk0bd5f0_Unk_0c75a8`: decompiler-derived
+## M1-T1135 (all 100% in objdiff)
+The eight existing C bodies were verified against the delinked object with the configured
+MWCC build and objdiff. Their behavior comments and contracts are now recorded in source.
+No assembly or fallback bodies were needed.
+
+- `Unk0bd5f0_IsState22or24` (48 B): returns false for a null global context;
+  otherwise tests its first word for 22 or 24. The comparisons and the first-word
+  writes in `Unk0bd5f0_Unk_0c7fbc` support the existing state predicate name.
+- `Unk0bd5f0_Unk_0c8510` (48 B): takes an `Unk0bd5f0Obj *`; reads `unk_0100`
+  and the byte `unk_0110` and passes them with zero to `func_020c72a4`, then writes
+  `unk_0000 = 20`, `unk_0004 =` the caller's second argument and `unk_0114 = -110`.
+  Kept separate from `Unk0bd5f0Ctx` (its -110 field is at +0x114, not +0x118).
+- `Unk0bd5f0_Unk_0c20bc` (52 B): tests group 0 masks 0x40 and 0x80 with
+  `func_020537b8`; returns true only if both are clear, short-circuiting the second query.
+- `Unk0bd5f0_AnyIdWithFlagsMid` (76 B): scans ids 111 through 210 inclusive;
+  returns true at the first id accepted by `Unk09974c_Unk_0998d8` whose record
+  from `Unk09974c_Unk_099d78` passes `Unk09974c_HasFlagsMid`.
+  The loop bounds and helper calls support the existing descriptive name.
+- `Unk0bd5f0_AnyIdWithoutFlagsMid` (76 B): same scan, requiring the record to
+  fail `Unk09974c_HasFlagsMid`; the negated helper result supports the name.
+- `Unk0bd5f0_Unk_0c7f70` (76 B): no-op for a null global context; otherwise
+  forwards `unk_0108` and all four caller arguments to `CampStatus_Unk_0dde3c`.
+- `Unk0bd5f0_Unk_0c7fbc` (76 B): no-op for a null global context; otherwise
+  writes 20 at +0, 22 at +4, -110 at +0x118, and zero at +0x120 and +0x11c.
+- `Unk0bd5f0_Unk_0c842c` (76 B): no-op for a null global context; otherwise
+  calls `Unk0ddeb0_Unk_0ddeb0` with the +0x100 word, the +0x114 word plus
+  three, and constants -2, 0, 12 and 10.
+
+Hard list for M1-T1135: none.
+`Unk0bd5f0_Unk_0c75a8` remains decompiler-derived and outside this card.
 
 ## Not done in M1-T1136
 - `Unk0bd5f0_Unk_0c1870`
