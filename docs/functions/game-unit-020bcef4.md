@@ -8,7 +8,7 @@ meaning is inferred for the neutral symbols. All pointer views are borrowed.
 
 | Function | Size | Evidence and contract |
 | --- | ---: | --- |
-| `Unk0bcef4_Unk_0bd2fc` | 16 B | 020bd2fc..020bd308 tail-calls `func_020bd30c` with the original two arguments and a zero third argument. Address arguments must satisfy the callee. |
+| `Unk0bcef4_Unk_0bd2fc` | 16 B | 020bd2fc..020bd308 calls `func_020bd30c` with the original two arguments and a zero third argument. Address arguments must satisfy the callee. |
 | `Unk0bcef4_Unk_0bd388` | 16 B | 020bd388..020bd394 loads the readable word at argument 1 and forwards it as the count to `Unk0bcef4_Unk_0bd584`. |
 | `Unk0bcef4_Unk_0bd470` | 16 B | 020bd470..020bd47c loads the readable first word and forwards it to `Unk0bd5f0_Unk_0bd614`. |
 | `Unk0bcef4_Unk_0bd5c4` | 16 B | 020bd5c4..020bd5d0 forwards the record address to `func_020bd49c` with mode 2. |
@@ -25,11 +25,15 @@ instructions without explicit register control.
 Validation: `python3 tools/match_gate.py`, `python3 tools/checksum.py`,
 `python3 tools/anticheat.py`, and the full Python unittest discovery suite.
 
-## Hard list
+## Other functions in this shared TU
+
+The following notes predate this card and track work outside its eight functions.
+
+### Hard list
 - `Unk0bcef4_Unk_0bcef4`: decompiler-derived
 - `Unk0bcef4_Unk_0bd368`: decompiler-derived
 
-## Not done in M1-T435
+### M1-T435 tracking notes
 - `func_020bd54c`
 - `func_020bd034`
 - `Unk0bcef4_Unk_0bd584`
@@ -38,7 +42,7 @@ Validation: `python3 tools/match_gate.py`, `python3 tools/checksum.py`,
 - `func_020bd30c`
 - `Unk0bcef4_Unk_0bd29c`: decompiler-derived
 
-## Not done in M1-T436
+### M1-T436 tracking notes
 - `func_020bcfc4`
 - `func_020bd110`
 - `func_020bd070`
@@ -46,4 +50,4 @@ Validation: `python3 tools/match_gate.py`, `python3 tools/checksum.py`,
 - `func_020bd49c`
 - `func_020bd1a8`
 - `Unk0bcef4_Unk_0bd584`: decompiler-derived (plain cleanup)
-- `Unk0bcef4_IsState015`: hand-matched
+- `Unk0bcef4_IsState015`: completed and verified by M1-T434 above
