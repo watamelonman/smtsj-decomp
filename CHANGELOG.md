@@ -2,6 +2,24 @@
 
 ## Unreleased
 - Matched all three M1-T162 state-sequence and cleanup functions in `src/game/unit_02039520.c`; documented typed work-block boundaries and null-input contracts.
+- Matched all six functions in `src/game/unit_020d1c98.c`, with typed partial work/resource layouts and per-function documentation.
+- Matched all eight M1-T157 functions in `src/game/unit_02109230.c`, with typed record/work layouts and per-function documentation.
+- Matched all seven M1-T156 operand handlers in `src/game/unit_0203dbbc.c` at 100% objdiff, with typed field layouts, callee parameters and per-function evidence.
+- Matched all seven M1-T155 functions in `src/game/unit_0203be10.c` at 100% objdiff, with typed callback prototypes and documented mode dispatch, polling, and slot transitions.
+- Verified all eight M1-T150 work accessors, thunks, subtraction helper and initializer at 100% objdiff; typed initializer storage, callees and callback, and documented original-instruction evidence.
+
+- Matched all seven functions in game/unit_02124e68, including callback initialization and interval updates.
+- Matched both M1-T148 functions in `src/game/unit_020f6f48.c` at 100% objdiff, with typed reset-state and record layouts and per-function documentation.
+- Matched all eight M1-T146 bit-field wrappers and flag helpers in `src/game/unit_020e651c.c` at 100% objdiff, with typed target signatures and per-function evidence.
+- Matched five M1-T145 transition helpers in `src/game/unit_0209e72c.c`; documented the remaining conditional-move ordering mismatch in the unit hard list.
+- Matched both M1-T144 functions in `src/game/unit_0209846c.c`, with typed layouts and documentation of record collection and weighted field aggregation.
+- Matched all five M1-T138 functions in `src/game/unit_020f077c.c` at 100% objdiff, with typed work/descriptor layouts and per-function behavior documentation.
+- Matched all five M1-T137 functions in `src/game/unit_020ef958.c` at 100% objdiff, with typed work/descriptor layouts and per-function documentation.
+- Matched all eight M1-T135 handlers in `src/game/unit_020bbd6c.c` at 100% objdiff, with typed work/record layouts and per-function evidence.
+- Matched all eight M1-T134 entry access, key search, and block copy functions in `src/game/unit_0206e2a0.c`, with typed layouts and per-function contracts.
+- Matched all seven M1-T131 functions in `src/game/unit_021122bc.c` at 100% objdiff, with typed cell/work/resource layouts and per-function documentation.
+- Matched all eight M1-T129 shared-work functions in `src/game/unit_020feba0.c` at 100% objdiff, including the completion predicate, with typed parameters and per-function documentation.
+- Verified all eight M1-T117 handlers at 100% objdiff; typed their callee declarations, made the argument flow into `func_0205e590` explicit, and documented their observed behavior.
 - Verified all eight M1-T1135 context and id-query functions in `src/game/unit_020bd5f0.c` at 100% objdiff; added behavior contracts and per-function documentation.
 - Verified the eight M1-T1109 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: replaced raw offsets with typed GameState-tail, action and slot-block views, gave `Unk02f2a8_Unk_02f8ac` and `Unk02f2a8_DirToAngle` real prototypes, commented each function and added a per-function doc entry.
 - Verified all five M1-T115 table, flag, and pair helpers at 100% objdiff; documented index contracts and instruction evidence.
