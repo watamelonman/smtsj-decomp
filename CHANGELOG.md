@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T223 `func_020b0d48` at 100% objdiff; documented its ten-entry filtering, fallback, and random-selection contract.
 - Matched seven M1-T222 arithmetic, query-limit, and comparison functions in `src/game/unit_020b0b5c.c`; documented the remaining fixed-point function and its 99.33% candidate on the hard list.
 - Matched all six M1-T220 area-query and cell-update functions in `src/game/unit_021159f8.c`; added typed field views and per-function contracts.
 - Matched all eight M1-T217 functions in `src/game/unit_020f81a4.c` at 100% objdiff, with typed object fields and callbacks and per-function evidence.
