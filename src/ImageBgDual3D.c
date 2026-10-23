@@ -32,9 +32,11 @@ typedef struct ImageBgDual3DWork {
 void func_021255b4(void);
 void Unk116598_Set(u32 a, u32 b);
 
-/* Empty per-frame / lifecycle callbacks (no direct callers; table entries). */
+/* At 0x021252f4, BX LR returns without reading arguments or changing state. */
 void ImageBgDual3D_Nop_1252f4(void) { }
+/* At 0x021252f8, BX LR returns without reading arguments or changing state. */
 void ImageBgDual3D_Nop_1252f8(void) { }
+/* At 0x021252fc, BX LR returns without reading arguments or changing state. */
 void ImageBgDual3D_Nop_1252fc(void) { }
 void func_02117360(u32 a, u32 b, u32 c, u32 d, u8 e);
 void func_02117400(u32 a, u32 b, u32 c, u32 d, u8 e);
@@ -48,14 +50,19 @@ void ImageBgDual3D_Call_02117400(u32 a, u32 b, u32 c, u32 d, u8 e)
     func_02117400(a, b, c, d, e);
 }
 
+/* At 0x02125c3c, BX LR returns without reading arguments or changing state. */
 void ImageBgDual3D_Nop_125c3c(void) { }
+/* At 0x02125c60, BX LR returns without reading arguments or changing state. */
 void ImageBgDual3D_Nop_125c60(void) { }
+/* At 0x02125c64, BX LR returns without reading arguments or changing state. */
 void ImageBgDual3D_Nop_125c64(void) { }
 
-/* Forwards to func_021255b4 with the caller's arguments. */
+/* At 0x021257e8, LDR IP / BX IP forwards to func_021255b4.
+ * The caller at 0x02125934 supplies no arguments; no result is consumed. */
 void ImageBgDual3D_Thunk_021255b4(void) { func_021255b4(); }
 
-/* Forwards to Unk116598_Set (shared helper also used by unit_02116598). */
+/* At 0x021259ac, LDR IP / BX IP forwards two opaque words unchanged
+ * to Unk116598_Set (0x021177e0); the target returns no value. */
 void ImageBgDual3D_Thunk_021177e0(u32 a, u32 b) { Unk116598_Set(a, b); }
 
 
