@@ -15,11 +15,11 @@ typedef signed char s8;
 extern unsigned char gUnkManager_02175eb0[];   /* static manager instance */
 
 void Unk02d15c_Call_02d91c(void);
-void Unk0caea8_Unk_0cb044(void);
-void func_020773dc();
-void func_020961a0(void);
+void Unk0caea8_Unk_0cb044(u32 index);
+void func_020773dc(int mode);
+int func_020961a0(void);
 
-/* Reads the signed byte at table[index]. */
+/* 0x02095560 uses LDRSB [r0, r1]; index must address a readable table byte. */
 int Unk095560_GetSignedByte(const s8 *table, int index) { return table[index]; }
 
 u32 Unk095560_ReadU32LE(const u8 *p, int o)
@@ -27,16 +27,16 @@ u32 Unk095560_ReadU32LE(const u8 *p, int o)
     return p[o] | (p[o + 1] << 8) | (p[o + 2] << 16) | (p[o + 3] << 24);
 }
 
-/* Returns the static manager instance. */
+/* 0x0209573c loads gUnkManager_02175eb0; returns borrowed static storage. */
 unsigned char *Unk095560_GetManager(void) { return gUnkManager_02175eb0; }
 
-/* Same as Unk095560_GetManager, kept as a separate entry point. */
+/* 0x02095748 tail-calls GetManager; preserves its borrowed-storage contract. */
 unsigned char *Unk095560_GetManagerAlias(void) { return Unk095560_GetManager(); }
 
-/* Returns the sub-object at offset 0x3A8 of the manager. */
+/* 0x02095754 adds 0x3a8 to GetManager; returns a borrowed interior pointer. */
 unsigned char *Unk095560_GetManagerSub3a8(void) { return Unk095560_GetManager() + 0x3a8; }
 
-/* Forwarders. */
+/* 0x02095600 tail-calls Unk02d15c_Call_02d91c without changing arguments. */
 void Unk095560_Thunk_0202d15c(void) { Unk02d15c_Call_02d91c(); }
 void Unk0a163c_Unk_0a1814(u16 id);
 void Unk0a163c_Unk_0a1834(u16 id);
@@ -50,7 +50,8 @@ void Unk095560_Call_0a1834(int id)
     Unk0a163c_Unk_0a1834((u16)id);
 }
 
-void Unk095560_Thunk_020cb044(void) { Unk0caea8_Unk_0cb044(); }
+/* 0x0209580c tail-calls Unk0caea8_Unk_0cb044 with r0 unchanged (index). */
+void Unk095560_Thunk_020cb044(u32 index) { Unk0caea8_Unk_0cb044(index); }
 int func_02095d5c(u32 a, u32 b, int c);
 
 int Unk095560_Unk_095950(u32 a, u32 b)
@@ -58,8 +59,10 @@ int Unk095560_Unk_095950(u32 a, u32 b)
     return func_02095d5c(a, b, 1) != 0;
 }
 
-void Unk095560_Thunk_020773dc(void) { func_020773dc(); }
-void Unk095560_Thunk_020961a0(void) { func_020961a0(); }
+/* 0x02096140 forwards r0 unchanged; callers of 020773dc supply a mode. */
+void Unk095560_Thunk_020773dc(int mode) { func_020773dc(mode); }
+/* 0x02096274 tail-calls 020961a0; 0202f2a8 callers consume its predicate. */
+int Unk095560_Thunk_020961a0(void) { return func_020961a0(); }
 
 
 
