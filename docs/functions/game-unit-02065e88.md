@@ -324,7 +324,7 @@ needed in this repository's Nintendo DS workflow.
   bytes but uses r3/ip instead of r5/r3 for the valid flag/payload and schedules
   conditional state stores differently. Reusing the flag for the type-4 mode
   did not resolve allocation. Candidate was removed.
-- `func_02066e80` (692 bytes), **hard**: initializes owner handles and twenty
+- `Unk065e88_Unk_066e80` (692 bytes), **hard**: initializes owner handles and twenty
   callback objects from literal tables 02145788/94/b0. Reconstructed all calls,
   allocations and callback-field stores. Both direct and inline-helper local
   descriptor initialization produce 628 bytes: the compiler eliminates the
@@ -333,7 +333,7 @@ needed in this repository's Nintendo DS workflow.
   artificial use was added to force otherwise dead stores.
 
 Hard list for M1-T1023: `func_02067d54`, `func_02068a58`, `func_020664c4`,
-`func_02066e80`. These require further matching work or human decomp.me scratches
+`Unk065e88_Unk_066e80`. These require further matching work or human decomp.me scratches
 via `tools/decompme.py`. No runtime tests were added: the card waives them and
 objdiff compares the generated code with the original object.
 
@@ -394,3 +394,4 @@ Validation: `match_gate.py` builds successfully and reports all 53 C definitions
 in this TU at 100%, including both new targets. `anticheat.py` passes, all nine
 unit tests pass, and `checksum.py` confirms all configured artifacts are
 byte-identical. The hard-list target is not claimed as matched C.
+- `Unk065e88_Unk_066e80`: hand-matched
