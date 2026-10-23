@@ -6,12 +6,12 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int Unk02ee5c_GetTierFromField70();
+int Unk02ee5c_GetTierFromField70(void);
 int Unk03aae8_Unk_03acf4();
-int Unk03aae8_Unk_03ad14();
-int Unk044904_Get_data_0215ee98();
+void *Unk03aae8_Unk_03ad14(void);
+void *Unk044904_Get_data_0215ee98(void);
 void func_02044ec4(void);
-int func_0204fdac();
+void func_0204fdac(u32 handle, u32 value);
 
 void Unk0bac80_Thunk_02044ec4(void);
 u32 Unk0bac80_Unk_0badc0(void);
@@ -22,64 +22,81 @@ u32 Unk0bac80_Unk_0bb298(void);
 void Unk0bac80_Unk_0badd0(u32 arg0);
 void Unk0bac80_Unk_0badec(u32 arg0);
 
-/* forwards to `func_02044ec4` */
+/* Borrowed views: offsets come from the loads in 020badc0..020bae18.
+ * Gaps describe only the accessed prefix; ownership stays with the providers. */
+typedef struct Unk0bac80Context {
+    u8 pad_0000[0xe8];
+    u32 work_address;
+} Unk0bac80Context;
+
+typedef struct Unk0bac80Work {
+    u8 pad_0000[0x40];
+    u32 unk_0040;
+    u8 pad_0044[0x10];
+    u32 unk_0054;
+    u8 pad_0058[8];
+    u32 unk_0060;
+    u8 pad_0064[4];
+    u32 unk_0068;
+} Unk0bac80Work;
+
+/* The original LDR ip / BX ip thunk names 02044ec4 as its sole target. */
 void Unk0bac80_Thunk_02044ec4(void) { func_02044ec4(); }
 
-/* decompiler-derived */
+/* Return the borrowed work address stored at context +0xe8 (020badc0 LDR). */
 u32 Unk0bac80_Unk_0badc0(void)
 {
-  int value;
-  value = Unk03aae8_Unk_03ad14();
-  return *(u32 *)(value + 0xe8);
+    Unk0bac80Context *context = Unk03aae8_Unk_03ad14();
+    return context->work_address;
 }
 
-/* decompiler-derived */
+/* Read the opaque word at work +0x68; the provider must supply valid work. */
 u32 Unk0bac80_Unk_0bae08(void)
 {
-  int value;
-  value = Unk0bac80_Unk_0badc0();
-  return *(u32 *)(value + 0x68);
+    Unk0bac80Work *work = (Unk0bac80Work *)Unk0bac80_Unk_0badc0();
+    return work->unk_0068;
 }
 
-/* decompiler-derived */
+/* Return a borrowed subobject address, +0x8c from the global provider.
+ * Its integer address ABI is retained for the existing handlers below. */
 int Unk0bac80_Unk_0bae18(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  return value + 0x8c;
+    u8 *base = Unk044904_Get_data_0215ee98();
+    return (int)(base + 0x8c);
 }
 
-/* decompiler-derived */
+/* Publish the tier query result and return handler completion (1).
+ * Evidence: consecutive BLs at 020bae54/020bae58 pass r0 unchanged. */
 u32 Unk0bac80_Unk_0bae50(void)
 {
-  Unk02ee5c_GetTierFromField70();
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 tier = Unk02ee5c_GetTierFromField70();
+    Unk03aae8_Unk_03acf4(tier);
+    return 1;
 }
 
-/* decompiler-derived */
+/* Publish work +0x40 through the shared result setter, then complete (1).
+ * Evidence: 020bb2a0 loads +0x40 before calling 0203acf4. */
 u32 Unk0bac80_Unk_0bb298(void)
 {
-  int value;
-  value = Unk0bac80_Unk_0badc0();
-  Unk03aae8_Unk_03acf4(*(u32 *)(value + 0x40));
-  return 1;
+    Unk0bac80Work *work = (Unk0bac80Work *)Unk0bac80_Unk_0badc0();
+    Unk03aae8_Unk_03acf4(work->unk_0040);
+    return 1;
 }
 
-/* decompiler-derived */
+/* Forward the opaque work +0x54 handle and the caller's unchanged word.
+ * Evidence: LDR +0x54 and MOV r1,r4 before BL 0204fdac. */
 void Unk0bac80_Unk_0badd0(u32 arg0)
 {
-  int value;
-  value = Unk0bac80_Unk_0badc0();
-  func_0204fdac(*(u32 *)(value + 0x54),arg0);
+    Unk0bac80Work *work = (Unk0bac80Work *)Unk0bac80_Unk_0badc0();
+    func_0204fdac(work->unk_0054, arg0);
 }
 
-/* decompiler-derived */
+/* Forward the opaque work +0x60 handle and the caller's unchanged word.
+ * Evidence: LDR +0x60 and MOV r1,r4 before BL 0204fdac. */
 void Unk0bac80_Unk_0badec(u32 arg0)
 {
-  int value;
-  value = Unk0bac80_Unk_0badc0();
-  func_0204fdac(*(u32 *)(value + 0x60),arg0);
+    Unk0bac80Work *work = (Unk0bac80Work *)Unk0bac80_Unk_0badc0();
+    func_0204fdac(work->unk_0060, arg0);
 }
 
 
