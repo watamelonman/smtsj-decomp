@@ -138,3 +138,63 @@ void ImageBg_AllocBuf(void)
     }
     data_02176ca4[1] = func_0205ba98(0x1e000, 0x800, data_02150bd4, 216);
 }
+
+void func_020e5664(ImageBgWork *work);
+void *func_020611dc(void (*update)(ImageBgWork *), void (*draw)(ImageBgWork *), u32 arg2,
+                    void (*cleanup)(void), u32 size, u32 arg5, u32 arg6, u32 arg7);
+void func_020e7658(u32 buf, u32 arg1);
+/* Create the 20-byte work task once (update 0x020e5664, teardown 0x020e56f4),
+ * store it in the first global word and hand the second word to 0x020e7658. */
+void func_020e5580(void)
+{
+    void *work;
+    if (data_02176ca4[0] != 0) {
+        return;
+    }
+    work = func_020611dc(func_020e5664, 0, 0, ImageBg_Unk_0e56f4, 20, 1, 0, 1);
+    if (work == 0) {
+        return;
+    }
+    data_02176ca4[0] = (u32)work;
+    func_020e7658(data_02176ca4[1], 0);
+}
+
+u32 Unk02dcfc_GetField70(void);
+int func_020e7840(u32 a);
+int Unk0e7290_Unk_0e77f0(u32 a);
+int Unk0e78b8_IsState5(void);
+void Unk0e7290_Set_0e7770(u32 a, u32 b);
+/* Per-frame update for the work task, dispatching on mode: 1 starts with
+ * field00 (via 0x020e7840 when GetField70 is 2) and moves to 2 or idle 0;
+ * 2 waits for IsState5, then enters 3; 3 forwards the +12/+16 pair.
+ * Mode 0 (idle) does nothing. */
+void func_020e5664(ImageBgWork *work)
+{
+    int ok;
+    switch (work->mode) {
+    case 0:
+        break;
+    case 1:
+        if (Unk02dcfc_GetField70() == 2) {
+            ok = func_020e7840(work->field00);
+        } else {
+            ok = Unk0e7290_Unk_0e77f0(work->field00);
+        }
+        if (ok != 0) {
+            work->mode = 2;
+            return;
+        }
+        work->mode = 0;
+        return;
+    case 2:
+        if (Unk0e78b8_IsState5() == 0) {
+            return;
+        }
+        work->mode = 3;
+        Unk0e7290_Set_0e7770(0, 0);
+        return;
+    case 3:
+        Unk0e7290_Set_0e7770(work->field0c, work->field10);
+        return;
+    }
+}
