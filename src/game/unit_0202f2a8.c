@@ -1417,7 +1417,8 @@ void func_02030204(Unk02f2a8Action *action)
 typedef struct Unk02f2a8Descriptor {
     u32 unk_0000;
     int (*unk_0004)(Unk02f2a8State *state);
-    u8 pad_0008[12];
+    int (*unk_0008)(Unk02f2a8State *state);
+    u8 pad_000c[8];
     u32 unk_0014;
 } Unk02f2a8Descriptor;
 Unk02f2a8Descriptor *Unk09a268_Unk_09c498(int id);
@@ -1741,4 +1742,202 @@ void func_0203721c(void *work, void *map, void *cells, void *position,
     func_02036fb8(work);
     if (map == 0) return;
     func_020370e8(work, map, cells);
+}
+
+int func_02053800(int channel, int mask);
+/* Test masks in priority order and latch the corresponding action word.
+ * The 0x800/0x400 paths also notify 0441ec; action storage is borrowed. */
+int func_020300ec(Unk02f2a8Action *action)
+{
+    int result = 0;
+    if (func_02053800(0, 0xf3) == 1) {
+        result = 1;
+        FIELD(u32, action, 0x30) = 1;
+    } else if (func_02053800(0, 0x800) == 1) {
+        result = 1;
+        FIELD(u32, action, 0x20) = 1;
+        Unk03e43c_Unk_0441ec();
+    } else if (func_02053800(0, 0x400) == 1) {
+        result = 1;
+        FIELD(u32, action, 0x24) = 1;
+        Unk03e43c_Unk_0441ec();
+    } else if (func_02053800(0, 0x100) == 1) {
+        result = 1;
+        FIELD(u32, action, 0x28) = 1;
+    } else if (func_02053800(0, 0x200) == 1) {
+        result = 1;
+        FIELD(u32, action, 0x2c) = 1;
+    }
+    return result;
+}
+
+Unk02f2a8Descriptor *Unk09ee4c_Unk_0a03b8(u32 id);
+
+/* Clear the active cell state, then restore root flags if descriptor slot
+ * +4 exists and returns zero. Requires a writable state and root. */
+void func_02032ca0(Unk02f2a8State *s)
+{
+    Unk02f2a8Descriptor *d = Unk09ee4c_Unk_0a03b8(s->unk_747c);
+    s->unk_7478 = 0;
+    s->unk_7480 = 0;
+    s->unk_7481 = 0;
+    s->unk_7484 = 0;
+    s->unk_7488 = 0;
+    if (d->unk_0004 != 0 && d->unk_0004(s) == 0) {
+        s->root->unk_0014 = 1;
+        s->root->unk_0018 = 2;
+        s->root->unk_001c = 0;
+        s->root->unk_0044 = 1;
+        s->root->unk_0050 = 1;
+        s->root->unk_004c = 1;
+        s->unk_7478 = 0;
+        s->unk_747c = 0;
+        s->unk_7480 = 0;
+        s->unk_7481 = 0;
+        s->unk_7484 = 0;
+        s->unk_7488 = 0;
+        s->unk_73cc = 2;
+    }
+}
+
+/* Poll descriptor slot +8 (absent means success); success restores root
+ * flags, clears the active cell, and optionally arms root +0x54. */
+void func_02032d4c(Unk02f2a8State *s)
+{
+    int result = 1;
+    Unk02f2a8Descriptor *d = Unk09ee4c_Unk_0a03b8(s->unk_747c);
+    if (d->unk_0008 != 0) result = d->unk_0008(s);
+    if (result == 1) {
+        s->root->unk_0014 = 1;
+        s->root->unk_0018 = 2;
+        s->root->unk_001c = 0;
+        s->root->unk_0044 = 1;
+        s->root->unk_0050 = 1;
+        s->root->unk_004c = 1;
+        s->unk_7478 = 0;
+        s->unk_747c = 0;
+        s->unk_7480 = 0;
+        s->unk_7481 = 0;
+        s->unk_7484 = 0;
+        s->unk_7488 = 0;
+        s->unk_73cc = 2;
+        if (FIELD(u32, s, 0x7498) != 0) s->root->unk_0054 = 1;
+    }
+}
+
+/* Cell word's low five bits and bit five are independent packed fields. */
+typedef struct Unk02f2a8CellFlags {
+    u32 unk_0000;
+    u32 unk_0004_0 : 5;
+    u32 unk_0004_5 : 1;
+    u32 unk_0004_6 : 26;
+} Unk02f2a8CellFlags;
+int func_020364bc(u16 value);
+/* Accept only a live input and a current cell whose low-five-bit predicate
+ * returns one and whose bit five is set. Repeated work access is intentional. */
+int func_02030494(u32 *input)
+{
+    int result;
+    Unk02f2a8GridState *s;
+    Unk02f2a8WorkArea *a, *b;
+    Unk02f2a8MapBlock *map;
+    Unk02f2a8CellFlags *cell;
+    if (*input == 0) return 0;
+    result = 0;
+    s = (Unk02f2a8GridState *)GetGameState();
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    map = Unk02f2a8_Unk_034970(&s->body, a->unk_0364, b->unk_0365);
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    cell = (Unk02f2a8CellFlags *)Unk038fbc_Unk_039160(map, a->unk_0364, b->unk_0365);
+    if (cell != 0 && func_020364bc((u16)cell->unk_0004_0) == 1) {
+        if (cell->unk_0004_5 == 1) result = 1;
+    }
+    return result;
+}
+
+/* Rebuild map work using the singleton's byte +0x5b; +0x7400 suppresses it.
+ * Root position +0x7c and cell table +0x38e8 must remain live. */
+void func_02034e90(void)
+{
+    u8 *s = (u8 *)gGameState;
+    u8 *root;
+    Unk02f2a8WorkArea *a, *b;
+    Unk02f2a8MapBlock *map;
+    if (FIELD(u32, s, 0x7400) != 0) return;
+    root = FIELD(u8 *, s, 0);
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    map = Unk02f2a8_Unk_034970((Unk02f2a8Body *)(s + 4), a->unk_0364, b->unk_0365);
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    func_0203721c(s + 0x3154, map, s + 0x38e8, root + 0x7c,
+        FIELD(u16, root, 0x94), a->unk_0364, b->unk_0365,
+        s[0x5b], FIELD(int, root, 0x18));
+}
+
+/* Rebuild the same work with byte +0x5b minus one, clamped to one. */
+void func_02034dd0(void)
+{
+    u8 *s = (u8 *)gGameState;
+    u8 *root;
+    u32 value = s[0x5b];
+    Unk02f2a8WorkArea *a, *b;
+    Unk02f2a8MapBlock *map;
+    if (value > 1) value--; else value = 1;
+    if (FIELD(u32, s, 0x7400) == 0) {
+        root = FIELD(u8 *, s, 0);
+        a = Unk02e000_GetWorkArea();
+        b = Unk02e000_GetWorkArea();
+        map = Unk02f2a8_Unk_034970((Unk02f2a8Body *)(s + 4), a->unk_0364, b->unk_0365);
+        a = Unk02e000_GetWorkArea();
+        b = Unk02e000_GetWorkArea();
+        func_0203721c(s + 0x3154, map, s + 0x38e8, root + 0x7c,
+            FIELD(u16, root, 0x94), a->unk_0364, b->unk_0365,
+            value, FIELD(int, root, 0x18));
+    }
+    ScanVisor_Unk_0a2b18();
+}
+
+void func_0209da38(void *work, int id, u32 area, u32 value);
+/* Enter state seven and initialize +0x7330 using the cell's signed halfword
+ * override (unless -1), otherwise map-table halfword +0x20. Resource 9 is held. */
+void func_02034f44(void)
+{
+    s16 id;
+    u8 *s = (u8 *)gGameState;
+    s8 x, y;
+    u8 *cell;
+    Unk02f2a8MapBlock *map;
+    FIELD(u32, s, 0x73cc) = 7;
+    FIELD(u32, FIELD(u8 *, s, 0), 4) = 0;
+    x = Unk02e000_GetWorkArea()->unk_0364;
+    y = Unk02e000_GetWorkArea()->unk_0365;
+    Unk044394_Unk_044428(9);
+    cell = (u8 *)Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970((Unk02f2a8Body *)(s + 4), x, y), x, y);
+    map = Unk02f2a8_Unk_034970((Unk02f2a8Body *)(s + 4), x, y);
+    id = FIELD(s16, map->unk_0004, 0x20);
+    if (cell != 0 && FIELD(s16, cell, 2) != -1) id = FIELD(s16, cell, 2);
+    func_0209da38(s + 0x7330, id, Unk02e000_GetWorkArea()->unk_035c, FIELD(u32, s, 0x7494));
+    Unk044394_Unk_044534(9);
+}
+
+void Unk0a6174_ClearBuffers(void *a, void *b);
+void func_020a6ac0(void *a, void *b, void *c, void *d, u32 id, int f, int g);
+/* Clear and rebuild +0x631c/+0x7130, then append each of seven enabled slots.
+ * Missing singleton is a no-op; all helpers borrow its embedded buffers. */
+void func_02035234(u32 id)
+{
+    u8 *s = (u8 *)gGameState;
+    int i;
+    if (s == 0) return;
+    Unk0a6174_ClearBuffers(s + 0x631c, s + 0x7130);
+    func_020a6ac0(s + 0x631c, s + 0x7130, s + 0x3134, s + 0x358, id, 0, 0);
+    for (i = 0; i < 7; i++) {
+        int slot = i + 1;
+        if (Unk02f2a8_Unk_035c14(id, slot) != 0) {
+            func_020a7474(s + 0x631c, s + 0x7130, s + 0x358, s + 0x218, id, slot, 0);
+        }
+    }
 }
