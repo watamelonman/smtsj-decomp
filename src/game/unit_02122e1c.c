@@ -32,52 +32,59 @@ typedef struct Unk122e1cWork {
 int func_0205caa8();
 int Unk0cb32c_Unk_0cb57c();
 
-void Unk122e1c_SetUnkFields64_b0(void *obj, u32 a, u32 b);
-void Unk122e1c_Unk_122f88(int arg0,int arg1,u32 arg2);
-u32 Unk122e1c_Unk_122f94(int arg0,int arg1);
-void Unk122e1c_Unk_122fa0(int arg0,int arg1,u32 arg2);
+void Unk122e1c_SetUnkFields64_b0(Unk122e1cWork *obj, u32 a, u32 b);
+void Unk122e1c_Unk_122f88(Unk122e1cWork *work, s32 index, u32 value);
+u32 Unk122e1c_Unk_122f94(Unk122e1cWork *work, s32 index);
+void Unk122e1c_Unk_122fa0(Unk122e1cWork *work, s32 index, u32 value);
 void Unk122e1c_Unk_12331c(Unk122e1cWork *work);
 int Unk122e1c_Unk_122f54(Unk122e1cWork *work);
 int Unk122e1c_Unk_122f68(Unk122e1cWork *work);
 void Unk122e1c_Unk_12332c(Unk122e1cWork *work);
 
-/* set +0x64 and +0xb0 */
-void Unk122e1c_SetUnkFields64_b0(void *obj, u32 a, u32 b) {
-    ((Unk122e1cWork *)obj)->unk_0064 = a;
-    ((Unk122e1cWork *)obj)->unk_00b0 = b;
+/* Original stores at 0x02122f7c: write the two independent work fields.
+ * obj must refer to a writable work object; neither value is range checked. */
+void Unk122e1c_SetUnkFields64_b0(Unk122e1cWork *obj, u32 a, u32 b) {
+    obj->unk_0064 = a;
+    obj->unk_00b0 = b;
 }
 
-/* decompiler-derived */
-void Unk122e1c_Unk_122f88(int arg0,int arg1,u32 arg2)
+/* Original 0x02122f88 stores a word at +0x78 + index*4.
+ * The caller must supply an index within the backing work storage. */
+void Unk122e1c_Unk_122f88(Unk122e1cWork *work, s32 index, u32 value)
 {
-  *(u32 *)(arg0 + arg1 * 4 + 0x78) = arg2;
+  *(u32 *)((u8 *)work + index * 4 + 0x78) = value;
 }
 
-/* decompiler-derived */
-u32 Unk122e1c_Unk_122f94(int arg0,int arg1)
+/* Original 0x02122f94 reads the word at +0x78 + index*4.
+ * The caller must supply an index within the backing work storage. */
+u32 Unk122e1c_Unk_122f94(Unk122e1cWork *work, s32 index)
 {
-  return *(u32 *)(arg0 + arg1 * 4 + 0x78);
+  return *(u32 *)((u8 *)work + index * 4 + 0x78);
 }
 
-/* decompiler-derived */
-void Unk122e1c_Unk_122fa0(int arg0,int arg1,u32 arg2)
+/* Original 0x02122fa0 stores a word at +0xc8 + index*4.
+ * The caller must supply an index within the backing work storage. */
+void Unk122e1c_Unk_122fa0(Unk122e1cWork *work, s32 index, u32 value)
 {
-  *(u32 *)(arg0 + arg1 * 4 + 200) = arg2;
+  *(u32 *)((u8 *)work + index * 4 + 0xc8) = value;
 }
 
-/* decompiler-derived */
+/* Forward the word at +0x14 to Unk0cb32c_Unk_0cb57c, as seen at
+ * 0x0212331c. The work object must be readable; the result is discarded. */
 void Unk122e1c_Unk_12331c(Unk122e1cWork *work)
 {
   Unk0cb32c_Unk_0cb57c(work->unk_0014);
 }
 
-/* decompiler-derived */
+/* Return exactly 1 when the byte at +0x60 is zero, otherwise 0.
+ * Evidence: ldrb/cmp at 0x02122f54; work must be readable. */
 int Unk122e1c_Unk_122f54(Unk122e1cWork *work)
 {
   return work->unk_0060 == '\0';
 }
 
-/* decompiler-derived */
+/* Return exactly 1 when the byte at +0x60 is eight, otherwise 0.
+ * Evidence: ldrb/cmp at 0x02122f68; work must be readable. */
 int Unk122e1c_Unk_122f68(Unk122e1cWork *work)
 {
   return work->unk_0060 == '\b';
@@ -110,7 +117,8 @@ void Unk122e1c_ClearSlots(Unk122e1cObj *p)
     }
 }
 
-/* decompiler-derived */
+/* Forward the word at +0x14 and constant 1 to func_0205caa8.
+ * Evidence: 0x0212332c; work must be readable and the result is discarded. */
 void Unk122e1c_Unk_12332c(Unk122e1cWork *work)
 {
   func_0205caa8(work->unk_0014,1);
