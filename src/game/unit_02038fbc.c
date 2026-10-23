@@ -1,26 +1,28 @@
-/* src/game/unit_02038fbc.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Resource-backed grid and element-table helpers. */
 #include "types.h"
 
 
-int func_02008848();
-int func_020516d0();
-/* decompiler-derived */
+void func_02008848(void *destination, int value, u32 size);
+void func_020516d0(void *resource);
+/* Release the backing resource and clear all 0x8c bytes; a null owner is allowed. */
 void Unk038fbc_Unk_039138(u32 *arg0)
 {
   if (arg0 == (u32 *)0x0) {
     return;
   }
-  func_020516d0(*arg0);
+  func_020516d0((void *)*arg0);
   func_02008848(arg0,0,0x8c);
 }
 
 
+/* Partial node layout: the getter only observes the word at offset eight. */
 typedef struct Unk038fbcNode {
     u32 unk_00;
     u32 unk_04;
     u32 unk_08;
 } Unk038fbcNode;
 
+/* Return the word at node offset eight, or zero for a null node (ldr +8). */
 u32 Unk038fbc_GetNodeUnk08(Unk038fbcNode *node)
 {
     if (node != 0) {
@@ -29,7 +31,7 @@ u32 Unk038fbc_GetNodeUnk08(Unk038fbcNode *node)
     return 0;
 }
 
-/* decompiler-derived */
+/* Return header width times height (bytes +10/+11), or zero without a resource. */
 int Unk038fbc_Unk_0391d8(int *arg0)
 {
   int value;
@@ -44,14 +46,14 @@ int Unk038fbc_Unk_0391d8(int *arg0)
 }
 
 
-/* decompiler-derived */
+/* Release a loaded resource, clear the first eight owner bytes, and report success. */
 u32 Unk038fbc_Unk_038fbc(int *arg0)
 {
   if (arg0 == (int *)0x0) {
     return 0;
   }
   if (*arg0 != 0) {
-    func_020516d0(*arg0);
+    func_020516d0((void *)*arg0);
     func_02008848(arg0,0,8);
     return 1;
   }
@@ -60,6 +62,7 @@ u32 Unk038fbc_Unk_038fbc(int *arg0)
 
 
 u32 Unk038fbc_Unk_039248(u32 arg0);
+/* Translate absolute coordinates using header origin +8/+9; reject out-of-grid cells. */
 u8 *Unk038fbc_Unk_039160(u8 **o, int x, int y)
 {
     u8 *h;
@@ -78,6 +81,7 @@ u8 *Unk038fbc_Unk_039160(u8 **o, int x, int y)
     return 0;
 }
 
+/* Select a table entry by kind and index; header counts at +12 bound the index. */
 u8 *Unk038fbc_GetElement(u32 *p, u32 i, u32 j)
 {
     if (p == 0) {
@@ -92,7 +96,7 @@ u8 *Unk038fbc_GetElement(u32 *p, u32 i, u32 j)
     }
 }
 
-/* decompiler-derived */
+/* Return the serialized stride for kinds 0..12, or zero for unknown kinds. */
 u32 Unk038fbc_Unk_039248(u32 arg0)
 {
   switch(arg0) {
