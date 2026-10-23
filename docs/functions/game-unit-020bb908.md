@@ -17,7 +17,13 @@ are not established. Evidence below refers to the original instruction addresses
 | `Unk0bb908_Unk_0bbab4` | Same index/null rules, unsigned halfword at +8 + index * 10. CMP/MOVGE at 0x020bbac8/0x020bbacc; LDRH at 0x020bbae0. |
 | `Unk0bb908_Unk_0bbafc` | Same index/null rules, unsigned halfword at +10 + index * 10. CMP/MOVGE at 0x020bbb10/0x020bbb14; LDRH at 0x020bbb28. |
 
-`Unk0bac80_Unk_0badc0` returns the work pointer; its +0x68 field is
+Typed layouts (local to the TU, not yet shared): `Unk0bb908Entry` is the
+36-byte entry (`u16 unk_0000/0002/0004` plus `Unk0bb908Slot unk_0006[3]`,
+each slot 10 bytes: `s16 unk_00, u16 unk_02, u16 unk_04`, 4 bytes padding;
+the array size 3 is inferred from the index clamp). `Unk0bac80Work` only
+declares `unk_0068`, the selected entry pointer.
+
+`Unk0bac80_Unk_0badc0` returns the work pointer; its `unk_0068` field is
 returned by `Unk0bac80_Unk_0bae08` (see that unit's loads). The source
 selector's result is kept as an opaque 32-bit handle because the original
 caller explicitly saves r0 and passes it to `func_0204fde0`; no stronger

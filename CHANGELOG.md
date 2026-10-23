@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Verified all eight M1-T141 handlers in `src/game/unit_020bb908.c` at 100% objdiff; added typed callee contracts and instruction-based behavior documentation.
+- Matched all eight M1-T141 handlers in `src/game/unit_020bb908.c` at 100% objdiff with typed entry/work struct layouts.
 - Matched all five M1-T138 functions in `src/game/unit_020f077c.c` at 100% objdiff, with typed work/descriptor layouts and per-function behavior documentation.
 - Matched all five M1-T137 functions in `src/game/unit_020ef958.c` at 100% objdiff, with typed work/descriptor layouts and per-function documentation.
 - Matched all eight M1-T135 handlers in `src/game/unit_020bbd6c.c` at 100% objdiff, with typed work/record layouts and per-function evidence.
