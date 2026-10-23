@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_020e6708` (5-entry ring buffer of recent bit writes) in `src/game/unit_020e651c.c` and documented all eight M1-T147 functions.
 - Matched all eight M1-T146 bit-field wrappers and flag helpers in `src/game/unit_020e651c.c` at 100% objdiff, with typed target signatures and per-function evidence.
 - Matched five M1-T145 transition helpers in `src/game/unit_0209e72c.c`; documented the remaining conditional-move ordering mismatch in the unit hard list.
 - Matched both M1-T144 functions in `src/game/unit_0209846c.c`, with typed layouts and documentation of record collection and weighted field aggregation.
