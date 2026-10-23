@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched four M1-T293 callbacks/submission helpers in `game/unit_0211f894` at 100%; documented the remaining six-strip helper on its hard list.
 - Matched all three M1-T172 mode-transition functions in `src/game/unit_0209e96c.c` at 100% objdiff, with typed cell/record views and per-function contracts.
 - Matched `func_020fef0c` (singleton task creation) in `src/game/unit_020fedd4.c` and typed the TU's 36-byte task object; all 16 functions there are at 100% objdiff.
 - Matched M1-T166's `func_020cb0d0` and `func_020cb12c` (group-14 table index lookups) in `src/game/unit_020cb0d0.c` at 100% objdiff.
