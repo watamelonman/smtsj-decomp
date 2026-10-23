@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched Unk0f8448_GetEntry, func_020f84f4 and func_020f8558 in game/unit_020f8448 (M1-T151) at 100%, with typed entry, state, context and work-area structs.
 - Verified all eight M1-T150 work accessors, thunks, subtraction helper and initializer at 100% objdiff; typed initializer storage, callees and callback, and documented original-instruction evidence.
 
 - Matched all seven functions in game/unit_02124e68, including callback initialization and interval updates.
