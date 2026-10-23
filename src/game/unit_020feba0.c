@@ -6,6 +6,14 @@ extern s32 *data_02176e24;
 void func_02061424(void);
 s32 *func_020fec84(void);
 void func_020f51dc(s32 value0, s32 value1, s32 mode, s32 amount);
+void func_020fecfc(s32 *work);
+void Unk0feba0_Unk_0fed54(s32 *work);
+void Unk0feba0_Clear_data_02176e24(void);
+void Unk0feba0_Reset(s32 *work);
+/* Task factory: update/draw callbacks, unused hook, cleanup, record size, then
+ * three flags whose meaning is not established here. */
+s32 *func_020611dc(void (*update)(s32 *), void (*draw)(s32 *), void (*hook)(void),
+    void (*cleanup)(void), u32 size, u32 arg5, u32 arg6, u32 arg7);
 
 /* Select a mode in a six-word record. Original stores establish the mode and
  * transition fields, but do not establish a descriptive subsystem name. */
@@ -105,4 +113,34 @@ void Unk0feba0_Unk_0fed54(s32 *work)
         return;
     }
     func_020f51dc(work[0], work[1], work[3], 100 - work[5]);
+}
+
+/* Per-frame step for the six-word record: advance word 0 by the positive step
+ * in word 2 until it reaches zero, then scale the positive word 5 by 50/100. */
+void func_020fecfc(s32 *work)
+{
+    if (work[2] > 0) {
+        work[0] += work[2];
+        if (work[0] > 0) {
+            work[0] = 0;
+            work[2] = 0;
+        }
+    }
+    if (work[5] > 0) {
+        work[5] = work[5] * 50 / 100;
+    }
+}
+
+/* Create the 24-byte (six-word) record through the task factory with update
+ * 020fecfc, draw 0fed54 and the slot-clearing cleanup, then reset it.
+ * Returns the record, or 0 if the factory fails. */
+s32 *func_020fec84(void)
+{
+    s32 *work = func_020611dc(func_020fecfc, Unk0feba0_Unk_0fed54, 0,
+        Unk0feba0_Clear_data_02176e24, 24, 3, 0, 1);
+    if (work == 0) {
+        return 0;
+    }
+    Unk0feba0_Reset(work);
+    return work;
 }
