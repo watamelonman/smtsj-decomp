@@ -44,7 +44,7 @@ typedef struct Unk0b28e4Obj {
     u32 unk_0c74;               /* 0x0c74: set while drawing is deferred */
     s8 unk_0c78[3];
     u8 pad_0c7b;
-    u32 unk_0c7c[3];            /* 0x0c7c: per-slot record state last drawn */
+    s32 unk_0c7c[3];            /* 0x0c7c: per-slot record state last drawn (signed range test 1..11) */
     u32 unk_0c88;
     u32 unk_0c8c;
     u32 unk_0c90;
@@ -54,9 +54,9 @@ typedef struct Unk0b28e4Obj {
     u32 unk_0ca8;
 } Unk0b28e4Obj;
 
-/* One 12-byte table slot; no member is accessed in this translation unit. */
+/* One 12-byte table slot: two rows of three category ids (Unk0b28e4_Unk_0b4040). */
 typedef struct Unk0b28e4Entry {
-    u8 pad_00[0xc];
+    u16 ids[6];
 } Unk0b28e4Entry;
 
 /* 44-byte block referenced by the second word of data_02176b80 (allocated with that size in
@@ -89,7 +89,7 @@ void func_020b363c(Unk0b28e4Obj *work);
 void func_020b3d28(Unk0b28e4Obj *work);
 typedef struct Unk0b28e4Event Unk0b28e4Event;
 void func_020b2dd0(Unk0b28e4Obj *work, Unk0b28e4Event *event);
-void func_0205f7f4(Unk0b28e4Fields *fields, u32 a, u32 b, u32 c);
+void func_0205f7f4(Unk0b28e4Fields *fields, const u16 *text, u32 x, u32 y);
 void func_020552ec(int a, int b);
 void *func_02052fe0(u32 size);
 void Unk0b28e4_Unk_0b6370(void);
@@ -117,11 +117,11 @@ void Unk0b28e4_InitCallbacks(u32 *p)
 
 /* Sets the byte at +0x37 and the word at +0x2c of `fields`, then forwards `fields` and the
    first three arguments to func_0205f7f4. */
-void Unk0b28e4_Unk_0b5e10(Unk0b28e4Fields *fields, u32 a, u32 b, u32 c, s8 d, u32 e)
+void Unk0b28e4_Unk_0b5e10(Unk0b28e4Fields *fields, const u16 *text, u8 x, u8 y, s8 d, u32 e)
 {
     fields->unk_0037 = d;
     fields->unk_002c = e;
-    func_0205f7f4(fields, a, b, c);
+    func_0205f7f4(fields, text, x, y);
 }
 
 /* Allocates and clears the 44-byte cache at +0x04 when absent, then selects callback set 13. */
@@ -530,11 +530,11 @@ void func_020b5adc(Unk0b28e4Obj *work, int id, int slot)
 }
 
 void func_020119c0(void *dst, int value, u32 size);
-void func_020b5634(Unk0b28e4Obj *work, int id, int slot);
+void Unk0b28e4_Unk_0b5634(Unk0b28e4Obj *work, int id, int slot);
 void func_020b5338(Unk0b28e4Obj *work);
 void func_0203f2d4(void *a, int x, int y, void *b, int c, int d, int width, int height);
-u32 func_02049398(u32 id);
-int func_02061a04(u32 bank, u32 id, u32 flags);
+const u16 *func_02049398(u32 id);
+int func_02061a04(u32 bank, const u16 *text, u32 flags);
 void Unk03e43c_Unk_03f2bc(u32 id);
 
 /* Scans type-1 roster entries using three-entry paging, clears other rows,
@@ -555,7 +555,7 @@ void func_020b4dd8(Unk0b28e4Obj *work)
         id = roster->unk_348[i];
         if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c >> 16 & 255) == 1) {
             if (count >= work->unk_0c6c * 3) {
-                func_020b5634(work, id, slot);
+                Unk0b28e4_Unk_0b5634(work, id, slot);
                 work->unk_0c78[slot] = roster->unk_348[i];
                 slot++;
             }
@@ -592,7 +592,7 @@ void func_020b49cc(Unk0b28e4Obj *work)
             if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c >> 16 & 255) != 1) {
                 func_0203f2d4(work->unk_0008, 0, y, work->unk_0004, 0, 72, 256, 56);
             } else {
-                func_020b5634(work, id, slot);
+                Unk0b28e4_Unk_0b5634(work, id, slot);
                 work->unk_0c78[slot] = id;
             }
         } else {
@@ -618,6 +618,12 @@ typedef struct Unk0b28e4IconIds {
     u8 ids[12];
 } Unk0b28e4IconIds;
 
+/* 10-bit value and 6-bit state, passed by value to func_020dd364 (as CampStatusStateWord). */
+typedef struct Unk0b28e4StateWord {
+    u16 value : 10;
+    u16 state : 6;
+} Unk0b28e4StateWord;
+
 /* Record returned by func_020a1740. Only the fields this TU reads are named. */
 typedef struct Unk0b28e4IconRecord {
     u16 unk_00;                 /* 0x00: id tested by Unk0a163c_Unk_0a17d8 */
@@ -626,7 +632,15 @@ typedef struct Unk0b28e4IconRecord {
     u32 unk_04;                 /* 0x04: value drawn at x=81 */
     u32 unk_08;                 /* 0x08: value drawn at x=121 */
     u8 pad_0c[0xa];
-    u16 unk_16;                 /* 0x16: bit 1 selects the alternative number layout */
+    u16 unk_16;                 /* 0x16: bit 1 selects the alternative number layout,
+                                   bit 2 hides the bar in Unk0b28e4_Unk_0b4040 */
+    u8 pad_18[0xa];
+    Unk0b28e4StateWord unk_22[8]; /* 0x22: per-button words for func_020dd364 */
+    u8 pad_32[0x28];
+    u8 unk_5a;                  /* 0x5a/0x5b: bar thresholds (Unk0b28e4_Unk_0b3dc4) */
+    u8 unk_5b;
+    u8 pad_5c[0xe];
+    u16 unk_6a;                 /* 0x6a: icon id used when the id has no direct icon */
 } Unk0b28e4IconRecord;
 
 /* Category table returned by Unk09974c_Unk_099c60. */
@@ -641,7 +655,7 @@ typedef struct Unk0b28e4Area {
     u8 pad_00[2];
     u16 unk_02;                 /* 0x02: category set id */
     u8 pad_04[0x44];
-    u8 unk_48[4];               /* 0x48: label source; extent unknown */
+    u16 unk_48[2];              /* 0x48: label text (16-bit characters); extent unknown */
 } Unk0b28e4Area;
 
 extern const Unk0b28e4IconIds data_0213c494;
@@ -649,23 +663,22 @@ extern const Unk0b28e4IconIds data_0213c494;
 Unk0b28e4IconRecord *func_020a1740(u32 id);
 int Unk0a163c_Unk_0a17d8(u32 id);
 u32 func_020445f4(u32 id, ...);
-u32 func_0204fed8(u32 resource, u32 value);
+const u16 *func_0204fed8(u32 resource, u32 value);
 u16 *func_0204a0d8(void *record);
-u32 Unk0caea8_Unk_0cb044(u32 value);
+const u16 *Unk0caea8_Unk_0cb044(u32 value);
 Unk0b28e4Categories *Unk09974c_Unk_099c60(u32 id);
 Unk0b28e4Area *Unk02e000_Thunk_0202e788(void);
 void func_0202122c(void *buf, u32 size);
 int Unk03e43c_Unk_03e8cc(u8 *p);
 int Unk02ee5c_GetTierFromField70(void);
-/* Rebuild result bounds row drawing in states 1 and 5; work is borrowed.
- * Implementation remains in the delink; see the M1-T1041 hard list. */
-int func_020b4040(Unk0b28e4Obj *work);
+/* Rebuild result bounds row drawing in states 1 and 5; work is borrowed. */
+int Unk0b28e4_Unk_0b4040(Unk0b28e4Obj *work);
 void func_020b4674(Unk0b28e4Obj *work);
 void func_020b4bb8(Unk0b28e4Obj *work);
 void func_020b5070(Unk0b28e4Obj *work);
 void *func_020b5f08(u32 id, u32 slot, void *target, void *record, u32 pcIcon,
                     u32 unknownIcon, u8 *dst);
-void func_020b3dc4(u32 id, void *dst, void *src, u32 x, s32 y);
+void Unk0b28e4_Unk_0b3dc4(u32 id, void *dst, void *src, u32 x, s32 y);
 
 /* Draws the work->unk_0c38 record rows: an icon handle, the record's numbers
    or its three category entries, with an alternate layout for flag bit 1. */
@@ -747,7 +760,7 @@ void func_020b5070(Unk0b28e4Obj *work)
             if ((((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[roster->unk_348[i]])->unk_36c >> 16 & 255) == 1
                 && func_0204a244(record) == 1) {
                 if (count >= work->unk_0c6c * 3) {
-                    func_020b5634(work, roster->unk_348[i], slot);
+                    Unk0b28e4_Unk_0b5634(work, roster->unk_348[i], slot);
                     work->unk_0c78[slot] = roster->unk_348[i];
                     slot++;
                 }
@@ -783,7 +796,7 @@ void func_020b5338(Unk0b28e4Obj *work)
     int state;
     int tier;
     int kind;
-    u32 label;
+    const u16 *label;
     int y;
     int i;
 
@@ -803,7 +816,7 @@ void func_020b5338(Unk0b28e4Obj *work)
     if (func_0204a244(record) == 1) tier++;
     label = func_0204fed8(resource, 43);
     Unk0b28e4_Unk_0b5e10(work->unk_0c34, label, 34, 19, 8, tier);
-    Unk0b28e4_Unk_0b5e10(work->unk_0c34, (u32)Unk02e000_Thunk_0202e788()->unk_48,
+    Unk0b28e4_Unk_0b5e10(work->unk_0c34, Unk02e000_Thunk_0202e788()->unk_48,
                          74, 19, 8, tier);
     drawn = 0;
     list = func_0204a0d8(record);
@@ -850,7 +863,7 @@ void func_020b32bc(Unk0b28e4Obj *work)
         break;
     case 1:
         if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
-            work->unk_0c38 = func_020b4040(work);
+            work->unk_0c38 = Unk0b28e4_Unk_0b4040(work);
             work->unk_0c70 = 0;
         }
         if (work->unk_0c74 == 0) {
@@ -892,7 +905,7 @@ void func_020b32bc(Unk0b28e4Obj *work)
         break;
     case 5:
         if (work->unk_0c70 != 0 && work->unk_0c74 == 0) {
-            work->unk_0c38 = func_020b4040(work);
+            work->unk_0c38 = Unk0b28e4_Unk_0b4040(work);
             work->unk_0c70 = 0;
         }
         if (work->unk_0c74 == 0) {
@@ -1365,5 +1378,219 @@ void func_020b363c(Unk0b28e4Obj *work)
             }
         }
         break;
+    }
+}
+
+/* Kind entry returned by func_020a1428; only the two bytes read here are named. */
+typedef struct Unk0b28e4Kind {
+    u8 pad_00[2];
+    u8 unk_02;                  /* 0x02: label index in resource (18, 0) */
+    u8 pad_03[2];
+    u8 unk_05;                  /* 0x05: 4 and 5 select label styles 3 and 5 */
+} Unk0b28e4Kind;
+/* 16-bit text copied from data_0213c468 ("   ") and data_0213c4a0. */
+typedef struct Unk0b28e4Text4 { u16 c[4]; } Unk0b28e4Text4;
+typedef struct Unk0b28e4Text8 { u16 c[8]; } Unk0b28e4Text8;
+extern const Unk0b28e4Text4 data_0213c468;
+extern const Unk0b28e4Text8 data_0213c4a0;
+Unk0b28e4Kind *func_020a1428(u32 id);
+s32 Unk02e000_GetRecordUnk1e(u32 id);
+s32 func_020dd364(Unk0b28e4StateWord w, const u16 *ids, s32 kind);
+
+/* Draws the three roster rows of Unk0b28e4_Unk_0b64c8(): an empty strip for a zero
+ * id, otherwise the row background, icon, two labels, the bar (or a blank
+ * strip when record flag bit 2 is set), then either a blank category/button
+ * grid (while Unk02e000_GetRecordUnk1e is below record->unk_5b) or the
+ * func_020b64dc categories and eight func_020dd364 button labels. Ends with
+ * the centred title label and returns the row count (3). */
+s32 Unk02e000_GetRecordUnk1e(u32 id);
+void func_0203f394(void *a, void *b, int x, int y, int sx, int sy, u16 width, int height);
+
+/* Draws the 60-pixel record gauge at (x, y): the record count and the two
+ * record thresholds (+0x5a, +0x5b) are scaled from 0..100 to 0..60 in 12-bit
+ * fixed point. A count of 100 or more draws the full bar; otherwise a tick
+ * marks each reached threshold and the three segments are drawn from
+ * different source rows. */
+void Unk0b28e4_Unk_0b3dc4(u32 id, void *dst, void *src, u32 x, s32 y)
+{
+    Unk0b28e4IconRecord *record = func_020a1740(id);
+    s32 len = (Unk02e000_GetRecordUnk1e(id) * 0x1000 / 10 * 6) >> 12;
+    u16 first = (record->unk_5a * 0x1000 / 10 * 6) >> 12;
+    u16 second = (record->unk_5b * 0x1000 / 10 * 6) >> 12;
+    s16 a;
+    s16 b;
+    s16 c;
+
+    if (len <= 0) {
+        return;
+    }
+    if (Unk02e000_GetRecordUnk1e(id) >= 100) {
+        func_0203f394(dst, src, x, y - 2, 192, 128, 60, 6);
+        return;
+    }
+    if (len >= first) {
+        a = first - 1;
+        func_0203f394(dst, src, x + first - 1, y, 192, 8, 1, 3);
+    } else {
+        a = len;
+    }
+    if (len >= second) {
+        b = second - first - 1;
+        func_0203f394(dst, src, x + second - 1, y, 192, 8, 1, 3);
+    } else {
+        b = len - first;
+    }
+    c = len - second;
+    if (a > 0) {
+        func_0203f394(dst, src, x, y, 128, 0, a, 3);
+    }
+    if (b > 0) {
+        func_0203f394(dst, src, x + first, y, 128, 8, b, 3);
+    }
+    if (c > 0) {
+        func_0203f394(dst, src, x + second, y, 192, 0, c, 3);
+    }
+}
+
+int Unk0b28e4_Unk_0b4040(Unk0b28e4Obj *work)
+{
+    u32 res0 = func_020445f4(18, 0);
+    u32 res1 = func_020445f4(18, 1);
+    Unk0b28e4Text4 blank;
+    Unk0b28e4Text8 alt;
+    u16 *list;
+    u8 i;
+    Unk0b28e4IconRecord *record;
+    Unk0b28e4Kind *kind;
+    int tier;
+    u8 row;
+    u8 col;
+    Unk0b28e4Entry *cats;
+    int width;
+
+    Unk044904_Get_data_0215ee98();
+    blank = data_0213c468;
+    alt = data_0213c4a0;
+    func_020119c0(work->unk_0c78, -1, 3);
+    list = (u16 *)Unk0b28e4_Unk_0b64c8();
+    for (i = 0; i < 3; i++) {
+        if (list[i] == 0) {
+            func_0203f2d4(work->unk_0008, 0, i * 56 + 16, work->unk_0004, 0, 72, 256, 56);
+            continue;
+        }
+        record = func_020a1740(list[i]);
+        kind = func_020a1428(list[i]);
+        func_0203f2d4(work->unk_0008, 0, i * 56 + 16, work->unk_0004, 0, 16, 256, 56);
+        if (Unk0a163c_Unk_0a17d8(list[i]) != 0) {
+            func_020b5f08(list[i], (u8)(i * 2 + 7), work->unk_0c3c[i], 0, 0, 1, work->unk_0c54[i]);
+            Unk0b28e4_Unk_0b5e10(work->unk_0c34, blank.c, 34, (u8)(i * 56 + 19), 8, 1);
+            Unk0b28e4_Unk_0b5e10(work->unk_0c34, alt.c, 74, (u8)(i * 56 + 19), 16, 1);
+        } else {
+            int ly;
+            func_020b5f08(record->unk_6a, (u8)(i * 2 + 7), work->unk_0c3c[i], 0, 0, 0, work->unk_0c54[i]);
+            tier = 1;
+            if (kind->unk_05 == 4) tier = 3;
+            if (kind->unk_05 == 5) tier = 5;
+            ly = i * 56 + 19;
+            Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_0204fed8(res0, kind->unk_02), 34, ly, 8, tier);
+            tier = 1;
+            if (kind->unk_05 == 4) tier = 3;
+            if (kind->unk_05 == 5) tier = 5;
+            Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_0204fed8(res1, list[i]), 74, ly, 16, tier);
+            if (((u32)record->unk_16 << 29) >> 31 != 0) {
+                func_0203f2d4(work->unk_0008, 32, (u8)(i * 56 + 37), work->unk_0004, 32, 93, 104, 7);
+            } else {
+                Unk0b28e4_Unk_0b3dc4(list[i], work->unk_0004, work->unk_0008, 75, (u8)(i * 56 + 39));
+            }
+        }
+        if (Unk02e000_GetRecordUnk1e(list[i]) < record->unk_5b) {
+            for (row = 0; row < 2; row++) {
+                for (col = 0; col < 3; col++) {
+                    Unk0b28e4_Unk_0b5e10(work->unk_0c30, blank.c, (u8)(col * 83 + 6),
+                                         (u8)(i * 56 + 44 + row * 12), 16, 7);
+                }
+            }
+            for (col = 0; col <= 7; col++) {
+                Unk0b28e4_Unk_0b5e10(work->unk_0c34, blank.c, (u8)(col * 14 + 143), (u8)(i * 56 + 32), 2, 1);
+            }
+        } else {
+            cats = func_020b64dc(i);
+            for (row = 0; row < 2; row++) {
+                for (col = 0; col < 3; col++) {
+                    if (cats->ids[row * 3 + col] != 0) {
+                        Unk0b28e4_Unk_0b5e10(work->unk_0c30, Unk0caea8_Unk_0cb044(cats->ids[row * 3 + col]),
+                                             (u8)(col * 83 + 6), (u8)(i * 56 + 44 + row * 12), 16, 7);
+                    }
+                }
+            }
+            for (col = 0; col <= 7; col++) {
+                Unk0b28e4_Unk_0b5e10(work->unk_0c34,
+                                     func_02049398((u8)func_020dd364(record->unk_22[col], cats->ids, col) + 5),
+                                     (u8)(col * 14 + 143), (u8)(i * 56 + 32), 2, 1);
+            }
+        }
+    }
+    width = func_02061a04(1, func_02049398(1), 0);
+    func_0203f2d4(work->unk_0008, 64, 0, work->unk_0004, 0, 0, 64, 16);
+    func_0203f2d4(work->unk_0008, 128, 0, work->unk_0004, 0, 0, 64, 16);
+    Unk0b28e4_Unk_0b5e10(work->unk_0c30, func_02049398(1), (u8)((256 - width) / 2), 0, 14, 8);
+    Unk03e43c_Unk_03f2bc(6);
+    return i;
+}
+
+/* Unit record from func_02044ec4; only the icon id at +0x1d8 is read here. */
+typedef struct Unk0b28e4Unit {
+    u8 pad_000[0x1d8];
+    u16 unk_1d8;                /* 0x1d8: id passed to func_020a1740/func_020a1428 */
+} Unk0b28e4Unit;
+extern const Unk0b28e4IconIds data_0213c488;
+
+/* Draws one roster row for roster entry `id` in row `slot`: background, icon,
+ * state icon (states 1..11), the two labels, the bar, the category grid and
+ * the eight command buttons. Same layout as func_020b5338. */
+void Unk0b28e4_Unk_0b5634(Unk0b28e4Obj *work, int id, int slot)
+{
+    u32 res0 = func_020445f4(18, 0);
+    u32 res1 = func_020445f4(18, 1);
+    Unk0b28e4Unit *unit = func_02044ec4(
+        ((Unk0b28e4RecordBase *)&Unk044904_Get_data_0215ee98()[id])->unk_36c);
+    Unk0b28e4IconRecord *record = func_020a1740(unit->unk_1d8);
+    Unk0b28e4Kind *kind = func_020a1428(unit->unk_1d8);
+    int tier;
+    int ly;
+    u16 *list;
+    int row;
+    int index;
+    int gy;
+    int col;
+    int x;
+    int i;
+
+    func_0203f2d4(work->unk_0008, 0, slot * 56 + 16, work->unk_0004, 0, 16, 256, 56);
+    func_020b5f08(record->unk_6a, (u8)(slot * 2 + 7), work->unk_0c3c[slot], unit, 0, 0, work->unk_0c54[slot]);
+    work->unk_0c7c[slot] = func_0204a244(unit);
+    if (work->unk_0c7c[slot] >= 1 && work->unk_0c7c[slot] <= 11) {
+        Unk0b28e4IconIds ids = data_0213c488;
+        func_020b61f0(ids.ids[work->unk_0c7c[slot]], (u8)(slot + 13), work->unk_0c48[slot], work->unk_0c60[slot]);
+    }
+    tier = 1;
+    if (kind->unk_05 == 4) tier = 3;
+    if (kind->unk_05 == 5) tier = 5;
+    if (func_0204a244(unit) == 1) tier++;
+    ly = slot * 56 + 19;
+    Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_0204fed8(res0, kind->unk_02), 34, ly, 8, tier);
+    Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_0204fed8(res1, unit->unk_1d8), 74, ly, 16, tier);
+    Unk0b28e4_Unk_0b3dc4(unit->unk_1d8, work->unk_0004, work->unk_0008, 75, (u8)(slot * 56 + 39));
+    list = func_0204a0d8(unit);
+    for (row = 0, index = 0, gy = slot * 56 + 44; row < 2; row++, index += 3, gy += 12) {
+        for (col = 0; col < 3; col++) {
+            if (list[index + col] != 0) {
+                Unk0b28e4_Unk_0b5e10(work->unk_0c30, Unk0caea8_Unk_0cb044(list[index + col]), col * 83 + 6, gy, 16, 7);
+            }
+        }
+    }
+    for (i = 0, x = 143; i <= 7; x += 14, i++) {
+        Unk0b28e4_Unk_0b5e10(work->unk_0c34, func_02049398(Unk0b28e4_GetEntry34((u8 *)unit, i + 8) + 5),
+                             x, slot * 56 + 32, 2, 1);
     }
 }
