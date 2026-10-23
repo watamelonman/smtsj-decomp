@@ -334,8 +334,12 @@ now covers +0x73DC and +0x7470..+0x748B, `Unk02f2a8Action` gains +0x9C, new
 
 ## M1-T1110: eight state, grid and dispatch helpers
 
-All eight existing C bodies were verified at 100% objdiff before and after
-adding typed local work-area, action and state/root views. The names are retained;
+All eight C bodies are at 100% objdiff and read their fields through typed views:
+the work area, `Unk02f2a8Action`, `Unk02f2a8State`/`Unk02f2a8StateRoot` (034b24,
+03064c, 0306a8), `Unk02f2a8Slots6138` (GetSlot_02f2dc) and `Unk02f2a8Body` with its
+s8 id array at +0x30 and two `Unk02f2a8MapBlock`s at +0x23c/+0x2c8 (034970, cell
+bits via `Unk02f2a8Obj39160`). In 0302f4 the empty `case 5` is kept so the jump
+table spans 0..5 like the original. The names are retained;
 neutral names indicate that field semantics are not established. No hard functions
 remain for this card. No module boundary changes were needed.
 

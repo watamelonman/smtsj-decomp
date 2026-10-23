@@ -68,7 +68,9 @@ typedef struct Unk02f2a8Action {
 typedef struct Unk02f2a8StateRoot {
     u8 pad_0000[4];
     u32 unk_0004;
-    u8 pad_0008[0x34 - 8];
+    u8 pad_0008[0x10 - 8];
+    u32 unk_0010;
+    u8 pad_0014[0x34 - 0x14];
     u32 unk_0034;
     u32 unk_0038;
     u8 pad_003c[8];
@@ -82,7 +84,9 @@ typedef struct Unk02f2a8StateRoot {
 /* Local view of state fields beyond the public GameState layout. */
 typedef struct Unk02f2a8State {
     Unk02f2a8StateRoot *root;
-    u8 pad_0004[0x73e0 - 4];
+    u8 pad_0004[0x73c8 - 4];
+    u32 unk_73c8;
+    u8 pad_73cc[0x73e0 - 0x73cc];
     u32 unk_73e0;
     u32 unk_73e4;
     u8 pad_73e8[0x757c - 0x73e8];
@@ -125,19 +129,6 @@ void Unk02f2a8_Unk_02f8ac(Unk02f2a8Action *action);
 void Unk02f2a8_Unk_0302f4(Unk02f2a8Action *action);
 void Unk02f2a8_Unk_02f378(int arg0);
 
-/* Read slot 1..3 at block +0x6138/+0x613c/+0x6140 (the paired
- * SetField6138 stores there); an invalid selector returns zero. */
-u32 Unk02f2a8_GetSlot_02f2dc(int i)
-{
-    u8 *w = (u8 *)Unk02e000_Unk_02e774();
-    switch (i) {
-    case 1: return FIELD(u32, w + 0x6000, 312);
-    case 2: return FIELD(u32, w + 0x6000, 316);
-    case 3: return FIELD(u32, w + 0x6000, 320);
-    }
-    return 0;
-}
-
 /* Typed view of the three slot words in the Unk02e000_Unk_02e774 block that
  * Unk02f2a8_SetField6138 writes. */
 typedef struct Unk02f2a8Slots6138 {
@@ -146,6 +137,19 @@ typedef struct Unk02f2a8Slots6138 {
     u32 unk_613c;
     u32 unk_6140;
 } Unk02f2a8Slots6138;
+
+/* Read slot 1..3 at block +0x6138/+0x613c/+0x6140 (the paired
+ * SetField6138 stores there); an invalid selector returns zero. */
+u32 Unk02f2a8_GetSlot_02f2dc(int i)
+{
+    Unk02f2a8Slots6138 *w = (Unk02f2a8Slots6138 *)Unk02e000_Unk_02e774();
+    switch (i) {
+    case 1: return w->unk_6138;
+    case 2: return w->unk_613c;
+    case 3: return w->unk_6140;
+    }
+    return 0;
+}
 
 /* Store v in slot k (1..3) of the Unk02e000_Unk_02e774 block, the words at
  * +0x6138/+0x613c/+0x6140 that Unk02f2a8_GetSlot_02f2dc reads back with the
@@ -773,7 +777,7 @@ void Unk02f2a8_Unk_0302f4(Unk02f2a8Action *action)
     case 4:
         func_0202fc50();
         return;
-    case 5:
+    case 5: /* kept so the jump table spans 0..5 like the original */
         return;
     default:
         return;
@@ -1031,21 +1035,38 @@ void *func_0204fe68();
 void *func_0204fed8();
 void func_0200866c();
 u32 func_0204fe18();
-u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y);
 
-/* Borrow the map block at p+572, or p+712 when the cell's bits 16..19
- * select a nonnegative signed id at p+48 and its lookup is nonzero. */
-u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y)
+/* One map block embedded in the body Unk02f2a8_Unk_034970 picks from; only
+ * its extent (the distance between the two blocks) is known. */
+typedef struct Unk02f2a8MapBlock {
+    u8 pad_0000[0x2c8 - 0x23c];
+} Unk02f2a8MapBlock;
+
+/* Body view used by Unk02f2a8_Unk_034970 (callers pass state +4). */
+typedef struct Unk02f2a8Body {
+    u8 pad_0000[0x30];
+    s8 unk_0030[15]; /* size guessed: indexed by a 4-bit cell id minus 1 */
+    u8 pad_003f[0x23c - 0x3f];
+    Unk02f2a8MapBlock unk_023c;
+    Unk02f2a8MapBlock unk_02c8;
+} Unk02f2a8Body;
+
+Unk02f2a8MapBlock *Unk02f2a8_Unk_034970(Unk02f2a8Body *p, int x, int y);
+
+/* Borrow the map block at p+0x23c, or the one at p+0x2c8 when the cell's
+ * bits 16..19 select a nonnegative signed id in p+0x30 and its lookup is
+ * nonzero. */
+Unk02f2a8MapBlock *Unk02f2a8_Unk_034970(Unk02f2a8Body *p, int x, int y)
 {
-    u8 *r = p + 572;
-    u8 *o = (u8 *)Unk038fbc_Unk_039160(r, x, y);
+    Unk02f2a8MapBlock *r = &p->unk_023c;
+    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)Unk038fbc_Unk_039160(r, x, y);
     u32 n;
     if (o != 0) {
-        n = (FIELD(u32, o, 4) << 12) >> 28;
+        n = o->unk_0004_16;
         if (n != 0) {
-            s8 k = FIELD(s8, p + (n - 1), 48);
+            s8 k = p->unk_0030[n - 1];
             if (k >= 0 && Unk0e5fb8_Unk_0e63c8(k) != 0) {
-                r = p + 712;
+                r = &p->unk_02c8;
             }
         }
     }
@@ -1076,19 +1097,17 @@ int Unk02f2a8_Unk_0349c4(u8 *p, int x, int y)
  * is 1 and root +4 is nonzero. Requires the singleton and its root. */
 int Unk02f2a8_Unk_034b24(void)
 {
-    u8 *g = (u8 *)gGameState;
-    u8 *q;
-    if (FIELD(u32, g + 0x7000, 992) == 1) {
+    Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
+    if (s->unk_73e0 == 1) {
         return 0;
     }
-    if (FIELD(u32, g + 0x7000, 968) != 2) {
+    if (s->unk_73c8 != 2) {
         return 0;
     }
-    q = FIELD(u8 *, g, 0);
-    if (FIELD(u32, q, 16) != 1) {
+    if (s->root->unk_0010 != 1) {
         return 0;
     }
-    return FIELD(u32, q, 4) != 0;
+    return s->root->unk_0004 != 0;
 }
 
 int Unk02f2a8_Unk_0351b4(int x, int y)
@@ -1104,7 +1123,7 @@ int Unk02f2a8_Unk_0351b4(int x, int y)
         return 0;
     }
     r = 0;
-    n = Unk02f2a8_Unk_034a8c(Unk02f2a8_Unk_034970(g + 4, x, y), x, y);
+    n = Unk02f2a8_Unk_034a8c((u8 *)Unk02f2a8_Unk_034970((Unk02f2a8Body *)(g + 4), x, y), x, y);
     if (n > 0) {
         r = func_020987ac(3, FIELD(u8, FIELD(u8 *, g, 580) + n, 15));
     }
