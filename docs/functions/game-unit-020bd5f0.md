@@ -81,16 +81,41 @@ Names are retained because the instruction accesses establish behavior but not d
   ordering, explicit result locals, conditional returns and integer-address forms.
   No nonmatching body is retained; a human can use `tools/decompme.py` for a scratch.
 
-`Unk0bd5f0_Unk_0c2050` remains decompiler-derived and outside this card.
+`Unk0bd5f0_Unk_0c2050` was subsequently verified in M1-T1137.
 
-## Not done in M1-T1137
-- `func_020c1f40`
-- `func_020c7bc8`
-- `func_020c1c4c`
-- `func_020c83a0`
-- `func_020c1d88`
-- `func_020c7b30`
-- `func_020c1af4`
+## M1-T1137 (all eight targets 100% in objdiff)
+
+Names remain neutral: instruction accesses establish behavior, but no strings or
+callers establish a more specific domain meaning. Parameters borrow their objects.
+
+- `Unk0bd5f0_Unk_0c2050` (108 B): queries group-zero masks 0x40, 0x80,
+  0x20 and 0x10, latching 1 into words +0x150, +0x154, +0x158 and +0x15c
+  respectively. Clear queries preserve the previous word.
+- `func_020c1f40` (112 B): initializes two descriptor flag bytes and sixteen
+  word slots, sets flag bit 1 and slot 1 to 24, submits kind 3 to
+  `func_020bcbc4`, then invokes the input latch routine.
+- `func_020c7bc8` (124 B): searches an inclusive unsigned range for an accepted
+  id. Exactly 411..900 uses `func_0209a158`; other ranges use
+  `Unk09974c_Unk_0998d8`. Empty ranges return false.
+- `func_020c1c4c` (132 B): zeroes six word slots, scans mappings starting at
+  owner +0x44 until six entries or a negative signed mapping, collects halfwords
+  at work-area +0xaa with stride 60, then refreshes via `func_020c1cd0`.
+- `func_020c83a0` (140 B): returns for a null global context; otherwise calls
+  helpers with 31 and no arguments, then configures its +0x108 object with
+  `(1, 152, 0, 25, 10)` and `(1, 164, 1, 25, 10)`.
+- `func_020c1d88` (144 B): collects the same six mapped ids and forwards them
+  with the populated count and constants 18, 1 to the owner's +0xb4 object.
+- `func_020c7b30` (152 B): counts accepted ids in an inclusive signed range,
+  wrapping the count to sixteen bits. Exactly 111..210 additionally requires
+  the id's record to pass `Unk09974c_HasFlagsMid`.
+- `func_020c1af4` (160 B): collects and forwards ids as in `func_020c1d88`,
+  then refreshes the owner with `func_020c1cd0`.
+
+Collection routines require readable mappings and referenced 60-byte records.
+The unsigned range scan requires an upper bound below UINT32_MAX when no match
+is found, as in the original incrementing loop.
+
+Hard list for M1-T1137: none. No assembly fallback bodies were added.
 
 ## Not done in M1-T1138
 - `func_020c1fb0`

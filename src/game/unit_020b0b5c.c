@@ -1,12 +1,31 @@
-/* src/game/unit_020b0b5c.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+extern int func_02049f24(u32 value, int mode);
+extern int func_02049d80(u32 value, int mode);
+extern int func_0204ab98(u32 value);
+extern int func_0204ab14(u32 value);
+extern int func_0200219c(int numerator, int denominator);
 
+/* Scale a percentage below 100 using rounded Q12 products, with a minimum of one.
+ * Values at least 100 return the supplied base unchanged. */
+int func_020b0bd4(int percent, int base, int multiplier)
+{
+    int numerator;
+    int ratio;
+    int result;
+    if (percent >= 100) {
+        return base;
+    }
+    numerator = (int)(((s64)(base << 12) * (percent << 12) + 0x800) >> 12);
+    ratio = func_0200219c(numerator, 100 << 12);
+    result = (int)(((s64)ratio * multiplier + 0x800) >> 12) >> 12;
+    if (result <= 0) {
+        result = 1;
+    }
+    return result;
+}
 
-int func_02049f24();
-int func_02049d80();
-int func_0204ab98();
-int func_0204ab14();
+/* Cap the requested amount by the mode-zero remaining capacity from three queries. */
 int Unk0b0b5c_Unk_0b0c30(int a, int l)
 {
     int x = func_02049f24(a, 0);
@@ -18,22 +37,20 @@ int Unk0b0b5c_Unk_0b0c30(int a, int l)
     return l;
 }
 
-/* decompiler-derived */
+/* Compare the pointed-to signed values; callers must supply valid int pointers. */
 int Unk0b0b5c_Unk_0b0d28(int *arg0,int *arg1)
 {
   return *arg1 - *arg0;
 }
 
 
-/* decompiler-derived */
+/* Compare the pointed-to signed values; callers must supply valid int pointers. */
 int Unk0b0b5c_Unk_0b0d38(int *arg0,int *arg1)
 {
   return *arg0 - *arg1;
 }
 
-int func_02049d80();
-int func_0204ab98();
-/* decompiler-derived */
+/* Cap the requested amount by the difference of the selected mode queries. */
 int Unk0b0b5c_Unk_0b0c78(u32 arg0,int arg1)
 {
   int value1;
@@ -46,7 +63,7 @@ int Unk0b0b5c_Unk_0b0c78(u32 arg0,int arg1)
   return arg1;
 }
 
-int func_0204ab14();
+/* Cap the requested amount by the mode-one remaining capacity from three queries. */
 int Unk0b0b5c_Unk_0b0cac(int a, int l)
 {
     int x = func_02049f24(a, 1);
@@ -58,7 +75,7 @@ int Unk0b0b5c_Unk_0b0cac(int a, int l)
     return l;
 }
 
-/* decompiler-derived */
+/* Cap the requested amount by the difference of the selected mode queries. */
 int Unk0b0b5c_Unk_0b0cf4(u32 arg0,int arg1)
 {
   int value1;
