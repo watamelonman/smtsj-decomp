@@ -1,4 +1,4 @@
-/* src/game/unit_0206e4d8.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Work-state helpers; field offsets and table stride follow the original ARM accesses. */
 #include "types.h"
 
 
@@ -20,41 +20,46 @@ typedef struct Unk06e4d8Work {
 } Unk06e4d8Work;
 
 extern u32 data_02170cc8[];
-/* decompiler-derived */
+/* Return the nullable work address stored at data_02170cc8 (original LDR pair).
+ * The caller borrows the work; this accessor does not transfer ownership. */
 u32 Unk06e4d8_Get_data_02170cc8(void)
 {
   return *data_02170cc8;
 }
 
 extern u8 data_0216bac8[];
-/* decompiler-derived */
+/* Return the borrowed address at +0xbc in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0xbc. */
 int Unk06e4d8_Unk_06e4d8(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0xbc;
 }
 
 
-/* decompiler-derived */
+/* Return the borrowed address at +0xdc in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0xdc. */
 int Unk06e4d8_Unk_06e4f0(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0xdc;
 }
 
 
-/* decompiler-derived */
+/* Return the borrowed address at +0xfc in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0xfc. */
 int Unk06e4d8_Unk_06e508(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0xfc;
 }
 
 
-/* decompiler-derived */
+/* Return the borrowed address at +0x11c in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0x11c. */
 int Unk06e4d8_Unk_06e520(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0x11c;
 }
 
-int func_02061424();
+int func_02061424(u32 work_address);
 extern u32 data_0216bac4[];
 u8 *Unk06dddc_Unk_06e058();
 void Unk06e4d8_Unk_06e814(int arg0);
@@ -74,6 +79,8 @@ void Unk06e4d8_Unk_06e538(void)
     p[108] = 0;
 }
 
+/* Reset a non-null work block: original stores clear +0x08, +0x6c and
+ * +0x68 before tail-calling Unk06e4d8_Unk_06e814 to clear the remaining state. */
 void Unk06e4d8_Reset(u8 *o)
 {
     FIELD(u32, o, 0x08) = 0;
@@ -82,7 +89,8 @@ void Unk06e4d8_Reset(u8 *o)
     Unk06e4d8_Unk_06e814((int)o);
 }
 
-/* decompiler-derived */
+/* Pass the stored work address to func_02061424, then clear the global slot.
+ * Evidence: original BL followed by a zero STR; no null check is performed. */
 void Unk06e4d8_Unk_06e680(void)
 {
   func_02061424(*data_02170cc8);
@@ -132,6 +140,8 @@ int Unk06e4d8_Unk_06ea0c(int i)
     return FIELD(s32, Unk06dddc_Unk_06e058(i), 0xd8) > 0;
 }
 
+/* Report whether the singleton exists and its byte at +0x6c is nonzero.
+ * Evidence: original two accessor calls, LDRB +0x6c and boolean normalization. */
 int Unk06e4d8_GetFlag6c(void)
 {
     if (Unk06e4d8_Get_data_02170cc8() == 0) {
