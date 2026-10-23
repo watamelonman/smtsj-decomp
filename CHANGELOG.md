@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T1113 resource, action, state-reset and grid helpers at 100% objdiff, with typed contracts and per-function documentation.
 - Matched `func_02036068` and rewrote the seven other M1-T1112 functions in `src/game/unit_0202f2a8.c` on typed struct views with contract comments, replacing their raw `FIELD` offsets. All eight are at 100% objdiff.
 - Matched seven M1-T222 arithmetic, query-limit, and comparison functions in `src/game/unit_020b0b5c.c`; documented the remaining fixed-point function and its 99.33% candidate on the hard list.
 - Matched all six M1-T220 area-query and cell-update functions in `src/game/unit_021159f8.c`; added typed field views and per-function contracts.
