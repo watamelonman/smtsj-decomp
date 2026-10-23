@@ -17,13 +17,13 @@ typedef struct Unk0ea208Work {
 
 
 extern u32 data_02176ddc[];
-int func_020572d8();
-int func_02057eb8();
-int Unk09974c_Unk_099bac();
-int Unk0caea8_Unk_0cb044();
-int Unk0e8228_Unk_0e8374();
-int Unk0e8228_GetArr88Field20();
-int Unk0e8228_Unk_0e8f38();
+void func_020572d8(void);
+void func_02057eb8(s32 value);
+void Unk09974c_Unk_099bac(u32 value);
+void Unk0caea8_Unk_0cb044(u32 value);
+int Unk0e8228_Unk_0e8374(int selector);
+int Unk0e8228_GetArr88Field20(int index);
+u32 Unk0e8228_Unk_0e8f38(void);
 
 void Unk0ea208_Unk_0ead3c(void);
 u32 Unk0ea208_Get_data_02176ddc(void);
@@ -114,8 +114,8 @@ void func_020eb034();
 void func_020ea744();
 int Unk0e8228_Unk_0e8460();
 int Unk0e8228_GetArr40();
-int func_020445f4();
-int func_0204fed8();
+int func_020445f4(int group, int index);
+int func_0204fed8(int resource, int selector);
 u32 Unk0ea208_GetArr24(int i)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
@@ -181,27 +181,26 @@ void Unk0ea208_Unk_0ea70c(void)
     }
 }
 
-/* decompiler-derived */
+/* Forward the 0e8f38 result to 0cb044; the original call chain supplies r0. */
 void Unk0ea208_Unk_0ead3c(void)
 {
-  Unk0e8228_Unk_0e8f38();
-  Unk0caea8_Unk_0cb044();
+  Unk0caea8_Unk_0cb044(Unk0e8228_Unk_0e8f38());
 }
 
-/* decompiler-derived */
+/* Borrow the singleton address stored at data_02176ddc; zero means absent. */
 u32 Unk0ea208_Get_data_02176ddc(void)
 {
   return *data_02176ddc;
 }
 
-/* decompiler-derived */
+/* Pass the all-ones sentinel to 02057eb8 before calling 020572d8. */
 void Unk0ea208_Unk_0eaca0(void)
 {
   func_02057eb8(0xffffffff);
   func_020572d8();
 }
 
-/* decompiler-derived */
+/* Return the singleton word at +0x1d4, or zero when no singleton exists. */
 u32 Unk0ea208_Unk_0ea72c(void)
 {
   int value1;
@@ -225,17 +224,16 @@ void Unk0ea208_Unk_0ea828(void)
     }
 }
 
+/* Resolve group 39, entry 3, then pass its result with selector 1. */
 int Unk0ea208_Unk_0ea85c(void)
 {
     return func_0204fed8(func_020445f4(39, 3), 1);
 }
 
-/* decompiler-derived */
+/* Resolve selector 8 through the +0x88 table and forward its +0x20 value. */
 void Unk0ea208_Unk_0ead4c(void)
 {
-  Unk0e8228_Unk_0e8374(8);
-  Unk0e8228_GetArr88Field20();
-  Unk09974c_Unk_099bac();
+  Unk09974c_Unk_099bac(Unk0e8228_GetArr88Field20(Unk0e8228_Unk_0e8374(8)));
 }
 
 
@@ -270,7 +268,7 @@ void Unk0ea208_Unk_0ead1c(void)
     Unk0ea208_Unk_0ea85c();
     return;
   }
-  Unk0caea8_Unk_0cb044();
+  Unk0caea8_Unk_0cb044(value);
 }
 
 
@@ -321,8 +319,8 @@ void Unk0ea208_Unk_0eb230(int arg0)
   } while (value < 6);
 }
 
-int func_020445f4();
-int func_0204fed8();
+int func_020445f4(int group, int index);
+int func_0204fed8(int resource, int selector);
 /* decompiler-derived */
 u32 Unk0ea208_Unk_0eada8(void)
 {
@@ -466,6 +464,7 @@ void Unk0ea208_Unk_0ea984(u32 arg0)
   func_0204fed8(tmp1,0);
 }
 
+/* Resolve group 39, entry 4, then pass its result with selector 1. */
 int Unk0ea208_Unk_0eac24(void)
 {
     return func_0204fed8(func_020445f4(39, 4), 1);
@@ -499,11 +498,11 @@ void Unk0ea208_ForEachSlot(u8 *p)
     }
 }
 
-/* decompiler-derived */
-void Unk0ea208_Unk_0eb6cc(int arg0)
+/* Require a valid work address; invoke 0eb264 only when its +0x1c4 state is 8. */
+void Unk0ea208_Unk_0eb6cc(Unk0ea208Work *work)
 {
-  if (((Unk0ea208Work *)arg0)->UnkField01c4 != 8) {
+  if (work->UnkField01c4 != 8) {
     return;
   }
-  Unk0ea208_Unk_0eb264((int)arg0);
+  Unk0ea208_Unk_0eb264((int)work);
 }
