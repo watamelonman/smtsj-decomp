@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched `func_020a25e0` and the seven M1-T183 work-field predicates in `game/unit_020a23f4` at 100% objdiff; replaced raw offsets with a typed `Unk0a23f4Work` struct and documented each contract.
 - Verified all eight M1-T182 scan-visor work wrappers at 100% objdiff; added typed declarations, preserved predicate return values, and documented call and offset evidence.
 - Matched all four M1-T177 work callbacks and constructor in `game/unit_02109dcc` at 100% objdiff with typed layouts and documented contracts.
 - Verified all eight M1-T1111 counter, pending-action, buffer and resource helpers at 100% objdiff; documented their contracts and replaced integer context addresses with typed pointers.
