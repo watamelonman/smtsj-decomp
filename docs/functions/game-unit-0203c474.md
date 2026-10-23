@@ -47,12 +47,20 @@ The delinked `func_0205e590` at 0x0205e590 copies incoming r0 to r1 before
 calling `func_0208e008`, confirming it consumes that value. The explicit C
 argument preserves the exact instructions. The owner view models only +0xe8.
 
-## Other functions
+## M1-T118 handlers
 
-- `Unk03c474_Unk_03c474` (44 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk03c474_Unk_03c638` (108 B): decompiler-derived (Ghidra output, cleaned)
+All three match at 100% in objdiff. They were previously in the file as
+decompiler-derived code with raw offsets; they are now written against the
+typed `Unk03c474Owner`/`Unk03c474Worker` views (worker at owner +0xe8) with
+real callee prototypes. Names stay neutral: the callees are unnamed, so the
+user-facing action is not established.
+
+| Function | Evidence and behavior |
+| --- | --- |
+| `Unk03c474_Unk_03c474` | 0x0203c474–0x0203c4a0: passes `func_0203ac00(0)` and 0 to `func_0205e484`, then `Unk02dcfc_Unk_02df00(owner->worker, 1)` (worker +0x18 = 21, +0x1c = 1); returns 3. |
+| `Unk03c474_Unk_03c608` | 0x0203c608–0x0203c638: if `func_0203ac00(0)` is positive, stores it minus one as a u16 at worker +0x0c; returns 1. Matching needs the value converted before the owner lookup, so the store goes through a small typed inline helper. |
+| `Unk03c474_Unk_03c638` | 0x0203c638–0x0203c6a4: calls `Unk03aae8_Unk_03ad24(worker)` once (guarded by worker +0x28, then set to 1), passes the argument through `Unk03aae8_Unk_03ad98(worker, arg)`, calls `func_02065bc0` when `func_02065544()` is 0, passes the result to `func_0206569c` and sets worker +0x18 = 28; returns 3. |
 
 ## Hard list
 
-- `Unk03c474_Unk_03c608`: no candidate matched locally
-- `Unk03c474_Unk_03c608`: hand-matched
+None. Every function in this TU matches.

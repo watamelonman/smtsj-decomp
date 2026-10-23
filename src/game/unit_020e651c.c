@@ -65,9 +65,25 @@ void Unk0e651c_Unk_0e66f0(u32 arg0,u32 arg1)
   Unk0e5fb8_SetBits(0xfb0,5,arg1);
 }
 
+/* Ring of 5 entries: 0x02176cb0..0x02176cc4 is 0x14 bytes, and the cursor wraps modulo 5. */
+extern s32 data_02176cac;
+extern u32 data_02176cb0[5];
+extern u32 data_02176cc4[5];
+
+/* Record (index, value) in a 5-entry ring buffer and advance the cursor. The caller
+   Unk094fe0_Unk_09502c passes the bit index and value it is about to write. */
+void func_020e6708(u32 index, u32 value)
+{
+    data_02176cb0[data_02176cac] = index;
+    data_02176cc4[data_02176cac] = value;
+    data_02176cac++;
+    data_02176cac %= 5;
+}
+
 
 int Unk0e5fb8_GetOffsetD80();
-/* decompiler-derived */
+/* Split a 2-bit value into bits D80+2 and D80+3: bit 0 goes to the first, bit 1 to the second.
+   The first argument is unused. */
 void Unk0e651c_Unk_0e651c(u32 arg0,u32 arg1)
 {
   int value;
@@ -81,6 +97,7 @@ int Unk0e651c_Get2BitsIn(u32 a, u32 b, u32 c);
 int Unk094fe0_TestBit200(u32 data, u32 index);
 void Unk094fe0_Unk_095204(u32 index, u32 value);
 int Unk094fe0_TestBit();
+/* Test flag (row a, column b) in the current data block via Unk0e651c_TestFlagIn. */
 int Unk0e651c_TestFlag(u32 a, u32 b)
 {
     return Unk0e651c_TestFlagIn(Unk094fe0_Thunk_0202e8cc(), a, b);
@@ -104,11 +121,14 @@ void Unk0e651c_SetFlag(u32 b, u32 c, u32 v)
     Unk094fe0_Unk_095204(c + b * 128, v);
 }
 
+/* Read 2-bit field (row a, slot b) from the current data block via Unk0e651c_Get2BitsIn. */
 int Unk0e651c_Get2Bits(u32 a, u32 b)
 {
     return Unk0e651c_Get2BitsIn(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
+/* Read the 2-bit field in slot c (0..31) of row b: bits 64 + c*2 and the next one of the 128-bit row.
+   Out-of-range slots read as zero. */
 int Unk0e651c_Get2BitsIn(u32 a, u32 b, u32 c)
 {
     int o;
@@ -121,6 +141,8 @@ int Unk0e651c_Get2BitsIn(u32 a, u32 b, u32 c)
     return (u8)(lo | (Unk094fe0_TestBit200(a, o + 1) << 1));
 }
 
+/* Write the low 2 bits of v into slot c (0..31) of row b, same layout as Unk0e651c_Get2BitsIn.
+   Out-of-range slots are ignored. */
 void Unk0e651c_Set2Bits(u32 b, u32 c, int v)
 {
     int o;
@@ -132,6 +154,7 @@ void Unk0e651c_Set2Bits(u32 b, u32 c, int v)
     Unk094fe0_Unk_095204(o + 1, (v & 2) >> 1);
 }
 
+/* Test bit b of data block a; indices above 0x7FF (2048 bits) read as zero. */
 int Unk0e651c_TestBitChecked(u32 a, u32 b)
 {
     if (b > 0x7ff) {
@@ -140,6 +163,7 @@ int Unk0e651c_TestBitChecked(u32 a, u32 b)
     return Unk094fe0_TestBit(a, b);
 }
 
+/* Set bit i to v through Unk094fe0_Call_0209502c; indices above 0x7FF are ignored. */
 void Unk0e651c_SetBitChecked(u32 i, u32 v)
 {
     if (i > 0x7ff) {
