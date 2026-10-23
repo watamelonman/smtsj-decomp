@@ -3,8 +3,6 @@
 
 
 
-/* empty callback */
-
 typedef struct StaffRollWork {
     u8  pad_0000[0x4];
     u32 unk_0004;
@@ -15,7 +13,8 @@ typedef struct StaffRollWork {
     s32 unk_0018;
     u8  pad_001c[0x90];
     u32 unk_00ac;
-    u8  pad_00b0[0x8];
+    u8  pad_00b0[0x4];
+    u32 unk_00b4;
     u32 unk_00b8;
     s32 unk_00bc;
     s32 unk_00c0;
@@ -29,17 +28,20 @@ typedef struct StaffRollWork {
     u8  pad_00e8[0x214];
     struct StaffRollCmd *cmds;  /* +0x2FC */
     u32 cmdCount;               /* +0x300 */
+    u32 unk_0304;
 } StaffRollWork;
 
+/* The original at 0x02117cf4 immediately returns; no state is accessed. */
 void StaffRoll_Nop_117cf4(void) { }
 
 
-/* empty callback */
+/* The original at 0x02117cf8 immediately returns; no state is accessed. */
 void StaffRoll_Nop_117cf8(void) { }
 
 
-int func_0204fed8();
-u32 StaffRoll_Unk_117cfc(u16 *p);
+/* Returns a borrowed halfword stream for the handle stored at work +0x304. */
+extern u16 *func_0204fed8(u32 handle);
+/* Reads one aligned halfword; only marker 0x8082 is returned (assembly evidence). */
 u32 StaffRoll_Unk_117cfc(u16 *p)
 {
     u32 v = 0;
@@ -49,15 +51,17 @@ u32 StaffRoll_Unk_117cfc(u16 *p)
     return v;
 }
 
-u32 StaffRoll_Unk_117d18(u8 *p)
+/* Resolves work +0x304 and tests its first halfword; a null stream returns zero. */
+u32 StaffRoll_Unk_117d18(StaffRollWork *p)
 {
-    u16 *q = (u16 *)func_0204fed8(FIELD(u32, p, 772));
+    u16 *q = func_0204fed8(p->unk_0304);
     if (q == 0) {
         return 0;
     }
     return StaffRoll_Unk_117cfc(q);
 }
 
+/* Maps marker 0x8082 to the original packed value; all other markers return -1. */
 int StaffRoll_Unk_117d38(u16 *p)
 {
     if (StaffRoll_Unk_117cfc(p) == 0x8082) {
@@ -74,19 +78,21 @@ u32 StaffRoll_Unk_1181a0(int arg0);
 int func_02118424();
 void StaffRoll_Unk_118490(u8 *p);
 void func_02061424();
-void StaffRoll_Tick(u8 *p)
+/* Advances +0xB4; reaching unsigned limit +0xC4 selects state 1 and resets it.
+ * The counter update in the original at 0x02118174 supports the existing Tick name. */
+void StaffRoll_Tick(StaffRollWork *p)
 {
-    u32 n = FIELD(u32, p, 180) + 1;
-    FIELD(u32, p, 180) = n;
-    if (FIELD(u32, p, 196) > n) {
+    u32 n = p->unk_00b4 + 1;
+    p->unk_00b4 = n;
+    if (((u32)p->unk_00c4) > n) {
         return;
     }
-    FIELD(u32, p, 172) = 1;
-    FIELD(u32, p, 180) = 0;
+    p->unk_00ac = 1;
+    p->unk_00b4 = 0;
 }
 
-/* decompiler-derived */
-void StaffRoll_Unk_11825c(int arg0)
+/* Clears words +4, +8 and +12 of the supplied writable record; +0 is preserved. */
+void StaffRoll_Unk_11825c(StaffRollWork *arg0)
 {
   ((StaffRollWork *)arg0)->unk_0004 = 0;
   ((StaffRollWork *)arg0)->unk_0008 = 0;
@@ -105,7 +111,7 @@ void StaffRoll_Unk_1182a4(int arg0)
   tmp1 = 0;
   do {
     if ((*(int *)(tmp2 + 4) == 1) && (*(int *)(tmp2 + 8) + 0x10 < ((StaffRollWork *)arg0)->unk_00e0)) {
-      StaffRoll_Unk_11825c(tmp2);
+      StaffRoll_Unk_11825c((StaffRollWork *)tmp2);
     }
     tmp1 = tmp1 + 1;
     tmp2 = tmp2 + 0x10;
@@ -115,7 +121,7 @@ void StaffRoll_Unk_1182a4(int arg0)
 
 int func_02117f94();
 int func_021180e4();
-void StaffRoll_Tick();
+
 /* decompiler-derived */
 u32 StaffRoll_Unk_1181a0(int arg0)
 {
@@ -134,7 +140,7 @@ u32 StaffRoll_Unk_1181a0(int arg0)
     func_021180e4();
     break;
   case 3:
-    StaffRoll_Tick();
+    StaffRoll_Tick((StaffRollWork *)arg0);
     break;
   case 4:
     tmp1 = 1;
@@ -273,4 +279,27 @@ void StaffRoll_Unk_1186cc(int arg0)
   func_02118518(arg0);
   func_02118584(arg0,1);
   func_020572d8();
+}
+
+/* A 16-byte record view, inferred from the search stride at 0x02118270. */
+typedef struct StaffRollSlot {
+    u32 unk_0000;
+    u32 unk_0004;
+    u32 unk_0008;
+    u32 unk_000c;
+} StaffRollSlot;
+
+/* Returns a borrowed pointer to the first record with +4 zero in the 32 records
+ * at work +0xF8, or null if all are occupied (original load/stride evidence). */
+StaffRollSlot *func_02118270(StaffRollWork *work)
+{
+    StaffRollSlot *result = 0;
+    int i = 0;
+    for (; i < 32; i++) {
+        if (((StaffRollSlot *)((u8 *)work + 0xf8))[i].unk_0004 == 0) {
+            result = &((StaffRollSlot *)((u8 *)work + 0xf8))[i];
+            break;
+        }
+    }
+    return result;
 }
