@@ -36,12 +36,11 @@ class AntiCheat(unittest.TestCase):
 class DecompMe(unittest.TestCase):
     def test_payload_fields(self):
         with tempfile.TemporaryDirectory() as d:
-            asm = pathlib.Path(d, "f.s"); asm.write_text("glabel f\njr $ra\nnop\n")
-            p = decompme.payload("f", asm, c={"platform": "ps2", "compiler": "ee-gcc2.96",
-                                              "compiler_flags": "-O2"})
-        self.assertEqual(p["platform"], "ps2")
+            asm = pathlib.Path(d, "f.s"); asm.write_text("arm_func_start f\nf:\n    bx lr\n")
+            p = decompme.raw_payload("f", asm)
+        self.assertEqual(p["platform"], "nds_arm9")
         self.assertEqual(p["diff_label"], "f")
-        self.assertIn("jr $ra", p["target_asm"])
+        self.assertIn("bx lr", p["target_asm"])
 
     def test_upload_needs_opt_in(self):
         env = {k: v for k, v in os.environ.items() if k != "FORGE_DECOMPME_OK"}
