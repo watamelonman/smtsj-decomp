@@ -123,9 +123,29 @@ The existing TU was extended. Neutral symbols are retained because accesses and
 helper calls establish behavior but do not establish domain names. Object and
 work-area pointers are borrowed; mapped indices must reference readable records.
 
+Typed layouts (all file-local in the .c; no other TU uses them):
+- `Unk0bd5f0List`: the 352-byte object of the kind-0 descriptor (`func_020bd9c4`,
+  release callback `func_020c0c5c`). Used by `func_020c0c5c`, `func_020c1fb0`,
+  `func_020c1414`, `func_020c1b94`, `func_020c1cd0`, `func_020c1770` and the
+  earlier `func_020c1af4`/`c1c4c`/`c1d88`.
+- `Unk0bd5f0SelectObj`: the 448-byte object of the kind-3 descriptor
+  (`func_020c2578`, release callback `func_020c67a0`). Used by `func_020c67a0`,
+  `func_020c7304` and `func_020c84c0`. Kept separate from `Unk0bd5f0List`: the
+  descriptor sizes differ and the same offsets hold different data (+0x3c is a
+  sub-object in the kind-0 object but a released handle in the kind-3 one).
+- `Unk0bd5f0SubObj`: a 28-byte sub-object at +0x20/+0x3c (kind 0) and +0x44
+  (kind 3); +8 is the first collected index and +0x10 the selected index.
+- `Unk0bd5f0WorkArea`/`Unk0bd5f0Record`: base record fields (+0x12, +0x1c, +0x1e),
+  text at +0x48 and record fields +6/+0x1a/+0x1c were added.
+`func_020c0c5c` and `func_020c67a0` keep `void *` parameters because they are
+stored in the descriptor's `void (*)(void *)` callback slots.
+
 - `func_020c1fb0` (160 B): acts only for kind 37. Mode 25 uses the
-  signed mapping at +0x353 plus object +0x30, with a special -1 dispatch for
-  index zero. Mode 26 uses +0x348 plus object +0x4c. Negative mappings call
+  1-based selection `unk_0020.unk_0010` into `unk_0354` (indexed from
+  `unk_0354 - 1` so the -1 folds into the load offset, as in the original),
+  with a special -1 dispatch for index zero. Mode 26 uses `unk_003c.unk_0010`
+  into `unk_0348`; that read adds the index to the typed field's address as u32
+  because plain indexing reverses the original add operands (See DEC-002). Negative mappings call
   the clearing helper; other mappings go to `func_020c1990`.
 - `func_020c1414` (172 B): resets conversion state, converts work-area
   +0x48, then converts the three +0x354 mappings using group 18, selector 1,
@@ -152,7 +172,8 @@ work-area pointers are borrowed; mapped indices must reference readable records.
 - `func_020c1770` (256 B): recounts nonnegative +0x348 mappings into
   object +0x60, resets the +0x20/+0x3c subobjects, collects up to six ids
   beginning at object +0x44, forwards the populated count to +0xb4, then
-  refreshes those ids through `func_020c1cd0`.
+  refreshes those ids through `func_020c1cd0`. The collection loop is inlined
+  as in `func_020c1af4`.
 - `func_020c7304` (292 B): derives a row count from group 12 and the
   object's selector, allowing a positive helper result to override it. Rebuilds
   selection subobjects and eight row values from +0xe0 flags, updates the

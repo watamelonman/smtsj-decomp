@@ -11,11 +11,13 @@ typedef struct Unk0bd5f0Work {
 } Unk0bd5f0Work;
 
 
-/* 60-byte record in the shared work area; only these two fields are read here. */
+/* 60-byte record in the shared work area; only these fields are read here. */
 typedef struct Unk0bd5f0Record {
-    u8 pad_0000[0x1a];
+    u8 pad_0000[0x6];
+    u8 unk_0006[0x14]; /* passed to func_020c1e18; size unknown */
     s16 unk_001a; /* work-area +0x92 for record 0 */
-    u8 pad_001c[0x14];
+    s16 unk_001c; /* work-area +0x94 for record 0 */
+    u8 pad_001e[0x12];
     u16 unk_0030; /* work-area +0xa8 for record 0 */
     u16 unk_0032; /* work-area +0xaa for record 0 */
     u8 pad_0034[0x8];
@@ -25,26 +27,90 @@ typedef struct Unk0bd5f0Record {
    (+0x78) and count (12) are guesses: +0x78 keeps both record fields inside one
    60-byte record, and 12 records end exactly at the +0x348 map. */
 typedef struct Unk0bd5f0WorkArea {
-    u8 pad_0000[0x78];
+    u8 pad_0000[0x12];
+    u8 unk_0012[0xa]; /* base record passed to func_020c1e18; size unknown */
+    s16 unk_001c;
+    s16 unk_001e;
+    u8 pad_0020[0x28];
+    u16 unk_0048[0x18]; /* halfword text; length guessed to end at the records */
     Unk0bd5f0Record unk_0078[12];
     s8 unk_0348[12]; /* signed record indices; size 12 assumed to match the records */
     s8 unk_0354[3];
     u8 unk_0357; /* number of valid unk_0348 entries */
 } Unk0bd5f0WorkArea;
 
-/* Object passed to func_020c84c0; layout from the accesses in that function. */
+/* 28-byte sub-object embedded in both screen objects below. The size is the
+   distance between the copies at +0x20/+0x3c (kind 0) and +0x44/+0x60 (kind 3);
+   +8 is the first collected mapping index and +0x10 the selected index. */
+typedef struct Unk0bd5f0SubObj {
+    u8 pad_0000[0x8];
+    u32 unk_0008;
+    u8 pad_000c[0x4];
+    s32 unk_0010;
+    u8 pad_0014[0x8];
+} Unk0bd5f0SubObj;
+
+/* 352-byte screen object of the kind-0 descriptor (func_020bd9c4); its release
+   callback is func_020c0c5c. Kept separate from Unk0bd5f0SelectObj because the
+   kind-3 object is 448 bytes and puts different data at the same offsets
+   (e.g. +0x3c is a sub-object here but a released handle there). */
+typedef struct Unk0bd5f0List {
+    s32 unk_0000;
+    s32 unk_0004;
+    s32 unk_0008; /* mode: 25 or 26 tested */
+    s32 unk_000c; /* kind: 37 tested */
+    void *unk_0010; /* released with func_0205ddb4 */
+    void *unk_0014; /* released with func_0205c368 */
+    void *unk_0018[2]; /* released with func_02061424 */
+    Unk0bd5f0SubObj unk_0020;
+    Unk0bd5f0SubObj unk_003c;
+    u8 pad_0058[0x8];
+    s32 unk_0060; /* count of valid mappings */
+    u8 pad_0064[0x48];
+    void *unk_00ac;
+    void *unk_00b0;
+    void *unk_00b4; /* passed to CampStatus_Unk_0dde3c */
+    u8 pad_00b8[0x80];
+    u8 *unk_0138; /* output; byte +0x40 is set to 2 */
+    u32 unk_013c;
+    u32 unk_0140;
+    u8 *unk_0144; /* output; byte +0x40 is set to 2 */
+    u32 unk_0148;
+    u32 unk_014c;
+    u8 pad_0150[0x10];
+} Unk0bd5f0List;
+
+/* 448-byte screen object of the kind-3 descriptor (func_020c2578); its release
+   callback is func_020c67a0. */
 typedef struct Unk0bd5f0SelectObj {
-    u8 pad_0000[0x44];
-    u8 unk_0044[0x10]; /* sub-object passed to func_020bcfc4; size unknown */
-    u32 unk_0054;
-    u8 pad_0058[0xb0];
+    s32 unk_0000; /* state */
+    s32 unk_0004; /* next state */
+    u8 pad_0008[0x34];
+    void *unk_003c; /* released with func_0205ddb4 */
+    void *unk_0040; /* released with func_0205c368 */
+    Unk0bd5f0SubObj unk_0044; /* passed to func_020bcfc4 */
+    u8 unk_0060[0x60]; /* destination sub-object; size up to +0xc0 is a guess */
+    u32 unk_00c0[8];
+    u32 unk_00e0[8]; /* zero marks an unavailable row */
+    void *unk_0100;
+    void *unk_0104;
     void *unk_0108;
-    u8 pad_010c[0x4];
-    u8 unk_0110;
-    u8 pad_0111[0x13];
+    void *unk_010c;
+    u8 unk_0110; /* selector passed to func_020445f4 group 12 */
+    u8 pad_0111[0x3];
+    s32 unk_0114;
+    s32 unk_0118;
+    s32 unk_011c;
+    s32 unk_0120;
     u8 unk_0124; /* stack count */
     u8 pad_0125[0x3];
     u32 unk_0128[1]; /* stack entries; real length unknown */
+    u8 pad_012c[0x5c];
+    void *unk_0188;
+    void *unk_018c[2];
+    u8 pad_0194[0x8];
+    void *unk_019c;
+    u8 pad_01a0[0x20];
 } Unk0bd5f0SelectObj;
 
 /* Callback addresses are stored here without invoking them; their full calling
@@ -76,7 +142,7 @@ extern void func_02063920(void);
 extern const u16 *func_0204fed8(u32 *table, u32 index);
 extern u32 func_02063a30(const u16 *value);
 extern void func_02061f10(void *obj, int a, int b, int c, u32 value);
-extern void func_020c7304(void *obj);
+extern void func_020c7304(Unk0bd5f0SelectObj *obj);
 extern void func_020bcfc4(void *obj, u32 value);
 extern void Unk0a0ce4_Unk_0a0da4(u32 value);
 
@@ -144,14 +210,14 @@ void Unk0bd5f0_Unk_0c1ad8(void)
 }
 
 extern u32 data_02176bb0[];
-void func_020c1b94(void *obj);
+void func_020c1b94(Unk0bd5f0List *p);
 /* Calls func_020c1b94 on the object stored in data_02176bb0 when that pointer is non-null. */
 void Unk0bd5f0_Unk_0c20f0(void)
 {
   if (*data_02176bb0 == 0) {
     return;
   }
-  func_020c1b94((void *)*data_02176bb0);
+  func_020c1b94((Unk0bd5f0List *)*data_02176bb0);
 }
 
 
@@ -411,18 +477,10 @@ void func_020c84c0(Unk0bd5f0SelectObj *o)
 {
     func_020c7304(o);
     o->unk_0124--;
-    func_020bcfc4(o->unk_0044, o->unk_0128[o->unk_0124]);
-    func_020c72a4(o->unk_0108, o->unk_0110, (u8)(o->unk_0054 + 100));
+    func_020bcfc4(&o->unk_0044, o->unk_0128[o->unk_0124]);
+    func_020c72a4(o->unk_0108, o->unk_0110, (u8)(o->unk_0044.unk_0010 + 100));
     Unk0a0ce4_Unk_0a0da4(2);
 }
-
-/* Borrowed list owner: offsets are established by the three collection routines. */
-typedef struct Unk0bd5f0List {
-    u8 pad_0000[0x44];
-    u32 unk_0044; /* first mapping index to collect */
-    u8 pad_0048[0x6c];
-    void *unk_00b4; /* passed to CampStatus_Unk_0dde3c */
-} Unk0bd5f0List;
 
 extern void func_02008644(u32 value, void *dest, u32 bytes);
 extern void func_020c1cd0(Unk0bd5f0List *obj, const u32 *ids);
@@ -440,7 +498,7 @@ void func_020c1af4(Unk0bd5f0List *obj)
     u32 ids[6];
     u32 i, start, end;
     func_02008644(0, ids, sizeof(ids));
-    start = obj->unk_0044;
+    start = obj->unk_003c.unk_0008;
     end = start + 6;
     for (i = start; i < end; i++) {
         s32 index = w->unk_0348[i];
@@ -459,7 +517,7 @@ void func_020c1c4c(Unk0bd5f0List *obj)
     u32 ids[6];
     u32 i, start, end;
     func_02008644(0, ids, sizeof(ids));
-    start = obj->unk_0044;
+    start = obj->unk_003c.unk_0008;
     end = start + 6;
     for (i = start; i < end; i++) {
         s32 index = w->unk_0348[i];
@@ -477,7 +535,7 @@ void func_020c1d88(Unk0bd5f0List *obj)
     u32 i, start, end;
     Unk0bd5f0WorkArea *w;
     func_02008644(0, ids, sizeof(ids));
-    start = obj->unk_0044;
+    start = obj->unk_003c.unk_0008;
     w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     end = start + 6;
     for (i = start; i < end; i++) {
@@ -556,37 +614,6 @@ void func_020c1f40(Unk0bd5f0Work *obj)
     Unk0bd5f0_Unk_0c2050(obj);
 }
 
-/* Borrowed word-aligned object view; field offsets follow the original loads. */
-typedef struct Unk0bd5f0Panel {
-    s32 state, next, mode, kind;
-    void *resource10, *resource14, *items18[2];
-    u8 sub20[0x10];
-    s32 index30;
-    u8 pad34[8];
-    void *resource3c, *resource40;
-    u8 sub44[0x10];
-    u32 index54;
-    u8 pad58[8];
-    s32 count60;
-    u8 pad64[0x48];
-    void *outputac, *outputb0, *outputb4;
-    u8 padb8[8];
-    u32 valuesc0[8], valuese0[8];
-    void *output100, *output104, *output108, *output10c;
-    u8 selector;
-    u8 pad111[3];
-    s32 value114, value118, value11c, value120;
-    u8 pad124[0x14];
-    u8 *output138;
-    u32 value13c, value140;
-    u8 *output144;
-    u32 value148, value14c;
-    u8 pad150[0x38];
-    void *resource188, *resources18c[2];
-    u8 pad194[8];
-    void *resource19c;
-} Unk0bd5f0Panel;
-
 extern void func_0205ddb4(void *resource);
 extern void func_0205c368(void *resource);
 extern void func_02061424(void *resource);
@@ -602,166 +629,173 @@ extern void func_020bd1a8(void *dest, const void *source, const u32 *values, u32
 extern s32 func_020c7cdc(void *obj);
 extern s32 func_0204ff64(const u32 *table);
 
-/* Releases the observed resource slots, clearing each released handle. */
+/* Releases the kind-0 object's resource slots, clearing each released handle.
+   Takes void * because it is stored as the descriptor's void (*)(void *) callback. */
 void func_020c0c5c(void *obj)
 {
-    Unk0bd5f0Panel *p = obj;
+    Unk0bd5f0List *p = obj;
     int i;
-    if (p->resource10) { func_0205ddb4(p->resource10); p->resource10 = 0; }
-    if (p->resource14) { func_0205c368(p->resource14); p->resource14 = 0; }
-    func_020629c4(p->output144);
-    if (p->output144) p->output144 = 0;
-    func_020629c4(p->output138);
-    if (p->output138) p->output138 = 0;
-    for (i = 0; i < 2; i++) { func_02061424(p->items18[i]); p->items18[i] = 0; }
-    func_020629c4(p->outputac);
-    if (p->outputac) p->outputac = 0;
-    func_020629c4(p->outputb4);
-    if (p->outputb4) p->outputb4 = 0;
-    func_020629c4(p->outputb0);
-    if (p->outputb0) p->outputb0 = 0;
+    if (p->unk_0010) { func_0205ddb4(p->unk_0010); p->unk_0010 = 0; }
+    if (p->unk_0014) { func_0205c368(p->unk_0014); p->unk_0014 = 0; }
+    func_020629c4(p->unk_0144);
+    if (p->unk_0144) p->unk_0144 = 0;
+    func_020629c4(p->unk_0138);
+    if (p->unk_0138) p->unk_0138 = 0;
+    for (i = 0; i < 2; i++) { func_02061424(p->unk_0018[i]); p->unk_0018[i] = 0; }
+    func_020629c4(p->unk_00ac);
+    if (p->unk_00ac) p->unk_00ac = 0;
+    func_020629c4(p->unk_00b4);
+    if (p->unk_00b4) p->unk_00b4 = 0;
+    func_020629c4(p->unk_00b0);
+    if (p->unk_00b0) p->unk_00b0 = 0;
     *data_02176bb0 = 0;
 }
 
-/* Releases the second object's observed resource slots after signaling 30. */
+/* Releases the kind-3 object's resource slots after signaling 30.
+   Takes void * because it is stored as the descriptor's void (*)(void *) callback. */
 void func_020c67a0(void *obj)
 {
-    Unk0bd5f0Panel *p = obj;
+    Unk0bd5f0SelectObj *p = obj;
     int i;
     Unk044394_Unk_044534(30);
-    if (p->resource3c) { func_0205ddb4(p->resource3c); p->resource3c = 0; }
-    if (p->resource40) { func_0205c368(p->resource40); p->resource40 = 0; }
-    func_02061424(p->resource188); p->resource188 = 0;
-    for (i = 0; i < 2; i++) { func_02061424(p->resources18c[i]); p->resources18c[i] = 0; }
-    func_02061424(p->resource19c); p->resource19c = 0;
-    func_020629c4(p->output100); if (p->output100) p->output100 = 0;
-    func_020629c4(p->output104); if (p->output104) p->output104 = 0;
-    func_020629c4(p->output108); if (p->output108) p->output108 = 0;
-    func_020629c4(p->output10c); if (p->output10c) p->output10c = 0;
+    if (p->unk_003c) { func_0205ddb4(p->unk_003c); p->unk_003c = 0; }
+    if (p->unk_0040) { func_0205c368(p->unk_0040); p->unk_0040 = 0; }
+    func_02061424(p->unk_0188); p->unk_0188 = 0;
+    for (i = 0; i < 2; i++) { func_02061424(p->unk_018c[i]); p->unk_018c[i] = 0; }
+    func_02061424(p->unk_019c); p->unk_019c = 0;
+    func_020629c4(p->unk_0100); if (p->unk_0100) p->unk_0100 = 0;
+    func_020629c4(p->unk_0104); if (p->unk_0104) p->unk_0104 = 0;
+    func_020629c4(p->unk_0108); if (p->unk_0108) p->unk_0108 = 0;
+    func_020629c4(p->unk_010c); if (p->unk_010c) p->unk_010c = 0;
 }
 
-/* Dispatches a signed mapping for kind 37; negative mappings clear via the helper. */
-void func_020c1fb0(Unk0bd5f0Panel *p)
+/* Dispatches a signed mapping for kind 37; negative mappings clear via the helper.
+   Mode 25 uses the 1-based +0x20 selection (0 means none), mode 26 the +0x3c one. */
+void func_020c1fb0(Unk0bd5f0List *p)
 {
     s32 index;
-    if (p->kind != 37) return;
-    if (p->mode == 25) {
-        index = p->index30;
+    Unk0bd5f0WorkArea *w;
+    if (p->unk_000c != 37) return;
+    if (p->unk_0008 == 25) {
+        index = p->unk_0020.unk_0010;
         if (index == 0) { func_020c1990(-1); return; }
-        index = *((s8 *)Unk02e000_GetWorkArea() + index + 0x353);
+        /* index is 1-based; offsetting the base keeps the -1 in the load offset. */
+        w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
+        index = (w->unk_0354 - 1)[index];
         if (index >= 0) func_020c1990(index);
         else Unk0bd5f0_Unk_0c1ad8();
-    } else if (p->mode == 26) {
-        index = *(s32 *)((u8 *)p + 0x4c);
-        if (*(s8 *)((u32)index + (u32)Unk02e000_GetWorkArea() + 0x348) >= 0)
-            func_020c1990(*(s8 *)((u32)index + (u32)Unk02e000_GetWorkArea() + 0x348));
+    } else if (p->unk_0008 == 26) {
+        index = p->unk_003c.unk_0010;
+        /* u32 arithmetic on the typed map's address keeps the original index + base
+           add order; plain indexing emits base + index (See DEC-002). */
+        if (*(s8 *)((u32)((Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea())->unk_0348 + (u32)index) >= 0)
+            func_020c1990(*(s8 *)((u32)((Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea())->unk_0348 + (u32)index));
         else Unk0bd5f0_Unk_0c1ad8();
     }
 }
 
 /* Submits the base record and three valid mapped records, then marks output +64. */
-void func_020c1b94(void *obj)
+void func_020c1b94(Unk0bd5f0List *p)
 {
-    Unk0bd5f0Panel *p = obj;
-    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     u32 i;
-    func_020c1e18(p->output138, w + 0x12, *(s16 *)(w + 0x1c), *(s16 *)(w + 0x1e), 0, p->value13c, p->value140);
+    func_020c1e18(p->unk_0138, w->unk_0012, w->unk_001c, w->unk_001e, 0, p->unk_013c, p->unk_0140);
     for (i = 0; i < 3; i++) {
-        s32 index = *(s8 *)(w + i + 0x354);
+        s32 index = w->unk_0354[i];
         if (index >= 0) {
-            u32 offset = index * 60;
-            func_020c1e18(p->output138, w + 0x7e + offset, *(s16 *)(w + offset + 0x92), *(s16 *)(w + offset + 0x94), (u8)(i + 1), p->value13c, p->value140);
+            func_020c1e18(p->unk_0138, w->unk_0078[index].unk_0006, w->unk_0078[index].unk_001a,
+                          w->unk_0078[index].unk_001c, (u8)(i + 1), p->unk_013c, p->unk_0140);
         }
     }
-    p->output138[0x40] = 2;
+    p->unk_0138[0x40] = 2;
 }
 
 /* Refreshes six borrowed ids from matching 60-byte records and marks output +64. */
-void func_020c1cd0(Unk0bd5f0List *obj, const u32 *ids)
+void func_020c1cd0(Unk0bd5f0List *p, const u32 *ids)
 {
-    Unk0bd5f0Panel *p = (Unk0bd5f0Panel *)obj;
-    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     u32 i;
     for (i = 0; i < 6; i++) {
         if (ids[i] != 0) {
             u8 j;
-            for (j = 0; j < w[0x357]; j++) {
-                u32 offset = j * 60;
-                if (*(u16 *)(w + offset + 0xaa) == ids[i]) {
-                    func_020c1e18(p->output144, w + 0x7e + offset, *(s16 *)(w + offset + 0x92), *(s16 *)(w + offset + 0x94), (u8)i, p->value148, p->value14c);
+            for (j = 0; j < w->unk_0357; j++) {
+                if (w->unk_0078[j].unk_0032 == ids[i]) {
+                    func_020c1e18(p->unk_0144, w->unk_0078[j].unk_0006, w->unk_0078[j].unk_001a,
+                                  w->unk_0078[j].unk_001c, (u8)i, p->unk_0148, p->unk_014c);
                     break;
                 }
             }
         }
     }
-    p->output144[0x40] = 2;
+    p->unk_0144[0x40] = 2;
 }
 
 /* Converts the base text and three mapped ids, substituting an empty halfword. */
-void func_020c1414(void *obj, void *output)
+void func_020c1414(Unk0bd5f0List *p, void *output)
 {
     u16 *blank;
-    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     u32 *table = func_020445f4(18, 1);
     u32 text, i;
     func_02063920();
-    text = func_02063a30((const u16 *)(w + 0x48));
+    text = func_02063a30(w->unk_0048);
     u16 empty[1] = {0};
     blank = empty;
     for (i = 0; i < 3; i++) {
-        s32 index = *(s8 *)(w + i + 0x354);
-        if (index >= 0) text = func_02063a30(func_0204fed8(table, *(u16 *)(w + index * 60 + 0xaa)));
+        s32 index = w->unk_0354[i];
+        if (index >= 0) text = func_02063a30(func_0204fed8(table, w->unk_0078[index].unk_0032));
         else text = func_02063a30(blank);
     }
     func_02061f10(output, -1, 0, 0, text);
-    func_020c1b94(obj);
+    func_020c1b94(p);
 }
 
-/* Recounts valid mappings and refreshes the six visible ids; mappings must be readable. */
-void func_020c1770(Unk0bd5f0Panel *p)
+/* Recounts valid mappings and refreshes the six visible ids; mappings must be readable.
+   The id collection loop is repeated inline (as in func_020c1af4) because the
+   original inlines it; a shared helper would emit a call and change codegen. */
+void func_020c1770(Unk0bd5f0List *p)
 {
     Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     s32 j;
     u32 ids[6], i, start, end;
-    p->count60 = 0;
-    for (j = 0; j < w->unk_0357; j++) if (w->unk_0348[j] >= 0) p->count60++;
-    func_020bcf14(p->sub20, 4);
-    Unk0bcef4_Unk_0bcef4(&p->resource3c, 6, w->unk_0357, 0);
+    p->unk_0060 = 0;
+    for (j = 0; j < w->unk_0357; j++) if (w->unk_0348[j] >= 0) p->unk_0060++;
+    func_020bcf14(&p->unk_0020, 4);
+    Unk0bcef4_Unk_0bcef4(&p->unk_003c, 6, w->unk_0357, 0);
     func_02008644(0, ids, sizeof(ids));
-    start = *(u32 *)p->sub44;
+    start = p->unk_003c.unk_0008;
     end = start + 6;
     for (i = start; i < end; i++) {
         s32 index = w->unk_0348[i];
         if (index < 0) break;
         ids[i - start] = w->unk_0078[index].unk_0032;
     }
-    CampStatus_Unk_0dde3c(p->outputb4, 18, 1, ids, i - start);
-    func_020c1cd0((Unk0bd5f0List *)p, ids);
+    CampStatus_Unk_0dde3c(p->unk_00b4, 18, 1, ids, i - start);
+    func_020c1cd0(p, ids);
 }
 
 /* Rebuilds selection rows and text, then initializes state 20 toward state 24. */
-void func_020c7304(void *obj)
+void func_020c7304(Unk0bd5f0SelectObj *p)
 {
-    Unk0bd5f0Panel *p = obj;
     s32 override = func_020c7cdc(p);
-    s32 count = func_0204ff64(func_020445f4(12, p->selector)) - 99;
+    s32 count = func_0204ff64(func_020445f4(12, p->unk_0110)) - 99;
     u32 rows[8], i;
     if (override > 0) count = override;
-    Unk0bcef4_Unk_0bcef4(p->sub44, count, count, 1);
-    Unk0bcef4_Unk_0bd29c(&p->count60, p->sub44);
-    func_020bd1a8(&p->count60, p->sub44, p->valuesc0, 1);
-    func_020c72a4(p->output100, p->selector, 0);
+    Unk0bcef4_Unk_0bcef4(&p->unk_0044, count, count, 1);
+    Unk0bcef4_Unk_0bd29c(p->unk_0060, &p->unk_0044);
+    func_020bd1a8(p->unk_0060, &p->unk_0044, p->unk_00c0, 1);
+    func_020c72a4(p->unk_0100, p->unk_0110, 0);
     for (i = 0; i < 8; i++) {
-        if (p->valuese0[i] == 0) rows[i] = 10;
+        if (p->unk_00e0[i] == 0) rows[i] = 10;
         else rows[i] = i + 1;
     }
-    CampStatus_Unk_0dde3c(p->output104, 12, p->selector, rows, count);
-    if (p->valuese0[p->index54] == 0) func_020c72a4(p->output108, p->selector, 10);
-    else func_020c72a4(p->output108, p->selector, (u8)(p->index54 + 100));
-    p->state = 20;
-    p->next = 24;
-    p->value118 = -110;
-    p->value114 = -110;
-    p->value120 = 0;
-    p->value11c = 0;
+    CampStatus_Unk_0dde3c(p->unk_0104, 12, p->unk_0110, rows, count);
+    if (p->unk_00e0[p->unk_0044.unk_0010] == 0) func_020c72a4(p->unk_0108, p->unk_0110, 10);
+    else func_020c72a4(p->unk_0108, p->unk_0110, (u8)(p->unk_0044.unk_0010 + 100));
+    p->unk_0000 = 20;
+    p->unk_0004 = 24;
+    p->unk_0118 = -110;
+    p->unk_0114 = -110;
+    p->unk_0120 = 0;
+    p->unk_011c = 0;
 }
