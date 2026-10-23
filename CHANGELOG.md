@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T373: verified eight game/unit_020e5fb8 helpers at 100% objdiff and documented their bit-index contracts and assembly evidence.
 - Matched `func_020f82e0` (M1-T218), the per-frame state update in `src/game/unit_020f81a4.c`, at 100% objdiff; the callback fields at +0x8c..+0xa0 are now typed.
 - M1-T203: `src/ImageBg.c` now has matching C for `func_020e5580` (work-task creation) and `func_020e5664` (mode-dispatch update callback); all 13 ImageBg functions are at 100%.
 - Matched all eight M1-T190 callbacks and state initialization functions in `src/game/unit_020cd470.c` at 100% objdiff, with typed layouts and per-function evidence.
