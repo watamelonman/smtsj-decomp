@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the three M1-T118 handlers in `src/game/unit_0203c474.c` at 100% objdiff: replaced raw offsets with typed owner/worker views, gave their callees real prototypes, and documented each function.
 - Verified all eight M1-T117 handlers at 100% objdiff; typed their callee declarations, made the argument flow into `func_0205e590` explicit, and documented their observed behavior.
 - Verified all eight M1-T1135 context and id-query functions in `src/game/unit_020bd5f0.c` at 100% objdiff; added behavior contracts and per-function documentation.
 - Verified the eight M1-T1109 functions in `src/game/unit_0202f2a8.c` at 100% objdiff: replaced raw offsets with typed GameState-tail, action and slot-block views, gave `Unk02f2a8_Unk_02f8ac` and `Unk02f2a8_DirToAngle` real prototypes, commented each function and added a per-function doc entry.
