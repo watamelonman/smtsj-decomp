@@ -57,7 +57,8 @@ Names are retained because the instruction accesses establish behavior but not d
   returns false for a negative mapping, otherwise tests the mapped 60-byte record's
   +0xa8 halfword for 1 or its signed +0x92 halfword for a nonpositive value.
 - `func_020c84c0` (80 B): calls `func_020c7304`, decrements the byte stack
-  count at +0x124, restores the selected +0x128 entry through `func_020bcfc4`,
+  count at +0x124, passes the sub-object at +0x44 and the popped +0x128 entry
+  to `func_020bcfc4`,
   forwards +0x108, +0x110 and the low byte of (+0x54 + 100) to `func_020c72a4`,
   then calls `Unk0a0ce4_Unk_0a0da4(2)`. Requires a populated selection stack.
 - `func_020bd9c4` (84 B): initializes the descriptor size to 352 and kind to 0,

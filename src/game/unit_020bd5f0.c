@@ -11,12 +11,76 @@ typedef struct Unk0bd5f0Work {
 } Unk0bd5f0Work;
 
 
+/* 60-byte record in the shared work area; only these two fields are read here. */
+typedef struct Unk0bd5f0Record {
+    u8 pad_0000[0x1a];
+    s16 unk_001a; /* work-area +0x92 for record 0 */
+    u8 pad_001c[0x14];
+    u16 unk_0030; /* work-area +0xa8 for record 0 */
+    u8 pad_0032[0xa];
+} Unk0bd5f0Record;
+
+/* View of the work area returned by Unk02e000_GetWorkArea. The record array base
+   (+0x78) and count (12) are guesses: +0x78 keeps both record fields inside one
+   60-byte record, and 12 records end exactly at the +0x348 map. */
+typedef struct Unk0bd5f0WorkArea {
+    u8 pad_0000[0x78];
+    Unk0bd5f0Record unk_0078[12];
+    s8 unk_0348[12]; /* signed record indices; size 12 assumed to match the records */
+    s8 unk_0354[3];
+    u8 unk_0357; /* number of valid unk_0348 entries */
+} Unk0bd5f0WorkArea;
+
+/* Object passed to func_020c84c0; layout from the accesses in that function. */
+typedef struct Unk0bd5f0SelectObj {
+    u8 pad_0000[0x44];
+    u8 unk_0044[0x10]; /* sub-object passed to func_020bcfc4; size unknown */
+    u32 unk_0054;
+    u8 pad_0058[0xb0];
+    void *unk_0108;
+    u8 pad_010c[0x4];
+    u8 unk_0110;
+    u8 pad_0111[0x13];
+    u8 unk_0124; /* stack count */
+    u8 pad_0125[0x3];
+    u32 unk_0128[1]; /* stack entries; real length unknown */
+} Unk0bd5f0SelectObj;
+
+/* Callback addresses are stored here without invoking them; their full calling
+   contracts are not established by these descriptor initializers. */
+typedef struct Unk0bd5f0Descriptor {
+    u32 size;
+    u32 kind;
+    u32 unk_0008;
+    void (*unk_000c)(void *);
+    void (*unk_0010)(void *);
+    u32 unk_0014;
+    void (*unk_0018)(void *);
+    void (*unk_001c)(void *);
+    void (*unk_0020)(void *);
+} Unk0bd5f0Descriptor;
+
+extern void func_020bf240(void *);
+extern void func_020bda18(void *);
+extern void func_020bfddc(void *);
+extern void func_020c0c5c(void *);
+extern void func_020c0d48(void *);
+extern void func_020c5094(void *);
+extern void func_020c25d0(void *);
+extern void func_020c5dc0(void *);
+extern void func_020c67a0(void *);
+extern void func_020c6888(void *);
+extern u32 *func_020445f4(u32 group, u32 selector);
+extern void func_02063920(void);
+extern u32 func_0204fed8(u32 *table, u32 index);
+extern u32 func_02063a30(u32 value);
+extern void func_02061f10(void *obj, int a, int b, int c, u32 value);
+extern void func_020c7304(void *obj);
+extern void func_020bcfc4(void *obj, u32 value);
+extern void Unk0a0ce4_Unk_0a0da4(u32 value);
 
 extern u8 data_0213c4d4[];
 int func_02057ddc();
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
 int Unk02e000_GetWorkArea();
 /* Non-zero only for an object whose state word at +8 is 2 and whose value at +4 is at least 2
    (the caller compares the result as a predicate). */
@@ -48,10 +112,10 @@ void func_020c72a4(void *obj, u32 a, u32 b);
    i indexes the caller-owned three-entry mapping at +0x354. */
 int Unk0bd5f0_Unk_0c1870(int i)
 {
-    u8 *w = (u8 *)Unk02e000_GetWorkArea();
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     int j;
-    for (j = 0; j < FIELD(u8, w, 855); j++) {
-        if (FIELD(s8, w + j + 768, 72) == FIELD(s8, w + i + 768, 84)) {
+    for (j = 0; j < w->unk_0357; j++) {
+        if (w->unk_0348[j] == w->unk_0354[i]) {
             break;
         }
     }
@@ -62,12 +126,10 @@ int Unk0bd5f0_Unk_0c1870(int i)
    record: true when its +0xa8 halfword is 1 or its signed +0x92 halfword is <= 0. */
 int Unk0bd5f0_Unk_0c1918(int i)
 {
-    u8 *w = (u8 *)Unk02e000_GetWorkArea();
-    s32 k = FIELD(s8, w + i + 768, 72);
-    u8 *e;
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
+    s32 k = w->unk_0348[i];
     if (k >= 0) {
-        e = w + k * 60;
-        if (FIELD(u16, e, 168) == 1 || FIELD(s16, e, 146) <= 0) {
+        if (w->unk_0078[k].unk_0030 == 1 || w->unk_0078[k].unk_001a <= 0) {
             return 1;
         }
     }
@@ -304,31 +366,6 @@ int func_020c1968(int idx)
     return flags[0x48] >= 0;
 }
 
-/* Callback addresses are stored here without invoking them; their full calling
-   contracts are not established by these descriptor initializers. */
-typedef struct Unk0bd5f0Descriptor {
-    u32 size;
-    u32 kind;
-    u32 unk_0008;
-    void (*unk_000c)(void *);
-    void (*unk_0010)(void *);
-    u32 unk_0014;
-    void (*unk_0018)(void *);
-    void (*unk_001c)(void *);
-    void (*unk_0020)(void *);
-} Unk0bd5f0Descriptor;
-
-extern void func_020bf240(void *);
-extern void func_020bda18(void *);
-extern void func_020bfddc(void *);
-extern void func_020c0c5c(void *);
-extern void func_020c0d48(void *);
-extern void func_020c5094(void *);
-extern void func_020c25d0(void *);
-extern void func_020c5dc0(void *);
-extern void func_020c67a0(void *);
-extern void func_020c6888(void *);
-
 /* Initializes a 352-byte, kind-zero callback descriptor, preserving +8. */
 void func_020bd9c4(Unk0bd5f0Descriptor *p)
 {
@@ -355,12 +392,6 @@ void func_020c2578(Unk0bd5f0Descriptor *p)
     p->unk_0020 = func_020c6888;
 }
 
-extern u32 *func_020445f4(u32 group, u32 selector);
-extern void func_02063920(void);
-extern u32 func_0204fed8(u32 *table, u32 index);
-extern u32 func_02063a30(u32 value);
-extern void func_02061f10(void *obj, int a, int b, int c, u32 value);
-
 /* Uses group 12 and the supplied selector; only indices below table word +12
    are converted and forwarded to obj. The table and obj are borrowed. */
 void func_020c72a4(void *obj, u32 selector, u32 index)
@@ -371,19 +402,14 @@ void func_020c72a4(void *obj, u32 selector, u32 index)
     func_02061f10(obj, -1, 0, 0, func_02063a30(func_0204fed8(table, index)));
 }
 
-extern void func_020c7304(void *obj);
-extern void func_020bcfc4(void *obj, u32 value);
-extern void Unk0a0ce4_Unk_0a0da4(u32 value);
-
-/* Pops the byte-sized selection stack at +0x124 after func_020c7304, restores
-   its value through +0x44, updates the +0x108 object and signals value 2.
-   Requires a populated stack and readable entries starting at +0x128. */
-void func_020c84c0(u8 *obj)
+/* After func_020c7304, pops the byte-sized stack at +0x124, passes the sub-object
+   at +0x44 and the popped +0x128 entry to func_020bcfc4, updates the +0x108 object
+   and signals value 2. Requires a populated stack. */
+void func_020c84c0(Unk0bd5f0SelectObj *o)
 {
-    func_020c7304(obj);
-    FIELD(u8, obj, 292)--;
-    func_020bcfc4(obj + 68, FIELD(u32, obj + FIELD(u8, obj, 292) * 4, 296));
-    func_020c72a4(FIELD(void *, obj, 264), FIELD(u8, obj, 272),
-                  (u8)(FIELD(u32, obj, 84) + 100));
+    func_020c7304(o);
+    o->unk_0124--;
+    func_020bcfc4(o->unk_0044, o->unk_0128[o->unk_0124]);
+    func_020c72a4(o->unk_0108, o->unk_0110, (u8)(o->unk_0054 + 100));
     Unk0a0ce4_Unk_0a0da4(2);
 }
