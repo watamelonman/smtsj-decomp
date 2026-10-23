@@ -8,14 +8,14 @@
 - `Unk039bb4_Unk_03aaa0`: decompiler-derived
 - `Unk039bb4_Unk_03aac4`: decompiler-derived
 - `Unk039bb4_Unk_03a298`: decompiler-derived
-- `Unk039bb4_Thunk_0203ab84`: decompiler-derived
-- `Unk039bb4_Unk_03a1c8`: decompiler-derived
-- `Unk039bb4_Unk_03a2f8`: decompiler-derived
-- `Unk039bb4_Unk_03a7f8`: decompiler-derived
-- `Unk039bb4_Unk_03a81c`: decompiler-derived
-- `Unk039bb4_Unk_03a840`: decompiler-derived
-- `Unk039bb4_Unk_03a864`: decompiler-derived
-- `Unk039bb4_Unk_03a9c8`: decompiler-derived
+- `Unk039bb4_Thunk_0203ab84`: tail-forwards to `func_0203ab84` through `ldr ip; bx ip`. Evidence: instructions at `0x02039d04` and target literal at `0x02039d0c`. No additional work or arguments are introduced.
+- `Unk039bb4_Unk_03a1c8`: Increments the signed word at work +0x18 and returns 1. Evidence: ARM instructions at `0x02003a1c8`; the wider meaning is unknown, so the name stays neutral.
+- `Unk039bb4_Unk_03a2f8`: Increments the signed word at work +0x18 and returns 1. Evidence: ARM instructions at `0x02003a2f8`; the wider meaning is unknown, so the name stays neutral.
+- `Unk039bb4_Unk_03a7f8`: Calls `func_0203a334(work, 0)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a7f8`; the wider meaning is unknown, so the name stays neutral.
+- `Unk039bb4_Unk_03a81c`: Calls `func_0203a334(work, 1)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a81c`; the wider meaning is unknown, so the name stays neutral.
+- `Unk039bb4_Unk_03a840`: Calls `func_0203a334(work, 2)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a840`; the wider meaning is unknown, so the name stays neutral.
+- `Unk039bb4_Unk_03a864`: Calls `func_0203a334(work, 3)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a864`; the wider meaning is unknown, so the name stays neutral.
+- `Unk039bb4_Unk_03a9c8`: Calls `func_0203a334(work, 4)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a9c8`; the wider meaning is unknown, so the name stays neutral.
 - `Unk039bb4_Unk_03a30c`: decompiler-derived
 - `Unk039bb4_Unk_039d10`: decompiler-derived
 - `Unk039bb4_Unk_039d3c`: decompiler-derived
@@ -54,3 +54,12 @@
 - `Unk039bb4_Unk_039fbc`: decompiler-derived (struct cleanup)
 - `Unk039bb4_Unk_03a0e0`: decompiler-derived (struct cleanup)
 - `Unk039bb4_Unk_03a11c`: decompiler-derived (struct cleanup)
+
+## M1-T674 verification
+
+The eight bodies were already present in the starting tree. This card adds explicit
+work-pointer parameters, a two-argument helper declaration, and behavior contracts.
+The helper retains its existing 32-bit address ABI for other callers in this unit.
+No new module boundary or inferred semantic name is introduced.
+
+Hard list for M1-T674: none.
