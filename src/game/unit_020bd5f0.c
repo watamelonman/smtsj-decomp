@@ -17,7 +17,8 @@ typedef struct Unk0bd5f0Record {
     s16 unk_001a; /* work-area +0x92 for record 0 */
     u8 pad_001c[0x14];
     u16 unk_0030; /* work-area +0xa8 for record 0 */
-    u8 pad_0032[0xa];
+    u16 unk_0032; /* work-area +0xaa for record 0 */
+    u8 pad_0034[0x8];
 } Unk0bd5f0Record;
 
 /* View of the work area returned by Unk02e000_GetWorkArea. The record array base
@@ -418,9 +419,9 @@ void func_020c84c0(Unk0bd5f0SelectObj *o)
 /* Borrowed list owner: offsets are established by the three collection routines. */
 typedef struct Unk0bd5f0List {
     u8 pad_0000[0x44];
-    u32 start;
+    u32 unk_0044; /* first mapping index to collect */
     u8 pad_0048[0x6c];
-    void *output;
+    void *unk_00b4; /* passed to CampStatus_Unk_0dde3c */
 } Unk0bd5f0List;
 
 extern void func_02008644(u32 value, void *dest, u32 bytes);
@@ -430,22 +431,23 @@ extern void func_02057e18(u32 value);
 extern void func_02057df8(void);
 
 /* Collects at most six mapped halfword ids (+0xaa, stride 60), stopping at a
-   negative mapping; forwards the populated count and refreshes the owner. */
+   negative mapping; forwards the populated count and refreshes the owner.
+   The collection loop is repeated inline in the next two functions because the
+   original inlines it; a shared helper would emit a call and change codegen. */
 void func_020c1af4(Unk0bd5f0List *obj)
 {
-    u32 work = (u32)Unk02e000_GetWorkArea();
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     u32 ids[6];
     u32 i, start, end;
     func_02008644(0, ids, sizeof(ids));
-    start = obj->start;
+    start = obj->unk_0044;
     end = start + 6;
     for (i = start; i < end; i++) {
-        s8 *mapping = (s8 *)(work + i + 0x300);
-        s32 index = mapping[0x48];
+        s32 index = w->unk_0348[i];
         if (index < 0) break;
-        ids[i - start] = *(u16 *)(work + index * 60 + 0xaa);
+        ids[i - start] = w->unk_0078[index].unk_0032;
     }
-    CampStatus_Unk_0dde3c(obj->output, 18, 1, ids, i - start);
+    CampStatus_Unk_0dde3c(obj->unk_00b4, 18, 1, ids, i - start);
     func_020c1cd0(obj, ids);
 }
 
@@ -453,17 +455,16 @@ void func_020c1af4(Unk0bd5f0List *obj)
    negative signed mapping. The borrowed work records use a 60-byte stride. */
 void func_020c1c4c(Unk0bd5f0List *obj)
 {
-    u32 work = (u32)Unk02e000_GetWorkArea();
+    Unk0bd5f0WorkArea *w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     u32 ids[6];
     u32 i, start, end;
     func_02008644(0, ids, sizeof(ids));
-    start = obj->start;
+    start = obj->unk_0044;
     end = start + 6;
     for (i = start; i < end; i++) {
-        s8 *mapping = (s8 *)(work + i + 0x300);
-        s32 index = mapping[0x48];
+        s32 index = w->unk_0348[i];
         if (index < 0) break;
-        ids[i - start] = *(u16 *)(work + index * 60 + 0xaa);
+        ids[i - start] = w->unk_0078[index].unk_0032;
     }
     func_020c1cd0(obj, ids);
 }
@@ -474,18 +475,17 @@ void func_020c1d88(Unk0bd5f0List *obj)
 {
     u32 ids[6];
     u32 i, start, end;
-    u32 work;
+    Unk0bd5f0WorkArea *w;
     func_02008644(0, ids, sizeof(ids));
-    start = obj->start;
-    work = (u32)Unk02e000_GetWorkArea();
+    start = obj->unk_0044;
+    w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
     end = start + 6;
     for (i = start; i < end; i++) {
-        s8 *mapping = (s8 *)(work + i + 0x300);
-        s32 index = mapping[0x48];
+        s32 index = w->unk_0348[i];
         if (index < 0) break;
-        ids[i - start] = *(u16 *)(work + index * 60 + 0xaa);
+        ids[i - start] = w->unk_0078[index].unk_0032;
     }
-    CampStatus_Unk_0dde3c(obj->output, 18, 1, ids, i - start);
+    CampStatus_Unk_0dde3c(obj->unk_00b4, 18, 1, ids, i - start);
 }
 
 /* Counts accepted ids in an inclusive signed range. For 111..210 only,
