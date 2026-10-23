@@ -1,19 +1,28 @@
 # src/game/unit_0202e000.c
 
-- `Unk02e000_Nop_02e3e0` (4 B): empty callback
-- `Unk02e000_GetAddr_data_02140ac8` (12 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk02e000_Thunk_0202e788` (12 B): forwards to `Unk02e000_GetWorkArea`
-- `Unk02e000_Set_data_0215dd24` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk02e000_Get_data_0215dd24` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk02e000_Unk_02e170` (16 B): decompiler-derived (Ghidra output, cleaned)
+M1-T649: all eight functions verified at **100% objdiff**. Existing candidates
+were retained and the global-word accessors cleaned up using typed array indexing.
+Evidence below is from the delinked ARM instructions; returned views remain borrowed.
+
+| Function | Address / bytes | Evidence and contract |
+| --- | --- | --- |
+| `Unk02e000_Nop_02e3e0` | 0x0202e3e0 / 4 | `bx lr` only; intentional empty callback. |
+| `Unk02e000_GetAddr_data_02140ac8` | 0x0202e0c0 / 12 | Loads relocated symbol address and returns it as a 32-bit address; no ownership transfer. |
+| `Unk02e000_Thunk_0202e788` | 0x0202e798 / 12 | Loads GetWorkArea into ip and tail-jumps; identical borrowed return contract. |
+| `Unk02e000_Set_data_0215dd24` | 0x0202e0f4 / 16 | Stores r0 at global offset zero; accepts any 32-bit word. |
+| `Unk02e000_Get_data_0215dd24` | 0x0202e104 / 16 | Loads global offset zero without interpretation. |
+| `Unk02e000_Unk_02e170` | 0x0202e170 / 16 | Loads global offset four; EnsureAlloc7718 stores the allocation here. Neutral name retained. |
+| `Unk02e000_GetWorkArea` | 0x0202e788 / 16 | Calls Unk_02e774 and adds four; GetAreaRecord and TestFlag use the returned work view. Requires allocation. |
+| `Unk02e000_GetSubBlock3a4` | 0x0202e8e0 / 16 | Calls GetWorkArea and adds 0x3a4; requires allocation, sub-block purpose unknown. |
+
+Other task entries (historical):
+
 - `Unk02e000_Unk_02e0ac` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk02e000_Unk_02e774` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk02e000_Unk_02e8b8` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk02e000_Unk_02e8f0` (20 B): decompiler-derived (Ghidra output, cleaned)
 
 ## Hard list
-- `Unk02e000_GetWorkArea`: no candidate matched locally
-- `Unk02e000_GetSubBlock3a4`: dropped when combining the TU
 - `Unk02e000_GetUnk094fe0Work`: no candidate matched locally
 - `Unk02e000_Call_02e4dc`: no candidate matched locally
 - `Unk02e000_Call_02e520`: no candidate matched locally
@@ -79,8 +88,6 @@
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
 - `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)
-- `Unk02e000_GetSubBlock3a4`: hand-matched
-- `Unk02e000_GetWorkArea`: hand-matched
 - `Unk02e000_GetUnk094fe0Work`: hand-matched
 - `Unk02e000_ClearMgrUnk38`: hand-matched
 - `Unk02e000_Call_02e4dc`: hand-matched

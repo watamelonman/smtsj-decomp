@@ -115,13 +115,13 @@ void Unk02e000_AddCounter5fc4(int add)
     }
 }
 
-/* empty callback */
+/* Original 0x0202e3e0 is only bx lr: intentionally has no side effects. */
 void Unk02e000_Nop_02e3e0(void) { }
 
-/* decompiler-derived */
+/* Original 0x0202e0c0 returns the symbol address; ownership stays with the module. */
 u32 Unk02e000_GetAddr_data_02140ac8(void)
 {
-  return ((int)data_02140ac8);
+    return (u32)data_02140ac8;
 }
 
 void func_0202e4dc(u8 *rec);
@@ -157,25 +157,25 @@ int Unk02e000_Call_02008848(void)
     return func_02008848(Unk02e000_Unk_02e884(), 0, 0x1148);
 }
 
-/* forwards to `Unk02e000_GetWorkArea` */
+/* Original 0x0202e798 tail-jumps to GetWorkArea; returns the same borrowed view. */
 u8 *Unk02e000_Thunk_0202e788(void) { return Unk02e000_GetWorkArea(); }
 
-/* decompiler-derived */
+/* Original 0x0202e0f4 stores the first global word, without validation or allocation. */
 void Unk02e000_Set_data_0215dd24(u32 arg0)
 {
-  *data_0215dd24 = arg0;
+    data_0215dd24[0] = arg0;
 }
 
-/* decompiler-derived */
+/* Original 0x0202e104 loads the first global word; its meaning is unconfirmed. */
 u32 Unk02e000_Get_data_0215dd24(void)
 {
-  return *data_0215dd24;
+    return data_0215dd24[0];
 }
 
-/* decompiler-derived */
+/* Original 0x0202e170 loads global word +4; allocation is owned by EnsureAlloc7718. */
 u32 Unk02e000_Unk_02e170(void)
 {
-  return *(u32 *)(((int)data_0215dd24) + 4);
+    return data_0215dd24[1];
 }
 
 /* decompiler-derived */
@@ -384,7 +384,8 @@ int Unk02e000_Unk_02e740(int arg0)
   return *(char *)(tmp1 + 0x28) != '\0';
 }
 
-/* Work area at +4 of the Unk02e000_Unk_02e774 block. */
+/* Original 0x0202e788 calls Unk_02e774 then adds 4; requires its allocated block.
+ * Returns a borrowed byte view, as used by GetAreaRecord and TestFlag. */
 u8 *Unk02e000_GetWorkArea(void)
 {
     return (u8 *)Unk02e000_Unk_02e774() + 4;
@@ -397,7 +398,8 @@ u8 *Unk02e000_GetUnk094fe0Work(void)
     return (u8 *)Unk02e000_Unk_02e774() + 0xcfc;
 }
 
-/* Pointer to the +0x3A4 sub-block of the Unk02e000_GetWorkArea work area. */
+/* Original 0x0202e8e0 calls GetWorkArea then adds 0x3a4.
+ * Returns a borrowed sub-block; the work area must already be allocated. */
 u8 *Unk02e000_GetSubBlock3a4(void)
 {
     return Unk02e000_GetWorkArea() + 0x3a4;
