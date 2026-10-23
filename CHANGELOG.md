@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T136 `func_020bbed4` in `src/game/unit_020bbd6c.c` at 100% objdiff; every function in that TU is now C.
 - Matched all eight M1-T135 handlers in `src/game/unit_020bbd6c.c` at 100% objdiff, with typed work/record layouts and per-function evidence.
 - Matched all eight M1-T134 entry access, key search, and block copy functions in `src/game/unit_0206e2a0.c`, with typed layouts and per-function contracts.
 - Matched all seven M1-T131 functions in `src/game/unit_021122bc.c` at 100% objdiff, with typed cell/work/resource layouts and per-function documentation.
