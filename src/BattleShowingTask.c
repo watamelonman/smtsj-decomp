@@ -93,7 +93,7 @@ typedef struct BattleShowingAreaRecord {
     s32 unk_0024;
     u8 pad_0028[0x0C];
     u16 unk_0034;               /* 0x34: area kind; 1/7 suppress EXP gain */
-    u8 pad_0036[2];
+    u16 unk_0036;               /* 0x36: record id passed to Unk02ee5c_SetRecordFlag0b */
     u8 unk_0038;                /* 0x38: level/curve index passed to 020b8240 */
 } BattleShowingAreaRecord;
 
@@ -531,6 +531,26 @@ void func_0211aaa8(BattleShowingTaskWork *work)
     }
 }
 
+/* Message/option block passed to the 020BCxxx UI helpers: two flag bytes
+ * followed by sixteen words. Same layout used by the 06A224 message helpers. */
+typedef struct BattleShowingMessage {
+    u8 flags[2];
+    u32 words[16];
+} BattleShowingMessage;
+
+/* Reset the message flags and optional words; inlined so each caller keeps its
+ * own loop counter, matching the original clearing layout. */
+static inline void BattleShowing_ClearMessage(BattleShowingMessage *message)
+{
+    int i;
+    for (i = 0; i < 2; i++) {
+        message->flags[i] = 0;
+    }
+    for (i = 0; i < 16; i++) {
+        message->words[i] = 0;
+    }
+}
+
 /* Record fields read by the resource dispatchers at 0x0211c4e0..0x0211c670. */
 typedef struct BattleShowingRecord {
     s16 unk00;                  /* 0x00: area ID; negative selects the work area */
@@ -543,11 +563,14 @@ typedef struct BattleShowingRecord {
     s8 unk17;
     s8 unk18;
     u8 pad19;
-    u8 flags;                  /* +0x1A: dispatch flags */
+    u8 unk1a_0 : 1;            /* +0x1A: dispatch flags; bits 1 and 2 are tested by BattleShowingTask_Unk_11c6ac */
+    u8 unk1a_1 : 1;
+    u8 unk1a_2 : 1;
+    u8 pad1a : 5;
     s8 selection;              /* +0x1B: area selection index */
     u16 unk1c;
     u16 unk1e;
-    u8 pad20[4];
+    u32 unk20;                  /* 0x20: resource refreshed by BattleShowingTask_Unk_11c6ac states 9..11 */
     u32 unk24;                  /* 0x24: nonzero selects variant 1 in func_0211c548 */
 } BattleShowingRecord;
 u32 func_020493e0(u32 id);
@@ -1254,33 +1277,13 @@ void func_0211c350(BattleShowingTaskWork *work)
     func_0206569c(value);
 }
 
-/* Message/option block passed to the 020BCxxx UI helpers: two flag bytes
- * followed by sixteen words. Same layout used by the 06A224 message helpers. */
-typedef struct BattleShowingMessage {
-    u8 flags[2];
-    u32 words[16];
-} BattleShowingMessage;
-
-/* Reset the message flags and optional words; inlined so each caller keeps its
- * own loop counter, matching the original clearing layout. */
-static inline void BattleShowing_ClearMessage(BattleShowingMessage *message)
-{
-    int i;
-    for (i = 0; i < 2; i++) {
-        message->flags[i] = 0;
-    }
-    for (i = 0; i < 16; i++) {
-        message->words[i] = 0;
-    }
-}
-
 int func_020654cc(void);
 int func_02065e28(void);
 s32 func_02053800(s32 arg0, u32 mask);
 void func_02065c30(void);
 int func_020bcacc(u32 slot, BattleShowingMessage *message);
 void func_020bc9f4(u32 slot, u32 value);
-void func_0211c6ac(BattleShowingTaskWork *work, u32 arg);
+void BattleShowingTask_Unk_11c6ac(BattleShowingTaskWork *work, u32 arg);
 
 /* Screen-level dispatch for states 6, 7 and 9. State 6 waits for the 020654CC
  * and 02053800(0,1) gates before continuing through func_0211C6AC. States 7
@@ -1298,7 +1301,7 @@ void func_0211ccf8(BattleShowingTaskWork *work)
         if (func_02053800(0, 1) == 0) {
             return;
         }
-        func_0211c6ac(work, 0);
+        BattleShowingTask_Unk_11c6ac(work, 0);
         return;
     case 7:
     case 9: {
@@ -1338,7 +1341,7 @@ void func_02013c68(void *base, s32 count, u32 size,
                    s32 (*compare)(const s16 *const *, const s16 *const *));
 void func_020a19b4(void *object, u32 arg);
 void func_020bcbc4(u32 slot, BattleShowingMessage *message);
-void func_0211c24c(BattleShowingTaskWork *work);
+void BattleShowingTask_Unk_11c24c(BattleShowingTaskWork *work);
 
 /* Collect the nonzero selectable entries into a freshly allocated list, sort
  * them with func_0211C160, and start the current-record dispatch. The caller's
@@ -1394,7 +1397,7 @@ BattleShowingTaskWork *func_0211ceb4(BattleShowingSelectable *first, BattleShowi
         message.words[1] = 13;
         message.flags[0] |= 2;
         func_020bcbc4(3, &message);
-        func_0211c24c(work);
+        BattleShowingTask_Unk_11c24c(work);
         work->unk_0000 = 0;
         return work;
     }
@@ -1670,6 +1673,151 @@ typedef struct BattleShowingScreenAreaRecord {
 } BattleShowingScreenAreaRecord;
 /* Drive record-screen entrance, message waits, confirmation and exit.
  * State mapping and ten-frame interpolation are evidenced by ARM 0x0211C960. */
+void Unk0bc1a8_Unk_0bc514(BattleShowingTaskWork *work, u32 mode, BattleShowingMessage *message);
+/* Bust-up texture file returned by func_02051610; its draw descriptor starts at +0x0c. */
+typedef struct BattleShowingTexFile {
+    u8 pad_0000[0xc];
+    u8 desc[0x10];
+} BattleShowingTexFile;
+extern char data_02151cc4[];
+extern char data_02151cf4[];
+void CampStatus_Copy176(const void *pairs);
+u32 *func_02051610(const char *path);
+BattleShowingTaskSub *func_0205ba28(void *desc, const char *file, u32 line);
+void func_0205b444(BattleShowingTaskSub *slot, u32 *texture);
+void func_020a1b68(void *loader, u32 id, u32 mode);
+void Unk0a163c_Unk_0a21f8(void *loader);
+/* Prepare the current record's display, then post message kind 3 (ARM 0x0211C24C). The
+ * record's +0x10 byte pairs go to CampStatus_Copy176. A negative record id loads the bust-up
+ * texture data_02151cc4 ("Data/Tex/Camp/Status/bust_up/st_bu_pc001.gfnt"; the source file name
+ * data_02151cf4 and line 162 go to func_0205ba28) and sets message word 1 to 14; otherwise the
+ * loader is started with the record's id and the message gets word 1 = 15 and word 7 = the
+ * record id. */
+void BattleShowingTask_Unk_11c24c(BattleShowingTaskWork *object)
+{
+    BattleShowingScreenWork *work = (BattleShowingScreenWork *)object;
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(object);
+    BattleShowingMessage message;
+    /* The original also writes each message value to its own stack word. */
+    volatile u32 word1;
+    volatile u32 word2;
+    volatile u32 word3;
+
+    BattleShowing_ClearMessage(&message);
+    CampStatus_Copy176(&record->pad0a[6]);
+    if (record->unk00 < 0) {
+        work->allocation = func_02051610(data_02151cc4);
+        work->sub = func_0205ba28(((BattleShowingTexFile *)work->allocation)->desc, data_02151cf4, 162);
+        func_0205b444(work->sub, work->allocation);
+        word1 = 14;
+        message.words[1] = 14;
+        message.flags[0] |= 2;
+    } else {
+        func_020a1b68(work->loader, record->id, 0);
+        Unk0a163c_Unk_0a21f8(work->loader);
+        message.words[1] = 15;
+        word2 = 15;
+        message.flags[0] |= 2;
+        word3 = record->unk00;
+        message.words[7] = record->unk00;
+        message.flags[0] |= 0x80;
+    }
+    func_020bcbc4(3, &message);
+}
+
+void func_0205264c(u32 a, u32 b, u32 c, u32 d, u32 e);
+void func_02065c80(void);
+u32 func_020e5e6c(BattleShowingAreaRecord *area);
+void Unk09974c_Unk_099abc(u32 resource, u16 value);
+void func_020659a4(u32 resource, u32 mode);
+void Unk02ee5c_SetRecordFlag0b(u16 id, u32 value);
+/* Advance the record-screen transition from state *work (ARM 0x0211C6AC). Record +0x1a bit 1
+ * selects the 0x0211C4E0 path in state 4; state 5 posts message 3 with word 1 = 16 and the
+ * record's selection, state 7 posts word 1 = 17 and then either starts the 0x0205264C fade
+ * (arg != 0) or moves to state 10; states 9/10 refresh resource +0x20 and, with +0x1a bit 2,
+ * store func_020e5e6c's value at +0x24. */
+void BattleShowingTask_Unk_11c6ac(BattleShowingTaskWork *work, u32 arg)
+{
+    BattleShowingRecord *record = (BattleShowingRecord *)BattleShowingTask_Unk_11c230(work);
+    BattleShowingMessage message1;
+    BattleShowingMessage message2;
+    /* The original also writes each message value to its own stack word. */
+    volatile u32 word1;
+    volatile u32 word2;
+    volatile u32 word3;
+
+    switch (work->unk_0000) {
+    case 4:
+        if (record->unk1a_1) {
+            func_0211c4e0(work);
+            work->unk_0000 = 5;
+            return;
+        }
+        work->unk_0000 = 10;
+        BattleShowingTask_Unk_11c6ac(work, 0);
+        return;
+    case 5:
+        func_02065c30();
+        BattleShowing_ClearMessage(&message1);
+        message1.words[1] = 16;
+        message1.flags[0] |= 2;
+        word1 = 16;
+        word2 = record->selection;
+        message1.words[7] = record->selection;
+        message1.flags[0] |= 0x80;
+        func_020bcbc4(3, &message1);
+        work->unk_0000 = 6;
+        return;
+    case 6:
+        BattleShowingTask_Unk_11c5d0(work);
+        work->unk_0000 = 7;
+        return;
+    case 7:
+        BattleShowing_ClearMessage(&message2);
+        word3 = 17;
+        message2.words[1] = 17;
+        message2.flags[0] |= 2;
+        func_020bcbc4(3, &message2);
+        if (arg != 0) {
+            work->unk_0000 = 8;
+            func_0205264c(2, 4, 31, 1, 2);
+            func_02065c80();
+            return;
+        }
+        work->unk_0000 = 10;
+        BattleShowingTask_Unk_11c670(work);
+        return;
+    case 8:
+        BattleShowingTask_Unk_11c610(work);
+        work->unk_0000 = 9;
+        return;
+    case 9:
+    case 10:
+        if (record->unk20 != 0) {
+            if (record->unk1a_2) {
+                record->unk24 = func_020e5e6c(Unk02e000_GetAreaRecord(record->unk00));
+                Unk09974c_Unk_099abc(record->unk20, record->unk24);
+            }
+            func_0211c548(work);
+            work->unk_0000 = 11;
+            return;
+        }
+        work->unk_0000 = 13;
+        return;
+    case 11:
+        func_02065628(1);
+        func_020659a4(record->unk20, 1);
+        if (record->unk1a_2) {
+            Unk02ee5c_SetRecordFlag0b(Unk02e000_GetAreaRecord(record->unk00)->unk_0036, 1);
+        }
+        work->unk_0000 = 12;
+        return;
+    case 12:
+        work->unk_0000 = 13;
+        break;
+    }
+}
+
 void func_0211c960(BattleShowingTaskWork *object)
 {
     BattleShowingScreenWork *work = (BattleShowingScreenWork *)object;
@@ -1723,21 +1871,21 @@ void func_0211c960(BattleShowingTaskWork *object)
             func_0209786c(area);
             area->savedX = area->x;
             area->savedY = area->y;
-            func_0211c6ac(object, 1);
-        } else func_0211c6ac(object, 0);
+            BattleShowingTask_Unk_11c6ac(object, 1);
+        } else BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 8:
-        if (!func_02052728()) func_0211c6ac(object, 0);
+        if (!func_02052728()) BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 9: case 10:
         if (!func_020654cc()) return;
         if (!func_02065cd0()) return;
-        func_0211c6ac(object, 0);
+        BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 4: case 5: case 11: case 12:
         if (!func_020654cc()) return;
         if (!func_02065cd0()) return;
-        func_0211c6ac(object, 0);
+        BattleShowingTask_Unk_11c6ac(object, 0);
         break;
     case 13:
         func_02065c30();
@@ -1758,12 +1906,47 @@ void func_0211c960(BattleShowingTaskWork *object)
         }
         if (++work->index >= work->count) work->state = 15;
         else {
-            func_0211c24c(object);
+            BattleShowingTask_Unk_11c24c(object);
             work->state = 0;
         }
         break;
     case 15:
         Unk0bc1a8_Unk_0bc504(work, 0);
+        break;
+    }
+}
+
+/* Event handler for the battle-showing screen (ARM 0x0211D050): *event 3 finishes the
+ * current record (states 7 and 9 go through 0x0211C5D0 / 0x0211C610); event 1 hands a
+ * cleared message to Unk0bc1a8_Unk_0bc514 with mode 1. Other events are ignored. */
+void BattleShowingTask_Unk_11d050(BattleShowingTaskWork *work, u32 *event)
+{
+    BattleShowingMessage message;
+
+    switch (*event) {
+    case 0:
+        break;
+    case 3:
+        switch (work->unk_0000) {
+        case 7:
+            func_02065bc0();
+            func_02065628(1);
+            BattleShowingTask_Unk_11c5d0(work);
+            break;
+        case 9:
+            func_02065bc0();
+            func_02065628(1);
+            BattleShowingTask_Unk_11c610(work);
+            break;
+        }
+        break;
+    case 1:
+        BattleShowing_ClearMessage(&message);
+        Unk0bc1a8_Unk_0bc514(work, 1, &message);
+        break;
+    case 2:
+        break;
+    case 4:
         break;
     }
 }
