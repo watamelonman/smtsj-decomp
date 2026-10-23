@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the four M1-T181 game/unit_0203bba4 callbacks at 100% objdiff; added typed helper declarations and documented argument conversions, substate updates and readiness checks.
 - Verified all eight M1-T180 callbacks in `src/game/unit_0203bba4.c` at 100% objdiff, with typed work-area/context struct views (`include/game/unit_0203bba4.h`), consistent prototypes, behavior contracts, and per-function documentation.
 - Matched eight additional game/unit_020bd5f0 input, list, range and setup routines.
 - Matched `func_02036068` and rewrote the seven other M1-T1112 functions in `src/game/unit_0202f2a8.c` on typed struct views with contract comments, replacing their raw `FIELD` offsets. All eight are at 100% objdiff.
