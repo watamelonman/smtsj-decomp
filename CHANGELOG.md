@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Verified all eight M1-T180 callbacks in `src/game/unit_0203bba4.c` at 100% objdiff, with typed callee declarations, behavior contracts, and per-function documentation.
+- Verified all eight M1-T180 callbacks in `src/game/unit_0203bba4.c` at 100% objdiff, with typed work-area/context struct views (`include/game/unit_0203bba4.h`), consistent prototypes, behavior contracts, and per-function documentation.
 - Matched all four M1-T177 work callbacks and constructor in `game/unit_02109dcc` at 100% objdiff with typed layouts and documented contracts.
 - Verified all eight M1-T1111 counter, pending-action, buffer and resource helpers at 100% objdiff; documented their contracts and replaced integer context addresses with typed pointers.
 - Matched all three M1-T172 mode-transition functions in `src/game/unit_0209e96c.c` at 100% objdiff, with typed cell/record views and per-function contracts.

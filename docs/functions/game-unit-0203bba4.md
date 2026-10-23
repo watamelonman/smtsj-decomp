@@ -23,8 +23,12 @@ because these call sequences do not establish a more specific purpose.
 The signed argument conversions intentionally occur in the callbacks, before
 passing full-width values to the ImageObj helpers. The byte readers likewise
 must preserve negative values when converting to the publisher's u32 argument.
-The existing bodies already matched; this task verifies them and supplies typed
-callee declarations and behavior comments without changing their instructions.
+Field access goes through partial struct views in
+`include/game/unit_0203bba4.h`: `Unk02e000WorkArea` (`unk_0358`, `unk_0364`,
+`unk_0365`), `Unk03aae8Ctx` (`unk_00e8`) and `Unk03bba4Sub` (`unk_0018`).
+Their sizes are unknown; gaps are padding. 03bba4/03bc40 keep a small inline
+setter because passing the constant before the pointer preserves the original
+register order (a direct `ctx->unk_00e8->unk_0018 = 19` measured 98.18%).
 
 ## Other existing functions (outside M1-T180)
 
