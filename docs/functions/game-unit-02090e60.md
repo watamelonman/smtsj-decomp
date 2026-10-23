@@ -8,7 +8,7 @@ the other four remain linked from the original delink object.
 
 ### `func_020934c8` — 0x020934c8, 240 bytes (100%)
 
-Clears `unk_0353` unconditionally, calls `func_020937a0` with the byte
+Clears `unk_0353` unconditionally, calls `Unk090e60_Unk_0937a0` with the byte
 selected by `unk_02f4` from `unk_0354`, then refreshes twelve `unk_040c`
 pointers when `unk_039c != unk_03a0`. It clears their flags and enables entries
 below `unk_0398` whose record predicate returns nonzero. Finally, **`unk_03e0`**
@@ -36,7 +36,7 @@ difference is mwcc register allocation at function entry: the original keeps
 shifts the whole body. Recommend a decomp.me scratch
 (`python3 tools/decompme.py --platform nds_arm9 ...`) to settle the allocation.
 
-### `func_020937a0` — 0x020937a0, 592 bytes
+### `Unk090e60_Unk_0937a0` — 0x020937a0, 592 bytes
 
 Rebuilds the three list panels (the `+0x114`, `+0x118`, `+0x110`/`+0x11c`
 groups): starts a draw list (`func_02063920`), optionally selects each of the 12
@@ -47,7 +47,7 @@ original spills the `list` argument to `[sp,#4]` and keeps the loop result in
 `r6`; mwcc kept the argument in `r9` in our version, changing the loop register
 assignment. Needs a scratch to fix the spill/colouring.
 
-### `func_02092624` — 0x02092624, 3748 bytes
+### `Unk090e60_Unk_092624` — 0x02092624, 3748 bytes
 
 Per-state drawing routine for the same screen (state word `+0x390`, 3748
 bytes; one jump table). It issues many multi-argument draw calls whose stack
@@ -62,7 +62,7 @@ and writing the real prototypes first; the case-by-case follow-up below reconstr
 Main per-frame state machine for this screen: 112 branches, one switch over
 `+0x390` with cases 0..12 (several share blocks through `goto`), 220 calls and
 five local stack arrays used to build event/menu payloads. Ghidra's export is
-usable as a skeleton but, like `func_02092624`, drops long call-argument
+usable as a skeleton but, like `Unk090e60_Unk_092624`, drops long call-argument
 payloads and local variable reuse (e.g. `unaff_r6`, `DAT_` constants); the
 generated C is far shorter than the target and would need a case-by-case
 disassembly pass. Recommended decomp.me scratch per case, starting with the
@@ -75,7 +75,7 @@ not claim whole-function matches. Both trials used typed padded work structs
 and mwcc 2.0/sp1p5 through `tools/hand/cmp.py`, then inspected the generated
 object with `arm-none-eabi-objdump -dr`.
 
-### `func_02092624`
+### `Unk090e60_Unk_092624`
 
 Reconstructed entry guards (`+0x2f0 != 0`, null `+0x3b0`), initial helper
 sequence, and the complete shared states 3/4/7 at `0x02093454..0x020934a0`.
@@ -140,3 +140,5 @@ are in missing states. Consequently these isolated cases cannot settle whole
 function register allocation. The next scratch must add state 0's branches
 at `0x02090f00` and the payload-building states 7/8 before tuning allocation.
 Remains on the hard list; no incomplete case implementation was installed.
+- `Unk090e60_Unk_0937a0`: rebuilds the four text lists from +0x39c slots and the group ids
+- `Unk090e60_Unk_092624`: per-frame draw: frame, scroll bar, row lists, group ids, 24-slot grid by state +0x390
