@@ -29,7 +29,7 @@ int Unk113294_AnyHi();
 int Unk113294_AnyLo();
 int Unk02e000_Thunk_0202e788();
 void func_02008904();
-void func_0202efa4();
+void Unk02ee5c_Unk_02efa4();
 typedef struct Unk113294Ids {
     u8 pad[216];
     u16 ids[16];
@@ -217,7 +217,7 @@ void Unk113294_CopyIds(u8 *p)
 {
     func_02008904(p + 232, (u8 *)Unk02e000_Thunk_0202e788() + 72, 16);
     func_02008904(p + 216, (u8 *)Unk02e000_Thunk_0202e788() + 90, 16);
-    func_0202efa4();
+    Unk02ee5c_Unk_02efa4();
 }
 
 int Unk113294_FindEmpty(Unk113294Ids *p)
