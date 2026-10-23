@@ -96,30 +96,6 @@ None for M1-T1087 or M1-T1088.
 - `func_0203fa84`
 - `func_02044264`
 - `func_020442fc`
-- `Unk03e43c_Unk_0434b0`: decompiler-derived
-
-## Not done in M1-T1090
-- `func_0203e6f0`
-- `func_0203f960`
-- `func_0203eaf8`
-- `func_0203f394`
-- `func_0203f174`
-- `func_0203f2d4`
-- `func_02043340`
-- `Unk03e43c_Call_02056cc0`: decompiler-derived (plain cleanup)
-- `Unk03e43c_CountDown`: hand-matched
-- `Unk03e43c_CopyEntry32`: hand-matched
-- `Unk03e43c_MergeTable`: hand-matched
-- `Unk03e43c_Unk_03e894`: hand-matched
-- `Unk03e43c_Div10Clamp16`: hand-matched
-- `Unk03e43c_UpdatePos18`: hand-matched
-- `Unk03e43c_Unk_03e8cc`: hand-matched
-- `Unk03e43c_Unk_03f234`: hand-matched
-- `Unk03e43c_Unk_041ce4`: hand-matched
-- `Unk03e43c_Unk_043450`: hand-matched
-- `Unk03e43c_Unk_043560`: hand-matched
-- `Unk03e43c_Unk_044194`: hand-matched
-- `Unk03e43c_Unk_0441ec`: hand-matched
 
 ## M1-T1089
 
@@ -165,3 +141,236 @@ Five of the eight card functions match the delinked original at 100% in objdiff
   with an inline helper taking an unused ctx arg) and keeps 1, &v and 2 in
   r4-r6 (push r3-r9); ours folds them into scratch registers (144 vs 152 B).
   Tried constant locals, inline params, and a static helper (not inlined).
+
+## M1-T1090
+
+Three of eight targets match at 100% in objdiff. The existing source was extended;
+no delink configuration was changed. Neutral symbols are retained because the
+memory accesses establish operations but do not establish gameplay names.
+
+- `Unk03e43c_Unk_0434b0` (176 B): clamps two writable s16 coordinates to
+  upper bounds 176/112 and lower bounds `-8 * (dimension - 10)`. The dimensions
+  are bytes +10/+11 of the map referenced by `GameState_GetBody() + 0x354`.
+  The existing body matched; its parameter types and contract are now explicit.
+- `func_0203f960` (168 B): fills a clipped rectangle on a 256 by 192 byte
+  surface through `func_020119c0`. Negative origins discard leading columns
+  or rows. The caller supplies the surface storage and rectangle dimensions.
+- `func_02043340` (208 B): submits the 96-byte entry at index `slot + 3`
+  relative to object +32, using resource +0x28a0 and coordinates (128, 96).
+  Then the signed byte at +0x2982+slot selects entry 0, 1 or 2 for another
+  submission at (128 + slot*64, 96). Other byte values produce no second call.
+
+### Hard list (for a decomp.me scratch)
+
+These five functions remain supplied by the delinked object; no unmatched C
+bodies were retained. No assembly stub is needed in this project's pipeline.
+
+- `func_0203e6f0` (164 B): builds a path from its first two arguments and
+  `data_02142214`, acquires a resource through `Unk03e43c_Unk_03e614`, and
+  optionally merges the acquired header's +12 table. The candidate was 160 B;
+  reversing the two 64-byte local buffer declarations fixed their stack offsets,
+  but the compiler kept the initial path pointer in ip and loaded the extension
+  later, instead of preserving it in r4. Tried an explicit extension local.
+- `func_0203eaf8` (172 B): configures mode, builds entries through
+  `func_0203eba4`, marks each eight-byte entry through `func_02056bd0`, submits
+  them and increments `data_0215e658`. Candidates were 180/184 B. Tried for/while
+  loops, signed/unsigned indices, typed u64 entry indexing, and postincrement
+  in the address expression. The compiler strength-reduced the index into a
+  separate pointer cursor; the original retains an index shifted by three.
+- `func_0203f174` (192 B): transforms a point about a center, using the
+  distance from `func_020500bc`, angle from `func_020024f8`, and s16 table
+  `data_0212629c`. A 192-byte candidate reproduced the initial paired point
+  loads and signed angle modulo, but table-load scheduling and multiplication
+  registers differed. Tried paired temporary loads, separate products, reversed
+  declaration order and s16 versus int temporaries.
+- `func_0203f2d4` (192 B): clips a destination rectangle to 256 by 192 and
+  copies source rows through `func_02008904`, using 256-byte strides. Tried
+  separate end/row locals, while loops and source-row postincrement in the
+  address expression. The last candidate was 188 B; the compiler folded the
+  source base and row offset and used fewer saved registers than the original.
+- `func_0203f394` (188 B): copies nonzero source pixels into a clipped
+  destination rectangle on 256-byte-stride surfaces. The candidate had the
+  correct size and control flow but different register allocation from the
+  first source-coordinate load onward. Reordering x/y declarations and moving
+  destination coordinate temporaries to function scope did not resolve it.
+
+### Retry results (attempt 2)
+
+The three matching functions are unchanged. The remaining five were re-examined;
+none reached 100%, so no C body was retained (the delink supplies them). All 2.0
+service packs were checked for `func_0203f174` and produce identical code, so the
+difference is source shape, not the compiler service pack.
+
+- `func_0203e6f0`: declaring `u8 name[64] = {0}` before `u8 path[64]` puts the
+  zeroed buffer at sp+68 and gives the exact 164-byte layout (87.9%). The original
+  also keeps `a0` in r4 and `a1` in r6, while mwcc keeps `a0` in ip and `a1` in
+  r4; both values are dead after their call, so this is a register-allocation
+  choice.
+- `func_0203f174`: the angle reduction is `(u16)((theta + angle) % 65536) >> 4`;
+  `x % 65536` is what produces the original `lsr/rsb/ror` idiom, and the table is
+  `s16 *` at 0x0212629c indexed by `idx * 2`. The 192-byte body then differs only
+  in register naming: the original keeps `idx * 2` in r3 and fills r1/r0 with the
+  two byte offsets, while mwcc reuses r1.
+- `func_0203f2d4`: the 192-byte body and control flow are reproduced exactly.
+  The original keeps `src` in fp and `srcCol` in r8 and forms
+  `srcCol + (row << 8)` each row; mwcc folds `src + srcCol` into sl and
+  strength-reduces the row term. Parenthesizing the address and recomputing the
+  row from `top + srcY` did not prevent the fold.
+- `func_0203eaf8`: not retried; the previous findings still apply.
+- `func_0203f394`: not retried; the previous findings still apply.
+
+## M1-T1091
+
+Two of the eight card targets match the delinked original at 100% in objdiff;
+the other six remain supplied by the delinked object and are on the hard list.
+`func_0203f450` and `func_0203f394` now have typed prototypes in the TU because
+the matched callers pass five and eight arguments respectively.
+
+- `func_0203e43c` (360 B): NOT MATCHED. Builds three resource paths from `a`,
+  `b` and the three `data_021421f*` suffixes, acquires them with
+  `Unk03e43c_Unk_03e5a4/03e5dc/03e64c`, stores the handles through `d`, `e`,
+  `c`, then submits setup slots 0/1 through `func_0203e684` for bank 2 or the
+  selected bank. A 356-byte candidate had the correct control flow. The
+  original zeroes its 64-byte scratch buffer as 16 iterations of four byte
+  stores with the pointer in `ip`; mwcc always chose a different loop form and
+  kept `bank` in r8 instead of r7. Tried simple/indexed/pointer loops and
+  four-byte unrolling.
+- `func_0203e93c` (444 B): NOT MATCHED. 452-byte candidate reproduces the
+  branches: flag bit 19 switches the bank and marks each built entry, otherwise
+  angle `+0x4c` builds a `func_02052dfc` matrix and scale `+0x40/+0x44` selects
+  identity or the angle matrix; the result count accumulates into
+  `data_0215e658`. mwcc emits a `count <= 0` pre-check that the original does
+  not, and assigns the seven saved registers differently throughout. Tried
+  `for`/indexed/u64-table forms, signed vs unsigned flag load, and reordered
+  `else if` branches.
+- `func_02041d98` (392 B): draws the object's 8x8 icon at (x, y). Skips the
+  draw unless the work-area context id at +0x35c matches
+  `Unk04bb9c_GetCtxUnka20`; mode 0 uses `func_0203f394`, modes 1/2 use
+  `func_0203f450` with a 90 or 0 degree transform, and the fallback passes the
+  mirror flag. The s16 offsets at +0x1c/+0x1e and +1 origin come from the
+  original call sites.
+- `func_020435c8` (356 B): NOT MATCHED. 352-byte candidate reads the 24-byte
+  id table at 0x0212cc0c, maps the object type at +0x28e9 to a starting y
+  (180/172/164/156/148/140), and draws up to 24 7x7 icons four per row through
+  `func_0203e93c`. The conditional category mapping (23->0x4a, 24->0x4b,
+  20->0x49) is reproduced; only register assignment and the two-byte copy
+  loop shape differ (r9/r6/r7 vs r4/r5/r9 etc.). Tried reversed declaration
+  order, pointer/indexed copy loops, explicit zero/category locals.
+- `func_02043ea8` (620 B): draws a 7x7 icon for an id in 2, 13, 14, 18, 19 or
+  21..24 from source-column/row pairs (0x30, 0x88, 0x90, 0xb0, 0xb8, 0,
+  8, 0x10, 0x18; rows 0 or 8) at (x+1, y+1). Ids outside 1..36 are ignored.
+  The case order follows the original handler order; case 14 is last and
+  breaks to the shared return.
+
+### Hard list (for a decomp.me scratch)
+
+- `func_0203e43c`: see the zero-loop/register notes above (356 B vs 360 B).
+- `func_0203e93c`: see the loop pre-check/register notes above (452 B vs 444 B).
+- `func_020435c8`: see the register/copy-loop notes above (352 B vs 356 B).
+- `func_0203eba4` (1488 B): not matched. Ghidra shows the entry builder:
+  mode must be 1; adds s16 offsets +0x4a/+0x48 to the position, applies
+  `func_0202128c` to the resource list and `func_0203f234`/`func_0203f174`
+  to the cached positions, computes rotated/translated quad corners from the
+  scale at +0x40/+0x44 and angle byte +0x5d, updates the two register words
+  at 0x0215e85c/0x0215e860 through bitfields, and increments the u16 count at
+  0x0215e858 by the built count. The stack-restarting decompiler output and
+  heavy bitfield/register mixing need a dedicated scratch.
+- `func_0203f450` (1296 B): not matched. Rotated/mirrored surface blit. It
+  normalises the angle through the 0x0203f958/0x0203f95c reciprocal, allocates
+  a `-(width*height) & ~7` stack buffer, copies the source through four
+  separate 0/90/180/270 paths, then composites with optional clipping and
+  transform flags (`param_9`..`param_11`). Callers pass 11 arguments.
+- `func_0203fb14` (1360 B): not matched. Initialises the 0x299c-byte task:
+  clears the +0x2000 work fields, stores the work-area pointer, seeds the
+  coordinate/camera fields through `GameState_*`/`Unk02e000_GetWorkArea`,
+  builds 76 + 32 draw entries via `Unk03e43c_Unk_03e894`, clears the shared
+  table, creates 16 slots through `func_0203e6f0`, three icon submissions,
+  and finishes with `func_02061f10`/`func_020442fc`.
+- `func_0203f450`/`func_0203fb14`/`func_0203eba4` source bodies are not retained
+  because the compiler-generated stack frames are large and the Ghidra output
+  loses the argument slots; no candidate reached a stable size. Open a
+  decomp.me scratch with the delinked body before retrying.
+
+## M1-T1092
+
+One of the five card targets matches the delinked original at 100% in objdiff.
+The other four remain supplied by the delinked object and are on the hard list
+below with the measured candidates and their differences.
+
+- `func_0204372c` (1916 B): draws the 7x7 map icon selected by `id` at
+  `(x+1, y+1)`. The id range 1..40 selects between a plain `func_0203f960`
+  background blit, a background plus a `func_0203f394` source rectangle, or a
+  rotated/mirrored `func_0203f450`/`func_0203f2d4` blit. The fifth parameter is
+  the background colour forwarded to `func_0203f960` (a `u8`, so the caller
+  passes it untruncated). Cases 21/22, 23/37, 8/24/26 and 9/25/27 share bodies;
+  the switch order follows the original body order so the jump table matches.
+  Matched with a 1916-byte body; the only prototype change was adding
+  `func_0203f2d4` with its eight arguments (source, x, y, destination,
+  source x/y, width, height).
+
+- `func_02040064` (5712 B): NOT MATCHED. The task update callback. It bails out
+  through `func_02061424` while `data_0215ee60+0x30` is set and otherwise
+  requires a loaded body; it refreshes `+0x2990` from `Unk0986ac_TestFlagBit`,
+  maps `func_0204ca1c()` to the state word at `+0x28c4` (0..3 -> 5/3/4/2,
+  4/5 -> the two context paths, -1 -> the reset path), and handles the selected
+  map record at `+0x28c0` (moving to state 8/12 and seeding the +0x2970..
+  +0x297c interpolation from the record's target, duration and current
+  position). It then calls `func_02044264`, reads the context word through
+  `+0x28d8`, picks a camera object through `func_02053c98`, and dispatches the
+  ~10 state values at `+0x28c4` to the map/path/object update, draw and sound
+  helpers (`func_02041f20`, `func_0204295c`, `func_0204d214`,
+  `func_02053d8c`, `func_0203f960`, `func_02043ea8`, ...). The function spans
+  1428 ARM instructions with a 40-byte stack scratch, several nested switches
+  and many call-argument stack slots; Ghidra's 708-line output is usable as a
+  guide but every candidate differed in register assignment and stack frame
+  from the first instruction block.
+
+- `func_020416bc` (1576 B): NOT MATCHED. The task draw/update callback. It
+  scrolls six 0x60-byte entries through the background ring at `+0x7d`, wraps
+  the background offset at `+0x28e6` every 0x180, animates the entry selected
+  by `+0x28e9` (callbacks through `func_0203eaf8`, `Unk03e43c_Unk_03e8cc`,
+  `Unk03e43c_CountDown` and `Unk03e43c_Unk_03e894`), updates the four icon
+  slots at +0x2c0/+0x320/+0x380/+0x3e0, then walks 32 map-object records
+  through `+0x28c0` (state counter at +0x8b4, positions at +0x28ee/+0x292e,
+  per-object tile/context checks) and finally draws the two cursor icons and
+  calls `func_02060170`. A 1480-1548-byte candidate reproduced the control
+  flow, but mwcc chose a different register split (the original keeps
+  `state=p+0x2800`, `work=p+0x8a0`, `entry=p+0x20`, i and the background
+  offset in r4-r9, with 2 and 0x60 in r7/fp) and re-materialised several
+  pointers between blocks. Also tried: direct `FIELD` expressions without
+  locals (1644 B, 24-byte frame), explicit base/entry locals (1480 B, correct
+  8-byte frame), and moving the loop value inside the block. The remaining
+  differences are register allocation and block ordering, not semantics.
+
+- `func_02041f20` (2620 B): NOT MATCHED. One of the two map-layer update
+  routines. `param_2` selects a phase: 0 builds the 16-element tile origin
+  table at `data_02142954` from the signed screen position at +0x18/+0x1a
+  (rounding to 8-pixel tiles, with the +1/negate split), 1..4 clear one
+  0x3000-byte layer buffer at +0x14, 5..8 scroll one tile row/column and call
+  `func_0204372c` for every visible tile after `func_0204c074` and the
+  `+0x358`/`+0x360` map probes, 9 walks 32 map records and draws their icons,
+  and 10..20 draw the object/marker layers (the cases share bodies). The
+  decompiled body is ~330 lines; no candidate was attempted to a stable size
+  because the same `data_02142954` pointer, tile-index and register split as
+  `func_0204295c` has to be reproduced first.
+
+- `func_0204295c` (2532 B): NOT MATCHED. The sibling map-layer update routine
+  using `data_02143338` instead of `data_02142954` and a 0xc000-byte clear
+  instead of 0x3000. Its case map is 0 -> seed tile table and clear the layer,
+  1/2 -> scroll and draw tiles, 3 -> draw the 32 map-record icons plus the
+  0x60 object entries and the border lines, and 4/5/... -> the second tile
+  plane (same `func_0204372c` per-tile call chain). It shares the register/
+  layout problem with `func_02041f20`; the two bodies should be recovered
+  together.
+
+### Hard list (M1-T1092, for a decomp.me scratch)
+
+- `func_02040064`: 1428-instruction update state machine, 40-byte stack scratch,
+  many 5/6-argument calls; need a scratch with the full delinked body.
+- `func_020416bc`: candidate reproduces the flow but not register allocation;
+  the original keeps r4=+0x2800, r5=+0x8a0, r6=+0x20, r7=2, r8=i, r9=offset,
+  fp=0x60 across the first loop, and re-materialises `p+0x2800`/`p+0x28a0`
+  between the switch and the 32-record loop.
+- `func_02041f20` / `func_0204295c`: recover the shared tile-layer dispatcher
+  (case map, `data_02142954`/`data_02143338` origins, tile probe call chain)
+  as one scratch; both are too large to hand-match independently.

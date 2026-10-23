@@ -231,14 +231,14 @@ Both produce nearly identical code; the remaining difference is register
 allocation, not semantics, and the trials below were measured with the project
 compiler (`mwccarm 2.0/sp1p5`, `-O4,p`).
 
-- `func_020e32e8` (208 B): charges `+0x98 * +0xc8` to the shared accumulator,
+- `Unk0e1648_Unk_0e32e8` (208 B): charges `+0x98 * +0xc8` to the shared accumulator,
   applies the selected slot through `0f4398`/`099a28`, then `0f4538` and clears
   `+0xee8` when `0f4510` rejects the id. Trials with the id as `u16`/`u32`, the
   record as a typed/byte/void/integer pointer, several declaration orders, and
   local flag/argument forms all put the id in r9 and the record in r6, whereas
   the ROM keeps the id in r6 and the record in r7; the function body is otherwise
   equivalent (same size and calls).
-- `func_020e4e28` (268 B): consumes up to 99 cost passes for the selected slot,
+- `Unk0e1648_Unk_0e4e28` (268 B): consumes up to 99 cost passes for the selected slot,
   subtracting the three entry weights and stopping when one goes negative. Trials
   with separate/reused loop counters, `do`/`while`/`for` loop forms, declaration
   permutations, `u32`/`s32` cost arrays and a grouped cost/remaining struct all
@@ -315,7 +315,7 @@ added: the card's oracle is instruction identity plus the checksum gate.
 
 ### Hard list
 
-- `func_020e33b8` (2744 B): draws the ordinary multi-slot list. The C body is
+- `Unk0e1648_Unk_0e33b8` (2744 B): draws the ordinary multi-slot list. The C body is
   semantically equivalent and reaches the same 686-instruction length, but
   mwcc places the loop index in r8 and the row counter in r9, while the ROM
   keeps the index in r9 and the row in r8; it also chooses r7 rather than r6
@@ -330,3 +330,6 @@ added: the card's oracle is instruction identity plus the checksum gate.
   compiler's handling of the final threshold block. The function is left
   undefined for the same reason and is available for a decomp.me scratch
   (`tools/decompme.py`).
+- `Unk0e1648_Unk_0e33b8`: hand-matched
+- `Unk0e1648_Unk_0e32e8`: hand-matched
+- `Unk0e1648_Unk_0e4e28`: hand-matched
