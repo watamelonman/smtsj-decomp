@@ -6,7 +6,8 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-/* Singleton pointed to by data_02176e28. */
+/* Borrowed singleton layout: offsets +0x14 and +0x1c are evidenced by
+ * the stores at 0x020feea4 and 0x020fee90 respectively. */
 typedef struct Unk0fedd4Obj {
     u32 unk_00;
     u32 handle;                 /* +0x04 */
@@ -21,7 +22,7 @@ typedef struct Unk0fedd4Obj {
 
 extern Unk0fedd4Obj *data_02176e28;
 
-int Unk05b82c_Unk_05b82c();
+void Unk05b82c_Unk_05b82c(int id);
 void func_0205bb68(void);
 Unk0fedd4Obj *Unk0fedd4_GetObj(void);
 
@@ -29,15 +30,19 @@ void Unk0fedd4_Thunk_0205bb68(void);
 Unk0fedd4Obj *Unk0fedd4_Thunk_020feef0(void);
 void Unk0fedd4_Unk_0fedd4(void);
 
+/* Returns the borrowed singleton, possibly null; the original at 0x020feef0
+ * loads data_02176e28 without allocating or changing ownership. */
 Unk0fedd4Obj *Unk0fedd4_GetObj(void)
 {
     return data_02176e28;
 }
 
-/* forwards to `func_0205bb68` */
+/* Tail-forwards to func_0205bb68, as evidenced by the relocation at
+ * 0x020fedec; the target supplies all side effects. */
 void Unk0fedd4_Thunk_0205bb68(void) { func_0205bb68(); }
 
-/* forwards to `Unk0fedd4_GetObj` */
+/* Returns the same borrowed, possibly null singleton as GetObj; the tail
+ * target is evidenced by the relocation at 0x020fef08. */
 Unk0fedd4Obj *Unk0fedd4_Thunk_020feef0(void) { return Unk0fedd4_GetObj(); }
 
 void func_02061f10(u32 handle, int a, int b, int c, u32 d);
@@ -54,21 +59,29 @@ void Unk0fedd4_SetUnk0c10(u32 a, u32 b)
     o->unk_10 = b;
 }
 
+/* Requires an allocated singleton; stores the supplied word at +0x1c
+ * (str at 0x020fee90). Its higher-level meaning is unknown. */
 void Unk0fedd4_SetUnk1c(u32 a)
 {
     Unk0fedd4_Thunk_020feef0()->unk_1c = a;
 }
 
+/* Requires an allocated singleton; writes 1 to the state word at +0x14
+ * (str at 0x020feea4). The state's higher-level meaning is unknown. */
 void Unk0fedd4_SetState1(void)
 {
     Unk0fedd4_Thunk_020feef0()->state = 1;
 }
 
+/* Requires an allocated singleton; writes 1 to the state word at +0x14
+ * (str at 0x020feeb8). The state's higher-level meaning is unknown. */
 void Unk0fedd4_SetState1b(void)
 {
     Unk0fedd4_Thunk_020feef0()->state = 1;
 }
 
+/* Requires an allocated singleton; writes 0 to the state word at +0x14
+ * (str at 0x020feecc). The state's higher-level meaning is unknown. */
 void Unk0fedd4_SetState0(void)
 {
     Unk0fedd4_Thunk_020feef0()->state = 0;
@@ -81,7 +94,8 @@ void Unk0fedd4_SetState2(void)
     o->unk_20 = 1;
 }
 
-/* decompiler-derived */
+/* Passes fixed id 0xd1 to the 05b82c helper; evidenced by mov r0 at
+ * 0x020fedd8 and the target relocation at 0x020fede0. Meaning is unknown. */
 void Unk0fedd4_Unk_0fedd4(void)
 {
   Unk05b82c_Unk_05b82c(0xd1);
