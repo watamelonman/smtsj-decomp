@@ -26,20 +26,37 @@ typedef struct Unk02f2a8WorkArea {
 /* Tail of GameState past the range declared by include/GameState.h (not owned
  * by this card): the cached grid source and teardown counter live there. */
 typedef struct Unk02f2a8GameStateTail {
-    u8 pad_0000[0x744e];
+    u8 pad_0000[0x73dc];
+    u32 unk_73dc;               /* nonzero suppresses the ResetField7478Ex notifies */
+    u8 pad_73e0[0x744e - 0x73e0];
     s8 unk_744e;
     s8 unk_744f;
     s32 unk_7450;
-    u8 pad_7454[0x74f0 - 0x7454];
+    u8 pad_7454[0x7470 - 0x7454];
+    u32 unk_7470;               /* set to 1 by SetField7470 with the 3 values below */
+    u16 unk_7474;
+    u8 unk_7476;
+    u8 unk_7477;
+    u32 unk_7478;               /* +0x7478..+0x748b cleared by ResetField7478Ex */
+    u8 pad_747c[4];
+    u8 unk_7480;
+    u8 unk_7481;
+    u8 pad_7482[2];
+    u32 unk_7484;
+    u32 unk_7488;
+    u8 pad_748c[0x74f0 - 0x748c];
     u32 unk_74f0;
 } Unk02f2a8GameStateTail;
 
 /* Local view of an action whose +0x18 word is folded into the work-area
- * direction (+0x358); Unk02f2a8_Unk_02fc10 clears its +0x1c word. */
+ * direction (+0x358); Unk02f2a8_Unk_02fc10 clears its +0x1c word. Action type 3
+ * (Unk02f2a8_Unk_02f8ac) uses the same object and sets +0x9c. */
 typedef struct Unk02f2a8Action {
     u8 pad_0000[0x18];
     u32 unk_0018;
     u32 unk_001c;
+    u8 pad_0020[0x9c - 0x20];
+    u32 unk_009c;
 } Unk02f2a8Action;
 
 Unk02f2a8WorkArea *Unk02e000_GetWorkArea(void);
@@ -72,7 +89,7 @@ void func_0209aca0();
 void func_02116598();
 void Unk02f2a8_ApplyPending(u8 *p);
 void Unk02f2a8_Unk_02fc10(Unk02f2a8Action *action);
-void Unk02f2a8_Unk_02f8ac(int arg0);
+void Unk02f2a8_Unk_02f8ac(Unk02f2a8Action *action);
 void Unk02f2a8_Unk_0302f4(int arg0);
 void Unk02f2a8_Unk_02f378(int arg0);
 
@@ -87,18 +104,30 @@ u32 Unk02f2a8_GetSlot_02f2dc(int i)
     return 0;
 }
 
+/* Typed view of the three slot words in the Unk02e000_Unk_02e774 block that
+ * Unk02f2a8_SetField6138 writes. */
+typedef struct Unk02f2a8Slots6138 {
+    u8 pad_0000[0x6138];
+    u32 unk_6138;
+    u32 unk_613c;
+    u32 unk_6140;
+} Unk02f2a8Slots6138;
+
+/* Store v in slot k (1..3) of the Unk02e000_Unk_02e774 block, the words at
+ * +0x6138/+0x613c/+0x6140 that Unk02f2a8_GetSlot_02f2dc reads back with the
+ * same 1-based selector. Any other k is ignored. */
 void Unk02f2a8_SetField6138(int k, u32 v)
 {
-    u8 *w = (u8 *)Unk02e000_Unk_02e774();
+    Unk02f2a8Slots6138 *w = (Unk02f2a8Slots6138 *)Unk02e000_Unk_02e774();
     switch (k) {
     case 1:
-        *(u32 *)(w + 0x6138) = v;
+        w->unk_6138 = v;
         break;
     case 2:
-        *(u32 *)(w + 0x613c) = v;
+        w->unk_613c = v;
         break;
     case 3:
-        *(u32 *)(w + 0x6140) = v;
+        w->unk_6140 = v;
         break;
     }
 }
@@ -176,14 +205,19 @@ void Unk02f2a8_ResetField7478(GameState *gs)
     Unk0a4e48_Unk_0a4e9c(2);
 }
 
+/* Full reset of the grid state block: clears +0x7478, +0x7480, +0x7481,
+ * +0x7484 and +0x7488 (a superset of Unk02f2a8_ResetField7478). Unless the
+ * +0x73dc word is set, it then calls func_020a269c(0), func_0205257c(3),
+ * notifies subsystem 2 and posts event 5. */
 void Unk02f2a8_ResetField7478Ex(GameState *gs)
 {
-    FIELD(u32, gs, 0x7478) = 0;
-    FIELD(u8, gs, 0x7480) = 0;
-    FIELD(u8, gs, 0x7481) = 0;
-    FIELD(u32, gs, 0x7484) = 0;
-    FIELD(u32, gs, 0x7488) = 0;
-    if (FIELD(u32, gs, 0x73dc) != 0) {
+    Unk02f2a8GameStateTail *t = (Unk02f2a8GameStateTail *)gs;
+    t->unk_7478 = 0;
+    t->unk_7480 = 0;
+    t->unk_7481 = 0;
+    t->unk_7484 = 0;
+    t->unk_7488 = 0;
+    if (t->unk_73dc != 0) {
         return;
     }
     func_020a269c(0);
@@ -274,12 +308,15 @@ void GameState_ClearRootUnk60(void)
     gGameState->root->unk_60 = 0;
 }
 
+/* Latch a (u16, u8, u8) triple at gGameState +0x7474..+0x7477 and set the
+ * +0x7470 word to 1 to mark it valid. Requires gGameState; what the triple
+ * means is not established. */
 void Unk02f2a8_SetField7470(u16 a, u8 b, u8 c)
 {
-    FIELD(u32, gGameState, 0x7470) = 1;
-    FIELD(u16, gGameState, 0x7474) = a;
-    FIELD(u8, gGameState, 0x7476) = b;
-    FIELD(u8, gGameState, 0x7477) = c;
+    ((Unk02f2a8GameStateTail *)gGameState)->unk_7470 = 1;
+    ((Unk02f2a8GameStateTail *)gGameState)->unk_7474 = a;
+    ((Unk02f2a8GameStateTail *)gGameState)->unk_7476 = b;
+    ((Unk02f2a8GameStateTail *)gGameState)->unk_7477 = c;
 }
 
 /* Read the unsigned 16-bit field at gGameState +0x74f6, which supports the
@@ -347,7 +384,11 @@ void Unk02f2a8_Call_02057660(void) { func_02057660(2, 0); }
 /* Reads the u16 at +0x74F4 of the singleton; field meaning is not established. */
 u16 GameState_GetUnkField74f4(void) { return gGameState->unk_74f4; }
 
-int Unk02f2a8_DirToAngle();
+int Unk02f2a8_DirToAngle(int dir);
+/* Fill a zeroed 8-byte position record through func_02035890(&pos, a), then
+ * apply it: the u16 id goes to Unk02f2a8_SetField35c and the signed x/y bytes
+ * plus the +4 word go to Unk02f2a8_SetGridPos. Returns func_02035890's result.
+ * Selector `a` is never 0 when called from Unk02f2a8_Unk_035440. */
 int Unk02f2a8_Unk_035a70(int a)
 {
     Unk02f2a8Pos pos = {0};
@@ -389,6 +430,9 @@ int Unk02f2a8_GetRes36Unk1b(int i, int j)
 int Unk0e5fb8_Unk_0e63c8();
 int Unk02e000_TestFlag();
 void Unk02e000_SetBit_02e968();
+/* Look up the signed id byte at +0x1b + j of resource-36 entry i (the same
+ * byte Unk02f2a8_GetRes36Unk1b returns) and pass it to Unk0e5fb8_Unk_0e63c8.
+ * A negative id (no entry) yields 0 without the call. */
 int Unk02f2a8_Unk_035c14(int i, int j)
 {
     Unk02f2a8Res36 *e = &UNK02F2A8_RES36()[i];
@@ -525,6 +569,10 @@ void Unk02f2a8_Unk_035440(int arg0)
 }
 
 int func_02050088(int mode, int lower, int upper);
+/* Map a direction index to a 16-bit binary angle (0x10000 = full turn):
+ * 1 -> 0, 2 -> 0x4000, 3 -> 0x8000, 0 -> 0xc000. Name evidence:
+ * Unk02f2a8_Unk_035ec4 stores this result in the u16 angle field at +0x18.
+ * Out-of-range directions return 0. */
 int Unk02f2a8_DirToAngle(int dir)
 {
     switch (dir) {
@@ -642,22 +690,24 @@ void Unk02f2a8_Unk_02fc10(Unk02f2a8Action *action)
     Unk0a0ce4_Unk_0a0da4(0x2c);
 }
 
-int func_021214e0();
+int func_021214e0(u32 v);
 int func_021215d4();
-/* decompiler-derived */
-void Unk02f2a8_Unk_02f8ac(int arg0)
+/* Action type 3 of the dispatcher above: clears the action's +0x1c word, runs
+ * the same ScanVisor/Unk095560 refresh pair as type 4 (Unk02f2a8_Unk_02fc10),
+ * and when func_021214e0 accepts the +0x18 word, sets +0x9c and calls
+ * func_021215d4 (the GetGameState result is unused). Event 0x1b is posted on
+ * both paths. The meaning of +0x18 and +0x9c is not established. */
+void Unk02f2a8_Unk_02f8ac(Unk02f2a8Action *action)
 {
-  int tmp1;
-  *(u32 *)(arg0 + 0x1c) = 0;
-  ScanVisor_Unk_0a2b38();
-  Unk095560_Unk_09615c();
-  tmp1 = func_021214e0(*(u32 *)(arg0 + 0x18));
-  if (tmp1 != 0) {
-    *(u32 *)(arg0 + 0x9c) = 1;
-    GetGameState();
-    func_021215d4();
-  }
-  Unk0a0ce4_Unk_0a0da4(0x1b);
+    action->unk_001c = 0;
+    ScanVisor_Unk_0a2b38();
+    Unk095560_Unk_09615c();
+    if (func_021214e0(action->unk_0018) != 0) {
+        action->unk_009c = 1;
+        GetGameState();
+        func_021215d4();
+    }
+    Unk0a0ce4_Unk_0a0da4(0x1b);
 }
 
 int func_0202f530();
@@ -780,7 +830,7 @@ void Unk02f2a8_ApplyPending(u8 *p)
         func_0202f3d8(p);
         break;
     case 3:
-        Unk02f2a8_Unk_02f8ac((int)p);
+        Unk02f2a8_Unk_02f8ac((Unk02f2a8Action *)p);
         break;
     case 4:
         Unk02f2a8_Unk_02fc10((Unk02f2a8Action *)p);
@@ -909,7 +959,9 @@ void Unk02f2a8_Unk_0313a4(u8 *p)
     func_020a7474(p + 264 + 0x5400, m, p + 576, p + 24, v, bits, 1);
 }
 
-/* Tears down the GameState sub-objects and clears gGameState. */
+/* Tears down the GameState sub-objects held at +0x314c, +0x3140, +0x3134 and
+ * +0x73d0 (in that order) and clears gGameState, so GameState_Exists then
+ * reports 0. The GameState memory itself is not freed here. */
 void GameState_Shutdown(GameState *gs)
 {
     Unk038fbc_Unk_038fbc((int *)gs->unk_314c);
