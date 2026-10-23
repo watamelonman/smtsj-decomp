@@ -1,29 +1,54 @@
 #include "types.h"
 
-/* Borrowed callback object; only the observed flag is exposed. */
+/* Borrowed callback object; only the observed word at +0xc0 is exposed. */
 typedef struct Unk0cd470Work {
-    u8 reserved[0xc0];
-    s32 flag;
+    u8 pad_0000[0xc0];
+    s32 unk_00c0;
 } Unk0cd470Work;
 
 /* Descriptor callbacks are stored without invoking them in this unit. */
 typedef void (*Unk0cd470Callback)(void *);
 typedef struct Unk0cd470Descriptor {
-    u32 size;
-    u32 flags;
-    u32 reserved;
+    u32 unk_0000;
+    u32 unk_0004;
+    u32 unk_0008;
     Unk0cd470Callback callbacks[6];
 } Unk0cd470Descriptor;
 
-/* Byte layout follows the accesses in 020cd594; the records have stride 0x1a. */
+/* 0x1a-byte record filled by func_020de960; 020cd594 reads bytes +8/+9 of
+ * the first record and the u16 at +0xa of each record. */
+typedef struct Unk0cd470Record {
+    u8 pad_0000[0x8];
+    u8 unk_0008;
+    u8 unk_0009;
+    u16 unk_000a;
+    u8 pad_000c[0xe];
+} Unk0cd470Record;
+
+/* 0x1c-byte control initialized by Unk0bcef4_Unk_0bcef4; only +0x10 is read here. */
+typedef struct Unk0cd470Control {
+    u8 pad_0000[0x10];
+    u32 unk_0010;
+    u8 pad_0014[0x8];
+} Unk0cd470Control;
+
+/* 0xf8-byte state; layout follows the accesses in 020cd594. */
 typedef struct Unk0cd470State {
-    u8 state, substate, mode, reserved03;
-    s32 field04, field08;
-    void *items[4];
+    u8 unk_0000;
+    u8 unk_0001;
+    u8 unk_0002;
+    u8 unk_0003;
+    s32 unk_0004;
+    s32 unk_0008;
+    void *items[4]; /* size guessed: gap between +0xc and the handle at +0x1c */
     void *handle;
-    u8 records[0x74];
-    u8 controls[3][0x1c];
-    s32 count, selection, fieldf0, fieldf4;
+    Unk0cd470Record records[4]; /* size guessed: matches items[]; 0x74-byte area */
+    u8 pad_0088[0xc];
+    Unk0cd470Control controls[3];
+    s32 count;
+    s32 unk_00ec;
+    s32 unk_00f0;
+    s32 unk_00f4;
 } Unk0cd470State;
 
 extern void func_02057524(s32 value);
@@ -61,7 +86,7 @@ extern Unk0cd470State *data_02176bcc;
 /* 020cd470: run the two helpers only when the borrowed object's +0xc0 flag is set. */
 void Unk0cd470_Unk_0cd470(Unk0cd470Work *work)
 {
-    if (work->flag == 0) return;
+    if (work->unk_00c0 == 0) return;
     func_02057524(4);
     func_020572d8();
 }
@@ -69,7 +94,7 @@ void Unk0cd470_Unk_0cd470(Unk0cd470Work *work)
 /* 020cd490: test the borrowed flag; both paths finish without further work. */
 void func_020cd490(Unk0cd470Work *work)
 {
-    if (work->flag == 0) return;
+    if (work->unk_00c0 == 0) return;
 }
 
 /* 020cd49c: event code 1 forwards the object with a cleared second argument. */
@@ -111,8 +136,8 @@ void Unk0cd470_Unk_0cd50c(void)
 /* 020cd538: fill the descriptor's size and six callback slots, leaving +8 intact. */
 void func_020cd538(Unk0cd470Descriptor *descriptor)
 {
-    descriptor->size = 0xf8;
-    descriptor->flags = 0;
+    descriptor->unk_0000 = 0xf8;
+    descriptor->unk_0004 = 0;
     descriptor->callbacks[0] = func_020cd778;
     descriptor->callbacks[1] = func_020cde1c;
     descriptor->callbacks[2] = func_020ce3e0;
@@ -122,43 +147,40 @@ void func_020cd538(Unk0cd470Descriptor *descriptor)
 }
 
 /* 020cd594: initialize a writable 0xf8-byte state. The record producer must
- * supply at most four entries for the item slots; record ids are aligned u16s. */
+ * supply at most four entries for the item slots. */
 void func_020cd594(Unk0cd470State *work)
 {
     s32 i;
-    u8 *record;
     func_020de960(work->records, 2);
     work->handle = func_02122abc();
-    ImageBg_Unk_0e54d4(work->records[8]);
+    ImageBg_Unk_0e54d4(work->records[0].unk_0008);
     Unk0fd268_Unk_0fd380(2);
     work->count = Unk0de678_CountLeading(work->records);
     i = 0;
     if (work->count > 0) {
-        record = (u8 *)work;
         do {
-            if (*(u16 *)(work->records + 10) == 0x25c)
-                work->items[i] = func_020ffd48(*(u16 *)(record + 0x2a), i - 1, work->count - 1);
+            if (work->records[0].unk_000a == 0x25c)
+                work->items[i] = func_020ffd48(work->records[i].unk_000a, i - 1, work->count - 1);
             else
-                work->items[i] = func_020ffd48(*(u16 *)(record + 0x2a), i, work->count);
+                work->items[i] = func_020ffd48(work->records[i].unk_000a, i, work->count);
             i++;
-            record += 0x1a;
         } while (i < work->count);
     }
-    work->selection = 0;
+    work->unk_00ec = 0;
     func_0212351c(work->handle, work->count, 1);
     Unk0bc1a8_Unk_0bc928(10, 18, 0);
-    Unk0bcef4_Unk_0bcef4(work->controls[0], 3, 3, 1);
-    Unk0bcef4_Unk_0bcef4(work->controls[1], 3, 3, 1);
-    Unk0bcef4_Unk_0bcef4(work->controls[2], 4, 4, 1);
+    Unk0bcef4_Unk_0bcef4(&work->controls[0], 3, 3, 1);
+    Unk0bcef4_Unk_0bcef4(&work->controls[1], 3, 3, 1);
+    Unk0bcef4_Unk_0bcef4(&work->controls[2], 4, 4, 1);
     data_02176bcc = work;
-    work->fieldf0 = 8;
-    work->substate = 0;
-    work->state = 0;
-    work->mode = 2;
-    work->fieldf4 = 1;
-    work->field04 = 0;
-    work->field08 = 0;
-    Unk1241ec_Unk_124224((u16)*(u32 *)(work->controls[0] + 0x10));
-    Unk0cb32c_Unk_0cb35c(work->records[9]);
+    work->unk_00f0 = 8;
+    work->unk_0001 = 0;
+    work->unk_0000 = 0;
+    work->unk_0002 = 2;
+    work->unk_00f4 = 1;
+    work->unk_0004 = 0;
+    work->unk_0008 = 0;
+    Unk1241ec_Unk_124224((u16)work->controls[0].unk_0010);
+    Unk0cb32c_Unk_0cb35c(work->records[0].unk_0009);
     func_02052634(1, 0, 31);
 }

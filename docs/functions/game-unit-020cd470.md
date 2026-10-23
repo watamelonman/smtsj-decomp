@@ -34,6 +34,12 @@ Evidence below refers to the original instruction addresses and field accesses.
   selector/display helpers. The producer must respect the four-slot capacity.
   A guarded do/while preserves the original pointer setup after the count check;
   a for-loop candidate moved it before that check and failed matching.
+  Layout is typed: `Unk0cd470Record` (0x1a bytes; bytes +8/+9 of the first
+  record feed 020e54d4 and 020cb35c, u16 at +0xa is the id) and
+  `Unk0cd470Control` (0x1c bytes; u32 at +0x10 read for 02124224). The loop
+  indexes `records[i]`; walking a `Unk0cd470Record *` from +0x20 adds an
+  `add r6, r4, #0x20` absent from the original. Array sizes (4 items,
+  4 records) are guessed from the field gaps.
 
 ## Hard list
 
