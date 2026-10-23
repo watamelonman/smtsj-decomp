@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched eight additional game/unit_020bd5f0 input, list, range and setup routines.
 - Matched seven M1-T1136 lookup, descriptor and selection helpers at 100% objdiff; documented the reverse-lookup compiler differences on the unit hard list.
 - Verified all eight M1-T1110 state, grid and dispatch helpers at 100% objdiff; added typed work-area/action/state views and per-function behavior documentation.
 - Matched all seven M1-T173 functions in `src/game/unit_020efb90.c` at 100% objdiff, including the row submission loop and event/mode filters; added typed contracts and per-function documentation.

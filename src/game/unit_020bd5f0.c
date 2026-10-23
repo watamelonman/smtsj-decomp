@@ -192,7 +192,8 @@ int Unk0bd5f0_Unk_0c75a8(u16 *arg0,u16 *arg1)
 
 
 int func_020537b8(u32 port, u32 mask);
-/* decompiler-derived */
+/* Latches group-zero input masks 0x40, 0x80, 0x20 and 0x10 into the
+   caller-owned words at +0x150..+0x15c; clear queries preserve prior values. */
 void Unk0bd5f0_Unk_0c2050(Unk0bd5f0Work *arg0){
   int tmp1;
   tmp1 = func_020537b8(0,0x40);
@@ -412,4 +413,145 @@ void func_020c84c0(Unk0bd5f0SelectObj *o)
     func_020bcfc4(o->unk_0044, o->unk_0128[o->unk_0124]);
     func_020c72a4(o->unk_0108, o->unk_0110, (u8)(o->unk_0054 + 100));
     Unk0a0ce4_Unk_0a0da4(2);
+}
+
+/* Borrowed list owner: offsets are established by the three collection routines. */
+typedef struct Unk0bd5f0List {
+    u8 pad_0000[0x44];
+    u32 start;
+    u8 pad_0048[0x6c];
+    void *output;
+} Unk0bd5f0List;
+
+extern void func_02008644(u32 value, void *dest, u32 bytes);
+extern void func_020c1cd0(Unk0bd5f0List *obj, const u32 *ids);
+extern int func_0209a158(u32 id);
+extern void func_02057e18(u32 value);
+extern void func_02057df8(void);
+
+/* Collects at most six mapped halfword ids (+0xaa, stride 60), stopping at a
+   negative mapping; forwards the populated count and refreshes the owner. */
+void func_020c1af4(Unk0bd5f0List *obj)
+{
+    u32 work = (u32)Unk02e000_GetWorkArea();
+    u32 ids[6];
+    u32 i, start, end;
+    func_02008644(0, ids, sizeof(ids));
+    start = obj->start;
+    end = start + 6;
+    for (i = start; i < end; i++) {
+        s8 *mapping = (s8 *)(work + i + 0x300);
+        s32 index = mapping[0x48];
+        if (index < 0) break;
+        ids[i - start] = *(u16 *)(work + index * 60 + 0xaa);
+    }
+    CampStatus_Unk_0dde3c(obj->output, 18, 1, ids, i - start);
+    func_020c1cd0(obj, ids);
+}
+
+/* Refreshes the owner with six zero-initialized slots populated until the first
+   negative signed mapping. The borrowed work records use a 60-byte stride. */
+void func_020c1c4c(Unk0bd5f0List *obj)
+{
+    u32 work = (u32)Unk02e000_GetWorkArea();
+    u32 ids[6];
+    u32 i, start, end;
+    func_02008644(0, ids, sizeof(ids));
+    start = obj->start;
+    end = start + 6;
+    for (i = start; i < end; i++) {
+        s8 *mapping = (s8 *)(work + i + 0x300);
+        s32 index = mapping[0x48];
+        if (index < 0) break;
+        ids[i - start] = *(u16 *)(work + index * 60 + 0xaa);
+    }
+    func_020c1cd0(obj, ids);
+}
+
+/* Forwards up to six mapped ids to the owner's output. A negative mapping
+   terminates collection; the count excludes the unused zero-filled slots. */
+void func_020c1d88(Unk0bd5f0List *obj)
+{
+    u32 ids[6];
+    u32 i, start, end;
+    u32 work;
+    func_02008644(0, ids, sizeof(ids));
+    start = obj->start;
+    work = (u32)Unk02e000_GetWorkArea();
+    end = start + 6;
+    for (i = start; i < end; i++) {
+        s8 *mapping = (s8 *)(work + i + 0x300);
+        s32 index = mapping[0x48];
+        if (index < 0) break;
+        ids[i - start] = *(u16 *)(work + index * 60 + 0xaa);
+    }
+    CampStatus_Unk_0dde3c(obj->output, 18, 1, ids, i - start);
+}
+
+/* Counts accepted ids in an inclusive signed range. For 111..210 only,
+   additionally requires HasFlagsMid; the result wraps to sixteen bits. */
+u16 func_020c7b30(s32 first, s32 last)
+{
+    u16 count = 0;
+    if (first == 111 && last == 210) {
+        u32 id;
+        for (id = 111; id <= 210; id++) {
+            void *record = Unk09974c_Unk_099d78(id);
+            if (Unk09974c_Unk_0998d8(id) && Unk09974c_HasFlagsMid(record)) count++;
+        }
+    } else {
+        for (; first <= last; first++) {
+            if (Unk09974c_Unk_0998d8(first)) count++;
+        }
+    }
+    return count;
+}
+
+/* Tests an inclusive unsigned range, using the alternate predicate for exactly
+   411..900. Returns on the first accepted id; an empty range returns false. */
+int func_020c7bc8(u32 first, u32 last)
+{
+    if (first == 411 && last == 900) {
+        for (; first <= last; first++) {
+            if (func_0209a158(first)) return 1;
+        }
+    } else {
+        for (; first <= last; first++) {
+            if (Unk09974c_Unk_0998d8(first)) return 1;
+        }
+    }
+    return 0;
+}
+
+/* For a live global context, resets helper state and configures two rows on its
+   borrowed +0x108 object with the observed coordinates and flags. */
+void func_020c83a0(void)
+{
+    if (data_02176bb4 == 0) return;
+    func_02057e18(31);
+    func_02057df8();
+    Unk0ddeb0_Unk_0ddeb0(data_02176bb4->unk_0108, 1, 152, 0, 25, 10);
+    Unk0ddeb0_Unk_0ddeb0(data_02176bb4->unk_0108, 1, 164, 1, 25, 10);
+}
+
+/* Descriptor passed synchronously to func_020bcbc4; two flag bytes precede
+   sixteen word slots, as established by the initialization loops. */
+typedef struct Unk0bd5f0InputDescriptor {
+    u8 flags[2];
+    u32 slots[16];
+} Unk0bd5f0InputDescriptor;
+extern void func_020bcbc4(u32 kind, Unk0bd5f0InputDescriptor *descriptor);
+
+/* Installs kind 3 with flag bit 1 and slot 1 set to 24, then latches input
+   flags into the caller-owned work object. */
+void func_020c1f40(Unk0bd5f0Work *obj)
+{
+    Unk0bd5f0InputDescriptor desc;
+    int i;
+    for (i = 0; i < 2; i++) desc.flags[i] = 0;
+    for (i = 0; i < 16; i++) desc.slots[i] = 0;
+    desc.slots[1] = 24;
+    desc.flags[0] |= 2;
+    func_020bcbc4(3, &desc);
+    Unk0bd5f0_Unk_0c2050(obj);
 }
