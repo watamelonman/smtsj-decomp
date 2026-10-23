@@ -8,18 +8,38 @@
  */
 #include "types.h"
 
-void Unk02dcfc_Unk_02df00(int worker, u32 code);
+/*
+ * Worker object held at owner +0xe8. Only the fields these handlers touch are
+ * modeled; +0x18/+0x1c match the Worker view in src/game/unit_0202dcfc.c.
+ */
+typedef struct Unk03c474Worker {
+  u8 pad_0000[0x0c];
+  u16 unk_000c;
+  u8 pad_000e[0x0a];
+  u32 unk_0018;
+  u8 pad_001c[0x0c];
+  u32 unk_0028; /* 0 until Unk03aae8_Unk_03ad24 has run for this worker */
+} Unk03c474Worker;
+
+/* Only the owner field read by these handlers is modeled; other fields are opaque. */
+typedef struct Unk03c474Owner {
+  u8 pad_0000[0xe8];
+  Unk03c474Worker *worker;
+} Unk03c474Owner;
+
+/* Writes worker +0x18 = 21 and +0x1c = code. */
+void Unk02dcfc_Unk_02df00(Unk03c474Worker *worker, u32 code);
 void Unk02dcfc_SetOwnerCode26(void);
 int func_0203ac00(int index);
-u32 Unk03aae8_Unk_03ad14(void);
-int Unk03aae8_Unk_03ad24();
-int Unk03aae8_Unk_03ad98();
-int func_0205e484();
+Unk03c474Owner *Unk03aae8_Unk_03ad14(void);
+void Unk03aae8_Unk_03ad24(Unk03c474Worker *worker);
+u32 Unk03aae8_Unk_03ad98(Unk03c474Worker *worker, int value);
+void func_0205e484(int value, int mode);
 /* Consumes the value left in r0 by func_0203ac00 in the original handler. */
 void func_0205e590(int value);
-int func_02065544();
-int func_0206569c();
-int func_02065bc0();
+int func_02065544(void);
+void func_0206569c(u32 value);
+void func_02065bc0(void);
 /* Applies `on` to the visor setters selected by the current visor mode (+0). */
 void func_020a269c(u32 on);
 void ScanVisor_Unk_0a273c(u32 on);
@@ -157,66 +177,66 @@ u32 Unk03c474_Unk_03c588(void)
   return 1;
 }
 
-/* Only the owner field read by this handler is modeled; other fields are opaque. */
-typedef struct Unk03c474Owner {
-  u8 pad_0000[0xe8];
-  int worker;
-} Unk03c474Owner;
-
 /* Forwards script argument index 0 to func_0205e590, then sets worker state 21/code 1; returns 3. */
 u32 Unk03c474_Unk_03c4a0(void)
 {
   Unk03c474Owner *owner;
   func_0205e590(func_0203ac00(0));
-  owner = (Unk03c474Owner *)Unk03aae8_Unk_03ad14();
+  owner = Unk03aae8_Unk_03ad14();
   Unk02dcfc_Unk_02df00(owner->worker, 1);
   return 3;
 }
 
-/* decompiler-derived */
+/*
+ * Passes script argument index 0 and mode 0 to func_0205e484, then sets the
+ * owner's worker to state 21/code 1 via Unk02dcfc_Unk_02df00; returns 3.
+ */
 u32 Unk03c474_Unk_03c474(void)
 {
-  u32 value1;
-  int value2;
-  value1 = func_0203ac00(0);
-  func_0205e484(value1,0);
-  value2 = Unk03aae8_Unk_03ad14();
-  Unk02dcfc_Unk_02df00(*(u32 *)(value2 + 0xe8),1);
+  func_0205e484(func_0203ac00(0), 0);
+  Unk02dcfc_Unk_02df00(Unk03aae8_Unk_03ad14()->worker, 1);
   return 3;
 }
 
-static inline void Unk03c474_SetSubUnkC(u16 v, u8 *sub)
+/*
+ * Stores script argument index 0 minus one in worker +0x0c when the argument
+ * is positive (a 1-based value kept 0-based); returns 1.
+ */
+static inline void Unk03c474_SetWorkerUnkC(u16 value, Unk03c474Worker *worker)
 {
-    FIELD(u16, sub, 0x0c) = v;
-}
-int Unk03c474_Unk_03c608(void)
-{
-    int v = func_0203ac00(0);
-    if (v > 0) {
-        Unk03c474_SetSubUnkC(v - 1, FIELD(u8 *, Unk03aae8_Unk_03ad14(), 0xe8));
-    }
-    return 1;
+  worker->unk_000c = value;
 }
 
-/* decompiler-derived */
+u32 Unk03c474_Unk_03c608(void)
+{
+  int value = func_0203ac00(0);
+  if (value > 0) {
+    /* The helper order (value computed before the owner lookup) is what matches. */
+    Unk03c474_SetWorkerUnkC(value - 1, Unk03aae8_Unk_03ad14()->worker);
+  }
+  return 1;
+}
+
+/*
+ * Runs Unk03aae8_Unk_03ad24 once per worker (guarded by +0x28), passes script
+ * argument index 0 through Unk03aae8_Unk_03ad98, calls func_02065bc0 when
+ * func_02065544 reports 0, hands the result to func_0206569c and sets worker
+ * +0x18 = 28; returns 3.
+ */
 u32 Unk03c474_Unk_03c638(void)
 {
-  u32 value1;
-  int value2;
-  int value3;
-  value1 = func_0203ac00(0);
-  value2 = Unk03aae8_Unk_03ad14();
-  value2 = *(int *)(value2 + 0xe8);
-  if (*(int *)(value2 + 0x28) == 0) {
-    Unk03aae8_Unk_03ad24(value2);
-    *(u32 *)(value2 + 0x28) = 1;
+  int arg = func_0203ac00(0);
+  Unk03c474Worker *worker = Unk03aae8_Unk_03ad14()->worker;
+  u32 value;
+  if (worker->unk_0028 == 0) {
+    Unk03aae8_Unk_03ad24(worker);
+    worker->unk_0028 = 1;
   }
-  value1 = Unk03aae8_Unk_03ad98(value2,value1);
-  value3 = func_02065544();
-  if (value3 == 0) {
+  value = Unk03aae8_Unk_03ad98(worker, arg);
+  if (func_02065544() == 0) {
     func_02065bc0();
   }
-  func_0206569c(value1);
-  *(u32 *)(value2 + 0x18) = 0x1c;
+  func_0206569c(value);
+  worker->unk_0018 = 28;
   return 3;
 }

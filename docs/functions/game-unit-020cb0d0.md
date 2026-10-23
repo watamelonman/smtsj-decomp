@@ -6,6 +6,8 @@ because the table contents' domain meaning has not been established.
 
 | Function | Observed behavior and contract |
 | --- | --- |
+| `func_020cb0d0` (M1-T166) | Resolves group 14/table 1 with `020445f4` and returns `0204fed8(table, index)`. For ids above 0x15e it performs a (discarded) table-1 lookup and uses index 0; otherwise the index is bits 5–8 of the table-0 record's word at +0x24. The table-0 record must exist (no null check). |
+| `func_020cb12c` (M1-T166) | Same shape for group 14/table 2. The index is bits 11–15 of the halfword at +0x26 of the table-1 record (ids above 0x15e) or bits 12–16 of the table-0 word at +0x24. Records must exist. |
 | `Unk0cb0d0_Unk_0cb190` | Subtracts the unsigned halfword keys at +0x20 of two non-null records. Both lookup functions pass this comparator to `func_02011810`. |
 | `func_020cb1a0` | Resolves group 11/table 0 with `020445d0`, obtains its base with `0204fde0` and count with `0204fe18`, then searches with stride 0x40. Only the input's low 16 bits initialize the comparison key. Returns a borrowed record pointer or null. |
 | `Unk0cb0d0_Unk_0cb1f8` | Resolves group 11/table 0, invokes the base and count helpers and discards their results. |
@@ -22,4 +24,6 @@ reads only +0x20. No module boundary changes were needed.
 
 ## Hard list
 
-None for M1-T165.
+None for M1-T165 or M1-T166. Both M1-T166 functions keep their `func_` names because
+the group-14 tables' meaning is not established; `Unk0cb0d0Record2a` was added
+for table 1's halfword at +0x26 (`func_020cb21c` now returns it).

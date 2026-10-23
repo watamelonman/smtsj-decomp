@@ -2,6 +2,18 @@
 
 ## Unreleased
 - Matched all three M1-T172 mode-transition functions in `src/game/unit_0209e96c.c` at 100% objdiff, with typed cell/record views and per-function contracts.
+- Matched `func_020fef0c` (singleton task creation) in `src/game/unit_020fedd4.c` and typed the TU's 36-byte task object; all 16 functions there are at 100% objdiff.
+- Matched M1-T166's `func_020cb0d0` and `func_020cb12c` (group-14 table index lookups) in `src/game/unit_020cb0d0.c` at 100% objdiff.
+- Matched Unk0f8448_GetEntry, func_020f84f4 and func_020f8558 in game/unit_020f8448 (M1-T151) at 100%, with typed entry, state, context and work-area structs.
+- Matched `func_020e6708` (5-entry ring buffer of recent bit writes) in `src/game/unit_020e651c.c` and documented all eight M1-T147 functions.
+- Matched all eight M1-T141 handlers in `src/game/unit_020bb908.c` at 100% objdiff with typed entry/work struct layouts.
+- Matched all five M1-T139 functions in `src/game/unit_02116360.c` at 100% objdiff, with typed entry/cell fields and per-function documentation.
+- Matched M1-T136 `func_020bbed4` in `src/game/unit_020bbd6c.c` at 100% objdiff; every function in that TU is now C.
+- Matched the M1-T130 record factory `func_020fec84` and per-frame step `func_020fecfc` in `src/game/unit_020feba0.c` at 100% objdiff (with `Unk0feba0_Unk_0fed7c`, all three task functions now in C).
+- Verified the three M1-T118 handlers in `src/game/unit_0203c474.c` at 100% objdiff: replaced raw offsets with typed owner/worker views, gave their callees real prototypes, and documented each function.
+- Matched seven M1-T1136 lookup, descriptor and selection helpers at 100% objdiff; documented the reverse-lookup compiler differences on the unit hard list.
+- Verified all eight M1-T1110 state, grid and dispatch helpers at 100% objdiff; added typed work-area/action/state views and per-function behavior documentation.
+- Matched all seven M1-T173 functions in `src/game/unit_020efb90.c` at 100% objdiff, including the row submission loop and event/mode filters; added typed contracts and per-function documentation.
 - Matched all six M1-T169 work-block functions in `src/game/unit_020fbc74.c` at 100% objdiff, with typed fields and per-function contracts.
 - Verified all eight M1-T167 singleton accessors and forwarding helpers at 100% objdiff; added typed callee parameters, contracts, and instruction evidence.
 - Matched all eight M1-T165 record lookup, comparison and packed-field helpers in `src/game/unit_020cb0d0.c` at 100% objdiff with typed contracts and per-function documentation.
