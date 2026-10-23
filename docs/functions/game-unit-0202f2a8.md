@@ -331,3 +331,93 @@ now covers +0x73DC and +0x7470..+0x748B, `Unk02f2a8Action` gains +0x9C, new
 - `Unk02f2a8_Unk_035b08`: hand-matched
 - `Unk02f2a8_Unk_035b74`: hand-matched
 - `Unk02f2a8_Unk_0366dc`: hand-matched
+
+## M1-T1110: eight state, grid and dispatch helpers
+
+All eight C bodies are at 100% objdiff and read their fields through typed views:
+the work area, `Unk02f2a8Action`, `Unk02f2a8State`/`Unk02f2a8StateRoot` (034b24,
+03064c, 0306a8), `Unk02f2a8Slots6138` (GetSlot_02f2dc) and `Unk02f2a8Body` with its
+s8 id array at +0x30 and two `Unk02f2a8MapBlock`s at +0x23c/+0x2c8 (034970, cell
+bits via `Unk02f2a8Obj39160`). In 0302f4 the empty `case 5` is kept so the jump
+table spans 0..5 like the original. The names are retained;
+neutral names indicate that field semantics are not established. No hard functions
+remain for this card. No module boundary changes were needed.
+
+- `Unk02f2a8_SetField35c` (80 bytes): rejects unsigned ids >=90, stores the id
+  at work-area +0x35c, tests its flag and sets it when clear. Returns one only
+  when setting a previously clear flag. The store offset supports the name.
+- `Unk02f2a8_SetGridPos` (80 bytes): `IsInGrid45x40` validates x/y before stores
+  to signed bytes +0x364/+0x365 and +0x366/+0x367, followed by the direction
+  word at +0x358. Returns one on success and zero without stores on failure.
+  The validation and paired coordinate stores support the grid name.
+- `Unk02f2a8_GetSlot_02f2dc` (84 bytes): reads words +0x6138/+0x613c/+0x6140
+  from the borrowed 02e774 block for selectors 1/2/3; other selectors return
+  zero. The paired `SetField6138` writes the same offsets.
+- `Unk02f2a8_Unk_034970` (84 bytes): returns borrowed p+572 by default. The
+  grid object at x/y supplies bits 16..19 of its +4 word; a nonzero value n
+  selects signed byte p+48+n-1. When that id is nonnegative and 0e63c8 returns
+  nonzero, returns p+712 instead. The map-block semantics remain unknown.
+- `Unk02f2a8_Unk_0302f4` (88 bytes): dispatches action +0x10: zero sets +0x14
+  to one; 1/2/3/4 call 030204/02f530/02f8f0/02fc50 respectively. All other
+  selectors return without a handler. Requires a valid action pointer.
+- `Unk02f2a8_Unk_034b24` (88 bytes): returns zero if state +0x73e0 equals
+  one, +0x73c8 differs from two, or root +0x10 differs from one; otherwise
+  returns whether root +4 is nonzero. Requires the singleton and its root.
+- `Unk02f2a8_Unk_03064c` (92 bytes): sets state +0x73e0 to one, clears root
+  +4/+0x4c, sets state +0x757c to four, resets the object at +0x7598, calls
+  the visor refresh pair, then calls 0a2a8c for indices 0 through 6.
+- `Unk02f2a8_Unk_0306a8` (92 bytes): sets root +0x4c/+0x54/+0x44/+0x50
+  to one, clears root +0x38/+0x34 and state +0x73e0/+0x73e4, then calls
+  0caf78, 0a0d30(1) and 0caf88 in order. The caller 032a08 uses this before
+  invoking 0305a8 with type one; no stronger semantic name is established.
+
+## M1-T1111: eight counter, dispatch and forwarding helpers
+
+All eight inherited C bodies already matched at the start of this card. Their
+instruction output remains 100% after documenting contracts and replacing the
+integer context addresses in 02f378 and 030d20 with byte pointers. The latter is
+void: it has no result of its own, and caller 033c94 discards the call result.
+No module boundary changes or new semantic names are introduced. The evidence
+below is the delinked instruction/field access sequence verified by objdiff.
+
+- `Unk02f2a8_Unk_02f378` (96 bytes): when context +0x60 equals one,
+  increments the unsigned counter +0x6c only below limit +0x68. Otherwise
+  decrements it only when positive as a signed word. Calls 036368 with
+  +0x7c and words +0x64/+0x68/+0x6c, then 035edc with +0x7c/+0x70.
+  The context and both sub-blocks must exist; their gameplay meaning is unknown.
+- `Unk02f2a8_ApplyPending` (96 bytes): copies pending word +0x14 to current
+  +0x10, then resets +0x14 to -1. Action one sets +0x5c/+0x50 to one;
+  actions two, three and four call 02f3d8, 02f8ac and 02fc10. Other values
+  do nothing after the copy. The pending check in 03034c and this dispatch
+  support the existing descriptive name. Requires a valid action context.
+- `Unk02f2a8_Unk_0308c0` (100 bytes): copies 16 bytes from context +0x40
+  into a zero-initialized 17-byte stack buffer and calls 039520 with the
+  context and buffer. The last byte stays zero; the source need not contain
+  a terminator. The callee borrows the buffer for the call.
+- `Unk02f2a8_Unk_030d20` (100 bytes): calls the visor helper 0a2b38,
+  selects mode one for argument one and mode two otherwise, calls 03480c
+  with context +4 and one, then resets +0x7550 and +0x7598 through 09974c
+  and 11f2d0. Calls 096130, 065eac, 0964f8 and 0a2414 in that order.
+  Requires a live context; caller 033c94 invokes this before releasing it.
+- `Unk02f2a8_Unk_0313a4` (100 bytes): obtains cell bits through
+  GetObj39160Bits16 using context +0x240 and signed coordinates
+  +0x744e/+0x744f. Reads 02e8b8 and work-area halfword +0x35c, then
+  calls 0a7474 with context +0x5508, that result, +0x240, +0x18,
+  the halfword, cell bits and one. Context and work-area storage are borrowed.
+- `Unk02f2a8_Unk_035b74` (100 bytes): opens resource 36, obtains its data
+  and row count, and counts rows whose signed byte +0x19 equals the argument.
+  The stride is 40 bytes. Its u8 index wraps at 256, so termination requires
+  fewer than 256 rows; no new bound or fallback is added.
+- `Unk02f2a8_Unk_030704` (104 bytes): copies exactly 16 readable signed
+  bytes into a zero-initialized 17-byte stack buffer, then calls 038ff8
+  with arguments one, the buffer, four and five. Argument three is unused;
+  argument five is a byte. The buffer is borrowed only during the call.
+- `Unk02f2a8_Unk_030198` (108 bytes): returns zero if 04b4c4 rejects the
+  context. Otherwise 04ca1c selects which word to set to one: +0x20 for
+  selectors 0/1/2, +0x28 for five, +0x2c for four. Returns one for these
+  selectors and zero for all others. Requires writable context storage.
+
+Validation: match gate (all eight 100%), full build through match/checksum,
+anticheat, nine existing unit tests, and byte-identical checksum artifacts.
+No new tests are required by this matching card; objdiff checks the original
+instruction output. Hard list for M1-T1111: none.
