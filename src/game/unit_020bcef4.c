@@ -9,14 +9,17 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
 typedef struct Unk0bcef4Work {
     u8 unk_0000[0x4];
-    u32 UnkField0004;
+    s32 UnkField0004;
 } Unk0bcef4Work;
 
 
-int func_020bd30c();
-int func_020bd49c();
+/* Dispatches the record operation; the third argument controls its predicate check. */
+int func_020bd30c(u32 arg0, u32 arg1, s32 arg2);
+/* Writes the record mode at +8; mode 2 is used by the wrapper below. */
+void func_020bd49c(u32 arg0, s32 mode);
 u32 Unk0bcef4_Unk_0bd584(int arg0,u32 arg1);
-int Unk0bd5f0_Unk_0bd614();
+/* Consumes the identifier loaded from the caller-owned first word. */
+int Unk0bd5f0_Unk_0bd614(u32 identifier);
 
 void Unk0bcef4_Unk_0bd2fc(u32 arg0,u32 arg1);
 void Unk0bcef4_Unk_0bd388(u32 arg0,u32 *arg1);
@@ -25,31 +28,31 @@ void Unk0bcef4_Unk_0bd5c4(u32 arg0);
 void Unk0bcef4_Unk_0bd3e0(Unk0bcef4Work *work);
 void Unk0bcef4_Unk_0bd480(int *arg0,int arg1);
 
-/* decompiler-derived */
+/* Forwards both arguments with a zero third argument (020bd2fc..020bd308); borrowed addresses must satisfy func_020bd30c. */
 void Unk0bcef4_Unk_0bd2fc(u32 arg0,u32 arg1)
 {
   func_020bd30c(arg0,arg1,0);
 }
 
-/* decompiler-derived */
+/* Forwards the borrowed count word to Unk0bcef4_Unk_0bd584 (load at 020bd38c); arg1 must be readable. */
 void Unk0bcef4_Unk_0bd388(u32 arg0,u32 *arg1)
 {
   Unk0bcef4_Unk_0bd584(arg0,*arg1);
 }
 
-/* decompiler-derived */
+/* Passes the first word to Unk0bd5f0_Unk_0bd614 (load at 020bd474); arg0 must be readable. */
 void Unk0bcef4_Unk_0bd470(u32 *arg0)
 {
   Unk0bd5f0_Unk_0bd614(*arg0);
 }
 
-/* decompiler-derived */
+/* Selects mode 2 through func_020bd49c (020bd5c4..020bd5d0); arg0 identifies its writable record. */
 void Unk0bcef4_Unk_0bd5c4(u32 arg0)
 {
   func_020bd49c(arg0,2);
 }
 
-/* decompiler-derived */
+/* Increments the signed word at +4 and caps it at 1 (020bd3e0..020bd3f8); work is borrowed and writable. */
 void Unk0bcef4_Unk_0bd3e0(Unk0bcef4Work *work)
 {
   int value;
@@ -60,7 +63,16 @@ void Unk0bcef4_Unk_0bd3e0(Unk0bcef4Work *work)
   }
 }
 
-/* decompiler-derived */
+/* Advances the signed +4 word modulo 2 (020bd3fc..020bd414).
+ * The remainder retains the dividend's sign; work is borrowed and writable.
+ */
+void func_020bd3fc(Unk0bcef4Work *work)
+{
+    work->UnkField0004++;
+    work->UnkField0004 %= 2;
+}
+
+/* Stores the state and sets the next word to 1 for states 1, 4, or 6 (020bd480..020bd498); arg0 has two writable words. */
 void Unk0bcef4_Unk_0bd480(int *arg0,int arg1)
 {
   *arg0 = arg1;
@@ -131,10 +143,14 @@ u32 Unk0bcef4_Unk_0bd584(int arg0,u32 arg1)
   return tmp2;
 }
 
+/* Borrowed first-word view; the comparisons at 020bd5d8..020bd5e0 identify it as a state. */
 typedef struct Unk0bcef4State {
     s32 state;
 } Unk0bcef4State;
 
+/* Returns whether the first word is state 0, 1, or 5 (020bd5d4..020bd5ec),
+ * which is the evidence for the existing descriptive symbol. t must be readable.
+ */
 int Unk0bcef4_IsState015(Unk0bcef4State *t)
 {
     s32 s = t->state;
