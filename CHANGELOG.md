@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T166's `func_020cb0d0` and `func_020cb12c` (group-14 table index lookups) in `src/game/unit_020cb0d0.c` at 100% objdiff.
 - Matched all eight M1-T165 record lookup, comparison and packed-field helpers in `src/game/unit_020cb0d0.c` at 100% objdiff with typed contracts and per-function documentation.
 - Matched all three game/unit_020964f8 functions, including the six-ID packed-record selector, with typed views and per-function documentation.
 - Matched all three M1-T162 state-sequence and cleanup functions in `src/game/unit_02039520.c`; documented typed work-block boundaries and null-input contracts.
