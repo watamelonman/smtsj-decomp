@@ -2,6 +2,14 @@
 
 ## Unreleased
 - Matched `func_020f82e0` (M1-T218), the per-frame state update in `src/game/unit_020f81a4.c`, at 100% objdiff; the callback fields at +0x8c..+0xa0 are now typed.
+- M1-T203: `src/ImageBg.c` now has matching C for `func_020e5580` (work-task creation) and `func_020e5664` (mode-dispatch update callback); all 13 ImageBg functions are at 100%.
+- Matched all eight M1-T190 callbacks and state initialization functions in `src/game/unit_020cd470.c` at 100% objdiff, with typed layouts and per-function evidence.
+- Matched `func_020a25e0` and the seven M1-T183 work-field predicates in `game/unit_020a23f4` at 100% objdiff; replaced raw offsets with a typed `Unk0a23f4Work` struct and documented each contract.
+- Verified all eight M1-T180 callbacks in `src/game/unit_0203bba4.c` at 100% objdiff, with typed work-area/context struct views (`include/game/unit_0203bba4.h`), consistent prototypes, behavior contracts, and per-function documentation.
+- Matched eight additional game/unit_020bd5f0 input, list, range and setup routines.
+- Matched `func_02036068` and rewrote the seven other M1-T1112 functions in `src/game/unit_0202f2a8.c` on typed struct views with contract comments, replacing their raw `FIELD` offsets. All eight are at 100% objdiff.
+- Matched seven M1-T222 arithmetic, query-limit, and comparison functions in `src/game/unit_020b0b5c.c`; documented the remaining fixed-point function and its 99.33% candidate on the hard list.
+- Matched all six M1-T220 area-query and cell-update functions in `src/game/unit_021159f8.c`; added typed field views and per-function contracts.
 - Matched all eight M1-T217 functions in `src/game/unit_020f81a4.c` at 100% objdiff, with typed object fields and callbacks and per-function evidence.
 - Matched all eight work-area and packed-pair functions in `src/game/unit_0209727c.c` at 100% objdiff; added typed contracts and per-function evidence.
 - Matched all four M1-T212 script handlers in `game/unit_0203d494` at 100% objdiff; documented query counting, numeric conversion, and state-setting argument forwarding.

@@ -55,7 +55,8 @@ typedef struct Unk02f2a8GameStateTail {
  * direction (+0x358); Unk02f2a8_Unk_02fc10 clears its +0x1c word. Action type 3
  * (Unk02f2a8_Unk_02f8ac) uses the same object and sets +0x9c. */
 typedef struct Unk02f2a8Action {
-    u8 pad_0000[0x10];
+    u32 unk_0000;               /* word handed to 0209aca0 by Unk_03034c */
+    u8 pad_0004[0x10 - 4];
     u32 unk_0010;
     u32 unk_0014;
     u32 unk_0018;
@@ -70,7 +71,10 @@ typedef struct Unk02f2a8StateRoot {
     u32 unk_0004;
     u8 pad_0008[0x10 - 8];
     u32 unk_0010;
-    u8 pad_0014[0x34 - 0x14];
+    u32 unk_0014;               /* 1/2/0 stored by Unk_032f3c */
+    u32 unk_0018;
+    u32 unk_001c;
+    u8 pad_0020[0x34 - 0x20];
     u32 unk_0034;
     u32 unk_0038;
     u8 pad_003c[8];
@@ -89,7 +93,15 @@ typedef struct Unk02f2a8State {
     u8 pad_73cc[0x73e0 - 0x73cc];
     u32 unk_73e0;
     u32 unk_73e4;
-    u8 pad_73e8[0x757c - 0x73e8];
+    u8 pad_73e8[0x7478 - 0x73e8];
+    u32 unk_7478;               /* +0x7478..+0x748b cleared by Unk_032f3c */
+    u32 unk_747c;
+    u8 unk_7480;
+    u8 unk_7481;
+    u8 pad_7482[2];
+    u32 unk_7484;
+    u32 unk_7488;
+    u8 pad_748c[0x757c - 0x748c];
     u32 unk_757c;
     u8 pad_7580[0x18];
     u32 unk_7598;
@@ -305,7 +317,8 @@ int func_02035890();
 int Unk02f2a8_SetField35c(u32 id);
 
 typedef struct Unk02f2a8Res36 {
-    u8 pad_0000[0x19];
+    u8 pad_0000[0x18];
+    u8 unk_0018;                /* Unk_035820 only matches rows where this is 1 */
     s8 unk_0019;
     s8 unk_001a;
     s8 unk_001b[0xd];
@@ -892,20 +905,24 @@ void Unk02f2a8_ApplyPending(u8 *p)
     }
 }
 
-void Unk02f2a8_Unk_03034c(u8 *p)
+/* Per-frame action step: when a pending action (+0x14 != -1) exists and
+ * 04b710 returns 1 or 04ca1c returns -1, ApplyPending promotes it. Then runs
+ * 0302f4 and 02f378, passes word +0 and the work-area grid bytes +0x364/+0x365
+ * to 0209aca0, and calls 116598. The action is borrowed and must be live. */
+void Unk02f2a8_Unk_03034c(Unk02f2a8Action *action)
 {
-    u8 *w1;
-    u8 *w2;
-    if (FIELD(s32, p, 20) != -1) {
+    Unk02f2a8WorkArea *w1;
+    Unk02f2a8WorkArea *w2;
+    if (action->unk_0014 != -1) {
         if (func_0204b710() == 1 || func_0204ca1c() == -1) {
-            Unk02f2a8_ApplyPending(p);
+            Unk02f2a8_ApplyPending((u8 *)action);
         }
     }
-    Unk02f2a8_Unk_0302f4((Unk02f2a8Action *)p);
-    Unk02f2a8_Unk_02f378(p);
-    w1 = (u8 *)Unk02e000_GetWorkArea();
-    w2 = (u8 *)Unk02e000_GetWorkArea();
-    func_0209aca0(FIELD(u32, p, 0), FIELD(s8, w1 + 0x300, 100), FIELD(s8, w2 + 0x300, 101));
+    Unk02f2a8_Unk_0302f4(action);
+    Unk02f2a8_Unk_02f378((u8 *)action);
+    w1 = Unk02e000_GetWorkArea();
+    w2 = Unk02e000_GetWorkArea();
+    func_0209aca0(action->unk_0000, w1->unk_0364, w2->unk_0365);
     func_02116598();
 }
 
@@ -941,24 +958,27 @@ void Unk02f2a8_Unk_0308c0(u8 *p)
     func_02039520(p, buf);
 }
 
-/* decompiler-derived */
-void Unk02f2a8_Unk_032f3c(int *arg0)
+/* Enter the state set up by 05257c(4), 0a4e9c(3) and 05e590(9): runs
+ * ScanVisor 0a2660, arms the root request with (0x800, 15), clears state
+ * +0x7478..+0x748b, stores root +0x14/+0x18/+0x1c = 1/2/0 and ends with
+ * 0a0da4(8). Requires the state and its root to be live. */
+void Unk02f2a8_Unk_032f3c(Unk02f2a8State *state)
 {
-  func_0205257c(4);
-  Unk0a4e48_Unk_0a4e9c(3);
-  func_0205e590(9);
-  ScanVisor_Unk_0a2660();
-  Unk02f2a8_SetRootUnk60(0x800,0xf);
-  arg0[0x1d1e] = 0;
-  arg0[0x1d1f] = 0;
-  *(u8 *)(arg0 + 0x1d20) = 0;
-  *(u8 *)((int)arg0 + 0x7481) = 0;
-  arg0[0x1d21] = 0;
-  arg0[0x1d22] = 0;
-  *(u32 *)(*arg0 + 0x14) = 1;
-  *(u32 *)(*arg0 + 0x18) = 2;
-  *(u32 *)(*arg0 + 0x1c) = 0;
-  Unk0a0ce4_Unk_0a0da4(8);
+    func_0205257c(4);
+    Unk0a4e48_Unk_0a4e9c(3);
+    func_0205e590(9);
+    ScanVisor_Unk_0a2660();
+    Unk02f2a8_SetRootUnk60(0x800, 15);
+    state->unk_7478 = 0;
+    state->unk_747c = 0;
+    state->unk_7480 = 0;
+    state->unk_7481 = 0;
+    state->unk_7484 = 0;
+    state->unk_7488 = 0;
+    state->root->unk_0014 = 1;
+    state->root->unk_0018 = 2;
+    state->root->unk_001c = 0;
+    Unk0a0ce4_Unk_0a0da4(8);
 }
 
 int Unk03e43c_Unk_03fa28(void);
@@ -1053,7 +1073,9 @@ u32 func_0204fe18();
 /* One map block embedded in the body Unk02f2a8_Unk_034970 picks from; only
  * its extent (the distance between the two blocks) is known. */
 typedef struct Unk02f2a8MapBlock {
-    u8 pad_0000[0x2c8 - 0x23c];
+    u32 unk_0000;               /* nonzero required by Unk_0351b4 */
+    u8 *unk_0004;               /* byte table indexed by 034a8c's result + 15 */
+    u8 pad_0008[0x2c8 - 0x23c - 8];
 } Unk02f2a8MapBlock;
 
 /* Body view used by Unk02f2a8_Unk_034970 (callers pass state +4). */
@@ -1087,15 +1109,19 @@ Unk02f2a8MapBlock *Unk02f2a8_Unk_034970(Unk02f2a8Body *p, int x, int y)
     return r;
 }
 
-int Unk02f2a8_Unk_0349c4(u8 *p, int x, int y)
+/* Return the work-area id +0x35c unless the cell at x/y in block +0x23c
+ * names a slot: bits 16..19 of the cell's +4 word select signed id
+ * p->unk_0030[n - 1]; for a nonnegative id whose 0e63c8 count m is positive,
+ * returns id * 2 + 90 + m - 1 instead. p is the borrowed state body. */
+int Unk02f2a8_Unk_0349c4(Unk02f2a8Body *p, int x, int y)
 {
-    int r = FIELD(u16, (u8 *)Unk02e000_GetWorkArea() + 0x300, 92);
-    u8 *o = (u8 *)Unk038fbc_Unk_039160(p + 572, x, y);
+    int r = Unk02e000_GetWorkArea()->unk_035c;
+    Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)Unk038fbc_Unk_039160(&p->unk_023c, x, y);
     u32 n;
     if (o != 0) {
-        n = (FIELD(u32, o, 4) << 12) >> 28;
+        n = o->unk_0004_16;
         if (n != 0) {
-            s8 k = FIELD(s8, p + (n - 1), 48);
+            s8 k = p->unk_0030[n - 1];
             if (k >= 0) {
                 int m = Unk0e5fb8_Unk_0e63c8(k);
                 if (m > 0) {
@@ -1124,27 +1150,41 @@ int Unk02f2a8_Unk_034b24(void)
     return s->root->unk_0004 != 0;
 }
 
+/* Game state viewed as root pointer plus the body used by 034970. */
+typedef struct Unk02f2a8StateBody {
+    GameStateRoot *root;
+    Unk02f2a8Body body;
+} Unk02f2a8StateBody;
+
+/* Look up the cell value at x/y: needs gGameState and a nonzero word at
+ * body block +0x23c. 034a8c reads the cell in the block chosen by 034970; a
+ * positive result n indexes byte n + 15 of the +0x23c block's table, which is
+ * passed with 3 to 0987ac. Returns that result, or zero otherwise. */
 int Unk02f2a8_Unk_0351b4(int x, int y)
 {
     int r;
     int n;
-    u8 *g;
-    g = (u8 *)gGameState;
+    Unk02f2a8StateBody *g;
+    g = (Unk02f2a8StateBody *)gGameState;
     if (g == 0) {
         return 0;
     }
-    if (FIELD(u32, g, 576) == 0) {
+    if (g->body.unk_023c.unk_0000 == 0) {
         return 0;
     }
     r = 0;
-    n = Unk02f2a8_Unk_034a8c((u8 *)Unk02f2a8_Unk_034970((Unk02f2a8Body *)(g + 4), x, y), x, y);
+    n = Unk02f2a8_Unk_034a8c((u8 *)Unk02f2a8_Unk_034970(&g->body, x, y), x, y);
     if (n > 0) {
-        r = func_020987ac(3, FIELD(u8, FIELD(u8 *, g, 580) + n, 15));
+        r = func_020987ac(3, (g->body.unk_023c.unk_0004 + n)[15]);
     }
     return r;
 }
 
-int Unk02f2a8_Unk_03550c(void *dst, u32 n, int key)
+/* Clear n halfwords at dst through 008644, then copy the record for key from
+ * resource 38 (row 0 of 04fe68, lookup 04fed8) into dst, at most 5 halfwords.
+ * Returns 1 when the record was copied, 0 when the resource or key is missing
+ * (dst stays cleared). dst must hold n halfwords. */
+int Unk02f2a8_Unk_03550c(u16 *dst, u32 n, int key)
 {
     int r = 0;
     void *h;
@@ -1164,16 +1204,19 @@ int Unk02f2a8_Unk_03550c(void *dst, u32 n, int key)
     return r;
 }
 
+/* Return the index of the first resource 36 row with byte +0x18 == 1 and
+ * signed byte +0x19 == a, or 0 when none matches (indistinguishable from row
+ * 0). The u8 index wraps, so the table must have fewer than 256 rows. */
 int Unk02f2a8_Unk_035820(int a)
 {
     void *h = func_020445d0(36, 0);
-    u8 *t = func_0204fde0();
+    Unk02f2a8Res36 *t = (Unk02f2a8Res36 *)func_0204fde0();
     u32 n = func_0204fe18(h);
     int r = 0;
     u8 i;
     for (i = 0; i < n; i++) {
-        u8 *e = t + i * 40;
-        if (e[24] == 1 && a == (s8)e[25]) {
+        Unk02f2a8Res36 *e = &t[i];
+        if (e->unk_0018 == 1 && a == e->unk_0019) {
             r = i;
             break;
         }
@@ -1181,18 +1224,20 @@ int Unk02f2a8_Unk_035820(int a)
     return r;
 }
 
+/* Return the index of the first resource 36 row whose signed bytes
+ * +0x19/+0x1a equal a/b, or 0 when none matches (same as row 0). */
 int Unk02f2a8_Unk_035b08(int a, int b)
 {
     int r;
     u32 i;
     u32 n;
-    u8 *t;
+    Unk02f2a8Res36 *t;
     void *h = func_020445d0(36, 0);
-    t = func_0204fde0();
+    t = (Unk02f2a8Res36 *)func_0204fde0();
     n = func_0204fe18(h);
     r = 0;
-    for (i = 0; i < n; i++, t += 40) {
-        if (a == (s8)t[25] && b == (s8)t[26]) {
+    for (i = 0; i < n; i++, t++) {
+        if (a == t->unk_0019 && b == t->unk_001a) {
             r = i;
             break;
         }
@@ -1223,6 +1268,36 @@ int Unk02f2a8_Unk_035b74(int a)
 
 int Unk0986ac_Unk_098978();
 int Unk0986ac_Thunk_02098714();
+
+/* Point read by func_02036068: words +0 and +8 (x and z by position; the +4
+ * word is not read there). */
+typedef struct Unk02f2a8Point {
+    s32 x;
+    s32 y;
+    s32 z;
+} Unk02f2a8Point;
+
+int func_020024f8(int a, int b);
+void func_02051b18(int *value, int step, int lo, int hi, int mode);
+
+/* Return a signed 16-bit value derived from the offset between two points:
+ * dx = to->x - from->x and dz = to->z - from->z (words +0 and +8). Equal x and
+ * z return zero without calls. Otherwise 020024f8(dz, dx) seeds a local that
+ * 02051b18 updates with -step, bounds -0x8000/0x8000 and mode 2. The value
+ * looks like an angle, but the callees are unnamed, so the name stays neutral.
+ * Both points are borrowed and read-only. */
+s16 func_02036068(const Unk02f2a8Point *from, int step, const Unk02f2a8Point *to)
+{
+    int dx = to->x - from->x;
+    int dz = to->z - from->z;
+    int angle;
+    if (dx == 0 && dz == 0) {
+        return 0;
+    }
+    angle = func_020024f8(dz, dx);
+    func_02051b18(&angle, -step, -0x8000, 0x8000, 2);
+    return (s16)angle;
+}
 
 int Unk02f2a8_Unk_0366dc(int v)
 {
