@@ -207,16 +207,6 @@ now covers +0x73DC and +0x7470..+0x748B, `Unk02f2a8Action` gains +0x9C, new
 - `Unk02f2a8_Unk_030704`
 - `Unk02f2a8_Unk_030198`
 
-## Not done in M1-T1112
-- `Unk02f2a8_Unk_03550c`
-- `Unk02f2a8_Unk_035b08`
-- `Unk02f2a8_Unk_035820`
-- `func_02036068`
-- `Unk02f2a8_Unk_03034c`
-- `Unk02f2a8_Unk_032f3c`
-- `Unk02f2a8_Unk_0349c4`
-- `Unk02f2a8_Unk_0351b4`
-
 ## Not done in M1-T1113
 - `Unk02f2a8_Unk_0366dc`
 - `func_02036654`
@@ -291,7 +281,7 @@ now covers +0x73DC and +0x7470..+0x748B, `Unk02f2a8Action` gains +0x9C, new
 - `Unk02f2a8_Unk_03064c`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_0306a8`: decompiler-derived (plain cleanup)
 - `Unk02f2a8_Unk_02f378`: decompiler-derived (plain cleanup)
-- `Unk02f2a8_Unk_032f3c`: decompiler-derived (plain cleanup)
+- `Unk02f2a8_Unk_032f3c`: rewritten with typed state fields in M1-T1112
 - `Unk02f2a8_Unk_03538c`: decompiler-derived (plain+fix cleanup)
 - `Unk02f2a8_Unk_030d20`: decompiler-derived (plain+fix cleanup)
 - `GameState_Shutdown`: hand-written. GameState_Shutdown + GameState_Exists (gGameState teardown / null check).
@@ -331,3 +321,174 @@ now covers +0x73DC and +0x7470..+0x748B, `Unk02f2a8Action` gains +0x9C, new
 - `Unk02f2a8_Unk_035b08`: hand-matched
 - `Unk02f2a8_Unk_035b74`: hand-matched
 - `Unk02f2a8_Unk_0366dc`: hand-matched
+
+## M1-T1110: eight state, grid and dispatch helpers
+
+All eight C bodies are at 100% objdiff and read their fields through typed views:
+the work area, `Unk02f2a8Action`, `Unk02f2a8State`/`Unk02f2a8StateRoot` (034b24,
+03064c, 0306a8), `Unk02f2a8Slots6138` (GetSlot_02f2dc) and `Unk02f2a8Body` with its
+s8 id array at +0x30 and two `Unk02f2a8MapBlock`s at +0x23c/+0x2c8 (034970, cell
+bits via `Unk02f2a8Obj39160`). In 0302f4 the empty `case 5` is kept so the jump
+table spans 0..5 like the original. The names are retained;
+neutral names indicate that field semantics are not established. No hard functions
+remain for this card. No module boundary changes were needed.
+
+- `Unk02f2a8_SetField35c` (80 bytes): rejects unsigned ids >=90, stores the id
+  at work-area +0x35c, tests its flag and sets it when clear. Returns one only
+  when setting a previously clear flag. The store offset supports the name.
+- `Unk02f2a8_SetGridPos` (80 bytes): `IsInGrid45x40` validates x/y before stores
+  to signed bytes +0x364/+0x365 and +0x366/+0x367, followed by the direction
+  word at +0x358. Returns one on success and zero without stores on failure.
+  The validation and paired coordinate stores support the grid name.
+- `Unk02f2a8_GetSlot_02f2dc` (84 bytes): reads words +0x6138/+0x613c/+0x6140
+  from the borrowed 02e774 block for selectors 1/2/3; other selectors return
+  zero. The paired `SetField6138` writes the same offsets.
+- `Unk02f2a8_Unk_034970` (84 bytes): returns borrowed p+572 by default. The
+  grid object at x/y supplies bits 16..19 of its +4 word; a nonzero value n
+  selects signed byte p+48+n-1. When that id is nonnegative and 0e63c8 returns
+  nonzero, returns p+712 instead. The map-block semantics remain unknown.
+- `Unk02f2a8_Unk_0302f4` (88 bytes): dispatches action +0x10: zero sets +0x14
+  to one; 1/2/3/4 call 030204/02f530/02f8f0/02fc50 respectively. All other
+  selectors return without a handler. Requires a valid action pointer.
+- `Unk02f2a8_Unk_034b24` (88 bytes): returns zero if state +0x73e0 equals
+  one, +0x73c8 differs from two, or root +0x10 differs from one; otherwise
+  returns whether root +4 is nonzero. Requires the singleton and its root.
+- `Unk02f2a8_Unk_03064c` (92 bytes): sets state +0x73e0 to one, clears root
+  +4/+0x4c, sets state +0x757c to four, resets the object at +0x7598, calls
+  the visor refresh pair, then calls 0a2a8c for indices 0 through 6.
+- `Unk02f2a8_Unk_0306a8` (92 bytes): sets root +0x4c/+0x54/+0x44/+0x50
+  to one, clears root +0x38/+0x34 and state +0x73e0/+0x73e4, then calls
+  0caf78, 0a0d30(1) and 0caf88 in order. The caller 032a08 uses this before
+  invoking 0305a8 with type one; no stronger semantic name is established.
+
+## M1-T1111: eight counter, dispatch and forwarding helpers
+
+All eight inherited C bodies already matched at the start of this card. Their
+instruction output remains 100% after documenting contracts and replacing the
+integer context addresses in 02f378 and 030d20 with byte pointers. The latter is
+void: it has no result of its own, and caller 033c94 discards the call result.
+No module boundary changes or new semantic names are introduced. The evidence
+below is the delinked instruction/field access sequence verified by objdiff.
+
+- `Unk02f2a8_Unk_02f378` (96 bytes): when context +0x60 equals one,
+  increments the unsigned counter +0x6c only below limit +0x68. Otherwise
+  decrements it only when positive as a signed word. Calls 036368 with
+  +0x7c and words +0x64/+0x68/+0x6c, then 035edc with +0x7c/+0x70.
+  The context and both sub-blocks must exist; their gameplay meaning is unknown.
+- `Unk02f2a8_ApplyPending` (96 bytes): copies pending word +0x14 to current
+  +0x10, then resets +0x14 to -1. Action one sets +0x5c/+0x50 to one;
+  actions two, three and four call 02f3d8, 02f8ac and 02fc10. Other values
+  do nothing after the copy. The pending check in 03034c and this dispatch
+  support the existing descriptive name. Requires a valid action context.
+- `Unk02f2a8_Unk_0308c0` (100 bytes): copies 16 bytes from context +0x40
+  into a zero-initialized 17-byte stack buffer and calls 039520 with the
+  context and buffer. The last byte stays zero; the source need not contain
+  a terminator. The callee borrows the buffer for the call.
+- `Unk02f2a8_Unk_030d20` (100 bytes): calls the visor helper 0a2b38,
+  selects mode one for argument one and mode two otherwise, calls 03480c
+  with context +4 and one, then resets +0x7550 and +0x7598 through 09974c
+  and 11f2d0. Calls 096130, 065eac, 0964f8 and 0a2414 in that order.
+  Requires a live context; caller 033c94 invokes this before releasing it.
+- `Unk02f2a8_Unk_0313a4` (100 bytes): obtains cell bits through
+  GetObj39160Bits16 using context +0x240 and signed coordinates
+  +0x744e/+0x744f. Reads 02e8b8 and work-area halfword +0x35c, then
+  calls 0a7474 with context +0x5508, that result, +0x240, +0x18,
+  the halfword, cell bits and one. Context and work-area storage are borrowed.
+- `Unk02f2a8_Unk_035b74` (100 bytes): opens resource 36, obtains its data
+  and row count, and counts rows whose signed byte +0x19 equals the argument.
+  The stride is 40 bytes. Its u8 index wraps at 256, so termination requires
+  fewer than 256 rows; no new bound or fallback is added.
+- `Unk02f2a8_Unk_030704` (104 bytes): copies exactly 16 readable signed
+  bytes into a zero-initialized 17-byte stack buffer, then calls 038ff8
+  with arguments one, the buffer, four and five. Argument three is unused;
+  argument five is a byte. The buffer is borrowed only during the call.
+- `Unk02f2a8_Unk_030198` (108 bytes): returns zero if 04b4c4 rejects the
+  context. Otherwise 04ca1c selects which word to set to one: +0x20 for
+  selectors 0/1/2, +0x28 for five, +0x2c for four. Returns one for these
+  selectors and zero for all others. Requires writable context storage.
+
+Validation: match gate (all eight 100%), full build through match/checksum,
+anticheat, nine existing unit tests, and byte-identical checksum artifacts.
+No new tests are required by this matching card; objdiff checks the original
+instruction output. Hard list for M1-T1111: none.
+
+## M1-T1112: resource lookups, map-cell queries and one point helper
+Seven of these were already matched by a hand wave but used raw `FIELD`
+offsets; they now use typed local views. Extended `Unk02f2a8Res36` (+0x18
+byte), `Unk02f2a8Action` (+0 word), `Unk02f2a8StateRoot` (+0x14..+0x1c),
+`Unk02f2a8State` (+0x7478..+0x748b) and `Unk02f2a8MapBlock` (+0 word, +4
+table pointer). `Unk02f2a8StateBody` is gGameState as root plus
+`Unk02f2a8Body`, so `gGameState + 0x240/0x244` are block +0x23c words.
+
+- `Unk02f2a8_Unk_03550c` (108 bytes): clears n halfwords at dst (008644),
+  then copies resource 38's record for key (04fe68 row 0, 04fed8 lookup)
+  into dst, at most 5 halfwords. Returns 1 when copied, 0 otherwise.
+- `Unk02f2a8_Unk_035b08` (108 bytes): first resource 36 row whose signed
+  bytes +0x19/+0x1a equal a/b; returns 0 when none matches.
+- `Unk02f2a8_Unk_035820` (112 bytes): first resource 36 row with byte
+  +0x18 == 1 and signed byte +0x19 == a; u8 index (wraps at 256), 0 if none.
+- `func_02036068` (112 bytes): dx/dz between words +0/+8 of two points; zero
+  when both are zero, else 020024f8(dz, dx) is passed by address to 02051b18
+  with -step, -0x8000, 0x8000 and 2; returns the low 16 bits signed. It looks
+  like an angle step, but the callees are unnamed, so the symbol stays as is.
+  The `dx` local must be declared first or the two loads swap.
+- `Unk02f2a8_Unk_03034c` (124 bytes): if an action is pending (+0x14 != -1)
+  and 04b710 returns 1 or 04ca1c returns -1, ApplyPending runs. Then calls
+  0302f4 and 02f378, then 0209aca0 with word +0 and work-area bytes
+  +0x364/+0x365, then 116598.
+- `Unk02f2a8_Unk_032f3c` (124 bytes): calls 05257c(4), 0a4e9c(3), 05e590(9)
+  and ScanVisor 0a2660, then arms the root request with (0x800, 15). Clears
+  state +0x7478..+0x748b, sets root +0x14/+0x18/+0x1c to 1/2/0, and ends
+  with 0a0da4(8).
+- `Unk02f2a8_Unk_0349c4` (128 bytes): defaults to work-area id +0x35c. A
+  cell in block +0x23c with nonzero bits 16..19 selects signed id
+  `unk_0030[n-1]`; a nonnegative id with a positive 0e63c8 count m returns
+  `id*2 + 90 + m - 1`.
+- `Unk02f2a8_Unk_0351b4` (128 bytes): needs gGameState and a nonzero block
+  +0x23c word. Positive 034a8c result n (block chosen by 034970) indexes byte
+  n+15 of block +0x23c's table, which goes to 0987ac(3, byte). Otherwise 0.
+  The index must be written as `(table + n)[15]` to keep `add; ldrb #15`.
+
+Validation: match gate (all 205 functions in the changed file 100%), checksum
+byte-identical, anticheat clean, 9 unit tests pass. Hard list for M1-T1112: none.
+
+## M1-T1113: predicates, action handling and grid initialization
+
+Names remain neutral: instruction-level field and call evidence establishes the
+operations below, but not their gameplay meanings. All pointers are borrowed.
+
+- `Unk02f2a8_Unk_0366dc` (128 bytes): converts one tenth of the signed input
+  through soft float, divides by two/three when predicates on ids 152/163 equal
+  one, and clamps to at least one. Existing matched implementation retained.
+- `func_02036654` (136 bytes): checks the key with 118c6c and visits seven signed
+  bytes at resource-36 row offsets +0x1c..+0x22. Negative bytes are skipped;
+  nonnegative n requires both 118c6c(2*n+90) and 118c6c(2*n+91). The first
+  failed derived check stops traversal. Returns one only if all checks pass.
+- `func_02030204` (144 bytes): returns for singleton flags +0x73e0/+0x743c equal
+  to one, action +4 unequal to one, or 04b710 unequal to one. Otherwise compares
+  work id +0x35c with 04bb9c's context id, selects 02fea0/0300ec and calls 0441ec
+  on result one, or 030198 otherwise. Requires a writable action and singleton.
+- `func_0203721c` (144 bytes): skips null position/cells, clears 0x794 work
+  bytes, calls 036c48 with position, halfword id, coordinates and flag, then
+  036fb8. A non-null map also invokes 0370e8 with the cell buffer. Its final
+  argument is unused; the repeated position check matches the original.
+- `func_02032adc` (148 bytes): polls descriptor +4 for state id +0x7478, defaulting
+  to success when absent. On result one clears +0x7478/+0x7480/+0x7481/+0x7484/
+  +0x7488, sets +0x73cc to two, root +0x14/+0x18/+0x1c to 1/2/0, and root
+  +0x44/+0x50/+0x4c to one. State and root must be writable.
+- `func_02032c0c` (148 bytes): identical callback and state-reset operation to
+  032adc at a separate original address; kept as a distinct function.
+- `func_02037054` (148 bytes): missing grid object accepts. Otherwise descriptor
+  +0x14 selects a filter on cell byte +1: zero accepts, one requires 1, two
+  accepts 1 or 3, three rejects; other selectors accept. Coordinates use the
+  existing GridIndex45 contract. Map and cell storage must remain readable.
+- `func_0202fe08` (152 bytes): selectors other than two return one. Selector
+  two offsets the cached coordinates by direction (0: -y, 1: +x, 2: +y,
+  3: -x). Out-of-grid returns one; otherwise returns 09c090(x,y,direction,1).
+
+Hard list for M1-T1113: none. Matching uses original instruction comparisons;
+no new test files are required by this card.
+
+Validation: all eight card functions are 100% in the generated objdiff report;
+match gate passes for the changed C file, checksum reports all artifacts
+byte-identical, anticheat passes, and all nine existing unit tests pass.
