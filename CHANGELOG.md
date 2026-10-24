@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T934 arithmetic, forwarding and channel-update helpers in `game/unit_0206fb70` at 100% objdiff, with typed callee contracts and instruction evidence.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
 - Matched four M1-T293 callbacks/submission helpers in `game/unit_0211f894` at 100%; documented the remaining six-strip helper on its hard list.
 - Added matching C for both M1-T282 request state machines in `game/unit_02037dd4`, with typed parameters and per-function contracts.

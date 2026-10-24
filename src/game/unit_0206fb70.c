@@ -9,8 +9,8 @@ typedef struct Unk06fb70Work {
 
 
 
-int func_0206d68c();
-/* decompiler-derived */
+int func_0206d68c(int mode, u32 value, int scale);
+/* ARM 0x020717c0 adds func_0206d68c(2, value, 100) to field +0x120. */
 void Unk06fb70_Unk_0717c0(Unk06fb70Work *arg0, u32 arg1){
   int tmp1;
   tmp1 = func_0206d68c(2,arg1,100);
@@ -18,9 +18,10 @@ void Unk06fb70_Unk_0717c0(Unk06fb70Work *arg0, u32 arg1){
   return;
 }
 
-int func_0200219c();
-int func_02007e94();
-/* decompiler-derived */
+int func_0200219c(s32 numerator, s32 denominator);
+void func_02007e94(void);
+/* ARM 0x0206fb70 divides the value delta by the time delta, both scaled
+ * by 4096; a zero time delta first calls 0x02007e94. */
 int Unk06fb70_Unk_06fb70(int arg0,int arg1,int arg2,int arg3)
 {
   if (arg1 - arg0 == 0) {
@@ -80,6 +81,8 @@ void Unk06fb70_Unk_06ff28(u32 arg0,u32 arg1)
   return;
 }
 
+/* ARM 0x020713fc clamps the sum toward lim according to the sign of d;
+ * p owns a writable signed accumulator in the same units as d and lim. */
 void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim)
 {
     *p += d;
@@ -92,19 +95,23 @@ void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim)
     }
 }
 
-void func_0207142c();
-void func_02071898();
-void func_020703b4();
+void func_0207142c(int a, int b, int c, int d, int e, int option, int f, int g);
+void func_02071898(int a, int b, int c, int d, int e, int option, int f, int g);
+void func_020703b4(void *a, void *b, void *c, void *d, void *e, void *f, void *g, void *h);
+/* Target ARM call to 0207142c forwards seven words, inserting zero as word six. */
 void Unk06fb70_Call_07142c(int a, int b, int c, int d, int e, int f, int g)
 {
     func_0207142c(a, b, c, d, e, 0, f, g);
 }
 
+/* Target ARM call to 02071898 forwards seven words, inserting zero as word six. */
 void Unk06fb70_Call_071898(int a, int b, int c, int d, int e, int f, int g)
 {
     func_02071898(a, b, c, d, e, 0, f, g);
 }
 
+/* ARM 0x02071d28 forwards views at +0x16c, +0x2c, +0x28, +0x30,
+ * +0, +0xc, +0x18 and +0x34; o must cover all these object fields. */
 void Unk06fb70_Call_0703b4(u8 *o)
 {
     func_020703b4(o + 364, o + 44, o + 40, o + 48, o, o + 12, o + 24, o + 52);
@@ -203,6 +210,8 @@ void Unk06fb70_Unk_070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[2], a->vel[2], a->max[2]);
 }
 
+/* ARM 0x02070114 advances channel 1 while its signed state is below 4;
+ * on expiry resets tick/velocity and selects the next key, else clamps position. */
 void Unk06fb70_Unk_070114(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[1] >= 4) {
@@ -217,6 +226,8 @@ void Unk06fb70_Unk_070114(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[3], a->vel[3], a->max[3]);
 }
 
+/* ARM 0x02070168 advances channel 2 while its signed state is below 4;
+ * on expiry resets tick/velocity and selects the next key, else clamps position. */
 void Unk06fb70_Unk_070168(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[2] >= 4) {
