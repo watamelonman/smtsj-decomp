@@ -1,19 +1,15 @@
-/* src/game/unit_0211ec7c.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* State callbacks with work-area offsets preserved from the original code. */
 #include "types.h"
-
-
-
-/* empty callback */
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk11ec7cWork {
-    u8 pad_0000[0x4];
+    u32 unk_0000;
     u32 unk_0004;
     u32 unk_0008;
-    u8 pad_000c[0x4];
-    u32 unk_0010;
+    s32 unk_000c;
+    s32 unk_0010;
     u32 unk_0014;
-    s32 unk_0018;
+    u32 unk_0018;
     s32 unk_001c;
     u32 unk_0020;
     u16 unk_0024;
@@ -27,11 +23,12 @@ typedef struct Unk11ec7cWork {
     s32 unk_0274;
 } Unk11ec7cWork;
 
+/* Empty entry callback: the original at 0x0211ef08 only returns. */
 void Unk11ec7c_Nop_11ef08(void) { }
 
 int Unk02e000_Unk_02e0cc();
 int Unk05b82c_Unk_05b82c();
-/* decompiler-derived */
+/* Calls 0x0202e0cc then 0x0205b82c with 0xd2; always returns 1. */
 u32 Unk11ec7c_Unk_11efec(void)
 {
   Unk02e000_Unk_02e0cc();
@@ -41,42 +38,42 @@ u32 Unk11ec7c_Unk_11efec(void)
 
 int func_0205dde4();
 int func_0211eda0();
-/* decompiler-derived */
-void Unk11ec7c_Unk_11ee8c(int arg0)
+/* Requires a valid borrowed work area; forwards the words at +4 and +8 to helpers. */
+void Unk11ec7c_Unk_11ee8c(Unk11ec7cWork *arg0)
 {
-  func_0205dde4(((Unk11ec7cWork *)arg0)->unk_0004);
-  func_0211eda0(((Unk11ec7cWork *)arg0)->unk_0008);
+  func_0205dde4(arg0->unk_0004);
+  func_0211eda0(arg0->unk_0008);
   return;
 }
 
 
-/* decompiler-derived */
-void Unk11ec7c_Unk_11ef0c(int arg0)
+/* Increments +0x18 with unsigned wrap; queues state 3 when it exceeds +0x14. */
+void Unk11ec7c_Unk_11ef0c(Unk11ec7cWork *arg0)
 {
   u32 tmp1;
-  tmp1 = ((Unk11ec7cWork *)arg0)->unk_0018 + 1;
-  ((Unk11ec7cWork *)arg0)->unk_0018 = tmp1;
-  if (((Unk11ec7cWork *)arg0)->unk_0014 < tmp1) {
-    ((Unk11ec7cWork *)arg0)->unk_0010 = 3;
+  tmp1 = arg0->unk_0018 + 1;
+  arg0->unk_0018 = tmp1;
+  if (arg0->unk_0014 < tmp1) {
+    arg0->unk_0010 = 3;
   }
   return;
 }
 
-int func_0211ee10();
-/* decompiler-derived */
-void Unk11ec7c_Unk_11ef2c(int arg0)
+void func_0211ee10(Unk11ec7cWork *work, int value);
+/* Decrements +0x1c, calls 0x0211ee10 with zero, then clears state fields if expired. */
+void Unk11ec7c_Unk_11ef2c(Unk11ec7cWork *arg0)
 {
-  ((Unk11ec7cWork *)arg0)->unk_001c = ((Unk11ec7cWork *)arg0)->unk_001c + -1;
+  arg0->unk_001c = arg0->unk_001c + -1;
   func_0211ee10(arg0,0);
-  if (0 < ((Unk11ec7cWork *)arg0)->unk_001c) {
+  if (0 < arg0->unk_001c) {
     return;
   }
-  ((Unk11ec7cWork *)arg0)->unk_0010 = 0;
-  ((Unk11ec7cWork *)arg0)->unk_0014 = 0;
-  ((Unk11ec7cWork *)arg0)->unk_0018 = 0;
-  ((Unk11ec7cWork *)arg0)->unk_001c = 0;
-  ((Unk11ec7cWork *)arg0)->unk_0024 = 0;
-  ((Unk11ec7cWork *)arg0)->unk_0020 = 0;
+  arg0->unk_0010 = 0;
+  arg0->unk_0014 = 0;
+  arg0->unk_0018 = 0;
+  arg0->unk_001c = 0;
+  arg0->unk_0024 = 0;
+  arg0->unk_0020 = 0;
   return;
 }
 
@@ -103,23 +100,22 @@ extern u8 data_02151fb4[];
 int func_02008848();
 int func_0205dcd4();
 int func_020629ac();
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
-void Unk11ec7c_Unk_11ee8c(int arg0);
+void Unk11ec7c_Unk_11ee8c(Unk11ec7cWork *arg0);
 void Unk11ec7c_Nop_11ef08(void);
-void Unk11ec7c_Unk_11ef0c(int arg0);
-void Unk11ec7c_Unk_11ef2c(int arg0);
-void func_0211eea8();
-void Unk11ec7c_ApplyNext(u8 *p);
-void Unk11ec7c_Dispatch(u8 *p);
-void Unk11ec7c_ApplyNext(u8 *p)
+void Unk11ec7c_Unk_11ef0c(Unk11ec7cWork *arg0);
+void Unk11ec7c_Unk_11ef2c(Unk11ec7cWork *arg0);
+void func_0211eea8(Unk11ec7cWork *work);
+void Unk11ec7c_ApplyNext(Unk11ec7cWork *p);
+void Unk11ec7c_Dispatch(Unk11ec7cWork *p);
+/* Applies the queued state. Evidence: copies +0x10 to +0xc, resets +0x10
+ * to -1 and invokes the entry callback. Requires a valid borrowed work area. */
+void Unk11ec7c_ApplyNext(Unk11ec7cWork *p)
 {
-    FIELD(int, p, 12) = FIELD(int, p, 16);
-    FIELD(int, p, 16) = -1;
-    switch (FIELD(int, p, 12)) {
+    p->unk_000c = p->unk_0010;
+    p->unk_0010 = -1;
+    switch (p->unk_000c) {
     case 1:
-        Unk11ec7c_Unk_11ee8c((int)p);
+        Unk11ec7c_Unk_11ee8c(p);
         return;
     case 2:
         Unk11ec7c_Nop_11ef08();
@@ -127,19 +123,21 @@ void Unk11ec7c_ApplyNext(u8 *p)
     }
 }
 
-void Unk11ec7c_Dispatch(u8 *p)
+/* Dispatches the current state. Evidence: the +0xc switch calls one of
+ * three callbacks. Requires a valid borrowed work area; other states do nothing. */
+void Unk11ec7c_Dispatch(Unk11ec7cWork *p)
 {
-    switch (FIELD(u32, p, 12)) {
+    switch ((u32)p->unk_000c) {
     case 0:
         break;
     case 1:
         func_0211eea8(p);
         break;
     case 2:
-        Unk11ec7c_Unk_11ef0c((int)p);
+        Unk11ec7c_Unk_11ef0c(p);
         break;
     case 3:
-        Unk11ec7c_Unk_11ef2c((int)p);
+        Unk11ec7c_Unk_11ef2c(p);
         break;
     }
 }
@@ -163,12 +161,14 @@ void Unk11ec7c_Unk_11f004(int *arg0)
   return;
 }
 
-void Unk11ec7c_Update(u8 *p)
+/* Updates an active work area. Evidence: +0 gates ApplyNext and Dispatch.
+ * The queued-state sentinel is -1; the caller retains ownership of p. */
+void Unk11ec7c_Update(Unk11ec7cWork *p)
 {
-    if (FIELD(u32, p, 0) == 0) {
+    if (p->unk_0000 == 0) {
         return;
     }
-    if (FIELD(int, p, 16) != -1) {
+    if (p->unk_0010 != -1) {
         Unk11ec7c_ApplyNext(p);
     }
     Unk11ec7c_Dispatch(p);
