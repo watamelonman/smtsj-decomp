@@ -674,3 +674,120 @@ s8 +0x7480/+0x7481, Descriptor +0 and +0xc are now function pointers, a new Unk0
 view, and a real `void *Unk02e000_Unk_02e8b8(void)` prototype.
 
 Not done in this card: none. Hard list: none.
+
+## M1-T1118: five matched functions; three hard functions
+
+The current build uses mwccarm 2.0/sp1p5. Five new definitions match at 100%:
+
+| Function | Bytes | Contract and evidence from original instructions |
+| --- | ---: | --- |
+| `func_0203480c` | 328 | Tears down the borrowed body and clears 0x3130 bytes. Mode 0 preserves the halfword-aligned 40-byte block at +0x214 and word-aligned 140-byte map at +0x354; mode 1 releases that map. A nonlive body only performs the optional map release. The original preserves r0 across the initial live check because 020396cc takes the body. |
+| `func_0203076c` | 340 | Copies the resource row's 16-byte key into a terminated local, resolves a current-cell selector, and calls 020392f8. Bits 12..15 take precedence; bits 16..19 use the signed byte table starting at row +0x1c with a one-based index and predicate 0e63c8; otherwise bits 20..23 are used. |
+| `func_0202f3d8` | 344 | Saves the work-area grid coordinates, advances them by the rotated direction, resets action +0x1c and sets +0x5c. It notifies visor/event helpers, clears +0xc when 09beb0 rejects the cell, conditionally calls 03538c, then sends the new coordinates to 09aa00. The action pointer is borrowed. |
+| `func_02030bb0` | 368 | Runs a two-phase body reload on state +0x73fc. Phase 0 closes auxiliary work and initializes reload helpers, then falls through. Phase 1 calls 0343ec with the current map id and grid coordinates; success refreshes cells, resets the phase, and returns 1. Other paths return 0. |
+| `func_020364bc` | 408 | Applies predicate-dependent scaling to a u16 increment and accumulates it at work +0xaf2, comparing signed halfword counters against +0xaf4. Predicates 142, event 0x70a, and 1125e8 can reset it. Nonzero increments receive the original per-step u16 truncation, minimum 1 and maximum 100. Float multiplication uses unsigned conversion for the 3.5 multiplier. |
+
+Names remain the existing neutral symbols: observed field accesses and callees do
+not establish the gameplay purpose. State +0x73fc is now explicitly typed; the
+40-byte and 140-byte local views preserve the original copy alignment. There is
+no module boundary change. No new tests are required by this card; comparison
+against the original machine code is the acceptance oracle.
+
+### Hard list
+
+These three functions remain supplied by the original delinked object. No
+nonmatching definitions or assembly stubs were added to the C source.
+
+- `func_02035edc` (396 bytes): builds two points around a borrowed position using
+  the u16 angle at object +0x18, the resident interleaved sin/cos table at
+  0x0212629c, and fixed-point distances -0x2000 and 0x10000. Best candidate:
+  **99.60%** under sp1p5. All instructions and register allocation match except
+  four `ldrsh` instructions: the compiler emits `[index, table]` where the
+  original has `[table, index]`. Tried direct scalar expressions, a vector
+  temporary and inline vector addition, scalar load/sum ordering, signed modulo
+  with negative-angle normalization, inline lookup, array and pointer forms,
+  and integer-address addition. Integer-address addition restores the operand
+  order but hoists the table address and changes register allocation. sp2p4
+  retains the same four operand differences. Needs a human scratch.
+- `func_0203675c` (396 bytes): numeric helper using fixed-point divisions by
+  100 and 2.5, coefficient 70, upper clamp 100, predicate-dependent divisions by
+  5 and 10 (ids 152/163), and lower clamp 1; modes 1/3/4 return 0. Best sp1p5
+  candidate: **96.63%**. The compiler emits a zero high-word multiply-add and
+  different register allocation. Tried signed/unsigned 64-bit constants,
+  operand order, inline fixed multiplication, local coefficients, float-folded
+  coefficients, and explicit signed high-word correction. Compiler comparison
+  found **100.00% objdiff under 2.0/sp2p4**, with the same configured flags.
+- `func_020368e8` (396 bytes): same contract as 0203675c with coefficient 55.
+  Same experiments and **96.63% under sp1p5 / 100.00% under sp2p4**.
+
+The compiler comparison used temporary objects and `objdiff-cli diff` against
+`build/delinks/src/game/unit_0202f2a8.o`; neither the configured compiler nor any
+protected file was changed. 2.0/base, sp1 and sp1p7 retain the extra multiply-add.
+This provides evidence for a human toolchain investigation, not authorization
+to change the compiler for the other units. The two sp2p4 matches were verified
+by objdiff's `match_percent`, not inferred solely from textual disassembly.
+
+Candidate source for the two numeric helpers (for a human decomp.me scratch;
+not compiled into this unit):
+
+```c
+/* Preserve the original signed 20.12 rounding contract at inline call sites. */
+static inline s32 Unk02f2a8_MulFixed(s32 a, s32 b)
+{
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
+
+/* Derive a bounded score from two signed inputs in 20.12 fixed point.
+ * Modes 1, 3 and 4 suppress it; predicates 152/163 divide it by 5/10.
+ * The constants and ordering are evidenced by the original at 0203675c. */
+int func_0203675c(int mode, int a, int b)
+{
+    int coefficient = (int)(4096.0f * 70.0f + 0.5f);
+    int x;
+    int y;
+    if (mode == 1 || mode == 3 || mode == 4) {
+        b = 0;
+    } else {
+        a = func_0200219c((int)((float)a > 0 ? 4096.0f * (float)a + 0.5f : 4096.0f * (float)a - 0.5f), 0x64000);
+        b = func_0200219c((int)((float)b > 0 ? 4096.0f * (float)b + 0.5f : 4096.0f * (float)b - 0.5f), 0x2800);
+        b = (Unk02f2a8_MulFixed(coefficient, a) - b) >> 12;
+        if (b > 100) b = 100;
+        x = Unk0986ac_Unk_098978(152);
+        y = Unk0986ac_Unk_098978(163);
+        if (Unk0986ac_Thunk_02098714(x) == 1) b /= 5;
+        if (Unk0986ac_Thunk_02098714(y) == 1) b /= 10;
+        if (b < 1) b = 1;
+    }
+    return b;
+}
+
+/* Same score contract as 0203675c, with a 55.0 rather than 70.0
+ * fixed-point coefficient, as evidenced by the original multiply. */
+int func_020368e8(int mode, int a, int b)
+{
+    int coefficient = (int)(4096.0f * 55.0f + 0.5f);
+    int x;
+    int y;
+    if (mode == 1 || mode == 3 || mode == 4) {
+        b = 0;
+    } else {
+        a = func_0200219c((int)((float)a > 0 ? 4096.0f * (float)a + 0.5f : 4096.0f * (float)a - 0.5f), 0x64000);
+        b = func_0200219c((int)((float)b > 0 ? 4096.0f * (float)b + 0.5f : 4096.0f * (float)b - 0.5f), 0x2800);
+        b = (Unk02f2a8_MulFixed(coefficient, a) - b) >> 12;
+        if (b > 100) b = 100;
+        x = Unk0986ac_Unk_098978(152);
+        y = Unk0986ac_Unk_098978(163);
+        if (Unk0986ac_Thunk_02098714(x) == 1) b /= 5;
+        if (Unk0986ac_Thunk_02098714(y) == 1) b /= 10;
+        if (b < 1) b = 1;
+    }
+    return b;
+}
+
+```
+
+Final local validation: `ninja` passed; anticheat passed; all nine Python unit
+tests passed; the match gate verified all 122 retained C definitions at 100%;
+checksum reported all artifacts byte-identical to the original. The match gate
+covers the retained definitions, not the three omitted hard functions above.
+`git diff --check` also passed.
