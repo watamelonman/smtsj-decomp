@@ -143,7 +143,8 @@ typedef struct Unk02f2a8State {
     u32 unk_73e4;
     u32 unk_73e8;
     u32 unk_73ec;
-    u8 pad_73f0[0x7400 - 0x73f0];
+    u8 pad_73f0[0x73fc - 0x73f0];
+    u32 unk_73fc;
     u32 unk_7400;               /* nonzero suppresses the func_0203721c rebuild */
     u8 pad_7404[0x7410 - 0x7404];
     u8 unk_7410[0x743c - 0x7410]; /* size guessed: position block used instead of root +0x7c */
@@ -921,7 +922,7 @@ void Unk02f2a8_Unk_0306a8(Unk02f2a8State *state)
     Unk0caea8_Unk_0caf88();
 }
 
-int func_02035edc();
+void func_02035edc(void *obj, const void *position);
 typedef struct Unk02f2a8Lerp {
     u8 pad_0000[0x1c];
     s32 unk_001c;               /* interpolated value written by func_02036368 */
@@ -1114,7 +1115,7 @@ void Unk02f2a8_Unk_03538c(void)
     Unk094fe0_Unk_0952ac();
 }
 
-int func_0203480c();
+void func_0203480c(u8 *body, int mode);
 int Unk03e43c_SetMode30();
 /* Select mode one only for argument one, otherwise mode two, then reset
  * the context blocks at +4/+0x7550/+0x7598 and notify the remaining subsystems.
@@ -2570,4 +2571,198 @@ void func_020370e8(Unk02f2a8SortList *list, void *map, u8 *cells)
             }
         }
     }
+}
+
+int Unk0e651c_Unk_0e666c(int id);
+int func_021125e8(void);
+void *Unk02e000_Thunk_0202e788(void);
+/* Accumulate a capped u16 input into the signed counter at work +0xaf2.
+ * Original calls establish the predicate ids and per-flag scaling; the
+ * threshold at +0xaf4 is compared as signed, including after u16 wrapping. */
+int func_020364bc(u16 value)
+{
+    Unk02f2a8WorkArea *w = Unk02e000_GetWorkArea();
+    int a, b, c;
+    void *p;
+    if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(142)) == 1) {
+        w->unk_0af2 = 0;
+        return 0;
+    }
+    if (Unk0e651c_Unk_0e666c(0x70a) == 0) {
+        w->unk_0af2 = 0;
+        return 0;
+    }
+    if (func_021125e8() == 0) {
+        w->unk_0af2 = 0;
+        return 0;
+    }
+    if (value != 0) {
+        p = Unk02e000_Thunk_0202e788();
+        if (p != 0 && FIELD(u16, p, 0x6c) == 2) value *= 3.5f;
+        a = Unk0986ac_Unk_098978(140);
+        b = Unk0986ac_Unk_098978(141);
+        c = Unk0986ac_Unk_098978(153);
+        if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(154)) == 1) value *= 2;
+        if (Unk0986ac_Thunk_02098714(b) == 1) value *= 3;
+        if (Unk0986ac_Thunk_02098714(c) == 1) value = value * 2 / 3;
+        if (Unk0986ac_Thunk_02098714(a) == 1) value /= 3;
+        if (value == 0) value = 1;
+    }
+    if (value > 100) value = 100;
+    if ((s16)w->unk_0af2 < 100) w->unk_0af2 = (s16)w->unk_0af2 + value;
+    return (s16)w->unk_0af4 <= (s16)w->unk_0af2;
+}
+
+int func_020361ec(int dir, int amount);
+int ScanVisor_Unk_0a2b38(void);
+int Unk095560_Unk_09615c(void);
+int Unk09a268_Unk_09beb0(int x, int y);
+void func_0209aa00(u32 id, int x, int y);
+void func_02116470(void);
+/* Advance the cached grid cell in the action's rotated direction, preserving
+ * the old coordinates. The original then resets the action timer, notifies
+ * visor/event helpers and conditionally arms the +0xc action flag. */
+void func_0202f3d8(u8 *action)
+{
+    int dir = func_020361ec(Unk02e000_GetWorkArea()->unk_0358, FIELD(u32, action, 0x18));
+    Unk02e000_GetWorkArea()->unk_0366 = Unk02e000_GetWorkArea()->unk_0364;
+    Unk02e000_GetWorkArea()->unk_0367 = Unk02e000_GetWorkArea()->unk_0365;
+    switch (dir) {
+    case 1: Unk02e000_GetWorkArea()->unk_0364++; break;
+    case 2: Unk02e000_GetWorkArea()->unk_0365++; break;
+    case 3: Unk02e000_GetWorkArea()->unk_0364--; break;
+    case 0: Unk02e000_GetWorkArea()->unk_0365--; break;
+    }
+    FIELD(u32, action, 0x1c) = 0;
+    FIELD(u32, action, 0x5c) = 1;
+    ScanVisor_Unk_0a2b38();
+    Unk095560_Unk_09615c();
+    if (FIELD(u32, action, 8) == 1) Unk0a0ce4_Unk_0a0da4(0x2b);
+    if (Unk09a268_Unk_09beb0(Unk02e000_GetWorkArea()->unk_0364,
+                            Unk02e000_GetWorkArea()->unk_0365) == 0) FIELD(u32, action, 0xc) = 0;
+    if (FIELD(u32, action, 0xc) == 1) Unk02f2a8_Unk_03538c();
+    func_0209aa00(FIELD(u32, action, 0), Unk02e000_GetWorkArea()->unk_0364,
+                  Unk02e000_GetWorkArea()->unk_0365);
+    func_02116470();
+}
+
+void func_020392f8(void *out, const s8 *key, u8 id, u8 value, int arg, int kind);
+/* Resolve the current cell's packed selector: bits 12..15 take precedence,
+ * then bits 16..19 with a valid resource byte, then bits 20..23. The borrowed
+ * resource key is copied to a terminated 17-byte local before dispatch. */
+void func_0203076c(void *map, void *out, Unk02f2a8Res36 *row, int arg)
+{
+    int id = 0;
+    int value = 0;
+    int kind = 0;
+    s8 key[17] = {0};
+    int i;
+    Unk02f2a8Obj39160 *cell;
+    for (i = 0; i < 16; i++) key[i] = row->unk_0000[i];
+    cell = (Unk02f2a8Obj39160 *)Unk038fbc_Unk_039160(map,
+        Unk02e000_GetWorkArea()->unk_0364, Unk02e000_GetWorkArea()->unk_0365);
+    if (cell != 0) {
+        int found = 0;
+        int n = cell->unk_0004_12;
+        if (n != 0) { kind = 1; value = 0; id = n; found = 1; }
+        if (found == 0) {
+            n = cell->unk_0004_16;
+            if (n != 0) {
+                int k = (&row->unk_001b[1])[n - 1];
+                if (k >= 0 && Unk0e5fb8_Unk_0e63c8(k) != 0) {
+                    id = cell->unk_0004_16;
+                    value = Unk0e5fb8_Unk_0e63c8(k);
+                    kind = 2;
+                    found = 1;
+                }
+            }
+        }
+        if (found == 0) { id = cell->unk_0004_20; value = 0; kind = 0; }
+    }
+    func_020392f8(out, key, (u8)id, (u8)value, arg, kind);
+}
+
+/* Halfword-aligned 40-byte block copied by 0203480c; no field meanings known. */
+typedef struct Unk02f2a8Block40 { u16 words[20]; } Unk02f2a8Block40;
+/* Word-aligned 140-byte map object copied by 0203480c. */
+typedef struct Unk02f2a8Block140 { u32 words[35]; } Unk02f2a8Block140;
+void func_020396cc(void *body);
+void Unk0392f8_Unk_039454(void *obj);
+/* Tear down a live body and clear its 0x3130 bytes. Mode zero preserves
+ * the +0x214/+0x354 blocks; mode one also releases the latter map object.
+ * A nonlive body only needs that optional map release. */
+void func_0203480c(u8 *body, int mode)
+{
+    Unk02f2a8Block40 saved40;
+    Unk02f2a8Block140 saved140;
+    if (FIELD(u32, body, 0) == 0) {
+        if (mode != 1) return;
+        if (FIELD(u32, body, 0x354) == 0) return;
+        Unk038fbc_Unk_039138(body + 0x354);
+        return;
+    }
+    func_020396cc(body);
+    Unk02f2a8_Unk_0343b4((Unk02f2a8Counted *)body);
+    Unk0392f8_Unk_039454(body + 0x3e0);
+    Unk038fbc_Unk_039138(body + 0x2c8);
+    Unk038fbc_Unk_039138(body + 0x23c);
+    saved40 = FIELD(Unk02f2a8Block40, body, 0x214);
+    saved140 = FIELD(Unk02f2a8Block140, body, 0x354);
+    if (mode == 1) Unk038fbc_Unk_039138(body + 0x354);
+    func_02008848(body, 0, 0x3130);
+    if (mode == 0) {
+        FIELD(Unk02f2a8Block40, body, 0x214) = saved40;
+        FIELD(Unk02f2a8Block140, body, 0x354) = saved140;
+    }
+    FIELD(u32, body, 0) = 0;
+}
+
+int Unk0a23f4_Unk_0a23f4(int value);
+int ScanVisor_Unk_0a273c(int value);
+int Unk02dcfc_GetState(void);
+int Unk065e88_Unk_065e88(void);
+int Unk0964f8_Unk_096508(void);
+int Unk095560_Thunk_020773dc(int value);
+void func_02099318(void *a, void *b, void *map, void *cells);
+void Unk11ec7c_Unk_11f004(void *obj);
+int func_020343ec(void *body, int id, int x, int y, int ctx, int a, int b, void *out);
+void func_0209a884(void *cells, void *body);
+int Unk03e43c_Thunk_0203fa84(void);
+/* Two-phase body reload driven by state +0x73fc. Phase zero closes UI work
+ * and initializes reload helpers, then falls through to phase one. Success
+ * refreshes the cells, resets the phase and returns one; pending returns zero. */
+int func_02030bb0(Unk02f2a8State *state)
+{
+    int result = 0;
+    int id;
+    switch (state->unk_73fc) {
+    case 0:
+        Unk0a23f4_Unk_0a23f4(0);
+        ScanVisor_Unk_0a273c(0);
+        if (Unk02dcfc_GetState() != 0) func_020a269c(0);
+        Unk065e88_Unk_065e88();
+        Unk0964f8_Unk_096508();
+        Unk095560_Thunk_020773dc(1);
+        {
+            void *map = Unk02f2a8_Unk_034970((Unk02f2a8Body *)((u8 *)state + 4),
+                Unk02e000_GetWorkArea()->unk_0364, Unk02e000_GetWorkArea()->unk_0365);
+            func_02099318((u8 *)state + 0x7550, (u8 *)state + 0x314c, map, (u8 *)state + 0x5508);
+        }
+        Unk11ec7c_Unk_11f004((u8 *)state + 0x7598);
+        state->unk_73fc++;
+    case 1:
+        id = Unk02e000_GetWorkArea()->unk_035c;
+        if (func_0204b4c4() != 0) id = Unk04bb9c_GetCtxUnka20();
+        if (func_020343ec((u8 *)state + 4, Unk02e000_GetWorkArea()->unk_035c,
+            Unk02e000_GetWorkArea()->unk_0364, Unk02e000_GetWorkArea()->unk_0365,
+            id, 1, 1, (u8 *)state + 0x7494) == 1) {
+            func_0209a884((u8 *)state + 0x38e8, (u8 *)state + 4);
+            Unk0a4e48_Unk_0a4e9c(0);
+            Unk03e43c_Thunk_0203fa84();
+            state->unk_73fc = 0;
+            result = 1;
+        }
+        break;
+    }
+    return result;
 }
