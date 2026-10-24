@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T448 game/unit_020a0ce4 functions at 100% objdiff; added typed helper declarations and per-function instruction evidence.
 - Verified all eight M1-T447 game/unit_020a0ce4 functions at 100% objdiff; documented instruction evidence and typed their helper calls.
 - Matched all seven M1-T436 selection and record functions in `game/unit_020bcef4`, with typed parameters and instruction evidence.
 - Matched all eight M1-T444 game/unit_020ef248 descriptor, ramp, state, initialization and entry callbacks at 100% objdiff.
