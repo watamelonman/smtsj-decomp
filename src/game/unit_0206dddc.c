@@ -52,7 +52,7 @@ void func_020086a0(u32 value, void *dst, u32 size);
 void func_020086bc(const void *src, void *dst, u32 size);
 void *func_02052fe0(u32 size);
 void func_02053000(void *p);
-int func_020152cc();
+int func_020152cc(const void *bytes, int key);
 u32 func_020943dc(int a, int i);
 
 /* Return record i's entry array, or null when i is past the record count. */
@@ -206,8 +206,7 @@ int func_0206e0dc(int i)
     int max;
     Unk06dddcEntry *entries;
     int j;
-    int k;
-    u32 off;
+    int off;
     s16 base;
     s16 mul;
     s16 val;
@@ -219,20 +218,20 @@ int func_0206e0dc(int i)
     entries = Unk06dddc_GetEntryUnk24(i);
     off = i * sizeof(Unk06dddcRecord);
     for (j = 0; j < 6; j++) {
-        if ((u32)max < ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk02c[j].unk04) {
-            max = ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk02c[j].unk04;
+        if ((u32)max < (&data_0216bac8[i])->unk02c[j].unk04) {
+            max = (&data_0216bac8[i])->unk02c[j].unk04;
         }
     }
-    k = 0;
+    j = 0;
     if (*(s32 *)(data_0216baf0 + off) > 0) {
         do {
-            func_020086bc(&entries[((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk13c[k].unk00], &tmp, sizeof(tmp));
-            base = ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk13c[k].unk04;
-            mul = ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk13c[k].unk06;
+            func_020086bc(&entries[((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk13c[j].unk00], &tmp, sizeof(tmp));
+            val = 0;
+            base = ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk13c[j].unk04;
+            mul = ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk13c[j].unk06;
             if (mul < 1) {
                 mul = 1;
             }
-            val = 0;
             switch (tmp.unk0224) {
             case 0:
                 val = tmp.unk00fc;
@@ -246,8 +245,8 @@ int func_0206e0dc(int i)
             if (max < base + mul * val) {
                 max = base + mul * val;
             }
-            k++;
-        } while (k < ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk028);
+            j++;
+        } while (j < ((Unk06dddcRecord *)((u8 *)data_0216bac8 + off))->unk028);
     }
     if ((u32)max < func_020943dc(0, i)) {
         max = func_020943dc(0, i);

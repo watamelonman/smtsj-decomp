@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all seven M1-T339 table operations in `game/unit_0206dddc`, with typed record layouts and per-function contracts.
 - M1-T338: verified eight table accessors in `game/unit_0206dddc` at 100% objdiff, with typed borrowed pointers and documented record offsets.
 - Matched all three M1-T337 object selection functions in `game/unit_020b0e08` at 100% objdiff, with typed object views and documented weighting rules.
 - Matched all eight M1-T336 functions in `game/unit_0210b4d0`, including cell state updates and paired map-code copying, with typed field views.
