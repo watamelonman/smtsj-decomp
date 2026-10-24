@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Verified all eight M1-T227 initialization, forwarding, teardown and optional-work setters at 100% objdiff; added typed callee declarations and corrected the unit hard list.
+- Matched seven M1-T1139 numeric-output and selection routines at 100% objdiff; documented the remaining record collector on the hard list.
+- Matched all eight M1-T225 functions in `game/unit_020e675c` at 100% objdiff, including the byte/halfword table searches; documented typed contracts and instruction evidence.
 - Matched eight more `src/game/unit_0202f2a8.c` functions (M1-T1114): two grid-cell handler dispatchers, a heading-step probe, a task creator, a cell sound-id latch, a tally counter, a resource-36 u16 copy and a record insertion sort.
 - Matched all eight M1-T1138 game/unit_020bd5f0 cleanup, mapping, record refresh and selection setup routines at 100% objdiff.
 - Matched M1-T223 `func_020b0d48` at 100% objdiff; documented its ten-entry filtering, fallback, and random-selection contract.
