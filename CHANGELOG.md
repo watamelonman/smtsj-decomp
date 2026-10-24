@@ -2,6 +2,10 @@
 
 ## Unreleased
 - Verified `Unk0202dcfc_InitWorker` (M1-T256) at 100% objdiff and documented its field resets and callers.
+
+- Match both game/unit_02115ca0 sequence and drawing functions to the original ARM code.
+- Matched six M1-T261 functions in `game/unit_020eef2c`, including the timed transition handler; documented the remaining message dispatcher on the hard list.
+- Matched all four M1-T260 state-transition and linked-cell functions in `src/game/unit_0209e418.c`, with typed temporary contexts and grid records.
 - Verified the eight M1-T255 functions in `game/unit_0202dcfc` at 100% objdiff. They now take typed pointers instead of raw offsets and have per-function evidence comments.
 - Matched both M1-T257 functions in `game/unit_020f868c` with typed work views and documented state-sequence behavior.
 - Gave the five M1-T251 handlers in `game/unit_0203ce68` a typed work struct, real callee prototypes and comments, still 100% objdiff; added `include/game/unit_0203ce68.h`.
