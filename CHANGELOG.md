@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T329 `func_02071efc` (find-or-add named record) and `func_02072068` (dynamic-record mode step) in `game/unit_02071dc0`; the unit is now fully in C, with `Unk071dc0Store` typing the 0x1608-byte record store.
 - Matched all eight M1-T328 record setup, lookup, clearing, and mode helpers in `game/unit_02071dc0` at 100% objdiff.
 - Matched all eight M1-T324 game/unit_020fd5a4 resource, coordinate, and mode-dispatch functions with typed contracts and assembly evidence.
 - Matched all seven M1-T322 functions in `game/unit_02039774` at 100% objdiff; added typed FLW0 section parsing, work allocation, list operations and cleanup contracts.
