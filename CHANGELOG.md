@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.
 - Matched all eight M1-T1115 action-flag, descriptor-transition and map-work functions at 100% objdiff, with typed contracts and per-function evidence.
 - Verified all eight M1-T227 initialization, forwarding, teardown and optional-work setters at 100% objdiff; added typed callee declarations and corrected the unit hard list.
 - Matched seven M1-T1139 numeric-output and selection routines at 100% objdiff; documented the remaining record collector on the hard list.
