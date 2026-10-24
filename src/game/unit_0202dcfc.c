@@ -26,11 +26,11 @@ typedef struct Worker {
     u32 field58;                /* +0x58 */
     u8  flag5C;                 /* +0x5C */
     u8  pad_005d[3];
-    u32 field60;
-    u32 field64;
-    u32 field68;
-    u32 unk6C;
-    u32 field70;                /* +0x70 */
+    u32 field60;                /* +0x60 */
+    u32 field64;                /* +0x64 */
+    u32 field68;                /* +0x68 */
+    u32 unk6C;                  /* +0x6C, not cleared by InitWorker */
+    u32 field70;               /* +0x70 */
     u32 slots[16];              /* +0x74 */
 } Worker;
 void ScanVisor_ResetBits(u32 *sub);
@@ -52,7 +52,11 @@ int Unk02dcfc_HasField50(Unk02dcfcField50 *p)
     return p->unk_0050 >= 0;
 }
 
-/* Resets the object and attaches it to `owner`. */
+/* Resets the worker and stores `owner` at +0x40: clears state, timer and the
+ * +0x54..+0x70 words (except +0x6C), resets the sub-object at +0x4C and zeroes
+ * the 16 slots at +0x74. `w` must be non-null. Evidence: original 0x0202dd28;
+ * Unk095560_Unk_0956a8/_0956c8 call it on the manager alias with owner 0, which
+ * is why the other accessors here treat that pointer as "the manager". */
 void Unk0202dcfc_InitWorker(Worker *w, u32 owner) {
     int i;
 

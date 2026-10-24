@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all three M1-T264 functions in `src/game/unit_02047c8c.c` at 100% objdiff, with typed partial layouts and per-function evidence.
+- Verified `Unk0202dcfc_InitWorker` (M1-T256) at 100% objdiff and documented its field resets and callers.
 
 - Match both game/unit_02115ca0 sequence and drawing functions to the original ARM code.
 - Matched six M1-T261 functions in `game/unit_020eef2c`, including the timed transition handler; documented the remaining message dispatcher on the hard list.

@@ -1,6 +1,5 @@
 # unit_0202dcfc
 
-- `Unk0202dcfc_InitWorker`: initialise a `Worker` (store owner at 0x40, clear state, init sub-object at 0x4C via `ScanVisor_ResetBits`, zero the 16-entry table at 0x74).
 ## M1-T253 — verified at 100% objdiff
 
 Evidence is the delinked ARM instructions at each address below. Worker pointers
@@ -62,3 +61,12 @@ neutral names are kept for the code-selecting functions.
 All eight already matched. This task replaced the `int` and `u8 *` parameters
 with typed pointers, removed the raw-offset `FIELD` macro, and added
 comments. Nothing was hard. Every function in the TU is now at 100%.
+
+## M1-T256: verified at 100% objdiff
+
+| Function | Address | Contract and evidence |
+| --- | --- | --- |
+| `Unk0202dcfc_InitWorker` | `0x0202dd28` | Worker must be non-null. Stores `owner` at +0x40, clears state (+0x44) and timer (+0x48), calls `ScanVisor_ResetBits` on the sub-object at +0x4C, clears +0x54, +0x58, the byte at +0x5C, +0x60, +0x64, +0x68 and +0x70 (+0x6C is left alone), then zeroes the 16 words at +0x74. Callers `Unk095560_Unk_0956a8` and `Unk095560_Unk_0956c8` pass the manager alias with owner 0. |
+
+It already matched; this task added offset comments for +0x60..+0x6C and
+an evidence comment. Nothing was hard.
