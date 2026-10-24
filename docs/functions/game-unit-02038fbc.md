@@ -3,7 +3,9 @@
 Seven functions are implemented in C and match the original object at 100%.
 The TU remains linked from its delinked object until a human marks it complete.
 Names are retained from the symbol map; the behavior below comes from the original
-loads, stores, bounds checks and call sequences.
+loads, stores, bounds checks and call sequences. Owner-taking functions share the
+`Unk038fbcOwner` layout (header +0, aux +4, grid +8, 32 table pointers +12; 0x8c bytes)
+and the partial `Unk038fbcHeader` (origin +8/+9, width/height +10/+11, per-kind counts +12).
 
 | Function | Contract and evidence |
 | --- | --- |
