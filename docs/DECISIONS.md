@@ -120,6 +120,13 @@ preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
 
+## DEC-008 — Preserve the aligned name buffer in 0203812c
+
+The original clears its 16-byte temporary name with four word stores before
+copying sixteen signed bytes. A union of four words and sixteen bytes expresses
+that alignment and byte access in C; a plain byte array compiles to a byte-clear
+loop. Keep dictionary entries 5–7 as separate assignments followed by record
+initialization, matching the original unrolled tail and field-read expression.
 ## DEC-008 — Preserve stack count reloads and size-table ordering in 0205b540
 
 The original push reloads the count between the two size-table writes and on
