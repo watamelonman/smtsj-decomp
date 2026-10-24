@@ -27,15 +27,27 @@ No new tests are required by this card; objdiff verifies the compiled behavior.
 
 None.
 
-## Not done in M1-T381
-- `Unk094fe0_Call_02095320`
-- `Unk094fe0_Call_0209502c`
-- `Unk094fe0_Call_02095370`
-- `Unk094fe0_SetSlot`
-- `Unk094fe0_TestBit200`
-- `Unk094fe0_Unk_095370`
-- `Unk094fe0_Unk_095204`
-- `func_020953c4`
+## M1-T381: verified matching functions
+
+All eight report 100% in objdiff. The shared work pointer comes from `Unk094fe0_Thunk_0202e8cc`.
+The bit setter `func_020950e4(bits, bit, set)` sets the bit when `set == 1` and clears it otherwise.
+
+| Function | Size | Contract and evidence |
+| --- | --- | --- |
+| `Unk094fe0_Call_02095320` | 24 B | Returns `Unk094fe0_TestBit990(work, a)`: 1 if bit a-1 of the +0x990 array is set. r0 from the callee is passed back, so the return type is now `int` (it was `void`). |
+| `Unk094fe0_Call_0209502c` | 32 B | Forwards (a, b) with the shared work pointer to `Unk094fe0_Unk_09502c`. Called by unit_0203aae8 with b = 0/1. |
+| `Unk094fe0_Call_02095370` | 32 B | Forwards (a, b) with the shared work pointer to `Unk094fe0_Unk_095370`. |
+| `Unk094fe0_SetSlot` | 36 B | Stores v in `slots[i]` of an `Unk094fe0Record`. A null record or i outside 0..4 is ignored (`cmp #5; bxge`). The 28-byte record type comes from the 0x1c stride of `Unk094fe0_Unk_094fec`: the word at +0, `slots[5]` at +4, and the word at +0x18 that `TestFlag18` reads. |
+| `Unk094fe0_TestBit200` | 40 B | Returns 1 if bit a of `w->unk_0200` (work +0x200) is set. Returns 0 if the bit is clear or a >= 15360 (unsigned `cmp #15360; movcs`). The bound gives an array of 0x780 bytes. |
+| `Unk094fe0_Unk_095370` | 40 B | Sets or clears bit a-1 of the +0x990 array (`Unk094fe0_Unk_095004`). Ignores a outside 1..128 (`sub #1; cmp #128; popcs`). |
+| `Unk094fe0_Unk_095204` | 44 B | Sets or clears bit a of the shared work's `unk_0200` array. Ignores a >= 15360. |
+| `func_020953c4` | 44 B | Writes (cnt, flag, id) into the shared work's `unk_09a4` record (strb +0x9a6, strb +0x9a7, strh +0x9a4). `Unk094fe0_Unk_0953f0` later reads and clears that record. To match, the code must go through an `Unk094fe0Timer *` (`add r1, r0, #0x1a4` base). Direct `w->unk_09a4.x` stores compile to 40 bytes. |
+
+Struct changes: `Unk094fe0Work` now names the +0x200 bit array (`unk_0200[0x780]`), split out of the old leading pad. `Unk094fe0Record` is new. The stale `void func_020950e4();` declarations were replaced with the real prototype. The other functions in the file still match.
+
+## M1-T381 hard list
+
+None.
 
 ## Not done in M1-T383
 - `Unk094fe0_Unk_09502c`
