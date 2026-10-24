@@ -30,6 +30,20 @@ context writable through offset `0x30af`. Evidence is the switch table, three
 request/poll/result call sequences, and their destination stores. Exact resource
 semantics remain unknown; the existing neutral symbol remains.
 
+## Types
+
+The context is modelled as `Unk02037dd4Context`, with named fields `unk_2470`,
+`unk_24a4`, and `unk_30a4`..`unk_30ac` at the offsets cited above. The extent of
+`unk_24a4` is a guess (it runs up to `unk_30a4`).
+
+Each state word and its request object form one 0x7c-byte block, cleared with a
+single `func_02008848` call. A struct extern was tried, but the original
+relocations reference `data_0215dd34`/`data_0215ddb0` directly, while the struct
+form emits `data_0215dd30`/`data_0215ddac` relocations (cmp.py: `reloc
+data_0215dd30 vs data_0215dd34`). So the halves stay separate sized externs
+(`int` + `u8[0x78]`), and the clear size is the named constant
+`UNK_REQUEST_BLOCK_SIZE`.
+
 ## Validation and hard list
 
 Both functions match the target instructions and relocations with the standalone
