@@ -32,14 +32,6 @@ The local struct views name only observed fields and preserve their byte offsets
 
 No M1-T403 hard functions remain. Other card implementations below are retained.
 
-- `Unk0bac80_Unk_0bae34`: decompiler-derived
-- `Unk0bac80_Unk_0bae64`: decompiler-derived
-- `Unk0bac80_Unk_0bae80`: decompiler-derived
-- `Unk0bac80_Unk_0baf6c`: decompiler-derived
-- `Unk0bac80_Unk_0baf88`: decompiler-derived
-- `Unk0bac80_Unk_0bb078`: decompiler-derived
-- `Unk0bac80_Unk_0bb094`: decompiler-derived
-- `Unk0bac80_Unk_0bb0b0`: decompiler-derived
 - `Unk0bac80_Unk_0bb0cc`: decompiler-derived
 - `Unk0bac80_Unk_0bb0e8`: decompiler-derived
 - `Unk0bac80_Unk_0bacf8`: decompiler-derived
@@ -58,3 +50,26 @@ No M1-T403 hard functions remain. Other card implementations below are retained.
 - `func_020bad40`
 - `func_020bb18c`
 - `Unk0bac80_Unk_0bb144`: hand-matched
+
+## M1-T404: verified query result wrappers
+
+Each 28-byte ARM wrapper calls `Unk0bac80_Unk_0bae18` for the borrowed
+subobject address, passes a fixed selector in r1 to the query below, forwards
+its returned r0 word to `Unk03aae8_Unk_03acf4`, and returns completion value 1.
+Evidence: original instruction streams inspected with `tools/hand/asm.py`.
+The C now expresses the result forwarding explicitly. The provider must supply
+a valid subobject; no ownership transfers. Selector meanings and result units
+are unknown, so the wrapper names remain neutral.
+
+- `Unk0bac80_Unk_0bae34` (28 B): query `func_02049d80`, selector 2; publishes the opaque result.
+- `Unk0bac80_Unk_0bae64` (28 B): query `func_02049f24`, selector 0; publishes the opaque result.
+- `Unk0bac80_Unk_0bae80` (28 B): query `func_02049d80`, selector 0; publishes the opaque result.
+- `Unk0bac80_Unk_0baf6c` (28 B): query `func_02049d80`, selector 1; publishes the opaque result.
+- `Unk0bac80_Unk_0baf88` (28 B): query `func_02049f24`, selector 1; publishes the opaque result.
+- `Unk0bac80_Unk_0bb078` (28 B): query `func_02049d80`, selector 3; publishes the opaque result.
+- `Unk0bac80_Unk_0bb094` (28 B): query `func_02049d80`, selector 4; publishes the opaque result.
+- `Unk0bac80_Unk_0bb0b0` (28 B): query `func_02049d80`, selector 5; publishes the opaque result.
+
+All eight wrappers are 100% in the generated objdiff report. The match gate
+passes for all 30 C definitions checked in changed files. No M1-T404 hard
+functions remain.
