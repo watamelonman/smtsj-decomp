@@ -31,8 +31,9 @@ typedef struct Unk0a50d4Context {
     s8 state;
     s8 x;
     s8 y;
-    int index;
+    int index; /* pair cursor 0..5 used by func_020a5124 states 10/11 */
 } Unk0a50d4Context;
+/* map size 0x747c is implied by mode sitting at +0x7480 after unk_00. */
 
 /* Five four-byte entries are evidenced by the index*4 loads in func_020a5124. */
 typedef struct Unk0a50d4Pair {
@@ -50,9 +51,30 @@ typedef struct Unk0a50d4Entry {
     u8 flag;
 } Unk0a50d4Entry;
 
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
+/* Partial view of the current cell; only the bytes touched here are named. */
+typedef struct Unk0a50d4Cell {
+    u8 unk_00;
+    u8 unk_01;
+    u16 unk_02;
+} Unk0a50d4Cell;
+
+/* Partial view of the Unk038fbc_Unk_039160 result: entry type and element index. */
+typedef struct Unk0a50d4Lookup {
+    u8 type;
+    u8 index;
+} Unk0a50d4Lookup;
+
+/* Partial view of the Unk09a268_Unk_09c484 definition; size unknown. */
+typedef struct Unk0a50d4Definition {
+    u8 pad_0000[0x19];
+    u8 unk_19;
+} Unk0a50d4Definition;
+
+/* Partial view of the Unk02e000_GetWorkArea result; size unknown. */
+typedef struct Unk0a50d4WorkArea {
+    u8 pad_0000[0x35c];
+    u16 unk_035c;
+} Unk0a50d4WorkArea;
 int func_02002954(u32 registerAddress);
 
 /* Tests either brightness limit; 0x0400106c is the sub-screen MASTER_BRIGHT register. */
@@ -71,10 +93,10 @@ void func_0206597c(int value);
 int func_02065cd0(void);
 void func_02065c58(void);
 void *Unk02f2a8_Unk_034970(void *map, int x, int y);
-u8 *Unk038fbc_Unk_039160(void *map, int x, int y);
-u8 *Unk038fbc_GetElement(void *map, int kind, int index);
-u8 *Unk02f2a8_GetCurrentCell38e8(void);
-u8 *Unk09a268_Unk_09c484(int kind);
+Unk0a50d4Lookup *Unk038fbc_Unk_039160(void *map, int x, int y);
+Unk0a50d4Entry *Unk038fbc_GetElement(void *map, int kind, int index);
+Unk0a50d4Cell *Unk02f2a8_GetCurrentCell38e8(void);
+Unk0a50d4Definition *Unk09a268_Unk_09c484(int kind);
 void *Unk02f2a8_Unk_0349c4(void *map, int x, int y);
 int Unk0e651c_TestFlag(void *flags, int bit);
 void Unk09a268_Unk_09a80c(void *cell, int value);
@@ -84,7 +106,7 @@ void Unk0a0ce4_Unk_0a0da4(int value);
 int Unk09a268_Unk_09a844(void *cell);
 void Unk09a268_Unk_09a870(void *cell, int value);
 void Unk0e651c_SetFlag(void *flags, int bit, int value);
-u8 *Unk02e000_GetWorkArea(void);
+Unk0a50d4WorkArea *Unk02e000_GetWorkArea(void);
 void func_0204b74c(int x, int y, int value);
 void func_0204b6f4(void);
 void Unk0fc584_SetDir(int value);
@@ -128,21 +150,21 @@ int func_020a5490(Unk0a50d4Context *p)
  * The coordinates are signed bytes at +0x7482 and +0x7483. */
 void func_020a554c(Unk0a50d4Context *p)
 {
-    u8 *definition = Unk09a268_Unk_09c484(3);
-    u8 *cell = Unk02f2a8_GetCurrentCell38e8();
+    Unk0a50d4Definition *definition = Unk09a268_Unk_09c484(3);
+    Unk0a50d4Cell *cell = Unk02f2a8_GetCurrentCell38e8();
     int y = p->y;
     int x = p->x;
-    u8 *entry = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(p->map, x, y), x, y);
-    if (entry != 0 && entry[0] == 3) {
-        entry = Unk038fbc_GetElement(Unk02f2a8_Unk_034970(p->map,
-            p->x, p->y), 0, entry[1]);
+    Unk0a50d4Lookup *entry = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(p->map, x, y), x, y);
+    if (entry != 0 && entry->type == 3) {
+        Unk0a50d4Entry *data = Unk038fbc_GetElement(Unk02f2a8_Unk_034970(p->map,
+            p->x, p->y), 0, entry->index);
         if (Unk0e651c_TestFlag(Unk02f2a8_Unk_0349c4(p->map,
-            p->x, p->y), entry[26]) == 0) {
+            p->x, p->y), data->flag) == 0) {
             Unk09a268_Unk_09a80c(cell, 1);
             Unk09a268_Unk_09a830(cell, 0);
-            Unk09a268_SetOnlyBit(cell, definition[25]);
-            cell[1] = 1;
-            FIELD(u16, cell, 2) = 0;
+            Unk09a268_SetOnlyBit(cell, definition->unk_19);
+            cell->unk_01 = 1;
+            cell->unk_02 = 0;
             Unk0a0ce4_Unk_0a0da4(42);
             p->mode = 0;
             return;
@@ -157,23 +179,23 @@ int func_020a5124(Unk0a50d4Context *p)
 {
     int y = p->y;
     int x = p->x;
-    u8 *entry = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(p->map, x, y), x, y);
-    Unk0a50d4Entry *data = (Unk0a50d4Entry *)Unk038fbc_GetElement(Unk02f2a8_Unk_034970(p->map,
-        p->x, p->y), 0, entry[1]);
-    u8 *cell = Unk02f2a8_GetCurrentCell38e8();
+    Unk0a50d4Lookup *entry = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(p->map, x, y), x, y);
+    Unk0a50d4Entry *data = Unk038fbc_GetElement(Unk02f2a8_Unk_034970(p->map,
+        p->x, p->y), 0, entry->index);
+    Unk0a50d4Cell *cell = Unk02f2a8_GetCurrentCell38e8();
     int done = 0;
     switch (p->state) {
     case 0:
-        FIELD(u16, cell, 2)++;
+        cell->unk_02++;
         if (Unk09a268_Unk_09a844(cell) == 1) {
             Unk09a268_Unk_09a830(cell, 1);
             Unk09a268_Unk_09a870(cell, 0);
-            cell[1] = 2;
-            FIELD(u16, cell, 2) = 0;
+            cell->unk_01 = 2;
+            cell->unk_02 = 0;
             Unk0e651c_SetFlag(Unk02f2a8_Unk_0349c4(p->map,
                 p->x, p->y), data->flag, 1);
             func_0204b74c(p->x, p->y,
-                FIELD(u16, Unk02e000_GetWorkArea(), 0x35c));
+                Unk02e000_GetWorkArea()->unk_035c);
             func_0204b6f4();
             func_02065bc0();
             if (data->kind == 2) {

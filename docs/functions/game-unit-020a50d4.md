@@ -18,8 +18,10 @@ only describe their observed use. Context and map pointers are borrowed.
 The context view preserves map storage beginning at +4 and state fields beginning
 at +0x7480. The entry view preserves five signed-halfword/byte pairs with stride
 4, followed by the word at +20 and the observed kind/flag bytes at +25/+26.
-These views reproduce the original field loads without retaining addresses of
-individual raw byte fields across helper calls.
+Small partial views type the remaining accesses: the current cell
+(`unk_01` byte, `unk_02` halfword), the `Unk038fbc_Unk_039160` lookup (type
+byte +0, element index +1), the `Unk09a268_Unk_09c484` definition (byte +25)
+and the `Unk02e000_GetWorkArea` halfword at +0x35c. No raw-offset casts remain.
 
 ## Hard list
 
