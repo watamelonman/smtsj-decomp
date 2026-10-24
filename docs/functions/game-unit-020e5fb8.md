@@ -39,16 +39,8 @@ None for M1-T373 or M1-T374.
 
 ## Not done in M1-T377
 - `func_020e5fb8`
-- `Unk0e5fb8_Unk_0e622c`: decompiler-derived
-- `Unk0e5fb8_Unk_0e631c`: decompiler-derived
-- `Unk0e5fb8_Unk_0e639c`: decompiler-derived
-- `Unk0e5fb8_Unk_0e641c`: decompiler-derived
 
-## Not done in M1-T375
-- `Unk0e5fb8_Unk_0e620c`
-- `Unk0e5fb8_Unk_0e626c`
-- `Unk0e5fb8_Unk_0e61e8`
-- `Unk0e5fb8_Unk_0e62a4`
+## Remaining outside M1-T375
 - `Unk0e5fb8_Unk_0e649c`: decompiler-derived
 
 ## Not done in M1-T376
@@ -59,9 +51,6 @@ None for M1-T373 or M1-T374.
 - `Unk0e5fb8_Get2BitsD80`
 - `Unk0e5fb8_Get2BitsD80Hi`
 - `Unk0e5fb8_GetBits`
-- `Unk0e5fb8_Unk_0e626c`: decompiler-derived (plain cleanup)
-- `Unk0e5fb8_Unk_0e61e8`: decompiler-derived (plain cleanup)
-- `Unk0e5fb8_Unk_0e62a4`: decompiler-derived (plain cleanup)
 - `Unk0e5fb8_GetOffset900`: hand-matched
 - `Unk0e5fb8_GetOffsetB00`: hand-matched
 - `Unk0e5fb8_GetOffsetD00`: hand-matched
@@ -69,7 +58,6 @@ None for M1-T373 or M1-T374.
 - `Unk0e5fb8_GetOffset800`: hand-matched
 - `Unk0e5fb8_GetBits`: hand-matched
 - `Unk0e5fb8_SetBits`: hand-matched
-- `Unk0e5fb8_Unk_0e620c`: hand-matched
 - `Unk0e5fb8_Get2Bits`: hand-matched
 - `Unk0e5fb8_Get2BitsB00`: hand-matched
 - `Unk0e5fb8_Get2BitsD00`: hand-matched
@@ -97,3 +85,28 @@ No module boundary changed.
 
 Validation: match gate (including build), anticheat, unit tests, and ROM checksum.
 No new tests: the card exempts tests, and objdiff verifies the original instructions.
+
+## M1-T375 verification
+
+All eight card functions match the delinked ARM instructions at 100% objdiff.
+The existing bodies were retained, with explicit index arguments in the three
+pair setters and typed external callee declarations. Neutral names and existing
+void interfaces are retained because domain meanings and caller-visible return
+contracts are not established. Context arguments borrow storage; no ownership
+changes or module boundary changes occur.
+
+| Function | Size | Contract and evidence |
+| --- | --- | --- |
+| `Unk0e5fb8_Unk_0e620c` | 32 B | ARM at 0x020e620c saves row/column across the shared-context thunk and passes them with its result to 0x020e622c. |
+| `Unk0e5fb8_Unk_0e626c` | 32 B | ARM at 0x020e626c computes index + 0x8e0 through 0x020e6158 and calls TestBit with the supplied context. Index addition is unchecked. |
+| `Unk0e5fb8_Unk_0e61e8` | 36 B | ARM at 0x020e61e8 calls GetOffset800(row, column), then TestBit(context, offset). Columns >= 10 select zero; row arithmetic must be representable. |
+| `Unk0e5fb8_Unk_0e62a4` | 36 B | ARM at 0x020e62a4 computes index + 0x8e0 and calls 0x0209502c with the supplied context and value 1. Signed index addition must be representable. |
+| `Unk0e5fb8_Unk_0e622c` | 40 B | ARM at 0x020e622c calls GetOffset800(row, column), then 0x0209502c(context, offset, 1); same row/column contract as the reader. |
+| `Unk0e5fb8_Unk_0e631c` | 44 B | ARM at 0x020e631c passes the index to GetOffset900 and writes value bits 0 and 1 through the shared-context setter at consecutive bit offsets. Unsigned indices >= 256 select zero. |
+| `Unk0e5fb8_Unk_0e639c` | 44 B | ARM at 0x020e639c uses GetOffsetB00 and the same two writes; unsigned indices >= 256 select zero. |
+| `Unk0e5fb8_Unk_0e641c` | 44 B | ARM at 0x020e641c uses GetOffsetD00 and the same two writes; unsigned indices >= 64 select zero. |
+
+The pair setters ignore value bits above bit 1 and use an arithmetic right shift
+of the signed masked second bit, matching the original instruction sequence.
+No new tests are required by the card: objdiff checks the original instructions.
+Hard list for M1-T375: none.

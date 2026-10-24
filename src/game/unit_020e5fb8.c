@@ -6,6 +6,10 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* Writes one bit through the shared context. */
+void Unk094fe0_Call_0209502c(int bit, int value);
+
+
 /* Supplies the shared bit-storage context; no caller arguments are consumed. */
 int Unk094fe0_Thunk_0202e8cc(void);
 void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2);
@@ -199,9 +203,12 @@ void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1)
 
 
 
-int Unk094fe0_Unk_09502c();
+/* Mutates a bit in the caller-owned context; bit indices are not byte offsets. */
+void Unk094fe0_Unk_09502c(u32 context, int bit, int value);
 int Unk0e5fb8_GetOffset800(int row, u32 col);
-/* decompiler-derived */
+/* Sets the row/column bit in the supplied context. ARM at 0x020e622c
+ * calls GetOffset800, then 0x0209502c with value 1. Row arithmetic must
+ * be representable; unsigned columns >= 10 select column zero. */
 void Unk0e5fb8_Unk_0e622c(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 value;
@@ -209,33 +216,38 @@ void Unk0e5fb8_Unk_0e622c(u32 arg0,u32 arg1,u32 arg2)
   Unk094fe0_Unk_09502c(arg0,value,1);
 }
 
-int Unk094fe0_Call_0209502c();
-int Unk0e5fb8_GetOffset900();
-/* decompiler-derived */
+int Unk0e5fb8_GetOffset900(u32 index);
+/* Writes the low two value bits to the shared-context pair at base 0x900.
+ * ARM at 0x020e631c passes the index to GetOffset900 (indices >= 256
+ * select zero), then writes masks 1 and 2 to consecutive bit indices. */
 void Unk0e5fb8_Unk_0e631c(u32 arg0,u32 arg1)
 {
   int value;
-  value = Unk0e5fb8_GetOffset900();
+  value = Unk0e5fb8_GetOffset900(arg0);
   Unk094fe0_Call_0209502c(value,arg1 & 1);
   Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
-int Unk0e5fb8_GetOffsetB00();
-/* decompiler-derived */
+int Unk0e5fb8_GetOffsetB00(u32 index);
+/* Writes the low two value bits to the shared-context pair at base 0xb00.
+ * ARM at 0x020e639c uses GetOffsetB00; unsigned indices >= 256 select
+ * zero. The second masked bit is shifted arithmetically as in the original. */
 void Unk0e5fb8_Unk_0e639c(u32 arg0,u32 arg1)
 {
   int value;
-  value = Unk0e5fb8_GetOffsetB00();
+  value = Unk0e5fb8_GetOffsetB00(arg0);
   Unk094fe0_Call_0209502c(value,arg1 & 1);
   Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
-int Unk0e5fb8_GetOffsetD00();
-/* decompiler-derived */
+int Unk0e5fb8_GetOffsetD00(u32 index);
+/* Writes the low two value bits to the shared-context pair at base 0xd00.
+ * ARM at 0x020e641c uses GetOffsetD00; unsigned indices >= 64 select
+ * zero. Higher value bits are ignored. */
 void Unk0e5fb8_Unk_0e641c(u32 arg0,u32 arg1)
 {
   int value;
-  value = Unk0e5fb8_GetOffsetD00();
+  value = Unk0e5fb8_GetOffsetD00(arg0);
   Unk094fe0_Call_0209502c(value,arg1 & 1);
   Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
@@ -251,8 +263,11 @@ void Unk0e5fb8_Unk_0e649c(u32 arg0,u32 arg1)
   Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
-int Unk094fe0_TestBit();
-/* decompiler-derived */
+/* Reads a bit from the caller-owned context without taking ownership. */
+int Unk094fe0_TestBit(u32 context, u32 bit);
+/* Reads the bit at unchecked index + 0x8e0 from the supplied context.
+ * Evidence: ARM at 0x020e626c calls 0x020e6158 then TestBit. Retains the
+ * existing void interface; the instructions do not establish a return contract. */
 void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1)
 {
   u32 tmp1;
@@ -260,7 +275,9 @@ void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1)
   Unk094fe0_TestBit(arg0,tmp1);
 }
 
-/* decompiler-derived */
+/* Reads the row/column bit from the supplied context without ownership.
+ * ARM at 0x020e61e8 calls GetOffset800 then TestBit. Row arithmetic must
+ * be representable; unsigned columns >= 10 select zero. Keeps the void interface. */
 void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 tmp1;
@@ -268,12 +285,17 @@ void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2)
   Unk094fe0_TestBit(arg0,tmp1);
 }
 
+/* Supplies the shared context to the row/column setter 0x020e622c.
+ * Evidence: ARM at 0x020e620c preserves both arguments across the thunk.
+ * Row/column validity follows GetOffset800; storage remains thunk-owned. */
 void Unk0e5fb8_Unk_0e620c(u32 a, u32 b)
 {
     Unk0e5fb8_Unk_0e622c(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
-/* decompiler-derived */
+/* Sets the bit at unchecked index + 0x8e0 in the supplied context.
+ * Evidence: ARM at 0x020e62a4 calls 0x020e6158 and passes value 1 to
+ * 0x0209502c. The signed index addition must be representable. */
 void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1)
 {
   u32 tmp1;
@@ -288,7 +310,6 @@ int Unk0e5fb8_Get2Bits(u32 a, u32 b)
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
-int Unk094fe0_TestBit();
 int Unk0e5fb8_Get2BitsB00(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetB00(b);
