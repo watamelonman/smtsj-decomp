@@ -3,6 +3,10 @@
 ## Unreleased
 
 - Match the four remaining game/unit_020efff4 state, initialization, float-slot update, and entry submission functions.
+- M1-T363: added matching C for `func_020b12c8`, the ten-slot filtered and sorted ID selection routine; documented `func_020b1488` on the hard list.
+- M1-T362: matched `func_020b23bc` with typed work/cell views; documented `func_020b2410` on the hard list after a 98.71% candidate.
+
+- Match the two-pass object update handler `func_020479b8` in game/unit_02047788.
 - Matched all eight M1-T360 functions in `game/unit_020efff4`, including descriptor setup, embedded-object initialization, and percentage clamping, with typed work fields and per-function evidence.
 - Matched all six M1-T359 entry application, status filtering, amount calculation and cost deduction functions in `game/unit_020f8bc8` at 100% objdiff, with typed record views and per-function documentation.
 - Matched all seven M1-T358 game/unit_020fb128 callbacks at 100% objdiff, with typed record/work views and documented phase and threshold behavior.
