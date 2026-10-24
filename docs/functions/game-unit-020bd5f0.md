@@ -199,3 +199,76 @@ Hard list for M1-T1138: none. Original delink configuration remains human-owned.
 - `Unk0bd5f0_Unk_0c842c`: hand-matched
 - `Unk0bd5f0_IsState22or24`: hand-matched
 - `Unk0bd5f0_Unk_0c8510`: hand-matched
+
+## M1-T1139
+
+Seven targets match at 100% in objdiff. Existing neutral symbols are retained:
+accesses and helper calls establish behavior, but do not establish domain names.
+The original delink continues to supply the remaining target; no assembly was added.
+
+The kind-3 `Unk0bd5f0SelectObj` view now includes eight collected ids at +0x148,
+a range byte at +0x17c, a signed index halfword at +0x17e, and the existing
+context marker at +0x1b8. The global context uses this view because the new
+selection routines access these fields and the already-established +0x44/+0x60
+subobjects. `Unk0bd5f0IdInfo` exposes only the metadata flag word at +0x24.
+These layouts remain local to the TU. The text-output helper's final argument
+is now a borrowed pointer; existing integer conversion results are explicitly cast.
+
+- `func_020c1e18` (296 B): reads two signed halfwords from the borrowed
+  record and formats four values through the output's first word. The slot selects
+  a ten-unit row; the first value uses color d below one fifth of the first
+  record value, otherwise c. Other values use c. The output and record must be readable.
+- `func_020c1990` (328 B): remains original; see hard list below. Collects
+  nonzero halfword ids from either the base selection or an indexed 60-byte record,
+  derives a flag from statuses 1/7/6/2 or a nonpositive signed value, then forwards
+  the index, collected ids, count and flag to `func_020c8008`.
+- `func_020c14c0` (344 B): configures data `data_02150558`, then draws up to
+  two bars for positive input values. Width is the low byte of
+  `(114688 / ((maximum << 12) / value)) % 29`, replacing zero with one.
+  Uses ids 0x1d09/0x1d07 for the first bar according to its one-fifth threshold,
+  and 0x1d08 for the second. Borrows two signed maxima; slot uses thirteen-unit
+  rows. The caller must supply ratios with nonzero divisors.
+- `func_020c1618` (344 B): same arithmetic and contracts, configuring
+  `data_0215055c` and using ids 0x1d1c/0x1d1a/0x1d1b.
+- `func_020c7428` (352 B): clears eight collected ids, counts an inclusive
+  range, populates ids and row flags when nonempty, and updates output +0x104.
+  A nonzero fifth argument also updates +0x108. Empty ranges submit an empty
+  halfword string. Rebuilds the eight-row subobjects, then writes global state 20,
+  next state 24, transition -110 and two zero transition fields. Requires a live
+  kind-3 object and global context.
+- `func_020c8210` (400 B): stores the range selector byte at +0x17c and
+  dispatches selectors 0..3 to ranges 211..260, 261..310, 311..360 and 361..410.
+  Empty ranges fill the eight flags with word value 1. All selectors then set
+  global state 22, transition fields 0 and 0x3f800000, and duration 10.
+  Requires a live global context; other selectors skip range setup.
+- `func_020c8008` (520 B): returns for a null context; otherwise clears
+  collected ids and stores the index halfword. Zero count creates a one-row empty
+  output. Nonzero count copies caller ids and keeps rows available only when flag
+  is clear, metadata exists, metadata bits 9..10 are 1 or 3, and the index/id
+  helper accepts the pair. Refreshes subobjects and output, then sets state 22.
+  The caller owns the ids and must keep count within the eight-slot capacity.
+- `func_020c7cdc` (660 B): fills both eight-word availability banks with 1,
+  then clears selector-specific rows using prerequisite queries, inclusive id
+  searches, or the shared signed mappings. Selector 16 also queries and resets
+  another subsystem and returns 2; other selectors return 0. Requires a borrowed
+  live kind-3 object and readable shared mappings. Explicit case 0 preserves the
+  original switch table; paired stores follow the original bank order.
+
+### Hard list for M1-T1139
+
+- `func_020c1990`: best measured objdiff 98.48%, with the correct 328-byte
+  body. MWCC swapped the count and flag registers and the source/destination
+  scratch registers in the collection loops. Trials covered signed and unsigned
+  flag/count types, initialization and declaration order, inner/outer loop locals,
+  explicit output pointers, helper prototypes, register hints, equivalent conditional
+  forms. A narrow index parameter also changed an
+  existing caller, so its original word-sized declaration is preserved. The record
+  multiply can match with a signed-halfword cast of that word-sized index.
+  The nonmatching C body and its unused record views were removed. A human can
+  create a scratch with `tools/decompme.py`; no public upload was performed.
+
+Validation: the build through `tools/match_gate.py` passes (all 46 defined C
+functions in the TU at 100%), anticheat passes, all nine unit tests pass, and
+checksum reports all artifacts byte-identical. No new tests were required by
+the card. Seven of eight card targets are implemented; `func_020c1990` remains
+unmatched in the original delink.
