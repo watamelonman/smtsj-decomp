@@ -112,3 +112,18 @@ The pair setters ignore value bits above bit 1 and use an arithmetic right shift
 of the signed masked second bit, matching the original instruction sequence.
 No new tests are required by the card: objdiff checks the original instructions.
 Hard list for M1-T375: none.
+
+## M1-T377
+
+- `func_020e5fb8` (252 B): hand-written, 100% objdiff. Takes a record id (truncated to
+  u16) and a resource id; returns a halfword id or 0. It starts at a random slot
+  (`func_02050074(1, 11)`) and tries all 12 slots of the `func_020e67f4` record with wrap.
+  The slot row is offset 12 when `Unk03e43c_Unk_03fa28()` returns 0 or the
+  `Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(131))` check passes, else 6 for mode 8,
+  else 0. Ids 0xfffd..0xffff are replaced by entry `id - 0xfff1` (12..14) of the 6-byte
+  table that `func_020a1740(resId)` returns. A replacement in 0x385..0x53c becomes 0 unless
+  `Unk0e651c_Unk_0e666c(0x702)` is set. Neutral name kept: no strings or callers name it.
+  Note: the entry read is written as `(base + id)[-0xfff1]`; `base[id - 0xfff1]` emits
+  add-then-multiply instead of the ROM's `mla` and negative-offset load.
+
+Hard list for M1-T377: none.
