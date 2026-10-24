@@ -2,6 +2,63 @@
 
 ## Unreleased
 - Matched all seven M1-T322 functions in `game/unit_02039774` at 100% objdiff; added typed FLW0 section parsing, work allocation, list operations and cleanup contracts.
+- Matched M1-T310 `func_02125dcc` (record/buffer initializer) in `game/unit_02125d84` at 100% objdiff.
+- Matched M1-T307 `func_0209d1cc` (effect spawn with kind-based placement and name-suffix modes) in `src/game/unit_0209d060.c` at 100% objdiff.
+- Verified all eight M1-T316 state callbacks in `game/unit_0211ec7c` at 100% objdiff; added typed work pointers, state fields, and per-function contracts and evidence.
+- Matched `func_020fb858` (M1-T314), the paged-list drawing callback, with typed work and draw-descriptor views.
+- Matched all three M1-T313 callback allocation, phase update and nearby-record scan functions in `game/unit_020b1fa0` at 100% objdiff, with typed local views and per-function evidence.
+- Matched all seven M1-T312 queue, record-selection, and callback descriptor functions in `game/unit_0211d120` with typed field views and per-function documentation.
+- M1-T311: verified the typed record comparator in `game/unit_02100414` at 100% objdiff; documented the initializer’s remaining scheduling mismatch on the hard list.
+- Matched all eight M1-T309 packed-shape, record lookup, cleanup, fill, and tile-write helpers at 100% objdiff.
+- Matched all three M1-T299 work-area sequence functions in `game/unit_020edc78` at 100% objdiff, with typed parameters and documented state transitions.
+- Matched M1-T308 cell-check and three-slot lookup functions in `game/unit_021214e0`; documented the remaining rendering function on its hard list.
+- Matched all eight M1-T306 singleton work helpers in `src/game/unit_0209d060.c`, including allocation and optional parent linking, with typed contracts and instruction evidence.
+- Matched all three M1-T301 functions in `game/unit_02122a78`, with typed callback state and documented resource/handle initialization.
+- Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.
+- Matched all seven M1-T300 functions in `game/unit_02115fbc` at 100% objdiff, with typed resource/state/record views and per-function contracts.
+
+- Match all four game/unit_02112714 functions, including descriptor and work record initialization.
+- Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
+- Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
+- Matched four M1-T293 callbacks/submission helpers in `game/unit_0211f894` at 100%; documented the remaining six-strip helper on its hard list.
+- Added matching C for both M1-T282 request state machines in `game/unit_02037dd4`, with typed parameters and per-function contracts.
+- Matched all eight M1-T285 handle and row-transition functions in `src/game/unit_0204459c.c`, with typed work/table layouts and per-function contracts.
+- Matched all four M1-T283 functions in `game/unit_0203845c`, including scanline synchronization, relative-entry resolution, and three-channel pool submissions.
+- Matched the remaining seven M1-T274 functions in `src/game/unit_020fd268.c` (state stepper, draw pass, work creation and init) at 100% objdiff; the TU is now fully C.
+- Verified seven M1-T268 resource/grid helpers at 100% objdiff, added behavior contracts, and documented the resource loader store-scheduling mismatch on the hard list.
+- Verified all eight M1-T273 singleton accessors and setters at 100% objdiff, with typed work fields and per-function behavior evidence.
+- Matched both M1-T267 current-item handlers in `src/game/unit_020466a4.c`, with typed record views and documented status/update behavior.
+- Matched M1-T266 `func_0203812c` at 100% objdiff with typed record, input, and resource dictionary views.
+- Verified the two M1-T265 callback wrappers at 100% objdiff with typed declarations; documented the remaining command handler on the hard list.
+- Matched all three M1-T264 functions in `src/game/unit_02047c8c.c` at 100% objdiff, with typed partial layouts and per-function evidence.
+- Verified `Unk0202dcfc_InitWorker` (M1-T256) at 100% objdiff and documented its field resets and callers.
+
+- Match both game/unit_02115ca0 sequence and drawing functions to the original ARM code.
+- Matched six M1-T261 functions in `game/unit_020eef2c`, including the timed transition handler; documented the remaining message dispatcher on the hard list.
+- Matched all four M1-T260 state-transition and linked-cell functions in `src/game/unit_0209e418.c`, with typed temporary contexts and grid records.
+- Verified the eight M1-T255 functions in `game/unit_0202dcfc` at 100% objdiff. They now take typed pointers instead of raw offsets and have per-function evidence comments.
+- Matched both M1-T257 functions in `game/unit_020f868c` with typed work views and documented state-sequence behavior.
+- Gave the five M1-T251 handlers in `game/unit_0203ce68` a typed work struct, real callee prototypes and comments, still 100% objdiff; added `include/game/unit_0203ce68.h`.
+- Verified all eight M1-T253 worker helpers at 100% objdiff; typed direct worker parameters and documented instruction evidence and absent-manager defaults.
+- Matched all four M1-T252 trial and weighted-selection functions in `src/game/unit_020e5cb8.c` at 100% objdiff with typed data views.
+- Verified all eight M1-T250 handlers in `game/unit_0203ce68` at 100% objdiff, with explicit result forwarding, typed operand contracts, and per-function instruction evidence.
+- Matched both M1-T249 entry-submission and segmented-bar functions in `src/game/unit_020de37c.c`; documented record layout and integer rounding contracts.
+- Matched all five M1-T246 battle event resource and record-selection functions at 100% objdiff, with typed layouts and behavior documentation.
+- Matched all eight M1-T244 stack-state functions at 100% objdiff, with typed entry/state layouts and documented mode-dependent push/pop behavior.
+- Matched both option-check and selection-dispatch functions in `src/game/unit_020f0be0.c`; documented their typed views and observed behavior.
+- Matched all three M1-T239 functions in `src/game/unit_020fa520.c` at 100% objdiff, with typed descriptor, record and work views and per-function contracts.
+- Matched `func_02124338` (work-block setup in `game/unit_021241ec`) at 100% objdiff and typed the full 0x40-byte work struct; the other three M1-T228 functions are confirmed at 100%.
+- Matched both callbacks in `game/unit_020b17f4`: frame-state progression and interpolated entry drawing, with typed work fields and per-function contracts.
+- Matched `func_02099494` (696-byte centered strip drawing callback) at 100% objdiff with typed work fields and per-function documentation.
+- Matched all eight M1-T1115 action-flag, descriptor-transition and map-work functions at 100% objdiff, with typed contracts and per-function evidence.
+- Verified all eight M1-T227 initialization, forwarding, teardown and optional-work setters at 100% objdiff; added typed callee declarations and corrected the unit hard list.
+- Matched seven M1-T1139 numeric-output and selection routines at 100% objdiff; documented the remaining record collector on the hard list.
+- Matched all eight M1-T225 functions in `game/unit_020e675c` at 100% objdiff, including the byte/halfword table searches; documented typed contracts and instruction evidence.
+- Matched eight more `src/game/unit_0202f2a8.c` functions (M1-T1114): two grid-cell handler dispatchers, a heading-step probe, a task creator, a cell sound-id latch, a tally counter, a resource-36 u16 copy and a record insertion sort.
+- Matched all eight M1-T1138 game/unit_020bd5f0 cleanup, mapping, record refresh and selection setup routines at 100% objdiff.
+- Matched M1-T223 `func_020b0d48` at 100% objdiff; documented its ten-entry filtering, fallback, and random-selection contract.
+- Verified the four M1-T181 game/unit_0203bba4 callbacks at 100% objdiff; added typed helper declarations and documented argument conversions, substate updates and readiness checks.
+- Matched all eight M1-T1113 resource, action, state-reset and grid helpers at 100% objdiff, with typed contracts and per-function documentation.
 - Matched `func_020f82e0` (M1-T218), the per-frame state update in `src/game/unit_020f81a4.c`, at 100% objdiff; the callback fields at +0x8c..+0xa0 are now typed.
 - M1-T203: `src/ImageBg.c` now has matching C for `func_020e5580` (work-task creation) and `func_020e5664` (mode-dispatch update callback); all 13 ImageBg functions are at 100%.
 - Matched all eight M1-T190 callbacks and state initialization functions in `src/game/unit_020cd470.c` at 100% objdiff, with typed layouts and per-function evidence.
