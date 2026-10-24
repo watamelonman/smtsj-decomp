@@ -18,7 +18,7 @@ Names describe only observed offsets and operations, without assigning gameplay 
   returns without updating if any predicate for `0x404`, `0x405`, or `0x406`
   is nonzero. Otherwise adds to work byte `0x70`, narrows the sum to signed
   16 bits, clamps to 0..255, and stores the byte. Narrowing precedes clamping.
-- `func_0202efa4` (`0x0202efa4`, original object): assembles an 18-halfword
+- `Unk02ee5c_Unk_02efa4` (`0x0202efa4`, original object): assembles an 18-halfword
   output at work + `0x24` from lists at `0x5a` and `0x48`. Each source is
   copied until zero or eight entries; separator 1 overwrites the first
   terminator, and remaining output slots through index 17 are zeroed.
@@ -33,10 +33,11 @@ Names describe only observed offsets and operations, without assigning gameplay 
 
 ## Hard list
 
-- `func_0202efa4`: attempted counted loops, do/while loops, separate source
+- `Unk02ee5c_Unk_02efa4`: attempted counted loops, do/while loops, separate source
   counters, struct array fields, raw halfword indexing, and explicit temporaries.
   Best result was 94.75%: the same 160-byte instruction sequence, but the
   output index and temporary registers differed (C used r1/r2/r3/ip where
   the target used ip/r1/r2/r3). No nonmatching definition is retained. It
   continues linking from the delinked object; no INCLUDE_ASM is used by this
   DS pipeline. A human can create a scratch with `tools/decompme.py`.
+- `Unk02ee5c_Unk_02efa4`: hand-matched
