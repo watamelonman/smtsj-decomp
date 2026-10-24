@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all eight M1-T424 game/unit_020fbed4 initialization, callback, cleanup, and drawing functions at 100% objdiff with typed private layouts.
+- M1-T423: added matching C for six game/unit_020a93e8 drawing routines; documented two remaining hard functions.
 
 - Matched the remaining main-loop dispatcher, startup, and frame helpers in `unit_0202cad4`; all twelve functions now match at 100%.
 - M1-T406: matched five game/unit_020bac80 state and command handlers with typed borrowed layouts and instruction evidence.
