@@ -1,8 +1,8 @@
-# game/unit_020b0b5c — M1-T222
+# game/unit_020b0b5c — M1-T222 / M1-T223
 
 The behavior below follows the ARM instructions and relocation targets in the
 original delinked object. Resource/query meanings are not established, so existing
-neutral symbol names are retained. All seven implemented functions match at 100%.
+neutral symbol names are retained. All eight implemented functions match at 100%.
 No module boundary changes are introduced.
 
 | Function | Contract and instruction evidence |
@@ -15,6 +15,8 @@ No module boundary changes are introduced.
 | `Unk0b0b5c_Unk_0b0cf4` | Mode-one counterpart of 0b0c78, using query4ab14 for the final query. |
 | `Unk0b0b5c_Unk_0b0d28` | Return second pointed-to signed integer minus first. Both pointers must be valid; subtraction must fit a signed int. The original is two loads, subtraction, return. |
 | `Unk0b0b5c_Unk_0b0d38` | Return first pointed-to signed integer minus second, with the same pointer and arithmetic contract. |
+
+| `func_020b0d48` | Select among the singleton's ten non-null entries at offset 0x64. A nonzero filter must equal bits 16–23 of the entry's first word; zero filter accepts any nonzero byte there. Exclude entries whose first word equals the fallback, or whose `func_0204a9ec` result is nonzero. Reload the first word after that call. Return zero if the singleton is absent, fallback if no candidates qualify, otherwise choose with `func_02050074(0, count - 1)`. The selected word is opaque; signed parameters and return preserve its 32-bit representation. Entry pointers must remain valid during the call, and the random helper must return an inclusive in-range index. The original's 0x28-byte stack array, ten-iteration loop, loads, tests, and call relocations establish this behavior. The explicit accepted-filter label preserves the original branch layout; separate candidate store and count increment preserve register allocation. All 192 bytes match. |
 
 The query helpers take a 32-bit opaque value; their data interpretation is not yet
 established. Query differences and requested limits use signed comparisons and
