@@ -37,7 +37,7 @@ void Unk0cce38_Enter(void)
 void Unk0cce38_Nop_0cce70(void) { }
 
 /* 020cd46c: the original callback returns immediately without side effects. */
-void Unk0cce38_Nop_0cd46c(void) { }
+void Unk0cce38_Nop_0cd46c(Unk0cce38Work *work) { }
 
 void Unk0cb32c_Unk_0cb754(u32 *slot);
 /* 020cd45c: forward the address of the borrowed work handle slot at +0x7c. */
@@ -148,4 +148,154 @@ void func_020ccea0(Unk0cce38Descriptor *descriptor)
     descriptor->callback_0018 = func_020cd490;
     descriptor->callback_001c = Unk0cce38_Unk_0ccfac;
     descriptor->callback_0020 = func_020cd49c;
+}
+
+int func_02052728(void);
+int func_020deb68(void);
+void Unk122e1c_Unk_123024(u32 handle);
+void Unk02cad4_Unk_02cbdc(u32 value);
+int func_020decd8(void);
+int Unk0de678_Unk_0debf8(void);
+void func_0205257c(int value);
+void func_0209b774(int value);
+int Unk09a268_Unk_09bb38(void);
+
+/* 020ccfe0: advance the borrowed work's state after helper completion;
+ * byte states and signed counter comparisons follow the original accesses. */
+void func_020ccfe0(void *arg)
+{
+    Unk0cce38Work *work = arg;
+    switch (work->unk_0000) {
+    case 0:
+        if (func_02052728() != 0) break;
+        if (func_020deb68() != 0) {
+            work->unk_0000 = 6;
+            work->unk_0002 = 4;
+        } else {
+            Unk122e1c_Unk_123024(work->unk_007c);
+            work->unk_0000 = work->unk_0002;
+            work->unk_0002 = 4;
+        }
+        break;
+    case 1:
+        if (func_02052728() == 0) Unk02cad4_Unk_02cbdc(work->unk_00b8);
+        break;
+    case 6:
+        if (func_020decd8() == 0) break;
+        if (work->unk_0002 == 4) {
+            if (func_020deb68() != 0) break;
+            Unk122e1c_Unk_123024(work->unk_007c);
+        } else {
+            if (Unk0de678_Unk_0debf8() != 0) break;
+            func_0205257c(0);
+        }
+        work->unk_0000 = work->unk_0002;
+        break;
+    case 7:
+        if (func_020decd8() == 0) break;
+        if (work->unk_0002 != 5) Unk122e1c_Unk_123024(work->unk_007c);
+        work->unk_0000 = work->unk_0002;
+        break;
+    case 8:
+        if (func_02052728() != 0) break;
+        if (work->unk_00bc == 0) {
+            Unk0cce38_Unk_0cd45c(work);
+            work->unk_00bc++;
+        } else if ((s32)work->unk_00bc < 2) {
+            work->unk_00bc++;
+        } else {
+            func_0209b774(2);
+            work->unk_00bc = 0;
+            work->unk_0000 = 9;
+        }
+        break;
+    case 9:
+        if (Unk09a268_Unk_09bb38() == 0) break;
+        if (work->unk_00bc == 0) {
+            Unk0cce38_Nop_0cd46c(work);
+            work->unk_00bc++;
+        } else if ((s32)work->unk_00bc < 2) {
+            work->unk_00bc++;
+        } else {
+            work->unk_00bc = 0;
+            func_020525cc(0);
+            work->unk_0000 = 10;
+        }
+        break;
+    case 10:
+        if (func_02052728() == 0) work->unk_0000 = work->unk_0002;
+        break;
+    }
+    if (work->unk_0000 != 9 && work->unk_00bc == 0) {
+        FIELD(u32, work->unk_007c, 0x64) = FIELD(u32, work, 0x90);
+        work->unk_00c0 = 1;
+    } else {
+        work->unk_00c0 = 0;
+    }
+}
+
+int func_02053824(int channel, int mask);
+int func_02053800(int channel, int mask);
+void func_020bcc7c(void *control);
+void func_020bccec(void *control);
+void func_020bcfc4(void *control, int value);
+void Unk0de678_Unk_0dec94(void *record);
+void Unk122e1c_Unk_123048(u32 handle);
+
+/* 020cd200: dispatch input-query results for states 4 and 5 while +4 is
+ * enabled. Original offsets identify two controls and 26-byte records. */
+void func_020cd200(void *arg)
+{
+    Unk0cce38Work *work = arg;
+    if (work->unk_0004 == 0) return;
+    switch (work->unk_0000) {
+    case 4:
+        if (func_02053824(0, 0x40)) {
+            func_020bcc7c((u8 *)work + 0x80);
+        } else if (func_02053824(0, 0x80)) {
+            func_020bccec((u8 *)work + 0x80);
+        } else if (func_02053800(0, 0x800)) {
+            func_0205257c(0);
+            work->unk_0001 = 0;
+            work->unk_0002 = 4;
+            work->unk_0000 = 8;
+        } else if (func_02053800(0, 1)) {
+            switch (FIELD(u32, work, 0x90)) {
+            case 0: Unk0cce38_Unk_0cd430(work, 8); break;
+            case 1: Unk0cce38_Unk_0cd430(work, 7); break;
+            case 2: Unk0cce38_Unk_0cd430(work, 9); break;
+            case 3:
+                if (FIELD(u32, work, 0xa0) == 0) break;
+                if (FIELD(u32, work, 0xa0) == 1) {
+                    Unk122e1c_Unk_122ff0(work->unk_007c);
+                    work->unk_0002 = 7;
+                    work->unk_0000 = 3;
+                } else {
+                    Unk122e1c_Unk_122ff0(work->unk_007c);
+                    work->unk_0002 = 5;
+                    work->unk_0000 = 3;
+                }
+                break;
+            case 4: Unk0cce38_Unk_0cd430(work, 5); break;
+            }
+        } else if (func_02053800(0, 2)) {
+            func_020bcfc4((u8 *)work + 0x80, 4);
+        }
+        break;
+    case 5:
+        if (func_02053824(0, 0x20)) {
+            func_020bcc7c((u8 *)work + 0x9c);
+        } else if (func_02053824(0, 0x10)) {
+            func_020bccec((u8 *)work + 0x9c);
+        } else if (func_02053800(0, 1)) {
+            Unk0de678_Unk_0dec94((u8 *)work + 0x14 + FIELD(u32, work, 0xac) * 26);
+            work->unk_0002 = 5;
+            work->unk_0000 = 7;
+        } else if (func_02053800(0, 2)) {
+            Unk122e1c_Unk_123048(work->unk_007c);
+            work->unk_0002 = 4;
+            work->unk_0000 = 2;
+        }
+        break;
+    }
 }
