@@ -791,3 +791,48 @@ tests passed; the match gate verified all 122 retained C definitions at 100%;
 checksum reported all artifacts byte-identical to the original. The match gate
 covers the retained definitions, not the three omitted hard functions above.
 `git diff --check` also passed.
+
+## M1-T1119: 8 functions
+
+All eight are 100% in objdiff (match gate, checksum and anticheat pass). Names stay neutral:
+the evidence shows what each function does to the state, not what it is for in the game.
+- `func_02031448` (480 bytes): moves the player off cell kinds 10/11/12. It reads direction bits
+  4..6 of element word 0 (kinds 10/11) or word 1 (kind 12), and keeps the current heading when
+  those bits are outside 1..4. Then it calls `Unk02f2a8_SetGridPos`.
+- `func_02033ae8` (428 bytes): mode-10 handler (called from `func_02033e08` case 10). A six-step
+  sequence on +0x7481: wait five frames, then two, reload the body, restore the display helpers,
+  then set +0x73cc to 2.
+- `func_02033f1c` (524 bytes): the first callback passed to `func_020611dc` by `func_0203428c`
+  (its partner is `func_02034128`). It runs pending work for +0x73e0 (032a08), +0x743c (031758),
+  root +0x4c (031628 mode 1) and +0x74a4 (031df8). It runs the mode entry (033cd0, skipped when
+  +0x73cc is -1) and the per-frame mode handler (033e08), and updates +0x7550 and +0x7598. While
+  +0x7430 is nonzero it moves to the 052dd8 grid position; when that is null it retries through
+  052d7c(+0x7430, +0x7434) if +0x7438 is 1, otherwise it clears both words. A root +0x5c request
+  rebuilds map work: one cell from +0x7482/+0x7483 along the work-area heading when +0x748c is 1
+  (y+1/x-1/y-1/x+1 for headings 0..3, unless +0x7400 is set), otherwise through `func_02034e90`.
+  The jump-table cases are written in handler-address order (0, 2, 3, 1).
+- `func_02034b7c` (480 bytes): arms a map/grid transition. It stores its eight arguments at
+  +0x744c..+0x7468, snapshots the work-area id/x/y/heading into +0x7454..+0x7458, and sets
+  +0x746c when the destination id differs. It calls 05e590(9) when +0x73d4 differs from the
+  destination's 03572c selector, then sets up the display transition (0a4e9c with 2 or 3 by mode
+  when the brightness flag is set and the sub brightness is not at max). The stores go through
+  `((Unk02f2a8State *)gGameState)->`; a local or static-inline pointer changes the code.
+- `func_02035008` (428 bytes): runs the descriptor callback of the lead actor (+0x6c id) and up
+  to three members (+0x34 id). In mode 1 it also adds four per-actor values into the flagged pairs
+  at +0x74a8/+0x74c8, changed when +0x74f0 differs from 03fa28. It always sets +0x74a4.
+- `func_02035578` (436 bytes): joins the two resource strings for a key (16 and 6 halfwords) with
+  resource (1,47) as a separator. It copies at most 19 halfwords to `dst` and terminates it.
+  Matching needed `firstLength * sizeof(u16)` as the first copy size (`* 2` schedules differently).
+- `func_02035890` (480 bytes): searches the loaded map for cell kind 14 and writes the cell next to
+  it (picked by the element's low two bits) plus a heading into the 8-byte position record. It
+  returns 1 only when it finds a cell. The grid bounds are bytes +8..+11 of the block that map
+  word +0 points to, so `Unk02f2a8MapBlock.unk_0000` is now a `u8 *`. The X bounds must be loaded
+  before the Y bounds.
+- `func_02036a74` (468 bytes): samples `func_02036068` at the four corners of a 4-unit square
+  around `center` (20.12 fixed point, int-to-fx rounding written out). It stores the max/min at
+  result +8/+0xa when forced, or when they lie inside (-0x1555, 0x1555). Declaring `row` after
+  the other locals is needed for the stack-slot order.
+
+New typed state fields: root +0x5c; state +0x73d4, +0x7430..+0x7438, +0x7440..+0x746c,
++0x7482/+0x7483, +0x748c, +0x74f0. The copy helper `func_0200866c` now has a real prototype.
+Hard list for this card: none.

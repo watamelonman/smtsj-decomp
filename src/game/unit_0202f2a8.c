@@ -89,7 +89,9 @@ typedef struct Unk02f2a8StateRoot {
     u32 unk_004c;
     u32 unk_0050;
     u32 unk_0054;
-    u8 pad_0058[0x7c - 0x58];
+    u8 pad_0058[4];
+    u32 unk_005c;               /* one-shot request consumed by func_02033f1c */
+    u8 pad_0060[0x7c - 0x60];
     u8 unk_007c[0x94 - 0x7c];   /* size guessed: position block passed to func_0203721c */
     u16 unk_0094;
     u8 pad_0096[0x9c - 0x96];
@@ -99,8 +101,9 @@ typedef struct Unk02f2a8StateRoot {
 /* One map block embedded in the body Unk02f2a8_Unk_034970 picks from; only
  * its extent (the distance between the two blocks) is known. */
 typedef struct Unk02f2a8MapBlock {
-    u32 unk_0000;               /* nonzero required by Unk_0351b4 */
-    u8 *unk_0004;               /* byte table indexed by 034a8c's result + 15 */
+    u8 *unk_0000;               /* nonzero required by Unk_0351b4; +8..+11 bound the
+                                 * cell grid scanned by func_02035890 */
+    u8 *unk_0004;              /* byte table indexed by 034a8c's result + 15 */
     u8 pad_0008[0x2c8 - 0x23c - 8];
 } Unk02f2a8MapBlock;
 
@@ -142,7 +145,7 @@ typedef struct Unk02f2a8State {
     u32 unk_73c8;
     u32 unk_73cc;
     u32 unk_73d0;
-    u8 pad_73d4[4];
+    u32 unk_73d4;               /* cell selector compared by func_02034b7c */
     u32 unk_73d8;
     u8 pad_73dc[4];
     u32 unk_73e0;
@@ -153,17 +156,37 @@ typedef struct Unk02f2a8State {
     u32 unk_73fc;
     u32 unk_7400;               /* nonzero suppresses the func_0203721c rebuild */
     u8 pad_7404[0x7410 - 0x7404];
-    u8 unk_7410[0x743c - 0x7410]; /* size guessed: position block used instead of root +0x7c */
-    u32 unk_743c;
-    u8 pad_7440[0x7478 - 0x7440];
+    u8 unk_7410[0x7430 - 0x7410]; /* size guessed: position block used instead of root +0x7c */
+    u32 unk_7430;               /* nonzero: func_02033f1c runs 052da0 */
+    u32 unk_7434;
+    u32 unk_7438;               /* 1: func_02033f1c hands +0x7430/+0x7434 to 052d7c */
+    u32 unk_743c;               /* 1: transition armed by func_02034b7c */
+    u32 unk_7440;
+    u32 unk_7444;
+    u32 unk_7448;
+    u16 unk_744c;               /* func_02034b7c destination id, x, y, heading */
+    s8 unk_744e;
+    s8 unk_744f;
+    u32 unk_7450;
+    u16 unk_7454;               /* work-area id, x, y, heading at arm time */
+    s8 unk_7456;
+    s8 unk_7457;
+    u32 unk_7458;
+    u32 unk_745c;               /* func_02034b7c mode, brightness flag, a, b */
+    u32 unk_7460;
+    u32 unk_7464;
+    u32 unk_7468;
+    u32 unk_746c;               /* 1 when the destination id differs */
+    u8 pad_7470[0x7478 - 0x7470];
     u32 unk_7478;               /* +0x7478..+0x748b cleared by Unk_032f3c */
     u32 unk_747c;
     s8 unk_7480;                /* id handed to func_02038888/func_02030924 */
     s8 unk_7481;                /* step of the func_02032e18 sequence */
-    u8 pad_7482[2];
+    s8 unk_7482;                /* grid x/y of the func_02033f1c rebuild */
+    s8 unk_7483;
     s32 unk_7484;               /* frame counter of the func_02032e18 sequence */
     u32 unk_7488;
-    u8 pad_748c[0x7490 - 0x748c];
+    u32 unk_748c;               /* 1: func_02033f1c rebuilds at +0x7482/+0x7483 */
     u32 unk_7490;
     u32 unk_7494;
     u32 unk_7498;               /* nonzero arms root +0x54 in func_02032d4c */
@@ -171,7 +194,9 @@ typedef struct Unk02f2a8State {
     u32 unk_74a4;
     Unk02f2a8PendingValue unk_74a8[4];
     Unk02f2a8PendingValue unk_74c8[4];
-    u8 pad_74e8[0x7550 - 0x74e8];
+    u8 pad_74e8[0x74f0 - 0x74e8];
+    u32 unk_74f0;               /* compared with Unk03e43c_Unk_03fa28 by func_02035008 */
+    u8 pad_74f4[0x7550 - 0x74f4];
     u8 unk_7550[0x757c - 0x7550]; /* size guessed: block handed to func_02099494 */
     u32 unk_757c;
     u8 pad_7580[0x18];
@@ -1189,7 +1214,7 @@ void func_02008644();
 void *func_0204459c();
 void *func_0204fe68();
 void *func_0204fed8();
-void func_0200866c();
+void func_0200866c(const void *source, void *dest, u32 size);
 u32 func_0204fe18();
 
 
@@ -2227,6 +2252,93 @@ void func_02033e08(Unk02f2a8State *s)
     }
 }
 
+void func_02031758(Unk02f2a8State *s);
+void func_02031df8(Unk02f2a8State *s);
+void func_020993a8(void *obj);
+void Unk11ec7c_Update(void *obj);
+void func_02052da0(void);
+void func_02052d7c(u32 a, u32 b);
+s8 *func_02052dd8(void);
+void Unk095560_Unk_0958a8(int x, int y);
+void func_02034e90(void);
+
+/* First callback of the game-state task (registered by func_0203428c with
+ * func_02034128). Runs the pending +0x73e0/+0x743c/+0x74a4 work, the
+ * current mode (func_02033cd0 unless +0x73cc is -1, then func_02033e08),
+ * updates +0x7550/+0x7598 and the 052dd8 grid position, and on the root
+ * +0x5c request rebuilds map work: at +0x7482/+0x7483 stepped one cell
+ * along the work-area heading when +0x748c is 1, else via func_02034e90. */
+void func_02033f1c(Unk02f2a8State *s)
+{
+    Unk02f2a8StateRoot *root;
+    s8 *pos;
+    if (s->unk_73e0 == 1) {
+        Unk02f2a8_Unk_032a08((int *)s);
+    }
+    if (s->unk_743c == 1) {
+        func_02031758(s);
+    }
+    if (s->unk_73cc != -1) {
+        func_02033cd0(s);
+    }
+    func_02033e08(s);
+    root = s->root;
+    if (root->unk_004c == 1) {
+        root->unk_004c = 0;
+        func_02031628(s, 1);
+    }
+    if (s->unk_74a4 == 1) {
+        func_02031df8(s);
+    }
+    func_020993a8(s->unk_7550);
+    Unk11ec7c_Update(&s->unk_7598);
+    if (s->unk_7430 != 0) {
+        func_02052da0();
+        pos = func_02052dd8();
+        if (pos != 0) {
+            Unk095560_Unk_0958a8(pos[0], pos[1]);
+        } else if (s->unk_7438 == 1) {
+            func_02052d7c(s->unk_7430, s->unk_7434);
+            pos = func_02052dd8();
+            if (pos != 0) {
+                Unk095560_Unk_0958a8(pos[0], pos[1]);
+            }
+        } else {
+            s->unk_7430 = 0;
+            s->unk_7434 = 0;
+        }
+    }
+    root = s->root;
+    if (root->unk_005c != 1) return;
+    root->unk_005c = 0;
+    if (s->unk_748c == 1) {
+        int x = s->unk_7482;
+        int y = s->unk_7483;
+        Unk02f2a8MapBlock *map;
+        switch (Unk02e000_GetWorkArea()->unk_0358) {
+        case 0:
+            y++;
+            break;
+        case 2:
+            y--;
+            break;
+        case 3:
+            x++;
+            break;
+        case 1:
+            x--;
+            break;
+        }
+        if (s->unk_7400 != 0) return;
+        root = s->root;
+        map = Unk02f2a8_Unk_034970(&s->body, x, y);
+        func_0203721c(s->unk_3154, map, s->unk_38e8, root->unk_007c,
+            root->unk_0094, x, y, 1, root->unk_0018);
+    } else {
+        func_02034e90();
+    }
+}
+
 void func_02037d50(void *cells, void *work, Unk02f2a8Body *body, void *position, int flag);
 void func_02099494(void *obj);
 void func_0211f0a0(void *obj);
@@ -2804,8 +2916,7 @@ int func_02035578(u16 *dst, u32 capacity, int key)
         }
         u16 combined[20] = {0};
         u16 *cursor = combined;
-        u32 bytes = firstLength * 2;
-        func_0200866c(first, cursor, bytes);
+        func_0200866c(first, cursor, firstLength * sizeof(u16));
         cursor += firstLength;
         u16 separator[2] = {0};
         separator[0] = func_02061bd4(1, 47);
@@ -2951,28 +3062,28 @@ int func_0205e590(int id);
  * the destination's cell selector, then configures the display transition. */
 void func_02034b7c(int id, int x, int y, u32 direction, int mode, int brightness, int a, int b)
 {
-    FIELD(u32, gGameState, 0x743c) = 1;
-    FIELD(u32, gGameState, 0x7440) = 0;
-    FIELD(u32, gGameState, 0x7448) = 0;
-    FIELD(u32, gGameState, 0x7444) = 0;
-    FIELD(u16, gGameState, 0x744c) = id;
-    FIELD(s8, gGameState, 0x744e) = x;
-    FIELD(s8, gGameState, 0x744f) = y;
-    FIELD(u32, gGameState, 0x7450) = direction;
-    FIELD(u32, gGameState, 0x745c) = mode;
-    FIELD(u32, gGameState, 0x7460) = brightness;
-    FIELD(u32, gGameState, 0x7464) = a;
-    FIELD(u32, gGameState, 0x7468) = b;
-    FIELD(u16, gGameState, 0x7454) = Unk02e000_GetWorkArea()->unk_035c;
-    FIELD(s8, gGameState, 0x7456) = Unk02e000_GetWorkArea()->unk_0364;
-    FIELD(s8, gGameState, 0x7457) = Unk02e000_GetWorkArea()->unk_0365;
-    FIELD(u32, gGameState, 0x7458) = Unk02e000_GetWorkArea()->unk_0358;
+    ((Unk02f2a8State *)gGameState)->unk_743c = 1;
+    ((Unk02f2a8State *)gGameState)->unk_7440 = 0;
+    ((Unk02f2a8State *)gGameState)->unk_7448 = 0;
+    ((Unk02f2a8State *)gGameState)->unk_7444 = 0;
+    ((Unk02f2a8State *)gGameState)->unk_744c = id;
+    ((Unk02f2a8State *)gGameState)->unk_744e = x;
+    ((Unk02f2a8State *)gGameState)->unk_744f = y;
+    ((Unk02f2a8State *)gGameState)->unk_7450 = direction;
+    ((Unk02f2a8State *)gGameState)->unk_745c = mode;
+    ((Unk02f2a8State *)gGameState)->unk_7460 = brightness;
+    ((Unk02f2a8State *)gGameState)->unk_7464 = a;
+    ((Unk02f2a8State *)gGameState)->unk_7468 = b;
+    ((Unk02f2a8State *)gGameState)->unk_7454 = Unk02e000_GetWorkArea()->unk_035c;
+    ((Unk02f2a8State *)gGameState)->unk_7456 = Unk02e000_GetWorkArea()->unk_0364;
+    ((Unk02f2a8State *)gGameState)->unk_7457 = Unk02e000_GetWorkArea()->unk_0365;
+    ((Unk02f2a8State *)gGameState)->unk_7458 = Unk02e000_GetWorkArea()->unk_0358;
     if (id != Unk02e000_GetWorkArea()->unk_035c) {
-        FIELD(u32, gGameState, 0x746c) = 1;
+        ((Unk02f2a8State *)gGameState)->unk_746c = 1;
     } else {
-        FIELD(u32, gGameState, 0x746c) = 0;
+        ((Unk02f2a8State *)gGameState)->unk_746c = 0;
     }
-    if (FIELD(u32, gGameState, 0x73d4) != func_0203572c(id, x, y)) func_0205e590(9);
+    if (((Unk02f2a8State *)gGameState)->unk_73d4 != func_0203572c(id, x, y)) func_0205e590(9);
     func_0205257c(mode);
     if (brightness == 1 && Unk0a50d4_IsSubBrightnessMax() == 0) {
         int value = 2;
@@ -2996,6 +3107,15 @@ typedef struct Unk02f2a8ActorDescriptor {
     u32 unk_0000[2];
     void (*unk_0008)(Unk02f2a8State *state, u8 slot);
 } Unk02f2a8ActorDescriptor;
+/* Actor views for func_02035008: only the descriptor id halfword is known. */
+typedef struct Unk02f2a8LeadActor {
+    u8 pad_0000[0x6c];
+    u16 unk_006c;
+} Unk02f2a8LeadActor;
+typedef struct Unk02f2a8MemberActor {
+    u8 pad_0000[0x34];
+    u16 unk_0034;
+} Unk02f2a8MemberActor;
 void *Unk02e000_Thunk_0202e788(void);
 u8 *Unk02e000_Unk_02e7c0(int index);
 Unk02f2a8ActorDescriptor *Unk109230_Unk_109328(u32 id);
@@ -3012,21 +3132,20 @@ void func_02035008(int mode)
     Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
     int i;
     for (i = 0; i < 4; i++) {
-        u8 *actor;
         Unk02f2a8ActorDescriptor *d;
         if (i == 0) {
-            actor = (u8 *)Unk02e000_Thunk_0202e788();
-            if (actor == 0) continue;
-            d = Unk109230_Unk_109328(FIELD(u16, actor, 0x6c));
+            Unk02f2a8LeadActor *lead = Unk02e000_Thunk_0202e788();
+            if (lead == 0) continue;
+            d = Unk109230_Unk_109328(lead->unk_006c);
         } else {
-            actor = Unk02e000_Unk_02e7c0(i - 1);
-            if (actor == 0) continue;
-            d = Unk109230_Unk_109328(FIELD(u16, actor, 0x34));
+            Unk02f2a8MemberActor *member = (Unk02f2a8MemberActor *)Unk02e000_Unk_02e7c0(i - 1);
+            if (member == 0) continue;
+            d = Unk109230_Unk_109328(member->unk_0034);
         }
         if (d->unk_0008 != 0) d->unk_0008(s, (u8)i);
     }
     if (mode == 1) {
-        int changed = FIELD(u32, s, 0x74f0) != Unk03e43c_Unk_03fa28();
+        int changed = s->unk_74f0 != Unk03e43c_Unk_03fa28();
         int first[4] = {0};
         int second[4] = {0};
         first[0] = func_02096f54(changed);
@@ -3049,7 +3168,7 @@ void func_02035008(int mode)
             }
         }
     }
-    FIELD(u32, s, 0x74a4) = 1;
+    s->unk_74a4 = 1;
 }
 
 /* Sample the four corners of a 4-unit square around center in 20.12 units.
@@ -3058,23 +3177,20 @@ void func_02035008(int mode)
 int func_02036a74(Unk02f2a8SortEntry *result, const Unk02f2a8Point *from, int step,
                   const Unk02f2a8Point *center, int force)
 {
-    int row = 0;
-    int rowOffset = 0;
-    int x = center->x;
-    int z = center->z;
+    int x = center->x - 0x2000;
+    int z = center->z - 0x2000;
     Unk02f2a8Point point = {0};
     int highest = -0x8000;
     int lowest = 0x7fff;
-    x -= 0x2000;
-    z -= 0x2000;
-    for (row = 0; row < 2; row++, rowOffset += 4096) {
+    int row;
+    for (row = 0; row < 2; row++) {
         int column;
-        int columnOffset = 0;
-        int value = (int)(row > 0 ? 0.5f + (float)rowOffset : (float)rowOffset - 0.5f);
+        /* Round row to 20.12, then scale by 4.0 with 20.12 rounding. */
+        int value = (int)(row > 0 ? row * 4096 + 0.5f : row * 4096 - 0.5f);
         point.z = z + (s32)(((s64)value * 0x4000 + 0x800) >> 12);
-        for (column = 0; column < 2; column++, columnOffset += 4096) {
+        for (column = 0; column < 2; column++) {
             int angle;
-            value = (int)(column > 0 ? 0.5f + (float)columnOffset : (float)columnOffset - 0.5f);
+            value = (int)(column > 0 ? column * 4096 + 0.5f : column * 4096 - 0.5f);
             point.x = x + (s32)(((s64)value * 0x4000 + 0x800) >> 12);
             angle = func_02036068(from, step, &point);
             if (highest < angle) highest = angle;
@@ -3120,14 +3236,17 @@ int func_02035890(Unk02f2a8Pos *dst, int selector)
     y = position.y;
     direction = 0;
     if (func_02038ff8(&map, &position, 0, 0) == 1) {
-        u8 *bounds = map.unk_0004;
-        int firstY = bounds[9];
-        int lastY = firstY + bounds[11];
-        int firstX = bounds[8];
-        int lastX = firstX + bounds[10];
+        int firstX;
+        int lastX;
+        int lastY;
         int row;
         int column;
-        for (row = firstY; row < lastY; row++) {
+        u8 *bounds = map.unk_0000;
+        firstX = bounds[8];
+        lastX = firstX + bounds[10];
+        row = bounds[9];
+        lastY = row + bounds[11];
+        for (; row < lastY; row++) {
             for (column = firstX; column < lastX; column++) {
                 u8 *cell = (u8 *)Unk038fbc_Unk_039160(&map, column, row);
                 if (cell != 0 && cell[0] == 14) {

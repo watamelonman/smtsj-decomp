@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T1119: matched all eight listed `game/unit_0202f2a8` functions (task update callback, transition setup, actor callbacks, string join, map search and corner sampling) at 100% objdiff, with typed state fields.
 - M1-T1118: matched five grid/action, selector, reload, teardown and counter functions in `game/unit_0202f2a8`; documented three hard functions, including two verified matches with mwccarm 2.0/sp2p4.
 - Matched all eight M1-T370 functions in `game/unit_020f470c`, including the missing accessor callback; documented typed work views and instruction evidence.
 - M1-T363: added matching C for `func_020b12c8`, the ten-slot filtered and sorted ID selection routine; documented `func_020b1488` on the hard list.
