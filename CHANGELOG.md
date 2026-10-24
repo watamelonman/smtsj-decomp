@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all six M1-T456 game/unit_020e7ac4 state, submission, and selection functions at 100% objdiff with typed parameters and instruction evidence.
 - Matched all eight M1-T455 game/unit_020e7ac4 callbacks and work-field helpers at 100% objdiff, with typed parameters and per-function evidence.
 - Matched M1-T445 `func_020ef578`, the remaining game/unit_020ef248 entry submission callback, with typed work fields and documented instruction evidence.
 - Verified all eight M1-T447 game/unit_020a0ce4 functions at 100% objdiff; documented instruction evidence and typed their helper calls.

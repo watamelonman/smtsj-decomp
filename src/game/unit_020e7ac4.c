@@ -172,9 +172,10 @@ s32 func_020e807c(void)
             if (func_02053e44(selected * 64, 176, 64, 16, 2, 0)) return selected;
         }
     } else {
-        s32 x = 0;
-        for (i = 0; i < 4; i++, x += 64) {
-            if (func_02053e44(x, 176, 64, 16, 1, 0)) selected = i;
+        s32 slot;
+        s32 x;
+        for (slot = 0, x = 0; slot < 4; slot++, x += 64) {
+            if (func_02053e44(x, 176, 64, 16, 1, 0)) selected = slot;
         }
         if (selected >= 0) data_02176cdc->selected[selected] = 1;
     }
@@ -240,7 +241,7 @@ void func_020e7b80(Unk0e7ac4Work *work)
  * 020e7d48..020e7f00 supplies selection tint and staggered phase clamps. */
 void func_020e7d40(Unk0e7ac4Work *work)
 {
-    s32 i, x;
+    s32 i, phase, x;
     if (work->unk_58 != 0) return;
     if (work->unk_50 == 0) return;
     func_02057524(4);
@@ -251,8 +252,7 @@ void func_020e7d40(Unk0e7ac4Work *work)
         func_02057eb8(2);
         func_02057fd8();
         func_02057e18(31);
-        for (i = 0, x = 0; i < 4; i++, x += 64) {
-            s32 phase;
+        for (i = 0, x = 0; i < 4; x += 64, i++) {
             func_02057df8();
             phase = work->phase - (3 - i) * 2;
             if (phase < 0) phase = 0;
