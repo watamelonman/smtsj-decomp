@@ -32,13 +32,6 @@ The local struct views name only observed fields and preserve their byte offsets
 
 No M1-T403 hard functions remain. Other card implementations below are retained.
 
-## Not done in M1-T406
-- `func_020bafa4`
-- `func_020bb00c`
-- `func_020bac80`
-- `func_020bad40`
-- `func_020bb18c`
-
 ## M1-T404: verified query result wrappers
 
 Each 28-byte ARM wrapper calls `Unk0bac80_Unk_0bae18` for the borrowed
@@ -96,3 +89,33 @@ Validation: match gate passed, anticheat passed, all nine unit tests passed,
 and checksum reported all artifacts byte-identical to the original. No new
 runtime tests were required by this card; objdiff checks the compiled functions.
 No M1-T405 hard functions remain.
+
+## M1-T406: verified matches
+
+Evidence: original ARM instructions inspected with `tools/hand/asm.py` and
+compared with `tools/hand/cmp.py`; all five functions are 100% in objdiff.
+Neutral names are retained because command and field meanings remain unknown.
+The typed views in `include/game/unit_020bac80.h` describe borrowed prefixes.
+
+- `func_020bafa4` (104 B): obtains argument 0 and the subobject handle;
+  calls 0204f5e0, then 0204f24c with option 2, zero and one.
+  Sets work +0x44 bit 13 and returns 3.
+- `func_020bb00c` (108 B): uses selector 22 in 0204f650, then option 3
+  in 0204f24c; sets the same bit and returns 3.
+- `func_020bac80` (120 B): ignores negative values. Otherwise forwards
+  the value and signed state bytes +0x7482/+0x7483 to 02034d5c and
+  02034b7c, including work word +0x358 and options (3,1,0,1) for the latter;
+  finally calls 020a0da4 with 52. Its existing integer ABI has no defined
+  result; callers ignore it, and the original negative path preserves r0.
+- `func_020bad40` (128 B): byte +0x7481 selects state 0 or 1. State 0
+  waits for 02052728 to return zero, calls 0204b74c with signed coordinates
+  and work halfword +0x35c, then increments the state byte. State 1 returns
+  whether word +0x7440 equals 1. Other states return zero.
+- `func_020bb18c` (268 B): visits ten pointers at provider +0x64. Non-null
+  entries with handle bits 16..23 equal to 1 and a zero 0204a9ec result
+  receive paired selector 21/22 and option 1/3 commands, using values from
+  020b0c30/020b0cac with limit 999. Command offsets advance by 12 only
+  for eligible entries; the second command uses offset +6. Sets work
+  +0x44 bit 13 and returns 3.
+
+No M1-T406 hard functions remain.
