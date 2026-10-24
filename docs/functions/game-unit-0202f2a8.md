@@ -451,3 +451,226 @@ table pointer). `Unk02f2a8StateBody` is gGameState as root plus
 
 Validation: match gate (all 205 functions in the changed file 100%), checksum
 byte-identical, anticheat clean, 9 unit tests pass. Hard list for M1-T1112: none.
+
+## M1-T1113: predicates, action handling and grid initialization
+
+Names remain neutral: instruction-level field and call evidence establishes the
+operations below, but not their gameplay meanings. All pointers are borrowed.
+
+- `Unk02f2a8_Unk_0366dc` (128 bytes): converts one tenth of the signed input
+  through soft float, divides by two/three when predicates on ids 152/163 equal
+  one, and clamps to at least one. Existing matched implementation retained.
+- `func_02036654` (136 bytes): checks the key with 118c6c and visits seven signed
+  bytes at resource-36 row offsets +0x1c..+0x22. Negative bytes are skipped;
+  nonnegative n requires both 118c6c(2*n+90) and 118c6c(2*n+91). The first
+  failed derived check stops traversal. Returns one only if all checks pass.
+- `func_02030204` (144 bytes): returns for singleton flags +0x73e0/+0x743c equal
+  to one, action +4 unequal to one, or 04b710 unequal to one. Otherwise compares
+  work id +0x35c with 04bb9c's context id, selects 02fea0/0300ec and calls 0441ec
+  on result one, or 030198 otherwise. Requires a writable action and singleton.
+- `func_0203721c` (144 bytes): skips null position/cells, clears 0x794 work
+  bytes, calls 036c48 with position, halfword id, coordinates and flag, then
+  036fb8. A non-null map also invokes 0370e8 with the cell buffer. Its final
+  argument is unused; the repeated position check matches the original.
+- `func_02032adc` (148 bytes): polls descriptor +4 for state id +0x7478, defaulting
+  to success when absent. On result one clears +0x7478/+0x7480/+0x7481/+0x7484/
+  +0x7488, sets +0x73cc to two, root +0x14/+0x18/+0x1c to 1/2/0, and root
+  +0x44/+0x50/+0x4c to one. State and root must be writable.
+- `func_02032c0c` (148 bytes): identical callback and state-reset operation to
+  032adc at a separate original address; kept as a distinct function.
+- `func_02037054` (148 bytes): missing grid object accepts. Otherwise descriptor
+  +0x14 selects a filter on cell byte +1: zero accepts, one requires 1, two
+  accepts 1 or 3, three rejects; other selectors accept. Coordinates use the
+  existing GridIndex45 contract. Map and cell storage must remain readable.
+- `func_0202fe08` (152 bytes): selectors other than two return one. Selector
+  two offsets the cached coordinates by direction (0: -y, 1: +x, 2: +y,
+  3: -x). Out-of-grid returns one; otherwise returns 09c090(x,y,direction,1).
+
+Hard list for M1-T1113: none. Matching uses original instruction comparisons;
+no new test files are required by this card.
+
+Validation: all eight card functions are 100% in the generated objdiff report;
+match gate passes for the changed C file, checksum reports all artifacts
+byte-identical, anticheat passes, and all nine existing unit tests pass.
+
+## M1-T1114: grid handlers, counters, a task creator and a record sort
+
+Names stay `func_<addr>`: no strings or callers establish a purpose, and
+renaming would touch config/arm9/symbols.txt (protected).
+
+- `func_0202fd64` (164 bytes): turns the cached heading by `turn` via
+  `func_020361ec`, steps one cell from the cached work-area position (same
+  direction table as `func_0202fe08`), returns 0 out of grid, 1 when
+  `probe == 0`, else `func_0209be20(x, y)`.
+- `func_020303d0` (168 bytes): allocates a 0xa0-byte task through
+  `func_020611dc` with `Unk02f2a8_Unk_03034c` and the two empty callbacks,
+  stores the argument and initial words (+8/+0xc = 1, +0x18 = 2), then runs
+  `Call_02035db8`, `Unk_030578` and `Unk_02f378` on it. Returns 0 on failure.
+- `func_020305a8` (164 bytes): picks an id from the s16 table at body+0x24 by
+  bits 20..23 of the current cell word; ids >= 29 are ignored. Forced (1) calls
+  `func_0205e484(id, 9)` and latches the id at +0x73d4; otherwise skipped when
+  +0x73e0 is 1 or the id is already latched.
+- `func_02032a40`, `func_02032b70` (156 bytes each, identical bodies): look up
+  the handler slot for the cached cell (+0x7482/+0x7483) with
+  `Unk09a268_Unk_09c4a8`, latch the cell's leading byte at +0x7478, clear
+  +0x7480..+0x7488 and call the handler if set.
+- `func_020352f4` (152 bytes): kind 0 bumps the u16 at +0x754e; other kinds
+  bump row `kind`, column `slot` of the u16[3] rows at +0x751e when the enable
+  byte at +0x33+kind is nonnegative; both report through `func_02030d84` with
+  the work-area id at +0x35c.
+- `func_0203546c` (160 bytes): zeroes `count` u16s at `dst`, then (resource 37
+  loaded) copies up to 15 u16s from entry `GetRes36Unk19(idx) - 1`, holding
+  resource 36 during the lookup. Returns 1 when copied.
+- `func_02036fb8` (156 bytes): stable insertion sort of the 16-byte records
+  after the count word, ascending by their +4 key.
+
+Shared types: the map-block/body typedefs moved above their first use, the
+body gained the s16 table at +0x24 (size guessed), `Unk02f2a8Obj39160` names
+bits 20..23, and the new `Unk02f2a8GridState` view types the state that
+`Unk02f2a8_Unk_034970` callers pass. The sort only matched without an explicit
+`count <= 1` early return (the loop's entry test produces it).
+
+Hard list for M1-T1114: none.
+
+Validation: match gate (all 175 C functions in the changed file 100%), checksum
+byte-identical, anticheat clean, 9 unit tests pass.
+
+## M1-T1115: action flags, descriptor transitions and map work
+
+All eight functions match the delinked ARM instructions at 100%. Names remain
+address-based because field access and call evidence does not establish gameplay
+semantics. Pointers and embedded buffers are borrowed; no ownership changes.
+
+- `func_020300ec` (172 bytes): tests channel-zero masks in priority order:
+  0xf3, 0x800, 0x400, 0x100, 0x200. A predicate result of one sets action
+  +0x30/+0x20/+0x24/+0x28/+0x2c respectively and returns one. The 0x800
+  and 0x400 branches also call 0441ec; no match returns zero.
+- `func_02030494` (180 bytes): rejects a zero input word, looks up the map
+  and cell at cached coordinates, then requires 0364bc(cell low five bits)
+  to equal one and cell bit five to equal one. Missing cells reject.
+- `func_02032ca0` (172 bytes): obtains the descriptor for state +0x747c,
+  clears the active cell fields, then calls optional descriptor +4. Return
+  zero restores root flags, clears +0x747c too, and sets +0x73cc to two.
+- `func_02032d4c` (168 bytes): polls descriptor +8, treating an absent
+  callback as one. Result one restores the same root and state fields;
+  nonzero state +0x7498 additionally sets root +0x54 to one.
+- `func_02034dd0` (192 bytes): unless +0x7400 is nonzero, rebuilds map work
+  through 03721c with byte +0x5b minus one, clamped to one. Always finishes
+  with ScanVisor 0a2b18. Root +0x94 supplies the halfword argument.
+- `func_02034e90` (180 bytes): rebuilds the same +0x3154 work with the
+  unmodified byte +0x5b; nonzero +0x7400 suppresses the call.
+- `func_02034f44` (196 bytes): enters state seven, clears root +4, pins
+  resource nine, selects the map table's signed halfword +0x20 or a cell's
+  non-sentinel signed halfword +2, and calls 09da38 for state +0x7330.
+  Releases resource nine afterward. Declaring the signed id before the
+  state pointer preserves the original register assignment.
+- `func_02035234` (192 bytes): absent singleton does nothing. Otherwise
+  clears +0x631c/+0x7130, calls 0a6ac0 to rebuild them, then checks seven
+  slots via 035c14 and appends each enabled slot through 0a7474.
+
+Typing (attempt 2): all eight use named members, not raw offsets.
+`Unk02f2a8State` now embeds `Unk02f2a8Body` at +4 (level byte `body.unk_0057` =
+state +0x5b, buffer `body.unk_0214` = +0x218) and names the buffers +0x358,
++0x3134, +0x3154, +0x38e8, +0x631c, +0x7130, +0x7330 and words +0x7400,
++0x7494, +0x7498. Buffer sizes run to the next known field (guessed).
+`Unk02f2a8StateRoot` gains `unk_007c`/`unk_0094`, `Unk02f2a8Action` gains
+`unk_0020`..`unk_0030`. `Unk02f2a8MapEntry` (s16 +0x20) and `Unk02f2a8CellId`
+(s16 +2, -1 = no override) type the records read by `func_02034f44`.
+
+Hard list for M1-T1115: none. No new tests are required by the card; objdiff
+compares every instruction against the original implementation.
+
+## M1-T1116: direction tables, counter targets, start-up and fixed-point helpers
+
+- `func_0203611c` (208 bytes): maps a pair of 0..3 directions to 0..3 through a
+  fixed 4x4 table, 2 for pairs outside it. Written as a switch whose cases sit
+  in handler-address order (1, 2, 3, 0); the `r = 2` assignments are kept so the
+  compares and early exits stay as in the original.
+- `func_020361ec` (220 bytes): rotates direction `dir` by `amount` through a
+  second 4x4 table; callers (Unk02f2a8_Unk_02fc10 and the step helper) pass the
+  cached heading. Out-of-range input returns `dir`, which is what the original
+  leaves in r0.
+- `func_0203572c` (244 bytes): loads a temporary map block (`Unk02f2a8MapBlock`,
+  zero-initialised on the stack) keyed by the 16-byte name of resource-36 row
+  `row`, reads bits 20..23 of the cell at (x, y), releases the block and returns
+  the row's s16 at +0x10 for that value. C99 block-order declarations put the two
+  stack initialisers after the resource call, as in the original.
+- `func_02030d84` (252 bytes): counter-target check behind func_020352f4. When
+  the kind-0 target (+0x7522) is set and reached and every kind 1..7 column-0
+  counter reached its target, it calls 118bec(id, 1) and 0953f0; with kind 1 it
+  also calls 118bec(90 + 2e + j - 1, 1) for each reached column j of a kind whose
+  id e (resource-36 row copy at +0x18, byte +0x1b + kind) is nonnegative. The id
+  formula is the same as in func_02036654.
+- `func_0203428c` (252 bytes): creates gGameState once: 0x75c0-byte task with
+  GameState_Shutdown as teardown, the three sub-objects at +0x3134/+0x3140/+0x314c,
+  default words +0x73c8..+0x73ec, the root task over body +0x23c, then the
+  start-up calls (resource 36, work-area id +0x35c, 052634(1, 3, 32)).
+- `func_02035cb4` (260 bytes): 20.12 fixed-point interpolation
+  `from + (to - from) * t / n`, with t and n converted through rounded float
+  (`x * 4096 +/- 0.5`); returns `to` for n == 0 or t >= n and `from` for t <= 0.
+- `func_02035db8` (268 bytes): stores the position of grid cell (x, z):
+  x and z in 20.12 fixed point times 4.0, height 0x8cd.
+
+Typing: `Unk02f2a8Res36` names the 16-byte key and the s16 table at +0x10.
+`Unk02f2a8Tally` now holds the resource-36 row copy at +0x18 and a union for the
+target (+0x74f2) and counter (+0x751e) tables. Both are indexed by kind with
+row 0 unused, so the unused counter row overlaps the end of the target table.
+`Unk02f2a8State` gains +0x3140/+0x314c and +0x73d0/+0x73d8/+0x73e8/+0x73ec.
+
+Hard list for M1-T1116:
+- `func_0202fc50` (276 bytes, action type 4 step): the structure matches
+  (counter +0x1c, sub-type swing through 0205eae0 around the heading angle,
+  flags +0x48/+0x4c/+0x44 at steps 3/6/8, `% 0x10000` then `+0x10000` if
+  negative). It still fails because mwcc builds the negative swing constants as
+  `sub rX, rZero, #K` from the zero-initialised local, while the original uses
+  `mov #K; rsb` and leaves the sub-type-0 branch unpredicated. Tried: if/else
+  chain, switch with and without default, else-branch zero init, swapped
+  declaration order, `amp = len` copy, s16 amplitude, and the negative constants
+  written as `-(int)16384.0f`, `-(0x10000 / 4)` and `0x8000 * -1`. Needs a
+  decomp.me scratch.
+
+Attempt 2 review verification: the map-work and direction-table comments now sit
+directly above their respective definitions, and the fixed-point interpolation
+comment explains why both helpers retain inline rounding expressions. Local
+validation passed: `ninja`, anticheat, all nine unit tests, match (all 102 C
+functions considered by the gate at 100%), and checksum (all artifacts identical).
+
+## M1-T1117: 8 functions
+
+All eight are at 100% in objdiff (match gate, checksum and anticheat pass). Every caller
+(func_02031758, func_02032020, func_02032fb8, func_02033400, func_02033f1c, func_0203428c)
+passes the game-state task object, so all but the last two take `Unk02f2a8State *`. Names stay
+neutral: the evidence covers the shape of each function but not what it is for in the game.
+- `func_02031274` (304 bytes): rebuilds the +0x5508 buffer against the Unk02e000_Unk_02e8b8
+  buffer. It clears it, adds sub-objects +0x3134/+0x3140 over body map block +0x23c for
+  work-area id +0x35c, then adds the seven slots that Unk02f2a8_Unk_035c14 enables.
+  The 45x40 cell table at +0x38e8 ends exactly at +0x5508, and +0x5508 has the same 0xe14
+  size as +0x631c, so the state view now splits there.
+- `func_02031628` (304 bytes): visor refresh, called with `mode`. It is gated on +0x73e0/+0x7498
+  being clear, on mode 4 not having event 12/14/37, and on body +0 being 1. It links
+  +0x3134/+0x3140 for the current 04bb9c context id. Then, for each of the seven entries, it
+  shows the entry (0a2a60) if its 0a03b8 descriptor +0 predicate returns 1, or hides it (0a2a8c).
+- `func_02032e18` (292 bytes): mode-6 handler. A 4-step sequence on +0x7481, with frame counter
+  +0x7484 (signed compare, so `s32`): free map block +0x358, reload for id +0x7480 after 3
+  frames, call 0a4e9c(0) after 6 frames, then request mode 2.
+- `func_02033cd0` (312 bytes): latches requested mode +0x73cc into +0x73c8 (the request resets
+  to -1) and runs that mode's entry action through a jump table; case 0 is an empty case.
+- `func_02033e08` (276 bytes): per-frame dispatch on +0x73c8, one helper per mode. Mode 1 arms
+  root +0x44/+0x4c/+0x50/+0x54 and starts +0x7598 with 180. Mode 12 is an empty case.
+- `func_02034128` (284 bytes): the second callback of the task that func_0203428c creates.
+  It runs the 037d50 rebuild, updates +0x7550/+0x7598, then runs the event/visor descriptor
+  callbacks (+8 for modes 3/4, +0xc for mode 5) and 12168c.
+- `func_02036368` (288 bytes): writes `to * t / n` in 20.12 fixed point to obj +0x1c and
+  returns 0, using the same rounded-float conversion as func_02035cb4. The out-of-range
+  cases return 1. The ROM places the `t >= n` store after the main path, so the code is
+  written as `if (t < n) { ...; return 0; }`.
+- `func_020370e8` (308 bytes): marks records in the sorted 16-byte list whose
+  [+8, +0xa] range (clamped to +-0x1555) is closed off by earlier unmarked records.
+  Unk02f2a8SortEntry now types +8/+0xa as s16 and +0xc/+0xd as the s8 grid x/y;
+  func_02036fb8 is still at 100%.
+
+Shared view changes: Body +0/+0x14, Root +0x9c, State +0x5508/+0x7410/+0x7490/+0x7550,
+s8 +0x7480/+0x7481, Descriptor +0 and +0xc are now function pointers, a new Unk02f2a8Lerp
+view, and a real `void *Unk02e000_Unk_02e8b8(void)` prototype.
+
+Not done in this card: none. Hard list: none.
