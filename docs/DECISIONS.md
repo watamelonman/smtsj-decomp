@@ -119,3 +119,48 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Preserve the selection scan's shared indexed exit
+
+The three functions in `game/unit_020b0e08` branch from a successful inclusive
+weight comparison to the same indexed load used after an exhausted scan sets
+the index to `count - 1`. Use a local `selected` label to share that return.
+A separate return inside the loop duplicates the epilogue; a post-loop bounds
+check emits an extra comparison. Preserve the original inclusive comparison
+and last-candidate fallback. Revisit if compiler/type evidence reproduces the
+same control flow without a label.
+## DEC-008 — Preserve VER record-count observations
+
+`func_0206f778` reloads the file header's record count at loop tests and again
+when preparing the subsequent copies or installation calls. Ordinary C lets
+mwcc retain the final loop-test value and removes two original loads. Qualify
+only the typed count field as volatile to preserve these observations and their
+instruction order. This is a matching constraint, not evidence of hardware or
+concurrent ownership. Revisit if original type or compiler evidence reproduces
+the reloads without the qualifier.
+## DEC-008 — Model 0206dafc interior symbols as one record array
+
+`func_0206dafc` clears 328 bytes at `data_0216bac8 + index * 328` and
+initializes bytes within that same record. The delinker labels those bytes
+with individual data symbols. Represent them as fields in one typed record
+rather than independent strided arrays: the latter imply unrelated objects
+and produce different register allocation. The unified layout matches all
+instructions, and objdiff resolves its interior relocations at 100%. Padding
+records only observed offsets; the table capacity and field meanings remain
+unknown. Revisit if further data-layout evidence changes the record boundary.
+## DEC-008 — Preserve the aligned name buffer in 0203812c
+
+The original clears its 16-byte temporary name with four word stores before
+copying sixteen signed bytes. A union of four words and sixteen bytes expresses
+that alignment and byte access in C; a plain byte array compiles to a byte-clear
+loop. Keep dictionary entries 5–7 as separate assignments followed by record
+initialization, matching the original unrolled tail and field-read expression.
+## DEC-008 — Preserve stack count reloads and size-table ordering in 0205b540
+
+The original push reloads the count between the two size-table writes and on
+each diagnostic scan iteration. The pop reads the second size only after
+restoring the first cursor. Qualify the count and size-table accesses as
+volatile to preserve those observed accesses and ordering. This is a matching
+constraint, not evidence of hardware ownership or synchronization. Ordinary
+accesses let mwcc cache the count and hoist the second size load; revisit if
+original declaration evidence permits reproducing the accesses otherwise.
