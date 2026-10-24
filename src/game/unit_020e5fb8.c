@@ -253,12 +253,12 @@ void Unk0e5fb8_Unk_0e641c(u32 arg0,u32 arg1)
 }
 
 
-int Unk0e5fb8_GetOffsetD80();
-/* decompiler-derived */
+/* Writes the low two value bits to the low pair of the four-bit entry at base 0xd80.
+ * ARM at 0x020e649c uses GetOffsetD80; unsigned indices >= 128 select zero. */
 void Unk0e5fb8_Unk_0e649c(u32 arg0,u32 arg1)
 {
   int value;
-  value = Unk0e5fb8_GetOffsetD80();
+  value = Unk0e5fb8_GetOffsetD80(arg0);
   Unk094fe0_Call_0209502c(value,arg1 & 1);
   Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }

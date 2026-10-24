@@ -40,8 +40,9 @@ None for M1-T373 or M1-T374.
 ## Not done in M1-T377
 - `func_020e5fb8`
 
-## Remaining outside M1-T375
-- `Unk0e5fb8_Unk_0e649c`: decompiler-derived
+## Outside the M1-T375 card
+- `Unk0e5fb8_Unk_0e649c` (100%): low-pair setter for the 0xd80 table. M1-T375 replaced its
+  stale `GetOffsetD80()` declaration with the typed one and passes the index explicitly.
 
 ## Not done in M1-T376
 - `Unk0e5fb8_SetBits`
