@@ -3,6 +3,9 @@
 ## Unreleased
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
+- Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
+- Matched four M1-T293 callbacks/submission helpers in `game/unit_0211f894` at 100%; documented the remaining six-strip helper on its hard list.
+- Added matching C for both M1-T282 request state machines in `game/unit_02037dd4`, with typed parameters and per-function contracts.
 - Matched all eight M1-T285 handle and row-transition functions in `src/game/unit_0204459c.c`, with typed work/table layouts and per-function contracts.
 - Matched all four M1-T283 functions in `game/unit_0203845c`, including scanline synchronization, relative-entry resolution, and three-channel pool submissions.
 - Matched the remaining seven M1-T274 functions in `src/game/unit_020fd268.c` (state stepper, draw pass, work creation and init) at 100% objdiff; the TU is now fully C.
