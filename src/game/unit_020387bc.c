@@ -19,8 +19,9 @@ int Unk0387bc_Unk_0387bc(u32 a)
 }
 
 /* Pass a nonzero handle to func_020516d0; return whether a call occurred.
- * Evidence: original 0x02038820 null check and single helper call; handle ownership is unknown. */
-u32 Unk0387bc_Unk_038820(int arg0)
+ * Evidence: original 0x02038820 null check and single helper call; handle ownership is unknown.
+ * Caller 0x02038c58 supplies an unused resource context in r1. */
+u32 Unk0387bc_Unk_038820(int arg0, const void *context)
 {
   if (arg0 != 0) {
     func_020516d0(arg0);
@@ -290,3 +291,112 @@ u32 Unk0387bc_Unk_038e7c(int *arg0)
   return 0;
 }
 
+/* Halfword alignment is observed in the original 40-byte copy loops. */
+typedef struct { u16 values[20]; } Unk0387bc_Record40;
+/* Borrowed destination view: the second record begins at byte 512. */
+typedef struct {
+    Unk0387bc_Record40 first;
+    u8 pad_0028[472];
+    Unk0387bc_Record40 second;
+} Unk0387bc_CopyWork;
+int func_020445d0(int resource, int index);
+/* Copy a bounded resource-36 record to offset 0 or 512 of caller storage.
+ * Evidence: 0x02038888 checks the unsigned index and copies 40 bytes;
+ * selector 1 chooses offset 512. Null output or invalid index returns 0. */
+u32 func_02038888(Unk0387bc_CopyWork *out, u32 index, int selector)
+{
+    int entry;
+    u32 result;
+    if (out == 0) return 0;
+    result = 0;
+    entry = func_020445d0(36, 0);
+    if (index < func_0204fe18(entry)) {
+        Unk0387bc_Record40 *records = (Unk0387bc_Record40 *)func_0204fde0(entry);
+        if (selector == 1) out->second = records[index];
+        else out->first = records[index];
+        result = 1;
+    }
+    return result;
+}
+
+/* These views preserve the byte/halfword/word copy alignment in 0x02038934. */
+typedef struct { s8 values[4]; } Unk0387bc_Selection;
+typedef struct {
+    u16 values[11];
+    s8 section;
+    u8 unk_0017;
+} Unk0387bc_Record24;
+typedef struct { u8 values[32]; } Unk0387bc_Record32;
+typedef struct { u32 values[10]; } Unk0387bc_Words40;
+typedef struct { u8 values[2]; } Unk0387bc_Pair;
+/* Caller-owned output; list counts are capped to the 60 available pairs. */
+typedef struct {
+    u8 pad_0000[40];
+    Unk0387bc_Selection selection;
+    Unk0387bc_Record24 record24;
+    Unk0387bc_Record32 record32;
+    Unk0387bc_Words40 words40;
+    u32 count_a;
+    Unk0387bc_Pair list_a[60];
+    u32 count_b;
+    Unk0387bc_Pair list_b[60];
+    u32 count_c;
+    Unk0387bc_Pair list_c[60];
+} Unk0387bc_Output;
+extern u8 data_02141ffc[];
+extern u8 data_02142010[];
+/* Populate selected records and three bounded lists from resource 0x02141ffc.
+ * Evidence: 0x02038934 indexes sections 0/1/2 for selection, 3/4/5 for
+ * records, then the selected section and sections 11/10 for lists. Caller
+ * supplies valid selection indices and writable output; null returns 0. */
+u32 func_02038934(Unk0387bc_Output *out, u32 index, int column,
+                  int variant, int alternate, int mode)
+{
+    Unk0387bc_Words40 *source40, *destination40;
+    u32 i;
+    u32 result;
+    int handle, entry;
+    Unk0387bc_Pair *pairs;
+    if (out == 0) return 0;
+    result = 0;
+    handle = Unk0387bc_Unk_0387bc((u32)data_02141ffc);
+    if (handle != 0) {
+        entry = func_0204fdac(handle, 0);
+        if (index < func_0204fe18(entry)) {
+            if (mode == 0 || variant == 0) {
+                out->selection = ((Unk0387bc_Selection *)func_0204fde0(entry))[index * 4 + column];
+            } else if (mode == 1) {
+                entry = alternate != 0 ? 1 : 0;
+                out->selection = ((Unk0387bc_Selection *)func_0204fde0(func_0204fdac(handle, 1)))[(variant - 1) * 2 + entry];
+            } else {
+                entry = func_0204fdac(handle, 2);
+                out->selection = (((Unk0387bc_Selection *)func_0204fde0(entry)) + variant)[-1];
+            }
+            entry = func_0204fdac(handle, 3);
+            entry = func_0204fde0(entry);
+            out->record24 = ((Unk0387bc_Record24 *)entry)[out->selection.values[0]];
+            out->record32 = ((Unk0387bc_Record32 *)func_0204fde0(func_0204fdac(handle, 4)))[out->selection.values[1]];
+            source40 = &((Unk0387bc_Words40 *)func_0204fde0(func_0204fdac(handle, 5)))[out->selection.values[2]];
+            destination40 = &out->words40;
+            *destination40 = *source40;
+            entry = func_0204fdac(handle, ((Unk0387bc_Record24 *)entry)[out->selection.values[0]].section + 6);
+            pairs = (Unk0387bc_Pair *)func_0204fde0(entry);
+            out->count_a = func_0204fe18(entry);
+            if (out->count_a > 60) out->count_a = 60;
+            for (i = 0; i < out->count_a; i++) out->list_a[i] = pairs[i];
+            entry = func_0204fdac(handle, 11);
+            pairs = (Unk0387bc_Pair *)func_0204fde0(entry);
+            out->count_b = func_0204fe18(entry);
+            if (out->count_b > 60) out->count_b = 60;
+            for (i = 0; i < out->count_b; i++) out->list_b[i] = pairs[i];
+            entry = func_0204fdac(handle, 10);
+            pairs = (Unk0387bc_Pair *)func_0204fde0(entry);
+            out->count_c = func_0204fe18(entry);
+            if (out->count_c > 60) out->count_c = 60;
+            for (i = 0; i < out->count_c; i++) out->list_c[i] = pairs[i];
+            result = 1;
+        }
+        Unk0387bc_Unk_038820(handle, data_02142010);
+    }
+    return result;
+}

@@ -1,4 +1,4 @@
-# game/unit_020387bc — M1-T468 / M1-T469
+# game/unit_020387bc — M1-T468 / M1-T469 / M1-T470
 
 All sixteen task functions match the delinked ARM original at 100% objdiff.
 The existing C bodies already matched; this task preserves them and adds typed
@@ -41,4 +41,22 @@ tests are required by the card: the delinked instructions are the acceptance ora
 
 ## Hard list
 
-None for M1-T468 or M1-T469; `func_02038888` and `func_02038934` remain supplied by the delink.
+None. Both M1-T470 functions now match at 100%; the TU remains linked from the delink until human completion approval.
+
+## M1-T470
+
+The original neutral `func_` symbols are retained because resource identities are
+unknown. Private typed views preserve observed alignment and caller ownership;
+no shared module boundary changes are introduced.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_02038888` | `0x02038888`, 172 bytes, 100%: returns 0 for null output; obtains resource 36/index 0, checks the unsigned record index against `func_0204fe18`, and copies a 40-byte halfword-aligned record to output offset 512 when selector is 1, otherwise offset 0. Returns 1 after copying, 0 for an invalid index. Output must cover the selected destination. |
+| `func_02038934` | `0x02038934`, 832 bytes, 100%: opens `data_02141ffc`, checks the unsigned primary index, selects four signed byte indices using section 0, 1, or 2 depending on mode/variant, and copies 24/32/40-byte records from sections 3/4/5. Byte 22 of the selected 24-byte record chooses the first pair-list section after adding 6; sections 11 and 10 supply the other lists. Each list count is capped at 60. Output is caller-owned, at least 512 bytes; embedded selection indices must be valid for the resource. Returns 0 for null output, failed open, or invalid primary index, otherwise 1. Every successfully opened handle is released. |
+
+The cleanup call at `0x02038c58` passes `data_02142010` in r1. Its callee
+`Unk0387bc_Unk_038820` does not read that argument; its typed signature now
+records this observed context argument without changing its instructions.
+The record-copy temporary pointers and declaration order preserve the original
+register allocation. No behavioral tests were added (`tests_required = false`);
+the original instructions and objdiff relocations provide the matching oracle.
