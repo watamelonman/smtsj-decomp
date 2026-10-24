@@ -72,9 +72,10 @@ int Unk0a0ce4_Unk_0a0ce4(int arg0)
 }
 
 
-int func_0205e5ec();
-int func_0205e63c();
-/* decompiler-derived */
+void func_0205e5ec(int value);
+void func_0205e63c(void);
+/* Calls 0205e5ec(0), 0205e63c(), then 0205e5ec(1) and records 1.
+ * Evidence: calls and data_02176afc store at 020a0d04..020a0d40. */
 void Unk0a0ce4_Unk_0a0d04(void)
 {
   func_0205e5ec(0);
@@ -84,8 +85,8 @@ void Unk0a0ce4_Unk_0a0d04(void)
 }
 
 extern u32 data_02176b00[];
-int func_0205bb68();
-int func_020629c4();
+void func_0205bb68(void);
+void func_020629c4(u32 handle);
 /* Scales a by scale/1024, preserving a for scale == 1024. Evidence:
  * 020a1140 compares against 0 and 1024, then multiplies and arithmetic-shifts
  * the low 32 product bits by 10. Callers 020a115c/020a1214 use the low byte.
@@ -101,7 +102,9 @@ int Unk0a0ce4_ScaleFx10(int a, int scale)
     return a;
 }
 
-/* decompiler-derived */
+/* Calls 0205bb68 three times, forwards the borrowed work word at +0x1c
+ * to 020629c4, then clears data_02176b00 (020a12e8..020a1310).
+ * The work pointer must be valid; ownership of the word is unknown. */
 void Unk0a0ce4_Unk_0a12e8(Unk0a0ce4Work *work)
 {
   func_0205bb68();
@@ -111,8 +114,10 @@ void Unk0a0ce4_Unk_0a12e8(Unk0a0ce4Work *work)
   *data_02176b00 = 0;
 }
 
-int func_0205e65c();
-/* decompiler-derived */
+void func_0205e65c(void);
+/* Ignores zero and the current shared value; otherwise calls 0205e65c,
+ * records the argument and forwards it to 0205e5ec. Evidence: conditional
+ * return and data_02176afc accesses at 020a0d30..020a0d60. */
 void Unk0a0ce4_Unk_0a0d30(int arg0)
 {
   if (*data_02176afc == arg0 || arg0 == 0) {
@@ -123,14 +128,14 @@ void Unk0a0ce4_Unk_0a0d30(int arg0)
   func_0205e5ec(arg0);
 }
 
-int func_0205e65c();
-int func_0205e5ec();
-int func_0205e6c0();
-int func_0205e740();
+int func_0205e6c0(int byte1, int byte0);
+int func_0205e740(int byte1, int byte0);
 extern u32 data_0214cc84[];
-int Unk0b6570_Get_data_02176b88();
-void func_020967a4();
-void Unk02cad4_Unk_02cbdc();
+u32 Unk0b6570_Get_data_02176b88(void);
+void func_020967a4(int value);
+void Unk02cad4_Unk_02cbdc(u32 value);
+/* Calls 0205e65c, records 5, then forwards 5 and the preserved argument
+ * to 0205e5ec; evidence: 020a0d68..020a0d8c. */
 void Unk0a0ce4_Unk_0a0d68(int x)
 {
     func_0205e65c();
@@ -139,6 +144,8 @@ void Unk0a0ce4_Unk_0a0d68(int x)
     func_0205e5ec(x);
 }
 
+/* Rejects indices outside 0..299 with -1; otherwise forwards unsigned
+ * entry bytes +1, +0 to 0205e6c0 (ldrb evidence at 020a0dc8/020a0dcc). */
 int Unk0a0ce4_Unk_0a0da4(int i)
 {
     u8 *p;
@@ -149,6 +156,8 @@ int Unk0a0ce4_Unk_0a0da4(int i)
     return func_0205e6c0(p[1], p[0]);
 }
 
+/* Rejects indices outside 0..299 with -1; otherwise forwards unsigned
+ * entry bytes +1, +0 to 0205e740 (ldrb evidence at 020a0dfc/020a0e00). */
 int Unk0a0ce4_Unk_0a0dd8(int i)
 {
     u8 *p;
@@ -159,6 +168,8 @@ int Unk0a0ce4_Unk_0a0dd8(int i)
     return func_0205e740(p[1], p[0]);
 }
 
+/* Returns table word i for 0..28, otherwise word zero. Evidence: signed
+ * bounds checks and indexed data_0214cc84 load at 020a0e0c..020a0e2c. */
 u32 Unk0a0ce4_GetTableEntry(int i)
 {
     if (i >= 0 && i < 29) {
@@ -167,6 +178,8 @@ u32 Unk0a0ce4_GetTableEntry(int i)
     return data_0214cc84[0];
 }
 
+/* Dispatches shared values 2/3/4 to 02cbdc(10/15/1); value 2 first calls
+ * 020967a4(0). Other values have no effect (020a0e44..020a0e90). */
 void Unk0a0ce4_Unk_0a0e44(void)
 {
     switch (Unk0b6570_Get_data_02176b88()) {
