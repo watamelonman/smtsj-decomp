@@ -119,6 +119,12 @@ typedef struct Unk02f2a8Body {
     Unk02f2a8MapBlock unk_02c8;
 } Unk02f2a8Body;
 
+/* Each pending value carries a flag so a zero amount need not arm it. */
+typedef struct Unk02f2a8PendingValue {
+    u32 flag;
+    s32 amount;
+} Unk02f2a8PendingValue;
+
 /* Local view of state fields beyond the public GameState layout. */
 typedef struct Unk02f2a8State {
     Unk02f2a8StateRoot *root;
@@ -161,7 +167,11 @@ typedef struct Unk02f2a8State {
     u32 unk_7490;
     u32 unk_7494;
     u32 unk_7498;               /* nonzero arms root +0x54 in func_02032d4c */
-    u8 pad_749c[0x7550 - 0x749c];
+    u8 pad_749c[8];
+    u32 unk_74a4;
+    Unk02f2a8PendingValue unk_74a8[4];
+    Unk02f2a8PendingValue unk_74c8[4];
+    u8 pad_74e8[0x7550 - 0x74e8];
     u8 unk_7550[0x757c - 0x7550]; /* size guessed: block handed to func_02099494 */
     u32 unk_757c;
     u8 pad_7580[0x18];
@@ -2765,4 +2775,382 @@ int func_02030bb0(Unk02f2a8State *state)
         break;
     }
     return result;
+}
+
+u16 func_02061bd4(int group, int index);
+
+/* Combine the two resource strings for key into a terminated borrowed buffer.
+ * Original 02035578 uses 16- and 6-halfword inputs, inserts resource (1,47),
+ * and copies at most 19 halfwords; capacity must be positive. */
+int func_02035578(u16 *dst, u32 capacity, int key)
+{
+    int result = 0;
+    func_02008644(0, dst, capacity * 2);
+    u16 first[16] = {0};
+    u16 second[6] = {0};
+    u32 firstLength = 0;
+    u32 secondLength = 0;
+    int a;
+    int b;
+    u32 i;
+    a = func_0203546c(first, 16, key);
+    b = Unk02f2a8_Unk_03550c(second, 6, key);
+    if (a == 1 && b == 1) {
+        for (i = 0; i < 16; i++) {
+            if (first[i] == 0) { firstLength = i; break; }
+        }
+        for (i = 0; i < 6; i++) {
+            if (second[i] == 0) { secondLength = i; break; }
+        }
+        u16 combined[20] = {0};
+        u16 *cursor = combined;
+        u32 bytes = firstLength * 2;
+        func_0200866c(first, cursor, bytes);
+        cursor += firstLength;
+        u16 separator[2] = {0};
+        separator[0] = func_02061bd4(1, 47);
+        separator[1] = 0;
+        func_0200866c(separator, cursor, 2);
+        cursor++;
+        func_0200866c(second, cursor, secondLength * 2);
+        func_0200866c(combined, dst, (capacity < 19 ? capacity : 19) * 2);
+        *(dst + capacity - 1) = 0;
+        result = 1;
+    }
+    return result;
+}
+
+void func_02111494(void);
+void Unk02cad4_SetupDisplayMode(int mode, int a, int b);
+void func_0204b504(void);
+void func_0204ccb0(void);
+void func_0204b6f4(void);
+void Unk02dcfc_Unk_02de6c(void);
+
+/* Advance the six-phase reload sequence at state +0x7481. The original
+ * 02033ae8 waits five frames, then two frames, reloads the body, and restores
+ * display helpers before setting state +0x73cc to 2. State is borrowed. */
+void func_02033ae8(Unk02f2a8State *s)
+{
+    switch (s->unk_7481) {
+    case 0:
+        Unk02f2a8_Unk_030d20((u8 *)s, 0);
+        s->unk_73d8 = 0;
+        s->unk_7484 = 0;
+        s->unk_7481++;
+        break;
+    case 1:
+        if (++s->unk_7484 > 4) {
+            func_02111494();
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 2:
+        if (++s->unk_7484 == 2) {
+            Unk02cad4_SetupDisplayMode(1, 0, 0);
+            func_02052634(1, 3, 32);
+            Unk0a4e48_Unk_0a4e9c(0);
+            func_0204b504();
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 3:
+        if (func_02030bb0(s) == 1) {
+            func_0204ccb0();
+            func_0204b6f4();
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 4:
+        s->unk_7484++;
+        if (s->unk_7484 == 1) Unk0a0ce4_Unk_0a0d30(1);
+        if (s->unk_7484 >= 2) {
+            Unk02dcfc_Unk_02de6c();
+            Unk02f2a8_Call_02057660();
+            func_020a269c(1);
+            s->unk_73d8 = 1;
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 5:
+        s->unk_73cc = 2;
+        break;
+    }
+}
+
+/* Direction occupies bits 4..6 in each element word (02031448). */
+typedef struct Unk02f2a8Element {
+    u32 directionLow : 2;
+    u32 pad_0000 : 2;
+    u32 direction0 : 3;
+    u32 rest_0000 : 25;
+    u32 pad_0004 : 4;
+    u32 direction1 : 3;
+    u32 rest_0004 : 25;
+} Unk02f2a8Element;
+Unk02f2a8Element *Unk038fbc_GetElement(void *map, int type, int index);
+
+/* Move off cell kinds 10/11/12, honoring direction bits 4..6 of element
+ * word 0 (kinds 10/11) or word 1 (kind 12). Original 02031448 falls back
+ * to the current heading when those bits are outside 1..4. */
+void func_02031448(Unk02f2a8State *s)
+{
+    int x = Unk02e000_GetWorkArea()->unk_0364;
+    int y = Unk02e000_GetWorkArea()->unk_0365;
+    u32 direction = Unk02e000_GetWorkArea()->unk_0358;
+    u8 *cell = (u8 *)Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(&s->body, x, y), x, y);
+    if (cell != 0) {
+        switch (cell[0]) {
+        case 10:
+        case 11:
+            switch (Unk038fbc_GetElement(Unk02f2a8_Unk_034970(&s->body, x, y), 1, cell[1])->direction0) {
+            case 1: y--; direction = 0; break;
+            case 2: y++; direction = 2; break;
+            case 3: x--; direction = 3; break;
+            case 4: x++; direction = 1; break;
+            default:
+                switch (direction) {
+                case 0: y--; break;
+                case 2: y++; break;
+                case 3: x--; break;
+                case 1: x++; break;
+                }
+                break;
+            }
+            break;
+        case 12:
+            switch (Unk038fbc_GetElement(Unk02f2a8_Unk_034970(&s->body, x, y), 2, cell[1])->direction1) {
+            case 1: y--; direction = 0; break;
+            case 2: y++; direction = 2; break;
+            case 3: x--; direction = 3; break;
+            case 4: x++; direction = 1; break;
+            default:
+                switch (direction) {
+                case 0: y--; break;
+                case 2: y++; break;
+                case 3: x--; break;
+                case 1: x++; break;
+                }
+                break;
+            }
+            break;
+        }
+    }
+    Unk02f2a8_SetGridPos(x, y, direction);
+}
+
+int Unk0a50d4_IsSubBrightnessMax(void);
+int func_0205e590(int id);
+
+/* Arm the pending map/grid transition and snapshot the current work position.
+ * Original 02034b7c stores all eight arguments at +0x744c..+0x7468, compares
+ * the destination's cell selector, then configures the display transition. */
+void func_02034b7c(int id, int x, int y, u32 direction, int mode, int brightness, int a, int b)
+{
+    FIELD(u32, gGameState, 0x743c) = 1;
+    FIELD(u32, gGameState, 0x7440) = 0;
+    FIELD(u32, gGameState, 0x7448) = 0;
+    FIELD(u32, gGameState, 0x7444) = 0;
+    FIELD(u16, gGameState, 0x744c) = id;
+    FIELD(s8, gGameState, 0x744e) = x;
+    FIELD(s8, gGameState, 0x744f) = y;
+    FIELD(u32, gGameState, 0x7450) = direction;
+    FIELD(u32, gGameState, 0x745c) = mode;
+    FIELD(u32, gGameState, 0x7460) = brightness;
+    FIELD(u32, gGameState, 0x7464) = a;
+    FIELD(u32, gGameState, 0x7468) = b;
+    FIELD(u16, gGameState, 0x7454) = Unk02e000_GetWorkArea()->unk_035c;
+    FIELD(s8, gGameState, 0x7456) = Unk02e000_GetWorkArea()->unk_0364;
+    FIELD(s8, gGameState, 0x7457) = Unk02e000_GetWorkArea()->unk_0365;
+    FIELD(u32, gGameState, 0x7458) = Unk02e000_GetWorkArea()->unk_0358;
+    if (id != Unk02e000_GetWorkArea()->unk_035c) {
+        FIELD(u32, gGameState, 0x746c) = 1;
+    } else {
+        FIELD(u32, gGameState, 0x746c) = 0;
+    }
+    if (FIELD(u32, gGameState, 0x73d4) != func_0203572c(id, x, y)) func_0205e590(9);
+    func_0205257c(mode);
+    if (brightness == 1 && Unk0a50d4_IsSubBrightnessMax() == 0) {
+        int value = 2;
+        switch (mode) {
+        case 0:
+        case 1:
+        case 3:
+            value = 2;
+            break;
+        case 2:
+        case 4:
+            value = 3;
+            break;
+        }
+        Unk0a4e48_Unk_0a4e9c(value);
+    }
+}
+
+/* Callback table selected by the halfword ids at actor +0x6c/+0x34. */
+typedef struct Unk02f2a8ActorDescriptor {
+    u32 unk_0000[2];
+    void (*unk_0008)(Unk02f2a8State *state, u8 slot);
+} Unk02f2a8ActorDescriptor;
+void *Unk02e000_Thunk_0202e788(void);
+u8 *Unk02e000_Unk_02e7c0(int index);
+Unk02f2a8ActorDescriptor *Unk109230_Unk_109328(u32 id);
+int func_02096f54(int changed);
+int func_0209701c(int changed);
+int func_02097a20(u8 *actor, int changed);
+int func_02097ad0(u8 *actor, int changed);
+
+/* Run up to four actor descriptor callbacks. Mode 1 additionally accumulates
+ * two per-actor values into the four flagged pairs at +0x74a8/+0x74c8.
+ * Offsets, slot truncation and the +0x74f0 comparison follow 02035008. */
+void func_02035008(int mode)
+{
+    Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
+    int i;
+    for (i = 0; i < 4; i++) {
+        u8 *actor;
+        Unk02f2a8ActorDescriptor *d;
+        if (i == 0) {
+            actor = (u8 *)Unk02e000_Thunk_0202e788();
+            if (actor == 0) continue;
+            d = Unk109230_Unk_109328(FIELD(u16, actor, 0x6c));
+        } else {
+            actor = Unk02e000_Unk_02e7c0(i - 1);
+            if (actor == 0) continue;
+            d = Unk109230_Unk_109328(FIELD(u16, actor, 0x34));
+        }
+        if (d->unk_0008 != 0) d->unk_0008(s, (u8)i);
+    }
+    if (mode == 1) {
+        int changed = FIELD(u32, s, 0x74f0) != Unk03e43c_Unk_03fa28();
+        int first[4] = {0};
+        int second[4] = {0};
+        first[0] = func_02096f54(changed);
+        second[0] = func_0209701c(changed);
+        for (i = 0; i < 3; i++) {
+            u8 *actor = Unk02e000_Unk_02e7c0(i);
+            if (actor != 0) {
+                first[i + 1] = func_02097a20(actor, changed);
+                second[i + 1] = func_02097ad0(actor, changed);
+            }
+        }
+        for (i = 0; i < 4; i++) {
+            if (first[i] != 0) {
+                s->unk_74a8[i].flag = 1;
+                s->unk_74a8[i].amount += first[i];
+            }
+            if (second[i] != 0) {
+                s->unk_74c8[i].flag = 1;
+                s->unk_74c8[i].amount += second[i];
+            }
+        }
+    }
+    FIELD(u32, s, 0x74a4) = 1;
+}
+
+/* Sample the four corners of a 4-unit square around center in 20.12 units.
+ * Original 02036a74 stores the extrema at result +8/+0xa when forced or when
+ * they span the signed wrap interval (-0x1555,+0x1555). All pointers borrow. */
+int func_02036a74(Unk02f2a8SortEntry *result, const Unk02f2a8Point *from, int step,
+                  const Unk02f2a8Point *center, int force)
+{
+    int row = 0;
+    int rowOffset = 0;
+    int x = center->x;
+    int z = center->z;
+    Unk02f2a8Point point = {0};
+    int highest = -0x8000;
+    int lowest = 0x7fff;
+    x -= 0x2000;
+    z -= 0x2000;
+    for (row = 0; row < 2; row++, rowOffset += 4096) {
+        int column;
+        int columnOffset = 0;
+        int value = (int)(row > 0 ? 0.5f + (float)rowOffset : (float)rowOffset - 0.5f);
+        point.z = z + (s32)(((s64)value * 0x4000 + 0x800) >> 12);
+        for (column = 0; column < 2; column++, columnOffset += 4096) {
+            int angle;
+            value = (int)(column > 0 ? 0.5f + (float)columnOffset : (float)columnOffset - 0.5f);
+            point.x = x + (s32)(((s64)value * 0x4000 + 0x800) >> 12);
+            angle = func_02036068(from, step, &point);
+            if (highest < angle) highest = angle;
+            if (angle < lowest) lowest = angle;
+        }
+    }
+    if (force == 1) {
+        result->unk_0008 = highest;
+        result->unk_000a = lowest;
+        return 1;
+    }
+    if (highest > -0x1555 && lowest < 0x1555) {
+        result->unk_0008 = highest;
+        result->unk_000a = lowest;
+        return 1;
+    }
+    return 0;
+}
+
+/* Resource position block: 02035890 reads its signed bytes at +0x23/+0x24. */
+typedef struct Unk02f2a8PositionBlock {
+    u32 words[8];
+    u8 pad_0020[3];
+    s8 x;
+    s8 y;
+    u8 pad_0025[0x228 - 0x25];
+} Unk02f2a8PositionBlock;
+
+/* Search a loaded map for cell kind 14 and return the adjacent position
+ * selected by its element's low two bits. Original 02035890 always writes
+ * the resolved id/coordinates/heading, returning 1 only after finding a cell. */
+int func_02035890(Unk02f2a8Pos *dst, int selector)
+{
+    int found = 0;
+    int id = Unk02f2a8_Unk_035820(selector);
+    Unk02f2a8PositionBlock position = {0};
+    Unk02f2a8MapBlock map = {0};
+    int x;
+    int y;
+    int direction;
+    func_02038888(&position, id, 0);
+    x = position.x;
+    y = position.y;
+    direction = 0;
+    if (func_02038ff8(&map, &position, 0, 0) == 1) {
+        u8 *bounds = map.unk_0004;
+        int firstY = bounds[9];
+        int lastY = firstY + bounds[11];
+        int firstX = bounds[8];
+        int lastX = firstX + bounds[10];
+        int row;
+        int column;
+        for (row = firstY; row < lastY; row++) {
+            for (column = firstX; column < lastX; column++) {
+                u8 *cell = (u8 *)Unk038fbc_Unk_039160(&map, column, row);
+                if (cell != 0 && cell[0] == 14) {
+                    u32 d = Unk038fbc_GetElement(&map, 4, cell[1])->directionLow;
+                    x = column;
+                    y = row;
+                    switch (d) {
+                    case 0: y = row - 1; direction = 0; break;
+                    case 1: y = row + 1; direction = 2; break;
+                    case 2: x = column - 1; direction = 3; break;
+                    case 3: x = column + 1; direction = 1; break;
+                    }
+                    found = 1;
+                    goto done;
+                }
+            }
+        }
+    done:
+        Unk038fbc_Unk_039138(&map);
+    }
+    dst->unk_0000 = id;
+    dst->unk_0002 = x;
+    dst->unk_0003 = y;
+    dst->unk_0004 = direction;
+    return found;
 }
