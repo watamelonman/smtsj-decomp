@@ -8,18 +8,19 @@ Unk03aae8Ctx *Unk03aae8_Unk_03ad14(void);
 int func_0203ac00(int index);
 int func_02095818(void);
 void Unk116598_Unk_116810(void);
-int func_02065544();
-void func_02065c10();
-void func_02065b10();
+int func_02065544(void);
+void func_02065c10(void);
+void func_02065b10(u32 value, u16 id);
 int func_020b8660(u32 value);
 void Unk02dcfc_SetCode8(void);
 void ImageObj_Unk_07784c(int value);
 void ImageObj_Unk_077880(int value);
 void ImageObj_Unk_07782c(int first, int second);
-int ImageObj_Unk_077860();
+void ImageObj_Unk_077860(u32 first, int second);
 void ScanVisor_Unk_0a2920(int on);
-int Unk02dcfc_Unk_02deb0();
-int Unk09e418_Unk_09e418();
+/* Preserve the context argument carried by this original call site. */
+void Unk02dcfc_Unk_02deb0(Unk03bba4Sub *sub);
+void Unk09e418_Unk_09e418(u16 first, u16 second, u16 third);
 
 /* Writes a substate code into the context subobject. Taking the value first
  * keeps the original register order (constant loaded before the call). */
@@ -39,6 +40,9 @@ int Unk03bba4_Unk_03bba4(void)
     return 3;
 }
 
+/* Forwards the unsigned low halfword of argument 0 to 065b10(0, id),
+ * calling 065c10 first when 065544 is zero; sets substate 6 and returns 3.
+ * Evidence: original halfword shifts, conditional call and +0x18 store. */
 int Unk03bba4_Unk_03bc40(void)
 {
     u16 id = func_0203ac00(0);
@@ -122,7 +126,9 @@ u32 Unk03bba4_Unk_03bcd8(void)
   return 3;
 }
 
-/* decompiler-derived */
+/* Forwards two signed low-halfword arguments to ImageObj 077860, sets
+ * code 8 and clears the ScanVisor switch; returns 3. Evidence: original
+ * arithmetic shifts and ordered call relocations at 0203bd3c. */
 u32 Unk03bba4_Unk_03bd3c(void)
 {
   s16 v1;
@@ -135,7 +141,9 @@ u32 Unk03bba4_Unk_03bd3c(void)
   return 3;
 }
 
-/* decompiler-derived */
+/* Forwards three unsigned low-halfword arguments to 09e418, then carries
+ * the borrowed context subobject into 02deb0; returns 3. Evidence: original
+ * logical shifts, +0xe8 load and ordered call relocations at 0203bbec. */
 u32 Unk03bba4_Unk_03bbec(void)
 {
   u16 value1;
@@ -149,14 +157,18 @@ u32 Unk03bba4_Unk_03bbec(void)
   return 3;
 }
 
-int func_0206552c();
-int ImageObj_Unk_077688();
-int Unk09d42c_Unk_09e274();
-int Unk02e000_GetSlot();
-void ImageBg_Unk_0e54d4();
-void Unk02e000_SetSlot();
-int ImageBg_IsMode1or2();
+int func_0206552c(void);
+int ImageObj_Unk_077688(void);
+int Unk09d42c_Unk_09e274(void);
+u32 Unk02e000_GetSlot(int slot);
+void ImageBg_Unk_0e54d4(int value);
+void Unk02e000_SetSlot(int slot, u32 value);
+int ImageBg_IsMode1or2(void);
 
+/* Returns zero while any readiness check blocks progress. Once ready,
+ * applies slot 0 and clears slot 1 only when slot 1 equals 1; returns whether
+ * the background mode predicate differs from 1. Evidence: original branches
+ * and GetSlot/SetSlot call arguments at 0203bda0. */
 int Unk03bba4_Unk_03bda0(void)
 {
     if (func_0206552c() != 0) {
