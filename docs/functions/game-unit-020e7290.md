@@ -1,6 +1,6 @@
-# game/unit_020e7290 — M1-T401
+# game/unit_020e7290 — M1-T401 / M1-T402
 
-All eight card functions match the delinked ARM originals at 100% objdiff.
+All thirteen TU functions match the delinked ARM originals at 100% objdiff.
 Names remain those in `config/arm9/symbols.txt`; no wider lifecycle meaning is inferred.
 The work/resource structs are local partial views derived from the accesses below.
 
@@ -25,7 +25,21 @@ the original instructions and relocations before running the repository gates.
 
 None for M1-T401.
 
-## Outside this card
+## M1-T402 functions
 
-The remaining TU functions `func_020e74e0`, `func_020e7570`, `func_020e7290`,
-`func_020e7658`, and `func_020e736c` remain delinked and are outside M1-T401.
+All five match at 100%; existing neutral symbol names are retained because the
+instruction evidence does not establish a broader game-specific purpose.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_020e74e0` | 020e74e0, 144 bytes: live work callback. Returns when +0xc is zero. States 0/1 start an asynchronous path request and enter 2; state 2 polls request completion and enters 3 on zero; state 3 initializes records and enters 4; state 4 waits for all flags and enters 5. Other states do nothing. |
+| `func_020e7570` | 020e7570, 212 bytes: live work rendering callback, active only when +8 is nonzero. Selects either the global flag-dependent value or +0x204, then submits four records at +0x94 with stride 0x5c. Signed halfwords from `data_0213c6d0` offset the work coordinates. Scale is 1.0 and the surrounding render state is restored by the original helper sequence. |
+| `func_020e7290` | 020e7290, 220 bytes: requires live work and global. Copies the 64-byte `data_0213c6e0` template, appends the formatted global pending index and `data_02150be0`; if the existence query returns zero, rebuilds with index 1 and `data_02150be8`. Nonzero second argument submits a request at +0x14; zero loads directly into +0x8c. Original template and suffix lengths must fit the 64-byte path. |
+| `func_020e736c` | 020e736c, 272 bytes: requires live work and a valid position pointer at +0x90. Obtains +0x8c from the request when absent. Copies four-word bounds from each of four resource entries, queries dimensions, seeds the first coordinates from the position pointer, and chains the next three coordinates using those dimensions. The second argument selects the record setup helper. Stores each entry's two queried words at record +0xc and +0x10. |
+| `func_020e7658` | 020e7658, 220 bytes: allocates 0x208 bytes with update, draw and clear callbacks; retains the caller-owned position pointer at +0x90. Initializes state 5, clears current/pending values and sets +0x204 to all ones. A nonzero initial value runs the direct load/setup/flag-completion sequence. Finally clears the work coordinates. Allocation follows the original allocator's success contract. |
+
+The final record setup match required initializing the independent cursor after
+the request lookup and declaring the entry pointer at function scope to reproduce
+the compiler's register allocation. No instruction-set overrides were needed.
+
+Hard list for M1-T402: none.
