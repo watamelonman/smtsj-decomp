@@ -121,7 +121,8 @@ typedef struct Unk02f2a8State {
     Unk02f2a8Body body;         /* +0x0004 */
     u8 unk_0358[0x3134 - 0x358]; /* buffer sizes up to 0x7330 guessed from the next known field */
     u8 unk_3134[0xc];
-    u8 pad_3140[0x3154 - 0x3140];
+    u8 unk_3140[0xc];
+    u8 unk_314c[0x3154 - 0x314c]; /* sub-object of unknown size */
     u8 unk_3154[0x38e8 - 0x3154];
     u8 unk_38e8[0x631c - 0x38e8]; /* 45-wide cell table */
     u8 unk_631c[0x7130 - 0x631c];
@@ -129,10 +130,15 @@ typedef struct Unk02f2a8State {
     u8 unk_7330[0x73c8 - 0x7330];
     u32 unk_73c8;
     u32 unk_73cc;
-    u8 pad_73d0[0x73e0 - 0x73d0];
+    u32 unk_73d0;
+    u8 pad_73d4[4];
+    u32 unk_73d8;
+    u8 pad_73dc[4];
     u32 unk_73e0;
     u32 unk_73e4;
-    u8 pad_73e8[0x7400 - 0x73e8];
+    u32 unk_73e8;
+    u32 unk_73ec;
+    u8 pad_73f0[0x7400 - 0x73f0];
     u32 unk_7400;               /* nonzero suppresses the func_0203721c rebuild */
     u8 pad_7404[0x743c - 0x7404];
     u32 unk_743c;
@@ -232,7 +238,7 @@ void Unk02f2a8_SetField6138(int k, u32 v)
 void Unk02f2a8_Nop_0303c8(void) { }
 /* Empty callback paired with the slot above at 0x0303CC. */
 void Unk02f2a8_Nop_0303cc(void) { }
-void func_02035db8();
+void func_02035db8(s32 *out, int x, int z);
 int Unk02f2a8_SetGridPos(int x, int y, u32 v);
 void func_0209e0b0(void);
 int Unk095560_Thunk_020961a0(void);
@@ -278,7 +284,7 @@ void Unk02f2a8_Call_02035db8(u8 *p)
 {
     Unk02f2a8WorkArea *a = Unk02e000_GetWorkArea();
     Unk02f2a8WorkArea *b = Unk02e000_GetWorkArea();
-    func_02035db8(p + 0x70, a->unk_0364, b->unk_0365);
+    func_02035db8((s32 *)(p + 0x70), a->unk_0364, b->unk_0365);
 }
 
 /* Push the grid coordinates cached at +0x744e/+0x744f into the work area via
@@ -385,7 +391,8 @@ int func_02035890();
 int Unk02f2a8_SetField35c(u32 id);
 
 typedef struct Unk02f2a8Res36 {
-    u8 pad_0000[0x18];
+    s8 unk_0000[0x10];          /* 16-byte key copied by func_0203572c */
+    s16 unk_0010[4];            /* indexed by bits 20..23 of a cell word */
     u8 unk_0018;                /* Unk_035820 only matches rows where this is 1 */
     s8 unk_0019;
     s8 unk_001a;
@@ -1019,7 +1026,7 @@ void Unk02f2a8_Unk_03034c(Unk02f2a8Action *action)
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-void func_02038ff8();
+int func_02038ff8();
 void func_02039520();
 int Unk02e000_Unk_02e8b8();
 void func_020a7474();
@@ -1672,10 +1679,21 @@ void func_02032b70(Unk02f2a8GridState *s)
 /* Counter view of gGameState: per-kind enable bytes at +0x33 and u16 rows of
  * three counters at +0x751e, with the kind-0 counter at +0x754e. */
 typedef struct Unk02f2a8Tally {
-    u8 pad_0000[0x33];
-    s8 unk_0033[8];             /* size guessed: one per counter row */
-    u8 pad_003b[0x751e - 0x3b];
-    u16 unk_751e[8][3];         /* 8 rows fit before unk_754e */
+    u8 pad_0000[0x18];
+    Unk02f2a8Res36 unk_0018;    /* copy of a resource-36 row; +0x1b holds the per-kind ids */
+    u8 pad_0040[0x74f2 - 0x40];
+    /* Both tables are indexed by kind 1..7 with row 0 never used, so the
+     * counter table's unused row 0 overlaps the end of the target table. */
+    union {
+        struct {
+            u16 unk_74f2[8][3]; /* targets; row 0 is not stored */
+            u16 unk_7522;       /* target for the kind-0 counter */
+        } tgt;
+        struct {
+            u8 pad_0000[0x751e - 0x74f2];
+            u16 unk_751e[8][3]; /* counters; row 0 is not stored */
+        } cnt;
+    } rows;
     u16 unk_754e;
 } Unk02f2a8Tally;
 
@@ -1693,8 +1711,8 @@ void func_020352f4(int kind, int slot)
         func_02030d84(t, Unk02e000_GetWorkArea()->unk_035c, 0);
         return;
     }
-    if (t->unk_0033[kind] < 0) return;
-    t->unk_751e[kind][slot]++;
+    if (t->unk_0018.unk_001b[kind] < 0) return;
+    t->rows.cnt.unk_751e[kind][slot]++;
     func_02030d84(t, Unk02e000_GetWorkArea()->unk_035c, 1);
 }
 
@@ -1882,6 +1900,86 @@ int func_02030494(u32 *input)
     return result;
 }
 
+void func_02118bec(int id, int v);
+void Unk094fe0_Unk_0953f0(void);
+/* Report counter targets for `id`: when the kind-0 target is set and reached
+ * and every kind 1..7 column-0 counter reached its target, call 118bec(id, 1)
+ * and 0953f0. With kind 1, also call 118bec(90 + 2 * e + j - 1, 1) for each
+ * kind whose enable byte e is nonnegative and whose column j (1, 2) reached
+ * its target. Does nothing when the kind-0 target is zero. */
+void func_02030d84(Unk02f2a8Tally *t, u32 id, int kind)
+{
+    Unk02f2a8Res36 *row = &t->unk_0018;
+    int all;
+    int i;
+    int j;
+    int k;
+    int m;
+    if (t->rows.tgt.unk_7522 == 0) return;
+    if (t->rows.tgt.unk_7522 <= t->unk_754e) {
+        all = 1;
+        for (i = 1; i <= 7; i++) {
+            if (t->rows.cnt.unk_751e[i][0] < t->rows.tgt.unk_74f2[i][0]) {
+                all = 0;
+                break;
+            }
+        }
+        if (all == 1) {
+            func_02118bec(id, 1);
+            Unk094fe0_Unk_0953f0();
+        }
+    }
+    if (kind != 1) return;
+    for (k = 1; k <= 7; k++) {
+        int e = row->unk_001b[k];
+        if (e < 0) continue;
+        for (m = 1; m <= 2; m++) {
+            if (t->rows.tgt.unk_74f2[k][m] <= t->rows.cnt.unk_751e[k][m]) {
+                func_02118bec(m - 1 + (e * 2 + 90), 1);
+            }
+        }
+    }
+}
+
+void func_02033f1c();
+void func_02034128();
+void func_0204b4e0(void);
+void Unk0387bc_Unk_038c74(void *obj);
+void Unk0387bc_Unk_038df8(void *obj);
+void Unk0387bc_Unk_038f7c(void *obj);
+void Unk095560_Unk_095af8(u32 id);
+void Unk095560_Thunk_0202d15c(void);
+void func_02052634(int a, int b, int c);
+/* Create the global game state once: allocate the 0x75c0-byte task with
+ * GameState_Shutdown as its teardown, publish it in gGameState, set up the
+ * three sub-objects at +0x3134/+0x3140/+0x314c and the default words, create
+ * the root task over body +0x23c, then run the start-up calls (resource 36,
+ * the work-area id +0x35c, 052634(1, 3, 32)). No-op if it already exists. */
+void func_0203428c(void)
+{
+    Unk02f2a8State *s;
+    Unk02e000_GetWorkArea();
+    if (gGameState != 0) return;
+    s = func_020611dc(func_02033f1c, func_02034128, 0, GameState_Shutdown, 0x75c0, 0, 1, 1);
+    gGameState = (GameState *)s;
+    if (s == 0) return;
+    Unk0387bc_Unk_038c74(s->unk_3134);
+    Unk0387bc_Unk_038df8(s->unk_3140);
+    Unk0387bc_Unk_038f7c(s->unk_314c);
+    s->unk_73c8 = 0;
+    s->unk_73cc = 0;
+    s->unk_73d0 = -1;
+    s->unk_73e8 = -1;
+    s->unk_73ec = -1;
+    s->unk_73d8 = 1;
+    s->root = (Unk02f2a8StateRoot *)func_020303d0((u32)&s->body.unk_023c);
+    func_0204b4e0();
+    Unk044394_Unk_044428(36);
+    Unk095560_Unk_095af8(Unk02e000_GetWorkArea()->unk_035c);
+    Unk095560_Thunk_0202d15c();
+    func_02052634(1, 3, 32);
+}
+
 /* Rebuild map work using the singleton's level byte (state +0x5b); +0x7400
  * suppresses it. Root position +0x7c and cell table +0x38e8 must remain live. */
 void func_02034e90(void)
@@ -1977,4 +2075,129 @@ void func_02035234(u32 id)
             func_020a7474(s->unk_631c, s->unk_7130, s->unk_0358, s->body.unk_0214, id, slot, 0);
         }
     }
+}
+
+void *func_020445d0();
+int Unk038fbc_Unk_039160();
+void Unk038fbc_Unk_039138();
+/* Load a temporary map block keyed by the 16-byte name of resource-36 row
+ * `row`, read bits 20..23 of the cell at (x, y) and return the row's s16
+ * entry for that value (entry 0 when the load or the lookup fails). */
+int func_0203572c(int row, int x, int y)
+{
+    Unk02f2a8Res36 *r;
+    u32 k;
+    int i;
+    func_020445d0(36, 0);
+    r = (Unk02f2a8Res36 *)func_0204fde0() + row;
+    k = 0;
+    s8 key[17] = {0};
+    for (i = 0; i < 16; i++) {
+        key[i] = r->unk_0000[i];
+    }
+    Unk02f2a8MapBlock map = {0};
+    if (func_02038ff8(&map, key, 0, 0) == 1) {
+        Unk02f2a8Obj39160 *o = (Unk02f2a8Obj39160 *)Unk038fbc_Unk_039160(&map, x, y);
+        if (o != 0) {
+            k = o->unk_0004_20;
+        }
+        Unk038fbc_Unk_039138(&map);
+    }
+    return r->unk_0010[k];
+}
+
+int func_0200219c(int num, int den);
+/* Fixed-point (20.12) interpolation from `from` to `to`: returns
+ * from + (to - from) * t / n, with t and n converted to fixed point through
+ * rounded float. Returns `to` when n is 0 or t >= n, `from` when t <= 0.
+ * The rounded float-to-fixed conversion is written out inline here and in
+ * func_02035db8 (not as a helper or macro) to match the original codegen. */
+int func_02035cb4(int from, int to, u32 n, int t)
+{
+    int d;
+    if (n == 0) return to;
+    if (t <= 0) return from;
+    if (n <= t) return to;
+    d = to - from;
+    d = (int)(((s64)d * (int)((float)t > 0 ? 4096.0f * (float)t + 0.5f : 4096.0f * (float)t - 0.5f) + 0x800) >> 12);
+    return from + func_0200219c(d, (int)((float)n > 0 ? 4096.0f * (float)n + 0.5f : 4096.0f * (float)n - 0.5f));
+}
+
+/* Store the position for grid cell (x, z) at out[0..2]: each coordinate is
+ * the cell index in 20.12 fixed point times 4.0, and the height is 0x8cd. */
+void func_02035db8(s32 *out, int x, int z)
+{
+    s32 fz = (s32)(((s64)(int)((float)z > 0 ? 4096.0f * (float)z + 0.5f : 4096.0f * (float)z - 0.5f) * 0x4000 + 0x800) >> 12);
+    s32 fx = (s32)(((s64)(int)((float)x > 0 ? 4096.0f * (float)x + 0.5f : 4096.0f * (float)x - 0.5f) * 0x4000 + 0x800) >> 12);
+    out[0] = fx;
+    out[1] = 0x8cd;
+    out[2] = fz;
+}
+
+/* Map a pair of 0..3 directions to 0..3 through a fixed 4x4 table; pairs
+ * outside the table give 2. The meaning of the table is not established. */
+int func_0203611c(int a, int b)
+{
+    int r = 2;
+    switch (a) {
+    case 1:
+        if (b == 1) r = 2;
+        else if (b == 2) r = 0;
+        else if (b == 3) r = 3;
+        else if (b == 0) r = 1;
+        break;
+    case 2:
+        if (b == 1) r = 1;
+        else if (b == 2) r = 2;
+        else if (b == 3) r = 0;
+        else if (b == 0) r = 3;
+        break;
+    case 3:
+        if (b == 1) r = 3;
+        else if (b == 2) r = 1;
+        else if (b == 3) r = 2;
+        else if (b == 0) r = 0;
+        break;
+    case 0:
+        if (b == 1) r = 0;
+        else if (b == 2) r = 3;
+        else if (b == 3) r = 1;
+        else if (b == 0) r = 2;
+        break;
+    }
+    return r;
+}
+
+/* Rotate direction `dir` (0..3) by `amount` (0..3) through a fixed table.
+ * Callers (Unk02f2a8_Unk_02fc10, the step helper) pass the cached heading.
+ * Out-of-range inputs return `dir` unchanged. */
+int func_020361ec(int dir, int amount)
+{
+    switch (dir) {
+    case 1:
+        if (amount == 0) return 2;
+        if (amount == 1) return 0;
+        if (amount == 2) return 1;
+        if (amount == 3) return 3;
+        break;
+    case 2:
+        if (amount == 0) return 3;
+        if (amount == 1) return 1;
+        if (amount == 2) return 2;
+        if (amount == 3) return 0;
+        break;
+    case 3:
+        if (amount == 0) return 0;
+        if (amount == 1) return 2;
+        if (amount == 2) return 3;
+        if (amount == 3) return 1;
+        break;
+    case 0:
+        if (amount == 0) return 1;
+        if (amount == 1) return 3;
+        if (amount == 2) return 0;
+        if (amount == 3) return 2;
+        break;
+    }
+    return dir;
 }
