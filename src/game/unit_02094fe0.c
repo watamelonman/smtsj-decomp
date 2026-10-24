@@ -4,7 +4,6 @@
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 
 /* Object passed as first arg in this file; layout from observed accesses. */
@@ -84,9 +83,11 @@ void Unk094fe0_Call_0209502c(int a, int b)
 }
 
 int func_020950e4(u8 *bits, u32 bit, int set);
-void func_020e6708();
-void *Unk02e000_GetWorkArea();
+void func_020e6708(int bit, int value);
+void *Unk02e000_GetWorkArea(void);
 
+/* Update a leading-array bit and notify 0x020e6708; the switch at
+ * 0x02095060 raises work-area byte +0x357 for indices 0x70c/0x70d. */
 void Unk094fe0_Unk_09502c(Unk094fe0Work *w, int a, int b)
 {
     u8 v;
@@ -108,6 +109,8 @@ void Unk094fe0_Unk_09502c(Unk094fe0Work *w, int a, int b)
     ((u8 *)Unk02e000_GetWorkArea())[855] = v;
 }
 
+/* Return 1 if bit `bit` of the work's leading 512-byte bit array (the Nop_095000 view) is set;
+ * 0 if clear or bit >= 4096 (the index >= 512 check). */
 int Unk094fe0_TestBit(Unk094fe0Work *w, u32 bit)
 {
     u32 sh = bit & 7;
@@ -120,7 +123,9 @@ int Unk094fe0_TestBit(Unk094fe0Work *w, u32 bit)
 }
 
 void Unk094fe0_Unk_095370(Unk094fe0Work *w, u32 a, int b);
-int Unk094fe0_TestFlag18(u8 *p, int bit)
+/* Return 1 if bit `bit` (0..31) of the record's +0x18 flag word is set; 0 for a null record,
+ * an out-of-range bit or a clear bit. */
+int Unk094fe0_TestFlag18(const Unk094fe0Record *p, int bit)
 {
     if (p == 0) {
         return 0;
@@ -128,7 +133,7 @@ int Unk094fe0_TestFlag18(u8 *p, int bit)
     if (bit < 0 || bit > 31) {
         return 0;
     }
-    return (FIELD(u32, p, 0x18) & (1 << bit)) != 0;
+    return (p->unk_0018 & (1 << bit)) != 0;
 }
 
 /* Store v in slot i (0..4) of a record; ignores a null record or out-of-range slot. */
@@ -143,7 +148,9 @@ void Unk094fe0_SetSlot(Unk094fe0Record *p, int i, u32 v)
     p->slots[i] = v;
 }
 
-u32 Unk094fe0_GetSlot(u8 *p, int i)
+/* Return slot i (0..4) of a record, or 0 for a null record or out-of-range slot.
+ * Counterpart of Unk094fe0_SetSlot; unit_0203aae8 reads the result as an s16. */
+u32 Unk094fe0_GetSlot(const Unk094fe0Record *p, int i)
 {
     if (p == 0) {
         return 0;
@@ -151,7 +158,7 @@ u32 Unk094fe0_GetSlot(u8 *p, int i)
     if (i < 0 || i >= 5) {
         return 0;
     }
-    return ((u32 *)(p + 4))[i];
+    return p->slots[i];
 }
 
 /* Set (b == 1) or clear bit a of the shared work's +0x200 bit array; ignores a >= 15360. */
@@ -173,9 +180,11 @@ int Unk094fe0_TestBit200(Unk094fe0Work *w, u32 a)
 }
 
 void Unk0e651c_SetBitChecked();
-int Unk02f2a8_Unk_035b08();
-int Unk09ee4c_Thunk_02118c6c();
+int Unk02f2a8_Unk_035b08(int cnt, int flag);
+int Unk09ee4c_Thunk_02118c6c(int value);
 
+/* Arm countdown slot i (0..3) of the shared work with (id, cnt). Returns 1 on success, 0 if
+ * i >= 4, id >= 4096 or cnt == 0. Unk094fe0_Unk_0952ac ticks these slots down. */
 int Unk094fe0_Unk_095258(u32 i, u32 id, u8 cnt)
 {
     Unk094fe0Timer *t;
@@ -194,6 +203,8 @@ int Unk094fe0_Unk_095258(u32 i, u32 id, u8 cnt)
     return 1;
 }
 
+/* Tick the four countdown slots of the shared work down by one. When a slot reaches 0, its id is
+ * passed with 1 to Unk0e651c_SetBitChecked. */
 void Unk094fe0_Unk_0952ac(void)
 {
     Unk094fe0Timer *t = Unk094fe0_Thunk_0202e8cc()->timers;
@@ -208,6 +219,7 @@ void Unk094fe0_Unk_0952ac(void)
     }
 }
 
+/* Return 1 if bit a-1 of the work's +0x990 bit array is set; 0 if clear or a is outside 1..128. */
 int Unk094fe0_TestBit990(Unk094fe0Work *w, u32 a)
 {
     u32 i = a - 1;
@@ -257,6 +269,8 @@ u32 Unk094fe0_GetWorkUnkField9a0(void)
     return Unk094fe0_GetUnkField9a0(Unk094fe0_Thunk_0202e8cc());
 }
 
+/* Consume the +0x9a4 record only when all fields and the 0x02118c6c
+ * predicate are nonzero; 0x02095450 sets its id bit before clearing the id. */
 int Unk094fe0_Unk_0953f0(void)
 {
     Unk094fe0Timer *t = &Unk094fe0_Thunk_0202e8cc()->unk_09a4;
@@ -282,4 +296,35 @@ int Unk094fe0_Unk_0953f0(void)
     Unk0e651c_SetBitChecked(t->id, 1);
     t->id = 0;
     return 1;
+}
+
+int Unk0e5fb8_Unk_0e61e8(Unk094fe0Work *work, int row, u8 column);
+void Unk0e5fb8_Unk_0e622c(Unk094fe0Work *work, int row, u8 column);
+
+/* Merge selected set bits from source into destination. The table at 0x0213bdbc,
+ * 15-by-10 loop at 0x020954d8 and 128-index loop at 0x02095524 establish
+ * the three ranges; clear source bits leave destination unchanged. */
+void func_02095468(Unk094fe0Work *destination, Unk094fe0Work *source)
+{
+    u32 bits[7] = {1024, 1025, 1026, 1027, 1803, 1804, 1805};
+    u32 i;
+    int column;
+    for (i = 0; i < 7; i++) {
+        u32 bit = bits[i];
+        if (Unk094fe0_TestBit(source, bit)) {
+            Unk094fe0_Unk_09502c(destination, bit, 1);
+        }
+    }
+    for (i = 0; (int)i < 15; i++) {
+        for (column = 0; column < 10; column++) {
+            if (Unk0e5fb8_Unk_0e61e8(source, i, column)) {
+                Unk0e5fb8_Unk_0e622c(destination, i, column);
+            }
+        }
+    }
+    for (i = 0; i < 128; i++) {
+        if (Unk094fe0_TestBit990(source, i)) {
+            Unk094fe0_Unk_095370(destination, i, 1);
+        }
+    }
 }
