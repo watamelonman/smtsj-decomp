@@ -180,3 +180,12 @@ volatile to preserve those observed accesses and ordering. This is a matching
 constraint, not evidence of hardware ownership or synchronization. Ordinary
 accesses let mwcc cache the count and hoist the second size load; revisit if
 original declaration evidence permits reproducing the accesses otherwise.
+
+## DEC-009 — Preserve signed text byte access in 020a9a90
+
+The two glyph loops test signed bytes and separately reload the byte passed to
+020a9ac8. Use a signed cursor for termination and space tests, and an unsigned
+byte read explicitly converted to s8 for the mapping argument. These equivalent
+C byte views reproduce the original loads with mwcc without introducing volatile
+semantics. The glyph mapper accepts a signed byte; the resource indices and
+coordinates remain signed integers as evidenced by the original arithmetic.

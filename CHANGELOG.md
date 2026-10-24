@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all three M1-T421 glyph mapping, width/draw, and target rectangle functions in game/unit_020a9a90 at 100% objdiff.
 - Matched all eight M1-T420 font metric, formatted text, and alignment functions in game/unit_020a9a90 at 100% objdiff.
 - Matched M1-T415 `func_02108ca4` (940 bytes) at 100% with typed saved-record and slot layouts and documented growth formulas.
 - Matched all eight M1-T418 state, forwarding and input-latch functions in game/unit_0202cad4; documented typed contracts and original-code evidence.
