@@ -6,9 +6,13 @@ typedef struct Unk0ef248Work {
     u8 pad_0000[0x4];
     u32 unk_0004;
     s32 unk_0008;
-    u8 pad_000c[0x34];
+    u8 pad_000c[4];
+    s32 unk_0010;
+    u8 pad_0014[0x2c];
     u32 unk_0040;
     u32 unk_0044;
+    u8 pad_0048[0xac];
+    float ramps[6];
 } Unk0ef248Work;
 
 /* Original 0x020ef4b4 is a bare return: an intentionally empty callback. */
@@ -286,4 +290,61 @@ void func_020ef3f0(Unk0ef248Work *work)
     func_020f81cc((u8 *)work + 0x50, 6, Unk0e8228_Unk_0e84e4(), 0, 1, 0,
                   Unk0ef248_Unk_0ef74c, func_020ef78c, Unk0ef248_Unk_0ef878, Unk0ef248_Unk_0ef8ac);
     Unk0f81a4_SetUnkField9c((u8 *)work + 0x50, func_020ef8d0);
+}
+
+void Unk0f8448_Unk_0f8468(void *work);
+int Unk0f8448_GetUnkField4(void *work);
+int Unk0f8448_GetEntry(void *work, int index);
+void func_02057df8(void);
+void func_02057e18(int value);
+void Unk0e8228_Unk_0e8e50(void);
+void Unk0e8228_Unk_0e8e6c(void);
+void Unk0e8228_Thunk_02057534(void);
+void Unk0e8228_Unk_0e8e7c(void);
+void func_020f5ad4(int x, int y, int mode, float ramp, int flag);
+void Unk0f51dc_Unk_0f5dfc(int x, int y);
+void func_020f5b68(int index, int x, int y, int mode, float ramp);
+void func_020f5d0c(int x, int y, int start, int count, int total);
+/* Original 0x020ef578 submits bounded embedded entries with the six +0xf4
+ * ramps and state-dependent modes. Borrowed work must span 0x10c bytes;
+ * the embedded count must be at most six to index the ramps. */
+void func_020ef578(Unk0ef248Work *work)
+{
+    int count, limit, y, i, mode, entry, flag, start, total;
+    Unk0f8448_Unk_0f8468((u8 *)work + 0x50);
+    count = Unk0f8448_GetUnkField0((u8 *)work + 0x50);
+    limit = Unk0f8448_GetUnkField4((u8 *)work + 0x50);
+    if (limit < count) count = limit;
+    if (work->unk_0008 == 1) return;
+    func_02057df8();
+    Unk0e8228_Unk_0e8e50();
+    y = 25;
+    for (i = 0; i < count; i++) {
+        Unk0e8228_Unk_0e8e6c();
+        func_02057e18(31);
+        mode = 0;
+        entry = Unk0f8448_GetEntry((u8 *)work + 0x50, i);
+        flag = work->unk_0010 == 0;
+        if (flag) {
+            switch (entry) {
+            case 2: flag = 0; /* Fall through: kind 2 shares mode 1. */
+            case 1: mode = 1; break;
+            case 3: flag = 0; /* Fall through: kind 3 shares mode 2. */
+            case 4: mode = 2; break;
+            default: flag = 0; mode = 0; break;
+            }
+        }
+        func_020f5ad4(74, y, mode, work->ramps[i], flag);
+        if (flag) Unk0f51dc_Unk_0f5dfc(74, y);
+        func_020f5b68(i, 74, y, mode, work->ramps[i]);
+        y += 15;
+    }
+    Unk0e8228_Unk_0e8e6c();
+    start = Unk0f8448_GetUnkField8((u8 *)work + 0x50);
+    total = Unk0e8228_Unk_0e84e4();
+    if (total > 6 && work->unk_0010 == 0) {
+        func_020f5d0c(0, 0, start, count, total);
+    }
+    Unk0e8228_Thunk_02057534();
+    Unk0e8228_Unk_0e8e7c();
 }

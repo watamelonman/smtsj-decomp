@@ -37,9 +37,19 @@ Offsets and callback identities below come from the original ARM instructions.
 No broader gameplay names are inferred. The descriptor and record prefix views
 are private to this translation unit; providers retain ownership.
 
+## M1-T445 match
+
+| Function | Size | Behavior and contract evidence |
+| --- | ---: | --- |
+| `func_020ef578` | 376 | At 0x020ef578, updates embedded work +0x50 and takes the signed minimum of its count and limit. State +8 equal to 1 returns early. Otherwise brackets entry submissions with the observed callbacks, places entries at (74, 25 + 15 * index), and passes each float ramp at +0xf4. When +0x10 is zero, entry kinds 1/2 select mode 1 and kinds 3/4 select mode 2; only kinds 1/4 retain the extra-submission flag. Other kinds clear mode and flag. A signed total >6 and zero +0x10 submit the start, bounded count, and total. The caller supplies borrowed work spanning 0x10c bytes and a bounded count no greater than six. |
+
+The private work view now names the +0x10 word and six float ramps already
+observed in the original instructions. The loop's vertical increment stays in
+the body to reproduce the original compiler's instruction scheduling.
+
 ## Hard list
 
-None for M1-T443 or M1-T444. `func_020ef578` belongs to the remaining
-neighboring work and stays linked from the original delinked object.
-No assembly, instruction blobs, or new tests were needed; objdiff checks the
-complete emitted instruction sequences and relocations.
+None for M1-T443, M1-T444, or M1-T445. The target's complete instruction
+sequence and relocations match in the standalone comparison and at 100% in
+the project objdiff report. No new tests are required
+by the card: instruction matching is the acceptance test for this function.
