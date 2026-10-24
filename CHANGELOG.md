@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all seven M1-T391 game/unit_020a50d4 global access, brightness, map-entry setup and sequence update functions at 100% objdiff.
+- Verified all eight M1-T386 game/unit_0206e4d8 table and work-state helpers at 100% objdiff; documented their contracts and instruction evidence.
 - M1-T390: matched four game/unit_020e5710 record eligibility and weighted selection helpers; documented the remaining selector on the hard list.
 
 - M1-T385: matched the game/unit_020f4c50 message handler `func_020f4d64` (1100 bytes) at 100% objdiff, with a typed flag-qualified message payload.

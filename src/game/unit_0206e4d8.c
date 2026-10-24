@@ -1,11 +1,13 @@
-/* src/game/unit_0206e4d8.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Work-state helpers; field offsets and table stride follow the original ARM accesses. */
 #include "types.h"
 
 
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk06e4d8Work {
-    u8 pad_0000[0x2c];
+    u8 pad_0000[0x8];
+    u32 unk_0008;
+    u8 pad_000c[0x20];
     u32 unk_002c;
     u32 unk_0030;
     u32 unk_0034;
@@ -17,48 +19,55 @@ typedef struct Unk06e4d8Work {
     u32 unk_005c;
     u32 unk_0060;
     u32 unk_0064;
-} Unk06e4d8Work;
+    u32 unk_0068;
+    u8 unk_006c;
+    u8 pad_006d[0x3];
+} Unk06e4d8Work; /* 0x70 bytes: allocated with size 112 in Unk06e4d8_Unk_06e538 */
 
 extern u32 data_02170cc8[];
-/* decompiler-derived */
+/* Return the nullable work address stored at data_02170cc8 (original LDR pair).
+ * The caller borrows the work; this accessor does not transfer ownership. */
 u32 Unk06e4d8_Get_data_02170cc8(void)
 {
   return *data_02170cc8;
 }
 
 extern u8 data_0216bac8[];
-/* decompiler-derived */
+/* Return the borrowed address at +0xbc in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0xbc. */
 int Unk06e4d8_Unk_06e4d8(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0xbc;
 }
 
 
-/* decompiler-derived */
+/* Return the borrowed address at +0xdc in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0xdc. */
 int Unk06e4d8_Unk_06e4f0(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0xdc;
 }
 
 
-/* decompiler-derived */
+/* Return the borrowed address at +0xfc in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0xfc. */
 int Unk06e4d8_Unk_06e508(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0xfc;
 }
 
 
-/* decompiler-derived */
+/* Return the borrowed address at +0x11c in a caller-validated table slot.
+ * Evidence: original MLA uses stride 0x148 from data_0216bac8, then ADD 0x11c. */
 int Unk06e4d8_Unk_06e520(int arg0)
 {
   return arg0 * 0x148 + ((int)data_0216bac8) + 0x11c;
 }
 
-int func_02061424();
+int func_02061424(u32 work_address);
 extern u32 data_0216bac4[];
 u8 *Unk06dddc_Unk_06e058();
 void Unk06e4d8_Unk_06e814(int arg0);
-u32 Unk06e4d8_Get_data_02170cc8(void);
 void *func_020611dc();
 void func_0206e5bc();
 void func_02008848();
@@ -74,15 +83,18 @@ void Unk06e4d8_Unk_06e538(void)
     p[108] = 0;
 }
 
-void Unk06e4d8_Reset(u8 *o)
+/* Reset a non-null work block: original stores clear +0x08, +0x6c and
+ * +0x68 before tail-calling Unk06e4d8_Unk_06e814 to clear the remaining state. */
+void Unk06e4d8_Reset(Unk06e4d8Work *w)
 {
-    FIELD(u32, o, 0x08) = 0;
-    FIELD(u8, o, 0x6c) = 0;
-    FIELD(u32, o, 0x68) = 0;
-    Unk06e4d8_Unk_06e814((int)o);
+    w->unk_0008 = 0;
+    w->unk_006c = 0;
+    w->unk_0068 = 0;
+    Unk06e4d8_Unk_06e814((int)w);
 }
 
-/* decompiler-derived */
+/* Pass the stored work address to func_02061424, then clear the global slot.
+ * Evidence: original BL followed by a zero STR; no null check is performed. */
 void Unk06e4d8_Unk_06e680(void)
 {
   func_02061424(*data_02170cc8);
@@ -132,10 +144,12 @@ int Unk06e4d8_Unk_06ea0c(int i)
     return FIELD(s32, Unk06dddc_Unk_06e058(i), 0xd8) > 0;
 }
 
+/* Report whether the singleton exists and its byte at +0x6c is nonzero.
+ * Evidence: original two accessor calls, LDRB +0x6c and boolean normalization. */
 int Unk06e4d8_GetFlag6c(void)
 {
     if (Unk06e4d8_Get_data_02170cc8() == 0) {
         return 0;
     }
-    return FIELD(u8, Unk06e4d8_Get_data_02170cc8(), 0x6c) != 0;
+    return ((Unk06e4d8Work *)Unk06e4d8_Get_data_02170cc8())->unk_006c != 0;
 }
