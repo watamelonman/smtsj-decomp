@@ -130,3 +130,19 @@ and produce different register allocation. The unified layout matches all
 instructions, and objdiff resolves its interior relocations at 100%. Padding
 records only observed offsets; the table capacity and field meanings remain
 unknown. Revisit if further data-layout evidence changes the record boundary.
+## DEC-008 — Preserve the aligned name buffer in 0203812c
+
+The original clears its 16-byte temporary name with four word stores before
+copying sixteen signed bytes. A union of four words and sixteen bytes expresses
+that alignment and byte access in C; a plain byte array compiles to a byte-clear
+loop. Keep dictionary entries 5–7 as separate assignments followed by record
+initialization, matching the original unrolled tail and field-read expression.
+## DEC-008 — Preserve stack count reloads and size-table ordering in 0205b540
+
+The original push reloads the count between the two size-table writes and on
+each diagnostic scan iteration. The pop reads the second size only after
+restoring the first cursor. Qualify the count and size-table accesses as
+volatile to preserve those observed accesses and ordering. This is a matching
+constraint, not evidence of hardware ownership or synchronization. Ordinary
+accesses let mwcc cache the count and hoist the second size load; revisit if
+original declaration evidence permits reproducing the accesses otherwise.
