@@ -579,3 +579,58 @@ state +0x5b, buffer `body.unk_0214` = +0x218) and names the buffers +0x358,
 
 Hard list for M1-T1115: none. No new tests are required by the card; objdiff
 compares every instruction against the original implementation.
+
+## M1-T1116: direction tables, counter targets, start-up and fixed-point helpers
+
+- `func_0203611c` (208 bytes): maps a pair of 0..3 directions to 0..3 through a
+  fixed 4x4 table, 2 for pairs outside it. Written as a switch whose cases sit
+  in handler-address order (1, 2, 3, 0); the `r = 2` assignments are kept so the
+  compares and early exits stay as in the original.
+- `func_020361ec` (220 bytes): rotates direction `dir` by `amount` through a
+  second 4x4 table; callers (Unk02f2a8_Unk_02fc10 and the step helper) pass the
+  cached heading. Out-of-range input returns `dir`, which is what the original
+  leaves in r0.
+- `func_0203572c` (244 bytes): loads a temporary map block (`Unk02f2a8MapBlock`,
+  zero-initialised on the stack) keyed by the 16-byte name of resource-36 row
+  `row`, reads bits 20..23 of the cell at (x, y), releases the block and returns
+  the row's s16 at +0x10 for that value. C99 block-order declarations put the two
+  stack initialisers after the resource call, as in the original.
+- `func_02030d84` (252 bytes): counter-target check behind func_020352f4. When
+  the kind-0 target (+0x7522) is set and reached and every kind 1..7 column-0
+  counter reached its target, it calls 118bec(id, 1) and 0953f0; with kind 1 it
+  also calls 118bec(90 + 2e + j - 1, 1) for each reached column j of a kind whose
+  id e (resource-36 row copy at +0x18, byte +0x1b + kind) is nonnegative. The id
+  formula is the same as in func_02036654.
+- `func_0203428c` (252 bytes): creates gGameState once: 0x75c0-byte task with
+  GameState_Shutdown as teardown, the three sub-objects at +0x3134/+0x3140/+0x314c,
+  default words +0x73c8..+0x73ec, the root task over body +0x23c, then the
+  start-up calls (resource 36, work-area id +0x35c, 052634(1, 3, 32)).
+- `func_02035cb4` (260 bytes): 20.12 fixed-point interpolation
+  `from + (to - from) * t / n`, with t and n converted through rounded float
+  (`x * 4096 +/- 0.5`); returns `to` for n == 0 or t >= n and `from` for t <= 0.
+- `func_02035db8` (268 bytes): stores the position of grid cell (x, z):
+  x and z in 20.12 fixed point times 4.0, height 0x8cd.
+
+Typing: `Unk02f2a8Res36` names the 16-byte key and the s16 table at +0x10.
+`Unk02f2a8Tally` now holds the resource-36 row copy at +0x18 and a union for the
+target (+0x74f2) and counter (+0x751e) tables. Both are indexed by kind with
+row 0 unused, so the unused counter row overlaps the end of the target table.
+`Unk02f2a8State` gains +0x3140/+0x314c and +0x73d0/+0x73d8/+0x73e8/+0x73ec.
+
+Hard list for M1-T1116:
+- `func_0202fc50` (276 bytes, action type 4 step): the structure matches
+  (counter +0x1c, sub-type swing through 0205eae0 around the heading angle,
+  flags +0x48/+0x4c/+0x44 at steps 3/6/8, `% 0x10000` then `+0x10000` if
+  negative). It still fails because mwcc builds the negative swing constants as
+  `sub rX, rZero, #K` from the zero-initialised local, while the original uses
+  `mov #K; rsb` and leaves the sub-type-0 branch unpredicated. Tried: if/else
+  chain, switch with and without default, else-branch zero init, swapped
+  declaration order, `amp = len` copy, s16 amplitude, and the negative constants
+  written as `-(int)16384.0f`, `-(0x10000 / 4)` and `0x8000 * -1`. Needs a
+  decomp.me scratch.
+
+Attempt 2 review verification: the map-work and direction-table comments now sit
+directly above their respective definitions, and the fixed-point interpolation
+comment explains why both helpers retain inline rounding expressions. Local
+validation passed: `ninja`, anticheat, all nine unit tests, match (all 102 C
+functions considered by the gate at 100%), and checksum (all artifacts identical).
