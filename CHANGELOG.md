@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T475 pair, bulk record, weighted query and byte-sum helpers with typed parameters and documented ARM evidence.
 - Verified all eight M1-T474 record clamp, ID, reset and work-field helpers at 100% objdiff; made global clamp argument forwarding explicit and documented original instruction evidence.
 - Added matching C for all eight M1-T480 game/unit_020e6a0c resource, record-update, scaling, filtering and entry-test functions.
 - Matched all eight M1-T469 game/unit_020387bc descriptor and initialization functions at 100% objdiff; documented instruction evidence and typed helper arguments.

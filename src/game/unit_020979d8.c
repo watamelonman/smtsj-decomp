@@ -189,15 +189,18 @@ typedef struct Unk0979d8Pair {
     u16 hi : 6;
 } Unk0979d8Pair;
 
-int func_020a1428();
+int func_020a1428(u16 id);
 void func_02097c18(Unk0979d8Pair *out, int a, u8 *b);
-int Unk02e000_GetWorkArea();
-int Unk02e000_GetAreaRecord();
+u8 *Unk02e000_GetWorkArea(void);
+u8 *Unk02e000_GetAreaRecord(int index);
 u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0);
 void Unk0979d8_ResetAreaEntries(void);
 void Unk096754_ClampField1c(int value);
 void Unk096754_ClampField1e(int value);
 void Unk096754_ResetAreaPos(void);
+/* Returns the indexed low 10 bits of a generated pair in a 20-pair local buffer.
+ * Evidence: +0x36 lookup, pair builder and bit extraction at 02097d54..02097d94.
+ * Caller must supply a valid record and index 0..19. */
 int Unk0979d8_GetPairLo(u8 *p, int i)
 {
     Unk0979d8Pair buf[20];
@@ -205,6 +208,8 @@ int Unk0979d8_GetPairLo(u8 *p, int i)
     return buf[i].lo;
 }
 
+/* Returns the indexed high 6 bits of a generated pair; index must be 0..19.
+ * Evidence: +0x36 lookup and high-bit extraction at 02097d98..02097dd8. */
 int Unk0979d8_GetPairHi(u8 *p, int i)
 {
     Unk0979d8Pair buf[20];
@@ -212,6 +217,8 @@ int Unk0979d8_GetPairHi(u8 *p, int i)
     return buf[i].hi;
 }
 
+/* Resets up to twelve active records, stopping at a negative slot, then area slots.
+ * Evidence: signed slot loads at +0x348 and reset calls at 02097ddc..02097e18. */
 void Unk0979d8_ResetAllEntries(void)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
@@ -226,6 +233,8 @@ void Unk0979d8_ResetAllEntries(void)
     Unk0979d8_ResetAreaEntries();
 }
 
+/* Clamps global +0x1c and active records +0x1e to value.
+ * Evidence: global call, twelve-slot loop and record clamp at 02097e1c..02097e68. */
 void Unk0979d8_ClampAllField1e(int v)
 {
     u8 *w;
@@ -241,6 +250,8 @@ void Unk0979d8_ClampAllField1e(int v)
     }
 }
 
+/* Clamps global +0x1e and active records +0x20 to value.
+ * Evidence: global call, twelve-slot loop and record clamp at 02097e6c..02097eb8. */
 void Unk0979d8_ClampAllField20(int v)
 {
     u8 *w;
@@ -256,6 +267,8 @@ void Unk0979d8_ClampAllField20(int v)
     }
 }
 
+/* Restores fields for three present area slots unless record state +0x34 is 1,
+ * then resets area position. Evidence: +0x354 slots and calls at 02097ebc..02097efc. */
 void Unk0979d8_ResetAreaEntries(void)
 {
     s8 *t = (s8 *)((u8 *)Unk02e000_GetWorkArea() + 852);
@@ -308,4 +321,60 @@ s32 Unk0979d8_AddField344(s32 d)
         FIELD(s32, w, 836) = 99999999;
     }
     return FIELD(s32, w, 836);
+}
+
+int Unk02e000_Unk_02e840(u8 *record);
+int Unk0986ac_Unk_098978(int id);
+int Unk0986ac_Thunk_02098714(int entry);
+
+/* Returns an unknown score for a borrowed record; NULL and states 1/7
+ * return zero. Evidence: state checks and weighted calls at 02097ad0..02097b4c. */
+int func_02097ad0(u8 *record, int enabled)
+{
+    int score;
+    if (record == 0) return 0;
+    if (FIELD(u16, record, 52) == 1 || FIELD(u16, record, 52) == 7) return 0;
+    score = 0;
+    if (Unk02e000_Unk_02e840(record) && enabled) {
+        if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(160))) score++;
+        if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(151))) score += 3;
+        if (Unk0979d8_HasId(record, 397)) score += 5;
+    }
+    return score;
+}
+
+u8 *Unk02e000_Thunk_0202e788(void);
+int Unk096754_CountEntries(void);
+/* Sums unsigned +0x38 across selected present records. Mode 0 includes
+ * both the main byte +0x6e and active entries; 1 selects active entries;
+ * 2 includes the main byte and three area slots. Other modes return zero.
+ * Evidence: mode branches, LDRSB slot checks and LDRB at 02098050..020980e0. */
+int func_02098050(int mode)
+{
+    int sum = 0;
+    int count;
+    s8 *slots;
+    int i;
+    if (mode == 0 || mode == 2) {
+        sum += FIELD(u8, Unk02e000_Thunk_0202e788(), 110);
+    }
+    count = 0;
+    slots = 0;
+    switch (mode) {
+    case 0:
+    case 1:
+        count = Unk096754_CountEntries();
+        slots = (s8 *)(Unk02e000_GetWorkArea() + 840);
+        break;
+    case 2:
+        count = 3;
+        slots = (s8 *)(Unk02e000_GetWorkArea() + 852);
+        break;
+    }
+    for (i = 0; i < count; i++) {
+        if (slots[i] >= 0) {
+            sum += FIELD(u8, Unk02e000_GetAreaRecord(slots[i]), 56);
+        }
+    }
+    return sum;
 }
