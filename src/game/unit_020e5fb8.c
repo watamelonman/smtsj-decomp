@@ -36,6 +36,79 @@ void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1);
 /* Reads a bit from the caller-owned context without taking ownership. */
 int Unk094fe0_TestBit(u32 context, u32 bit);
 
+/* 0x34-byte record returned by func_020e67f4 (leading key, then halfword slots).
+ * func_020e5fb8 reads slots[s], slots[s + 6] and slots[s + 12] for s in 0..11;
+ * the row layout is unknown, so the slots stay one flat array. */
+typedef struct Unk0e5fb8_Record {
+    u16 key;
+    u16 slots[25];
+} Unk0e5fb8_Record;
+
+/* 6-byte entry at the start of the func_020a1740 resource; only the leading
+ * halfword is read here. Ids 0xfffd..0xffff select entries 12..14. */
+typedef struct Unk0e5fb8_Entry {
+    u16 id;
+    u8 pad_0002[4];
+} Unk0e5fb8_Entry;
+
+Unk0e5fb8_Record *func_020e67f4(u32 id);
+int func_02050074(int first, int last);
+int Unk0986ac_Unk_098978(int id);
+int Unk0986ac_Thunk_02098714(int id);
+int Unk03e43c_Unk_03fa28(void);
+Unk0e5fb8_Entry *func_020a1740(u32 id);
+int Unk0e651c_Unk_0e666c(u32 flag);
+
+/* Picks a nonzero halfword id from the func_020e67f4 record for `id`, starting at
+ * a random slot in 1..11 (func_02050074(1, 11)) and trying all 12 slots with wrap.
+ * The mode from Unk03e43c_Unk_03fa28 and the 0x98978(131) check select the slot
+ * row: offset 12 when the mode is 0 or the check passes, else 6 for mode 8, else 0.
+ * Ids >= 0xfffd are replaced by entry (id - 0xfff1) of resource `resId`; a
+ * replacement in 0x385..0x53c is dropped unless flag 0x702 is set. Returns 0
+ * when every slot yields 0. Evidence: ARM at 0x020e5fb8; meanings unknown. */
+u32 func_020e5fb8(u32 id, u32 resId)
+{
+    u32 value;
+    Unk0e5fb8_Record *rec = func_020e67f4((u16)id);
+    u32 slot = func_02050074(1, 11);
+    int enabled = Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(131));
+    int tries = 0;
+    int mode;
+
+    do {
+        mode = Unk03e43c_Unk_03fa28();
+        if (mode == 0 || enabled != 0) {
+            value = rec->slots[slot + 12];
+        } else if (mode == 8) {
+            value = rec->slots[slot + 6];
+        } else {
+            value = rec->slots[slot];
+        }
+        if (value >= 0xfffd) {
+            /* Same address as entries[value - 0xfff1]; written this way to keep
+             * the ROM's multiply-then-subtract addressing. */
+            value = (func_020a1740(resId) + value)[-0xfff1].id;
+            if (value >= 0x385 && value <= 0x53c) {
+                if (Unk0e651c_Unk_0e666c(0x702) == 0) {
+                    value = 0;
+                }
+            }
+        }
+        if (value != 0) {
+            break;
+        }
+        slot++;
+        tries++;
+        if (slot > 11) {
+            slot = 0;
+        }
+    } while (tries < 12);
+    if (tries == 12) {
+        value = 0;
+    }
+    return value;
+}
+
 /* Packs n consecutive context bits starting at bit index b, LSB first.
  * ARM at 0x020e60b4 loops TestBit(a, b + i) and ORs 1 << i per set bit.
  * n <= 0 returns 0; n > 32 is not meaningful for the u32 result. */
