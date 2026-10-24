@@ -1,15 +1,17 @@
-/* src/game/unit_02100414.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Borrowed record view; the comparator reads only the key and score. */
+typedef struct Unk100414Record {
+    u16 key;
+    u8 pad_0002[6];
+    s32 score;
+} Unk100414Record;
 
-
-/* decompiler-derived */
-int Unk100414_Unk_100414(u16 *arg0,u16 *arg1)
+/* Orders records by descending score, then ascending key (loads at +8/+0).
+ * Both arguments must point to complete records; neutral name retains unknown use. */
+int Unk100414_Unk_100414(const Unk100414Record *a, const Unk100414Record *b)
 {
-  int value;
-  value = *(int *)(arg1 + 4) - *(int *)(arg0 + 4);
-  if (value == 0) {
-    value = (u32)*arg0 - (u32)*arg1;
-  }
-  return value;
+    int value = b->score - a->score;
+    if (value == 0) value = (u32)a->key - (u32)b->key;
+    return value;
 }
