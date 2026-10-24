@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Gave the five M1-T251 handlers in `game/unit_0203ce68` a typed work struct, real callee prototypes and comments, still 100% objdiff; added `include/game/unit_0203ce68.h`.
+- Verified all eight M1-T253 worker helpers at 100% objdiff; typed direct worker parameters and documented instruction evidence and absent-manager defaults.
+- Matched all four M1-T252 trial and weighted-selection functions in `src/game/unit_020e5cb8.c` at 100% objdiff with typed data views.
 - Verified all eight M1-T250 handlers in `game/unit_0203ce68` at 100% objdiff, with explicit result forwarding, typed operand contracts, and per-function instruction evidence.
 - Matched both M1-T249 entry-submission and segmented-bar functions in `src/game/unit_020de37c.c`; documented record layout and integer rounding contracts.
 - Matched all five M1-T246 battle event resource and record-selection functions at 100% objdiff, with typed layouts and behavior documentation.
