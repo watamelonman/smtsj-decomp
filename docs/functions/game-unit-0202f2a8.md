@@ -634,3 +634,43 @@ directly above their respective definitions, and the fixed-point interpolation
 comment explains why both helpers retain inline rounding expressions. Local
 validation passed: `ninja`, anticheat, all nine unit tests, match (all 102 C
 functions considered by the gate at 100%), and checksum (all artifacts identical).
+
+## M1-T1117: 8 functions
+
+All eight are at 100% in objdiff (match gate, checksum and anticheat pass). Every caller
+(func_02031758, func_02032020, func_02032fb8, func_02033400, func_02033f1c, func_0203428c)
+passes the game-state task object, so all but the last two take `Unk02f2a8State *`. Names stay
+neutral: the evidence covers the shape of each function but not what it is for in the game.
+- `func_02031274` (304 bytes): rebuilds the +0x5508 buffer against the Unk02e000_Unk_02e8b8
+  buffer. It clears it, adds sub-objects +0x3134/+0x3140 over body map block +0x23c for
+  work-area id +0x35c, then adds the seven slots that Unk02f2a8_Unk_035c14 enables.
+  The 45x40 cell table at +0x38e8 ends exactly at +0x5508, and +0x5508 has the same 0xe14
+  size as +0x631c, so the state view now splits there.
+- `func_02031628` (304 bytes): visor refresh, called with `mode`. It is gated on +0x73e0/+0x7498
+  being clear, on mode 4 not having event 12/14/37, and on body +0 being 1. It links
+  +0x3134/+0x3140 for the current 04bb9c context id. Then, for each of the seven entries, it
+  shows the entry (0a2a60) if its 0a03b8 descriptor +0 predicate returns 1, or hides it (0a2a8c).
+- `func_02032e18` (292 bytes): mode-6 handler. A 4-step sequence on +0x7481, with frame counter
+  +0x7484 (signed compare, so `s32`): free map block +0x358, reload for id +0x7480 after 3
+  frames, call 0a4e9c(0) after 6 frames, then request mode 2.
+- `func_02033cd0` (312 bytes): latches requested mode +0x73cc into +0x73c8 (the request resets
+  to -1) and runs that mode's entry action through a jump table; case 0 is an empty case.
+- `func_02033e08` (276 bytes): per-frame dispatch on +0x73c8, one helper per mode. Mode 1 arms
+  root +0x44/+0x4c/+0x50/+0x54 and starts +0x7598 with 180. Mode 12 is an empty case.
+- `func_02034128` (284 bytes): the second callback of the task that func_0203428c creates.
+  It runs the 037d50 rebuild, updates +0x7550/+0x7598, then runs the event/visor descriptor
+  callbacks (+8 for modes 3/4, +0xc for mode 5) and 12168c.
+- `func_02036368` (288 bytes): writes `to * t / n` in 20.12 fixed point to obj +0x1c and
+  returns 0, using the same rounded-float conversion as func_02035cb4. The out-of-range
+  cases return 1. The ROM places the `t >= n` store after the main path, so the code is
+  written as `if (t < n) { ...; return 0; }`.
+- `func_020370e8` (308 bytes): marks records in the sorted 16-byte list whose
+  [+8, +0xa] range (clamped to +-0x1555) is closed off by earlier unmarked records.
+  Unk02f2a8SortEntry now types +8/+0xa as s16 and +0xc/+0xd as the s8 grid x/y;
+  func_02036fb8 is still at 100%.
+
+Shared view changes: Body +0/+0x14, Root +0x9c, State +0x5508/+0x7410/+0x7490/+0x7550,
+s8 +0x7480/+0x7481, Descriptor +0 and +0xc are now function pointers, a new Unk02f2a8Lerp
+view, and a real `void *Unk02e000_Unk_02e8b8(void)` prototype.
+
+Not done in this card: none. Hard list: none.

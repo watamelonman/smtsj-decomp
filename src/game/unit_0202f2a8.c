@@ -92,6 +92,8 @@ typedef struct Unk02f2a8StateRoot {
     u8 pad_0058[0x7c - 0x58];
     u8 unk_007c[0x94 - 0x7c];   /* size guessed: position block passed to func_0203721c */
     u16 unk_0094;
+    u8 pad_0096[0x9c - 0x96];
+    u32 unk_009c;
 } Unk02f2a8StateRoot;
 
 /* One map block embedded in the body Unk02f2a8_Unk_034970 picks from; only
@@ -104,7 +106,9 @@ typedef struct Unk02f2a8MapBlock {
 
 /* Body view used by Unk02f2a8_Unk_034970 (callers pass state +4). */
 typedef struct Unk02f2a8Body {
-    u8 pad_0000[0x24];
+    u32 unk_0000;               /* nonzero once the body is live (func_02034128) */
+    u8 pad_0004[0x14 - 4];
+    u8 unk_0014[0x24 - 0x14];   /* size guessed: block handed to func_020a7474 / func_02038888 */
     s16 unk_0024[6]; /* size guessed: indexed by bits 20..23 of a cell word (func_020305a8) */
     s8 unk_0030[15]; /* size guessed: indexed by a 4-bit cell id minus 1 */
     u8 pad_003f[0x57 - 0x3f];
@@ -124,7 +128,8 @@ typedef struct Unk02f2a8State {
     u8 unk_3140[0xc];
     u8 unk_314c[0x3154 - 0x314c]; /* sub-object of unknown size */
     u8 unk_3154[0x38e8 - 0x3154];
-    u8 unk_38e8[0x631c - 0x38e8]; /* 45-wide cell table */
+    u8 unk_38e8[0x5508 - 0x38e8]; /* 45x40 table of 4-byte cells */
+    u8 unk_5508[0x631c - 0x5508]; /* buffer rebuilt by func_02031274; same size as +0x631c */
     u8 unk_631c[0x7130 - 0x631c];
     u8 unk_7130[0x7330 - 0x7130];
     u8 unk_7330[0x73c8 - 0x7330];
@@ -140,26 +145,32 @@ typedef struct Unk02f2a8State {
     u32 unk_73ec;
     u8 pad_73f0[0x7400 - 0x73f0];
     u32 unk_7400;               /* nonzero suppresses the func_0203721c rebuild */
-    u8 pad_7404[0x743c - 0x7404];
+    u8 pad_7404[0x7410 - 0x7404];
+    u8 unk_7410[0x743c - 0x7410]; /* size guessed: position block used instead of root +0x7c */
     u32 unk_743c;
     u8 pad_7440[0x7478 - 0x7440];
     u32 unk_7478;               /* +0x7478..+0x748b cleared by Unk_032f3c */
     u32 unk_747c;
-    u8 unk_7480;
-    u8 unk_7481;
+    s8 unk_7480;                /* id handed to func_02038888/func_02030924 */
+    s8 unk_7481;                /* step of the func_02032e18 sequence */
     u8 pad_7482[2];
-    u32 unk_7484;
+    s32 unk_7484;               /* frame counter of the func_02032e18 sequence */
     u32 unk_7488;
-    u8 pad_748c[0x7494 - 0x748c];
+    u8 pad_748c[0x7490 - 0x748c];
+    u32 unk_7490;
     u32 unk_7494;
     u32 unk_7498;               /* nonzero arms root +0x54 in func_02032d4c */
-    u8 pad_749c[0x757c - 0x749c];
+    u8 pad_749c[0x7550 - 0x749c];
+    u8 unk_7550[0x757c - 0x7550]; /* size guessed: block handed to func_02099494 */
     u32 unk_757c;
     u8 pad_7580[0x18];
     u32 unk_7598;
 } Unk02f2a8State;
 
 Unk02f2a8WorkArea *Unk02e000_GetWorkArea(void);
+void *Unk02e000_Unk_02e8b8(void);
+void ScanVisor_Unk_0a2a8c(int i);
+void Unk11f2d0_Unk_11f320(void *obj);
 
 /* Clear bit 0 of the 64-entry byte table at the Unk02e000_Unk_02e774 block
  * +0x5e12. Ids outside 0..63 are ignored, not clamped, so a bad selector
@@ -911,7 +922,11 @@ void Unk02f2a8_Unk_0306a8(Unk02f2a8State *state)
 }
 
 int func_02035edc();
-int func_02036368();
+typedef struct Unk02f2a8Lerp {
+    u8 pad_0000[0x1c];
+    s32 unk_001c;               /* interpolated value written by func_02036368 */
+} Unk02f2a8Lerp;
+int func_02036368(Unk02f2a8Lerp *obj, int to, u32 n, int t);
 /* Move the counter at +0x6c toward the unsigned limit at +0x68 when
  * +0x60 is one; otherwise decrement a positive signed counter. Requires a
  * context through +0x7c; the two callees consume its updated counter/block. */
@@ -924,13 +939,13 @@ void Unk02f2a8_Unk_02f378(u8 *p)
     } else if (FIELD(s32, p, 0x6c) > 0) {
         FIELD(s32, p, 0x6c)--;
     }
-    func_02036368(p + 0x7c, FIELD(u32, p, 0x64),
+    func_02036368((Unk02f2a8Lerp *)(p + 0x7c), FIELD(u32, p, 0x64),
                  FIELD(u32, p, 0x68), FIELD(u32, p, 0x6c));
     func_02035edc(p + 0x7c, p + 0x70);
 }
 
 void Unk02f2a8_SetRootUnk60();
-int func_0205257c();
+int func_0205257c(int v);
 /* If 04b4c4 accepts the context, set its +0x20/+0x28/+0x2c flag for
  * selectors 0..2/5/4 respectively. Return one only for a handled selector. */
 int func_0209be20(int x, int y);
@@ -1028,8 +1043,7 @@ void Unk02f2a8_Unk_03034c(Unk02f2a8Action *action)
 #endif
 int func_02038ff8();
 void func_02039520();
-int Unk02e000_Unk_02e8b8();
-void func_020a7474();
+void func_020a7474(void *a, void *b, void *c, void *d, u32 id, int f, int g);
 
 /* Pass a zero-terminated copy of exactly 16 source bytes to 038ff8.
  * src must provide 16 readable bytes; the third ABI argument is unused. */
@@ -1133,7 +1147,7 @@ void Unk02cad4_Unk_02cbdc(u32 a);
 void Unk02f2a8_Unk_0313a4(u8 *p)
 {
     int bits = Unk02f2a8_GetObj39160Bits16(p + 576, FIELD(s8, p + 0x7400, 78), FIELD(s8, p + 0x7400, 79));
-    int m = Unk02e000_Unk_02e8b8();
+    void *m = Unk02e000_Unk_02e8b8();
     u16 v = FIELD(u16, (u8 *)Unk02e000_GetWorkArea() + 0x300, 92);
     func_020a7474(p + 264 + 0x5400, m, p + 576, p + 24, v, bits, 1);
 }
@@ -1447,10 +1461,11 @@ void func_02030204(Unk02f2a8Action *action)
 /* Callback descriptor observed at 09c498: +4 is the transition predicate,
  * +0x14 selects the cell filter. The descriptor remains borrowed. */
 typedef struct Unk02f2a8Descriptor {
-    u32 unk_0000;
+    int (*unk_0000)(Unk02f2a8State *state);
     int (*unk_0004)(Unk02f2a8State *state);
     int (*unk_0008)(Unk02f2a8State *state);
-    u8 pad_000c[8];
+    void (*unk_000c)(Unk02f2a8State *state);
+    u8 pad_0010[4];
     u32 unk_0014;
 } Unk02f2a8Descriptor;
 Unk02f2a8Descriptor *Unk09a268_Unk_09c498(int id);
@@ -1545,7 +1560,7 @@ void func_02036c48(void *work, void *map, void *position, u16 id,
                    int x, int y, u32 flag);
 struct Unk02f2a8SortList;
 void func_02036fb8(struct Unk02f2a8SortList *list);
-void func_020370e8(void *work, void *map, void *cells);
+void func_020370e8(struct Unk02f2a8SortList *list, void *map, u8 *cells);
 /* Initialize 0x794 writable work bytes, populate from a borrowed position,
  * then attach cells when a map exists. Null position/cells skip setup.
  * The repeated position test and unused final argument preserve the ABI. */
@@ -1748,10 +1763,13 @@ int func_0203546c(void *dst, u32 count, int idx)
 
 /* 16-byte record sorted by func_02036fb8 on its +4 key. */
 typedef struct Unk02f2a8SortEntry {
-    u32 unk_0000;
+    u32 unk_0000;               /* set to 1 by func_020370e8 */
     s32 unk_0004;               /* sort key */
-    u32 unk_0008;
-    u32 unk_000c;
+    s16 unk_0008;
+    s16 unk_000a;
+    s8 unk_000c;                /* grid x */
+    s8 unk_000d;                /* grid y */
+    u8 pad_000e[2];
 } Unk02f2a8SortEntry;
 
 /* Counted record list at the start of the 0x794-byte work block. */
@@ -1950,6 +1968,298 @@ void Unk0387bc_Unk_038f7c(void *obj);
 void Unk095560_Unk_095af8(u32 id);
 void Unk095560_Thunk_0202d15c(void);
 void func_02052634(int a, int b, int c);
+void Unk0a6174_ClearBuffers(void *a, void *b);
+void func_020a6ac0(void *a, void *b, void *c, void *d, u32 id, int f, int g);
+void func_020a6c98(void *a, void *b, void *c, void *d, u32 id, int f, int g);
+void func_020a6e94(void *a, void *b);
+void func_020a7108(void *a, void *b);
+/* Rebuild the +0x5508 buffer against the 02e8b8 buffer: clear it, add the
+ * +0x3134 and +0x3140 sub-objects over body map block +0x23c for work-area id
+ * +0x35c, run 0a6e94/0a7108, then add each of the seven slots that
+ * Unk02f2a8_Unk_035c14 enables for that id. */
+void func_02031274(Unk02f2a8State *s)
+{
+    int i;
+    Unk0a6174_ClearBuffers(s->unk_5508, Unk02e000_Unk_02e8b8());
+    func_020a6ac0(s->unk_5508, Unk02e000_Unk_02e8b8(), s->unk_3134, &s->body.unk_023c,
+                  Unk02e000_GetWorkArea()->unk_035c, 0, 0);
+    func_020a6c98(s->unk_5508, Unk02e000_Unk_02e8b8(), s->unk_3140, &s->body.unk_023c,
+                  Unk02e000_GetWorkArea()->unk_035c, 0, 0);
+    func_020a6e94(s->unk_5508, Unk02e000_Unk_02e8b8());
+    func_020a7108(s->unk_5508, Unk02e000_Unk_02e8b8());
+    for (i = 0; i < 7; i++) {
+        int slot = i + 1;
+        if (Unk02f2a8_Unk_035c14(Unk02e000_GetWorkArea()->unk_035c, slot) != 0) {
+            func_020a7474(s->unk_5508, Unk02e000_Unk_02e8b8(), &s->body.unk_023c, s->body.unk_0014,
+                          Unk02e000_GetWorkArea()->unk_035c, slot, 1);
+        }
+    }
+}
+
+int Unk04bb9c_GetCtxUnka20(void);
+void func_020a7ae4(void *dst, void *src, int on);
+void func_020a7bd0(void *dst, void *src, int on);
+struct Unk02f2a8Descriptor *Unk09ee4c_Unk_0a03b8(u32 id);
+void ScanVisor_Unk_0a2a60(int i, int mode);
+/* Refresh the seven visor entries: when the +0x73e0/+0x7498 flags are clear,
+ * mode +0x73c8 is not 4 with event +0x7478 of 12/14/37 and body +0 is 1, link
+ * the +0x3134/+0x3140 sub-objects to the 02e8b8 buffer (on for the current
+ * 04bb9c context id, else off and onto +0x7130 instead). Entry i is then shown
+ * (0a2a60 with `mode`) when its 0a03b8 predicate returns 1, else hidden. */
+void func_02031628(Unk02f2a8State *s, int mode)
+{
+    int i;
+    int ctx;
+    if (s->unk_73e0 != 0 || s->unk_7498 != 0) return;
+    if (s->unk_73c8 == 4) {
+        if (s->unk_7478 == 12 || s->unk_7478 == 14 || s->unk_7478 == 37) return;
+    }
+    if (s->body.unk_0000 != 1) return;
+    ctx = Unk04bb9c_GetCtxUnka20();
+    if (ctx == Unk02e000_GetWorkArea()->unk_035c) {
+        func_020a7ae4(Unk02e000_Unk_02e8b8(), s->unk_3134, 1);
+        func_020a7bd0(Unk02e000_Unk_02e8b8(), s->unk_3140, 1);
+    } else {
+        func_020a7ae4(Unk02e000_Unk_02e8b8(), s->unk_3134, 0);
+        func_020a7bd0(Unk02e000_Unk_02e8b8(), s->unk_3140, 0);
+        func_020a7ae4(s->unk_7130, s->unk_3134, 1);
+        func_020a7bd0(s->unk_7130, s->unk_3140, 1);
+    }
+    for (i = 0; i < 7; i++) {
+        struct Unk02f2a8Descriptor *d = Unk09ee4c_Unk_0a03b8(i);
+        if (d->unk_0000 != 0) {
+            if (d->unk_0000(s) == 1) {
+                ScanVisor_Unk_0a2a60(i, mode);
+            } else {
+                ScanVisor_Unk_0a2a8c(i);
+            }
+        }
+    }
+}
+
+int func_020a4f3c(void);
+void Unk038fbc_Unk_039138(void *owner);
+void func_02038888(void *block, int id, int flag);
+void func_02030924(Unk02f2a8Body *body, int id);
+void func_0204cbac(int id);
+void func_0204b66c(int id);
+void func_0204ccb0(void);
+void func_0204b6f4(void);
+/* Step the +0x7481 sequence once per frame: 0 waits for 0a4f3c to go idle and
+ * frees map block +0x358; 1 waits 3 frames, then reloads for id +0x7480; 2
+ * waits 6 frames and calls 0a4e9c(0); 3 waits for 0a4f3c to go idle and
+ * requests mode 2 through +0x73cc. */
+void func_02032e18(Unk02f2a8State *s)
+{
+    switch (s->unk_7481) {
+    case 0:
+        if (func_020a4f3c() != 0) return;
+        Unk038fbc_Unk_039138(s->unk_0358);
+        s->unk_7484 = 0;
+        s->unk_7481 = s->unk_7481 + 1;
+        break;
+    case 1:
+        if (++s->unk_7484 <= 2) return;
+        func_02038888(s->body.unk_0014, s->unk_7480, 1);
+        func_02030924(&s->body, s->unk_7480);
+        func_0204cbac(s->unk_7480);
+        func_0204b66c(Unk04bb9c_GetCtxUnka20());
+        func_0204ccb0();
+        func_0204b6f4();
+        s->unk_7484 = 0;
+        s->unk_7481 = s->unk_7481 + 1;
+        break;
+    case 2:
+        if (++s->unk_7484 <= 5) return;
+        Unk0a4e48_Unk_0a4e9c(0);
+        s->unk_7481 = s->unk_7481 + 1;
+        break;
+    case 3:
+        if (func_020a4f3c() == 0) s->unk_73cc = 2;
+        break;
+    }
+}
+
+void func_020525cc(int v);
+void func_02032a40(Unk02f2a8GridState *s);
+void func_02032b70(Unk02f2a8GridState *s);
+void func_02032ca0(Unk02f2a8State *s);
+void Unk02f2a8_ResetField7478(GameState *gs);
+void Unk02f2a8_ResetField7478Ex(GameState *gs);
+void Unk02f2a8_Unk_032f3c(Unk02f2a8State *state);
+void Unk02f2a8_Unk_033890(GameState *gs);
+void Unk02f2a8_Unk_033ac8(GameState *gs);
+void Unk02f2a8_Unk_033c94(u32 *ctx);
+/* Latch the requested mode (+0x73cc -> +0x73c8, request cleared to -1) and
+ * run its entry action. Most modes reset their state and then the +0x7598
+ * object. The callers cast because those helpers view the same object
+ * through narrower local structs. */
+void func_02033cd0(Unk02f2a8State *s)
+{
+    s->unk_73c8 = s->unk_73cc;
+    s->unk_73cc = -1;
+    switch (s->unk_73c8) {
+    case 0:
+        break;
+    case 1:
+        func_020525cc(3);
+        Unk0a4e48_Unk_0a4e9c(0);
+        break;
+    case 2:
+        if (s->unk_73e0 != 0) break;
+        s->root->unk_0004 = 1;
+        break;
+    case 3:
+        func_02032a40((Unk02f2a8GridState *)s);
+        Unk11f2d0_Unk_11f320(&s->unk_7598);
+        break;
+    case 4:
+        func_02032b70((Unk02f2a8GridState *)s);
+        Unk11f2d0_Unk_11f320(&s->unk_7598);
+        break;
+    case 5:
+        func_02032ca0(s);
+        Unk11f2d0_Unk_11f320(&s->unk_7598);
+        break;
+    case 6:
+        Unk02f2a8_ResetField7478((GameState *)s);
+        break;
+    case 7:
+        Unk02f2a8_Unk_032f3c(s);
+        Unk11f2d0_Unk_11f320(&s->unk_7598);
+        break;
+    case 8:
+        Unk02f2a8_ResetField7478Ex((GameState *)s);
+        Unk11f2d0_Unk_11f320(&s->unk_7598);
+        break;
+    case 9:
+        Unk02f2a8_Unk_033890((GameState *)s);
+        Unk11f2d0_Unk_11f320(&s->unk_7598);
+        break;
+    case 10:
+        Unk02f2a8_Unk_033ac8((GameState *)s);
+        Unk11f2d0_Unk_11f320(&s->unk_7598);
+        break;
+    case 11:
+        func_0205257c(3);
+        break;
+    case 12:
+        Unk02f2a8_Unk_033c94((u32 *)s);
+        break;
+    }
+}
+
+void func_02032020(Unk02f2a8State *s);
+void func_0203229c(Unk02f2a8State *s);
+void func_02032adc(Unk02f2a8State *state);
+void func_02032c0c(Unk02f2a8State *state);
+void func_02032d4c(Unk02f2a8State *s);
+void func_02032e18(Unk02f2a8State *s);
+void func_02032fb8(Unk02f2a8State *s);
+void func_02033400(Unk02f2a8State *s);
+void func_020338b0(Unk02f2a8State *s);
+void func_02033ae8(Unk02f2a8State *s);
+int func_02052728(void);
+void Unk11f2d0_Unk_11f308(void *obj, int frames);
+/* Per-frame handler for the current mode +0x73c8 (one helper per mode).
+ * Mode 1 waits until 0a4f3c and 052728 are idle, starts the +0x7598 object
+ * with 180, requests mode 2 and arms root +0x44/+0x4c/+0x50/+0x54; mode 11
+ * requests mode 12 once 052728 is idle; mode 12 does nothing. */
+void func_02033e08(Unk02f2a8State *s)
+{
+    switch (s->unk_73c8) {
+    case 0:
+        func_02032020(s);
+        break;
+    case 1:
+        if (func_020a4f3c() != 0) return;
+        if (func_02052728() != 0) return;
+        Unk11f2d0_Unk_11f308(&s->unk_7598, 180);
+        s->unk_73cc = 2;
+        s->root->unk_0054 = 1;
+        s->root->unk_004c = 1;
+        s->root->unk_0044 = 1;
+        s->root->unk_0050 = 1;
+        break;
+    case 2:
+        func_0203229c(s);
+        break;
+    case 3:
+        func_02032adc(s);
+        break;
+    case 4:
+        func_02032c0c(s);
+        break;
+    case 5:
+        func_02032d4c(s);
+        break;
+    case 6:
+        func_02032e18(s);
+        break;
+    case 7:
+        func_02032fb8(s);
+        break;
+    case 8:
+        func_02033400(s);
+        break;
+    case 9:
+        func_020338b0(s);
+        break;
+    case 10:
+        func_02033ae8(s);
+        break;
+    case 11:
+        if (func_02052728() == 0) s->unk_73cc = 12;
+        break;
+    case 12:
+        break;
+    }
+}
+
+void func_02037d50(void *cells, void *work, Unk02f2a8Body *body, void *position, int flag);
+void func_02099494(void *obj);
+void func_0211f0a0(void *obj);
+void func_02057fd8(void);
+void func_0212168c(Unk02f2a8State *s);
+/* Second callback of the game-state task (registered by func_0203428c). Once
+ * body +0 is set: when +0x73d8 is 1, rebuild through 037d50 with the root
+ * +0x7c position (or +0x7410 when +0x7400 is set); update +0x7550 and +0x7598;
+ * run the mode-3/4 event (+0x7478) or mode-5 visor (+0x747c) callback; and
+ * call 12168c while root +0x10 is 3 and root +0x9c is 1. */
+void func_02034128(Unk02f2a8State *s)
+{
+    struct Unk02f2a8Descriptor *d;
+    if (s->body.unk_0000 == 0) return;
+    if (s->unk_73d8 == 1) {
+        void *position;
+        if (s->unk_7400 == 0) {
+            position = s->root->unk_007c;
+        } else {
+            position = s->unk_7410;
+        }
+        func_02037d50(s->unk_38e8, s->unk_3154, &s->body, position, s->unk_7490 == 0);
+    }
+    func_02099494(s->unk_7550);
+    func_0211f0a0(&s->unk_7598);
+    if (s->unk_73c8 == 3 || s->unk_73c8 == 4) {
+        d = Unk09a268_Unk_09c498(s->unk_7478);
+        if (d->unk_0008 != 0) {
+            func_02057fd8();
+            d->unk_0008(s);
+        }
+    } else if (s->unk_73c8 == 5) {
+        d = Unk09ee4c_Unk_0a03b8(s->unk_747c);
+        if (d->unk_000c != 0) {
+            func_02057fd8();
+            d->unk_000c(s);
+        }
+    }
+    if (s->root->unk_0010 == 3 && s->root->unk_009c == 1) {
+        func_02057fd8();
+        func_0212168c(s);
+    }
+}
+
 /* Create the global game state once: allocate the 0x75c0-byte task with
  * GameState_Shutdown as its teardown, publish it in gGameState, set up the
  * three sub-objects at +0x3134/+0x3140/+0x314c and the default words, create
@@ -2079,7 +2389,6 @@ void func_02035234(u32 id)
 
 void *func_020445d0();
 int Unk038fbc_Unk_039160();
-void Unk038fbc_Unk_039138();
 /* Load a temporary map block keyed by the 16-byte name of resource-36 row
  * `row`, read bits 20..23 of the cell at (x, y) and return the row's s16
  * entry for that value (entry 0 when the load or the lookup fails). */
@@ -2200,4 +2509,65 @@ int func_020361ec(int dir, int amount)
         break;
     }
     return dir;
+}
+
+int func_0200219c(int num, int den);
+/* Store `to * t / n` (20.12 fixed point, t and n converted through rounded
+ * float) in obj +0x1c and return 0; return 1 after storing 0 for t <= 0 or
+ * `to` for t >= n. A null obj returns 1. Same conversion as func_02035cb4. */
+int func_02036368(Unk02f2a8Lerp *obj, int to, u32 n, int t)
+{
+    int v;
+    if (obj == 0) return 1;
+    if (t <= 0) {
+        obj->unk_001c = 0;
+        return 1;
+    }
+    if (t < n) {
+        v = (int)(((s64)to * (int)((float)t > 0 ? 4096.0f * (float)t + 0.5f : 4096.0f * (float)t - 0.5f) + 0x800) >> 12);
+        obj->unk_001c = func_0200219c(v, (int)((float)n > 0 ? 4096.0f * (float)n + 0.5f : 4096.0f * (float)n - 0.5f));
+        return 0;
+    }
+    obj->unk_001c = to;
+    return 1;
+}
+
+int func_02037054(void *map, u8 *cells, int x, int y);
+/* Mark covered records of the sorted list (+0 = 1). The scan starts at the
+ * first record from index 2 whose cell func_02037054 rejects. Each later
+ * record's [+8, +0xa] range (clamped to +-0x1555) is narrowed by the earlier
+ * unmarked records whose cells are not type 1; when it closes, the record is
+ * marked. */
+void func_020370e8(Unk02f2a8SortList *list, void *map, u8 *cells)
+{
+    int start = 0;
+    int i;
+    int j;
+    int k;
+    int lo;
+    int hi;
+    for (i = 2; i < list->count; i++) {
+        if (func_02037054(map, cells, list->entries[i].unk_000c, list->entries[i].unk_000d) == 0) {
+            start = i;
+            break;
+        }
+    }
+    for (j = start + 1; j < list->count; j++) {
+        lo = list->entries[j].unk_0008;
+        hi = list->entries[j].unk_000a;
+        if (lo > 0x1555) lo = 0x1555;
+        if (hi < -0x1555) hi = -0x1555;
+        for (k = start; k < j; k++) {
+            if (func_02037054(map, cells, list->entries[k].unk_000c, list->entries[k].unk_000d) != 1 &&
+                list->entries[k].unk_0000 != 1) {
+                int b = list->entries[k].unk_000a;
+                if (b < lo && lo <= list->entries[k].unk_0008) lo = b;
+                if (b <= hi && hi < list->entries[k].unk_0008) hi = list->entries[k].unk_0008;
+                if (lo <= hi) {
+                    list->entries[j].unk_0000 = 1;
+                    break;
+                }
+            }
+        }
+    }
 }

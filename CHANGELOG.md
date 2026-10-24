@@ -2,6 +2,13 @@
 
 ## Unreleased
 - Matched M1-T329 `func_02071efc` (find-or-add named record) and `func_02072068` (dynamic-record mode step) in `game/unit_02071dc0`; the unit is now fully in C, with `Unk071dc0Store` typing the 0x1608-byte record store.
+- M1-T338: verified eight table accessors in `game/unit_0206dddc` at 100% objdiff, with typed borrowed pointers and documented record offsets.
+- Matched all three M1-T337 object selection functions in `game/unit_020b0e08` at 100% objdiff, with typed object views and documented weighting rules.
+- Matched all eight M1-T336 functions in `game/unit_0210b4d0`, including cell state updates and paired map-code copying, with typed field views.
+- Matched all eight M1-T1117 unit_0202f2a8 functions (game-state task mode latch/dispatch, visor refresh, map reload sequence, sorted-list range marking, fixed-point lerp) at 100% objdiff.
+- Matched both game/unit_0206f6e4 VER resource loading and legacy record conversion functions at 100%, with typed layouts and format contracts.
+- Matched all five M1-T330 slot-bank and record initialization functions in `game/unit_0206d950`, with typed layouts and per-function contracts.
+- Matched the remaining five M1-T317 functions in `game/unit_0211ec7c` (descriptor fill, work init, label formatting, scale update, state-1 tick) at 100% objdiff; the TU is now fully C, with the work struct extended to its 0x31c size.
 - Matched all eight M1-T328 record setup, lookup, clearing, and mode helpers in `game/unit_02071dc0` at 100% objdiff.
 - Matched all eight M1-T324 game/unit_020fd5a4 resource, coordinate, and mode-dispatch functions with typed contracts and assembly evidence.
 - Matched all seven M1-T322 functions in `game/unit_02039774` at 100% objdiff; added typed FLW0 section parsing, work allocation, list operations and cleanup contracts.
