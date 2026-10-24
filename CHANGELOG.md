@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Verified seven M1-T268 resource/grid helpers at 100% objdiff, added behavior contracts, and documented the resource loader store-scheduling mismatch on the hard list.
+- Verified all eight M1-T273 singleton accessors and setters at 100% objdiff, with typed work fields and per-function behavior evidence.
+- Matched both M1-T267 current-item handlers in `src/game/unit_020466a4.c`, with typed record views and documented status/update behavior.
 - Matched M1-T266 `func_0203812c` at 100% objdiff with typed record, input, and resource dictionary views.
 - Verified the two M1-T265 callback wrappers at 100% objdiff with typed declarations; documented the remaining command handler on the hard list.
 - Matched all three M1-T264 functions in `src/game/unit_02047c8c.c` at 100% objdiff, with typed partial layouts and per-function evidence.
