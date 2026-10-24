@@ -6,7 +6,8 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int Unk094fe0_Thunk_0202e8cc();
+/* Supplies the shared bit-storage context; no caller arguments are consumed. */
+int Unk094fe0_Thunk_0202e8cc(void);
 void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2);
 void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1);
 void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1);
@@ -57,13 +58,15 @@ int Unk0e5fb8_GetOffset800(int row, u32 col)
     return col + (base + 0x800);
 }
 
-/* decompiler-derived */
+/* Adds bit-index base 0x8e0 without bounds checking (ARM at 0x020e6158). */
 int Unk0e5fb8_Unk_0e6158(int arg0)
 {
   return arg0 + 0x8e0;
 }
 
-/* Table offset of entry `i` (256 entries of 2 bytes at 0x900); out of range maps to 0. */
+/* Returns a bit index: base 0x900, stride 2, 256 entries.
+ * Unsigned out-of-range indices select entry zero. Evidence: Get2Bits passes
+ * this offset to Unk094fe0_TestBit; the ARM helper compares, shifts, then adds. */
 int Unk0e5fb8_GetOffset900(u32 i)
 {
     if (i >= 256) {
@@ -72,7 +75,9 @@ int Unk0e5fb8_GetOffset900(u32 i)
     return 0x900 + (i << 1);
 }
 
-/* Table offset of entry `i` (256 entries of 2 bytes at 0xb00); out of range maps to 0. */
+/* Returns a bit index: base 0xb00, stride 2, 256 entries.
+ * Unsigned out-of-range indices select entry zero. Evidence: Get2BitsB00 passes
+ * this offset to Unk094fe0_TestBit; the ARM helper compares, shifts, then adds. */
 int Unk0e5fb8_GetOffsetB00(u32 i)
 {
     if (i >= 256) {
@@ -81,7 +86,9 @@ int Unk0e5fb8_GetOffsetB00(u32 i)
     return 0xb00 + (i << 1);
 }
 
-/* Table offset of entry `i` (64 entries of 2 bytes at 0xd00); out of range maps to 0. */
+/* Returns a bit index: base 0xd00, stride 2, 64 entries.
+ * Unsigned out-of-range indices select entry zero. Evidence: Get2BitsD00 passes
+ * this offset to Unk094fe0_TestBit; the ARM helper compares, shifts, then adds. */
 int Unk0e5fb8_GetOffsetD00(u32 i)
 {
     if (i >= 64) {
@@ -90,7 +97,9 @@ int Unk0e5fb8_GetOffsetD00(u32 i)
     return 0xd00 + (i << 1);
 }
 
-/* Table offset of entry `i` (128 entries of 4 bytes at 0xd80); out of range maps to 0. */
+/* Returns a bit index: base 0xd80, stride 4, 128 entries.
+ * Unsigned out-of-range indices select entry zero. Evidence: Get2BitsD80 passes
+ * this offset to Unk094fe0_TestBit; the ARM helper compares, shifts, then adds. */
 int Unk0e5fb8_GetOffsetD80(u32 i)
 {
     if (i >= 128) {
@@ -99,19 +108,21 @@ int Unk0e5fb8_GetOffsetD80(u32 i)
     return 0xd80 + (i << 2);
 }
 
-/* decompiler-derived */
+/* Adds 0x2ff without bounds checking; ARM at 0x020e61b0 adds 0xff then 0x200. */
 int Unk0e5fb8_Unk_0e61b0(int arg0)
 {
   return arg0 + 0x2ff;
 }
 
-/* decompiler-derived */
+/* Adds 0x37f without bounds checking; ARM at 0x020e61bc adds 0x7f then 0x300. */
 int Unk0e5fb8_Unk_0e61bc(int arg0)
 {
   return arg0 + 0x37f;
 }
 
-/* decompiler-derived */
+/* Forwards the shared context and unchecked relative bit index to 0x020e626c.
+ * Evidence: ARM at 0x020e6254 preserves r0 across the context thunk call,
+ * then supplies it in r1. The callee uses the 0x8e0 bit-index base. */
 void Unk0e5fb8_Unk_0e6254(u32 arg0)
 {
   u32 value;

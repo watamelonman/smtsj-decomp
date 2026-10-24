@@ -2,6 +2,10 @@
 
 ## Unreleased
 - M1-T371: matched eight more `game/unit_020f470c` callbacks and documented their descriptor, flag, and input handling contracts.
+- M1-T373: verified eight game/unit_020e5fb8 helpers at 100% objdiff and documented their bit-index contracts and assembly evidence.
+
+- Match the four remaining game/unit_020efff4 state, initialization, float-slot update, and entry submission functions.
+- M1-T1118: matched five grid/action, selector, reload, teardown and counter functions in `game/unit_0202f2a8`; documented three hard functions, including two verified matches with mwccarm 2.0/sp2p4.
 - Matched all eight M1-T370 functions in `game/unit_020f470c`, including the missing accessor callback; documented typed work views and instruction evidence.
 - M1-T363: added matching C for `func_020b12c8`, the ten-slot filtered and sorted ID selection routine; documented `func_020b1488` on the hard list.
 - M1-T362: matched `func_020b23bc` with typed work/cell views; documented `func_020b2410` on the hard list after a 98.71% candidate.
