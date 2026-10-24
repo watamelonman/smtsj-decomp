@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched the three remaining M1-T427 resource lookup and transfer-queue functions in `game/unit_0205ae50`, with typed parameters and instruction evidence.
 - Matched the eight M1-T426 VCOUNT, queue-drain and descriptor-submission functions in `game/unit_0205ae50`, with typed private queue/request layouts and instruction evidence.
 - Matched all eight M1-T435 selection, initialization, and record update functions in `game/unit_020bcef4` at 100% objdiff.
 - Matched all eight M1-T443 game/unit_020ef248 callbacks and work helpers at 100% objdiff, with typed arguments and per-function evidence.
