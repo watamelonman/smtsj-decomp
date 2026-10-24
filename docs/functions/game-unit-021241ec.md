@@ -29,7 +29,22 @@ and behavior contracts without changing their instructions.
 - `Unk1241ec_Unk_124258`: releases nonnull work and clears the global pointer; already matched.
 - `Unk1241ec_Unk_1242fc`: conditionally resets words 0x28/0x2c/0x3c/0x38 to 1/0/1/0; already matched.
 
+## M1-T228
+
+All four card functions are at 100% objdiff in `build/report.json`.
+
+| Function | Size | Observed behavior and contract |
+| --- | --- | --- |
+| `Unk1241ec_Unk_124224` | 40 B | Takes `int x`; passes `(u8)func_020cb3dc()` and `(u16)(x + 200)` to `Unk0cb32c_Unk_0cb4e4`, then gives that result to `Unk0fedd4_Unk_0fee38`. |
+| `Unk1241ec_Unk_124258` | 44 B | If `data_02176e84` is nonnull, calls `func_02061424` and clears the pointer. Takes no arguments. |
+| `Unk1241ec_Unk_1242fc` | 60 B | If the work block exists, sets words 0x28/0x2c/0x3c/0x38 to 1/0/1/0 (same order as the ROM stores). |
+| `func_02124338` | 356 B | Clears `data_02176e84`, then calls `func_020611dc` with four callbacks from the 0212449c TU (`func_02124538`, `Unk12449c_Unk_124590`, `func_021245bc`, `Unk12449c_Unk_12449c`), size 64 and 0/0/1. On failure it returns and leaves the pointer at 0. Otherwise it sets 0x24 (0 if `Unk044394_HasEntry(30)`, else `Unk044394_Unk_044428(30)`), loads the four ids in `data_0213cdc0`, opens the resources at `data_021520a4`/`data_021520bc` into 0x00/0x04, and builds four handles at 0x08..0x14 from them. It creates 0x18 with `func_020629ac(5,1,1,1)`, sets the default words, and publishes the block. |
+
+The work struct (`Unk1241ecWork`) now lists all sixteen words. Its 0x40 size comes from
+the allocation size passed to `func_020611dc`. The name stays neutral because nothing in
+this TU shows what the block is for. To match, the ROM order of the default stores
+(0x38 before 0x34) has to be kept in the source.
+
 ## Hard list
 
-None for M1-T227. `func_02124338` remains supplied by the delinked object and
-is outside this card.
+None.
