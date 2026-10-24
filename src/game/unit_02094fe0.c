@@ -15,12 +15,20 @@ typedef struct Unk094fe0Timer {
 } Unk094fe0Timer;
 
 typedef struct Unk094fe0Work {
-    u8 pad_0000[0x980];
+    u8 pad_0000[0x200];
+    u8 unk_0200[0x780];         /* +0x200: bit array, 15360 bits from the bounds checks */
     Unk094fe0Timer timers[4];   /* +0x980: count from the < 4 bounds */
     u8 pad_0990[0x10];
     u32 unk_09a0;
     Unk094fe0Timer unk_09a4;
 } Unk094fe0Work;
+
+/* 28-byte record from Unk094fe0_Unk_094fec (stride 0x1c); slots[5] from the < 5 bounds. */
+typedef struct Unk094fe0Record {
+    u32 unk_0000;
+    u32 slots[5];
+    u32 unk_0018;
+} Unk094fe0Record;
 
 extern u8 data_02175dac[];
 Unk094fe0Work *Unk02e000_GetUnk094fe0Work(void);
@@ -48,9 +56,10 @@ int Unk094fe0_Call_020950b4(u32 a)
     return Unk094fe0_TestBit(Unk094fe0_Thunk_0202e8cc(), a);
 }
 
-void Unk094fe0_Call_02095320(u32 a)
+/* Test bit a-1 of the shared work's +0x990 bit array; tail of 0x02095308 calls TestBit990. */
+int Unk094fe0_Call_02095320(u32 a)
 {
-    Unk094fe0_TestBit990(Unk094fe0_Thunk_0202e8cc(), a);
+    return Unk094fe0_TestBit990(Unk094fe0_Thunk_0202e8cc(), a);
 }
 
 /* Read a valid borrowed work object; ldr at 0x020953bc proves the +0x9a0 field. */
@@ -67,13 +76,14 @@ u8 *Unk094fe0_Unk_094fec(int index)
     return data_02175dac + index * 0x1c;
 }
 
-void Unk094fe0_Unk_09502c();
+void Unk094fe0_Unk_09502c(Unk094fe0Work *w, int a, int b);
+/* Forward (a, b) with the shared work pointer to Unk094fe0_Unk_09502c (calls at 0x02095018/0x02095024). */
 void Unk094fe0_Call_0209502c(int a, int b)
 {
     Unk094fe0_Unk_09502c(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
-void func_020950e4();
+int func_020950e4(u8 *bits, u32 bit, int set);
 void func_020e6708();
 void *Unk02e000_GetWorkArea();
 
@@ -109,7 +119,6 @@ int Unk094fe0_TestBit(Unk094fe0Work *w, u32 bit)
     return (bits[idx] & (1 << sh)) != 0;
 }
 
-void func_020950e4();
 void Unk094fe0_Unk_095370(Unk094fe0Work *w, u32 a, int b);
 int Unk094fe0_TestFlag18(u8 *p, int bit)
 {
@@ -122,7 +131,8 @@ int Unk094fe0_TestFlag18(u8 *p, int bit)
     return (FIELD(u32, p, 0x18) & (1 << bit)) != 0;
 }
 
-void Unk094fe0_SetSlot(u8 *p, int i, u32 v)
+/* Store v in slot i (0..4) of a record; ignores a null record or out-of-range slot. */
+void Unk094fe0_SetSlot(Unk094fe0Record *p, int i, u32 v)
 {
     if (p == 0) {
         return;
@@ -130,7 +140,7 @@ void Unk094fe0_SetSlot(u8 *p, int i, u32 v)
     if (i < 0 || i >= 5) {
         return;
     }
-    ((u32 *)(p + 4))[i] = v;
+    p->slots[i] = v;
 }
 
 u32 Unk094fe0_GetSlot(u8 *p, int i)
@@ -144,20 +154,22 @@ u32 Unk094fe0_GetSlot(u8 *p, int i)
     return ((u32 *)(p + 4))[i];
 }
 
+/* Set (b == 1) or clear bit a of the shared work's +0x200 bit array; ignores a >= 15360. */
 void Unk094fe0_Unk_095204(u32 a, int b)
 {
     if (a >= 15360) {
         return;
     }
-    func_020950e4((u8 *)Unk094fe0_Thunk_0202e8cc() + 512, a, b);
+    func_020950e4(Unk094fe0_Thunk_0202e8cc()->unk_0200, a, b);
 }
 
+/* Return 1 if bit a of w's +0x200 bit array is set, 0 if clear or a >= 15360. */
 int Unk094fe0_TestBit200(Unk094fe0Work *w, u32 a)
 {
     if (a >= 15360) {
         return 0;
     }
-    return (FIELD(u8, (u8 *)w + (a >> 3), 512) & (1 << (a & 7))) != 0;
+    return (w->unk_0200[a >> 3] & (1 << (a & 7))) != 0;
 }
 
 void Unk0e651c_SetBitChecked();
@@ -207,11 +219,13 @@ int Unk094fe0_TestBit990(Unk094fe0Work *w, u32 a)
     return (bits[i >> 3] & (1 << (i & 7))) != 0;
 }
 
+/* Forward (a, b) with the shared work pointer to Unk094fe0_Unk_095370. */
 void Unk094fe0_Call_02095370(u32 a, int b)
 {
     Unk094fe0_Unk_095370(Unk094fe0_Thunk_0202e8cc(), a, b);
 }
 
+/* Set (b == 1) or clear bit a-1 of w's +0x990 bit array; ignores a outside 1..128. */
 void Unk094fe0_Unk_095370(Unk094fe0Work *w, u32 a, int b)
 {
     u32 i = a - 1;
@@ -225,6 +239,16 @@ void Unk094fe0_Unk_095370(Unk094fe0Work *w, u32 a, int b)
 void Unk094fe0_SetUnkField9a0(u32 value)
 {
     Unk094fe0_Thunk_0202e8cc()->unk_09a0 = value;
+}
+
+/* Store (cnt, flag, id) into the shared work's +0x9a4 record that Unk094fe0_Unk_0953f0 consumes
+ * (strb +0x9a6, strb +0x9a7, strh +0x9a4 in that order). */
+void func_020953c4(u32 cnt, u32 flag, u32 id)
+{
+    Unk094fe0Timer *t = &Unk094fe0_Thunk_0202e8cc()->unk_09a4;
+    t->cnt = cnt;
+    t->flag = flag;
+    t->id = id;
 }
 
 /* Read shared work through the getter, as the two calls at 0x020953b0 show. */
