@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all four M1-T260 state-transition and linked-cell functions in `src/game/unit_0209e418.c`, with typed temporary contexts and grid records.
+- Verified the eight M1-T255 functions in `game/unit_0202dcfc` at 100% objdiff. They now take typed pointers instead of raw offsets and have per-function evidence comments.
 - Matched both M1-T257 functions in `game/unit_020f868c` with typed work views and documented state-sequence behavior.
 - Gave the five M1-T251 handlers in `game/unit_0203ce68` a typed work struct, real callee prototypes and comments, still 100% objdiff; added `include/game/unit_0203ce68.h`.
 - Verified all eight M1-T253 worker helpers at 100% objdiff; typed direct worker parameters and documented instruction evidence and absent-manager defaults.
