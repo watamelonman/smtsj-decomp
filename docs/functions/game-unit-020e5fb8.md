@@ -44,26 +44,27 @@ None for M1-T373 or M1-T374.
 - `Unk0e5fb8_Unk_0e649c` (100%): low-pair setter for the 0xd80 table. M1-T375 replaced its
   stale `GetOffsetD80()` declaration with the typed one and passes the index explicitly.
 
-## Not done in M1-T376
-- `Unk0e5fb8_SetBits`
-- `Unk0e5fb8_Get2Bits`
-- `Unk0e5fb8_Get2BitsB00`
-- `Unk0e5fb8_Get2BitsD00`
-- `Unk0e5fb8_Get2BitsD80`
-- `Unk0e5fb8_Get2BitsD80Hi`
-- `Unk0e5fb8_GetBits`
-- `Unk0e5fb8_GetOffset900`: hand-matched
-- `Unk0e5fb8_GetOffsetB00`: hand-matched
-- `Unk0e5fb8_GetOffsetD00`: hand-matched
-- `Unk0e5fb8_GetOffsetD80`: hand-matched
-- `Unk0e5fb8_GetOffset800`: hand-matched
-- `Unk0e5fb8_GetBits`: hand-matched
-- `Unk0e5fb8_SetBits`: hand-matched
-- `Unk0e5fb8_Get2Bits`: hand-matched
-- `Unk0e5fb8_Get2BitsB00`: hand-matched
-- `Unk0e5fb8_Get2BitsD00`: hand-matched
-- `Unk0e5fb8_Get2BitsD80`: hand-matched
-- `Unk0e5fb8_Get2BitsD80Hi`: hand-matched
+## M1-T376 verification
+
+All eight card functions match at 100% objdiff (build/report.json). The existing hand-matched
+bodies were kept. M1-T376 added a comment to each one and moved the `Unk094fe0_TestBit`
+prototype above `GetBits`, its first user, so no call goes through an implicit declaration.
+The descriptive names (`GetBits`, `SetBits`, `Get2Bits*`) describe what the code does and are
+backed by the instructions cited below. Offsets count bits. The context borrows storage.
+
+| Function | Size | Contract and evidence |
+| --- | --- | --- |
+| `Unk0e5fb8_GetBits` | 76 B | At 0x020e60b4, loops i < n, calling `TestBit(context, b + i)` and ORing `1 << i` for each set bit. Returns the bits packed LSB first; n <= 0 returns 0. |
+| `Unk0e5fb8_SetBits` | 60 B | At 0x020e6100, writes `(bits >> i) & 1` to bit `a + i` through 0x0209502c for i < n. The inverse of `GetBits`. |
+| `Unk0e5fb8_Get2Bits` | 60 B | At 0x020e62e0, calls `GetOffset900(b)` (b >= 256 selects 0) and returns `TestBit(o) \| TestBit(o+1) << 1` truncated to u8. Counterpart of setter 0x020e631c. |
+| `Unk0e5fb8_Get2BitsB00` | 60 B | At 0x020e6360, the same read through `GetOffsetB00` (b >= 256 selects 0). Counterpart of 0x020e639c. |
+| `Unk0e5fb8_Get2BitsD00` | 60 B | At 0x020e63e0, the same read through `GetOffsetD00` (b >= 64 selects 0). Counterpart of 0x020e641c. |
+| `Unk0e5fb8_Get2BitsD80` | 60 B | At 0x020e6460, reads bits 0..1 of four-bit entry b through `GetOffsetD80` (b >= 128 selects 0). Counterpart of 0x020e649c. |
+| `Unk0e5fb8_Get2BitsD80Hi` | 60 B | At 0x020e64e0, reads bits 2..3 of the same entry (TestBit at o+2 and o+3). |
+| `Unk0e5fb8_Unk_0e649c` | 44 B | At 0x020e649c, writes value bits 0 and 1 to the low pair of the 0xd80 entry through `GetOffsetD80`. Higher value bits are ignored. |
+
+Hard list for M1-T376: none. No new tests, because the card does not require them and objdiff
+already checks the original instructions.
 
 ## M1-T374 verification
 

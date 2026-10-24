@@ -33,6 +33,12 @@ void Unk0e5fb8_Unk_0e6448(u32 arg0);
 void Unk0e5fb8_Unk_0e64c8(u32 arg0);
 void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1);
 
+/* Reads a bit from the caller-owned context without taking ownership. */
+int Unk094fe0_TestBit(u32 context, u32 bit);
+
+/* Packs n consecutive context bits starting at bit index b, LSB first.
+ * ARM at 0x020e60b4 loops TestBit(a, b + i) and ORs 1 << i per set bit.
+ * n <= 0 returns 0; n > 32 is not meaningful for the u32 result. */
 u32 Unk0e5fb8_GetBits(u32 a, int b, int n)
 {
     u32 bits = 0;
@@ -45,6 +51,8 @@ u32 Unk0e5fb8_GetBits(u32 a, int b, int n)
     return bits;
 }
 
+/* Writes the low n bits of `bits` to the shared context at bit indices a..a+n-1,
+ * LSB first. Inverse of GetBits; ARM at 0x020e6100 calls 0x0209502c per bit. */
 void Unk0e5fb8_SetBits(int a, int n, u32 bits)
 {
     int i;
@@ -263,8 +271,6 @@ void Unk0e5fb8_Unk_0e649c(u32 arg0,u32 arg1)
   Unk094fe0_Call_0209502c(value + 1,(int)(arg1 & 2) >> 1);
 }
 
-/* Reads a bit from the caller-owned context without taking ownership. */
-int Unk094fe0_TestBit(u32 context, u32 bit);
 /* Reads the bit at unchecked index + 0x8e0 from the supplied context.
  * Evidence: ARM at 0x020e626c calls 0x020e6158 then TestBit. Retains the
  * existing void interface; the instructions do not establish a return contract. */
@@ -303,6 +309,8 @@ void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1)
   Unk094fe0_Unk_09502c(arg0,tmp1,1);
 }
 
+/* Returns the 2-bit value (0..3) stored at entry b of the 0x900 table, low bit first.
+ * ARM at 0x020e62e0: GetOffset900 (b >= 256 selects 0), two TestBit calls, u8 result. */
 int Unk0e5fb8_Get2Bits(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffset900(b);
@@ -310,6 +318,8 @@ int Unk0e5fb8_Get2Bits(u32 a, u32 b)
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
+/* Returns the 2-bit value (0..3) at entry b of the 0xb00 table, low bit first.
+ * ARM at 0x020e6360: GetOffsetB00 (b >= 256 selects 0), two TestBit calls, u8 result. */
 int Unk0e5fb8_Get2BitsB00(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetB00(b);
@@ -317,6 +327,8 @@ int Unk0e5fb8_Get2BitsB00(u32 a, u32 b)
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
+/* Returns the 2-bit value (0..3) at entry b of the 0xd00 table, low bit first.
+ * ARM at 0x020e63e0: GetOffsetD00 (b >= 64 selects 0), two TestBit calls, u8 result. */
 int Unk0e5fb8_Get2BitsD00(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetD00(b);
@@ -324,6 +336,8 @@ int Unk0e5fb8_Get2BitsD00(u32 a, u32 b)
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
+/* Returns the low 2-bit pair (bits 0..1) of four-bit entry b in the 0xd80 table.
+ * ARM at 0x020e6460: GetOffsetD80 (b >= 128 selects 0); written by 0x020e649c. */
 int Unk0e5fb8_Get2BitsD80(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetD80(b);
@@ -331,6 +345,8 @@ int Unk0e5fb8_Get2BitsD80(u32 a, u32 b)
     return (u8)(lo | (Unk094fe0_TestBit(a, o + 1) << 1));
 }
 
+/* Returns the high 2-bit pair (bits 2..3) of four-bit entry b in the 0xd80 table.
+ * ARM at 0x020e64e0: GetOffsetD80 (b >= 128 selects 0), then TestBit at +2 and +3. */
 int Unk0e5fb8_Get2BitsD80Hi(u32 a, u32 b)
 {
     int o = Unk0e5fb8_GetOffsetD80(b);
