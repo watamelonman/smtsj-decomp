@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T382: documented and typed six game/unit_02094fe0 functions verified at 100% objdiff (TestBit, GetSlot, TestBit990, TestFlag18, Unk_095258, Unk_0952ac). `func_020950e4` and `func_0209512c` are on the hard list.
 - M1-T381: matched `func_020953c4` and verified seven more game/unit_02094fe0 bit-array/slot helpers at 100% objdiff; typed the +0x200 bit array and the 28-byte slot record, and documented their contracts.
 
 - Match and document eight unit_020e5fb8 bit access wrappers and setters with explicit pair indices.
