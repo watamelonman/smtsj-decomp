@@ -12,7 +12,8 @@ typedef signed long long s64;
 typedef unsigned int u32;
 typedef unsigned char u8;
 
-/* Worker object for this TU (named fields from matched accessors). */
+/* Partial worker layout: offsets follow the original loads/stores in this TU.
+ * Pointers are borrowed; callers retain ownership of the backing storage. */
 typedef struct Worker {
     u8  pad_0000[0x18];
     u32 unk_0018;               /* +0x18 */
@@ -65,25 +66,26 @@ void Unk0202dcfc_InitWorker(Worker *w, u32 owner) {
 
 
 Worker *Unk095560_GetManagerAlias(void);
-/* forwards to `Unk095560_GetManagerAlias` */
+/* Returns the borrowed manager alias unchanged; the original at 0x0202dd1c
+ * tail-forwards to Unk095560_GetManagerAlias via a literal-loaded address. */
 Worker *Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void) { return Unk095560_GetManagerAlias(); }
 
 
-/* decompiler-derived */
-void Unk02dcfc_Unk_02df00(int arg0,u32 arg1)
+/* Requires a live worker. Original stores at 0x0202df00 select code 21
+ * at +0x18 and copy the full 32-bit argument to +0x1c; purpose is unknown. */
+void Unk02dcfc_Unk_02df00(Worker *w, u32 value)
 {
-  ((Worker *)arg0)->unk_0018 = 0x15;
-  ((Worker *)arg0)->unk_001c = arg1;
-  return;
+    w->unk_0018 = 21;
+    w->unk_001c = value;
 }
 
 
-/* decompiler-derived */
-void Unk02dcfc_Unk_02de58(int arg0)
+/* Requires a live worker. Original stores at 0x0202de58 select code 12
+ * at +0x18 and set +0x54 to one; the operation remains unidentified. */
+void Unk02dcfc_Unk_02de58(Worker *w)
 {
-  ((Worker *)arg0)->unk_0018 = 0xc;
-  ((Worker *)arg0)->field54 = 1;
-  return;
+    w->unk_0018 = 12;
+    w->field54 = 1;
 }
 
 
@@ -121,6 +123,8 @@ void func_020a2c90(u32 *sub);
 void ScanVisor_Unk_0a2950(int a);
 void Unk02dcfc_SetField70(u32 value);
 
+/* Returns the manager state word, or zero if absent. Evidence: original
+ * 0x0202dd84 conditionally loads +0x44, the state cleared by InitWorker. */
 u32 Unk02dcfc_GetState(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -142,6 +146,8 @@ void Unk02dcfc_Unk_02ddf4(void)
     Unk02dcfc_SetField70(0);
 }
 
+/* Returns the manager timer word, or one if absent. Evidence: original
+ * 0x0202de28 loads +0x48 and explicitly supplies the absent-manager value. */
 u32 Unk02dcfc_GetTimer(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -151,6 +157,8 @@ u32 Unk02dcfc_GetTimer(void)
     return w->timer;
 }
 
+/* Returns the word at +0x54, or zero if absent; its meaning is unknown.
+ * Evidence: conditional load in the original at 0x0202de40. */
 u32 Unk02dcfc_GetField54(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -171,6 +179,8 @@ void Unk02dcfc_Unk_02de6c(void)
     Unk02dcfc_SetField70(0);
 }
 
+/* Returns the word at +0x58, or zero if absent; its meaning is unknown.
+ * Evidence: conditional load in the original at 0x0202de98. */
 u32 Unk02dcfc_GetField58(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -201,6 +211,8 @@ void Unk02dcfc_Unk_02ded4(void)
     Unk02dcfc_SetField70(0);
 }
 
+/* Selects code 7 at +0x18 when a manager exists. Evidence: conditional
+ * store in the original at 0x0202df10; callers include unit_0203be10. */
 void Unk02dcfc_SetCode7(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -209,6 +221,8 @@ void Unk02dcfc_SetCode7(void)
     }
 }
 
+/* Selects code 8 at +0x18 when a manager exists; the code's meaning is
+ * unknown. Evidence: conditional store in the original at 0x0202df28. */
 void Unk02dcfc_SetCode8(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -217,6 +231,9 @@ void Unk02dcfc_SetCode8(void)
     }
 }
 
+/* Unconditionally selects code 22 at +0x18 of the worker held at +0xE8 of
+ * the Unk03aae8_Unk_03ad14 object; that worker must exist.
+ * Evidence: unchecked store in the original at 0x0202df40. */
 void Unk02dcfc_SetOwnerCode22(void)
 {
     u32 code = 22;
@@ -224,6 +241,8 @@ void Unk02dcfc_SetOwnerCode22(void)
     w->unk_0018 = code;
 }
 
+/* Selects code 24 at +0x18 when a manager exists; the code's meaning is
+ * unknown. Evidence: conditional store in the original at 0x0202df58. */
 void Unk02dcfc_SetCode24(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -232,6 +251,8 @@ void Unk02dcfc_SetCode24(void)
     }
 }
 
+/* Selects code 25 at +0x18 when a manager exists; the code's meaning is
+ * unknown. Evidence: conditional store in the original at 0x0202df70. */
 void Unk02dcfc_SetCode25(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -240,6 +261,9 @@ void Unk02dcfc_SetCode25(void)
     }
 }
 
+/* Unconditionally selects code 26 at +0x18 of the worker held at +0xE8 of
+ * the Unk03aae8_Unk_03ad14 object; that worker must exist.
+ * Evidence: unchecked store in the original at 0x0202df88. */
 void Unk02dcfc_SetOwnerCode26(void)
 {
     u32 code = 26;
@@ -247,6 +271,8 @@ void Unk02dcfc_SetOwnerCode26(void)
     w->unk_0018 = code;
 }
 
+/* Sets the word at +0x64 to one when a manager exists (InitWorker clears
+ * it); meaning unknown. Evidence: original at 0x0202dfa0. */
 void Unk02dcfc_SetField64(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -255,6 +281,8 @@ void Unk02dcfc_SetField64(void)
     }
 }
 
+/* Sets the word at +0x68 to one when a manager exists (InitWorker clears
+ * it); meaning unknown. Evidence: original at 0x0202dfb8. */
 void Unk02dcfc_SetField68(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -263,6 +291,8 @@ void Unk02dcfc_SetField68(void)
     }
 }
 
+/* Returns the word at +0x70, or zero if absent; Unk02dcfc_SetField70 writes
+ * it, meaning unknown. Evidence: original at 0x0202dfd0. */
 u32 Unk02dcfc_GetField70(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
