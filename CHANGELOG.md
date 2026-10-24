@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T469 game/unit_020387bc descriptor and initialization functions at 100% objdiff; documented instruction evidence and typed helper arguments.
 - Verified all eight M1-T468 handle cleanup and bounded entry lookup functions at 100% objdiff; documented their contracts and typed helper calls.
 - Matched all six M1-T456 game/unit_020e7ac4 state, submission, and selection functions at 100% objdiff with typed parameters and instruction evidence.
 - Matched all seven M1-T467 game/unit_02112aa0 state handlers and resource cleanup functions at 100% objdiff, with typed work storage and per-function evidence.
