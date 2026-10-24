@@ -38,9 +38,15 @@ void Unk1241ec_Unk_1241ec(void)
 }
 
 
-/* Work block behind data_02176e84; only offsets 0x28..0x3c are touched here. Size is a guess. */
+/* Work block behind data_02176e84. Size 0x40 comes from the allocation in func_02124338. */
 typedef struct Unk1241ecWork {
-    u8 pad_0000[0x28];
+    u32 unk_0000;
+    u32 unk_0004;
+    u32 unk_0008[4];
+    u32 unk_0018;
+    u32 unk_001c;
+    s32 unk_0020;
+    u32 unk_0024;
     u32 unk_0028;
     u32 unk_002c;
     u32 unk_0030;
@@ -130,4 +136,66 @@ void Unk1241ec_Unk_1242fc(void)
     data_02176e84->unk_002c = 0;
     data_02176e84->unk_003c = 1;
     data_02176e84->unk_0038 = 0;
+}
+
+extern u32 data_0213cdc0[4];
+void Unk02e000_Unk_02e0cc(void);
+extern u8 data_021520a4[];
+extern u8 data_021520bc[];
+void func_02124538(void);
+void Unk12449c_Unk_124590(void);
+void func_021245bc(void);
+void Unk12449c_Unk_12449c(void);
+Unk1241ecWork *func_020611dc(void (*a)(void), void (*b)(void), void (*c)(void), void (*d)(void),
+                             u32 size, u32 e, u32 f, u32 g);
+int Unk044394_HasEntry(int id);
+u32 Unk044394_Unk_044428(int id);
+void Unk05b82c_Unk_05b82c(u32 id);
+u32 func_0205dcd4(const void *data, u32 mode);
+u32 func_0205c2c4(const void *data);
+u32 func_0205c3c0(void);
+void func_0205c3fc(u32 handle, u32 a, u32 b);
+void func_0205caa8(u32 handle, u32 index);
+u32 func_020629ac(u32 a, u32 b, u32 c, u32 d);
+void Unk0cb32c_Unk_0cb504(u32 handle, u32 selector, u32 c);
+
+/** Allocate the 0x40-byte work block with four callbacks from the next TU, load its resources,
+ * set its defaults, then publish it in data_02176e84 (cleared first, left 0 on failure).
+ * Evidence: the call sequence and stores at 0x02124338; field meanings are unknown.
+ */
+void func_02124338(void)
+{
+    Unk1241ecWork *w;
+    u32 i;
+    int j;
+
+    data_02176e84 = 0;
+    w = func_020611dc(func_02124538, Unk12449c_Unk_124590, func_021245bc, Unk12449c_Unk_12449c,
+                      64, 0, 0, 1);
+    if (w == 0) {
+        return;
+    }
+    w->unk_0024 = Unk044394_HasEntry(30) ? 0 : Unk044394_Unk_044428(30);
+    Unk02e000_Unk_02e0cc();
+    for (i = 0; i < 4; i++) {
+        Unk05b82c_Unk_05b82c(data_0213cdc0[i]);
+    }
+    w->unk_0000 = func_0205dcd4(data_021520a4, 1);
+    w->unk_0004 = func_0205c2c4(data_021520bc);
+    for (j = 0; j < 4; j++) {
+        w->unk_0008[j] = func_0205c3c0();
+        func_0205c3fc(w->unk_0008[j], w->unk_0000, w->unk_0004);
+        func_0205caa8(w->unk_0008[j], j);
+    }
+    w->unk_0018 = func_020629ac(5, 1, 1, 1);
+    Unk0cb32c_Unk_0cb504(w->unk_0018, (u8)func_020cb3dc(), 0);
+    w->unk_001c = 0;
+    w->unk_0020 = -192;
+    w->unk_0028 = 1;
+    w->unk_002c = 1;
+    w->unk_0030 = 1;
+    w->unk_0038 = 1;
+    w->unk_0034 = 0;
+    w->unk_003c = 0;
+    data_02176e84 = w;
 }
