@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all eight M1-T401 game/unit_020e7290 functions, with typed work/resource views and documented state, flag, and formatting contracts.
+- M1-T383: matched all three remaining requested game/unit_02094fe0 functions, including the selected-bit merge routine; documented contracts and typed callee parameters.
 - Matched all eight M1-T394 game/unit_0211f2d0 functions, including allocation, resource setup, slot creation, teardown and timed state updates.
 - M1-T387: verified eight game/unit_0206e4d8 state and channel helpers at 100% objdiff with byte-identical image artifacts.
 - Verified all eight M1-T393 game/unit_0211f2d0 helpers at 100% objdiff; added typed record views, explicit helper contracts and per-function evidence.

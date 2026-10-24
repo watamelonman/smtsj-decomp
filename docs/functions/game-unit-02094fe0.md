@@ -49,11 +49,6 @@ Struct changes: `Unk094fe0Work` now names the +0x200 bit array (`unk_0200[0x780]
 
 None.
 
-## Not done in M1-T383
-- `Unk094fe0_Unk_09502c`
-- `Unk094fe0_Unk_0953f0`
-- `func_02095468`
-
 ## M1-T382: verified matching functions
 
 These six report 100% in objdiff. Their bodies were already in the file and matched. This card
@@ -86,3 +81,27 @@ Both functions are still linked from the delink, so `Unk094fe0_Unk_09502c`, `Unk
   `mvnne r2, r2, lsl r1; ldrne r1; andne r1, r1, r2`, while every variant compiles to
   `mvnne r1, ...; ldrne r2; andne r1, r2, r1`. Tried: the same families as above, plus a `u32 *`/FIELD/s32 field,
   `1u`, u32/u8 `set`, and `-1 ^ m`.
+
+## M1-T383: verified matching functions
+
+All three functions report 100% in objdiff with the configured compiler. The first
+two bodies already matched; this card adds their contracts and typed callee
+parameters, and implements the missing merge routine. Neutral names are retained
+because the bit meanings and record purpose are not established.
+
+| Function | Size | Contract and evidence |
+| --- | --- | --- |
+| `Unk094fe0_Unk_09502c` | 112 B | Updates bit a through `func_020950e4`, then calls `func_020e6708(a, b)`. For a = 0x70c or 0x70d, raises work-area byte +0x357 to at least 10 or 12 respectively, independently of b. The calls and switch at 0x0209502c–0x02095094 establish this behavior. Requires valid work. |
+| `Unk094fe0_Unk_0953f0` | 120 B | Returns 0 unless the shared +0x9a4 record has nonzero cnt, flag and id and `Unk09ee4c_Thunk_02118c6c(Unk02f2a8_Unk_035b08(cnt, flag))` succeeds. Then clears cnt and flag, sets the id bit, clears id and returns 1. Loads and stores at 0x020953f0–0x02095464 establish the contract. |
+| `func_02095468` | 248 B | Merges selected set bits from source into destination, preserving destination bits wherever the source is clear. The seven leading-array indices are 1024, 1025, 1026, 1027, 1803, 1804 and 1805 (table at 0x0213bdbc). Next visits 15 rows × 10 columns through 0x020e61e8/0x020e622c, then indices 0..127 through TestBit990/095370. Their bounds ignore index 0, so this final loop propagates indices 1..127. Both pointers must be valid; ownership is borrowed. |
+
+The merge uses a local initialized index table, as shown by the original stack
+copy. Reusing its outer index for the row loop preserves register allocation;
+the row bound is signed, while the table and final bit bounds are unsigned.
+No module boundary changes or additional dependencies were needed. Matching is
+the behavioral verification for this card, which requires no new test files.
+
+## M1-T383 hard list
+
+None of the three requested functions remain unmatched. The two earlier hard
+functions listed under M1-T382 remain outside this card.
