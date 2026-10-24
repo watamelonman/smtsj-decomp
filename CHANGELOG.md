@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all eight M1-T394 game/unit_0211f2d0 functions, including allocation, resource setup, slot creation, teardown and timed state updates.
+- M1-T387: verified eight game/unit_0206e4d8 state and channel helpers at 100% objdiff with byte-identical image artifacts.
 - Verified all eight M1-T393 game/unit_0211f2d0 helpers at 100% objdiff; added typed record views, explicit helper contracts and per-function evidence.
 - Matched M1-T392 `func_0211e6b8`, the state-dependent list rendering callback, with typed work-area and image/text layouts.
 - M1-T382: documented and typed six game/unit_02094fe0 functions verified at 100% objdiff (TestBit, GetSlot, TestBit990, TestFlag18, Unk_095258, Unk_0952ac). `func_020950e4` and `func_0209512c` are on the hard list.
