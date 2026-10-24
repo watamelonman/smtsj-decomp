@@ -2,6 +2,10 @@
 
 ## Unreleased
 - Matched both M1-T470 game/unit_020387bc resource record and bounded-list copy functions at 100% objdiff with typed storage views.
+- Verified all eight M1-T492 game/unit_020946e0 functions at 100% objdiff; documented address, signed-output, allocation, and clearing contracts and typed their helper calls.
+- Added matching C for M1-T481 `func_020e6ebc`, with typed record views and documented state and value-update rules.
+- Verified all eight M1-T474 record clamp, ID, reset and work-field helpers at 100% objdiff; made global clamp argument forwarding explicit and documented original instruction evidence.
+- Added matching C for all eight M1-T480 game/unit_020e6a0c resource, record-update, scaling, filtering and entry-test functions.
 - Matched all eight M1-T469 game/unit_020387bc descriptor and initialization functions at 100% objdiff; documented instruction evidence and typed helper arguments.
 - Matched all seven M1-T479 game/unit_020fe360 state, recovery, and selected-element handlers with typed work views.
 - Matched all seven M1-T477 game/unit_020ca69c offset, cell-state and sequence functions with typed field views.
