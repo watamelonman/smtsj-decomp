@@ -19,10 +19,18 @@ typedef struct Unit125d84 {
     u32 buffer_size;
 } Unit125d84;
 
+/* Eight-byte input records copied into the owner's sixteen-byte records. */
+typedef struct Unit125d84Source {
+    u32 shape;
+    u16 x, y;
+} Unit125d84Source;
+
 extern s8 data_0213ce10[];
 extern s8 data_0213ce1c[];
 void func_02056cac(void *resource);
 void func_02053000(void *allocation);
+void *func_02052fe0(u32 size);
+u32 func_02056c54(void *resource, u16 *pixels, int format, int width, int height);
 void func_02008644(u16 value, void *destination, u32 size);
 int func_02125d84(u32 shape);
 int func_02125da8(u32 shape);
@@ -48,6 +56,46 @@ int func_02125da8(u32 shape)
     low >>= 14;
     high >>= 30;
     return data_0213ce1c[(low << 2) | high];
+}
+
+/* Build the owner: copy count source records, size one shared pixel buffer from the
+   per-record extents (format 4 uses a byte per pixel, otherwise a nibble), then hand each
+   record its slice and store the handle func_02056c54 returns for it. */
+void func_02125dcc(Unit125d84 *owner, void *resource, u32 unk0c, int format,
+                   const Unit125d84Source *src, int count)
+{
+    int i;
+    int scale;
+    u32 offset;
+    owner->count = count;
+    owner->unk04 = resource;
+    owner->format = format;
+    owner->unk0c = unk0c;
+    owner->records = func_02052fe0(owner->count << 4);
+    scale = owner->format == 4 ? 2 : 1;
+    /* i doubles as the zero stored to buffer_size; a literal 0 here reorders the stores. */
+    i = 0;
+    owner->buffer_size = i;
+    for (; i < owner->count; i++) {
+        Unit125d84Record *record = &owner->records[i];
+        int width, height;
+        record->shape = src[i].shape;
+        record->x = src[i].x;
+        record->y = src[i].y;
+        width = func_02125d84(record->shape);
+        height = func_02125da8(record->shape);
+        owner->buffer_size += (u32)(scale * (width * height)) >> 1;
+    }
+    owner->buffer = func_02052fe0(owner->buffer_size);
+    offset = 0;
+    for (i = 0; i < owner->count; i++) {
+        Unit125d84Record *record = &owner->records[i];
+        int width = func_02125d84(record->shape);
+        int height = func_02125da8(record->shape);
+        record->pixels = (u16 *)((u8 *)owner->buffer + offset);
+        record->unk08 = func_02056c54(owner->unk04, record->pixels, owner->format, width, height);
+        offset += (u32)(scale * (width * height)) >> 1;
+    }
 }
 /* Release the repeated resource, then both owned allocations; count is reloaded after calls. */
 void Unk125d84_Unk_125f0c(Unit125d84 *owner)
