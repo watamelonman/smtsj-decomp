@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match eight script argument/result wrappers in `libs/unknown/lib_020b8f8c.c` (M2-T073), with typed contracts and selector evidence.
+
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
