@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Verified eight M1-T493 shared-record and task wrapper matches; documented their contracts and explicit task-update arguments.
+- Matched all eight M1-T475 pair, bulk record, weighted query and byte-sum helpers with typed parameters and documented ARM evidence.
+- Matched both M1-T470 game/unit_020387bc resource record and bounded-list copy functions at 100% objdiff with typed storage views.
 - Verified all eight M1-T492 game/unit_020946e0 functions at 100% objdiff; documented address, signed-output, allocation, and clearing contracts and typed their helper calls.
 - Added matching C for M1-T481 `func_020e6ebc`, with typed record views and documented state and value-update rules.
 - Verified all eight M1-T474 record clamp, ID, reset and work-field helpers at 100% objdiff; made global clamp argument forwarding explicit and documented original instruction evidence.

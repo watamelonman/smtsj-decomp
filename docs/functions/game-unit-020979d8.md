@@ -51,23 +51,33 @@ unprototyped call. No module boundary changes or new layout assumptions.
 None for M1-T474. No new tests are required by this card; objdiff checks the
 compiled instructions against the original functions.
 
-## Not done in M1-T475
-- `Unk0979d8_ResetAllEntries`
-- `Unk0979d8_GetPairLo`
-- `Unk0979d8_GetPairHi`
-- `Unk0979d8_ResetAreaEntries`
-- `Unk0979d8_ClampAllField1e`
-- `Unk0979d8_ClampAllField20`
-- `func_02097ad0`
-- `func_02098050`
+## M1-T475: matched functions
+
+All eight functions match the original ARM instructions. Record and work pointers
+are borrowed. Pair access requires a valid record and an index in 0..19; the
+original performs no bounds check. No module boundary changes.
+
+| Function | Contract and original-code evidence |
+| --- | --- |
+| `Unk0979d8_ResetAllEntries` | 02097ddc, 64 bytes. Iterates up to twelve signed slots at work +0x348, stops at the first negative slot, resets each record, then calls ResetAreaEntries. |
+| `Unk0979d8_GetPairLo` | 02097d54, 68 bytes. Builds twenty packed pairs using record +0x36 and IDs at +0x28, then returns the indexed low ten bits. LDRH and shifts establish the extraction. |
+| `Unk0979d8_GetPairHi` | 02097d98, 68 bytes. Same pair construction; returns the indexed upper six bits. The final shifts establish the split. |
+| `Unk0979d8_ResetAreaEntries` | 02097ebc, 68 bytes. Visits three signed slots at work +0x354; skips negative slots and records whose unsigned +0x34 equals 1. Restores remaining records, then resets area position. |
+| `Unk0979d8_ClampAllField1e` | 02097e1c, 80 bytes. Calls global ClampField1c, then clamps +0x1e in up to twelve active records at work +0x74 + slot*60. First negative slot ends traversal. |
+| `Unk0979d8_ClampAllField20` | 02097e6c, 80 bytes. Calls global ClampField1e, then clamps +0x20 using the same active-slot traversal. |
+| `func_02097ad0` | 02097ad0, 132 bytes. NULL and unsigned state +0x34 equal to 1 or 7 return zero. Otherwise checks 0202e840 and the enable argument; when both hold, adds weights 1 and 3 for queried IDs 160 and 151 and weight 5 for record ID 397. Gameplay meaning remains unknown. |
+| `func_02098050` | 02098050, 152 bytes. Sums unsigned record bytes +0x38. Modes 0/1 select CountEntries active slots; mode 2 selects three area slots. Modes 0/2 also include unsigned +0x6e from 0202e798. Negative slots are skipped; other modes return zero. |
+
+Typed the work-area, record lookup and pair metadata lookup declarations. Kept
+local count/pointer initialization after the mode-dependent byte read to preserve
+the original instruction ordering in func_02098050.
+
+### Hard list
+
+None for M1-T475. Instruction matching supplies the acceptance check; the card
+requires no new behavioral tests.
 
 ## Not done in M1-T476
 - `func_02097a20`
 - `func_02097f68`
 - `func_02097c18`
-- `Unk0979d8_GetPairLo`: hand-matched
-- `Unk0979d8_GetPairHi`: hand-matched
-- `Unk0979d8_ResetAllEntries`: hand-matched
-- `Unk0979d8_ClampAllField1e`: hand-matched
-- `Unk0979d8_ClampAllField20`: hand-matched
-- `Unk0979d8_ResetAreaEntries`: hand-matched
