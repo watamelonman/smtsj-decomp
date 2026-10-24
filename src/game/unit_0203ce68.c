@@ -1,12 +1,18 @@
 /* src/game/unit_0203ce68.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
+/* Partial view of the work block: ARM 0x0203cfe4 loads byte 0x70. */
+typedef struct Unk03ce68Work {
+    u8 pad_0000[0x70];
+    u8 unk_0070;
+} Unk03ce68Work;
 
-int Unk0979d8_ResetAllEntries();
-int Unk096754_Unk_096a14();
-int func_0203ac00();
-int Unk03aae8_Unk_03acf4();
-u8 *Unk02e000_Thunk_0202e788();
+
+void Unk0979d8_ResetAllEntries(void);
+int Unk096754_Unk_096a14(int operand);
+int func_0203ac00(int operandIndex);
+int Unk03aae8_Unk_03acf4(u32 value);
+u8 *Unk02e000_Thunk_0202e788(void);
 int Unk09727c_GetAreaS8();
 int Unk0981dc_Unk_098258();
 u32 Unk03ce68_Unk_03d038(u32 arg0);
@@ -29,9 +35,9 @@ int Unk03ce68_Unk_03ce68(void)
     return 1;
 }
 
-int func_0203ac00();
-int Unk03aae8_Unk_03acf4();
-u8 *Unk02e000_Thunk_0202e788();
+int func_0203ac00(int operandIndex);
+int Unk03aae8_Unk_03acf4(u32 value);
+u8 *Unk02e000_Thunk_0202e788(void);
 int Unk09974c_GetEntryUnk08();
 void Unk096754_Unk_097220();
 void Unk0981dc_Unk_0981f4();
@@ -57,6 +63,8 @@ int Unk03ce68_Unk_03ced0(void)
     return 1;
 }
 
+/* ARM 0x0203cf48: report whether the operand lookup returns a value other
+ * than -1; the handler always returns completion status 1. */
 int Unk03ce68_Unk_03cf48(void)
 {
     int v = Unk096754_Unk_096a14(func_0203ac00(0));
@@ -68,24 +76,24 @@ int Unk03ce68_Unk_03cf48(void)
     return 1;
 }
 
-/* decompiler-derived */
+/* Invoke the entry reset and return completion status 1 (ARM 0x0203cfb4). */
 u32 Unk03ce68_Unk_03cfb4(void)
 {
   Unk0979d8_ResetAllEntries();
   return 1;
 }
 
-int Unk096754_ResetAreaPos();
-/* decompiler-derived */
+void Unk096754_ResetAreaPos(void);
+/* Invoke the area-position reset and return completion status 1 (ARM 0x0203cfc4). */
 u32 Unk03ce68_Unk_03cfc4(void)
 {
   Unk096754_ResetAreaPos();
   return 1;
 }
 
-int func_0203ac00();
-int Unk03aae8_Unk_03acf4();
-/* decompiler-derived */
+int func_0203ac00(int operandIndex);
+int Unk03aae8_Unk_03acf4(u32 value);
+/* Consume operand zero, report 1, and return completion status 1 (ARM 0x0203cf78). */
 u32 Unk03ce68_Unk_03cf78(void)
 {
   func_0203ac00(0);
@@ -93,37 +101,38 @@ u32 Unk03ce68_Unk_03cf78(void)
   return 1;
 }
 
-int Unk02ee5c_GetTierFromField70();
-u8 *Unk02e000_Thunk_0202e788();
+int Unk02ee5c_GetTierFromField70(void);
+u8 *Unk02e000_Thunk_0202e788(void);
+/* ARM 0x0203cfd4: consume operand zero and report work byte 0x70; return 1. */
 int Unk03ce68_Unk_03cfd4(void)
 {
     func_0203ac00(0);
-    Unk03aae8_Unk_03acf4(Unk02e000_Thunk_0202e788()[0x70]);
+    Unk03aae8_Unk_03acf4(((Unk03ce68Work *)Unk02e000_Thunk_0202e788())->unk_0070);
     return 1;
 }
 
-/* decompiler-derived */
+/* Consume operand zero and report the byte-0x70 tier; return 1 (ARM 0x0203cff4). */
 u32 Unk03ce68_Unk_03cff4(void)
 {
   func_0203ac00(0);
-  Unk02ee5c_GetTierFromField70();
-  Unk03aae8_Unk_03acf4();
+  Unk03aae8_Unk_03acf4(Unk02ee5c_GetTierFromField70());
   return 1;
 }
 
-int Unk0981dc_Unk_0981dc();
-/* decompiler-derived */
+int Unk0981dc_Unk_0981dc(u8 operand);
+/* Narrow operand zero to eight bits and report the callee result; return 1
+ * (ARM 0x0203cf94). The neutral name preserves the unknown command meaning. */
 u32 Unk03ce68_Unk_03cf94(void)
 {
   u8 value;
   value = func_0203ac00(0);
-  Unk0981dc_Unk_0981dc(value);
-  Unk03aae8_Unk_03acf4();
+  Unk03aae8_Unk_03acf4(Unk0981dc_Unk_0981dc(value));
   return 1;
 }
 
-int Unk02ee5c_AddClamped70();
-/* decompiler-derived */
+void Unk02ee5c_AddClamped70(int delta);
+/* Consume two operands and apply operand one as a signed 16-bit delta
+ * to the byte-0x70 updater; return completion status 1 (ARM 0x0203d010). */
 u32 Unk03ce68_Unk_03d010(void)
 {
   short v1;
