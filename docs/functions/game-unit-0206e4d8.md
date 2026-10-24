@@ -27,8 +27,6 @@ Notes left by other cards that touch this TU; kept for reference.
 
 ## Not done in M1-T388
 - `func_0206e8b0`
-- `Unk06e4d8_Unk_06e6a4`: decompiler-derived
-- `Unk06e4d8_Unk_06e814`: decompiler-derived
 
 ## M1-T387
 All eight card functions match at 100% (objdiff report). The checksum gate is byte-identical.
@@ -52,3 +50,11 @@ nothing here names the effect.
 
 ### Hard list for M1-T387
 None.
+
+### M1-T387 validation
+
+Retained the inherited matching implementations and gave the table-record accessor
+an explicit integer index prototype. Rebuilt with the match gate: all 16 defined
+functions in this TU are 100%, including the eight requested here. Checksum and
+anticheat gates pass; the existing nine unit tests pass. No new behavioral tests
+are required by this matching card; objdiff checks the original instructions.

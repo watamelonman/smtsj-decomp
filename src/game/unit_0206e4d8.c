@@ -2,7 +2,6 @@
 #include "types.h"
 
 
-
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk06e4d8Work {
     s32 unk_0000;
@@ -69,7 +68,7 @@ int Unk06e4d8_Unk_06e520(int arg0)
 
 int func_02061424(u32 work_address);
 extern u32 data_0216bac4[];
-u8 *Unk06dddc_Unk_06e058();
+u8 *Unk06dddc_Unk_06e058(int index);
 void Unk06e4d8_Unk_06e814(Unk06e4d8Work *w);
 void *func_020611dc();
 void func_0206e5bc(Unk06e4d8Work *w);
