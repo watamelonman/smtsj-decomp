@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T894 SaveLoadTask helpers at 100% objdiff, with typed parameters and instruction-based contracts.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
 - Matched four M1-T293 callbacks/submission helpers in `game/unit_0211f894` at 100%; documented the remaining six-strip helper on its hard list.
 - Added matching C for both M1-T282 request state machines in `game/unit_02037dd4`, with typed parameters and per-function contracts.
