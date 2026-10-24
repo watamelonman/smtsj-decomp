@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added C for eight lib_020b9c3c script command wrappers with operand and result contracts.
+
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
