@@ -29,11 +29,36 @@ contracts below. Neutral names retain uncertainty about the surrounding subsyste
   and returns 0. Other byte values remain unchanged. Returning the zero
   assignment in the clear branch reproduces the original register reuse.
 
-## Other functions (outside M1-T418)
+## M1-T419 — verified at 100% objdiff
 
-`Unk02cad4_SetupDisplayMode` retains its existing matching implementation.
-`func_0202cad4`, `func_0202cbfc`, and `func_0202cd14` remain delinked.
+- `func_0202cad4` (0x0202cad4, 236 bytes): dispatches the selected
+  28-byte table entry through enter/update/leave callbacks. Phase zero optionally
+  configures its display; phase one waits for the pending state to cease being
+  unsigned -1; phase two optionally cleans up, saves the previous state, installs
+  the pending state, and resets the phase. No parameters or ownership transfer.
+  Evidence: original table stride, indirect calls, and global field accesses.
+- `func_0202cbfc` (0x0202cbfc, 280 bytes): initializes services, configures
+  three slots, seeds one slot from a three-word startup record (or 2048 on failure)
+  and another from the XOR of eight words, then requests initial state zero and
+  clears the input latch. Returns 1. Evidence: original calls and main's single
+  invocation before its frame loop. Separate product/factor locals preserve the
+  original multiplication evaluation and register allocation.
+- `func_0202cd14` (0x0202cd14, 224 bytes): performs the per-frame service and
+  dispatcher calls. Modes 2 and 3 also update the +0x18 global value, conditionally
+  increment a counter, and process the four-mask input latch. An activated latch
+  triggers the early return path; otherwise the function runs the final service
+  and polls GXSTAT geometry-busy bit 27 until clear. Returns 1 on both paths.
+  Evidence: main's frame-loop call and the original MMIO address 0x04000600.
+- `Unk02cad4_SetupDisplayMode` (0x0202ceec, 612 bytes): retains the existing
+  matching layout setup for modes 0 through 3. Arguments are mode, an unused word,
+  and a word forwarded to the display initialization calls; no ownership transfer.
+  Evidence for the descriptive name: named palette/plane resources and display
+  setup callees in each branch. Other modes only call the common initial helper.
+
+The global view now describes accessed words through +0x18; its first three
+words alone are reset to unsigned -1. Callback entries and startup buffers are
+borrowed. Existing symbol names remain unchanged for relocation compatibility.
 
 ## Hard list
 
-None for M1-T418.
+None. All twelve functions in this translation unit match at 100%.

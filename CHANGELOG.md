@@ -2,6 +2,14 @@
 
 ## Unreleased
 - Matched all three M1-T421 glyph mapping, width/draw, and target rectangle functions in game/unit_020a9a90 at 100% objdiff.
+- Matched all eight M1-T434 game/unit_020bcef4 wrappers, state helpers, and signed modulo update; documented their argument contracts and instruction evidence.
+- Matched all eight M1-T425 singleton wrappers, byte predicates, limit setter and work cleanup functions in `game/unit_0205ae50`, with typed work links and documented assembly evidence.
+- Matched all eight M1-T424 game/unit_020fbed4 initialization, callback, cleanup, and drawing functions at 100% objdiff with typed private layouts.
+- M1-T423: added matching C for six game/unit_020a93e8 drawing routines; documented two remaining hard functions.
+
+- Matched the remaining main-loop dispatcher, startup, and frame helpers in `unit_0202cad4`; all twelve functions now match at 100%.
+- M1-T406: matched five game/unit_020bac80 state and command handlers with typed borrowed layouts and instruction evidence.
+- M1-T1120: matched five `game/unit_0202f2a8` input, reload and position animation handlers at 100% objdiff; documented three remaining functions on the hard list.
 - Matched all eight M1-T420 font metric, formatted text, and alignment functions in game/unit_020a9a90 at 100% objdiff.
 - Matched M1-T415 `func_02108ca4` (940 bytes) at 100% with typed saved-record and slot layouts and documented growth formulas.
 - Matched all eight M1-T418 state, forwarding and input-latch functions in game/unit_0202cad4; documented typed contracts and original-code evidence.
