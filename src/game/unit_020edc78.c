@@ -6,11 +6,12 @@
 /* Caller-owned work area; padding preserves the offsets used by the original TU. */
 typedef struct Unk0edc78Work {
     s32 *owner;
-    u8 pad_0004[0x54];
+    u8 unk_0004[0x54]; /* size from the next field */
     u16 unk_0058;
     u8 pad_005a[0x4a];
     u32 unk_00a4;
-    u8 pad_00a8[0x7324];
+    u8 unk_00a8[0x2400]; /* size guessed: next used field at 0x24a8 */
+    u8 unk_24a8[0x4f24]; /* size guessed: runs up to unk_73cc */
     s32 unk_73cc;
     s32 unk_73d0;
     u32 unk_73d4;
@@ -22,6 +23,9 @@ typedef struct Unk0edc78Work {
     u32 unk_7488;
     u32 unk_748c;
     u32 unk_7490;
+    u8 pad_7494[0xbc];
+    u8 unk_7550[0x48]; /* size guessed: next field at 0x7598 */
+    u8 unk_7598[4]; /* size unknown */
 } Unk0edc78Work;
 
 int func_020edc78(Unk0edc78Work *work);
@@ -47,21 +51,21 @@ void func_02052d7c(void *area, u32 value);
 void Unk09a268_SetOnlyBit(Unk0edc78Cell *cell, int bit);
 void Unk0a0ce4_Unk_0a0da4(int value);
 /* Initializes current-cell flags from record 5 and starts the work-area operation. */
-void Unk0edc78_Unk_0edf98(Unk0edc78Work *arg0)
+void Unk0edc78_Unk_0edf98(Unk0edc78Work *work)
 {
-  u8 *value1;
-  Unk0edc78Cell *value2;
-  value1 = Unk09a268_Unk_09c484(5);
-  value2 = Unk02f2a8_GetCurrentCell38e8();
-  Unk09a268_Unk_09a80c(value2,1);
-  Unk09a268_Unk_09a830(value2,0);
-  Unk09a268_SetOnlyBit(value2,value1[0x19]);
-  value2->unk_1 = 1;
-  value2->ticks = 0;
-  Unk0a0ce4_Unk_0a0da4(arg0->unk_0058);
-  func_02052d7c(arg0->pad_00a8,arg0->unk_00a4);
-  arg0->unk_748c = 1;
-  arg0->unk_7490 = 1;
+  u8 *record;
+  Unk0edc78Cell *cell;
+  record = Unk09a268_Unk_09c484(5);
+  cell = Unk02f2a8_GetCurrentCell38e8();
+  Unk09a268_Unk_09a80c(cell,1);
+  Unk09a268_Unk_09a830(cell,0);
+  Unk09a268_SetOnlyBit(cell,record[0x19]);
+  cell->unk_1 = 1;
+  cell->ticks = 0;
+  Unk0a0ce4_Unk_0a0da4(work->unk_0058);
+  func_02052d7c(work->unk_00a8,work->unk_00a4);
+  work->unk_748c = 1;
+  work->unk_7490 = 1;
 }
 
 void func_02052da0(Unk0edc78Cell *cell);
@@ -88,7 +92,9 @@ extern const u8 data_02150dc4[];
 
 /* Advances the caller-owned nine-state sequence, polling completion and counting
  * updates. Field accesses and ScanVisor calls establish the behavior; the wider
- * purpose of this sequence is unknown, so the original neutral name is retained. */
+ * purpose of this sequence is unknown, so the original neutral name is retained.
+ * The tick thresholds (40, 10, 2, 300), loop counts (7, 128) and the values 46, 8
+ * and 12 are original constants whose meaning is unknown. */
 int func_020edc78(Unk0edc78Work *work)
 {
     Unk0edc78Cell *cell = Unk02f2a8_GetCurrentCell38e8();
@@ -121,16 +127,16 @@ int func_020edc78(Unk0edc78Work *work)
             work->unk_73d8 = 0;
             ScanVisor_Unk_0a2b38();
             Unk095560_Unk_09615c();
-            func_020396cc(work->pad_0004);
-            Unk02f2a8_Unk_0343b4(work->pad_0004);
-            Unk09974c_Unk_09974c((u8 *)work + 0x7550);
-            Unk11f2d0_Unk_11f2d0((u8 *)work + 0x7598);
+            func_020396cc(work->unk_0004);
+            Unk02f2a8_Unk_0343b4(work->unk_0004);
+            Unk09974c_Unk_09974c(work->unk_7550);
+            Unk11f2d0_Unk_11f2d0(work->unk_7598);
             work->ticks = 0;
             work->state++;
         }
         break;
     case 3:
-        if (work->ticks > 2 && func_020395f8(work->pad_0004, data_02150dc4) == 1) {
+        if (work->ticks > 2 && func_020395f8(work->unk_0004, data_02150dc4) == 1) {
             ScanVisor_Unk_0a273c(0);
             func_020525cc(3);
             Unk0a0ce4_Unk_0a0da4(46);
@@ -139,14 +145,14 @@ int func_020edc78(Unk0edc78Work *work)
         }
         break;
     case 4:
-        for (i = 0; i < 128; i++) func_02058a90(work->pad_00a8 + 0x2400, i);
+        for (i = 0; i < 128; i++) func_02058a90(work->unk_24a8, i);
         if (func_02052728() == 0) {
             work->ticks = 0;
             work->state++;
         }
         break;
     case 5:
-        for (i = 0; i < 128; i++) func_02058a90(work->pad_00a8 + 0x2400, i);
+        for (i = 0; i < 128; i++) func_02058a90(work->unk_24a8, i);
         if (func_02053800(0, 3) == 1 || work->ticks > 300) {
             func_0205257c(3);
             Unk0a4e48_Unk_0a4e9c(2);
@@ -156,7 +162,7 @@ int func_020edc78(Unk0edc78Work *work)
         }
         break;
     case 6:
-        for (i = 0; i < 128; i++) func_02058a90(work->pad_00a8 + 0x2400, i);
+        for (i = 0; i < 128; i++) func_02058a90(work->unk_24a8, i);
         if (func_020a4f3c() == 0 && func_02052728() == 0) {
             work->ticks = 0;
             work->state++;
