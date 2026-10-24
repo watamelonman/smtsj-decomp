@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched all eight M1-T1117 unit_0202f2a8 functions (game-state task mode latch/dispatch, visor refresh, map reload sequence, sorted-list range marking, fixed-point lerp) at 100% objdiff.
+- Matched both game/unit_0206f6e4 VER resource loading and legacy record conversion functions at 100%, with typed layouts and format contracts.
+- Matched all five M1-T330 slot-bank and record initialization functions in `game/unit_0206d950`, with typed layouts and per-function contracts.
 - Matched the remaining five M1-T317 functions in `game/unit_0211ec7c` (descriptor fill, work init, label formatting, scale update, state-1 tick) at 100% objdiff; the TU is now fully C, with the work struct extended to its 0x31c size.
 - Matched all eight M1-T328 record setup, lookup, clearing, and mode helpers in `game/unit_02071dc0` at 100% objdiff.
 - Matched all eight M1-T324 game/unit_020fd5a4 resource, coordinate, and mode-dispatch functions with typed contracts and assembly evidence.
