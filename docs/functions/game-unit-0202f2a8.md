@@ -568,5 +568,14 @@ semantics. Pointers and embedded buffers are borrowed; no ownership changes.
   clears +0x631c/+0x7130, calls 0a6ac0 to rebuild them, then checks seven
   slots via 035c14 and appends each enabled slot through 0a7474.
 
+Typing (attempt 2): all eight use named members, not raw offsets.
+`Unk02f2a8State` now embeds `Unk02f2a8Body` at +4 (level byte `body.unk_0057` =
+state +0x5b, buffer `body.unk_0214` = +0x218) and names the buffers +0x358,
++0x3134, +0x3154, +0x38e8, +0x631c, +0x7130, +0x7330 and words +0x7400,
++0x7494, +0x7498. Buffer sizes run to the next known field (guessed).
+`Unk02f2a8StateRoot` gains `unk_007c`/`unk_0094`, `Unk02f2a8Action` gains
+`unk_0020`..`unk_0030`. `Unk02f2a8MapEntry` (s16 +0x20) and `Unk02f2a8CellId`
+(s16 +2, -1 = no override) type the records read by `func_02034f44`.
+
 Hard list for M1-T1115: none. No new tests are required by the card; objdiff
 compares every instruction against the original implementation.
