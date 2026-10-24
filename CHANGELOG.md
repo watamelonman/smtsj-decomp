@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T444 game/unit_020ef248 descriptor, ramp, state, initialization and entry callbacks at 100% objdiff.
 - Matched all eight M1-T443 game/unit_020ef248 callbacks and work helpers at 100% objdiff, with typed arguments and per-function evidence.
 - Matched all three M1-T421 glyph mapping, width/draw, and target rectangle functions in game/unit_020a9a90 at 100% objdiff.
 - Matched all eight M1-T434 game/unit_020bcef4 wrappers, state helpers, and signed modulo update; documented their argument contracts and instruction evidence.
