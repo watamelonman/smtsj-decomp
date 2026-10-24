@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Added matching C for all eight M1-T480 game/unit_020e6a0c resource, record-update, scaling, filtering and entry-test functions.
+- Matched all eight M1-T469 game/unit_020387bc descriptor and initialization functions at 100% objdiff; documented instruction evidence and typed helper arguments.
 - Matched all seven M1-T479 game/unit_020fe360 state, recovery, and selected-element handlers with typed work views.
 - Matched all seven M1-T477 game/unit_020ca69c offset, cell-state and sequence functions with typed field views.
 - Matched all six M1-T449 game/unit_020a0ce4 state, drawing, and singleton routines at 100% objdiff, with typed work fields and per-function instruction evidence.
