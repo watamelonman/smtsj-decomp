@@ -119,3 +119,13 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Preserve stack count reloads and size-table ordering in 0205b540
+
+The original push reloads the count between the two size-table writes and on
+each diagnostic scan iteration. The pop reads the second size only after
+restoring the first cursor. Qualify the count and size-table accesses as
+volatile to preserve those observed accesses and ordering. This is a matching
+constraint, not evidence of hardware ownership or synchronization. Ordinary
+accesses let mwcc cache the count and hoist the second size load; revisit if
+original declaration evidence permits reproducing the accesses otherwise.
