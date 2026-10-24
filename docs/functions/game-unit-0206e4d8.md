@@ -23,6 +23,7 @@ No domain meaning beyond these accesses is established, so neutral names remain.
 None. All requested functions are identical; no scratch is needed.
 
 ## Other cards (pre-existing status)
+Notes left by other cards that touch this TU; kept for reference.
 
 ## Not done in M1-T388
 - `func_0206e8b0`

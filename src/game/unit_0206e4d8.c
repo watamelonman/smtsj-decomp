@@ -5,7 +5,9 @@
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk06e4d8Work {
-    u8 pad_0000[0x2c];
+    u8 pad_0000[0x8];
+    u32 unk_0008;
+    u8 pad_000c[0x20];
     u32 unk_002c;
     u32 unk_0030;
     u32 unk_0034;
@@ -17,7 +19,10 @@ typedef struct Unk06e4d8Work {
     u32 unk_005c;
     u32 unk_0060;
     u32 unk_0064;
-} Unk06e4d8Work;
+    u32 unk_0068;
+    u8 unk_006c;
+    u8 pad_006d[0x3];
+} Unk06e4d8Work; /* 0x70 bytes: allocated with size 112 in Unk06e4d8_Unk_06e538 */
 
 extern u32 data_02170cc8[];
 /* Return the nullable work address stored at data_02170cc8 (original LDR pair).
@@ -63,7 +68,6 @@ int func_02061424(u32 work_address);
 extern u32 data_0216bac4[];
 u8 *Unk06dddc_Unk_06e058();
 void Unk06e4d8_Unk_06e814(int arg0);
-u32 Unk06e4d8_Get_data_02170cc8(void);
 void *func_020611dc();
 void func_0206e5bc();
 void func_02008848();
@@ -81,12 +85,12 @@ void Unk06e4d8_Unk_06e538(void)
 
 /* Reset a non-null work block: original stores clear +0x08, +0x6c and
  * +0x68 before tail-calling Unk06e4d8_Unk_06e814 to clear the remaining state. */
-void Unk06e4d8_Reset(u8 *o)
+void Unk06e4d8_Reset(Unk06e4d8Work *w)
 {
-    FIELD(u32, o, 0x08) = 0;
-    FIELD(u8, o, 0x6c) = 0;
-    FIELD(u32, o, 0x68) = 0;
-    Unk06e4d8_Unk_06e814((int)o);
+    w->unk_0008 = 0;
+    w->unk_006c = 0;
+    w->unk_0068 = 0;
+    Unk06e4d8_Unk_06e814((int)w);
 }
 
 /* Pass the stored work address to func_02061424, then clear the global slot.
@@ -147,5 +151,5 @@ int Unk06e4d8_GetFlag6c(void)
     if (Unk06e4d8_Get_data_02170cc8() == 0) {
         return 0;
     }
-    return FIELD(u8, Unk06e4d8_Get_data_02170cc8(), 0x6c) != 0;
+    return ((Unk06e4d8Work *)Unk06e4d8_Get_data_02170cc8())->unk_006c != 0;
 }
