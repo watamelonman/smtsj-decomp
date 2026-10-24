@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Matched M1-T415 `func_02108ca4` (940 bytes) at 100% with typed saved-record and slot layouts and documented growth formulas.
+- Matched all eight M1-T418 state, forwarding and input-latch functions in game/unit_0202cad4; documented typed contracts and original-code evidence.
+- M1-T405: matched eight game/unit_020bac80 query, halfword update, and command handlers at 100% objdiff with typed arguments and per-function evidence.
+- M1-T408: matched the initializer and both state callbacks in game/unit_020cce38 at 100% objdiff, with per-function contracts and instruction evidence.
 - Matched seven M1-T414 singleton and selective-record-copy functions in game/unit_02108bc8 with typed layouts; documented the remaining restore routine on the hard list.
 - Matched all five M1-T402 game/unit_020e7290 callbacks and resource setup functions at 100% objdiff; documented typed layouts and contracts.
 - M1-T404: matched eight game/unit_020bac80 query wrappers with explicit result forwarding, typed query arguments, and per-function evidence.

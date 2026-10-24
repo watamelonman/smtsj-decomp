@@ -1,9 +1,9 @@
-/* src/game/unit_0202cad4.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Main-loop state helpers; contracts are based on the original ARM code. */
 #include "types.h"
 
 
-int Unk065e88_Unk_065eac();
-/* decompiler-derived */
+void Unk065e88_Unk_065eac(void);
+/* Original at 0x0202cee0 forwards to 0x02065eac with no arguments. */
 void Unk02cad4_Thunk_Unk065e88_Unk_065eac(void)
 {
   Unk065e88_Unk_065eac();
@@ -22,6 +22,7 @@ typedef struct Unk02cad4Globals {
 
 extern Unk02cad4Globals data_0213d338;
 
+/* Original stores the unsigned -1 sentinel in the three state words. */
 void Unk02cad4_ResetGlobals(void)
 {
     Unk02cad4Globals *g = &data_0213d338;
@@ -30,31 +31,64 @@ void Unk02cad4_ResetGlobals(void)
     g->unk_08 = -1;
 }
 
+/* Returns the first state word unchanged; the reset sentinel is also valid. */
 u32 Unk02cad4_GetUnk00(void)
 {
     return data_0213d338.unk_00;
 }
 
+/* Stores a caller-supplied state in the word at global offset +8. */
 void Unk02cad4_Unk_02cbdc(u32 arg0)
 {
     data_0213d338.unk_08 = arg0;
 }
 
-int Unk065e88_Unk_065e88();
-int func_020e13ac();
-/* decompiler-derived */
+int func_020537b8(int index, u32 mask);
+extern u8 data_0215dd1c;
+
+/* Original tests masks 0x200, 0x100, 4 and 8 on input index zero.
+ * Returns 1 only when all tests pass and the byte latch was zero; a failed
+ * test clears a latch of 1. Other nonzero latch values are preserved. */
+int func_0202cdf4(void)
+{
+    if (func_020537b8(0, 0x200) && func_020537b8(0, 0x100) &&
+        func_020537b8(0, 4) && func_020537b8(0, 8)) {
+        if (data_0215dd1c == 0) {
+            data_0215dd1c = 1;
+            return 1;
+        }
+        return 0;
+    }
+    if (data_0215dd1c == 1) {
+        return data_0215dd1c = 0;
+    }
+    return 0;
+}
+
+void Unk065e88_Unk_065e88(void);
+void func_020e13ac(int entry);
+/* Original calls 0x02065e88 before selecting entry zero at 0x020e13ac. */
 void Unk02cad4_Unk_02ce80(void)
 {
   Unk065e88_Unk_065e88();
   func_020e13ac(0);
 }
 
-int Unk02e000_Unk_02e75c();
-/* decompiler-derived */
+/* Borrowed record: only the word read by 0x0202ce94 is described here. */
+typedef struct Unk02cad4Record {
+    u8 unknown[0x38];
+    u32 unk_38;
+} Unk02cad4Record;
+
+Unk02cad4Record *Unk02e000_Unk_02e75c(int index);
+int Unk0e1648_Unk_0e1648(void);
+void Unk02e000_Set_data_0215dd24(u32 value);
+/* If enabled, publishes the larger unsigned +0x38 word of records 0 and 1,
+ * then sets the global +8 state to 1 (original calls and field loads). */
 void Unk02cad4_Unk_02ce94(void)
 {
   int value1;
-  int value2;
+  Unk02cad4Record *value2;
   u32 value3;
   value1 = Unk0e1648_Unk_0e1648();
   if (value1 == 0) {
@@ -65,8 +99,8 @@ void Unk02cad4_Unk_02ce94(void)
   do {
     value2 = Unk02e000_Unk_02e75c(value1);
     value1 = value1 + 1;
-    if (value3 < *(u32 *)(value2 + 0x38)) {
-      value3 = *(u32 *)(value2 + 0x38);
+    if (value3 < value2->unk_38) {
+      value3 = value2->unk_38;
     }
   } while (value1 < 2);
   Unk02e000_Set_data_0215dd24(value3);

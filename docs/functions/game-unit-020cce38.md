@@ -17,13 +17,22 @@ All work and descriptor pointers borrow caller-owned, writable storage.
 | `Unk0cce38_Unk_0cd45c` | Tail-forwards the address of work +0x7c to `Unk0cb32c_Unk_0cb754`. The original adds 0x7c without dereferencing it and uses an ABS32 relocation for the tail call. |
 | `Unk0cce38_Nop_0cd46c` | Takes no consumed arguments and has no effects: its sole instruction is `bx lr`. |
 
-## Other functions in this translation unit
+## M1-T408 functions
 
-The existing `Unk0cce38_Unk_0ccefc` work initializer is retained and also
-matches at 100%. `func_020ccfe0` and `func_020cd200` belong to M1-T408 and
-remain supplied by the delink. The unit remains incomplete in the human-owned
-delink configuration.
+All three requested functions match at 100% with mwccarm 2.0/sp1p5.
+The existing initializer was retained; the two state callbacks are now C.
+Evidence is from the delinked ARM instructions and call relocations.
+
+| Function | Contract and original evidence |
+| --- | --- |
+| `Unk0cce38_Unk_0ccefc` | Borrows writable storage of at least 0xc4 bytes. Initializes records at +8 and controls at +0x80 and +0x9c, publishes the work pointer at `data_02176bc8`, sets state bytes and words, and forwards byte +0x11. Stores at 020ccf68–020ccf94 establish the initial state; helper relocations identify setup calls. Size 176 bytes. |
+| `func_020ccfe0` | Borrows initialized work storage and its +0x7c handle. The jump table at 020ccff8 selects states 0, 1, 6–10; completion-query branches gate state changes. States 8 and 9 advance the +0xbc counter using signed comparisons against 2. The final block copies +0x90 to handle +0x64 and sets +0xc0 only when state is not 9 and the counter is zero. The empty +0xcd46c callback accepts the work pointer passed by this caller but consumes no fields. Size 544 bytes. |
+| `func_020cd200` | Borrows initialized work storage. Word +4 disables all processing when zero. State 4 queries masks 0x40, 0x80, 0x800, 1, 2 in priority order and dispatches the +0x90 selection; state 5 queries 0x20, 0x10, 1, 2. The multiply-add at 020cd3ac computes a 26-byte record at work +0x14 using the +0xac index. State 5 therefore requires that selected record to be valid. Control offsets and transition stores follow the original loads/stores; no higher-level menu meanings are assumed. Size 560 bytes. |
+
+The unit remains incomplete in the human-owned delink configuration, as
+required by the card; its original object continues to supply the linked image.
+No module boundary changed.
 
 ## Hard list
 
-None for M1-T407.
+None for M1-T407 or M1-T408.
