@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk02ee5c_GetTierFromField70(void);
-int Unk03aae8_Unk_03acf4();
+int Unk03aae8_Unk_03acf4(u32 value);
 void *Unk03aae8_Unk_03ad14(void);
 void *Unk044904_Get_data_0215ee98(void);
 void func_02044ec4(void);
@@ -200,30 +200,28 @@ u32 Unk0bac80_Unk_0bb0b0(void)
 
 
 
-/* decompiler-derived */
+/* Publish selector 6 from query 02049d80; evidence: BL sequence at 020bb0cc. */
 u32 Unk0bac80_Unk_0bb0cc(void)
 {
   u32 value;
   value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,6);
-  Unk03aae8_Unk_03acf4();
+  Unk03aae8_Unk_03acf4(func_02049d80(value,6));
   return 1;
 }
 
 
-/* decompiler-derived */
+/* Publish selector 7 from query 02049d80; evidence: BL sequence at 020bb0e8. */
 u32 Unk0bac80_Unk_0bb0e8(void)
 {
   u32 value;
   value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,7);
-  Unk03aae8_Unk_03acf4();
+  Unk03aae8_Unk_03acf4(func_02049d80(value,7));
   return 1;
 }
 
-int Unk02e000_GetWorkArea();
-int func_020bac80();
-/* decompiler-derived */
+int Unk02e000_GetWorkArea(void);
+int func_020bac80(u32 arg0, int value);
+/* Forward work halfword +0x35c plus one; evidence: LDRH/ADD at 020bacf8. */
 void Unk0bac80_Unk_0bacf8(u32 arg0)
 {
   int value;
@@ -232,7 +230,7 @@ void Unk0bac80_Unk_0bacf8(u32 arg0)
 }
 
 
-/* decompiler-derived */
+/* Forward work halfword +0x35c minus one; evidence: LDRH/SUB at 020bad1c. */
 void Unk0bac80_Unk_0bad1c(u32 arg0)
 {
   int value;
@@ -240,8 +238,10 @@ void Unk0bac80_Unk_0bad1c(u32 arg0)
   func_020bac80(arg0,*(u16 *)(value + 0x35c) - 1);
 }
 
-int func_0203ac00();
-/* decompiler-derived */
+int func_0203ac00(u32 index);
+/* Publish halfword at +0x386 indexed by signed argument 0 when below 15,
+ * otherwise publish zero. Evidence: CMP/BGE and LDRH at 020bb104.
+ * Negative indices are not rejected by the original; callers supply valid indices. */
 u32 Unk0bac80_Unk_0bb104(void)
 {
   int value1;
@@ -257,8 +257,11 @@ u32 Unk0bac80_Unk_0bb104(void)
   return 1;
 }
 
-int func_0203ac00();
-int Unk02e000_GetWorkArea();
+int func_0203ac00(u32 index);
+int Unk02e000_GetWorkArea(void);
+/* Add argument 1 modulo 65536 to the selected halfword at +0x386 when
+ * argument 0 is below 15. Evidence: LDRH/ADD/STRH at 020bb144.
+ * The caller must supply a valid index; the signed comparison permits negatives. */
 u32 Unk0bac80_Unk_0bb144(void)
 {
     int a = func_0203ac00(0);
@@ -268,4 +271,40 @@ u32 Unk0bac80_Unk_0bb144(void)
         t[a] += b;
     }
     return 1;
+}
+
+/* Opaque helper ABIs follow the argument registers at the original call sites. */
+void func_0204f59c(u32 mode, u32 handle, int value);
+void func_0204f650(u32 mode, u32 handle, int value, u32 selector);
+void func_0204f24c(u32 mode, u32 handle, int value, u32 option,
+                   u32 zero, u32 enabled);
+
+/* Forward argument 0 through two helpers using the borrowed subobject's first
+ * word, set work +0x44 bit 13, and return 3. Evidence: calls and ORR at 020bae9c.
+ * The handle and command meanings are unknown; ownership remains with providers. */
+u32 func_020bae9c(void)
+{
+    int value = func_0203ac00(0);
+    u32 handle = *(u32 *)Unk0bac80_Unk_0bae18();
+    u32 *work;
+    func_0204f59c(0, handle, value);
+    func_0204f24c(0, handle, value, 0, 0, 1);
+    work = (u32 *)Unk0bac80_Unk_0badc0();
+    work[0x44 / 4] |= 0x2000;
+    return 3;
+}
+
+/* Forward argument 0 with selector 21, then call 0204f24c with option 1,
+ * set work +0x44 bit 13, and return 3. Evidence: MOV/BL/ORR at 020baf04.
+ * The subobject's first word is a borrowed opaque handle. */
+u32 func_020baf04(void)
+{
+    int value = func_0203ac00(0);
+    u32 handle = *(u32 *)Unk0bac80_Unk_0bae18();
+    u32 *work;
+    func_0204f650(0, handle, value, 21);
+    func_0204f24c(0, handle, value, 1, 0, 1);
+    work = (u32 *)Unk0bac80_Unk_0badc0();
+    work[0x44 / 4] |= 0x2000;
+    return 3;
 }
