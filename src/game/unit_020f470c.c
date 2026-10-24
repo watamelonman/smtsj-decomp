@@ -1,7 +1,12 @@
-/* src/game/unit_020f470c.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Borrowed work views and callbacks reconstructed from ARM data accesses. */
 #include "types.h"
 
-
+int Unk0f8448_GetUnkField10(void *object);
+int Unk0e8228_Unk_0e8bac(void);
+void Unk0e8228_Unk_0e8b94(void);
+int Unk044904_Unk_045048(void);
+void Unk0e8228_Unk_0e8d18(int value);
+int Unk0e8228_Unk_0e8d90(u32 value, u32 field);
 
 
 /* Object passed as first arg in this file; layout from observed accesses. */
@@ -67,13 +72,13 @@ int Unk0e8228_GetArr40();
 int Unk0ea208_Unk_0ea70c();
 int func_020ea744();
 int Unk0ea208_Unk_0ea828();
-/* decompiler-derived */
-void Unk0f470c_Unk_0f4958(int arg0)
+/* Field-10 selects an array entry unless the work flag requests 0ea828. */
+void Unk0f470c_Unk_0f4958(Unk0f470cWork *arg0)
 {
   u32 value;
-  value = Unk0f8448_GetUnkField10(arg0 + 0x54);
+  value = Unk0f8448_GetUnkField10(arg0->embedded_0054);
   Unk0ea208_Unk_0ea70c();
-  if (((Unk0f470cWork *)arg0)->unk_0050 != 0) {
+  if (arg0->unk_0050 != 0) {
     Unk0ea208_Unk_0ea828();
     return;
   }
@@ -100,10 +105,8 @@ void Unk0f470c_Unk_0f49f4(Unk0f470cWork *p)
     func_020d1e94(1);
 }
 
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
 void Unk0e8228_Unk_0e8f50();
+/* Event 2 sets the work flag for values 1, 5 and 6 and publishes that flag. */
 void Unk0f470c_Unk_0f4a1c(u8 *p, int a, int b)
 {
     if (a != 2) {
@@ -121,7 +124,7 @@ void Unk0f470c_Unk_0f4a1c(u8 *p, int a, int b)
     Unk0e8228_Unk_0e8f50(0);
 }
 
-/* decompiler-derived */
+/* Singleton fields +4 and +0x40 select objects for the three update calls. */
 void Unk0f470c_Unk_0f4b44(void)
 {
   int value;
@@ -136,14 +139,14 @@ int func_02044ec4();
 int func_020e82c8();
 int Unk0e8228_Unk_0e8c80();
 int func_020e8d38();
-/* decompiler-derived */
-void Unk0f470c_Unk_0f4ac0(void)
+/* The borrowed embedded object selects an array entry; 0e8bac selects its destination. */
+void Unk0f470c_Unk_0f4ac0(void *object)
 {
   u32 value1;
   int value2;
   int value3;
   int value4;
-  value1 = Unk0f8448_GetUnkField10();
+  value1 = Unk0f8448_GetUnkField10(object);
   value4 = *data_02176e00;
   Unk0e8228_Unk_0e8c80();
   value2 = func_02044ec4();
@@ -171,7 +174,6 @@ int Unk0f470c_Unk_0f4b80(Unk0f470cWork *arg0)
   return Unk0e8228_Unk_0e8d90(*(u32 *)(*data_02176e00 + 0x44),tmp1);
 }
 
-int Unk0f8448_GetUnkField10();
 int Unk0f8448_GetUnkField0();
 /* Both accessors receive the embedded object; the trailing state comparison
  * has no visible effect, as in the original instructions at 020f4944.
@@ -183,4 +185,79 @@ void func_020f4928(Unk0f470cWork *work)
     if (work->state == 1) {
         return;
     }
+}
+
+void func_020f4878(void);
+/* Descriptor words and callback addresses are evidenced by stores at 020f470c.
+ * The caller owns the descriptor; word +8 is deliberately untouched. */
+void func_020f470c(u32 *descriptor)
+{
+    descriptor[0] = 0xf8;
+    descriptor[1] = 3;
+    descriptor[3] = (u32)func_020f4878;
+    descriptor[4] = (u32)Unk0f470c_Unk_0f4908;
+    descriptor[5] = (u32)func_020f4928;
+    descriptor[6] = 0;
+    descriptor[7] = (u32)Unk0f470c_Nop_0f4874;
+    descriptor[8] = (u32)Unk0f470c_Thunk_020f7248;
+}
+
+int Unk0e8228_Unk_0e82ac(void);
+int Unk0e8228_Unk_0e8374(u32 value);
+void Unk0f8448_Init(void *object, int value);
+/* Initialize the embedded object from work +0x44 when enabled, reset the flag,
+ * then submit the resource selected by work +0x28 with sentinel -1. */
+void func_020f4994(Unk0f470cWork *work)
+{
+    if (Unk0e8228_Unk_0e82ac()) {
+        Unk0f8448_Init(work->embedded_0054,
+                      Unk0e8228_Unk_0e8374(FIELD(u32, work, 0x44)));
+    } else {
+        Unk0f8448_Init(work->embedded_0054, 0);
+    }
+    work->unk_0050 = 0;
+    Unk0e8228_Unk_0e8f50(0);
+    FIELD(u32, work, 0xc) = 9;
+    Unk0d1c98_Unk_0d1d94(func_020ea630(FIELD(u32, work, 0x28)), -1);
+}
+
+int func_0204a244(int object);
+/* With 0e8bac enabled, reject states 1, 2, 7 and 11 from 0204a244.
+ * The first callback argument is unused in the original. */
+int func_020f4a60(void *unused, int index)
+{
+    int state;
+    if (!Unk0e8228_Unk_0e8bac()) return 1;
+    Unk0e8228_GetArr40(index);
+    state = func_0204a244(func_02044ec4());
+    switch (state) {
+    case 1: case 2: case 7: case 11: return 0;
+    }
+    return 1;
+}
+
+int func_02053824(int channel, int mask);
+void Unk0f8448_Thunk_020bcc7c(void *object);
+void Unk0f8448_Thunk_020bccec(void *object);
+/* When the singleton flag is clear, input masks 32 and 16 invoke opposite
+ * object callbacks and refresh the singleton. Mask 16 takes return precedence. */
+int func_020f4ba4(void *object)
+{
+    int result;
+    Unk0f470cWork *work;
+    work = (Unk0f470cWork *)*data_02176e00;
+    result = 0;
+    if (work->unk_0050 == 0) {
+        if (func_02053824(0, 32)) {
+            Unk0f8448_Thunk_020bcc7c(object);
+            Unk0f470c_Unk_0f4958(work);
+            result = -1;
+        }
+        if (func_02053824(0, 16)) {
+            Unk0f8448_Thunk_020bccec(object);
+            Unk0f470c_Unk_0f4958(work);
+            result = 1;
+        }
+    }
+    return result;
 }
