@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Reconstruct seven matching command and record lookup functions in NitroSDK sdk_0204f7d4; document the remaining literal-pool mismatch.
+
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
