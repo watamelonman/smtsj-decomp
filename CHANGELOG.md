@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
