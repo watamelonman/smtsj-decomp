@@ -7,20 +7,20 @@ typedef signed short s16;
 typedef unsigned int u32;
 /* Borrowed table entry; packed selectors preserve the observed bit extraction. */
 typedef struct Entry {
-    u8 pad_00[32]; u16 unk_20; u16 pad_22;
+    u8 pad_00[32]; u16 unk_20; u16 unk_22;
     u16 unk_24, unk_26; u8 unk_28, unk_29; u8 unk_2a : 7; u8 flag_2a : 1;
-    u8 pad_2b[4]; u8 unk_2f : 1; u8 flags_2f : 7;
+    u8 pad_2b[4]; u8 unk_2f : 1; u8 flag_2f_1 : 1; u8 flags_2f : 6;
 } Entry;
 /* Default record view; signed values saturate at 99 in selector updates. */
 typedef struct RecordA {
     u8 pad_00[12]; s8 unk_0c, unk_0d, unk_0e, unk_0f, unk_10;
-    u8 pad_11[13]; s16 unk_1e; u8 pad_20[76]; u16 unk_6c;
+    u8 pad_11; s16 unk_12, unk_14; u8 pad_16[6]; s16 unk_1c, unk_1e; u8 pad_20[76]; u16 unk_6c;
 } RecordA;
 /* Indexed record view; the two signed-byte groups are updated together. */
 typedef struct RecordB {
     u8 pad_00[4]; s8 unk_04, unk_05, unk_06, unk_07, unk_08;
-    u8 pad_09[15]; s8 unk_18, unk_19, unk_1a, unk_1b, unk_1c;
-    u8 pad_1d[3]; s16 unk_20; u8 pad_22[18]; u16 unk_34;
+    u8 pad_09; s16 unk_0a, unk_0c; u8 pad_0e[10]; s8 unk_18, unk_19, unk_1a, unk_1b, unk_1c;
+    u8 pad_1d; s16 unk_1e, unk_20; u8 pad_22[18]; u16 unk_34;
 } RecordB;
 /* Borrowed work area; exactly twelve signed slot IDs are visited. */
 typedef struct Area { u8 pad_000[0x348]; s8 unk_348[12]; } Area;
@@ -32,7 +32,7 @@ extern RecordA *Unk02e000_Thunk_0202e788(void);
 extern RecordB *Unk02e000_GetAreaRecord(int index);
 extern Area *Unk02e000_GetWorkArea(void);
 extern Entry *Unk09974c_Unk_099d14(int index);
-extern int func_020e6ebc(int index, Entry *entry);
+extern int Unk09974c_IsKind1or14(Entry *entry);
 extern void func_02099b10(int index, int value);
 extern void func_02096c8c(void);
 extern void func_0209786c(RecordB *record);
@@ -195,6 +195,96 @@ int func_020e6e5c(Entry *entry, int value)
         } else if (selector == 14) result = value;
         else if (value == selector) result = value;
     }
+    return result;
+}
+
+/* Apply the entry's state and signed-halfword adjustments to one borrowed
+ * record; return zero for an effective update. Evidence: state 1 revival,
+ * state 7 exclusion, +0x2f bit one, and the original scaling/filter calls.
+ * entry must be nonnull; negative indices select the default record. */
+int func_020e6ebc(int index, Entry *entry)
+{
+    RecordA *a;
+    RecordB *b;
+    int result;
+    int amount;
+    if (entry->unk_22) return 1;
+    a = 0;
+    b = 0;
+    if (index < 0) a = Unk02e000_Thunk_0202e788();
+    else {
+        b = Unk02e000_GetAreaRecord(index);
+        if (!b) return 1;
+        switch (entry->unk_20) {
+        case 81: case 82: case 83: case 84: case 85:
+            return 1;
+        }
+    }
+    result = 1;
+    if (Unk09974c_IsKind1or14(entry)) {
+        if (a) {
+            if (a->unk_6c == 1) {
+                a->unk_6c = 0;
+                a->unk_1c += func_020e6de4(entry, a->unk_12);
+                if (a->unk_1c <= 0) a->unk_1c = 1;
+                result = 0;
+            }
+        } else {
+            if (b->unk_34 == 1) {
+                b->unk_34 = 0;
+                b->unk_1e += func_020e6de4(entry, b->unk_0a);
+                if (b->unk_1e <= 0) b->unk_1e = 1;
+                result = 0;
+            }
+        }
+    } else {
+        if (a) {
+            if (a->unk_6c == 1) return result;
+        } else {
+            if (b->unk_34 == 1) return result;
+        }
+        if (entry->flag_2f_1) result = func_020e6a28(index, entry);
+        if (a) {
+            if (func_020e6e5c(entry, a->unk_6c) > 0) {
+                result = 0;
+                a->unk_6c = 0;
+            }
+            if (a->unk_6c != 7) {
+                amount = func_020e6de4(entry, a->unk_12);
+                if (amount && a->unk_1c < a->unk_12) {
+                    a->unk_1c += amount;
+                    result = 0;
+                }
+                amount = func_020e6e20(entry, a->unk_14);
+                if (amount && a->unk_1e < a->unk_14) {
+                    a->unk_1e += amount;
+                    result = 0;
+                }
+                if (a->unk_1c > a->unk_12) a->unk_1c = a->unk_12;
+                if (a->unk_1e > a->unk_14) a->unk_1e = a->unk_14;
+            }
+        } else {
+            if (func_020e6e5c(entry, b->unk_34) > 0) {
+                result = 0;
+                b->unk_34 = 0;
+            }
+            if (b->unk_34 != 7) {
+                amount = func_020e6de4(entry, b->unk_0a);
+                if (amount && b->unk_1e < b->unk_0a) {
+                    b->unk_1e += amount;
+                    result = 0;
+                }
+                amount = func_020e6e20(entry, b->unk_0c);
+                if (amount && b->unk_20 < b->unk_0c) {
+                    b->unk_20 += amount;
+                    result = 0;
+                }
+            }
+            if (b->unk_1e > b->unk_0a) b->unk_1e = b->unk_0a;
+            if (b->unk_20 > b->unk_0c) b->unk_20 = b->unk_0c;
+        }
+    }
+    if (entry->flag_2f_1) result = func_020e6c54(index, entry, result);
     return result;
 }
 
