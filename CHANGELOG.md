@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T435 selection, initialization, and record update functions in `game/unit_020bcef4` at 100% objdiff.
 - Matched all eight M1-T434 game/unit_020bcef4 wrappers, state helpers, and signed modulo update; documented their argument contracts and instruction evidence.
 - Matched all eight M1-T425 singleton wrappers, byte predicates, limit setter and work cleanup functions in `game/unit_0205ae50`, with typed work links and documented assembly evidence.
 - Matched all eight M1-T424 game/unit_020fbed4 initialization, callback, cleanup, and drawing functions at 100% objdiff with typed private layouts.
