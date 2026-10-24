@@ -221,6 +221,8 @@ void Unk02dcfc_SetCode7(void)
     }
 }
 
+/* Selects code 8 at +0x18 when a manager exists; the code's meaning is
+ * unknown. Evidence: conditional store in the original at 0x0202df28. */
 void Unk02dcfc_SetCode8(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -229,6 +231,9 @@ void Unk02dcfc_SetCode8(void)
     }
 }
 
+/* Unconditionally selects code 22 at +0x18 of the worker held at +0xE8 of
+ * the Unk03aae8_Unk_03ad14 object; that worker must exist.
+ * Evidence: unchecked store in the original at 0x0202df40. */
 void Unk02dcfc_SetOwnerCode22(void)
 {
     u32 code = 22;
@@ -236,6 +241,8 @@ void Unk02dcfc_SetOwnerCode22(void)
     w->unk_0018 = code;
 }
 
+/* Selects code 24 at +0x18 when a manager exists; the code's meaning is
+ * unknown. Evidence: conditional store in the original at 0x0202df58. */
 void Unk02dcfc_SetCode24(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -244,6 +251,8 @@ void Unk02dcfc_SetCode24(void)
     }
 }
 
+/* Selects code 25 at +0x18 when a manager exists; the code's meaning is
+ * unknown. Evidence: conditional store in the original at 0x0202df70. */
 void Unk02dcfc_SetCode25(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -252,6 +261,9 @@ void Unk02dcfc_SetCode25(void)
     }
 }
 
+/* Unconditionally selects code 26 at +0x18 of the worker held at +0xE8 of
+ * the Unk03aae8_Unk_03ad14 object; that worker must exist.
+ * Evidence: unchecked store in the original at 0x0202df88. */
 void Unk02dcfc_SetOwnerCode26(void)
 {
     u32 code = 26;
@@ -259,6 +271,8 @@ void Unk02dcfc_SetOwnerCode26(void)
     w->unk_0018 = code;
 }
 
+/* Sets the word at +0x64 to one when a manager exists (InitWorker clears
+ * it); meaning unknown. Evidence: original at 0x0202dfa0. */
 void Unk02dcfc_SetField64(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -267,6 +281,8 @@ void Unk02dcfc_SetField64(void)
     }
 }
 
+/* Sets the word at +0x68 to one when a manager exists (InitWorker clears
+ * it); meaning unknown. Evidence: original at 0x0202dfb8. */
 void Unk02dcfc_SetField68(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -275,6 +291,8 @@ void Unk02dcfc_SetField68(void)
     }
 }
 
+/* Returns the word at +0x70, or zero if absent; Unk02dcfc_SetField70 writes
+ * it, meaning unknown. Evidence: original at 0x0202dfd0. */
 u32 Unk02dcfc_GetField70(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();

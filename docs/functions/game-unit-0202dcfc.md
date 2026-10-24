@@ -23,15 +23,27 @@ No hard functions remain for M1-T253. The existing implementations already
 matched; this task types the two direct worker parameters and documents the
 verified instruction contracts. No module boundary changes were needed.
 
-## Not done in M1-T254
-- `Unk02dcfc_SetCode8`
-- `Unk02dcfc_SetOwnerCode22`
-- `Unk02dcfc_SetCode24`
-- `Unk02dcfc_SetCode25`
-- `Unk02dcfc_SetOwnerCode26`
-- `Unk02dcfc_SetField64`
-- `Unk02dcfc_SetField68`
-- `Unk02dcfc_GetField70`
+## M1-T254: verified at 100% objdiff
+
+"Manager" is the borrowed pointer from `Unk02dcfc_Thunk_Unk095560_GetManagerAlias`;
+"owner worker" is the `Worker *` at +0xE8 of the object returned by
+`Unk03aae8_Unk_03ad14`. Code values stored at +0x18 have no known meaning yet.
+
+| Function | Address | Contract and evidence |
+| --- | --- | --- |
+| `Unk02dcfc_SetCode8` | `0x0202df28` | Stores 8 at manager +0x18 if a manager exists. |
+| `Unk02dcfc_SetOwnerCode22` | `0x0202df40` | Stores 22 at owner worker +0x18 with no null check, so the worker must exist. |
+| `Unk02dcfc_SetCode24` | `0x0202df58` | Stores 24 at manager +0x18 if a manager exists. |
+| `Unk02dcfc_SetCode25` | `0x0202df70` | Stores 25 at manager +0x18 if a manager exists. |
+| `Unk02dcfc_SetOwnerCode26` | `0x0202df88` | Stores 26 at owner worker +0x18 with no null check, so the worker must exist. |
+| `Unk02dcfc_SetField64` | `0x0202dfa0` | Stores 1 at manager +0x64 if a manager exists; `InitWorker` clears it. |
+| `Unk02dcfc_SetField68` | `0x0202dfb8` | Stores 1 at manager +0x68 if a manager exists; `InitWorker` clears it. |
+| `Unk02dcfc_GetField70` | `0x0202dfd0` | Returns manager +0x70, or 0 if no manager; `Unk02dcfc_SetField70` writes it. |
+
+All eight already matched once M1-T253 landed. This task adds the per-function
+comments and doc entries. Nothing was hard; no names changed.
+
+## Other
 - `Unk02dcfc_Unk_02dd9c`: decompiler-derived
 
 ## Not done in M1-T255
