@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T404: matched eight game/unit_020bac80 query wrappers with explicit result forwarding, typed query arguments, and per-function evidence.
 - Verified all eight M1-T403 game/unit_020bac80 helpers at 100% objdiff; added typed work views, explicit tier-result forwarding, and per-function evidence.
 - Matched all eight M1-T401 game/unit_020e7290 functions, with typed work/resource views and documented state, flag, and formatting contracts.
 - M1-T383: matched all three remaining requested game/unit_02094fe0 functions, including the selected-bit merge routine; documented contracts and typed callee parameters.
