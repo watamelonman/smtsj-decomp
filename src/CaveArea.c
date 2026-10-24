@@ -1,4 +1,4 @@
-/* src/CaveArea.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Cave-area helpers reconstructed from ARM field accesses and call relocations. */
 #include "types.h"
 
 
@@ -20,8 +20,8 @@ typedef struct CaveAreaWork {
     u32 unk_0160;
 } CaveAreaWork;
 
-int func_0205bb68();
-/* decompiler-derived */
+void func_0205bb68(void);
+/* At 0x020ed354, invokes the no-argument helper twice; its wider purpose is unknown. */
 void CaveArea_Unk_0ed354(void)
 {
   func_0205bb68();
@@ -30,8 +30,8 @@ void CaveArea_Unk_0ed354(void)
 }
 
 
-/* decompiler-derived */
-void CaveArea_Unk_0ec278(int arg0)
+/* ARM stores at 0x020ec278 select byte state 2 and set the word at +0x160. */
+void CaveArea_Unk_0ec278(CaveAreaWork *arg0)
 {
   ((CaveAreaWork *)arg0)->unk_00c8 = 2;
   ((CaveAreaWork *)arg0)->unk_0160 = 1;
@@ -40,13 +40,14 @@ void CaveArea_Unk_0ec278(int arg0)
 
 
 extern u8 data_02150d6c[];
-u32 func_0205ba98();
+u32 func_0205ba98(u32 size, u32 alignment, const u8 *source, u32 line);
+/* 0x020ed1a8 requests 0x4000 bytes aligned to 0x200 and retains the handle at +0x80. */
 void CaveArea_AllocBuf(u8 *p)
 {
     FIELD(u32, p, 128) = func_0205ba98(0x4000, 0x200, data_02150d6c, 0x5a1);
 }
 
-/* decompiler-derived */
+/* 0x020ed3b4 resets words 0 and 2 and sets word 3 to 16; word 1 is preserved. */
 void CaveArea_Unk_0ed3b4(u32 *arg0)
 {
   *arg0 = 0;
@@ -55,20 +56,20 @@ void CaveArea_Unk_0ed3b4(u32 *arg0)
   return;
 }
 
-int func_020445f4();
-int func_0204fed8();
-/* decompiler-derived */
+void *func_020445f4(int index, int item);
+u32 func_0204fed8(void *table, u32 index);
+/* 0x020eda18 forwards the index through table (0x25, 0), discarding the result. */
 void CaveArea_Unk_0eda18(u32 arg0)
 {
-  u32 tmp1;
+  void *tmp1;
   tmp1 = func_020445f4(0x25,0);
   func_0204fed8(tmp1,arg0);
   return;
 }
 
 
-/* decompiler-derived */
-void CaveArea_Unk_0ed26c(int arg0)
+/* 0x020ed26c calls the helper only for a nonzero +0x124 flag, then clears it. */
+void CaveArea_Unk_0ed26c(CaveAreaWork *arg0)
 {
   if (((CaveAreaWork *)arg0)->unk_0124 == 0) {
     return;
@@ -84,7 +85,6 @@ extern u8 data_02150dac[];
 int func_02013c3c();
 int func_0205ae60();
 int func_0205b398();
-void CaveArea_AllocBuf();
 /* Loads Cave/Area/cave_area0%d (or cave_privatearmy) layout (medium). */
 void CaveArea_LoadAreaLayout(int arg0)
 {
@@ -102,7 +102,7 @@ void CaveArea_LoadAreaLayout(int arg0)
   else {
     func_02013c3c(auStack_48,data_02150dac,tmp1 + 6);
   }
-  CaveArea_AllocBuf(arg0);
+  CaveArea_AllocBuf((u8 *)arg0);
   *(u8 **)(arg0 + 0x6c) = auStack_48;
   ((CaveAreaWork *)arg0)->unk_007c = 0;
   func_0205ae60(arg0 + 0x68);
@@ -131,6 +131,7 @@ typedef struct CaveAreaUnk0ed9e8 {
     float t;
 } CaveAreaUnk0ed9e8;
 
+/* 0x020ed3cc advances the caller-owned float by 0.6, resetting at >= 32. */
 void CaveArea_Unk_0ed3cc(float *p)
 {
     *p += 0.6f;
@@ -139,6 +140,8 @@ void CaveArea_Unk_0ed3cc(float *p)
     }
 }
 
+/* Stores at 0x020ed60c initialize three floats and the following integer word.
+ * The caller must provide at least 16 writable bytes. */
 void CaveArea_InitParams(float *p)
 {
     p[0] = 96.0f;
