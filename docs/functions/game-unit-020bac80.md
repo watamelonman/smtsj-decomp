@@ -32,24 +32,12 @@ The local struct views name only observed fields and preserve their byte offsets
 
 No M1-T403 hard functions remain. Other card implementations below are retained.
 
-- `Unk0bac80_Unk_0bb0cc`: decompiler-derived
-- `Unk0bac80_Unk_0bb0e8`: decompiler-derived
-- `Unk0bac80_Unk_0bacf8`: decompiler-derived
-- `Unk0bac80_Unk_0bad1c`: decompiler-derived
-- `Unk0bac80_Unk_0bb104`: decompiler-derived
-
-## Not done in M1-T405
-- `Unk0bac80_Unk_0bb144`
-- `func_020bae9c`
-- `func_020baf04`
-
 ## Not done in M1-T406
 - `func_020bafa4`
 - `func_020bb00c`
 - `func_020bac80`
 - `func_020bad40`
 - `func_020bb18c`
-- `Unk0bac80_Unk_0bb144`: hand-matched
 
 ## M1-T404: verified query result wrappers
 
@@ -73,3 +61,38 @@ are unknown, so the wrapper names remain neutral.
 All eight wrappers are 100% in the generated objdiff report. The match gate
 passes for all 30 C definitions checked in changed files. No M1-T404 hard
 functions remain.
+
+## M1-T405: verified matches
+
+All eight functions below are 100% in objdiff. Evidence is the original ARM
+instruction stream inspected with `tools/hand/asm.py`; field and command purposes
+remain unknown, so existing neutral names are retained. Provider objects are
+borrowed and must remain valid throughout each call.
+
+- `Unk0bac80_Unk_0bb0cc` (28 B): queries `func_02049d80` selector 6 on
+  the subobject from 020bae18, publishes its returned word, and returns 1.
+- `Unk0bac80_Unk_0bb0e8` (28 B): the same sequence with selector 7.
+- `Unk0bac80_Unk_0bacf8` (36 B): reads the unsigned halfword at work
+  +0x35c and passes its value plus one to 020bac80 with the original first
+  argument. The addition occurs after integer promotion, without halfword wrapping.
+- `Unk0bac80_Unk_0bad1c` (36 B): the same forwarding with subtraction
+  of one; a zero halfword produces signed -1.
+- `Unk0bac80_Unk_0bb104` (64 B): obtains signed argument 0; when it is
+  below 15, publishes the halfword indexed from work +0x386, otherwise zero.
+  The original CMP/BGE does not reject negative indices; valid addressing is
+  a caller precondition, rather than an added bounds check.
+- `Unk0bac80_Unk_0bb144` (72 B): obtains arguments 0 and 1, and adds
+  argument 1 to the halfword indexed by argument 0 from work +0x386 if the
+  signed index is below 15. STRH truncates the sum modulo 65536. The same
+  caller index precondition applies.
+- `func_020bae9c` (104 B): obtains argument 0 and the subobject's first
+  word, calls 0204f59c with `(0, word, argument)`, then 0204f24c with
+  `(0, word, argument, 0, 0, 1)`. Sets bit 13 in work +0x44 and returns 3.
+- `func_020baf04` (104 B): calls 0204f650 with
+  `(0, word, argument, 21)`, then 0204f24c with
+  `(0, word, argument, 1, 0, 1)`. Sets the same work bit and returns 3.
+
+Validation: match gate passed, anticheat passed, all nine unit tests passed,
+and checksum reported all artifacts byte-identical to the original. No new
+runtime tests were required by this card; objdiff checks the compiled functions.
+No M1-T405 hard functions remain.

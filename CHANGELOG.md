@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T405: matched eight game/unit_020bac80 query, halfword update, and command handlers at 100% objdiff with typed arguments and per-function evidence.
 - M1-T404: matched eight game/unit_020bac80 query wrappers with explicit result forwarding, typed query arguments, and per-function evidence.
 - Matched all eight M1-T407 game/unit_020cce38 entry, descriptor, teardown, state and empty callback functions at 100% objdiff; added typed contracts and per-function evidence.
 - M1-T388: matched the 348-byte slot-driven singleton transition setup `func_0206e8b0` in readable C.
