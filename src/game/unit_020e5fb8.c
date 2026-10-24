@@ -11,11 +11,11 @@ int Unk094fe0_Thunk_0202e8cc(void);
 void Unk0e5fb8_Unk_0e61e8(u32 arg0,u32 arg1,u32 arg2);
 void Unk0e5fb8_Unk_0e626c(u32 arg0,u32 arg1);
 void Unk0e5fb8_Unk_0e62a4(u32 arg0,u32 arg1);
-int Unk0e5fb8_Get2Bits();
-int Unk0e5fb8_Get2BitsB00();
-int Unk0e5fb8_Get2BitsD00();
-int Unk0e5fb8_Get2BitsD80();
-int Unk0e5fb8_Get2BitsD80Hi();
+int Unk0e5fb8_Get2Bits(u32 a, u32 b);
+int Unk0e5fb8_Get2BitsB00(u32 a, u32 b);
+int Unk0e5fb8_Get2BitsD00(u32 a, u32 b);
+int Unk0e5fb8_Get2BitsD80(u32 a, u32 b);
+int Unk0e5fb8_Get2BitsD80Hi(u32 a, u32 b);
 
 int Unk0e5fb8_Unk_0e6158(int arg0);
 int Unk0e5fb8_Unk_0e61b0(int arg0);
@@ -49,6 +49,9 @@ void Unk0e5fb8_SetBits(int a, int n, u32 bits)
     }
 }
 
+/* Returns bit index 0x800 + 10 * row + col; unsigned columns >= 10 use zero.
+ * Evidence: ARM at 0x020e613c and TestBit caller 0x020e61e8. Rows must
+ * keep signed multiplication and addition representable; no row check exists. */
 int Unk0e5fb8_GetOffset800(int row, u32 col)
 {
     int base = row * 10;
@@ -130,7 +133,8 @@ void Unk0e5fb8_Unk_0e6254(u32 arg0)
   Unk0e5fb8_Unk_0e626c(value,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards the shared context and unchecked index to the bit-setting helper
+ * at 0x020e62a4. Evidence: ARM at 0x020e628c saves r0 across the thunk call. */
 void Unk0e5fb8_Unk_0e628c(u32 arg0)
 {
   u32 value;
@@ -138,7 +142,8 @@ void Unk0e5fb8_Unk_0e628c(u32 arg0)
   Unk0e5fb8_Unk_0e62a4(value,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards the shared context and index to Get2Bits (base 0x900).
+ * Evidence: ARM at 0x020e62c8 saves r0 and supplies it as r1 after the thunk. */
 void Unk0e5fb8_Unk_0e62c8(u32 arg0)
 {
   u32 value;
@@ -146,7 +151,8 @@ void Unk0e5fb8_Unk_0e62c8(u32 arg0)
   Unk0e5fb8_Get2Bits(value,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards the shared context and index to Get2BitsB00 (base 0xb00).
+ * Evidence: ARM at 0x020e6348 saves r0 and supplies it as r1 after the thunk. */
 void Unk0e5fb8_Unk_0e6348(u32 arg0)
 {
   u32 value;
@@ -154,7 +160,8 @@ void Unk0e5fb8_Unk_0e6348(u32 arg0)
   Unk0e5fb8_Get2BitsB00(value,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards the shared context and index to Get2BitsD00 (base 0xd00).
+ * Evidence: ARM at 0x020e63c8 saves r0 and supplies it as r1 after the thunk. */
 void Unk0e5fb8_Unk_0e63c8(u32 arg0)
 {
   u32 value;
@@ -162,7 +169,8 @@ void Unk0e5fb8_Unk_0e63c8(u32 arg0)
   Unk0e5fb8_Get2BitsD00(value,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards the shared context and index to Get2BitsD80 (low pair).
+ * Evidence: ARM at 0x020e6448 saves r0 and supplies it as r1 after the thunk. */
 void Unk0e5fb8_Unk_0e6448(u32 arg0)
 {
   u32 value;
@@ -170,7 +178,8 @@ void Unk0e5fb8_Unk_0e6448(u32 arg0)
   Unk0e5fb8_Get2BitsD80(value,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards the shared context and index to Get2BitsD80Hi (high pair).
+ * Evidence: ARM at 0x020e64c8 saves r0 and supplies it as r1 after the thunk. */
 void Unk0e5fb8_Unk_0e64c8(u32 arg0)
 {
   u32 value;
@@ -178,7 +187,9 @@ void Unk0e5fb8_Unk_0e64c8(u32 arg0)
   Unk0e5fb8_Get2BitsD80Hi(value,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards the shared context, row and column to 0x020e61e8.
+ * Evidence: ARM at 0x020e61c8 preserves both arguments across the thunk
+ * and supplies them as r1/r2. The callee reads the GetOffset800 bit index. */
 void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1)
 {
   u32 value;
@@ -189,7 +200,7 @@ void Unk0e5fb8_Unk_0e61c8(u32 arg0,u32 arg1)
 
 
 int Unk094fe0_Unk_09502c();
-int Unk0e5fb8_GetOffset800();
+int Unk0e5fb8_GetOffset800(int row, u32 col);
 /* decompiler-derived */
 void Unk0e5fb8_Unk_0e622c(u32 arg0,u32 arg1,u32 arg2)
 {
