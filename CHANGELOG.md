@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched M1-T307 `func_0209d1cc` (effect spawn with kind-based placement and name-suffix modes) in `src/game/unit_0209d060.c` at 100% objdiff.
 - Matched all eight M1-T306 singleton work helpers in `src/game/unit_0209d060.c`, including allocation and optional parent linking, with typed contracts and instruction evidence.
 - Matched all three M1-T301 functions in `game/unit_02122a78`, with typed callback state and documented resource/handle initialization.
 - Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.

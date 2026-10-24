@@ -15,6 +15,7 @@ its sole word's wider meaning is unknown. Names remain unchanged.
 | `Unk09d060_Unk_09d170` | 0209d170–0209d190 passes singleton and the opaque child pointer to 020616ec only when the singleton exists. The call order complements the parent link in 0209d084. |
 | `Unk09d060_GetCtxUnk00` | 0209d194–0209d1ac loads the singleton's first word when present, otherwise returns zero. |
 | `Unk09d060_Unk_09d1b0` | 0209d1b0–0209d1c8 conditionally stores zero in the singleton's first word. |
+| `func_0209d1cc` | M1-T307. 0209d1cc–0209d428 resolves `name` to a slot with 0206e06c (returns early on 0xff) and fetches record `id` with 02044ec4. A 10-way jump table on `kind` picks the position (02049ca4/02049cd4 from the record, zero, or y = -5888/-10368) and the mode (3, 5 for kinds 2/5/7, 1 for kind 9). Names that start with "ef_e" (data_0214c9b8) and end with "_y" (data_0214c9c0) force mode 1. It calls 0206c130 (scale 0x3f800000), links the result with 0209d170, and sets flag 0x20 at +0x34. In mode 5 it also sets 0x02, and for "ef_w" names (data_0214c9c4) it stores record+0x0c at +0x38. Then come the 0206ea0c/0206e8b0 and 0206c8f8 sub-entry steps (record type byte 2), and up to two pairs from 02044618, as in UniteEvent's func_0210fa60. 0a5680's getters are declared with one argument because the original sets only r0 before those calls. Neutral name: nothing shows what the effect is for. |
 
 The callback and pointer prototypes preserve the original argument registers;
 opaque link endpoints do not imply knowledge of other work-block layouts.
@@ -23,5 +24,4 @@ marks it complete.
 
 ## Hard list / outside this card
 
-No M1-T306 functions remain unmatched. `func_0209d1cc` belongs to M1-T307,
-remains absent from this C file, and continues to link from the delinked object.
+None: every function in this TU is now written in C and matches at 100%.
