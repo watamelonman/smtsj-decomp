@@ -80,6 +80,122 @@ u32 Unk108bc8_GetHead(void)
     return 0;
 }
 
+/* Growth block is returned by value; HP/MP formula evidence also appears in CampStatus. */
+typedef struct Unk108bc8Base {
+    u8 hpRate, mpRate;
+    u16 unk_02, unk_04, unk_06, hpBase, mpBase;
+} Unk108bc8Base;
+
+/* Borrowed 36-byte saved record; flag bit one retains existing resource fields. */
+typedef struct Unk108bc8Saved {
+    u8 level, stats[5], current[5];
+    u8 flag0:1, flag1:1, otherFlags:6;
+    u16 hp, mp, ids[6];
+    u8 tail[8];
+} Unk108bc8Saved;
+
+/* Borrowed 40-byte slot: id selects growth data and HP/MP occupy +16/+18. */
+typedef struct Unk108bc8Slot {
+    u16 id;
+    u8 pad_02[2];
+    u8 level, stats[5];
+    u8 pad_0a[6];
+    u16 hp, mp;
+    u8 pad_14[20];
+} Unk108bc8Slot;
+
+/* Twelve signed indices at +0x348; negative entries do not name an area. */
+typedef struct Unk108bc8AreaWork {
+    u8 pad[0x348];
+    s8 indices[12];
+} Unk108bc8AreaWork;
+
+void func_02096c8c(void);
+u8 *Unk02e000_GetWorkArea(void);
+u8 *Unk02e000_GetAreaRecord(int index);
+void func_0209786c(void *area);
+u8 *Unk02e000_Thunk_0202e788(void);
+void Unk02ee5c_Unk_02efa4(void);
+u8 *Unk02e000_Unk_02e774(void);
+u8 *func_020a1428(u16 id);
+Unk108bc8Base func_020b8804(u16 id);
+
+/* Caps the level and vitality growth formula at the original 999 HP limit. */
+static inline u16 Unk108bc8_CalcHp(u8 level, u8 vi, Unk108bc8Base base)
+{
+    u16 result;
+    s32 value = base.hpBase + (level * 6 + base.hpRate * (vi * 3) / 100);
+    if (value > 999) result = 999;
+    else result = value;
+    return result;
+}
+
+/* Caps the level and magic growth formula at the original 999 MP limit. */
+static inline u16 Unk108bc8_CalcMp(u8 level, u8 ma, Unk108bc8Base base)
+{
+    u16 result;
+    s32 value = base.mpBase + (level * 3 + base.mpRate * (ma * 2) / 100);
+    if (value > 999) result = 999;
+    else result = value;
+    return result;
+}
+
+/* Refreshes area and saved-record derived values. Offsets, loop bounds and flag
+ * bit one are evidenced by ARM loads at 02108cbc, 02108d38 and 02108f1c. */
+void func_02108ca4(void)
+{
+    u8 *work;
+    int i, j;
+    u8 index;
+    Unk108bc8Saved *record;
+    Unk108bc8Slot *slot;
+    Unk108bc8Base base, slotBase;
+    func_02096c8c();
+    work = Unk02e000_GetWorkArea();
+    for (i = 0; i < 12; i++) {
+        if (((Unk108bc8AreaWork *)(work + i))->indices[0] >= 0)
+            func_0209786c(Unk02e000_GetAreaRecord(((Unk108bc8AreaWork *)(work + i))->indices[0]));
+    }
+    if (work[0x357] < 8) work[0x357] = 8;
+    for (index = 0; index < 12; index++)
+        Unk02e000_GetAreaRecord(index)[0x3a] = index;
+    work = Unk02e000_Thunk_0202e788();
+    *(u16 *)(work + 0x58) = 0;
+    *(u16 *)(work + 0x6a) = 0;
+    Unk02ee5c_Unk_02efa4();
+    record = (Unk108bc8Saved *)(Unk02e000_Unk_02e774() + 0x16fc);
+    for (i = 0; i < 491; i++, record++) {
+        u8 *resource = func_020a1428((u16)(i + 1));
+        if (resource) {
+            if (!record->flag1) {
+                record->level = resource[3];
+                record->stats[0] = resource[26];
+                record->stats[1] = resource[30];
+                record->stats[2] = resource[27];
+                record->stats[3] = resource[28];
+                record->stats[4] = resource[29];
+                record->current[0] = resource[26];
+                record->current[1] = resource[30];
+                record->current[2] = resource[27];
+                record->current[3] = resource[28];
+                record->current[4] = resource[29];
+                for (j = 0; j < 6; j++) record->ids[j] = ((u16 *)(resource + 46))[j];
+            }
+            { Unk108bc8Base *p = &base; *p = func_020b8804((u16)(i + 1)); }
+            record->hp = Unk108bc8_CalcHp(record->level, record->stats[2], base);
+            record->mp = Unk108bc8_CalcMp(record->level, record->stats[1], base);
+        }
+    }
+    slot = (Unk108bc8Slot *)(Unk02e000_Unk_02e774() + 0x5c08);
+    for (i = 0; i < 3; i++, slot++) {
+        if (func_020a1428(slot->id)) {
+            { Unk108bc8Base *p = &slotBase; *p = func_020b8804(slot->id); }
+            slot->hp = Unk108bc8_CalcHp(slot->level, slot->stats[2], slotBase);
+            slot->mp = Unk108bc8_CalcMp(slot->level, slot->stats[1], slotBase);
+        }
+    }
+}
+
 /* Copies selected record regions; 02109050 clears bit zero in both flag bytes. */
 void func_02109050(Unk108bc8Work *dst, const Unk108bc8Work *src)
 {
