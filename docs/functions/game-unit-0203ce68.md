@@ -25,12 +25,26 @@ preserves the original instructions while expressing the data dependency.
 `Unk096754_Unk_096a14` likewise receives the operand in r0 in the original;
 its current implementation does not use it.
 
-## Other existing functions (outside M1-T250)
+## M1-T251
 
-The TU also contains `Unk03ce68_Unk_03ce68`, `Unk03ce68_Unk_03ced0`,
-`Unk03ce68_Unk_03d038`, `Unk03ce68_Unk_03d088`, and
-`Unk03ce68_Unk_03d0f0`; their bodies were retained.
+The remaining five functions already matched in HEAD, but with untyped
+prototypes (`int f();`), raw `u16 *` work access and no comments. They now use
+the shared `Unk03ce68Work` struct (u16 slots `unk_0000`..`unk_0006`, then
+`unk_0070`), real prototypes taken from the callee definitions, and doc comments.
+All five are still 100% objdiff and the image is still byte-identical. Neutral names
+are kept because the command identities are not established.
+
+| Function | Behavior and instruction evidence |
+| --- | --- |
+| `Unk03ce68_Unk_03ce68` | Reads slot index (operand 0; operand 1 is read and discarded), reports work u16 slot 0..3 (`ldrh [r0,#0..#6]` jump table), 0 otherwise. |
+| `Unk03ce68_Unk_03ced0` | Reads id (operand 1, `lsl/lsr #16`; operand 0 discarded), switches on `Unk09974c_GetEntryUnk08(id)`: kinds 3..6 `strh` the id into slots 0..3, kinds 0..2 and others store nothing (7-entry table). |
+| `Unk03ce68_Unk_03d038` | Pure mapping of selector 0..4 to 0, 4, 1, 2, 3; others give 0 (5-entry table of `mov r0,#n; bx lr`). |
+| `Unk03ce68_Unk_03d088` | Target = operand 0, selector = `03d038(operand 1)`. Target 0 reports `Unk09727c_GetAreaS8(sel)`, targets 1..3 report `Unk0981dc_Unk_098258((u8)(target-1), sel)`, others report 0. |
+| `Unk03ce68_Unk_03d0f0` | Setter counterpart: operand 2 is the value, sign-extended from 16 bits (`lsl/asr #16`), then passed to `Unk096754_Unk_097220(sel, v)` for target 0 or `Unk0981dc_Unk_0981f4((u8)(target-1), sel, v)` for targets 1..3. |
+
+Those two setters take a `u8` value in their own TUs. Here the caller-side
+prototypes declare `s16` because the ROM sign-extends from 16 bits at the call site.
 
 ## Hard list
 
-None for M1-T250.
+None for M1-T250 or M1-T251.
