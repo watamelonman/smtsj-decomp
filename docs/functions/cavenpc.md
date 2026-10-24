@@ -1,6 +1,6 @@
-# CaveNpc (M1-T353)
+# CaveNpc (M1-T353, M1-T354)
 
-All eight functions below match at 100% in objdiff. Names already present in the
+All nine functions below match at 100% in objdiff. Names already present in the
 symbol map are retained; unknown routines keep their address-based names.
 Layouts come from the listed ARM9 loads/stores, without assuming a full object ABI.
 Work pointers are non-null unless the entry below explicitly permits null.
@@ -15,6 +15,18 @@ Work pointers are non-null unless the entry below explicitly permits null.
 | `func_020fff40` | 136 | Kind 604 is untouched. State zero polls +20, completes that request, binds +44 to +48, initializes +56 and sets state one. State one decrements a positive signed countdown and updates +56. Other states do nothing. Evidence: +4 dispatch and handle calls. |
 | `func_02100104` | 200 | Maps count/row to +8: count one gives zero; count two gives -34 for row zero, +34 otherwise; count three gives -68/0/+68 for rows 0..2; count four gives -68/0/+68/0 for rows 0..3. Other combinations preserve +8. Evidence: switch tables and immediate stores. |
 | `func_020fffc8` | 264 | Kind 604 bypasses drawing. Other kinds bracket processing with mode four and `func_020572d8`; state one draws +56 at (+8 + signed pair.x, 8 + signed pair.y), with unit scale. When active, the tint uses shade 76 plus signed countdown * 179 / 5 for positive countdown, narrowed to a byte. Evidence: `Unk0de678_GetPair`, `func_0205c748`, packed color construction, and signed byte loads. |
+
+## M1-T354 initializer
+
+| Function | Size | Behavior and evidence |
+| --- | ---: | --- |
+| `func_020ffd48` | 372 | Allocates 60 bytes with update/draw/no-op callbacks and returns null on failure. Stores the unsigned 16-bit input kind at +0 and +2; kind 604 returns immediately. Otherwise allocates +44, formats `Event/2DCH/ch%d`, and checks `Data/Tex/Event/2DCH/ch%d.cmp`. A missing file changes only +0 to 600 and rebuilds the path. Initializes the +20 request using the path at +24 and zero at +40, submits it with +44, then loads `Event/2DCH/sh/ch%d` into +48 and clears its record values. Loads `Event/2DCH/an/ch%d` into +52, creates +56 and binds both handles. Applies the existing row/count position helper and clears activation, countdown and state. Evidence: ARM loads/stores and format strings at `data_02151118` through `data_0215116c`. Retains the existing symbol name. |
+
+The two local path buffers are 64 bytes each, as shown by stack offsets +16
+and +80. The request initializer/submission consumes the stack-backed path during
+this call; the reconstruction preserves that original lifetime and call order.
+The +2 kind remains the requested kind when +0 falls back to 600.
+Verification: direct relocated instruction comparison and objdiff both report 100%.
 
 ## Hard list
 

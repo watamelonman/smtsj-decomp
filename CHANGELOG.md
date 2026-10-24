@@ -3,6 +3,10 @@
 ## Unreleased
 
 - Match the two-pass object update handler `func_020479b8` in game/unit_02047788.
+- Matched all eight M1-T360 functions in `game/unit_020efff4`, including descriptor setup, embedded-object initialization, and percentage clamping, with typed work fields and per-function evidence.
+- Matched all six M1-T359 entry application, status filtering, amount calculation and cost deduction functions in `game/unit_020f8bc8` at 100% objdiff, with typed record views and per-function documentation.
+- Matched all seven M1-T358 game/unit_020fb128 callbacks at 100% objdiff, with typed record/work views and documented phase and threshold behavior.
+- Matched M1-T354 `func_020ffd48`, the CaveNpc resource initializer, at 100% objdiff with typed kind and request fields.
 - Matched all eight M1-T356 functions in `game/unit_02047788`, with typed work fields and per-function behavior documentation.
 - Matched the four remaining M1-T349 work-construction functions in `game/unit_020b1ab8`, including allocation failure and conditional coordinate offsets.
 - Matched all eight M1-T353 CaveNpc callbacks at 100% objdiff, with typed work and record layouts and documented behavior.
