@@ -34,6 +34,20 @@ Consumers rewritten to use the struct (no raw casts):
 `unit_0202f2a8.c`, `unit_0209e72c.c`, `unit_0209e96c.c`, `unit_0209ee4c.c`,
 `unit_0209e418.c`, `unit_0209d42c.c`, `unit_021124f0.c`.
 
+Pending fold-in: `unit_0209e96c.c` (`func_0209ea18`) views `GameState` through a
+local `TransitionState` because `GameState.h` was outside that card's scope. Offsets
+it observed (all **certain** on offset/type, meaning **none**), to be folded into
+`GameState` later:
+
+| Offset | Type | Use in `func_0209ea18` |
+|---|---|---|
+| +0x0004 | sub-object | passed to `Unk02f2a8_Unk_034970` |
+| +0x0058 | `u16` | passed to `Unk0a0ce4_Unk_0a0da4` |
+| +0x00A4 | `u32` | 2nd arg to `func_02052d7c` |
+| +0x00A8 | sub-object | address is 1st arg to `func_02052d7c` |
+| +0x03E4 | table | passed to `Unk0392f8_Unk_0394b8` (size unknown) |
+| +0x7482 / +0x7483 | `u8` / `u8` | grid x / y stored before mode 15 |
+
 ## Other frequent globals — `include/Globals.h`
 
 Scalar BSS words still named `data_<addr>` in `symbols.txt` (rename later when meaning
@@ -135,3 +149,9 @@ transient local, not the file Work object.
 +0x40. `func_020ae16c` checks +0x38; `func_020ae0d8` increments +0x3a
 and tests +0x40 bit 2. Padding preserves observed offsets, without claiming
 the size or meaning of the rest of the shared object.
+
+## Unk02e000WorkArea / Unk03aae8Ctx / Unk03bba4Sub — `include/game/unit_0203bba4.h`
+Partial views used by `src/game/unit_0203bba4.c`. `Unk02e000WorkArea` (returned by
+`Unk02e000_GetWorkArea`) names `unk_0358` (u32), `unk_0364`/`unk_0365` (s8).
+`Unk03aae8Ctx` (returned by `Unk03aae8_Unk_03ad14`) names `unk_00e8`, a pointer to
+`Unk03bba4Sub` whose `unk_0018` holds a substate code. Sizes unknown.
