@@ -6,75 +6,75 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int Unk0a7d54_Unk_0a7e8c();
-int Unk0a7d54_FindByKey();
+int Unk0a7d54_Unk_0a7e8c(int entry);
+int Unk0a7d54_FindByKey(u8 *p, u32 key);
 
-void Unk0a7d54_SetUnkField8(void *obj, u32 value);
-void Unk0a7d54_Unk_0a9158(int arg0);
-void Unk0a7d54_Unk_0a7eb8(int arg0,u32 arg1);
-u32 Unk0a7d54_Unk_0a8648(int arg0);
-int Unk0a7d54_Unk_0a9204(int arg0);
-void Unk0a7d54_Unk_0a8594(void);
-void Unk0a7d54_Unk_0a7ec8(u32 arg0,u32 arg1,u32 arg2);
+/* Borrowed field view; offsets follow loads/stores in 020a7eb8 and 020a9158.
+ * Field meanings and the bytes between them remain unknown. */
+typedef struct Unk0a7d54Fields {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+    u8 unk_0c;
+    u8 unk_0d;
+    u8 pad_0e[0x0e];
+    u32 unk_1c;
+    u32 unk_20;
+} Unk0a7d54Fields;
 
-/* set u32 at +0x8 */
-void Unk0a7d54_SetUnkField8(void *obj, u32 value) { FIELD(u32, obj, 0x8) = value; }
-
-/* decompiler-derived */
-void Unk0a7d54_Unk_0a9158(int arg0)
+/* The STR at 020a9164 establishes the name: write field +8; obj must be valid. */
+void Unk0a7d54_SetUnkField8(Unk0a7d54Fields *obj, u32 value)
 {
-  *(u32 *)(arg0 + 4) = 1;
+    obj->unk_08 = value;
 }
 
-/* decompiler-derived */
-void Unk0a7d54_Unk_0a7eb8(int arg0,u32 arg1)
+/* Set field +4 to one (020a9158); obj is a borrowed, non-null field view. */
+void Unk0a7d54_Unk_0a9158(Unk0a7d54Fields *obj)
 {
-  *(u8 *)(arg0 + 0xd) = 1;
-  *(u32 *)(arg0 + 0x1c) = arg1;
+    obj->unk_04 = 1;
 }
 
-/* decompiler-derived */
-u32 Unk0a7d54_Unk_0a8648(int arg0)
+/* Mark byte +13 and store value at +28, as shown by STRB/STR at 020a7eb8.
+ * The returned lookup entry must be non-null. */
+void Unk0a7d54_Unk_0a7eb8(Unk0a7d54Fields *obj, u32 value)
 {
-  u32 value;
-  if (arg0 == 0) {
-    value = 0;
-  }
-  else {
-    value = *(u32 *)(arg0 + 4);
-  }
-  return value;
+    obj->unk_0d = 1;
+    obj->unk_1c = value;
 }
 
-/* decompiler-derived */
-int Unk0a7d54_Unk_0a9204(int arg0)
+/* Read field +4 from a borrowed object, or return zero for null (020a8648). */
+u32 Unk0a7d54_Unk_0a8648(Unk0a7d54Fields *obj)
 {
-  return *(int *)(arg0 + 0x20) != 0;
+    return obj == 0 ? 0 : obj->unk_04;
 }
 
-/* decompiler-derived */
-void Unk0a7d54_Unk_0a8594(void)
+/* Test field +32 of a non-null object; 020a9204 normalizes the result to 0/1. */
+int Unk0a7d54_Unk_0a9204(Unk0a7d54Fields *obj)
 {
-  int value;
-  value = Unk0a7d54_FindByKey();
-  if (value == 0) {
-    return;
-  }
-  Unk0a7d54_Unk_0a7e8c();
+    return obj->unk_20 != 0;
 }
 
-/* decompiler-derived */
-void Unk0a7d54_Unk_0a7ec8(u32 arg0,u32 arg1,u32 arg2)
+/* Forward the owner/key to FindByKey and clean up a found entry.
+ * Calls and argument flow at 020a8594 establish this contract. */
+void Unk0a7d54_Unk_0a8594(u8 *owner, u32 key)
 {
-  int value;
-  value = Unk0a7d54_FindByKey();
-  if (value == 0) {
-    return;
-  }
-  Unk0a7d54_Unk_0a7eb8(value,arg2);
+    int entry = Unk0a7d54_FindByKey(owner, key);
+    if (entry == 0) {
+        return;
+    }
+    Unk0a7d54_Unk_0a7e8c(entry);
 }
 
-
+/* Forward owner/key to FindByKey, then mark a found entry with value.
+ * 020a7ec8 saves the third argument across the lookup; missing keys do nothing. */
+void Unk0a7d54_Unk_0a7ec8(u8 *owner, u32 key, u32 value)
+{
+    int entry = Unk0a7d54_FindByKey(owner, key);
+    if (entry == 0) {
+        return;
+    }
+    Unk0a7d54_Unk_0a7eb8((Unk0a7d54Fields *)entry, value);
+}
 
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a7e64(u32 *arg0)
@@ -276,12 +276,14 @@ int Unk0a7d54_FindByKey(u8 *p, u32 k)
     return 0;
 }
 
-int Unk0a7d54_HasField8(u8 *p)
+/* The null check and LDR +8 at 020a8608 support this field-only name.
+ * Null is false; otherwise return a normalized predicate on the borrowed view. */
+int Unk0a7d54_HasField8(Unk0a7d54Fields *p)
 {
     if (p == 0) {
         return 0;
     }
-    return FIELD(u32, p, 8) != 0;
+    return p->unk_08 != 0;
 }
 
 int Unk0a7d54_IsField8Is3(u8 *p)
@@ -337,7 +339,7 @@ void Unk0a7d54_Unk_0a8b70(u8 *p)
         return;
     }
     FIELD(u32, p, 68) = 0;
-    if (Unk0a7d54_Unk_0a9204((int)p) != 0) {
+    if (Unk0a7d54_Unk_0a9204((Unk0a7d54Fields *)p) != 0) {
         FIELD(u32, p, 8) = 11;
         return;
     }
@@ -347,7 +349,7 @@ void Unk0a7d54_Unk_0a8b70(u8 *p)
 int Unk0a7d54_Unk_0a8c04(u8 *p)
 {
     u32 v;
-    if (Unk0a7d54_Unk_0a9204((int)p) == 1) {
+    if (Unk0a7d54_Unk_0a9204((Unk0a7d54Fields *)p) == 1) {
         return 0;
     }
     v = FIELD(u32, p, 8);
