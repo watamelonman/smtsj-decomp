@@ -25,8 +25,20 @@ None. All requested functions are identical; no scratch is needed.
 ## Other cards (pre-existing status)
 Notes left by other cards that touch this TU; kept for reference.
 
-## Not done in M1-T388
-- `func_0206e8b0`
+## M1-T388
+
+| Function | Size | Contract and evidence |
+| --- | ---: | --- |
+| `func_0206e8b0` | 348 | Configures the borrowed singleton from a slot. Returns if 06ea0c rejects the slot or the singleton is absent. Copies the slot block at +0xbc (32 bytes), using the duration at +0xd8. If active, replaces the first four block bytes with the current 20.12 channel integer parts, clears +0x60/+0x5c/+0x64, and enters state 2. Otherwise resets the counter, enters state 1, and initializes four channels from the block bytes. Stores the slot byte at +0x6d, sets the end frame to counter + duration, calls 0207112c with block and field addresses, and sets +0x68 to 2 for packed target RGB 0xffffff00, otherwise 1. Evidence: original ARM loads/stores and calls; effect purpose remains unknown, so the name stays neutral. |
+
+The work layout now types the fourth channel at +0x38 and the slot byte at
++0x6d. A strided duration view preserves the original byte-stride multiply.
+The instruction comparison matches all 348 bytes (including relocations).
+Objdiff reports 100% for the target and all defined functions in this TU.
+The full build/checksum and anticheat gates pass, as do all nine unit tests.
+
+### Hard list for M1-T388
+None.
 
 ## M1-T387
 All eight card functions match at 100% (objdiff report). The checksum gate is byte-identical.

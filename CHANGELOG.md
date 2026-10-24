@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Matched all five M1-T402 game/unit_020e7290 callbacks and resource setup functions at 100% objdiff; documented typed layouts and contracts.
+- Matched all eight M1-T407 game/unit_020cce38 entry, descriptor, teardown, state and empty callback functions at 100% objdiff; added typed contracts and per-function evidence.
+- M1-T388: matched the 348-byte slot-driven singleton transition setup `func_0206e8b0` in readable C.
+- Verified all eight M1-T403 game/unit_020bac80 helpers at 100% objdiff; added typed work views, explicit tier-result forwarding, and per-function evidence.
 - Matched all eight M1-T401 game/unit_020e7290 functions, with typed work/resource views and documented state, flag, and formatting contracts.
 - M1-T383: matched all three remaining requested game/unit_02094fe0 functions, including the selected-bit merge routine; documented contracts and typed callee parameters.
 - Matched all eight M1-T394 game/unit_0211f2d0 functions, including allocation, resource setup, slot creation, teardown and timed state updates.

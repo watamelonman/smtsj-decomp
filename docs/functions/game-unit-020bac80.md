@@ -1,13 +1,37 @@
 # src/game/unit_020bac80.c
 
-- `Unk0bac80_Thunk_02044ec4` (12 B): forwards to `func_02044ec4`
-- `Unk0bac80_Unk_0badc0` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0bac80_Unk_0bae08` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0bac80_Unk_0bae18` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0bac80_Unk_0bae50` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0bac80_Unk_0bb298` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0bac80_Unk_0badd0` (28 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0bac80_Unk_0badec` (28 B): decompiler-derived (Ghidra output, cleaned)
+## M1-T403: verified matches
+
+All eight functions below are 100% in objdiff. Evidence is the original ARM
+instruction stream (addresses from `config/arm9/symbols.txt`), inspected with
+`tools/hand/asm.py`. Names remain neutral because field purposes are unknown.
+Provider-owned objects are borrowed; these helpers neither allocate nor free them.
+The local struct views name only observed fields and preserve their byte offsets.
+
+- `Unk0bac80_Thunk_02044ec4` (12 B): original LDR ip / BX ip veneer
+  forwards to `func_02044ec4`; the C call produces the matching thunk.
+- `Unk0bac80_Unk_0badc0` (16 B): calls `Unk03aae8_Unk_03ad14`,
+  loads its word at +0xe8, and returns that borrowed work address.
+- `Unk0bac80_Unk_0bae08` (16 B): calls the work-address getter and
+  returns the opaque word at +0x68. Requires a valid provider-owned work object.
+- `Unk0bac80_Unk_0bae18` (16 B): returns the global provider address plus
+  0x8c, as shown by ADD r0,r0,#140. Keeps the existing integer-address ABI
+  used by other handlers in this TU.
+- `Unk0bac80_Unk_0bae50` (20 B): queries
+  `Unk02ee5c_GetTierFromField70`, passes its r0 result to
+  `Unk03aae8_Unk_03acf4`, and returns completion value 1. The argument is now
+  explicit in C. The setter's body at 0203acf4 stores that word at +0xa8
+  in its current context and clears a byte at +0x3b.
+- `Unk0bac80_Unk_0bb298` (24 B): loads work +0x40, passes the word
+  to the same setter, and returns completion value 1.
+- `Unk0bac80_Unk_0badd0` (28 B): preserves the input word in r4,
+  loads work +0x54 as the first argument, and forwards the input as the
+  second argument to `func_0204fdac`. Handle semantics remain unknown.
+- `Unk0bac80_Unk_0badec` (28 B): the same forwarding sequence with the
+  handle at work +0x60. No range restriction on the forwarded word is inferred.
+
+No M1-T403 hard functions remain. Other card implementations below are retained.
+
 - `Unk0bac80_Unk_0bae34`: decompiler-derived
 - `Unk0bac80_Unk_0bae64`: decompiler-derived
 - `Unk0bac80_Unk_0bae80`: decompiler-derived
