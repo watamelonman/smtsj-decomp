@@ -2,7 +2,7 @@
 #include "types.h"
 
 
-int func_020516d0();
+int func_020516d0(int handle);
 extern u32 data_02141f98[];
 void func_02015134();
 void func_0201524c();
@@ -16,7 +16,8 @@ int Unk0387bc_Unk_0387bc(u32 a)
     return func_02051610(buf);
 }
 
-/* decompiler-derived */
+/* Pass a nonzero handle to func_020516d0; return whether a call occurred.
+ * Evidence: original 0x02038820 null check and single helper call; handle ownership is unknown. */
 u32 Unk0387bc_Unk_038820(int arg0)
 {
   if (arg0 != 0) {
@@ -26,8 +27,10 @@ u32 Unk0387bc_Unk_038820(int arg0)
   return 0;
 }
 
-int func_02008848();
-/* decompiler-derived */
+int func_02008848(void *destination, int value, u32 size);
+/* Pass the first word to func_020516d0, then clear all 12 descriptor bytes.
+ * Evidence: original 0x02038cbc calls func_02008848 with zero and size 12.
+ * A null descriptor or zero first word returns 0 without clearing; success returns 1. */
 u32 Unk0387bc_Unk_038cbc(int *arg0)
 {
   if (arg0 == (int *)0x0) {
@@ -42,7 +45,9 @@ u32 Unk0387bc_Unk_038cbc(int *arg0)
 }
 
 
-/* decompiler-derived */
+/* Pass the first word to func_020516d0, then clear all 20 descriptor bytes.
+ * Evidence: original 0x02038d58 calls func_02008848 with zero and size 20.
+ * A null descriptor or zero first word returns 0 without clearing; success returns 1. */
 u32 Unk0387bc_Unk_038d58(int *arg0)
 {
   if (arg0 == (int *)0x0) {
@@ -57,7 +62,10 @@ u32 Unk0387bc_Unk_038d58(int *arg0)
 }
 
 
-u32 func_0204fe18();
+u32 func_0204fe18(u32 descriptor);
+/* Return a borrowed 32-byte entry, or null for a null descriptor or out-of-range index.
+ * Evidence: original 0x02038d94 uses descriptor words 1 and 2 for count input
+ * and base, with an unsigned bound check and 32-byte stride; caller retains storage. */
 u8 *Unk0387bc_GetEntry32(u32 *p, u32 i)
 {
     if (p == 0) {
@@ -69,6 +77,9 @@ u8 *Unk0387bc_GetEntry32(u32 *p, u32 i)
     return (u8 *)p[2] + i * 32;
 }
 
+/* Return a borrowed 36-byte entry, or null for a null descriptor or out-of-range index.
+ * Evidence: original 0x02038dc4 uses descriptor words 3 and 4 for count input
+ * and base, with an unsigned bound check and 36-byte stride; caller retains storage. */
 u8 *Unk0387bc_GetEntry36(u32 *p, u32 i)
 {
     if (p == 0) {
@@ -80,7 +91,9 @@ u8 *Unk0387bc_GetEntry36(u32 *p, u32 i)
     return (u8 *)p[4] + i * 36;
 }
 
-/* decompiler-derived */
+/* Pass the first word to func_020516d0, then clear all 12 descriptor bytes.
+ * Evidence: original 0x02038e40 calls func_02008848 with zero and size 12.
+ * A null descriptor or zero first word returns 0 without clearing; success returns 1. */
 u32 Unk0387bc_Unk_038e40(int *arg0)
 {
   if (arg0 == (int *)0x0) {
@@ -113,6 +126,9 @@ u32 Unk0387bc_Unk_038edc(int *arg0)
 extern u8 data_02142064[];
 int Unk0387bc_Unk_0387bc();
 int func_0204fe68();
+/* Return a borrowed 32-byte entry, or null for a null descriptor or out-of-range index.
+ * Evidence: original 0x02038f18 uses descriptor words 1 and 2 for count input
+ * and base, with an unsigned bound check and 32-byte stride; caller retains storage. */
 u8 *Unk0387bc_GetEntry32b(u32 *p, u32 i)
 {
     if (p == 0) {
@@ -124,6 +140,9 @@ u8 *Unk0387bc_GetEntry32b(u32 *p, u32 i)
     return (u8 *)p[2] + i * 32;
 }
 
+/* Return a borrowed 36-byte entry, or null for a null descriptor or out-of-range index.
+ * Evidence: original 0x02038f48 uses descriptor words 3 and 4 for count input
+ * and base, with an unsigned bound check and 36-byte stride; caller retains storage. */
 u8 *Unk0387bc_GetEntry36b(u32 *p, u32 i)
 {
     if (p == 0) {
