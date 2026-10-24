@@ -7,7 +7,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
 typedef struct Unk0a0ce4Work {
-    u8 unk_0000[0x1c];
+    u32 state;
+    s32 counter, duration, threshold, scale;
+    u32 field14, field18;
     u32 UnkField001c;
 } Unk0a0ce4Work;
 
@@ -18,7 +20,7 @@ int func_0204fde0(void);
 int func_02052528(int arg0);
 int func_02053048(void);
 int func_0205e590(int arg0);
-int func_020a1318(void);
+void func_020a1318(void);
 int func_020b72a8(void);
 
 void Unk0a0ce4_Nop_0a0e94(void);
@@ -194,4 +196,163 @@ void Unk0a0ce4_Unk_0a0e44(void)
         Unk02cad4_Unk_02cbdc(1);
         break;
     }
+}
+
+extern const s16 data_0213c238[];
+extern u8 data_0214ccf8[];
+int func_02053800(int port, int mask);
+int func_0205eae0(int from, int to, int duration, int counter);
+void func_02061424(Unk0a0ce4Work *work);
+void func_02057e18(u32 value);
+void func_02057df8(void);
+void func_02057ddc(u32 value);
+void func_02058c3c(u32 target, u32 mode, int x, int y, float scale, int zero, int flags);
+void func_02060b60(u32 target, u32 handle, int x, int y, int zero, int flags);
+Unk0a0ce4Work *func_020611dc(void (*update)(Unk0a0ce4Work *),
+    void (*first)(Unk0a0ce4Work *), void (*second)(Unk0a0ce4Work *),
+    void (*cleanup)(Unk0a0ce4Work *), int size, int one, int zero, int last);
+void func_02008848(void *dest, int value, u32 size);
+void Unk05b82c_Unk_05b82c(int value);
+u32 func_02060a48(int kind, int first, int second);
+void *func_02051610(const void *name);
+void *func_0204fe68(void *resource, int index);
+void *func_0204fed8(void *entry, int index);
+void func_02061f10(u32 handle, int index, int one, int zero, void *entry);
+void func_02053000(void *resource);
+
+/* Initializes borrowed work for a valid unsigned table index. Evidence:
+ * 020a0ebc loads signed halfword data_0213c238[state]; states 1/4 wait 60. */
+void func_020a0ebc(Unk0a0ce4Work *work, u32 state)
+{
+    int duration = data_0213c238[state];
+    work->state = state;
+    work->counter = 0;
+    work->duration = duration;
+    work->threshold = 0;
+    work->field14 = 4;
+    work->field18 = 0;
+    if (work->state >= 3) {
+        work->field14 = 5;
+        work->field18 = 6;
+    }
+    if (work->state == 1 || work->state == 4) work->threshold = 60;
+}
+
+/* Returns completion at duration or, when enabled after threshold, on one
+ * of the masks 1/2/1024/2048/8. Evidence: signed compares at 020a0f20. */
+int func_020a0f20(Unk0a0ce4Work *work, int enabled)
+{
+    if (work->counter >= work->duration) return 1;
+    if (enabled && work->counter >= work->threshold) {
+        if (func_02053800(0, 1) || func_02053800(0, 2) ||
+            func_02053800(0, 1024) || func_02053800(0, 2048) ||
+            func_02053800(0, 8)) return 1;
+    }
+    return 0;
+}
+
+/* Advances borrowed work one tick through states 0..5. Evidence: 020a0fc0
+ * increments +4, interpolates +16 and finishes state 5 via 02061424/02cbdc. */
+void func_020a0fc0(Unk0a0ce4Work *work)
+{
+    work->counter++;
+    switch (work->state) {
+    case 0:
+        work->scale = func_0205eae0(0, 1024, work->duration, work->counter);
+        if (func_020a0f20(work, 0)) func_020a0ebc(work, 1);
+        break;
+    case 1:
+        work->scale = 1024;
+        if (func_020a0f20(work, 1)) func_020a0ebc(work, 2);
+        break;
+    case 2:
+        work->scale = func_0205eae0(1024, 0, work->duration, work->counter);
+        if (func_020a0f20(work, 0)) func_020a0ebc(work, 3);
+        break;
+    case 3:
+        work->scale = func_0205eae0(0, 1024, work->duration, work->counter);
+        if (func_020a0f20(work, 0)) func_020a0ebc(work, 4);
+        break;
+    case 4:
+        work->scale = 1024;
+        if (func_020a0f20(work, 1)) func_020a0ebc(work, 5);
+        break;
+    case 5:
+        work->scale = func_0205eae0(1024, 0, work->duration, work->counter);
+        if (func_020a0f20(work, 0)) {
+            func_02061424(work);
+            Unk02cad4_Unk_02cbdc(2);
+        }
+        break;
+    }
+}
+
+/* Draw callback for borrowed work: 020a115c scales 31 to a byte for states
+ * 0/2/3/5, suppresses zero, and uses y=64 only when field +20 equals 4. */
+void func_020a115c(Unk0a0ce4Work *work)
+{
+    switch (work->state) {
+    case 0: case 2: case 3: case 5: {
+        u8 value = Unk0a0ce4_ScaleFx10(31, work->scale);
+        if (!value) return;
+        func_02057e18(value);
+        break;
+    }
+    case 1: case 4:
+        func_02057e18(31);
+        break;
+    }
+    func_02057df8();
+    if (work->field14 == 4)
+        func_02058c3c(0x80001, work->field14, 0, 64, 1.0f, 0, 4);
+    else
+        func_02058c3c(0x80001, work->field14, 0, 0, 1.0f, 0, 4);
+}
+
+/* Draw callback sharing the byte-scale rule above. Evidence: 020a1214
+ * selects 02058c3c for +24==6, else 02060b60 with handle +28 at (128,96). */
+void func_020a1214(Unk0a0ce4Work *work)
+{
+    switch (work->state) {
+    case 0: case 2: case 3: case 5: {
+        u8 value = Unk0a0ce4_ScaleFx10(31, work->scale);
+        if (!value) return;
+        func_02057e18(value);
+        break;
+    }
+    case 1: case 4:
+        func_02057e18(31);
+        break;
+    }
+    if (work->field18 == 6) {
+        func_02057df8();
+        func_02058c3c(0x80001, work->field18, 0, 0, 1.0f, 0, 4);
+    } else {
+        func_02057ddc(255);
+        func_02060b60(0x5000001, work->UnkField001c, 128, 96, 0, 4);
+    }
+}
+
+/* Creates singleton work only when absent; failed allocation returns.
+ * Evidence: 020a1318 registers four callbacks and 32 bytes, initializes
+ * state 0, and acquires/releases the resource named by data_0214ccf8. */
+void func_020a1318(void)
+{
+    Unk0a0ce4Work *work;
+    void *resource;
+    if (*data_02176b00) return;
+    work = func_020611dc(func_020a0fc0, func_020a115c, func_020a1214,
+        Unk0a0ce4_Unk_0a12e8, 32, 1, 0, 0);
+    if (!work) return;
+    func_02008848(work, 0, 32);
+    Unk05b82c_Unk_05b82c(4);
+    Unk05b82c_Unk_05b82c(5);
+    Unk05b82c_Unk_05b82c(6);
+    func_020a0ebc(work, 0);
+    *data_02176b00 = (u32)work;
+    work->UnkField001c = func_02060a48(4, 1, 1);
+    resource = func_02051610(data_0214ccf8);
+    func_02061f10(work->UnkField001c, -1, 1, 0,
+        func_0204fed8(func_0204fe68(resource, 0), 0));
+    func_02053000(resource);
 }
