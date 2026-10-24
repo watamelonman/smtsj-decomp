@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Matched the remaining main-loop dispatcher, startup, and frame helpers in `unit_0202cad4`; all twelve functions now match at 100%.
+- M1-T406: matched five game/unit_020bac80 state and command handlers with typed borrowed layouts and instruction evidence.
 - M1-T1120: matched five `game/unit_0202f2a8` input, reload and position animation handlers at 100% objdiff; documented three remaining functions on the hard list.
 - Matched all eight M1-T420 font metric, formatted text, and alignment functions in game/unit_020a9a90 at 100% objdiff.
 - Matched M1-T415 `func_02108ca4` (940 bytes) at 100% with typed saved-record and slot layouts and documented growth formulas.
