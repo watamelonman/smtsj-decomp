@@ -13,21 +13,22 @@ typedef struct Unk05ae50Work {
     u32 unk_0008;
     u32 unk_000c;
     u32 unk_0010;
-    u8 pad_0014[0x45];
+    struct Unk05ae50Work *unk_0014;
+    u8 pad_0018[0x41];
     u8 unk_0059;
 } Unk05ae50Work;
 
 extern u8 data_0216a184[];
-int func_02053000();
-int func_0205ad9c();
-int func_0205ae60();
-int func_0205b36c();
+void func_02053000(u32 resource);
+Unk05ae50Work *func_0205ad9c(void);
+u32 func_0205ae60(Unk05ae50Work *work);
+int func_0205b36c(Unk05ae50Work *work);
 
 void Unk05ae50_Unk_05b228(Unk05ae50Work *work);
 void Unk05ae50_Unk_05ae50(void);
 void Unk05ae50_Unk_05b388(void);
 void Unk05ae50_Unk_05afd8(u32 arg0);
-int Unk05ae50_Unk_05b358(int arg0);
+int Unk05ae50_Unk_05b358(const Unk05ae50Work *work);
 u32 Unk05ae50_Unk_05af3c(Unk05ae50Work *work);
 
 int func_02008848();
@@ -53,17 +54,16 @@ void Unk05ae50_Reset(void)
     Unk05ae50_Unk_05afd8(0x18000);
 }
 
-/* decompiler-derived */
+/* Set the byte at +0x59; the original STRB provides no stronger meaning. */
 void Unk05ae50_Unk_05b228(Unk05ae50Work *work)
 {
   work->unk_0059 = 1;
 }
 
-/* decompiler-derived */
+/* Forward the borrowed singleton to func_0205ae60, as in the original calls. */
 void Unk05ae50_Unk_05ae50(void)
 {
-  func_0205ad9c();
-  func_0205ae60();
+  func_0205ae60(func_0205ad9c());
 }
 
 void Unk05ae50_WaitVCountThen_05af64(int *x)
@@ -77,26 +77,34 @@ void Unk05ae50_WaitVCountThen_05af64(int *x)
     }
 }
 
-/* decompiler-derived */
+/* Query the singleton through its +0x14 link; original forwards R0 unchanged. */
 void Unk05ae50_Unk_05b388(void)
 {
-  func_0205ad9c();
-  func_0205b36c();
+  func_0205b36c(func_0205ad9c());
 }
 
-/* decompiler-derived */
+/* Store a four-byte-aligned limit at singleton +0x5a8 (BIC/STR evidence). */
 void Unk05ae50_Unk_05afd8(u32 arg0)
 {
-  *(u32 *)(((int)data_0216a184) + 0x5a8) = arg0 & 0xfffffffc;
+  FIELD(u32, data_0216a184, 0x5a8) = arg0 & 0xfffffffc;
 }
 
-/* decompiler-derived */
-int Unk05ae50_Unk_05b358(int arg0)
+/* Normalize the byte at +0x59 to 0 or 1; work must be non-null. */
+int Unk05ae50_Unk_05b358(const Unk05ae50Work *work)
 {
-  return ((Unk05ae50Work *)arg0)->unk_0059 != '\0';
+  return work->unk_0059 != 0;
 }
 
-/* decompiler-derived */
+/* Original LDR +0x14 and null guard establish an optional borrowed work link. */
+int func_0205b36c(Unk05ae50Work *work)
+{
+  if (work->unk_0014 == 0) {
+    return 0;
+  }
+  return Unk05ae50_Unk_05b358(work->unk_0014);
+}
+
+/* Pass +0x10 to func_02053000, clear +0x10/+8/+0xc, and return success. */
 u32 Unk05ae50_Unk_05af3c(Unk05ae50Work *work)
 {
   func_02053000(work->unk_0010);
@@ -138,7 +146,7 @@ void Unk05ae50_Unk_05af64(int *arg0)
   return;
 }
 
-/* decompiler-derived */
+/* Apply the clearing helper to the borrowed singleton (original call pair). */
 void Unk05ae50_Unk_05af2c(void)
 {
     Unk05ae50_Unk_05af3c((Unk05ae50Work *)func_0205ad9c());
