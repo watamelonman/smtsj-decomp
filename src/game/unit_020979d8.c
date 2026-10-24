@@ -1,4 +1,4 @@
-/* src/game/unit_020979d8.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Area-record helpers; offsets are evidenced by the original ARM accesses. */
 #include "types.h"
 
 /* Object passed as first arg in this file; layout from observed accesses. */
@@ -9,132 +9,110 @@ typedef struct Unk0979d8Work {
 
 
 
-int Unk096754_GetAreaRecordIf();
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
-int Unk0979d8_ResetFields(u8 *p)
+/* Returns a borrowed area record, or NULL when the indexed slot is absent. */
+u8 *Unk096754_GetAreaRecordIf(u32 index);
+int Unk0979d8_ClampField1e(u8 *record, int value);
+int Unk0979d8_ClampField20(u8 *record, int value);
+
+/* Restores +0x1e/+0x20 from +0x0a/+0x0c; ARM 020979e4..020979f0
+ * establishes the copies. NULL returns 0; a restored record returns 1. */
+int Unk0979d8_ResetFields(u8 *record)
 {
-    if (p == 0) {
+    if (record == 0) {
         return 0;
     }
-    FIELD(s16, p, 30) = FIELD(s16, p, 10);
-    FIELD(s16, p, 32) = FIELD(s16, p, 12);
+    FIELD(s16, record, 0x1e) = FIELD(s16, record, 0x0a);
+    FIELD(s16, record, 0x20) = FIELD(s16, record, 0x0c);
     return 1;
 }
 
-/* decompiler-derived */
-u8 Unk0979d8_Unk_098124(void)
+/* Reads the indexed record's unsigned byte at +0x38, or 0 if absent.
+ * Evidence: BL 02096754 and LDRB at 02098134; field meaning is unknown. */
+u8 Unk0979d8_Unk_098124(u32 index)
 {
-  u8 value1;
-  int value2;
-  value2 = Unk096754_GetAreaRecordIf();
-  if (value2 == 0) {
-    value1 = 0;
-  }
-  else {
-    value1 = *(u8 *)(value2 + 0x38);
-  }
-  return value1;
+    u8 *record = Unk096754_GetAreaRecordIf(index);
+    u8 value;
+    if (record == 0) {
+        value = 0;
+    } else {
+        value = FIELD(u8, record, 0x38);
+    }
+    return value;
+}
+
+/* Reads signed +0x1e, or 0 for an absent indexed record.
+ * Evidence: BL 02096754 and LDRSH at 0209814c. */
+int Unk0979d8_Unk_09813c(u32 index)
+{
+    u8 *record = Unk096754_GetAreaRecordIf(index);
+    return record == 0 ? 0 : FIELD(s16, record, 0x1e);
+}
+
+/* Reads signed +0x0a, or 0 for an absent indexed record.
+ * Evidence: BL 02096754 and LDRSH at 02098164. */
+int Unk0979d8_Unk_098154(u32 index)
+{
+    u8 *record = Unk096754_GetAreaRecordIf(index);
+    return record == 0 ? 0 : FIELD(s16, record, 0x0a);
+}
+
+/* Reads signed +0x20, or 0 for an absent indexed record.
+ * Evidence: BL 02096754 and LDRSH at 0209819c. */
+int Unk0979d8_Unk_09818c(u32 index)
+{
+    u8 *record = Unk096754_GetAreaRecordIf(index);
+    return record == 0 ? 0 : FIELD(s16, record, 0x20);
+}
+
+/* Reads signed +0x0c, or 0 for an absent indexed record.
+ * Evidence: BL 02096754 and LDRSH at 020981b4. */
+int Unk0979d8_Unk_0981a4(u32 index)
+{
+    u8 *record = Unk096754_GetAreaRecordIf(index);
+    return record == 0 ? 0 : FIELD(s16, record, 0x0c);
+}
+
+/* For a present indexed record, forwards value to the +0x1e clamp.
+ * Evidence: 02098170 preserves r1 across lookup, then BL 02097b54.
+ * An absent record is left untouched. */
+void Unk0979d8_Unk_09816c(u32 index, int value)
+{
+    u8 *record = Unk096754_GetAreaRecordIf(index);
+    if (record == 0) {
+        return;
+    }
+    Unk0979d8_ClampField1e(record, value);
+}
+
+/* For a present indexed record, forwards value to the +0x20 clamp.
+ * Evidence: 020981c0 preserves r1 across lookup, then BL 02097b84.
+ * An absent record is left untouched. */
+void Unk0979d8_Unk_0981bc(u32 index, int value)
+{
+    u8 *record = Unk096754_GetAreaRecordIf(index);
+    if (record == 0) {
+        return;
+    }
+    Unk0979d8_ClampField20(record, value);
 }
 
 
-/* decompiler-derived */
-int Unk0979d8_Unk_09813c(void)
+/* Clears unsigned +0x34 and restores the borrowed record fields; NULL returns 0.
+ * Evidence: STRH at 02097a10 and BL ResetFields at 02097a14. */
+u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0)
 {
-  int value;
-  value = Unk096754_GetAreaRecordIf();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = (int)*(short *)(value + 0x1e);
-  }
-  return value;
-}
-
-
-/* decompiler-derived */
-int Unk0979d8_Unk_098154(void)
-{
-  int value;
-  value = Unk096754_GetAreaRecordIf();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = (int)*(short *)(value + 10);
-  }
-  return value;
-}
-
-
-/* decompiler-derived */
-int Unk0979d8_Unk_09818c(void)
-{
-  int value;
-  value = Unk096754_GetAreaRecordIf();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = (int)*(short *)(value + 0x20);
-  }
-  return value;
-}
-
-
-/* decompiler-derived */
-int Unk0979d8_Unk_0981a4(void)
-{
-  int value;
-  value = Unk096754_GetAreaRecordIf();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = (int)*(short *)(value + 0xc);
-  }
-  return value;
-}
-
-int Unk0979d8_ClampField1e();
-/* decompiler-derived */
-void Unk0979d8_Unk_09816c(u32 arg0,u32 arg1)
-{
-  int value;
-  value = Unk096754_GetAreaRecordIf();
-  if (value == 0) {
-    return;
-  }
-  Unk0979d8_ClampField1e(value,arg1);
-}
-
-int Unk0979d8_ClampField20();
-/* decompiler-derived */
-void Unk0979d8_Unk_0981bc(u32 arg0,u32 arg1)
-{
-  int value;
-  value = Unk096754_GetAreaRecordIf();
-  if (value == 0) {
-    return;
-  }
-  Unk0979d8_ClampField20(value,arg1);
-}
-
-
-int Unk0979d8_ResetFields();
-/* decompiler-derived */
-u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0){
   if (arg0 != 0) {
     arg0->unk_0034 = 0;
-    Unk0979d8_ResetFields();
+    Unk0979d8_ResetFields((u8 *)arg0);
     return 1;
   }
   return 0;
 }
 
-int Unk096754_ClampField1c();
+void Unk096754_ClampField1c(int value);
+/* Clamps signed +0x1e using signed +0x0a as the upper bound; NULL returns 0.
+ * Evidence: LDRSH/STRH at 02097b60..02097b7c. The lower bound of 1
+ * applies only when v <= the upper bound, preserving nonpositive maxima. */
 int Unk0979d8_ClampField1e(u8 *p, int v)
 {
     s32 m;
@@ -152,6 +130,9 @@ int Unk0979d8_ClampField1e(u8 *p, int v)
     return FIELD(s16, p, 30);
 }
 
+/* Clamps signed +0x20 against +0x0c, returning the stored signed halfword.
+ * Evidence: 02097b90..02097bac; same bound ordering as ClampField1e.
+ * NULL returns 0 without writing. */
 int Unk0979d8_ClampField20(u8 *p, int v)
 {
     s32 m;
@@ -169,6 +150,9 @@ int Unk0979d8_ClampField20(u8 *p, int v)
     return FIELD(s16, p, 32);
 }
 
+/* Tests the six unsigned halfword IDs at +0x28; NULL returns false.
+ * Evidence: LDRH, equality comparison and six-iteration loop at 02097bc4..02097be0.
+ * The full-width id is compared without narrowing. */
 int Unk0979d8_HasId(u8 *p, int id)
 {
     int j;
@@ -183,6 +167,9 @@ int Unk0979d8_HasId(u8 *p, int id)
     return 0;
 }
 
+/* Copies six IDs from borrowed record +0x28 to caller-owned out (six u16s).
+ * Evidence: LDRH/STRH loop at 02097bf8..02097c10. NULL p leaves out untouched;
+ * otherwise out must be writable. */
 void Unk0979d8_CopyIds(u8 *p, u16 *out)
 {
     int j;
@@ -208,8 +195,8 @@ int Unk02e000_GetWorkArea();
 int Unk02e000_GetAreaRecord();
 u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0);
 void Unk0979d8_ResetAreaEntries(void);
-int Unk096754_ClampField1c();
-int Unk096754_ClampField1e();
+void Unk096754_ClampField1c(int value);
+void Unk096754_ClampField1e(int value);
 void Unk096754_ResetAreaPos(void);
 int Unk0979d8_GetPairLo(u8 *p, int i)
 {
@@ -284,25 +271,32 @@ void Unk0979d8_ResetAreaEntries(void)
     Unk096754_ResetAreaPos();
 }
 
-/* decompiler-derived */
-void Unk0979d8_Unk_097f00(u32 arg0)
+/* Forwards value to the global +0x1c clamp, then the +0x1e wrappers for
+ * slots 0, 1, 2. Evidence: calls at 02097f08..02097f2c, with live r0
+ * on the first call. Absent slots are ignored by the wrappers. */
+void Unk0979d8_Unk_097f00(int arg0)
 {
-  Unk096754_ClampField1c();
+  Unk096754_ClampField1c(arg0);
   Unk0979d8_Unk_09816c(0,arg0);
   Unk0979d8_Unk_09816c(1,arg0);
   Unk0979d8_Unk_09816c(2,arg0);
 }
 
-int Unk096754_ClampField1e();
-/* decompiler-derived */
-void Unk0979d8_Unk_097f34(u32 arg0)
+void Unk096754_ClampField1e(int value);
+/* Forwards value to the global +0x1e clamp, then the +0x20 wrappers for
+ * slots 0, 1, 2. Evidence: calls at 02097f3c..02097f60, with live r0
+ * on the first call. Absent slots are ignored by the wrappers. */
+void Unk0979d8_Unk_097f34(int arg0)
 {
-  Unk096754_ClampField1e();
+  Unk096754_ClampField1e(arg0);
   Unk0979d8_Unk_0981bc(0,arg0);
   Unk0979d8_Unk_0981bc(1,arg0);
   Unk0979d8_Unk_0981bc(2,arg0);
 }
 
+/* Adds d to work-area signed +0x344 and bounds the result to 0..99999999.
+ * Evidence: ADD/STR at 020980f8..020980fc, conditional bounds through
+ * 02098114 and constant at 02098120. Returns the stored value. */
 s32 Unk0979d8_AddField344(s32 d)
 {
     u8 *w = (u8 *)Unk02e000_GetWorkArea();
