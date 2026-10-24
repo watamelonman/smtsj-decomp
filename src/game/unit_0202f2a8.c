@@ -158,7 +158,6 @@ typedef struct Unk02f2a8State {
     u32 unk_7488;
     u8 pad_748c[0x7490 - 0x748c];
     u32 unk_7490;
-
     u32 unk_7494;
     u32 unk_7498;               /* nonzero arms root +0x54 in func_02032d4c */
     u8 pad_749c[0x7550 - 0x749c];
@@ -946,7 +945,7 @@ void Unk02f2a8_Unk_02f378(u8 *p)
 }
 
 void Unk02f2a8_SetRootUnk60();
-int func_0205257c();
+int func_0205257c(int v);
 /* If 04b4c4 accepts the context, set its +0x20/+0x28/+0x2c flag for
  * selectors 0..2/5/4 respectively. Return one only for a handled selector. */
 int func_0209be20(int x, int y);
@@ -1044,7 +1043,7 @@ void Unk02f2a8_Unk_03034c(Unk02f2a8Action *action)
 #endif
 int func_02038ff8();
 void func_02039520();
-void func_020a7474();
+void func_020a7474(void *a, void *b, void *c, void *d, u32 id, int f, int g);
 
 /* Pass a zero-terminated copy of exactly 16 source bytes to 038ff8.
  * src must provide 16 readable bytes; the third ABI argument is unused. */
@@ -1969,17 +1968,11 @@ void Unk0387bc_Unk_038f7c(void *obj);
 void Unk095560_Unk_095af8(u32 id);
 void Unk095560_Thunk_0202d15c(void);
 void func_02052634(int a, int b, int c);
-/* Create the global game state once: allocate the 0x75c0-byte task with
- * GameState_Shutdown as its teardown, publish it in gGameState, set up the
- * three sub-objects at +0x3134/+0x3140/+0x314c and the default words, create
- * the root task over body +0x23c, then run the start-up calls (resource 36,
- * the work-area id +0x35c, 052634(1, 3, 32)). No-op if it already exists. */
 void Unk0a6174_ClearBuffers(void *a, void *b);
 void func_020a6ac0(void *a, void *b, void *c, void *d, u32 id, int f, int g);
 void func_020a6c98(void *a, void *b, void *c, void *d, u32 id, int f, int g);
 void func_020a6e94(void *a, void *b);
 void func_020a7108(void *a, void *b);
-void func_020a7474();
 /* Rebuild the +0x5508 buffer against the 02e8b8 buffer: clear it, add the
  * +0x3134 and +0x3140 sub-objects over body map block +0x23c for work-area id
  * +0x35c, run 0a6e94/0a7108, then add each of the seven slots that
@@ -2045,7 +2038,7 @@ void func_02031628(Unk02f2a8State *s, int mode)
 }
 
 int func_020a4f3c(void);
-void Unk038fbc_Unk_039138();
+void Unk038fbc_Unk_039138(void *owner);
 void func_02038888(void *block, int id, int flag);
 void func_02030924(Unk02f2a8Body *body, int id);
 void func_0204cbac(int id);
@@ -2088,7 +2081,6 @@ void func_02032e18(Unk02f2a8State *s)
 }
 
 void func_020525cc(int v);
-int func_0205257c();
 void func_02032a40(Unk02f2a8GridState *s);
 void func_02032b70(Unk02f2a8GridState *s);
 void func_02032ca0(Unk02f2a8State *s);
@@ -2268,6 +2260,11 @@ void func_02034128(Unk02f2a8State *s)
     }
 }
 
+/* Create the global game state once: allocate the 0x75c0-byte task with
+ * GameState_Shutdown as its teardown, publish it in gGameState, set up the
+ * three sub-objects at +0x3134/+0x3140/+0x314c and the default words, create
+ * the root task over body +0x23c, then run the start-up calls (resource 36,
+ * the work-area id +0x35c, 052634(1, 3, 32)). No-op if it already exists. */
 void func_0203428c(void)
 {
     Unk02f2a8State *s;
@@ -2392,7 +2389,6 @@ void func_02035234(u32 id)
 
 void *func_020445d0();
 int Unk038fbc_Unk_039160();
-void Unk038fbc_Unk_039138();
 /* Load a temporary map block keyed by the 16-byte name of resource-36 row
  * `row`, read bits 20..23 of the cell at (x, y) and return the row's s16
  * entry for that value (entry 0 when the load or the lookup fails). */
