@@ -43,11 +43,23 @@ No requested function remains on the hard list.
 
 None for M1-T447 or M1-T448.
 
-## Outside these cards (M1-T449)
+## M1-T449 functions
 
-- `func_020a0ebc`
-- `func_020a0f20`
-- `func_020a115c`
-- `func_020a1214`
-- `func_020a1318`
-- `func_020a0fc0`
+All six additional functions match at 100% objdiff. Their broader subsystem
+purpose is unproven, so the existing neutral symbol names are retained.
+The private work view now covers all 32 observed bytes; it transfers no ownership
+and does not change module boundaries. The duration table is read-only signed
+halfwords, matching the original `ldrsh` accesses.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `func_020a0ebc` | 0x020a0ebc / 100 B | Initializes a borrowed work object for a valid duration-table index. Stores state at +0, zero counter +4, signed table duration +8, and threshold +12 (60 for states 1/4, otherwise zero). Fields +20/+24 are 4/0 for indices below 3 and 5/6 otherwise. Leaves scale +16 and handle +28 untouched. Evidence: halfword load from `data_0213c238`, unsigned state comparison, and explicit stores. |
+| `func_020a0f20` | 0x020a0f20 / 160 B | Returns 1 when signed counter reaches duration. When enabled and counter reaches threshold, tests `02053800(0, mask)` for masks 1, 2, 1024, 2048, 8 in order, stopping on success. Otherwise returns 0. Evidence: signed comparisons and short-circuit call branches. |
+| `func_020a0fc0` | 0x020a0fc0 / 384 B | Increments the borrowed work counter, then dispatches states 0..5. States 0/3 interpolate 0 to 1024; 2/5 interpolate 1024 to 0 using duration/counter. States 1/4 hold 1024 and enable mask completion. Completed states advance through `020a0ebc`; final state calls `02061424(work)` then `02cbdc(2)`. Other states only increment. Evidence: six-way jump table, immediate interpolation endpoints, call relocations. |
+| `func_020a115c` | 0x020a115c / 184 B | Requires borrowed work. States 0/2/3/5 scale 31 using +16 and truncate to an unsigned byte, returning on zero; 1/4 submit 31. Calls `02057df8`, then `02058c3c` with target 0x80001, mode +20, x=0, y=64 if mode=4 (otherwise 0), float scale 1, zero and flags 4. Evidence: dispatch table, byte mask, argument setup. |
+| `func_020a1214` | 0x020a1214 / 212 B | Uses the same state-dependent byte scaling. If +24 is 6, calls `02057df8` and `02058c3c` with target 0x80001 and zero coordinates. Otherwise calls `02057ddc(255)` and `02060b60` with target 0x5000001, handle +28, coordinates (128,96), zero and flags 4. Evidence: +24 comparison and call arguments. |
+| `func_020a1318` | 0x020a1318 / 256 B | Returns if shared work already exists or allocation fails. Registers update, two drawing callbacks and cleanup with 32-byte allocation; clears it, calls `05b82c` with 4/5/6, initializes state 0, publishes the pointer, and stores the acquired handle at +28. Loads `data_0214ccf8`, forwards its nested index-zero resource entry to `02061f10`, then releases the loaded resource. Evidence: pointer literals, callback relocations, allocation size, zero-fill and handle stores. |
+
+No additional behavioral tests are required (`tests_required = false`). Original
+instruction/relocation comparisons provide the acceptance check for these routines.
+No M1-T449 function remains on the hard list.
