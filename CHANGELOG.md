@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched both M1-T470 game/unit_020387bc resource record and bounded-list copy functions at 100% objdiff with typed storage views.
 - Matched all eight M1-T469 game/unit_020387bc descriptor and initialization functions at 100% objdiff; documented instruction evidence and typed helper arguments.
 - Matched all seven M1-T479 game/unit_020fe360 state, recovery, and selected-element handlers with typed work views.
 - Matched all seven M1-T477 game/unit_020ca69c offset, cell-state and sequence functions with typed field views.
