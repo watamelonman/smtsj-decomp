@@ -1,67 +1,86 @@
-/* src/game/unit_0203ce68.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
-#include "types.h"
+/* src/game/unit_0203ce68.c: script command handlers (read args via func_0203ac00). */
+#include "game/unit_0203ce68.h"
 
-/* Partial view of the work block: ARM 0x0203cfe4 loads byte 0x70. */
+/* Work block returned by Unk02e000_Thunk_0202e788 (partial view). The four u16 slots at +0x0..+0x6 are
+ * read by Unk03ce68_Unk_03ce68 and written by Unk03ce68_Unk_03ced0; ARM 0x0203cfe4 loads byte 0x70. */
 typedef struct Unk03ce68Work {
-    u8 pad_0000[0x70];
+    u16 unk_0000;
+    u16 unk_0002;
+    u16 unk_0004;
+    u16 unk_0006;
+    u8 pad_0008[0x68];
     u8 unk_0070;
 } Unk03ce68Work;
-
 
 void Unk0979d8_ResetAllEntries(void);
 int Unk096754_Unk_096a14(int operand);
 int func_0203ac00(int operandIndex);
 int Unk03aae8_Unk_03acf4(u32 value);
-u8 *Unk02e000_Thunk_0202e788(void);
-int Unk09727c_GetAreaS8();
-int Unk0981dc_Unk_098258();
-u32 Unk03ce68_Unk_03d038(u32 arg0);
+Unk03ce68Work *Unk02e000_Thunk_0202e788(void);
+u8 Unk09974c_GetEntryUnk08(u32 id);
+s8 Unk09727c_GetAreaS8(int i);
+s8 Unk0981dc_Unk_098258(u32 id, int selector);
+/* The callees store a byte, but these call sites pass the value sign-extended from 16 bits
+ * (lsl/asr #16 in the ROM), so the caller-side prototypes take s16. */
+void Unk096754_Unk_097220(int i, s16 v);
+void Unk0981dc_Unk_0981f4(u32 id, u32 selector, s16 value);
 
+/* Script query: reads a slot index (0..3; arg 1 is read and ignored) and writes the work area's
+ * u16 in that slot as the script result (0 for other indices). Returns 1. */
 int Unk03ce68_Unk_03ce68(void)
 {
-    int k = func_0203ac00(0);
-    u16 *w;
-    int r;
+    int slot = func_0203ac00(0);
+    Unk03ce68Work *w;
+    u16 v;
     func_0203ac00(1);
-    w = (u16 *)Unk02e000_Thunk_0202e788();
-    r = 0;
-    switch (k) {
-    case 0: r = w[0]; break;
-    case 1: r = w[1]; break;
-    case 2: r = w[2]; break;
-    case 3: r = w[3]; break;
+    w = Unk02e000_Thunk_0202e788();
+    v = 0;
+    switch (slot) {
+    case 0:
+        v = w->unk_0000;
+        break;
+    case 1:
+        v = w->unk_0002;
+        break;
+    case 2:
+        v = w->unk_0004;
+        break;
+    case 3:
+        v = w->unk_0006;
+        break;
     }
-    Unk03aae8_Unk_03acf4(r);
+    Unk03aae8_Unk_03acf4(v);
     return 1;
 }
 
-int func_0203ac00(int operandIndex);
-int Unk03aae8_Unk_03acf4(u32 value);
-u8 *Unk02e000_Thunk_0202e788(void);
-int Unk09974c_GetEntryUnk08();
-void Unk096754_Unk_097220();
-void Unk0981dc_Unk_0981f4();
-u32 Unk03ce68_Unk_03d038(u32 arg0);
 
+/* Script command: reads an id (arg 1; arg 0 is read and ignored) and stores it in the work-area
+ * slot chosen by Unk09974c_GetEntryUnk08(id): kinds 3..6 map to slots 0..3,
+ * other kinds store nothing. Returns 1. */
 int Unk03ce68_Unk_03ced0(void)
 {
-    u16 v;
-    u16 *w;
+    u16 id;
+    Unk03ce68Work *w;
     func_0203ac00(0);
-    v = func_0203ac00(1);
-    w = (u16 *)Unk02e000_Thunk_0202e788();
-    switch (Unk09974c_GetEntryUnk08(v)) {
-    case 0:
-    case 1:
-    case 2:
+    id = func_0203ac00(1);
+    w = Unk02e000_Thunk_0202e788();
+    switch (Unk09974c_GetEntryUnk08(id)) {
+    case 3:
+        w->unk_0000 = id;
         break;
-    case 3: w[0] = v; break;
-    case 4: w[1] = v; break;
-    case 5: w[2] = v; break;
-    case 6: w[3] = v; break;
+    case 4:
+        w->unk_0002 = id;
+        break;
+    case 5:
+        w->unk_0004 = id;
+        break;
+    case 6:
+        w->unk_0006 = id;
+        break;
     }
     return 1;
 }
+
 
 /* ARM 0x0203cf48: report whether the operand lookup returns a value other
  * than -1; the handler always returns completion status 1. */
@@ -91,8 +110,6 @@ u32 Unk03ce68_Unk_03cfc4(void)
   return 1;
 }
 
-int func_0203ac00(int operandIndex);
-int Unk03aae8_Unk_03acf4(u32 value);
 /* Consume operand zero, report 1, and return completion status 1 (ARM 0x0203cf78). */
 u32 Unk03ce68_Unk_03cf78(void)
 {
@@ -102,12 +119,11 @@ u32 Unk03ce68_Unk_03cf78(void)
 }
 
 int Unk02ee5c_GetTierFromField70(void);
-u8 *Unk02e000_Thunk_0202e788(void);
 /* ARM 0x0203cfd4: consume operand zero and report work byte 0x70; return 1. */
 int Unk03ce68_Unk_03cfd4(void)
 {
     func_0203ac00(0);
-    Unk03aae8_Unk_03acf4(((Unk03ce68Work *)Unk02e000_Thunk_0202e788())->unk_0070);
+    Unk03aae8_Unk_03acf4(Unk02e000_Thunk_0202e788()->unk_0070);
     return 1;
 }
 
@@ -142,51 +158,56 @@ u32 Unk03ce68_Unk_03d010(void)
   return 1;
 }
 
-
-
-/* decompiler-derived */
-u32 Unk03ce68_Unk_03d038(u32 arg0)
+/* Maps a script selector 0..4 to 0, 4, 1, 2, 3; anything else maps to 0. */
+int Unk03ce68_Unk_03d038(int sel)
 {
-  switch(arg0) {
-  case 0:
+    switch (sel) {
+    case 0:
+        return 0;
+    case 1:
+        return 4;
+    case 2:
+        return 1;
+    case 3:
+        return 2;
+    case 4:
+        return 3;
+    }
     return 0;
-  case 1:
-    return 4;
-  case 2:
-    return 1;
-  case 3:
-    return 2;
-  case 4:
-    return 3;
-  default:
-    return 0;
-  }
 }
 
+
+/* Script query: reads a target (arg 0) and a selector (arg 1, remapped by Unk03ce68_Unk_03d038).
+ * Target 0 reads Unk09727c_GetAreaS8(selector), targets 1..3 read Unk0981dc_Unk_098258(target - 1,
+ * selector); the value (0 for other targets) becomes the script result. Returns 1. */
 int Unk03ce68_Unk_03d088(void)
 {
-    int k = func_0203ac00(0);
-    u32 y = Unk03ce68_Unk_03d038(func_0203ac00(1));
-    int r = 0;
-    if (k == 0) {
-        r = Unk09727c_GetAreaS8(y);
-    } else if (k >= 1 && k <= 3) {
-        r = Unk0981dc_Unk_098258((u8)(k - 1), y);
+    int target = func_0203ac00(0);
+    int sel = Unk03ce68_Unk_03d038(func_0203ac00(1));
+    int v = 0;
+    if (target == 0) {
+        v = Unk09727c_GetAreaS8(sel);
+    } else if (target >= 1 && target <= 3) {
+        v = Unk0981dc_Unk_098258((u8)(target - 1), sel);
     }
-    Unk03aae8_Unk_03acf4(r);
+    Unk03aae8_Unk_03acf4(v);
     return 1;
 }
 
+
+/* Script command: the setter counterpart of Unk03ce68_Unk_03d088. Reads a target, a selector
+ * (remapped by Unk03ce68_Unk_03d038) and a value; target 0 stores through Unk096754_Unk_097220,
+ * targets 1..3 through Unk0981dc_Unk_0981f4(target - 1, ...). Returns 1. */
 int Unk03ce68_Unk_03d0f0(void)
 {
-    int k = func_0203ac00(0);
-    int x = func_0203ac00(1);
-    int y = func_0203ac00(2);
-    u32 e = Unk03ce68_Unk_03d038(x);
-    if (k == 0) {
-        Unk096754_Unk_097220(e, (s16)y);
-    } else if (k >= 1 && k <= 3) {
-        Unk0981dc_Unk_0981f4((u8)(k - 1), e, (s16)y);
+    int target = func_0203ac00(0);
+    int arg1 = func_0203ac00(1);
+    int value = func_0203ac00(2);
+    int sel = Unk03ce68_Unk_03d038(arg1);
+    if (target == 0) {
+        Unk096754_Unk_097220(sel, (s16)value);
+    } else if (target >= 1 && target <= 3) {
+        Unk0981dc_Unk_0981f4((u8)(target - 1), sel, (s16)value);
     }
     return 1;
 }
