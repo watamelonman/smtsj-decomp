@@ -1,31 +1,44 @@
-/* src/ImageBg.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* ImageBg work-state helpers, verified against the delinked ARM object. */
 #include "types.h"
 
 
+/* The callback at 0x020e5664 reads mode at +4 and the pair at +12/+16.
+ * Unidentified words retain neutral names; this view owns no storage. */
+typedef struct ImageBgWork {
+    u32 field00;
+    u32 mode;
+    u32 field08;
+    u32 field0c;
+    u32 field10;
+} ImageBgWork;
+
 extern u32 data_02176ca4[];
-/* decompiler-derived */
+/* Return the borrowed work address (zero when absent): 0x020e5570 loads
+ * data_02176ca4[0] directly. The integer return preserves the existing ABI. */
 u32 ImageBg_Get_data_02176ca4(void)
 {
   return *data_02176ca4;
 }
 
 
-/* decompiler-derived */
+/* Report work presence as 0/1; 0x020e54b8 compares the global word to zero. */
 int ImageBg_IsSet_data_02176ca4(void)
 {
   return *data_02176ca4 != 0;
 }
 
-void ImageBg_Release();
-/* decompiler-derived */
+void ImageBg_Release(void);
+/* Cleanup callback: 0x020e56f4 calls Release before clearing the work address.
+ * func_020e5580 registers this callback as its teardown handler. */
 void ImageBg_Unk_0e56f4(void)
 {
   ImageBg_Release();
   *data_02176ca4 = 0;
 }
 
-int func_02061424();
-/* decompiler-derived */
+void func_02061424(ImageBgWork *work);
+/* At 0x020e5530, absent work selects Release; present work selects
+ * func_02061424. Its wider lifecycle purpose is not established. */
 void ImageBg_Unk_0e5530(void)
 {
   int value;
@@ -34,23 +47,25 @@ void ImageBg_Unk_0e5530(void)
     ImageBg_Release();
     return;
   }
-  func_02061424();
+  func_02061424((ImageBgWork *)value);
 }
 
 
-/* decompiler-derived */
+/* Store the pair consumed by callback mode 3 (0x020e56e4, offsets +12/+16).
+ * Values are opaque words; absent work makes this a no-op. */
 void ImageBg_Unk_0e5550(u32 arg0,u32 arg1)
 {
   int value;
   value = ImageBg_Get_data_02176ca4();
   if (value != 0) {
-    *(u32 *)(value + 0xc) = arg0;
-    *(u32 *)(value + 0x10) = arg1;
+    ((ImageBgWork *)value)->field0c = arg0;
+    ((ImageBgWork *)value)->field10 = arg1;
   }
 }
 
-int Unk0e7290_Unk_0e7790();
-/* decompiler-derived */
+void Unk0e7290_Unk_0e7790(u32 value);
+/* Clear the work mode and forward zero to 0x020e7790, as at 0x020e550c.
+ * No work means no state change and no forwarding call. */
 void ImageBg_Unk_0e550c(void)
 {
   int value;
@@ -58,15 +73,15 @@ void ImageBg_Unk_0e550c(void)
   if (value == 0) {
     return;
   }
-  *(u32 *)(value + 4) = 0;
+  ((ImageBgWork *)value)->mode = 0;
   Unk0e7290_Unk_0e7790(0);
 }
 
 
-int ImageBg_IsMode1or2();
-int func_020e5580();
-void ImageBg_AllocBuf();
-/* decompiler-derived */
+int ImageBg_IsMode1or2(void);
+void func_020e5580(void);
+void ImageBg_AllocBuf(void);
+/* Start mode 1 with an opaque first word, unless mode 1 or 2 is active. */
 void ImageBg_Unk_0e54d4(u32 arg0)
 {
   int value;
@@ -83,13 +98,12 @@ void ImageBg_Unk_0e54d4(u32 arg0)
   v2[1] = 1;
 }
 
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
 extern u8 data_02150bd4[];
-u32 func_0205ba98();
-void func_0205bb68();
-void Unk0e7290_Unk_0e7734();
+u32 func_0205ba98(u32 size, u32 alignment, const void *source, u32 line);
+void func_0205bb68(void);
+void Unk0e7290_Unk_0e7734(void);
+/* Release only when the second global word is set. At 0x020e5638 it is
+ * cleared before calls to 0x0205bb68 and 0x020e7734; repeated calls are inert. */
 void ImageBg_Release(void)
 {
     if (data_02176ca4[1] == 0) {
@@ -100,13 +114,15 @@ void ImageBg_Release(void)
     Unk0e7290_Unk_0e7734();
 }
 
+/* Test the +4 mode word for 1 or 2 (comparisons at 0x020e549c/54a0).
+ * Absent work returns false without dereferencing its address. */
 int ImageBg_IsMode1or2(void)
 {
     u32 p = ImageBg_Get_data_02176ca4();
     if (p == 0) {
         return 0;
     }
-    switch (FIELD(u32, p, 4)) {
+    switch (((ImageBgWork *)p)->mode) {
     case 1:
     case 2:
         return 1;
@@ -114,10 +130,71 @@ int ImageBg_IsMode1or2(void)
     return 0;
 }
 
+/* Populate the second global word once, using the original allocation tuple. */
 void ImageBg_AllocBuf(void)
 {
     if (data_02176ca4[1] != 0) {
         return;
     }
     data_02176ca4[1] = func_0205ba98(0x1e000, 0x800, data_02150bd4, 216);
+}
+
+void func_020e5664(ImageBgWork *work);
+void *func_020611dc(void (*update)(ImageBgWork *), void (*draw)(ImageBgWork *), u32 arg2,
+                    void (*cleanup)(void), u32 size, u32 arg5, u32 arg6, u32 arg7);
+void func_020e7658(u32 buf, u32 arg1);
+/* Create the 20-byte work task once (update 0x020e5664, teardown 0x020e56f4),
+ * store it in the first global word and hand the second word to 0x020e7658. */
+void func_020e5580(void)
+{
+    void *work;
+    if (data_02176ca4[0] != 0) {
+        return;
+    }
+    work = func_020611dc(func_020e5664, 0, 0, ImageBg_Unk_0e56f4, 20, 1, 0, 1);
+    if (work == 0) {
+        return;
+    }
+    data_02176ca4[0] = (u32)work;
+    func_020e7658(data_02176ca4[1], 0);
+}
+
+u32 Unk02dcfc_GetField70(void);
+int func_020e7840(u32 a);
+int Unk0e7290_Unk_0e77f0(u32 a);
+int Unk0e78b8_IsState5(void);
+void Unk0e7290_Set_0e7770(u32 a, u32 b);
+/* Per-frame update for the work task, dispatching on mode: 1 starts with
+ * field00 (via 0x020e7840 when GetField70 is 2) and moves to 2 or idle 0;
+ * 2 waits for IsState5, then enters 3; 3 forwards the +12/+16 pair.
+ * Mode 0 (idle) does nothing. */
+void func_020e5664(ImageBgWork *work)
+{
+    int ok;
+    switch (work->mode) {
+    case 0:
+        break;
+    case 1:
+        if (Unk02dcfc_GetField70() == 2) {
+            ok = func_020e7840(work->field00);
+        } else {
+            ok = Unk0e7290_Unk_0e77f0(work->field00);
+        }
+        if (ok != 0) {
+            work->mode = 2;
+            return;
+        }
+        work->mode = 0;
+        return;
+    case 2:
+        if (Unk0e78b8_IsState5() == 0) {
+            return;
+        }
+        work->mode = 3;
+        Unk0e7290_Set_0e7770(0, 0);
+        return;
+    case 3:
+        Unk0e7290_Set_0e7770(work->field0c, work->field10);
+        return;
+    }
 }
