@@ -11,7 +11,7 @@ typedef struct Unk06e4d8Work {
     s32 unk_002c; /* 20.12 fixed point, integer part 0..255 */
     s32 unk_0030;
     s32 unk_0034;
-    u8 pad_0038[0x4];
+    s32 unk_0038;
     u32 unk_003c;
     u32 unk_0040;
     u32 unk_0044;
@@ -23,7 +23,8 @@ typedef struct Unk06e4d8Work {
     u32 unk_0064;
     u32 unk_0068;
     u8 unk_006c;
-    u8 pad_006d[0x3];
+    u8 unk_006d;
+    u8 pad_006e[0x2];
 } Unk06e4d8Work; /* 0x70 bytes: allocated with size 112 in Unk06e4d8_Unk_06e538 */
 
 extern Unk06e4d8Work *data_02170cc8;
@@ -235,4 +236,59 @@ int Unk06e4d8_GetFlag6c(void)
         return 0;
     }
     return ((Unk06e4d8Work *)Unk06e4d8_Get_data_02170cc8())->unk_006c != 0;
+}
+
+/* Duration word at +0xd8 of each 0x148-byte slot record. */
+typedef struct Unk06e4d8DurationSlot {
+    s32 duration;
+    u8 pad_0004[0x144];
+} Unk06e4d8DurationSlot;
+extern Unk06e4d8DurationSlot data_0216bba0[];
+void func_020086bc(const void *source, void *destination, u32 size);
+void func_0207112c(u8 *block, u32 *field5c, u32 *field64, u32 *field3c, u32 *field4c);
+
+/* Configure the singleton from a valid slot's 32-byte block, retaining current
+ * 20.12 channel values when active. Evidence: table stride 0x148, block copy,
+ * state-byte stores and calls to 0207112c in the original ARM function.
+ * Slot validity is checked by 06ea0c; the work address remains borrowed. */
+void func_0206e8b0(u32 slot)
+{
+    Unk06e4d8Work *w = (Unk06e4d8Work *)Unk06e4d8_Get_data_02170cc8();
+    s32 duration;
+    u32 packed;
+    if (!Unk06e4d8_Unk_06ea0c(slot)) {
+        return;
+    }
+    if (!Unk06e4d8_Get_data_02170cc8()) {
+        return;
+    }
+    duration = data_0216bba0[slot].duration;
+    func_020086bc((void *)Unk06e4d8_Unk_06e4d8(slot), w->unk_000c, 32);
+    if (Unk06e4d8_GetFlag6c()) {
+        w->unk_000c[0] = w->unk_002c >> 12;
+        w->unk_000c[1] = w->unk_0030 >> 12;
+        w->unk_000c[2] = w->unk_0034 >> 12;
+        w->unk_000c[3] = w->unk_0038 >> 12;
+        w->unk_0060 = 0;
+        w->unk_005c = 0;
+        w->unk_0064 = 0;
+        w->unk_006c = 2;
+    } else {
+        w->unk_0008 = 0;
+        w->unk_006c = 1;
+        w->unk_0000 = 0;
+        w->unk_002c = w->unk_000c[0] << 12;
+        w->unk_0030 = w->unk_000c[1] << 12;
+        w->unk_0034 = w->unk_000c[2] << 12;
+        w->unk_0038 = w->unk_000c[3] << 12;
+    }
+    w->unk_006d = slot;
+    w->unk_0004 = w->unk_0008 + duration;
+    func_0207112c(w->unk_000c, &w->unk_005c, &w->unk_0064, &w->unk_003c, &w->unk_004c);
+    packed = (w->unk_000c[24] << 24) | (w->unk_000c[25] << 16) | (w->unk_000c[26] << 8);
+    if (packed != 0xffffff00) {
+        w->unk_0068 = 1;
+    } else {
+        w->unk_0068 = 2;
+    }
 }

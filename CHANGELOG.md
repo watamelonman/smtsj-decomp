@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T388: matched the 348-byte slot-driven singleton transition setup `func_0206e8b0` in readable C.
 - M1-T387: verified eight game/unit_0206e4d8 state and channel helpers at 100% objdiff with byte-identical image artifacts.
 - Verified all eight M1-T393 game/unit_0211f2d0 helpers at 100% objdiff; added typed record views, explicit helper contracts and per-function evidence.
 - Matched M1-T392 `func_0211e6b8`, the state-dependent list rendering callback, with typed work-area and image/text layouts.
