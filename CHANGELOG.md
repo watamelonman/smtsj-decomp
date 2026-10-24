@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M1-T385: matched the game/unit_020f4c50 message handler `func_020f4d64` (1100 bytes) at 100% objdiff, with a typed flag-qualified message payload.
 - Match all eight M1-T384 callbacks and initializers in game/unit_020f4c50.
 - M1-T381: matched `func_020953c4` and verified seven more game/unit_02094fe0 bit-array/slot helpers at 100% objdiff; typed the +0x200 bit array and the 28-byte slot record, and documented their contracts.
 
