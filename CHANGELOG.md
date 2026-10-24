@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched M1-T445 `func_020ef578`, the remaining game/unit_020ef248 entry submission callback, with typed work fields and documented instruction evidence.
+- Verified all eight M1-T447 game/unit_020a0ce4 functions at 100% objdiff; documented instruction evidence and typed their helper calls.
+- Matched all seven M1-T436 selection and record functions in `game/unit_020bcef4`, with typed parameters and instruction evidence.
 - Matched all eight M1-T444 game/unit_020ef248 descriptor, ramp, state, initialization and entry callbacks at 100% objdiff.
 - Matched the eight M1-T426 VCOUNT, queue-drain and descriptor-submission functions in `game/unit_0205ae50`, with typed private queue/request layouts and instruction evidence.
 - Matched all eight M1-T435 selection, initialization, and record update functions in `game/unit_020bcef4` at 100% objdiff.
