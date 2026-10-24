@@ -69,7 +69,24 @@ Validation uses binary equivalence rather than host tests (tests_required=false)
 All eight functions match the original instructions and relocations exactly.
 No module boundary changes. Hard list for M1-T371: none.
 
-## Remaining functions outside these cards
+## M1-T372 — remaining two functions
 
-- `func_020f4878`
-- `func_020f4790`
+- `func_020f4790` (228 bytes): initializes borrowed work words +0x40,
+  +0x44, +0x48 and +0x4c to 30, 5, 0 and 0. Calls `020f711c` with
+  the observed numeric parameters and three callbacks. Uses `0e8460()` for
+  both embedded-object selectors, installs four callbacks through `020f81cc`,
+  then sets callbacks at embedded offsets +0x98 and +0x9c. Evidence is the
+  stores, calls and nine callback literals at 020f4790–020f4870.
+- `func_020f4878` (144 bytes): first calls `020f7188(work)`, then dispatches
+  the state word at +8. State 11 calls `0bc9b4(work[+0x40], 0)`; state 9
+  refreshes through `0f4958`, calls `020f8264` on embedded +0x54 and becomes
+  10; state 2 calls `0f7de4(work[+0x40], 2)` and becomes 1. Other states
+  return. Evidence is the jump table at 020f4894 and its three targets.
+
+Both functions preserve neutral names because the instructions establish these
+contracts without identifying game semantics. No module boundary changes.
+Binary equivalence is the acceptance test (tests_required=false); standalone
+instruction and relocation comparisons match both functions exactly. Full build
+and objdiff confirm 100% for both; anticheat and all nine unit tests pass, and
+checksum reports all artifacts byte-identical to the original.
+Hard list for M1-T372: none.

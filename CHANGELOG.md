@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Match and document eight unit_020e5fb8 bit access wrappers and setters with explicit pair indices.
+- Verified all eight M1-T380 work accessors and forwarding helpers at 100% objdiff; corrected address-helper pointer types and documented original instruction evidence.
+- M1-T372: matched the final two `game/unit_020f470c` initialization and state callbacks and documented their contracts.
 - M1-T374: verified eight game/unit_020e5fb8 wrappers and offset helpers at 100% objdiff; documented their contracts and typed their callee declarations.
 - M1-T371: matched eight more `game/unit_020f470c` callbacks and documented their descriptor, flag, and input handling contracts.
 - M1-T373: verified eight game/unit_020e5fb8 helpers at 100% objdiff and documented their bit-index contracts and assembly evidence.

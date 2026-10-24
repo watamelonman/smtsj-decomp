@@ -40,7 +40,7 @@ void Unk0f470c_Unk_0f4908(Unk0f470cWork *arg0)
 
 extern u32 data_02176e00[];
 int func_02008848();
-int func_020f4790();
+void func_020f4790(Unk0f470cWork *work);
 /* Clear the observed 0xf8-byte work area, publish it, then initialize it. */
 void Unk0f470c_Unk_0f4764(Unk0f470cWork *arg0)
 {
@@ -187,7 +187,7 @@ void func_020f4928(Unk0f470cWork *work)
     }
 }
 
-void func_020f4878(void);
+void func_020f4878(Unk0f470cWork *work);
 /* Descriptor words and callback addresses are evidenced by stores at 020f470c.
  * The caller owns the descriptor; word +8 is deliberately untouched. */
 void func_020f470c(u32 *descriptor)
@@ -260,4 +260,58 @@ int func_020f4ba4(void *object)
         }
     }
     return result;
+}
+
+void func_020f711c(Unk0f470cWork *work, u32 handle, s32 x, s32 y,
+                    s32 a, s32 b, u32 c, u32 d, u32 first, u32 second, u32 third);
+int Unk0e8228_Unk_0e8460(void);
+void func_020f81cc(void *object, int a, int b, int c, int d, int e,
+                    u32 first, u32 second, u32 third, u32 fourth);
+void Unk0f81a4_SetUnkField98(void *object, u32 callback);
+void Unk0f81a4_SetUnkField9c(void *object, u32 callback);
+
+/* Stores at 020f479c establish defaults and callback arguments; initialize the
+ * borrowed work and its embedded object without assigning game semantics. */
+void func_020f4790(Unk0f470cWork *work)
+{
+    int value;
+    FIELD(u32, work, 0x40) = 30;
+    FIELD(u32, work, 0x44) = 5;
+    FIELD(u32, work, 0x48) = 0;
+    FIELD(u32, work, 0x4c) = 0;
+    func_020f711c(work, FIELD(u32, work, 0x40), -128, 0, 128, -128, 0, 0,
+                 (u32)func_020f4994, (u32)Unk0f470c_Unk_0f49f4,
+                 (u32)Unk0f470c_Unk_0f4a1c);
+    value = Unk0e8228_Unk_0e8460();
+    func_020f81cc(work->embedded_0054, value, value, 0, 1, 0,
+                 (u32)func_020f4a60, (u32)Unk0f470c_Unk_0f4ac0,
+                 (u32)Unk0f470c_Unk_0f4b44, (u32)Unk0f470c_Unk_0f4b80);
+    Unk0f81a4_SetUnkField98(work->embedded_0054, (u32)func_020f4ba4);
+    Unk0f81a4_SetUnkField9c(work->embedded_0054, (u32)Unk0f470c_Unk_0f4c20);
+}
+
+void func_020f7188(Unk0f470cWork *work);
+void Unk0bc1a8_Unk_0bc9b4(u32 handle, int value);
+void func_020f8264(void *object);
+/* The jump table at 020f4894 handles states 11, 9 and 2; the caller owns
+ * work, whose state changes from 9 to 10 and from 2 to 1. */
+void func_020f4878(Unk0f470cWork *work)
+{
+    func_020f7188(work);
+    switch (work->state) {
+    case 0: case 1: case 3: case 4: case 5: case 6: case 7: case 8: case 10:
+        break;
+    case 11:
+        Unk0bc1a8_Unk_0bc9b4(FIELD(u32, work, 0x40), 0);
+        break;
+    case 9:
+        Unk0f470c_Unk_0f4958(work);
+        func_020f8264(work->embedded_0054);
+        work->state = 10;
+        break;
+    case 2:
+        func_020f7de4(FIELD(u32, work, 0x40), 2);
+        work->state = 1;
+        break;
+    }
 }
