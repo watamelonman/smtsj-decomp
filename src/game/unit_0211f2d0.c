@@ -7,7 +7,11 @@
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk11f2d0Work {
-    u8 pad_0000[0x10];
+    s32 state;
+    s32 countdown;
+    u32 field8;
+    s16 timer;
+    u16 pad_E;
     s32 unk_0010;
     u32 unk_0014;
     u32 unk_0018;
@@ -102,9 +106,9 @@ void Unk11f2d0_Unk_11f2d0(Unk11f2d0Record *record)
     func_02008848(record, 0, 0x28);
 }
 
-int func_0205c408();
-int func_0205c6e0();
-int Unk065e88_Call_02065fc0();
+void func_0205c408(u32 object, int index);
+void func_0205c6e0(u32 object);
+u32 *Unk065e88_Call_02065fc0(u32 resource, u32 context, int mode, int flags);
 
 /* The load at 0x0211f340 tests word +0xC; a null record returns false. */
 int Unk11f2d0_IsFieldCSet(const Unk11f2d0Record *record)
@@ -125,73 +129,65 @@ int Unk11f2d0_IsState7(void)
     return work->state == 7;
 }
 
-/* decompiler-derived */
-void Unk11f2d0_Unk_11f544(int arg0)
+/* At 0x0211f544, create slot +0x24 once, select index 0, then start it. */
+void Unk11f2d0_Unk_11f544(Unk11f2d0Work *work)
 {
-  u32 *v1;
-  if (((Unk11f2d0Work *)arg0)->unk_0024 != 0) {
-    return;
-  }
-  v1 = (u32 *)
-           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
-  *(u32 **)(arg0 + 0x24) = v1;
-  func_0205c408(*v1,0);
-  func_0205c6e0(**(u32 **)(arg0 + 0x24));
-  return;
+    u32 *object;
+    if (work->unk_0024 != 0) {
+        return;
+    }
+    object = Unk065e88_Call_02065fc0(work->unk_0014, work->unk_001c, 1, 0);
+    work->unk_0024 = (s32)object;
+    func_0205c408(*object, 0);
+    func_0205c6e0(*(u32 *)work->unk_0024);
 }
 
 
-/* decompiler-derived */
-void Unk11f2d0_Unk_11f58c(int arg0)
+/* At 0x0211f58c, create slot +0x28 once, select index 1, then start it. */
+void Unk11f2d0_Unk_11f58c(Unk11f2d0Work *work)
 {
-  u32 *v1;
-  if (((Unk11f2d0Work *)arg0)->unk_0028 != 0) {
-    return;
-  }
-  v1 = (u32 *)
-           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
-  *(u32 **)(arg0 + 0x28) = v1;
-  func_0205c408(*v1,1);
-  func_0205c6e0(**(u32 **)(arg0 + 0x28));
-  return;
+    u32 *object;
+    if (work->unk_0028 != 0) {
+        return;
+    }
+    object = Unk065e88_Call_02065fc0(work->unk_0014, work->unk_001c, 1, 0);
+    work->unk_0028 = (s32)object;
+    func_0205c408(*object, 1);
+    func_0205c6e0(*(u32 *)work->unk_0028);
 }
 
 
-/* decompiler-derived */
-void Unk11f2d0_Unk_11f5d4(int arg0)
+/* At 0x0211f5d4, create slot +0x2c once, select index 2, then start it. */
+void Unk11f2d0_Unk_11f5d4(Unk11f2d0Work *work)
 {
-  u32 *v1;
-  if (((Unk11f2d0Work *)arg0)->unk_002c != 0) {
-    return;
-  }
-  v1 = (u32 *)
-           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0014,((Unk11f2d0Work *)arg0)->unk_001c,1,0);
-  *(u32 **)(arg0 + 0x2c) = v1;
-  func_0205c408(*v1,2);
-  func_0205c6e0(**(u32 **)(arg0 + 0x2c));
-  return;
+    u32 *object;
+    if (work->unk_002c != 0) {
+        return;
+    }
+    object = Unk065e88_Call_02065fc0(work->unk_0014, work->unk_001c, 1, 0);
+    work->unk_002c = (s32)object;
+    func_0205c408(*object, 2);
+    func_0205c6e0(*(u32 *)work->unk_002c);
 }
 
 
-/* decompiler-derived */
-void Unk11f2d0_Unk_11f61c(int arg0)
+/* At 0x0211f61c, create slot +0x30 once, select index 0, then start it. */
+void Unk11f2d0_Unk_11f61c(Unk11f2d0Work *work)
 {
-  u32 *v1;
-  if (((Unk11f2d0Work *)arg0)->unk_0030 != 0) {
-    return;
-  }
-  v1 = (u32 *)
-           Unk065e88_Call_02065fc0(((Unk11f2d0Work *)arg0)->unk_0018,((Unk11f2d0Work *)arg0)->unk_0020,0,0);
-  *(u32 **)(arg0 + 0x30) = v1;
-  func_0205c408(*v1,0);
-  func_0205c6e0(**(u32 **)(arg0 + 0x30));
-  return;
+    u32 *object;
+    if (work->unk_0030 != 0) {
+        return;
+    }
+    object = Unk065e88_Call_02065fc0(work->unk_0018, work->unk_0020, 0, 0);
+    work->unk_0030 = (s32)object;
+    func_0205c408(*object, 0);
+    func_0205c6e0(*(u32 *)work->unk_0030);
 }
 
-int func_0205bb68();
-int func_0205c368();
-/* decompiler-derived */
-void Unk11f2d0_Unk_11f43c(int arg0)
+void func_0205bb68(void);
+void func_0205c368(u32 context);
+/* Release nonzero slots and resources in observed order, then clear the singleton. */
+void Unk11f2d0_Unk_11f43c(Unk11f2d0Work *arg0)
 {
   u32 tmp1;
   if (((Unk11f2d0Work *)arg0)->unk_0024 != 0) {
@@ -211,11 +207,11 @@ void Unk11f2d0_Unk_11f43c(int arg0)
     ((Unk11f2d0Work *)arg0)->unk_0030 = 0;
   }
   if (((Unk11f2d0Work *)arg0)->unk_001c != 0) {
-    func_0205c368();
+    func_0205c368(arg0->unk_001c);
     ((Unk11f2d0Work *)arg0)->unk_001c = 0;
   }
   if (((Unk11f2d0Work *)arg0)->unk_0020 != 0) {
-    func_0205c368();
+    func_0205c368(arg0->unk_0020);
     ((Unk11f2d0Work *)arg0)->unk_0020 = 0;
   }
   if (((Unk11f2d0Work *)arg0)->unk_0010 != 0) {
@@ -237,4 +233,111 @@ void Unk11f2d0_Unk_11f43c(int arg0)
   } while (tmp1 < 5);
   *data_02176e78 = 0;
   return;
+}
+
+extern u32 data_0213cd2c[];
+extern const char data_02151fc4[], data_02151fd4[], data_02151ff0[];
+extern const char data_0215200c[], data_02152028[];
+void Unk05b82c_Unk_05b82c(u32 value);
+u32 func_0205dcd4(const char *path, int mode);
+u32 func_0205c2c4(const char *path);
+void Unk0a0ce4_Unk_0a0da4(int value);
+int func_02053800(int index, int mask);
+void func_0211f894(Unk11f2d0Work *work);
+void func_0211f974(Unk11f2d0Work *work);
+void func_0211f704(Unk11f2d0Work *work);
+u32 func_020611dc(void (*update)(Unk11f2d0Work *),
+    void (*callback1)(Unk11f2d0Work *), void (*callback2)(Unk11f2d0Work *),
+    void (*destroy)(Unk11f2d0Work *), u32 size, int alignment, int flags, int mode);
+
+/* At 0x0211f67c, register five table entries and load the five work resources. */
+void func_0211f67c(Unk11f2d0Work *work)
+{
+    u32 i;
+    for (i = 0; i < 5; i++) {
+        Unk05b82c_Unk_05b82c(data_0213cd2c[i]);
+    }
+    work->unk_0010 = func_0205dcd4(data_02151fc4, 1);
+    work->unk_0014 = func_0205dcd4(data_02151fd4, 1);
+    work->unk_0018 = func_0205dcd4(data_02151ff0, 1);
+    work->unk_001c = func_0205c2c4(data_0215200c);
+    work->unk_0020 = func_0205c2c4(data_02152028);
+}
+
+/* Allocate 0x34 bytes with the four observed callbacks; initialize only on success. */
+u32 func_0211f3c8(void)
+{
+    Unk11f2d0Work *work = (Unk11f2d0Work *)func_020611dc(func_0211f704,
+        func_0211f894, func_0211f974, Unk11f2d0_Unk_11f43c, 0x34, 4, 0, 1);
+    if (work == 0) {
+        return 0;
+    }
+    Unk11f2d0_Unk_11f664((Unk11f2d0Prefix *)work);
+    func_0211f67c(work);
+    return (u32)work;
+}
+
+/* Advance states 0..7 using call-count delays and the signed halfword timeout.
+ * Evidence: dispatch and field accesses at 0x0211f704..0x0211f88c. */
+void func_0211f704(Unk11f2d0Work *work)
+{
+    int finished;
+    switch (work->state) {
+    case 0:
+        if (--work->countdown < 1) {
+            work->state = 1;
+            work->countdown = 2;
+            Unk11f2d0_Unk_11f544(work);
+        }
+        break;
+    case 1:
+        if (--work->countdown < 1) {
+            work->state = 2;
+            work->countdown = 8;
+            Unk0a0ce4_Unk_0a0da4(41);
+        }
+        break;
+    case 2:
+        if (--work->countdown < 1) {
+            work->state = 3;
+            work->countdown = 20;
+            Unk11f2d0_Unk_11f58c(work);
+        }
+        break;
+    case 3:
+        if (--work->countdown < 1) {
+            work->state = 4;
+            work->countdown = 30;
+            Unk11f2d0_Unk_11f61c(work);
+        }
+        break;
+    case 4:
+        if (--work->countdown < 1) {
+            work->state = 5;
+            work->timer = 600;
+            Unk11f2d0_Unk_11f5d4(work);
+        }
+        break;
+    case 5:
+        finished = 0;
+        if (--work->timer < 1) {
+            finished = 1;
+        }
+        if (func_02053800(0, 0xc03)) {
+            Unk0a0ce4_Unk_0a0da4(1);
+            finished = 1;
+        }
+        if (finished) {
+            work->countdown = 11;
+            work->state = 6;
+        }
+        break;
+    case 6:
+        if (--work->countdown < 1) {
+            work->state = 7;
+        }
+        break;
+    case 7:
+        break;
+    }
 }
