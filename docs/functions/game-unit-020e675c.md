@@ -24,8 +24,17 @@ Validation: all eight entries in the generated objdiff report are 100%; the
 full checksum gate verifies the original image while this TU remains delinked.
 No new tests are required by this card; the binary match is the behavior oracle.
 
-## Outside M1-T225 (M1-T226)
+## M1-T226 — remaining three functions match at 100%
 
-- `func_020e6874`
-- `func_020e68f0`
-- `func_020e6948`
+Group 0x17 uses the same selector/base/count/search interface as above.
+`func_020a1428` is the entry lookup also called from `BattleShowingTask.c` and
+`CampStatus.c`; only the six halfwords at +0x2e that this TU reads are typed.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_020e6874` | Search group 0x17/table 2 with a 6-byte key (`strh` of the id) and stride 6, comparator `Unk0e675c_Unk_0e677c`. Returns a borrowed record or NULL. |
+| `func_020e68f0` | Search group 0x17/table 1 with a 12-byte key and stride 12, comparator `Unk0e675c_Unk_0e678c`. Returns a borrowed record or NULL. |
+| `func_020e6948` | Look up `func_020a1428(owner)`, then repeat the `func_020e6874` search inline (no call in the original; a call did not inline under mwcc). Return 1 if the record id equals any of the entry's six ids at +0x2e (`ldrh [r1, #46]` loop to 6), or if bit pair 0-1, 2-3 or 6-7 of the record byte at +4 is nonzero (`lsl`/`lsrs #30` tests); else 0. The search result is not NULL-checked. |
+
+Validation: `tools/match_gate.py` reports all 11 C functions in this TU at
+100%, and `tools/checksum.py` reports all artifacts byte-identical.

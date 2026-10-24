@@ -534,3 +534,48 @@ Hard list for M1-T1114: none.
 
 Validation: match gate (all 175 C functions in the changed file 100%), checksum
 byte-identical, anticheat clean, 9 unit tests pass.
+
+## M1-T1115: action flags, descriptor transitions and map work
+
+All eight functions match the delinked ARM instructions at 100%. Names remain
+address-based because field access and call evidence does not establish gameplay
+semantics. Pointers and embedded buffers are borrowed; no ownership changes.
+
+- `func_020300ec` (172 bytes): tests channel-zero masks in priority order:
+  0xf3, 0x800, 0x400, 0x100, 0x200. A predicate result of one sets action
+  +0x30/+0x20/+0x24/+0x28/+0x2c respectively and returns one. The 0x800
+  and 0x400 branches also call 0441ec; no match returns zero.
+- `func_02030494` (180 bytes): rejects a zero input word, looks up the map
+  and cell at cached coordinates, then requires 0364bc(cell low five bits)
+  to equal one and cell bit five to equal one. Missing cells reject.
+- `func_02032ca0` (172 bytes): obtains the descriptor for state +0x747c,
+  clears the active cell fields, then calls optional descriptor +4. Return
+  zero restores root flags, clears +0x747c too, and sets +0x73cc to two.
+- `func_02032d4c` (168 bytes): polls descriptor +8, treating an absent
+  callback as one. Result one restores the same root and state fields;
+  nonzero state +0x7498 additionally sets root +0x54 to one.
+- `func_02034dd0` (192 bytes): unless +0x7400 is nonzero, rebuilds map work
+  through 03721c with byte +0x5b minus one, clamped to one. Always finishes
+  with ScanVisor 0a2b18. Root +0x94 supplies the halfword argument.
+- `func_02034e90` (180 bytes): rebuilds the same +0x3154 work with the
+  unmodified byte +0x5b; nonzero +0x7400 suppresses the call.
+- `func_02034f44` (196 bytes): enters state seven, clears root +4, pins
+  resource nine, selects the map table's signed halfword +0x20 or a cell's
+  non-sentinel signed halfword +2, and calls 09da38 for state +0x7330.
+  Releases resource nine afterward. Declaring the signed id before the
+  state pointer preserves the original register assignment.
+- `func_02035234` (192 bytes): absent singleton does nothing. Otherwise
+  clears +0x631c/+0x7130, calls 0a6ac0 to rebuild them, then checks seven
+  slots via 035c14 and appends each enabled slot through 0a7474.
+
+Typing (attempt 2): all eight use named members, not raw offsets.
+`Unk02f2a8State` now embeds `Unk02f2a8Body` at +4 (level byte `body.unk_0057` =
+state +0x5b, buffer `body.unk_0214` = +0x218) and names the buffers +0x358,
++0x3134, +0x3154, +0x38e8, +0x631c, +0x7130, +0x7330 and words +0x7400,
++0x7494, +0x7498. Buffer sizes run to the next known field (guessed).
+`Unk02f2a8StateRoot` gains `unk_007c`/`unk_0094`, `Unk02f2a8Action` gains
+`unk_0020`..`unk_0030`. `Unk02f2a8MapEntry` (s16 +0x20) and `Unk02f2a8CellId`
+(s16 +2, -1 = no override) type the records read by `func_02034f44`.
+
+Hard list for M1-T1115: none. No new tests are required by the card; objdiff
+compares every instruction against the original implementation.
