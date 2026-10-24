@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T371: matched eight more `game/unit_020f470c` callbacks and documented their descriptor, flag, and input handling contracts.
 - Matched all eight M1-T370 functions in `game/unit_020f470c`, including the missing accessor callback; documented typed work views and instruction evidence.
 - M1-T363: added matching C for `func_020b12c8`, the ten-slot filtered and sorted ID selection routine; documented `func_020b1488` on the hard list.
 - M1-T362: matched `func_020b23bc` with typed work/cell views; documented `func_020b2410` on the hard list after a 98.71% candidate.

@@ -33,17 +33,43 @@ is the acceptance test; the card does not require additional host tests.
 
 Hard list for M1-T370: none.
 
-## Not done in M1-T372
+## M1-T371 — all eight functions match at 100%
+
+Contracts below follow the ARM instructions at the named addresses; pointers are
+borrowed and neutral names avoid inferring game semantics from callbacks alone.
+
+- `Unk0f470c_Unk_0f4958` (60 bytes): reads embedded field 10, calls
+  `0ea70c`, then uses the flag at +0x50 to choose `0ea828` or the array-entry
+  lookup followed by `func_020ea744`.
+- `Unk0f470c_Unk_0f4b44` (60 bytes): reads the singleton; calls `0e8b94`,
+  then updates singleton +4 with arguments 0 and 5, calls `0f7d14` on it,
+  and passes singleton +0x40 and zero to `0f7de4`.
+- `Unk0f470c_Unk_0f4a1c` (68 bytes): ignores events other than 2. Values
+  1, 5 and 6 set the work flag; other values clear it. Publishes that flag
+  through `0e8f50`.
+- `func_020f470c` (88 bytes): fills descriptor size 0xf8, kind 3, five
+  callback addresses and a zero word. The word at +8 is untouched.
+- `func_020f4994` (96 bytes): initializes the embedded object using either
+  zero or `0e8374(work[+0x44])`, selected by `0e82ac`. Clears and publishes
+  the flag, stores 9 at +0xc and submits the resource from +0x28 with -1.
+- `func_020f4a60` (96 bytes): returns 1 when `0e8bac` is false; otherwise
+  looks up the supplied index and rejects states 1, 2, 7 and 11 returned by
+  `0204a244(02044ec4())`. Its first callback argument is unused.
+- `func_020f4ba4` (124 bytes): a clear singleton flag enables input checks
+  for masks 32 and 16. Each invokes its corresponding object thunk and
+  refreshes the singleton through `0f4958`. Returns -1 for mask 32, 1 for
+  mask 16 (which takes precedence), or zero when neither is processed.
+- `Unk0f470c_Unk_0f4ac0` (132 bytes): obtains field 10 from its incoming
+  object and selects an array entry. If `0e8bac` is true, stores the entry
+  into `045048()` +0x40 and calls `020e82c8`. Otherwise calls `020e8d38`
+  with the object from `02044ec4`, its +0x1e8 region, the entry, and singleton
+  +0x28; a nonzero result triggers `0e8d18(0)`, then updates singleton +0x40.
+
+Validation uses binary equivalence rather than host tests (tests_required=false).
+All eight functions match the original instructions and relocations exactly.
+No module boundary changes. Hard list for M1-T371: none.
+
+## Remaining functions outside these cards
+
 - `func_020f4878`
 - `func_020f4790`
-- `Unk0f470c_Unk_0f4958`: decompiler-derived
-- `Unk0f470c_Unk_0f4b44`: decompiler-derived
-- `Unk0f470c_Unk_0f4ac0`: decompiler-derived
-
-## Not done in M1-T371
-- `Unk0f470c_Unk_0f4a1c`
-- `func_020f470c`
-- `func_020f4994`
-- `func_020f4a60`
-- `func_020f4ba4`
-- `Unk0f470c_Unk_0f4a1c`: hand-matched
