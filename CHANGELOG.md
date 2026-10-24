@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T372: matched the final two `game/unit_020f470c` initialization and state callbacks and documented their contracts.
 - M1-T371: matched eight more `game/unit_020f470c` callbacks and documented their descriptor, flag, and input handling contracts.
 - M1-T373: verified eight game/unit_020e5fb8 helpers at 100% objdiff and documented their bit-index contracts and assembly evidence.
 
