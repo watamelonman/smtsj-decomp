@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched the remaining seven M1-T274 functions in `src/game/unit_020fd268.c` (state stepper, draw pass, work creation and init) at 100% objdiff; the TU is now fully C.
 - Verified all eight M1-T273 singleton accessors and setters at 100% objdiff, with typed work fields and per-function behavior evidence.
 - Matched both M1-T267 current-item handlers in `src/game/unit_020466a4.c`, with typed record views and documented status/update behavior.
 - Matched M1-T266 `func_0203812c` at 100% objdiff with typed record, input, and resource dictionary views.
