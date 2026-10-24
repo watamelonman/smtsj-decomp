@@ -7,9 +7,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u32 data_0215ee98[];
-int func_0206df10();
-int Unk071dc0_Unk_072200();
-int Unk09d060_Unk_09d13c();
+int func_0206df10(void);
+int Unk071dc0_Unk_072200(void);
+int Unk09d060_Unk_09d13c(void);
 
 int Unk044904_GetConst1(void);
 u32 Unk044904_Get_data_0215ee98(void);
@@ -88,6 +88,8 @@ Unk044904Rec *Unk044904_Unk_044948(u32 a, u32 key)
     return (Unk044904Rec *)e;
 }
 
+/* 02044b68: adds n modulo 65536 to the keyed record's halfword at +8.
+ * The lookup must return a record; the original does not check for a full table. */
 void Unk044904_AddRecUnk08(u32 a, u32 b, int n)
 {
     Unk044904Rec *r = Unk044904_Unk_044948(a, b);
@@ -202,31 +204,32 @@ void Unk044904_Unk_045c58(int x)
     Unk0bc1a8_Unk_0bc928(26, 0xffff, 0);
 }
 
-/* returns 1 */
+/* 02046100: unconditional mov r0,#1 supplies the constant return value. */
 int Unk044904_GetConst1(void) { return 1; }
 
-/* decompiler-derived */
+/* 02044e80: loads the word stored at data_0215ee98; zero means unregistered.
+ * Returns the borrowed address as a 32-bit word, matching existing callers. */
 u32 Unk044904_Get_data_0215ee98(void)
 {
   return *data_0215ee98;
 }
 
-/* decompiler-derived */
+/* 020459ec: reads the registered manager's +0x50 word; requires registration. */
 u32 Unk044904_Unk_0459ec(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  return *(u32 *)(value + 0x50);
+    Unk044904Mgr *manager = UNK044904_MGR();
+    return manager->unk_0050;
 }
 
-/* decompiler-derived */
+/* 02045c98: calls 0206df10 then 02072200, discarding both results. */
 void Unk044904_Unk_045c98(void)
 {
   func_0206df10();
   Unk071dc0_Unk_072200();
 }
 
-/* decompiler-derived */
+/* 02044e90: registers the supplied address only while the global word is zero.
+ * The conditional store is the evidence for first-registration behavior. */
 void Unk044904_Unk_044e90(int arg0)
 {
   if (*data_0215ee98 == 0) {
@@ -234,7 +237,7 @@ void Unk044904_Unk_044e90(int arg0)
   }
 }
 
-/* decompiler-derived */
+/* 02045fd4: normalizes 0209d13c's result to exactly zero or one. */
 int Unk044904_Unk_045fd4(void)
 {
   int value;
@@ -242,7 +245,7 @@ int Unk044904_Unk_045fd4(void)
   return value != 0;
 }
 
-/* decompiler-derived */
+/* 02044ea8: clears a nonzero registration word without freeing its target. */
 void Unk044904_Unk_044ea8(void)
 {
   if (*data_0215ee98 != 0) {
@@ -503,7 +506,7 @@ void Unk05ae50_Unk_05afd8();
 void func_020a609c();
 int func_020a4f3c();
 int func_02052728();
-int Unk09d060_Unk_09d13c();
+int Unk09d060_Unk_09d13c(void);
 void Unk044904_Unk_045480(void);
 
 void Unk044904_Unk_045480(void)
