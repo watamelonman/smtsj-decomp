@@ -77,12 +77,35 @@ This preserves the observed 48-byte local stack frame, including two outputs
 and the fifth outgoing argument. The queue record's remaining fields are
 populated by the queue helper, not fabricated by these callers.
 
+## M1-T427
+
+All three requested functions match at 100% in objdiff. Evidence is the
+original ARM instructions and call/data relocations; unknown meanings retain
+neutral names. Arguments are borrowed and non-null.
+
+- `func_0205ae60` (204 B): builds a 64-byte path using `func_0205ad6c`,
+  work +4, and `data_02143bcc`; a failed `func_020519f0` probe selects
+  `data_02143bd4` instead. Loads through `func_02051610`, returning null on
+  failure. On success, queries the header at resource +12 and stores payload
+  start (resource +28), the next range start, and the resource at work +8,
+  +12, and +16. Returns the loaded resource. The probe uses two local words;
+  the separate header output follows them in the original stack frame.
+- `func_0205b02c` (296 B): advances cumulative progress at descriptor +24,
+  processing the second transfer group before the first. Each copy is bounded
+  by `Unk05ae50_Unk_05afec`; nonpositive limits leave progress unchanged.
+  Original unsigned comparisons establish completion at the sum of both
+  lengths. Setup, cache-range, copy, and finalization calls preserve the
+  observed order; returns exactly zero or one.
+- `func_0205b234` (216 B): enters/exits the original helper pair with argument
+  1, checks the forty-slot ring for fullness, and invokes `func_02007e94` on
+  full. Otherwise copies all 36 descriptor bytes, zeros source/length pairs
+  when either is absent, resets progress, records callback/work, and publishes
+  the next write index, wrapping at forty. Callback and work remain borrowed
+  until draining. Callers provide storage for the full nine-word descriptor.
+
+No runtime tests were added: this card uses original-object matching as its
+behavioral oracle. Existing M1-T425 and M1-T426 functions remain at 100%.
+
 ## Hard list
 
-None for M1-T425 or M1-T426.
-
-## Outside these cards
-
-- `func_0205ae60`
-- `func_0205b234`
-- `func_0205b02c`
+None for M1-T425, M1-T426, or M1-T427.

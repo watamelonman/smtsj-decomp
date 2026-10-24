@@ -2,6 +2,10 @@
 
 ## Unreleased
 - Matched all six M1-T449 game/unit_020a0ce4 state, drawing, and singleton routines at 100% objdiff, with typed work fields and per-function instruction evidence.
+- Matched all six M1-T456 game/unit_020e7ac4 state, submission, and selection functions at 100% objdiff with typed parameters and instruction evidence.
+- Matched all seven M1-T467 game/unit_02112aa0 state handlers and resource cleanup functions at 100% objdiff, with typed work storage and per-function evidence.
+- Matched all four M1-T459 resource cleanup, offset update and drawing callbacks in game/unit_0212449c at 100% objdiff.
+- Matched the three remaining M1-T427 resource lookup and transfer-queue functions in `game/unit_0205ae50`, with typed parameters and instruction evidence.
 - Verified all eight M1-T448 game/unit_020a0ce4 functions at 100% objdiff; added typed helper declarations and per-function instruction evidence.
 - Matched all eight M1-T455 game/unit_020e7ac4 callbacks and work-field helpers at 100% objdiff, with typed parameters and per-function evidence.
 - Matched M1-T445 `func_020ef578`, the remaining game/unit_020ef248 entry submission callback, with typed work fields and documented instruction evidence.

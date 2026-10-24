@@ -22,7 +22,7 @@ typedef struct Unk05ae50Work {
 extern u8 data_0216a184[];
 void func_02053000(u32 resource);
 Unk05ae50Work *func_0205ad9c(void);
-u32 func_0205ae60(Unk05ae50Work *work);
+u8 *func_0205ae60(Unk05ae50Work *work);
 int func_0205b36c(Unk05ae50Work *work);
 
 void Unk05ae50_Unk_05b228(Unk05ae50Work *work);
@@ -264,4 +264,112 @@ void func_0205b4c4(Unk05ae50Work *work, void *resource)
     entry.transfer[5] = second;
     Unk05ae50_WaitVCountThen_05af64(entry.transfer);
     work->unk_0059 = 1;
+}
+
+const char *func_0205ad6c(void);
+void func_02015134(char *destination, const char *source);
+void func_0201524c(char *destination, const char *source);
+int func_020519f0(void *result, const char *path);
+u8 *func_02051610(const char *path);
+extern const char data_02143bcc[], data_02143bd4[];
+
+/* Build a path with the two original suffix relocations, load it, and expose
+ * its payload ranges at work +8/+12. Work is borrowed and must be valid. */
+u8 *func_0205ae60(Unk05ae50Work *work)
+{
+    char path[64];
+    int first;
+    u32 result[2];
+    u8 *resource;
+    int size;
+    func_02015134(path, func_0205ad6c());
+    func_0201524c(path, (const char *)work->unk_0004);
+    func_0201524c(path, data_02143bcc);
+    if (!func_020519f0(result, path)) {
+        func_02015134(path, func_0205ad6c());
+        func_0201524c(path, (const char *)work->unk_0004);
+        func_0201524c(path, data_02143bd4);
+    }
+    resource = func_02051610(path);
+    if (!resource) return 0;
+    func_0205aa78(resource + 12, &first, 0, 0, 0);
+    size = (u32)(resource + 28) + first;
+    work->unk_0008 = (u32)(resource + 28);
+    work->unk_000c = size;
+    work->unk_0010 = (u32)resource;
+    return resource;
+}
+
+/* Advance the borrowed descriptor within the VCOUNT byte limit. Original
+ * unsigned comparisons place group two before group one in cumulative progress. */
+int func_0205b02c(Unk05ae50Entry *entry)
+{
+    u32 remaining;
+    int amount;
+    int complete;
+    if (entry->unk_0018 >= (u32)(entry->transfer[2] + entry->transfer[5])) return 1;
+    if (entry->transfer[3] && entry->unk_0018 < (u32)entry->transfer[5]) {
+        remaining = entry->transfer[5] - entry->unk_0018;
+        amount = Unk05ae50_Unk_05afec(remaining);
+        if (amount > 0) {
+            remaining = entry->transfer[5] - remaining;
+            func_0200551c();
+            func_02006c94(entry->transfer[3], entry->transfer[5]);
+            func_02005550(entry->transfer[3] + remaining, entry->transfer[4] + remaining, amount);
+            func_020055bc();
+            entry->unk_0018 += amount;
+        }
+    }
+    if (entry->transfer[0] && entry->unk_0018 < (u32)(entry->transfer[2] + entry->transfer[5])) {
+        remaining = entry->transfer[2] + entry->transfer[5] - entry->unk_0018;
+        amount = Unk05ae50_Unk_05afec(remaining);
+        if (amount > 0) {
+            remaining = entry->transfer[2] - remaining;
+            func_02005334();
+            func_02006c94(entry->transfer[0], entry->transfer[2]);
+            func_02005390(entry->transfer[0] + remaining, entry->transfer[1] + remaining, amount);
+            func_020054d0();
+            entry->unk_0018 += amount;
+        }
+    }
+    complete = 0;
+    if (entry->unk_0018 >= (u32)(entry->transfer[2] + entry->transfer[5])) complete = 1;
+    return complete;
+}
+
+void func_020059d8(int value);
+void func_020059a8(int value);
+void func_02007e94(void);
+void func_02008904(const void *source, void *destination, u32 size);
+
+/* Copy a borrowed descriptor into the forty-slot singleton ring, normalize
+ * absent groups, and retain the callback/work until draining (original offsets).
+ * A full ring invokes the original failure helper without publishing a slot. */
+void func_0205b234(Unk05ae50Entry *entry, void (*callback)(Unk05ae50Work *), Unk05ae50Work *work)
+{
+    Unk05ae50Entry *slot;
+    int next;
+    func_020059d8(1);
+    next = (((Unk05ae50Queue *)data_0216a184)->write + 1 == 40) ? 0 : ((Unk05ae50Queue *)data_0216a184)->write + 1;
+    if (((Unk05ae50Queue *)data_0216a184)->read == next) {
+        func_02007e94();
+        func_020059a8(1);
+        return;
+    }
+    slot = &((Unk05ae50Queue *)data_0216a184)->entries[((Unk05ae50Queue *)data_0216a184)->write];
+    func_02008904(entry, slot, 36);
+    if (!slot->transfer[0] || !slot->transfer[2]) {
+        slot->transfer[0] = 0;
+        slot->transfer[2] = 0;
+    }
+    if (!slot->transfer[3] || !slot->transfer[5]) {
+        slot->transfer[3] = 0;
+        slot->transfer[5] = 0;
+    }
+    slot->unk_0018 = 0;
+    slot->callback = (void (*)(void *))callback;
+    slot->argument = work;
+    next = (((Unk05ae50Queue *)data_0216a184)->write + 1 == 40) ? 0 : ((Unk05ae50Queue *)data_0216a184)->write + 1;
+    ((Unk05ae50Queue *)data_0216a184)->write = next;
+    func_020059a8(1);
 }
