@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.
+- Matched all seven M1-T300 functions in `game/unit_02115fbc` at 100% objdiff, with typed resource/state/record views and per-function contracts.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
