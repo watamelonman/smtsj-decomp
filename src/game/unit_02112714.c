@@ -101,10 +101,10 @@ typedef struct Unk112714Work {
 } Unk112714Work;
 
 /* Initializes the work record and creates its resource handles.
- * The record is allocated directly after a u32 mode word owned by the
- * framework that allocates it (the size 284 comes from func_02112740's
- * descriptor), so the mode is read as ((u32 *)w)[-1]; mode 6 skips the
- * optional resource stored in unk_0028. */
+ * Contract: the caller supplies a readable u32 immediately before w. The
+ * original load at -4 reads this mode word; it is outside the 284-byte work
+ * record described by func_02112740. Mode 6 skips the optional resource
+ * stored in unk_0028. All accesses within the record use its typed fields. */
 void func_0211279c(Unk112714Work *w)
 {
     int i;
