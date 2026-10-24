@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Documented M2-T008 rotation/reciprocal-scale behavior and its 99.26% candidate on the hard list; retained original delink code.
+- Matched M2-T008 rotation/reciprocal-scale wrapper in C using the public SDK sine/cosine table declaration; documented the table symbol required before linking from C.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
