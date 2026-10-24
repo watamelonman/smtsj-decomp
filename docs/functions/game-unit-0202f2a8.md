@@ -1,5 +1,9 @@
 # unit_0202f2a8
 
+The TU's local struct views, the `FIELD`/`UNK02F2A8_RES36` helper macros and callee
+prototypes live in `include/game/unit_0202f2a8.h`. They were moved there so the source stays
+under the 3000-line file limit. Moving declarations does not change codegen.
+
 ## M1-T1104: 8 small functions
 
 - `Unk02f2a8_Nop_0303c8` (4 bytes): empty callback; compiles to a bare return.
