@@ -90,7 +90,8 @@ void Unk0946e0_Unk_094a64(u32 arg0)
 
 
 
-/* decompiler-derived */
+/* Initialize a nullable 12-byte record with three halfword values and a negated
+ * delay; STRH offsets at 0x02094710–0x0209472c establish the layout. */
 void Unk0946e0_Unk_094704(u16 *arg0,u16 arg1,u16 arg2,u16 arg3,
                   short arg4)
 {
@@ -108,7 +109,9 @@ void Unk0946e0_Unk_094704(u16 *arg0,u16 arg1,u16 arg2,u16 arg3,
 
 int func_02094750();
 void Unk0946e0_Unk_0949e0();
-void Unk0946e0_ApplyRect();
+void Unk0946e0_ApplyRect(int a);
+/* Reset the shared rectangle to origin and 256 by 192; stores at
+ * 0x0209491c–0x02094944 establish the dimensions and cleared trailing word. */
 void Unk0946e0_ResetRect(void)
 {
     u8 *p = (u8 *)Unk0946e0_GetAddr_data_02175d94();
@@ -144,7 +147,7 @@ void Unk0946e0_Unk_094958(void)
 }
 
 int func_02061424();
-int func_02094af8();
+int func_02094af8(int task);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
@@ -159,6 +162,8 @@ void Unk0946e0_Unk_0949e0(int a)
     func_020575ac(a, h - y, -(h + y), x - w, x + w);
 }
 
+/* Apply shared position and half the dimension differences from 256 by 192,
+ * in 12-bit fixed point; calls at 0x02094aa8/0x02094ad8 support this name. */
 void Unk0946e0_ApplyRect(int a)
 {
     u8 *v = (u8 *)Unk0946e0_GetAddr_data_02175d94();
@@ -166,7 +171,9 @@ void Unk0946e0_ApplyRect(int a)
     func_02057628(a, ((FIELD(s16, v, 16) - 256) / 2) << 12, ((FIELD(s16, v, 18) - 192) / 2) << 12);
 }
 
-/* decompiler-derived */
+/* On a negative counter at +8, initialize it and capture the shared halfword;
+ * otherwise update this task and release it on completion (0x02094ba8–0x02094bcc).
+ * arg0 is a non-null writable task address in the DS 32-bit address space. */
 void Unk0946e0_Unk_094b98(int arg0)
 {
   int tmp1;
@@ -175,14 +182,14 @@ void Unk0946e0_Unk_094b98(int arg0)
     Unk0946e0_Unk_094ae0((int *)arg0);
     return;
   }
-  tmp1 = func_02094af8();
+  tmp1 = func_02094af8(arg0);
   if (tmp1 == 0) {
     return;
   }
   func_02061424(arg0);
 }
 
-int func_02094c74();
+int func_02094c74(int task);
 typedef struct Unk0946e0Task {
     u32 unk_00;
     s32 unk_04;
@@ -204,7 +211,9 @@ void Unk0946e0_Unk_094bd4(int a, u32 b, u8 c)
     Unk09d060_Unk_09d170(t);
 }
 
-/* decompiler-derived */
+/* Initialize a negative counter at +0x10 and capture the shared pair, or update
+ * and release the task on completion (0x02094d74–0x02094d98).
+ * arg0 is a non-null writable task address in the DS 32-bit address space. */
 void Unk0946e0_Unk_094d64(int arg0)
 {
   int tmp1;
@@ -213,21 +222,24 @@ void Unk0946e0_Unk_094d64(int arg0)
     Unk0946e0_Unk_094c50((int *)arg0);
     return;
   }
-  tmp1 = func_02094c74();
+  tmp1 = func_02094c74(arg0);
   if (tmp1 == 0) {
     return;
   }
   func_02061424(arg0);
 }
 
+/* Signed halfword output pair written by func_02049c28; caller owns storage. */
 typedef struct Unk0946e0Pt {
     s16 x;
     s16 y;
 } Unk0946e0Pt;
 
-void func_02094da0();
-int func_02044ec4();
-void func_02049c28();
+void func_02094da0(int x, int y, int b, int c);
+int func_02044ec4(int key);
+void func_02049c28(int address, Unk0946e0Pt *point);
+/* Clamp x to [-64, 64] and forward it with shared signed y and two parameters;
+ * comparisons and shared LDRSH at 0x02094e38–0x02094e58 establish the contract. */
 void Unk0946e0_Unk_094e30(int x, int b, int c)
 {
     if (x >= 64) {
@@ -239,6 +251,8 @@ void Unk0946e0_Unk_094e30(int x, int b, int c)
     func_02094da0(x, FIELD(s16, Unk0946e0_GetAddr_data_02175d94(), 2), b, c);
 }
 
+/* Resolve key a to a halfword pair, subtract (128, 96), and forward the signed
+ * wrapped pair with b/c; stack STRH/LDRSH at 0x02094e9c–0x02094eb0 preserve wrapping. */
 void Unk0946e0_Unk_094e70(int a, int b, int c)
 {
     Unk0946e0Pt pt;
@@ -248,6 +262,8 @@ void Unk0946e0_Unk_094e70(int a, int b, int c)
     func_02094da0(pt.x, pt.y, b, c);
 }
 
+/* Resolve key a, subtract 128 from the first halfword, and forward it with zero
+ * y and b/c; STRH/LDRSH at 0x02094ee0/0x02094ee4 establish signed wrapping. */
 void Unk0946e0_Unk_094eb8(int a, int b, int c)
 {
     Unk0946e0Pt pt;

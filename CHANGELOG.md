@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched all eight M1-T500 work reset, callback descriptor, empty callback and lookup helpers in `game/unit_020fa7e8`; documented typed contracts and original instruction evidence.
+
+- Verified eight M1-T493 shared-record and task wrapper matches; documented their contracts and explicit task-update arguments.
 - Matched all seven M1-T499 game/unit_020a03cc record queries, state-machine updates, table reset and mode dispatcher in readable typed C.
 - Matched all eight M1-T475 pair, bulk record, weighted query and byte-sum helpers with typed parameters and documented ARM evidence.
 - Matched both M1-T470 game/unit_020387bc resource record and bounded-list copy functions at 100% objdiff with typed storage views.
