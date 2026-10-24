@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched `func_02099494` (696-byte centered strip drawing callback) at 100% objdiff with typed work fields and per-function documentation.
+- Matched all eight M1-T1115 action-flag, descriptor-transition and map-work functions at 100% objdiff, with typed contracts and per-function evidence.
 - Verified all eight M1-T227 initialization, forwarding, teardown and optional-work setters at 100% objdiff; added typed callee declarations and corrected the unit hard list.
 - Matched seven M1-T1139 numeric-output and selection routines at 100% objdiff; documented the remaining record collector on the hard list.
 - Matched all eight M1-T225 functions in `game/unit_020e675c` at 100% objdiff, including the byte/halfword table searches; documented typed contracts and instruction evidence.
