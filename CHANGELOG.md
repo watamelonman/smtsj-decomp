@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched the four remaining M1-T349 work-construction functions in `game/unit_020b1ab8`, including allocation failure and conditional coordinate offsets.
 - Matched all eight M1-T348 coordinate-offset and work-construction functions in `game/unit_020b1ab8` at 100% objdiff, with typed coordinate and work layouts.
 - Matched all three M1-T347 record/metadata calculations in `game/unit_020ddeb0`, including six-entry exclusion scans, unsigned arithmetic, and result caps.
 - Matched all eight M1-T346 resource access, descriptor forwarding, and phase helpers in `game/unit_020ddeb0`, with typed call contracts and per-function evidence.
