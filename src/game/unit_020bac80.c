@@ -100,92 +100,102 @@ void Unk0bac80_Unk_0badec(u32 arg0)
 }
 
 
-int func_02049d80();
-/* decompiler-derived */
+/* Query the borrowed subobject by selector; returned word is opaque. */
+u32 func_02049d80(u32 address, u32 selector);
+/* Publish query 02049d80 selector 2 and return completion (1).
+ * Evidence: 020bae34 BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0bae34(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,2);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049d80(address, 2);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
-int func_02049f24();
-/* decompiler-derived */
+/* Alternate query on the same borrowed subobject and selector ABI. */
+u32 func_02049f24(u32 address, u32 selector);
+/* Publish query 02049f24 selector 0 and return completion (1).
+ * Evidence: 020bae64 BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0bae64(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049f24(value,0);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049f24(address, 0);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
 
-/* decompiler-derived */
+/* Publish query 02049d80 selector 0 and return completion (1).
+ * Evidence: 020bae80 BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0bae80(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,0);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049d80(address, 0);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
 
-/* decompiler-derived */
+/* Publish query 02049d80 selector 1 and return completion (1).
+ * Evidence: 020baf6c BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0baf6c(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,1);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049d80(address, 1);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
 
-/* decompiler-derived */
+/* Publish query 02049f24 selector 1 and return completion (1).
+ * Evidence: 020baf88 BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0baf88(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049f24(value,1);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049f24(address, 1);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
 
-/* decompiler-derived */
+/* Publish query 02049d80 selector 3 and return completion (1).
+ * Evidence: 020bb078 BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0bb078(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,3);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049d80(address, 3);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
 
-/* decompiler-derived */
+/* Publish query 02049d80 selector 4 and return completion (1).
+ * Evidence: 020bb094 BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0bb094(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,4);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049d80(address, 4);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
 
-/* decompiler-derived */
+/* Publish query 02049d80 selector 5 and return completion (1).
+ * Evidence: 020bb0b0 BL sequence forwards the query's r0 to 0203acf4.
+ * The subobject is borrowed from 020bae18 and must remain valid. */
 u32 Unk0bac80_Unk_0bb0b0(void)
 {
-  u32 value;
-  value = Unk0bac80_Unk_0bae18();
-  func_02049d80(value,5);
-  Unk03aae8_Unk_03acf4();
-  return 1;
+    u32 address = Unk0bac80_Unk_0bae18();
+    u32 result = func_02049d80(address, 5);
+    Unk03aae8_Unk_03acf4(result);
+    return 1;
 }
 
 
