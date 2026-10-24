@@ -62,7 +62,12 @@ typedef struct Unk02f2a8Action {
     u32 unk_0014;
     u32 unk_0018;
     u32 unk_001c;
-    u8 pad_0020[0x9c - 0x20];
+    u32 unk_0020;               /* latched by func_020300ec for mask 0x800 */
+    u32 unk_0024;               /* mask 0x400 */
+    u32 unk_0028;               /* mask 0x100 */
+    u32 unk_002c;               /* mask 0x200 */
+    u32 unk_0030;               /* mask 0xf3 */
+    u8 pad_0034[0x9c - 0x34];
     u32 unk_009c;
 } Unk02f2a8Action;
 
@@ -84,18 +89,52 @@ typedef struct Unk02f2a8StateRoot {
     u32 unk_004c;
     u32 unk_0050;
     u32 unk_0054;
+    u8 pad_0058[0x7c - 0x58];
+    u8 unk_007c[0x94 - 0x7c];   /* size guessed: position block passed to func_0203721c */
+    u16 unk_0094;
 } Unk02f2a8StateRoot;
+
+/* One map block embedded in the body Unk02f2a8_Unk_034970 picks from; only
+ * its extent (the distance between the two blocks) is known. */
+typedef struct Unk02f2a8MapBlock {
+    u32 unk_0000;               /* nonzero required by Unk_0351b4 */
+    u8 *unk_0004;               /* byte table indexed by 034a8c's result + 15 */
+    u8 pad_0008[0x2c8 - 0x23c - 8];
+} Unk02f2a8MapBlock;
+
+/* Body view used by Unk02f2a8_Unk_034970 (callers pass state +4). */
+typedef struct Unk02f2a8Body {
+    u8 pad_0000[0x24];
+    s16 unk_0024[6]; /* size guessed: indexed by bits 20..23 of a cell word (func_020305a8) */
+    s8 unk_0030[15]; /* size guessed: indexed by a 4-bit cell id minus 1 */
+    u8 pad_003f[0x57 - 0x3f];
+    u8 unk_0057;                /* level byte passed to func_0203721c (state +0x5b) */
+    u8 pad_0058[0x214 - 0x58];
+    u8 unk_0214[0x23c - 0x214]; /* size guessed: buffer handed to func_020a7474 (state +0x218) */
+    Unk02f2a8MapBlock unk_023c;
+    Unk02f2a8MapBlock unk_02c8;
+} Unk02f2a8Body;
 
 /* Local view of state fields beyond the public GameState layout. */
 typedef struct Unk02f2a8State {
     Unk02f2a8StateRoot *root;
-    u8 pad_0004[0x73c8 - 4];
+    Unk02f2a8Body body;         /* +0x0004 */
+    u8 unk_0358[0x3134 - 0x358]; /* buffer sizes up to 0x7330 guessed from the next known field */
+    u8 unk_3134[0xc];
+    u8 pad_3140[0x3154 - 0x3140];
+    u8 unk_3154[0x38e8 - 0x3154];
+    u8 unk_38e8[0x631c - 0x38e8]; /* 45-wide cell table */
+    u8 unk_631c[0x7130 - 0x631c];
+    u8 unk_7130[0x7330 - 0x7130];
+    u8 unk_7330[0x73c8 - 0x7330];
     u32 unk_73c8;
     u32 unk_73cc;
     u8 pad_73d0[0x73e0 - 0x73d0];
     u32 unk_73e0;
     u32 unk_73e4;
-    u8 pad_73e8[0x743c - 0x73e8];
+    u8 pad_73e8[0x7400 - 0x73e8];
+    u32 unk_7400;               /* nonzero suppresses the func_0203721c rebuild */
+    u8 pad_7404[0x743c - 0x7404];
     u32 unk_743c;
     u8 pad_7440[0x7478 - 0x7440];
     u32 unk_7478;               /* +0x7478..+0x748b cleared by Unk_032f3c */
@@ -105,7 +144,10 @@ typedef struct Unk02f2a8State {
     u8 pad_7482[2];
     u32 unk_7484;
     u32 unk_7488;
-    u8 pad_748c[0x757c - 0x748c];
+    u8 pad_748c[0x7494 - 0x748c];
+    u32 unk_7494;
+    u32 unk_7498;               /* nonzero arms root +0x54 in func_02032d4c */
+    u8 pad_749c[0x757c - 0x749c];
     u32 unk_757c;
     u8 pad_7580[0x18];
     u32 unk_7598;
@@ -194,23 +236,6 @@ void func_02035db8();
 int Unk02f2a8_SetGridPos(int x, int y, u32 v);
 void func_0209e0b0(void);
 int Unk095560_Thunk_020961a0(void);
-/* One map block embedded in the body Unk02f2a8_Unk_034970 picks from; only
- * its extent (the distance between the two blocks) is known. */
-typedef struct Unk02f2a8MapBlock {
-    u32 unk_0000;               /* nonzero required by Unk_0351b4 */
-    u8 *unk_0004;               /* byte table indexed by 034a8c's result + 15 */
-    u8 pad_0008[0x2c8 - 0x23c - 8];
-} Unk02f2a8MapBlock;
-
-/* Body view used by Unk02f2a8_Unk_034970 (callers pass state +4). */
-typedef struct Unk02f2a8Body {
-    u8 pad_0000[0x24];
-    s16 unk_0024[6]; /* size guessed: indexed by bits 20..23 of a cell word (func_020305a8) */
-    s8 unk_0030[15]; /* size guessed: indexed by a 4-bit cell id minus 1 */
-    u8 pad_003f[0x23c - 0x3f];
-    Unk02f2a8MapBlock unk_023c;
-    Unk02f2a8MapBlock unk_02c8;
-} Unk02f2a8Body;
 
 /* Grid-state view: the body Unk02f2a8_Unk_034970 reads sits at +4, followed
  * far later by the latched sound id and the +0x7478 grid fields. */
@@ -1417,7 +1442,8 @@ void func_02030204(Unk02f2a8Action *action)
 typedef struct Unk02f2a8Descriptor {
     u32 unk_0000;
     int (*unk_0004)(Unk02f2a8State *state);
-    u8 pad_0008[12];
+    int (*unk_0008)(Unk02f2a8State *state);
+    u8 pad_000c[8];
     u32 unk_0014;
 } Unk02f2a8Descriptor;
 Unk02f2a8Descriptor *Unk09a268_Unk_09c498(int id);
@@ -1741,4 +1767,214 @@ void func_0203721c(void *work, void *map, void *cells, void *position,
     func_02036fb8(work);
     if (map == 0) return;
     func_020370e8(work, map, cells);
+}
+
+int func_02053800(int channel, int mask);
+/* Test masks in priority order and latch the corresponding action word.
+ * The 0x800/0x400 paths also notify 0441ec; action storage is borrowed. */
+int func_020300ec(Unk02f2a8Action *action)
+{
+    int result = 0;
+    if (func_02053800(0, 0xf3) == 1) {
+        result = 1;
+        action->unk_0030 = 1;
+    } else if (func_02053800(0, 0x800) == 1) {
+        result = 1;
+        action->unk_0020 = 1;
+        Unk03e43c_Unk_0441ec();
+    } else if (func_02053800(0, 0x400) == 1) {
+        result = 1;
+        action->unk_0024 = 1;
+        Unk03e43c_Unk_0441ec();
+    } else if (func_02053800(0, 0x100) == 1) {
+        result = 1;
+        action->unk_0028 = 1;
+    } else if (func_02053800(0, 0x200) == 1) {
+        result = 1;
+        action->unk_002c = 1;
+    }
+    return result;
+}
+
+Unk02f2a8Descriptor *Unk09ee4c_Unk_0a03b8(u32 id);
+
+/* Clear the active cell state, then restore root flags if descriptor slot
+ * +4 exists and returns zero. Requires a writable state and root. */
+void func_02032ca0(Unk02f2a8State *s)
+{
+    Unk02f2a8Descriptor *d = Unk09ee4c_Unk_0a03b8(s->unk_747c);
+    s->unk_7478 = 0;
+    s->unk_7480 = 0;
+    s->unk_7481 = 0;
+    s->unk_7484 = 0;
+    s->unk_7488 = 0;
+    if (d->unk_0004 != 0 && d->unk_0004(s) == 0) {
+        s->root->unk_0014 = 1;
+        s->root->unk_0018 = 2;
+        s->root->unk_001c = 0;
+        s->root->unk_0044 = 1;
+        s->root->unk_0050 = 1;
+        s->root->unk_004c = 1;
+        s->unk_7478 = 0;
+        s->unk_747c = 0;
+        s->unk_7480 = 0;
+        s->unk_7481 = 0;
+        s->unk_7484 = 0;
+        s->unk_7488 = 0;
+        s->unk_73cc = 2;
+    }
+}
+
+/* Poll descriptor slot +8 (absent means success); success restores root
+ * flags, clears the active cell, and optionally arms root +0x54. */
+void func_02032d4c(Unk02f2a8State *s)
+{
+    int result = 1;
+    Unk02f2a8Descriptor *d = Unk09ee4c_Unk_0a03b8(s->unk_747c);
+    if (d->unk_0008 != 0) result = d->unk_0008(s);
+    if (result == 1) {
+        s->root->unk_0014 = 1;
+        s->root->unk_0018 = 2;
+        s->root->unk_001c = 0;
+        s->root->unk_0044 = 1;
+        s->root->unk_0050 = 1;
+        s->root->unk_004c = 1;
+        s->unk_7478 = 0;
+        s->unk_747c = 0;
+        s->unk_7480 = 0;
+        s->unk_7481 = 0;
+        s->unk_7484 = 0;
+        s->unk_7488 = 0;
+        s->unk_73cc = 2;
+        if (s->unk_7498 != 0) s->root->unk_0054 = 1;
+    }
+}
+
+/* Cell word's low five bits and bit five are independent packed fields. */
+typedef struct Unk02f2a8CellFlags {
+    u32 unk_0000;
+    u32 unk_0004_0 : 5;
+    u32 unk_0004_5 : 1;
+    u32 unk_0004_6 : 26;
+} Unk02f2a8CellFlags;
+int func_020364bc(u16 value);
+/* Accept only a live input and a current cell whose low-five-bit predicate
+ * returns one and whose bit five is set. Repeated work access is intentional. */
+int func_02030494(u32 *input)
+{
+    int result;
+    Unk02f2a8GridState *s;
+    Unk02f2a8WorkArea *a, *b;
+    Unk02f2a8MapBlock *map;
+    Unk02f2a8CellFlags *cell;
+    if (*input == 0) return 0;
+    result = 0;
+    s = (Unk02f2a8GridState *)GetGameState();
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    map = Unk02f2a8_Unk_034970(&s->body, a->unk_0364, b->unk_0365);
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    cell = (Unk02f2a8CellFlags *)Unk038fbc_Unk_039160(map, a->unk_0364, b->unk_0365);
+    if (cell != 0 && func_020364bc((u16)cell->unk_0004_0) == 1) {
+        if (cell->unk_0004_5 == 1) result = 1;
+    }
+    return result;
+}
+
+/* Rebuild map work using the singleton's level byte (state +0x5b); +0x7400
+ * suppresses it. Root position +0x7c and cell table +0x38e8 must remain live. */
+void func_02034e90(void)
+{
+    Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
+    Unk02f2a8StateRoot *root;
+    Unk02f2a8WorkArea *a, *b;
+    Unk02f2a8MapBlock *map;
+    if (s->unk_7400 != 0) return;
+    root = s->root;
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    map = Unk02f2a8_Unk_034970(&s->body, a->unk_0364, b->unk_0365);
+    a = Unk02e000_GetWorkArea();
+    b = Unk02e000_GetWorkArea();
+    func_0203721c(s->unk_3154, map, s->unk_38e8, root->unk_007c,
+        root->unk_0094, a->unk_0364, b->unk_0365,
+        s->body.unk_0057, root->unk_0018);
+}
+
+/* Rebuild the same work with the level byte minus one, clamped to one. */
+void func_02034dd0(void)
+{
+    Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
+    Unk02f2a8StateRoot *root;
+    u32 value = s->body.unk_0057;
+    Unk02f2a8WorkArea *a, *b;
+    Unk02f2a8MapBlock *map;
+    if (value > 1) value--; else value = 1;
+    if (s->unk_7400 == 0) {
+        root = s->root;
+        a = Unk02e000_GetWorkArea();
+        b = Unk02e000_GetWorkArea();
+        map = Unk02f2a8_Unk_034970(&s->body, a->unk_0364, b->unk_0365);
+        a = Unk02e000_GetWorkArea();
+        b = Unk02e000_GetWorkArea();
+        func_0203721c(s->unk_3154, map, s->unk_38e8, root->unk_007c,
+            root->unk_0094, a->unk_0364, b->unk_0365,
+            value, root->unk_0018);
+    }
+    ScanVisor_Unk_0a2b18();
+}
+
+/* Map-table entry reached through Unk02f2a8MapBlock.unk_0004. */
+typedef struct Unk02f2a8MapEntry {
+    u8 pad_0000[0x20];
+    s16 unk_0020;               /* default id for func_02034f44 */
+} Unk02f2a8MapEntry;
+
+/* Cell record from Unk038fbc_Unk_039160; unk_0002 == -1 means no override. */
+typedef struct Unk02f2a8CellId {
+    u16 unk_0000;
+    s16 unk_0002;
+} Unk02f2a8CellId;
+
+void func_0209da38(void *work, int id, u32 area, u32 value);
+/* Enter state seven and initialize +0x7330 using the cell's signed halfword
+ * override (unless -1), otherwise map-table halfword +0x20. Resource 9 is held. */
+void func_02034f44(void)
+{
+    s16 id;
+    Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
+    s8 x, y;
+    Unk02f2a8CellId *cell;
+    Unk02f2a8MapBlock *map;
+    s->unk_73cc = 7;
+    s->root->unk_0004 = 0;
+    x = Unk02e000_GetWorkArea()->unk_0364;
+    y = Unk02e000_GetWorkArea()->unk_0365;
+    Unk044394_Unk_044428(9);
+    cell = (Unk02f2a8CellId *)Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(&s->body, x, y), x, y);
+    map = Unk02f2a8_Unk_034970(&s->body, x, y);
+    id = ((Unk02f2a8MapEntry *)map->unk_0004)->unk_0020;
+    if (cell != 0 && cell->unk_0002 != -1) id = cell->unk_0002;
+    func_0209da38(s->unk_7330, id, Unk02e000_GetWorkArea()->unk_035c, s->unk_7494);
+    Unk044394_Unk_044534(9);
+}
+
+void Unk0a6174_ClearBuffers(void *a, void *b);
+void func_020a6ac0(void *a, void *b, void *c, void *d, u32 id, int f, int g);
+/* Clear and rebuild +0x631c/+0x7130, then append each of seven enabled slots.
+ * Missing singleton is a no-op; all helpers borrow its embedded buffers. */
+void func_02035234(u32 id)
+{
+    Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
+    int i;
+    if (s == 0) return;
+    Unk0a6174_ClearBuffers(s->unk_631c, s->unk_7130);
+    func_020a6ac0(s->unk_631c, s->unk_7130, s->unk_3134, s->unk_0358, id, 0, 0);
+    for (i = 0; i < 7; i++) {
+        int slot = i + 1;
+        if (Unk02f2a8_Unk_035c14(id, slot) != 0) {
+            func_020a7474(s->unk_631c, s->unk_7130, s->unk_0358, s->body.unk_0214, id, slot, 0);
+        }
+    }
 }
