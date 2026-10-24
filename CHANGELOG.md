@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T474 record clamp, ID, reset and work-field helpers at 100% objdiff; made global clamp argument forwarding explicit and documented original instruction evidence.
 - Verified all eight M1-T473 area-record reset and indexed access wrappers at 100% objdiff; added explicit argument forwarding and documented ARM evidence and null contracts.
 - Verified all eight M1-T468 handle cleanup and bounded entry lookup functions at 100% objdiff; documented their contracts and typed helper calls.
 - Matched all six M1-T456 game/unit_020e7ac4 state, submission, and selection functions at 100% objdiff with typed parameters and instruction evidence.
