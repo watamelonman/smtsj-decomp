@@ -1,7 +1,7 @@
 /* Work state and resource operations for this unit. */
 #include "types.h"
 
-/* Private layout; the ten handles at 0x28 are initialized and released together. */
+/* Private work view: callers own the storage; setup and teardown own its ten handles. */
 typedef struct Unk10fe28Work {
     u8  pad_0000[0x8];
     u32 unk_0008;
@@ -17,25 +17,23 @@ typedef struct Unk10fe28Work {
 } Unk10fe28Work;
 
 
-
 u32 func_0204fe68(u32 handle, int index);
 u32 func_0204fed8(u32 handle, u32 index);
-/* Resolve the selected entry through the resource stored at 0x18. */
-void Unk10fe28_Unk_10fe28(Unk10fe28Work *arg0){
-  u32 tmp1;
-  tmp1 = func_0204fe68(arg0->unk_0018,1);
-  func_0204fed8(tmp1,arg0->unk_0008);
-  return;
+/* Resolve resource group 1 at +0x18, then select the entry indexed by +0x08. */
+void Unk10fe28_Unk_10fe28(Unk10fe28Work *w)
+{
+    u32 group = func_0204fe68(w->unk_0018, 1);
+    func_0204fed8(group, w->unk_0008);
 }
 
 void func_02053000(u32 handle);
 void func_0210ff80(Unk10fe28Work *w);
-/* Release this work state before releasing its owning resource. */
-void Unk10fe28_Unk_1113e0(Unk10fe28Work *arg0){
-  func_0210ff80(arg0);
-  func_02053000(arg0->unk_0018);
-  arg0->unk_0018 = 0;
-  return;
+/* Release subordinate handles before releasing and clearing the owning resource. */
+void Unk10fe28_Unk_1113e0(Unk10fe28Work *w)
+{
+    func_0210ff80(w);
+    func_02053000(w->unk_0018);
+    w->unk_0018 = 0;
 }
 
 extern u32 data_02151438[];
@@ -56,14 +54,13 @@ u32 func_020629ac(int a, int b, int c, int d);
 void Unk065e88_Unk_065e88(void);
 void Unk05b82c_Unk_05b82c(int a);
 
-/* Initialize the resource handles and ten entries owned by this work state. */
-
+/* Initialize six descriptors and ten owned entries; +0x18 must already be valid. */
 void func_0210fe48(Unk10fe28Work *w)
 {
     s32 i;
     u32 n;
     u8 *p;
-    u32 font;
+    u32 entry;
 
     func_0205ad2c(*data_02151438);
     n = 0;
@@ -78,8 +75,8 @@ void func_0210fe48(Unk10fe28Work *w)
 
     w->unk_0050 = func_020629ac(3, 1, 0, 1);
     func_02061e98(w->unk_0050, 0x10, 1);
-    font = func_0204fed8(func_0204fe68(w->unk_0018, 1), 10);
-    func_02061f10(w->unk_0050, -1, 0, 0, font);
+    entry = func_0204fed8(func_0204fe68(w->unk_0018, 1), 10);
+    func_02061f10(w->unk_0050, -1, 0, 0, entry);
 
     w->unk_0054 = func_020629ac(5, 2, 0, 1);
     func_02061e98(w->unk_0054, 0x10, 1);
@@ -94,7 +91,6 @@ void func_0210fe48(Unk10fe28Work *w)
     Unk02e000_Unk_02e0cc();
     Unk05b82c_Unk_05b82c(0x39);
     w->unk_0024 = func_0205dcd4(data_02151550, 1);
-
 }
 
 void Unk10fe28_Unk_110048(Unk10fe28Work *w, int i, u32 v);
@@ -120,7 +116,7 @@ void Unk10fe28_Unk_110074(Unk10fe28Work *w)
     }
 }
 
-/* Apply the operation to four entries selected by the signed index table. */
+/* Apply the entry operation to four handles selected by signed table offsets. */
 void Unk10fe28_Unk_1102d4(Unk10fe28Work *w)
 {
     u32 i;
@@ -172,13 +168,13 @@ void func_0210ff80(Unk10fe28Work *w)
     }
 }
 
-extern s16 data_0213ca88[];
+extern const s16 data_0213ca88[];
 void func_02057ddc(u32 value);
 void func_02057df8(void);
 void func_0205de40(int mode, u32 handle, int entry, int x, int y,
                    float scaleX, float scaleY, int z, float scaleZ, int flags);
 
-/* Process six table entries, omitting entry four in mode one and marking selection. */
+/* Submit six table entries, skipping value 4 in mode 1; selected enables +0x08 tinting. */
 void func_02110f08(Unk10fe28Work *w, int selected)
 {
     u32 i;
