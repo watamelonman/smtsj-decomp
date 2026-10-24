@@ -25,29 +25,37 @@ instructions without explicit register control.
 Validation: `python3 tools/match_gate.py`, `python3 tools/checksum.py`,
 `python3 tools/anticheat.py`, and the full Python unittest discovery suite.
 
-## Other functions in this shared TU
+## M1-T435: eight matched functions
 
-The following notes predate this card and track work outside its eight functions.
+All eight functions below match at 100% in objdiff. The evidence is their original
+ARM instructions; the names remain neutral because no higher-level purpose is proven.
+All storage is borrowed. Record indices must be within the caller's allocation.
+
+| Function | Size | Evidence and contract |
+| --- | ---: | --- |
+| `Unk0bcef4_Unk_0bcef4` | 32 B | Stores arguments into words 0, 1 and 6; clears words 2 through 5. Requires seven writable words. |
+| `Unk0bcef4_Unk_0bd368` | 32 B | Subtracts selection start (+8) from selected (+16), multiplies by 12 and tail-forwards the record to `Unk0bd5f0_Unk_0bd5f0`. |
+| `func_020bd54c` | 56 B | Disabled writes counter 1. Enabled writes counter 0 except mode 2, which writes counter and state 2. Requires a writable 12-byte record. |
+| `func_020bd034` | 60 B | Signed count/span comparison leaves short lists unchanged; otherwise adds selected minus start to start and caps it at count minus span. Always returns 1. |
+| `Unk0bcef4_Unk_0bd584` | 64 B | Unsigned count controls a 12-byte-stride loop calling `func_020bd398`; returns the last nonzero-result index or unsigned -1. |
+| `func_020bd398` | 72 B | Mode at +8 selects the cap-at-one, signed modulo-two, or two-stage helper. Only the last helper's return is forwarded; other modes return 0. |
+| `func_020bd418` | 88 B | State 1 increments counter, caps at 1 and changes state to 2. Other states increment counter, cap at 2 and return completion 1 when that cap is reached; otherwise returns 0. |
+| `func_020bd30c` | 92 B | Selects a 12-byte record by selected minus start; a zero third argument requires `Unk0bcef4_IsState015` success. On success applies mode 2 through `Unk0bcef4_Unk_0bd5c4` and returns 1, otherwise 0. |
+
+The private record view adds state and mode words to the existing counter view;
+the selection view describes the seven signed words used by the offset arithmetic.
+No module boundary changes are needed. The dispatcher is defined after its callees
+to avoid the documented objdiff same-unit call scoring artifact (standalone instruction
+comparison was already identical before reordering).
+
+Validation: match gate (all defined functions at 100%), checksum, anticheat and
+Python unittest discovery. No new tests are required by this matching card: original
+instruction comparison checks the implementations directly.
 
 ### Hard list
-- `Unk0bcef4_Unk_0bcef4`: decompiler-derived
-- `Unk0bcef4_Unk_0bd368`: decompiler-derived
+None for M1-T435.
 
-### M1-T435 tracking notes
-- `func_020bd54c`
-- `func_020bd034`
-- `Unk0bcef4_Unk_0bd584`
-- `func_020bd398`
-- `func_020bd418`
-- `func_020bd30c`
-- `Unk0bcef4_Unk_0bd29c`: decompiler-derived
-
-### M1-T436 tracking notes
-- `func_020bcfc4`
-- `func_020bd110`
-- `func_020bd070`
-- `func_020bcf14`
-- `func_020bd49c`
-- `func_020bd1a8`
-- `Unk0bcef4_Unk_0bd584`: decompiler-derived (plain cleanup)
-- `Unk0bcef4_IsState015`: completed and verified by M1-T434 above
+### Other shared-TU tracking notes
+- `Unk0bcef4_Unk_0bd29c`: existing decompiler-derived body, outside this card.
+- M1-T436: `func_020bcfc4`, `func_020bd110`, `func_020bd070`,
+  `func_020bcf14`, `func_020bd49c`, `func_020bd1a8`.

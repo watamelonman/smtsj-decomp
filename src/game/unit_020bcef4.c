@@ -8,8 +8,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* Object passed as the first argument in this file (layout from field accesses; names unknown). */
 typedef struct Unk0bcef4Work {
-    u8 unk_0000[0x4];
+    s32 state;
     s32 UnkField0004;
+    s32 mode;
 } Unk0bcef4Work;
 
 
@@ -83,7 +84,7 @@ void Unk0bcef4_Unk_0bd480(int *arg0,int arg1)
 
 
 
-/* decompiler-derived */
+/* Initializes seven caller-owned words; the four position words start at zero. */
 void Unk0bcef4_Unk_0bcef4(u32 *arg0,u32 arg1,u32 arg2,u32 arg3)
 {
   *arg0 = arg1;
@@ -95,16 +96,21 @@ void Unk0bcef4_Unk_0bcef4(u32 *arg0,u32 arg1,u32 arg2,u32 arg3)
   arg0[6] = arg3;
 }
 
-int Unk0bd5f0_Unk_0bd5f0();
-/* decompiler-derived */
-void Unk0bcef4_Unk_0bd368(int arg0,int arg1)
+/* Seven signed selection words, matching accesses at +8 and +16. */
+typedef struct Unk0bcef4Selection {
+    s32 span, count, start, previous_start, selected, previous_selected, wrap;
+} Unk0bcef4Selection;
+
+extern void Unk0bd5f0_Unk_0bd5f0(Unk0bcef4Work *record);
+/* Forwards the selected record relative to start; caller supplies a valid index. */
+void Unk0bcef4_Unk_0bd368(Unk0bcef4Work *records, Unk0bcef4Selection *selection)
 {
-  Unk0bd5f0_Unk_0bd5f0((*(int *)(arg1 + 0x10) - *(int *)(arg1 + 8)) * 0xc + arg0);
+    Unk0bd5f0_Unk_0bd5f0(records + (selection->selected - selection->start));
 }
 
 
 int func_020bd070();
-int func_020bd54c();
+void func_020bd54c(Unk0bcef4Work *work, int enabled);
 /* decompiler-derived */
 u32 Unk0bcef4_Unk_0bd29c(int arg0,int *arg1)
 {
@@ -113,7 +119,7 @@ u32 Unk0bcef4_Unk_0bd29c(int arg0,int *arg1)
   if (0 < *arg1) {
     do {
       func_020bd070(arg0,1,0);
-      func_020bd54c(arg0,0);
+      func_020bd54c((Unk0bcef4Work *)arg0,0);
       value = value + 1;
       arg0 = arg0 + 0xc;
     } while (value < *arg1);
@@ -121,26 +127,25 @@ u32 Unk0bcef4_Unk_0bd29c(int arg0,int *arg1)
   return 1;
 }
 
-int func_020bd398();
-/* decompiler-derived */
-u32 Unk0bcef4_Unk_0bd584(int arg0,u32 arg1)
+int func_020bd398(Unk0bcef4Work *work);
+/* Updates each of count contiguous 12-byte records; returns the last completed
+ * index, or UINT_MAX when none completes. Storage is borrowed and writable. */
+u32 Unk0bcef4_Unk_0bd584(int record_address, u32 count)
 {
-  int tmp1;
-  u32 tmp2;
-  u32 tmp3;
-  tmp2 = 0xffffffff;
-  tmp3 = 0;
-  if (arg1 != 0) {
-    do {
-      tmp1 = func_020bd398(arg0);
-      if (tmp1 != 0) {
-        tmp2 = tmp3;
-      }
-      tmp3 = tmp3 + 1;
-      arg0 = arg0 + 0xc;
-    } while (tmp3 < arg1);
-  }
-  return tmp2;
+    int completed;
+    u32 last_completed = (u32)-1;
+    u32 index = 0;
+    if (count != 0) {
+        do {
+            completed = func_020bd398((Unk0bcef4Work *)record_address);
+            if (completed != 0) {
+                last_completed = index;
+            }
+            index++;
+            record_address += sizeof(Unk0bcef4Work);
+        } while (index < count);
+    }
+    return last_completed;
 }
 
 /* Borrowed first-word view; the comparisons at 020bd5d8..020bd5e0 identify it as a state. */
@@ -158,4 +163,77 @@ int Unk0bcef4_IsState015(Unk0bcef4State *t)
         return 1;
     }
     return 0;
+}
+
+/* Selects the counter reset from enabled and mode; mode 2 also sets state 2. */
+void func_020bd54c(Unk0bcef4Work *work, int enabled)
+{
+    if (enabled) {
+        if (work->mode != 2) {
+            work->UnkField0004 = 0;
+            return;
+        }
+        work->UnkField0004 = 2;
+        work->state = 2;
+    } else {
+        work->UnkField0004 = 1;
+    }
+}
+
+/* Moves start to selected and caps it to count minus span when a page fits. */
+int func_020bd034(Unk0bcef4Selection *selection)
+{
+    int delta;
+    if (selection->count < selection->span) return 1;
+    delta = selection->selected - selection->start;
+    selection->start += delta;
+    if (selection->count - selection->span < selection->start)
+        selection->start = selection->count - selection->span;
+    return 1;
+}
+
+int func_020bd418(Unk0bcef4Work *work);
+/* Advances counter to 1 while state is 1, then changes state to 2. Other
+ * states complete when the counter reaches 2, which is also its upper cap. */
+int func_020bd418(Unk0bcef4Work *work)
+{
+    if (work->state == 1) {
+        work->UnkField0004++;
+        if (work->UnkField0004 >= 1) {
+            work->UnkField0004 = 1;
+            work->state = 2;
+        }
+    } else {
+        work->UnkField0004++;
+        if (work->UnkField0004 >= 2) {
+            work->UnkField0004 = 2;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+/* Applies mode 2 to the selected record, requiring state 0/1/5 unless forced.
+ * Address arguments refer to borrowed records and a readable selection view. */
+int func_020bd30c(u32 records, u32 selection, s32 force)
+{
+    Unk0bcef4Work *base = (Unk0bcef4Work *)records;
+    Unk0bcef4Selection *sel = (Unk0bcef4Selection *)selection;
+    if (force || Unk0bcef4_IsState015((Unk0bcef4State *)(base + (sel->selected - sel->start)))) {
+        Unk0bcef4_Unk_0bd5c4((u32)(base + (sel->selected - sel->start)));
+        return 1;
+    }
+    return 0;
+}
+
+/* Dispatches by the mode word; only mode 2 forwards completion to the caller. */
+int func_020bd398(Unk0bcef4Work *work)
+{
+    int result = 0;
+    switch (work->mode) {
+    case 0: Unk0bcef4_Unk_0bd3e0(work); break;
+    case 1: func_020bd3fc(work); break;
+    case 2: result = func_020bd418(work); break;
+    }
+    return result;
 }
