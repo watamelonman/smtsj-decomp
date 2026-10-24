@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched M1-T310 `func_02125dcc` (record/buffer initializer) in `game/unit_02125d84` at 100% objdiff.
+- Matched M1-T307 `func_0209d1cc` (effect spawn with kind-based placement and name-suffix modes) in `src/game/unit_0209d060.c` at 100% objdiff.
 - Verified all eight M1-T316 state callbacks in `game/unit_0211ec7c` at 100% objdiff; added typed work pointers, state fields, and per-function contracts and evidence.
 - Matched `func_020fb858` (M1-T314), the paged-list drawing callback, with typed work and draw-descriptor views.
 - Matched all three M1-T313 callback allocation, phase update and nearby-record scan functions in `game/unit_020b1fa0` at 100% objdiff, with typed local views and per-function evidence.
