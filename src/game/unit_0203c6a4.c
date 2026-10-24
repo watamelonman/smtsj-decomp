@@ -1,19 +1,20 @@
-/* src/game/unit_0203c6a4.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Script handlers; neutral names retain meanings not established by the ARM code. */
 #include "types.h"
 
-
-
-/* returns 1 */
+/* Returns handler result 1, as established by mov r0, #1 at 0x0203c710. */
 int Unk03c6a4_GetConst1(void) { return 1; }
 
-int func_0203ac00();
-int func_0203c748();
-int Unk03aae8_Unk_03ad14();
-void func_02065c30();
+int func_0203ac00(int index);
+int func_0203c748(int mode, int value, int kind, int option, int flags);
+int Unk03aae8_Unk_03ad14(void);
+void func_02065c30(void);
+int func_02065544(void);
+/* Keeps the value in r0 and worker in r1 for the store seen at 0x0203c73c. */
 static inline void Unk03c6a4_SetSubState(u32 v, u8 *sub)
 {
     FIELD(u32, sub, 0x18) = v;
 }
+/* On a nonzero poll, calls 0x02065c30 and writes owner worker +0x18 = 4; returns 3. */
 int Unk03c6a4_Unk_03c718(void)
 {
     if (func_02065544() == 0) {
@@ -24,57 +25,57 @@ int Unk03c6a4_Unk_03c718(void)
     return 3;
 }
 
-/* decompiler-derived */
+/* ARM at 0x0203c84c: forwards signed low 16 bits of argument 0 with mode 0, kind 0, options 0. */
 void Unk03c6a4_Unk_03c84c(void)
 {
-  short v1;
-  v1 = func_0203ac00(0);
-  func_0203c748(0,(int)v1,0,0,0);
+  s16 value;
+  value = func_0203ac00(0);
+  func_0203c748(0, (int)value, 0, 0, 0);
 }
 
 
-/* decompiler-derived */
+/* ARM at 0x0203c878: forwards signed low 16 bits of argument 0 with mode 1, kind 0, options 0. */
 void Unk03c6a4_Unk_03c878(void)
 {
-  short v1;
-  v1 = func_0203ac00(0);
-  func_0203c748(1,(int)v1,0,0,0);
+  s16 value;
+  value = func_0203ac00(0);
+  func_0203c748(1, (int)value, 0, 0, 0);
 }
 
 
-/* decompiler-derived */
+/* ARM at 0x0203c8a4: forwards signed low 16 bits of argument 0 with mode 2, kind 0, options 0. */
 void Unk03c6a4_Unk_03c8a4(void)
 {
-  short v1;
-  v1 = func_0203ac00(0);
-  func_0203c748(2,(int)v1,0,0,0);
+  s16 value;
+  value = func_0203ac00(0);
+  func_0203c748(2, (int)value, 0, 0, 0);
 }
 
 
-/* decompiler-derived */
+/* ARM at 0x0203c8d0: forwards signed low 16 bits of argument 0 with mode 0, kind 1, options 0. */
 void Unk03c6a4_Unk_03c8d0(void)
 {
-  short v1;
-  v1 = func_0203ac00(0);
-  func_0203c748(0,(int)v1,1,0,0);
+  s16 value;
+  value = func_0203ac00(0);
+  func_0203c748(0, (int)value, 1, 0, 0);
 }
 
 
-/* decompiler-derived */
+/* ARM at 0x0203c8fc: forwards signed low 16 bits of argument 0 with mode 1, kind 1, options 0. */
 void Unk03c6a4_Unk_03c8fc(void)
 {
-  short v1;
-  v1 = func_0203ac00(0);
-  func_0203c748(1,(int)v1,1,0,0);
+  s16 value;
+  value = func_0203ac00(0);
+  func_0203c748(1, (int)value, 1, 0, 0);
 }
 
 
-/* decompiler-derived */
+/* ARM at 0x0203c928: forwards signed low 16 bits of argument 0 with mode 2, kind 1, options 0. */
 void Unk03c6a4_Unk_03c928(void)
 {
-  short v1;
-  v1 = func_0203ac00(0);
-  func_0203c748(2,(int)v1,1,0,0);
+  s16 value;
+  value = func_0203ac00(0);
+  func_0203c748(2, (int)value, 1, 0, 0);
 }
 
 
@@ -105,8 +106,8 @@ u32 Unk03c6a4_Unk_03c6a4(void)
   return 3;
 }
 
-int func_0203ac00();
-int func_0203c748();
+int func_0203ac00(int index);
+int func_0203c748(int mode, int value, int kind, int option, int flags);
 
 int Unk03c6a4_Unk_03c954(void)
 {
