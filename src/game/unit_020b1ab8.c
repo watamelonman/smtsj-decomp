@@ -15,12 +15,47 @@ typedef struct Unk0b1ab8Work {
     u32 unk_04;
     u32 unk_08;
     u32 value;
+    u32 unk_10;
+    int mode;
+    Unk0b1ab8Pair position;
 } Unk0b1ab8Work;
 
 extern const s16 data_0213c42c[];
 extern const s16 data_0213c42e[];
 Unk0b1ab8Work *func_020b1ab8(Unk0b1ab8Pair position, int mode, u8 direction);
 void func_020b1bc4(Unk0b1ab8Pair *position, u32 direction);
+
+void func_020b17f4(Unk0b1ab8Work *work);
+void func_020b1884(Unk0b1ab8Work *work);
+Unk0b1ab8Work *func_020611dc(void (*update)(Unk0b1ab8Work *),
+                           void (*draw)(Unk0b1ab8Work *),
+                           void (*third)(Unk0b1ab8Work *),
+                           void (*fourth)(Unk0b1ab8Work *),
+                           u32 size, u32 category, u16 priority, u32 flags);
+void Unk09d060_Unk_09d170(void *child);
+
+/* Neutral 020b1ab8: allocates 28 bytes with the two adjacent callbacks,
+ * registers successful work, and initializes the fields those callbacks use.
+ * Returns null on allocation failure. Priority truncates 10-direction to u16. */
+Unk0b1ab8Work *func_020b1ab8(Unk0b1ab8Pair position, int mode, u8 direction)
+{
+    Unk0b1ab8Work *work = func_020611dc(func_020b17f4, func_020b1884,
+                                      0, 0, 28, 4, (u16)(10 - direction), 0);
+    if (work) {
+        Unk09d060_Unk_09d170(work);
+        work->unk_01 = 0;
+        work->unk_04 = 0;
+        work->unk_08 = 0;
+        work->position = position;
+        work->mode = mode;
+        work->kind = 4;
+        work->value = 0;
+        work->unk_10 = 0;
+        work->variant = 0;
+        work->unk_03 = direction;
+    }
+    return work;
+}
 
 /* Neutral 020b1b68: creates kind 4 work with the supplied value and byte variant.
  * The original requires the allocator to succeed; mode is selected by nonzero flag. */
@@ -87,6 +122,19 @@ void func_020b1e74(Unk0b1ab8Pair position, u32 direction, int flag)
     work->value = 2;
 }
 
+/* Neutral 020b1ed4: creates kind 8 with value one after offsetting the pair.
+ * A zero final argument also subtracts 12 from y; creation must succeed. */
+void func_020b1ed4(Unk0b1ab8Pair position, u32 direction, int flag, int keep_y)
+{
+    Unk0b1ab8Work *work;
+    func_020b1bc4(&position, direction);
+    if (!keep_y)
+        position.y -= 12;
+    work = func_020b1ab8(position, flag ? 7 : 6, (u8)direction);
+    work->kind = 8;
+    work->value = 1;
+}
+
 /* Neutral 020b1f48: offsets position and creates kind 9 work.
  * As in the original, creation must succeed before the kind is written. */
 void func_020b1f48(Unk0b1ab8Pair position, u32 direction, int flag)
@@ -95,4 +143,24 @@ void func_020b1f48(Unk0b1ab8Pair position, u32 direction, int flag)
     func_020b1bc4(&position, direction);
     work = func_020b1ab8(position, flag ? 7 : 6, (u8)direction);
     work->kind = 9;
+}
+
+/* Neutral 020b1d44: offsets the copied pair and forwards variant 2.
+ * Evidence: the call sequence matches the adjacent variant wrappers. */
+void func_020b1d44(u32 value, Unk0b1ab8Pair position, u32 direction, int flag)
+{
+    func_020b1bc4(&position, direction);
+    func_020b1b68(value, position, 2, flag, (u8)direction);
+}
+
+/* Neutral 020b1e08: offsets the copied pair, subtracts 12 from y, and
+ * creates kind 6 with value zero; creation must succeed before the stores. */
+void func_020b1e08(Unk0b1ab8Pair position, u32 direction, int flag)
+{
+    Unk0b1ab8Work *work;
+    func_020b1bc4(&position, direction);
+    position.y -= 12;
+    work = func_020b1ab8(position, flag ? 7 : 6, (u8)direction);
+    work->kind = 6;
+    work->value = 0;
 }

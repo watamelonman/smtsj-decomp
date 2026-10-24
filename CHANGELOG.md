@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched M1-T354 `func_020ffd48`, the CaveNpc resource initializer, at 100% objdiff with typed kind and request fields.
+- Matched all eight M1-T356 functions in `game/unit_02047788`, with typed work fields and per-function behavior documentation.
+- Matched the four remaining M1-T349 work-construction functions in `game/unit_020b1ab8`, including allocation failure and conditional coordinate offsets.
 - Matched all eight M1-T353 CaveNpc callbacks at 100% objdiff, with typed work and record layouts and documented behavior.
 - Matched all seven M1-T339 table operations in `game/unit_0206dddc`, with typed record layouts and per-function contracts.
 - Matched all eight M1-T348 coordinate-offset and work-construction functions in `game/unit_020b1ab8` at 100% objdiff, with typed coordinate and work layouts.
