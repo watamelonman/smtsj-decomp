@@ -30,13 +30,26 @@ Their sizes are unknown; gaps are padding. 03bba4/03bc40 keep a small inline
 setter because passing the constant before the pointer preserves the original
 register order (a direct `ctx->unk_00e8->unk_0018 = 19` measured 98.18%).
 
-## Other existing functions (outside M1-T180)
+## M1-T181 — verified at 100% objdiff
 
-- `Unk03bba4_Unk_03bd3c`: forwards two signed command arguments to ImageObj 077860, sets code 8 and clears the ScanVisor switch; returns 3.
-- `Unk03bba4_Unk_03bbec`: forwards three unsigned halfword arguments to 09e418, then passes context +0xe8 to 02deb0; returns 3.
-- `Unk03bba4_Unk_03bc40`: forwards argument 0 to 065b10 after an optional 065c10 call, sets substate 6; returns 3.
-- `Unk03bba4_Unk_03bda0`: polls readiness helpers, applies and clears a pending work slot, and waits for the background mode check.
+All four callbacks take no parameters and return command status or readiness.
+Evidence is the ARM instructions and relocations in the same delinked object.
+The existing C already matched; typed helper declarations and behavior comments
+now make the call contracts explicit without changing the matching code.
+
+| Function | Bytes | Observed contract |
+| --- | ---: | --- |
+| `Unk03bba4_Unk_03bd3c` | 64 | Reads arguments 0 and 1, sign-extends each low halfword with arithmetic shifts, calls ImageObj 077860, SetCode8, then ScanVisor 0a2920(0); returns 3. |
+| `Unk03bba4_Unk_03bc40` | 72 | Zero-extends argument 0's low halfword; calls 065c10 only if 065544 returns zero, then 065b10(0, id); stores substate 6 through context +0xe8 at +0x18; returns 3. |
+| `Unk03bba4_Unk_03bbec` | 84 | Reads arguments 0, 1 and 2 in order, zero-extends their low halfwords, calls 09e418, then loads context +0xe8 into the 02deb0 call; returns 3. |
+| `Unk03bba4_Unk_03bda0` | 112 | Returns 0 if 06552c is nonzero, 077688 is zero or 09e274 is zero. Otherwise, when slot 1 equals 1, passes slot 0 to ImageBg 0e54d4 and clears slot 1. Returns 0 only when ImageBg_IsMode1or2 equals 1, otherwise 1. |
+
+The 02deb0 declaration preserves the borrowed subobject pointer passed by this
+call site, although the current callee implementation takes no arguments and
+does not consume it. This records the observed caller ABI rather than removing
+an apparently unused argument and losing the original load. Neutral callback
+names remain because call sequences alone do not establish a specific purpose.
 
 ## Hard list
 
-None for M1-T180; all eight targets match exactly.
+None; all twelve callbacks in this translation unit match exactly.

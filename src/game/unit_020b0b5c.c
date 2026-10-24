@@ -87,3 +87,64 @@ int Unk0b0b5c_Unk_0b0cf4(u32 arg0,int arg1)
   }
   return arg1;
 }
+
+/* Borrowed query entry; only the leading opaque value is established. */
+typedef struct Unk0b0b5cEntry {
+    u32 value;
+} Unk0b0b5cEntry;
+
+/* The singleton exposes ten borrowed entry pointers at offset 0x64. */
+typedef struct Unk0b0b5cWork {
+    u8 reserved[0x64];
+    Unk0b0b5cEntry *entries[10];
+} Unk0b0b5cWork;
+
+extern Unk0b0b5cWork *Unk044904_Get_data_0215ee98(void);
+extern int func_0204a9ec(Unk0b0b5cEntry *entry);
+extern int func_02050074(int minimum, int maximum);
+
+/* Select an eligible entry value, excluding fallback; zero filter accepts any
+ * nonzero ID byte (bits 16..23). The singleton's ten pointers and the eligibility
+ * call establish this contract; their game meaning is unknown. Return zero for
+ * a missing singleton, or fallback when no candidates remain. */
+int func_020b0d48(int filter, int fallback)
+{
+    Unk0b0b5cWork *work = Unk044904_Get_data_0215ee98();
+    int count;
+    int i;
+    int index;
+    int candidates[10];
+    if (work == 0) {
+        return 0;
+    }
+    count = 0;
+    for (i = 0; i < 10; i++) {
+        Unk0b0b5cEntry *entry = work->entries[i];
+        if (entry != 0) {
+            u32 value = entry->value;
+            if (filter != 0) {
+                if (filter == ((value >> 16) & 0xff)) {
+                    goto eligible;
+                }
+                continue;
+            } else {
+                if (((value >> 16) & 0xff) == 0) {
+                    continue;
+                }
+            }
+eligible:
+            if (value == fallback) {
+                continue;
+            }
+            if (func_0204a9ec(entry) == 0) {
+                candidates[count] = entry->value;
+                count++;
+            }
+        }
+    }
+    if (count == 0) {
+        return fallback;
+    }
+    index = func_02050074(0, count - 1);
+    return candidates[index];
+}
