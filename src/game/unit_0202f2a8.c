@@ -1900,8 +1900,6 @@ int func_02030494(u32 *input)
     return result;
 }
 
-/* Rebuild map work using the singleton's level byte (state +0x5b); +0x7400
- * suppresses it. Root position +0x7c and cell table +0x38e8 must remain live. */
 void func_02118bec(int id, int v);
 void Unk094fe0_Unk_0953f0(void);
 /* Report counter targets for `id`: when the kind-0 target is set and reached
@@ -1982,6 +1980,8 @@ void func_0203428c(void)
     func_02052634(1, 3, 32);
 }
 
+/* Rebuild map work using the singleton's level byte (state +0x5b); +0x7400
+ * suppresses it. Root position +0x7c and cell table +0x38e8 must remain live. */
 void func_02034e90(void)
 {
     Unk02f2a8State *s = (Unk02f2a8State *)gGameState;
@@ -2077,8 +2077,6 @@ void func_02035234(u32 id)
     }
 }
 
-/* Map a pair of 0..3 directions to 0..3 through a fixed 4x4 table; pairs
- * outside the table give 2. The meaning of the table is not established. */
 void *func_020445d0();
 int Unk038fbc_Unk_039160();
 void Unk038fbc_Unk_039138();
@@ -2111,7 +2109,9 @@ int func_0203572c(int row, int x, int y)
 int func_0200219c(int num, int den);
 /* Fixed-point (20.12) interpolation from `from` to `to`: returns
  * from + (to - from) * t / n, with t and n converted to fixed point through
- * rounded float. Returns `to` when n is 0 or t >= n, `from` when t <= 0. */
+ * rounded float. Returns `to` when n is 0 or t >= n, `from` when t <= 0.
+ * The rounded float-to-fixed conversion is written out inline here and in
+ * func_02035db8 (not as a helper or macro) to match the original codegen. */
 int func_02035cb4(int from, int to, u32 n, int t)
 {
     int d;
@@ -2134,6 +2134,8 @@ void func_02035db8(s32 *out, int x, int z)
     out[2] = fz;
 }
 
+/* Map a pair of 0..3 directions to 0..3 through a fixed 4x4 table; pairs
+ * outside the table give 2. The meaning of the table is not established. */
 int func_0203611c(int a, int b)
 {
     int r = 2;
