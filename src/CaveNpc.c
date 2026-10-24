@@ -6,13 +6,18 @@
 /* Layout follows halfword +0, state +4, signed countdown +12, and handles +44..56. */
 typedef struct CaveNpcWork {
     u16 kind;
-    u8 pad_0002[2];
+    u16 originalKind;
     s32 state;
     s32 offset;
     s8 countdown;
     u8 pad_000d[3];
     u32 active;
-    u8 request[24];
+    struct {
+        u32 field0;
+        const char *path;
+        u8 pad_001c[12];
+        u32 field20;
+    } request;
     void *resource;
     void *handle30;
     void *handle34;
@@ -107,8 +112,8 @@ void func_020fff40(CaveNpcWork *work)
     if (work->kind == 604) return;
     switch (work->state) {
     case 0:
-        if (func_0205b36c(work->request) == 0) return;
-        Unk05ae50_Unk_05af3c(work->request);
+        if (func_0205b36c(&work->request) == 0) return;
+        Unk05ae50_Unk_05af3c(&work->request);
         func_0205de30(work->handle30, 0, work->resource);
         func_0205caa8(work->handle38, 0);
         work->state = 1;
@@ -219,4 +224,60 @@ void func_021001cc(CaveNpcContext *context)
     u32 i;
     u32 count = table->count;
     for (i = 0; i < count; ++i, ++entry) entry->value = 0;
+}
+
+extern const char data_02151118[], data_02151128[], data_02151148[];
+extern const char data_02151158[], data_0215116c[];
+CaveNpcWork *func_020611dc(void (*update)(CaveNpcWork *),
+                         void (*draw)(CaveNpcWork *), void (*release)(CaveNpcWork *),
+                         void (*callback)(void), u32 size, u32 arg5, u32 arg6, u32 arg7);
+void Unk02e000_Unk_02e0cc(void);
+int func_02013c3c(char *buffer, const char *format, ...);
+int func_020513d4(const char *path);
+void func_0205ae60(void *request);
+void func_0205b398(void *resource, void *request);
+CaveNpcContext *func_0205dcd4(const char *path, int mode);
+void *func_0205c2c4(const char *path);
+void *func_0205c3c0(void *resource);
+void func_0205c3fc(void *handle, void *data, void *resource);
+
+/* Allocates 60-byte work and initializes kind-specific resources and callbacks.
+ * Evidence: +0/+2 kind stores, formatted paths, and +44..56 handle setup.
+ * Returns null on allocation failure; kind 604 bypasses resource initialization.
+ */
+CaveNpcWork *func_020ffd48(u16 kind, int row, u32 count)
+{
+    char path[64];
+    char checkPath[64];
+    CaveNpcWork *work = func_020611dc(func_020fff40, func_020fffc8, 0,
+                                    CaveNpc_Nop_0fff3c, 60, 0, 0, 1);
+    if (work != 0) {
+        work->originalKind = kind;
+        work->kind = kind;
+        if (work->kind == 604) return work;
+        CaveNpc_Unk_1000d0(work);
+        Unk02e000_Unk_02e0cc();
+        func_02013c3c(path, data_02151118, work->kind);
+        func_02013c3c(checkPath, data_02151128, work->kind);
+        if (func_020513d4(checkPath) == 0) {
+            work->kind = 600;
+            func_02013c3c(path, data_02151148, work->kind);
+        }
+        work->request.path = path;
+        work->request.field20 = 0;
+        func_0205ae60(&work->request);
+        func_0205b398(work->resource, &work->request);
+        func_02013c3c(path, data_02151158, work->kind);
+        work->handle30 = func_0205dcd4(path, 0);
+        func_021001cc(work->handle30);
+        func_02013c3c(path, data_0215116c, work->kind);
+        work->handle34 = func_0205c2c4(path);
+        work->handle38 = func_0205c3c0(work->handle34);
+        func_0205c3fc(work->handle38, work->handle30, work->handle34);
+        func_02100104((CaveNpcList *)work, row, count);
+        work->active = 0;
+        work->countdown = 0;
+        work->state = 0;
+    }
+    return work;
 }
