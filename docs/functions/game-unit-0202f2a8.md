@@ -628,3 +628,9 @@ Hard list for M1-T1116:
   declaration order, `amp = len` copy, s16 amplitude, and the negative constants
   written as `-(int)16384.0f`, `-(0x10000 / 4)` and `0x8000 * -1`. Needs a
   decomp.me scratch.
+
+Attempt 2 review verification: the map-work and direction-table comments now sit
+directly above their respective definitions, and the fixed-point interpolation
+comment explains why both helpers retain inline rounding expressions. Local
+validation passed: `ninja`, anticheat, all nine unit tests, match (all 102 C
+functions considered by the gate at 100%), and checksum (all artifacts identical).
