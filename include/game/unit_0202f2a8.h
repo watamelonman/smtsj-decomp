@@ -75,7 +75,9 @@ typedef struct Unk02f2a8Action {
     u32 unk_0028;               /* mask 0x100 */
     u32 unk_002c;               /* mask 0x200 */
     u32 unk_0030;               /* mask 0xf3 */
-    u8 pad_0034[0x9c - 0x34];
+    u8 pad_0034[0x58 - 0x34];
+    u32 unk_0058;               /* input mask 1 latched by 0202fea0 */
+    u8 pad_005c[0x9c - 0x5c];
     u32 unk_009c;
 } Unk02f2a8Action;
 
@@ -160,7 +162,8 @@ typedef struct Unk02f2a8State {
     u32 unk_73e4;
     u32 unk_73e8;
     u32 unk_73ec;
-    u8 pad_73f0[0x73fc - 0x73f0];
+    u8 pad_73f0[4];
+    u8 unk_73f4[0x73fc - 0x73f4]; /* size guessed: block handed to func_021229b0 */
     u32 unk_73fc;
     u32 unk_7400;               /* nonzero suppresses the func_0203721c rebuild */
     u8 pad_7404[0x7410 - 0x7404];
@@ -218,6 +221,30 @@ void Unk11f2d0_Unk_11f320(void *obj);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
+
+/* Borrowed map buffers and grid ids used by the phase-one reload. */
+/* Reload path hands this helper two borrowed map-work buffers. */
+void func_020a7ca4(void *dst, void *src);
+/* Reload uses signed grid coordinates and the current work-area id. */
+void func_0204b74c(int x, int y, int id);
+/* Return the selector whose value 2 chooses the alternate reload path. */
+int Unk02f078_Unk_02f0d8(void);
+/* Prepare the request iteration performed by the phase-one reload. */
+void Unk095560_Thunk_0202d15c(void);
+/* Nonzero keeps the reload request iteration active. */
+int func_0202d170(void);
+/* The reload handler treats result 1 for selector 16 as an armed request. */
+int Unk02d15c_IsMode1Match(int mode);
+/* Advance the pending request after each reload iteration. */
+void func_0202d198(void);
+/* Notify the subsystem after the reload disarms the current action. */
+void func_02095f94(void);
+/* Animation tail uses result 1 to arm task +0x5c. */
+int func_0204cb90(void);
+/* Input selection treats result 1 as an active mask on device zero. */
+int func_020537b8(int device, u32 mask);
+/* Directional input posts ids 8..10 with value 1. */
+void Unk118b04_Unk_118e50(int id, int value);
 
 int func_0204b4c4();
 int func_0204ca1c();
@@ -359,8 +386,11 @@ int func_020361ec(int dir, int amount);
 int Unk0a0ce4_Unk_0a0da4();
 int func_021214e0(u32 v);
 int func_021215d4();
-int func_0202f530();
-int func_0202f8f0();
+struct Unk02f2a8Task;
+/* Borrow a 0xa0-byte task for the 24-frame position animation. */
+void func_0202f530(struct Unk02f2a8Task *task);
+/* Borrow a 0xa0-byte task for the 15-frame position animation. */
+void func_0202f8f0(struct Unk02f2a8Task *task);
 int func_0202fc50();
 void func_02030204(Unk02f2a8Action *action);
 void func_02035edc(void *obj, const void *position);
@@ -445,11 +475,24 @@ typedef struct Unk02f2a8Task {
     u32 unk_0014;
     u32 unk_0018;
     u32 unk_001c;
-    u8 pad_0020[0x54 - 0x20];
+    u8 pad_0020[0x34 - 0x20];
+    u32 unk_0034;
+    u32 unk_0038;
+    u32 unk_003c;
+    u32 unk_0040;
+    u32 unk_0044;
+    u32 unk_0048;
+    u32 unk_004c;
+    u8 pad_0050[4];
     u32 unk_0054;
     u8 pad_0058[4];
     u32 unk_005c;
-    u8 pad_0060[0xa0 - 0x60];
+    u8 pad_0060[0x70 - 0x60];
+    s32 unk_0070;
+    s32 unk_0074;
+    s32 unk_0078;
+    u8 pad_007c[0x9c - 0x7c];
+    u32 unk_009c;
 } Unk02f2a8Task;
 
 typedef void (*Unk02f2a8TaskFn)();
@@ -641,6 +684,11 @@ typedef struct Unk02f2a8Element {
 Unk02f2a8Element *Unk038fbc_GetElement(void *map, int type, int index);
 int Unk0a50d4_IsSubBrightnessMax(void);
 int func_0205e590(int id);
+void Unk0bc1a8_Unk_0bc928(u32 slot, u32 value, void *message);
+int Unk0bc1a8_IsSlotEmpty(int slot);
+void func_021229b0(void *obj);
+void Unk02dcfc_Unk_02ded4(void);
+int func_02030bb0(Unk02f2a8State *state);
 /* Callback table selected by the halfword ids at actor +0x6c/+0x34. */
 typedef struct Unk02f2a8ActorDescriptor {
     u32 unk_0000[2];

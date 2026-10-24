@@ -840,3 +840,58 @@ the evidence shows what each function does to the state, not what it is for in t
 New typed state fields: root +0x5c; state +0x73d4, +0x7430..+0x7438, +0x7440..+0x746c,
 +0x7482/+0x7483, +0x748c, +0x74f0. The copy helper `func_0200866c` now has a real prototype.
 Hard list for this card: none.
+
+## M1-T1120: five matched functions; three hard functions
+
+Five definitions match at **100%** with the configured mwccarm 2.0/sp1p5.
+The three hard functions below remain supplied by the delinked original;
+the match gate checks retained C definitions and does not establish completion
+of all eight functions on this card. Names remain neutral because the original
+instructions establish field-level behavior, not the gameplay purpose.
+
+| Function | Bytes | Contract and evidence from the original instructions |
+| --- | ---: | --- |
+| `func_020338b0` | 536 | Seven-phase handler on signed byte +0x7481 with signed frame counter +0x7484. Clears +0x73d8, sets display mode zero on frame 3, waits through frame 4, sends value 0xffff to slot 8, initializes +0x73f4, waits for slot 8 to empty, then reloads the body and restores display helpers. The last phase requests mode 2. The state and its root are borrowed. |
+| `func_02031df8` | 552 | Applies pending signed changes to four actors. Actor zero uses current values +0x1c/+0x1e, maxima +0x12/+0x14 and id +0x6c; the other actors use +0x1e/+0x20, +0xa/+0xc and id +0x34. Null actors and id 1 are skipped. The first value is bounded to [1,max]; the second to [0,max] and deferred while +0x74e8 is at most 10. Posts mode events 48..51 when +0x74ec is armed. **Hard: omitted.** |
+| `func_0202fea0` | 588 | Prioritizes input masks 1, 0x800, 0x400, 0x100 and 0x200, latching action words. Mask 0xf0 enters directional selection; mask 2 changes whether a direction requests movement or rotation. Calls 0202fd64/0202fe08 to choose action +0x14 and posts 118e50 events 8/9/10. Returns whether input was handled. Borrows the action. |
+| `func_02032020` | 636 | Two-phase reload handler on +0x7481. Phase zero waits for 02030bb0, restores map work and marks the current id. Phase one either copies +0x5508 and selects mode 4, or rebuilds map work, checks the cell ahead for kind 14, drains pending mode-1 requests and selects the next mode. Resets the phase after phase one. Borrows state/root. |
+| `func_02030924` | 652 | Loads the body map at +0x354 using the key at +0x214. Marks kind-24/25 cells using element-type-7 ids and the persistent two-bit predicate. For each enabled signed id at body +0x230..+0x236, loads a temporary 140-byte map, overlays matching cells and releases that map. Finishes through 0210b7e4(id). **Hard: omitted.** |
+| `func_0202f8f0` | 800 | Advances task +0x1c, converts cached grid coordinates to 20.12 fixed point and scales by four units with signed 64-bit rounding. Applies the relative-direction offset from 02035cb4 for the first three frames. Sets flags on frames 3/4; at frame 15 restores action 1, direction 2, clears +0x9c and snaps to cached grid position. Borrows the 0xa0-byte task. |
+| `func_02036c48` | 880 | Collects cell records into a 0x794-byte work block. Offsets the viewpoint by 3.5 units using the resident sin/cos table at 0x0212629c, clamps radius+1 to 7 and bounds to the 45x40 grid. Filters boundary cells through descriptor byte +0x18, rejects absolute relative angles >=0x1b05 and distances <0x2800, then records corner angles, distance and signed grid coordinates. **Hard: omitted.** |
+| `func_0202f530` | 892 | Advances a task across a cell using 02035cb4(0x4000,0,24,frame), the rotated direction and the same fixed-point coordinate conversion as 0202f8f0. Sets flags on frames 3/6/8 and restores idle fields at frame 24. The completion checks singleton fields +0x7564/+0x7578; the tail may arm +0x5c through 0204b4c4/0204cb90. Borrows the 0xa0-byte task. |
+
+The task view now exposes the animation flags at +0x34..+0x4c, position
+words +0x70/+0x74/+0x78 and +0x9c. The action view exposes the input latch
+at +0x58. The dispatcher passes its existing action pointer through typed
+animation-handler parameters and still matches at 100%. No module boundary
+changed. New behavioral tests are not required by this card; original-object
+instruction comparison is the acceptance oracle.
+
+### Hard list for M1-T1120
+
+- `func_02031df8`: best candidate **99.35%**, initial candidate **99.06%**.
+  The initial candidate has the same instruction sequence apart from allocation
+  of the loop index, second-value pointer and second maximum: original uses
+  r6/r7/r8, candidate r8/r6/r7. Tried declaration order inside/outside the loop,
+  separate amount scopes, register-qualified index, and signed-halfword maxima.
+  These did not produce an exact match. A human scratch should start from the
+  actor/value contracts above and focus on register allocation.
+- `func_02030924`: best candidate **93.52%**. Reconstructed both grid scans,
+  cell overlays, temporary-map initialization/release and the final notification.
+  Tried byte wrap expressed as addition rather than subtraction, pointer/index
+  forms for the signed entry table, local slot initialization order, X/Y local
+  declaration order and the loader's stack-argument typing. Remaining differences
+  include scan-register allocation, loop-constant hoisting and stack scheduling.
+  Loader experiments preserved its own 100% match but did not match this caller;
+  those helper changes were removed with the candidate.
+- `func_02036c48`: best candidate **80.97%** (initial **80.17%**).
+  Reconstructed the viewpoint, grid bounds, boundary predicate, angle/distance
+  filters and output records. Tried signed angle modulo with explicit negative
+  normalization and both fixed-multiply operand orders. The configured compiler
+  emits extra high-word multiply-adds for the 3.5 coefficient, different sin/cos
+  load operand order and different scheduling/register allocation. This resembles
+  the compiler-sensitive fixed-point issues documented under M1-T1118, but no
+  alternate compiler match was established for this function.
+
+No nonmatching C definitions, assembly stubs or code-byte arrays are retained.
+These three functions need human decomp.me scratches through `tools/decompme.py`.
