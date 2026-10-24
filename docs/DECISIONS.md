@@ -120,6 +120,15 @@ preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
 
+## DEC-008 — Preserve the selection scan's shared indexed exit
+
+The three functions in `game/unit_020b0e08` branch from a successful inclusive
+weight comparison to the same indexed load used after an exhausted scan sets
+the index to `count - 1`. Use a local `selected` label to share that return.
+A separate return inside the loop duplicates the epilogue; a post-loop bounds
+check emits an extra comparison. Preserve the original inclusive comparison
+and last-candidate fallback. Revisit if compiler/type evidence reproduces the
+same control flow without a label.
 ## DEC-008 — Preserve VER record-count observations
 
 `func_0206f778` reloads the file header's record count at loop tests and again

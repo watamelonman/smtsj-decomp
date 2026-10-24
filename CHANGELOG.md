@@ -2,6 +2,26 @@
 
 ## Unreleased
 - M1-T1118: matched five grid/action, selector, reload, teardown and counter functions in `game/unit_0202f2a8`; documented three hard functions, including two verified matches with mwccarm 2.0/sp2p4.
+- M1-T363: added matching C for `func_020b12c8`, the ten-slot filtered and sorted ID selection routine; documented `func_020b1488` on the hard list.
+- M1-T362: matched `func_020b23bc` with typed work/cell views; documented `func_020b2410` on the hard list after a 98.71% candidate.
+
+- Match the two-pass object update handler `func_020479b8` in game/unit_02047788.
+- Matched all eight M1-T360 functions in `game/unit_020efff4`, including descriptor setup, embedded-object initialization, and percentage clamping, with typed work fields and per-function evidence.
+- Matched all six M1-T359 entry application, status filtering, amount calculation and cost deduction functions in `game/unit_020f8bc8` at 100% objdiff, with typed record views and per-function documentation.
+- Matched all seven M1-T358 game/unit_020fb128 callbacks at 100% objdiff, with typed record/work views and documented phase and threshold behavior.
+- Matched M1-T354 `func_020ffd48`, the CaveNpc resource initializer, at 100% objdiff with typed kind and request fields.
+- Matched all eight M1-T356 functions in `game/unit_02047788`, with typed work fields and per-function behavior documentation.
+- Matched the four remaining M1-T349 work-construction functions in `game/unit_020b1ab8`, including allocation failure and conditional coordinate offsets.
+- Matched all eight M1-T353 CaveNpc callbacks at 100% objdiff, with typed work and record layouts and documented behavior.
+- Matched all seven M1-T339 table operations in `game/unit_0206dddc`, with typed record layouts and per-function contracts.
+- Matched all eight M1-T348 coordinate-offset and work-construction functions in `game/unit_020b1ab8` at 100% objdiff, with typed coordinate and work layouts.
+- Matched all three M1-T347 record/metadata calculations in `game/unit_020ddeb0`, including six-entry exclusion scans, unsigned arithmetic, and result caps.
+- Matched all eight M1-T346 resource access, descriptor forwarding, and phase helpers in `game/unit_020ddeb0`, with typed call contracts and per-function evidence.
+- M1-T340: matched three area-record initialization and adjustment functions in game/unit_02097514; documented the remaining slot wrapper on the hard list.
+- Matched M1-T329 `func_02071efc` (find-or-add named record) and `func_02072068` (dynamic-record mode step) in `game/unit_02071dc0`; the unit is now fully in C, with `Unk071dc0Store` typing the 0x1608-byte record store.
+- M1-T338: verified eight table accessors in `game/unit_0206dddc` at 100% objdiff, with typed borrowed pointers and documented record offsets.
+- Matched all three M1-T337 object selection functions in `game/unit_020b0e08` at 100% objdiff, with typed object views and documented weighting rules.
+- Matched all eight M1-T336 functions in `game/unit_0210b4d0`, including cell state updates and paired map-code copying, with typed field views.
 - Matched all eight M1-T1117 unit_0202f2a8 functions (game-state task mode latch/dispatch, visor refresh, map reload sequence, sorted-list range marking, fixed-point lerp) at 100% objdiff.
 - Matched both game/unit_0206f6e4 VER resource loading and legacy record conversion functions at 100%, with typed layouts and format contracts.
 - Matched all five M1-T330 slot-bank and record initialization functions in `game/unit_0206d950`, with typed layouts and per-function contracts.
