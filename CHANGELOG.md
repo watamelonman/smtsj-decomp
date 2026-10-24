@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched the eight M1-T426 VCOUNT, queue-drain and descriptor-submission functions in `game/unit_0205ae50`, with typed private queue/request layouts and instruction evidence.
 - Matched all eight M1-T425 singleton wrappers, byte predicates, limit setter and work cleanup functions in `game/unit_0205ae50`, with typed work links and documented assembly evidence.
 - Matched all eight M1-T424 game/unit_020fbed4 initialization, callback, cleanup, and drawing functions at 100% objdiff with typed private layouts.
 - M1-T423: added matching C for six game/unit_020a93e8 drawing routines; documented two remaining hard functions.
