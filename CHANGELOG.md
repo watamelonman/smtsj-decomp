@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T1120: matched five `game/unit_0202f2a8` input, reload and position animation handlers at 100% objdiff; documented three remaining functions on the hard list.
 - M1-T1119: matched all eight listed `game/unit_0202f2a8` functions (task update callback, transition setup, actor callbacks, string join, map search and corner sampling) at 100% objdiff, with typed state fields.
 - Verified all eight M1-T386 game/unit_0206e4d8 table and work-state helpers at 100% objdiff; documented their contracts and instruction evidence.
 - M1-T390: matched four game/unit_020e5710 record eligibility and weighted selection helpers; documented the remaining selector on the hard list.

@@ -545,10 +545,10 @@ void Unk02f2a8_Unk_0302f4(Unk02f2a8Action *action)
         func_02030204(action);
         return;
     case 2:
-        func_0202f530();
+        func_0202f530((Unk02f2a8Task *)action);
         return;
     case 3:
-        func_0202f8f0();
+        func_0202f8f0((Unk02f2a8Task *)action);
         return;
     case 4:
         func_0202fc50();
@@ -2586,4 +2586,289 @@ int func_02035890(Unk02f2a8Pos *dst, int selector)
     dst->unk_0003 = y;
     dst->unk_0004 = direction;
     return found;
+}
+
+/* Advance the seven-phase reload through slot 8, display setup and body reload.
+ * Original 020338b0 uses +0x7481 as phase and +0x7484 as frame count. */
+void func_020338b0(Unk02f2a8State *s)
+{
+    switch (s->unk_7481) {
+    case 0:
+        Unk02f2a8_Unk_030d20((u8 *)s, 0);
+        s->unk_73d8 = 0;
+        s->unk_7484 = 0;
+        s->unk_7481++;
+        break;
+    case 1:
+        s->unk_7484++;
+        if (s->unk_7484 == 3) {
+            func_020572c0();
+            Unk02cad4_SetupDisplayMode(0, 0, 0);
+        }
+        if (s->unk_7484 > 4) {
+            Unk0bc1a8_Unk_0bc928(8, 0xffff, 0);
+            func_021229b0(s->unk_73f4);
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 2:
+        if (Unk0bc1a8_IsSlotEmpty(8) == 1) {
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 3:
+        if (++s->unk_7484 == 2) {
+            Unk02cad4_SetupDisplayMode(1, 0, 0);
+            func_02052634(1, 3, 32);
+            func_0204b504();
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 4:
+        if (func_02030bb0(s) == 1) {
+            func_0204ccb0();
+            func_0204b6f4();
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 5:
+        s->unk_7484++;
+        if (s->unk_7484 == 1) Unk0a0ce4_Unk_0a0d30(1);
+        if (s->unk_7484 >= 2) {
+            Unk02dcfc_Unk_02ded4();
+            Unk02f2a8_Call_02057660();
+            func_020a269c(1);
+            s->unk_73d8 = 1;
+            s->unk_7484 = 0;
+            s->unk_7481++;
+        }
+        break;
+    case 6:
+        s->unk_73cc = 2;
+        break;
+    }
+}
+/* Prioritize input masks, then choose a direction/action using the two grid
+ * predicates. Original 0202fea0 latches the result in the borrowed action. */
+int func_0202fea0(Unk02f2a8Action *action)
+{
+    int result = 0;
+    if (func_02053800(0, 1) == 1) {
+        result = 1;
+        action->unk_0058 = 1;
+    } else if (func_02053800(0, 0x800) == 1) {
+        result = 1;
+        action->unk_0020 = 1;
+        Unk03e43c_Unk_0441ec();
+    } else if (func_02053800(0, 0x400) == 1) {
+        result = 1;
+        action->unk_0024 = 1;
+        Unk03e43c_Unk_0441ec();
+    } else if (func_02053800(0, 0x100) == 1) {
+        result = 1;
+        action->unk_0028 = 1;
+    } else if (func_02053800(0, 0x200) == 1) {
+        result = 1;
+        action->unk_002c = 1;
+    } else if (func_020537b8(0, 0xf0) == 1) {
+        if (func_020537b8(0, 2) == 1) {
+            if (func_020537b8(0, 0x10) == 1) action->unk_0018 = 0;
+            else if (func_020537b8(0, 0x20) == 1) action->unk_0018 = 1;
+            else if (func_020537b8(0, 0x40) == 1) action->unk_0018 = 2;
+            else if (func_020537b8(0, 0x80) == 1) action->unk_0018 = 3;
+            result = 1;
+        } else {
+            if (func_020537b8(0, 0x10) == 1) action->unk_0018 = 0;
+            else if (func_020537b8(0, 0x20) == 1) action->unk_0018 = 1;
+            else if (func_020537b8(0, 0x40) == 1) {
+                action->unk_0018 = 2;
+                result = 1;
+            } else if (func_020537b8(0, 0x80) == 1) action->unk_0018 = 3;
+        }
+        if (result == 1) {
+            if (func_0202fd64(action->unk_0000, action->unk_0018) == 1) {
+                action->unk_0014 = 2;
+                switch (action->unk_0018) {
+                case 0:
+                case 1: Unk118b04_Unk_118e50(9, 1); break;
+                case 3: Unk118b04_Unk_118e50(10, 1); break;
+                }
+            } else if (func_0202fe08(action->unk_0018) == 1) {
+                action->unk_0014 = 3;
+                Unk118b04_Unk_118e50(8, 1);
+            } else {
+                action->unk_0018 = 2;
+            }
+        } else {
+            action->unk_0014 = 4;
+        }
+        result = 1;
+    }
+    return result;
+}
+/* Animate the task position along the relative grid direction in 20.12 units.
+ * Original 0202f530 sets frame flags and restores the idle state on completion;
+ * the borrowed task must have the 0xa0-byte layout allocated by 020303d0. */
+void func_0202f530(Unk02f2a8Task *task)
+{
+    int direction;
+    int delta;
+    int coordinate;
+    task->unk_001c++;
+    direction = func_020361ec(Unk02e000_GetWorkArea()->unk_0358, task->unk_0018);
+    delta = func_02035cb4(0x4000, 0, 24, task->unk_001c);
+    switch (direction) {
+    case 1:
+        coordinate = Unk02e000_GetWorkArea()->unk_0364;
+        task->unk_0070 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) - delta;
+        break;
+    case 2:
+        coordinate = Unk02e000_GetWorkArea()->unk_0365;
+        task->unk_0078 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) - delta;
+        break;
+    case 3:
+        coordinate = Unk02e000_GetWorkArea()->unk_0364;
+        task->unk_0070 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) + delta;
+        break;
+    case 0:
+        coordinate = Unk02e000_GetWorkArea()->unk_0365;
+        task->unk_0078 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) + delta;
+        break;
+    }
+    if (task->unk_001c == 3) task->unk_0048 = 1;
+    if (task->unk_001c == 6) task->unk_004c = 1;
+    if (task->unk_001c == 8) {
+        task->unk_0044 = 1;
+        task->unk_0048 = 0;
+    }
+    if ((s32)task->unk_001c >= 24) {
+        if (task->unk_000c == 1) {
+            task->unk_0038 = 1;
+            if (FIELD(u32, GetGameState(), 0x7564) != 3 || FIELD(u32, GetGameState(), 0x7578) != 1) task->unk_0034 = 1;
+        }
+        task->unk_0008 = 1;
+        task->unk_000c = 1;
+        task->unk_0014 = 1;
+        task->unk_0018 = 2;
+        task->unk_001c = 0;
+        task->unk_0054 = 1;
+        task->unk_003c = 1;
+        task->unk_0040 = 1;
+        task->unk_005c = 1;
+        Unk02f2a8_Call_02035db8((u8 *)task);
+    }
+    if (task->unk_0018 != 2 && func_0204b4c4() != 0 && func_0204cb90() == 1) task->unk_005c = 1;
+}
+/* Animate the task position along the relative grid direction in 20.12 units.
+ * Original 0202f8f0 sets frame flags and restores the idle state on completion;
+ * the borrowed task must have the 0xa0-byte layout allocated by 020303d0. */
+void func_0202f8f0(Unk02f2a8Task *task)
+{
+    int direction;
+    int delta;
+    int coordinate;
+    task->unk_001c++;
+    direction = func_020361ec(Unk02e000_GetWorkArea()->unk_0358, task->unk_0018);
+    delta = 0;
+    if ((s32)task->unk_001c <= 1) delta = func_02035cb4(0, 0x4000, 24, task->unk_001c);
+    else if ((s32)task->unk_001c <= 3) delta = func_02035cb4(0, 0x4000, 24, 3 - task->unk_001c);
+    switch (direction) {
+    case 1:
+        coordinate = Unk02e000_GetWorkArea()->unk_0364;
+        task->unk_0070 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) + delta;
+        break;
+    case 2:
+        coordinate = Unk02e000_GetWorkArea()->unk_0365;
+        task->unk_0078 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) + delta;
+        break;
+    case 3:
+        coordinate = Unk02e000_GetWorkArea()->unk_0364;
+        task->unk_0070 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) - delta;
+        break;
+    case 0:
+        coordinate = Unk02e000_GetWorkArea()->unk_0365;
+        task->unk_0078 = (s32)(((s64)(int)((float)coordinate > 0 ? 4096.0f * (float)coordinate + 0.5f : 4096.0f * (float)coordinate - 0.5f) * 0x4000 + 0x800) >> 12) - delta;
+        break;
+    }
+    if (task->unk_001c == 3) task->unk_0048 = 1;
+    if (task->unk_001c == 4) {
+        task->unk_0044 = 1;
+        task->unk_0048 = 0;
+    }
+    if ((s32)task->unk_001c >= 15) {
+        task->unk_0014 = 1;
+        task->unk_0018 = 2;
+        task->unk_001c = 0;
+        task->unk_0044 = 1;
+        task->unk_009c = 0;
+        Unk02f2a8_Call_02035db8((u8 *)task);
+    }
+}
+/* Reload the body in phase zero, then rebuild map work and select the next
+ * mode in phase one. Original 02032020 also checks the cell ahead for kind 14
+ * and drains pending mode-1 requests. The state and its root are borrowed. */
+void func_02032020(Unk02f2a8State *s)
+{
+    switch (s->unk_7481) {
+    case 0:
+        if (func_02030bb0(s) == 1) {
+            func_02030e80(s, Unk02e000_GetWorkArea()->unk_035c);
+            Unk02f2a8_Unk_036488();
+            Unk02e000_SetBit_02e968(Unk02e000_GetWorkArea()->unk_035c, 1);
+            Unk0a0ce4_Unk_0a0d30(1);
+            Unk02f2a8_Call_02057660();
+            s->unk_7481++;
+        }
+        break;
+    case 1:
+        if (Unk02f078_Unk_02f0d8() == 2) {
+            func_020a7ca4(s->unk_5508, Unk02e000_Unk_02e8b8());
+            func_0204ccb0();
+            func_020305a8((Unk02f2a8GridState *)s, 1);
+            s->unk_73cc = 4;
+            s->root->unk_0004 = 0;
+            s->unk_7482 = Unk02e000_GetWorkArea()->unk_0364;
+            s->unk_7483 = Unk02e000_GetWorkArea()->unk_0365;
+            s->unk_757c = 4;
+        } else {
+            s16 x;
+            s16 y;
+            u8 *cell;
+            func_02031274(s);
+            func_0204ccb0();
+            x = Unk02e000_GetWorkArea()->unk_0364;
+            y = Unk02e000_GetWorkArea()->unk_0365;
+            func_0204b74c(x, y, Unk02e000_GetWorkArea()->unk_035c);
+            switch (Unk02e000_GetWorkArea()->unk_0358) {
+            case 0: y++; break;
+            case 2: y--; break;
+            case 3: x++; break;
+            case 1: x--; break;
+            }
+            cell = (u8 *)Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(&s->body, x, y), x, y);
+            if (cell != 0 && cell[0] == 14) func_0204b74c(x, y, Unk02e000_GetWorkArea()->unk_035c);
+            func_02034e90();
+            Unk095560_Thunk_0202d15c();
+            while (func_0202d170() != 0) {
+                if (Unk02d15c_IsMode1Match(16) == 1) {
+                    Unk02f2a8_Unk_03064c(s);
+                    func_02095f94();
+                    ScanVisor_Unk_0a273c(0);
+                    s->unk_73cc = 2;
+                }
+                func_0202d198();
+            }
+            if (s->unk_73e0 == 0) {
+                func_020305a8((Unk02f2a8GridState *)s, 1);
+                func_020a269c(1);
+                s->unk_73cc = 1;
+            }
+        }
+        s->unk_7481 = 0;
+        break;
+    }
 }
