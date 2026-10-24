@@ -2,6 +2,11 @@
 
 ## Unreleased
 - Matched M1-T310 `func_02125dcc` (record/buffer initializer) in `game/unit_02125d84` at 100% objdiff.
+- Verified all eight M1-T316 state callbacks in `game/unit_0211ec7c` at 100% objdiff; added typed work pointers, state fields, and per-function contracts and evidence.
+- Matched `func_020fb858` (M1-T314), the paged-list drawing callback, with typed work and draw-descriptor views.
+- Matched all three M1-T313 callback allocation, phase update and nearby-record scan functions in `game/unit_020b1fa0` at 100% objdiff, with typed local views and per-function evidence.
+- Matched all seven M1-T312 queue, record-selection, and callback descriptor functions in `game/unit_0211d120` with typed field views and per-function documentation.
+- M1-T311: verified the typed record comparator in `game/unit_02100414` at 100% objdiff; documented the initializer’s remaining scheduling mismatch on the hard list.
 - Matched all eight M1-T309 packed-shape, record lookup, cleanup, fill, and tile-write helpers at 100% objdiff.
 - Matched all three M1-T299 work-area sequence functions in `game/unit_020edc78` at 100% objdiff, with typed parameters and documented state transitions.
 - Matched M1-T308 cell-check and three-slot lookup functions in `game/unit_021214e0`; documented the remaining rendering function on its hard list.
