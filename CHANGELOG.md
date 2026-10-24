@@ -2,6 +2,23 @@
 
 ## Unreleased
 - Matched all eight M1-T1117 unit_0202f2a8 functions (game-state task mode latch/dispatch, visor refresh, map reload sequence, sorted-list range marking, fixed-point lerp) at 100% objdiff.
+- Matched the remaining five M1-T317 functions in `game/unit_0211ec7c` (descriptor fill, work init, label formatting, scale update, state-1 tick) at 100% objdiff; the TU is now fully C, with the work struct extended to its 0x31c size.
+- Matched all eight M1-T328 record setup, lookup, clearing, and mode helpers in `game/unit_02071dc0` at 100% objdiff.
+- Matched all eight M1-T324 game/unit_020fd5a4 resource, coordinate, and mode-dispatch functions with typed contracts and assembly evidence.
+- Matched all seven M1-T322 functions in `game/unit_02039774` at 100% objdiff; added typed FLW0 section parsing, work allocation, list operations and cleanup contracts.
+- M1-T318: matched the graphics reset and sort comparator in `game/unit_020ee01c`; documented the remaining task callback on its hard list.
+- Matched M1-T310 `func_02125dcc` (record/buffer initializer) in `game/unit_02125d84` at 100% objdiff.
+- Matched M1-T307 `func_0209d1cc` (effect spawn with kind-based placement and name-suffix modes) in `src/game/unit_0209d060.c` at 100% objdiff.
+- Verified all eight M1-T316 state callbacks in `game/unit_0211ec7c` at 100% objdiff; added typed work pointers, state fields, and per-function contracts and evidence.
+- Matched `func_020fb858` (M1-T314), the paged-list drawing callback, with typed work and draw-descriptor views.
+- Matched all three M1-T313 callback allocation, phase update and nearby-record scan functions in `game/unit_020b1fa0` at 100% objdiff, with typed local views and per-function evidence.
+- Matched all seven M1-T312 queue, record-selection, and callback descriptor functions in `game/unit_0211d120` with typed field views and per-function documentation.
+- M1-T311: verified the typed record comparator in `game/unit_02100414` at 100% objdiff; documented the initializer’s remaining scheduling mismatch on the hard list.
+- Matched all eight M1-T309 packed-shape, record lookup, cleanup, fill, and tile-write helpers at 100% objdiff.
+- Matched all three M1-T299 work-area sequence functions in `game/unit_020edc78` at 100% objdiff, with typed parameters and documented state transitions.
+- Matched M1-T308 cell-check and three-slot lookup functions in `game/unit_021214e0`; documented the remaining rendering function on its hard list.
+- Matched all eight M1-T306 singleton work helpers in `src/game/unit_0209d060.c`, including allocation and optional parent linking, with typed contracts and instruction evidence.
+- Matched all three M1-T301 functions in `game/unit_02122a78`, with typed callback state and documented resource/handle initialization.
 - Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.
 - Matched all seven M1-T300 functions in `game/unit_02115fbc` at 100% objdiff, with typed resource/state/record views and per-function contracts.
 
