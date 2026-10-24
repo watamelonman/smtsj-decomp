@@ -136,3 +136,13 @@ volatile to preserve those observed accesses and ordering. This is a matching
 constraint, not evidence of hardware ownership or synchronization. Ordinary
 accesses let mwcc cache the count and hoist the second size load; revisit if
 original declaration evidence permits reproducing the accesses otherwise.
+
+## DEC-009 — Keep the SDK build record in the startup text section
+
+`BuildInfo` at 0x02000ba0 is data inside the original executable section, not a
+function. Define this translation unit's `rodata` section as executable `.text`
+with mwcc's `define_section` pragma so its typed constant record stays in the
+original section. The ARM `arm section` pragma does not change mwcc's output.
+This setting is local to the source file; the public header has no section
+side effects. The first four pointers retain the original relocations; the
+unrelocated static BSS end remains the literal linker boundary 0x02176ea0.

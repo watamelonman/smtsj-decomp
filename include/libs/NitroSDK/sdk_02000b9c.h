@@ -22,7 +22,6 @@ typedef struct SdkBuildInfo {
 void func_02000b9c(void);
 
 /* The boot loader locates this fixed-layout module record independently of C callers. */
-#pragma arm section rodata=".text"
 extern const SdkBuildInfo BuildInfo;
 
 #endif
