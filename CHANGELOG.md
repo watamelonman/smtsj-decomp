@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match the two-pass object update handler `func_020479b8` in game/unit_02047788.
 - Matched all eight M1-T356 functions in `game/unit_02047788`, with typed work fields and per-function behavior documentation.
 - Matched the four remaining M1-T349 work-construction functions in `game/unit_020b1ab8`, including allocation failure and conditional coordinate offsets.
 - Matched all eight M1-T353 CaveNpc callbacks at 100% objdiff, with typed work and record layouts and documented behavior.
