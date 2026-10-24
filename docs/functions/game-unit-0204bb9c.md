@@ -27,4 +27,8 @@ Names already present in the symbol map are retained. Unknown accessors retain
 | `Unk04bb9c_SetCtxUnk0c` | 0x0204c464: sets word +8 to 1 and stores three halfwords at +0xc, +0xe, +0x10; absent singleton is ignored. |
 
 No new behavioral tests: this card requires binary equivalence, checked by objdiff.
+Verification: all eight requested functions report 100% in `build/report.json`.
+The match gate also verifies the four previously implemented routines in this TU
+at 100%. The full build/checksum gate reports all artifacts byte-identical to
+the original; anticheat and all nine repository unit tests pass.
 Hard list: none.
