@@ -106,3 +106,25 @@ Useful scratch boundaries and contracts for a human using `tools/decompme.py`:
 The remaining work is a full reconstruction of the setup/resource paths and all
 state bodies, followed by whole-function register/stack matching. No partial body,
 assembly include, or stub was added.
+
+### `func_0210bc2c`: cloud giants batch
+
+A full C candidate exists in `docs/candidates/func_0210bc2c.md`, together with the retyped
+`UniteEvent` layout: typed `UniteDrawHandle *` handles, `Unk10fa60Work` slots, `UniteTextWork`
+at +0x284 and `u16 iconId`. All 14 matched functions in the TU still match with that layout.
+The candidate is 9,260 of 9,272 bytes, and states 1 to 11 and 13 to 19 are instruction-identical
+except for the issues below. It cannot be merged yet:
+
+1. **Needs a symbols.txt entry**: state 13 indexes NitroSDK's `FX_SinCosTable_` (sin/cos
+   `s16` pairs) at 0x0212629c, which has no symbol, so the delinked literal is unrelocated.
+   With a constant address, mwcc folds `table + 2` into a second base register. The original
+   code indexed one symbol base (`add r5, r0, r5, lsl #2; ldrsh r5, [r5, #2]`). Needed entry:
+   `data_0212629c kind:data(any) addr:0x0212629c` (or the name `FX_SinCosTable_`).
+2. Stack: the original keeps a dead store of each request argument value in its own 4-byte
+   slot (sp+4/8/12/16 for states 19/17/16/15) before writing `req.values[i]`. The frame is
+   0x1B4 bytes. Every probed form either removes the slot (address-taken scalar, array, inline
+   parameter, union) or adds a second slot or a template load (aggregate initializer,
+   struct-return inline). Unresolved; this costs 16 bytes of frame.
+3. State 13's second loop: the original computes `0x578 + (t - 260) * 18` as `mla` with
+   0x578 already in a register. State 12's `start` counter is initialised after the loop guard.
+
