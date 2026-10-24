@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all three M1-T347 record/metadata calculations in `game/unit_020ddeb0`, including six-entry exclusion scans, unsigned arithmetic, and result caps.
 - Matched all eight M1-T346 resource access, descriptor forwarding, and phase helpers in `game/unit_020ddeb0`, with typed call contracts and per-function evidence.
 - M1-T340: matched three area-record initialization and adjustment functions in game/unit_02097514; documented the remaining slot wrapper on the hard list.
 - Matched M1-T329 `func_02071efc` (find-or-add named record) and `func_02072068` (dynamic-record mode step) in `game/unit_02071dc0`; the unit is now fully in C, with `Unk071dc0Store` typing the 0x1608-byte record store.

@@ -86,3 +86,130 @@ u8 func_020ddf7c(s32 phase)
         result = 1;
     return result;
 }
+
+/* Local record view: the resolver copies 36 bytes; offsets follow the original loads. */
+typedef struct Unk0ddeb0Record {
+    u8 unk00;
+    u8 values[5];
+    u8 pad06[10];
+    u16 entries[6];
+    u16 unk1c;
+    u8 value1e : 7;
+    u8 flag1e : 1;
+    u8 pad1f[5];
+} Unk0ddeb0Record;
+
+/* Borrowed metadata view; only the bytes and halfwords used here are named. */
+typedef struct Unk0ddeb0Meta {
+    u8 pad00[26];
+    u8 values[5];
+    u8 pad1f[13];
+    u16 coefficient;
+    u16 entries[6];
+} Unk0ddeb0Meta;
+
+int Unk02e000_SetRecord(u32 id, Unk0ddeb0Record *record);
+Unk0ddeb0Meta *func_020a1428(u32 id);
+const u8 *func_020e6874(u32 id);
+
+/* Calculate a capped unsigned value from a resolved record and metadata.
+ * Evidence: byte sum at 1..5, six-entry exclusion scan, resource 15 calls,
+ * and reciprocal division sequences for 1000 and 200 at 020de04c. */
+u32 func_020de04c(u32 id)
+{
+    Unk0ddeb0Record record;
+    u32 result = 0;
+    if (Unk02e000_SetRecord(id, &record)) {
+        Unk0ddeb0Meta *meta = func_020a1428(id);
+        s32 sum = record.values[0] + record.values[1] + record.values[2] + record.values[3] + record.values[4];
+        u32 coefficient = meta->coefficient;
+        u32 multiplier = 2;
+        s32 maximum = 0;
+        s32 i;
+        u32 extra, scale, base;
+        for (i = 0; i < 6; i++) {
+            if (record.entries[i]) {
+                s32 j;
+                s32 value = func_020e6874(record.entries[i])[3];
+                if (value > maximum) {
+                    for (j = 0; j < 6; j++) {
+                        if (meta->entries[j] && record.entries[i] == meta->entries[j])
+                            break;
+                    }
+                    if (j == 6)
+                        maximum = value;
+                }
+            }
+        }
+        extra = Unk0ddeb0_Unk_0ddfe8(maximum);
+        if (record.value1e >= 100)
+            multiplier = 1;
+        scale = Unk0ddeb0_GetRes15Word0();
+        base = Unk0ddeb0_GetRes15Word1();
+        result = scale * (multiplier * (base + (extra + coefficient * sum * sum * sum / 1000))) / 200;
+        if (result > 99999999)
+            result = 99999999;
+    }
+    return result;
+}
+
+/* Resolve a 36-byte record, then calculate a capped value from metadata bytes
+ * 26..30 and coefficient 44. Evidence: loads, resource calls and divisions in
+ * 020de194; a failed resolver returns zero. */
+u32 func_020de194(u32 id)
+{
+    Unk0ddeb0Record record;
+    u32 result = 0;
+    if (Unk02e000_SetRecord(id, &record)) {
+        Unk0ddeb0Meta *meta = func_020a1428(id);
+        u32 coefficient = meta->coefficient;
+        s32 sum = meta->values[0] + meta->values[4] + meta->values[1] + meta->values[2] + meta->values[3];
+        u32 multiplier = 2;
+        u32 scale, base;
+        if (record.value1e >= 100)
+            multiplier = 1;
+        scale = Unk0ddeb0_GetRes15Word0();
+        base = Unk0ddeb0_GetRes15Word1();
+        result = scale * (multiplier * (base + coefficient * sum * sum * sum / 1000)) / 200;
+        if (result > 99999999)
+            result = 99999999;
+    }
+    return result;
+}
+
+/* Calculate the same six-entry adjusted value using a caller-owned record.
+ * Evidence: 020de258 reads the second argument directly and compares its entries
+ * against metadata at offset 46; both pointers must remain valid during calls. */
+u32 func_020de258(u32 id, const Unk0ddeb0Record *record)
+{
+    Unk0ddeb0Meta *meta = func_020a1428(id);
+    s32 sum = record->values[0] + record->values[1] + record->values[2] + record->values[3] + record->values[4];
+    u32 coefficient = meta->coefficient;
+    u32 multiplier = 2;
+    s32 maximum = 0;
+    s32 i;
+    u32 extra, scale, base, result;
+    for (i = 0; i < 6; i++) {
+        if (record->entries[i]) {
+            s32 j;
+            s32 value = func_020e6874(record->entries[i])[3];
+            if (value > maximum) {
+                for (j = 0; j < 6; j++) {
+                    if (meta->entries[j] && record->entries[i] == meta->entries[j])
+                        break;
+                }
+                if (j == 6)
+                    maximum = value;
+            }
+        }
+    }
+    extra = Unk0ddeb0_Unk_0ddfe8(maximum);
+    if (record->value1e >= 100)
+        multiplier = 1;
+    scale = Unk0ddeb0_GetRes15Word0();
+    base = Unk0ddeb0_GetRes15Word1();
+    result = scale * (multiplier * (base + (extra + coefficient * sum * sum * sum / 1000))) / 200;
+    if (result > 99999999)
+        result = 99999999;
+    return result;
+}
