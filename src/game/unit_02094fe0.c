@@ -83,9 +83,11 @@ void Unk094fe0_Call_0209502c(int a, int b)
 }
 
 int func_020950e4(u8 *bits, u32 bit, int set);
-void func_020e6708();
-void *Unk02e000_GetWorkArea();
+void func_020e6708(int bit, int value);
+void *Unk02e000_GetWorkArea(void);
 
+/* Update a leading-array bit and notify 0x020e6708; the switch at
+ * 0x02095060 raises work-area byte +0x357 for indices 0x70c/0x70d. */
 void Unk094fe0_Unk_09502c(Unk094fe0Work *w, int a, int b)
 {
     u8 v;
@@ -178,8 +180,8 @@ int Unk094fe0_TestBit200(Unk094fe0Work *w, u32 a)
 }
 
 void Unk0e651c_SetBitChecked();
-int Unk02f2a8_Unk_035b08();
-int Unk09ee4c_Thunk_02118c6c();
+int Unk02f2a8_Unk_035b08(int cnt, int flag);
+int Unk09ee4c_Thunk_02118c6c(int value);
 
 /* Arm countdown slot i (0..3) of the shared work with (id, cnt). Returns 1 on success, 0 if
  * i >= 4, id >= 4096 or cnt == 0. Unk094fe0_Unk_0952ac ticks these slots down. */
@@ -267,6 +269,8 @@ u32 Unk094fe0_GetWorkUnkField9a0(void)
     return Unk094fe0_GetUnkField9a0(Unk094fe0_Thunk_0202e8cc());
 }
 
+/* Consume the +0x9a4 record only when all fields and the 0x02118c6c
+ * predicate are nonzero; 0x02095450 sets its id bit before clearing the id. */
 int Unk094fe0_Unk_0953f0(void)
 {
     Unk094fe0Timer *t = &Unk094fe0_Thunk_0202e8cc()->unk_09a4;
@@ -292,4 +296,35 @@ int Unk094fe0_Unk_0953f0(void)
     Unk0e651c_SetBitChecked(t->id, 1);
     t->id = 0;
     return 1;
+}
+
+int Unk0e5fb8_Unk_0e61e8(Unk094fe0Work *work, int row, u8 column);
+void Unk0e5fb8_Unk_0e622c(Unk094fe0Work *work, int row, u8 column);
+
+/* Merge selected set bits from source into destination. The table at 0x0213bdbc,
+ * 15-by-10 loop at 0x020954d8 and 128-index loop at 0x02095524 establish
+ * the three ranges; clear source bits leave destination unchanged. */
+void func_02095468(Unk094fe0Work *destination, Unk094fe0Work *source)
+{
+    u32 bits[7] = {1024, 1025, 1026, 1027, 1803, 1804, 1805};
+    u32 i;
+    int column;
+    for (i = 0; i < 7; i++) {
+        u32 bit = bits[i];
+        if (Unk094fe0_TestBit(source, bit)) {
+            Unk094fe0_Unk_09502c(destination, bit, 1);
+        }
+    }
+    for (i = 0; (int)i < 15; i++) {
+        for (column = 0; column < 10; column++) {
+            if (Unk0e5fb8_Unk_0e61e8(source, i, column)) {
+                Unk0e5fb8_Unk_0e622c(destination, i, column);
+            }
+        }
+    }
+    for (i = 0; i < 128; i++) {
+        if (Unk094fe0_TestBit990(source, i)) {
+            Unk094fe0_Unk_095370(destination, i, 1);
+        }
+    }
 }

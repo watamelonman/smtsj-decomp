@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T383: matched all three remaining requested game/unit_02094fe0 functions, including the selected-bit merge routine; documented contracts and typed callee parameters.
 - M1-T382: documented and typed six game/unit_02094fe0 functions verified at 100% objdiff (TestBit, GetSlot, TestBit990, TestFlag18, Unk_095258, Unk_0952ac). `func_020950e4` and `func_0209512c` are on the hard list.
 - Matched all seven M1-T391 game/unit_020a50d4 global access, brightness, map-entry setup and sequence update functions at 100% objdiff.
 - M1-T1119: matched all eight listed `game/unit_0202f2a8` functions (task update callback, transition setup, actor callbacks, string join, map search and corner sampling) at 100% objdiff, with typed state fields.
