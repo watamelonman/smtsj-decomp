@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T374: verified eight game/unit_020e5fb8 wrappers and offset helpers at 100% objdiff; documented their contracts and typed their callee declarations.
 - M1-T373: verified eight game/unit_020e5fb8 helpers at 100% objdiff and documented their bit-index contracts and assembly evidence.
 
 - Match the four remaining game/unit_020efff4 state, initialization, float-slot update, and entry submission functions.

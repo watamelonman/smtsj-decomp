@@ -35,7 +35,7 @@ inputs whose signed addition is representable under their existing C signatures.
 
 ## Hard list
 
-None for M1-T373. The pre-existing `GetOffset800` candidate is outside this card.
+None for M1-T373 or M1-T374.
 
 ## Not done in M1-T377
 - `func_020e5fb8`
@@ -75,3 +75,25 @@ None for M1-T373. The pre-existing `GetOffset800` candidate is outside this card
 - `Unk0e5fb8_Get2BitsD00`: hand-matched
 - `Unk0e5fb8_Get2BitsD80`: hand-matched
 - `Unk0e5fb8_Get2BitsD80Hi`: hand-matched
+
+## M1-T374 verification
+
+The eight existing C bodies match at 100% objdiff and are retained. Typed callee
+prototypes replace unspecified argument lists. Neutral wrapper names and existing
+void interfaces are retained: the instructions alone do not establish domain names
+or a caller-visible return contract. Context storage remains owned by the thunk.
+No module boundary changed.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `Unk0e5fb8_Unk_0e628c` | 24 B at 0x020e628c: preserves the unchecked index across the context thunk and calls 0x020e62a4 with context/index. That helper sets the bit at index + 0x8e0. |
+| `Unk0e5fb8_Unk_0e62c8` | 24 B at 0x020e62c8: forwards context/index to `Get2Bits`, which reads the pair at base 0x900; unsigned indices >= 256 select zero. |
+| `Unk0e5fb8_Unk_0e6348` | 24 B at 0x020e6348: forwards context/index to `Get2BitsB00`, which reads the pair at base 0xb00; unsigned indices >= 256 select zero. |
+| `Unk0e5fb8_Unk_0e63c8` | 24 B at 0x020e63c8: forwards context/index to `Get2BitsD00`, which reads the pair at base 0xd00; unsigned indices >= 64 select zero. |
+| `Unk0e5fb8_Unk_0e6448` | 24 B at 0x020e6448: forwards context/index to `Get2BitsD80`, which reads the low pair of a four-bit entry at base 0xd80; unsigned indices >= 128 select zero. |
+| `Unk0e5fb8_Unk_0e64c8` | 24 B at 0x020e64c8: forwards context/index to `Get2BitsD80Hi`, which reads the high pair of the same four-bit entry; unsigned indices >= 128 select zero. |
+| `Unk0e5fb8_GetOffset800` | 28 B at 0x020e613c: multiplies row by ten, replaces unsigned columns >= 10 with zero, then returns 0x800 + row * 10 + column. Caller 0x020e61e8 passes this to `TestBit`, supporting bit-index units. Signed row arithmetic must remain representable. |
+| `Unk0e5fb8_Unk_0e61c8` | 32 B at 0x020e61c8: preserves row/column in r5/r4 across the context thunk, then forwards context/row/column to 0x020e61e8, which reads the bit selected by `GetOffset800`. |
+
+Validation: match gate (including build), anticheat, unit tests, and ROM checksum.
+No new tests: the card exempts tests, and objdiff verifies the original instructions.
