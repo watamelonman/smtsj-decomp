@@ -160,7 +160,8 @@ typedef struct Unk02f2a8State {
     u32 unk_73e4;
     u32 unk_73e8;
     u32 unk_73ec;
-    u8 pad_73f0[0x73fc - 0x73f0];
+    u8 pad_73f0[4];
+    u8 unk_73f4[0x73fc - 0x73f4]; /* size guessed: block handed to func_021229b0 */
     u32 unk_73fc;
     u32 unk_7400;               /* nonzero suppresses the func_0203721c rebuild */
     u8 pad_7404[0x7410 - 0x7404];
@@ -641,6 +642,11 @@ typedef struct Unk02f2a8Element {
 Unk02f2a8Element *Unk038fbc_GetElement(void *map, int type, int index);
 int Unk0a50d4_IsSubBrightnessMax(void);
 int func_0205e590(int id);
+void Unk0bc1a8_Unk_0bc928(u32 slot, u32 value, void *message);
+int Unk0bc1a8_IsSlotEmpty(int slot);
+void func_021229b0(void *obj);
+void Unk02dcfc_Unk_02ded4(void);
+int func_02030bb0(Unk02f2a8State *state);
 /* Callback table selected by the halfword ids at actor +0x6c/+0x34. */
 typedef struct Unk02f2a8ActorDescriptor {
     u32 unk_0000[2];
