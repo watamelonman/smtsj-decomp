@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Matched the remaining main-loop dispatcher, startup, and frame helpers in `unit_0202cad4`; all twelve functions now match at 100%.
 - Matched all eight M1-T418 state, forwarding and input-latch functions in game/unit_0202cad4; documented typed contracts and original-code evidence.
 - M1-T405: matched eight game/unit_020bac80 query, halfword update, and command handlers at 100% objdiff with typed arguments and per-function evidence.
 - M1-T408: matched the initializer and both state callbacks in game/unit_020cce38 at 100% objdiff, with per-function contracts and instruction evidence.
