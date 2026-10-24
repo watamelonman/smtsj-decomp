@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched both M1-T249 entry-submission and segmented-bar functions in `src/game/unit_020de37c.c`; documented record layout and integer rounding contracts.
+- Matched all five M1-T246 battle event resource and record-selection functions at 100% objdiff, with typed layouts and behavior documentation.
 - Matched all eight M1-T244 stack-state functions at 100% objdiff, with typed entry/state layouts and documented mode-dependent push/pop behavior.
 - Matched both option-check and selection-dispatch functions in `src/game/unit_020f0be0.c`; documented their typed views and observed behavior.
 - Matched all three M1-T239 functions in `src/game/unit_020fa520.c` at 100% objdiff, with typed descriptor, record and work views and per-function contracts.
