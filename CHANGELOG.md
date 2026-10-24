@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched M1-T266 `func_0203812c` at 100% objdiff with typed record, input, and resource dictionary views.
+- Verified the two M1-T265 callback wrappers at 100% objdiff with typed declarations; documented the remaining command handler on the hard list.
 - Matched all three M1-T264 functions in `src/game/unit_02047c8c.c` at 100% objdiff, with typed partial layouts and per-function evidence.
 - Verified `Unk0202dcfc_InitWorker` (M1-T256) at 100% objdiff and documented its field resets and callers.
 
