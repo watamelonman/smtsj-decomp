@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched both option-check and selection-dispatch functions in `src/game/unit_020f0be0.c`; documented their typed views and observed behavior.
+- Matched all three M1-T239 functions in `src/game/unit_020fa520.c` at 100% objdiff, with typed descriptor, record and work views and per-function contracts.
 - Matched `func_02124338` (work-block setup in `game/unit_021241ec`) at 100% objdiff and typed the full 0x40-byte work struct; the other three M1-T228 functions are confirmed at 100%.
 - Matched both callbacks in `game/unit_020b17f4`: frame-state progression and interpolated entry drawing, with typed work fields and per-function contracts.
 - Matched `func_02099494` (696-byte centered strip drawing callback) at 100% objdiff with typed work fields and per-function documentation.
