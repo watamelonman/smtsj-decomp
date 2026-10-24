@@ -109,10 +109,10 @@ void Unk0bcef4_Unk_0bd368(Unk0bcef4Work *records, Unk0bcef4Selection *selection)
 }
 
 
-int func_020bd070();
+void func_020bd070(Unk0bcef4Work *work, int value, int enabled);
 void func_020bd54c(Unk0bcef4Work *work, int enabled);
-/* decompiler-derived */
-u32 Unk0bcef4_Unk_0bd29c(int arg0,int *arg1)
+/* Initializes count borrowed records through the state and counter helpers (020bd29c). */
+u32 Unk0bcef4_Unk_0bd29c(Unk0bcef4Work *arg0,int *arg1)
 {
   int value;
   value = 0;
@@ -121,7 +121,7 @@ u32 Unk0bcef4_Unk_0bd29c(int arg0,int *arg1)
       func_020bd070(arg0,1,0);
       func_020bd54c((Unk0bcef4Work *)arg0,0);
       value = value + 1;
-      arg0 = arg0 + 0xc;
+      arg0++;
     } while (value < *arg1);
   }
   return 1;
@@ -236,4 +236,145 @@ int func_020bd398(Unk0bcef4Work *work)
     case 2: result = func_020bd418(work); break;
     }
     return result;
+}
+
+/* Clamps the selected index and moves the visible span to contain it (020bcfc4).
+ * The seven-word selection is borrowed and writable. */
+void func_020bcfc4(Unk0bcef4Selection *s, int index)
+{
+    if (index < 0) index = 0;
+    if (s->count <= index) index = s->count - 1;
+    s->previous_selected = s->selected;
+    s->selected = index;
+    if (s->start <= index && index < s->start + s->span) return;
+    s->previous_start = s->start;
+    if (s->selected < s->start) s->start = s->selected;
+    else {
+        s->start = s->selected - (s->span - 1);
+        if (s->start < 0) s->start = 0;
+    }
+}
+
+/* Reduces indices after changing count, preserving the visible span where possible
+ * (020bcf14). Selection storage is borrowed and writable. */
+void func_020bcf14(Unk0bcef4Selection *s, int count)
+{
+    int old = s->count;
+    int i = 0;
+    s->count = count;
+    for (; i < old; i++) {
+        if (s->count > s->selected) break;
+        if (s->start > 0) s->start--;
+        s->selected--;
+    }
+    for (i = 0; i < old; i++) {
+        if (s->count - s->start >= s->span) break;
+        if (s->start <= 0) break;
+        s->start--;
+    }
+    if (s->span <= s->selected - s->start)
+        s->selected = s->start + s->span - 1;
+}
+
+/* Maps values 0..3 to observed state words and chooses counter mode
+ * (020bd070); enabled also resets the borrowed record counter. */
+void func_020bd070(Unk0bcef4Work *work, int value, int enabled)
+{
+    if (enabled) {
+        if (value == 0) work->state = 4;
+        else if (value == 1) work->state = 1;
+        else if (value == 2) work->state = 6;
+        else if (value == 3) work->state = 7;
+        work->mode = 1;
+        func_020bd54c(work, 1);
+    } else {
+        if (value == 0) work->state = 3;
+        else if (value == 1) work->state = 0;
+        else if (value == 2) work->state = 5;
+        else if (value == 3) work->state = 7;
+        work->mode = 0;
+    }
+}
+
+/* Moves counters in overlap-safe order by the start delta (020bd110).
+ * Records cover span entries; selection and record storage are borrowed. */
+void func_020bd110(Unk0bcef4Work *records, Unk0bcef4Selection *s)
+{
+    int delta = s->start - s->previous_start;
+    int step;
+    int i;
+    Unk0bcef4Work *source;
+    Unk0bcef4Work *dest;
+    if (delta == 0) return;
+    step = 1;
+    i = 0;
+    if (delta < 0) { step = -1; i = s->span - 1; }
+    source = records + delta + i;
+    dest = records + i;
+    for (; i >= 0 && i < s->span; i += step) {
+        if (i + delta >= 0 && i + delta < s->span)
+            dest->UnkField0004 = source->UnkField0004;
+        else func_020bd54c(dest, 0);
+        source += step;
+        dest += step;
+    }
+}
+
+/* Sets visible record states, shifts counters, then enables the selected record
+ * or resets all counters (020bd1a8). Optional values has span readable entries. */
+int func_020bd1a8(Unk0bcef4Work *records, Unk0bcef4Selection *s, int *values, int enabled)
+{
+    int i = 0;
+    Unk0bcef4Work *cursor;
+    if (s->span > 0) {
+        cursor = records;
+        do {
+            int value = 1;
+            if (values) value = values[i];
+            if (s->count < s->span && s->count <= i) value = 3;
+            func_020bd070(cursor, value, 0);
+            cursor++;
+            i++;
+        } while (i < s->span);
+    }
+    func_020bd110(records, s);
+    if (enabled) {
+        int index = s->selected - s->start;
+        int value = 1;
+        if (values) value = values[index];
+        func_020bd070(records + index, value, 1);
+    } else {
+        for (i = 0; i < s->span; i++) {
+            func_020bd54c(records, 0);
+            records++;
+        }
+    }
+    return 1;
+}
+
+/* External numeric helper: five integer arguments, return low byte observed here. */
+extern int func_0205ea18(int a, int b, int c, int d, int e);
+/* Writes mode and initializes the counter using the observed mode-specific rules
+ * (020bd49c); the record is borrowed and writable. */
+void func_020bd49c(u32 address, s32 mode)
+{
+    Unk0bcef4Work *work = (Unk0bcef4Work *)address;
+    work->mode = mode;
+    switch (mode) {
+    case 0:
+        {
+        int value = (u8)func_0205ea18(21, 31, 2, work->UnkField0004, 1);
+        value /= 31;
+        work->UnkField0004 = 1 - value;
+        }
+        break;
+    case 1:
+        work->UnkField0004 = 0;
+        if (work->state == 2) work->state = 1;
+        break;
+    case 2:
+        Unk0bcef4_Unk_0bd480((int *)work, 1);
+        work->UnkField0004 = 0;
+        break;
+    }
 }

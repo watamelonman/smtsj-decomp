@@ -55,7 +55,24 @@ instruction comparison checks the implementations directly.
 ### Hard list
 None for M1-T435.
 
-### Other shared-TU tracking notes
-- `Unk0bcef4_Unk_0bd29c`: existing decompiler-derived body, outside this card.
-- M1-T436: `func_020bcfc4`, `func_020bd110`, `func_020bd070`,
-  `func_020bcf14`, `func_020bd49c`, `func_020bd1a8`.
+## M1-T436: seven matched functions
+
+Original ARM instruction comparison establishes the behavior below. Names remain
+neutral; records and selection views are borrowed, with caller-provided capacity.
+
+| Function | Size | Evidence and contract |
+| --- | ---: | --- |
+| `Unk0bcef4_Unk_0bd29c` | 96 B | 020bd29c loops over the signed count at argument 1, advancing records by 12 bytes; calls the state helper with (1,0) and counter helper with 0. Returns 1. Count pointer must remain readable. |
+| `func_020bcfc4` | 112 B | 020bcfc4 clamps the index to 0..count-1, saves the previous selected index, and adjusts start if selection lies outside the visible span. Requires seven writable words. |
+| `func_020bd110` | 152 B | 020bd110 subtracts previous start from start and copies counter words in overlap-safe direction; out-of-span source positions use the disabled counter helper. Records cover the visible span. |
+| `func_020bd070` | 160 B | 020bd070 maps input values 0..3 to states (4,1,6,7) when enabled and (3,0,5,7) otherwise. Other values preserve state. Writes mode 1 or 0; enabled calls the counter helper. |
+| `func_020bcf14` | 176 B | 020bcf14 replaces count, decrements selected/start within loops bounded by old count, then caps selected to the span. Requires writable selection storage. |
+| `func_020bd49c` | 176 B | 020bd49c writes mode. Mode 0 calls 0205ea18 with (21,31,2,counter,1), narrows to a byte and stores 1 minus signed quotient by 31. Mode 1 clears counter and maps state 2 to 1. Mode 2 sets state 1 through 020bd480 then clears counter. |
+| `func_020bd1a8` | 244 B | 020bd1a8 initializes span records, shifts counters through 020bd110, then enables the selected relative record or resets all counters. Optional values points to span readable signed words. Returns 1. |
+
+The mode-zero quotient uses a separate compound division assignment to reproduce
+the original register allocation, as with the earlier modulo helper. No new tests
+are required by this card; instruction comparison provides the behavior check.
+
+### Hard list
+None for M1-T436.

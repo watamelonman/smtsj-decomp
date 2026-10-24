@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all seven M1-T436 selection and record functions in `game/unit_020bcef4`, with typed parameters and instruction evidence.
 - Matched all eight M1-T435 selection, initialization, and record update functions in `game/unit_020bcef4` at 100% objdiff.
 - Matched all eight M1-T443 game/unit_020ef248 callbacks and work helpers at 100% objdiff, with typed arguments and per-function evidence.
 - Matched all three M1-T421 glyph mapping, width/draw, and target rectangle functions in game/unit_020a9a90 at 100% objdiff.
