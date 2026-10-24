@@ -8,7 +8,6 @@ typedef signed short s16;
 typedef signed char s8;
 typedef unsigned long long u64;
 typedef signed long long s64;
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 typedef unsigned int u32;
 typedef unsigned char u8;
 
@@ -36,12 +35,21 @@ typedef struct Worker {
 } Worker;
 void ScanVisor_ResetBits(u32 *sub);
 
-int Unk02dcfc_HasField50(u8 *p)
+/* Object whose signed word at +0x50 HasField50 tests; only that offset is
+ * known, so it is kept apart from Worker (no caller links the two). */
+typedef struct Unk02dcfcField50 {
+    u8  pad_0000[0x50];
+    s32 unk_0050;               /* +0x50 */
+} Unk02dcfcField50;
+
+/* Returns 1 if `p` is non-null and its +0x50 word is non-negative, else 0.
+ * Evidence: original 0x0202dcfc null-checks, loads +0x50 and tests the sign. */
+int Unk02dcfc_HasField50(Unk02dcfcField50 *p)
 {
     if (p == 0) {
         return 0;
     }
-    return FIELD(s32, p, 0x50) >= 0;
+    return p->unk_0050 >= 0;
 }
 
 /* Resets the object and attaches it to `owner`. */
@@ -90,21 +98,23 @@ void Unk02dcfc_Unk_02de58(Worker *w)
 
 
 
-int func_0205e5b4();
-int func_020a2c00();
-/* decompiler-derived */
-void Unk02dcfc_Unk_02dd9c(int arg0)
+int func_0205e5b4(void);
+void func_020a2c00(u32 *sub);
+
+/* Requires a live worker. Selects code 11 at +0x18, sets state to 1, sets
+ * the timer word to whether func_0205e5b4 returned something other than -1,
+ * then passes the sub-object at +0x4C to func_020a2c00. Evidence: original
+ * 0x0202dd9c; caller in unit_0203e02c. Purpose unknown, so the name is neutral. */
+void Unk02dcfc_Unk_02dd9c(Worker *w)
 {
-  int tmp1;
-  ((Worker *)arg0)->unk_0018 = 0xb;
-  ((Worker *)arg0)->state = 1;
-  tmp1 = func_0205e5b4();
-  ((Worker *)arg0)->timer = (u32)(tmp1 != -1);
-  func_020a2c00(arg0 + 0x4c);
-  return;
+    w->unk_0018 = 11;
+    w->state = 1;
+    w->timer = func_0205e5b4() != -1;
+    func_020a2c00(w->sub);
 }
 
-/* Clears state/timer and resets the sub-object. */
+/* Requires a live worker. Clears timer (+0x48) and state (+0x44), then
+ * resets the sub-object at +0x4C. Evidence: original 0x0202ddd8. */
 void Unk02dcfc_ResetWorker(Worker *w)
 {
     w->timer = 0;
@@ -134,6 +144,9 @@ u32 Unk02dcfc_GetState(void)
     return w->state;
 }
 
+/* If a manager exists: selects code 1 at +0x18, passes the sub-object at
+ * +0x4C to func_020a2c90, calls ScanVisor_Unk_0a2950(0) and clears +0x70.
+ * Evidence: original 0x0202ddf4. Purpose unknown, so the name is neutral. */
 void Unk02dcfc_Unk_02ddf4(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -168,6 +181,8 @@ u32 Unk02dcfc_GetField54(void)
     return w->field54;
 }
 
+/* If a manager exists: selects code 1 at +0x18, clears +0x54 (the flag set
+ * by Unk02dcfc_Unk_02de58) and clears +0x70. Evidence: original 0x0202de6c. */
 void Unk02dcfc_Unk_02de6c(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -190,6 +205,8 @@ u32 Unk02dcfc_GetField58(void)
     return w->field58;
 }
 
+/* If a manager exists: selects code 13 at +0x18 and sets +0x58 to 1.
+ * Evidence: original 0x0202deb0. Purpose unknown, so the name is neutral. */
 void Unk02dcfc_Unk_02deb0(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -200,6 +217,8 @@ void Unk02dcfc_Unk_02deb0(void)
     w->field58 = 1;
 }
 
+/* If a manager exists: selects code 1 at +0x18, clears +0x58 (set by
+ * Unk02dcfc_Unk_02deb0) and clears +0x70. Evidence: original 0x0202ded4. */
 void Unk02dcfc_Unk_02ded4(void)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -302,6 +321,8 @@ u32 Unk02dcfc_GetField70(void)
     return w->field70;
 }
 
+/* Stores `value` at manager +0x70 if a manager exists; meaning unknown.
+ * Evidence: original 0x0202dfe8 (conditional store). */
 void Unk02dcfc_SetField70(u32 value)
 {
     Worker *w = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
