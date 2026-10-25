@@ -2,6 +2,11 @@
 
 ## Unreleased
 - Matched all eight M1-T633 game/unit_020986ac flag, selector, and bounded record scan functions at 100% objdiff; documented typed contracts and compiler propagation control.
+- Verified all eight M1-T650 initialization, work-view and record-call helpers at 100% objdiff; clarified typed calls and borrowed-address contracts.
+- Match all eight M1-T642 StaffRoll state, resource, drawing, and teardown functions at 100% objdiff with typed borrowed views.
+- Verified all eight M1-T649 global-word and work-area helpers at 100% objdiff; documented instruction evidence and borrowed-view contracts.
+- M1-T623: matched all five remaining game/unit_020f7188 progression, event and selector handlers at 100% objdiff.
+- Matched all eight M1-T629 list allocation, resource resolution, selector and output routines in game/unit_020a163c at 100% objdiff.
 - Corrected M1-T632 id lookup and borrowed record arguments in `Unk0986ac_Unk_098918`, preserving original instructions.
 - Verified all eight M1-T632 game/unit_020986ac targets at 100% objdiff; documented typed calls, borrowed field contracts, and instruction evidence.
 - Match eight StaffRoll state, text-slot, spacing, and drawing functions to the original ARM code (M1-T641).

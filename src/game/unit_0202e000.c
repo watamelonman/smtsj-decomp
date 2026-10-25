@@ -10,7 +10,7 @@ extern u8 data_02140ac8[];
 extern u32 data_0215dd24[];
 void Unk02e000_Unk_02e0cc(void);
 u8 *Unk02e000_GetWorkArea(void);
-int func_0205a9d0();
+int func_0205a9d0(int arg0);
 
 void Unk02e000_Nop_02e3e0(void);
 u32 Unk02e000_GetAddr_data_02140ac8(void);
@@ -115,13 +115,13 @@ void Unk02e000_AddCounter5fc4(int add)
     }
 }
 
-/* empty callback */
+/* Original 0x0202e3e0 is only bx lr: intentionally has no side effects. */
 void Unk02e000_Nop_02e3e0(void) { }
 
-/* decompiler-derived */
+/* Original 0x0202e0c0 returns the symbol address; ownership stays with the module. */
 u32 Unk02e000_GetAddr_data_02140ac8(void)
 {
-  return ((int)data_02140ac8);
+    return (u32)data_02140ac8;
 }
 
 void func_0202e4dc(u8 *rec);
@@ -141,12 +141,15 @@ int Unk02e000_GetTier(int x)
     return 3;
 }
 
-/* 100-byte records starting at +500. */
+/* Original 0x0202e578 computes base + 500 + i * 100 and tail-calls
+ * func_0202e4dc; the caller must supply a valid borrowed record index. */
 void Unk02e000_Call_02e4dc(u8 *base, int i)
 {
     func_0202e4dc(base + 500 + i * 100);
 }
 
+/* Original 0x0202e590 uses the same 100-byte record layout and tail-calls
+ * func_0202e520; base and the selected record remain caller-owned. */
 void Unk02e000_Call_02e520(u8 *base, int i)
 {
     func_0202e520(base + 500 + i * 100);
@@ -157,38 +160,40 @@ int Unk02e000_Call_02008848(void)
     return func_02008848(Unk02e000_Unk_02e884(), 0, 0x1148);
 }
 
-/* forwards to `Unk02e000_GetWorkArea` */
+/* Original 0x0202e798 tail-jumps to GetWorkArea; returns the same borrowed view. */
 u8 *Unk02e000_Thunk_0202e788(void) { return Unk02e000_GetWorkArea(); }
 
-/* decompiler-derived */
+/* Original 0x0202e0f4 stores the first global word, without validation or allocation. */
 void Unk02e000_Set_data_0215dd24(u32 arg0)
 {
-  *data_0215dd24 = arg0;
+    data_0215dd24[0] = arg0;
 }
 
-/* decompiler-derived */
+/* Original 0x0202e104 loads the first global word; its meaning is unconfirmed. */
 u32 Unk02e000_Get_data_0215dd24(void)
 {
-  return *data_0215dd24;
+    return data_0215dd24[0];
 }
 
-/* decompiler-derived */
+/* Original 0x0202e170 loads global word +4; allocation is owned by EnsureAlloc7718. */
 u32 Unk02e000_Unk_02e170(void)
 {
-  return *(u32 *)(((int)data_0215dd24) + 4);
+    return data_0215dd24[1];
 }
 
-/* decompiler-derived */
+/* Original 0x0202e0ac calls func_0205a9d0 with 0xa0 before Unk_02e0cc;
+ * the initialization purpose is unconfirmed, so retain the neutral name. */
 void Unk02e000_Unk_02e0ac(void)
 {
   func_0205a9d0(0xa0);
   Unk02e000_Unk_02e0cc();
 }
 
-/* decompiler-derived */
+/* Original 0x0202e774 returns global word +4 plus 0x98 as a 32-bit address.
+ * EnsureAlloc7718 must have provided the allocation; no ownership transfers. */
 int Unk02e000_Unk_02e774(void)
 {
-  return *(int *)(((int)data_0215dd24) + 4) + 0x98;
+  return (int)data_0215dd24[1] + 0x98;
 }
 
 /* 60-byte records at +0x74 of the work area. */
@@ -241,7 +246,8 @@ int Unk02e000_Unk_02e840(u8 *p)
     return 0;
 }
 
-/* decompiler-derived */
+/* Original 0x0202e8b8 adds 0xafc to the allocated Unk_02e774 view.
+ * Returns a borrowed 32-bit address; the sub-block purpose is unconfirmed. */
 int Unk02e000_Unk_02e8b8(void)
 {
   int value;
@@ -249,10 +255,11 @@ int Unk02e000_Unk_02e8b8(void)
   return value + 0xafc;
 }
 
-/* decompiler-derived */
+/* Original 0x0202e8f0 returns allocation word +4 plus 0x90.
+ * Unk_02e180 uses this borrowed address for an eight-byte initialization. */
 int Unk02e000_Unk_02e8f0(void)
 {
-  return *(int *)(((int)data_0215dd24) + 4) + 0x90;
+  return (int)data_0215dd24[1] + 0x90;
 }
 
 
@@ -296,7 +303,8 @@ int Unk02e000_Unk_02e89c(int arg0)
   return *(int *)(((int)data_0215dd24) + 4) + 0x5d26 + arg0 * 4;
 }
 
-/* decompiler-derived */
+/* Original 0x0202e228 adds 0x5fc8 to the allocated Unk_02e774 view.
+ * Returns a borrowed 32-bit address; the sub-block purpose is unconfirmed. */
 int Unk02e000_Unk_02e228(void)
 {
   int tmp1;
@@ -384,20 +392,23 @@ int Unk02e000_Unk_02e740(int arg0)
   return *(char *)(tmp1 + 0x28) != '\0';
 }
 
-/* Work area at +4 of the Unk02e000_Unk_02e774 block. */
+/* Original 0x0202e788 calls Unk_02e774 then adds 4; requires its allocated block.
+ * Returns a borrowed byte view, as used by GetAreaRecord and TestFlag. */
 u8 *Unk02e000_GetWorkArea(void)
 {
     return (u8 *)Unk02e000_Unk_02e774() + 4;
 }
 
 
-/* Unk094fe0Work block at +0xCFC of the Unk02e000_Unk_02e774 block. */
+/* Original 0x0202e8cc adds 0xcfc to Unk_02e774; unit_02094fe0
+ * uses this as its work block. Allocation is required; the view is borrowed. */
 u8 *Unk02e000_GetUnk094fe0Work(void)
 {
     return (u8 *)Unk02e000_Unk_02e774() + 0xcfc;
 }
 
-/* Pointer to the +0x3A4 sub-block of the Unk02e000_GetWorkArea work area. */
+/* Original 0x0202e8e0 calls GetWorkArea then adds 0x3a4.
+ * Returns a borrowed sub-block; the work area must already be allocated. */
 u8 *Unk02e000_GetSubBlock3a4(void)
 {
     return Unk02e000_GetWorkArea() + 0x3a4;
