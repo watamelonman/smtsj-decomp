@@ -32,10 +32,12 @@ void Unk095560_Unk_095d08(int value);
 s32 *Unk094fe0_Unk_094fec(int index);
 u8 *Unk02d15c_GetManagerRecord(int i);
 int Unk02d15c_FindRecordEntry(int a, int key);
-int func_0202d390();
-int func_0204b01c();
-u8 *Unk02e000_GetWorkArea();
-int Unk02f2a8_Unk_035c14();
+/* Eight-word request consumed by the dispatcher at 0202d390; storage is borrowed. */
+typedef struct { u32 w[8]; } Unk02d15cRequest;
+u8 *func_0202d390(Unk02d15cRequest *request);
+int func_0204b01c(u8 *recordData, int key);
+u8 *Unk02e000_GetWorkArea(void);
+int Unk02f2a8_Unk_035c14(u16 area, s16 key);
 /* Test the manager index against -1; 0202d18c resets the pair on that sentinel.
  * Other index meanings are unknown, so retain the original neutral symbol. */
 int func_0202d170(void)
@@ -50,6 +52,7 @@ int func_0202d170(void)
     return active;
 }
 
+/* Switch at 0202d22c maps the record kind loaded by 0202d710 to its output kind. */
 int Unk02d15c_MapKind_02d22c(int x)
 {
     switch (x) {
@@ -65,6 +68,7 @@ int Unk02d15c_MapKind_02d22c(int x)
     return 0;
 }
 
+/* Reverse kind mapping established by the switch constants at 0202d2a0. */
 int Unk02d15c_MapKind_02d2a0(int x)
 {
     switch (x) {
@@ -103,9 +107,34 @@ int Unk02d15c_IsStatus0OrNeg(int a)
     return Unk094fe0_Call_020950b4(a) == 0;
 }
 
+/* Build the request seen at 0202d710; on success write the mapped signed kind
+ * to caller storage +40 and retain the returned image handle from record +8.
+ * Both pointers are borrowed; the caller provides writable storage through +43. */
+int func_0202d710(u8 *out, u32 a, u32 b)
+{
+    Unk02d15cRequest request;
+    u8 *record;
+    request.w[0] = Unk095560_Unk_095d1c();
+    request.w[1] = -1;
+    request.w[2] = 0;
+    request.w[3] = -1;
+    request.w[4] = -1;
+    request.w[5] = Unk02d15c_Unk_02d944();
+    request.w[6] = a;
+    request.w[7] = b;
+    record = func_0202d390(&request);
+    if (record == 0) {
+        return 0;
+    }
+    FIELD(int, out, 40) = Unk02d15c_MapKind_02d22c(FIELD(s16, record, 6));
+    data_0213d898[0] = FIELD(u32, record, 8);
+    return 1;
+}
+
+/* Dispatch the eight-word request observed at 0202d794; report a non-null result. */
 int Unk02d15c_Unk_02d794(u32 a, u32 b)
 {
-    struct { u32 w[8]; } s;
+    Unk02d15cRequest s;
     s.w[0] = Unk095560_Unk_095d1c();
     s.w[1] = -1;
     s.w[2] = 1;
@@ -162,6 +191,8 @@ void Unk02d15c_Unk_02d81c(void)
   *data_0213d898 = 0xffffffff;
 }
 
+/* At 0202d8a8, resolve c in record a and set up either its entry or fallback index.
+ * Record and entry storage stay borrowed from the manager. */
 int Unk02d15c_Unk_02d8a8(int a, int b, int c)
 {
     u8 *r = Unk02d15c_GetManagerRecord(a);
@@ -192,6 +223,8 @@ void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1)
 
 
 
+/* Test signed condition fields +20/+22/+24 against the work-area key at +0x35c.
+ * The loads and comparison at 0202d954 establish this borrowed-record contract. */
 int Unk02d15c_Unk_02d954(u8 *p)
 {
     u16 v;
@@ -253,7 +286,8 @@ u32 Unk02d15c_Unk_02d9f8(u32 arg0)
 
 
 
-/* decompiler-derived */
+/* Unsigned switch at 0202da48 maps 0..4 to 28,31,22,25,0; default is 28.
+ * Constant meanings are unknown. */
 u32 Unk02d15c_Unk_02da48(u32 arg0)
 {
   switch(arg0) {
@@ -295,6 +329,8 @@ int Unk02d15c_ResetRecord(int a, s32 b)
     return 1;
 }
 
+/* Scan record a's count at +8 and entry pointer at +12, stride 0x30,
+ * comparing each first byte (0202dccc); return its index or -1. */
 int Unk02d15c_FindRecordEntry(int a, int key)
 {
     u8 *rec = Unk02d15c_GetManagerRecord(a);

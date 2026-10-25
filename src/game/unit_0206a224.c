@@ -12,16 +12,26 @@ typedef struct Unk06a224Work {
 
 
 
-void CampStatus_Copy168(void);
-u32 Unk0986ac_Unk_098978(void);
-void Unk0986ac_Thunk_02098714(u32 a);
-void Unk06a224_Unk_06a9fc(void)
+/* Six byte pairs, matching the assignment in CampStatus_Copy168. */
+typedef struct Unk06a224Pairs {
+    u8 pairs[6][2];
+} Unk06a224Pairs;
+
+void CampStatus_Copy168(const Unk06a224Pairs *src);
+int Unk0986ac_Unk_098978(int id);
+int Unk0986ac_Thunk_02098714(int bit);
+
+/* Preserve the mapped flag test result; the callees map id - 0x6f and test it. */
+int Unk06a224_Unk_06a9fc(int id)
 {
-    Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978());
+    return Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(id));
 }
 
-/* forwards to `CampStatus_Copy168` */
-void Unk06a224_Thunk_020d6cac(void) { CampStatus_Copy168(); }
+/* Forward a borrowed six-pair source; CampStatus_Copy168 copies it to +0x168. */
+void Unk06a224_Thunk_020d6cac(const Unk06a224Pairs *src)
+{
+    CampStatus_Copy168(src);
+}
 
 /* Globals block at 0x0216b9b0; fields named by their accessors. */
 typedef struct Unk06a224Globals {
@@ -32,21 +42,25 @@ typedef struct Unk06a224Globals {
 
 extern Unk06a224Globals data_0216b9b0;
 
+/* Read the word at global +8; its meaning is not established. */
 u32 Unk06a224_Unk_06a224(void)
 {
     return data_0216b9b0.unk_08;
 }
 
+/* Read global +0, as evidenced by the target ldr [r0]. */
 u32 Unk06a224_GetUnk00(void)
 {
     return data_0216b9b0.unk_00;
 }
 
+/* Store the supplied word at global +8 without normalization. */
 void Unk06a224_Unk_06a244(u32 arg0)
 {
     data_0216b9b0.unk_08 = arg0;
 }
 
+/* Store global +0, as evidenced by the target str [r1]. */
 void Unk06a224_SetUnk00(u32 arg0)
 {
     data_0216b9b0.unk_00 = arg0;
@@ -58,6 +72,7 @@ typedef struct Unk06a224Slot {
     u16 id;
     u16 pad_0002;
 } Unk06a224Slot;
+/* Count nonzero halfword IDs in the 489 four-byte records at work +0x408. */
 s16 Unk06a224_CountUsedSlots(void)
 {
     s16 n = 0;
@@ -70,12 +85,21 @@ s16 Unk06a224_CountUsedSlots(void)
     return n;
 }
 
-int Unk06a224_Unk_06a374(u8 *o)
+/* Borrowed object view; signed halfwords are established by target ldrsh. */
+typedef struct Unk06a224Selection {
+    u8 pad_000[0x154];
+    s16 unk_154;
+    s16 unk_156;
+} Unk06a224Selection;
+
+/* Return true for an odd +0x154 value or a positive +0x156 value.
+ * Signed remainder behavior is retained for negative values; meaning is unknown. */
+int Unk06a224_Unk_06a374(const Unk06a224Selection *o)
 {
-    if (FIELD(s16, o, 0x154) % 2 != 0) {
+    if (o->unk_154 % 2 != 0) {
         return 1;
     }
-    return FIELD(s16, o, 0x156) > 0;
+    return o->unk_156 > 0;
 }
 
 int Unk06a224_Unk_06a3a4(u8 *o)
