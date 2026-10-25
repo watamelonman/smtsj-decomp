@@ -64,14 +64,31 @@ halfword directly with the incoming register without narrowing it. Existing
 callers pass narrower keys, but that does not establish a narrower callee contract.
 No hard-list entries for M1-T688.
 
-## Not done in M1-T689
-- `func_020dec18`
-- `func_020de7e8`
-- `func_020ded70`
-- `func_020deb68`
-- `func_020decd8`
-- `func_020dee40`
-- `func_020de8b0`
+## M1-T689
+
+Seven functions match at 100% against the delinked object. Evidence is the
+instructions and relocations in `build/delinks/src/game/unit_020de678.o`.
+Existing names are retained; selector meanings remain unknown.
+
+| Function | Size | Evidence and contract |
+| --- | --- | --- |
+| `func_020dec18` | 124 B | Scans the external iterator for selectors 1, 3, or the result of `Unk02d15c_Unk_02d9f8`; returns a boolean. Incoming word is unused. |
+| `func_020de7e8` | 136 B | First flag clears 208 bytes of global state; then invokes ten observed providers, with the final selector-2 call controlled by the second flag. Compiler intrinsic clear emits the original inline stores. |
+| `func_020ded70` | 136 B | Original forwards signed byte pairs from the resource selected by global byte 24, advances index 28, and loops or clears active state at the end. Left in the delink. |
+| `func_020deb68` | 144 B | Scans selectors 1, 3, or the result of `Unk02d15c_Unk_02d9a8`; clears global offset 0xcc on success and returns a boolean. |
+| `func_020decd8` | 152 B | Dispatches states 0/1 at offset 0xcc, forwards pending state changes, and invokes the pair updater when active. Returns one only while waiting for completion in state 1. |
+| `func_020dee40` | 156 B | Allocates a 12-byte callback work area; null ends early. Clears two words, records current provider values, and forwards selectors 9 and 24. Provider owns the allocation. |
+| `func_020de8b0` | 160 B | Unless bypassed, scans selector 40. Initializes state, conditionally starts the display sequence, and returns the search flag. |
+| `Unk_LoadPalette_020de678` | 168 B | Six packed color-pair calls followed by six draw calls, with channel increments of 38 and offset increments of 32. Packed four-channel data supports the existing palette name. |
+
+### Hard list
+
+- `func_020ded70`: readable signed-byte array and two-byte record views both
+  reproduced behavior, but best objdiff was 98.24%. Remaining differences are
+  register allocation for the shared pair index and the increment after the
+  forwarding call. Explicit pair pointers and local global-state pointers were
+  also tried; neither matched. Body omitted, preserving original delink linkage.
+  A human can prepare a scratch with `tools/decompme.py scratch func_020ded70`.
 
 ## Not done in M1-T690
 - `func_020df374`
