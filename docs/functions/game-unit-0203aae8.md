@@ -62,3 +62,40 @@ Work, object, record, and table addresses are borrowed and must be valid.
 
 Hard list for M1-T666: none. No runtime tests were added, as permitted by the
 card; instruction and relocation matching verifies these original-code contracts.
+
+
+## M1-T667 verified functions
+
+Evidence: ARM instructions, jump tables, and call relocations in
+`build/delinks/src/game/unit_0203aae8.o`. All four targets match 100%, including
+relocations. Existing neutral symbols are retained because no gameplay purpose
+is established. Each entry returns script status 3 and requires valid active
+work and object pointers. Arguments are read in order and truncated to signed
+16-bit values. The original argument 0 is stored at object +0x30; its zero/nonzero
+state selects provider mode 0/2. Argument 1 initializes the eight-byte division
+record through `0203af7c`. Recognized kinds store a status at +0x18 and the
+record's residual word at +0x1c; unrecognized kinds leave those fields alone.
+
+- `func_0203aff0` (360 bytes): Dispatches kinds 0, 2, 3, 4, 5 to
+  `0209e75c`, `020df374`, `02117360`, `02117360b`, and the dual-3D
+  `02117360` provider respectively, recording statuses 16, 18, 19, 20, 20.
+  Kind 0 receives flag zero; other providers receive leading flags 1 and 0.
+  Always clears provider field 0x70 after dispatch.
+- `func_0203b158` (436 bytes): Uses the corresponding alternate providers
+  `0209e7fc`, `020df420`, `02117400`, `02117400b`, and dual-3D `02117400`.
+  Statuses and fixed flags are the same. Only kinds 3, 4, and 5 update provider
+  field 0x70, passing 2 for zero mode and 1 otherwise.
+- `func_0203b30c` (404 bytes): Handles only kinds 0, 2, and 5 through
+  `0209e75c`, `020df374`, and dual-3D `02117360`, recording 16, 18, and 20.
+  Argument 2 equal to zero gives kind 0 flag 1, otherwise flag 0. For kinds 2
+  and 5, argument 2 values 0, 1, 2 select leading flags (1,1), (1,0), (0,1);
+  other values select (0,0). Kind 5 also updates field 0x70 as above.
+- `func_0203b4a0` (404 bytes): Same three-argument dispatch and flag contracts
+  as `0203b30c`, using `0209e7fc`, `020df420`, and dual-3D `02117400`.
+
+`include/game/unit_0203aae8.h` exposes only the instruction-established object
+prefix and division-record layout. These are borrowed views, with no ownership
+or allocation changes. No new runtime tests were required by the card;
+instruction and relocation matching is the acceptance check.
+
+Hard list for M1-T667: none.
