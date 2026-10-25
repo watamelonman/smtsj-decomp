@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match `func_020b6f28` state-dependent drawing and document two remaining unit_020b6570 hard functions.
 - Matched the eight M1-T745 game/unit_020b6570 query, status, resource, cleanup, and graphics setup functions with typed contracts.
 - Match all four M1-T709 game/unit_0209d42c weighted-selection, cell-update, mode-polling, and record-work routines at 100% objdiff.
 - M1-T719: match all eight unit_020ce578 registration, setup, teardown, dispatcher and event functions with typed borrowed work layouts.
