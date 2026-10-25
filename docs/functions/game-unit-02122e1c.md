@@ -14,29 +14,20 @@ check bounds. Field and callee semantics remain unknown, so neutral names stay.
 - `Unk122e1c_Unk_122f68` (20 B): returns 1 iff the byte at +0x60 is eight, otherwise 0. Evidence: `ldrb`, comparison with eight, conditional 1/0 moves.
 - `Unk122e1c_Unk_12332c` (20 B): forwards the readable work word at +0x14 and constant 1 to `func_0205caa8`, discarding its return value. Evidence: field load, `mov r1, #1`, and indirect tail call with an absolute callee relocation.
 
-No M1-T747 functions remain on the hard list. Other entries below predate this card.
+## M1-T748
 
-- `Unk122e1c_Unk_123024`: decompiler-derived
-- `Unk122e1c_Unk_123048`: decompiler-derived
-- `Unk122e1c_Unk_1232f8`: decompiler-derived
-- `Unk122e1c_Unk_1232c8`: decompiler-derived
+All eight functions below match at 100% objdiff. Work pointers borrow writable
+storage; indexed accesses require sufficient backing storage unless stated otherwise.
+Names remain neutral where the instructions do not establish a higher-level purpose.
 
-## Not done in M1-T748
-- `func_0212351c`
-- `Unk122e1c_ClearSlots`
-- `Unk122e1c_Unk_1241cc`
-- `Unk122e1c_SetSlot`
-- `Unk122e1c_Unk_122ff0`: decompiler-derived
-- `Unk122e1c_Unk_123294`: decompiler-derived
-- `Unk122e1c_Unk_12306c`: decompiler-derived
+- `func_0212351c` (24 B): writes 0 for a zero value, otherwise 1, to +0x78 + index*4. Evidence: conditional moves and indexed store at 0212351c. Separate branch stores preserve the original compiler scheduling.
+- `Unk122e1c_ClearSlots` (32 B): clears six slot words at +0xf8. Evidence: six-iteration indexed store loop at 02122fd0.
+- `Unk122e1c_Unk_1241cc` (32 B): forwards the indexed word at +0x10 and the corresponding word from data_0213cd7c to func_0205caa8. Evidence: indexed loads and tail call at 021241cc. Both indices must be valid.
+- `Unk122e1c_SetSlot` (36 B): writes one of six slots at +0xf8; null pointers and indices outside [0, 6) are ignored. Evidence: pointer and signed range checks at 02122fac.
+- `Unk122e1c_Unk_123024` (36 B): calls Unk0fedd4_SetState1, clears +0x114/+0x61, and writes 1 to +0x60. Evidence: calls and stores at 02123024.
+- `Unk122e1c_Unk_123048` (36 B): same observed stores with 2 at +0x60. Evidence: 02123048.
+- `Unk122e1c_Unk_1232f8` (36 B): same observed stores with 6 at +0x60. Evidence: 021232f8.
+- `Unk122e1c_Unk_1232c8` (48 B): calls Unk0fedd4_SetState0 and Unk0cb32c_Unk_0cb57c with +0x14, clears +0x114/+0x60, and stores -92 at +0xb8/+0x6c. Evidence: 021232c8 calls and stores.
 
-## Not done in M1-T749
-- `Unk122e1c_Unk_123534`
-- `func_021230b4`
-- `func_02123340`
-- `func_02122e1c`
-- `func_021233e0`
-- `Unk122e1c_Unk_1241cc`: decompiler-derived (plain cleanup)
-- `Unk122e1c_SetSlot`: hand-matched
-- `Unk122e1c_ClearSlots`: hand-matched
-- `Unk122e1c_Unk_123534`: hand-matched
+No M1-T747 or M1-T748 functions remain on the hard list. Other existing
+implementations are outside this card: 122ff0, 123294, 12306c, and 123534.

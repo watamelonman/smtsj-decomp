@@ -98,6 +98,8 @@ typedef struct Unk122e1cObj {
     u32 slot[6];
 } Unk122e1cObj;
 void Unk0cb32c_Unk_0cb504();
+/* Store slot i at +0xf8 when p is nonnull and i is in [0, 6).
+ * Evidence: 02122fac checks the pointer and bounds before the indexed store. */
 void Unk122e1c_SetSlot(Unk122e1cObj *p, int i, u32 v)
 {
     if (p == 0) {
@@ -109,6 +111,8 @@ void Unk122e1c_SetSlot(Unk122e1cObj *p, int i, u32 v)
     p->slot[i] = v;
 }
 
+/* Clear all six words at +0xf8; p must be writable.
+ * Evidence: 02122fd0 loops over six indexed stores of zero. */
 void Unk122e1c_ClearSlots(Unk122e1cObj *p)
 {
     int i;
@@ -126,48 +130,52 @@ void Unk122e1c_Unk_12332c(Unk122e1cWork *work)
 
 
 int Unk0fedd4_SetState1();
-/* decompiler-derived */
-void Unk122e1c_Unk_123024(int arg0)
+/* Call the state provider, clear +0x114 and +0x61, and set +0x60 to 1.
+ * Evidence: stores at 0x02123024; work must be writable. */
+void Unk122e1c_Unk_123024(Unk122e1cWork *work)
 {
   Unk0fedd4_SetState1();
-  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
-  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
-  ((Unk122e1cWork *)arg0)->unk_0060 = 1;
+  work->unk_0114 = 0;
+  work->unk_0061 = 0;
+  work->unk_0060 = 1;
   return;
 }
 
 
-/* decompiler-derived */
-void Unk122e1c_Unk_123048(int arg0)
+/* Call the state provider, clear +0x114 and +0x61, and set +0x60 to 2.
+ * Evidence: stores at 0x02123048; work must be writable. */
+void Unk122e1c_Unk_123048(Unk122e1cWork *work)
 {
   Unk0fedd4_SetState1();
-  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
-  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
-  ((Unk122e1cWork *)arg0)->unk_0060 = 2;
+  work->unk_0114 = 0;
+  work->unk_0061 = 0;
+  work->unk_0060 = 2;
   return;
 }
 
 
-/* decompiler-derived */
-void Unk122e1c_Unk_1232f8(int arg0)
+/* Call the state provider, clear +0x114 and +0x61, and set +0x60 to 6.
+ * Evidence: stores at 0x021232f8; work must be writable. */
+void Unk122e1c_Unk_1232f8(Unk122e1cWork *work)
 {
   Unk0fedd4_SetState1();
-  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
-  ((Unk122e1cWork *)arg0)->unk_0061 = 0;
-  ((Unk122e1cWork *)arg0)->unk_0060 = 6;
+  work->unk_0114 = 0;
+  work->unk_0061 = 0;
+  work->unk_0060 = 6;
   return;
 }
 
 int Unk0fedd4_SetState0();
-/* decompiler-derived */
-void Unk122e1c_Unk_1232c8(int arg0)
+/* Call both providers, clear +0x114 and +0x60, and write -92 to +0xb8/+0x6c.
+ * Evidence: 021232c8 calls and stores; work must be writable. */
+void Unk122e1c_Unk_1232c8(Unk122e1cWork *work)
 {
   Unk0fedd4_SetState0();
-  Unk0cb32c_Unk_0cb57c(((Unk122e1cWork *)arg0)->unk_0014);
-  ((Unk122e1cWork *)arg0)->unk_0114 = 0;
-  ((Unk122e1cWork *)arg0)->unk_00b8 = 0xffffffa4;
-  ((Unk122e1cWork *)arg0)->unk_006c = 0xffffffa4;
-  ((Unk122e1cWork *)arg0)->unk_0060 = 0;
+  Unk0cb32c_Unk_0cb57c(work->unk_0014);
+  work->unk_0114 = 0;
+  work->unk_00b8 = 0xffffffa4;
+  work->unk_006c = 0xffffffa4;
+  work->unk_0060 = 0;
   return;
 }
 
@@ -221,9 +229,21 @@ void Unk122e1c_Unk_123534(Unk122e1cObj *p)
     }
 }
 
-/* decompiler-derived */
-void Unk122e1c_Unk_1241cc(int arg0,int arg1)
+/* Forward the indexed word at +0x10 and its table argument to the provider.
+ * Evidence: 021241cc indexed loads; index must fit both borrowed arrays. */
+void Unk122e1c_Unk_1241cc(Unk122e1cWork *work, s32 index)
 {
-  func_0205caa8(*(u32 *)(arg0 + arg1 * 4 + 0x10),
-                  *(u32 *)(data_0213cd7c + arg1 * 4));
+  func_0205caa8(*(u32 *)((u8 *)work + index * 4 + 0x10),
+                  *(u32 *)(data_0213cd7c + index * 4));
+}
+
+/* Normalize value to 0/1 in the indexed word at +0x78.
+ * Evidence: 0212351c conditional moves and indexed store; caller validates index. */
+void func_0212351c(Unk122e1cWork *work, s32 value, s32 index)
+{
+    if (value == 0) {
+        *(u32 *)((u8 *)work + index * 4 + 0x78) = 0;
+    } else {
+        *(u32 *)((u8 *)work + index * 4 + 0x78) = 1;
+    }
 }
