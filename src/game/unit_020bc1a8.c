@@ -51,8 +51,8 @@ void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 }
 
 
-int func_020bc770();
-int func_020bc8c8();
+int func_020bc770(u32 slot, void *request);
+int func_020bc8c8(void *request, u32 slot, u32 value, int mode);
 /* Evidence: 020bc5c0 stores at payload -4 and returns success. A non-null
  * p must have a writable, word-aligned header word immediately before it. */
 int Unk0bc1a8_SetPrevWord(u32 *p, u32 value)
@@ -64,7 +64,8 @@ int Unk0bc1a8_SetPrevWord(u32 *p, u32 value)
     return 1;
 }
 
-/* decompiler-derived */
+/* Evidence: 020bc9b4 builds a 72-byte request with mode 1, then passes it
+ * to 0bc770 only on success. The callees borrow the stack request. */
 void Unk0bc1a8_Unk_0bc9b4(u32 arg0,u32 arg1)
 {
   int value;
@@ -77,7 +78,8 @@ void Unk0bc1a8_Unk_0bc9b4(u32 arg0,u32 arg1)
 }
 
 extern u32 data_02176ba8[];
-/* decompiler-derived */
+/* Evidence: 020bcc34 searches 41 twelve-byte slots and clears the first
+ * object address equal to arg0. The initialized context owns the table. */
 u32 Unk0bc1a8_Unk_0bcc34(int arg0)
 {
   int value;
@@ -120,10 +122,11 @@ void Unk0bc1a8_Unk_0bc928(int arg0,u32 arg1,u32 arg2,u32 arg3)
   }
 }
 
-int func_02061424();
-int Unk0bc1a8_GetHeaderWord4();
-int func_020bcacc();
-/* decompiler-derived */
+int func_02061424(int objectAddress);
+int Unk0bc1a8_GetHeaderWord4(u8 *p);
+int func_020bcacc(u32 headerWord, u32 request);
+/* Evidence: 020bc514 calls 02061424 on payload -52, then, for nonzero
+ * arg1, forwards header -4 and arg2 to 0bcacc. arg0 is a live DS address. */
 void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2)
 {
   u32 tmp1;
@@ -131,10 +134,12 @@ void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2)
   if (arg1 == 0) {
     return;
   }
-  tmp1 = Unk0bc1a8_GetHeaderWord4(arg0);
+  tmp1 = Unk0bc1a8_GetHeaderWord4((u8 *)arg0);
   func_020bcacc(tmp1,arg2);
 }
 
+/* Evidence: 020bc548 clears mask 4 at payload -12 when on is nonzero,
+ * and sets it otherwise. Null is ignored; non-null needs an aligned header. */
 void Unk0bc1a8_SetFlag4Inv(u8 *p, int on)
 {
     u8 *q;
@@ -149,6 +154,8 @@ void Unk0bc1a8_SetFlag4Inv(u8 *p, int on)
     }
 }
 
+/* Evidence: 020bc570 clears mask 1 at payload -12 when on is nonzero,
+ * and sets it otherwise. Null is ignored; non-null needs an aligned header. */
 void Unk0bc1a8_SetFlag1Inv(u8 *p, int on)
 {
     u8 *q;
@@ -203,8 +210,9 @@ u32 Unk0bc1a8_Unk_0bc6e8(void)
 }
 
 extern u8 data_0215034c[];
-int func_02052fe0();
-/* decompiler-derived */
+void *func_02052fe0(u32 size);
+/* Evidence: 020bc5d4 allocates an eight-byte context only when absent,
+ * sets its table to data_0215034c and its second word to 1. */
 void Unk0bc1a8_Unk_0bc5d4(void)
 {
   u32 tmp1;
@@ -219,6 +227,8 @@ void Unk0bc1a8_Unk_0bc5d4(void)
   Unk0bc1a8_Unk_0bc6d4(1);
 }
 
+/* Evidence: 020bc650 returns 1 for signed indices >=41 or a null slot
+ * object. Other indices require an initialized context and valid table index. */
 int Unk0bc1a8_IsSlotEmpty(int i)
 {
     if (i >= 41) {
@@ -238,4 +248,18 @@ int Unk0bc1a8_IsSlotEmptyOrFlag8(int i)
         return 1;
     }
     return (FIELD(u32, o, 36) & 8) == 8;
+}
+
+/* Evidence: 020bc614 visits all 41 slots, copying object +40 to +36 for
+ * occupied slots. Requires initialized context; the table and objects are borrowed.
+ * Reload the context each iteration as in the original; see DEC-010. */
+void func_020bc614(void)
+{
+    int i;
+    for (i = 0; i < 41; ++i) {
+        u8 *object = (*(Unk0bc1a8Slot **)*(volatile u32 *)data_02176ba8)[i].obj;
+        if (object != 0) {
+            FIELD(u32, object, 36) = FIELD(u32, object, 40);
+        }
+    }
 }
