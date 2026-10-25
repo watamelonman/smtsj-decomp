@@ -14,17 +14,37 @@ typedef unsigned long long u64;
 typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+/* The descriptor is copied as four aligned words by 0x021253c4. */
+typedef struct ImageBgDual3DDescriptor {
+    u32 words[4];
+} ImageBgDual3DDescriptor;
+
+/* Borrowed 0x5c-byte record; offsets follow 0x021253c4 accesses. */
+typedef struct ImageBgDual3DRecord {
+    u32 x, y;
+    u32 unk_0008;
+    u32 unk_000c, unk_0010;
+    u32 unk_0014;
+    ImageBgDual3DDescriptor descriptor;
+    u16 unk_0028, unk_002a;
+    char path[48];
+} ImageBgDual3DRecord;
+
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct ImageBgDual3DWork {
     u32 unk_0000;
     s32 unk_0004;
     u32 unk_0008;
     u32 unk_000c;
-    u8 pad_0010[0x7c];
+    u8 pad_0010[0x6c];
+    u32 resource;
+    u32 index;
+    u32 first;
+    u32 second;
     u32 unk_008c;
-    u8 pad_0090[0x5d];
-    u8 unk_00ed;
-    u8 pad_00ee[0x11a];
+    u32 *buffer;
+    ImageBgDual3DRecord records[4];
+    u32 count;
     u32 unk_0208;
 } ImageBgDual3DWork;
 
@@ -221,7 +241,7 @@ u32 ImageBgDual3D_Unk_125618(ImageBgDual3DWork *work)
   s32 index = 0;
   if (0 < *count) {
     do {
-      if (work->unk_00ed == 0) {
+      if (((u8 *)work)[0xed] == 0) {
         return 0;
       }
       index++;
@@ -474,6 +494,183 @@ u32 func_02125a08(void)
     if (work == 0) return 0;
     ImageBgDual3D_Unk_125a90(work);
     return (u32)work;
+}
+
+
+extern const char *data_02152148[];
+extern const char data_02152170[];
+void func_02015118(char *path);
+void func_0201524c(char *path, const char *suffix);
+void func_020513d4(const char *path);
+void func_020516dc(void *request, const char *path, u32 a, u32 b);
+u32 func_02051610(const char *path);
+/* At 0x02125314, builds the observed Data/Tex/Event/ED/ path using
+ * work's index and the .bin suffix. Nonzero mode starts a request in the
+ * borrowed work; zero mode stores the synchronously obtained resource. */
+void func_02125314(ImageBgDual3DWork *work, u32 mode)
+{
+    typedef struct { char bytes[64]; } Path;
+    extern const Path data_0213cdd0;
+    Path storage = data_0213cdd0;
+    func_02015118(storage.bytes);
+    func_0201524c(storage.bytes, data_02152148[FIELD(u32, work, 0x80)]);
+    func_0201524c(storage.bytes, data_02152170);
+    func_020513d4(storage.bytes);
+    if (mode != 0) {
+        func_020516dc(&work->unk_0004, storage.bytes, 0, 0);
+        return;
+    }
+    FIELD(u32, work, 0x7c) = func_02051610(storage.bytes);
+}
+
+u32 func_02051844(void *request, s32 value);
+void func_0205c704(u32 handle);
+u32 func_0205ca48(u32 handle);
+/* At 0x02125678, advances states 1 through 4 as requests finish;
+ * state 5 polls an active offset-0x8c handle. Work is borrowed and non-null. */
+void func_02125678(ImageBgDual3DWork *work)
+{
+    switch (work->unk_0000) {
+    case 0:
+    case 1:
+        func_02125314(work, 1);
+        work->unk_0000 = 2;
+        break;
+    case 2:
+        if (func_02051844(&work->unk_0004, -1) == 0)
+            work->unk_0000 = 3;
+        break;
+    case 3:
+        func_021253c4(work, 1);
+        work->unk_0000 = 4;
+        break;
+    case 4:
+        if (ImageBgDual3D_Unk_125618(work) != 0) {
+            work->unk_0000 = 5;
+            ImageBgDual3D_Unk_125650(work);
+        }
+        break;
+    case 5:
+        if (work->unk_0208 != 0) {
+            func_0205c704(work->unk_008c);
+            if (func_0205ca48(work->unk_008c) == 0)
+                work->unk_0208 = 0;
+        }
+        break;
+    }
+}
+
+u32 func_020961a0(void);
+void func_02117834(void);
+u32 Unk095560_Unk_096484(void);
+u32 Unk0a23f4_IsSet_data_02176b04(void);
+void func_02111494(void);
+void Unk02cad4_SetupDisplayMode(u32 a, u32 b, u32 c);
+/* At 0x02125b60, polls state 0, restarts setup from state 1 when
+ * three external predicates permit it, and releases the task in state 2.
+ * Only the first sixteen bytes of the borrowed work are accessed. */
+void func_02125b60(ImageBgDual3DWork *work)
+{
+    switch (work->unk_0000) {
+    case 0:
+        if (func_020961a0() == 0) work->unk_000c = 1;
+        func_02117834();
+        if (work->unk_000c != 0) work->unk_0000 = 2;
+        break;
+    case 1:
+        if (Unk095560_Unk_096484() == 0) return;
+        if (Unk0a23f4_IsSet_data_02176b04() != 0) return;
+        if (Unk0bc1a8_IsSlotEmpty(24) == 0) return;
+        func_02111494();
+        Unk02cad4_SetupDisplayMode(2, 1, 0);
+        ImageBgDual3D_Unk_125a68();
+        work->unk_0000 = 0;
+        func_02117400(1, 1, 0, 0, 31);
+        break;
+    case 2:
+        func_02061424((u32)work);
+        break;
+    }
+}
+
+u32 func_020519e8(void *request);
+u32 func_0205f2e4(u32 resource);
+u8 *func_0205f41c(u32 resource, u32 index);
+u32 func_0205dd58(u8 *resource, u32 mode);
+u32 func_0205c328(u8 *resource);
+void func_0205aa78(u32 *descriptor, u32 *x, u32 *y, u16 *a, u16 *b);
+int func_02013c3c(char *dst, const char *format, ...);
+extern const char data_02152178[];
+u32 func_0205accc(u8 *resource);
+u32 func_0205acd4(u8 *resource);
+void func_0205b444(ImageBgDual3DRecord *record, u8 *resource);
+void func_0205b4c4(ImageBgDual3DRecord *record, u8 *resource);
+void func_0205de30(u32 header, u32 index, ImageBgDual3DRecord *record);
+u32 func_0205c3c0(void);
+void func_0205c3fc(u32 handle, u32 first, u32 second);
+/* At 0x021253c4, resolves the resource, consumes its first two entries
+ * as headers, then initializes 0x5c-byte records and attaches them to a
+ * final handle. Work must cover every resource entry; mode selects the
+ * observed asynchronous or synchronous record helper. */
+void func_021253c4(ImageBgDual3DWork *work, u32 mode)
+{
+    u32 total;
+    u32 i;
+    if (work->resource == 0)
+        work->resource = func_020519e8(&work->unk_0004);
+    total = func_0205f2e4(work->resource);
+    work->count = 0;
+    for (i = 0; i < total; i++) {
+        switch (i) {
+        case 0:
+            work->first = func_0205dd58(func_0205f41c(work->resource, i), 0);
+            break;
+        case 1:
+            work->second = func_0205c328(func_0205f41c(work->resource, i));
+            break;
+        default: {
+            s32 index = i - 2;
+            ImageBgDual3DRecord *record = &work->records[index];
+            u8 *resource;
+            u32 x, y;
+            work->count++;
+            resource = func_0205f41c(work->resource, i);
+            record->descriptor = *(ImageBgDual3DDescriptor *)(resource + 12);
+            func_0205aa78(record->descriptor.words, &x, &y,
+                         &record->unk_0028, &record->unk_002a);
+            if (index == 0) {
+                record->x = work->buffer[0];
+                record->y = work->buffer[1];
+            }
+            if (index < 3) {
+                work->records[index + 1].x = record->x + x;
+                work->records[index + 1].y = record->y + y;
+            }
+            func_02013c3c(record->path, data_02152178,
+                         data_02152148[work->index], index);
+            record->unk_000c = func_0205accc(resource);
+            record->unk_0010 = func_0205acd4(resource);
+            if (mode != 0) func_0205b444(record, resource);
+            else func_0205b4c4(record, resource);
+            break;
+        }
+        }
+    }
+    {
+        u32 j;
+        ImageBgDual3DRecord *record;
+        j = 0;
+        if (j < work->count) {
+            record = work->records;
+            do {
+                func_0205de30(work->first, j, record);
+                j++;
+                record++;
+            } while (j < work->count);
+        }
+    }
+    work->unk_008c = func_0205c3c0();
+    func_0205c3fc(work->unk_008c, work->first, work->second);
 }
 
 /* At 0x021257f4, creates 0x20c bytes with four observed callbacks,
