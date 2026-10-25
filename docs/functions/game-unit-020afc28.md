@@ -20,19 +20,26 @@ no ownership transfer occurs. Neutral canonical names are retained.
 
 None for M1-T680.
 
-### Other existing implementations
+## M1-T681
 
-- `Unk0afc28_Unk_0afcd4`: existing selector mapping, outside this card.
-- `Unk0afc28_CountById`: existing ten-pointer ID count, outside this card.
+All eight functions match at 100% in the instruction comparison and objdiff.
+The existing canonical symbols are retained; field layouts expose only observed
+accesses and borrowed provider storage. No new module boundary is introduced.
 
-## Not done in M1-T681
-- `Unk0afc28_CountById`
-- `func_020afc80`
-- `func_020b07c4`
-- `func_020b081c`
-- `func_020afdf8`
-- `func_020b06a0`
-- `func_020b0a5c`
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `Unk0afc28_CountById` | Counts matching IDs among ten nonnull pointers at global +0x64. The first word's bits 16..23 supply the ID, supporting the existing name. |
+| `func_020afc80` | Searches ten ID/value slots starting at work +0x30. Adds delta to the first empty or matching slot, writes the ID, and returns 1 only if its old ID was nonzero. Returns 0 if full. Paired word accesses establish the slot layout. Signed accumulation must fit. |
+| `Unk0afc28_Unk_0afcd4` | The original jump table maps selectors 0..7 to 8..15 and all other unsigned values to 26. |
+| `func_020afdf8` | Queries selector 7 on both borrowed inputs; clamps unsigned `5*(query(a)+10)/(query(b)+10)` to 1..50, then compares a random 0..99 draw against it. Evidence: multiply, unsigned divide, clamp and unsigned final comparison. Denominator must be nonzero. |
+| `func_020b06a0` | Rejects values other than 1. Accepts a nonzero selector-one query on global +0x8c. Otherwise requires nonzero flag and either kind 1/7 or a nonzero selector-zero query. Evidence: the three provider calls and branches. |
+| `func_020b07c4` | Calls 0b071c(value,0,-1). When global bit 10 is clear and the result is nonzero, delegates to 0b06a0(value,0); otherwise returns whether the first result was zero. Evidence: word +0x40, bit extraction, and calls. |
+| `func_020b081c` | Same branch structure as 0b07c4, with flag 1 passed to both helpers. Evidence: immediate arguments in the original. |
+| `func_020b0a5c` | Returns 0 unless provider kind is 3. Multiplies selector 17 (doubled if the selector-zero predicate succeeds) by the halfword at +0x17a, divides signed by 100, adds five and spread(result,10), and clamps to one. Evidence: halfword load, signed division sequence, calls and final compare. Signed arithmetic must fit. |
+
+### Hard list
+
+None for M1-T681.
 
 ## Not done in M1-T683
 - `func_020afe64`
