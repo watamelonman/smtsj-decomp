@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match six additional functions in game/unit_020f90dc; document the remaining drawing function for scratch follow-up.
+
 - Match eight game/unit_020f90dc functions for handle lifecycle and entry selection.
 - Match `func_020b6f28` state-dependent drawing and document two remaining unit_020b6570 hard functions.
 - Match eight more game/unit_02122e1c resource and state routines, with typed work views and evidence documentation.
