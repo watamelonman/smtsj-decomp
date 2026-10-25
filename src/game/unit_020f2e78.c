@@ -15,7 +15,8 @@ typedef struct Unk0f2e78State {
     s32 unk_73d4;
     s32 unk_73d8;
     s32 unk_73dc;
-    u8 pad_73e0[0x7440 - 0x73e0];
+    s32 unk_73e0;
+    u8 pad_73e4[0x7440 - 0x73e4];
     s32 unk_7440;
     u8 pad_7444[0x7478 - 0x7444];
     s32 unk_7478;
@@ -114,9 +115,13 @@ void func_020f3d28(Unk0f2e78State *state)
 
 /* Only the two sequence-control words are known in this borrowed root. */
 typedef struct Unk0f2e78Root {
-    u8 pad_0000[0x14];
+    u32 unk_0000;
+    s32 unk_0004;
+    u8 pad_0008[0x14 - 8];
     s32 unk_0014;
     s32 unk_0018;
+    u8 pad_001c[0x54 - 0x1c];
+    s32 unk_0054;
 } Unk0f2e78Root;
 /* Work-area direction and id, as loaded by the coordinate advance. */
 typedef struct Unk0f2e78Work {
@@ -429,4 +434,195 @@ void func_020f3a78(Unk0f2e78State *state)
     func_02001784(&context);
     func_02004600(&context);
     func_020580ec(1);
+}
+
+/* Borrowed relocation record: id, signed cell coordinates and direction. */
+typedef struct Unk0f2e78Move {
+    u16 id;
+    s8 x, y;
+    u32 direction;
+} Unk0f2e78Move;
+void func_0209a4fc(void *body, int value);
+void func_0209a588(void *body, int a, int b, int c, int d, int e);
+void *Unk02f2a8_GetRes36Unk19(int id);
+void func_02035890(Unk0f2e78Move *move, void *resource);
+
+/* Advance six phases, waiting 60 ticks before reversing the resource's
+ * direction and relocating it. Evidence: direction switch and relocation call. */
+int func_020f370c(Unk0f2e78State *state)
+{
+    int result = 0;
+    state->unk_7484++;
+    switch (state->unk_7481) {
+    case 0:
+        if (func_020654cc() == 1) {
+            func_0209a4fc((u8 *)state + 4, 0);
+            func_0209a588((u8 *)state + 4, 0, 1, 1, 1, 0);
+            Unk0a0ce4_Unk_0a0da4(45);
+            state->unk_7484 = 0;
+            state->unk_7481++;
+        }
+        break;
+    case 1:
+        if (state->unk_7484 > 60) {
+            Unk0f2e78Work *work = Unk02e000_GetWorkArea();
+            Unk0f2e78Move move = {0};
+            func_02035890(&move, Unk02f2a8_GetRes36Unk19(work->unk_035c));
+            switch (move.direction) {
+            case 0: move.direction = 2; break;
+            case 1: move.direction = 3; break;
+            case 2: move.direction = 0; break;
+            case 3: move.direction = 1; break;
+            }
+            func_02034b7c(move.id, move.x, move.y, move.direction, 4, 1, 0, 0);
+            state->unk_7484 = 0;
+            state->unk_7481++;
+        }
+        break;
+    case 2:
+        if (func_020a4f3c() == 0 && func_02052728() == 0) {
+            state->unk_7484 = 0;
+            state->unk_7481++;
+        }
+        break;
+    case 3:
+        if (func_02052728() == 1) {
+            state->unk_7484 = 0;
+            state->unk_7481++;
+        }
+        break;
+    case 4:
+        state->unk_7484 = 0;
+        state->unk_7481++;
+        break;
+    case 5:
+        if (state->unk_7440 != 0) result = 1;
+        break;
+    default: result = 1; break;
+    }
+    return result;
+}
+
+int func_0202d170(void);
+void func_0202d198(void);
+int Unk02d15c_IsMode1Match(int mode);
+void func_02095f94(void);
+int Unk0e651c_Unk_0e666c(int bit);
+void Unk0e651c_SetBitChecked(int bit, int value);
+void *Unk095560_Unk_095778(int id);
+void func_0206569c(void *data);
+int func_02065cd0(void);
+void func_020658dc(void *data, int a, int selection, int flags);
+int func_0206559c(void);
+int func_02065e1c(void);
+void func_0206567c(void);
+void func_02065c30(void);
+
+/* Run nine selection phases. Evidence: flags 0x73a..0x73c select resource
+ * ids 14/15 and 50..52; returned low-byte choices select the next state kind. */
+int func_020f307c(Unk0f2e78State *state)
+{
+    int result = 0;
+    state->unk_7484++;
+    switch (state->unk_7481) {
+    case 0:
+        if (func_020a4f3c() == 0 && func_02052728() == 0) {
+            while (func_0202d170() != 0) {
+                if (Unk02d15c_IsMode1Match(7) == 1) {
+                    state->unk_73e0 = 1;
+                    state->root->unk_0004 = 0;
+                    func_02095f94();
+                    break;
+                }
+                func_0202d198();
+            }
+            state->unk_7484 = 0;
+            state->unk_7481++;
+        }
+        break;
+    case 1:
+        if (state->unk_73e0 == 0) {
+            state->unk_7484 = 0;
+            state->unk_7481++;
+        }
+        break;
+    case 2:
+        if (func_020654cc() == 1) {
+            if (Unk0e651c_Unk_0e666c(0x73c) == 0) {
+                Unk0e651c_SetBitChecked(0x73c, 1);
+                func_0206569c(Unk095560_Unk_095778(50));
+                state->unk_7481++;
+            } else state->unk_7481 += 2;
+        }
+        break;
+    case 3:
+        if (func_02065cd0() == 1) state->unk_7481++;
+        break;
+    case 4:
+        if (Unk0e651c_Unk_0e666c(0x73b) == 0 && Unk0e651c_Unk_0e666c(0x73a) == 1) {
+            Unk0e651c_SetBitChecked(0x73b, 1);
+            func_0206569c(Unk095560_Unk_095778(51));
+            state->unk_7481++;
+        } else state->unk_7481 += 2;
+        break;
+    case 5:
+        if (func_02065cd0() == 1) state->unk_7481++;
+        break;
+    case 6: {
+        int id = 14;
+        if (Unk0e651c_Unk_0e666c(0x73a) == 1) id = 15;
+        func_020658dc(Unk095560_Unk_095778(id), 0, state->unk_7488, 0x101);
+        state->unk_7481++;
+        break;
+    }
+    case 7:
+        if (func_0206559c() == 1) {
+            int choice = (u8)func_02065e1c();
+            if (Unk0e651c_Unk_0e666c(0x73a) == 1) {
+                switch (choice) {
+                case 0: state->unk_7480 = 2; break;
+                case 1:
+                    func_0206567c();
+                    func_020658dc(Unk095560_Unk_095778(52), 0, 0, 0x101);
+                    state->unk_7481++;
+                    break;
+                case 2: state->unk_7480 = 4; break;
+                default: state->unk_7480 = 5; break;
+                }
+            } else {
+                switch (choice) {
+                case 0: state->unk_7480 = 2; break;
+                case 1:
+                    func_0206567c();
+                    func_020658dc(Unk095560_Unk_095778(52), 0, 0, 0);
+                    state->unk_7481++;
+                    break;
+                default: state->unk_7480 = 5; break;
+                }
+            }
+            state->unk_7488 = choice;
+            if (state->unk_7480 != 1) {
+                func_02065c30();
+                state->unk_7484 = 0;
+                state->unk_7481 = 0;
+            }
+        }
+        break;
+    case 8:
+        if (func_0206559c() == 1) {
+            switch ((u8)func_02065e1c()) {
+            case 0:
+                state->unk_7480 = 3;
+                func_02065c30();
+                state->unk_7484 = 0;
+                state->unk_7481 = 0;
+                state->root->unk_0054 = 1;
+            break;
+            default: state->unk_7481 = 6; break;
+            }
+        }
+        break;
+    default: result = 1; break;
+    }
+    return result;
 }
