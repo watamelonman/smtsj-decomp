@@ -2,6 +2,8 @@
 
 ## Unreleased
 - M1-T720: match all four remaining unit_020ce578 setup, state and input handlers at 100% objdiff, with typed work parameters and observed provider contracts.
+- Matched the eight M1-T745 game/unit_020b6570 query, status, resource, cleanup, and graphics setup functions with typed contracts.
+- Match all four M1-T709 game/unit_0209d42c weighted-selection, cell-update, mode-polling, and record-work routines at 100% objdiff.
 - M1-T719: match all eight unit_020ce578 registration, setup, teardown, dispatcher and event functions with typed borrowed work layouts.
 - Matched all eight M1-T743 unit_02068f18 record, ID, coordinate and alpha helpers; documented their data contracts.
 - Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.

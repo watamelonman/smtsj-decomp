@@ -68,8 +68,30 @@ checksum pass. No new behavioral tests (`tests_required = false`); comparison
 against the original object checks instructions and relocations. No hard
 functions remain for M1-T708.
 
-## Not done in M1-T709
-- `func_0209de58`
-- `func_0209d7f4`
-- `func_0209e0b0`
-- `func_0209db70`
+## M1-T709 — verified matching functions
+
+All four functions report 100% objdiff, and all 24 earlier functions retain
+100%. Evidence is the original ARM instructions and relocations in
+`build/delinks/src/game/unit_0209d42c.o`. Original neutral symbol names are
+retained because the higher-level purposes are not established. Record and work
+views remain private; providers retain ownership of resource and cell storage.
+
+| Function | Size | Evidence and contract |
+| --- | ---: | --- |
+| `func_0209de58` | 280 | Loads signed coordinates at state +0x7482/+0x7483, looks up map table 11 using entry byte +1, and increments cell halfword +2. Predicate success updates cell flags, cycles byte +1 modulo eight, clears the halfword, and writes the element's low eight-bit field and state phase byte through `Unk0e651c_Set2Bits`. State, selected cell, map element and provider record 23 must exist. Returns one only on success. |
+| `func_0209d7f4` | 368 | Uses table-one bytes +2/+3/+4 as category weights, then selects an ID from four-byte ID/weight pairs at +6/+66/+86 with counts 15/5/5. Copies the selected 24-byte table-two record and fills zero ID/value bytes from table one or table zero. Returns the selected halfword ID. Borrowed tables must exist and supply valid nonzero weight totals for the random helper's inclusive range. |
+| `func_0209e0b0` | 452 | Dispatches signed mode -1 through 22 at state +0x73e8. Mode -1 returns immediately; other modes poll root/state fields or the observed helper calls, wait, or complete immediately. Completion result exactly one sets mode/callback words to -1, clears phase +0x73f0, and clears 28 bytes at +0x7478. State/root and mode-specific subobjects must exist. |
+| `func_0209db70` | 744 | Clears 84 bytes, initializes scales to 4096, and fills work from a 52-byte table-three record. Zero source ID/value bytes use table-zero defaults; six halfwords become words, fixed eight-/sixteen-byte strings use leading ASCII-zero suppression, and individual source flag bits map to work flags. Copies four extra halfwords and marks their presence. A nonzero source scale invokes `func_0200219c` with scale shifted by 12 and denominator 409600. Caller owns valid 84-byte work; tables are borrowed. |
+
+Matching refinements: four-byte typed weight records preserve the original
+indexed halfword loads; explicit staged weight sums preserve evaluation order.
+The cell predicate takes its selected cell as an argument, as confirmed by its
+implementation in `src/game/unit_0209a268.c`. The map element's low field is an
+eight-bit unsigned bitfield, matching the original paired shifts. Table-three
+and work flag bitfields preserve the observed source reloads and destination
+read/modify/write sequences without assembly.
+
+Validation: all 28 compiled functions in this unit match at 100%; anticheat,
+repository unit tests, full build, and full-image checksum pass. No new behavioral
+tests (`tests_required = false`); original-object comparison verifies every
+instruction and relocation. No hard functions remain for M1-T709.
