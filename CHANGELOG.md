@@ -2,6 +2,17 @@
 
 ## Unreleased
 - Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.
+- Verify all eight M1-T694 resource dispatch, byte assembly and manager-state routines at 100% objdiff; document typed parameters and instruction evidence.
+- Verify all eight M1-T693 forwarding, manager-word and initialization routines at 100% objdiff; document typed parameters and provider call sequences.
+- M1-T688: match and document eight game/unit_020de678 resource searches, state updates, and helper dispatch routines.
+- Verify all eight M1-T692 manager-field and forwarding routines at 100% objdiff; document typed views, call order and the resource pointer result.
+- M1-T687: match and document eight game/unit_020de678 state setters, record counter, and helper dispatch routines.
+- Verify M1-T691 manager accessors and forwarding wrappers; preserve typed arguments and predicate results.
+- Match all four M1-T656 slot, record-field, work-transfer and record-initialization functions at 100% objdiff; document instruction evidence and borrowed storage contracts.
+
+- Match eight more unit_02039bb4 entry/table handlers with typed work parameters and documented contracts.
+- M1-T686: documented and typed eight game/unit_020de678 no-op, forwarding, selector, and global-word helpers.
+- Verified the two M1-T685 game/unit_020f2e78 selection and relocation handlers at 100% objdiff; documented their phase contracts and instruction evidence.
 - Matched all eight M1-T681 game/unit_020afc28 slot, selector, predicate and scaling routines with typed borrowed layouts. 
 - M1-T676: clarify eight game/unit_02039bb4 record, tagged append, and entry handlers with typed work views and behavior contracts.
 - Matched the eight M1-T684 game/unit_020f2e78 transition, cell-reset and dispatcher functions with typed layouts and per-function documentation.

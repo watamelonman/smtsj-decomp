@@ -15,89 +15,105 @@ typedef signed char s8;
 extern unsigned char gUnkManager_02175eb0[];   /* static manager instance */
 
 void Unk02d15c_Call_02d91c(void);
-void Unk0caea8_Unk_0cb044(void);
-void func_020773dc();
-void func_020961a0(void);
+void Unk0caea8_Unk_0cb044(u32 index);
+void func_020773dc(int mode);
+int func_020961a0(void);
 
-/* Reads the signed byte at table[index]. */
+/* 0x02095560 uses LDRSB [r0, r1]; index must address a readable table byte. */
 int Unk095560_GetSignedByte(const s8 *table, int index) { return table[index]; }
 
+/* 0x02095568 assembles four byte loads in little-endian order.
+ * The caller must provide readable bytes at offsets o through o + 3. */
 u32 Unk095560_ReadU32LE(const u8 *p, int o)
 {
     return p[o] | (p[o + 1] << 8) | (p[o + 2] << 16) | (p[o + 3] << 24);
 }
 
-/* Returns the static manager instance. */
+/* 0x0209573c loads gUnkManager_02175eb0; returns borrowed static storage. */
 unsigned char *Unk095560_GetManager(void) { return gUnkManager_02175eb0; }
 
-/* Same as Unk095560_GetManager, kept as a separate entry point. */
+/* 0x02095748 tail-calls GetManager; preserves its borrowed-storage contract. */
 unsigned char *Unk095560_GetManagerAlias(void) { return Unk095560_GetManager(); }
 
-/* Returns the sub-object at offset 0x3A8 of the manager. */
+/* 0x02095754 adds 0x3a8 to GetManager; returns a borrowed interior pointer. */
 unsigned char *Unk095560_GetManagerSub3a8(void) { return Unk095560_GetManager() + 0x3a8; }
 
-/* Forwarders. */
+/* 0x02095600 tail-calls Unk02d15c_Call_02d91c without changing arguments. */
 void Unk095560_Thunk_0202d15c(void) { Unk02d15c_Call_02d91c(); }
 void Unk0a163c_Unk_0a1814(u16 id);
 void Unk0a163c_Unk_0a1834(u16 id);
+/* 0x020957e4 truncates the ID to 16 bits before forwarding to 020a1814. */
 void Unk095560_Call_0a1814(int id)
 {
     Unk0a163c_Unk_0a1814((u16)id);
 }
 
+/* 0x020957f8 truncates the ID to 16 bits before forwarding to 020a1834. */
 void Unk095560_Call_0a1834(int id)
 {
     Unk0a163c_Unk_0a1834((u16)id);
 }
 
-void Unk095560_Thunk_020cb044(void) { Unk0caea8_Unk_0cb044(); }
+/* 0x0209580c tail-calls Unk0caea8_Unk_0cb044 with r0 unchanged (index). */
+void Unk095560_Thunk_020cb044(u32 index) { Unk0caea8_Unk_0cb044(index); }
 int func_02095d5c(u32 a, u32 b, int c);
 
+/* 0x02095950 passes mode 1 to 095d5c and normalizes its result to 0 or 1. */
 int Unk095560_Unk_095950(u32 a, u32 b)
 {
     return func_02095d5c(a, b, 1) != 0;
 }
 
-void Unk095560_Thunk_020773dc(void) { func_020773dc(); }
-void Unk095560_Thunk_020961a0(void) { func_020961a0(); }
+/* 0x02096140 forwards r0 unchanged; callers of 020773dc supply a mode. */
+void Unk095560_Thunk_020773dc(int mode) { func_020773dc(mode); }
+/* 0x02096274 tail-calls 020961a0; 0202f2a8 callers consume its predicate. */
+int Unk095560_Thunk_020961a0(void) { return func_020961a0(); }
 
 
 
-/* decompiler-derived */
+/* Borrowed three-word view: 02095d2c/1c/4c load offsets 0, 4 and 8.
+ * Field meanings beyond their instruction-observed positions remain unknown. */
+typedef struct Unk095560Words {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+} Unk095560Words;
+
+/* 0x02095d2c reads subobject offset 0; manager storage remains borrowed. */
 u32 Unk095560_Unk_095d2c(void)
 {
-  u32 *v1;
-  v1 = (u32 *)Unk095560_GetManagerSub3a8();
-  return *v1;
+    const Unk095560Words *words = (const Unk095560Words *)Unk095560_GetManagerSub3a8();
+    return words->unk_00;
 }
 
 extern u8 data_02175ea8[];
-/* decompiler-derived */
+/* 0x02095d3c loads global offset 4; no manager lookup or ownership transfer. */
 u32 Unk095560_Unk_095d3c(void)
 {
-  return *(u32 *)(((int)data_02175ea8) + 4);
+    return ((const Unk095560Words *)data_02175ea8)->unk_04;
 }
 
-int func_02065ca8();
+int func_02065ca8(void);
 void Unk095560_Unk_095728(void);
-/* decompiler-derived */
+/* 0x02096130 calls 095728 then 02065ca8, discarding the provider result. */
 void Unk095560_Unk_096130(void)
 {
-  Unk095560_Unk_095728();
-  func_02065ca8();
+    Unk095560_Unk_095728();
+    func_02065ca8();
 }
 
-int func_020445d0();
-/* decompiler-derived */
-void Unk095560_Unk_095764(u32 arg0)
+void *func_020445d0(int index, int item);
+/* 0x02095764 forwards item with resource index 27; 020445d0 returns a
+ * provider-owned resource pointer (see its definition in unit_0204459c). */
+void *Unk095560_Unk_095764(int item)
 {
-  func_020445d0(0x1b,arg0);
+    return func_020445d0(27, item);
 }
 
 
-int ImageObj_Unk_0775ec();
-int ImageObj_Unk_077640();
-/* decompiler-derived */
+void ImageObj_Unk_0775ec(void);
+void ImageObj_Unk_077640(void);
+/* 0x0209615c calls the three providers in order; results are discarded. */
 void Unk095560_Unk_09615c(void)
 {
   ImageObj_Unk_0775ec();
@@ -105,52 +121,55 @@ void Unk095560_Unk_09615c(void)
   func_02065ca8();
 }
 
-int func_02077750();
-int ImageBg_Unk_0e5550();
-/* decompiler-derived */
-void Unk095560_Unk_0958a8(u32 arg0,u32 arg1)
+void func_02077750(u32 arg0, u32 arg1);
+void ImageBg_Unk_0e5550(u32 arg0, u32 arg1);
+/* 0x020958a8 preserves both arguments across 020e5550 for 02077750. */
+void Unk095560_Unk_0958a8(u32 arg0, u32 arg1)
 {
-  ImageBg_Unk_0e5550();
-  func_02077750(arg0,arg1);
+    ImageBg_Unk_0e5550(arg0, arg1);
+    func_02077750(arg0, arg1);
 }
 
 
-int func_0204459c();
-int func_0204fe68();
-int func_0204fed8();
-/* decompiler-derived */
+void *func_0204459c(int index);
+void *func_0204fe68(void *handle, int index);
+void func_0204fed8(void *record, u32 arg);
+/* 0x020095778 selects handle 25, entry 0, then forwards the caller word
+ * to 0204fed8. unit_0204459c establishes the borrowed handle/entry types. */
 void Unk095560_Unk_095778(u32 arg0)
 {
-  u32 value;
+  void *value;
   value = func_0204459c(0x19);
   value = func_0204fe68(value,0);
   func_0204fed8(value,arg0);
 }
 
 
-/* decompiler-derived */
+/* 0x02009579c selects handle 26, entry 0, then forwards the caller word
+ * to 0204fed8. unit_0204459c establishes the borrowed handle/entry types. */
 void Unk095560_Unk_09579c(u32 arg0)
 {
-  u32 value;
+  void *value;
   value = func_0204459c(0x1a);
   value = func_0204fe68(value,0);
   func_0204fed8(value,arg0);
 }
 
 
-/* decompiler-derived */
+/* 0x0200957c0 selects handle 26, entry 0, then forwards the caller word
+ * to 0204fed8. unit_0204459c establishes the borrowed handle/entry types. */
 void Unk095560_Unk_0957c0(u32 arg0)
 {
-  u32 value;
+  void *value;
   value = func_0204459c(0x1a);
   value = func_0204fe68(value,0);
   func_0204fed8(value,arg0);
 }
 
 u32 Unk095560_Unk_0956e8(void);
-int func_020958c8();
-int Unk095560_Unk_095950();
-/* decompiler-derived */
+int func_020958c8(int value);
+/* 0x02095af8 resets through 0956e8, calls 095950 with slot 0, and
+ * forwards a nonzero result to 0958c8; returns normalized success. */
 u32 Unk095560_Unk_095af8(u32 arg0)
 {
   int value;
@@ -163,9 +182,12 @@ u32 Unk095560_Unk_095af8(u32 arg0)
   return 0;
 }
 
-int func_02095818();
-int ImageBg_Unk_0e5530();
-/* decompiler-derived */
+int func_02095818(void);
+void ImageBg_Unk_0e5530(void);
+void ImageObj_Unk_0775d8(void);
+void Unk02d15c_Unk_02d81c(void);
+/* 0x02096170 selects the provider sequence by 095818's zero/nonzero result,
+ * then always calls 02d81c and 02065ca8; no provider results are retained. */
 void Unk095560_Unk_096170(void)
 {
   int value;
@@ -311,58 +333,58 @@ void func_02095b48(char *buf, int id)
     }
 }
 
-/* decompiler-derived */
+/* 0x02095728 calls these three providers in order; no results are consumed. */
 void Unk095560_Unk_095728(void)
 {
-  ImageBg_Unk_0e5530();
-  ImageObj_Unk_0775d8();
-  Unk02d15c_Unk_02d81c();
+    ImageBg_Unk_0e5530();
+    ImageObj_Unk_0775d8();
+    Unk02d15c_Unk_02d81c();
 }
 
-/* decompiler-derived */
+/* 0x02095d1c reads subobject offset 4; callers interpret -1 as no record. */
 u32 Unk095560_Unk_095d1c(void)
 {
-  int tmp1;
-  tmp1 = (int)(Unk095560_GetManagerSub3a8());
-  return *(u32 *)(tmp1 + 4);
+    const Unk095560Words *words = (const Unk095560Words *)Unk095560_GetManagerSub3a8();
+    return words->unk_04;
 }
 
-/* decompiler-derived */
+/* 0x02095d4c reads subobject offset 8; manager storage remains borrowed. */
 u32 Unk095560_Unk_095d4c(void)
 {
-  int tmp1;
-  tmp1 = (int)(Unk095560_GetManagerSub3a8());
-  return *(u32 *)(tmp1 + 8);
+    const Unk095560Words *words = (const Unk095560Words *)Unk095560_GetManagerSub3a8();
+    return words->unk_08;
 }
 
-/* decompiler-derived */
-void Unk095560_Unk_095d08(u32 arg0)
+/* 0x02095d08 stores the caller's word at subobject offset 8.
+ * The subobject borrows the manager's static storage. */
+void Unk095560_Unk_095d08(u32 value)
 {
-  int tmp1;
-  tmp1 = (int)(Unk095560_GetManagerSub3a8());
-  *(u32 *)(tmp1 + 8) = arg0;
+    Unk095560Words *words = (Unk095560Words *)Unk095560_GetManagerSub3a8();
+    words->unk_08 = value;
 }
 
-/* decompiler-derived */
+typedef struct Worker Worker;
+void Unk0202dcfc_InitWorker(Worker *worker, u32 owner);
+u32 Unk0964f8_Unk_0964f8(void);
+
+/* 0x020956a8 resets through 0956e8/0964f8, initializes the borrowed manager
+ * worker with owner 0, and returns 1 regardless of the reset results. */
 u32 Unk095560_Unk_0956a8(void)
 {
-  u32 tmp1;
-  Unk095560_Unk_0956e8();
-  Unk0964f8_Unk_0964f8();
-  tmp1 = (unsigned int)(Unk095560_GetManagerAlias());
-  Unk0202dcfc_InitWorker(tmp1,0);
-  return 1;
+    Unk095560_Unk_0956e8();
+    Unk0964f8_Unk_0964f8();
+    Unk0202dcfc_InitWorker((Worker *)Unk095560_GetManagerAlias(), 0);
+    return 1;
 }
 
-/* decompiler-derived */
+/* 0x020956c8 repeats 0956a8's provider sequence and unconditional success;
+ * the original has a separate entry point with identical instructions. */
 u32 Unk095560_Unk_0956c8(void)
 {
-  u32 tmp1;
-  Unk095560_Unk_0956e8();
-  Unk0964f8_Unk_0964f8();
-  tmp1 = (unsigned int)(Unk095560_GetManagerAlias());
-  Unk0202dcfc_InitWorker(tmp1,0);
-  return 1;
+    Unk095560_Unk_0956e8();
+    Unk0964f8_Unk_0964f8();
+    Unk0202dcfc_InitWorker((Worker *)Unk095560_GetManagerAlias(), 0);
+    return 1;
 }
 
 int func_0204af80();
@@ -467,23 +489,28 @@ int Unk095560_Unk_0959d0(s32 a, s32 *out)
     return 0;
 }
 
+/* 0x02095b28 passes slot 8 and the caller word to 095950,
+ * returning its result normalized to 0 or 1. */
 int Unk095560_Unk_095b28(u32 x)
 {
     return Unk095560_Unk_095950(8, x) != 0;
 }
 
+/* 0x02095cd8 saves c/d in the two global words, stores b/a/-1 in
+ * the borrowed manager subobject, and returns 1. Field meanings are unknown. */
 int Unk095560_Unk_095cd8(u32 a, u32 b, u32 c, u32 d)
 {
-    u32 *q;
+    Unk095560Words *q;
     ((u32 *)data_02175ea8)[0] = c;
     ((u32 *)data_02175ea8)[1] = d;
-    q = (u32 *)Unk095560_GetManagerSub3a8();
-    q[1] = a;
-    q[0] = b;
-    q[2] = -1;
+    q = (Unk095560Words *)Unk095560_GetManagerSub3a8();
+    q->unk_04 = a;
+    q->unk_00 = b;
+    q->unk_08 = -1;
     return 1;
 }
 
+/* 0x0209614c tail-forwards mode 1 to 020773dc, as the literal/BX shows. */
 void Unk095560_Call_020773dc(void)
 {
     func_020773dc(1);
