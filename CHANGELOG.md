@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T675: document and type seven selector handlers and the indexed record-word transfer in game/unit_02039bb4.
 - M1-T674: verified eight game/unit_02039bb4 routines and documented typed work parameters, field increments, selector calls, and the forwarding thunk.
 - M1-T634: matched all eight selector, coordinate-probe, initialization, record-search, and permission-dispatch functions at 100% objdiff.
 - Match all eight M1-T666 game/unit_0203aae8 targets at 100% objdiff, including argument decoding, opcode dispatch, bit operations, and record initialization.
