@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T504 table, record-query, and packed-state functions in `game/unit_020f3db4`, with typed contracts and instruction evidence.
 - Verified all eight M1-T503 packed-state and work-access helpers at 100% objdiff; documented contracts and made table-selector forwarding explicit.
 - Matched all eight M1-T502 game/unit_0210947c callbacks, constructor, snapshot refresh and field helpers with typed layouts and documented contracts.
 - Matched all eight M1-T500 work reset, callback descriptor, empty callback and lookup helpers in `game/unit_020fa7e8`; documented typed contracts and original instruction evidence.
