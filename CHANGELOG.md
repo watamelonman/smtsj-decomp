@@ -3,6 +3,10 @@
 ## Unreleased
 
 - Match `func_020b6f28` state-dependent drawing and document two remaining unit_020b6570 hard functions.
+- Match eight more game/unit_02122e1c resource and state routines, with typed work views and evidence documentation.
+- Match all eight M1-T748 slot, flag, and state helper functions in game/unit_02122e1c.
+- Verified all eight M1-T747 work-field accessors, byte predicates and call wrappers at 100% objdiff; added typed object parameters and instruction evidence.
+- M1-T720: match all four remaining unit_020ce578 setup, state and input handlers at 100% objdiff, with typed work parameters and observed provider contracts.
 - Matched the eight M1-T745 game/unit_020b6570 query, status, resource, cleanup, and graphics setup functions with typed contracts.
 - Match all four M1-T709 game/unit_0209d42c weighted-selection, cell-update, mode-polling, and record-work routines at 100% objdiff.
 - M1-T719: match all eight unit_020ce578 registration, setup, teardown, dispatcher and event functions with typed borrowed work layouts.
