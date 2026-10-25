@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T665 game/unit_0203aae8 functions at 100% objdiff; document typed helper contracts, kind dispatch, slot access, and scaled query arithmetic.
 - Verified all eight M1-T664 game/unit_0203aae8 functions at 100% objdiff; typed helper calls, made query-result forwarding explicit, and documented assembly evidence.
 - Match all four M1-T643 StaffRoll viewport, script-layout, owner-initialization, and asynchronous image-loader functions at 100% objdiff.
 - Verified all eight M1-T652 manager, tier, allocation and initialization helpers at 100% objdiff; documented instruction evidence and typed callee parameters.
