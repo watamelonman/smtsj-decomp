@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T568 buffer, release, mode and mission-log helpers at 100% objdiff; documented instruction evidence and typed buffer contracts.
 - Corrected the M1-T567 low-pair wrapper to forward its typed table index and describe its two-bit return value.
 - Verified all eight M1-T567 wrappers and buffer accessors in `game/unit_020d297c` at 100% objdiff, with typed arguments, return values, and documented assembly evidence.
 - Matched all seven M1-T548 object creation, slot dispatch, request update and record predicate functions in game/unit_020bc1a8 at 100% objdiff.

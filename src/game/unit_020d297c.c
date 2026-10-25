@@ -39,7 +39,8 @@ u16 Unk0d297c_Unk_0d32e8(const Unk0d297cBuffer *buffer, int index);
 u16 *Unk0d297c_Unk_0d32f8(const Unk0d297cBuffer *buffer);
 
 void func_020d297c(u16 id);
-void Unk0d297c_Call_020d297c(int id)
+/** Add 50 and truncate to a halfword before forwarding; see 0x020d2a8c. */
+void Unk0d297c_Call_020d297c(u32 id)
 {
     func_020d297c((u16)(id + 50));
 }
@@ -76,7 +77,7 @@ u16 *Unk0d297c_Unk_0d32f8(const Unk0d297cBuffer *buffer)
     return buffer->data + buffer->index;
 }
 
-/* decompiler-derived */
+/** Store the first two words and clear +0x0c/+0x10; +0x08 is preserved (0x020d3250). */
 void Unk0d297c_Unk_0d3250(u32 *arg0,u32 arg1,u32 arg2)
 {
   *arg0 = arg1;
@@ -86,14 +87,14 @@ void Unk0d297c_Unk_0d3250(u32 *arg0,u32 arg1,u32 arg2)
 }
 
 
-/* decompiler-derived */
-u16 Unk0d297c_Unk_0d32ac(int *arg0)
+/** Read the halfword at the signed +0x04 index; caller guarantees validity (0x020d32ac). */
+u16 Unk0d297c_Unk_0d32ac(const Unk0d297cBuffer *buffer)
 {
-  return *(u16 *)(*arg0 + arg0[1] * 2);
+  return buffer->data[buffer->unk_0004];
 }
 
 
-/* decompiler-derived */
+/** Clear words +0x04, +0x00, +0x0c and +0x10, preserving +0x08 (0x020d31e8). */
 void Unk0d297c_Unk_0d31e8(u32 *arg0)
 {
   arg0[1] = 0;
@@ -103,20 +104,20 @@ void Unk0d297c_Unk_0d31e8(u32 *arg0)
 }
 
 
-/* decompiler-derived */
-void Unk0d297c_Unk_0d3290(int *arg0,u16 arg1)
+/** Write without advancing +0x04 when signed index < +0x08; no lower bound check (0x020d3290). */
+void Unk0d297c_Unk_0d3290(Unk0d297cBuffer *buffer, u16 value)
 {
-  if (arg0[1] < arg0[2]) {
-    *(u16 *)(*arg0 + arg0[1] * 2) = arg1;
+  if (buffer->unk_0004 < buffer->unk_0008) {
+    buffer->data[buffer->unk_0004] = value;
   }
 }
 
 int func_02053000();
 void Unk0d297c_FreeSlot();
-/* decompiler-derived */
+/** Release the leading slot, then release and clear +0x18; call order from 0x020d33ac. */
 void Unk0d297c_Unk_0d33ac(Unk0d297cWork *work)
 {
-  Unk0d297c_FreeSlot();
+  Unk0d297c_FreeSlot((u32 *)work);
   func_02053000(work->unk_0018);
   work->unk_0018 = 0;
 }
@@ -270,7 +271,7 @@ u32 Unk0d297c_Unk_0d3034(u32 arg0,u32 arg1)
 
 extern u8 data_02150680[];
 int func_02051610();
-/* Loads Data/Event/Mission/MissionLog.mbb into data_02176be0 (certain from string). */
+/** Load Data/Event/Mission/MissionLog.mbb (data_02150680 string), store its handle, return 1. */
 u32 Unk0d297c_LoadMissionLog(void)
 {
   u32 tmp1;
@@ -319,7 +320,7 @@ void Unk0d297c_Unk_0d2aa4(u32 obj)
     Unk094fe0_SetUnkField9a0(obj);
 }
 
-/* Switches to mode 2 when active. */
+/** Pass mode 2 only for a nonzero query result; cmp/popeq at 0x020d2af8-0x020d2afc establishes the guard. */
 void Unk0d297c_Unk_0d2aec(u32 obj)
 {
     if (Unk0e5fb8_Unk_0e6448(obj) == 0) {
