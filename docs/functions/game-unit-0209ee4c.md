@@ -23,15 +23,27 @@ speculative gameplay meanings.
 
 None for M1-T766.
 
-## Not done in M1-T767
-- `Unk09ee4c_Unk_09efb4`
-- `func_0209f298`
-- `Unk09ee4c_Unk_09f5d8`
-- `Unk09ee4c_Unk_09fd14`
-- `func_0209f550`
-- `func_0209f034`
-- `func_0209f480`
-- `func_0209ee80`
-- `Unk09ee4c_Unk_09efb4`: hand-matched
-- `Unk09ee4c_Unk_09f5d8`: hand-matched
-- `Unk09ee4c_Unk_09fd14`: hand-matched
+## M1-T767
+
+All eight functions match at 100% in objdiff. Names remain neutral because the
+instruction evidence establishes data flow without proving gameplay meaning.
+Offsets below refer to borrowed storage; providers retain ownership.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `Unk09ee4c_Unk_09efb4` | With live state, looks up the ID descriptor, invokes its first callback when present, then writes mode 22 and ID at +0x73e8/+0x73ec. Callback receives the ID. |
+| `func_0209f298` | Adds signed record +0x192 to base, clamps negative results to zero, then calls `func_0204f364`. Either descriptor +16 bit 0 or bit 1 selects flag 1; otherwise flag 0. Target shifts establish the bitfield view. |
+| `Unk09ee4c_Unk_09f5d8` | Rejects IDs whose bits 16..23 are not 2 with -1. Resolves ID, reads unsigned halfword +0x1d8, resolves that resource, and forwards its byte +3 with flag 0 to f550. |
+| `Unk09ee4c_Unk_09fd14` | Clears ID slots then calls f034 four times with base 0, both IDs equal, flag 1 and consecutive 22-byte records. Caller supplies four valid records. |
+| `func_0209f550` | Resolves entry or returns -1; submits four 22-byte records, calls f520 with base plus signed +0x192, calls a780 on the ID resource with 12, then returns signed +0x190. |
+| `func_0209f034` | Rejects initial signed bytes 0/48 and a zero pattern-call result. Kinds 3/4/5 at unsigned +18 select the second ID; other kinds select the first. Adds signed +16 to base, clamps at zero, submits through f188 and returns the adjusted value. Record requires at least 20 readable bytes. |
+| `func_0209f480` | Record +132 bits 14/15 enable submissions from words +112/+116. First uses kinds 21/1 and slot 0; second uses kinds 22/3, with base +4 and slot 1 if the first was enabled. All f24c calls pass final flag 1. |
+| `func_0209ee80` | With live state, resolves index table entry and reads signed work coordinates +0x364/+0x365. Entry +16 equal to 1 enables direction adjustment: 0 decrements y, 1 increments x, 2 increments y, 3 decrements x. Stores index/coordinates at state +0x747c/+0x7482/+0x7483, calls visor helper with 2, then selects mode 19. |
+
+The source bitfields preserve the target's shift-based extraction. Switch cases
+preserve the observed comparison chain and direction jump table. Definition
+ordering preserves local-call relocations for existing callers.
+
+### Hard list
+
+None for M1-T767. Validation: match gate, anticheat, nine tool tests and checksum.
