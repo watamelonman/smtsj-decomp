@@ -29,16 +29,23 @@ All eight functions match at 100% against the original ARM object.
 
 No hard functions remain in this card. Existing descriptive names reflect only observed loads, stores, or call destinations; neutral names retain unknown semantics.
 
+## M1-T537
+
+All eight functions match at 100% against the original ARM object. Neutral
+names retain unknown semantics; the contracts below follow the original loads,
+stores, comparisons and call relocations. No hard functions remain in this card.
+
+- `ImageBgDual3D_Unk_125a68` (`0x02125a68`, 24 bytes): calls `ImageBgDual3D_AllocBuf`, `Unk065e88_Unk_065e88`, then `func_020773dc(1)`; no results consumed.
+- `ImageBgDual3D_Unk_125ca4` (`0x02125ca4`, 24 bytes): returns the exact zero comparison of `ImageBgDual3D_Unk_12594c`, normalized to zero or one.
+- `ImageBgDual3D_Unk_125cbc` (`0x02125cbc`, 24 bytes): returns the exact one comparison of the same helper, normalized to zero or one.
+- `ImageBgDual3D_Unk_125d30` (`0x02125d30`, 24 bytes): calls `ImageBgDual3D_Unk_1258e8` only if `ImageBgDual3D_Unk_125cbc` is nonzero.
+- `ImageBgDual3D_Unk_1259c4` (`0x021259c4`, 28 bytes): obtains the borrowed, non-null global work address; stores the argument at offset 4 and one at offset 0xc.
+- `ImageBgDual3D_Unk_125c40` (`0x02125c40`, 32 bytes): calls `Unk116598_Unk_117790`, then `Unk116598_Unk_117294`, and stores the return word of `func_02125a08` in `data_02176e94`. No ownership inference is made.
+- `ImageBgDual3D_Unk_125d10` (`0x02125d10`, 32 bytes): forwards its opaque word to `ImageBgDual3D_Unk_1258a0` only if `ImageBgDual3D_Unk_125cbc` is nonzero.
+- `ImageBgDual3D_Unk_125650` (`0x02125650`, 40 bytes): passes the borrowed work's offset-0x8c word to `func_0205c408` with zero and then `func_0205c6e0`, and clears offset 0x208. Work must be non-null.
+
 ## Other tasks
 
-- `ImageBgDual3D_Unk_125a68`: decompiler-derived
-- `ImageBgDual3D_Unk_125ca4`: decompiler-derived
-- `ImageBgDual3D_Unk_125cbc`: decompiler-derived
-- `ImageBgDual3D_Unk_125d30`: decompiler-derived
-- `ImageBgDual3D_Unk_1259c4`: decompiler-derived
-- `ImageBgDual3D_Unk_125c40`: decompiler-derived
-- `ImageBgDual3D_Unk_125d10`: decompiler-derived
-- `ImageBgDual3D_Unk_125650`: decompiler-derived
 - `ImageBgDual3D_Unk_125618`: decompiler-derived
 - `ImageBgDual3D_Unk_125cd4`: decompiler-derived
 - `ImageBgDual3D_Unk_125d48`: decompiler-derived
