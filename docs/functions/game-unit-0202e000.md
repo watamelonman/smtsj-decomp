@@ -47,16 +47,7 @@ No M1-T650 targets remain. Historical unresolved candidate:
 - `Unk02e000_EnsureAlloc7718`
 - `Unk02e000_AddCounter5fc4`
 - `Unk02e000_SetSlot`
-- `Unk02e000_Unk_02e75c`: decompiler-derived
-- `Unk02e000_Unk_02e884`: decompiler-derived
-- `Unk02e000_Unk_02e89c`: decompiler-derived
 
-## Not done in M1-T651
-- `Unk02e000_Unk_02e5c4`
-- `Unk02e000_ClearMgrUnk38`
-- `Unk02e000_Call_02008848`
-- `Unk02e000_Unk_02e740`
-- `Unk02e000_GetAreaRecord`
 
 ## Not done in M1-T653
 - `Unk02e000_Unk_02e7c0`
@@ -95,17 +86,12 @@ No M1-T650 targets remain. Historical unresolved candidate:
 - `func_0202e23c`
 - `Unk02e000_Unk_02e0cc`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
-- `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
-- `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)
-- `Unk02e000_ClearMgrUnk38`: hand-matched
-- `Unk02e000_GetAreaRecord`: hand-matched
 - `Unk02e000_SetSlot`: hand-matched
 - `Unk02e000_GetSlot`: hand-matched
 - `Unk02e000_SetMgrUnk38`: hand-matched
 - `Unk02e000_EnsureAlloc7718`: hand-matched
 - `Unk02e000_AddCounter5fc4`: hand-matched
 - `Unk02e000_GetTier`: hand-matched
-- `Unk02e000_Call_02008848`: hand-matched
 - `Unk02e000_Unk_02e7c0`: hand-matched
 - `Unk02e000_FindEntryIndex`: hand-matched
 - `Unk02e000_Unk_02e840`: hand-matched
@@ -128,3 +114,23 @@ No M1-T650 targets remain. Historical unresolved candidate:
 - `Unk02e000_SetRecordFlag1f`: hand-matched
 - `Unk02e000_SetRecordFlag1f_1`: hand-matched
 - `Unk02e000_SetRecordUnk1f_2`: hand-matched
+
+## M1-T651
+
+All eight existing candidates verified at **100% objdiff**. Evidence is the
+original ARM instruction sequence. Address returns retain the existing 32-bit
+ABI; all views are borrowed and require prior allocation and valid indices.
+Neutral names remain where instruction evidence does not establish purpose.
+
+| Function | Address / bytes | Instruction evidence and contract |
+| --- | --- | --- |
+| `Unk02e000_Unk_02e5c4` | 0x0202e5c4 / 24 | Calls Unk_02e75c(index), then func_02008848(record, 0, 72). |
+| `Unk02e000_Unk_02e75c` | 0x0202e75c / 24 | Loads allocation word +4 and multiply-adds index times 72. |
+| `Unk02e000_Unk_02e884` | 0x0202e884 / 24 | Loads allocation word +4; adds 0x5d0 and 0x6000. |
+| `Unk02e000_ClearMgrUnk38` | 0x0202e090 / 28 | Calls manager alias getter; conditionally stores zero at +0x38 and +0x3c, supporting the existing name. Null is allowed. |
+| `Unk02e000_Call_02008848` | 0x0202e5a8 / 28 | Calls Unk_02e884 then func_02008848 with zero and length 0x1148; returns its result. |
+| `Unk02e000_Unk_02e740` | 0x0202e740 / 28 | Calls Unk_02e75c, loads unsigned byte +0x28, returns whether nonzero. |
+| `Unk02e000_GetAreaRecord` | 0x0202e7a4 / 28 | Calls GetWorkArea, adds 0x74, multiply-adds index times 60; record table arithmetic supports the existing name. |
+| `Unk02e000_Unk_02e89c` | 0x0202e89c / 28 | Loads allocation word +4, adds 0x26 and 0x5d00, then index shifted left two. Address need not be word aligned. |
+
+No M1-T651 targets remain on the hard list.
