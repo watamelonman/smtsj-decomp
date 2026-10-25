@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all six M1-T658 game/unit_020cd6ec state, input, message, and item-rebuild handlers at 100% objdiff; preserved the eight earlier matches.
 - Matched all eight M1-T657 game/unit_020cd6ec callbacks, cleanup routines, state transitions, and handle flag updates; documented typed state offsets and instruction evidence.
 - Matched all five M1-T630 resource sorting, list cleanup, output setup and loading-state routines in game/unit_020a163c at 100% objdiff.
 - Verified all eight M1-T651 manager, record and allocation-view helpers at 100% objdiff; clarified typed access and instruction contracts.
