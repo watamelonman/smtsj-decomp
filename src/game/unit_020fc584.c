@@ -12,19 +12,19 @@ typedef struct Unk0fc584Work {
 /* Borrowed field views; gaps describe only offsets observed in this unit. */
 typedef struct Unk0fc584State {
     u32 unk_0000;
-    u32 unk_0004;
+    s32 unk_0004;
     u32 unk_0008;
     s32 unk_000c;
     u32 unk_0010;
     s32 unk_0014;
-    u32 unk_0018;
+    s32 unk_0018;
     s32 unk_001c;
     s32 unk_0020;
     s32 unk_0024;
     s32 unk_0028;
     u32 unk_002c;
     u32 unk_0030;
-    u32 unk_0034;
+    float unk_0034;
     u32 unk_0038;
     u32 unk_003c;
 } Unk0fc584State;
@@ -356,7 +356,7 @@ u32 func_020fc8bc(u32 kind)
 
 extern u8 data_021510a0[];
 void func_020a9fd8(u32 kind, u32 arg1, u32 arg2, u32 mode,
-    u32 arg4, u32 arg5, const u8 *format, s32 value);
+    u32 arg4, u32 arg5, const u8 *format, ...);
 /* Clamp signed +0x20 to 0..99999999 for formatted output; 020fcf5c literal/call. */
 void func_020fcf5c(Unk0fc584State *p, u32 arg1, u32 arg2, u32 arg3)
 {
@@ -364,4 +364,100 @@ void func_020fcf5c(Unk0fc584State *p, u32 arg1, u32 arg2, u32 arg3)
     if (value < 0) value = 0;
     if (value > 99999999) value = 99999999;
     func_020a9fd8(1, arg1, arg2, 2, arg3, 17, data_021510a0, value);
+}
+
+/* Borrowed work prefix; 020fca5c reads the signed word at +0x344. */
+typedef struct Unk0fc584Area { u8 pad[0x344]; s32 unk_0344; } Unk0fc584Area;
+Unk0fc584Area *Unk02e000_GetWorkArea(void);
+int func_02053800(u32 arg0, u32 arg1);
+void func_0205de40(u32 screen, u32 handle, u32 cell, s32 x, s32 y,
+    float sx, float sy, u32 flags, float alpha, u32 order);
+void func_02057e58(u32 arg0, u32 arg1, u32 arg2);
+void func_02058e9c(u32 screen, u32 resource, s32 x, s32 y, float scale, u32 flags, u32 order);
+extern u8 data_02151084[], data_02151088[], data_02151094[], data_02151098[], data_0215109c[];
+
+/* Advance borrowed state, interpolate +0x20, and handle settling; evidence: 020fca5c field accesses. */
+void func_020fca5c(Unk0fc584State *p)
+{
+    if (++p->unk_0004 >= 65535) p->unk_0004 = 0;
+    if (p->unk_0014 > 0) {
+        p->unk_000c += p->unk_0014;
+        if (p->unk_000c >= p->unk_0018) {
+            p->unk_000c = p->unk_0018;
+            p->unk_0014 = 0;
+            Unk0fc584_Unk_0fc84c(0);
+        }
+    } else if (p->unk_0014 < 0) {
+        p->unk_000c += p->unk_0014;
+        if (p->unk_000c <= 0) { p->unk_000c = 0; p->unk_0014 = 0; }
+    }
+    if (p->unk_000c == 0) p->unk_0034 = 1.0f;
+    else if (p->unk_000c != p->unk_0018) {
+        s32 step = p->unk_0014;
+        if (step <= 0) step = -step;
+        p->unk_0034 = (float)(step * 100 / p->unk_000c) / 100.0f;
+        if (p->unk_0034 > 1.0f) p->unk_0034 = 1.0f;
+    }
+    if (p->unk_0020 == p->unk_0024) {
+        Unk0fc584Area *area = Unk02e000_GetWorkArea();
+        p->unk_0020 = area->unk_0344;
+        p->unk_0024 = area->unk_0344;
+        return;
+    }
+    if ((s32)p->unk_0004 % 6 == 0) Unk0a0ce4_Unk_0a0da4(12);
+    p->unk_0020 += p->unk_0028;
+    if (p->unk_0028 > 0) {
+        if (p->unk_0020 >= p->unk_0024) Unk0fc584_Unk_0fc824();
+    } else if (p->unk_0020 <= p->unk_0024) Unk0fc584_Unk_0fc824();
+    if ((s32)p->unk_003c > 0) --p->unk_003c;
+    if (p->unk_0038 != 0 && (s32)p->unk_003c < 1 && func_02053800(0, 3)) Unk0fc584_Unk_0fc824();
+}
+
+/* Draw kind-zero cells and settled numeric output; 020fcc10 supplies cell IDs 0, 2, 1. */
+void func_020fcc10(Unk0fc584State *p)
+{
+    if (!Unk0fc584_IsBelow64()) return;
+    Unk0fc584_Unk_0fcfb0();
+    func_0205de40(2, p->unk_0008, 0, p->unk_000c, p->unk_0010, 1.0f, 1.0f, 0, p->unk_0034, 16);
+    func_0205de40(2, p->unk_0008, 2, p->unk_000c, p->unk_0010, 1.0f, 1.0f, 0, p->unk_0034, 17);
+    if (1.0f == p->unk_0034) {
+        func_0205de40(2, p->unk_0008, 1, p->unk_000c, p->unk_0010, 1.0f, 1.0f, 0, 1.0f, 17);
+        func_020fcf5c(p, p->unk_000c + 202, p->unk_0010 + 30, 40);
+    }
+    Unk0fc584_Unk_0fcfd0();
+}
+
+/* Draw the other kind's value and signed pending change; evidence: 020fcd18 format selections. */
+void func_020fcd18(Unk0fc584State *p)
+{
+    s32 y, x, change;
+    if (!Unk0fc584_IsBelow64()) return;
+    Unk0fc584_Unk_0fcfb0();
+    func_02057e58(0, 10, 20);
+    func_02057eb8(0);
+    func_0205de40(2, p->unk_0008, 0, p->unk_000c, p->unk_0010, 1.0f, 1.0f, 0, p->unk_0034, 16);
+    if (1.0f == p->unk_0034) {
+        func_02057ddc(-1);
+        {
+            s32 value = p->unk_0020;
+            s32 y, x;
+            y = p->unk_0010;
+            if (value < 0) value = 0;
+            if (value > 99999999) value = 99999999;
+            x = p->unk_000c;
+            func_020a9fd8(1, x + 239, y + 2, 2, 5, 16, data_02151084, value);
+            func_02058e9c(1, 0x611b, x + 249, y + 2, 1.0f, 0, 17);
+        }
+        x = p->unk_000c; y = p->unk_0010;
+        func_02058e9c(1, 0x611b, x + 249, y + 11, 1.0f, 0, 17);
+        change = p->unk_002c;
+        if (p->unk_0030 == 0) func_020a9fd8(1, x + 239, y + 11, 2, 5, 17, data_02151088);
+        else {
+            func_02057ddc(0xff9429ff);
+            if (change > 0) func_020a9fd8(1, x + 239, y + 11, 2, 5, 17, data_02151094, change);
+            else if (change < 0) func_020a9fd8(1, x + 239, y + 11, 2, 5, 17, data_02151098, change);
+            else func_020a9fd8(1, x + 239, y + 11, 2, 5, 17, data_0215109c, 0);
+        }
+    }
+    Unk0fc584_Unk_0fcfd0();
 }
