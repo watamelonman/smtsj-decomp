@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T681 game/unit_020afc28 slot, selector, predicate and scaling routines with typed borrowed layouts. 
 - Matched all eight M1-T680 game/unit_020afc28 routines; documented record layouts, signed-byte lookups, coordinate checks and spread arithmetic.
 - M1-T675: document and type seven selector handlers and the indexed record-word transfer in game/unit_02039bb4.
 - Match all four M1-T667 script provider dispatchers in game/unit_0203aae8 at 100% objdiff, with typed record and borrowed object views.
