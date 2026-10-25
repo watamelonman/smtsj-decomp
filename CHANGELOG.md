@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match both M1-T562 area initialization and derived-field refresh functions in game/unit_02096754 at 100% objdiff.
+
 - Match seven M1-T561 area/list functions in game/unit_02096754; document the remaining initialization function on the hard list.
 - Verified all eight M1-T575 manager-pair, record-address and status helpers at 100% objdiff; added typed declarations and evidence-based contracts.
 - Corrected the M1-T567 low-pair wrapper to forward its typed table index and describe its two-bit return value.
