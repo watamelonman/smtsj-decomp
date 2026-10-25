@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T577 request, record lookup, condition and kind mapping functions at 100% objdiff; documented typed request contracts and instruction evidence.
 - Matched all eight M1-T576 manager predicates, image release, setup, record reset and constant mapping helpers at 100% objdiff; documented typed contracts and instruction evidence.
 
 - Match seven M1-T561 area/list functions in game/unit_02096754; document the remaining initialization function on the hard list.
