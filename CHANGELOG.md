@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T633 game/unit_020986ac flag, selector, and bounded record scan functions at 100% objdiff; documented typed contracts and compiler propagation control.
 - Corrected M1-T632 id lookup and borrowed record arguments in `Unk0986ac_Unk_098918`, preserving original instructions.
 - Verified all eight M1-T632 game/unit_020986ac targets at 100% objdiff; documented typed calls, borrowed field contracts, and instruction evidence.
 - Match eight StaffRoll state, text-slot, spacing, and drawing functions to the original ARM code (M1-T641).

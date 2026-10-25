@@ -67,6 +67,8 @@ int Unk0986ac_Unk_0986c0(int arg0)
 
 int func_0204fed8(u32 handle, int index);
 void func_02061f10(int handle, int arg1, int arg2, int arg3, int value);
+/* Set or clear the indexed bit in borrowed storage; 0x020986d4 uses
+ * bit & 7 as the mask shift. Caller must enforce storage bounds. */
 void Unk0986ac_SetFlagBit(int bit, int on)
 {
     u8 *p = (u8 *)Unk0986ac_Unk_0986c0(bit);
@@ -202,17 +204,21 @@ int Unk0986ac_IsMode012(u8 *p)
     return r;
 }
 
-void Unk0986ac_Unk_09911c();
-void func_02099174();
-int Unk0a23f4_Unk_0a246c();
+struct Unk09911cObj;
+void Unk0986ac_Unk_09911c(struct Unk09911cObj *p);
+void func_02099174(u8 *p);
+int Unk0a23f4_Unk_0a246c(void);
 void Unk0986ac_Unk_099234(u8 *p);
+/* Borrowed header prefix; only signed selector +16 is observed. */
 typedef struct Unk09911cHdr {
     u8 pad_00[16];
     s32 unk_10;
 } Unk09911cHdr;
+/* Borrowed state prefix whose first word points to the header. */
 typedef struct Unk09911cState {
     Unk09911cHdr *hdr;
 } Unk09911cState;
+/* Borrowed object fields observed by 0x0209911c, through signed word +56. */
 typedef struct Unk09911cObj {
     u8 pad_00[4];
     u32 unk_04;
@@ -223,10 +229,13 @@ typedef struct Unk09911cObj {
     u8 pad_2c[12];
     s32 unk_38;
 } Unk09911cObj;
-void *GetGameState();
-void Unk11f2d0_Unk_11f320();
-int Unk09974c_Unk_0998d8();
+void *GetGameState(void);
+void Unk11f2d0_Unk_11f320(void *p);
+int Unk09974c_Unk_0998d8(int id);
 
+/* With a live game state, call the operation on state +30104, forward
+ * object fields +16/+4/+40, then set +56 if object +40 or header +16 is 1.
+ * Loads and call relocations at 0x0209911c establish these borrowed views. */
 void Unk0986ac_Unk_09911c(Unk09911cObj *p)
 {
     Unk09911cState *gs = (Unk09911cState *)GetGameState();
@@ -242,6 +251,9 @@ void Unk0986ac_Unk_09911c(Unk09911cObj *p)
     }
 }
 
+/* Decrement signed word +56 and recompute outputs; when nonpositive, clear
+ * words +24/+40/+56/+64 and byte +68 (0x02099234). Caller supplies aligned
+ * borrowed storage through +68 and a decrement representable as signed int. */
 void Unk0986ac_Unk_099234(u8 *p)
 {
     FIELD(s32, p, 56) -= 1;
@@ -256,6 +268,9 @@ void Unk0986ac_Unk_099234(u8 *p)
     FIELD(u8, p, 68) = 0;
 }
 
+/* Consume pending selector +24 into +20, reset +24 to -1, and dispatch
+ * selectors 2 and 3; stores and branches at 0x02099274 define this transition.
+ * The borrowed object must satisfy the selected handler contract. */
 void Unk0986ac_Unk_099274(u8 *p)
 {
     FIELD(s32, p, 20) = FIELD(s32, p, 24);
@@ -270,6 +285,9 @@ void Unk0986ac_Unk_099274(u8 *p)
     }
 }
 
+/* Dispatch borrowed selector +20: 1 may queue 2 at +24 when the external
+ * predicate returns exactly 1; 2 and 4 invoke their handlers. The jump table
+ * at 0x020992b0 establishes these cases; other selectors have no effect. */
 void Unk0986ac_Unk_0992b0(u8 *p)
 {
     switch (FIELD(u32, p, 20)) {
@@ -290,3 +308,71 @@ void Unk0986ac_Unk_0992b0(u8 *p)
         break;
     }
 }
+
+int func_0209a158(int id);
+/* Preserve the original loop-entry comparisons. See DEC-014. */
+#pragma push
+#pragma opt_propagation off
+
+/* Scan ids 111..210 for a matching middle field and an enabled external
+ * predicate; 0x02098860 returns one on the first such record. Records are borrowed. */
+int func_02098860(int field)
+{
+    int result = 0;
+    int id;
+    id = 111;
+    while (id <= 210) {
+        Unk09974cFlags *record = Unk09974c_Unk_099d78(id);
+        if (record != 0 && Unk09974c_GetFlagsMidMinus1(record) == field) {
+            if (Unk09974c_Unk_0998d8(id) != 0) {
+                result = 1;
+                break;
+            }
+        }
+        id++;
+    }
+    return result;
+}
+
+/* Scan the same borrowed id range; 0x020988bc returns zero on the first
+ * matching middle field whose func_0209a158 predicate is false, otherwise one. */
+int func_020988bc(int field)
+{
+    int result = 1;
+    int id;
+    id = 111;
+    while (id <= 210) {
+        Unk09974cFlags *record = Unk09974c_Unk_099d78(id);
+        if (record != 0 && Unk09974c_GetFlagsMidMinus1(record) == field) {
+            if (func_0209a158(id) == 0) {
+                result = 0;
+                break;
+            }
+        }
+        id++;
+    }
+    return result;
+}
+
+/* Return the largest high nibble at +4 among borrowed records for ids
+ * 111..210 matching the middle field and external predicate; 0x02098740
+ * loads the halfword and shifts bits 12..15. Zero also covers no match. */
+int func_02098740(int field)
+{
+    int result = 0;
+    int id;
+    id = 111;
+    while (id <= 210) {
+        Unk09974cFlags *record = Unk09974c_Unk_099d78(id);
+        if (record != 0 && Unk09974c_GetFlagsMidMinus1(record) == field &&
+            Unk09974c_Unk_0998d8(id) != 0) {
+            if (result < record->unk_04_hi) {
+                result = record->unk_04_hi;
+            }
+        }
+        id++;
+    }
+    return result;
+}
+
+#pragma pop
