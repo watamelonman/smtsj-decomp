@@ -2,6 +2,13 @@
 
 ## Unreleased
 - Matched five M1-T669 packing, validation, and table encoding functions in game/unit_02111400; documented two remaining hard functions.
+- Corrected M1-T654 resource-provider declarations to use 16-bit IDs and the provider record pointer type, preserving all eight instruction matches.
+- Verified all eight M1-T654 record, flag, entry search and slot-copy functions at 100% objdiff; documented instruction evidence and typed contracts.
+- M1-T674: verified eight game/unit_02039bb4 routines and documented typed work parameters, field increments, selector calls, and the forwarding thunk.
+- M1-T634: matched all eight selector, coordinate-probe, initialization, record-search, and permission-dispatch functions at 100% objdiff.
+- Match all eight M1-T666 game/unit_0203aae8 targets at 100% objdiff, including argument decoding, opcode dispatch, bit operations, and record initialization.
+- Verified seven M1-T653 slot, record, flag and initialization helpers at 100% objdiff; documented the remaining settings-table helper on the hard list.
+- Match all eight M1-T665 game/unit_0203aae8 functions at 100% objdiff; document typed helper contracts, kind dispatch, slot access, and scaled query arithmetic.
 - Matched all eight M1-T668 functions in game/unit_02111400 with typed C and documented assembly evidence.
 - Matched all six M1-T658 game/unit_020cd6ec state, input, message, and item-rebuild handlers at 100% objdiff; preserved the eight earlier matches.
 - Verified all eight M1-T664 game/unit_0203aae8 functions at 100% objdiff; typed helper calls, made query-result forwarding explicit, and documented assembly evidence.
