@@ -25,8 +25,8 @@ typedef struct Unk10a034Work {
 extern u32 data_02176e38[];
 extern u32 data_02176e3c[];
 extern u32 data_02176e44[];
-int func_02061424();
-int func_020a1740();
+void func_02061424(Unk10a034Work *work);
+const u8 *func_020a1740(u32 id);
 
 u32 Unk10a034_Get_data_02176e38(void);
 u32 Unk10a034_Get_data_02176e3c(void);
@@ -43,7 +43,7 @@ int Unk10a034_Unk_10afc0(void);
 void Unk10a034_Unk_10b000(void);
 void Unk10a034_Unk_10b018(void);
 int Unk10a034_Unk_10b058(u32 id);
-void Unk10a034_Unk_10aeb0(int arg0);
+void Unk10a034_Unk_10aeb0(u8 *work);
 
 /* Returns the word at 0x02176e38; the original loads this global directly. */
 u32 Unk10a034_Get_data_02176e38(void)
@@ -101,7 +101,8 @@ void Unk10a034_Unk_10b394(Unk10a034Work *work,u32 arg1,int arg2)
   work->unk_0008 = arg1;
 }
 
-/* decompiler-derived */
+/* Borrows the global work, passing it to func_02061424 only when present.
+ * Evidence: original call at 0x0210a06c preserves the getter result in r0. */
 void Unk10a034_Unk_10a05c(void)
 {
   int value;
@@ -109,16 +110,16 @@ void Unk10a034_Unk_10a05c(void)
   if (value == 0) {
     return;
   }
-  func_02061424();
+  func_02061424((Unk10a034Work *)value);
 }
 
-/* decompiler-derived */
+/* Restores the borrowed work's +8 word from +0x10 when present.
+ * Evidence: original conditional load/store; no ownership is transferred. */
 void Unk10a034_Unk_10a074(void)
 {
-  int value;
-  value = Unk10a034_Get_data_02176e38();
-  if (value != 0) {
-    *(u32 *)(value + 8) = *(u32 *)(value + 0x10);
+  Unk10a034Work *work = (Unk10a034Work *)Unk10a034_Get_data_02176e38();
+  if (work != 0) {
+    work->unk_0008 = work->unk_0010;
   }
 }
 
@@ -144,7 +145,8 @@ int Unk10a034_Unk_10a08c(void)
     return FIELD(u32, p, 8) == 18;
 }
 
-/* decompiler-derived */
+/* Returns the global work word at +0x18, or 1 when absent.
+ * Evidence: original conditional load at 0x0210a0c4. */
 u32 Unk10a034_Unk_10a0b4(void)
 {
   int value1;
@@ -159,7 +161,8 @@ u32 Unk10a034_Unk_10a0b4(void)
   return value2;
 }
 
-/* decompiler-derived */
+/* Returns a borrowed address at global work +0x18, or zero when absent.
+ * Evidence: original conditional addition at 0x0210afd0. */
 int Unk10a034_Unk_10afc0(void)
 {
   int value;
@@ -173,7 +176,8 @@ int Unk10a034_Unk_10afc0(void)
   return value;
 }
 
-/* decompiler-derived */
+/* Borrows the second global work for func_02061424 when present.
+ * Evidence: original call at 0x0210b010 passes the getter result in r0. */
 void Unk10a034_Unk_10b000(void)
 {
   int value;
@@ -181,37 +185,37 @@ void Unk10a034_Unk_10b000(void)
   if (value == 0) {
     return;
   }
-  func_02061424();
+  func_02061424((Unk10a034Work *)value);
 }
 
-/* decompiler-derived */
+/* Restores the borrowed work's +8 word from +0x10 when present.
+ * Evidence: original conditional load/store; no ownership is transferred. */
 void Unk10a034_Unk_10b018(void)
 {
-  int value;
-  value = Unk10a034_Get_data_02176e44();
-  if (value != 0) {
-    *(u32 *)(value + 8) = *(u32 *)(value + 0x10);
+  Unk10a034Work *work = (Unk10a034Work *)Unk10a034_Get_data_02176e44();
+  if (work != 0) {
+    work->unk_0008 = work->unk_0010;
   }
 }
 
-/* decompiler-derived */
+/* Scales the provider record's unsigned byte at +2 by 300. The provider
+ * must return a readable record; evidence: ldrb/mul at 0x0210b060..68. */
 int Unk10a034_Unk_10b058(u32 id)
 {
-  int value;
-  value = func_020a1740(id);
-  return (u32)*(u8 *)(value + 2) * 300;
+  const u8 *record = func_020a1740(id);
+  return record[2] * 300;
 }
 
-/* decompiler-derived */
-void Unk10a034_Unk_10aeb0(int arg0)
+/* Clears twelve words starting at +0x2c with a twelve-byte stride.
+ * Borrows writable storage through +0xb3; evidence: loop at 0x0210aeb8. */
+void Unk10a034_Unk_10aeb0(u8 *work)
 {
-  int value;
-  value = 0;
+  int i = 0;
   do {
-    value = value + 1;
-    ((Unk10a034Work *)arg0)->unk_002c = 0;
-    arg0 = arg0 + 0xc;
-  } while (value < 0xc);
+    i++;
+    *(u32 *)(work + 0x2c) = 0;
+    work += 12;
+  } while (i < 12);
 }
 
 
