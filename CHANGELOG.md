@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T666 game/unit_0203aae8 targets at 100% objdiff, including argument decoding, opcode dispatch, bit operations, and record initialization.
 - Match all eight M1-T665 game/unit_0203aae8 functions at 100% objdiff; document typed helper contracts, kind dispatch, slot access, and scaled query arithmetic.
 - Matched all eight M1-T668 functions in game/unit_02111400 with typed C and documented assembly evidence.
 - Matched all six M1-T658 game/unit_020cd6ec state, input, message, and item-rebuild handlers at 100% objdiff; preserved the eight earlier matches.
