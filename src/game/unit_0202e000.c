@@ -35,7 +35,7 @@ typedef struct Unk02e000Mgr {
 
 Unk02e000Mgr *Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void);
 
-u32 func_02052fe0();
+u32 func_02052fe0(u32 size);
 
 typedef struct Unk02e000Save {
     u8 pad_0000[0x5fc4];
@@ -56,6 +56,8 @@ typedef struct Unk02e000Rec {
 } Unk02e000Rec;                 /* 36 bytes; table at work+0x16FC, ids 1..491 */
 #define UNK02E000_RECS() ((Unk02e000Rec *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc))
 
+/* Original 0x0202e000 stores at manager +0x74 + i*4, supporting SetSlot.
+ * Null managers and indices outside 0..15 are ignored; ownership stays external. */
 void Unk02e000_SetSlot(int i, u32 v)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -80,6 +82,8 @@ u32 Unk02e000_GetSlot(int i)
     return m->slots[i];
 }
 
+/* Original 0x0202e070 conditionally stores the pair at manager +0x38/+0x3c,
+ * supporting the existing offset-based name. Any word values and null are allowed. */
 void Unk02e000_SetMgrUnk38(u32 a, u32 b)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -100,6 +104,8 @@ void Unk02e000_ClearMgrUnk38(void)
     }
 }
 
+/* Original 0x0202e114 allocates 0x7718 bytes only when global word +4 is zero.
+ * The size and conditional allocation support the name; storage stays module-owned. */
 void Unk02e000_EnsureAlloc7718(void)
 {
     if (data_0215dd24[1] != 0) {
@@ -108,6 +114,8 @@ void Unk02e000_EnsureAlloc7718(void)
     data_0215dd24[1] = func_02052fe0(0x7718);
 }
 
+/* Original 0x0202e1f8 adds to work +0x5fc4 and caps the unsigned result at
+ * 35999999, supporting the name. Requires allocation; addition wraps before capping. */
 void Unk02e000_AddCounter5fc4(int add)
 {
     Unk02e000Save *w = (Unk02e000Save *)Unk02e000_Unk_02e774();
@@ -131,6 +139,8 @@ u32 Unk02e000_GetAddr_data_02140ac8(void)
 void func_0202e4dc(u8 *rec);
 void func_0202e520(u8 *rec);
 
+/* Original 0x0202e440 tests the sign of x-3, x-11 and x-31 to return 0..3.
+ * GetSlotPtr uses the same boundaries for record tiers; callers supply slot indices. */
 int Unk02e000_GetTier(int x)
 {
     if (x - 3 < 0) {
@@ -271,10 +281,11 @@ int Unk02e000_Unk_02e8f0(void)
 
 
 void Unk02e000_Unk_02e180(void);
-int func_0202e23c();
+int func_0202e23c(void);
 int Unk02e000_Call_02008848();
 void Unk02e000_Unk_02e5c4(int arg0);
-/* decompiler-derived */
+/* Original 0x0202e144 calls three initialization helpers in order, then
+ * Unk_02e5c4 for indices 0 and 1. Requires allocation; broader purpose is unknown. */
 void Unk02e000_Unk_02e144(void)
 {
   int value;
@@ -323,9 +334,10 @@ int Unk02e000_Unk_02e228(void)
 }
 
 extern u32 data_0213d89c[];
-int func_0205ad2c();
-int func_0205ad78();
-/* decompiler-derived; refs "Data/Tex/" */
+int func_0205ad2c(u32 value);
+int func_0205ad78(u8 *data, u32 value);
+/* Original 0x0202e0cc passes global word zero to func_0205ad2c, then
+ * data_02140ac8 and 0xde to func_0205ad78. Purpose is unconfirmed; name stays neutral. */
 void Unk02e000_Unk_02e0cc(void)
 {
   func_0205ad2c(*data_0213d89c);
@@ -424,6 +436,8 @@ u8 *Unk02e000_GetSubBlock3a4(void)
     return Unk02e000_GetWorkArea() + 0x3a4;
 }
 
+/* Original 0x0202e904 returns whether the borrowed halfword at +0x36 is
+ * nonzero, supporting the name. Null returns false; nonnull storage must be aligned. */
 int Unk02e000_HasField36(u8 *p)
 {
     if (p == 0) {

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T652 manager, tier, allocation and initialization helpers at 100% objdiff; documented instruction evidence and typed callee parameters.
 - Verified all eight M1-T651 manager, record and allocation-view helpers at 100% objdiff; clarified typed access and instruction contracts.
 - Matched all eight M1-T633 game/unit_020986ac flag, selector, and bounded record scan functions at 100% objdiff; documented typed contracts and compiler propagation control.
 - Verified all eight M1-T650 initialization, work-view and record-call helpers at 100% objdiff; clarified typed calls and borrowed-address contracts.
