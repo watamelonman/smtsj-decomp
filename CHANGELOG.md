@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match M1-T697 resource path formatting and record loading routines at 100% objdiff, with typed borrowed layouts and instruction evidence.
 - Match all eight M1-T696 manager dispatch, phase, record-work and EventMessage path routines with typed inputs and documented ARM evidence.
 - M1-T718: verified six game/unit_020ce578 callbacks and state helpers at 100% objdiff, added typed helper contracts, and documented two deferred compare-and-return accessors.
 - Match M1-T683 selector-factor chance routine 020b0310; document 020afe64 and 020b04b4 on the hard list.
