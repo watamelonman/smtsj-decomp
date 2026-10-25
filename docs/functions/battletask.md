@@ -1,4 +1,4 @@
-# BattleTask — M1-T611
+# BattleTask — M1-T611 / M1-T612
 
 These neutral symbols retain their existing names: the instruction/data evidence
 establishes the operations below, but does not establish gameplay terminology.
@@ -15,6 +15,14 @@ padding and one-byte resource tails do not specify allocation sizes.
 | `BattleTask_Unk_0484d0` | Comparator accepts two slot addresses; null entries have coordinate 256, others supply the first signed halfword via `func_02049c28`. Returns first minus second. |
 | `func_02048520` | Scans ten type-2 slots, excludes entries rejected by `func_0204a9ec`, configures remaining objects, propagates work bit 9, then sorts six slots beginning at +0x74 with the comparator. Requires live work. |
 | `func_020485c4` (deferred) | Resets the resource at global +0x79b0 and sets count six. Registers eligible type-2 entries using entry bit 2 at +0x282 to choose the mapping path. Optionally scans six 12-byte request records, skips zero IDs, maps low-halfword IDs conditionally, then finalizes the resource. Requires live work/global state. |
+
+| `func_0204870c` | Initializes work only when none exists, allocating 0x7a40 bytes and returning on allocation failure. Takes a borrowed request (IDs at +0, flags at +0x1c, mode at +0x20, text at +0x34/+0x3c, four halfword IDs at +0x4c) and caller-owned 0x44-byte output. Copies individual flags with the observed bit remapping, loads eight resource descriptors, fills ten slots from embedded 0x2e0-byte entries, selects the bit-10 initialization path, registers six request IDs, and invokes subsystem initialization in original order. ARM loads/stores and calls establish this contract; gameplay terminology remains unknown. Matched all 1924 bytes at 100% objdiff. |
+
+The initialization views preserve offsets rather than claiming complete object
+semantics. The packed entry ID helper masks its 16-bit input explicitly before
+adding type 1 in the upper halfword, preserving the original compiler's narrowing.
+`func_02048520` now declares its unused context parameter, retaining the original
+caller's global load without changing that function's instructions.
 
 No new tests are required by this card. Validation compares compiled instructions
 and relocations against the original, followed by objdiff and full-image checksum.

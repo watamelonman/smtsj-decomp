@@ -8,7 +8,11 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0d297cWork {
-    u8 pad_0000[0x14];
+    u16 *data;
+    s32 count;
+    s32 capacity;
+    s32 index;
+    s32 unk_0010;
     u32 unk_0014;
     u32 unk_0018;
     u32 unk_001c;
@@ -19,7 +23,7 @@ typedef struct Unk0d297cWork {
 void Unk094fe0_SetUnkField9a0(u32 value);
 u32 Unk094fe0_GetWorkUnkField9a0(void);
 int Unk0e5fb8_Unk_0e6448(u32 index);
-void Unk0e5fb8_Unk_0e64c8(u32 value);
+int Unk0e5fb8_Unk_0e64c8(u32 value);
 void Unk0e651c_Unk_0e651c(u32 value, u32 mode);
 
 int Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(u32 index);
@@ -38,7 +42,27 @@ typedef struct Unk0d297cBuffer {
 u16 Unk0d297c_Unk_0d32e8(const Unk0d297cBuffer *buffer, int index);
 u16 *Unk0d297c_Unk_0d32f8(const Unk0d297cBuffer *buffer);
 
-void func_020d297c(u16 id);
+u32 func_0204fdac(u32 handle, int table);
+u32 func_0204fe18(u32 table);
+void *func_0204fde0(u32 table);
+u32 func_0204459c(int index);
+/** Borrowed 68-byte record view; only the index byte is interpreted here. */
+typedef struct Unk0d297cEntry { u8 index; u8 rest[67]; } Unk0d297cEntry;
+/** Search handle 28 table zero, normalizing indices outside 1..count to one (0x020d2eb0). */
+int func_020d2eb0(u32 index)
+{
+    u32 table = func_0204fdac(func_0204459c(28), 0);
+    u32 count = func_0204fe18(table);
+    Unk0d297cEntry *entry;
+    u32 i;
+    if (!(index >= 1 && count >= index)) index = 1;
+    entry = func_0204fde0(table);
+    for (i = 0; i < count; i++, entry++) {
+        if (entry->index == index) return (int)entry;
+    }
+    return 0;
+}
+int func_020d297c(u16 id);
 /** Add 50 and truncate to a halfword before forwarding; see 0x020d2a8c. */
 void Unk0d297c_Call_020d297c(u32 id)
 {
@@ -230,7 +254,7 @@ void Unk0d297c_Unk_0d3200(u32 *arg0,int arg1)
 
 
 int func_020d2eb0(u32 index);
-/* decompiler-derived */
+/** Resolve mission-log table zero using record word +0x40; absent handle/record returns zero. */
 u32 Unk0d297c_Unk_0d2fbc(u32 arg0)
 {
   int tmp1;
@@ -247,8 +271,10 @@ u32 Unk0d297c_Unk_0d2fbc(u32 arg0)
   return 0;
 }
 
-int func_0204fb14();
-/* decompiler-derived */
+u32 Unk09974c_Unk_099bac(u32 index);
+u32 Unk0a163c_Unk_0a1814(u32 index);
+int func_0204fb14(int index);
+/** Dispatch selectors 1/3/4 to observed lookup helpers; other selectors return zero (0x020d3034). */
 u32 Unk0d297c_Unk_0d3034(u32 arg0,u32 arg1)
 {
   u16 tmp1;
@@ -293,21 +319,21 @@ void Unk0d297c_Unk_0d3308(Unk0d297cWork *arg0)
   arg0->unk_0020 = 0x100;
 }
 
-/* decompiler-derived */
-void Unk0d297c_Unk_0d3358(int arg0, int arg1)
+/** Allocate both buffers once, then clear extension storage; ownership evidenced at 0x020d3358. */
+void Unk0d297c_Unk_0d3358(Unk0d297cWork *arg0, int arg1)
 {
   u32 tmp1;
-  if (((Unk0d297cWork *)arg0)->unk_0014 == 0) {
-    Unk0d297c_Unk_0d3200((u32 *)arg0, (int)arg1);
-    if (((Unk0d297cWork *)arg0)->unk_0018 != 0) {
-      func_02053000();
-      ((Unk0d297cWork *)arg0)->unk_0018 = 0;
+  if (arg0->unk_0014 == 0) {
+    Unk0d297c_Unk_0d3200((u32 *)arg0, arg1);
+    if (arg0->unk_0018 != 0) {
+      func_02053000(arg0->unk_0018);
+      arg0->unk_0018 = 0;
     }
-    tmp1 = func_02052fe0(((Unk0d297cWork *)arg0)->unk_0020 << 2);
-    ((Unk0d297cWork *)arg0)->unk_0018 = tmp1;
-    ((Unk0d297cWork *)arg0)->unk_0014 = 1;
+    tmp1 = func_02052fe0(arg0->unk_0020 << 2);
+    arg0->unk_0018 = tmp1;
+    arg0->unk_0014 = 1;
   }
-  Unk0d297c_Unk_0d3330((Unk0d297cWork *)arg0);
+  Unk0d297c_Unk_0d3330(arg0);
 }
 
 void Unk0e5fb8_Unk_0e649c(u32 obj, int mode);
@@ -367,8 +393,9 @@ void Unk0d297c_FreeSlot(u32 *slot)
 }
 
 /** Append one halfword and advance count if signed count < capacity; evidence: 0x020d3264.
- * Caller supplies valid storage and a nonnegative count; no lower bound check exists. */
-void Unk0d297c_PushU16(Unk0d297cU16Vec *v, u16 x)
+ * Stores the low halfword of x. Caller supplies valid storage and a nonnegative
+ * count; no lower bound check exists. */
+void Unk0d297c_PushU16(Unk0d297cU16Vec *v, u32 x)
 {
     if (v->n < v->cap) {
         v->buf[v->n] = x;
@@ -417,4 +444,139 @@ int func_020d2b10(u32 index, u8 selector)
         return 1;
     }
     return Unk0e651c_Unk_0e666c(value);
+}
+
+void Unk0e651c_SetBitChecked(u32 index, int value);
+/** Update selected nonnegative record bit after query-dependent setup; selector wraps to 0..4 (0x020d2b98). */
+void func_020d2b98(u32 index, u8 selector)
+{
+    int state;
+    Unk0d297cRecord *record;
+    s32 value;
+    selector = (u8)(selector - 1);
+    if (selector >= 5) return;
+    state = Unk0e5fb8_Unk_0e6448(index);
+    if (state != 0) {
+        if (!(state != 1 && state != 2)) {
+            Unk094fe0_SetUnkField9a0(index);
+            if (Unk0e5fb8_Unk_0e64c8(index) == 0) Unk0e651c_Unk_0e651c(index, 2);
+        }
+    }
+    record = (Unk0d297cRecord *)func_020d2eb0(index);
+    if (record == 0) return;
+    value = record->unk_0004[selector];
+    if (value < 0) return;
+    Unk0e651c_SetBitChecked(value, 1);
+}
+int Unk094fe0_Call_02095320(u32 index);
+/** Return integer percent of flagged records whose index query succeeds; original has no zero-count guard. */
+int func_020d30b0(void)
+{
+    int matched = 0;
+    int total = 0;
+    u32 table = func_0204fdac(func_0204459c(28), 0);
+    u32 count = func_0204fe18(table);
+    Unk0d297cRecord *record = func_0204fde0(table);
+    u32 i;
+    for (i = 0; i < count; i++, record = (Unk0d297cRecord *)((u8 *)record + 68)) {
+        if (record->unk_0003_high) {
+            total++;
+            if (Unk094fe0_Call_02095320(*(u8 *)record)) matched++;
+        }
+    }
+    return matched * 100 / total;
+}
+/** Borrowed selector result; halfword tag/index and word payload follow 0x020d315c..31c0. */
+typedef struct Unk0d297cSelection { u16 tag; u16 index; u32 value; } Unk0d297cSelection;
+u32 Unk0a163c_Unk_0a1728(void);
+/** Validate a tagged lookup result with the original tag-specific bounds and payload tests (0x020d314c). */
+int func_020d314c(const Unk0d297cSelection *selection)
+{
+    if (selection == 0) return 0;
+    switch (selection->tag) {
+    case 1:
+        if (selection->index >= 0x5b5) return 0;
+        return selection->value != 0;
+    case 2: return selection->value != 0;
+    case 3: return selection->index < Unk0a163c_Unk_0a1728();
+    case 4: return 1;
+    }
+    return 0;
+}
+
+extern const char data_02150660[];
+int func_02013c3c(char *destination, const char *format, ...);
+int func_020513d4(const char *path);
+void func_02052f58(int mode);
+void func_02052f68(void);
+int Unk02d15c_IsStatus1OrNeg(s16 index);
+int Unk02d15c_IsStatus0OrNeg(s16 index);
+void Unk095560_Unk_09596c(u32 index);
+/** Borrowed file entry: word index plus two signed-halfword status arguments stored as words. */
+typedef struct Unk0d297cFileEntry { u32 index; s32 first; s32 second; } Unk0d297cFileEntry;
+/** Format the path at data_02150660 and apply entries passing both status checks; release loaded file (0x020d297c). */
+int func_020d297c(u16 id)
+{
+    char path[64] = {0};
+    u32 handle, table, count;
+    Unk0d297cFileEntry *entry;
+    u32 i;
+    func_02013c3c(path, data_02150660, id);
+    if (func_020513d4(path) == 0) return 1;
+    func_02052f58(0);
+    handle = func_02051610(path);
+    func_02052f68();
+    table = func_0204fdac(handle, 0);
+    count = func_0204fe18(table);
+    entry = func_0204fde0(table);
+    for (i = 0; i < count; i++, entry++) {
+        s16 first = (s16)entry->first;
+        u32 index = entry->index;
+        s16 second = (s16)entry->second;
+        if (Unk02d15c_IsStatus1OrNeg(first) && Unk02d15c_IsStatus0OrNeg(second)) {
+            Unk095560_Unk_09596c(index);
+        }
+        if (i == count - 1) break;
+    }
+    func_02053000(handle);
+    return 1;
+}
+
+int func_02062268(const u16 *stream);
+int func_0204f9fc(int token);
+int func_0204f9d8(int token);
+int func_0204f8c0(int token);
+
+/** Copy a terminated halfword stream, replacing 0x8001 with zero and recording
+ * section starts; calls and stores at 0x020d33cc..34dc establish the contract.
+ * Caller supplies a valid terminated stream and writable work storage. */
+void func_020d33cc(Unk0d297cWork *work, const u16 *stream)
+{
+    int token, position, i;
+    Unk0d297c_Unk_0d3358(work, func_02062268(stream) + 1);
+    token = stream[0];
+    position = 0;
+    ((s32 *)work->unk_0018)[0] = position;
+    position++;
+    while (!func_0204f9fc(token)) {
+        if (!func_0204f9d8(token)) {
+            Unk0d297c_PushU16((Unk0d297cU16Vec *)work, token);
+            token = stream[position++];
+        } else {
+            if (token == 0x8001) {
+                Unk0d297c_PushU16((Unk0d297cU16Vec *)work, 0);
+                work->unk_001c++;
+                ((s32 *)work->unk_0018)[work->unk_001c] = work->count;
+            } else {
+                Unk0d297c_PushU16((Unk0d297cU16Vec *)work, token);
+            }
+            token = func_0204f8c0(token);
+            for (i = 0; i < token; i++, position++) {
+                Unk0d297c_PushU16((Unk0d297cU16Vec *)work, stream[position]);
+            }
+            token = stream[position];
+            position++;
+        }
+    }
+    Unk0d297c_PushU16((Unk0d297cU16Vec *)work, 0);
 }

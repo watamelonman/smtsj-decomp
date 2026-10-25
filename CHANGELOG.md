@@ -2,6 +2,12 @@
 
 ## Unreleased
 - Matched five M1-T604 palette transition and dirty-buffer transfer functions at 100% objdiff; documented the remaining RGB555 blend on the hard list.
+- Matched all eight M1-T615 game/unit_021218d0 slot initialization, flag, counter and saved-area routines with typed layouts and per-function contracts.
+
+- Match the 0x020d33cc halfword-stream copier; document 0x020d2c44 matching blockers.
+- Match all eight M1-T613 callbacks in game/unit_020ff030 with typed C and documented field contracts.
+- M1-T612: matched the 1924-byte BattleTask initialization routine at 100% objdiff with typed request, output, work, and packed-ID views.
+- Matched all eight M1-T571 file-entry, record lookup, selector and buffer-allocation functions at 100% objdiff; documented original contracts.
 - Matched seven M1-T603 table/resource and buffer initialization functions; documented the remaining slot-claim function for scratch investigation.
 - M1-T611: matched seven BattleTask routines with typed layouts and per-function contracts; documented the remaining registration routine on the hard list.
 - Matched all six M1-T601 request, slot-refresh and selection-input functions in game/unit_0206a224 at 100% objdiff; documented typed contracts and original instruction evidence.
