@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match the 0x020d33cc halfword-stream copier; document 0x020d2c44 matching blockers.
 - Matched all eight M1-T571 file-entry, record lookup, selector and buffer-allocation functions at 100% objdiff; documented original contracts.
 - Matched seven M1-T603 table/resource and buffer initialization functions; documented the remaining slot-claim function for scratch investigation.
 - M1-T611: matched seven BattleTask routines with typed layouts and per-function contracts; documented the remaining registration routine on the hard list.

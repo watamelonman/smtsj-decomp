@@ -66,10 +66,6 @@ The buffer view remains local, with no module boundary change.
 
 None for M1-T568 or M1-T569.
 
-## Not done in M1-T572
-- `func_020d33cc`
-- `func_020d2c44`
-
 ## M1-T570
 
 All eight targets match at 100% objdiff. The instruction addresses below establish
@@ -111,3 +107,33 @@ Validation: match gate passed all 53 C definitions in the changed unit; checksum
 reported all artifacts byte-identical; anticheat passed; all nine unit tests passed.
 No new tests are required by this card; objdiff checks the original instructions.
 Hard list for M1-T571: none.
+
+## M1-T572
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `func_020d33cc` | `0x020d33cc` / 280 B | Copies a terminated halfword stream into the work buffer. Calls 0x02062268 and 0x020d3358 to prepare capacity, clears the first section offset, and queries tokens through 0x0204f9fc/0x0204f9d8. Replaces token 0x8001 with zero and records the resulting count at the next section offset. Other command tokens copy the argument count returned by 0x0204f8c0. Appends a final zero. Caller supplies a valid terminated stream; original has no extra bounds or section-capacity checks. |
+| `func_020d2c44` | `0x020d2c44` / 544 B | Remains linked from the original delink. The attempted C resolves the mission-log stream after 0x0210af40 setup, emits `[1, 0]` if absent, filters sections using 0x8075 selector queries at 0x020d2b10, unpacks words between 0xffff and 0xfffe, and records 0x8001 boundaries. No guessed domain name was introduced. |
+
+The work view now types the previously opaque leading five words at the offsets
+observed in the buffer helpers. PushU16 accepts a word and stores its low halfword,
+matching the original unmasked argument forwarding. Both are local changes;
+module boundaries and ownership are unchanged.
+
+### Hard list for M1-T572
+
+- `func_020d2c44`: attempted structured token dispatch, separate signed argument
+  counts and high-byte temporaries, and alternate packed-word loop forms. The
+  closest standalone comparison had the exact 544-byte size and control flow,
+  but five instructions differed in the packed-word loop: the compiler loaded
+  the packed word into r2 rather than r1 and scheduled its high-byte extraction
+  differently. Declaration order and byte/word typing variations did not resolve
+  these differences. The nonmatching body was removed; a human can open a
+  decomp.me scratch with `tools/decompme.py`. No new assembly stub is necessary:
+  this incomplete TU continues to link from the original delink.
+
+No new tests are required by this card; the original bytes and objdiff are the
+acceptance oracle for the retained implementation.
+
+Validation: match gate passed all 56 checked definitions; checksum reported all
+artifacts byte-identical; anticheat passed; all nine unit tests passed.
