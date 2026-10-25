@@ -2,14 +2,15 @@
 
 /* Only the accessed fields are known; embedded renderer storage remains opaque. */
 typedef struct Work {
-    int state;
+    u32 state;
     u8 pad04[4];
     int field08, field0c;
     u32 field10;
     struct Work *previous;
     u8 pad18[4];
     u8 field1c;
-    u8 pad1d[3];
+    u8 pad1d;
+    s16 field1e;
     void *field20, *field24, *field28, *field2c, *field30;
     void *entries[7];
     u32 field50;
@@ -195,4 +196,66 @@ void func_020b76cc(Work *w, int index)
     Context context;
     func_02001784(&context);
     func_02004600(&context);
+}
+
+/* Borrowed resource records; halfword offsets follow the copy and crop instructions. */
+typedef struct DrawRecord { u32 words[2]; s16 x, y, width, height; u32 tail[2]; } DrawRecord;
+typedef struct CropRecord { u16 x, y, width, height; } CropRecord;
+extern const s8 data_0213c4b0[];
+extern void func_02057830(int);
+extern void func_020580ec(int);
+extern DrawRecord *func_0205e318(void *, int);
+extern CropRecord *func_0205e328(void *, u32, u32);
+extern void func_02008904(const void *, void *, u32);
+extern void func_0205e048(int, void *, DrawRecord *, int, int, float, float, int, float, int, int);
+extern void func_0205de40(int, void *, int, int, int, float, float, int, float, int);
+
+/* Draw the state-dependent resource, temporarily cropping two records in state 1.
+ * Work and resource records must be live; their ownership remains with providers.
+ * Evidence: copies of resource records are restored after func_0205e048. */
+void func_020b6f28(Work *w)
+{
+    DrawRecord record;
+    CropRecord saved;
+    CropRecord *crop;
+    u32 i;
+    if (w->state == 5 || w->state == 8) return;
+    func_02057830(0);
+    func_020580ec(0);
+    func_02057524(6);
+    func_02057df8();
+    func_02057e18(w->field1c);
+    switch (w->state) {
+    case 0: break;
+    case 1:
+        for (i = 0; i < 2; i++) {
+            u16 difference;
+            int height;
+            func_02008904(func_0205e318(w->field20, data_0213c4b0[i]), &record, 24);
+            crop = func_0205e328(w->field20, record.words[0], record.words[1]);
+            func_02008904(crop, &saved, 8);
+            height = crop->height * w->field1e / 54;
+            difference = crop->height - height;
+            crop->y += difference;
+            crop->height = height;
+            record.y += difference;
+            record.height = crop->height;
+            func_0205e048(2, w->field20, &record, 0, 0, 1.0f, 1.0f, 0, 1.0f, 4, 0);
+            func_02008904(&saved, crop, 8);
+            func_02057fd8();
+        }
+        break;
+    case 12: case 13:
+        func_02058c3c(1, 8, 0, 0, 1.0f, 0, 4);
+        func_02058c3c(1, 9, 0, 128, 1.0f, 0, 4);
+        return;
+    default:
+        func_0205de40(2, w->field20, 0, 0, 0, 1.0f, 1.0f, 0, 1.0f, 4);
+        break;
+    }
+    func_02057524(0);
+    func_020b76cc(w, 0);
+    func_02057534();
+    func_02057e18(31);
+    func_02057fd8();
 }

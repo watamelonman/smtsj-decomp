@@ -326,3 +326,13 @@ stores and reloads. Explicit branches assign boolean results; logical float
 operands compare against double zero as established by the conversion calls.
 Each setting is restored immediately after its function. These choices preserve
 ordinary memory semantics without volatile accesses or assembly.
+
+## DEC-019 — Preserve 0211d884 conditional assignment ordering
+
+Disable conditional rebuilding only for `func_0211d884`, restoring it immediately
+afterward. With the default setting, mwcc converts the group-0/group-1 selection
+into a boolean and emits the two conditional moves in reverse order. Disabling
+this transformation preserves the original `movne 0; moveq 1` sequence while
+retaining readable C and ordinary memory semantics. The input handler follows
+its local callees in source, as in the delink; this also preserves its 100% score
+in the project report. No assembly or volatile accesses are required.

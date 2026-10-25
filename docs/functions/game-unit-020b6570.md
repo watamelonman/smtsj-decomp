@@ -1,6 +1,6 @@
 # game/unit_020b6570
 
-The eight task M1-T745 functions use ARM code. Names are retained from the
+The eight task M1-T745 functions and the M1-T746 draw function use ARM code. Names are retained from the
 symbol map; uncertain operations are described by their observed fields and
 calls rather than assigning unsupported subsystem names. `Work` is a partial
 view, not a claim about the full allocation size. Its seven handles occupy
@@ -22,6 +22,30 @@ Validation uses standalone instruction comparison followed by the linked objdiff
 report, which resolves the ARM-to-Thumb call to `func_02000edc` in the graphics
 setup routine. No new behavioral tests are required by this matching card.
 
+## M1-T746 functions
+
+| Function | Observed contract and evidence |
+| --- | --- |
+| `func_020b6f28` | Draws according to unsigned state 0x00. States 5/8 return; state 0 bypasses the resource draw; state 1 copies two 24-byte records selected by signed bytes at `data_0213c4b0`, crops their eight-byte resource rectangles using signed progress at 0x1e divided by 54, draws, then restores the rectangles. States 12/13 draw slots 8/9 and return; other states use the common resource draw. The remaining path submits embedded graphics record 0 and restores graphics setup. Both resource record and crop storage are borrowed. Standalone objdiff: 100%. |
+| `func_020b72a8` | Unimplemented in C; retained in the original delink. Allocates callback work of size 0x2d44; initializes resource handles, seven entry handles and three bounds copied from signed halfwords. Allocation failure returns immediately. Evidence: callback/resource literals and the three bounds-copy iterations. |
+| `func_020b6608` | Unimplemented in C; retained in the original delink. Dispatches 18 states involving progress at 0x1e, counters at 0x10/0x50, selection at 0x08, seven entry handles and save/load callbacks. Evidence: the original jump table and `SaveLoadTask_SelectEntry`/`SaveLoadTask_Unk_0df7c4` calls. |
+
 ## Hard list
 
-None.
+- `func_020b72a8` (760 bytes): a typed C reconstruction reached 98.83158%
+  in standalone objdiff. Aggregate copying of the three resource indices fixed
+  the initial scalar-copy differences. The remaining difference was instruction
+  scheduling immediately after `func_0205c6f8`: the original initializes r9/r8
+  before loading work +0x28; C loads that handle and materializes 6 first.
+  Tried explicit loop initialization, a do/while loop, scoped loop variables,
+  typed handle pointers and signed/unsigned field views. The unmatched body was
+  removed; use a decomp.me scratch to resolve scheduling.
+- `func_020b6608` (2336 bytes): a complete typed switch reconstruction reached
+  95.57534% in standalone objdiff. Its dispatch, state transitions and resource
+  calls matched; remaining differences centered on the frame (0x48 rather than
+  0x4c, and no saved r3) and slot-request setup in state 7. The original uses a
+  request at sp+8 and writes 1 at sp+4 before `Unk0bc1a8_Unk_0bc928`; the local
+  reconstruction placed the request at sp+4. Other callers declare that callee
+  with three parameters, so the extra write's contract remains unresolved.
+  The unmatched body and speculative prototype were removed. A scratch should
+  resolve that stack-local/call contract before further matching.
