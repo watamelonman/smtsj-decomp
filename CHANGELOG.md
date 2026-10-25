@@ -5,6 +5,8 @@
 - Matched all eight M1-T627 game/unit_020a163c comparison, resource lookup, ID conversion and state callback functions at 100% objdiff.
 - Matched all five M1-T616 game/unit_021218d0 field and slot initialization functions with typed record views and documented contracts.
 
+- Match all three M1-T619 game/unit_020939f0 state, setup and duration functions at 100% objdiff.
+
 - Match all eight M1-T618 work-record functions in game/unit_020939f0 with typed C contracts.
 - Matched all eight M1-T621 `game/unit_020f7188` functions at 100% objdiff; documented their field contracts and added a typed state layout.
 - M1-T620: matched seven game/unit_020f6250 scene transition and resource-selection functions; documented the remaining sine-alpha function on the hard list.
