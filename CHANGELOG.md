@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all six M1-T601 request, slot-refresh and selection-input functions in game/unit_0206a224 at 100% objdiff; documented typed contracts and original instruction evidence.
 - Verified all eight M1-T600 selection, request, and flag-latch functions at 100% objdiff; documented borrowed layouts and call contracts.
 - Verified all eight M1-T569 lookup, slot release, setup and next-halfword helpers at 100% objdiff; made register-carried arguments explicit and documented typed contracts.
 - Verified all eight M1-T599 game/unit_0206a224 functions at 100% objdiff; corrected wrapper argument/result contracts and documented field and slot evidence.
