@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T526 singleton predicates, field updates, creation and dispatch helpers at 100% objdiff; documented original instruction evidence and contracts.
 - Verified all eight M1-T525 singleton, context-field, and helper-sequence functions at 100% objdiff; added typed field views and documented original instruction evidence.
 - Verified all eight M1-T508 singleton, direction, handle-cleanup and color helpers at 100% objdiff; added explicit call arguments, typed work parameters and evidence documentation.
 - M1-T507: matched four game/unit_020469d8 setup, phase, and queue callbacks; documented the remaining dispatcher on the hard list.

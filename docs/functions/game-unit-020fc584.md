@@ -26,19 +26,34 @@ delinked unit until a human marks it complete.
 
 None. All eight requested functions match.
 
-### Outside M1-T525
+## M1-T526 — verified matches
 
-- `Unk0fc584_Unk_0fc824`: existing decompiler-derived body.
-- `Unk0fc584_Unk_0fc674`: existing decompiler-derived body.
+All eight requested functions report 100% in objdiff. Parameters carry words or
+boolean flags; singleton field views remain borrowed. Evidence below comes from
+the original ARM instructions at the listed entry addresses.
 
-## Not done in M1-T526
-- `Unk0fc584_IsBelow64`
-- `Unk0fc584_IsFieldCZero`
-- `Unk0fc584_Unk_0fc86c`
-- `Unk0fc584_SetDir`
-- `Unk0fc584_Unk_0fc7f4`
-- `Unk0fc584_Unk_0fc7b8`
-- `Unk0fc584_Unk_0fc9fc`: decompiler-derived
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk0fc584_IsBelow64` | 020fc6e4 returns false without a singleton, otherwise compares signed +0x0c against 64. The load and signed comparison support the existing descriptive name. |
+| `Unk0fc584_IsFieldCZero` | 020fc70c returns false without a singleton, otherwise tests +0x0c for zero, supporting the field-based name. |
+| `Unk0fc584_Unk_0fc824` | 020fc824 requires IsBelow64, clears +0x28, then copies +0x24 into +0x20. |
+| `Unk0fc584_Unk_0fc86c` | 020fc86c requires a singleton and nonzero +0x30 and +0x2c; forwards +0x2c to 020fc734. It does not clear either field. |
+| `Unk0fc584_Unk_0fc674` | 020fc674 creates through 020fc8bc with the supplied word only when the singleton is absent, then publishes its returned address. |
+| `Unk0fc584_SetDir` | 020fc6b8 copies +0x1c into +0x14 for a nonzero flag and negates it for zero; absent singleton does nothing. This sign selection supports the existing direction name without assigning further meaning to the fields. |
+| `Unk0fc584_Unk_0fc7f4` | 020fc7f4 returns false unless IsBelow64; otherwise returns whether +0x20 and +0x24 differ. |
+| `Unk0fc584_Unk_0fc7b8` | 020fc7b8 requires IsBelow64. Kind +0x00 equal to one dispatches through 020fc84c and 020fc86c; other kinds pass the supplied word directly to 020fc734. |
+
+The original-object comparison is the acceptance test; this card requires no new
+unit tests. The unit continues linking from the delinked object pending human
+completion marking.
+
+### Hard list for M1-T526
+
+None. All eight requested functions match.
+
+### Outside M1-T526
+
+- `Unk0fc584_Unk_0fc9fc`: existing decompiler-derived body.
 
 ## Not done in M1-T527
 - `func_020fc584`
@@ -54,9 +69,3 @@ None. All eight requested functions match.
 - `func_020fca5c`
 - `func_020fcd18`
 - `Unk0fc584_LoadMoneyWindow`: decompiler-derived (plain cleanup)
-- `Unk0fc584_Unk_0fc7b8`: decompiler-derived (plain+fix cleanup)
-- `Unk0fc584_SetDir`: hand-matched
-- `Unk0fc584_IsBelow64`: hand-matched
-- `Unk0fc584_IsFieldCZero`: hand-matched
-- `Unk0fc584_Unk_0fc7f4`: hand-matched
-- `Unk0fc584_Unk_0fc86c`: hand-matched
