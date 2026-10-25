@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T555 range, record, percentage and subblock-bit helpers in `game/unit_0209974c`; documented instruction evidence and the setter symbol-name discrepancy.
 - Matched all eight M1-T554 resource, cleanup, record-kind and flag helpers in `game/unit_0209974c`, with typed parameters and per-function evidence.
 - Matched all eight M1-T546 slot, flag, context and request helpers in game/unit_020bc1a8; documented instruction evidence and contracts.
 - Matched all eight M1-T539 ImageBgDual3D callback, work creation, cleanup and initialization functions at 100% objdiff; documented typed contracts and instruction evidence.

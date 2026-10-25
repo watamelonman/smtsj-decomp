@@ -144,6 +144,8 @@ typedef struct Unk09974cKind {
     u8 kind : 7;
     u8 kind_hi : 1;
 } Unk09974cKind;
+/* Scan ten signed inclusive ranges; evidence: 0x02099780..7c0.
+ * Returns a borrowed table entry, or null when no range contains id. */
 Unk09974cEntry *Unk09974c_FindEntry(int id)
 {
     Unk09974cEntry *t = (Unk09974cEntry *)data_0213bdec;
@@ -195,6 +197,8 @@ typedef struct Unk09974cFlags {
     u16 unk_04_hi : 4;
 } Unk09974cFlags;
 
+/* Require a nonzero helper result, and at least 99 for entry mode 1;
+ * evidence: byte +9 and signed comparison at 0x0209991c..934. */
 int Unk09974c_Unk_0998f0(int id)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
@@ -244,6 +248,8 @@ void *func_02011810();
 
 void Unk09974c_SetBit6ac(int id);
 
+/* Read the indexed halfword only for entry mode 2; evidence: 0x02099a04..a24.
+ * Missing entries and other modes return zero; storage is borrowed. */
 u32 Unk09974c_Unk_0999d4(int id)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
@@ -264,6 +270,8 @@ u32 Unk09974c_Unk_0999d4(int id)
     return 0;
 }
 
+/* Store a nonzero halfword for mode 2 and mark the id bit for any present
+ * entry; evidence: 0x02099acc..b0c. The selected buffer must be writable. */
 void Unk09974c_Unk_099abc(int id, u16 v)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
@@ -315,6 +323,8 @@ void *Unk09974c_Unk_099c60(int id)
     return func_02011810(&key, base, n, 80, Unk09974c_Unk_099870);
 }
 
+/* Scale the ten-bit field at +4 by unsigned percent +0x0e, rounding down
+ * with minimum 1 when both are nonzero; evidence: 0x02099cc4..d10. */
 s32 Unk09974c_Unk_099cc4(Unk09974cStat *p)
 {
     u32 v = p->unk_04;
@@ -384,7 +394,7 @@ void *Unk09974c_Unk_099ddc(int id)
 
 int Unk02ee5c_GetTierFromField70();
 void *Unk02e000_Thunk_0202e788();
-int func_0209a158();
+int func_0209a158(int id);
 
 void *Unk09974c_Unk_099e40(int id)
 {
@@ -456,6 +466,8 @@ int Unk09974c_Unk_09a090(int id)
     return 0;
 }
 
+/* Accept record byte +0x2d values 1 or 3 for ids 51..110; evidence:
+ * 0x0209a0c0..aec. In-range ids require a present borrowed record. */
 int Unk09974c_Unk_09a0c0(int id)
 {
     if (id >= 51 && id <= 110) {
@@ -490,6 +502,25 @@ int Unk09974c_GetFlagsMidMinus1(Unk09974cFlags *f)
     return f->unk_04_mid - 1;
 }
 
+/* Test the same subblock +0x6ac bit as SetBit6ac, returning 0 or 1;
+ * evidence: 0x0209a158..19c. Callers must supply id >= 51; indices >= 162
+ * return zero. The subblock pointer is borrowed. */
+int func_0209a158(int id)
+{
+    u8 *b = (u8 *)Unk02e000_GetSubBlock3a4();
+    s32 k = id - 51;
+    s32 i = k >> 3;
+    if (i < 162) {
+        u8 value = (b + i)[0x6ac];
+        u8 mask = (u8)(1 << (k & 7));
+        return (value & mask) != 0;
+    }
+    return 0;
+}
+
+/* Set the id-minus-51 bit in subblock +0x6ac; evidence: 0x0209a1a0..1e0.
+ * Existing symbol is the card's SetSeenBit; the bit's gameplay meaning is unproven.
+ * Callers must supply id >= 51; byte indices >= 162 are ignored. */
 void Unk09974c_SetBit6ac(int id)
 {
     u8 *b = (u8 *)Unk02e000_GetSubBlock3a4();
