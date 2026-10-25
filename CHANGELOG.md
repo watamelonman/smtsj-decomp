@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T690: match seven game/unit_020de678 transition, record selection, and callback state handlers with typed arguments.
 - Match seven M1-T689 state, iterator, callback, and palette routines; document the remaining pair updater.
 - Verify all eight M1-T694 resource dispatch, byte assembly and manager-state routines at 100% objdiff; document typed parameters and instruction evidence.
 - Verify all eight M1-T693 forwarding, manager-word and initialization routines at 100% objdiff; document typed parameters and provider call sequences.
