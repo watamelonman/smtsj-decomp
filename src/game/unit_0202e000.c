@@ -70,6 +70,8 @@ void Unk02e000_SetSlot(int i, u32 v)
     m->slots[i] = v;
 }
 
+/* Original 0x0202e034 loads manager +0x74 + i*4, supporting GetSlot.
+ * Null managers and signed indices outside 0..15 return zero; view is borrowed. */
 u32 Unk02e000_GetSlot(int i)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -136,7 +138,7 @@ u32 Unk02e000_GetAddr_data_02140ac8(void)
     return (u32)data_02140ac8;
 }
 
-void func_0202e4dc(u8 *rec);
+u8 *func_0202e4dc(int value);
 void func_0202e520(u8 *rec);
 
 /* Original 0x0202e440 tests the sign of x-3, x-11 and x-31 to return 0..3.
@@ -159,7 +161,7 @@ int Unk02e000_GetTier(int x)
  * func_0202e4dc; the caller must supply a valid borrowed record index. */
 void Unk02e000_Call_02e4dc(u8 *base, int i)
 {
-    func_0202e4dc(base + 500 + i * 100);
+    func_0202e4dc((int)(base + 500 + i * 100));
 }
 
 /* Original 0x0202e590 uses the same 100-byte record layout and tail-calls
@@ -219,6 +221,8 @@ u8 *Unk02e000_GetAreaRecord(int i)
     return Unk02e000_GetWorkArea() + 116 + i * 60;
 }
 
+/* Original 0x0202e7c0 reads signed byte work+0x354+i; negative returns null,
+ * otherwise returns work+0x74+byte*60. Caller supplies a valid allocated index. */
 u8 *Unk02e000_Unk_02e7c0(int i)
 {
     u8 *w = Unk02e000_GetWorkArea();
@@ -250,6 +254,8 @@ int Unk02e000_FindEntryIndex(u8 *p)
     return -1;
 }
 
+/* Original 0x0202e840 tests whether FindEntryIndex(p) occurs in the three
+ * nonnegative signed bytes at work+0x354. Requires allocated work storage. */
 int Unk02e000_Unk_02e840(u8 *p)
 {
     int idx = Unk02e000_FindEntryIndex(p);
@@ -345,8 +351,9 @@ void Unk02e000_Unk_02e0cc(void)
 }
 
 int func_02008848();
-int func_0202e1b8();
-/* decompiler-derived */
+void func_0202e1b8(void);
+/* Original 0x0202e180 clears eight allocated bytes, sets 2,2,1,1, then
+ * calls func_0202e1b8. Requires allocation; initialization purpose is unconfirmed. */
 void Unk02e000_Unk_02e180(void)
 {
   u8 *v1;
@@ -446,6 +453,8 @@ int Unk02e000_HasField36(u8 *p)
     return FIELD(u16, p, 0x36) != 0;
 }
 
+/* Original 0x0202e924 tests bit i in the work+0x374 byte array, supporting
+ * TestFlag. Indices outside 0..89 return false; valid indices require allocation. */
 int Unk02e000_TestFlag(int i)
 {
     if (i < 0) {
@@ -532,6 +541,8 @@ int Unk02e000_SetRecordUnk1c(u32 id, u16 v)
     return 1;
 }
 
+/* Original 0x0202eb0c loads unsigned halfword +0x1c in the 36-byte record,
+ * supporting the offset name. IDs above 491 return zero; valid IDs are 1..491. */
 u32 Unk02e000_GetRecordUnk1c(u32 id)
 {
     if (id > 491) {
@@ -647,4 +658,20 @@ int Unk02e000_GetRecordUnk1f(u32 id)
         Unk02e000Rec *r = &UNK02E000_RECS()[id - 1];
         return r->unk_001f_2;
     }
+}
+
+/* Original 0x0202e4dc looks up the signed low halfword, then its slot view.
+ * A missing index or null slot retries with index lookup key -1. The returned
+ * record is borrowed; the allocation must exist. Broader purpose is unconfirmed. */
+u8 *func_0202e4dc(int value)
+{
+    u8 *record = 0;
+    int index = Unk02e000_FindIndex_02e3e4((s16)value);
+    if (index >= 0) {
+        record = Unk02e000_GetSlotPtr(index);
+    }
+    if (record == 0) {
+        record = Unk02e000_GetSlotPtr(Unk02e000_FindIndex_02e3e4(-1));
+    }
+    return record;
 }
