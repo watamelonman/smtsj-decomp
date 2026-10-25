@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Match four remaining game/unit_0202d15c cursor, request and entry-validation functions.
+- Verified all eight M1-T600 selection, request, and flag-latch functions at 100% objdiff; documented borrowed layouts and call contracts.
+- Verified all eight M1-T569 lookup, slot release, setup and next-halfword helpers at 100% objdiff; made register-carried arguments explicit and documented typed contracts.
+- Verified all eight M1-T599 game/unit_0206a224 functions at 100% objdiff; corrected wrapper argument/result contracts and documented field and slot evidence.
 - Matched all eight M1-T577 request, record lookup, condition and kind mapping functions at 100% objdiff; documented typed request contracts and instruction evidence.
 - Verified all eight M1-T568 buffer, release, mode and mission-log helpers at 100% objdiff; documented instruction evidence and typed buffer contracts.
 - Matched all eight M1-T576 manager predicates, image release, setup, record reset and constant mapping helpers at 100% objdiff; documented typed contracts and instruction evidence.
