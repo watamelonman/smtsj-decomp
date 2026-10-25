@@ -1,65 +1,4 @@
-#include "types.h"
-
-/* Only the state word at +0x0c is accessed by these callbacks. */
-typedef struct Unk0a163cWork {
-    u32 unk_0000[3];
-    u32 unk_000c;
-} Unk0a163cWork;
-
-/* Borrowed resource record: offsets 0x5a and 0x6a are established by loads. */
-typedef struct Unk0a163cRecord {
-    u16 id;
-    u8 unk_0002[88];
-    u8 unk_005a;
-    u8 unk_005b[15];
-    s16 unk_006a;
-    u8 unk_006c[20];
-} Unk0a163cRecord;
-
-/* Signed offsets belong to the borrowed entry metadata. */
-typedef struct Unk0a163cMetadata {
-    u16 unk_0000;
-    s16 unk_0002;
-    s16 unk_0004;
-} Unk0a163cMetadata;
-
-/* Entry stride 0x3a0 and the three pointers follow the original list loads. */
-typedef struct Unk0a163cEntry {
-    u16 id;
-    u16 unk_0002;
-    void *unk_0004;
-    u32 unk_0008;
-    u8 unk_000c[384];
-    Unk0a163cMetadata *unk_018c;
-    void *unk_0190;
-    void *unk_0194;
-    u8 unk_0198[520];
-} Unk0a163cEntry;
-
-/* Output routines write coordinates at +0xc and +0x10. */
-typedef struct Unk0a163cOutput {
-    u32 unk_0000[3];
-    s32 unk_000c;
-    s32 unk_0010;
-} Unk0a163cOutput;
-
-/* The original list routines read a count and a borrowed entry buffer. */
-typedef struct Unk0a163cList {
-    u32 count;
-    Unk0a163cEntry *entries;
-    u32 unk_0008;
-    u32 unk_000c;
-    u32 unk_0010;
-    u32 unk_0014[1];
-} Unk0a163cList;
-
-extern void *func_020445d0(int group, int table);
-extern void *func_020445f4(int group, int table);
-extern u32 func_0204fe18(void *resource);
-extern void *func_0204fed8(void *resource, u32 index);
-extern int func_020a1b08(Unk0a163cList *list, u16 id, u32 value);
-extern int func_020a208c(Unk0a163cWork *work);
-extern Unk0a163cEntry *func_020a2218(Unk0a163cList *list, u16 id);
+#include "game/unit_020a163c.h"
 
 /* ARM 0x020a1718: compare the first unsigned halfword of two records.
  * The subtraction promotes both values to int, giving a signed ordering. */
@@ -117,24 +56,6 @@ void *Unk0a163c_Call_020a2218(Unk0a163cList *list, u16 id)
 {
     return func_020a2218(list, (u16)(id + 500));
 }
-
-extern void func_020a1a24(Unk0a163cList *list);
-extern void func_02053000(void *allocation);
-extern void *func_0204fde0(void *resource);
-extern void *func_02011810(const void *key, const void *base, u32 count,
-                          u32 stride, int (*compare)(const u16 *, const u16 *));
-extern s32 func_02011804(s32 value);
-extern s32 Unk02e000_GetRecordUnk1e(u16 id);
-extern const u8 data_0213c258[];
-extern const u8 data_0213c244[];
-extern Unk0a163cEntry *func_020a2250(Unk0a163cList *list, u16 id);
-extern Unk0a163cOutput *func_02065fc0(void *a, void *b, u32 value, int mode, int flags);
-extern Unk0a163cOutput *func_0205f41c(void *object, u32 argument);
-extern Unk0a163cOutput *func_0205adb4(int mode, s32 *coordinates);
-extern s32 func_0205accc(Unk0a163cOutput *object);
-extern s32 func_0205acd4(Unk0a163cOutput *object);
-extern void func_0205b9a0(Unk0a163cOutput *object);
-extern void func_0205b900(Unk0a163cOutput *object);
 
 /* ARM 0x020a1740: search resource (19, 1) by its leading halfword.
  * The original uses a 128-byte stack key and 128-byte resource stride. */
@@ -232,17 +153,6 @@ Unk0a163cOutput *func_020a239c(void *object, u32 argument, int flag)
     else func_0205b900(output);
     return output;
 }
-
-extern void *func_02052fe0(u32 size);
-extern void func_02008848(void *buffer, int value, u32 size);
-extern void *func_020519e8(void *context);
-extern u32 func_0205f2e4(void *object);
-extern int func_02013c3c(char *buffer, const char *format, ...);
-extern void func_020516dc(void *context, const char *name, int a, int b);
-extern void *func_02051610(const char *name);
-extern int func_020a1d00(Unk0a163cList *list, int flag);
-extern const char data_0214cd28[];
-extern const char data_0214cd48[];
 
 /* ARM 0x020a1854: map selectors -5..-1 to 0,4,3,2,1; nonnegative
  * selectors index the borrowed byte table. Other negatives are unspecified. */
@@ -372,4 +282,206 @@ Unk0a163cOutput *func_020a2334(Unk0a163cList *list, u16 id, u32 value, int mode,
     output->unk_000c = -entry->unk_018c->unk_0002;
     output->unk_0010 = -entry->unk_018c->unk_0004;
     return output;
+}
+
+/* ARM 0x020a163c: sort the six nonzero halfwords of each resource
+ * (19, 0) record in ascending order, discarding duplicates and padding zero. */
+void func_020a163c(void)
+{
+    u16 sorted[6];
+    void *resource = func_020445d0(19, 0);
+    Unk0a163cSortRecord *record = func_0204fde0(resource);
+    u32 count = func_0204fe18(resource);
+    u32 i;
+    for (i = 0; i < count; i++, record++) {
+        int j;
+        func_02008848(sorted, 0, sizeof(sorted));
+        for (j = 0; j < 6; j++) {
+            u32 value = record->slots[j];
+            int k;
+            if (value == 0) continue;
+            for (k = 0; k < 6; k++) {
+                u32 old = sorted[k];
+                if (old == 0) { sorted[k] = value; break; }
+                if (value == old) break;
+                if (old > value) { sorted[k] = value; value = old; }
+            }
+        }
+        func_02008904(sorted, record->slots, sizeof(sorted));
+    }
+}
+
+/* ARM 0x020a18c8: clear capacity halfwords, then insert distinct resource
+ * values in ascending order. A missing named resource returns zero. */
+int func_020a18c8(u16 id, u16 *values, int capacity)
+{
+    char name[64];
+    int i;
+    Unk0a163cRecord *record;
+    Unk0a163cValues *resource;
+    int k;
+    for (i = 0; i < capacity; i++) values[i] = 0;
+    record = func_020a1740(id);
+    if (record) {
+        func_02013c3c(name, data_0214cd10, record->unk_006c);
+        if (!func_020513d4(name)) return 0;
+        resource = func_02051610(name);
+        for (k = 0; k < resource->count; k++) {
+            u32 value = resource->values[k];
+            int j;
+            for (j = 0; j < capacity; j++) {
+                u32 old = values[j];
+                if (old == 0) { values[j] = value; break; }
+                if (value == old) break;
+                if (value < old) { values[j] = value; value = old; }
+            }
+        }
+        func_02053000(resource);
+    }
+    return 1;
+}
+
+/* ARM 0x020a1a24: release the counted shared allocations and each entry's
+ * three owned objects; restore unused ids without freeing the list buffer. */
+void func_020a1a24(Unk0a163cList *list)
+{
+    int count = list->unk_0008;
+    int j;
+    u32 i;
+    for (j = 0; j < count; j++) func_0205bb68();
+    list->unk_0008 = 0;
+    for (i = 0; i < list->count; i++) {
+        Unk0a163cEntry *entry = &list->entries[i];
+        if (entry->unk_0194) {
+            func_0205ddb4(entry->unk_0194);
+            entry->unk_0194 = 0;
+        }
+        if (entry->unk_0190) {
+            func_0205c368(entry->unk_0190);
+            entry->unk_0190 = 0;
+        }
+        func_02053000(entry->unk_0004);
+        entry->unk_0004 = 0;
+        list->entries[i].id = 0xffff;
+        list->entries[i].unk_0008 = 0;
+    }
+}
+
+/* ARM 0x020a1d00: build current entry outputs from object views 3 onward,
+ * format names from id/index, and link named container items to inline views.
+ * The flag selects the two original output initialization routines. */
+int func_020a1d00(Unk0a163cList *list, int flag)
+{
+    s32 x, y;
+    Unk0a163cEntry *entry = &list->entries[list->unk_0010];
+    int i;
+    if (entry->id == 0xffff) return 0;
+    for (i = 0; i < entry->unk_0002; i++) {
+        Unk0a163cInline *output;
+        int slot = i;
+        if (i >= 4) slot = 0;
+        if (entry->unk_0008) {
+            Unk0a163cOutput *view;
+            output = &entry->outputs[slot];
+            view = func_0205f41c(entry->unk_0004, i + 3);
+            output->vector = *(Unk0a163cVector *)((u8 *)view + 12);
+            func_0205aa78(&output->vector, &x, &y, &output->unk_0028, &output->unk_002a);
+            if (slot == 0) {
+                output->x = ((s32 *)entry->unk_0008)[0];
+                output->y = ((s32 *)entry->unk_0008)[1];
+            }
+            if (slot < 3) {
+                entry->outputs[slot + 1].x = output->x + x;
+                entry->outputs[slot + 1].y = output->y + y;
+            }
+            if (flag) func_0205b444(output, view);
+            else func_0205b4c4(output, view);
+            output->unk_000c = func_0205accc(view);
+            output->unk_0010 = func_0205acd4(view);
+        } else {
+            output = (Unk0a163cInline *)func_020a239c(entry->unk_0004, i + 3, flag);
+            entry->output_ptrs[slot] = output;
+        }
+        if (entry->id >= 500) {
+            switch (i) {
+            case 0: func_02013c3c(output->name, data_0214cd64, entry->id - 500); break;
+            case 1: func_02013c3c(output->name, data_0214cd70, entry->id - 500); break;
+            default: func_02013c3c(output->name, data_0214cd7c, entry->id - 500, i); break;
+            }
+        } else {
+            switch (i) {
+            case 0: func_02013c3c(output->name, data_0214cd8c, entry->id); break;
+            case 1: func_02013c3c(output->name, data_0214cd94, entry->id); break;
+            default: func_02013c3c(output->name, data_0214cd9c, entry->id, i); break;
+            }
+        }
+        if (i == 0) func_02008904((void *)output->unk_0010, (u8 *)entry + 0x1a0, 512);
+    }
+    if (entry->unk_0008) {
+        u32 j;
+        Unk0a163cContainer *container = func_0205dd58(func_0205f41c(entry->unk_0004, 2), 0);
+        entry->unk_0194 = container;
+        for (j = 0; j < container->count; j++) {
+            Unk0a163cItem *item = func_0205e33c(container, j);
+            int k;
+            for (k = 0; k < entry->unk_0002; k++) {
+                if (func_020152cc(entry->outputs[k].name, item->name) == 0)
+                    item->output = &entry->outputs[k];
+            }
+            container = entry->unk_0194;
+        }
+    } else entry->unk_0194 = func_0205dd58(func_0205f41c(entry->unk_0004, 2), 1);
+    entry->unk_0190 = func_0205c328(func_0205f41c(entry->unk_0004, 1));
+    return 1;
+}
+
+/* ARM 0x020a208c: advance resource loading through states 0..6 at +0xc.
+ * Work must reference a full list object, including its loading context.
+ * Completion waits for each entry's byte +0x59 (or inline +0x65) flags. */
+int func_020a208c(Unk0a163cWork *work)
+{
+    Unk0a163cList *list = (Unk0a163cList *)work;
+    switch (list->unk_000c) {
+    case 0: return 1;
+    case 6: return 1;
+    case 1:
+        list->unk_0010 = 0;
+        list->unk_000c = 2;
+        /* Fall through to request the first entry in this call. */
+    case 2:
+        if (list->unk_0010 >= list->count) list->unk_000c = 6;
+        else if (func_020a1c50(list, 1)) list->unk_000c = 3;
+        else list->unk_0010++;
+        break;
+    case 3:
+        if (func_02051844(list->unk_0014, -1) == 0) {
+            func_020a1bb8(list, 1);
+            list->unk_000c = 4;
+        }
+        break;
+    case 4:
+        func_020a1d00(list, 1);
+        list->unk_000c = 5;
+        break;
+    case 5:
+        {
+            Unk0a163cEntry *entry = &list->entries[list->unk_0010];
+            int ready = 1;
+            int i;
+            for (i = 0; i < entry->unk_0002; i++) {
+                if (entry->unk_0008) {
+                    if (entry->outputs[i].ready == 0) ready = 0;
+                } else {
+                    Unk0a163cInline *object = entry->output_ptrs[i];
+                    if (object->ready == 0) ready = 0;
+                }
+            }
+            if (ready) {
+                list->unk_0010++;
+                list->unk_000c = 2;
+            }
+        }
+        break;
+    }
+    return 0;
 }

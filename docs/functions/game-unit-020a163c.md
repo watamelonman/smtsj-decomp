@@ -1,6 +1,6 @@
-# game/unit_020a163c — M1-T627 / M1-T628 / M1-T629
+# game/unit_020a163c — M1-T627 / M1-T628 / M1-T629 / M1-T630
 
-All twenty-four functions below match the delinked ARM object at 100% objdiff.
+All twenty-nine functions below match the delinked ARM object at 100% objdiff.
 Names remain neutral: the instructions establish field and resource operations,
 but do not establish a gameplay meaning. Source comments cite original addresses.
 The remaining functions in this TU continue to come from the delinked object;
@@ -36,6 +36,12 @@ no completion flag or module boundary changed.
 | `func_020a2250` | `0x020a2250` | Searches using the record selector, translating negatives to 500 minus selector and truncating to u16. If absent, searches again using the negative selector magnitude or the two byte-table mapping, plus 500 through the wrapper. Returns a borrowed entry or null. |
 | `func_020a2334` | `0x020a2334` | Returns null for an absent entry; otherwise forwards value, mode and u16 flags to `func_02065fc0` with entry +0x194/+0x190. Negates metadata signed offsets +2/+4 into output +0xc/+0x10. |
 
+| `func_020a163c` | `0x020a163c` | Selects resource (19, 0), iterates 100-byte records, and inserts the six halfwords at +0x2e into a zeroed six-slot stack array in ascending unsigned order, omitting zero and duplicates. Copies all twelve bytes back. |
+| `func_020a18c8` | `0x020a18c8` | Clears the caller's signed-capacity halfword array, looks up the id, and formats a resource name from record +0x6c using `data_0214cd10`. Returns 0 when the named resource is unavailable; otherwise inserts distinct loaded values in ascending unsigned order up to capacity, frees the loaded resource, and returns 1. An absent id also returns 1 after clearing. |
+| `func_020a1a24` | `0x020a1a24` | Calls `func_0205bb68` list +8 times with signed count ordering, clears that count, releases entry +0x194/+0x190 when nonnull, frees entry +4, and clears those pointers. Restores id 0xffff and value +8 zero, retaining the entry buffer. |
+| `func_020a1d00` | `0x020a1d00` | Rejects an unused current entry, then processes object views starting at index 3. Nonzero entry +8 supplies initial coordinate words for four inline 92-byte outputs; other entries construct separate outputs. Slots beyond index 3 reuse slot zero. Copies the 16-byte view +0xc block, derives coordinate offsets, selects initialization by flag, and formats output names with six original format strings. Copies 512 bytes from the first output's +0x10 pointer into entry +0x1a0. Creates the +0x194 container from view 2, links matching item names to inline outputs when entry +8 is nonzero, and creates entry +0x190 from view 1. Resource counts and buffer extents retain the original caller/provider contracts. |
+| `func_020a208c` | `0x020a208c` | Advances state +0xc through 1 (reset cursor), 2 (request current entry), 3 (wait for resource and cache view), 4 (initialize outputs), and 5 (wait for all ready bytes). Inline ready bytes are entry +0x65 with stride 92; separate outputs use pointer table +0x17c and byte +0x59. Completion increments the cursor and returns to state 2; cursor exhaustion sets state 6. States 0 and 6 return 1; other calls return 0. |
+
 The list view follows the count load at +0 and entry-pointer load at +4 in
 `func_020a1b08` and `func_020a2218`. The entry and metadata views expose only offsets and stride established by loads
 and pointer increments; they do not claim gameplay identities. The work view represents only the three
@@ -43,10 +49,12 @@ unknown words before the state field; it does not claim a complete object layout
 
 ## Validation
 
-`python3 tools/match_gate.py` verifies all twenty-four compiled definitions at 100%.
+`python3 tools/match_gate.py` verifies all twenty-nine compiled definitions at 100%.
 No new behavioral tests are required by this card; binary matching checks the
 exact instructions and relocations against the original implementation.
 
 ## Hard list
 
-None of the twenty-four requested functions remain unmatched.
+None of the twenty-nine requested functions remain unmatched.
+
+M1-T630 also verifies the full build, anticheat, tool tests, and retail image checksum.

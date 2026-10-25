@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all five M1-T630 resource sorting, list cleanup, output setup and loading-state routines in game/unit_020a163c at 100% objdiff.
 - Matched all eight M1-T629 list allocation, resource resolution, selector and output routines in game/unit_020a163c at 100% objdiff.
 - Corrected M1-T632 id lookup and borrowed record arguments in `Unk0986ac_Unk_098918`, preserving original instructions.
 - Verified all eight M1-T632 game/unit_020986ac targets at 100% objdiff; documented typed calls, borrowed field contracts, and instruction evidence.
