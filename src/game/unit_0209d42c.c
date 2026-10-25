@@ -44,6 +44,9 @@ void func_02052da0(u8 *state);
 u32 *Unk02f2a8_GetCell38e8(int x, int y);
 int Unk09a268_Unk_09a844(void);
 int Unk1124f0_Unk_11259c(int index);
+/* Maps zero to one and, when enabled, IDs 62..64 to 65..67. These
+ * explicit ID comparisons in the original support the MapId name; the result
+ * is truncated to a byte for other inputs. */
 u8 Unk09d42c_MapId(int a, int b)
 {
     if (a == 0) {
@@ -74,6 +77,8 @@ u8 *Unk09d42c_GetTable0Entry(int i)
     return base + i * 2;
 }
 
+/* Borrows group 9/table 1 storage (lookup arguments in the original).
+ * Signed invalid indices return its base; valid entries have 106-byte stride. */
 u8 *Unk09d42c_GetTable1Entry(int i)
 {
     int t = func_020445d0(9, 1);
@@ -84,6 +89,8 @@ u8 *Unk09d42c_GetTable1Entry(int i)
     return base + i * 106;
 }
 
+/* Borrows group 9/table 2 storage (lookup arguments in the original).
+ * Signed invalid indices return its base; valid entries have 24-byte stride. */
 u8 *Unk09d42c_GetTable2Entry(int i)
 {
     int t = func_020445d0(9, 2);
@@ -106,8 +113,10 @@ typedef struct Unk09d42cMap {
 extern char data_0214c9cc[];
 int func_020152cc();
 void func_02013c3c();
-int Unk0e651c_Unk_0e666c();
+int Unk0e651c_Unk_0e666c(u16 flag);
 
+/* Scans borrowed six-byte records in group 9/table 4, returning the first
+ * value whose key equals id and whose flag helper succeeds, or id if absent. */
 u16 Unk09d42c_Unk_09d73c(u16 id)
 {
     int tab = func_020445d0(9, 4);
@@ -122,6 +131,8 @@ u16 Unk09d42c_Unk_09d73c(u16 id)
     return id;
 }
 
+/* Borrows group 9/table 3 storage (lookup arguments in the original).
+ * Signed invalid indices return its base; valid entries have 52-byte stride. */
 u8 *Unk09d42c_GetTable3Entry(int i)
 {
     int t = func_020445d0(9, 3);
@@ -148,6 +159,39 @@ int Unk09d42c_Unk_09df70(u8 *p)
     return r;
 }
 
+int Unk0a23f4_Unk_0a246c(void);
+void ScanVisor_Unk_0a2b18(void);
+int Unk0a23f4_Unk_0a2448(void);
+
+/* Borrowed state prefix exposing only the phase word observed in the original.
+ * The caller retains ownership and must supply storage through +0x73f3. */
+typedef struct Unk09d42cPhaseState {
+    u8 prefix[0x73f0];
+    u32 phase;
+} Unk09d42cPhaseState;
+
+/* Dispatches the supplied state's +0x73f0 phase. Phase zero advances after
+ * the first predicate returns one and the action runs; phase one returns
+ * whether the second predicate is zero. Other phases return zero. */
+int func_0209e020(Unk09d42cPhaseState *state)
+{
+    int result = 0;
+    switch (state->phase) {
+    case 0:
+        if (Unk0a23f4_Unk_0a246c() == 1) {
+            ScanVisor_Unk_0a2b18();
+            state->phase = state->phase + 1;
+        }
+        break;
+    case 1:
+        if (Unk0a23f4_Unk_0a2448() == 0) {
+            result = 1;
+        }
+        break;
+    }
+    return result;
+}
+
 /* Calls the optional second callback in the eight-byte record selected by
  * state +0x73ec; an absent callback succeeds with one. State/record must exist. */
 int Unk09d42c_Unk_09e080(u8 *p)
@@ -170,6 +214,9 @@ int Unk09d42c_Unk_09e274(void)
     return FIELD(s32, gs + 28672, 1000) == -1;
 }
 
+/* Resolves arg0 through work-area +0x358, stores the result at root +0x18,
+ * sets root +0x14 to four and state +0x73e8 to one. Null state is ignored;
+ * a present state must have a root and a valid work area. */
 void Unk09d42c_Unk_09e2f4(u32 arg0)
 {
     GameState *gs = GetGameState();
@@ -183,6 +230,9 @@ void Unk09d42c_Unk_09e2f4(u32 arg0)
     gs->unk_73e8 = 1;
 }
 
+/* Resolves arg0 through work-area +0x358, stores the result at root +0x18,
+ * sets root +0x14 to two, and clears root +0xc and state +0x73e8. Null state
+ * is ignored; a present state must have a root and a valid work area. */
 void Unk09d42c_Unk_09e2a4(u32 arg0)
 {
     GameState *gs = GetGameState();

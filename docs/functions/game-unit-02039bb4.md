@@ -34,12 +34,6 @@
 
 - `Unk039bb4_Unk_039f80`: Appends with tag 0 the word selected from data_0215e258 by the current entry’s unsigned +2 halfword, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x020039f80`; no wider semantic name is established.
 
-## Not done in M1-T679
-- `func_02039c60`
-- `func_02039bb4`
-- `func_0203a888`
-- `func_0203a334`
-
 ## M1-T674 verification
 
 The eight bodies were already present in the starting tree. This card adds explicit
@@ -144,3 +138,44 @@ Validation: all eight M1-T678 targets individually report 100% objdiff.
 The full build, match gate (164 checked functions), anticheat, nine existing
 unit tests, and byte-identical artifact checksum pass. No new tests are
 required by this card.
+
+## M1-T679
+
+- `func_02039bb4`: Rejects negative or out-of-range record indices without
+  mutation. Otherwise copies the selected +0xb4 record's terminated name,
+  loads its +0x18 execution index, clears 28 stack tags and words, resets the
+  stack count and +0xcc/+0xd0, and saves the selected index at +0xc4.
+  Evidence: ARM instructions at `0x02039bb4`. Work, header and records are
+  borrowed; the selected name must terminate within the destination.
+- `func_02039c60`: Scans the borrowed file directory at +0x20 for kind zero,
+  then compares the names in its 32-byte records using `func_020152cc`.
+  Returns the first equal record index, or -1 for null input, missing kind,
+  or missing name. Evidence: ARM instructions at `0x02039c60`; directory
+  counts/offsets and terminated strings must be valid.
+- `func_0203a888`: Negates a top integer/float directly for tags 0/1, or
+  negates the referenced integer/float global for tags 2/3. Other tags leave
+  the value unchanged. Float negation uses subtraction from positive zero.
+  Advances +0x18 and returns 1. Evidence: switch and `_fsub` calls at
+  `0x0203a888`. Borrowed stack/global indices must be valid.
+- `func_0203a334`: Pops two integers when both tags are 0/2, otherwise two
+  floats, saving operands and results in `data_0215de34`. Selectors 0–11
+  evaluate addition, subtraction, multiplication, division, logical OR/AND,
+  equality/inequality, less/greater, and less-or-equal/greater-or-equal.
+  The first popped operand is the left operand. Integer operations append
+  tag zero; float arithmetic appends tag one and float predicates append
+  tag zero. Logical float comparisons promote to double. Evidence: switches
+  and conversion/operator calls at `0x0203a334`. Two valid values are
+  required; integer arithmetic must be representable and divisors nonzero.
+  The helper returns void, matching callers that discard its register result.
+
+All four retain their existing neutral symbols; no wider gameplay meaning or
+module boundary is inferred. Scoped compiler settings preserve instruction
+selection and register lifetimes (See DEC-018). Address arguments retain the
+unit's existing 32-bit ABI. Instruction matching validates behavior; no new
+host tests are required by this card.
+
+Hard list for M1-T679: none.
+
+Validation: all four targets individually report 100% objdiff. Full build,
+match gate (139 checked C functions), anticheat, nine existing unit tests,
+and byte-identical artifact checksum pass.
