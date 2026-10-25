@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Corrected the M1-T567 low-pair wrapper to forward its typed table index and describe its two-bit return value.
 - Verified all eight M1-T567 wrappers and buffer accessors in `game/unit_020d297c` at 100% objdiff, with typed arguments, return values, and documented assembly evidence.
 
 - Match six more game/unit_0209974c functions, including mode-based storage updates and packed record adjustments.

@@ -8,7 +8,7 @@ The wrappers preserve arguments and results across their tail branches.
 
 | Function | Address / size | Contract and evidence |
 | --- | --- | --- |
-| `Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448` | `0x020d2b58` / 12 B | Tail branch to `Unk0e5fb8_Unk_0e6448`; returns its predicate result. |
+| `Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448` | `0x020d2b58` / 12 B | Tail branch to `Unk0e5fb8_Unk_0e6448(u32 index)`; forwards the caller's table index unchanged in r0. Returns the low two-bit value (0..3). At `0x020e644c` the target saves the index and at `0x020e6454` passes it in r1 to `Get2BitsD80`. The original leaves the low two-bit value (0..3) in r0 (`orr`/`and #255` at `0x020e6490`/`0x020e6494`), which is a two-bit value rather than a predicate. The existing callee definition incorrectly declares void: callers at `0x020d2ab0` and `0x020d2af8` compare its r0 result; that out-of-scope definition needs a matching int return contract. |
 | `Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8` | `0x020d2b64` / 12 B | Tail branch to `Unk0e5fb8_Unk_0e64c8`; forwards the caller's u32 value in r0. |
 | `Unk0d297c_Thunk_02095398` | `0x020d3098` / 12 B | Tail branch to the +0x9a0 setter at `0x02095398`; forwards the u32 value. |
 | `Unk0d297c_Thunk_020953ac` | `0x020d30a4` / 12 B | Tail branch to the +0x9a0 getter at `0x020953ac`; returns its u32 result. |

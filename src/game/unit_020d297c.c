@@ -18,11 +18,11 @@ typedef struct Unk0d297cWork {
 
 void Unk094fe0_SetUnkField9a0(u32 value);
 u32 Unk094fe0_GetWorkUnkField9a0(void);
-int Unk0e5fb8_Unk_0e6448(void);
+int Unk0e5fb8_Unk_0e6448(u32 index);
 void Unk0e5fb8_Unk_0e64c8(u32 value);
 void Unk0e651c_Unk_0e651c(u32 value, u32 mode);
 
-int Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(void);
+int Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(u32 index);
 void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8(u32 value);
 void Unk0d297c_Thunk_02095398(u32 value);
 u32 Unk0d297c_Thunk_020953ac(void);
@@ -44,8 +44,10 @@ void Unk0d297c_Call_020d297c(int id)
     func_020d297c((u16)(id + 50));
 }
 
-/** Preserve the predicate result; the branch at 0x020d2b58 forwards to 0x020e6448. */
-int Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(void) { return Unk0e5fb8_Unk_0e6448(); }
+/** Forward the table index unchanged (branch at 0x020d2b58).
+ * The target saves r0 as the Get2BitsD80 index and returns its low pair (0..3).
+ * Evidence: 0x020e6490 combines the bits; 0x020e6494 masks the result to u8. */
+int Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(u32 index) { return Unk0e5fb8_Unk_0e6448(index); }
 
 /** Forward the caller value unchanged; target 0x020e64c8 accepts it in r0. */
 void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8(u32 value) { Unk0e5fb8_Unk_0e64c8(value); }
@@ -309,7 +311,7 @@ void Unk0e5fb8_Unk_0e649c(u32 obj, int mode);
 /* Mode 1 setup unless Unk0e5fb8_Unk_0e6448 reports already active. */
 void Unk0d297c_Unk_0d2aa4(u32 obj)
 {
-    if (Unk0e5fb8_Unk_0e6448() != 0) {
+    if (Unk0e5fb8_Unk_0e6448(obj) != 0) {
         return;
     }
     Unk0e5fb8_Unk_0e649c(obj, 1);
@@ -320,7 +322,7 @@ void Unk0d297c_Unk_0d2aa4(u32 obj)
 /* Switches to mode 2 when active. */
 void Unk0d297c_Unk_0d2aec(u32 obj)
 {
-    if (Unk0e5fb8_Unk_0e6448() == 0) {
+    if (Unk0e5fb8_Unk_0e6448(obj) == 0) {
         return;
     }
     Unk0e5fb8_Unk_0e649c(obj, 2);
