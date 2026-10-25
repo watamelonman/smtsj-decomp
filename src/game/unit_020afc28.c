@@ -450,3 +450,33 @@ int func_020b0974(const void *work)
     }
     return 0;
 }
+
+int func_0204a244(const void *work);
+
+/* Compare the supplied chance after selector-six/seven and selector-14
+ * factors. Evidence: rounded 20.12 chains and random 0..0x63ff comparison.
+ * Provider inputs are borrowed and arithmetic must fit signed intermediates. */
+int func_020b0310(int chance, const void *a, const void *b)
+{
+    int kind, six, seven, source, target, value;
+    if (chance == 255) return 1;
+    if (chance == 0) return 0;
+    kind = func_0204a244(b);
+    if (kind == 2 || kind == 4) return 1;
+    six = func_02049d80(a, 6);
+    six = func_020491cc(six - func_02049d80(b, 6));
+    seven = func_02049d80(a, 7);
+    seven = func_02049220(seven - func_02049d80(b, 7), 30);
+    source = Unk0afc28_Unk_0afdd0(a, 14, 0);
+    target = Unk0afc28_Unk_0afdd0(b, 14, 1);
+    value = Unk0afc28_Mul(chance << 12, six);
+    value = Unk0afc28_Mul(value, seven);
+    value = Unk0afc28_Mul(value, source);
+    value = Unk0afc28_Mul(value, target);
+    if (func_0204a67c(b, 21) != 0) value = Unk0afc28_Mul(value, 0x800);
+    if (value > 0x63000) value = 0x63000;
+    func_0204a244(a);
+    if (kind == 4) value = Unk0afc28_Mul(value, 0x800);
+    if (value < 0x1000) value = 0x1000;
+    return value > (func_02050074(0, 0x63ff) << 4);
+}

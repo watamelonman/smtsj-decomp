@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match M1-T683 selector-factor chance routine 020b0310; document 020afe64 and 020b04b4 on the hard list.
 - Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.
 - Match seven M1-T689 state, iterator, callback, and palette routines; document the remaining pair updater.
 - Verify all eight M1-T694 resource dispatch, byte assembly and manager-state routines at 100% objdiff; document typed parameters and instruction evidence.
