@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match all eight M1-T618 work-record functions in game/unit_020939f0 with typed C contracts.
 - Verified all eight M1-T617 game/unit_020939f0 helpers at 100% objdiff; added typed work fields, helper contracts and per-function evidence.
 - Matched five M1-T604 palette transition and dirty-buffer transfer functions at 100% objdiff; documented the remaining RGB555 blend on the hard list.
 - Matched all eight M1-T615 game/unit_021218d0 slot initialization, flag, counter and saved-area routines with typed layouts and per-function contracts.
