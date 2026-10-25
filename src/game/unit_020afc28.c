@@ -53,16 +53,16 @@ void Unk0afc28_Unk_0afc38(Unk0afc28RecordWork *p, const Unk0afc28Pos12 *src)
 }
 
 /* Query the work/selector pair and forward its optionally negated result.
- * Evidence: calls to 0204a67c and 020492ec; any nonzero flag negates. */
-void Unk0afc28_Unk_0afdd0(const void *arg0, u32 arg1, int arg2)
+ * Evidence: calls to 0204a67c and 020492ec; any nonzero flag negates.
+ * Return the forwarded result, consumed by the fixed-point calculations. */
+int Unk0afc28_Unk_0afdd0(const void *arg0, u32 arg1, int arg2)
 {
   int tmp1;
   tmp1 = func_0204a67c(arg0, arg1);
   if (arg2 != 0) {
     tmp1 = -tmp1;
   }
-  func_020492ec(arg1,tmp1);
-  return;
+  return func_020492ec(arg1,tmp1);
 }
 
 
@@ -161,7 +161,7 @@ int Unk0afc28_IsOrigin(Unk0afc28Pos *p)
 typedef struct Unk0afc28Result {
     u32 unk_0000;
     u32 unk_0004;
-    u16 unk_0008;
+    s16 unk_0008;
     u16 unk_000a;
 } Unk0afc28Result;
 
@@ -301,4 +301,152 @@ int func_020b0a5c(Unk0afc28ScaleWork *work)
     result += Unk0afc28_Unk_0afd60(result, 10);
     if (result <= 0) result = 1;
     return result;
+}
+
+/* Kind-nine counterpart of 0b0a5c, halving before spread; evidence: kind
+ * comparison, selector 23 and signed divide by two. Work remains borrowed. */
+int func_020b0adc(Unk0afc28ScaleWork *work)
+{
+    Unk0afc28ScaleRecord *record;
+    int scale;
+    int result;
+    if (func_0204aa98(work) != 9) return 0;
+    record = &work->record;
+    scale = func_02049d80(work, 23);
+    if (func_0204a7f4(work, 0) != 0) scale *= 2;
+    result = (record->unk_000a * scale / 100 + 5) / 2;
+    result += Unk0afc28_Unk_0afd60(result, 10);
+    if (result <= 0) result = 1;
+    return result;
+}
+
+/* Count matching ten-slot IDs without selector-one state; when flag is set,
+ * also exclude selector-zero state and kinds 1/7. Third argument is unused
+ * in the original; evidence: the loop never reads incoming r2. */
+int func_020b071c(int value, int flag, int selector)
+{
+    Unk0afc28Ptrs *g = Unk044904_Get_data_0215ee98();
+    int n = 0;
+    int i;
+    for (i = 0; i < 10; i++) {
+        u32 *entry = g->e[i];
+        if (entry != 0 && value == ((entry[0] >> 16) & 255)) {
+            if (func_0204a968(entry, 1) == 0) {
+                if (flag != 0) {
+                    if (func_0204abd8(entry, 0) == 0) {
+                        int kind = func_0204aa98(entry);
+                        if (kind != 1 && kind != 7) n++;
+                    }
+                } else n++;
+            }
+        }
+    }
+    return n;
+}
+
+/* Borrowed provider view: only the byte used by the packed result is known. */
+typedef struct Unk0afc28PackedWork {
+    u8 pad_0000[0x1dc];
+    u8 unk_01dc;
+} Unk0afc28PackedWork;
+Unk0afc28PackedWork *func_02044ec4(u32 id);
+/* Pack capped selector-six percentage in bits 10..25, provider byte in
+ * bits 2..9 and bit zero. Evidence: shifts, ORs and the 0xffff cap.
+ * Missing provider returns zero; products must fit signed 32 bits. */
+u32 func_020b0874(u32 id, int percent)
+{
+    Unk0afc28PackedWork *work = func_02044ec4(id);
+    int value;
+    Unk0afc28Ptrs *g;
+    if (work == 0) return 0;
+    value = func_02049d80(work, 6);
+    value += func_02050074(0, 10) - 5;
+    if (value < 0) value = 0;
+    g = Unk044904_Get_data_0215ee98();
+    if ((g->unk_0040 << 21) >> 31 == 0 && ((id >> 16) & 255) == 1)
+        value += 3;
+    value *= percent;
+    value /= 100;
+    if (value > 65535) value = 65535;
+    return ((u32)work->unk_01dc << 2) | ((u32)(u16)value << 10) | 1;
+}
+
+/* Round a signed 20.12 product to nearest, as in each SMULL/add/shift chain. */
+static inline int Unk0afc28_Mul(int a, int b)
+{
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
+
+int func_0200219c(int numerator, int denominator);
+int func_020491cc(int delta);
+int func_02049220(int delta, int scale);
+int func_0204a230(const void *work);
+int func_0204a120(const void *work, int selector);
+
+/* Combine selector multipliers in 20.12 units, with +0x282 bit two applying
+ * factor 0x119a. Evidence: provider selectors 13/12 and rounded products.
+ * Inputs are borrowed; the final result is in integer units. */
+int func_020affc8(const void *a, const void *b, int base, int factor, u32 selector)
+{
+    int left = Unk0afc28_Unk_0afdd0(b, 13, 0);
+    int right = Unk0afc28_Unk_0afdd0(a, 12, 0);
+    int ratio = func_0200219c(func_02049d80(b, Unk0afc28_Unk_0afcd4(selector)) << 12, 100 << 12);
+    factor = Unk0afc28_Mul(factor, Unk0afc28_Mul(right, left));
+    factor = Unk0afc28_Mul(factor, ratio);
+    if ((u32)(FIELD(u8, a, 0x282) << 29) >> 31)
+        factor = (s32)(((s64)factor * 0x119aLL + 0x800) >> 12);
+    return Unk0afc28_Mul(base << 12, factor) >> 12;
+}
+
+/* Calculate from selectors 3 and 5 and supplied level, then spread/clamp.
+ * Evidence: provider calls and the 4*level/10 term; arithmetic must fit s32. */
+int func_020b00c0(const void *a, const void *b, int level, int factor, u32 selector)
+{
+    int stat = func_02049d80(a, 3);
+    int value = func_020491cc(stat - func_02049d80(b, 5));
+    value = (s32)(((s64)factor * value + 0x800) >> 12);
+    value = Unk0afc28_Mul(value, func_02049220(level - func_0204a230(b), 60));
+    level = stat + level * 4 / 10 + 5;
+    value = func_020affc8(a, b, level, value, selector);
+    return Unk0afc28_Unk_0afd98(value, 10, 3);
+}
+
+/* Selector-four variant: use twice the source stat minus target stat/level.
+ * Evidence: selector 4 calls and the 8*source/10 term; inputs are borrowed. */
+int func_020b017c(const void *a, const void *b, int factor, u32 selector)
+{
+    int stat = func_02049d80(a, 4);
+    int other = func_02049d80(b, 4);
+    int value = func_020491cc(stat - other);
+    value = (s32)(((s64)factor * value + 0x800) >> 12);
+    value = Unk0afc28_Mul(value, func_02049220(stat * 2 - (other + func_0204a230(b)), 60));
+    value = func_020affc8(a, b, stat + stat * 8 / 10 + 5, value, selector);
+    return Unk0afc28_Unk_0afd98(value, 10, 3);
+}
+
+/* Inspect the record at +0x170: absent/negative/one states return zero.
+ * Coordinate-zero records compare y to state; others compare a random draw
+ * with a selector-based ratio plus ten times state. Evidence: signed loads,
+ * signed division, SMLABB and unsigned final comparison. */
+int func_020b0974(const void *work)
+{
+    const Unk0afc28Result *record = (const Unk0afc28Result *)((const u8 *)work + 0x170);
+    Unk0afc28Pos *pos;
+    int denom;
+    u32 chance;
+    if (record->unk_0000 == 0) return 0;
+    if ((s16)record->unk_0008 < 0) return 0;
+    if ((s16)record->unk_0008 == 1) return 0;
+    pos = func_020982c0((s8)record->unk_0000);
+    if (pos->x == 0) {
+        if (pos->y != 0) {
+            if (pos->y < (s16)record->unk_0008) return 1;
+        }
+    } else {
+        denom = (int)(func_02049d80(work, 2) * 6) / 10;
+        chance = (pos->x * (int)func_02049d80(work, 7) + 10) / (denom + 15);
+        chance += (s16)record->unk_0008 * 10;
+        if ((u32)func_02050074(0, 99) < chance) return 1;
+    }
+    return 0;
 }

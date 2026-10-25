@@ -2,6 +2,10 @@
 
 ## Unreleased
 - Match all eight M1-T678 game/unit_02039bb4 handlers, including saved-value duplication and callback dispatch; resolve both hard-function deferrals.
+- Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.
+- Match seven M1-T689 state, iterator, callback, and palette routines; document the remaining pair updater.
+- Verify all eight M1-T694 resource dispatch, byte assembly and manager-state routines at 100% objdiff; document typed parameters and instruction evidence.
+- Verify all eight M1-T693 forwarding, manager-word and initialization routines at 100% objdiff; document typed parameters and provider call sequences.
 - M1-T688: match and document eight game/unit_020de678 resource searches, state updates, and helper dispatch routines.
 - Verify all eight M1-T692 manager-field and forwarding routines at 100% objdiff; document typed views, call order and the resource pointer result.
 - M1-T687: match and document eight game/unit_020de678 state setters, record counter, and helper dispatch routines.

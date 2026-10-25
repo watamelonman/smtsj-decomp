@@ -300,3 +300,160 @@ void func_020df520(int value)
     func_020df420(1, 1, 2, 0, 3);
     func_0205e590(10);
 }
+
+int func_0202d170(void);
+void func_0202d198(void);
+int Unk02d15c_IsMode1Match(int selector);
+int Unk02d15c_Unk_02d9f8(void);
+int Unk02d15c_Unk_02d9a8(void);
+void Unk124c5c_Thunk_02124e9c(void);
+void Unk02cad4_SetupDisplayMode(int mode, int a, int b);
+void func_02095f94(void);
+void func_020dee40(void);
+int func_0206552c(void);
+int func_020961a0(void);
+void Unk02f2a8_Unk_035440(u32 value);
+void Unk02cad4_Unk_02cbdc(u32 value);
+void func_020ded70(void);
+void func_020deedc(void);
+void func_020def0c(void);
+u32 Unk02cad4_GetUnk00(void);
+u32 *func_020611dc(void (*a)(void), void (*b)(void), void (*c)(void),
+                    void (*d)(void), int size, int enabled, int zero, int one);
+void Unk0bc1a8_Unk_0bc928(int selector, int value, int zero);
+void func_02057fd8(void);
+void func_02057dcc(u32 a, u32 b, u32 c, u32 d);
+void func_0205dee8(int mode, u32 value, float a, float b, int offset,
+                  float x, float y, float c, float z, float d);
+
+/* At 0x020dec18, scans the external iterator for selectors 1, 3, or the
+ * queried selector. The incoming word is unused in the original. */
+int func_020dec18(u32 value)
+{
+    int found = 0;
+    int selector;
+    func_020cb3dc();
+    selector = Unk02d15c_Unk_02d9f8();
+    while (func_0202d170()) {
+        if (Unk02d15c_IsMode1Match(1)) { found = 1; break; }
+        if (Unk02d15c_IsMode1Match(3)) { found = 1; break; }
+        if (Unk02d15c_IsMode1Match(selector)) { found = 1; break; }
+        func_0202d198();
+    }
+    return found;
+}
+
+/* At 0x020deb68, scans three selectors and clears offset 0xcc on success. */
+int func_020deb68(void)
+{
+    int found = 0;
+    int selector;
+    func_020cb3dc();
+    selector = Unk02d15c_Unk_02d9a8();
+    while (func_0202d170()) {
+        if (Unk02d15c_IsMode1Match(1)) { found = 1; break; }
+        if (Unk02d15c_IsMode1Match(3)) { found = 1; break; }
+        if (Unk02d15c_IsMode1Match(selector)) { found = 1; break; }
+        func_0202d198();
+    }
+    if (found) FIELD(u32, data_021508d4, 0xcc) = 0;
+    return found;
+}
+
+/* At 0x020de7e8, optionally clears 208 bytes of state, then initializes
+ * external providers; the second flag enables the final selector-2 call. */
+void func_020de7e8(int clear, int enable)
+{
+    if (clear) __builtin__clear(data_021508d4, 208);
+    Unk0964f8_Unk_096508();
+    Unk0de678_Unk_0df598();
+    Unk02e000_Unk_02e0cc();
+    Unk05b82c_Unk_05b82c(194);
+    Unk0fc584_Unk_0fc674(1);
+    Unk0fc584_Unk_0fc84c(0);
+    Unk065e88_Unk_065e88();
+    Unk124c5c_Thunk_02124e9c();
+    Unk044394_Unk_044428(30);
+    if (enable) Unk0a23f4_Unk_0a23f4(2);
+}
+
+/* At 0x020de8b0, optionally searches selector 40 before initializing
+ * state and starting the observed display sequence. Returns the search flag. */
+int func_020de8b0(int bypass)
+{
+    int found = 0;
+    if (!bypass) {
+        while (func_0202d170()) {
+            if (Unk02d15c_IsMode1Match(40)) { found = 1; break; }
+            func_0202d198();
+        }
+    }
+    if (found) {
+        Unk02cad4_SetupDisplayMode(2, 0, 0);
+        func_020de7e8(1, 1);
+        data_021508d4[0] = 1;
+        func_02095f94();
+        func_020dee40();
+    } else {
+        func_020de7e8(1, 0);
+        data_021508d4[0] = 0;
+    }
+    return found;
+}
+
+/* At 0x020decd8, processes states 0/1 at offset 0xcc. Returns one only
+ * when state 1 is waiting for the external completion query. */
+int func_020decd8(void)
+{
+    u32 *state = data_021508d4;
+    switch (FIELD(u32, state, 0xcc)) {
+    case 0:
+        if (!func_0206552c()) {
+            func_02095f94();
+            FIELD(u32, state, 0xcc) = 1;
+        }
+        break;
+    case 1:
+        if (FIELD(u32, state, 4)) {
+            if (FIELD(u32, state, 8) == 3)
+                Unk02f2a8_Unk_035440(FIELD(u32, state, 12));
+            Unk02cad4_Unk_02cbdc(FIELD(u32, state, 8));
+            return 0;
+        }
+        if (!func_020961a0()) return 1;
+        if (FIELD(u32, state, 16)) func_020ded70();
+        break;
+    }
+    return 0;
+}
+
+/* At 0x020dee40, creates a 12-byte callback work area, records the current
+ * provider value, and enables selectors 9 and 24. Null allocation ends early. */
+void func_020dee40(void)
+{
+    u32 *work = func_020611dc(func_020def0c, Unk0de678_Nop_0df05c,
+        Unk0de678_Nop_0df060, func_020deedc, 12, 1, 0, 1);
+    if (!work) return;
+    work[0] = 0;
+    work[1] = 0;
+    work[2] = Unk02cad4_GetUnk00();
+    FIELD(u32, data_021508d4, 8) = Unk02cad4_GetUnk00();
+    Unk044394_Unk_044428(9);
+    Unk0bc1a8_Unk_0bc928(24, 65535, 0);
+}
+
+/* At 0x020de678, supplies six packed four-channel color pairs and six
+ * draw calls. Packed channel arithmetic supports the existing palette name. */
+void Unk_LoadPalette_020de678(u32 value)
+{
+    int i, low, high, offset;
+    func_02057fd8();
+    i = 0; high = 0; offset = 0; low = 25;
+    for (; i < 6; i++, low += 38, high += 38, offset += 32) {
+        u32 a = ((u32)low << 24) + ((u32)low << 16) + ((u32)low << 8);
+        u32 channel = high + 63;
+        u32 b = (channel << 24) + (channel << 16) + (channel << 8);
+        func_02057dcc(a + 255, b + 255, b + 255, a + 255);
+        func_0205dee8(2, value, 0.0f, 0.0f, offset, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f);
+    }
+}
