@@ -251,3 +251,102 @@ u32 func_020fdb14(void)
     Unk0fd9f0_LoadBattleHelpTalk((u32 *)p);
     return p;
 }
+
+u32 *Unk065e88_Call_02065fc0(u32 resource, u32 data, s32 a, s32 b);
+void func_0205c408(u32 handle, s32 value);
+void func_0205c6e0(u32 handle);
+void Unk065e88_SetUnkField28(u32 *object, u32 value);
+void Unk065e88_SetUnkField24(u32 *object, s32 value);
+void Unk065e88_SetUnkField30(u32 *object, s32 value);
+void Unk065e88_SetUnkField3c(u32 *object, s32 value);
+/* Replace the +0x24 object using resources +0x1c/+0x20 and the selected color.
+ * Evidence: 020fe2c4 configures the returned object's fields before storing it. */
+void func_020fe2c4(u8 *work)
+{
+    u32 *object;
+    Unk0fd9f0_Unk_0fe33c((Unk0fd9f0Work *)work);
+    object = Unk065e88_Call_02065fc0(FIELD(u32, work, 28), FIELD(u32, work, 32), 1, 0);
+    func_0205c408(*object, 1);
+    func_0205c6e0(*object);
+    Unk065e88_SetUnkField28(object, Unk0fd9f0_GetColor(FIELD(s32, work, 48)));
+    Unk065e88_SetUnkField24(object, 14);
+    Unk065e88_SetUnkField30(object, 4);
+    Unk065e88_SetUnkField3c(object, 2);
+    FIELD(u32 *, work, 36) = object;
+}
+
+/* Advance signed positions +8/+12 by velocities +16/+20 and clamp to limits.
+ * At a boundary, +52 requests a transition to +56; 020fdc88 is the evidence. */
+void func_020fdc88(u8 *work, s32 minX, s32 minY, s32 maxX, s32 maxY)
+{
+    s32 hit = 0;
+    if (FIELD(s32, work, 16) < 0) {
+        FIELD(s32, work, 8) += FIELD(s32, work, 16);
+        if (FIELD(s32, work, 8) <= minX) {
+            FIELD(s32, work, 8) = minX;
+            FIELD(s32, work, 16) = 0;
+            hit = 1;
+        }
+    }
+    if (FIELD(s32, work, 20) < 0) {
+        FIELD(s32, work, 12) += FIELD(s32, work, 20);
+        if (FIELD(s32, work, 12) <= minY) {
+            FIELD(s32, work, 12) = minY;
+            FIELD(s32, work, 20) = 0;
+            hit = 1;
+        }
+    }
+    if (FIELD(s32, work, 16) > 0) {
+        FIELD(s32, work, 8) += FIELD(s32, work, 16);
+        if (FIELD(s32, work, 8) >= maxX) {
+            FIELD(s32, work, 8) = maxX;
+            FIELD(s32, work, 16) = 0;
+            hit = 1;
+        }
+    }
+    if (FIELD(s32, work, 20) > 0) {
+        FIELD(s32, work, 12) += FIELD(s32, work, 20);
+        if (FIELD(s32, work, 12) >= maxY) {
+            FIELD(s32, work, 12) = maxY;
+            FIELD(s32, work, 20) = 0;
+            hit = 1;
+            if (FIELD(s32, work, 44) == 2) func_020fe2c4(work);
+        }
+    }
+    if (hit && FIELD(s32, work, 52)) {
+        FIELD(s32, work, 20) = 1;
+        FIELD(s32, work, 44) = FIELD(s32, work, 56);
+        FIELD(s32, work, 52) = 0;
+    }
+}
+
+/* Tick the wrapping +60 counter, movement, and state-2 countdown at +64.
+ * The original 020fdd90 clears +48 when the positive countdown expires. */
+void func_020fdd90(u8 *work)
+{
+    if (++FIELD(s32, work, 60) >= 65535) FIELD(s32, work, 60) = 0;
+    func_020fdc88(work, 0, -11, 0, 0);
+    if (FIELD(s32, work, 44) == 2) {
+        if (FIELD(s32, work, 64) > 0) {
+            if (--FIELD(s32, work, 64) == 0) FIELD(s32, work, 48) = 0;
+        }
+    }
+}
+
+void func_0205de40(s32 layer, u32 resource, s32 index, s32 x, s32 y,
+                   float scaleX, float scaleY, s32 angle, float opacity, s32 order);
+/* Draw resource +28 at signed coordinates +8/+12, using +48 for color.
+ * Evidence: 020fe1f8 calls 0205de40 and updates the optional +36 object. */
+void func_020fe1f8(u8 *work)
+{
+    s32 x, y;
+    u32 color;
+    Unk0fd9f0_Unk_0fe278();
+    x = FIELD(s32, work, 8);
+    y = FIELD(s32, work, 12);
+    color = Unk0fd9f0_GetColor(FIELD(s32, work, 48));
+    if (FIELD(u32 *, work, 36)) Unk065e88_SetUnkField28(FIELD(u32 *, work, 36), -1);
+    func_02057ddc(color);
+    func_0205de40(2, FIELD(u32, work, 28), 0, x, y, 1.0f, 1.0f, 0, 1.0f, 12);
+    Unk0fd9f0_Unk_0fe2b0();
+}

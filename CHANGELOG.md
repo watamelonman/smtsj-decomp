@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match four more game/unit_020fd9f0 helpers for movement, countdown, drawing, and secondary object setup; document two remaining rendering matches.
 - M1-T509: matched seven battle help/talk initialization, resource cleanup and state helpers; documented 020fdaa8 on the hard list.
 - Added C for M1-T501 message dispatch wrappers and work-state/event handlers in `game/unit_020fa7e8`, with typed message and callback contracts.
 - Matched all eight M1-T504 table, record-query, and packed-state functions in `game/unit_020f3db4`, with typed contracts and instruction evidence.
