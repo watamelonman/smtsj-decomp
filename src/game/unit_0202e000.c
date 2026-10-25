@@ -290,7 +290,7 @@ int Unk02e000_Unk_02e8f0(void)
 
 
 void Unk02e000_Unk_02e180(void);
-int func_0202e23c(void);
+void func_0202e23c(void);
 int Unk02e000_Call_02008848();
 void Unk02e000_Unk_02e5c4(int arg0);
 /* Original 0x0202e144 calls three initialization helpers in order, then
@@ -392,6 +392,9 @@ int Unk02e000_Unk_02e884(void);
 int Unk02e000_GetTier(int x);
 int Unk02e000_FindIndex_02e3e4(int a);
 
+/* Original 0x0202e468 selects a borrowed slot from four contiguous tiers
+ * with strides 152, 96, 64 and 32. This indexing supports GetSlotPtr;
+ * allocation is required and callers supply nonnegative indices below 91. */
 u8 *Unk02e000_GetSlotPtr(int i)
 {
     u8 *p = (u8 *)Unk02e000_Unk_02e884();
@@ -677,6 +680,9 @@ int Unk02e000_GetRecordFlag1(u32 id)
     }
 }
 
+/* Original 0x0202eda8 caps signed v above 63, otherwise truncating to six
+ * bits at record +0x1f bits 2..7 and preserving bits 0..1. Offset supports
+ * the name; valid allocated IDs are 1..491, IDs above 491 return zero. */
 int Unk02e000_SetRecordUnk1f_2(u32 id, int v)
 {
     Unk02e000Rec *e;
@@ -733,5 +739,102 @@ int func_0202e520(int value)
     case 2: return 64;
     case 3: return 32;
     default: return 0;
+    }
+}
+
+int Unk118b04_Unk_118b90(u8 *block, int bit);
+/* Original 0x0202e5dc transfers fields between work and an indexed 72-byte
+ * slot, including selected entry IDs and global word zero. The 34-byte copy
+ * writes work+0x28 from slot+2; both views must be writable and allocated. */
+void func_0202e5dc(int index, u8 *work)
+{
+    u8 *record = (u8 *)Unk02e000_Unk_02e75c(index);
+    int i;
+    FIELD(u16, record, 0) = FIELD(u16, work, 0);
+    func_02008904(work + 0x28, record + 2, 34);
+    FIELD(u16, record, 0x24) = 0;
+    record[0x26] = work[0x72];
+    if (work[0x74] >= 160) {
+        record[0x29] = 5;
+    } else if (work[0x74] <= 95) {
+        record[0x29] = 4;
+    } else {
+        record[0x29] = 1;
+    }
+    record[0x27] = 0;
+    if (Unk118b04_Unk_118b90(work + 0x5fc8, 67)) record[0x27] |= 1;
+    if (Unk118b04_Unk_118b90(work + 0x5fc8, 68)) record[0x27] |= 2;
+    if (Unk118b04_Unk_118b90(work + 0x5fc8, 69)) record[0x27] |= 4;
+    record[0x28] = work[2];
+    FIELD(u16, record, 0x2a) = FIELD(u16, work, 0x360);
+    if (work[2] == 3) {
+        for (i = 0; i < 3; i++) ((u16 *)record + i)[0x16] = 0;
+    } else {
+        for (i = 0; i < 3; i++) {
+            int entry = (s8)work[0x358 + i];
+            if (entry < 0) ((u16 *)record + i)[0x16] = 0;
+            else ((u16 *)record + i)[0x16] = ((u16 *)(work + entry * 60))[0x57];
+        }
+    }
+    FIELD(u32, record, 0x34) = FIELD(u32, work, 0x5fc4);
+    FIELD(u32, record, 0x38) = Unk02e000_Get_data_0215dd24();
+}
+
+void Unk02ee5c_Unk_02f054(void);
+void Unk02f078_Unk_02f08c(void);
+u8 *func_020a1428(u16 id);
+/* Original 0x0202e23c clears the allocated work and seeds 491 records from
+ * resource fields, leaving missing resources cleared. Entry indices and three
+ * trailing words receive -1 sentinels; all storage remains module-owned. */
+void func_0202e23c(void)
+{
+    int i, j;
+    Unk02e000Rec *record;
+    u8 *work;
+    func_02008848(Unk02e000_Unk_02e774(), 0, 0x6538);
+    work = Unk02e000_GetWorkArea();
+    record = (Unk02e000Rec *)work;
+    for (i = 0; i < 12; i++) {
+        ((s8 *)(work + i))[0x348] = -1;
+        ((u8 *)record)[0xae] = i;
+        record = (Unk02e000Rec *)((u8 *)record + 60);
+    }
+    for (i = 0; i < 3; i++) ((s8 *)(work + i))[0x354] = -1;
+    Unk02ee5c_Unk_02f054();
+    Unk02f078_Unk_02f08c();
+    record = UNK02E000_RECS();
+    for (i = 0; i < 491; i++) {
+        u8 *source = func_020a1428((u16)(i + 1));
+        if (source != 0) {
+            u8 *dest = (u8 *)record;
+            dest[0] = source[3];
+            dest[1] = source[0x1a];
+            dest[2] = source[0x1e];
+            dest[3] = source[0x1b];
+            dest[4] = source[0x1c];
+            dest[5] = source[0x1d];
+            dest[6] = source[0x1a];
+            dest[7] = source[0x1e];
+            dest[8] = source[0x1b];
+            dest[9] = source[0x1c];
+            dest[10] = source[0x1d];
+            FIELD(u16, dest, 12) = FIELD(u16, source, 20);
+            FIELD(u16, dest, 14) = FIELD(u16, source, 22);
+            for (j = 0; j < 6; j++) {
+                ((u16 *)dest + j)[8] = ((u16 *)source + j)[23];
+            }
+            record->unk_000b &= ~1;
+            record->unk_001c = 0;
+            record->unk_001e_0 = 0;
+            record->unk_001e_7 = 0;
+            record->flag_001f_0 = 0;
+            record->flag_001f_1 = 0;
+            record->unk_001f_2 = 0;
+        }
+        record++;
+    }
+    Unk02e000_Nop_02e3e0();
+    for (i = 0; i < 3; i++) {
+        ((u32 *)Unk02e000_Unk_02e774() + i + 0x1800)[0x4e] = -1;
     }
 }

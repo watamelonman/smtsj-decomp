@@ -2,6 +2,11 @@
 
 ## Unreleased
 - Match six more game/unit_02039bb4 handlers, including tagged integer/float pops; document two remaining hard functions.
+- M1-T688: match and document eight game/unit_020de678 resource searches, state updates, and helper dispatch routines.
+- Verify all eight M1-T692 manager-field and forwarding routines at 100% objdiff; document typed views, call order and the resource pointer result.
+- M1-T687: match and document eight game/unit_020de678 state setters, record counter, and helper dispatch routines.
+- Verify M1-T691 manager accessors and forwarding wrappers; preserve typed arguments and predicate results.
+- Match all four M1-T656 slot, record-field, work-transfer and record-initialization functions at 100% objdiff; document instruction evidence and borrowed storage contracts.
 
 - Match eight more unit_02039bb4 entry/table handlers with typed work parameters and documented contracts.
 - M1-T686: documented and typed eight game/unit_020de678 no-op, forwarding, selector, and global-word helpers.
