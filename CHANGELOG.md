@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T551 entry refresh, cleanup, selection and binding helpers in `game/unit_020a5680` at 100% objdiff; documented typed layouts and instruction contracts.
 - Matched all eight M1-T550 table lookup, selector refresh, insertion, and resolved-object helpers at 100% objdiff; documented typed layouts and instruction contracts.
 - Matched all eight M1-T554 resource, cleanup, record-kind and flag helpers in `game/unit_0209974c`, with typed parameters and per-function evidence.
 - Matched all eight M1-T546 slot, flag, context and request helpers in game/unit_020bc1a8; documented instruction evidence and contracts.
