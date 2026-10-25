@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Match three M1-T643 StaffRoll viewport, script-layout, and owner-initialization functions; document the remaining image loader on the hard list.
+- Match all four M1-T643 StaffRoll viewport, script-layout, owner-initialization, and asynchronous image-loader functions at 100% objdiff.
 - Matched all eight M1-T657 game/unit_020cd6ec callbacks, cleanup routines, state transitions, and handle flag updates; documented typed state offsets and instruction evidence.
 - Matched all five M1-T630 resource sorting, list cleanup, output setup and loading-state routines in game/unit_020a163c at 100% objdiff.
 - Verified all eight M1-T651 manager, record and allocation-view helpers at 100% objdiff; clarified typed access and instruction contracts.

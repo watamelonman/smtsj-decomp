@@ -636,3 +636,45 @@ void func_02118974(void)
     func_02052634(2, 3, 0);
     work->unk_0004 = 14;
 }
+
+/* Advances four asynchronous image-load states, using the original indexed
+ * tables at 0x0213CC44/0x0213CBF4. Work and images are borrowed and writable;
+ * table indices must be valid. Readiness is the image byte at +0x59. */
+void func_02117f94(StaffRollWork *work)
+{
+    extern int data_02151b28;
+    extern int data_0213cc44[][10];
+    extern int func_02051844(void *resource, int wait);
+    extern void func_02053000(StaffRollResource *resource);
+    int *row = data_0213cc44[data_02151b28];
+    int image = work->imageIndex;
+    /* See DEC-015: repeated addition preserves the original lookup scheduling. */
+    int index = row[work->unk_00b0] + row[work->unk_00b0] + data_0213cbf4[image].resourceIndex;
+    Unk02e000_Unk_02e0cc();
+    work->unk_00b4++;
+    switch (work->loadState) {
+    case 0:
+        func_02117e5c(work, index);
+        work->loadState++;
+        break;
+    case 1:
+        if (func_02051844(work->resource, -1) != 0) return;
+        work->loadState++;
+        break;
+    case 2:
+        func_02117ef4(work, work->imageIndex);
+        work->loadState++;
+        break;
+    case 3:
+        if (work->images[work->imageIndex]->ready == 0) return;
+        func_02053000(func_020519e8(work->resource));
+        work->loadState = 0;
+        work->imageIndex++;
+        if (work->imageIndex < 4) return;
+        work->unk_00ac = 2;
+        work->unk_00c8 = ((u32)work->unk_00bc - work->unk_00c4 * 9) / 10 - work->unk_00b4;
+        work->unk_00b4 = 0;
+        work->imageIndex = 0;
+        break;
+    }
+}
