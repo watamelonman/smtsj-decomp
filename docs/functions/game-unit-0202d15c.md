@@ -51,23 +51,32 @@ added (`tests_required = false`); instruction matching checks every target body.
 No M1-T576 hard functions remain. The TU remains linked from the delink.
 `Unk02d15c_Unk_02da48` is outside this card.
 
-## Not done in M1-T577
-- `Unk02d15c_FindRecordEntry`
-- `Unk02d15c_Unk_02d954`
-- `Unk02d15c_Unk_02d794`
-- `Unk02d15c_MapKind_02d2a0`
-- `Unk02d15c_MapKind_02d22c`
-- `Unk02d15c_Unk_02d8a8`
-- `func_0202d710`
+## M1-T577: verified matches
+
+All eight functions match the delinked ARM original at 100% objdiff.
+Seven existing bodies were verified; `func_0202d710` was added from the original
+instructions. The dispatcher now has a typed eight-word request and borrowed
+record return pointer. No storage ownership or module boundary changes.
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `Unk02d15c_Unk_02da48` | 80 B | Unsigned switch at 0x0202da48 maps 0..4 to 28,31,22,25,0; defaults to 28. Constant meanings remain unknown. |
+| `Unk02d15c_FindRecordEntry` | 80 B | At 0x0202dcac, obtains the manager record, loads count +8 and pointer +12, and scans unsigned first bytes at stride 0x30. Returns the first matching index or -1, including for a null record. The scan supports the existing name. |
+| `Unk02d15c_Unk_02d954` | 84 B | Tests signed condition +20: zero succeeds; one compares helper result with signed +24 using the unsigned work-area value +0x35c and signed key +22. Other conditions succeed. Record is borrowed. |
+| `Unk02d15c_Unk_02d794` | 96 B | Dispatches eight words `(managerIndex,-1,1,13,-1,managerPairFirst,a,b)` and returns whether the result is non-null. Stack stores at 0x0202d7b4 onward establish the layout. |
+| `Unk02d15c_MapKind_02d2a0` | 108 B | Switch at 0x0202d2a0 reverses the kind mapping for supported values: 0,1,2,5,6,7,4 map to 0,2,1,3,4,5,7. Defaults to zero. |
+| `Unk02d15c_MapKind_02d22c` | 116 B | Switch at 0x0202d22c maps 0,2,1,3,4,5,7 to 0,1,2,5,6,7,4; defaults to zero. Caller 0x0202d710 loads signed record kind +6 and stores the mapped output at +40, supporting the existing name. |
+| `Unk02d15c_Unk_02d8a8` | 116 B | Resolves c using record a +16, returning zero for null record or negative result. Finds the entry and calls setup with either `(a,b,entry,-1)` or `(a,b,-1,resolvedIndex)`; the latter returns one. Calls and branches at 0x0202d8a8 establish the behavior. |
+| `func_0202d710` | 132 B | Dispatches `(managerIndex,-1,0,-1,-1,managerPairFirst,a,b)`; null returns zero. Otherwise maps signed result +6 into caller +40, copies result +8 into the stored image handle, and returns one. The loads and stores at 0x0202d76c..0x0202d784 establish the contract. Caller storage must be writable through byte 43. |
+
+Validation: match gate reports 100% for every defined function in this TU;
+anticheat, unit tests and checksum pass. Behavioral tests are not required by
+this card; instruction matching checks the target implementations directly.
+No M1-T577 hard functions remain. The TU remains linked from the delink until
+a human marks it complete.
 
 ## Not done in M1-T578
 - `func_0202d198`
 - `func_0202d668`
 - `func_0202da98`
 - `func_0202d390`
-- `Unk02d15c_FindRecordEntry`: hand-matched
-- `Unk02d15c_MapKind_02d22c`: hand-matched
-- `Unk02d15c_MapKind_02d2a0`: hand-matched
-- `Unk02d15c_Unk_02d794`: hand-matched
-- `Unk02d15c_Unk_02d8a8`: hand-matched
-- `Unk02d15c_Unk_02d954`: hand-matched
