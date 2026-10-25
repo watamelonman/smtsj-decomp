@@ -60,3 +60,23 @@ remain on the hard list.
 - `func_020cefac`
 - `func_020ced18`
 - `func_020ce868`
+
+## M1-T720
+
+All four requested functions match at 100% objdiff with the configured compiler.
+They borrow the existing 0xe4-byte work area. Phase operations here use only the
+byte at +8; the cursor selection at +0xc4 is a signed word. Neutral original
+symbols are retained because the observed operations do not establish gameplay
+names. The records passed to deaa0 are a halfword-aligned, 114-byte value;
+the separate selection argument follows that value on the stack.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_020ce684` | Initialize records through de960(mode 1), construct the counted item handles with the ID-604 index adjustment, initialize cursors at +0x98/+0xb4, publish the borrowed work in data_02176bd0, and initialize states and status words. Requires writable work and valid provider results. |
+| `func_020ce868` | Dispatch states 0 through 10, polling provider completion before transitions. States 3 and 7 pass the 114-byte record block by value to deaa0(kind 20); state 5 updates item activity from the selected index. A nonzero +0x10 handle receives the +0xa8/+0xc4 selections after dispatch. |
+| `func_020ced18` | Advance six byte phases at +8 through provider release, SaveLoadTask_SelectEntry(5 for selection 1, otherwise 2), completion polling and item reconstruction. Rebuilt items preserve the ID-604 adjustment; cancellation enters state 1 with saved value 15. |
+| `func_020cefac` | Act only in state 4. Nonnegative e807c results select transition requests; negative results enable ordered 53824/53800 input-mask handling. Selection +0xa8 controls handle queries, save/load entry, counted-item states and the +0xb4 cursor flow. |
+
+Validation used the delinked object as the instruction oracle, then the full
+project gates. No new behavior tests are required by this matching-only card.
+No M1-T720 functions are deferred; the earlier M1-T718 hard list is unchanged.

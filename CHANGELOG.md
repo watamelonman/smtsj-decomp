@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T720: match all four remaining unit_020ce578 setup, state and input handlers at 100% objdiff, with typed work parameters and observed provider contracts.
 - M1-T719: match all eight unit_020ce578 registration, setup, teardown, dispatcher and event functions with typed borrowed work layouts.
 - Matched all eight M1-T743 unit_02068f18 record, ID, coordinate and alpha helpers; documented their data contracts.
 - Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.
