@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all five M1-T529 cell interaction and state-machine functions in `game/unit_020d1ee8` at 100% objdiff, with typed owner views and per-function evidence.
+- M1-T509: matched seven battle help/talk initialization, resource cleanup and state helpers; documented 020fdaa8 on the hard list.
 - Added C for M1-T501 message dispatch wrappers and work-state/event handlers in `game/unit_020fa7e8`, with typed message and callback contracts.
 - Matched all eight M1-T504 table, record-query, and packed-state functions in `game/unit_020f3db4`, with typed contracts and instruction evidence.
 - Verified all eight M1-T525 singleton, context-field, and helper-sequence functions at 100% objdiff; added typed field views and documented original instruction evidence.
