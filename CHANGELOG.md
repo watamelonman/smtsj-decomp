@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T629 list allocation, resource resolution, selector and output routines in game/unit_020a163c at 100% objdiff.
 - Matched all eight M1-T628 resource, list, selector and output routines in game/unit_020a163c at 100% objdiff with typed field views.
 - Matched all eight M1-T640 StaffRoll helpers at 100% objdiff, including the free-record search; added typed contracts and original-instruction evidence.
 - Verified the eight M1-T631 game/unit_020986ac flag-storage helpers and no-op callback; documented typed contracts and instruction evidence.

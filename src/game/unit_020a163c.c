@@ -129,7 +129,7 @@ extern const u8 data_0213c258[];
 extern const u8 data_0213c244[];
 extern Unk0a163cEntry *func_020a2250(Unk0a163cList *list, u16 id);
 extern Unk0a163cOutput *func_02065fc0(void *a, void *b, u32 value, int mode, int flags);
-extern Unk0a163cOutput *func_0205f41c(void *object);
+extern Unk0a163cOutput *func_0205f41c(void *object, u32 argument);
 extern Unk0a163cOutput *func_0205adb4(int mode, s32 *coordinates);
 extern s32 func_0205accc(Unk0a163cOutput *object);
 extern s32 func_0205acd4(Unk0a163cOutput *object);
@@ -221,10 +221,10 @@ Unk0a163cOutput *func_020a22e0(Unk0a163cList *list, u16 id, u32 value)
 }
 
 /* ARM 0x020a239c: obtain the object's borrowed view, construct an output,
- * copy both queried coordinates, and select its finalizer by the flag. */
+ * forward the view argument, copy both coordinates, and finalize by flag. */
 Unk0a163cOutput *func_020a239c(void *object, u32 argument, int flag)
 {
-    Unk0a163cOutput *view = func_0205f41c(object);
+    Unk0a163cOutput *view = func_0205f41c(object, argument);
     Unk0a163cOutput *output = func_0205adb4(0, &view->unk_000c);
     output->unk_000c = func_0205accc(view);
     output->unk_0010 = func_0205acd4(view);
@@ -280,9 +280,9 @@ int func_020a19b4(Unk0a163cList *list, u32 count)
  * entry with id and value; return zero when all count entries are occupied. */
 int func_020a1b08(Unk0a163cList *list, u16 id, u32 value)
 {
-    u32 count = list->count;
     u32 i = 0;
     Unk0a163cEntry *entry;
+    u32 count = list->count;
     if (i < count) {
         entry = list->entries;
         do {
@@ -309,14 +309,14 @@ int func_020a1bb8(Unk0a163cList *list, int flag)
         entry->unk_0004 = func_020519e8(list->unk_0014);
         if (entry->unk_0004 == 0) return 0;
     }
-    entry->unk_018c = (Unk0a163cMetadata *)func_0205f41c(entry->unk_0004);
+    entry->unk_018c = (Unk0a163cMetadata *)func_0205f41c(entry->unk_0004, 0);
     entry->unk_0002 = func_0205f2e4(entry->unk_0004) - 3;
     if (entry->unk_0008 == 0) list->unk_0008 += entry->unk_0002;
     return 1;
 }
 
 /* ARM 0x020a1c50: format the current entry's resource name in 64 stack
- * bytes, request or resolve it according to flag, then cache its view. */
+ * bytes; request it when flagged, otherwise resolve it and cache its view. */
 int func_020a1c50(Unk0a163cList *list, int flag)
 {
     char name[64];
@@ -325,8 +325,10 @@ int func_020a1c50(Unk0a163cList *list, int flag)
     if (entry->id >= 500) func_02013c3c(name, data_0214cd28, entry->id - 500);
     else func_02013c3c(name, data_0214cd48, entry->id);
     if (flag) func_020516dc(list->unk_0014, name, 0, 0);
-    else entry->unk_0004 = func_02051610(name);
-    func_020a1bb8(list, flag);
+    else {
+        entry->unk_0004 = func_02051610(name);
+        func_020a1bb8(list, flag);
+    }
     return 1;
 }
 
@@ -349,8 +351,9 @@ Unk0a163cEntry *func_020a2250(Unk0a163cList *list, u16 id)
     s32 selector = record->unk_006a;
     Unk0a163cEntry *entry;
     u16 fallback;
-    if (selector < 0) selector = 500 - selector;
-    entry = func_020a2218(list, (u16)selector);
+    if (selector < 0) fallback = 500 - selector;
+    else fallback = selector;
+    entry = func_020a2218(list, fallback);
     if (entry) return entry;
     selector = record->unk_006a;
     if (selector < 0) fallback = func_02011804(selector);
