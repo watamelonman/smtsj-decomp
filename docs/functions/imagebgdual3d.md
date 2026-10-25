@@ -8,7 +8,7 @@
 - `ImageBgDual3D_Nop_125c3c` (`0x02125c3c`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
 - `ImageBgDual3D_Nop_125c60` (`0x02125c60`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
 - `ImageBgDual3D_Nop_125c64` (`0x02125c64`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
-- `ImageBgDual3D_Thunk_021255b4` (`0x021257e8`, 12 bytes): `LDR IP` / `BX IP` through an absolute relocation to `func_021255b4`. No arguments or return value are used by its caller at `0x02125934`.
+- `ImageBgDual3D_Thunk_021255b4` (`0x021257e8`, 12 bytes): `LDR IP` / `BX IP` through an absolute relocation to `func_021255b4`. The caller at `0x02125934` forwards borrowed work in R0; no return value is consumed.
 - `ImageBgDual3D_Thunk_021177e0` (`0x021259ac`, 12 bytes): the same forwarding sequence, relocated to `Unk116598_Set` (`0x021177e0`); preserves its two opaque 32-bit arguments and void return contract.
 
 The existing symbol names describe only behavior directly established by these instructions.
@@ -44,18 +44,24 @@ stores, comparisons and call relocations. No hard functions remain in this card.
 - `ImageBgDual3D_Unk_125d10` (`0x02125d10`, 32 bytes): forwards its opaque word to `ImageBgDual3D_Unk_1258a0` only if `ImageBgDual3D_Unk_125cbc` is nonzero.
 - `ImageBgDual3D_Unk_125650` (`0x02125650`, 40 bytes): passes the borrowed work's offset-0x8c word to `func_0205c408` with zero and then `func_0205c6e0`, and clears offset 0x208. Work must be non-null.
 
+## M1-T538
+
+All eight functions match at 100% against the original ARM object. The source
+already contained matching implementations; this card verifies them and adds typed
+contracts, readable record traversal, and explicit arguments previously carried in R0.
+Neutral names preserve unknown semantics. No hard functions remain in this card.
+
+- `ImageBgDual3D_Unk_1258e8` (`0x021258e8`, 40 bytes): checks the global handle with `func_02061698`, resolves it with `func_020616c0`, and forwards the borrowed result in R0 to `func_02061424`. Invalid handles cause an immediate return.
+- `ImageBgDual3D_Unk_125618` (`0x02125618`, 56 bytes): reads a signed count at work offset 0x204 and checks bytes starting at offset 0xed with stride 0x5c. Returns zero at the first zero byte, otherwise one; nonpositive counts return one without reading records. Work must cover the indicated records.
+- `ImageBgDual3D_Unk_12594c` (`0x0212594c`, 56 bytes): returns one when the global handle passes `func_02061698` and its resolved work has first word 5; returns zero otherwise.
+- `ImageBgDual3D_Unk_125910` (`0x02125910`, 60 bytes): checks and resolves the global handle, forwards the work in R0 to `ImageBgDual3D_Thunk_021255b4`, then stores the opaque argument at offset 0x80 and zero at offset 0.
+- `ImageBgDual3D_AllocBuf` (`0x02125c68`, 60 bytes): if `data_02176e98` is zero, calls `func_0205ba98` with size 0x28000, alignment 0x800, diagnostic string `data_02152180`, and line 22, then stores its result in the global. The existing allocator name is supported by this call and the paired release in 0x02125d48.
+- `ImageBgDual3D_Unk_125cd4` (`0x02125cd4`, 60 bytes): forwards the opaque argument to `ImageBgDual3D_Unk_125910` when `ImageBgDual3D_Unk_125cbc` is nonzero; otherwise calls `func_021257f4` with the shared buffer, argument, and one.
+- `ImageBgDual3D_Unk_125d48` (`0x02125d48`, 60 bytes): conditionally calls `ImageBgDual3D_Unk_1258e8` using the same predicate; then passes a nonzero shared buffer to `func_0205bb68` and clears the global. The original leaves the loaded buffer in R0 for the release call.
+- `ImageBgDual3D_Unk_1252b4` (`0x021252b4`, 64 bytes): requires nonzero borrowed work word 2, unsigned work word 0 at most one, and a nonzero `Unk0bc1a8_IsSlotEmpty(0x24)` result before calling `Unk0bc1a8_Unk_0bc504(work, 0)`.
+
 ## Other tasks
 
-- `ImageBgDual3D_Unk_125618`: decompiler-derived
-- `ImageBgDual3D_Unk_125cd4`: decompiler-derived
-- `ImageBgDual3D_Unk_125d48`: decompiler-derived
-- `ImageBgDual3D_Unk_1252b4`: decompiler-derived
-
-## Not done in M1-T538
-- `ImageBgDual3D_Unk_1258e8`
-- `ImageBgDual3D_Unk_12594c`
-- `ImageBgDual3D_Unk_125910`
-- `ImageBgDual3D_AllocBuf`
 - `ImageBgDual3D_Unk_125b10`: decompiler-derived
 
 ## Not done in M1-T539
@@ -73,8 +79,4 @@ stores, comparisons and call relocations. No hard functions remain in this card.
 - `func_02125b60`
 - `func_021253c4`
 - `ImageBgDual3D_Unk_1258a0`: decompiler-derived (plain cleanup)
-- `ImageBgDual3D_Unk_12594c`: decompiler-derived (plain cleanup)
-- `ImageBgDual3D_Unk_1258e8`: decompiler-derived (plain cleanup)
 - `ImageBgDual3D_Unk_125a90`: hand-matched
-- `ImageBgDual3D_Unk_125910`: hand-matched
-- `ImageBgDual3D_AllocBuf`: hand-matched
