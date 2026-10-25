@@ -105,12 +105,20 @@ typedef struct Unk0bd5f0SelectObj {
     u8 unk_0124; /* stack count */
     u8 pad_0125[0x3];
     u32 unk_0128[1]; /* stack entries; real length unknown */
-    u8 pad_012c[0x5c];
+    u8 pad_012c[0x1c];
+    u32 unk_0148[8];
+    u8 pad_0168[0x14];
+    u8 unk_017c;
+    u8 pad_017d;
+    s16 unk_017e;
+    u8 pad_0180[8];
     void *unk_0188;
     void *unk_018c[2];
     u8 pad_0194[0x8];
     void *unk_019c;
-    u8 pad_01a0[0x20];
+    u8 pad_01a0[0x18];
+    u32 unk_01b8;
+    u8 pad_01bc[4];
 } Unk0bd5f0SelectObj;
 
 /* Callback addresses are stored here without invoking them; their full calling
@@ -141,7 +149,7 @@ extern u32 *func_020445f4(u32 group, u32 selector);
 extern void func_02063920(void);
 extern const u16 *func_0204fed8(u32 *table, u32 index);
 extern u32 func_02063a30(const u16 *value);
-extern void func_02061f10(void *obj, int a, int b, int c, u32 value);
+extern void func_02061f10(void *obj, int a, int b, int c, const void *value);
 extern void func_020c7304(Unk0bd5f0SelectObj *obj);
 extern void func_020bcfc4(void *obj, u32 value);
 extern void Unk0a0ce4_Unk_0a0da4(u32 value);
@@ -167,7 +175,7 @@ u32 Unk0bd5f0_Unk_0bd614(int arg0)
   return 0;
 }
 
-int func_020c8008();
+void func_020c8008(s32 index, const u32 *ids, s32 count, s32 flag);
 int Unk02e000_GetWorkArea();
 void *Unk09974c_Unk_099d78(u32 id);
 int Unk09974c_Unk_0998d8(u32 id);
@@ -311,7 +319,7 @@ typedef struct Unk0bd5f0Obj {
     s32 unk_0114;
 } Unk0bd5f0Obj;
 
-extern Unk0bd5f0Ctx *data_02176bb4;
+extern Unk0bd5f0SelectObj *data_02176bb4;
 
 /* Returns true only when both func_020537b8 queries (group 0, masks 0x40 and
    0x80) are clear; the second query is skipped when the first is set. */
@@ -381,7 +389,7 @@ void Unk0bd5f0_Unk_0c7fbc(void)
    three to Unk0ddeb0_Unk_0ddeb0, followed by constants -2, 0, 12 and 10. */
 void Unk0bd5f0_Unk_0c842c(void)
 {
-    Unk0bd5f0Ctx *c = data_02176bb4;
+    Unk0bd5f0SelectObj *c = data_02176bb4;
     if (c == 0) {
         return;
     }
@@ -467,7 +475,7 @@ void func_020c72a4(void *obj, u32 selector, u32 index)
     u32 *table = func_020445f4(12, selector);
     if (index >= table[3]) return;
     func_02063920();
-    func_02061f10(obj, -1, 0, 0, func_02063a30(func_0204fed8(table, index)));
+    func_02061f10(obj, -1, 0, 0, (const void *)func_02063a30(func_0204fed8(table, index)));
 }
 
 /* After func_020c7304, pops the byte-sized stack at +0x124, passes the sub-object
@@ -746,7 +754,7 @@ void func_020c1414(Unk0bd5f0List *p, void *output)
         if (index >= 0) text = func_02063a30(func_0204fed8(table, w->unk_0078[index].unk_0032));
         else text = func_02063a30(blank);
     }
-    func_02061f10(output, -1, 0, 0, text);
+    func_02061f10(output, -1, 0, 0, (const void *)text);
     func_020c1b94(p);
 }
 
@@ -798,4 +806,239 @@ void func_020c7304(Unk0bd5f0SelectObj *p)
     p->unk_0114 = -110;
     p->unk_0120 = 0;
     p->unk_011c = 0;
+}
+
+extern const u32 data_02150558[], data_0215055c[];
+extern const u16 data_02150560[], data_02150564[], data_02150568[], data_0215056c[];
+extern void func_020a9e14(u32 group, const u32 *data);
+extern void func_02057df8(void);
+extern void func_02058f10(u32 group, u32 id, u32 x, u32 y, u32 width, u32 a, u32 b);
+extern void func_020aa078(u32 output, u32 group, u32 x, u32 y, u32 a, u32 b, u32 color, const u16 *format, s32 value);
+
+/* Formats four signed values in a borrowed output's row; record holds two
+   signed halfwords, slot selects a ten-unit row, and c/d select threshold colors. */
+void func_020c1e18(void *output, const void *record, s32 a, s32 b, u8 slot, u32 c, u32 d)
+{
+    s32 first = ((const s16 *)record)[0];
+    s32 second = ((const s16 *)record)[1];
+    u32 color = c;
+    if (a < first / 5) color = d;
+    func_020aa078(*(u32 *)output, 2, 2, slot * 10 + 1, 0, 3, color, data_02150560, a);
+    func_020aa078(*(u32 *)output, 2, 18, slot * 10 + 3, 0, 3, c, data_02150564, first);
+    func_020aa078(*(u32 *)output, 2, 34, slot * 10 + 1, 0, 3, c, data_02150568, b);
+    func_020aa078(*(u32 *)output, 2, 50, slot * 10 + 3, 0, 3, c, data_0215056c, second);
+}
+
+/* Draws two positive-value bars using the borrowed pair of signed maxima.
+   Width derives from a 12-bit fixed-point ratio; slot uses thirteen-unit rows. */
+void func_020c14c0(s32 a, s32 b, const s16 *maximum, u32 x, u8 slot)
+{
+    func_020a9e14(2, data_02150558);
+    func_02057df8();
+    if (a > 0) {
+        s32 first = maximum[0];
+        u8 width = (114688 / ((first << 12) / a)) % 29;
+        u32 id;
+        if (a < first / 5) id = 7433;
+        else id = 7431;
+        if (width == 0) width = 1;
+        func_02058f10(2, id, x, slot * 13, width, 2, 10);
+    }
+    if (b > 0) {
+        u8 width = (114688 / ((maximum[1] << 12) / b)) % 29;
+        if (width == 0) width = 1;
+        func_02058f10(2, 7432, x, slot * 13, width, 2, 10);
+    }
+}
+
+/* Draws two positive-value bars using the borrowed pair of signed maxima.
+   Width derives from a 12-bit fixed-point ratio; slot uses thirteen-unit rows. */
+void func_020c1618(s32 a, s32 b, const s16 *maximum, u32 x, u8 slot)
+{
+    func_020a9e14(2, data_0215055c);
+    func_02057df8();
+    if (a > 0) {
+        s32 first = maximum[0];
+        u8 width = (114688 / ((first << 12) / a)) % 29;
+        u32 id;
+        if (a < first / 5) id = 7452;
+        else id = 7450;
+        if (width == 0) width = 1;
+        func_02058f10(2, id, x, slot * 13, width, 2, 10);
+    }
+    if (b > 0) {
+        u8 width = (114688 / ((maximum[1] << 12) / b)) % 29;
+        if (width == 0) width = 1;
+        func_02058f10(2, 7451, x, slot * 13, width, 2, 10);
+    }
+}
+
+extern void func_020086a0(u32 value, void *destination, u32 size);
+
+extern u32 func_020c760c(u32 first, u32 last, u32 mode, u32 *ids, u32 *flags);
+
+/* Rebuilds range-backed selection rows, optionally refreshing the secondary output.
+   Borrows a live kind-3 object; inclusive range bounds use the existing id helpers. */
+void func_020c7428(Unk0bd5f0SelectObj *p, u32 first, u32 last, u32 mode, u32 secondary)
+{
+    u16 count;
+    func_02008644(0, p->unk_0148, sizeof(p->unk_0148));
+    count = func_020c7b30(first, last);
+    if (count != 0) {
+        u32 populated = func_020c760c(first, last, mode, p->unk_0148, p->unk_00c0);
+        CampStatus_Unk_0dde3c(p->unk_0104, 6, 0, p->unk_0148, populated);
+        if (secondary) CampStatus_Unk_0dde3c(p->unk_0108, 7, 0, p->unk_0148, 1);
+    } else {
+        u16 empty[1] = {0};
+        func_02061f10(p->unk_0104, -1, 0, 0, empty);
+        if (secondary) func_02061f10(p->unk_0108, -1, 0, 0, empty);
+    }
+    Unk0bcef4_Unk_0bcef4(&p->unk_0044, 8, count, 1);
+    Unk0bcef4_Unk_0bd29c(p->unk_0060, &p->unk_0044);
+    func_020bd1a8(p->unk_0060, &p->unk_0044, p->unk_00c0, 1);
+    data_02176bb4->unk_0000 = 20;
+    data_02176bb4->unk_0004 = 24;
+    data_02176bb4->unk_0118 = -110;
+    data_02176bb4->unk_0120 = 0;
+    data_02176bb4->unk_011c = 0;
+}
+
+/* Selects one of four inclusive 50-id ranges for the live global context.
+   Empty ranges mark all rows unavailable, then start the state-22 transition. */
+void func_020c8210(u32 range)
+{
+    data_02176bb4->unk_017c = range;
+    switch (range) {
+    case 0:
+        func_020c7428(data_02176bb4, 211, 260, 0, 0);
+        if (func_020c7b30(211, 260) == 0) func_020086a0(1, data_02176bb4->unk_00c0, 32);
+        break;
+    case 1:
+        func_020c7428(data_02176bb4, 261, 310, 0, 0);
+        if (func_020c7b30(261, 310) == 0) func_020086a0(1, data_02176bb4->unk_00c0, 32);
+        break;
+    case 2:
+        func_020c7428(data_02176bb4, 311, 360, 0, 0);
+        if (func_020c7b30(311, 360) == 0) func_020086a0(1, data_02176bb4->unk_00c0, 32);
+        break;
+    case 3:
+        func_020c7428(data_02176bb4, 361, 410, 0, 0);
+        if (func_020c7b30(361, 410) == 0) func_020086a0(1, data_02176bb4->unk_00c0, 32);
+        break;
+    }
+    data_02176bb4->unk_0000 = 22;
+    data_02176bb4->unk_0118 = 0;
+    data_02176bb4->unk_0120 = 0x3f800000;
+    data_02176bb4->unk_011c = 10;
+}
+
+/* Only the flag word at +0x24 is observed in the id metadata lookup. */
+typedef struct Unk0bd5f0IdInfo {
+    u8 pad_0000[0x24];
+    u32 unk_0024;
+} Unk0bd5f0IdInfo;
+extern Unk0bd5f0IdInfo *func_020cb1a0(u32 id);
+extern s32 Unk0f90dc_Unk_0f90dc(s32 index, u32 id);
+
+/* Displays caller-owned ids; rows remain available only for kinds 1/3
+   accepted by the index/id helper while flag is clear. A null global context is a no-op; zero count clears the output. */
+void func_020c8008(s32 index, const u32 *ids, s32 count, s32 flag)
+{
+    if (data_02176bb4 == 0) return;
+    func_02008644(0, data_02176bb4->unk_0148, 32);
+    data_02176bb4->unk_017e = index;
+    if (count == 0) {
+        func_020086a0(1, data_02176bb4->unk_00c0, 32);
+        Unk0bcef4_Unk_0bcef4(&data_02176bb4->unk_0044, 6, 1, 1);
+        Unk0bcef4_Unk_0bd29c(data_02176bb4->unk_0060, &data_02176bb4->unk_0044);
+        func_020bd1a8(data_02176bb4->unk_0060, &data_02176bb4->unk_0044, data_02176bb4->unk_00c0, 1);
+        u16 empty[1] = {0};
+        func_02061f10(data_02176bb4->unk_0104, -1, 0, 0, empty);
+    } else {
+        s32 i;
+        func_020445f4(10, 0);
+        func_020086a0(1, data_02176bb4->unk_00c0, 32);
+        for (i = 0; i < count; i++) {
+            Unk0bd5f0IdInfo *info;
+            data_02176bb4->unk_0148[i] = ids[i];
+            info = func_020cb1a0(ids[i]);
+            if (!flag && info) {
+                u32 kind = (info->unk_0024 << 21) >> 30;
+                if (kind == 1 || kind == 3) {
+                    if (Unk0f90dc_Unk_0f90dc(index, ids[i])) continue;
+                }
+            }
+            data_02176bb4->unk_00c0[i] = 0;
+        }
+        Unk0bcef4_Unk_0bcef4(&data_02176bb4->unk_0044, 6, count, 1);
+        Unk0bcef4_Unk_0bd29c(data_02176bb4->unk_0060, &data_02176bb4->unk_0044);
+        func_020bd1a8(data_02176bb4->unk_0060, &data_02176bb4->unk_0044, data_02176bb4->unk_00c0, 1);
+        CampStatus_Unk_0dde3c(data_02176bb4->unk_0104, 10, 0, ids, count);
+    }
+    data_02176bb4->unk_0000 = 22;
+}
+
+extern s32 Unk0e651c_Unk_0e666c(u32 id);
+extern s32 Unk06a224_GetUnk00(void);
+extern void Unk06a224_Unk_06a224(void);
+
+/* Initializes eight availability words in each bank, then clears rows whose
+   selector-specific prerequisites fail. Returns the special row count for selector 16. */
+s32 func_020c7cdc(void *obj)
+{
+    s32 count = 0;
+    Unk0bd5f0WorkArea *w;
+    Unk0bd5f0SelectObj *p = obj;
+    w = (Unk0bd5f0WorkArea *)Unk02e000_GetWorkArea();
+    func_020086a0(1, p->unk_00c0, 32);
+    func_020086a0(1, p->unk_00e0, 32);
+    switch (p->unk_0110) {
+    case 0: break;
+    case 1:
+        if (!Unk0e651c_Unk_0e666c(0x704)) p->unk_00e0[3] = p->unk_00c0[3] = 0;
+        if (!Unk0e651c_Unk_0e666c(0x706)) p->unk_00e0[5] = p->unk_00c0[5] = 0;
+        if (!Unk0e651c_Unk_0e666c(0x705)) p->unk_00e0[6] = p->unk_00c0[6] = 0;
+        if (!Unk0e651c_Unk_0e666c(0x751)) p->unk_00e0[7] = p->unk_00c0[7] = 0;
+        break;
+    case 2:
+        if (!func_020c7bc8(51, 110)) p->unk_00c0[0] = 0;
+        if (!Unk0e651c_Unk_0e666c(0x702)) p->unk_00e0[1] = p->unk_00c0[1] = 0;
+        if (!func_020c7bc8(1341, 1460)) p->unk_00c0[2] = 0;
+        break;
+    case 4:
+        if (!func_020c7bc8(901, 1120)) p->unk_00c0[0] = 0;
+        if (!func_020c7bc8(1121, 1340)) p->unk_00c0[1] = 0;
+        break;
+    case 14:
+        if (!Unk0e651c_Unk_0e666c(0x705)) p->unk_00e0[0] = p->unk_00c0[0] = 0;
+        if (!Unk0e651c_Unk_0e666c(0x706)) {
+            p->unk_00e0[2] = p->unk_00c0[2] = 0;
+            break;
+        }
+        if (!func_020c7bc8(411, 900)) p->unk_00c0[2] = 0;
+        break;
+    case 10: {
+        s32 i;
+        for (i = 0; i < w->unk_0357; i++) if (w->unk_0348[i] >= 0) break;
+        if (i == w->unk_0357) {
+            p->unk_00c0[0] = 0;
+            p->unk_00c0[1] = 0;
+            p->unk_00c0[2] = 0;
+        }
+        break;
+    }
+    case 16: {
+        s32 value;
+        count = 2;
+        value = Unk06a224_GetUnk00();
+        Unk06a224_Unk_06a224();
+        if (!value && p->unk_00c0[1]) p->unk_00c0[1] = 0;
+        break;
+    }
+    case 24:
+        if (!Unk0bd5f0_AnyIdWithFlagsMid()) p->unk_00c0[1] = 0;
+        if (!Unk0bd5f0_AnyIdWithoutFlagsMid()) p->unk_00c0[2] = 0;
+        break;
+    }
+    return count;
 }
