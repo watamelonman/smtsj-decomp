@@ -234,6 +234,9 @@ u8 *Unk02e000_Unk_02e7c0(int i)
     return r;
 }
 
+/* Original 0x0202e7f4 scans twelve 60-byte entries at work+0x74,
+ * comparing addresses then byte +0x3a; this supports FindEntryIndex. Null returns
+ * -1; otherwise p must expose that byte. Requires allocated work storage. */
 int Unk02e000_FindEntryIndex(u8 *p)
 {
     u8 *e;
@@ -470,8 +473,11 @@ int Unk02e000_TestFlag(int i)
 }
 
 void func_02008904();
-u8 *func_020a1740();
-int Unk0a163c_Unk_0a17d8();
+/* Provider record is opaque here; its definition lives in unit_020a163c.h.
+ * Lookup borrows that record and both providers accept 16-bit resource IDs. */
+struct Unk0a163cRecord;
+struct Unk0a163cRecord *func_020a1740(u16 id);
+int Unk0a163c_Unk_0a17d8(u16 id);
 int Unk02e000_GetRecordUnk1f(u32 id);
 
 
@@ -496,6 +502,9 @@ void Unk02e000_SetBit_02e968(int i, int set)
     }
 }
 
+/* Original 0x0202e9c8 copies 36 bytes into work+0x16fc+(id-1)*36,
+ * supporting SetRecord. IDs above 491 return zero; callers supply IDs 1..491
+ * and readable source storage. Allocation and destination ownership stay external. */
 int Unk02e000_SetRecord(u32 id, void *src)
 {
     if (id > 491) {
@@ -517,6 +526,9 @@ int Unk02e000_GetRecord(u32 id, u32 a)
     return 1;
 }
 
+/* Original 0x0202ea68 copies 36 bytes to work+0x5c0c+i*40,
+ * supporting SetSlot40. Signed indices outside 0..2 return zero, but allocation
+ * is required even then; src must expose 36 readable bytes for valid indices. */
 int Unk02e000_SetSlot40(int i, void *src)
 {
     u8 *base = (u8 *)Unk02e000_Unk_02e774() + 8 + 0x5c00;
@@ -569,6 +581,9 @@ int Unk02e000_SetRecordUnk1e(u32 id, int v)
     return 1;
 }
 
+/* Original 0x0202ebb8 extracts bits 0..6 of record byte +0x1e,
+ * supporting the offset name. IDs above 491 return zero; callers supply valid
+ * allocated IDs 1..491. The seven-bit value has no established semantic meaning. */
 u32 Unk02e000_GetRecordUnk1e(u32 id)
 {
     if (id > 491) {
@@ -580,7 +595,11 @@ u32 Unk02e000_GetRecordUnk1e(u32 id)
     }
 }
 
-int Unk02e000_IsRecordAvailable(u32 id)
+/* Original 0x0202ebfc requires a zero Unk0a163c_Unk_0a17d8 result,
+ * object halfword +0x16 bit zero set, and positive GetRecordUnk1f result; these
+ * predicates support the existing availability name. Caller supplies a valid id
+ * with a nonnull object lookup and allocated record storage. */
+int Unk02e000_IsRecordAvailable(u16 id)
 {
     Unk02e000ObjFlags *o = (Unk02e000ObjFlags *)func_020a1740(id);
     if (Unk0a163c_Unk_0a17d8(id) == 0 && o->flag_0016_0 && Unk02e000_GetRecordUnk1f(id) > 0) {
@@ -600,6 +619,9 @@ int Unk02e000_SetRecordFlag1f(u32 id, int v)
     return 1;
 }
 
+/* Original 0x0202ecac normalizes record byte +0x1f bit zero to 0/1,
+ * supporting GetRecordFlag0. IDs above 491 return zero; callers supply valid
+ * allocated IDs 1..491. The flag purpose remains unconfirmed. */
 int Unk02e000_GetRecordFlag0(u32 id)
 {
     if (id > 491) {
@@ -623,6 +645,9 @@ int Unk02e000_SetRecordFlag1f_1(u32 id, int v)
     return 1;
 }
 
+/* Original 0x0202ed5c normalizes record byte +0x1f bit one to 0/1,
+ * supporting GetRecordFlag1. IDs above 491 return zero; callers supply valid
+ * allocated IDs 1..491. The flag purpose remains unconfirmed. */
 int Unk02e000_GetRecordFlag1(u32 id)
 {
     if (id > 491) {
@@ -649,6 +674,9 @@ int Unk02e000_SetRecordUnk1f_2(u32 id, int v)
     return 1;
 }
 
+/* Original 0x0202ee18 extracts bits 2..7 of record byte +0x1f,
+ * supporting the offset name. IDs above 491 return zero; callers supply valid
+ * allocated IDs 1..491. The six-bit value has no established semantic meaning. */
 int Unk02e000_GetRecordUnk1f(u32 id)
 {
     if (id > 491) {
