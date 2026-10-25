@@ -1,8 +1,8 @@
-/* src/game/unit_02068f18.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Sortable records and work-area helpers from unit_02068f18. */
 #include "types.h"
 
-
-
+/* Orders four-byte records by descending primary byte, ascending category,
+ * then ascending ID; evidence: byte +2/+3 and halfword +0 comparisons. */
 int Unk068f18_CompareKeyAsc(u8 *a, u8 *b)
 {
     int d = b[2] - a[2];
@@ -15,6 +15,8 @@ int Unk068f18_CompareKeyAsc(u8 *a, u8 *b)
     return d;
 }
 
+/* Reverses CompareKeyAsc, including its ID tie-break; both inputs must
+ * contain an aligned halfword followed by two key bytes. */
 int Unk068f18_CompareKeyDesc(u8 *a, u8 *b)
 {
     int d = a[2] - b[2];
@@ -27,11 +29,14 @@ int Unk068f18_CompareKeyDesc(u8 *a, u8 *b)
     return d;
 }
 
+/* Partial borrowed work view: six ID slots start at offset 40. */
 typedef struct Unk068f18Ids {
     u8 pad_0000[40];
     u16 ids[6];
 } Unk068f18Ids;
 
+/* Merges six nonzero source IDs into six destination slots without duplicates;
+ * the original stops each search at the first matching or empty slot. */
 void Unk068f18_Unk_069888(Unk068f18Ids *p, u16 *src)
 {
     int i;
@@ -53,7 +58,8 @@ void Unk068f18_Unk_069888(Unk068f18Ids *p, u16 *src)
     }
 }
 
-/* decompiler-derived */
+/* Selects the smaller sum after signed-byte conversion of the first sum,
+ * converts a selected second sum likewise, then caps the result at 99. */
 int Unk068f18_Unk_069afc(int arg0,int arg1,int arg2,int arg3)
 {
   int value;
@@ -70,8 +76,11 @@ int Unk068f18_Unk_069afc(int arg0,int arg1,int arg2,int arg3)
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-int Unk02e000_GetWorkArea();
+/* Returns the shared borrowed work storage used by the slot-index table. */
+u8 *Unk02e000_GetWorkArea(void);
 
+/* Searches the active signed-byte slot table at work +0x348 for a record
+ * whose halfword +54 equals key; returns its slot or -1 when absent. */
 int Unk068f18_Unk_06a1a8(u8 *p, int key)
 {
     int r;
@@ -90,4 +99,69 @@ int Unk068f18_Unk_06a1a8(u8 *p, int key)
         }
     }
     return r;
+}
+
+/* Fills size bytes of caller-owned destination storage. */
+void func_02008848(void *dst, int value, u32 size);
+/* Resolves the caller-owned link coordinate pair in place. */
+void CampStatus_GetLinkUnk14(int *link);
+/* Prepares the rendering state required before resource submission. */
+void func_02057df8(void);
+/* Submits a resource with coordinates and floating-point scale. */
+void func_02058e9c(int screen, u32 resource, int x, int y, float scale, int a, int b);
+
+/* Four-byte sortable entry; ID is halfword aligned. */
+typedef struct Unk068f18Record {
+    u16 id;
+    u8 key;
+    u8 category;
+} Unk068f18Record;
+
+/* Builds six sortable records; +0xa8 supplies six-byte entries and +0xa0
+ * supplies the fifteen category keys, as evidenced by the original loads. */
+void func_0206902c(u8 *work, Unk068f18Record *records, u16 *source)
+{
+    int i;
+    func_02008848(records, 0, 24);
+    for (i = 0; i < 6; i++) {
+        if (source[i + 3] != 0) {
+            u8 j;
+            records[i].id = source[i + 3];
+            records[i].key = FIELD(u8 *, work, 168)[source[i + 3] * 6 + 3];
+            for (j = 0; j < 15; j++) {
+                if (FIELD(u8 *, work, 160)[j] == FIELD(u8 *, work, 168)[source[i + 3] * 6 + 2]) {
+                    records[i].category = j;
+                }
+            }
+        }
+    }
+}
+
+/* Returns the 60-tick triangular alpha used by unit_02090e60 draw calls;
+ * callers supply the shared ticker, and each half-cycle spans 30 ticks. */
+float func_02069ec8(s32 phase)
+{
+    float result = 1.0f;
+    int tick = phase % 60;
+    if (tick < 30) {
+        result -= 0.025f * tick;
+    } else {
+        result = 0.25f + 0.025f * (tick - 30);
+    }
+    return result;
+}
+
+/* Resolves the link at +1000, adjusts its coordinates, and submits resource
+ * 0x1801. Evidence: CampStatus_GetLinkUnk14 and func_02058e9c calls. */
+void func_0206a124(u8 *work)
+{
+    CampStatus_GetLinkUnk14(&FIELD(int, work, 1000));
+    if (FIELD(int, work, 1000) >= 145 && FIELD(int, work, 1000) <= 152) {
+        FIELD(int, work, 1004) += 8;
+    }
+    if (FIELD(int, work, 1000) > 256 || FIELD(int, work, 1000) <= 0) {
+        FIELD(int, work, 1004) = 1;
+    }
+    func_02057df8();
+    func_02058e9c(1, 0x1801, FIELD(int, work, 1000), FIELD(int, work, 1004), 1.0f, 0, 10);
 }
