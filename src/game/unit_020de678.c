@@ -62,7 +62,7 @@ void Unk0de678_Unk_0dee2c(int arg0)
 
 
 
-/* decompiler-derived */
+/* At 0x020df584, sets the global word at offset 0x2c to one. */
 void Unk0de678_Unk_0df584(void)
 {
   *(u32 *)(((int)data_021508d4) + 0x2c) = 1;
@@ -71,7 +71,7 @@ void Unk0de678_Unk_0df584(void)
 int func_0205bb68();
 int Unk0a23f4_Unk_0a2414();
 int Unk0fc584_Unk_0fc6a0();
-/* decompiler-derived */
+/* At 0x020df0a4, invokes the observed helper sequence with selector 30. */
 void Unk0de678_Unk_0df0a4(void)
 {
   Unk0a23f4_Unk_0a2414();
@@ -108,12 +108,15 @@ int Unk0964f8_Unk_096508();
 int Unk0a23f4_Unk_0a23f4();
 int Unk0fc584_Unk_0fc674();
 int Unk0fc584_Unk_0fc84c();
-int func_020dec18();
+int func_020dec18(u32 value);
+/* Borrowed 26-byte records; only the halfword at offset 10 is observed. */
 typedef struct Unk0de678Rec {
     u8 pad_00[0xa];
     u16 unk_0a;
     u8 pad_0c[0xe];
 } Unk0de678Rec;
+/* At 0x020dea70, counts up to four leading records with nonzero offset-10 values.
+ * The caller supplies four readable records. */
 int Unk0de678_CountLeading(Unk0de678Rec *p)
 {
     int n = 0;
@@ -127,6 +130,7 @@ int Unk0de678_CountLeading(Unk0de678Rec *p)
     return n;
 }
 
+/* At 0x020debf8, clears global offset 0xcc when the forwarded query succeeds. */
 int Unk0de678_Unk_0debf8(u32 a)
 {
     int r = func_020dec18(a);
@@ -168,8 +172,8 @@ u32 Unk0de678_Unk_0dec94(u32 arg0)
   return 0;
 }
 
-void Unk0bc1a8_Unk_0bc9b4();
-void func_020df330();
+void Unk0bc1a8_Unk_0bc9b4(u32 selector, u32 value);
+void func_020df330(u32 value);
 void Unk095560_Unk_0958a8();
 void Unk0de678_GetPair(u8 *out)
 {
@@ -182,6 +186,7 @@ void Unk0de678_GetPair(u8 *out)
     out[1] = 0;
 }
 
+/* At 0x020df348, activates state 3 and stores the supplied word at offset 12. */
 void Unk0de678_Unk_0df348(u32 a)
 {
     FIELD(u32, data_021508d4, 4) = 1;
@@ -189,6 +194,8 @@ void Unk0de678_Unk_0df348(u32 a)
     FIELD(u32, data_021508d4, 12) = a;
 }
 
+/* At 0x020df4cc, records a low-byte value and a word, sets offset 16,
+ * and resets offset 28. No ownership of external storage is transferred. */
 void Unk0de678_Unk_0df4cc(u32 a, u32 b)
 {
     FIELD(u32, data_021508d4, 16) = 1;
@@ -203,4 +210,21 @@ void Unk0de678_Unk_0df4f0(void)
     FIELD(u32, data_021508d4, 36) = 0;
     Unk095560_Unk_0958a8(0, 0);
     FIELD(u32, data_021508d4, 16) = 0;
+}
+
+/* At 0x020df330, sets global offset 4 and records the supplied state word. */
+void func_020df330(u32 value)
+{
+    FIELD(u32, data_021508d4, 4) = 1;
+    FIELD(u32, data_021508d4, 8) = value;
+}
+
+/* At 0x020deedc, calls selector 24 only when global offset 0xc8 is zero,
+ * then always forwards selector 9 to the second helper. */
+void func_020deedc(void)
+{
+    if (FIELD(u32, data_021508d4, 0xc8) == 0) {
+        Unk0bc1a8_Unk_0bc9b4(24, 0);
+    }
+    Unk044394_Unk_044534(9);
 }
