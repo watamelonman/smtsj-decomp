@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match six more game/unit_02039bb4 handlers, including tagged integer/float pops; document two remaining hard functions.
 
 - Match eight more unit_02039bb4 entry/table handlers with typed work parameters and documented contracts.
 - M1-T686: documented and typed eight game/unit_020de678 no-op, forwarding, selector, and global-word helpers.

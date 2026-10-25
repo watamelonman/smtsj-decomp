@@ -34,24 +34,11 @@
 
 - `Unk039bb4_Unk_039f80`: Appends with tag 0 the word selected from data_0215e258 by the current entry’s unsigned +2 halfword, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x020039f80`; no wider semantic name is established.
 
-## Not done in M1-T678
-- `Unk039bb4_Unk_039fbc`
-- `Unk039bb4_Unk_03a0e0`
-- `Unk039bb4_Unk_03a11c`
-- `func_0203a0a0`
-- `func_0203a944`
-- `func_02039dc0`
-- `func_0203a1dc`
-- `func_02039e50`
-
 ## Not done in M1-T679
 - `func_02039c60`
 - `func_02039bb4`
 - `func_0203a888`
 - `func_0203a334`
-- `Unk039bb4_Unk_039fbc`: decompiler-derived (struct cleanup)
-- `Unk039bb4_Unk_03a0e0`: decompiler-derived (struct cleanup)
-- `Unk039bb4_Unk_03a11c`: decompiler-derived (struct cleanup)
 
 ## M1-T674 verification
 
@@ -102,3 +89,56 @@ Validation: all eight targets report 100% objdiff; the match gate passes all
 110 checked C functions. Full build, anticheat, unit tests, and checksum pass.
 
 Hard list for M1-T677: none.
+
+## M1-T678
+
+- `Unk039bb4_Unk_039fbc`: Appends the global word selected from
+  `data_0215de58` by the current entry's unsigned +2 halfword, with tag 1;
+  reloads and advances +0x18 and returns 1. Evidence: instructions at
+  `0x02039fbc`. Work, entry storage, and append space are borrowed.
+- `Unk039bb4_Unk_03a0e0`: Pops an integer with `func_02039dc0(work)`,
+  stores it in `data_0215e258` using the current entry's +2 halfword read
+  after the call, then advances +0x18 and returns 1. Evidence: `0x0203a0e0`.
+- `Unk039bb4_Unk_03a11c`: Pops a float with `func_02039e50(work)`,
+  stores it in `data_0215de58` using the reloaded entry's +2 halfword,
+  then advances +0x18 and returns 1. Evidence: `0x0203a11c`.
+- `func_02039dc0`: Decrements the stack count at +0x1c. Tags 0 and 4
+  return the signed word; tag 1 converts the float word to signed integer;
+  tags 2 and 3 select from the integer and float global tables respectively,
+  converting the latter. Other tags return zero. Evidence: switch and
+  `_ffix` calls at `0x02039dc0`. Stack must be nonempty and indices valid.
+- `func_02039e50`: Decrements +0x1c and returns the popped value as float.
+  Tag 0 converts a signed word, tag 1 returns its float representation,
+  tags 2 and 3 select integer and float globals (converting the integer),
+  and tag 4 or unsupported tags return zero. Evidence: switch and `_fflt`
+  calls at `0x02039e50`. Stack must be nonempty and indices valid.
+- `func_0203a944`: For top tags 0/2, pops an integer and appends its zero
+  comparison with tag 0. For tags 1/3, does the same with a float comparison.
+  Other tags leave the stack unchanged. Advances +0x18 and returns 1.
+  Evidence: switch and `_feq` at `0x0203a944`; stack must be nonempty.
+
+The float pop return type is explicit; its existing +0xdc store now uses
+float storage to preserve the returned bits without introducing conversion.
+No module boundary changes or new semantic names. Instruction matching is
+behavioral validation; the card requires no new tests.
+
+### Hard list
+
+- `func_0203a0a0`: Original duplicates the saved tag at +0x3b and word at
+  +0xa8 into the stack, increments +0x1c and +0x18, and returns 1.
+  Tried raw address expressions, typed arrays, explicit temporaries, and
+  integer/float loads. Best match was 98.12%: the word-copy register
+  allocation differs (r1/r2 swapped). Body omitted; original delink remains.
+- `func_0203a1dc`: Original dispatches the callback selected by entry +2
+  from the eight-byte table at 0x0212b40c, sets data_0215de34 +4 to work,
+  translates callback results, subtracts the consumed count, and advances
+  +0x18 only if the callback left it unchanged. Tried record views, separate
+  callback/count views, integer and pointer arithmetic, and index types.
+  Best match was 74%: numeric table addresses become immediate additions
+  rather than literal loads. The original literals at 0x0203a260 and
+  0x0203a268 lack load relocations in config/arm9/relocs.txt; a human should
+  check those before a decomp.me scratch. Body omitted; original delink remains.
+
+Validation: six implemented targets report 100%; match gate passes all 57
+functions checked in changed source files. Build, anticheat, nine unit tests,
+and byte-identical artifact checksum pass.
