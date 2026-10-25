@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Match all eight M1-T655 record setters, bit update, resource search, record copy and tier-size helper functions at 100% objdiff; document typed contracts and instruction evidence.
+- Matched all eight M1-T680 game/unit_020afc28 routines; documented record layouts, signed-byte lookups, coordinate checks and spread arithmetic.
 - M1-T675: document and type seven selector handlers and the indexed record-word transfer in game/unit_02039bb4.
 - Match all four M1-T667 script provider dispatchers in game/unit_0203aae8 at 100% objdiff, with typed record and borrowed object views.
 - Matched five M1-T669 packing, validation, and table encoding functions in game/unit_02111400; documented two remaining hard functions.
