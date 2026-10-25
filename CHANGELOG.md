@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Match seven M1-T689 state, iterator, callback, and palette routines; document the remaining pair updater.
+- Verify all eight M1-T694 resource dispatch, byte assembly and manager-state routines at 100% objdiff; document typed parameters and instruction evidence.
 - Verify all eight M1-T693 forwarding, manager-word and initialization routines at 100% objdiff; document typed parameters and provider call sequences.
 - M1-T688: match and document eight game/unit_020de678 resource searches, state updates, and helper dispatch routines.
 - Verify all eight M1-T692 manager-field and forwarding routines at 100% objdiff; document typed views, call order and the resource pointer result.

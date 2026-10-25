@@ -22,6 +22,8 @@ int func_020961a0(void);
 /* 0x02095560 uses LDRSB [r0, r1]; index must address a readable table byte. */
 int Unk095560_GetSignedByte(const s8 *table, int index) { return table[index]; }
 
+/* 0x02095568 assembles four byte loads in little-endian order.
+ * The caller must provide readable bytes at offsets o through o + 3. */
 u32 Unk095560_ReadU32LE(const u8 *p, int o)
 {
     return p[o] | (p[o + 1] << 8) | (p[o + 2] << 16) | (p[o + 3] << 24);
@@ -129,42 +131,45 @@ void Unk095560_Unk_0958a8(u32 arg0, u32 arg1)
 }
 
 
-int func_0204459c();
-int func_0204fe68();
-int func_0204fed8();
-/* decompiler-derived */
+void *func_0204459c(int index);
+void *func_0204fe68(void *handle, int index);
+void func_0204fed8(void *record, u32 arg);
+/* 0x020095778 selects handle 25, entry 0, then forwards the caller word
+ * to 0204fed8. unit_0204459c establishes the borrowed handle/entry types. */
 void Unk095560_Unk_095778(u32 arg0)
 {
-  u32 value;
+  void *value;
   value = func_0204459c(0x19);
   value = func_0204fe68(value,0);
   func_0204fed8(value,arg0);
 }
 
 
-/* decompiler-derived */
+/* 0x02009579c selects handle 26, entry 0, then forwards the caller word
+ * to 0204fed8. unit_0204459c establishes the borrowed handle/entry types. */
 void Unk095560_Unk_09579c(u32 arg0)
 {
-  u32 value;
+  void *value;
   value = func_0204459c(0x1a);
   value = func_0204fe68(value,0);
   func_0204fed8(value,arg0);
 }
 
 
-/* decompiler-derived */
+/* 0x0200957c0 selects handle 26, entry 0, then forwards the caller word
+ * to 0204fed8. unit_0204459c establishes the borrowed handle/entry types. */
 void Unk095560_Unk_0957c0(u32 arg0)
 {
-  u32 value;
+  void *value;
   value = func_0204459c(0x1a);
   value = func_0204fe68(value,0);
   func_0204fed8(value,arg0);
 }
 
 u32 Unk095560_Unk_0956e8(void);
-int func_020958c8();
-int Unk095560_Unk_095950();
-/* decompiler-derived */
+int func_020958c8(int value);
+/* 0x02095af8 resets through 0956e8, calls 095950 with slot 0, and
+ * forwards a nonzero result to 0958c8; returns normalized success. */
 u32 Unk095560_Unk_095af8(u32 arg0)
 {
   int value;
@@ -177,11 +182,12 @@ u32 Unk095560_Unk_095af8(u32 arg0)
   return 0;
 }
 
-int func_02095818();
+int func_02095818(void);
 void ImageBg_Unk_0e5530(void);
 void ImageObj_Unk_0775d8(void);
 void Unk02d15c_Unk_02d81c(void);
-/* decompiler-derived */
+/* 0x02096170 selects the provider sequence by 095818's zero/nonzero result,
+ * then always calls 02d81c and 02065ca8; no provider results are retained. */
 void Unk095560_Unk_096170(void)
 {
   int value;
@@ -483,20 +489,24 @@ int Unk095560_Unk_0959d0(s32 a, s32 *out)
     return 0;
 }
 
+/* 0x02095b28 passes slot 8 and the caller word to 095950,
+ * returning its result normalized to 0 or 1. */
 int Unk095560_Unk_095b28(u32 x)
 {
     return Unk095560_Unk_095950(8, x) != 0;
 }
 
+/* 0x02095cd8 saves c/d in the two global words, stores b/a/-1 in
+ * the borrowed manager subobject, and returns 1. Field meanings are unknown. */
 int Unk095560_Unk_095cd8(u32 a, u32 b, u32 c, u32 d)
 {
-    u32 *q;
+    Unk095560Words *q;
     ((u32 *)data_02175ea8)[0] = c;
     ((u32 *)data_02175ea8)[1] = d;
-    q = (u32 *)Unk095560_GetManagerSub3a8();
-    q[1] = a;
-    q[0] = b;
-    q[2] = -1;
+    q = (Unk095560Words *)Unk095560_GetManagerSub3a8();
+    q->unk_04 = a;
+    q->unk_00 = b;
+    q->unk_08 = -1;
     return 1;
 }
 
