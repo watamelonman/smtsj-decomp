@@ -392,6 +392,9 @@ int Unk02e000_Unk_02e884(void);
 int Unk02e000_GetTier(int x);
 int Unk02e000_FindIndex_02e3e4(int a);
 
+/* Original 0x0202e468 selects a borrowed slot from four contiguous tiers
+ * with strides 152, 96, 64 and 32. This indexing supports GetSlotPtr;
+ * allocation is required and callers supply nonnegative indices below 91. */
 u8 *Unk02e000_GetSlotPtr(int i)
 {
     u8 *p = (u8 *)Unk02e000_Unk_02e884();
@@ -677,6 +680,9 @@ int Unk02e000_GetRecordFlag1(u32 id)
     }
 }
 
+/* Original 0x0202eda8 caps signed v above 63, otherwise truncating to six
+ * bits at record +0x1f bits 2..7 and preserving bits 0..1. Offset supports
+ * the name; valid allocated IDs are 1..491, IDs above 491 return zero. */
 int Unk02e000_SetRecordUnk1f_2(u32 id, int v)
 {
     Unk02e000Rec *e;
@@ -737,9 +743,9 @@ int func_0202e520(int value)
 }
 
 int Unk118b04_Unk_118b90(u8 *block, int bit);
-/* Original 0x0202e5dc copies work fields into the indexed 72-byte slot,
- * including three selected entry IDs and global word zero. Both borrowed views
- * must be allocated; the caller supplies a valid slot and readable work block. */
+/* Original 0x0202e5dc transfers fields between work and an indexed 72-byte
+ * slot, including selected entry IDs and global word zero. The 34-byte copy
+ * writes work+0x28 from slot+2; both views must be writable and allocated. */
 void func_0202e5dc(int index, u8 *work)
 {
     u8 *record = (u8 *)Unk02e000_Unk_02e75c(index);
@@ -762,12 +768,12 @@ void func_0202e5dc(int index, u8 *work)
     record[0x28] = work[2];
     FIELD(u16, record, 0x2a) = FIELD(u16, work, 0x360);
     if (work[2] == 3) {
-        for (i = 0; i < 3; i++) ((u16 *)(record + i * 2))[0x16] = 0;
+        for (i = 0; i < 3; i++) ((u16 *)record + i)[0x16] = 0;
     } else {
         for (i = 0; i < 3; i++) {
             int entry = (s8)work[0x358 + i];
-            if (entry < 0) ((u16 *)(record + i * 2))[0x16] = 0;
-            else ((u16 *)(record + i * 2))[0x16] = ((u16 *)(work + entry * 60))[0x57];
+            if (entry < 0) ((u16 *)record + i)[0x16] = 0;
+            else ((u16 *)record + i)[0x16] = ((u16 *)(work + entry * 60))[0x57];
         }
     }
     FIELD(u32, record, 0x34) = FIELD(u32, work, 0x5fc4);
@@ -782,19 +788,18 @@ u8 *func_020a1428(u16 id);
  * trailing words receive -1 sentinels; all storage remains module-owned. */
 void func_0202e23c(void)
 {
-    u8 *work;
-    u8 *entry;
-    Unk02e000Rec *record;
     int i, j;
+    Unk02e000Rec *record;
+    u8 *work;
     func_02008848(Unk02e000_Unk_02e774(), 0, 0x6538);
     work = Unk02e000_GetWorkArea();
-    entry = work;
+    record = (Unk02e000Rec *)work;
     for (i = 0; i < 12; i++) {
-        work[0x348 + i] = -1;
-        entry[0xae] = i;
-        entry += 60;
+        ((s8 *)(work + i))[0x348] = -1;
+        ((u8 *)record)[0xae] = i;
+        record = (Unk02e000Rec *)((u8 *)record + 60);
     }
-    for (i = 0; i < 3; i++) work[0x354 + i] = -1;
+    for (i = 0; i < 3; i++) ((s8 *)(work + i))[0x354] = -1;
     Unk02ee5c_Unk_02f054();
     Unk02f078_Unk_02f08c();
     record = UNK02E000_RECS();
@@ -816,7 +821,7 @@ void func_0202e23c(void)
             FIELD(u16, dest, 12) = FIELD(u16, source, 20);
             FIELD(u16, dest, 14) = FIELD(u16, source, 22);
             for (j = 0; j < 6; j++) {
-                ((u16 *)(dest + j * 2))[8] = ((u16 *)(source + j * 2))[23];
+                ((u16 *)dest + j)[8] = ((u16 *)source + j)[23];
             }
             record->unk_000b &= ~1;
             record->unk_001c = 0;
@@ -830,6 +835,6 @@ void func_0202e23c(void)
     }
     Unk02e000_Nop_02e3e0();
     for (i = 0; i < 3; i++) {
-        ((u32 *)((u8 *)Unk02e000_Unk_02e774() + i * 4 + 0x6000))[0x4e] = -1;
+        ((u32 *)Unk02e000_Unk_02e774() + i + 0x1800)[0x4e] = -1;
     }
 }

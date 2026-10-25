@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all four M1-T656 slot, record-field, work-transfer and record-initialization functions at 100% objdiff; document instruction evidence and borrowed storage contracts.
 - Match all eight M1-T655 record setters, bit update, resource search, record copy and tier-size helper functions at 100% objdiff; document typed contracts and instruction evidence.
 - Matched all eight M1-T680 game/unit_020afc28 routines; documented record layouts, signed-byte lookups, coordinate checks and spread arithmetic.
 - M1-T675: document and type seven selector handlers and the indexed record-word transfer in game/unit_02039bb4.
