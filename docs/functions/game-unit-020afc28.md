@@ -41,11 +41,6 @@ accesses and borrowed provider storage. No new module boundary is introduced.
 
 None for M1-T681.
 
-## Not done in M1-T683
-- `func_020afe64`
-- `func_020b04b4`
-- `func_020b0310`
-
 ## M1-T682
 
 Seven functions match at 100% objdiff. Existing prerequisite functions retain
@@ -72,3 +67,16 @@ must fit the widths used by the original.
   of the sum and multiplier to r5/r6 (including the sum's shift destination).
   Leave linked from the delink; a human can open a scratch with
   `tools/decompme.py`. No nonmatching C implementation is retained.
+
+## M1-T683
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_020b0310` | Matches at 100%. Chance 255 returns one, zero returns zero; target kinds 2/4 return one. Otherwise combines chance with source-minus-target selector-six and selector-seven factors and forwarded selector-14 factors in rounded 20.12 units. Target selector 21 halves the result; caps at 99 units, calls the source kind provider, conditionally halves for the saved target kind 4, clamps to one unit, then compares against a random 0..0x63ff value shifted four bits. The second kind call is retained even though its return is unused; the saved target-kind comparison is unreachable after the early return but appears in the original. Borrowed inputs must be valid; intermediate arithmetic must fit signed 32 bits. Neutral name retained because provider calls and arithmetic do not establish a specific gameplay purpose. |
+| `func_020afe64` | Not emitted. Scans ten global slots for the highest selector-six/seven sum in each of ID classes one and two; resolves those IDs, combines the two selector differences with factor 0x50000, adds 15 times the argument, caps unsigned values above 100 at 99 and compares to a random draw. |
+| `func_020b04b4` | Not emitted. Maps the selector for kind one, otherwise reads the kind's signed-byte record field. Rejects selector states 1/3/4 and incompatible signed-byte kinds. Scales the supplied chance by target selector percentage and adds selector-seven difference times 0x666 in 20.12 units, clamps to 1..99 units and compares against a random draw. |
+
+### Hard list
+
+- `func_020afe64`: best local objdiff 96.18%. The scan and provider sequence matched; the compiler retained a redundant zero-high-word multiply-add in the wide constant product, changing allocation and scheduling. Tried inline and direct rounded products, signed/unsigned constant widths, operand order, and separating the bonus calculation. An explicit high/low product decomposition was worse and was removed.
+- `func_020b04b4`: best local objdiff 97.30%. A switch matched the initial three-state conditional comparisons. Remaining wide constant-product differences include a redundant zero-high-word multiply-add and rounding-register allocation. Tried inline/direct products, constant widths and operand order, and explicit high/low decomposition. Nonmatching implementations were removed; both functions remain linked from the delink. A human can open scratches with `tools/decompme.py`.
