@@ -6,9 +6,9 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int Unk02e000_GetWorkArea();
+int Unk02e000_GetWorkArea(void);
 void *Unk02e000_Thunk_0202e788(void);
-int Unk096754_CountEntries();
+int Unk096754_CountEntries(void);
 void func_0209846c(u32 arg0, void *area);
 
 int Unk096754_Unk_0970b4(void);
@@ -30,8 +30,10 @@ typedef struct Unk096754Area {
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-int Unk02e000_GetAreaRecord();
+int Unk02e000_GetAreaRecord(void);
 int Unk096754_HasEntryId(int id);
+/* At 0x02096754, the three signed bytes at work +0x354 gate the
+ * area-record lookup for unsigned indices 0..2; other indices return zero. */
 int Unk096754_GetAreaRecordIf(u32 i)
 {
     u8 *base;
@@ -50,6 +52,8 @@ int Unk096754_GetAreaRecordIf(u32 i)
     return 0;
 }
 
+/* At 0x02096898, counts consecutive nonnegative signed entry indices at
+ * work +0x348, stopping at the first negative byte or twelve entries. */
 int Unk096754_CountEntries(void)
 {
     u8 *base = (u8 *)Unk02e000_GetWorkArea();
@@ -120,31 +124,27 @@ int Unk096754_Unk_0969f0(void)
 }
 
 
-int Unk02e000_HasField36();
-/* decompiler-derived */
+int Unk02e000_HasField36(const void *entry);
+/* At 0x02096a14, returns the first of twelve 0x3c-byte records whose
+ * +0x36 predicate is false, or -1 when capacity or the scan rejects it. */
 int Unk096754_Unk_096a14(void)
 {
-  int value1;
-  int value2;
-  int value3;
-  value1 = Unk096754_Unk_0969f0();
-  if (value1 == 0) {
-    return -1;
-  }
-  value1 = Unk02e000_GetWorkArea(value1);
-  value1 = value1 + 0x74;
-  value3 = 0;
-  do {
-    value2 = Unk02e000_HasField36(value1);
-    if (value2 == 0) {
-      return value3;
+    int i;
+    u8 *entry;
+    if (Unk096754_Unk_0969f0() == 0) {
+        return -1;
     }
-    value3 = value3 + 1;
-    value1 = value1 + 0x3c;
-  } while (value3 < 0xc);
-  return -1;
+    entry = (u8 *)Unk02e000_GetWorkArea() + 0x74;
+    for (i = 0; i < 12; i++, entry += 0x3c) {
+        if (Unk02e000_HasField36(entry) == 0) {
+            return i;
+        }
+    }
+    return -1;
 }
 
+/* At 0x02096a60, compares id with unsigned halfword +0xaa of each
+ * record selected by the twelve signed indices at work +0x348. */
 int Unk096754_HasEntryId(int id)
 {
     u8 *base = (u8 *)Unk02e000_GetWorkArea();
@@ -158,6 +158,8 @@ int Unk096754_HasEntryId(int id)
     return 0;
 }
 
+/* At 0x02096ab0, returns false for record +0xa8 values 1 and 7.
+ * Signed indices outside 0..11 return true before any record load. */
 int Unk096754_Unk_096ab0(int i)
 {
     u8 *base = (u8 *)Unk02e000_GetWorkArea();
@@ -172,6 +174,8 @@ int Unk096754_Unk_096ab0(int i)
     return 1;
 }
 
+/* At 0x02096b44, requires available capacity and HasEntryId(id) != 1.
+ * The capacity check short-circuits the ID lookup. */
 int Unk096754_Unk_096b44(int id)
 {
     if (Unk096754_Unk_0969f0() == 0) {
@@ -191,6 +195,8 @@ void Unk096754_ResetAreaPos(void)
     FIELD(s16, p, 30) = FIELD(s16, p, 20);
 }
 
+/* At 0x020970d4, clamps v against signed area +0x12 and then a lower
+ * bound of one, storing +0x1c; the upper-bound branch takes precedence. */
 void Unk096754_ClampField1c(int v)
 {
     u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
@@ -204,6 +210,8 @@ void Unk096754_ClampField1c(int v)
     FIELD(s16, p, 28) = m;
 }
 
+/* At 0x02097120, clamps v against signed area +0x14 and then a lower
+ * bound of one, storing +0x1e; the upper-bound branch takes precedence. */
 void Unk096754_ClampField1e(int v)
 {
     u8 *p = (u8 *)Unk02e000_Thunk_0202e788();

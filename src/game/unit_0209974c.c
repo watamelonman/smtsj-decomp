@@ -158,7 +158,8 @@ Unk09974cEntry *Unk09974c_FindEntry(int id)
     return 0;
 }
 
-/* decompiler-derived */
+/* Select a borrowed subblock slice for categories 0..9; offsets are evidenced
+ * by the switch at 0x020997d4..985c. Other categories return zero. */
 int Unk09974c_Unk_0997c8(u32 arg0)
 {
   int value;
@@ -293,6 +294,9 @@ void Unk09974c_Unk_099abc(int id, u16 v)
     Unk09974c_SetBit6ac(id);
 }
 
+/* Search resource (5, 0) using the id's low halfword at record +0;
+ * evidence: 0x020099bfc passes stride 8 and comparator 099860 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099bfc(int id)
 {
     Unk09974cRec8 key;
@@ -308,6 +312,9 @@ void *Unk09974c_Unk_099bfc(int id)
     return func_02011810(&key, base, n, 8, Unk09974c_Unk_099860);
 }
 
+/* Search resource (5, 2) using the id's low halfword at record +0;
+ * evidence: 0x020099c60 passes stride 80 and comparator 099870 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099c60(int id)
 {
     Unk09974cRec80 key;
@@ -347,6 +354,9 @@ s32 Unk09974c_Unk_099cc4(Unk09974cStat *p)
     return q;
 }
 
+/* Search resource (5, 1) using the id's low halfword at record +32;
+ * evidence: 0x020099d14 passes stride 56 and comparator 099880 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099d14(int id)
 {
     Unk09974cRec56 key;
@@ -362,6 +372,9 @@ void *Unk09974c_Unk_099d14(int id)
     return func_02011810(&key, base, n, 56, Unk09974c_Unk_099880);
 }
 
+/* Search resource (5, 3) using the id's low halfword at record +0;
+ * evidence: 0x020099d78 passes stride 16 and comparator 099890 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099d78(int id)
 {
     Unk09974cRec16 key;
@@ -377,6 +390,9 @@ void *Unk09974c_Unk_099d78(int id)
     return func_02011810(&key, base, n, 16, Unk09974c_Unk_099890);
 }
 
+/* Search resource (5, 4) using the id's low halfword at record +0;
+ * evidence: 0x020099ddc passes stride 16 and comparator 0998a0 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099ddc(int id)
 {
     Unk09974cRec16 key;
@@ -396,6 +412,9 @@ int Unk02ee5c_GetTierFromField70();
 void *Unk02e000_Thunk_0202e788();
 int func_0209a158(int id);
 
+/* Search resource (5, 5) using the id's low halfword at record +0;
+ * evidence: 0x020099e40 passes stride 16 and comparator 0998b0 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099e40(int id)
 {
     Unk09974cRec16 key;
@@ -411,6 +430,8 @@ void *Unk09974c_Unk_099e40(int id)
     return func_02011810(&key, base, n, 16, Unk09974c_Unk_0998b0);
 }
 
+/* Accept record +0x17 bits 0/2/1 for tiers 4/5/1 respectively;
+ * evidence: 0x02099ea4..9f20. Missing borrowed records return zero. */
 int Unk09974c_Unk_099ea4(int id)
 {
     int tier = Unk02ee5c_GetTierFromField70();
@@ -430,6 +451,9 @@ int Unk09974c_Unk_099ea4(int id)
     return 0;
 }
 
+/* For an id accepted by 099ea4, store its low halfword in subblock slot
+ * 0..3 selected by record byte +2 values 3..6; evidence: 0x02099f24..f78.
+ * Accepted ids require a present record and a writable four-halfword subblock. */
 void Unk09974c_Unk_099f24(int id)
 {
     u16 *w;
@@ -534,6 +558,9 @@ void Unk09974c_SetBit6ac(int id)
     f[i] |= (u8)(1 << (k & 7));
 }
 
+/* Return zero for an already-set 6ac bit, else category 0's record byte +5,
+ * one for categories 8/9, or zero; evidence: 0x0209a1e4..a238.
+ * Requires id >=51 for the bit test and a present record for category zero. */
 int Unk09974c_Unk_09a1e4(int id)
 {
     if (func_0209a158(id) != 0) {
@@ -558,4 +585,124 @@ int func_0209a23c(int id)
         return ((Unk09974cRec8 *)Unk09974c_Unk_099bfc(id))->unk_05;
     }
     return 0;
+}
+
+/* Read mode 0's bit, mode 1's byte, or mode 2's presence flag;
+ * evidence: 0x0209993c..99d0. Missing entries return zero. */
+s32 func_0209993c(u32 id)
+{
+    Unk09974cEntry *e = Unk09974c_FindEntry(id);
+    u8 *buf;
+    int off;
+    if (e == 0) return 0;
+    buf = (u8 *)Unk09974c_Unk_0997c8(e->unk_0008);
+    off = id - e->lo;
+    switch (e->unk_0009) {
+    case 0: {
+        u32 byte = buf[off / 8];
+        return (byte & (1 << (off % 8))) != 0;
+    }
+    case 1: return buf[off];
+    case 2: return ((u16 *)buf)[off] != 0;
+    }
+    return 0;
+}
+
+/* Set a mode-0 bit or add to a mode-1 byte with a cap of 99, then mark
+ * the id bit; evidence: 0x02099a28..9ab8. Storage must be writable. */
+void func_02099a28(int id, u32 amount)
+{
+    Unk09974cEntry *e;
+    u8 *buf;
+    int off;
+    if (amount == 0) return;
+    e = Unk09974c_FindEntry(id);
+    if (e == 0) return;
+    buf = (u8 *)Unk09974c_Unk_0997c8(e->unk_0008);
+    off = id - e->lo;
+    switch (e->unk_0009) {
+    case 0: buf[off / 8] |= 1 << (off % 8); break;
+    case 1: {
+        u32 sum = buf[off];
+        sum += amount;
+        if (sum >= 99) buf[off] = 99;
+        else buf[off] = sum;
+        break;
+    }
+    case 2: break;
+    }
+    Unk09974c_SetBit6ac(id);
+}
+
+/* Clear a mode-0 bit or mode-2 halfword, or subtract with a zero floor
+ * from a mode-1 byte; evidence: 0x02099b10..9ba8. Storage is borrowed. */
+void func_02099b10(int id, u32 amount)
+{
+    Unk09974cEntry *e;
+    u8 *buf;
+    int off;
+    if (amount == 0) return;
+    e = Unk09974c_FindEntry(id);
+    if (e == 0) return;
+    buf = (u8 *)Unk09974c_Unk_0997c8(e->unk_0008);
+    off = id - e->lo;
+    switch (e->unk_0009) {
+    case 0: buf[off / 8] &= ~(1 << (off % 8)); break;
+    case 1:
+        if (buf[off] < amount) buf[off] = 0;
+        else buf[off] -= amount;
+        break;
+    case 2: ((u16 *)buf)[off] = 0; break;
+    }
+}
+
+/* Source halfword view: signed ten-bit adjustment and signed six-bit kind;
+ * evidence: sign-extending shifts at 0x02099ff0 and 0x0209a038. */
+typedef struct Unk09974cPackedSource {
+    s16 value : 10;
+    s16 kind : 6;
+} Unk09974cPackedSource;
+
+/* Unsigned packed output preserves the ten-bit value when replacing its kind. */
+typedef struct Unk09974cPackedDest {
+    u16 value : 10;
+    u16 kind : 6;
+} Unk09974cPackedDest;
+
+/* Borrowed input prefix containing two optional resource ids at +4 and +6. */
+typedef struct Unk09974cPair {
+    u8 pad_00[4];
+    u16 ids[2];
+} Unk09974cPair;
+
+/* Borrowed resource prefix followed by 19 signed packed adjustments. */
+typedef struct Unk09974cAdjustments {
+    u8 pad_00[24];
+    Unk09974cPackedSource slots[19];
+} Unk09974cAdjustments;
+
+int Unk02f078_IsAllowed_02f190(int current, int candidate);
+
+/* Combine two optional resource records into 19 caller-owned packed slots;
+ * evidence and field contracts are given by the views above (0x02099f7c). */
+void func_02099f7c(const Unk09974cPair *input, Unk09974cPackedDest *dest)
+{
+    Unk09974cAdjustments *records[2] = {0, 0};
+    int i;
+    if (input->ids[0] != 0) records[0] = Unk09974c_Unk_099c60(input->ids[0]);
+    if (input->ids[1] != 0) records[1] = Unk09974c_Unk_099c60(input->ids[1]);
+    for (i = 0; i < 19; i++, dest++) {
+        int adjustment = 0;
+        u32 j;
+        for (j = 0; j < 2; j++) {
+            if (records[j] != 0) {
+                int kind = records[j]->slots[i].kind;
+                if (Unk02f078_IsAllowed_02f190(dest->kind, kind)) {
+                    dest->kind = kind;
+                    adjustment = records[j]->slots[i].value;
+                }
+            }
+        }
+        dest->value += adjustment;
+    }
 }
