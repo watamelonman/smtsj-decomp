@@ -19,21 +19,25 @@ Helper selector meanings and the global word's meaning remain unknown.
 
 No hard-list entries for M1-T686.
 
-## Other cards (existing work)
+## M1-T687
 
-- `Unk0de678_Unk_0df584`: decompiler-derived
-- `Unk0de678_Unk_0df0a4`: decompiler-derived
+All eight ARM functions match at 100% against the delinked object. Evidence is
+instruction offsets and relocations in `build/delinks/src/game/unit_020de678.o`.
+Unknown state and selector meanings retain their existing neutral symbols.
 
-## Not done in M1-T687
-- `func_020df330`
-- `Unk0de678_Unk_0debf8`
-- `Unk0de678_Unk_0df4cc`
-- `Unk0de678_Unk_0df348`
-- `Unk0de678_CountLeading`
-- `func_020deedc`
-- `Unk0de678_Unk_0de870`: decompiler-derived
-- `Unk0de678_Unk_0df064`: decompiler-derived
-- `Unk0de678_Unk_0dec94`: decompiler-derived
+| Function | Size | Evidence and contract |
+| --- | --- | --- |
+| `Unk0de678_Unk_0df584` | 20 B | Stores one to global offset 0x2c; no arguments. |
+| `func_020df330` | 24 B | Stores one at offset 4 and the unsigned argument at offset 8. |
+| `Unk0de678_Unk_0debf8` | 32 B | Forwards an unsigned word to `func_020dec18`, returns its result, and clears offset 0xcc on a nonzero result. |
+| `Unk0de678_Unk_0df4cc` | 36 B | Sets offset 16, stores the first argument's low byte at 24 and the second word at 20, and clears offset 28. |
+| `Unk0de678_Unk_0df0a4` | 40 B | Calls seven helpers in relocation order, including selector 30 to `Unk044394_Unk_044534`; no arguments. |
+| `Unk0de678_Unk_0df348` | 44 B | Sets offset 4, calls `func_020df330(3)`, then stores the argument at offset 12. |
+| `Unk0de678_CountLeading` | 48 B | Counts the nonzero halfwords at offset 10 in up to four consecutive 26-byte records. Caller supplies four readable records. The load, stride, and bound support the existing descriptive name. |
+| `func_020deedc` | 48 B | When offset 0xc8 is zero, calls `Unk0bc1a8_Unk_0bc9b4(24, 0)`; always calls `Unk044394_Unk_044534(9)`. |
+
+No hard-list entries for M1-T687. Existing routines belonging to later cards
+remain outside this card's implementation scope.
 
 ## Not done in M1-T688
 - `Unk0de678_Unk_0df4f0`
@@ -59,9 +63,5 @@ No hard-list entries for M1-T686.
 - `func_020de960`
 - `func_020def0c`
 - `func_020df0cc`
-- `Unk0de678_CountLeading`: hand-matched
-- `Unk0de678_Unk_0debf8`: hand-matched
 - `Unk0de678_GetPair`: hand-matched
-- `Unk0de678_Unk_0df348`: hand-matched
-- `Unk0de678_Unk_0df4cc`: hand-matched
 - `Unk0de678_Unk_0df4f0`: hand-matched
