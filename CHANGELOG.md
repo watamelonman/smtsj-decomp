@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match seven M1-T561 area/list functions in game/unit_02096754; document the remaining initialization function on the hard list.
 - Verified all eight M1-T560 entry scans, predicates and area field clamps at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Matched all eight M1-T547 state, callback and request functions in game/unit_020bc1a8 at 100% objdiff, with instruction evidence and typed contracts.
 - Matched all eight M1-T551 entry refresh, cleanup, selection and binding helpers in `game/unit_020a5680` at 100% objdiff; documented typed layouts and instruction contracts.
