@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Verified the six ImageBgDual3D no-op callbacks and two forwarding thunks for M1-T535; documented each instruction-level contract.
 - Matched all five M1-T529 cell interaction and state-machine functions in `game/unit_020d1ee8` at 100% objdiff, with typed owner views and per-function evidence.
 - M1-T509: matched seven battle help/talk initialization, resource cleanup and state helpers; documented 020fdaa8 on the hard list.

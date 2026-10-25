@@ -40,11 +40,15 @@ void ImageBgDual3D_Nop_1252f8(void) { }
 void ImageBgDual3D_Nop_1252fc(void) { }
 void func_02117360(u32 a, u32 b, u32 c, u32 d, u8 e);
 void func_02117400(u32 a, u32 b, u32 c, u32 d, u8 e);
+/* At 0x02125984, forwards four words and the fifth argument as an unsigned
+ * byte (LDRB / STR) to func_02117360; no result is consumed. */
 void ImageBgDual3D_Call_02117360(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117360(a, b, c, d, e);
 }
 
+/* At 0x02125998, forwards four words and the fifth argument as an unsigned
+ * byte (LDRB / STR) to func_02117400; no result is consumed. */
 void ImageBgDual3D_Call_02117400(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117400(a, b, c, d, e);
@@ -67,19 +71,22 @@ void ImageBgDual3D_Thunk_021177e0(u32 a, u32 b) { Unk116598_Set(a, b); }
 
 
 void Unk116598_Reset(void);
-/* forwards to `Unk116598_Reset` */
+/* At 0x021259b8, LDR IP / BX IP forwards without arguments to
+ * Unk116598_Reset (0x02117808); the target has no return value. */
 void ImageBgDual3D_Thunk_02117808(void) { Unk116598_Reset(); }
 
 extern u32 data_02176e94[];
-/* decompiler-derived */
+/* At 0x021259f8, loads the word at data_02176e94 unchanged. Callers
+ * (including 0x021259e0) treat it as a borrowed work address; no null check. */
 u32 ImageBgDual3D_Get_data_02176e94(void)
 {
   return *data_02176e94;
 }
 
-int Unk065e88_Unk_065eac();
-int Unk095560_Unk_096130();
-/* decompiler-derived */
+void Unk065e88_Unk_065eac(void);
+void Unk095560_Unk_096130(void);
+/* At 0x02125a80, calls 0x02096130 then 0x02065eac, without arguments.
+ * Their wider purpose is not established here, so retain the neutral name. */
 void ImageBgDual3D_Unk_125a80(void)
 {
   Unk095560_Unk_096130();
@@ -87,15 +94,17 @@ void ImageBgDual3D_Unk_125a80(void)
 }
 
 extern u32 data_02176e8c[];
-/* decompiler-derived */
+/* At 0x02125300, stores a zero word at data_02176e8c. The name describes
+ * only this observed store, without assigning a meaning to the global. */
 void ImageBgDual3D_Clear_data_02176e8c(void)
 {
   *data_02176e8c = 0;
 }
 
-int Unk116598_Unk_1172dc();
-int Unk116598_Unk_1177cc();
-/* decompiler-derived */
+void Unk116598_Unk_1172dc(void);
+void Unk116598_Unk_1177cc(u32 arg0);
+/* At 0x02125afc, calls 0x021177cc with zero, then 0x021172dc.
+ * The work argument supplied by 0x02125a90 is borrowed and never accessed. */
 void ImageBgDual3D_Unk_125afc(ImageBgDual3DWork *work)
 {
   Unk116598_Unk_1177cc(0);
@@ -103,12 +112,13 @@ void ImageBgDual3D_Unk_125afc(ImageBgDual3DWork *work)
 }
 
 
-/* decompiler-derived */
+/* At 0x021259e0, obtains the non-null borrowed work address, writes one
+ * to its first word, then calls 0x02125a80; the state meaning is unknown. */
 void ImageBgDual3D_Unk_1259e0(void)
 {
-  u32 *v1;
-  v1 = (u32 *)ImageBgDual3D_Get_data_02176e94();
-  *v1 = 1;
+  ImageBgDual3DWork *work;
+  work = (ImageBgDual3DWork *)ImageBgDual3D_Get_data_02176e94();
+  work->unk_0000 = 1;
   ImageBgDual3D_Unk_125a80();
 }
 
