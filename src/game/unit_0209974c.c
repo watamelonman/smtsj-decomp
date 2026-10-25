@@ -74,44 +74,53 @@ s32 Unk09974c_Unk_0998d8(u32 id)
     return func_0209993c(id) > 0;
 }
 
-int func_020445f4();
-int func_0204fed8();
-/* decompiler-derived */
-u32 Unk09974c_Unk_099bac(int arg0)
+void *func_020445f4(int index, int item);
+void *func_0204fed8(void *resource, int id);
+
+/* Resolve a nonzero id in resource (6, 0); evidence: 0x02099bbc..bcc.
+ * Zero is the absent-id sentinel and returns a null borrowed pointer. */
+void *Unk09974c_Unk_099bac(int id)
 {
-  u32 value;
-  if (arg0 != 0) {
-    value = func_020445f4(6,0);
-    value = func_0204fed8(value,arg0);
-    return value;
-  }
-  return 0;
+    if (id != 0) {
+        void *resource = func_020445f4(6, 0);
+        return func_0204fed8(resource, id);
+    }
+    return 0;
 }
 
-
-/* decompiler-derived */
-u32 Unk09974c_Unk_099bd4(int arg0)
+/* Resolve a nonzero id in resource (7, 0); evidence: 0x02099be4..bf4.
+ * The returned pointer is borrowed; zero ids return null. */
+void *Unk09974c_Unk_099bd4(int id)
 {
-  u32 value;
-  if (arg0 != 0) {
-    value = func_020445f4(7,0);
-    value = func_0204fed8(value,arg0);
-    return value;
-  }
-  return 0;
+    if (id != 0) {
+        void *resource = func_020445f4(7, 0);
+        return func_0204fed8(resource, id);
+    }
+    return 0;
 }
 
-int func_02008848();
-int func_020629c4();
-/* decompiler-derived */
-void Unk09974c_Unk_09974c(int *arg0)
+/* Caller-owned 0x48-byte area; only the observed live marker and handle
+ * are interpreted. Other bytes are cleared along with these fields. */
+typedef struct Unk09974cWork {
+    u32 live;
+    u8 padding_04[12];
+    void *handle;
+    u8 padding_14[0x34];
+} Unk09974cWork;
+
+void func_02008848(void *dest, int value, u32 size);
+void func_020629c4(void *handle);
+
+/* Release the +0x10 handle and clear a live area; evidence: 0x02099754..778.
+ * A zero live marker leaves the caller-owned 0x48 bytes untouched. */
+void Unk09974c_Unk_09974c(Unk09974cWork *work)
 {
-  if (*arg0 == 0) {
-    return;
-  }
-  func_020629c4(arg0[4]);
-  arg0[4] = 0;
-  func_02008848(arg0,0,0x48);
+    if (work->live == 0) {
+        return;
+    }
+    func_020629c4(work->handle);
+    work->handle = 0;
+    func_02008848(work, 0, 0x48);
 }
 
 
@@ -129,11 +138,14 @@ typedef struct Unk09974cStat {
     u16 unk_0e;
 } Unk09974cStat;
 
+/* Borrowed record prefix: byte +0x2a holds a seven-bit kind. */
 typedef struct Unk09974cKind {
     u8 pad_0000[0x2a];
     u8 kind : 7;
     u8 kind_hi : 1;
 } Unk09974cKind;
+/* Scan ten signed inclusive ranges; evidence: 0x02099780..7c0.
+ * Returns a borrowed table entry, or null when no range contains id. */
 Unk09974cEntry *Unk09974c_FindEntry(int id)
 {
     Unk09974cEntry *t = (Unk09974cEntry *)data_0213bdec;
@@ -177,6 +189,7 @@ int Unk09974c_Unk_0997c8(u32 arg0)
   }
 }
 
+/* Borrowed record prefix: halfword +4 contains the four-bit field at 8..11. */
 typedef struct Unk09974cFlags {
     u8 pad_0000[0x4];
     u16 unk_04_lo : 8;          /* +0x04 */
@@ -184,6 +197,8 @@ typedef struct Unk09974cFlags {
     u16 unk_04_hi : 4;
 } Unk09974cFlags;
 
+/* Require a nonzero helper result, and at least 99 for entry mode 1;
+ * evidence: byte +9 and signed comparison at 0x0209991c..934. */
 int Unk09974c_Unk_0998f0(int id)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
@@ -233,6 +248,8 @@ void *func_02011810();
 
 void Unk09974c_SetBit6ac(int id);
 
+/* Read the indexed halfword only for entry mode 2; evidence: 0x02099a04..a24.
+ * Missing entries and other modes return zero; storage is borrowed. */
 u32 Unk09974c_Unk_0999d4(int id)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
@@ -253,6 +270,8 @@ u32 Unk09974c_Unk_0999d4(int id)
     return 0;
 }
 
+/* Store a nonzero halfword for mode 2 and mark the id bit for any present
+ * entry; evidence: 0x02099acc..b0c. The selected buffer must be writable. */
 void Unk09974c_Unk_099abc(int id, u16 v)
 {
     Unk09974cEntry *e = Unk09974c_FindEntry(id);
@@ -304,6 +323,8 @@ void *Unk09974c_Unk_099c60(int id)
     return func_02011810(&key, base, n, 80, Unk09974c_Unk_099870);
 }
 
+/* Scale the ten-bit field at +4 by unsigned percent +0x0e, rounding down
+ * with minimum 1 when both are nonzero; evidence: 0x02099cc4..d10. */
 s32 Unk09974c_Unk_099cc4(Unk09974cStat *p)
 {
     u32 v = p->unk_04;
@@ -373,7 +394,7 @@ void *Unk09974c_Unk_099ddc(int id)
 
 int Unk02ee5c_GetTierFromField70();
 void *Unk02e000_Thunk_0202e788();
-int func_0209a158();
+int func_0209a158(int id);
 
 void *Unk09974c_Unk_099e40(int id)
 {
@@ -432,6 +453,8 @@ void Unk09974c_Unk_099f24(int id)
     }
 }
 
+/* Test byte +0x2d for ids 51..110; evidence: 0x0209a094..a0b4.
+ * In-range ids require a present record from Unk09974c_Unk_099d14. */
 int Unk09974c_Unk_09a090(int id)
 {
     if (id >= 51 && id <= 110) {
@@ -443,6 +466,8 @@ int Unk09974c_Unk_09a090(int id)
     return 0;
 }
 
+/* Accept record byte +0x2d values 1 or 3 for ids 51..110; evidence:
+ * 0x0209a0c0..aec. In-range ids require a present borrowed record. */
 int Unk09974c_Unk_09a0c0(int id)
 {
     if (id >= 51 && id <= 110) {
@@ -454,17 +479,21 @@ int Unk09974c_Unk_09a0c0(int id)
     return 0;
 }
 
+/* Test kinds 14 and 1 in byte +0x2a bits 0..6; evidence: 0x0209a0f4..a108. */
 int Unk09974c_IsKind1or14(Unk09974cKind *p)
 {
     u32 v = p->kind;
     return v == 14 || v == 1;
 }
 
+/* Test halfword +4 bits 8..11; the shifts at 0x0209a118/11c support the name. */
 int Unk09974c_HasFlagsMid(Unk09974cFlags *f)
 {
     return f->unk_04_mid != 0;
 }
 
+/* Decode halfword +4 bits 8..11 to 0..14, or -1 when absent.
+ * Evidence for the name: HasFlagsMid call and subtraction at 0x0209a14c. */
 int Unk09974c_GetFlagsMidMinus1(Unk09974cFlags *f)
 {
     if (Unk09974c_HasFlagsMid(f) == 0) {
@@ -473,6 +502,25 @@ int Unk09974c_GetFlagsMidMinus1(Unk09974cFlags *f)
     return f->unk_04_mid - 1;
 }
 
+/* Test the same subblock +0x6ac bit as SetBit6ac, returning 0 or 1;
+ * evidence: 0x0209a158..19c. Callers must supply id >= 51; indices >= 162
+ * return zero. The subblock pointer is borrowed. */
+int func_0209a158(int id)
+{
+    u8 *b = (u8 *)Unk02e000_GetSubBlock3a4();
+    s32 k = id - 51;
+    s32 i = k >> 3;
+    if (i < 162) {
+        u8 value = (b + i)[0x6ac];
+        u8 mask = (u8)(1 << (k & 7));
+        return (value & mask) != 0;
+    }
+    return 0;
+}
+
+/* Set the id-minus-51 bit in subblock +0x6ac; evidence: 0x0209a1a0..1e0.
+ * Existing symbol is the card's SetSeenBit; the bit's gameplay meaning is unproven.
+ * Callers must supply id >= 51; byte indices >= 162 are ignored. */
 void Unk09974c_SetBit6ac(int id)
 {
     u8 *b = (u8 *)Unk02e000_GetSubBlock3a4();
@@ -497,6 +545,17 @@ int Unk09974c_Unk_09a1e4(int id)
     case 8:
     case 9:
         return 1;
+    }
+    return 0;
+}
+
+/* Return record byte +5 only for entry category zero; evidence: the category
+ * test and record load at 0x0209a244..a258. The lookup must return a record. */
+int func_0209a23c(int id)
+{
+    switch (Unk09974c_GetEntryUnk08(id)) {
+    case 0:
+        return ((Unk09974cRec8 *)Unk09974c_Unk_099bfc(id))->unk_05;
     }
     return 0;
 }

@@ -2,6 +2,12 @@
 
 ## Unreleased
 - Matched all eight M1-T547 state, callback and request functions in game/unit_020bc1a8 at 100% objdiff, with instruction evidence and typed contracts.
+- Matched all eight M1-T551 entry refresh, cleanup, selection and binding helpers in `game/unit_020a5680` at 100% objdiff; documented typed layouts and instruction contracts.
+- Matched all eight M1-T555 range, record, percentage and subblock-bit helpers in `game/unit_0209974c`; documented instruction evidence and the setter symbol-name discrepancy.
+- Verified all eight M1-T559 area access, copy, reset, forwarding and count-limit functions at 100% objdiff; documented signed fields and call contracts.
+- Matched all four M1-T540 ImageBgDual3D resource initialization and state callbacks; documented borrowed layouts and original instruction evidence.
+- Matched all eight M1-T550 table lookup, selector refresh, insertion, and resolved-object helpers at 100% objdiff; documented typed layouts and instruction contracts.
+- Matched all eight M1-T554 resource, cleanup, record-kind and flag helpers in `game/unit_0209974c`, with typed parameters and per-function evidence.
 - Matched all eight M1-T546 slot, flag, context and request helpers in game/unit_020bc1a8; documented instruction evidence and contracts.
 - Matched all eight M1-T539 ImageBgDual3D callback, work creation, cleanup and initialization functions at 100% objdiff; documented typed contracts and instruction evidence.
 - Matched all eight M1-T553 record subtraction, entry-byte lookup and predicate functions in `game/unit_0209974c` with typed record views and per-function evidence.

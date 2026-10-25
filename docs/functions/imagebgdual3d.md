@@ -76,7 +76,17 @@ Neutral names retain unknown semantics. No hard functions remain in this card.
 - `ImageBgDual3D_Unk_125a90` (`0x02125a90`, 108 bytes): calls 0x02077314 and 0x02125a68; if 0x02095b28(3) succeeds, calls setup helpers with (8, 3) and (8, 42, 0, -1), then 0x02095f94. Initializes work words 0, 4, 8, 12 to (0, 13, 1, 0) and calls 0x02125afc.
 - `func_021257f4` (`0x021257f4`, 172 bytes): requests 0x20c bytes with callbacks 0x02125678, 0x02125738, 0x02125790, and 0x021257e8 and flags (0, 0, 1). Stores buffer/value at 0x90/0x80, publishes the handle through 0x020615ec, then returns for nonzero mode. Zero mode calls 0x02125314(work, 0), 0x021253c4(work, 0), and 0x02125650(work), then sets state 5. The caller consumes no result; using a void return reproduces the original conditional epilogue.
 
-## Not done in M1-T540
-- `func_02125314`
-- `func_02125678`
-- `func_02125b60`
+## M1-T540
+
+All four functions match the original ARM instructions and relocations. Their
+existing neutral symbols are retained because resource and state semantics are
+only partly established. The earlier source is extended rather than recreated.
+
+- `func_02125314` (`0x02125314`, 176 bytes): copies the 64-byte directory template at `data_0213cdd0` (`Data/Tex/Event/ED/`), normalizes it through 0x02015118, appends the indexed name from `data_02152148` and `.bin` at `data_02152170`, then calls 0x020513d4. Nonzero mode starts a request in work offset 4; zero mode stores the synchronous resource at offset 0x7c. Work is borrowed and its index must address the name table.
+- `func_02125678` (`0x02125678`, 192 bytes): states 0 and 1 start loading and become state 2; state 2 polls the request and becomes 3 on zero; state 3 initializes records and becomes 4; state 4 waits for all record completion bytes, sets state 5 and calls 0x02125650. State 5 polls an active handle and clears offset 0x208 when complete. Out-of-range states do nothing.
+- `func_02125b60` (`0x02125b60`, 220 bytes): state 0 polls 0x020961a0 and 0x02117834, advancing to 2 when work word 0xc is nonzero. State 1 requires three predicates before display setup, shared-buffer setup, state reset and 0x02117400(1, 1, 0, 0, 31). State 2 forwards the borrowed task to 0x02061424. Only its sixteen-byte prefix is used.
+- `func_021253c4` (`0x021253c4`, 496 bytes): resolves an absent resource from the request, reads the entry count and consumes entries 0 and 1 as headers. Later entries populate records at offset 0x94 with stride 0x5c, copying a sixteen-byte descriptor, deriving dimensions and chaining coordinates from the shared buffer for the first four records. Formats paths with `%s_%02d` from `data_02152178`, then calls the mode-selected record helper. Finally registers all records and creates/attaches the final handle. The provider must supply storage covering every resource record; the observed work reserves four records. Descriptor aggregate assignment reproduces the original LDM/STM copy.
+
+### Hard list
+
+None for M1-T540.
