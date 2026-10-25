@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all five M1-T616 game/unit_021218d0 field and slot initialization functions with typed record views and documented contracts.
 - Matched all eight M1-T615 game/unit_021218d0 slot initialization, flag, counter and saved-area routines with typed layouts and per-function contracts.
 
 - Match the 0x020d33cc halfword-stream copier; document 0x020d2c44 matching blockers.
