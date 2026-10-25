@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all three M1-T528 state-update and drawing callbacks at 100% objdiff, with typed floating state and documented instruction evidence.
 - Matched all eight M1-T527 context, money-window lifecycle, state initialization and numeric-output functions at 100% objdiff; documented instruction evidence and typed contracts.
 - Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Matched eight more game/unit_020f3db4 functions: table selection, record lookup, state scans, and list insertion.

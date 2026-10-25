@@ -76,7 +76,23 @@ human completion marking. No module boundary changes are introduced.
 
 None. All eight requested functions match.
 
-## Not done in M1-T528
-- `func_020fcc10`
-- `func_020fca5c`
-- `func_020fcd18`
+## M1-T528 — verified matches
+
+All three requested functions match the original ARM instructions and relocations.
+The state is borrowed and remains 64 bytes. The +0x34 word is a float; +4 and
++0x18 use signed comparisons as evidenced by 020fca5c.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_020fca5c` | Wraps the frame count at 65535, advances signed +0x0c toward zero or +0x18, and computes floating opacity at +0x34. Synchronizes settled +0x20/+0x24 from work-area +0x344; otherwise advances by +0x28, emits helper 12 every six frames, clamps through 020fc824, and handles the countdown/input completion. |
+| `func_020fcc10` | Requires IsBelow64, draws cells 0 and 2 with state opacity, and draws cell 1 and the formatted value only at opacity 1.0. Drawing setup/cleanup follows the original call sequence. |
+| `func_020fcd18` | Requires IsBelow64, configures drawing and draws cell 0. At opacity 1.0, clamps the displayed value to 0..99999999, draws resource 0x611b twice, and selects formats 02151088/94/98/9c using +0x30 and signed +0x2c. Local scopes preserve the original register lifetimes. |
+
+The formatted-output helper is variadic: the 02151088 format call passes no
+numeric argument in the original. No ownership or module boundary changes occur.
+The unit continues linking from the delink until a human marks it complete.
+The card requires no new tests; original-object comparison is the acceptance test.
+
+### Hard list for M1-T528
+
+None. All three requested functions match.
