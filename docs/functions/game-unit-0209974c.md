@@ -25,21 +25,24 @@ original object, as do all functions outside this card. No module boundary chang
 The original disassembly supplies the instruction-level acceptance oracle; the
 card requires no new tests. Run the match, checksum, anticheat and unit-test gates.
 
-## Existing work outside M1-T553
+## M1-T554
 
-The following status notes predate this card and are retained for later tasks.
+The following eight functions match at 100%. All record and resource pointers
+are borrowed; cleanup receives a caller-owned writable 0x48-byte area.
 
-## Hard list
-- `Unk09974c_Unk_099bac`: decompiler-derived
-- `Unk09974c_Unk_099bd4`: decompiler-derived
-- `Unk09974c_Unk_09974c`: decompiler-derived
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk09974c_HasFlagsMid` | `0x0209a114..a128`: load halfword +4, extract bits 8..11 and return whether nonzero. The observed extraction supports the existing name. |
+| `Unk09974c_IsKind1or14` | `0x0209a0f4..a110`: extract byte +0x2a bits 0..6 and compare with 14 and 1, supporting the existing name. |
+| `Unk09974c_Unk_099bac` | `0x02099bac..bcf`: zero id returns null; otherwise resolve resource (6, 0), then pass its pointer and id to `func_0204fed8`. |
+| `Unk09974c_Unk_099bd4` | `0x02099bd4..bf7`: same resolution contract using resource (7, 0). |
+| `Unk09974c_GetFlagsMidMinus1` | `0x0209a12c..a154`: test HasFlagsMid, return -1 when absent, otherwise extract the four-bit field and subtract one (range 0..14). |
+| `func_0209a23c` | `0x0209a23c..a264`: category zero returns byte +5 of the `099bfc` record; other categories return zero. Category-zero ids require a present record. |
+| `Unk09974c_Unk_09a090` | `0x0209a090..a0bc`: reject signed ids outside 51..110; for accepted ids return whether `099d14` record byte +0x2d is nonzero. The record must exist. |
+| `Unk09974c_Unk_09974c` | `0x0209974c..977c`: when word +0 is nonzero, release pointer +0x10, clear that pointer, then clear all 0x48 bytes. Zero marker leaves the area untouched. |
 
-## Not done in M1-T554
-- `Unk09974c_HasFlagsMid`
-- `Unk09974c_IsKind1or14`
-- `Unk09974c_GetFlagsMidMinus1`
-- `func_0209a23c`
-- `Unk09974c_Unk_09a090`
+No module boundary changed. The original instruction sequences are the acceptance
+oracle; this card explicitly requires no new tests. No M1-T554 hard functions remain.
 
 ## Not done in M1-T555
 - `Unk09974c_Unk_09a0c0`
