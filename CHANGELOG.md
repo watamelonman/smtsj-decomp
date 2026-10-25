@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Match M1-T683 selector-factor chance routine 020b0310; document 020afe64 and 020b04b4 on the hard list.
+- M1-T690: match seven game/unit_020de678 transition, record selection, and callback state handlers with typed arguments.
+- Match and document all eight M1-T695 manager reset, record search and ID predicate routines at 100% objdiff, with typed borrowed record access.
+- Match all eight M1-T678 game/unit_02039bb4 handlers, including saved-value duplication and callback dispatch; resolve both hard-function deferrals.
 - Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.
 - Match seven M1-T689 state, iterator, callback, and palette routines; document the remaining pair updater.
 - Verify all eight M1-T694 resource dispatch, byte assembly and manager-state routines at 100% objdiff; document typed parameters and instruction evidence.

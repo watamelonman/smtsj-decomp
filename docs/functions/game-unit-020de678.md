@@ -90,11 +90,25 @@ Existing names are retained; selector meanings remain unknown.
   also tried; neither matched. Body omitted, preserving original delink linkage.
   A human can prepare a scratch with `tools/decompme.py scratch func_020ded70`.
 
-## Not done in M1-T690
-- `func_020df374`
-- `func_020df420`
-- `func_020deaa0`
-- `func_020df234`
-- `func_020de960`
-- `func_020def0c`
-- `func_020df0cc`
+## M1-T690
+
+All seven ARM functions match at 100% in objdiff and direct instruction/relocation
+comparison against `build/delinks/src/game/unit_020de678.o`. Existing neutral
+symbols are retained because provider selector meanings remain unknown.
+
+| Function | Size | Evidence and contract |
+| --- | --- | --- |
+| `func_020df374` | 172 B | Sets provider pair (0,31), forwards the five transition arguments, and uses selectors 0/1 for an optional active-state transition. Modes 0, 1, and 3 select 0. |
+| `func_020df420` | 172 B | Same dispatch shape with provider pair (1,0) and active-state selectors 2/3. Modes 0, 1, and 3 select 2. |
+| `func_020deaa0` | 200 B | Receives a 114-byte block by value, extracts offset-10 halfwords from four 26-byte records, and appends the selection word. Slots 3 and 2 choose helper selector 12, 11, or 10. Helper receives a borrowed six-word stack array. |
+| `func_020df234` | 252 B | Advances callback phases; phase 0 invokes shutdown helpers, phase 1 waits before restoring providers and starting a transition, phase 6 restores state 1 and phase 0. Requires writable callback work. |
+| `func_020de960` | 256 B | Clears a writable 114-byte output and scans resource-31 records backwards. Counts non-minus-one signed keys among the first four, queries that many leading keys, and copies the first qualifying record; returns a boolean. Resource storage remains borrowed. |
+| `func_020def0c` | 336 B | Dispatches five callback states using a writable 12-byte work area, consumes pending global transitions, saves the provider selector, and delegates states 2/3 to the phase handlers. |
+| `func_020df0cc` | 360 B | Sequences seven callback phases, with provider waits and display transitions. Bits 2..9 of global offset 192 select the alternate mode-4 exit when equal to 3. Requires writable callback work. |
+
+The callback declaration now exposes the provider-supplied work pointer already
+used by the original instructions. The allocation and lifetime remain external.
+The reverse scan uses separate counting and query indices to reproduce register
+lifetimes without changing its search behavior. No new runtime tests are required
+by this card; original instruction comparison and objdiff verify these routines.
+No hard-list entries for M1-T690.
