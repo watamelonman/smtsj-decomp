@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T650 initialization, work-view and record-call helpers at 100% objdiff; clarified typed calls and borrowed-address contracts.
 - Verified all eight M1-T649 global-word and work-area helpers at 100% objdiff; documented instruction evidence and borrowed-view contracts.
 - M1-T623: matched all five remaining game/unit_020f7188 progression, event and selector handlers at 100% objdiff.
 - Matched all eight M1-T629 list allocation, resource resolution, selector and output routines in game/unit_020a163c at 100% objdiff.
