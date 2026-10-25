@@ -206,3 +206,11 @@ lets mwcc hoist that load, changing the instructions and register allocation.
 Use a volatile view for this loop's context pointer read to preserve the observed
 accesses. This matching constraint does not establish synchronization or hardware
 ownership; the table and object words remain ordinary memory accesses.
+
+## DEC-011 — Preserve local call direction in 020bc1a8
+
+Place 020bc770 before 020bcbc4 and 020bc2fc before 020bc814. With this
+compiler, forward and backward local call relocations have different encoded
+branch addends; the report's fuzzy comparison distinguishes them even when the
+interactive diff resolves both to the same symbol. Callee placement reproduces
+the original call direction without changing behavior or tool configuration.

@@ -3,6 +3,13 @@
 ## Unreleased
 
 - Match seven M1-T561 area/list functions in game/unit_02096754; document the remaining initialization function on the hard list.
+- Verified all eight M1-T575 manager-pair, record-address and status helpers at 100% objdiff; added typed declarations and evidence-based contracts.
+- Corrected the M1-T567 low-pair wrapper to forward its typed table index and describe its two-bit return value.
+- Verified all eight M1-T567 wrappers and buffer accessors in `game/unit_020d297c` at 100% objdiff, with typed arguments, return values, and documented assembly evidence.
+- Matched all seven M1-T548 object creation, slot dispatch, request update and record predicate functions in game/unit_020bc1a8 at 100% objdiff.
+
+- Match six more game/unit_0209974c functions, including mode-based storage updates and packed record adjustments.
+- Verified all eight M1-T556 resource searches and conditional record helpers at 100% objdiff; documented instruction evidence and caller contracts.
 - Verified all eight M1-T560 entry scans, predicates and area field clamps at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Matched all eight M1-T547 state, callback and request functions in game/unit_020bc1a8 at 100% objdiff, with instruction evidence and typed contracts.
 - Matched all eight M1-T551 entry refresh, cleanup, selection and binding helpers in `game/unit_020a5680` at 100% objdiff; documented typed layouts and instruction contracts.
