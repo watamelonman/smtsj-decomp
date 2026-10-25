@@ -255,3 +255,14 @@ without volatile accesses, padding stores or compiler directives. Ordinary scala
 assignments remove the source copies. The two flag bytes and sixteen records
 are cleared separately, leaving the two alignment bytes unspecified as in ARM.
 These private views describe only the observed request layout, not gameplay meaning.
+
+
+## DEC-014 — Preserve bounded scan entry checks in 020986ac
+
+The three scans at 02098740, 02098860 and 020988bc compare the initial id
+111 to 210 before entering the loop. mwccarm 2.0/sp1p5 normally propagates
+that constant and removes the entry comparison and branch. Scope
+`opt_propagation off` to these three functions to preserve the observed
+control flow without changing their ordinary C behavior. Declaring the result
+before the id also reproduces the original register allocation. All three
+functions then match at 100%; the pragma is popped before any later code.
