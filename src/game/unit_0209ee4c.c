@@ -2,10 +2,13 @@
 #include "types.h"
 
 void func_02118c6c(void);
+/* The target is an unconditional tail branch to func_02118c6c; no arguments. */
 void Unk09ee4c_Thunk_02118c6c(void) { func_02118c6c(); }
 
 extern u8 data_0213c190[];
 void func_0204f1f8(int v, u32 b, u32 c, u8 *d);
+/* Target loads unsigned d[1], adds base, and clamps negative sums before the call.
+ * d must address at least two bytes; b, c and d pass through unchanged. */
 void Unk09ee4c_Call_0204f1f8(int base, u32 b, u32 c, u8 *d)
 {
     int v = d[1] + base;
@@ -15,6 +18,7 @@ void Unk09ee4c_Call_0204f1f8(int base, u32 b, u32 c, u8 *d)
     func_0204f1f8(v, b, c, d);
 }
 
+/* Only the word at +0x64 is evidenced by Call_0204f68c. */
 typedef struct Unk09ee4cObj {
     u8 pad_0000[0x64];
     u32 unk_64;
@@ -22,6 +26,8 @@ typedef struct Unk09ee4cObj {
 
 void func_0204f68c(u32 a, u32 b, u32 *p);
 
+/* Target forwards the address of the +0x64 word only when it is nonzero.
+ * o must be valid, and the callee may modify that word. */
 void Unk09ee4c_Call_0204f68c(u32 a, u32 b, Unk09ee4cObj *o)
 {
     if (o->unk_64 == 0) {
@@ -30,12 +36,16 @@ void Unk09ee4c_Call_0204f68c(u32 a, u32 b, Unk09ee4cObj *o)
     func_0204f68c(a, b, &o->unk_64);
 }
 
+/* Target uses a multiply-add with stride 24 and data_0213c190 as its base.
+ * Returns the address as a target-width integer; the caller supplies the index. */
 int Unk09ee4c_Unk_0a03b8(int arg0)
 {
     return arg0 * 0x18 + ((int)data_0213c190);
 }
 
 void ScanVisor_Unk_0a2ae8(u32 a, int b);
+/* With a live game state, forwards arg0 and constant 2 to the visor helper,
+ * then writes mode 0x14 at +0x73e8 (evidence: target call and stores). */
 void Unk09ee4c_Unk_09ef50(u32 arg0)
 {
     GameState *gs = GetGameState();
@@ -46,6 +56,8 @@ void Unk09ee4c_Unk_09ef50(u32 arg0)
     gs->unk_73e8 = 0x14;
 }
 
+/* Target clears +0x7400, sets root +0x5c, and selects mode 0x12.
+ * A missing game state is accepted; a live state must have a valid root. */
 void Unk09ee4c_Unk_09ee4c(void)
 {
     GameState *gs = GetGameState();
@@ -58,6 +70,8 @@ void Unk09ee4c_Unk_09ee4c(void)
 }
 
 void Unk11f2d0_Unk_11f308(void *sub, u32 a);
+/* Target passes the embedded +0x7598 object and arg0 to the helper before
+ * selecting mode 0x15. A missing game state leaves everything untouched. */
 void Unk09ee4c_Unk_09ef80(u32 arg0)
 {
     GameState *gs = GetGameState();
@@ -68,7 +82,10 @@ void Unk09ee4c_Unk_09ef80(u32 arg0)
     gs->unk_73e8 = 0x15;
 }
 
-int Unk1124f0_Unk_11259c();
+typedef void (*Unk09ee4cCallback)(u32);
+Unk09ee4cCallback *Unk1124f0_Unk_11259c(u32 id);
+/* Invokes the descriptor callback if present, then records mode 22 and the ID.
+ * Evidence: indirect call and state stores at +0x73e8 and +0x73ec. */
 void Unk09ee4c_Unk_09efb4(u32 id)
 {
     u8 *gs = (u8 *)GetGameState();
@@ -84,20 +101,30 @@ void Unk09ee4c_Unk_09efb4(u32 id)
     FIELD(u32, gs + 28672, 1004) = id;
 }
 
+/* A separate view records only the packed word evidenced by this accessor. */
+typedef struct Unk09ee4cPackedState {
+    u8 pad_0000[0x73c0];
+    u32 unk_73c0;
+} Unk09ee4cPackedState;
+
+/* Target extracts bits 10..19 of the word at state +0x7000+0x3c0.
+ * Returns zero when no state exists; the result is in the range 0..1023. */
 u16 Unk09ee4c_GetField3c0Bits(void)
 {
-    u8 *gs = (u8 *)GetGameState();
+    Unk09ee4cPackedState *gs = (Unk09ee4cPackedState *)GetGameState();
     if (gs == 0) {
         return 0;
     }
-    return (u16)((FIELD(u32, gs + 28672, 960) << 12) >> 22);
+    return (u16)((gs->unk_73c0 << 12) >> 22);
 }
 
-int func_02044ec4();
-int func_020a1740();
-int func_0209f550();
-void Unk044904_ClearSlotsUnk1de();
-void func_0209f034();
+void *func_02044ec4(u32 id);
+void *func_020a1740(u16 id);
+int func_0209f550(int base, u32 id, u32 entry, u32 flag);
+void Unk044904_ClearSlotsUnk1de(u32 id);
+int func_0209f034(int base, u32 first, u32 second, u8 *record, u32 flag);
+/* Accepts category 2 IDs and forwards the resource byte at +3 to f550.
+ * Evidence: ID byte test and the +0x1d8 resource lookup. */
 int Unk09ee4c_Unk_09f5d8(u32 a, u32 id)
 {
     u8 *e;
@@ -109,7 +136,33 @@ int Unk09ee4c_Unk_09f5d8(u32 a, u32 id)
     return func_0209f550(a, id, e[3], 0);
 }
 
-void Unk09ee4c_Unk_09fd14(u32 a, u32 b)
+int func_020152cc(const void *text, const void *pattern);
+extern u8 data_0214c9e4[];
+void func_0204f188(int value, u32 id, u32 kind, u8 *record, u32 flag);
+/* Submits a nonempty record, choosing its ID from the kind at +18.
+ * Evidence: byte tests, pattern call, signed +16 adjustment and clamping.
+ * The borrowed record contains at least 20 readable bytes. */
+int func_0209f034(int base, u32 first, u32 second, u8 *record, u32 flag)
+{
+    int value;
+    u32 kind;
+    if (*(s8 *)record == 0) return -1;
+    if (*(s8 *)record == 48) return -1;
+    if (func_020152cc(record, data_0214c9e4) == 0) return -1;
+    kind = FIELD(u16, record, 18);
+    switch (kind) {
+    case 3: case 4: case 5: first = second; break;
+    }
+    value = FIELD(s16, record, 16) + base;
+    if (value < 0) value = 0;
+    func_0204f188(value, first, kind, record, flag);
+    return value;
+}
+
+
+/* Clears the ID slots, then submits four consecutive 22-byte records.
+ * Evidence: loop bound, pointer stride and constant fifth argument. */
+void Unk09ee4c_Unk_09fd14(u32 a, u8 *b)
 {
     int j;
     Unk044904_ClearSlotsUnk1de(a);
@@ -117,4 +170,103 @@ void Unk09ee4c_Unk_09fd14(u32 a, u32 b)
         func_0209f034(0, a, a, b, 1);
         b += 22;
     }
+}
+
+
+/* Borrowed descriptor flag layout; target shifts establish bits 0/1/14/15.
+ * No ownership or meaning for the remaining bits is inferred. */
+typedef struct Unk09ee4cFlags {
+    u32 bit0 : 1;
+    u32 bit1 : 1;
+    u32 unused : 12;
+    u32 bit14 : 1;
+    u32 bit15 : 1;
+    u32 upper : 16;
+} Unk09ee4cFlags;
+
+void func_0204f364(int value, u32 id, int flag);
+/* Adds the signed +0x192 adjustment and clamps at zero; bits 0 and 1 of
+ * descriptor +16 select the forwarded flag (evidence: target shifts). */
+void func_0209f298(int base, u32 id, u8 *descriptor, u8 *record)
+{
+    int value = base + FIELD(s16, record + 256, 146);
+    Unk09ee4cFlags *bits = (Unk09ee4cFlags *)(descriptor + 16);
+    if (value < 0) value = 0;
+    if (bits->bit0 || bits->bit1)
+        func_0204f364(value, id, 1);
+    else
+        func_0204f364(value, id, 0);
+}
+
+void func_0204f650(int base, u32 id, u32 value, u32 kind);
+void func_0204f24c(int base, u32 id, u32 value, u32 kind, u32 slot, u32 flag);
+/* Bits 14 and 15 at +132 enable the +112 and +116 submissions.
+ * Evidence: target shifts and calls with kinds 21/22 and 1/3. */
+void func_0209f480(int base, u32 id, u8 *record)
+{
+    Unk09ee4cFlags *bits;
+    int slot;
+    if (FIELD(Unk09ee4cFlags, record, 132).bit14) {
+        func_0204f650(base, id, FIELD(u32, record, 112), 21);
+        func_0204f24c(base, id, FIELD(u32, record, 112), 1, 0, 1);
+    }
+    bits = (Unk09ee4cFlags *)(record + 132);
+    if (bits->bit15) {
+        slot = 0;
+        if (bits->bit14) {
+            base += 4;
+            slot = 1;
+        }
+        func_0204f650(base, id, FIELD(u32, record, 116), 22);
+        func_0204f24c(base, id, FIELD(u32, record, 116), 3, slot, 1);
+    }
+}
+
+u8 *Unk0aa118_Unk_0afb40(u32 entry);
+void func_0204f520(int value, u32 id, u32 flag);
+void func_0204a780(void *resource, u32 value);
+/* Resolves an entry, submits four 22-byte records, and returns signed +0x190.
+ * Evidence: lookup null check, loop stride, +0x192 adjustment and final load. */
+int func_0209f550(int base, u32 id, u32 entry, u32 flag)
+{
+    u8 *record = Unk0aa118_Unk_0afb40(entry);
+    int i;
+    u8 *current;
+    if (record == 0) return -1;
+    current = record;
+    for (i = 0; i < 4; i++) {
+        func_0209f034(base, id, id, current, flag);
+        current += 22;
+    }
+    func_0204f520(base + FIELD(s16, record + 256, 146), id, flag);
+    func_0204a780(func_02044ec4(id), 12);
+    return FIELD(s16, record + 256, 144);
+}
+
+u8 *Unk02e000_GetWorkArea(void);
+/* Records the selected table index and signed coordinates, optionally stepping
+ * by work-area direction 0..3; target table +16 selects this adjustment.
+ * Evidence: work +0x364/+0x365 loads and state +0x747c/+0x7482 stores. */
+void func_0209ee80(u32 index)
+{
+    u8 *gs = (u8 *)GetGameState();
+    u8 *entry;
+    s8 x, y;
+    if (gs == 0) return;
+    entry = (u8 *)Unk09ee4c_Unk_0a03b8(index);
+    x = FIELD(s8, Unk02e000_GetWorkArea() + 768, 100);
+    y = FIELD(s8, Unk02e000_GetWorkArea() + 768, 101);
+    if (FIELD(u32, entry, 16) == 1) {
+        switch (FIELD(u32, Unk02e000_GetWorkArea(), 856)) {
+        case 0: y--; break;
+        case 2: y++; break;
+        case 3: x--; break;
+        case 1: x++; break;
+        }
+    }
+    FIELD(u32, gs + 28672, 1148) = index;
+    FIELD(s8, gs + 28672, 1154) = x;
+    FIELD(s8, gs + 28672, 1155) = y;
+    ScanVisor_Unk_0a2ae8(index, 2);
+    FIELD(u32, gs + 28672, 1000) = 19;
 }
