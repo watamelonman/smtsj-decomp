@@ -3,37 +3,6 @@
 
 
 
-/* Borrowed work layout; gaps retain offsets observed in the original ARM code. */
-typedef struct StaffRollWork {
-    u32 unk_0000;
-    u32 unk_0004;
-    u32 unk_0008;
-    u32 unk_000c;
-    u8  pad_0010[0x4];
-    s32 unk_0014;
-    s32 unk_0018;
-    u8  pad_001c[0x90];
-    u32 unk_00ac;
-    u8  pad_00b0[0x4];
-    u32 unk_00b4;
-    u32 unk_00b8;
-    s32 unk_00bc;
-    s32 unk_00c0;
-    s32 unk_00c4;
-    u8  pad_00c8[0x4];
-    u32 unk_00cc;
-    u32 unk_00d0;
-    u32 unk_00d4;
-    u32 unk_00d8;
-    s32 scrollY;                /* +0xDC  starts at 0x1F0, grows per text line */
-    s32 unk_00e0;
-    u32 firstTextCmd;           /* +0xE4 */
-    u8  pad_00e8[0x214];
-    struct StaffRollCmd *cmds;  /* +0x2FC */
-    u32 cmdCount;               /* +0x300 */
-    u32 unk_0304;
-} StaffRollWork;
-
 /* A 16-byte record view, inferred from the search stride at 0x02118270. */
 typedef struct StaffRollSlot {
     u32 unk_0000;
@@ -41,6 +10,41 @@ typedef struct StaffRollSlot {
     u32 unk_0008;
     u32 unk_000c;
 } StaffRollSlot;
+
+/* Borrowed work layout; gaps retain offsets observed in the original ARM code. */
+typedef struct StaffRollWork {
+    u32 unk_0000;
+    u32 unk_0004;
+    u32 unk_0008;
+    u32 unk_000c;
+    u32 unk_0010;
+    s32 unk_0014;
+    s32 unk_0018;
+    u8 pad_001c[8];
+    u8 resource[0x78];
+    struct StaffRollImage *images[4];
+    u32 unk_00ac;
+    u32 unk_00b0;
+    u32 unk_00b4;
+    u32 unk_00b8;
+    s32 unk_00bc;
+    s32 unk_00c0;
+    s32 unk_00c4;
+    u32 unk_00c8;
+    u32 unk_00cc;
+    u32 unk_00d0;
+    u32 unk_00d4;
+    u32 unk_00d8;
+    s32 scrollY;                /* +0xDC  starts at 0x1F0, grows per text line */
+    s32 unk_00e0;
+    u32 firstTextCmd;           /* +0xE4 */
+    u8 pad_00e8[0x10];
+    struct StaffRollSlot slots[32];
+    u32 unk_02f8;
+    struct StaffRollCmd *cmds;  /* +0x2FC */
+    u32 cmdCount;               /* +0x300 */
+    u32 unk_0304;
+} StaffRollWork;
 
 /* The original at 0x02117cf4 immediately returns; no state is accessed. */
 void StaffRoll_Nop_117cf4(void) { }
@@ -242,17 +246,19 @@ void func_0211882c(StaffRollWork *w)
 }
 
 extern u8 data_0213cc08[];
-int func_020572d8();
-int func_02057524();
-int func_0205789c();
-int func_02057df8();
-int func_02057e18();
-int func_02057e30();
-int func_02058d04();
+void func_020572d8(void);
+void func_02057524(int value);
+void func_0205789c(void);
+void func_02057df8(void);
+void func_02057e18(int value);
+void func_02057e30(int value);
+void func_02058d04(struct StaffRollImage *image, int a, u32 b, u32 c,
+                    u32 scale, int d, int e, int f);
 void func_02118518(StaffRollWork *work);
-int func_02118584();
-/* decompiler-derived */
-void StaffRoll_Unk_118620(int arg0)
+void func_02118584(StaffRollWork *work, int screen);
+/* Draws image pair 0/1 in state 2, then the overlay and first-screen slots;
+ * original calls at 0x02118620 borrow all resources. */
+void StaffRoll_Unk_118620(StaffRollWork *arg0)
 {
   func_02057524(0);
   func_0205789c();
@@ -260,9 +266,9 @@ void StaffRoll_Unk_118620(int arg0)
   func_02057e30(0);
   func_02057e18(0x1f);
   if (((StaffRollWork *)arg0)->unk_00ac == 2) {
-    func_02058d04(*(u32 *)(arg0 + 0x9c),0,0,0,0x3f800000,0,0,0);
+    func_02058d04(arg0->images[0],0,0,0,0x3f800000,0,0,0);
 
-    func_02058d04(*(u32 *)(arg0 + 0xa0),0,*(u32 *)(data_0213cc08 + 0xc),
+    func_02058d04(arg0->images[1],0,*(u32 *)(data_0213cc08 + 0xc),
                   *(u32 *)(data_0213cc08 + 0x10),0x3f800000,0,0,0);
   }
   func_02118518((StaffRollWork *)arg0);
@@ -272,8 +278,9 @@ void StaffRoll_Unk_118620(int arg0)
 
 extern u8 data_0213cc1c[];
 extern u8 data_0213cc30[];
-/* decompiler-derived */
-void StaffRoll_Unk_1186cc(int arg0)
+/* Draws image pair 2/3 in state 2, then the overlay and second-screen slots;
+ * original calls at 0x021186CC borrow all resources. */
+void StaffRoll_Unk_1186cc(StaffRollWork *arg0)
 {
   func_02057524(0);
   func_0205789c();
@@ -281,10 +288,10 @@ void StaffRoll_Unk_1186cc(int arg0)
   func_02057e30(0);
   func_02057e18(0x1f);
   if (((StaffRollWork *)arg0)->unk_00ac == 2) {
-    func_02058d04(*(u32 *)(arg0 + 0xa4),0,*(u32 *)(data_0213cc1c + 0xc),
+    func_02058d04(arg0->images[2],0,*(u32 *)(data_0213cc1c + 0xc),
                   *(u32 *)(data_0213cc1c + 0x10),0x3f800000,0,0,0);
 
-    func_02058d04(*(u32 *)(arg0 + 0xa8),0,*(u32 *)(data_0213cc30 + 0xc),
+    func_02058d04(arg0->images[3],0,*(u32 *)(data_0213cc30 + 0xc),
                   *(u32 *)(data_0213cc30 + 0x10),0x3f800000,0,0,0);
   }
   func_02118518((StaffRollWork *)arg0);
@@ -374,4 +381,152 @@ void func_02118518(StaffRollWork *work)
     func_02057e30(0);
     func_02057e18(31);
     func_02057df8();
+}
+
+/* Dispatches +0x10 states, starting and stopping handler 26 at unsigned frame
+ * thresholds +0x14 and +0x14 + +0x18; state 2 reports completion. */
+int func_02117dd8(StaffRollWork *work)
+{
+    extern void func_0205e484(int id, int value);
+    extern void func_0205e590(int value);
+    int done = 0;
+    switch (work->unk_0010) {
+    case 0:
+        if ((u32)work->unk_0014 <= work->unk_0008) {
+            func_0205e484(26, 0);
+            work->unk_0010 = 1;
+        }
+        break;
+    case 1:
+        if ((u32)(work->unk_0014 + work->unk_0018) <= work->unk_0008) {
+            func_0205e590(0);
+            work->unk_0010 = 2;
+        }
+        break;
+    case 2:
+        done = 1;
+        break;
+    }
+    return done;
+}
+
+/* Advances +0xB4, derives +0xCC from the unsigned fade intervals, and moves
+ * to state 3 or 4 after +0xC8 frames. Divisor +0xC0 must be nonzero. */
+void func_021180e4(StaffRollWork *work)
+{
+    work->unk_00b4++;
+    if (work->unk_00b4 <= (u32)work->unk_00c0)
+        work->unk_00cc = ((u32)work->unk_00c0 - work->unk_00b4) * 31 / (u32)work->unk_00c0;
+    if (work->unk_00c8 - (u32)work->unk_00c0 <= work->unk_00b4)
+        work->unk_00cc = (work->unk_00b4 - (work->unk_00c8 - (u32)work->unk_00c0)) * 31 / (u32)work->unk_00c0;
+    if (work->unk_00c8 <= work->unk_00b4) {
+        work->unk_00b0++;
+        work->unk_00ac = work->unk_00b0 < 10 ? 3 : 4;
+        work->unk_00b4 = 0;
+    }
+}
+
+/* Builds a Data/Tex/ path with the indexed 24-byte table record and .gfnt
+ * suffix (original literals), and loads it into borrowed resource storage. */
+void func_02117e5c(StaffRollWork *work, int index)
+{
+    typedef struct StaffRollPath { u32 unk_0000; const char *name; u8 pad[16]; } StaffRollPath;
+    extern StaffRollPath *Unk02e000_GetAddr_data_02140ac8(void);
+    extern void func_0201524c(char *dest, const char *src);
+    extern int func_020513d4(const char *path);
+    extern void func_020516dc(void *resource, const char *path, int a, int b);
+    char path[64] = "Data/Tex/";
+    func_0201524c(path, Unk02e000_GetAddr_data_02140ac8()[index].name);
+    func_0201524c(path, ".gfnt");
+    if (func_020513d4(path) == 0) return;
+    func_020516dc(work->resource, path, 0, 0);
+}
+
+/* Draws active slots intersecting the 192-line viewport; screen selects a
+ * 288-line offset. Slot positions and opacity follow the original loads. */
+void func_02118584(StaffRollWork *work, int screen)
+{
+    extern void func_02057ddc(int value);
+    extern void func_02060b60(u32 flags, u32 handle, int x, int y, int a, int b);
+    int offset = screen == 0 ? 0 : 288;
+    int i = 0;
+    int y;
+    StaffRollSlot *slot = work->slots;
+    for (; i < 32; i++, slot++) {
+        if (slot->unk_0004 == 1) {
+            y = (s32)slot->unk_0008 - work->unk_00e0 - offset;
+            if (y + 16 >= 0 && y < 192) {
+                func_02057ddc(slot->unk_000c);
+                func_02060b60(0x01000001, slot->unk_0000, 128, y, 0, 2);
+            }
+        }
+    }
+    func_02057df8();
+}
+
+/* Releases the 32 slot handles and counted resources, invokes the original
+ * teardown calls, and clears the global owner pointer at 0x02176E6C. */
+void func_02118784(StaffRollWork *work)
+{
+    extern void func_020629c4(u32 handle);
+    extern void func_0205bb68(void);
+    extern void Unk044394_Unk_044534(int id);
+    extern void Unk065e88_Unk_0663bc(int a, int b);
+    extern void func_02052634(int a, int b, int c);
+    extern void func_0205e590(int value);
+    extern void Unk02cad4_Unk_02cbdc(u32 handle);
+    extern StaffRollWork *data_02176e6c;
+    int i = 0;
+    int j;
+    for (; i < 32; i++) {
+        func_020629c4(work->slots[i].unk_0000);
+        work->slots[i].unk_0000 = 0;
+    }
+    for (j = 0; j < (s32)work->unk_000c; j++) func_0205bb68();
+    work->unk_000c = 0;
+    Unk044394_Unk_044534(43);
+    Unk044394_Unk_044534(44);
+    Unk065e88_Unk_0663bc(3, 39);
+    func_02052634(1, 3, 31);
+    func_0205e590(0);
+    Unk02cad4_Unk_02cbdc(work->unk_0004);
+    data_02176e6c = 0;
+}
+
+/* Four words copied together by 0x02117EF4; their interpretation is unknown. */
+typedef struct StaffRollImageWords { u32 word[4]; } StaffRollImageWords;
+/* Borrowed image prefix; halfwords +0x28/+0x2A are output parameters. */
+typedef struct StaffRollImage {
+    u8 pad_0000[12];
+    u32 unk_000c;
+    u32 unk_0010;
+    u32 unk_0014;
+    StaffRollImageWords words;
+    u16 unk_0028;
+    u16 unk_002a;
+} StaffRollImage;
+/* Borrowed resource prefix exposes only the four words copied to an image. */
+typedef struct StaffRollResource {
+    u8 pad_0000[12];
+    StaffRollImageWords words;
+} StaffRollResource;
+
+/* Copies the resource metadata into an indexed image and resolves its two
+ * dimensions through the original helper calls. Index must be in 0..3. */
+void func_02117ef4(StaffRollWork *work, int index)
+{
+    extern StaffRollResource *func_020519e8(void *resource);
+    extern void func_0205aa78(StaffRollImageWords *words, int *a, int *b, u16 *c, u16 *d);
+    extern void func_0205b444(StaffRollImage *image, StaffRollResource *resource);
+    extern u32 func_0205accc(StaffRollResource *resource);
+    extern u32 func_0205acd4(StaffRollResource *resource);
+    StaffRollResource *resource = func_020519e8(work->resource);
+    int a = 0;
+    int b = 0;
+    work->images[index]->words = resource->words;
+    func_0205aa78(&work->images[index]->words, &a, &b,
+                 &work->images[index]->unk_0028, &work->images[index]->unk_002a);
+    func_0205b444(work->images[index], resource);
+    work->images[index]->unk_000c = func_0205accc(resource);
+    work->images[index]->unk_0010 = func_0205acd4(resource);
 }

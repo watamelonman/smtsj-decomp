@@ -38,15 +38,26 @@ original instructions; this card verifies them and replaces provisional contract
 No M1-T632 functions remain on the hard list. No new behavior tests are required;
 objdiff checks instruction identity and checksum checks the linked original image.
 
-## Not done in M1-T633
-- `Unk0986ac_Unk_099274`
-- `Unk0986ac_SetFlagBit`
-- `Unk0986ac_Unk_099234`
-- `Unk0986ac_Unk_0992b0`
-- `Unk0986ac_Unk_09911c`
-- `func_02098860`
-- `func_020988bc`
-- `func_02098740`
+## M1-T633
+
+All eight targets match at 100% objdiff. Arguments and record pointers are
+borrowed; field names remain neutral where application meaning is unknown.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `Unk0986ac_Unk_099274` | Copies pending selector +24 to +20, resets +24 to -1, calls `Unk0986ac_Unk_09911c` for 2 or the no-op callback for 3; stores/branches at 0x02099274 (60 B). |
+| `Unk0986ac_SetFlagBit` | Sets or clears mask `1 << (bit & 7)` in the borrowed byte selected by the storage helper. Caller enforces index bounds; byte loads/stores at 0x020986d4 (64 B). |
+| `Unk0986ac_Unk_099234` | Decrements signed +56, recomputes outputs, then clears words +24/+40/+56/+64 and byte +68 if +56 is nonpositive. Caller supplies aligned storage through +68 and representable decrement; 0x02099234 (64 B). |
+| `Unk0986ac_Unk_0992b0` | Dispatches selector +20: case 1 queues 2 at +24 only when the external predicate returns exactly 1; cases 2/4 call their handlers, other cases do nothing. Jump table at 0x020992b0 (80 B). |
+| `Unk0986ac_Unk_09911c` | Returns for absent game state; otherwise invokes the operation on state +30104, forwards object +16/+4/+40, and writes boolean +56 from object +40 == 1 or state header +16 == 1. Loads/calls at 0x0209911c (88 B). |
+| `func_02098860` | Scans ids 111..210 inclusive for a borrowed record matching the decoded middle field and a nonzero `Unk09974c_Unk_0998d8(id)`; returns 1 on the first match, else 0. Calls/comparisons at 0x02098860 (92 B). |
+| `func_020988bc` | Scans the same range for a matching middle field with zero `func_0209a158(id)`; returns 0 on the first such record, otherwise 1. Calls/comparisons at 0x020988bc (92 B). |
+| `func_02098740` | Returns the maximum high nibble of halfword +4 among records in ids 111..210 matching the decoded middle field and nonzero external predicate, or zero if none. Halfword load/shifts at 0x02098740 (108 B). |
+
+The three scans use scoped propagation control to retain original loop-entry
+checks and register allocation (See DEC-014). No behavior tests are required by
+this card; instruction identity and full-image checksum are the acceptance checks.
+No M1-T633 functions remain on the hard list.
 
 ## Not done in M1-T634
 - `func_02098b14`
@@ -57,8 +68,3 @@ objdiff checks instruction identity and checksum checks the linked original imag
 - `func_020993a8`
 - `func_02098fec`
 - `func_02098b9c`
-- `Unk0986ac_SetFlagBit`: hand-matched
-- `Unk0986ac_Unk_099234`: hand-matched
-- `Unk0986ac_Unk_099274`: hand-matched
-- `Unk0986ac_Unk_0992b0`: hand-matched
-- `Unk0986ac_Unk_09911c`: hand-matched
