@@ -2,6 +2,10 @@
 
 ## Unreleased
 - Matched all three M1-T506 record-query, table-percentage, and six-table scanner functions in `game/unit_020f3db4` at 100% objdiff.
+- Matched all three M1-T528 state-update and drawing callbacks at 100% objdiff, with typed floating state and documented instruction evidence.
+- Verified all eight M1-T537 ImageBgDual3D predicates, field updates and helper sequences at 100% objdiff; added typed contracts and instruction evidence.
+- Matched all eight M1-T527 context, money-window lifecycle, state initialization and numeric-output functions at 100% objdiff; documented instruction evidence and typed contracts.
+- Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Matched eight more game/unit_020f3db4 functions: table selection, record lookup, state scans, and list insertion.
 - Verified all eight M1-T526 singleton predicates, field updates, creation and dispatch helpers at 100% objdiff; documented original instruction evidence and contracts.
 - Verified the six ImageBgDual3D no-op callbacks and two forwarding thunks for M1-T535; documented each instruction-level contract.

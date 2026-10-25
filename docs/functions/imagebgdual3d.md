@@ -14,26 +14,38 @@
 The existing symbol names describe only behavior directly established by these instructions.
 Matching is checked against the delinked object; this TU remains linked from the delink pending human completion.
 
+## M1-T536
+
+All eight functions match at 100% against the original ARM object.
+
+- `ImageBgDual3D_Thunk_02117808` (`0x021259b8`, 12 bytes): absolute `LDR IP / BX IP` forwarding to `Unk116598_Reset`; no arguments or result.
+- `ImageBgDual3D_Get_data_02176e94` (`0x021259f8`, 16 bytes): returns the global word unchanged. The caller at `0x021259e0` uses it as a non-null borrowed work address.
+- `ImageBgDual3D_Unk_125a80` (`0x02125a80`, 16 bytes): calls `Unk095560_Unk_096130` then `Unk065e88_Unk_065eac`, both without arguments or consumed results. Their purpose remains unspecified.
+- `ImageBgDual3D_Clear_data_02176e8c` (`0x02125300`, 20 bytes): stores zero in the named global word; its meaning is not inferred.
+- `ImageBgDual3D_Call_02117360` (`0x02125984`, 20 bytes): forwards four words and an unsigned byte to `func_02117360`; the stack argument is explicitly loaded with `LDRB` and stored as a word for the call.
+- `ImageBgDual3D_Call_02117400` (`0x02125998`, 20 bytes): the same argument contract, forwarding to `func_02117400`.
+- `ImageBgDual3D_Unk_125afc` (`0x02125afc`, 20 bytes): calls `Unk116598_Unk_1177cc(0)` then `Unk116598_Unk_1172dc()`. The work argument supplied by `0x02125a90` is unused.
+- `ImageBgDual3D_Unk_1259e0` (`0x021259e0`, 24 bytes): calls the global getter, writes one to the first work word, then calls `ImageBgDual3D_Unk_125a80`. No null check occurs in the original.
+
+No hard functions remain in this card. Existing descriptive names reflect only observed loads, stores, or call destinations; neutral names retain unknown semantics.
+
+## M1-T537
+
+All eight functions match at 100% against the original ARM object. Neutral
+names retain unknown semantics; the contracts below follow the original loads,
+stores, comparisons and call relocations. No hard functions remain in this card.
+
+- `ImageBgDual3D_Unk_125a68` (`0x02125a68`, 24 bytes): calls `ImageBgDual3D_AllocBuf`, `Unk065e88_Unk_065e88`, then `func_020773dc(1)`; no results consumed.
+- `ImageBgDual3D_Unk_125ca4` (`0x02125ca4`, 24 bytes): returns the exact zero comparison of `ImageBgDual3D_Unk_12594c`, normalized to zero or one.
+- `ImageBgDual3D_Unk_125cbc` (`0x02125cbc`, 24 bytes): returns the exact one comparison of the same helper, normalized to zero or one.
+- `ImageBgDual3D_Unk_125d30` (`0x02125d30`, 24 bytes): calls `ImageBgDual3D_Unk_1258e8` only if `ImageBgDual3D_Unk_125cbc` is nonzero.
+- `ImageBgDual3D_Unk_1259c4` (`0x021259c4`, 28 bytes): obtains the borrowed, non-null global work address; stores the argument at offset 4 and one at offset 0xc.
+- `ImageBgDual3D_Unk_125c40` (`0x02125c40`, 32 bytes): calls `Unk116598_Unk_117790`, then `Unk116598_Unk_117294`, and stores the return word of `func_02125a08` in `data_02176e94`. No ownership inference is made.
+- `ImageBgDual3D_Unk_125d10` (`0x02125d10`, 32 bytes): forwards its opaque word to `ImageBgDual3D_Unk_1258a0` only if `ImageBgDual3D_Unk_125cbc` is nonzero.
+- `ImageBgDual3D_Unk_125650` (`0x02125650`, 40 bytes): passes the borrowed work's offset-0x8c word to `func_0205c408` with zero and then `func_0205c6e0`, and clears offset 0x208. Work must be non-null.
+
 ## Other tasks
 
-- `ImageBgDual3D_Thunk_02117808`: decompiler-derived
-- `ImageBgDual3D_Get_data_02176e94`: decompiler-derived
-- `ImageBgDual3D_Unk_125a80`: decompiler-derived
-- `ImageBgDual3D_Clear_data_02176e8c`: decompiler-derived
-- `ImageBgDual3D_Unk_125afc`: decompiler-derived
-- `ImageBgDual3D_Unk_1259e0`: decompiler-derived
-
-## Not done in M1-T536
-- `ImageBgDual3D_Call_02117360`
-- `ImageBgDual3D_Call_02117400`
-- `ImageBgDual3D_Unk_125a68`: decompiler-derived
-- `ImageBgDual3D_Unk_125ca4`: decompiler-derived
-- `ImageBgDual3D_Unk_125cbc`: decompiler-derived
-- `ImageBgDual3D_Unk_125d30`: decompiler-derived
-- `ImageBgDual3D_Unk_1259c4`: decompiler-derived
-- `ImageBgDual3D_Unk_125c40`: decompiler-derived
-- `ImageBgDual3D_Unk_125d10`: decompiler-derived
-- `ImageBgDual3D_Unk_125650`: decompiler-derived
 - `ImageBgDual3D_Unk_125618`: decompiler-derived
 - `ImageBgDual3D_Unk_125cd4`: decompiler-derived
 - `ImageBgDual3D_Unk_125d48`: decompiler-derived
@@ -64,7 +76,5 @@ Matching is checked against the delinked object; this TU remains linked from the
 - `ImageBgDual3D_Unk_12594c`: decompiler-derived (plain cleanup)
 - `ImageBgDual3D_Unk_1258e8`: decompiler-derived (plain cleanup)
 - `ImageBgDual3D_Unk_125a90`: hand-matched
-- `ImageBgDual3D_Call_02117360`: hand-matched
-- `ImageBgDual3D_Call_02117400`: hand-matched
 - `ImageBgDual3D_Unk_125910`: hand-matched
 - `ImageBgDual3D_AllocBuf`: hand-matched
