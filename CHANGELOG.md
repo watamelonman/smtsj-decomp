@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T696 manager dispatch, phase, record-work and EventMessage path routines with typed inputs and documented ARM evidence.
 - Match and document all eight M1-T695 manager reset, record search and ID predicate routines at 100% objdiff, with typed borrowed record access.
 - Match all eight M1-T678 game/unit_02039bb4 handlers, including saved-value duplication and callback dispatch; resolve both hard-function deferrals.
 - Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.
