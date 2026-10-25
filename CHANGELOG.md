@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T612: matched the 1924-byte BattleTask initialization routine at 100% objdiff with typed request, output, work, and packed-ID views.
 - M1-T611: matched seven BattleTask routines with typed layouts and per-function contracts; documented the remaining registration routine on the hard list.
 - Matched all six M1-T601 request, slot-refresh and selection-input functions in game/unit_0206a224 at 100% objdiff; documented typed contracts and original instruction evidence.
 - Matched all eight M1-T570 buffer initialization, halfword append, record query and lookup helpers at 100% objdiff; documented typed contracts and instruction evidence.
