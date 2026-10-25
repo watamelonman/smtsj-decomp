@@ -2,6 +2,11 @@
 
 ## Unreleased
 - Match three M1-T643 StaffRoll viewport, script-layout, and owner-initialization functions; document the remaining image loader on the hard list.
+- Matched all eight M1-T657 game/unit_020cd6ec callbacks, cleanup routines, state transitions, and handle flag updates; documented typed state offsets and instruction evidence.
+- Matched all five M1-T630 resource sorting, list cleanup, output setup and loading-state routines in game/unit_020a163c at 100% objdiff.
+- Verified all eight M1-T651 manager, record and allocation-view helpers at 100% objdiff; clarified typed access and instruction contracts.
+- Matched all eight M1-T633 game/unit_020986ac flag, selector, and bounded record scan functions at 100% objdiff; documented typed contracts and compiler propagation control.
+- Verified all eight M1-T650 initialization, work-view and record-call helpers at 100% objdiff; clarified typed calls and borrowed-address contracts.
 - Match all eight M1-T642 StaffRoll state, resource, drawing, and teardown functions at 100% objdiff with typed borrowed views.
 - Verified all eight M1-T649 global-word and work-area helpers at 100% objdiff; documented instruction evidence and borrowed-view contracts.
 - M1-T623: matched all five remaining game/unit_020f7188 progression, event and selector handlers at 100% objdiff.
