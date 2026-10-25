@@ -3,6 +3,7 @@
 ## Unreleased
 - Corrected M1-T654 resource-provider declarations to use 16-bit IDs and the provider record pointer type, preserving all eight instruction matches.
 - Verified all eight M1-T654 record, flag, entry search and slot-copy functions at 100% objdiff; documented instruction evidence and typed contracts.
+- M1-T674: verified eight game/unit_02039bb4 routines and documented typed work parameters, field increments, selector calls, and the forwarding thunk.
 - M1-T634: matched all eight selector, coordinate-probe, initialization, record-search, and permission-dispatch functions at 100% objdiff.
 - Match all eight M1-T666 game/unit_0203aae8 targets at 100% objdiff, including argument decoding, opcode dispatch, bit operations, and record initialization.
 - Verified seven M1-T653 slot, record, flag and initialization helpers at 100% objdiff; documented the remaining settings-table helper on the hard list.
