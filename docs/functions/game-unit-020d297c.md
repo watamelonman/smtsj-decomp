@@ -41,12 +41,32 @@ already matched on entry; this card adds typed buffer access and evidence commen
 No tests are required by this matching card; objdiff verifies emitted code.
 The borrowed buffer layout is local, with no shared boundary change.
 
+## M1-T569
+
+All eight targets match at 100% objdiff. Existing bodies already matched on
+entry; this card makes register-carried arguments explicit, types the next-element
+buffer view, and records the original instruction contracts. Unknown domain
+meanings retain neutral names.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `Unk0d297c_Unk_0d2f18` | `0x020d2f18` / 36 B | Gets handle 29, selects table 0, forwards caller index to func_0204fed8; ignores result. Original mov/bl chain fixes the indices and order. |
+| `Unk0d297c_Unk_0d2f3c` | `0x020d2f3c` / 36 B | Same lookup chain with table 1; caller index survives in r4 until the final call. |
+| `Unk0d297c_Unk_0d2f98` | `0x020d2f98` / 36 B | Same lookup chain with table 3; result is ignored. |
+| `Unk0d297c_FreeSlot` | `0x020d322c` / 36 B | Loads the owned allocation from the caller's writable slot, returns if zero, otherwise passes it to func_02053000 and clears the slot. The original ldr leaves the allocation in r0 for the release call; C now passes it explicitly. |
+| `Unk0d297c_Unk_0d2b70` | `0x020d2b70` / 40 B | Forwards caller index to Unk0e651c_Unk_0e654c and Unk0d297c_Unk_0d2aa4, queries func_02095818, calls Unk02dcfc_SetField64 unless result equals 1. The first call consumes the original r0; its explicit argument agrees with the callee's index contract. |
+| `Unk0d297c_Unk_0d2c1c` | `0x020d2c1c` / 40 B | Calls Unk0e651c_Unk_0e6560(index), Unk094fe0_Call_02095370(index, 1), Unk0d297c_Unk_0d2aec(index), then Unk02dcfc_SetField64. Original r4 saves index across all calls. |
+| `Unk0d297c_Unk_0d2e88` | `0x020d2e88` / 40 B | Unconditionally releases the handle stored by LoadMissionLog in data_02176be0, clears it, returns 1. No zero guard or error query appears. |
+| `Unk0d297c_Unk_0d32c0` | `0x020d32c0` / 40 B | Signed comparison index (+4) < capacity (+8) - 1 gates the halfword read at data (+0) + index * 2 + 2. Returns zero otherwise; does not advance index. Caller guarantees valid storage, lower bound, and representable capacity - 1. |
+
+No new tests are required by this card; objdiff checks emitted instructions.
+The buffer view remains local, with no module boundary change.
+
 ## Hard list
 
-None for M1-T568.
+None for M1-T568 or M1-T569.
 
-## Not done in M1-T569
-- `Unk0d297c_FreeSlot`
+## Pending later cards
 - `Unk0d297c_Unk_0d3330`: decompiler-derived
 - `Unk0d297c_Unk_0d3200`: decompiler-derived
 
@@ -74,7 +94,6 @@ None for M1-T568.
 - `Unk0d297c_Unk_0d3308`: decompiler-derived (struct+fix cleanup)
 - `Unk0d297c_Unk_0d3358`: decompiler-derived (struct+fix cleanup)
 - `Unk0d297c_Unk_0d2aa4`: hand-matched
-- `Unk0d297c_FreeSlot`: hand-matched
 - `Unk0d297c_Unk_0d3004`: hand-matched
 - `Unk0d297c_Unk_0d3138`: hand-matched
 - `Unk0d297c_PushU16`: hand-matched

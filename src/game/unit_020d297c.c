@@ -113,7 +113,7 @@ void Unk0d297c_Unk_0d3290(Unk0d297cBuffer *buffer, u16 value)
 }
 
 int func_02053000();
-void Unk0d297c_FreeSlot();
+void Unk0d297c_FreeSlot(u32 *slot);
 /** Release the leading slot, then release and clear +0x18; call order from 0x020d33ac. */
 void Unk0d297c_Unk_0d33ac(Unk0d297cWork *work)
 {
@@ -123,10 +123,10 @@ void Unk0d297c_Unk_0d33ac(Unk0d297cWork *work)
 }
 
 
-int func_0204459c();
-int func_0204fe68();
-int func_0204fed8();
-/* decompiler-derived */
+u32 func_0204459c(int index);
+u32 func_0204fe68(u32 handle, int index);
+u32 func_0204fed8(u32 table, u32 index);
+/** Forward index through handle 29, table 0; call arguments at 0x020d2f18 establish the lookup chain. */
 void Unk0d297c_Unk_0d2f18(u32 arg0)
 {
   u32 value;
@@ -136,7 +136,7 @@ void Unk0d297c_Unk_0d2f18(u32 arg0)
 }
 
 
-/* decompiler-derived */
+/** Forward index through handle 29, table 1; call arguments at 0x020d2f3c establish the lookup chain. */
 void Unk0d297c_Unk_0d2f3c(u32 arg0)
 {
   u32 value;
@@ -146,7 +146,7 @@ void Unk0d297c_Unk_0d2f3c(u32 arg0)
 }
 
 
-/* decompiler-derived */
+/** Forward index through handle 29, table 3; call arguments at 0x020d2f98 establish the lookup chain. */
 void Unk0d297c_Unk_0d2f98(u32 arg0)
 {
   u32 value;
@@ -155,14 +155,16 @@ void Unk0d297c_Unk_0d2f98(u32 arg0)
   func_0204fed8(value,arg0);
 }
 
-int Unk02dcfc_SetField64();
-int func_02095818();
-void Unk0d297c_Unk_0d2aa4();
-/* decompiler-derived */
+void Unk02dcfc_SetField64(void);
+int func_02095818(void);
+void Unk0d297c_Unk_0d2aa4(u32 index);
+void Unk0e651c_Unk_0e654c(int index);
+void Unk0e651c_Unk_0e6560(int index);
+/** Forward index to both setup helpers, then set field 64 unless query returns 1 (0x020d2b70). */
 void Unk0d297c_Unk_0d2b70(u32 arg0)
 {
   int value;
-  Unk0e651c_Unk_0e654c();
+  Unk0e651c_Unk_0e654c(arg0);
   Unk0d297c_Unk_0d2aa4(arg0);
   value = func_02095818();
   if (value == 1) {
@@ -171,19 +173,19 @@ void Unk0d297c_Unk_0d2b70(u32 arg0)
   Unk02dcfc_SetField64();
 }
 
-int Unk094fe0_Call_02095370();
-void Unk0d297c_Unk_0d2aec();
-/* decompiler-derived */
+void Unk094fe0_Call_02095370(u32 index, int mode);
+void Unk0d297c_Unk_0d2aec(u32 index);
+/** Forward index through three helpers (middle mode 1), then set field 64; order from 0x020d2c1c. */
 void Unk0d297c_Unk_0d2c1c(u32 arg0)
 {
-  Unk0e651c_Unk_0e6560();
+  Unk0e651c_Unk_0e6560(arg0);
   Unk094fe0_Call_02095370(arg0,1);
   Unk0d297c_Unk_0d2aec(arg0);
   Unk02dcfc_SetField64();
 }
 
 extern u32 data_02176be0[];
-/* decompiler-derived */
+/** Release the LoadMissionLog handle unconditionally, clear its slot, and return 1 (0x020d2e88). */
 u32 Unk0d297c_Unk_0d2e88(void)
 {
   func_02053000(*data_02176be0);
@@ -192,11 +194,12 @@ u32 Unk0d297c_Unk_0d2e88(void)
 }
 
 
-/* decompiler-derived */
-u16 Unk0d297c_Unk_0d32c0(int *arg0)
+/** Read the next halfword only if signed index < capacity - 1 (0x020d32c0).
+ * No lower bound check; caller guarantees valid storage and representable capacity - 1. */
+u16 Unk0d297c_Unk_0d32c0(const Unk0d297cBuffer *buffer)
 {
-  if (arg0[1] < arg0[2] + -1) {
-    return *(u16 *)(*arg0 + arg0[1] * 2 + 2);
+  if (buffer->unk_0004 < buffer->unk_0008 - 1) {
+    return *(buffer->data + buffer->unk_0004 + 1);
   }
   return 0;
 }
@@ -351,13 +354,13 @@ int Unk0d297c_Unk_0d3138(void)
     return Unk0e651c_Unk_0e666c(0x751);
 }
 
-/* Frees *slot (if set) and clears it. */
+/** Release a nonzero owned slot and clear it; load/guard/call/store at 0x020d322c establish ownership. */
 void Unk0d297c_FreeSlot(u32 *slot)
 {
     if (*slot == 0) {
         return;
     }
-    func_02053000();
+    func_02053000(*slot);
     *slot = 0;
 }
 
