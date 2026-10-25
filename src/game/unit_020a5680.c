@@ -1,109 +1,121 @@
-/* src/game/unit_020a5680.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Entry lookup and state helpers; layouts reflect observed ARM field accesses. */
 #include "types.h"
 
 
-extern u32 data_02176b14[];
-/* decompiler-derived */
-void Unk0a5680_Clear_data_02176b14(void)
-{
-  *data_02176b14 = 0;
-}
-
-extern u8 data_0213c3e0[];
-/* Entry returned by func_020a5680. */
 typedef struct Unk0a5680Entry {
-    u8 pad_0000[0x14];
+    u32 unk_0000;
+    u8 pad_0004[4];
+    u32 handle;
+    u32 id;
+    u8 pad_0010[2];
+    s8 unk_0012;
+    u8 pad_0013;
     s32 unk_0014;
-    u8 pad_0018[0x8];
-    u8 unk_0020[4];             /* +0x20 sub-block */
+    u8 pad_0018[4];
+    const void *source;
+    u8 unk_0020[0x200];
 } Unk0a5680Entry;
 
-Unk0a5680Entry *func_020a5680();
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
-int func_02008904();
-int func_0206f24c();
-int func_02044ec4();
-int func_0204a244();
-extern s8 data_0213c3d4[];
-int func_020616c0();
-int Unk0a5680_Unk_0a572c(u8 *p, u32 c);
-
-int Unk0a5680_Unk_0a572c(u8 *p, u32 c)
+/* Six entry slots precede the signed count observed at owner +0xcc0. */
+typedef struct Unk0a5680Owner {
+    Unk0a5680Entry entries[6];
+    volatile int count; /* Preserve each observed count read during table scans. */
+} Unk0a5680Owner;
+extern Unk0a5680Owner *data_02176b14;
+/* Clear the global owner slot; 0x020a5718 stores zero to data_02176b14. */
+void Unk0a5680_Clear_data_02176b14(void)
 {
-    s32 k = FIELD(s8, p, 18);
-    if (k == -1) {
-        return func_02008904(FIELD(u32, p, 28), p + 32, 512, c);
-    }
-    return func_0206f24c(p + 32, FIELD(u32, p, 28), 1 << (k + 13), c);
+  data_02176b14 = 0;
 }
 
-int Unk0a5680_Unk_0a5778(u8 *p, int force)
+extern s16 data_0213c3e0[];
+Unk0a5680Entry *func_020a5680(u32 id);
+int func_02008904(const void *source, void *dest, u32 size, u32 control);
+int func_0206f24c(void *dest, const void *source, u32 size, u32 control);
+int func_02044ec4(u32 id);
+int func_0204a244(int value);
+extern s8 data_0213c3d4[];
+u8 *func_020616c0(void *handle);
+int Unk0a5680_Unk_0a572c(Unk0a5680Entry *p, u32 c);
+
+/* Copy 512 bytes for selector -1; otherwise expand the selector-sized source. */
+int Unk0a5680_Unk_0a572c(Unk0a5680Entry *p, u32 c)
 {
-    s8 k = data_0213c3d4[func_0204a244(func_02044ec4(FIELD(u32, p, 12)))];
-    if (FIELD(s8, p, 18) == k && force == 0) {
+    s32 k = p->unk_0012;
+    if (k == -1) {
+        return func_02008904(p->source, p->unk_0020, 512, c);
+    }
+    return func_0206f24c(p->unk_0020, p->source, 1 << (k + 13), c);
+}
+
+/* Refresh the signed selector from data_0213c3d4; force bypasses equality. */
+int Unk0a5680_Unk_0a5778(Unk0a5680Entry *p, int force)
+{
+    s8 k = data_0213c3d4[func_0204a244(func_02044ec4(p->id))];
+    if (p->unk_0012 == k && force == 0) {
         return 0;
     }
-    FIELD(s8, p, 18) = k;
+    p->unk_0012 = k;
     Unk0a5680_Unk_0a572c(p, 4096);
     return 1;
 }
 
-s32 Unk0a5680_GetEntryUnk14(u32 a, u32 b)
+/* Return entry +0x14, or -1 when absent (loads at 0x020a5e48). */
+s32 Unk0a5680_GetEntryUnk14(u32 id)
 {
-    Unk0a5680Entry *e = func_020a5680(a, b);
+    Unk0a5680Entry *e = func_020a5680(id);
     if (e != 0) {
         return e->unk_0014;
     }
     return -1;
 }
 
-u8 *Unk0a5680_GetEntrySub20(u32 a, u32 b)
+/* Borrow entry +0x20, or NULL when absent (address at 0x020a5e60). */
+u8 *Unk0a5680_GetEntrySub20(u32 id)
 {
-    Unk0a5680Entry *e = func_020a5680(a, b);
+    Unk0a5680Entry *e = func_020a5680(id);
     if (e != 0) {
         return e->unk_0020;
     }
     return 0;
 }
 
-/* decompiler-derived */
-int Unk0a5680_Unk_0a5e78(int arg0)
+/* Read a signed halfword; 0x020a5e78 indexes data_0213c3e0 without bounds checks. */
+int Unk0a5680_Unk_0a5e78(int index)
 {
-  return (int)*(short *)(((int)data_0213c3e0) + arg0 * 2);
+  return data_0213c3e0[index];
 }
 
-int Unk0a5680_Unk_0a5e28();
-/* decompiler-derived */
-void Unk0a5680_Unk_0a6150(void)
+u8 *Unk0a5680_Unk_0a5e28(u32 id);
+/* Set resolved bytes +0x38/+0x39 to 1/0 if present (0x020a6150 stores). */
+void Unk0a5680_Unk_0a6150(u32 id)
 {
-  int value;
-  value = Unk0a5680_Unk_0a5e28();
+  u8 *value;
+  value = Unk0a5680_Unk_0a5e28(id);
   if (value == 0) {
     return;
   }
-  *(u8 *)(value + 0x38) = 1;
-  *(u8 *)(value + 0x39) = 0;
+  value[0x38] = 1;
+  value[0x39] = 0;
 }
 
 
-int func_020a1854();
-int func_020a59f4();
-/* decompiler-derived */
+u32 func_020a1854(u32 value);
+Unk0a5680Entry *func_020a59f4(u32 value, u32 id, u32 direction);
+/* Normalize the entry search result after transforming the incoming value. */
 int Unk0a5680_Unk_0a5c14(u32 arg0,u32 arg1,u32 arg2)
 {
   u32 value1;
-  int value2;
-  value1 = func_020a1854();
+  Unk0a5680Entry *value2;
+  value1 = func_020a1854(arg0);
   value2 = func_020a59f4(value1,arg1,arg2);
   return value2 != 0;
 }
 
-int func_0205c41c();
-int func_0205ca88();
-int Unk0a5680_Unk_0a5e28(id)
-    u32 id;
+int func_0205c41c(u32 handle, int value);
+int func_0205ca88(u32 handle);
+/* Resolve the handle at entry +8; 0x020a5e28 returns NULL for missing IDs. */
+u8 *Unk0a5680_Unk_0a5e28(u32 id)
 {
     u8 *e = (u8 *)func_020a5680(id);
     if (e == 0) {
@@ -112,27 +124,35 @@ int Unk0a5680_Unk_0a5e28(id)
     return func_020616c0(e + 8);
 }
 
-/* decompiler-derived */
-void Unk0a5680_Unk_0a611c(void)
+/* Borrowed prefix of the resolved object; only observed offsets are exposed. */
+typedef struct Unk0a5680Resolved {
+    u32 handle;
+    u8 pad_0004[0x34];
+    u8 unk_0038;
+} Unk0a5680Resolved;
+
+/* Decrement the resolved handle value and clear its byte +0x38 if present. */
+void Unk0a5680_Unk_0a611c(u32 id)
 {
-  u32 *v1;
+  Unk0a5680Resolved *v1;
   int value;
-  v1 = (u32 *)Unk0a5680_Unk_0a5e28();
-  if (v1 == (u32 *)0x0) {
+  v1 = (Unk0a5680Resolved *)Unk0a5680_Unk_0a5e28(id);
+  if (v1 == 0) {
     return;
   }
-  value = func_0205ca88(*v1);
-  func_0205c41c(*v1,value + -1);
-  *(u8 *)(v1 + 0xe) = 0;
+  value = func_0205ca88(v1->handle);
+  func_0205c41c(v1->handle,value - 1);
+  v1->unk_0038 = 0;
 }
 
-int func_020a5e8c();
-/* decompiler-derived */
+void func_020a5e8c(u32 owner);
+/* Forward the global owner to func_020a5e8c (tail call at 0x020a5fb0). */
 void Unk0a5680_Unk_0a5fb0(void)
 {
-  func_020a5e8c(*data_02176b14);
+  func_020a5e8c((u32)data_02176b14);
 }
 
+/* Normalize resolved byte +0x38 to 0/1; missing IDs yield 0 (0x020a60fc). */
 int Unk0a5680_Unk_0a60fc(u32 id)
 {
     u8 *e = (u8 *)Unk0a5680_Unk_0a5e28(id);
@@ -140,4 +160,53 @@ int Unk0a5680_Unk_0a60fc(u32 id)
         return 1;
     }
     return 0;
+}
+
+/* Return the first entry with matching +0x0c ID, or NULL; owner must exist. */
+Unk0a5680Entry *func_020a5680(u32 id)
+{
+    Unk0a5680Owner *owner = data_02176b14;
+    Unk0a5680Entry *entry = owner->entries;
+    int i = 0;
+    for (; i < owner->count; i++, entry++) {
+        if (entry->id == id) return entry;
+    }
+    return 0;
+}
+
+/* Return the first entry whose +0x14 word matches, or NULL; owner must exist. */
+Unk0a5680Entry *func_020a56cc(s32 value)
+{
+    Unk0a5680Owner *owner = data_02176b14;
+    Unk0a5680Entry *entry = owner->entries;
+    int i = 0;
+    for (; i < owner->count; i++, entry++) {
+        if (entry->unk_0014 == value) return entry;
+    }
+    return 0;
+}
+
+/* Store the word in the next entry and advance count; caller ensures capacity. */
+void func_020a59c4(u32 value)
+{
+    data_02176b14->entries[data_02176b14->count].unk_0000 = value;
+    data_02176b14->count++;
+}
+
+void Unk065e88_SetUnkField20(void *object, float value);
+/* Set resolved objects' +0x20 to float 1 or 0 according to the input flag. */
+void func_020a609c(int enabled)
+{
+    Unk0a5680Owner **slot = &data_02176b14;
+    Unk0a5680Entry *entry = (*slot)->entries;
+    int i;
+    float value = enabled ? 1.0f : 0.0f;
+    i = 0;
+    if (((Unk0a5680Owner *)entry)->count <= 0) return;
+    do {
+        void *object = func_020616c0(&entry->handle);
+        if (object != 0) Unk065e88_SetUnkField20(object, value);
+        i++;
+        entry++;
+    } while (i < (*slot)->count);
 }
