@@ -437,3 +437,59 @@ u32 func_0203a944(Unk039bb4Work *work)
   work->unk_0018 += 1;
   return 1;
 }
+
+/* Duplicates the saved tag/word at +0x3b/+0xa8 into the borrowed stack.
+ * Evidence: 0x0203a0a0; caller provides space for one more value. */
+/* See DEC-017 for the scoped propagation setting. */
+#pragma push
+#pragma opt_propagation off
+u32 func_0203a0a0(Unk039bb4Work *work)
+{
+  u32 *slot;
+  u32 value;
+  *((u8 *)work + work->unk_001c + 0x20) = *((u8 *)work + 0x3b);
+  slot = (u32 *)((u8 *)work + work->unk_001c * 4 + 0x3c);
+  value = *(u32 *)((u8 *)work + 0xa8);
+  *slot = value;
+  work->unk_001c++;
+  work->unk_0018++;
+  return 1;
+}
+
+#pragma pop
+
+/* Eight-byte callback records observed at 0x0212b40c; providers own storage. */
+typedef struct Unk039bb4Callback {
+  int (*callback)(void);
+  int consumed;
+} Unk039bb4Callback;
+/* Borrowed +4 view of each callback record, with the same eight-byte stride. */
+typedef struct Unk039bb4Count {
+  s32 consumed;
+  s32 nextCallback;
+} Unk039bb4Count;
+extern u32 data_0215de34[];
+
+/* Dispatches the entry's callback and consumes its declared stack arguments.
+ * Evidence: 0x0203a1dc; work, entries and callback records must be valid. */
+/* See DEC-017 for the scoped propagation setting. */
+#pragma push
+#pragma opt_propagation off
+u32 func_0203a1dc(Unk039bb4Work *work)
+{
+  Unk039bb4Callback *callbacks = (Unk039bb4Callback *)0x0212b40c;
+  int previous = work->unk_0018;
+  u16 index = *(u16 *)(work->unk_00bc + previous * 4 + 2);
+  int (*callback)(void) = callbacks[index].callback;
+  int result;
+  data_0215de34[1] = (u32)work;
+  result = callback == 0 ? 1 : callback();
+  if (result == 0) return 2;
+  if (result == 2) return 0;
+  Unk039bb4Count *counts = (Unk039bb4Count *)0x0212b410;
+  work->unk_001c -= counts[index].consumed;
+  if (previous == work->unk_0018) work->unk_0018++;
+  return result == 3 ? 2 : 1;
+}
+
+#pragma pop

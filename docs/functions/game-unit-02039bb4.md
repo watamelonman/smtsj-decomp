@@ -122,23 +122,25 @@ float storage to preserve the returned bits without introducing conversion.
 No module boundary changes or new semantic names. Instruction matching is
 behavioral validation; the card requires no new tests.
 
+- `func_0203a0a0`: Duplicates the saved tag at +0x3b and word at +0xa8
+  into the next stack slot, increments +0x1c and +0x18, and returns 1.
+  Evidence: instructions at `0x0203a0a0`. Work is borrowed and append space
+  must exist. Matches 100%; scoped propagation control preserves register
+  allocation (See DEC-017).
+- `func_0203a1dc`: Dispatches the callback selected by entry +2 from the
+  eight-byte table at `0x0212b40c`, setting data_0215de34 +4 to work first.
+  Callback results 0/2 return 2/0 immediately; other results consume the
+  declared stack count and advance +0x18 if unchanged. Result 3 returns 2,
+  otherwise 1. Evidence: instructions at `0x0203a1dc`. Work, entry and
+  callback storage are borrowed and indices/counts must be valid.
+  Matches 100%; separate borrowed count view retains the literal at
+  `0x0212b410` (See DEC-017).
+
 ### Hard list
 
-- `func_0203a0a0`: Original duplicates the saved tag at +0x3b and word at
-  +0xa8 into the stack, increments +0x1c and +0x18, and returns 1.
-  Tried raw address expressions, typed arrays, explicit temporaries, and
-  integer/float loads. Best match was 98.12%: the word-copy register
-  allocation differs (r1/r2 swapped). Body omitted; original delink remains.
-- `func_0203a1dc`: Original dispatches the callback selected by entry +2
-  from the eight-byte table at 0x0212b40c, sets data_0215de34 +4 to work,
-  translates callback results, subtracts the consumed count, and advances
-  +0x18 only if the callback left it unchanged. Tried record views, separate
-  callback/count views, integer and pointer arithmetic, and index types.
-  Best match was 74%: numeric table addresses become immediate additions
-  rather than literal loads. The original literals at 0x0203a260 and
-  0x0203a268 lack load relocations in config/arm9/relocs.txt; a human should
-  check those before a decomp.me scratch. Body omitted; original delink remains.
+None. Both previously deferred functions now match exactly.
 
-Validation: six implemented targets report 100%; match gate passes all 57
-functions checked in changed source files. Build, anticheat, nine unit tests,
-and byte-identical artifact checksum pass.
+Validation: all eight M1-T678 targets individually report 100% objdiff.
+The full build, match gate (164 checked functions), anticheat, nine existing
+unit tests, and byte-identical artifact checksum pass. No new tests are
+required by this card.

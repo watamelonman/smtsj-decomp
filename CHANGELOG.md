@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- Match six more game/unit_02039bb4 handlers, including tagged integer/float pops; document two remaining hard functions.
+- Match all eight M1-T678 game/unit_02039bb4 handlers, including saved-value duplication and callback dispatch; resolve both hard-function deferrals.
 - M1-T688: match and document eight game/unit_020de678 resource searches, state updates, and helper dispatch routines.
 - Verify all eight M1-T692 manager-field and forwarding routines at 100% objdiff; document typed views, call order and the resource pointer result.
 - M1-T687: match and document eight game/unit_020de678 state setters, record counter, and helper dispatch routines.
