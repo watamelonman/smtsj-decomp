@@ -11,7 +11,7 @@ void Unk0bc1a8_Unk_0bc514(int arg0,int arg1,u32 arg2);
 int Unk0bc1a8_GetConst0(void);
 void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1);
 
-/* returns 0 */
+/* Returns the constant zero, as shown by mov r0, #0 at 020bc420. */
 int Unk0bc1a8_GetConst0(void) { return 0; }
 
 void Unk06ae94_Unk_06ae94();
@@ -31,6 +31,8 @@ void Unk0bc1a8_Unk_0bc490(u8 *p)
     Unk06ae94_Unk_06aeb4(2);
 }
 
+/* Evidence: 020bc4e0 removes p through 0bcc34, then calls the optional
+ * callback at +28 with the payload at +52. p must be a live object base. */
 void Unk0bc1a8_Unk_0bc4e0(u8 *p)
 {
     Unk0bc1a8Fn fn;
@@ -41,7 +43,8 @@ void Unk0bc1a8_Unk_0bc4e0(u8 *p)
     }
 }
 
-/* decompiler-derived */
+/* Evidence: 020bc504 forwards the payload address and mode to 0bc514,
+ * supplying zero for its optional request argument. arg0 is a DS address. */
 void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 {
   Unk0bc1a8_Unk_0bc514(arg0,arg1,0);
@@ -50,6 +53,8 @@ void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 
 int func_020bc770();
 int func_020bc8c8();
+/* Evidence: 020bc5c0 stores at payload -4 and returns success. A non-null
+ * p must have a writable, word-aligned header word immediately before it. */
 int Unk0bc1a8_SetPrevWord(u32 *p, u32 value)
 {
     if (p == 0) {
@@ -158,6 +163,8 @@ void Unk0bc1a8_SetFlag1Inv(u8 *p, int on)
     }
 }
 
+/* Evidence: 020bc598 reads the word at payload -8; null returns 0xffff.
+ * A non-null p must belong to an object with that aligned header word. */
 u32 Unk0bc1a8_GetHeaderWord(u8 *p)
 {
     if (p == 0) {
@@ -171,6 +178,8 @@ typedef struct Unk0bc1a8Slot {
     u8 *obj;
     u32 pad_04[2];
 } Unk0bc1a8Slot;
+/* Evidence: 020bc5ac reads the word at payload -4; null returns 0xffff.
+ * A non-null p must belong to an object with that aligned header word. */
 int Unk0bc1a8_GetHeaderWord4(u8 *p)
 {
     if (p == 0) {
@@ -179,13 +188,15 @@ int Unk0bc1a8_GetHeaderWord4(u8 *p)
     return FIELD(u32, p, -4);
 }
 
-/* decompiler-derived */
+/* Evidence: 020bc6d4 stores the supplied word at global context +4.
+ * The context referenced by data_02176ba8 must already be initialized. */
 void Unk0bc1a8_Unk_0bc6d4(u32 arg0)
 {
   *(u32 *)(*data_02176ba8 + 4) = arg0;
 }
 
-/* decompiler-derived */
+/* Evidence: 020bc6e8 reads global context +4 without interpreting its bits.
+ * The context referenced by data_02176ba8 must already be initialized. */
 u32 Unk0bc1a8_Unk_0bc6e8(void)
 {
   return *(u32 *)(*data_02176ba8 + 4);
