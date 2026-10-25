@@ -20,7 +20,8 @@ typedef struct StaffRollWork {
     u32 unk_0010;
     s32 unk_0014;
     s32 unk_0018;
-    u8 pad_001c[8];
+    s32 imageIndex;
+    u32 loadState;
     u8 resource[0x78];
     struct StaffRollImage *images[4];
     u32 unk_00ac;
@@ -38,7 +39,10 @@ typedef struct StaffRollWork {
     s32 scrollY;                /* +0xDC  starts at 0x1F0, grows per text line */
     s32 unk_00e0;
     u32 firstTextCmd;           /* +0xE4 */
-    u8 pad_00e8[0x10];
+    u32 textInCmd;
+    s32 textLine;
+    s32 textY;
+    u32 textDone;
     struct StaffRollSlot slots[32];
     u32 unk_02f8;
     struct StaffRollCmd *cmds;  /* +0x2FC */
@@ -54,8 +58,9 @@ void StaffRoll_Nop_117cf4(void) { }
 void StaffRoll_Nop_117cf8(void) { }
 
 
-/* Returns a borrowed halfword stream for the handle stored at work +0x304. */
-extern u16 *func_0204fed8(u32 handle);
+/* Returns a borrowed halfword stream for work +0x304. The viewport caller
+ * additionally supplies its line index; marker-only callers pass the handle. */
+extern u16 *func_0204fed8(u32 handle, ...);
 /* Reads one aligned halfword; only marker 0x8082 is returned (assembly evidence). */
 u32 StaffRoll_Unk_117cfc(u16 *p)
 {
@@ -201,7 +206,9 @@ void StaffRoll_Update(StaffRollWork *p)
     }
 }
 
-/* Parses the staff-roll command list and lays out its text lines. */
+/* Parses 20-byte script entries and accumulates line spacing from 0x1F0.
+ * Types 1..3 clamp timing parameters; type 4 marks text (0x0211882C).
+ * The borrowed command list must contain cmdCount readable entries. */
 void func_0211882c(StaffRollWork *w)
 {
     int found = 0;
@@ -504,6 +511,8 @@ typedef struct StaffRollImage {
     StaffRollImageWords words;
     u16 unk_0028;
     u16 unk_002a;
+    u8 pad_002c[0x2d];
+    u8 ready;
 } StaffRollImage;
 /* Borrowed resource prefix exposes only the four words copied to an image. */
 typedef struct StaffRollResource {
@@ -529,4 +538,101 @@ void func_02117ef4(StaffRollWork *work, int index)
     func_0205b444(work->images[index], resource);
     work->images[index]->unk_000c = func_0205accc(resource);
     work->images[index]->unk_0010 = func_0205acd4(resource);
+}
+
+/* Advances the text viewport from unsigned frame progress, retires old slots,
+ * and queues one line when it enters the 480-line lookahead (0x021182F0).
+ * Command and text streams must contain the indexed entries. */
+void func_021182f0(StaffRollWork *work)
+{
+    StaffRollSlot *slot;
+    u16 *text;
+    int value;
+    work->unk_00e0 = (work->unk_0008 - work->unk_00d4) * work->scrollY / work->unk_00d8;
+    StaffRoll_Unk_1182a4(work);
+    if (work->textDone != 0) return;
+    if (work->textY > work->unk_00e0 + 480) return;
+    slot = func_02118270(work);
+    if (slot == 0) {
+        func_02061424(work);
+        return;
+    }
+    text = func_0204fed8(work->unk_0304, work->textLine);
+    value = StaffRoll_Unk_117d38(text);
+    func_02118208((StaffRollWork *)slot, text, work->textY, value);
+    work->textInCmd++;
+    if ((u32)work->cmds[work->firstTextCmd].arg[0] <= work->textInCmd) {
+        do {
+            work->firstTextCmd++;
+            if (work->cmdCount <= work->firstTextCmd) {
+                work->textDone = 1;
+                break;
+            }
+        } while (work->cmds[work->firstTextCmd].type != 4);
+        work->textInCmd = 0;
+    }
+    if (work->textDone != 0) return;
+    work->textY += func_02117d5c(work, work->firstTextCmd, work->textLine);
+    work->textLine++;
+}
+
+/* Borrowed 20-byte image allocation record, observed at data_0213cbf4. */
+typedef struct StaffRollImageConfig {
+    int resourceIndex;
+    int arg1;
+    int arg2;
+    int x;
+    int y;
+} StaffRollImageConfig;
+extern StaffRollResource *func_020519e8(void *resource);
+extern StaffRollImageConfig data_0213cbf4[];
+void Unk02e000_Unk_02e0cc(void);
+
+/* Creates the single global staff-roll owner, loads script/text resources and
+ * allocates four images and 32 text slots (calls and counts at 0x02118974).
+ * Repeated calls preserve the existing owner; allocation failure returns. */
+void func_02118974(void)
+{
+    extern StaffRollWork *data_02176e6c;
+    extern StaffRollWork *func_020611dc(void (*update)(StaffRollWork *),
+        void (*draw0)(StaffRollWork *), void (*draw1)(StaffRollWork *),
+        void (*destroy)(StaffRollWork *), u32 size, int a, int b, int c);
+    extern void func_020662d4(int a, int b);
+    extern void Unk044394_Unk_044428(int id);
+    extern u32 func_020445d0(int id, int index);
+    extern StaffRollCmd *func_0204fde0(u32 handle);
+    extern u32 func_0204fe18(u32 handle);
+    extern u32 func_020445f4(int id, int index);
+    extern StaffRollImage *func_0205ba98(int a, int b, void *c, int d);
+    extern u32 func_020629ac(int a, int b, int c, int d);
+    extern void func_02052634(int a, int b, int c);
+    extern u8 data_02151b34[];
+    int i;
+    StaffRollImageConfig *config;
+    StaffRollWork *work;
+    if (data_02176e6c != 0) return;
+    work = func_020611dc(StaffRoll_Update, StaffRoll_Unk_118620,
+        StaffRoll_Unk_1186cc, func_02118784, sizeof(StaffRollWork), 0, 0, 1);
+    data_02176e6c = work;
+    if (work == 0) return;
+    Unk02e000_Unk_02e0cc();
+    func_020662d4(3, 39);
+    Unk044394_Unk_044428(43);
+    work->unk_02f8 = func_020445d0(43, 0);
+    work->cmds = func_0204fde0(work->unk_02f8);
+    work->cmdCount = func_0204fe18(work->unk_02f8);
+    Unk044394_Unk_044428(44);
+    work->unk_0304 = func_020445f4(44, 0);
+    config = data_0213cbf4;
+    for (i = 0; (u32)i < 4; i++, config++) {
+        work->unk_000c++;
+        work->images[i] = func_0205ba98(config->arg1, config->arg2, data_02151b34, 331);
+    }
+    for (i = 0; i < 32; i++) work->slots[i].unk_0000 = func_020629ac(5, 1, 3, 3);
+    work->unk_00cc = 31;
+    work->textLine = 1;
+    work->textY = 480;
+    func_0211882c(work);
+    func_02052634(2, 3, 0);
+    work->unk_0004 = 14;
 }

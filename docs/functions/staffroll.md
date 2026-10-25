@@ -52,13 +52,6 @@ register allocation without changing behavior.
 
 Hard list for M1-T641: none. All eight functions match; no scratch is needed.
 
-## Not done in M1-T643
-- `func_021182f0`
-- `func_0211882c`
-- `func_02117f94`
-- `func_02118974`
-- `func_0211882c`: hand-written. Parses staff-roll command list and lays out text lines.
-
 ## M1-T642 — verified 100% objdiff
 
 Existing neutral symbols are retained. Evidence is the original ARM instructions
@@ -84,3 +77,20 @@ comparison provide the behavioral regression checks for these assembly targets;
 no new unit tests were required by the card.
 
 Hard list for M1-T642: none. All eight functions match; no scratch is needed.
+
+## M1-T643
+
+Existing neutral symbols are retained. All views are borrowed. Original ARM
+instructions at the listed addresses provide the contracts below.
+
+| Function | Evidence and result |
+| --- | --- |
+| `func_021182f0` | **100%**. Derives viewport +0xE0 using unsigned frame progress and nonzero +0xD8, retires old slots, and queues at most one line inside the 480-line lookahead. Advances through type-4 commands, records exhaustion at +0xF4, and advances spacing and line index. Command and text indexes must be valid. |
+| `func_0211882c` | **100%**. Parses 20-byte commands; types 1..3 clamp timing arguments, type 4 records the first text command and accumulates spacing from 496. Requires cmdCount readable entries. The pre-existing draft already matched and now has its contract documented. |
+| `func_02118974` | **100%**. Preserves an existing global owner, otherwise allocates 776 bytes with four callbacks; returns on failure. Loads resources 43/44, allocates four images using 20-byte records and 32 text handles, initializes viewport fields, and parses the commands. |
+| `func_02117f94` | Left linked from the original. Reconstructed all four asynchronous image-load states, readiness byte +89, and unsigned duration computation. Comparison reached 94.10%; the initial two table lookups allocate different registers and schedule multiplication differently. Declaration order, expression order, intermediate pointers/indexes, and signedness variants did not produce an exact match. The unmatched implementation was removed. |
+
+Hard list for M1-T643: `func_02117f94` (336 bytes). A human can create a
+`nds_arm9` scratch with tools/decompme.py; no scratch was uploaded here.
+The remaining three functions are verified by objdiff; no unit tests were
+required for these instruction-matching targets.

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match three M1-T643 StaffRoll viewport, script-layout, and owner-initialization functions; document the remaining image loader on the hard list.
 - Match all eight M1-T642 StaffRoll state, resource, drawing, and teardown functions at 100% objdiff with typed borrowed views.
 - Verified all eight M1-T649 global-word and work-area helpers at 100% objdiff; documented instruction evidence and borrowed-view contracts.
 - M1-T623: matched all five remaining game/unit_020f7188 progression, event and selector handlers at 100% objdiff.
