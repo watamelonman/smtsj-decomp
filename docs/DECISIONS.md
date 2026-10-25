@@ -120,6 +120,17 @@ preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
 
+## DEC-008 — Preserve direction reads and dispatcher relocations in 020f6250
+
+The original 020f6998 reads the global direction at +358 for its switch and
+reloads it for 02034b7c. A volatile-qualified field preserves those two accesses;
+this records observed access behavior without asserting hardware ownership.
+Ordinary reads cache the direction and change both register allocation and size.
+The 020f6ef8 dispatcher follows its C callees because placing it before them
+produced a 99.75% objdiff relocation discrepancy despite the standalone byte
+comparison passing. With this ordering all seven implemented functions match.
+Revisit these constraints if compiler or original-type evidence supplies a
+matching ordinary declaration or objdiff resolves forward local calls identically.
 ## DEC-008 — Preserve work-relative entry flag views in 020fbed4
 
 The initializer and wrapping draw callback address entry flags as
