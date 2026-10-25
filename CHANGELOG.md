@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Matched all eight M1-T494 rectangle, displacement, interpolation task, and command dispatch functions at 100% objdiff; documented original record contracts.
+
 - Verified eight M1-T493 shared-record and task wrapper matches; documented their contracts and explicit task-update arguments.
 - Matched all seven M1-T499 game/unit_020a03cc record queries, state-machine updates, table reset and mode dispatcher in readable typed C.
 - Matched all eight M1-T475 pair, bulk record, weighted query and byte-sum helpers with typed parameters and documented ARM evidence.
