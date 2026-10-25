@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T509: matched seven battle help/talk initialization, resource cleanup and state helpers; documented 020fdaa8 on the hard list.
 - Verified all eight M1-T508 singleton, direction, handle-cleanup and color helpers at 100% objdiff; added explicit call arguments, typed work parameters and evidence documentation.
 - M1-T507: matched four game/unit_020469d8 setup, phase, and queue callbacks; documented the remaining dispatcher on the hard list.
 - Verified all eight M1-T503 packed-state and work-access helpers at 100% objdiff; documented contracts and made table-selector forwarding explicit.
