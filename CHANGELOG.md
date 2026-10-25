@@ -2,6 +2,8 @@
 
 ## Unreleased
 - M1-T675: document and type seven selector handlers and the indexed record-word transfer in game/unit_02039bb4.
+- Match all four M1-T667 script provider dispatchers in game/unit_0203aae8 at 100% objdiff, with typed record and borrowed object views.
+- Matched five M1-T669 packing, validation, and table encoding functions in game/unit_02111400; documented two remaining hard functions.
 - Corrected M1-T654 resource-provider declarations to use 16-bit IDs and the provider record pointer type, preserving all eight instruction matches.
 - Verified all eight M1-T654 record, flag, entry search and slot-copy functions at 100% objdiff; documented instruction evidence and typed contracts.
 - M1-T674: verified eight game/unit_02039bb4 routines and documented typed work parameters, field increments, selector calls, and the forwarding thunk.

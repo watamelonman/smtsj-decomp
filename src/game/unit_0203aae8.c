@@ -1,5 +1,6 @@
 /* src/game/unit_0203aae8.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
+#include "game/unit_0203aae8.h"
 
 
 
@@ -454,4 +455,210 @@ int func_0203b7f4(void)
     }
     Unk03aae8_Unk_03acf4(result);
     return 1;
+}
+
+int func_02095818(void);
+void func_0209e75c(int first, int second, int mode, int flag);
+void func_0209e7fc(int first, int second, int mode, int flag);
+void func_020df374(int first, int second, int mode, int step, int count);
+void func_020df420(int first, int second, int mode, int step, int count);
+void Unk116598_Call_02117360(int first, int second, int mode, int step, int count);
+void Unk116598_Call_02117360b(int first, int second, int mode, int step, int count);
+void Unk116598_Call_02117400(int first, int second, int mode, int step, int count);
+void Unk116598_Call_02117400b(int first, int second, int mode, int step, int count);
+void ImageBgDual3D_Call_02117360(int first, int second, int mode, int step, int count);
+void ImageBgDual3D_Call_02117400(int first, int second, int mode, int step, int count);
+void Unk02dcfc_SetField70(int value);
+
+/* Dispatch two signed arguments to the kind-selected provider, storing status
+ * and residual count in the valid borrowed object; clear provider field 0x70. */
+int func_0203aff0(void)
+{
+    Unk03aae8Object *object = FIELD(Unk03aae8Object *, Unk03aae8_Unk_03ad14(), 232);
+    int mode = (s16)func_0203ac00(0);
+    int parts = (s16)func_0203ac00(1);
+    Unk03aae8Record record;
+    object->argument = mode;
+    if (mode == 0) mode = 0;
+    else mode = 2;
+    func_0203af7c((u8 *)&record, parts);
+    switch (func_02095818()) {
+    case 0:
+        func_0209e75c(record.step, record.count, mode, 0);
+        object->status = 16;
+        object->residual = record.residual;
+        break;
+    case 2:
+        func_020df374(1, 0, mode, record.step, record.count);
+        object->status = 18;
+        object->residual = record.residual;
+        break;
+    case 3:
+        Unk116598_Call_02117360(1, 0, mode, record.step, record.count);
+        object->status = 19;
+        object->residual = record.residual;
+        break;
+    case 4:
+        Unk116598_Call_02117360b(1, 0, mode, record.step, record.count);
+        object->status = 20;
+        object->residual = record.residual;
+        break;
+    case 5:
+        ImageBgDual3D_Call_02117360(1, 0, mode, record.step, record.count);
+        object->status = 20;
+        object->residual = record.residual;
+        break;
+    }
+    Unk02dcfc_SetField70(0);
+    return 3;
+}
+
+/* Dispatch two signed arguments to the alternate providers; kinds 3..5 also
+ * set field 0x70 to 2 for zero mode or 1 otherwise. Object storage is borrowed. */
+int func_0203b158(void)
+{
+    Unk03aae8Object *object = FIELD(Unk03aae8Object *, Unk03aae8_Unk_03ad14(), 232);
+    int mode = (s16)func_0203ac00(0);
+    int parts = (s16)func_0203ac00(1);
+    Unk03aae8Record record;
+    object->argument = mode;
+    if (mode == 0) mode = 0;
+    else mode = 2;
+    func_0203af7c((u8 *)&record, parts);
+    switch (func_02095818()) {
+    case 0:
+        func_0209e7fc(record.step, record.count, mode, 0);
+        object->status = 16;
+        object->residual = record.residual;
+        break;
+    case 2:
+        func_020df420(1, 0, mode, record.step, record.count);
+        object->status = 18;
+        object->residual = record.residual;
+        break;
+    case 3:
+        Unk116598_Call_02117400(1, 0, mode, record.step, record.count);
+        object->status = 19;
+        object->residual = record.residual;
+        if (mode == 0) Unk02dcfc_SetField70(2);
+        else Unk02dcfc_SetField70(1);
+        break;
+    case 4:
+        Unk116598_Call_02117400b(1, 0, mode, record.step, record.count);
+        object->status = 20;
+        object->residual = record.residual;
+        if (mode == 0) Unk02dcfc_SetField70(2);
+        else Unk02dcfc_SetField70(1);
+        break;
+    case 5:
+        ImageBgDual3D_Call_02117400(1, 0, mode, record.step, record.count);
+        object->status = 20;
+        object->residual = record.residual;
+        if (mode == 0) Unk02dcfc_SetField70(2);
+        else Unk02dcfc_SetField70(1);
+        break;
+    }
+    return 3;
+}
+
+/* Dispatch three signed arguments for kinds 0, 2 and 5. Argument 2 selects
+ * provider flags; kind 5 updates field 0x70. The active object must be valid. */
+int func_0203b30c(void)
+{
+    Unk03aae8Object *object = FIELD(Unk03aae8Object *, Unk03aae8_Unk_03ad14(), 232);
+    int mode = (s16)func_0203ac00(0);
+    int parts = (s16)func_0203ac00(1);
+    int selection = (s16)func_0203ac00(2);
+    int flag;
+    int first;
+    int second;
+    Unk03aae8Record record;
+    object->argument = mode;
+    if (mode == 0) mode = 0;
+    else mode = 2;
+    flag = selection == 0;
+    first = 0;
+    second = 0;
+    func_0203af7c((u8 *)&record, parts);
+    switch (func_02095818()) {
+    case 0:
+        func_0209e75c(record.step, record.count, mode, flag);
+        object->status = 16;
+        object->residual = record.residual;
+        break;
+    case 2:
+        switch (selection) {
+        case 0: first = 1; second = 1; break;
+        case 1: first = 1; break;
+        case 2: second = 1; break;
+        }
+        func_020df374(first, second, mode, record.step, record.count);
+        object->status = 18;
+        object->residual = record.residual;
+        break;
+    case 5:
+        switch (selection) {
+        case 0: first = 1; second = 1; break;
+        case 1: first = 1; break;
+        case 2: second = 1; break;
+        }
+        ImageBgDual3D_Call_02117360(first, second, mode, record.step, record.count);
+        object->status = 20;
+        object->residual = record.residual;
+        if (mode == 0) Unk02dcfc_SetField70(2);
+        else Unk02dcfc_SetField70(1);
+        break;
+    }
+    return 3;
+}
+
+/* Dispatch three signed arguments to the alternate kind-0/2/5 providers,
+ * preserving argument-selected flags and the borrowed object status fields. */
+int func_0203b4a0(void)
+{
+    Unk03aae8Object *object = FIELD(Unk03aae8Object *, Unk03aae8_Unk_03ad14(), 232);
+    int mode = (s16)func_0203ac00(0);
+    int parts = (s16)func_0203ac00(1);
+    int selection = (s16)func_0203ac00(2);
+    int flag;
+    int first;
+    int second;
+    Unk03aae8Record record;
+    object->argument = mode;
+    if (mode == 0) mode = 0;
+    else mode = 2;
+    flag = selection == 0;
+    first = 0;
+    second = 0;
+    func_0203af7c((u8 *)&record, parts);
+    switch (func_02095818()) {
+    case 0:
+        func_0209e7fc(record.step, record.count, mode, flag);
+        object->status = 16;
+        object->residual = record.residual;
+        break;
+    case 2:
+        switch (selection) {
+        case 0: first = 1; second = 1; break;
+        case 1: first = 1; break;
+        case 2: second = 1; break;
+        }
+        func_020df420(first, second, mode, record.step, record.count);
+        object->status = 18;
+        object->residual = record.residual;
+        break;
+    case 5:
+        switch (selection) {
+        case 0: first = 1; second = 1; break;
+        case 1: first = 1; break;
+        case 2: second = 1; break;
+        }
+        ImageBgDual3D_Call_02117400(first, second, mode, record.step, record.count);
+        object->status = 20;
+        object->residual = record.residual;
+        if (mode == 0) Unk02dcfc_SetField70(2);
+        else Unk02dcfc_SetField70(1);
+        break;
+    }
+    return 3;
 }
