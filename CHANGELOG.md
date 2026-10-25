@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched all eight M1-T527 context, money-window lifecycle, state initialization and numeric-output functions at 100% objdiff; documented instruction evidence and typed contracts.
+- Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.
+- Matched eight more game/unit_020f3db4 functions: table selection, record lookup, state scans, and list insertion.
 - Verified all eight M1-T526 singleton predicates, field updates, creation and dispatch helpers at 100% objdiff; documented original instruction evidence and contracts.
 - Verified the six ImageBgDual3D no-op callbacks and two forwarding thunks for M1-T535; documented each instruction-level contract.
 - Matched all five M1-T529 cell interaction and state-machine functions in `game/unit_020d1ee8` at 100% objdiff, with typed owner views and per-function evidence.
