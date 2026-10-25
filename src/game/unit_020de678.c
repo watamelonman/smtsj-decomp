@@ -7,9 +7,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u32 data_021508d4[];
-int Unk044394_Unk_044428();
-int Unk044394_Unk_044534();
-int Unk0e651c_Unk_0e666c();
+int Unk044394_Unk_044428(u32 value);
+int Unk044394_Unk_044534(u32 value);
+int Unk0e651c_Unk_0e666c(int value);
 void Unk124c5c_Unk_124e04(void);
 
 void Unk0de678_Nop_0df05c(void);
@@ -21,40 +21,40 @@ void Unk0de678_Unk_0df598(void);
 void Unk0de678_Unk_0df5a8(void);
 void Unk0de678_Unk_0dee2c(int arg0);
 
-/* empty callback */
+/* Target 0x020df05c is only bx lr; this callback has no side effects. */
 void Unk0de678_Nop_0df05c(void) { }
 
-/* empty callback */
+/* Target 0x020df060 is only bx lr; this callback has no side effects. */
 void Unk0de678_Nop_0df060(void) { }
 
-/* forwards to `Unk124c5c_Unk_124e04` */
+/* The literal relocation at 0x020df580 identifies the tail-call target. */
 void Unk0de678_Thunk_02124e04(void) { Unk124c5c_Unk_124e04(); }
 
-/* decompiler-derived */
+/* Target 0x020de950 loads the first word at data_021508d4; its meaning is unknown. */
 u32 Unk0de678_Get_data_021508d4(void)
 {
   return *data_021508d4;
 }
 
-/* decompiler-derived */
+/* Target 0x020dea60 tail-calls Unk044394_Unk_044534 with selector 31. */
 void Unk0de678_Unk_0dea60(void)
 {
   Unk044394_Unk_044534(0x1f);
 }
 
-/* decompiler-derived */
+/* Target 0x020df598 tail-calls Unk044394_Unk_044428 with selector 32. */
 void Unk0de678_Unk_0df598(void)
 {
   Unk044394_Unk_044428(0x20);
 }
 
-/* decompiler-derived */
+/* Target 0x020df5a8 tail-calls Unk044394_Unk_044534 with selector 32. */
 void Unk0de678_Unk_0df5a8(void)
 {
   Unk044394_Unk_044534(0x20);
 }
 
-/* decompiler-derived */
+/* Target 0x020dee2c adds 0x5f1 before forwarding to Unk0e651c_Unk_0e666c. */
 void Unk0de678_Unk_0dee2c(int arg0)
 {
   Unk0e651c_Unk_0e666c(arg0 + 0x5f1);

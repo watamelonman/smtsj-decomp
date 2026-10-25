@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Match eight more unit_02039bb4 entry/table handlers with typed work parameters and documented contracts.
+- M1-T686: documented and typed eight game/unit_020de678 no-op, forwarding, selector, and global-word helpers.
 - Verified the two M1-T685 game/unit_020f2e78 selection and relocation handlers at 100% objdiff; documented their phase contracts and instruction evidence.
 - Matched all eight M1-T681 game/unit_020afc28 slot, selector, predicate and scaling routines with typed borrowed layouts. 
 - M1-T676: clarify eight game/unit_02039bb4 record, tagged append, and entry handlers with typed work views and behavior contracts.
