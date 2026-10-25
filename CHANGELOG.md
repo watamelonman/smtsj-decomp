@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all three M1-T506 record-query, table-percentage, and six-table scanner functions in `game/unit_020f3db4` at 100% objdiff.
 - Matched eight more game/unit_020f3db4 functions: table selection, record lookup, state scans, and list insertion.
 - Verified all eight M1-T526 singleton predicates, field updates, creation and dispatch helpers at 100% objdiff; documented original instruction evidence and contracts.
 - Verified the six ImageBgDual3D no-op callbacks and two forwarding thunks for M1-T535; documented each instruction-level contract.
