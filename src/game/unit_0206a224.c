@@ -187,9 +187,9 @@ void Unk06a224_Unk_06aafc(u32 x)
     func_020bcbc4(3, &m);
 }
 
-void func_020bcacc();
-void func_020bc9f4();
-void CampStatus_SetUnk1a8();
+void func_020bcacc(int channel, const Unk06a224Msg *message);
+void func_020bc9f4(int id, int value);
+void CampStatus_SetUnk1a8(int value);
 void CampStatus_Copy12c();
 
 /* Call CampStatus_Copy12c before submitting word-1 value 11 with flag 2.
@@ -210,6 +210,8 @@ void Unk06a224_Unk_06ab64(void)
     func_020bcbc4(3, &m);
 }
 
+/* Submit request 20 with caller word 7, word 6 = 1 and flags 0xc2.
+ * Instruction stores establish the request fields; submission borrows the stack. */
 void Unk06a224_Unk_06ac54(u32 x)
 {
     Unk06a224Msg m;
@@ -246,6 +248,8 @@ void Unk06a224_Unk_06accc(u32 x)
     func_020bcbc4(3, &m);
 }
 
+/* Submit request 11 with word 3 = 12, then clear the two callee states.
+ * Constants and call order follow the original instructions. */
 void Unk06a224_Unk_06ad40(void)
 {
     Unk06a224Msg m;
@@ -298,4 +302,207 @@ void Unk06a224_Unk_06ae28(Unk06a224Work *work)
     if (func_020537b8(0, 0x10) != 0) {
         work->unk_044c = 1;
     }
+}
+
+/* Borrowed work bytes; the signed byte at +0x348 supplies request word 7. */
+u8 *Unk02e000_GetWorkArea(void);
+
+/* Submit request 2 with the signed work byte selected by the caller's index.
+ * The caller supplies a valid index into the work byte table at +0x348. */
+void func_0206aa70(int index)
+{
+    Unk06a224Msg m;
+    int i;
+    for (i = 0; i < 2; i++) m.flags[i] = 0;
+    for (i = 0; i < 16; i++) m.w[i] = 0;
+    m.w[1] = 2;
+    m.flags[0] |= 2;
+    m.w[7] = FIELD(s8, Unk02e000_GetWorkArea() + index, 0x348);
+    m.flags[0] |= 0x80;
+    func_020bcbc4(3, &m);
+}
+
+/* Preserve the first argument for CampStatus_Copy12c; a nonzero second argument
+ * adds word 3 = 11 and flag 8 to the borrowed channel-three request. */
+void func_0206abcc(const void *source, int extra)
+{
+    Unk06a224Msg m;
+    int i;
+    CampStatus_Copy12c(source);
+    for (i = 0; i < 2; i++) m.flags[i] = 0;
+    for (i = 0; i < 16; i++) m.w[i] = 0;
+    m.w[1] = 11;
+    m.flags[0] |= 2;
+    if (extra != 0) {
+        m.w[3] = 11;
+        m.flags[0] |= 8;
+    }
+    func_020bcbc4(3, &m);
+}
+
+void func_020086a0(int value, void *destination, u32 size);
+void func_02063920(void);
+void *func_020445f4(int group, int id);
+void func_0204fed8(void *resource, int id);
+int func_02063a30(void);
+void func_02061f10(u32 object, int id, int a, int b, int last);
+
+/* Rebuild the 24 borrowed slot pointers and emit resources for populated IDs.
+ * Slot zero uses resource (12,17), ID 5 when empty; the last emitted handle
+ * is passed to the object at +0x150, as established by the target call sequence. */
+void func_0206a2ac(Unk06a224Ctl *c)
+{
+    s16 i;
+    int last;
+    void *emptyResource;
+    void *entryResource;
+    func_020086a0(0, c->slots, 0x60);
+    func_02067d54(c);
+    func_02063920();
+    emptyResource = func_020445f4(12, 17);
+    entryResource = func_020445f4(6, 0);
+    for (i = 0; i < 24; i++) {
+        if (c->slots[i] == 0) {
+            if (i == 0) {
+                func_0204fed8(emptyResource, 5);
+                last = func_02063a30();
+            }
+        } else if (*c->slots[i] != 0) {
+            func_0204fed8(entryResource, *c->slots[i]);
+            last = func_02063a30();
+        }
+    }
+    func_02061f10(FIELD(u32, c, 0x150), -1, 0, 0, last);
+}
+
+int func_02053824(int group, int mask);
+int func_020537dc(int group, int mask);
+int func_02053800(int group, int mask);
+void Unk0a0ce4_Unk_0a0da4(int value);
+
+/* Update signed selection and scroll halfwords in response to group-zero input.
+ * The target uses 24 visible slots, two-column movement and latched request state
+ * at +0x3d8. The caller owns the complete work object through +0x44c. */
+int func_0206a3f4(u8 *o)
+{
+    int oldSelection = FIELD(s16, o, 0x154);
+    int oldScroll = FIELD(s16, o, 0x156);
+    int result = 1;
+    int moved = 0;
+    int i;
+    if (FIELD(s16, o, 0x158) > 2) {
+        if (FIELD(int, o, 0x3d8) == 0 &&
+            (func_02053824(0, 0x40) || func_02053824(0, 0x80))) {
+            Unk06a224_Unk_06aa0c();
+            FIELD(int, o, 0x3d8) = 1;
+            Unk06a224_Unk_06ae28((Unk06a224Work *)o);
+        }
+        if (func_02053824(0, 0x40)) {
+            FIELD(s16, o, 0x154) -= 2;
+            if (FIELD(s16, o, 0x158) > 24) {
+                if (FIELD(s16, o, 0x154) < FIELD(s16, o, 0x156))
+                    FIELD(s16, o, 0x156) -= 2;
+            }
+            if (FIELD(s16, o, 0x154) % 2 == 0) {
+                if (FIELD(s16, o, 0x154) < 0) {
+                    FIELD(s16, o, 0x154) += FIELD(s16, o, 0x158);
+                    if (FIELD(s16, o, 0x154) % 2 != 0) FIELD(s16, o, 0x154)++;
+                    if (FIELD(s16, o, 0x158) > 24) {
+                        FIELD(s16, o, 0x156) = FIELD(s16, o, 0x158) - 24;
+                        if (FIELD(s16, o, 0x156) % 2 != 0) FIELD(s16, o, 0x156)++;
+                    }
+                }
+            } else if (FIELD(s16, o, 0x154) < 0) {
+                FIELD(s16, o, 0x154) += FIELD(s16, o, 0x158);
+                if (FIELD(s16, o, 0x158) > 24) {
+                    FIELD(s16, o, 0x156) = FIELD(s16, o, 0x158) - 24;
+                    if (FIELD(s16, o, 0x156) % 2 != 0) FIELD(s16, o, 0x156)++;
+                }
+            }
+        } else if (func_02053824(0, 0x80)) {
+            FIELD(s16, o, 0x154) += 2;
+            if (FIELD(s16, o, 0x154) - FIELD(s16, o, 0x156) >= 24)
+                FIELD(s16, o, 0x156) += 2;
+            if (FIELD(s16, o, 0x154) % 2 == 0) {
+                if (FIELD(s16, o, 0x154) >= FIELD(s16, o, 0x158)) {
+                    FIELD(s16, o, 0x154) = 0;
+                    FIELD(s16, o, 0x156) = 0;
+                }
+            } else if (FIELD(s16, o, 0x154) == FIELD(s16, o, 0x158)) {
+                FIELD(s16, o, 0x154) = FIELD(s16, o, 0x158) - 1;
+            } else if (FIELD(s16, o, 0x154) > FIELD(s16, o, 0x158)) {
+                FIELD(s16, o, 0x154) -= FIELD(s16, o, 0x158);
+                FIELD(s16, o, 0x156) = 0;
+            }
+        }
+    }
+    if (FIELD(s16, o, 0x158) > 1) {
+        if (FIELD(int, o, 0x3d8) == 0 && func_02053824(0, 0x20) &&
+            Unk06a224_Unk_06a374((Unk06a224Selection *)o)) {
+            Unk06a224_Unk_06aa0c();
+            FIELD(int, o, 0x3d8) = 1;
+            Unk06a224_Unk_06ae28((Unk06a224Work *)o);
+            moved = 1;
+        }
+        if (func_02053824(0, 0x20)) {
+            if (FIELD(s16, o, 0x154) % 2 == 0) {
+                for (i = 0; i < 22; i += 2) {
+                    if (FIELD(s16, o, 0x156) <= 0) break;
+                    FIELD(s16, o, 0x154) -= 2;
+                    FIELD(s16, o, 0x156) -= 2;
+                }
+            } else FIELD(s16, o, 0x154)--;
+        }
+        if (FIELD(int, o, 0x3d8) == 0 && func_02053824(0, 0x10) &&
+            Unk06a224_Unk_06a3a4(o)) {
+            Unk06a224_Unk_06aa0c();
+            FIELD(int, o, 0x3d8) = 1;
+            Unk06a224_Unk_06ae28((Unk06a224Work *)o);
+            moved = 1;
+        }
+        if (func_02053824(0, 0x10)) {
+            if (FIELD(s16, o, 0x154) % 2 == 0) {
+                if (FIELD(s16, o, 0x154) < FIELD(s16, o, 0x158) - 1) FIELD(s16, o, 0x154)++;
+            } else {
+                for (i = 0; i < 22; i += 2) {
+                    if (FIELD(s16, o, 0x158) - FIELD(s16, o, 0x156) <= 24) break;
+                    FIELD(s16, o, 0x154) += 2;
+                    FIELD(s16, o, 0x156) += 2;
+                }
+                if (FIELD(s16, o, 0x154) >= FIELD(s16, o, 0x158)) FIELD(s16, o, 0x154)--;
+            }
+        }
+    }
+    if (oldScroll != FIELD(s16, o, 0x156)) func_0206a2ac((Unk06a224Ctl *)o);
+    if (oldSelection != FIELD(s16, o, 0x154)) {
+        result = 0;
+        Unk0a0ce4_Unk_0a0da4(0);
+    }
+    if (FIELD(int, o, 0x3d8) != 0) {
+        if (func_020537dc(0, 0x40) && func_020537dc(0, 0x80) && !moved &&
+            (!FIELD(int, o, 0x448) || func_020537dc(0, 0x20) ||
+             !Unk06a224_Unk_06a374((Unk06a224Selection *)o)) && !moved &&
+            (!FIELD(int, o, 0x44c) || func_020537dc(0, 0x10) || !Unk06a224_Unk_06a3a4(o))) {
+            if (FIELD(s16, o, 0x154) == 0 && FIELD(s16, o, 0x156) == 0) {
+                Unk06a224_Unk_06aa0c();
+            } else {
+                u16 id = *((Unk06a224Ctl *)o)->slots[FIELD(s16, o, 0x154) - FIELD(s16, o, 0x156)];
+                FIELD(u16, o, 0x3f0) = id;
+                Unk06a224_Unk_06accc(id);
+            }
+            FIELD(int, o, 0x3d8) = 0;
+            if (func_020537dc(0, 0x40)) FIELD(int, o, 0x440) = 0;
+            if (func_020537dc(0, 0x80)) FIELD(int, o, 0x444) = 0;
+            if (func_020537dc(0, 0x20)) FIELD(int, o, 0x448) = 0;
+            if (func_020537dc(0, 0x10)) FIELD(int, o, 0x44c) = 0;
+        }
+    } else if (oldSelection == FIELD(s16, o, 0x154) && func_02053800(0, 0x800)) {
+        if (FIELD(s16, o, 0x154) == 0 && FIELD(s16, o, 0x156) == 0) {
+            Unk0a0ce4_Unk_0a0da4(4);
+        } else {
+            Unk06a224_Unk_06ad40();
+            result = 0;
+        }
+    }
+    return result;
 }
