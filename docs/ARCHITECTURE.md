@@ -9,4 +9,8 @@ Arrows mean "may include/call". Nothing points upward.
 
 ## Boundaries that must not be crossed
 
+`include/game/unit_020bac80.h` defines borrowed prefix views for the state,
+work area, and entry table used by `src/game/unit_020bac80.c`. Providers retain
+ownership; the views expose only offsets observed in the original instructions.
+
 ## Glossary
