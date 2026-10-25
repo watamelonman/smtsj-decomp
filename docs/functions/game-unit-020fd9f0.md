@@ -25,18 +25,29 @@ from the delinked TU. No module boundary changes are introduced.
 
 None for M1-T508.
 
-## Other existing C outside M1-T508
+## M1-T509
 
-- `Unk0fd9f0_Unk_0fdb80`
-- `Unk0fd9f0_Unk_0fe278`
+Seven card functions match at 100%; the remaining function stays in the delink.
+All pointers below borrow valid work storage.
 
-## Not done in M1-T509
-- `Unk0fd9f0_Update`
-- `Unk0fd9f0_Unk_0fda58`
-- `Unk0fd9f0_LoadBattleHelpTalk`
-- `func_020fdaa8`
-- `func_020fdb14`
-- `Unk0fd9f0_Unk_0fdc18`
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk0fd9f0_Unk_0fdb80` | 020fdb80 initializes +0x0c to -27, +0x14/+0x28/+0x2c to 1 and +0x24/+0x30 through +0x40 to zero. |
+| `Unk0fd9f0_Unk_0fe278` | 020fe278 calls five subsystem setters with 31, -1, (2,48,10), 2 and 4 in that order. |
+| `Unk0fd9f0_Update` | 020fde0c dispatches +0x2c: state 1 calls 020fde4c then 020fe004; state 2 calls 020fe1f8; others do nothing. |
+| `Unk0fd9f0_Unk_0fda58` | 020fda58 ignores an absent singleton. State 1 stores the argument at +0x28; state 2 sets +0x34/+0x38 to 1, resets direction and releases +0x24. |
+| `Unk0fd9f0_LoadBattleHelpTalk` | 020fdbb8 acquires IDs 0xd5/0xd6 and loads resource paths data_021510b8/cc/e0 into +0/+0x1c/+0x20. Battle/battle_help and battle_talk strings support the existing name. |
+| `func_020fdb14` | Allocates 0x44 bytes through 020611dc with callbacks 020fdd90, Update and 020fdc18, group 3 and flags 0/1; returns zero on failure, otherwise initializes fields and resources. |
+| `Unk0fd9f0_Unk_0fdc18` | Releases +0x24, then nonzero handles +0x20/+0/+0x1c, clearing each; calls 0205bb68 twice and clears the singleton. |
+| `func_020fdaa8` | Unmatched: stores the second argument at +0x40; state 1 writes 1 at +0x28/+0x34, 2 at +0x38, the first argument at +0x30, then resets direction; state 2 writes only +0x30. |
+
+### Hard list for M1-T509
+
+- `func_020fdaa8`: readable switch implementations using struct fields and offset views,
+  signed/unsigned state, case ordering, explicit defaults, and break/return forms
+  produce an 84-byte function rather than the original 92 bytes. The compiler
+  predicates the state-2 store instead of branching to a separate store/return block.
+  No nonmatching definition retained; a human can investigate in decomp.me.
 
 ## Not done in M1-T510
 - `func_020fe2c4`
