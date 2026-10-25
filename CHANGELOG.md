@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.
+- Match all eight M1-T708 game/unit_0209d42c request, queue, record-copy, and work-initialization routines; preserve earlier matches and document storage contracts.
+- Matched all eight M1-T729 game/unit_0211d520 routines, including resource teardown and selected-entry text setup, at 100% objdiff.
+- Match M1-T697 resource path formatting and record loading routines at 100% objdiff, with typed borrowed layouts and instruction evidence.
 - Matched all eight M1-T721 forwarding and record/table submission helpers in game/unit_020f51dc, with typed contracts and per-function evidence.
 - Match all four M1-T679 record selection, name search, tagged negation and binary operator functions at 100% objdiff.
 - Match all eight M1-T707 game/unit_0209d42c routines, including phase dispatch; document table strides, ID mapping, and state/root updates.
