@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all four M1-T667 script provider dispatchers in game/unit_0203aae8 at 100% objdiff, with typed record and borrowed object views.
 - Match all eight M1-T666 game/unit_0203aae8 targets at 100% objdiff, including argument decoding, opcode dispatch, bit operations, and record initialization.
 - Verified seven M1-T653 slot, record, flag and initialization helpers at 100% objdiff; documented the remaining settings-table helper on the hard list.
 - Match all eight M1-T665 game/unit_0203aae8 functions at 100% objdiff; document typed helper contracts, kind dispatch, slot access, and scaled query arithmetic.
