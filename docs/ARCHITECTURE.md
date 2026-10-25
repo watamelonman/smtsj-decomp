@@ -12,4 +12,8 @@ The `game/unit_020f6250` scene handlers share partial borrowed layout views in
 
 ## Boundaries that must not be crossed
 
+`include/game/unit_020bac80.h` defines borrowed prefix views for the state,
+work area, and entry table used by `src/game/unit_020bac80.c`. Providers retain
+ownership; the views expose only offsets observed in the original instructions.
+
 ## Glossary
