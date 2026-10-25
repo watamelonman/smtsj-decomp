@@ -301,3 +301,13 @@ Initialize the count view after early callback returns, matching its original
 lifetime. Its eight-byte stride exposes the consumed-count word at record +4.
 These settings preserve ordinary C behavior without volatile accesses,
 assembly, or changes to the human-owned relocation configuration.
+
+## DEC-018 — Type the 0209d42c singleton storage
+
+Declare `data_02176278` as a private struct with 64 observed 32-byte name slots,
+count, cursor, and phase words. Retain a byte view for the earlier matched
+functions. Direct typed member updates in 0209d44c and 0209d500 preserve the
+original load/store ordering and register allocation; casting the byte array
+at each update produced different instructions. This changes no ownership or
+storage allocation: the singleton remains externally defined. All earlier
+functions and the eight M1-T708 additions remain at 100% objdiff.

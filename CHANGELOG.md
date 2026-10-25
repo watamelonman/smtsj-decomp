@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T708 game/unit_0209d42c request, queue, record-copy, and work-initialization routines; preserve earlier matches and document storage contracts.
 - Match all eight M1-T707 game/unit_0209d42c routines, including phase dispatch; document table strides, ID mapping, and state/root updates.
 - Match all eight M1-T696 manager dispatch, phase, record-work and EventMessage path routines with typed inputs and documented ARM evidence.
 - M1-T718: verified six game/unit_020ce578 callbacks and state helpers at 100% objdiff, added typed helper contracts, and documented two deferred compare-and-return accessors.
