@@ -49,10 +49,30 @@ All pointers below borrow valid work storage.
   predicates the state-2 store instead of branching to a separate store/return block.
   No nonmatching definition retained; a human can investigate in decomp.me.
 
-## Not done in M1-T510
-- `func_020fe2c4`
-- `func_020fdd90`
-- `func_020fe1f8`
-- `func_020fdc88`
-- `func_020fde4c`
-- `func_020fe004`
+## M1-T510
+
+All six functions match at 100%, including both rendering functions completed
+in attempt 2. The TU still links through the delinked object pending human completion. Parameters are typed borrowed work
+views; offsets refer to the original ARM instructions.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_020fe2c4` | 020fe2c4 releases +0x24, creates an object from resources +0x1c/+0x20 with arguments 1/0, configures its underlying handle and color selected by +0x30, sets fields +0x24/+0x30/+0x3c to 14/4/2, then stores it at work +0x24. |
+| `func_020fdd90` | 020fdd90 increments signed +0x3c, wrapping at 65535, then clamps movement to x=0 and y=-11..0. In state 2, a positive +0x40 countdown decrements and clears +0x30 on expiration. |
+| `func_020fe1f8` | 020fe1f8 draws resource +0x1c, index 0, at signed coordinates +8/+12 with unit scales/opacity and order 12. It selects the rendering color using +0x30, updates the optional +0x24 object with all-one color bits, and brackets drawing with the existing setting helpers. |
+| `func_020fdc88` | 020fdc88 advances signed coordinates +8/+12 by signed velocities +0x10/+0x14, clamping each moving axis to its supplied limits and clearing the corresponding velocity. Reaching the upper y bound in state 2 creates the secondary object. Any hit with nonzero +0x34 sets y velocity to 1, installs state +0x38, and clears +0x34. |
+| `func_020fde4c` | Draws resource +0 indices 0/2, choosing color 0x299ce700 for modes 0/2 and 0x4a4a4a00 otherwise. Mode 2 also draws index 4 with a pulsing opacity from the frame counter and the interleaved signed fixed-point table at 0212629c. Orders are 12/13/14. |
+| `func_020fe004` | Analogous draw sequence for indices 1/3 and mode-3 index 5; it also calls 02057e18(31) after the first draw. |
+
+No new runtime tests are required by this card. Exact instruction and relocation
+comparison verifies all six definitions at 100%; full-image checksum checks
+the existing delink-based link. No module boundaries change.
+
+### Hard list for M1-T510
+
+None. Both rendering functions now reproduce the original 440/452-byte bodies.
+The pulse uses signed `frame * 180 / 60 % 180`, converted to a 16-bit angle
+with the original rounded fixed-point multiplication. A direct signed-short
+interleaved table expression preserves the table register and the 30-factor
+register allocation, including the original signed halfword multiplication.
+The resulting unsigned intensity converts to float and divides by 100.
