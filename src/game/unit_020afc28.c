@@ -8,8 +8,6 @@ typedef struct Unk0afc28Work {
 } Unk0afc28Work;
 
 
-
-
 /* Add a signed delta to field +0x20; the caller owns the work area. */
 void Unk0afc28_Unk_0afc28(Unk0afc28Work *arg0, int arg1){
   arg0->unk_0020 = arg0->unk_0020 + arg1;
@@ -18,16 +16,16 @@ void Unk0afc28_Unk_0afc28(Unk0afc28Work *arg0, int arg1){
 
 int func_020492ec(u32 selector, int value);
 int func_0204a67c(const void *work, u32 selector);
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
 typedef struct Unk0afc28Pos12 {
     u32 w[3];
 } Unk0afc28Pos12;
 
 typedef struct Unk0afc28Ptrs {
-    u8 pad_00[0x64];
+    u8 pad_00[0x40];
+    u32 unk_0040;
+    u8 pad_0044[0x20];
     u32 *e[10];
+    u8 unk_008c[1];
 } Unk0afc28Ptrs;
 
 int Unk0981dc_Unk_098324(int a, int b);
@@ -37,7 +35,7 @@ Unk0afc28Ptrs *Unk044904_Get_data_0215ee98(void);
 typedef struct Unk0afc28Pos Unk0afc28Pos;
 Unk0afc28Pos *func_020982c0(int id);
 int Unk0afc28_IsOrigin(Unk0afc28Pos *p);
-/* Owns a three-word record at +0x24; earlier fields are unknown. */
+/* Borrowed work view with a three-word record at +0x24. */
 typedef struct Unk0afc28RecordWork {
     u8 pad_0000[0x24];
     Unk0afc28Pos12 unk_0024;
@@ -68,8 +66,7 @@ void Unk0afc28_Unk_0afdd0(const void *arg0, u32 arg1, int arg2)
 }
 
 
-
-/* decompiler-derived */
+/* Map selectors 0..7 to 8..15, otherwise 26; evidence: jump-table returns. */
 u32 Unk0afc28_Unk_0afcd4(u32 arg0)
 {
   switch(arg0) {
@@ -134,6 +131,8 @@ int Unk0afc28_Unk_0afd98(int a, int b, int c)
     return r;
 }
 
+/* Count nonnull entries whose bits 16..23 equal id; evidence for CountById
+ * is the ten-pointer scan and extracted ID comparison. Storage is borrowed. */
 int Unk0afc28_CountById(u32 id)
 {
     Unk0afc28Ptrs *g = (Unk0afc28Ptrs *)Unk044904_Get_data_0215ee98();
@@ -179,4 +178,127 @@ int Unk0afc28_Unk_0b0930(Unk0afc28Result *p, u32 a, u16 b, u32 c)
     p->unk_000a = b;
     p->unk_0008 = Unk0afc28_IsOrigin(r);
     return 1;
+}
+
+/* Each slot has an ID and a signed accumulated value, from +0x30 accesses. */
+typedef struct Unk0afc28Slot {
+    u32 id;
+    int value;
+} Unk0afc28Slot;
+typedef struct Unk0afc28SlotWork {
+    u8 pad_0000[0x30];
+    Unk0afc28Slot slots[10];
+} Unk0afc28SlotWork;
+
+/* Accumulate in the first empty or matching slot; return whether it existed.
+ * Evidence: paired word loads/stores, ten-slot bound, and nonzero old ID test. */
+int func_020afc80(Unk0afc28SlotWork *work, u32 id, int delta)
+{
+    int found = 0;
+    Unk0afc28Slot *slot = work->slots;
+    int i = 0;
+    for (; i < 10; i++, slot++) {
+        u32 old = slot->id;
+        if (old == 0 || old == id) {
+            slot->id = id;
+            if (old != 0) found = 1;
+            slot->value += delta;
+            break;
+        }
+    }
+    return found;
+}
+
+u32 func_02049d80(const void *work, u32 selector);
+int func_0204a968(const void *work, int selector);
+int func_0204aa98(const void *work);
+int func_0204abd8(const void *work, int selector);
+int func_0204a7f4(const void *work, int selector);
+int func_020b071c(int value, int flag, int selector);
+
+/* Compare a random 0..99 draw with 5*(query(a,7)+10)/(query(b,7)+10),
+ * clamped to 1..50. Evidence: unsigned division and unsigned clamp branches. */
+int func_020afdf8(const void *a, const void *b)
+{
+    u32 chance = 5;
+    chance *= func_02049d80(a, 7) + 10;
+    chance /= func_02049d80(b, 7) + 10;
+    if (chance < 1) chance = 1;
+    if (chance > 50) chance = 50;
+    return (u32)func_02050074(0, 99) < chance;
+}
+
+/* Only value 1 is eligible. Accept a nonzero +0x8c selector-one query;
+ * otherwise flag must be set and kind must be 1/7 or selector zero nonzero.
+ * Evidence: original comparisons and provider calls; storage is borrowed. */
+int func_020b06a0(int value, int flag)
+{
+    Unk0afc28Ptrs *g;
+    if (value != 1) return 0;
+    g = Unk044904_Get_data_0215ee98();
+    if (func_0204a968(g->unk_008c, 1) == 0) {
+        if (flag != 0) {
+            int kind = func_0204aa98(g->unk_008c);
+            if (kind == 1 || kind == 7) return 1;
+            if (func_0204abd8(g->unk_008c, 0) == 0) return 0;
+        } else {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/* Invert the initial predicate except when global bit 10 is clear and it
+ * succeeds: that path delegates to 0b06a0 with flag zero. */
+int func_020b07c4(int value)
+{
+    int result = func_020b071c(value, 0, -1);
+    Unk0afc28Ptrs *g = Unk044904_Get_data_0215ee98();
+    if ((g->unk_0040 << 21) >> 31 == 0) {
+        if (result != 0) return func_020b06a0(value, 0);
+    } else {
+        if (result != 0) return 0;
+    }
+    return 1;
+}
+
+/* Same instruction-observed dispatch as 0b07c4, passing flag one to both
+ * predicates; the provider's bit 10 suppresses the second query. */
+int func_020b081c(int value)
+{
+    int result = func_020b071c(value, 1, -1);
+    Unk0afc28Ptrs *g = Unk044904_Get_data_0215ee98();
+    if ((g->unk_0040 << 21) >> 31 == 0) {
+        if (result != 0) return func_020b06a0(value, 1);
+    } else {
+        if (result != 0) return 0;
+    }
+    return 1;
+}
+
+/* Borrowed layout: the original reads a halfword at +0x17a. */
+typedef struct Unk0afc28ScaleRecord {
+    u8 pad_0000[10];
+    u16 unk_000a;
+} Unk0afc28ScaleRecord;
+typedef struct Unk0afc28ScaleWork {
+    u8 pad_0000[0x170];
+    Unk0afc28ScaleRecord record;
+} Unk0afc28ScaleWork;
+
+/* For kind 3, scale selector 17 by the +0x17a halfword, optionally doubling,
+ * divide by 100, add five and spread, then clamp to one. Other kinds return 0. */
+int func_020b0a5c(Unk0afc28ScaleWork *work)
+{
+    Unk0afc28ScaleRecord *record;
+    int scale;
+    int result;
+    if (func_0204aa98(work) != 3) return 0;
+    record = &work->record;
+    scale = func_02049d80(work, 17);
+    if (func_0204a7f4(work, 0) != 0) scale *= 2;
+    result = record->unk_000a * scale / 100 + 5;
+    result += Unk0afc28_Unk_0afd60(result, 10);
+    if (result <= 0) result = 1;
+    return result;
 }
