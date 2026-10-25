@@ -93,6 +93,14 @@ and predicate arguments. The source already existed despite the card's creation
 wording. No tests were added (`tests_required = false`); objdiff compares each
 function against the original instructions. No M1-T654 targets remain hard.
 
+Review correction: the object lookup now returns an opaque
+`struct Unk0a163cRecord *`, compatible with the provider definition in
+`include/game/unit_020a163c.h`; both provider declarations take `u16`.
+`IsRecordAvailable` likewise accepts a 16-bit resource ID, avoiding extra
+argument narrowing instructions and preserving all eight 100% matches. The
+opaque forward declaration avoids importing unrelated provider declarations;
+the shared provider header is outside this card's owned paths.
+
 | Function | Address / bytes | Instruction evidence and contract |
 | --- | --- | --- |
 | `Unk02e000_GetRecordUnk1e` | 0x0202ebb8 / 68 | Loads byte +0x1e from work+0x16fc+(id-1)*36 and extracts low seven bits. IDs above 491 return zero; valid allocated IDs are 1..491. |

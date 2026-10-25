@@ -473,8 +473,11 @@ int Unk02e000_TestFlag(int i)
 }
 
 void func_02008904();
-u8 *func_020a1740(u32 id);
-int Unk0a163c_Unk_0a17d8(u32 id);
+/* Provider record is opaque here; its definition lives in unit_020a163c.h.
+ * Lookup borrows that record and both providers accept 16-bit resource IDs. */
+struct Unk0a163cRecord;
+struct Unk0a163cRecord *func_020a1740(u16 id);
+int Unk0a163c_Unk_0a17d8(u16 id);
 int Unk02e000_GetRecordUnk1f(u32 id);
 
 
@@ -596,7 +599,7 @@ u32 Unk02e000_GetRecordUnk1e(u32 id)
  * object halfword +0x16 bit zero set, and positive GetRecordUnk1f result; these
  * predicates support the existing availability name. Caller supplies a valid id
  * with a nonnull object lookup and allocated record storage. */
-int Unk02e000_IsRecordAvailable(u32 id)
+int Unk02e000_IsRecordAvailable(u16 id)
 {
     Unk02e000ObjFlags *o = (Unk02e000ObjFlags *)func_020a1740(id);
     if (Unk0a163c_Unk_0a17d8(id) == 0 && o->flag_0016_0 && Unk02e000_GetRecordUnk1f(id) > 0) {
