@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Matched seven M1-T603 table/resource and buffer initialization functions; documented the remaining slot-claim function for scratch investigation.
+- M1-T611: matched seven BattleTask routines with typed layouts and per-function contracts; documented the remaining registration routine on the hard list.
+- Matched all six M1-T601 request, slot-refresh and selection-input functions in game/unit_0206a224 at 100% objdiff; documented typed contracts and original instruction evidence.
+- Matched all eight M1-T570 buffer initialization, halfword append, record query and lookup helpers at 100% objdiff; documented typed contracts and instruction evidence.
 - Verified all eight M1-T602 table, buffer-slot and mask helpers in `game/unit_0206ea70` at 100% objdiff; documented their offset evidence and caller contracts.
 - Match four remaining game/unit_0202d15c cursor, request and entry-validation functions.
 - Verified all eight M1-T600 selection, request, and flag-latch functions at 100% objdiff; documented borrowed layouts and call contracts.

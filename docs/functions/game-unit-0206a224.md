@@ -64,12 +64,44 @@ instruction offsets and request constants do not establish higher-level intent.
 Requests are stack-local and borrowed during submission. Their two alignment
 bytes remain untouched, as in the target. No M1-T600 hard-list entries remain.
 
-## Not done in M1-T601
-- `Unk06a224_Unk_06ac54`
-- `Unk06a224_Unk_06ad40`
-- `func_0206abcc`
-- `func_0206aa70`
-- `func_0206a2ac`
-- `func_0206a3f4`
-- `Unk06a224_Unk_06ac54`: hand-matched
-- `Unk06a224_Unk_06ad40`: hand-matched
+## M1-T601
+
+All six functions below match at 100% objdiff against the corresponding symbols
+in `build/delinks/src/game/unit_0206a224.o`. Names remain neutral: instruction
+constants, offsets and callees establish behavior but not a higher-level purpose.
+
+- `Unk06a224_Unk_06ac54` (120 bytes): initializes two flag bytes and sixteen
+  request words, sets word 1 = 20, word 6 = 1, word 7 = the caller word, and
+  flags 0xc2. Submits the stack-local borrowed request on channel 3.
+- `Unk06a224_Unk_06ad40` (128 bytes): initializes the same request layout,
+  sets word 1 = 11, word 3 = 12 and flags 10, and calls `func_020bcacc` on
+  channel 3. Then calls `func_020bc9f4(11, 0)` and `CampStatus_SetUnk1a8(0)`.
+- `func_0206abcc` (136 bytes): forwards its borrowed source to
+  `CampStatus_Copy12c`, preserving the second integer argument across that
+  call. Submits word 1 = 11 with flag 2; a nonzero second argument also sets
+  word 3 = 11 and flag 8. The request's alignment bytes remain untouched.
+- `func_0206aa70` (140 bytes): submits word 1 = 2 with flag 2, then obtains
+  the shared work area and reads a signed byte at caller index +0x348 into
+  word 7, enabling flag 0x80. The caller must supply a valid byte-table index.
+- `func_0206a2ac` (200 bytes): clears 24 slot pointers at +0x15c and repopulates
+  them through `func_02067d54`. After `func_02063920`, obtains resources (12,17)
+  and (6,0). An empty first slot emits ID 5 using the first resource; nonzero
+  IDs in populated slots use the second resource. Each emission obtains a
+  handle through `func_02063a30`; the last handle is passed as argument five
+  to `func_02061f10` with the object at +0x150. As in the target, the provider
+  must ensure at least one emission so the last handle is initialized.
+- `func_0206a3f4` (1444 bytes): processes group-zero input masks 0x40, 0x80,
+  0x20 and 0x10 to update signed selection/scroll/count fields at
+  +0x154/+0x156/+0x158. Two-column movement wraps by count; lateral movement
+  scrolls up to 22 entries with 24 visible slots. It rebuilds slots when the
+  scroll changes, reports selection changes, and manages request latch
+  +0x3d8 and flags +0x440..+0x44c. On latch release, it submits the selected
+  ID and stores it at +0x3f0, or emits request 24 for selection/scroll zero.
+  Input mask 0x800 triggers request 11 or the zero-selection notification.
+  Returns zero after selection changes or the nonzero-selection request-11
+  action, otherwise one. The caller owns a valid work object through +0x44c
+  and valid populated slot pointers for the selected index.
+
+Validation: match gate reports every defined function at 100%; anticheat and
+all nine unit tests pass; checksum reports every artifact byte-identical.
+No M1-T601 hard-list entries remain.
