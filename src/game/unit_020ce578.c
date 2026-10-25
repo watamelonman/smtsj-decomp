@@ -1,9 +1,9 @@
-/* src/game/unit_020ce578.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Work-area accesses and helper calls recovered from the ARM object. */
 #include "types.h"
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0ce578Work {
-    u8 pad_0000[0x4];
+    s32 unk_0000;
     u32 unk_0004;
     u8 pad_0008[0x4];
     s32 unk_000c;
@@ -13,13 +13,12 @@ typedef struct Unk0ce578Work {
 } Unk0ce578Work;
 
 
-
-
-/* empty callback */
+/** Empty callback: the original consists solely of a return instruction. */
 void Unk0ce578_Nop_0ce5e4(void) { }
 
-int Unk0d297c_Unk_0d3138();
-/* decompiler-derived */
+s32 Unk0d297c_Unk_0d3138(void);
+void Unk122e1c_Unk_122f88(u32 handle, s32 zero, s32 value);
+/** Forward the global query to helper 122f88 with the borrowed +0x10 handle. */
 void Unk0ce578_Unk_0cec98(Unk0ce578Work *arg0){
   u32 tmp1;
   tmp1 = Unk0d297c_Unk_0d3138();
@@ -27,9 +26,9 @@ void Unk0ce578_Unk_0cec98(Unk0ce578Work *arg0){
   return;
 }
 
-void Unk0ce578_SetState();
-int Unk122e1c_Unk_123294();
-/* decompiler-derived */
+void Unk0ce578_SetState(Unk0ce578Work *work, s32 state);
+void Unk122e1c_Unk_123294(u32 handle);
+/** Reset the +0x10 handle, save the supplied value at +0xd8, and enter state 3. */
 void Unk0ce578_Unk_0cf29c(Unk0ce578Work *arg0, u32 arg1){
   Unk122e1c_Unk_123294(arg0->unk_0010);
   arg0->unk_00d8 = arg1;
@@ -39,12 +38,13 @@ void Unk0ce578_Unk_0cf29c(Unk0ce578Work *arg0, u32 arg1){
 }
 
 extern u8 data_02176bd0[];
-int Unk095560_Unk_0956c8();
-int Unk0bc1a8_Unk_0bc9b4();
-int Unk0de678_Unk_0de870();
-int Unk122a78_Unk_122aa0();
-int Unk1241ec_Unk_124258();
-/* decompiler-derived */
+void Unk095560_Unk_0956c8(void);
+void Unk0bc1a8_Unk_0bc9b4(s32 value, s32 zero);
+s32 Unk0de678_Get_data_021508d4(void);
+void Unk0de678_Unk_0de870(void);
+void Unk122a78_Unk_122aa0(void);
+void Unk1241ec_Unk_124258(void);
+/** Run the observed teardown sequence and clear the global word at +4. */
 void Unk0ce578_Unk_0ce5e8(void)
 {
   int tmp1;
@@ -56,24 +56,23 @@ void Unk0ce578_Unk_0ce5e8(void)
   }
   Unk0de678_Unk_0de870();
   Unk095560_Unk_0956c8();
-  *(u32 *)(((int)data_02176bd0) + 4) = 0;
+  ((u32 *)data_02176bd0)[1] = 0;
   return;
 }
 
-int Unk0a0ce4_Unk_0a0da4();
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
+void Unk0a0ce4_Unk_0a0da4(s32 value);
 
+/** Set the state word at +0; ARM callers and the conditional state-2 hook
+ * support the existing SetState name. The work area remains caller-owned. */
 void Unk0ce578_SetState(Unk0ce578Work *p, int k)
 {
     if (k == 2) {
         Unk0ce578_Unk_0cec98(p);
     }
-    FIELD(int, p, 0) = k;
+    p->unk_0000 = k;
 }
 
-/* decompiler-derived */
+/** Enter state 9 with the supplied value unless value 2 fails the global query. */
 void Unk0ce578_Unk_0cf258(Unk0ce578Work *arg0, int arg1){
   int tmp1;
   if ((arg1 == 2) && (tmp1 = Unk0d297c_Unk_0d3138(), tmp1 == 0)) {
