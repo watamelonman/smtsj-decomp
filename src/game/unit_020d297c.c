@@ -16,19 +16,27 @@ typedef struct Unk0d297cWork {
 } Unk0d297cWork;
 
 
-void Unk094fe0_SetUnkField9a0();
-void Unk094fe0_GetWorkUnkField9a0(void);
-int Unk0e5fb8_Unk_0e6448(void);
-void Unk0e5fb8_Unk_0e64c8(void);
-int Unk0e651c_Unk_0e651c();
+void Unk094fe0_SetUnkField9a0(u32 value);
+u32 Unk094fe0_GetWorkUnkField9a0(void);
+int Unk0e5fb8_Unk_0e6448(u32 index);
+void Unk0e5fb8_Unk_0e64c8(u32 value);
+void Unk0e651c_Unk_0e651c(u32 value, u32 mode);
 
-void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(void);
-void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8(void);
-void Unk0d297c_Thunk_02095398(void);
-void Unk0d297c_Thunk_020953ac(void);
+int Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(u32 index);
+void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8(u32 value);
+void Unk0d297c_Thunk_02095398(u32 value);
+u32 Unk0d297c_Thunk_020953ac(void);
 void Unk0d297c_Unk_0d2adc(u32 arg0);
-u16 Unk0d297c_Unk_0d32e8(int *arg0,int arg1);
-int Unk0d297c_Unk_0d32f8(int *arg0);
+/** Borrowed buffer view; +0x0c is the index used by the 0x020d32f8 accessor. */
+typedef struct Unk0d297cBuffer {
+    u16 *data;
+    s32 unk_0004;
+    s32 unk_0008;
+    s32 index;
+} Unk0d297cBuffer;
+
+u16 Unk0d297c_Unk_0d32e8(const Unk0d297cBuffer *buffer, int index);
+u16 *Unk0d297c_Unk_0d32f8(const Unk0d297cBuffer *buffer);
 
 void func_020d297c(u16 id);
 void Unk0d297c_Call_020d297c(int id)
@@ -36,37 +44,37 @@ void Unk0d297c_Call_020d297c(int id)
     func_020d297c((u16)(id + 50));
 }
 
-/* forwards to `Unk0e5fb8_Unk_0e6448` */
-void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(void) { Unk0e5fb8_Unk_0e6448(); }
+/** Forward the table index unchanged (branch at 0x020d2b58).
+ * The target saves r0 as the Get2BitsD80 index and returns its low pair (0..3).
+ * Evidence: 0x020e6490 combines the bits; 0x020e6494 masks the result to u8. */
+int Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e6448(u32 index) { return Unk0e5fb8_Unk_0e6448(index); }
 
-/* forwards to `Unk0e5fb8_Unk_0e64c8` */
-void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8(void) { Unk0e5fb8_Unk_0e64c8(); }
+/** Forward the caller value unchanged; target 0x020e64c8 accepts it in r0. */
+void Unk0d297c_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Thunk_Unk0e5fb8_Unk_0e64c8(u32 value) { Unk0e5fb8_Unk_0e64c8(value); }
 
-/* forwards to `Unk094fe0_SetUnkField9a0` */
-void Unk0d297c_Thunk_02095398(void) { Unk094fe0_SetUnkField9a0(); }
+/** Forward the value to the +0x9a0 setter, as shown by the target branch. */
+void Unk0d297c_Thunk_02095398(u32 value) { Unk094fe0_SetUnkField9a0(value); }
 
-/* forwards to `Unk094fe0_GetWorkUnkField9a0` */
-void Unk0d297c_Thunk_020953ac(void) { Unk094fe0_GetWorkUnkField9a0(); }
+/** Preserve the +0x9a0 getter result, as shown by the target branch. */
+u32 Unk0d297c_Thunk_020953ac(void) { return Unk094fe0_GetWorkUnkField9a0(); }
 
-/* decompiler-derived */
+/** Forward the caller value with mode zero, evidenced by mov r1, #0 at 0x020d2adc. */
 void Unk0d297c_Unk_0d2adc(u32 arg0)
 {
   Unk0e651c_Unk_0e651c(arg0,0);
 }
 
-/* decompiler-derived */
-u16 Unk0d297c_Unk_0d32e8(int *arg0,int arg1)
+/** Read a halfword without bounds checks; caller must supply a valid index (0x020d32e8). */
+u16 Unk0d297c_Unk_0d32e8(const Unk0d297cBuffer *buffer, int index)
 {
-  return *(u16 *)(*arg0 + arg1 * 2);
+    return buffer->data[index];
 }
 
-/* decompiler-derived */
-int Unk0d297c_Unk_0d32f8(int *arg0)
+/** Return the borrowed buffer address at the +0x0c index; caller guarantees validity. */
+u16 *Unk0d297c_Unk_0d32f8(const Unk0d297cBuffer *buffer)
 {
-  return *arg0 + arg0[3] * 2;
+    return buffer->data + buffer->index;
 }
-
-
 
 /* decompiler-derived */
 void Unk0d297c_Unk_0d3250(u32 *arg0,u32 arg1,u32 arg2)
@@ -303,7 +311,7 @@ void Unk0e5fb8_Unk_0e649c(u32 obj, int mode);
 /* Mode 1 setup unless Unk0e5fb8_Unk_0e6448 reports already active. */
 void Unk0d297c_Unk_0d2aa4(u32 obj)
 {
-    if (Unk0e5fb8_Unk_0e6448() != 0) {
+    if (Unk0e5fb8_Unk_0e6448(obj) != 0) {
         return;
     }
     Unk0e5fb8_Unk_0e649c(obj, 1);
@@ -314,13 +322,13 @@ void Unk0d297c_Unk_0d2aa4(u32 obj)
 /* Switches to mode 2 when active. */
 void Unk0d297c_Unk_0d2aec(u32 obj)
 {
-    if (Unk0e5fb8_Unk_0e6448() == 0) {
+    if (Unk0e5fb8_Unk_0e6448(obj) == 0) {
         return;
     }
     Unk0e5fb8_Unk_0e649c(obj, 2);
 }
 
-int Unk0e651c_Unk_0e666c();
+int Unk0e651c_Unk_0e666c(u32 index);
 typedef struct Unk0d297cU16Vec {
     u16 *buf;
     int n;
@@ -336,6 +344,7 @@ int Unk0d297c_Unk_0d3004(void)
     return func_0204fed8(v, 0);
 }
 
+/** Query index 0x751; the literal and branch to 0x020e666c establish this contract. */
 int Unk0d297c_Unk_0d3138(void)
 {
     return Unk0e651c_Unk_0e666c(0x751);
