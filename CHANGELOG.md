@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all eight M1-T504 table, record-query, and packed-state functions in `game/unit_020f3db4`, with typed contracts and instruction evidence.
+- Verified all eight M1-T525 singleton, context-field, and helper-sequence functions at 100% objdiff; added typed field views and documented original instruction evidence.
 - Verified all eight M1-T508 singleton, direction, handle-cleanup and color helpers at 100% objdiff; added explicit call arguments, typed work parameters and evidence documentation.
 - M1-T507: matched four game/unit_020469d8 setup, phase, and queue callbacks; documented the remaining dispatcher on the hard list.
 - Verified all eight M1-T503 packed-state and work-access helpers at 100% objdiff; documented contracts and made table-selector forwarding explicit.
