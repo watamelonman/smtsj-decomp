@@ -209,3 +209,238 @@ void func_0206eab4(void)
         data_02170cd4[i] = func_0205f41c(data_02170ccc.table->count, i);
     }
 }
+
+void func_0205bccc(u32 *request, int mode, void *source, int count,
+                   void *destination, int transfer);
+
+/* Submit the contiguous span containing all dirty 512-byte slots, then clear
+ * mask_10. Evidence: 0206f544 scans bits; 0206f5ac submits the first/last span.
+ * Buffer state may be absent; otherwise both buffers cover count slots,
+ * with count in 0..32. */
+void func_0206f508(void)
+{
+    int first, last, i;
+    u32 request[2];
+    Unk06ea70Bufs *state = (Unk06ea70Bufs *)data_02170ccc.unk_04;
+    if (state == 0) {
+        return;
+    }
+    first = -1;
+    last = -1;
+    for (i = 0; i < state->count; i++) {
+        if (state->mask_10 & (1u << i)) {
+            if (first < 0) {
+                first = i;
+            }
+            last = i;
+        }
+    }
+    if (first == -1 && last == -1) {
+        return;
+    }
+    /* Preserve the original post-scan singleton reload. See DEC-012. */
+    state = (Unk06ea70Bufs *)*(volatile u32 *)&data_02170ccc.unk_04;
+    func_0205bccc(request, 0,
+        state->buf_00 + first * 512,
+        last - first + 1,
+        state->buf_04 + first * 512, 1);
+    ((Unk06ea70Bufs *)data_02170ccc.unk_04)->mask_10 = 0;
+}
+
+void func_02008904(const void *source, void *destination, u32 bytes);
+void func_02002298(int numerator, int denominator);
+int func_02002204(void);
+
+/* Palette transition storage: nine 256-element fixed-point component arrays
+ * followed by the original eight control words (0x2400..0x241c). */
+typedef struct Unk06ea70Transition {
+    int red[256], green[256], blue[256];
+    int targetRed[256], targetGreen[256], targetBlue[256];
+    int deltaRed[256], deltaGreen[256], deltaBlue[256];
+    u16 *source;
+    u16 *target;
+    int begin, end, tick;
+    u32 mask;
+    int slot, enabled;
+} Unk06ea70Transition;
+
+/* Install RGB555 colors immediately or prepare per-component increments.
+ * Evidence: 0206ee6c copies 510 bytes; 0206eedc uses the hardware divider.
+ * state has 2312 words; colors has 256 entries, with endpoints excluded
+ * from the incremental update. Positive duration is measured in ticks and
+ * must fit a signed 20.12 value. */
+void func_0206ee3c(Unk06ea70Transition *state, int duration, u16 *colors)
+{
+    int i;
+    int difference;
+    s64 *divider = (s64 *)0x04000290;
+    if (duration <= 0) {
+        func_02008904(colors, Unk06ea70_GetBuf00Slot(state->slot), 510);
+        Unk06ea70_SetMask10Bit(state->slot);
+        Unk06ea70_Unk_06edf4(state->red, state->green, state->blue, colors);
+        return;
+    }
+    Unk06ea70_Unk_06edf4(state->targetRed, state->targetGreen, state->targetBlue, colors);
+    func_02002298(4096, 4096);
+    i = 1;
+    difference = state->targetRed[1] - state->red[1];
+    do {
+        divider[0] = (s64)((u64)(u32)difference << 32);
+        divider[1] = (u32)(duration << 12);
+        state->deltaRed[i] = func_02002204();
+        divider[0] = (s64)((u64)(u32)(state->targetGreen[i] - state->green[i]) << 32);
+        divider[1] = (u32)(duration << 12);
+        state->deltaGreen[i] = func_02002204();
+        divider[0] = (s64)((u64)(u32)(state->targetBlue[i] - state->blue[i]) << 32);
+        divider[1] = (u32)(duration << 12);
+        state->deltaBlue[i] = func_02002204();
+        difference = state->targetRed[i + 1] - state->red[i + 1];
+        i++;
+    } while (i < 255);
+}
+
+/* Advance interior RGB555 entries by fixed-point component deltas, stopping
+ * each component at a boundary or its destination's integer component.
+ * Evidence: 0206ec94..0206edd0 clamps at 0/0xff000 and packs RGB555.
+ * state covers 0x2420 bytes and its slot must be initialized. */
+void func_0206ec68(Unk06ea70Transition *state)
+{
+    u16 *colors = (u16 *)Unk06ea70_GetBuf00Slot(state->slot);
+    int i;
+    for (i = 1; i < 255; i++) {
+        int red = (state->red[i] += state->deltaRed[i]);
+        int green, blue;
+        if (red <= 0) {
+            state->red[i] = 0;
+            state->deltaRed[i] = 0;
+            red = 0;
+        } else if (red >= 0xff000) {
+            state->red[i] = 0xff000;
+            state->deltaRed[i] = 0;
+            red = 255;
+        } else {
+            red >>= 12;
+            if (red == state->targetRed[i] >> 12) {
+                state->deltaRed[i] = 0;
+            }
+        }
+        green = (state->green[i] += state->deltaGreen[i]);
+        if (green <= 0) {
+            state->green[i] = 0;
+            state->deltaGreen[i] = 0;
+            green = 0;
+        } else if (green >= 0xff000) {
+            state->green[i] = 0xff000;
+            state->deltaGreen[i] = 0;
+            green = 255;
+        } else {
+            green >>= 12;
+            if (green == state->targetGreen[i] >> 12) {
+                state->deltaGreen[i] = 0;
+            }
+        }
+        blue = (state->blue[i] += state->deltaBlue[i]);
+        if (blue <= 0) {
+            state->blue[i] = 0;
+            state->deltaBlue[i] = 0;
+            blue = 0;
+        } else if (blue >= 0xff000) {
+            state->blue[i] = 0xff000;
+            state->deltaBlue[i] = 0;
+            blue = 255;
+        } else {
+            blue >>= 12;
+            if (blue == state->targetBlue[i] >> 12) {
+                state->deltaBlue[i] = 0;
+            }
+        }
+        colors[i] = (red >> 3) | ((green >> 3) << 5) | ((blue >> 3) << 10);
+    }
+    Unk06ea70_SetMask10Bit(state->slot);
+}
+
+void func_020a5fc8(int slot, int value);
+
+/* Drive the palette transition's warmup, blend interval and final release.
+ * Evidence: 0206ef98 compares tick to begin/end, then 0206f084 releases
+ * the table entry. The initialized state is borrowed until that release. */
+void func_0206ef6c(Unk06ea70Transition *state)
+{
+    int tick = state->tick;
+    if (tick < 7) {
+        if (state->enabled) {
+            func_0206ec68(state);
+        }
+    } else if (tick >= 7 && tick < state->begin) {
+        /* Hold the initial palette until the blend interval begins. */
+    } else if (tick >= state->begin && tick < state->end) {
+        if (tick == state->begin) {
+            func_020a5fc8(state->slot, 0);
+            func_02008904(state->source, Unk06ea70_GetBuf00Slot(state->slot), 510);
+            func_0206ee3c(state, state->end - state->begin, state->source);
+        }
+        if (state->begin != state->end) {
+            func_0206ec68(state);
+        }
+    } else if (tick >= state->end) {
+        func_020a5fc8(state->slot, 0);
+        func_02008904(state->source, Unk06ea70_GetBuf00Slot(state->slot), 510);
+        Unk06ea70_SetMask10Bit(state->slot);
+        Unk06ea70_ReleaseEntry(state->slot);
+        return;
+    }
+    state->tick++;
+}
+
+void func_02007e94(int condition);
+Unk06ea70Transition *func_020611dc(void (*callback)(Unk06ea70Transition *),
+    int a, int b, int c, u32 size, int priority, int d, int e);
+
+/* Create or restart a slot's timed palette transition, retaining source colors.
+ * Evidence: 0206f16c allocates 0x2420 bytes with callback 0206ef6c;
+ * 0206f1b0 registers the resulting state in the slot table.
+ * source has 256 colors and must remain valid through end; slot must index
+ * initialized buffers. */
+Unk06ea70Transition *func_0206f0a4(u16 *source, u32 mask, int slot, int begin, int end)
+{
+    Unk06ea70Transition *state;
+    int valid = source != 0;
+    if (!valid) {
+        func_02007e94(valid);
+        return 0;
+    }
+    state = (Unk06ea70Transition *)Unk06ea70_GetTableEntry(slot);
+    if (state) {
+        state->enabled = 0;
+        state->mask = mask;
+        state->source = source;
+        state->begin = begin;
+        state->end = end;
+        state->tick = 0;
+        state->slot = slot;
+        state->target = (u16 *)Unk06ea70_FindByMask(mask);
+        func_0206ee3c(state, state->enabled ? 7 : 0, state->target);
+    } else {
+        state = func_020611dc(func_0206ef6c, 0, 0, 0, 0x2420, 4, 0, 0);
+        func_02008848(state, 0, 0x2420);
+        state->enabled = 0;
+        state->mask = mask;
+        state->source = source;
+        state->begin = begin;
+        state->end = end;
+        state->tick = 0;
+        state->slot = slot;
+        Unk06ea70_SetEntry(slot, (u32)state);
+        state->target = (u16 *)Unk06ea70_FindByMask(mask);
+        if (state->enabled) {
+            Unk06ea70_Unk_06edf4(state->red, state->green, state->blue, state->source);
+            func_0206ee3c(state, 7, state->target);
+        } else {
+            func_0206ee3c(state, 0, state->target);
+        }
+    }
+    if (state->enabled) {
+        func_02008904(state->source, Unk06ea70_GetBuf00Slot(state->slot), 512);
+    }
+    return state;
+}

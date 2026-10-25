@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched five M1-T604 palette transition and dirty-buffer transfer functions at 100% objdiff; documented the remaining RGB555 blend on the hard list.
 - Matched all eight M1-T615 game/unit_021218d0 slot initialization, flag, counter and saved-area routines with typed layouts and per-function contracts.
 
 - M1-T614: match four additional game/unit_020ff030 functions; document the remaining message callback on the hard list.

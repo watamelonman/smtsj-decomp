@@ -2,13 +2,7 @@
 
 - `Unk06ea70_Unk_06edf4`: decompiler-derived
 
-## Not done in M1-T604
-- `func_0206f508`
-- `func_0206ee3c`
-- `func_0206ef6c`
-- `func_0206ec68`
-- `func_0206f0a4`
-- `func_0206f24c`
+## Earlier implementations
 - `Unk06ea70_FindByMask`: hand-matched
 - `Unk06ea70_Unk_06ebb8`: hand-matched
 - `Unk06ea70_ReleaseEntry`: hand-matched
@@ -63,3 +57,31 @@ is the original ARM disassembly; all indices require valid initialized storage.
 
 The TU remains linked from its original delink; no assembly stub is required by
 this project's build scheme. No completion configuration was changed.
+
+## M1-T604
+
+Five requested functions match at 100% in objdiff. Evidence is the ARM
+instructions in `build/delinks/src/game/unit_0206ea70.o`; the TU remains linked
+from that original object until a human marks it complete.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_0206f508` | 0206f508, 196 bytes: accepts absent buffer state; otherwise scans mask_10, submits the inclusive first/last dirty slot span through 0205bccc, and clears the mask. Both buffers must cover the signed slot count, which must be at most 32. The request is stack storage consumed by the helper. See DEC-012 for the singleton reload. |
+| `func_0206ee3c` | 0206ee3c, 304 bytes: nonpositive duration copies 510 bytes to the slot and expands all 256 RGB555 words into current component arrays. Positive duration expands destination components and prepares deltas for entries 1 through 254 using the hardware divider at 04000290. Duration is in ticks and its shift by twelve must fit signed int. State covers 0x2420 bytes; the borrowed color array has 256 words. The next red difference is read before the loop test, including entry 255. |
+| `func_0206ef6c` | 0206ef6c, 312 bytes: advances the tick, optionally steps during the first seven ticks, holds until begin, and prepares/steps the begin-to-end transition. At end it copies the retained source palette, marks the buffer dirty, and releases the slot entry. State and borrowed source must remain valid until release. |
+| `func_0206ec68` | 0206ec68, 396 bytes: adds deltas to entries 1 through 254, clamps component values to 0..0xff000, stops deltas when integer destinations are reached, packs RGB555 into buffer00, and sets mask_10. State contains nine 256-word component arrays and eight control words; the slot must exist. |
+| `func_0206f0a4` | 0206f0a4, 424 bytes: rejects a null source through 02007e94; restarts an existing table entry or allocates/zeros 0x2420 bytes through 020611dc with callback 0206ef6c, registers the slot, and initializes the selected palette. Returns the task-owned state; the caller retains ownership of source colors until the callback releases the entry. Slot and mask refer to initialized tables. |
+| `func_0206f24c` | 0206f24c, 532 bytes: selects the mask resource before testing the weight; copies 255 RGB555 entries from the source for weight <=0 or selected resource for weight >=4096. Interior weights blend each component using complementary 12-bit weights and separately rounded signed 64-bit products. Body omitted because instruction identity was not reached. |
+
+### Hard list for M1-T604
+
+- `func_0206f24c`: implemented typed RGB555 component extraction, complementary
+  weights, and signed 64-bit rounded products. Best objdiff result was 92.54%
+  (516 bytes against 532). Ordinary integer weights reached 91.94%; widening
+  both weights reproduced the original sign-extension register ordering.
+  Tried component declaration permutations, early loop increments, separate
+  versus combined packing expressions, component reuse, destination increment
+  forms, and inline multiplication helpers. Remaining differences include red
+  component register allocation, the location of the loop increment, and
+  packing/product scheduling. Use `tools/decompme.py` for a human scratch.
+  The original delink body is retained; this repository uses no assembly stubs.
