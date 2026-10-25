@@ -90,8 +90,9 @@ u32 Unk03aae8_Unk_03ac9c(int arg0)
 }
 
 
-int func_020b8660();
-/* decompiler-derived */
+int func_020b8660(int index);
+/* Forward signed argument zero with mode 1; values 0x733..0x737 also
+ * select indices 0..4 through 020b8660, as shown by the original jump table. */
 u32 Unk03aae8_Unk_03ae68(void)
 {
   short v1;
@@ -204,7 +205,7 @@ void *Unk03aae8_Unk_03ae10(u8 *p, int key)
 int Unk094fe0_Unk_094fec(u32 value);
 void Unk094fe0_SetSlot(int owner, int slot, int value);
 int Unk094fe0_GetSlot(int owner, int slot);
-void func_0209512c();
+void func_0209512c(int owner, int bit, int enabled);
 u32 Unk03aae8_Unk_03ad14(void);
 
 /* Write a slot using signed 16-bit arguments; kind 0 resolves field +0x40,
@@ -245,6 +246,8 @@ int Unk03aae8_Unk_03b694(void)
     return 1;
 }
 
+/* Set the argument-selected bit through the kind-0 provider or field +0x40
+ * for kinds 1 and 3. The borrowed object comes from active work +0xe8. */
 int Unk03aae8_Unk_03b6ec(void)
 {
     s16 a = func_0203ac00(0);
@@ -305,5 +308,150 @@ int func_0203b8e4(void)
     u32 upper = func_0203ac00(2);
     u32 value = (u32)func_02050088(0, lower << 10, upper << 10) / 100;
     Unk03aae8_Unk_03acf4((s32)((u32)scale * value) >> 10);
+    return 1;
+}
+
+int func_02039dc0(u8 *work);
+float func_02039e50(u8 *work);
+extern int data_0215e258[];
+extern float data_0215de58[];
+int Unk094fe0_TestFlag18(int owner, int bit);
+
+/* Test the top stack value by its byte tag; advance the instruction index for
+ * true, otherwise load the destination from the indexed 32-byte record. */
+int func_0203aae8(u8 *work)
+{
+    int value;
+    switch (FIELD(u8, work + FIELD(int, work, 28), 31)) {
+    case 0:
+    case 2:
+        value = func_02039dc0(work);
+        break;
+    case 1:
+    case 3:
+        if (0.0f == func_02039e50(work)) {
+            value = 0;
+        } else {
+            value = 1;
+        }
+        break;
+    case 4:
+        value = 0;
+        break;
+    default:
+        value = 0;
+        break;
+    }
+    if (value) {
+        FIELD(int, work, 24) = FIELD(int, work, 24) + 1;
+    } else {
+        FIELD(int, work, 24) = FIELD(int, FIELD(u8 *, work, 184) +
+            FIELD(u16, FIELD(u8 *, work, 188) + FIELD(int, work, 24) * 4, 2) * 32, 24);
+    }
+    return 1;
+}
+
+/* Dispatch borrowed work through the opcode table until status 0 or 2.
+ * Status 1 clears the consecutive-yield counter; status 2 increments both counters. */
+int func_0203ab84(u8 *work)
+{
+    for (;;) {
+        int status = ((Unk03aae8StepFn *)data_02142170)[
+            FIELD(u16, FIELD(u8 *, work, 188), FIELD(int, work, 24) * 4)](work);
+        if (status == 0) {
+            FIELD(int, work, 208) = 0;
+            return 2;
+        }
+        if (status == 2) {
+            break;
+        }
+        if (status == 1) {
+            FIELD(int, work, 208) = 0;
+        }
+    }
+    FIELD(int, work, 208)++;
+    FIELD(int, work, 204)++;
+    return 1;
+}
+
+/* Read the argument counted backward from the borrowed stack. Tags 1 and 3
+ * convert floats to integers; tags 2 and 3 index the external value tables. */
+int func_0203ac00(int argumentIndex)
+{
+    u8 *work = FIELD(u8 *, data_0215de34, 4);
+    int index = FIELD(int, work, 28) - (argumentIndex + 1);
+    switch (FIELD(u8, work + index, 32)) {
+    case 0:
+    case 4:
+        return FIELD(int, work + index * 4, 60);
+    case 1:
+        return (int)FIELD(float, work + index * 4, 60);
+    case 2:
+        return data_0215e258[FIELD(int, work + index * 4, 60)];
+    case 3:
+        return (int)data_0215de58[FIELD(int, work + index * 4, 60)];
+    }
+    return 0;
+}
+
+/* Initialize the borrowed eight-byte record, dividing 32 among at most 32
+ * positive parts. Byte zero and the residual word at +4 are each at least 1. */
+void func_0203af7c(u8 *record, int parts)
+{
+    FIELD(u8, record, 0) = 32;
+    FIELD(u8, record, 1) = 1;
+    FIELD(int, record, 4) = 1;
+    if (parts <= 0) return;
+    if (parts > 32) parts = 32;
+    FIELD(u8, record, 0) /= parts;
+    if (FIELD(u8, record, 0) < 1) FIELD(u8, record, 0) = 1;
+    FIELD(int, record, 4) = 32 - parts * FIELD(u8, record, 0);
+    FIELD(int, record, 4)++;
+    if (FIELD(int, record, 4) < 1) FIELD(int, record, 4) = 1;
+}
+
+/* Clear the argument-selected bit using the kind-0 provider or the borrowed
+ * object's field +0x40 for kinds 1 and 3. Return script status 1. */
+int func_0203b76c(void)
+{
+    s16 bit = func_0203ac00(0);
+    u8 *object = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);
+    switch (FIELD(int, object, 8)) {
+    case 0:
+        func_0209512c(Unk094fe0_Unk_094fec(FIELD(u32, object, 64)), bit, 0);
+        break;
+    case 1:
+        FIELD(u32, object, 64) &= ~(1 << bit);
+        break;
+    case 2:
+        break;
+    case 3:
+        FIELD(u32, object, 64) &= ~(1 << bit);
+        break;
+    }
+    return 1;
+}
+
+/* Store the selected bit's state using the kind-0 provider or field +0x40
+ * for kinds 1 and 3; other kinds store zero. Return script status 1. */
+int func_0203b7f4(void)
+{
+    s16 bit = func_0203ac00(0);
+    u8 *object = FIELD(u8 *, Unk03aae8_Unk_03ad14(), 232);
+    int result = 0;
+    switch (FIELD(int, object, 8)) {
+    case 0:
+        result = Unk094fe0_TestFlag18(Unk094fe0_Unk_094fec(FIELD(u32, object, 64)), bit);
+        break;
+    case 1:
+        if (FIELD(u32, object, 64) & (1 << bit)) result = 1;
+        break;
+    case 2:
+        break;
+    case 3:
+        if (FIELD(u32, object, 64) & (1 << bit)) result = 1;
+        break;
+    }
+    Unk03aae8_Unk_03acf4(result);
     return 1;
 }
