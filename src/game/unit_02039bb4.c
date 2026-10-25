@@ -20,77 +20,83 @@ typedef struct Unk039bb4Work {
 
 /* The existing callers pass the work pointer as a 32-bit address. */
 int func_0203a334(int workAddress, int selector);
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a9ec(int arg0)
+/* Calls func_0203a334 with selector 5, then advances +0x18 and returns 1.
+ * Work is borrowed and valid; reload +0x18 after any callee changes. */
+u32 Unk039bb4_Unk_03a9ec(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,5);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 5);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03aa10(int arg0)
+/* Calls func_0203a334 with selector 6, then advances +0x18 and returns 1.
+ * Work is borrowed and valid; reload +0x18 after any callee changes. */
+u32 Unk039bb4_Unk_03aa10(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,6);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 6);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03aa34(int arg0)
+/* Calls func_0203a334 with selector 7, then advances +0x18 and returns 1.
+ * Work is borrowed and valid; reload +0x18 after any callee changes. */
+u32 Unk039bb4_Unk_03aa34(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,7);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 7);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03aa58(int arg0)
+/* Calls func_0203a334 with selector 8, then advances +0x18 and returns 1.
+ * Work is borrowed and valid; reload +0x18 after any callee changes. */
+u32 Unk039bb4_Unk_03aa58(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,8);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 8);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03aa7c(int arg0)
+/* Calls func_0203a334 with selector 9, then advances +0x18 and returns 1.
+ * Work is borrowed and valid; reload +0x18 after any callee changes. */
+u32 Unk039bb4_Unk_03aa7c(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,9);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 9);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03aaa0(int arg0)
+/* Calls func_0203a334 with selector 10, then advances +0x18 and returns 1.
+ * Work is borrowed and valid; reload +0x18 after any callee changes. */
+u32 Unk039bb4_Unk_03aaa0(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,10);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 10);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03aac4(int arg0)
+/* Calls func_0203a334 with selector 11, then advances +0x18 and returns 1.
+ * Work is borrowed and valid; reload +0x18 after any callee changes. */
+u32 Unk039bb4_Unk_03aac4(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,0xb);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 11);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a298(int arg0)
+/* Replaces +0x18 using the +0x18 word of a selected 0x20-byte record.
+ * Work and both tables are borrowed; the current four-byte entry supplies
+ * an unsigned halfword index at +2. Callers must supply valid table indices. */
+u32 Unk039bb4_Unk_03a298(Unk039bb4Work *work)
 {
-  ((Unk039bb4Work *)arg0)->unk_0018 =
-       *(u32 *)
-        (((Unk039bb4Work *)arg0)->unk_00b4 +
-         (u32)*(u16 *)(((Unk039bb4Work *)arg0)->unk_00bc + ((Unk039bb4Work *)arg0)->unk_0018 * 4 + 2) * 0x20 +
-        0x18);
+  u16 index = *(u16 *)(work->unk_00bc + work->unk_0018 * 4 + 2);
+  work->unk_0018 = *(s32 *)(work->unk_00b4 + (u32)index * 0x20 + 0x18);
   return 1;
 }
 

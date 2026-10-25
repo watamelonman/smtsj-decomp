@@ -21,3 +21,7 @@ ownership; the views expose only offsets observed in the original instructions.
 `include/game/unit_020a163c.h` holds private layout views and provider declarations
 for the resource/list TU. The views expose only instruction-established fields;
 resource providers retain their existing ownership and lifetime contracts.
+
+`include/game/unit_0203aae8.h` defines borrowed object-prefix and eight-byte
+record views for the script provider dispatchers. Only instruction-observed
+fields are exposed; active work and provider storage retain their ownership.
