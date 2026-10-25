@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T676: clarify eight game/unit_02039bb4 record, tagged append, and entry handlers with typed work views and behavior contracts.
 - M1-T675: document and type seven selector handlers and the indexed record-word transfer in game/unit_02039bb4.
 - Match all four M1-T667 script provider dispatchers in game/unit_0203aae8 at 100% objdiff, with typed record and borrowed object views.
 - Matched five M1-T669 packing, validation, and table encoding functions in game/unit_02111400; documented two remaining hard functions.

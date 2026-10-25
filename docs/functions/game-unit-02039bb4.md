@@ -16,14 +16,14 @@
 - `Unk039bb4_Unk_03a840`: Calls `func_0203a334(work, 2)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a840`; the wider meaning is unknown, so the name stays neutral.
 - `Unk039bb4_Unk_03a864`: Calls `func_0203a334(work, 3)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a864`; the wider meaning is unknown, so the name stays neutral.
 - `Unk039bb4_Unk_03a9c8`: Calls `func_0203a334(work, 4)`, then increments the signed word at work +0x18 and returns 1. The field is read after the call. Evidence: ARM instructions at `0x02003a9c8`; the wider meaning is unknown, so the name stays neutral.
-- `Unk039bb4_Unk_03a30c`: decompiler-derived
-- `Unk039bb4_Unk_039d10`: decompiler-derived
-- `Unk039bb4_Unk_039d3c`: decompiler-derived
-- `Unk039bb4_Unk_039d68`: decompiler-derived
-- `Unk039bb4_Unk_039d94`: decompiler-derived
-- `Unk039bb4_Unk_03a26c`: decompiler-derived
-- `Unk039bb4_Unk_039f1c`: decompiler-derived
-- `Unk039bb4_Unk_039ee8`: decompiler-derived
+- `Unk039bb4_Unk_03a30c`: Copies the +0x18 word of a 0x20-byte record from the table at work +0xb8 into work +0x18. The unsigned halfword at current entry +2 selects the record. Returns 1; borrowed tables and indices must be valid. Evidence: ARM instructions at `0x02003a30c`. The wider purpose remains unknown, so the neutral name is retained.
+- `Unk039bb4_Unk_039d10`: Writes tag 0 to work +0x20 indexed by the signed word at +0x1c, writes the supplied word to work +0x3c indexed by the reloaded +0x1c, then increments +0x1c. The work address retains its existing 32-bit ABI; callers must provide valid append space. Evidence: ARM instructions at `0x020039d10`. The wider purpose remains unknown, so the neutral name is retained.
+- `Unk039bb4_Unk_039d3c`: Writes tag 1 to work +0x20 indexed by the signed word at +0x1c, writes the supplied word to work +0x3c indexed by the reloaded +0x1c, then increments +0x1c. The work address retains its existing 32-bit ABI; callers must provide valid append space. Evidence: ARM instructions at `0x020039d3c`. The wider purpose remains unknown, so the neutral name is retained.
+- `Unk039bb4_Unk_039d68`: Writes tag 5 to work +0x20 indexed by the signed word at +0x1c, writes the supplied word to work +0x3c indexed by the reloaded +0x1c, then increments +0x1c. The work address retains its existing 32-bit ABI; callers must provide valid append space. Evidence: ARM instructions at `0x020039d68`. The wider purpose remains unknown, so the neutral name is retained.
+- `Unk039bb4_Unk_039d94`: Writes tag 4 to work +0x20 indexed by the signed word at +0x1c, writes the supplied word to work +0x3c indexed by the reloaded +0x1c, then increments +0x1c. The work address retains its existing 32-bit ABI; callers must provide valid append space. Evidence: ARM instructions at `0x020039d94`. The wider purpose remains unknown, so the neutral name is retained.
+- `Unk039bb4_Unk_03a26c`: Returns 0 without changes when work +0x1c is zero. Otherwise calls func_02039dc0 with the work address, writes its result plus one to +0x18, and returns 1. Evidence: ARM instructions at `0x02003a26c`. The wider purpose remains unknown, so the neutral name is retained.
+- `Unk039bb4_Unk_039f1c`: Appends the current four-byte entry’s unsigned halfword at +2 using the tag-zero helper, reloads and increments work +0x18, and returns 1. Evidence: ARM instructions at `0x020039f1c`. The wider purpose remains unknown, so the neutral name is retained.
+- `Unk039bb4_Unk_039ee8`: Increments work +0x18 before reading a full word from that entry in the +0xbc table; appends it using the tag-zero helper, reloads and increments +0x18 again, and returns 1. Evidence: ARM instructions at `0x020039ee8`. The wider purpose remains unknown, so the neutral name is retained.
 - `Unk039bb4_Unk_039f4c`: decompiler-derived
 - `Unk039bb4_Unk_039ff8`: decompiler-derived
 - `Unk039bb4_Unk_03a030`: decompiler-derived
@@ -77,3 +77,17 @@ and byte-identical artifact checksum gate pass. No new tests are required by
 this card; instruction matching validates the original behavior.
 
 Hard list for M1-T675: none.
+
+## M1-T676 verification
+
+The eight bodies already existed in the starting tree. This card replaces their
+raw decompiler expressions with explicit work views, named values, and borrowed
+storage contracts. The four append helpers retain their integer-address ABI for
+existing callers. No module boundary changes or new semantic names are introduced.
+Instruction matching is the behavioral test; this card requires no new tests.
+
+Validation: all eight targets report 100% objdiff; the match gate passes all
+76 checked C functions. The full build, anticheat, nine existing unit tests,
+and byte-identical artifact checksum gate pass.
+
+Hard list for M1-T676: none.
