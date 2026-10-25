@@ -36,27 +36,25 @@ No allocation ownership transfers and no bounds checks occur in these helpers.
 
 ## Hard list
 
-No M1-T650 targets remain. Historical unresolved candidate:
-- `Unk02e000_Unk_02e144`: decompiler-derived
+No M1-T650 or M1-T652 targets remain on the hard list.
 
-## Not done in M1-T652
-- `Unk02e000_SetMgrUnk38`
-- `Unk02e000_HasField36`
-- `Unk02e000_Unk_02e0cc`
-- `Unk02e000_GetTier`
-- `Unk02e000_EnsureAlloc7718`
-- `Unk02e000_AddCounter5fc4`
-- `Unk02e000_SetSlot`
-- `Unk02e000_Unk_02e75c`: decompiler-derived
-- `Unk02e000_Unk_02e884`: decompiler-derived
-- `Unk02e000_Unk_02e89c`: decompiler-derived
+## M1-T652
 
-## Not done in M1-T651
-- `Unk02e000_Unk_02e5c4`
-- `Unk02e000_ClearMgrUnk38`
-- `Unk02e000_Call_02008848`
-- `Unk02e000_Unk_02e740`
-- `Unk02e000_GetAreaRecord`
+All eight existing C candidates verified at **100% objdiff**. Retained matching
+logic, added instruction-based contracts and typed the allocation and resource
+callee parameters. The TU already existed despite the card's creation wording.
+No new tests are required by this card; objdiff checks generated instructions.
+
+| Function | Address / bytes | Instruction evidence and contract |
+| --- | --- | --- |
+| `Unk02e000_SetMgrUnk38` | 0x0202e070 / 32 | Conditional stores of the two input words to manager +0x38/+0x3c; null is ignored. |
+| `Unk02e000_HasField36` | 0x0202e904 / 32 | Null returns zero; otherwise loads an unsigned halfword at +0x36 and normalizes to boolean. Borrowed storage must support the halfword load. |
+| `Unk02e000_Unk_02e0cc` | 0x0202e0cc / 40 | Calls func_0205ad2c(data_0213d89c[0]), then func_0205ad78(data_02140ac8, 0xde). Purpose unknown; neutral name retained. |
+| `Unk02e000_GetTier` | 0x0202e440 / 40 | Sign tests after subtracting 3, 11 and 31 select tiers 0..3. GetSlotPtr uses these same tier boundaries; intended inputs are slot indices. |
+| `Unk02e000_Unk_02e144` | 0x0202e144 / 44 | Calls Unk_02e180, func_0202e23c and Call_02008848 in order, then loops over Unk_02e5c4(0) and (1). Requires allocation; overall purpose unconfirmed. |
+| `Unk02e000_EnsureAlloc7718` | 0x0202e114 / 48 | If global word +4 is zero, calls func_02052fe0(0x7718) and stores its result there. Module retains ownership; no allocation failure handling in original. |
+| `Unk02e000_AddCounter5fc4` | 0x0202e1f8 / 48 | Adds input to work word +0x5fc4, then stores the smaller unsigned value of the wrapped sum and 35999999. Requires allocation. |
+| `Unk02e000_SetSlot` | 0x0202e000 / 52 | Rejects null manager and signed indices outside 0..15; stores input word at manager +0x74 + index*4. Borrowed manager remains externally owned. |
 
 ## Not done in M1-T653
 - `Unk02e000_Unk_02e7c0`
@@ -93,23 +91,11 @@ No M1-T650 targets remain. Historical unresolved candidate:
 - `Unk02e000_GetSlotPtr`
 - `func_0202e5dc`
 - `func_0202e23c`
-- `Unk02e000_Unk_02e0cc`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
-- `Unk02e000_Unk_02e5c4`: decompiler-derived (proto+fix cleanup)
-- `Unk02e000_Unk_02e740`: decompiler-derived (plain+fix cleanup)
-- `Unk02e000_ClearMgrUnk38`: hand-matched
-- `Unk02e000_GetAreaRecord`: hand-matched
-- `Unk02e000_SetSlot`: hand-matched
 - `Unk02e000_GetSlot`: hand-matched
-- `Unk02e000_SetMgrUnk38`: hand-matched
-- `Unk02e000_EnsureAlloc7718`: hand-matched
-- `Unk02e000_AddCounter5fc4`: hand-matched
-- `Unk02e000_GetTier`: hand-matched
-- `Unk02e000_Call_02008848`: hand-matched
 - `Unk02e000_Unk_02e7c0`: hand-matched
 - `Unk02e000_FindEntryIndex`: hand-matched
 - `Unk02e000_Unk_02e840`: hand-matched
-- `Unk02e000_HasField36`: hand-matched
 - `Unk02e000_TestFlag`: hand-matched
 - `Unk02e000_SetRecord`: hand-matched
 - `Unk02e000_SetSlot40`: hand-matched
@@ -128,3 +114,23 @@ No M1-T650 targets remain. Historical unresolved candidate:
 - `Unk02e000_SetRecordFlag1f`: hand-matched
 - `Unk02e000_SetRecordFlag1f_1`: hand-matched
 - `Unk02e000_SetRecordUnk1f_2`: hand-matched
+
+## M1-T651
+
+All eight existing candidates verified at **100% objdiff**. Evidence is the
+original ARM instruction sequence. Address returns retain the existing 32-bit
+ABI; all views are borrowed and require prior allocation and valid indices.
+Neutral names remain where instruction evidence does not establish purpose.
+
+| Function | Address / bytes | Instruction evidence and contract |
+| --- | --- | --- |
+| `Unk02e000_Unk_02e5c4` | 0x0202e5c4 / 24 | Calls Unk_02e75c(index), then func_02008848(record, 0, 72). |
+| `Unk02e000_Unk_02e75c` | 0x0202e75c / 24 | Loads allocation word +4 and multiply-adds index times 72. |
+| `Unk02e000_Unk_02e884` | 0x0202e884 / 24 | Loads allocation word +4; adds 0x5d0 and 0x6000. |
+| `Unk02e000_ClearMgrUnk38` | 0x0202e090 / 28 | Calls manager alias getter; conditionally stores zero at +0x38 and +0x3c, supporting the existing name. Null is allowed. |
+| `Unk02e000_Call_02008848` | 0x0202e5a8 / 28 | Calls Unk_02e884 then func_02008848 with zero and length 0x1148; returns its result. |
+| `Unk02e000_Unk_02e740` | 0x0202e740 / 28 | Calls Unk_02e75c, loads unsigned byte +0x28, returns whether nonzero. |
+| `Unk02e000_GetAreaRecord` | 0x0202e7a4 / 28 | Calls GetWorkArea, adds 0x74, multiply-adds index times 60; record table arithmetic supports the existing name. |
+| `Unk02e000_Unk_02e89c` | 0x0202e89c / 28 | Loads allocation word +4, adds 0x26 and 0x5d00, then index shifted left two. Address need not be word aligned. |
+
+No M1-T651 targets remain on the hard list.

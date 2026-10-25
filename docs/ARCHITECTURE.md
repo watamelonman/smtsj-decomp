@@ -17,3 +17,7 @@ work area, and entry table used by `src/game/unit_020bac80.c`. Providers retain
 ownership; the views expose only offsets observed in the original instructions.
 
 ## Glossary
+
+`include/game/unit_020a163c.h` holds private layout views and provider declarations
+for the resource/list TU. The views expose only instruction-established fields;
+resource providers retain their existing ownership and lifetime contracts.

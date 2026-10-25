@@ -20,6 +20,8 @@ u32 Unk02e000_Get_data_0215dd24(void);
 u32 Unk02e000_Unk_02e170(void);
 void Unk02e000_Unk_02e0ac(void);
 int Unk02e000_Unk_02e774(void);
+int Unk02e000_Unk_02e75c(int index);
+int Unk02e000_Unk_02e884(void);
 int Unk02e000_Unk_02e8b8(void);
 int Unk02e000_Unk_02e8f0(void);
 
@@ -33,7 +35,7 @@ typedef struct Unk02e000Mgr {
 
 Unk02e000Mgr *Unk02dcfc_Thunk_Unk095560_GetManagerAlias(void);
 
-u32 func_02052fe0();
+u32 func_02052fe0(u32 size);
 
 typedef struct Unk02e000Save {
     u8 pad_0000[0x5fc4];
@@ -54,6 +56,8 @@ typedef struct Unk02e000Rec {
 } Unk02e000Rec;                 /* 36 bytes; table at work+0x16FC, ids 1..491 */
 #define UNK02E000_RECS() ((Unk02e000Rec *)((u8 *)Unk02e000_Unk_02e774() + 0x16fc))
 
+/* Original 0x0202e000 stores at manager +0x74 + i*4, supporting SetSlot.
+ * Null managers and indices outside 0..15 are ignored; ownership stays external. */
 void Unk02e000_SetSlot(int i, u32 v)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -78,6 +82,8 @@ u32 Unk02e000_GetSlot(int i)
     return m->slots[i];
 }
 
+/* Original 0x0202e070 conditionally stores the pair at manager +0x38/+0x3c,
+ * supporting the existing offset-based name. Any word values and null are allowed. */
 void Unk02e000_SetMgrUnk38(u32 a, u32 b)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -87,6 +93,8 @@ void Unk02e000_SetMgrUnk38(u32 a, u32 b)
     }
 }
 
+/* Original 0x0202e090 clears manager words +0x38/+0x3c when the borrowed
+ * manager alias exists; the paired stores support the existing name. */
 void Unk02e000_ClearMgrUnk38(void)
 {
     Unk02e000Mgr *m = Unk02dcfc_Thunk_Unk095560_GetManagerAlias();
@@ -96,6 +104,8 @@ void Unk02e000_ClearMgrUnk38(void)
     }
 }
 
+/* Original 0x0202e114 allocates 0x7718 bytes only when global word +4 is zero.
+ * The size and conditional allocation support the name; storage stays module-owned. */
 void Unk02e000_EnsureAlloc7718(void)
 {
     if (data_0215dd24[1] != 0) {
@@ -104,6 +114,8 @@ void Unk02e000_EnsureAlloc7718(void)
     data_0215dd24[1] = func_02052fe0(0x7718);
 }
 
+/* Original 0x0202e1f8 adds to work +0x5fc4 and caps the unsigned result at
+ * 35999999, supporting the name. Requires allocation; addition wraps before capping. */
 void Unk02e000_AddCounter5fc4(int add)
 {
     Unk02e000Save *w = (Unk02e000Save *)Unk02e000_Unk_02e774();
@@ -127,6 +139,8 @@ u32 Unk02e000_GetAddr_data_02140ac8(void)
 void func_0202e4dc(u8 *rec);
 void func_0202e520(u8 *rec);
 
+/* Original 0x0202e440 tests the sign of x-3, x-11 and x-31 to return 0..3.
+ * GetSlotPtr uses the same boundaries for record tiers; callers supply slot indices. */
 int Unk02e000_GetTier(int x)
 {
     if (x - 3 < 0) {
@@ -155,6 +169,8 @@ void Unk02e000_Call_02e520(u8 *base, int i)
     func_0202e520(base + 500 + i * 100);
 }
 
+/* Original 0x0202e5a8 calls func_02008848 on the borrowed +0x65d0 block
+ * with value zero and length 0x1148; allocation must already exist. */
 int Unk02e000_Call_02008848(void)
 {
     return func_02008848(Unk02e000_Unk_02e884(), 0, 0x1148);
@@ -196,7 +212,8 @@ int Unk02e000_Unk_02e774(void)
   return (int)data_0215dd24[1] + 0x98;
 }
 
-/* 60-byte records at +0x74 of the work area. */
+/* Original 0x0202e7a4 computes work +0x74 + i*60; this table arithmetic
+ * supports GetAreaRecord. Caller supplies a valid index; storage is borrowed. */
 u8 *Unk02e000_GetAreaRecord(int i)
 {
     return Unk02e000_GetWorkArea() + 116 + i * 60;
@@ -264,10 +281,11 @@ int Unk02e000_Unk_02e8f0(void)
 
 
 void Unk02e000_Unk_02e180(void);
-int func_0202e23c();
+int func_0202e23c(void);
 int Unk02e000_Call_02008848();
 void Unk02e000_Unk_02e5c4(int arg0);
-/* decompiler-derived */
+/* Original 0x0202e144 calls three initialization helpers in order, then
+ * Unk_02e5c4 for indices 0 and 1. Requires allocation; broader purpose is unknown. */
 void Unk02e000_Unk_02e144(void)
 {
   int value;
@@ -283,24 +301,27 @@ void Unk02e000_Unk_02e144(void)
 
 
 
-/* decompiler-derived */
-int Unk02e000_Unk_02e75c(int arg0)
+/* Original 0x0202e75c multiply-adds index*72 to allocation word +4.
+ * Caller supplies a valid index; the borrowed record purpose is unconfirmed. */
+int Unk02e000_Unk_02e75c(int index)
 {
-  return arg0 * 0x48 + *(int *)(((int)data_0215dd24) + 4);
+    return index * 0x48 + (int)data_0215dd24[1];
 }
 
 
-/* decompiler-derived */
+/* Original 0x0202e884 adds 0x5d0 then 0x6000 to allocation word +4.
+ * Returns a borrowed address; the sub-block purpose remains unconfirmed. */
 int Unk02e000_Unk_02e884(void)
 {
-  return *(int *)(((int)data_0215dd24) + 4) + 0x65d0;
+    return (int)data_0215dd24[1] + 0x65d0;
 }
 
 
-/* decompiler-derived */
-int Unk02e000_Unk_02e89c(int arg0)
+/* Original 0x0202e89c adds 0x5d26 and index*4 to allocation word +4.
+ * Caller supplies a valid index; returns an unaligned borrowed address. */
+int Unk02e000_Unk_02e89c(int index)
 {
-  return *(int *)(((int)data_0215dd24) + 4) + 0x5d26 + arg0 * 4;
+    return (int)data_0215dd24[1] + 0x5d26 + index * 4;
 }
 
 /* Original 0x0202e228 adds 0x5fc8 to the allocated Unk_02e774 view.
@@ -313,9 +334,10 @@ int Unk02e000_Unk_02e228(void)
 }
 
 extern u32 data_0213d89c[];
-int func_0205ad2c();
-int func_0205ad78();
-/* decompiler-derived; refs "Data/Tex/" */
+int func_0205ad2c(u32 value);
+int func_0205ad78(u8 *data, u32 value);
+/* Original 0x0202e0cc passes global word zero to func_0205ad2c, then
+ * data_02140ac8 and 0xde to func_0205ad78. Purpose is unconfirmed; name stays neutral. */
 void Unk02e000_Unk_02e0cc(void)
 {
   func_0205ad2c(*data_0213d89c);
@@ -376,20 +398,20 @@ u8 *Unk02e000_GetSlotPtr(int i)
     return 0;
 }
 
-/* decompiler-derived */
-void Unk02e000_Unk_02e5c4(int arg0)
+/* Original 0x0202e5c4 passes the indexed borrowed record to func_02008848
+ * with zero and length 72. Caller must provide an allocated, valid index. */
+void Unk02e000_Unk_02e5c4(int index)
 {
-  u32 tmp1;
-  tmp1 = Unk02e000_Unk_02e75c(arg0);
-  func_02008848(tmp1,0,0x48);
+    int record = Unk02e000_Unk_02e75c(index);
+    func_02008848(record, 0, 0x48);
 }
 
-/* decompiler-derived */
-int Unk02e000_Unk_02e740(int arg0)
+/* Original 0x0202e740 tests unsigned byte +0x28 in the indexed record.
+ * Requires a valid allocated record; the byte's meaning is unconfirmed. */
+int Unk02e000_Unk_02e740(int index)
 {
-  int tmp1;
-  tmp1 = Unk02e000_Unk_02e75c((int)arg0);
-  return *(char *)(tmp1 + 0x28) != '\0';
+    u8 *record = (u8 *)Unk02e000_Unk_02e75c(index);
+    return record[0x28] != 0;
 }
 
 /* Original 0x0202e788 calls Unk_02e774 then adds 4; requires its allocated block.
@@ -414,6 +436,8 @@ u8 *Unk02e000_GetSubBlock3a4(void)
     return Unk02e000_GetWorkArea() + 0x3a4;
 }
 
+/* Original 0x0202e904 returns whether the borrowed halfword at +0x36 is
+ * nonzero, supporting the name. Null returns false; nonnull storage must be aligned. */
 int Unk02e000_HasField36(u8 *p)
 {
     if (p == 0) {

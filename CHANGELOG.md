@@ -2,6 +2,13 @@
 
 ## Unreleased
 - M1-T634: matched seven selector, coordinate-probe, initialization, and record-search functions; documented the remaining dispatcher on the hard list.
+- Matched all six M1-T658 game/unit_020cd6ec state, input, message, and item-rebuild handlers at 100% objdiff; preserved the eight earlier matches.
+- Verified all eight M1-T664 game/unit_0203aae8 functions at 100% objdiff; typed helper calls, made query-result forwarding explicit, and documented assembly evidence.
+- Match all four M1-T643 StaffRoll viewport, script-layout, owner-initialization, and asynchronous image-loader functions at 100% objdiff.
+- Verified all eight M1-T652 manager, tier, allocation and initialization helpers at 100% objdiff; documented instruction evidence and typed callee parameters.
+- Matched all eight M1-T657 game/unit_020cd6ec callbacks, cleanup routines, state transitions, and handle flag updates; documented typed state offsets and instruction evidence.
+- Matched all five M1-T630 resource sorting, list cleanup, output setup and loading-state routines in game/unit_020a163c at 100% objdiff.
+- Verified all eight M1-T651 manager, record and allocation-view helpers at 100% objdiff; clarified typed access and instruction contracts.
 - Matched all eight M1-T633 game/unit_020986ac flag, selector, and bounded record scan functions at 100% objdiff; documented typed contracts and compiler propagation control.
 - Verified all eight M1-T650 initialization, work-view and record-call helpers at 100% objdiff; clarified typed calls and borrowed-address contracts.
 - Match all eight M1-T642 StaffRoll state, resource, drawing, and teardown functions at 100% objdiff with typed borrowed views.
