@@ -7,9 +7,9 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 int Unk02e000_GetWorkArea();
-int Unk02e000_Thunk_0202e788();
+void *Unk02e000_Thunk_0202e788(void);
 int Unk096754_CountEntries();
-int func_0209846c();
+void func_0209846c(u32 arg0, void *area);
 
 int Unk096754_Unk_0970b4(void);
 int Unk096754_Unk_0970c4(void);
@@ -64,6 +64,8 @@ int Unk096754_CountEntries(void)
     return n;
 }
 
+/* Copies signed halfwords +0x12/+0x14 to +0x1c/+0x1e. The paired
+ * loads/stores at 0x02096f0c support the existing CopyAreaPos name. */
 void Unk096754_CopyAreaPos(void)
 {
     Unk096754Area *a = (Unk096754Area *)Unk02e000_Thunk_0202e788();
@@ -71,47 +73,43 @@ void Unk096754_CopyAreaPos(void)
     a->unk_1e = a->unk_14;
 }
 
-/* decompiler-derived */
+/* Returns the signed area halfword at +0x1c; field semantics are unknown. */
 int Unk096754_Unk_0970b4(void)
 {
-  int value;
-  value = Unk02e000_Thunk_0202e788();
-  return (int)*(short *)(value + 0x1c);
+    Unk096754Area *area = (Unk096754Area *)Unk02e000_Thunk_0202e788();
+    return area->unk_1c;
 }
 
-/* decompiler-derived */
+/* Returns the signed area halfword at +0x12; field semantics are unknown. */
 int Unk096754_Unk_0970c4(void)
 {
-  int value;
-  value = Unk02e000_Thunk_0202e788();
-  return (int)*(short *)(value + 0x12);
+    Unk096754Area *area = (Unk096754Area *)Unk02e000_Thunk_0202e788();
+    return area->unk_12;
 }
 
-/* decompiler-derived */
+/* Returns the signed area halfword at +0x1e; field semantics are unknown. */
 int Unk096754_Unk_097100(void)
 {
-  int value;
-  value = Unk02e000_Thunk_0202e788();
-  return (int)*(short *)(value + 0x1e);
+    Unk096754Area *area = (Unk096754Area *)Unk02e000_Thunk_0202e788();
+    return area->unk_1e;
 }
 
-/* decompiler-derived */
+/* Returns the signed area halfword at +0x14; field semantics are unknown. */
 int Unk096754_Unk_097110(void)
 {
-  int value;
-  value = Unk02e000_Thunk_0202e788();
-  return (int)*(short *)(value + 0x14);
+    Unk096754Area *area = (Unk096754Area *)Unk02e000_Thunk_0202e788();
+    return area->unk_14;
 }
 
-/* decompiler-derived */
+/* Forwards arg0 and the borrowed current area to func_0209846c. */
 void Unk096754_Unk_097204(u32 arg0)
 {
-  u32 value;
+  void *value;
   value = Unk02e000_Thunk_0202e788();
   func_0209846c(arg0,value);
 }
 
-/* decompiler-derived */
+/* Tests whether the entry count is below the unsigned byte at work +0x357. */
 int Unk096754_Unk_0969f0(void)
 {
   int value1;
@@ -182,6 +180,8 @@ int Unk096754_Unk_096b44(int id)
     return Unk096754_HasEntryId(id) != 1;
 }
 
+/* Clears area +0x6c and restores the paired halfwords. The call to
+ * CopyAreaPos and repeated copies at 0x02096f28 support the existing name. */
 void Unk096754_ResetAreaPos(void)
 {
     u8 *p = (u8 *)Unk02e000_Thunk_0202e788();
