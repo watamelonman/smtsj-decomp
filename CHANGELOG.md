@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Added C for M1-T501 message dispatch wrappers and work-state/event handlers in `game/unit_020fa7e8`, with typed message and callback contracts.
 - Matched all eight M1-T500 work reset, callback descriptor, empty callback and lookup helpers in `game/unit_020fa7e8`; documented typed contracts and original instruction evidence.
 
 - Verified eight M1-T493 shared-record and task wrapper matches; documented their contracts and explicit task-update arguments.
