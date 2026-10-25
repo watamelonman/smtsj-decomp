@@ -24,21 +24,27 @@ Validation: all eight functions report 100% in objdiff. The match build,
 checksum (all artifacts byte-identical), anticheat, and nine tool tests pass.
 No new tests are required by this card; objdiff checks the original instructions.
 
-## Hard list
+## M1-T546
 
-No M1-T545 functions remain on the hard list.
-The following older entries concern other cards:
+Evidence is the original ARM instructions in
+`build/delinks/src/game/unit_020bc1a8.o`; all offsets below are bytes.
 
-- `Unk0bc1a8_Unk_0bc9b4`: decompiler-derived
-- `Unk0bc1a8_Unk_0bcc34`: decompiler-derived
+| Function | Size | Evidence and contract |
+| --- | ---: | --- |
+| `Unk0bc1a8_SetFlag4Inv` | 40 | 020bc548: nonzero mode clears mask 4 in payload -12; zero sets it. Null is ignored; other payloads require an aligned writable header. |
+| `Unk0bc1a8_SetFlag1Inv` | 40 | 020bc570: same operation with mask 1. |
+| `Unk0bc1a8_Unk_0bc514` | 52 | 020bc514: calls 02061424 on payload -52; nonzero mode then passes header -4 and the request word to 0bcacc. Payload is a live DS address. |
+| `Unk0bc1a8_IsSlotEmpty` | 56 | 020bc650: signed index >=41 returns 1, otherwise tests the slot object against null. Other indices must address the initialized table. |
+| `func_020bc614` | 60 | 020bc614: scans 41 twelve-byte slots and copies object +40 to +36 when occupied. Context is reloaded each iteration; see DEC-010. |
+| `Unk0bc1a8_Unk_0bc5d4` | 64 | 020bc5d4: if context is absent, allocates eight bytes, installs data_0215034c as the table and sets the second word to 1. |
+| `Unk0bc1a8_Unk_0bc9b4` | 64 | 020bc9b4: builds a borrowed 72-byte stack request through 0bc8c8 with mode 1; on success forwards it and the slot to 0bc770. |
+| `Unk0bc1a8_Unk_0bcc34` | 72 | 020bcc34: scans 41 slots, clears the first object address equal to the supplied DS address, returns 1 on finding it and 0 otherwise. Requires initialized context. |
 
-## Not done in M1-T546
-- `Unk0bc1a8_SetFlag4Inv`
-- `Unk0bc1a8_SetFlag1Inv`
-- `Unk0bc1a8_Unk_0bc514`
-- `Unk0bc1a8_IsSlotEmpty`
-- `func_020bc614`
-- `Unk0bc1a8_Unk_0bc5d4`
+Seven existing bodies already matched and retain their instruction sequences.
+The new loop initially allowed the compiler to hoist the context load; preserving
+that observed read with volatile gives identical instructions (DEC-010).
+All eight requested functions report 100%. No M1-T546 hard functions remain.
+No new tests: the card waives them and objdiff verifies the original instructions.
 
 ## Not done in M1-T547
 - `Unk0bc1a8_IsSlotEmptyOrFlag8`
@@ -58,10 +64,5 @@ The following older entries concern other cards:
 - `func_020bc9f4`
 - `func_020bcacc`
 - `func_020bc200`
-- `Unk0bc1a8_Unk_0bc514`: decompiler-derived (plain cleanup)
-- `Unk0bc1a8_Unk_0bc5d4`: decompiler-derived (plain+fix cleanup)
 - `Unk0bc1a8_Unk_0bc490`: hand-matched
-- `Unk0bc1a8_SetFlag4Inv`: hand-matched
-- `Unk0bc1a8_SetFlag1Inv`: hand-matched
-- `Unk0bc1a8_IsSlotEmpty`: hand-matched
 - `Unk0bc1a8_IsSlotEmptyOrFlag8`: hand-matched

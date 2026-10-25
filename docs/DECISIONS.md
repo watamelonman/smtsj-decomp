@@ -198,3 +198,11 @@ byte read explicitly converted to s8 for the mapping argument. These equivalent
 C byte views reproduce the original loads with mwcc without introducing volatile
 semantics. The glyph mapper accepts a signed byte; the resource indices and
 coordinates remain signed integers as evidenced by the original arithmetic.
+
+## DEC-010 — Preserve the context reload in 020bc614
+
+The original reloads data_02176ba8 on every slot iteration. An ordinary read
+lets mwcc hoist that load, changing the instructions and register allocation.
+Use a volatile view for this loop's context pointer read to preserve the observed
+accesses. This matching constraint does not establish synchronization or hardware
+ownership; the table and object words remain ordinary memory accesses.

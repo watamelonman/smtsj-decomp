@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T546 slot, flag, context and request helpers in game/unit_020bc1a8; documented instruction evidence and contracts.
 - Verified the eight M1-T545 object-header, callback and context helpers against the original instructions; documented their contracts.
 - Matched all three M1-T506 record-query, table-percentage, and six-table scanner functions in `game/unit_020f3db4` at 100% objdiff.
 - Matched all three M1-T528 state-update and drawing callbacks at 100% objdiff, with typed floating state and documented instruction evidence.
