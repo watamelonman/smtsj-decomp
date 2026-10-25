@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Match all eight M1-T696 manager dispatch, phase, record-work and EventMessage path routines with typed inputs and documented ARM evidence.
+- Match M1-T683 selector-factor chance routine 020b0310; document 020afe64 and 020b04b4 on the hard list.
+- Verified all eight M1-T706 game/unit_0209d42c functions at 100% objdiff; added typed helper declarations and documented singleton, table, cell, and callback contracts.
+- M1-T690: match seven game/unit_020de678 transition, record selection, and callback state handlers with typed arguments.
 - Match and document all eight M1-T695 manager reset, record search and ID predicate routines at 100% objdiff, with typed borrowed record access.
 - Match all eight M1-T678 game/unit_02039bb4 handlers, including saved-value duplication and callback dispatch; resolve both hard-function deferrals.
 - Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.

@@ -316,9 +316,11 @@ void Unk02f2a8_Unk_035440(u32 value);
 void Unk02cad4_Unk_02cbdc(u32 value);
 void func_020ded70(void);
 void func_020deedc(void);
-void func_020def0c(void);
+/* Callback work contains two state words and a saved provider selector. */
+typedef struct Unk0de678Work { u32 state, phase, selector; } Unk0de678Work;
+void func_020def0c(Unk0de678Work *work);
 u32 Unk02cad4_GetUnk00(void);
-u32 *func_020611dc(void (*a)(void), void (*b)(void), void (*c)(void),
+u32 *func_020611dc(void (*a)(Unk0de678Work *), void (*b)(void), void (*c)(void),
                     void (*d)(void), int size, int enabled, int zero, int one);
 void Unk0bc1a8_Unk_0bc928(int selector, int value, int zero);
 void func_02057fd8(void);
@@ -456,4 +458,239 @@ void Unk_LoadPalette_020de678(u32 value)
         func_02057dcc(a + 255, b + 255, b + 255, a + 255);
         func_0205dee8(2, value, 0.0f, 0.0f, offset, 1.0f, 1.0f, 0.0f, 1.0f, 0.0f);
     }
+}
+
+void Unk124c5c_Set_124d8c(int enabled, int kind);
+void Unk124c5c_Set_124d6c(int first, int second);
+void Unk124e68_Set(int mode, int step, int count);
+void func_020fc584(int mode, int step, int count);
+
+/* At 0x020df374, configures selector 31 and forwards the transition;
+ * active global state routes optional transitions by the observed mode set. */
+void func_020df374(int first, int second, int mode, int step, int count)
+{
+    Unk124c5c_Set_124d8c(0, 31);
+    if (data_021508d4[0]) {
+        Unk124c5c_Set_124d6c(first, 0);
+        Unk124e68_Set(mode, step, count);
+        if (second) {
+            switch (mode) {
+            case 0: case 1: case 3: func_020fc584(0, step, count); break;
+            default: func_020fc584(1, step, count); break;
+            }
+        }
+    } else {
+        Unk124c5c_Set_124d6c(first, second);
+        Unk124e68_Set(mode, step, count);
+    }
+}
+
+/* At 0x020df420, enables the provider and forwards transitions using
+ * selectors 2/3 when global state is active; arguments remain provider-owned. */
+void func_020df420(int first, int second, int mode, int step, int count)
+{
+    Unk124c5c_Set_124d8c(1, 0);
+    if (data_021508d4[0]) {
+        Unk124c5c_Set_124d6c(first, 0);
+        Unk124e68_Set(mode, step, count);
+        if (second) {
+            switch (mode) {
+            case 0: case 1: case 3: func_020fc584(2, step, count); break;
+            default: func_020fc584(3, step, count); break;
+            }
+        }
+    } else {
+        Unk124c5c_Set_124d6c(first, second);
+        Unk124e68_Set(mode, step, count);
+    }
+}
+
+int Unk095560_Unk_096484(void);
+void func_02111494(void);
+void Unk02dcfc_Unk_02de6c(void);
+void Unk095560_Call_020773dc(void);
+void Unk0fc584_SetField28bc(int value);
+/* At 0x020df234, advances callback phases, restoring display providers at
+ * phase 1 and returning to state 1 at phase 6. Caller owns writable work. */
+void func_020df234(Unk0de678Work *work)
+{
+    switch (work->phase) {
+    case 0:
+        Unk0bc1a8_Unk_0bc9b4(24, 0);
+        Unk0de678_Unk_0de870();
+        work->phase++;
+        break;
+    case 1:
+        if (!Unk095560_Unk_096484()) return;
+        func_02111494();
+        Unk02cad4_SetupDisplayMode(2, 0, 0);
+        func_020de7e8(0, 1);
+        Unk0964f8_Unk_096508();
+        Unk02dcfc_Unk_02de6c();
+        Unk095560_Call_020773dc();
+        Unk0bc1a8_Unk_0bc928(24, 65535, 0);
+        Unk0fc584_SetField28bc(1);
+        func_020df374(1, 1, 0, 0, 0);
+        work->phase++;
+        break;
+    case 6:
+        work->state = 1;
+        work->phase = 0;
+        break;
+    default:
+        work->phase++;
+        break;
+    }
+}
+
+int Unk124c5c_IsKind31(void);
+void func_0204870c(void *first, void *second);
+int BattleTask_Unk_0481d4(void);
+void Unk02dcfc_Unk_02ddf4(void);
+extern u32 data_02150958[];
+/* At 0x020df0cc, sequences seven callback phases. Global packed bits
+ * 2..9 at offset 192 select the observed alternate exit. */
+void func_020df0cc(Unk0de678Work *work)
+{
+    switch (work->phase) {
+    case 0:
+        if (!Unk124c5c_IsKind31()) return;
+        work->phase++;
+        break;
+    case 1:
+        Unk0bc1a8_Unk_0bc9b4(24, 0);
+        Unk0de678_Unk_0df0a4();
+        work->phase++;
+        break;
+    case 2:
+        work->phase++;
+        break;
+    case 3:
+        Unk124c5c_Set_124d8c(0, 0);
+        func_0204870c(data_02150904, data_02150958);
+        work->phase++;
+        break;
+    case 4:
+        if (BattleTask_Unk_0481d4()) return;
+        work->phase++;
+        break;
+    case 5:
+        if ((FIELD(u32, data_021508d4, 192) << 22) >> 24 == 3) {
+            FIELD(u32, data_021508d4, 200) = 1;
+            Unk02cad4_Unk_02cbdc(4);
+            return;
+        }
+        Unk02cad4_SetupDisplayMode(2, 0, 0);
+        Unk124c5c_Set_124d8c(1, 31);
+        Unk124e68_Set(0, 0, 3);
+        work->phase++;
+        break;
+    case 6:
+        Unk0de678_Unk_0df064();
+        Unk0964f8_Unk_096508();
+        Unk02dcfc_Unk_02ddf4();
+        Unk095560_Call_020773dc();
+        Unk0bc1a8_Unk_0bc928(24, 65535, 0);
+        work->state = 0;
+        work->phase = 0;
+        break;
+    }
+}
+
+int Unk0fc584_GetField28bc(void);
+/* At 0x020def0c, drives the callback state machine and consumes global
+ * pending transitions. The provider supplies a writable 12-byte work area. */
+void func_020def0c(Unk0de678Work *work)
+{
+    switch (work->state) {
+    case 0:
+        work->state = 1;
+        break;
+    case 1:
+        if (!Unk0fc584_GetField28bc()) Unk0fc584_SetField28bc(1);
+        if (!func_020961a0() || FIELD(u32, data_021508d4, 4) == 1) {
+            if (!FIELD(u32, data_021508d4, 4))
+                FIELD(u32, data_021508d4, 8) = Unk02cad4_GetUnk00();
+            work->selector = FIELD(u32, data_021508d4, 8);
+            if (work->selector == 3)
+                Unk02f2a8_Unk_035440(FIELD(u32, data_021508d4, 12));
+            func_020df374(1, 1, 0, 0, 0);
+            Unk02cad4_Unk_02cbdc(work->selector);
+            work->state = 4;
+            return;
+        }
+        if (FIELD(u32, data_021508d4, 16)) func_020ded70();
+        if (FIELD(u32, data_021508d4, 40)) {
+            FIELD(u32, data_021508d4, 40) = 0;
+            work->state = 2;
+        }
+        if (FIELD(u32, data_021508d4, 44)) {
+            FIELD(u32, data_021508d4, 44) = 0;
+            Unk0fc584_SetField28bc(0);
+            work->state = 3;
+        }
+        break;
+    case 2:
+        func_020df0cc(work);
+        break;
+    case 3:
+        func_020df234(work);
+        break;
+    case 4:
+        break;
+    }
+}
+
+/* The by-value resource block has four 26-byte records plus ten opaque
+ * trailing bytes, as established by the caller and stack argument offsets. */
+typedef struct Unk0de678RecordBlock { Unk0de678Rec records[4]; u8 tail[10]; } Unk0de678RecordBlock;
+void func_020fa8a8(int selector, const u32 *values, int mode);
+/* At 0x020deaa0, forwards four offset-10 halfwords and a selection word;
+ * the last populated slot chooses selector 10, 11, or 12. */
+void func_020deaa0(int kind, Unk0de678RecordBlock records, u32 selection)
+{
+    u32 values[6] = {0, 0, 0, 0, 0, 0};
+    int i;
+    Unk0bc1a8_Unk_0bc928(23, kind, 0);
+    for (i = 0; i < 4; i++) values[i] = records.records[i].unk_0a;
+    values[4] = selection;
+    if (values[3]) func_020fa8a8(12, values, 2);
+    else if (values[2]) func_020fa8a8(11, values, 2);
+    else func_020fa8a8(10, values, 2);
+}
+
+/* Resource-31 records have four signed keys and a 114-byte stride. */
+typedef struct Unk0de678ResourceRecord { s16 keys[4]; u8 pad_08[106]; } Unk0de678ResourceRecord;
+void func_020119c0(void *destination, int value, u32 size);
+void func_020119a0(void *destination, const void *source, u32 size);
+/* At 0x020de960, clears the caller's 114-byte output and searches resource
+ * 31 backwards. Counts non-minus-one keys, then queries that many leading
+ * keys and copies the first qualifying record; returns one on copy, zero when no record qualifies. */
+int func_020de960(Unk0de678ResourceRecord *output, int selector)
+{
+    void *resource;
+    int count;
+    Unk0de678ResourceRecord *records;
+    int i;
+    int j;
+    Unk044394_Unk_044428(31);
+    func_020119c0(output, 0, 114);
+    resource = func_020445d0(31, selector);
+    count = func_0204fe18(resource);
+    records = (Unk0de678ResourceRecord *)func_0204fde0(resource);
+    for (i = count - 1; i >= 0; i--) {
+        u8 populated = 0;
+        int k;
+        for (k = 0; k < 4; k++) {
+            if (records[i].keys[k] != -1) populated++;
+        }
+        for (j = 0; j < populated; j++) {
+            if (!Unk0e651c_Unk_0e666c(records[i].keys[j])) break;
+            if (j == populated - 1) {
+                func_020119a0(output, &records[i], 114);
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
