@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified seven M1-T653 slot, record, flag and initialization helpers at 100% objdiff; documented the remaining settings-table helper on the hard list.
 - Verified all eight M1-T652 manager, tier, allocation and initialization helpers at 100% objdiff; documented instruction evidence and typed callee parameters.
 - Matched all eight M1-T657 game/unit_020cd6ec callbacks, cleanup routines, state transitions, and handle flag updates; documented typed state offsets and instruction evidence.
 - Matched all five M1-T630 resource sorting, list cleanup, output setup and loading-state routines in game/unit_020a163c at 100% objdiff.
