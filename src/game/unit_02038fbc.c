@@ -1,26 +1,46 @@
-/* src/game/unit_02038fbc.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Resource-backed grid and element-table helpers. */
 #include "types.h"
 
+/* Serialized resource header; only the observed bytes are named. */
+typedef struct Unk038fbcHeader {
+    u8 pad_0000[8];
+    u8 originX;    /* +8: subtracted from absolute x */
+    u8 originY;    /* +9: subtracted from absolute y */
+    u8 width;      /* +10 */
+    u8 height;     /* +11 */
+    u8 counts[32]; /* +12: entries per kind; size guessed to match owner->tables */
+} Unk038fbcHeader;
 
-int func_02008848();
-int func_020516d0();
-/* decompiler-derived */
-void Unk038fbc_Unk_039138(u32 *arg0)
+/* Loaded-resource owner; 0x8c bytes as cleared by Unk038fbc_Unk_039138. */
+typedef struct Unk038fbcOwner {
+    Unk038fbcHeader *header; /* +0: backing resource */
+    u8 *aux;                 /* +4 */
+    u8 *grid;                /* +8: width*height records of eight bytes */
+    u8 *tables[32];          /* +12: per-kind element arrays, (0x8c - 12) / 4 */
+} Unk038fbcOwner;
+
+void func_02008848(void *destination, int value, u32 size);
+void func_020516d0(void *resource);
+u32 Unk038fbc_Unk_039248(u32 kind);
+
+/* Release the backing resource and clear all 0x8c bytes; a null owner is allowed. */
+void Unk038fbc_Unk_039138(Unk038fbcOwner *owner)
 {
-  if (arg0 == (u32 *)0x0) {
-    return;
-  }
-  func_020516d0(*arg0);
-  func_02008848(arg0,0,0x8c);
+    if (owner == 0) {
+        return;
+    }
+    func_020516d0(owner->header);
+    func_02008848(owner, 0, sizeof(Unk038fbcOwner));
 }
 
-
+/* Partial node layout: the getter only observes the word at offset eight. */
 typedef struct Unk038fbcNode {
     u32 unk_00;
     u32 unk_04;
     u32 unk_08;
 } Unk038fbcNode;
 
+/* Return the word at node offset eight, or zero for a null node (ldr +8). */
 u32 Unk038fbc_GetNodeUnk08(Unk038fbcNode *node)
 {
     if (node != 0) {
@@ -29,100 +49,100 @@ u32 Unk038fbc_GetNodeUnk08(Unk038fbcNode *node)
     return 0;
 }
 
-/* decompiler-derived */
-int Unk038fbc_Unk_0391d8(int *arg0)
+/* Return the grid cell count (header width times height), or zero without a resource. */
+int Unk038fbc_Unk_0391d8(Unk038fbcOwner *owner)
 {
-  int value;
-  if (arg0 == (int *)0x0) {
-    return 0;
-  }
-  value = *arg0;
-  if (value != 0) {
-    return (int)(short)(u16)*(u8 *)(value + 10) * (int)(short)(u16)*(u8 *)(value + 0xb);
-  }
-  return 0;
-}
-
-
-/* decompiler-derived */
-u32 Unk038fbc_Unk_038fbc(int *arg0)
-{
-  if (arg0 == (int *)0x0) {
-    return 0;
-  }
-  if (*arg0 != 0) {
-    func_020516d0(*arg0);
-    func_02008848(arg0,0,8);
-    return 1;
-  }
-  return 0;
-}
-
-
-u32 Unk038fbc_Unk_039248(u32 arg0);
-u8 *Unk038fbc_Unk_039160(u8 **o, int x, int y)
-{
-    u8 *h;
-    int dx, dy;
-    if (o == 0) {
+    Unk038fbcHeader *header;
+    if (owner == 0) {
         return 0;
     }
-    h = o[0];
-    if (h != 0) {
-        dx = x - h[8];
-        dy = y - h[9];
-        if (dx >= 0 && dx < h[10] && dy >= 0 && dy < h[11]) {
-            return o[2] + (h[10] * dy + dx) * 8;
+    header = owner->header;
+    if (header != 0) {
+        return (int)(short)(u16)header->width * (int)(short)(u16)header->height;
+    }
+    return 0;
+}
+
+/* Release a loaded resource, clear the header/aux pointers, and report success. */
+u32 Unk038fbc_Unk_038fbc(Unk038fbcOwner *owner)
+{
+    if (owner == 0) {
+        return 0;
+    }
+    if (owner->header != 0) {
+        func_020516d0(owner->header);
+        func_02008848(owner, 0, 8);
+        return 1;
+    }
+    return 0;
+}
+
+/* Translate absolute coordinates by the header origin; reject out-of-grid cells. */
+u8 *Unk038fbc_Unk_039160(Unk038fbcOwner *owner, int x, int y)
+{
+    Unk038fbcHeader *header;
+    int dx, dy;
+    if (owner == 0) {
+        return 0;
+    }
+    header = owner->header;
+    if (header != 0) {
+        dx = x - header->originX;
+        dy = y - header->originY;
+        if (dx >= 0 && dx < header->width && dy >= 0 && dy < header->height) {
+            return owner->grid + (header->width * dy + dx) * 8;
         }
     }
     return 0;
 }
 
-u8 *Unk038fbc_GetElement(u32 *p, u32 i, u32 j)
+/* Select a table entry by kind and index; the header count for the kind bounds the index. */
+u8 *Unk038fbc_GetElement(Unk038fbcOwner *owner, u32 kind, u32 index)
 {
-    if (p == 0) {
+    if (owner == 0) {
         return 0;
     }
-    if (((u8 *)p[0] + i)[12] <= j) {
+    if (owner->header->counts[kind] <= index) {
         return 0;
     }
     {
-        u8 *base = (u8 *)(p + i)[3];
-        return base + j * Unk038fbc_Unk_039248(i);
+        u8 *table = owner->tables[kind];
+        return table + index * Unk038fbc_Unk_039248(kind);
     }
 }
 
-/* decompiler-derived */
-u32 Unk038fbc_Unk_039248(u32 arg0)
+/* Return the serialized element stride for kinds 0..12 (the kinds with known
+ * table layouts), or zero for unknown kinds. */
+u32 Unk038fbc_Unk_039248(u32 kind)
 {
-  switch(arg0) {
-  case 0:
-    return 0x20;
-  case 1:
-    return 4;
-  case 2:
-    return 8;
-  case 3:
-    return 4;
-  case 4:
-    return 4;
-  case 5:
-    return 8;
-  case 6:
-    return 4;
-  case 7:
-    return 4;
-  case 8:
-    return 8;
-  case 9:
-    return 8;
-  case 10:
-    return 8;
-  case 0xb:
-    return 4;
-  case 0xc:
-    return 4;
-  default:
-    return 0;
-  }
+    switch (kind) {
+    case 0:
+        return 0x20;
+    case 1:
+        return 4;
+    case 2:
+        return 8;
+    case 3:
+        return 4;
+    case 4:
+        return 4;
+    case 5:
+        return 8;
+    case 6:
+        return 4;
+    case 7:
+        return 4;
+    case 8:
+        return 8;
+    case 9:
+        return 8;
+    case 10:
+        return 8;
+    case 11:
+        return 4;
+    case 12:
+        return 4;
+    default:
+        return 0;
+    }
 }
