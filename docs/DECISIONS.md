@@ -214,3 +214,12 @@ compiler, forward and backward local call relocations have different encoded
 branch addends; the report's fuzzy comparison distinguishes them even when the
 interactive diff resolves both to the same symbol. Callee placement reproduces
 the original call direction without changing behavior or tool configuration.
+
+## DEC-012 — Preserve the palette transfer singleton reload
+
+The original 0206f508 reloads buffer state from data_02170ccc +4 after scanning
+its dirty bits. An ordinary C read lets mwcc retain the state across the scan,
+changing both register allocation and the transfer setup. Use a volatile word
+view for this single reload to reproduce the observed access. This matching
+constraint does not imply concurrent mutation or hardware ownership. Slot
+contents and the scan itself remain ordinary memory accesses.
