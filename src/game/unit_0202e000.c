@@ -139,7 +139,7 @@ u32 Unk02e000_GetAddr_data_02140ac8(void)
 }
 
 u8 *func_0202e4dc(int value);
-void func_0202e520(u8 *rec);
+int func_0202e520(int value);
 
 /* Original 0x0202e440 tests the sign of x-3, x-11 and x-31 to return 0..3.
  * GetSlotPtr uses the same boundaries for record tiers; callers supply slot indices. */
@@ -168,7 +168,7 @@ void Unk02e000_Call_02e4dc(u8 *base, int i)
  * func_0202e520; base and the selected record remain caller-owned. */
 void Unk02e000_Call_02e520(u8 *base, int i)
 {
-    func_0202e520(base + 500 + i * 100);
+    func_0202e520((int)(base + 500 + i * 100));
 }
 
 /* Original 0x0202e5a8 calls func_02008848 on the borrowed +0x65d0 block
@@ -369,13 +369,15 @@ void Unk02e000_Unk_02e180(void)
   func_0202e1b8();
 }
 
-int func_020445d0();
-s16 *func_0204fde0();
-u32 func_0204fe18();
+void *func_020445d0(int index, int item);
+void *func_0204fde0(void *handle);
+u32 func_0204fe18(void *handle);
+/* Original 0x0202e3e4 scans signed halfwords from resource (35,0), using
+ * its unsigned count; returns the first equal index or -1. Provider owns storage. */
 int Unk02e000_FindIndex_02e3e4(int a)
 {
-    int h = func_020445d0(35, 0);
-    s16 *t = func_0204fde0();
+    void *h = func_020445d0(35, 0);
+    s16 *t = func_0204fde0(h);
     u32 n = func_0204fe18(h);
     u32 i;
     for (i = 0; i < n; i++) {
@@ -486,6 +488,8 @@ typedef struct Unk02e000ObjFlags {
     u16 flag_0016_0 : 1;
 } Unk02e000ObjFlags;
 
+/* Original 0x0202e968 sets/clears bit i at work+0x374, supporting the name.
+ * Signed indices outside 0..89 are ignored; valid indices require allocation. */
 void Unk02e000_SetBit_02e968(int i, int set)
 {
     u8 m;
@@ -514,7 +518,10 @@ int Unk02e000_SetRecord(u32 id, void *src)
     return 1;
 }
 
-int Unk02e000_GetRecord(u32 id, u32 a)
+/* Original 0x0202ea10 copies 36 bytes out, then sets source byte +0xb bit 1.
+ * This copy supports GetRecord. IDs above 491 fail; valid IDs 1..491 require
+ * allocation and a writable 36-byte destination. Ownership stays external. */
+int Unk02e000_GetRecord(u32 id, void *a)
 {
     Unk02e000Rec *e;
     if (id > 491) {
@@ -539,6 +546,8 @@ int Unk02e000_SetSlot40(int i, void *src)
     return 0;
 }
 
+/* Original 0x0202eab8 stores halfword +0x1c then caps it at 500, supporting
+ * the offset name. IDs above 491 fail; valid IDs 1..491 require allocation. */
 int Unk02e000_SetRecordUnk1c(u32 id, u16 v)
 {
     Unk02e000Rec *e;
@@ -566,6 +575,9 @@ u32 Unk02e000_GetRecordUnk1c(u32 id)
     }
 }
 
+/* Original 0x0202eb48 caps signed v above 100, otherwise stores its low seven
+ * bits at +0x1e, preserving bit 7. Offset supports name. IDs above 491 fail;
+ * valid IDs 1..491 require allocation; negative v is truncated, not clamped. */
 int Unk02e000_SetRecordUnk1e(u32 id, int v)
 {
     Unk02e000Rec *e;
@@ -608,6 +620,9 @@ int Unk02e000_IsRecordAvailable(u16 id)
     return 0;
 }
 
+/* Original 0x0202ec48 normalizes v into byte +0x1f bit 0, preserving other
+ * bits; this supports the flag name. IDs above 491 fail; valid allocated IDs
+ * are 1..491. Returns one after updating the borrowed record. */
 int Unk02e000_SetRecordFlag1f(u32 id, int v)
 {
     Unk02e000Rec *e;
@@ -634,6 +649,9 @@ int Unk02e000_GetRecordFlag0(u32 id)
 }
 
 
+/* Original 0x0202ecf8 normalizes v into byte +0x1f bit 1, preserving other
+ * bits; this supports the flag name. IDs above 491 fail; valid allocated IDs
+ * are 1..491. Returns one after updating the borrowed record. */
 int Unk02e000_SetRecordFlag1f_1(u32 id, int v)
 {
     Unk02e000Rec *e;
@@ -702,4 +720,18 @@ u8 *func_0202e4dc(int value)
         record = Unk02e000_GetSlotPtr(Unk02e000_FindIndex_02e3e4(-1));
     }
     return record;
+}
+
+/* Original 0x0202e520 looks up the signed low halfword and switches on its
+ * tier to return 152/96/64/32 bytes, or zero for another tier. The neutral
+ * name is retained because the argument's broader meaning is unconfirmed. */
+int func_0202e520(int value)
+{
+    switch (Unk02e000_GetTier(Unk02e000_FindIndex_02e3e4((s16)value))) {
+    case 0: return 152;
+    case 1: return 96;
+    case 2: return 64;
+    case 3: return 32;
+    default: return 0;
+    }
 }
