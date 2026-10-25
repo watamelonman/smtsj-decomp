@@ -65,7 +65,7 @@ u32 Unk03aae8_Unk_03af50(void)
 
 
 
-/* decompiler-derived */
+/* Read a borrowed stack word only for tag 5; arg0 counts backward from the top. */
 u32 Unk03aae8_Unk_03ac9c(int arg0)
 {
   int value1;
@@ -131,14 +131,16 @@ void Unk03aae8_Unk_03acf4(u32 arg0)
 #endif
 typedef int (*Unk03aae8StepFn)(u8 *);
 extern u8 data_02142170[];
-void func_02095b48();
-void func_0204b344();
-void *func_0204b3cc();
-void *func_0204fe68();
-void *func_0204fed8();
-void *Unk095560_Unk_095778();
+void func_02095b48(u8 *buffer, u32 value);
+void func_0204b344(u8 *object, const u8 *buffer);
+void *func_0204b3cc(u8 *object, int key);
+void *func_0204fe68(u32 handle, void *context);
+void *func_0204fed8(void *object, int key);
+void *Unk095560_Unk_095778(int key);
 int _s32_div_f();
 
+/* For kind 0, populate a zeroed 64-byte temporary from field +0x40 and apply it.
+ * The borrowed object must expose its kind at +8. */
 void Unk03aae8_Unk_03ad24(u8 *p)
 {
     switch (FIELD(s32, p, 8)) {
@@ -155,6 +157,8 @@ void Unk03aae8_Unk_03ad24(u8 *p)
     }
 }
 
+/* Resolve key through the kind-specific borrowed handle at +0x5c or +0x74.
+ * Kind 0 delegates directly; unsupported kinds return null. */
 void *Unk03aae8_Unk_03ad98(u8 *p, int key)
 {
     void *r = 0;
@@ -174,6 +178,8 @@ void *Unk03aae8_Unk_03ad98(u8 *p, int key)
     return r;
 }
 
+/* Resolve key globally for kind 0 or through borrowed field +0x50 for kind 2.
+ * Other kinds return null; evidence is the original kind jump table. */
 void *Unk03aae8_Unk_03ae10(u8 *p, int key)
 {
     void *r = 0;
@@ -195,12 +201,14 @@ void *Unk03aae8_Unk_03ae10(u8 *p, int key)
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-int Unk094fe0_Unk_094fec();
-void Unk094fe0_SetSlot();
-int Unk094fe0_GetSlot();
+int Unk094fe0_Unk_094fec(u32 value);
+void Unk094fe0_SetSlot(int owner, int slot, int value);
+int Unk094fe0_GetSlot(int owner, int slot);
 void func_0209512c();
 u32 Unk03aae8_Unk_03ad14(void);
 
+/* Write a slot using signed 16-bit arguments; kind 0 resolves field +0x40,
+ * while other kinds pass owner zero. Return script status 1. */
 int Unk03aae8_Unk_03b634(void)
 {
     int r;
@@ -219,6 +227,7 @@ int Unk03aae8_Unk_03b634(void)
     return 1;
 }
 
+/* Read a signed 16-bit slot for kind 0, otherwise store zero; return status 1. */
 int Unk03aae8_Unk_03b694(void)
 {
     int r;
@@ -270,6 +279,8 @@ int Unk03aae8_Unk_03b89c(void)
     return 1;
 }
 
+/* Store whether argument 0 lies within the inclusive signed bounds in arguments
+ * 1 and 2; the original comparisons establish signed ordering. */
 int Unk03aae8_Unk_03b93c(void)
 {
     int v = func_0203ac00(0);
@@ -280,5 +291,19 @@ int Unk03aae8_Unk_03b93c(void)
     } else {
         Unk03aae8_Unk_03acf4(0);
     }
+    return 1;
+}
+
+int func_02050088(int stream, u32 lower, u32 upper);
+/* Query stream zero with bounds scaled by 1024, divide its unsigned result by
+ * 100, multiply by argument 0 with word wrapping, then arithmetic-shift by 10.
+ * The original umull reciprocal sequence establishes unsigned division. */
+int func_0203b8e4(void)
+{
+    int scale = func_0203ac00(0);
+    u32 lower = func_0203ac00(1);
+    u32 upper = func_0203ac00(2);
+    u32 value = (u32)func_02050088(0, lower << 10, upper << 10) / 100;
+    Unk03aae8_Unk_03acf4((s32)((u32)scale * value) >> 10);
     return 1;
 }
