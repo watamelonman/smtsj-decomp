@@ -75,8 +75,21 @@ this card; instruction matching checks the target implementations directly.
 No M1-T577 hard functions remain. The TU remains linked from the delink until
 a human marks it complete.
 
-## Not done in M1-T578
-- `func_0202d198`
-- `func_0202d668`
-- `func_0202da98`
-- `func_0202d390`
+## M1-T578: verified matches
+
+All four functions match the original ARM instructions at 100% objdiff.
+Names remain neutral because the field and category semantics are unknown.
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `func_0202d198` | 148 B | Advances the manager entry cursor, skipping null or unpopulated records and resetting the entry to -1 when it reaches unsigned count +8. Index 9 becomes -1; an initial -1 returns without storing. The switch and scan at 0202d1bc..0202d21c establish these rules. |
+| `func_0202d668` | 168 B | Builds the eight-word request with signed work-area bytes +0x364/+0x365, selecting the current manager entry unless a nonnegative override is supplied. Returns zero for null dispatch; otherwise forwards the entry to 02095d3c for nonzero mode and returns one. Stores at 0202d6b4 onward establish the request layout. |
+| `func_0202da98` | 428 B | Accepts key -1; otherwise compares mirrored key categories with the helper result category. The two switch tables at 0202dac0 and 0202db50 establish the mappings; unsupported values return zero. |
+| `func_0202d390` | 728 B | Returns a borrowed 0x30-byte entry only after validating record population, unsigned entry bounds, status and flag predicates, category, condition, and mode-specific fields. Original loads and rejection branches at 0202d390..0202d65c establish field widths and order. No allocation or ownership transfer occurs. |
+
+The cursor required retaining the original sentinel switch case order to match
+register allocation. The dispatcher uses signed narrowing of full-word status
+fields because the original loads a word then sign-extends its low halfword.
+No M1-T578 hard functions remain. Behavioral tests are not required by this
+card; objdiff validates the generated instructions directly. The TU remains
+linked from the original delink pending human completion marking.

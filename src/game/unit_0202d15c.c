@@ -350,3 +350,141 @@ int Unk02d15c_FindRecordEntry(int a, int key)
     }
     return -1;
 }
+
+int Unk095560_Unk_095d2c(void);
+void Unk095560_Unk_095d3c(u8 *entry);
+u32 Unk03e43c_Unk_03fa28(void);
+int Unk094fe0_TestFlag18(s32 *record, int bit);
+int func_0202da98(int key);
+
+/* Advance the borrowed manager cursor across populated records (0202d198).
+ * Record count +8 bounds the entry cursor; record index 9 ends the scan. */
+void func_0202d198(void)
+{
+    int entry = Unk095560_Unk_095d2c();
+    int index = Unk095560_Unk_095d1c();
+    for (;;) {
+        int done;
+        u8 *record;
+        if (index == -1) return;
+        done = 0;
+        switch (index) {
+        case -1: done = 1; break;
+        case 9: done = 1; index = -1; break;
+        }
+        if (done) break;
+        record = Unk02d15c_GetManagerRecord(index);
+        if (record == 0 || FIELD(u32, record, 0) == 0) { index++; continue; }
+        entry++;
+        if ((u32)entry >= FIELD(u32, record, 8)) { entry = -1; index++; continue; }
+        break;
+    }
+    Unk02d15c_Unk_02d91c(index, entry);
+}
+
+/* Assemble the eight-word borrowed request using work-area signed bytes
+ * +0x364/+0x365; nonzero mode forwards the selected entry (0202d668). */
+int func_0202d668(int record, int mode0, int mode, int mode1, int sentinel)
+{
+    Unk02d15cRequest request;
+    u8 *work = Unk02e000_GetWorkArea();
+    int index = 0;
+    u8 *entry;
+    if (record == Unk095560_Unk_095d1c()) index = Unk02d15c_Unk_02d944();
+    if (sentinel > -1) index = sentinel;
+    request.w[0] = record;
+    request.w[4] = sentinel;
+    request.w[1] = mode0;
+    request.w[2] = mode;
+    request.w[3] = mode1;
+    request.w[5] = index;
+    request.w[6] = FIELD(s8, work + 0x300, 0x64);
+    request.w[7] = FIELD(s8, work + 0x300, 0x65);
+    entry = func_0202d390(&request);
+    if (entry == 0) return 0;
+    if (mode != 0) Unk095560_Unk_095d3c(entry);
+    return 1;
+}
+
+/* Compare the key's mirrored category with the current helper category.
+ * Switch tables at 0202dac0 and 0202db50 establish the mapping; -1 accepts. */
+int func_0202da98(int key)
+{
+    int category = -1;
+    if (key == -1) return 1;
+    switch (Unk03e43c_Unk_03fa28()) {
+    case 8: category = 0; break;
+    case 7: case 9: category = 1; break;
+    case 6: case 10: category = 2; break;
+    case 5: case 11: category = 3; break;
+    case 4: case 12: category = 4; break;
+    case 3: case 13: category = 5; break;
+    case 2: case 14: category = 6; break;
+    case 1: case 15: category = 7; break;
+    case 0: category = 8; break;
+    }
+    switch (key) {
+    case 0: return category == 8;
+    case 1: case 15: case 22: return category == 7;
+    case 2: case 14: case 21: return category == 6;
+    case 3: case 13: case 20: return category == 5;
+    case 4: case 12: case 19: return category == 4;
+    case 5: case 11: case 18: return category == 3;
+    case 6: case 10: case 17: return category == 2;
+    case 7: case 9: case 16: return category == 1;
+    case 8: return category == 0;
+    default: return 0;
+    }
+}
+
+/* Validate a borrowed 0x30-byte entry against the request, flags and work
+ * area. Offsets and rejection order follow 0202d390; no storage is owned here. */
+u8 *func_0202d390(Unk02d15cRequest *request)
+{
+    int index = request->w[0];
+    int kind = request->w[1];
+    int mode = request->w[2];
+    int code = request->w[3];
+    int limit = request->w[4];
+    u32 entryIndex = request->w[5];
+    int a = request->w[6];
+    int b = request->w[7];
+    u8 *work = Unk02e000_GetWorkArea();
+    u8 *record = Unk02d15c_GetManagerRecord(index);
+    s32 *flags = Unk094fe0_Unk_094fec(index);
+    u8 *entry;
+    if (record == 0) return 0;
+    if (FIELD(u32, record, 0) == 0) return 0;
+    if (limit > -1 && entryIndex != limit) return 0;
+    if (entryIndex >= FIELD(u32, record, 8)) return 0;
+    entry = FIELD(u8 *, record, 12) + entryIndex * 48;
+    if (!Unk02d15c_IsStatus1OrNeg((s16)FIELD(s32, entry, 12))) return 0;
+    if (!Unk02d15c_IsStatus0OrNeg((s16)FIELD(s32, entry, 16))) return 0;
+    if (FIELD(s32, entry, 12) < -1 && Unk094fe0_TestFlag18(flags, -2 - FIELD(s32, entry, 12)) != 1) return 0;
+    if (FIELD(s32, entry, 16) < -1 && Unk094fe0_TestFlag18(flags, -2 - FIELD(s32, entry, 16)) == 1) return 0;
+    if (FIELD(s8, entry, 2) >= 0 && !func_0202da98(FIELD(s8, entry, 2))) return 0;
+    if (!Unk02d15c_Unk_02d954(entry)) return 0;
+    if (mode == 0) {
+        u32 tag = entry[1];
+        if (tag != 1 && tag != 2) {
+            u16 area;
+            if (tag < 50) return 0;
+            area = tag - 50;
+            if (tag >= 250) area += 780;
+            if (area != FIELD(u16, work + 0x300, 0x5c)) return 0;
+        }
+        if (FIELD(s8, entry, 3) >= 0 && FIELD(s8, entry, 3) != a) return 0;
+        if (FIELD(s8, entry, 4) >= 0 && FIELD(s8, entry, 4) != b) return 0;
+        if (kind == -1) {
+            if (FIELD(s16, entry, 6) == 0) return 0;
+        } else if (FIELD(s16, entry, 6) != kind) return 0;
+        if (FIELD(s8, entry, 5) >= 0 && FIELD(s8, entry, 5) != FIELD(s32, work, 0x358)) return 0;
+    } else {
+        if (entry[1] != code) return 0;
+        if (code == 13) {
+            if (FIELD(s8, entry, 3) >= 0 && FIELD(s8, entry, 3) != a) return 0;
+            if (FIELD(s8, entry, 4) >= 0 && FIELD(s8, entry, 4) != b) return 0;
+        }
+    }
+    return entry;
+}
