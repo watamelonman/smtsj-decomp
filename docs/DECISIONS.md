@@ -120,6 +120,17 @@ preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
 
+## DEC-008 — Preserve direction reads and dispatcher relocations in 020f6250
+
+The original 020f6998 reads the global direction at +358 for its switch and
+reloads it for 02034b7c. A volatile-qualified field preserves those two accesses;
+this records observed access behavior without asserting hardware ownership.
+Ordinary reads cache the direction and change both register allocation and size.
+The 020f6ef8 dispatcher follows its C callees because placing it before them
+produced a 99.75% objdiff relocation discrepancy despite the standalone byte
+comparison passing. With this ordering all seven implemented functions match.
+Revisit these constraints if compiler or original-type evidence supplies a
+matching ordinary declaration or objdiff resolves forward local calls identically.
 ## DEC-008 — Preserve work-relative entry flag views in 020fbed4
 
 The initializer and wrapping draw callback address entry flags as
@@ -214,3 +225,22 @@ compiler, forward and backward local call relocations have different encoded
 branch addends; the report's fuzzy comparison distinguishes them even when the
 interactive diff resolves both to the same symbol. Callee placement reproduces
 the original call direction without changing behavior or tool configuration.
+
+
+## DEC-012 — Preserve address-based optional-word copies in 020ff140
+
+The original initializer stores constants in two stack words as well as copying
+those words into the outgoing presence-tagged message. An inline helper taking
+a typed pointer eliminates the separate stores with mwccarm 2.0/sp1p5. Pass the
+borrowed source as a 32-bit DS address and dereference it as s32 inside the helper;
+this retains the observed copies without volatile access or extra side effects.
+The caller owns both source words until the inline copy finishes. The helper is
+private to this TU; its index must be in 0..15.
+## DEC-012 — Preserve the palette transfer singleton reload
+
+The original 0206f508 reloads buffer state from data_02170ccc +4 after scanning
+its dirty bits. An ordinary C read lets mwcc retain the state across the scan,
+changing both register allocation and the transfer setup. Use a volatile word
+view for this single reload to reproduce the observed access. This matching
+constraint does not imply concurrent mutation or hardware ownership. Slot
+contents and the scan itself remain ordinary memory accesses.
