@@ -119,3 +119,172 @@ Model that field as a union of `u32 bits` and `float scale` so both calls
 preserve the original bits without numeric conversion. The initializer clears
 its integer view. The instruction evidence establishes the representation;
 it does not establish the field's game-level meaning.
+
+## DEC-008 — Preserve direction reads and dispatcher relocations in 020f6250
+
+The original 020f6998 reads the global direction at +358 for its switch and
+reloads it for 02034b7c. A volatile-qualified field preserves those two accesses;
+this records observed access behavior without asserting hardware ownership.
+Ordinary reads cache the direction and change both register allocation and size.
+The 020f6ef8 dispatcher follows its C callees because placing it before them
+produced a 99.75% objdiff relocation discrepancy despite the standalone byte
+comparison passing. With this ordering all seven implemented functions match.
+Revisit these constraints if compiler or original-type evidence supplies a
+matching ordinary declaration or objdiff resolves forward local calls identically.
+## DEC-008 — Preserve work-relative entry flag views in 020fbed4
+
+The initializer and wrapping draw callback address entry flags as
+`work + index * 96 + 0x6d`, while entry submissions use a base at work +0x10.
+Keep a shifted private work view for the flag accesses and the separately based
+entry addresses for submissions. These are views into the same allocated work
+block, not separately allocated work objects. Collapsing both expressions into
+ordinary entry-array indexing changes multiplication and register allocation;
+the separate views reproduce the original instructions at 100% objdiff.
+## DEC-008 — Variadic argument cursors in game/unit_020a9a90
+
+The original formatting wrappers align the address of the last named argument
+to four bytes and advance one word to obtain the variadic cursor. Express that
+32-bit ARM ABI operation directly in C, passing the borrowed cursor to
+`func_02013b94`. The compiler distribution has no standard headers in this
+project; `__builtin_next_arg` compiled as an external call rather than an
+intrinsic. The explicit cursor expression matches all four wrappers exactly.
+This is target-specific and should be revisited if standard library headers
+become available or the target ABI changes.
+## DEC-008 — Preserve the final comparison in 020f4928
+
+The original callback calls two accessors, loads work +8, compares it to 1,
+and returns unconditionally. Express the comparison as an early return in C:
+MWCC retains the original comparison even though both paths return. Removing
+it loses instruction equivalence. No game meaning is inferred from this test.
+## DEC-008 — Preserve the selection scan's shared indexed exit
+
+The three functions in `game/unit_020b0e08` branch from a successful inclusive
+weight comparison to the same indexed load used after an exhausted scan sets
+the index to `count - 1`. Use a local `selected` label to share that return.
+A separate return inside the loop duplicates the epilogue; a post-loop bounds
+check emits an extra comparison. Preserve the original inclusive comparison
+and last-candidate fallback. Revisit if compiler/type evidence reproduces the
+same control flow without a label.
+## DEC-008 — Preserve VER record-count observations
+
+`func_0206f778` reloads the file header's record count at loop tests and again
+when preparing the subsequent copies or installation calls. Ordinary C lets
+mwcc retain the final loop-test value and removes two original loads. Qualify
+only the typed count field as volatile to preserve these observations and their
+instruction order. This is a matching constraint, not evidence of hardware or
+concurrent ownership. Revisit if original type or compiler evidence reproduces
+the reloads without the qualifier.
+## DEC-008 — Model 0206dafc interior symbols as one record array
+
+`func_0206dafc` clears 328 bytes at `data_0216bac8 + index * 328` and
+initializes bytes within that same record. The delinker labels those bytes
+with individual data symbols. Represent them as fields in one typed record
+rather than independent strided arrays: the latter imply unrelated objects
+and produce different register allocation. The unified layout matches all
+instructions, and objdiff resolves its interior relocations at 100%. Padding
+records only observed offsets; the table capacity and field meanings remain
+unknown. Revisit if further data-layout evidence changes the record boundary.
+## DEC-008 — Preserve the aligned name buffer in 0203812c
+
+The original clears its 16-byte temporary name with four word stores before
+copying sixteen signed bytes. A union of four words and sixteen bytes expresses
+that alignment and byte access in C; a plain byte array compiles to a byte-clear
+loop. Keep dictionary entries 5–7 as separate assignments followed by record
+initialization, matching the original unrolled tail and field-read expression.
+## DEC-008 — Preserve stack count reloads and size-table ordering in 0205b540
+
+The original push reloads the count between the two size-table writes and on
+each diagnostic scan iteration. The pop reads the second size only after
+restoring the first cursor. Qualify the count and size-table accesses as
+volatile to preserve those observed accesses and ordering. This is a matching
+constraint, not evidence of hardware ownership or synchronization. Ordinary
+accesses let mwcc cache the count and hoist the second size load; revisit if
+original declaration evidence permits reproducing the accesses otherwise.
+
+## DEC-009 — Preserve signed text byte access in 020a9a90
+
+The two glyph loops test signed bytes and separately reload the byte passed to
+020a9ac8. Use a signed cursor for termination and space tests, and an unsigned
+byte read explicitly converted to s8 for the mapping argument. These equivalent
+C byte views reproduce the original loads with mwcc without introducing volatile
+semantics. The glyph mapper accepts a signed byte; the resource indices and
+coordinates remain signed integers as evidenced by the original arithmetic.
+
+## DEC-010 — Preserve the context reload in 020bc614
+
+The original reloads data_02176ba8 on every slot iteration. An ordinary read
+lets mwcc hoist that load, changing the instructions and register allocation.
+Use a volatile view for this loop's context pointer read to preserve the observed
+accesses. This matching constraint does not establish synchronization or hardware
+ownership; the table and object words remain ordinary memory accesses.
+
+## DEC-011 — Preserve local call direction in 020bc1a8
+
+Place 020bc770 before 020bcbc4 and 020bc2fc before 020bc814. With this
+compiler, forward and backward local call relocations have different encoded
+branch addends; the report's fuzzy comparison distinguishes them even when the
+interactive diff resolves both to the same symbol. Callee placement reproduces
+the original call direction without changing behavior or tool configuration.
+
+
+## DEC-012 — Preserve address-based optional-word copies in 020ff140
+
+The original initializer stores constants in two stack words as well as copying
+those words into the outgoing presence-tagged message. An inline helper taking
+a typed pointer eliminates the separate stores with mwccarm 2.0/sp1p5. Pass the
+borrowed source as a 32-bit DS address and dereference it as s32 inside the helper;
+this retains the observed copies without volatile access or extra side effects.
+The caller owns both source words until the inline copy finishes. The helper is
+private to this TU; its index must be in 0..15.
+## DEC-012 — Preserve the palette transfer singleton reload
+
+The original 0206f508 reloads buffer state from data_02170ccc +4 after scanning
+its dirty bits. An ordinary C read lets mwcc retain the state across the scan,
+changing both register allocation and the transfer setup. Use a volatile word
+view for this single reload to reproduce the observed access. This matching
+constraint does not imply concurrent mutation or hardware ownership. Slot
+contents and the scan itself remain ordinary memory accesses.
+
+
+## DEC-013 — Preserve one-word request records in 020f7188
+
+The four request builders store selected values both in source stack slots and
+in outgoing request words. Model each outgoing word as a one-word record and
+copy a local record into it. With mwccarm 2.0/sp1p5 this reproduces those stores
+without volatile accesses, padding stores or compiler directives. Ordinary scalar
+assignments remove the source copies. The two flag bytes and sixteen records
+are cleared separately, leaving the two alignment bytes unspecified as in ARM.
+These private views describe only the observed request layout, not gameplay meaning.
+
+
+## DEC-014 — Preserve bounded scan entry checks in 020986ac
+
+The three scans at 02098740, 02098860 and 020988bc compare the initial id
+111 to 210 before entering the loop. mwccarm 2.0/sp1p5 normally propagates
+that constant and removes the entry comparison and branch. Scope
+`opt_propagation off` to these three functions to preserve the observed
+control flow without changing their ordinary C behavior. Declaring the result
+before the id also reproduces the original register allocation. All three
+functions then match at 100%; the pragma is popped before any later code.
+
+
+## DEC-015 — Preserve StaffRoll image lookup scheduling
+
+In func_02117f94, retain a borrowed pointer to the selected ten-word table row
+and add its selected value twice before adding the image record's resource
+index. With mwccarm 2.0/sp1p5, spelling this as multiplication by two schedules
+the two table lookups differently and changes register allocation. Repeated
+addition reproduces the original shifted add and all preceding instructions
+without volatile accesses or compiler directives. Table values must keep the
+signed index arithmetic in range, and both table indices must be valid.
+
+
+## DEC-016 — Preserve 02098b9c register allocation
+
+The record/permission dispatcher at 02098b9c assigns its state and coordinate
+arguments to r6/r5/r4, with kind and enabled in r7/r8. mwccarm 2.0/sp1p5 lifetime
+optimization instead assigns kind/enabled to r4/r5 and shifts the arguments to
+r8/r7/r6. Scope `opt_lifetimes off` to this function to retain the original
+allocation without volatile accesses or changes to C behavior. Typed borrowed
+bitfield views preserve the observed shift pairs for packed permission fields.
+All 1104 bytes then match; the pragma is popped immediately after the function.
