@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match and document all eight M1-T695 manager reset, record search and ID predicate routines at 100% objdiff, with typed borrowed record access.
 - Verify all eight M1-T694 resource dispatch, byte assembly and manager-state routines at 100% objdiff; document typed parameters and instruction evidence.
 - Verify all eight M1-T693 forwarding, manager-word and initialization routines at 100% objdiff; document typed parameters and provider call sequences.
 - M1-T688: match and document eight game/unit_020de678 resource searches, state updates, and helper dispatch routines.
