@@ -51,21 +51,32 @@ completion marking.
 
 None. All eight requested functions match.
 
-### Outside M1-T526
+## M1-T527 — verified matches
 
-- `Unk0fc584_Unk_0fc9fc`: existing decompiler-derived body.
+All eight requested functions report 100% in objdiff. Evidence is the original
+ARM instruction flow at the entry addresses. State and panel pointers are borrowed;
+020fc8bc returns the allocator-owned address using the existing word-address ABI.
 
-## Not done in M1-T527
-- `func_020fc584`
-- `Unk0fc584_LoadMoneyWindow`
-- `func_020fcf5c`
-- `func_020fc5d4`
-- `func_020fc944`
-- `func_020fc734`
-- `func_020fc8bc`
+| Function | Evidence and contract |
+| --- | --- |
+| `func_020fc584` | Sets context +4 to zero for unsigned kind <=1, otherwise two; calls 020a4e48(0), then forwards all three input words to 020a4eb0. Absent context does nothing. |
+| `Unk0fc584_LoadMoneyWindow` | 020fc9ac selects resource 0xda and cave_moneywindow for zero kind, or resource 0x59 and battle_money otherwise. The layout strings support the existing name. Stores the returned handle at +8. |
+| `func_020fcf5c` | Clamps signed state +0x20 to 0..99999999 and forwards it with format data_021510a0 and the three supplied output words to 020a9fd8. |
+| `Unk0fc584_Unk_0fc9fc` | For either kind, releases a nonzero +8 handle through 0205ddb4, clears it, calls 0205bb68, and clears the singleton. The explicit handle argument preserves the original r0 flow. |
+| `func_020fc5d4` | With a context, sets +0x28b8 to one, writes 189 and byte five at panel +0x2c/+0x37, then forwards the panel and supplied word to 0205fd10. Repeated context loads follow the original instructions. |
+| `func_020fc944` | Initializes the 64-byte state. Kind zero selects +0x0c/+0x18=64 and +0x1c=-6; other kinds select 97 and -16. Leaves +0x28/+0x34 untouched as in the original. |
+| `func_020fc734` | Requires IsBelow64; synchronizes +0x24 with +0x20, stores signed input/60 at +0x28 with minimum magnitude one for nonzero input, calls 020a0da4(12), adds the input to +0x24 and sets +0x3c=3. |
+| `func_020fc8bc` | Allocates 64 bytes through 020611dc with callbacks 020fca5c, kind-selected 020fcc10/020fcd18, and 020fc9fc. Returns zero on allocation failure; otherwise initializes state and loads the money-window layout. |
+
+The original-object comparison supplies the acceptance test; the card requires no
+new unit tests. This unit continues linking from the delinked original pending a
+human completion marking. No module boundary changes are introduced.
+
+### Hard list for M1-T527
+
+None. All eight requested functions match.
 
 ## Not done in M1-T528
 - `func_020fcc10`
 - `func_020fca5c`
 - `func_020fcd18`
-- `Unk0fc584_LoadMoneyWindow`: decompiler-derived (plain cleanup)
