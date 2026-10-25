@@ -106,22 +106,32 @@ u32 Unk0986ac_Unk_099300(void)
   return 1;
 }
 
-int Unk09974c_Unk_099d78(void);
-int Unk09974c_HasFlagsMid(void);
-int Unk09974c_GetFlagsMidMinus1(int value);
-/* Return zero unless both external predicates succeed, then transform the
- * first result. The conditional calls at 0x02098918 establish their order. */
-u32 Unk0986ac_Unk_098918(void)
+/* Borrowed record prefix shared with unit_0209974c; +4 bits 8..11
+ * encode the optional value tested by the external flag helpers. */
+typedef struct Unk09974cFlags {
+  u8 pad_0000[0x4];
+  u16 unk_04_lo : 8;
+  u16 unk_04_mid : 4;
+  u16 unk_04_hi : 4;
+} Unk09974cFlags;
+
+void *Unk09974c_Unk_099d78(int id);
+int Unk09974c_HasFlagsMid(Unk09974cFlags *record);
+int Unk09974c_GetFlagsMidMinus1(Unk09974cFlags *record);
+/* Look up the supplied id and decode its optional middle flag field, or
+ * return zero for an absent record/field. At 0x02098920 incoming r0 is the
+ * lookup id; 0x0209892c passes the returned record onward in r0. The caller
+ * at 0x020c3090 loads the id from its table before invoking this function.
+ * The returned record is borrowed and is never retained or modified. */
+u32 Unk0986ac_Unk_098918(int id)
 {
-  int value1;
-  int value2;
-  u32 value3;
-  value3 = 0;
-  value1 = Unk09974c_Unk_099d78();
-  if ((value1 != 0) && (value2 = Unk09974c_HasFlagsMid(), value2 != 0)) {
-    value3 = Unk09974c_GetFlagsMidMinus1(value1);
+  Unk09974cFlags *record;
+  u32 value = 0;
+  record = Unk09974c_Unk_099d78(id);
+  if (record != 0 && Unk09974c_HasFlagsMid(record) != 0) {
+    value = Unk09974c_GetFlagsMidMinus1(record);
   }
-  return value3;
+  return value;
 }
 
 /* Read the unsigned byte at borrowed storage + 13; ldrb at 0x02098988
