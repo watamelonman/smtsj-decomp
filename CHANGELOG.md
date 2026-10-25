@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T569 lookup, slot release, setup and next-halfword helpers at 100% objdiff; made register-carried arguments explicit and documented typed contracts.
 - Verified all eight M1-T568 buffer, release, mode and mission-log helpers at 100% objdiff; documented instruction evidence and typed buffer contracts.
 - Matched all eight M1-T576 manager predicates, image release, setup, record reset and constant mapping helpers at 100% objdiff; documented typed contracts and instruction evidence.
 
