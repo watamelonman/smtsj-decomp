@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T554 resource, cleanup, record-kind and flag helpers in `game/unit_0209974c`, with typed parameters and per-function evidence.
 - Matched all eight M1-T553 record subtraction, entry-byte lookup and predicate functions in `game/unit_0209974c` with typed record views and per-function evidence.
 
 - Match all six M1-T510 game/unit_020fd9f0 helpers, including both resource-layer rendering functions and their fixed-point opacity pulse.
