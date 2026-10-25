@@ -58,5 +58,29 @@ Hard list for M1-T641: none. All eight functions match; no scratch is needed.
 - `func_02117f94`
 - `func_02118974`
 - `func_0211882c`: hand-written. Parses staff-roll command list and lays out text lines.
-- `StaffRoll_Unk_118620`: decompiler-derived (plain cleanup)
-- `StaffRoll_Unk_1186cc`: decompiler-derived (plain cleanup)
+
+## M1-T642 — verified 100% objdiff
+
+Existing neutral symbols are retained. Evidence is the original ARM instructions
+at each address. Work, slot, image, and resource views are borrowed; callers must
+provide readable storage and writable fields for each observed store.
+
+| Function | Original evidence and contract |
+| --- | --- |
+| `func_02117dd8` | 0x02117DD8 dispatches +0x10 states 0..2. Unsigned frame thresholds +0x14 and wrapping +0x14 + +0x18 start handler 26 and stop it; state 2 returns 1. |
+| `func_021180e4` | 0x021180E4 advances unsigned +0xB4 and derives +0xCC with unsigned division by nonzero +0xC0. At +0xC8 it increments +0xB0, selects state 3 for counts below 10 or state 4 otherwise, and clears +0xB4. |
+| `func_02117e5c` | 0x02117E5C constructs a 64-byte path from `Data/Tex/`, the name pointer at +4 of indexed 24-byte table records, and `.gfnt`. The existence query guards loading into resource storage +0x24. Index and combined path length must be valid for that table and buffer. |
+| `func_02118584` | 0x02118584 scans 32 slots at +0xF8, stride 16. Active slots are drawn at signed slot +8 minus work +0xE0 minus the screen offset (0 or 288), when y +16 is nonnegative and y <192. Slot +12 supplies opacity; the original draw arguments are flags 0x01000001, x=128, 0, and 2. |
+| `func_02117ef4` | 0x02117EF4 resolves resource +0x24, copies four words from resource +12 to indexed image +24, passes image halfwords +40/+42 as outputs, and stores two helper results at image +12/+16. The image index must be 0..3 and its pointer writable. |
+| `func_02118784` | 0x02118784 releases and clears all 32 slot handles, releases the signed +12 count of resources, clears that count, calls the observed teardown helpers, releases +4, and clears global data_02176e6c. |
+| `StaffRoll_Unk_118620` | 0x02118620 configures drawing, draws image pointers +0x9C/+0xA0 only in state +0xAC=2, then invokes the overlay and slot handler with screen 0 before finalizing drawing. |
+| `StaffRoll_Unk_1186cc` | 0x021186CC performs the corresponding drawing sequence using image pointers +0xA4/+0xA8 and screen 1. Positions come from the original external data records. |
+
+The partial work view now exposes resource storage, four image pointers, and 32
+slots at their observed offsets. Four metadata words remain an opaque aggregate
+to preserve the original copy without inventing field meanings. No module
+boundary changes or new dependencies are introduced. Matching and checksum
+comparison provide the behavioral regression checks for these assembly targets;
+no new unit tests were required by the card.
+
+Hard list for M1-T642: none. All eight functions match; no scratch is needed.

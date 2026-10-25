@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T642 StaffRoll state, resource, drawing, and teardown functions at 100% objdiff with typed borrowed views.
 - Match eight StaffRoll state, text-slot, spacing, and drawing functions to the original ARM code (M1-T641).
 - Matched all eight M1-T628 resource, list, selector and output routines in game/unit_020a163c at 100% objdiff with typed field views.
 - Matched all eight M1-T640 StaffRoll helpers at 100% objdiff, including the free-record search; added typed contracts and original-instruction evidence.
