@@ -85,7 +85,8 @@ int Unk0f3db4_Unk_0f4510(u32 arg0,int arg1)
 
 
 
-/* decompiler-derived */
+/* Return table lengths from the six-case switch at 020f3e6c;
+ * unsupported selectors have length zero. */
 u32 Unk0f3db4_Unk_0f3e6c(u32 arg0)
 {
   switch(arg0) {
@@ -107,7 +108,8 @@ u32 Unk0f3db4_Unk_0f3e6c(u32 arg0)
 }
 
 
-/* decompiler-derived */
+/* Return a borrowed packed-byte table at the offsets in 020f3ec8;
+ * unsupported selectors return a null address. */
 int Unk0f3db4_Unk_0f3ec8(u32 arg0)
 {
   int value;
@@ -180,7 +182,8 @@ int Unk0f3db4_Unk_0f4448(int id)
     return n;
 }
 
-/* decompiler-derived */
+/* Copy low state bits over the ranges observed at 020f4674, leaving
+ * bytes 200..299 untouched. Both addresses must cover at least 360 bytes. */
 void Unk0f3db4_Unk_0f4674(int arg0,int arg1)
 {
   u8 value1;
@@ -259,4 +262,101 @@ int func_020f4070(const Unk0f3db4Obj *p)
         }
     }
     return result;
+}
+
+void *func_020445d0(int index, int table);
+void func_0204fe18(void *resource);
+u8 *func_0204fde0(void *resource);
+
+/* Select a borrowed 46-byte record. The switch and resource calls at
+ * 020f3de8 establish the table mapping; index wraps to 16 bits for table 1. */
+u8 *func_020f3de8(u32 selector, u16 index)
+{
+    int table = 0;
+    void *resource;
+    switch (selector) {
+    case 0: table = 0; break;
+    case 1: index += 50; break;
+    case 2: table = 1; break;
+    case 3: table = 2; break;
+    case 4: table = 3; break;
+    case 5: table = 4; break;
+    }
+    resource = func_020445d0(8, table);
+    func_0204fe18(resource);
+    return func_0204fde0(resource) + index * 46;
+}
+
+/* Map the signed ID ranges tested at 020f3f2c to table selectors.
+ * Unrecognized IDs use selector zero, as in the original comparison chain. */
+int func_020f3f2c(int id)
+{
+    if (id >= 211 && id <= 260) return 0;
+    if (id >= 261 && id <= 310) return 1;
+    if (id >= 311 && id <= 360) return 2;
+    if (id >= 361 && id <= 410) return 3;
+    if (id >= 111 && id <= 210) return 4;
+    if (id >= 51 && id <= 110) return 5;
+    return 0;
+}
+
+/* Borrowed eight-byte entry, with observed halfwords at +2 and +4. */
+typedef struct Unk0f3db4ListEntry {
+    u16 unknown;
+    u16 index;
+    u16 id;
+    u16 trailing;
+} Unk0f3db4ListEntry;
+
+/* Caller owns storage for count entries and an additional appended entry. */
+typedef struct Unk0f3db4List {
+    u8 prefix[0xfc];
+    int count;
+    Unk0f3db4ListEntry entries[1];
+} Unk0f3db4List;
+
+/* Append ID/index only if no existing record has the same string at +22;
+ * 020f40c8 resolves entries through the range mapper and record accessor. */
+void func_020f40c8(Unk0f3db4List *list, const u8 *record, u16 index)
+{
+    int i;
+    for (i = 0; i < list->count; i++) {
+        u8 *other = func_020f3de8(func_020f3f2c(list->entries[i].id),
+                                list->entries[i].index);
+        if (func_020152cc((const char *)record + 22, (const char *)other + 22) == 0) {
+            return;
+        }
+    }
+    list->entries[list->count].id = *(const u16 *)record;
+    list->entries[list->count].index = index;
+    list->count++;
+}
+
+/* Promote state 2 to 3 across all six tables. The halfword loop counter
+ * and repeated length query follow 020f43d4; table storage is borrowed. */
+void func_020f43d4(void)
+{
+    int selector;
+    u16 index;
+    for (selector = 0; selector < 6; selector++) {
+        for (index = 0; index < Unk0f3db4_Unk_0f3e6c(selector); index++) {
+            if (Unk0f3db4_Unk_0f4490(selector, index) == 2) {
+                Unk0f3db4_Unk_0f44b0(selector, index, 3);
+            }
+        }
+    }
+}
+
+/* Return whether a valid table contains state 2; 020f4560 bounds selectors
+ * to [0,6) and scans with a wrapping halfword offset. */
+int func_020f4560(int selector)
+{
+    u32 count;
+    u16 index;
+    if (selector < 0 || selector >= 6) return 0;
+    count = Unk0f3db4_Unk_0f3e6c(selector);
+    for (index = 0; index < count; index++) {
+        if (Unk0f3db4_Unk_0f4490(selector, index) == 2) return 1;
+    }
+    return 0;
 }
