@@ -1,8 +1,21 @@
 # ImageBgDual3D
 
-- `ImageBgDual3D_Nop_1252f4`, `ImageBgDual3D_Nop_1252f8`, `ImageBgDual3D_Nop_1252fc`, `ImageBgDual3D_Nop_125c3c`, `ImageBgDual3D_Nop_125c60`, `ImageBgDual3D_Nop_125c64`: empty callbacks (function-table slots).
-- `ImageBgDual3D_Thunk_021255b4`: tail-forwards to `func_021255b4`.
-- `ImageBgDual3D_Thunk_021177e0`: tail-forwards to `Unk116598_Set`.
+## M1-T535
+
+- `ImageBgDual3D_Nop_1252f4` (`0x021252f4`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
+- `ImageBgDual3D_Nop_1252f8` (`0x021252f8`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
+- `ImageBgDual3D_Nop_1252fc` (`0x021252fc`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
+- `ImageBgDual3D_Nop_125c3c` (`0x02125c3c`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
+- `ImageBgDual3D_Nop_125c60` (`0x02125c60`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
+- `ImageBgDual3D_Nop_125c64` (`0x02125c64`, 4 bytes): immediate `BX LR`; reads no arguments and changes no state. The empty C body preserves this intentional no-op.
+- `ImageBgDual3D_Thunk_021255b4` (`0x021257e8`, 12 bytes): `LDR IP` / `BX IP` through an absolute relocation to `func_021255b4`. No arguments or return value are used by its caller at `0x02125934`.
+- `ImageBgDual3D_Thunk_021177e0` (`0x021259ac`, 12 bytes): the same forwarding sequence, relocated to `Unk116598_Set` (`0x021177e0`); preserves its two opaque 32-bit arguments and void return contract.
+
+The existing symbol names describe only behavior directly established by these instructions.
+Matching is checked against the delinked object; this TU remains linked from the delink pending human completion.
+
+## Other tasks
+
 - `ImageBgDual3D_Thunk_02117808`: decompiler-derived
 - `ImageBgDual3D_Get_data_02176e94`: decompiler-derived
 - `ImageBgDual3D_Unk_125a80`: decompiler-derived
