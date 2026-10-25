@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Verified all eight M1-T568 buffer, release, mode and mission-log helpers at 100% objdiff; documented instruction evidence and typed buffer contracts.
+- Matched all eight M1-T576 manager predicates, image release, setup, record reset and constant mapping helpers at 100% objdiff; documented typed contracts and instruction evidence.
 
 - Match seven M1-T561 area/list functions in game/unit_02096754; document the remaining initialization function on the hard list.
 - Verified all eight M1-T575 manager-pair, record-address and status helpers at 100% objdiff; added typed declarations and evidence-based contracts.

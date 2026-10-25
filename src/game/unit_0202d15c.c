@@ -22,20 +22,34 @@ void Unk02d15c_Call_02d91c(void)
     Unk02d15c_Unk_02d91c(0, -1);
 }
 
-int Unk095560_Unk_095d1c();
-int func_0202d668();
+int Unk095560_Unk_095d1c(void);
+int func_0202d668(int record, int mode0, int mode, int mode1, int sentinel);
 int Unk094fe0_Call_020950b4(int index);
-void ImageObj_Unk_077894();
-void Unk02dcfc_SetField68();
-void Unk095560_Unk_095cd8();
-void Unk095560_Unk_095d08();
-s32 *Unk094fe0_Unk_094fec();
+void ImageObj_Unk_077894(u32 image, int flags);
+void Unk02dcfc_SetField68(void);
+void Unk095560_Unk_095cd8(int a, int c, int b, int flags);
+void Unk095560_Unk_095d08(int value);
+s32 *Unk094fe0_Unk_094fec(int index);
 u8 *Unk02d15c_GetManagerRecord(int i);
 int Unk02d15c_FindRecordEntry(int a, int key);
 int func_0202d390();
 int func_0204b01c();
 u8 *Unk02e000_GetWorkArea();
 int Unk02f2a8_Unk_035c14();
+/* Test the manager index against -1; 0202d18c resets the pair on that sentinel.
+ * Other index meanings are unknown, so retain the original neutral symbol. */
+int func_0202d170(void)
+{
+    int active;
+    if (Unk095560_Unk_095d1c() != -1) {
+        active = 1;
+    } else {
+        active = 0;
+        Unk02d15c_Call_02d91c();
+    }
+    return active;
+}
+
 int Unk02d15c_MapKind_02d22c(int x)
 {
     switch (x) {
@@ -65,6 +79,7 @@ int Unk02d15c_MapKind_02d2a0(int x)
     return 0;
 }
 
+/* 0202d330 passes mode 0 and compares the dispatcher result with exactly 1. */
 int Unk02d15c_IsMode0Match(int a)
 {
     return func_0202d668(Unk095560_Unk_095d1c(), a, 0, 0, -1) == 1;
@@ -102,6 +117,7 @@ int Unk02d15c_Unk_02d794(u32 a, u32 b)
     return func_0202d390(&s) != 0;
 }
 
+/* 0202d808 releases the stored image with flags 0 unless its handle is -1. */
 void Unk02d15c_ReleaseImage(void)
 {
     if ((s32)data_0213d898[0] == -1) {
@@ -110,11 +126,14 @@ void Unk02d15c_ReleaseImage(void)
     ImageObj_Unk_077894(data_0213d898[0], 0);
 }
 
+/* 0202d854 passes mode 1 and compares the dispatcher result with exactly 1. */
 int Unk02d15c_IsMode1Match(int a)
 {
     return func_0202d668(Unk095560_Unk_095d1c(), 0, 1, a, -1) == 1;
 }
 
+/* 0202d880 calls the setup helpers in order, forwarding (a,c,b,0) then d.
+ * The helper sequence supports the existing Setup name; always returns 1. */
 int Unk02d15c_Setup(int a, int b, int c, int d)
 {
     Unk02dcfc_SetField68();
@@ -191,7 +210,8 @@ int Unk02d15c_Unk_02d954(u8 *p)
     return 1;
 }
 
-/* decompiler-derived */
+/* 0202d9a8 maps unsigned indices 0..4 to observed constants; others use 26.
+ * No caller evidence establishes the meaning of these values. */
 u32 Unk02d15c_Unk_02d9a8(u32 arg0)
 {
   switch(arg0) {
@@ -211,7 +231,8 @@ u32 Unk02d15c_Unk_02d9a8(u32 arg0)
 }
 
 
-/* decompiler-derived */
+/* 0202d9f8 maps unsigned indices 0..4 to observed constants; others use 27.
+ * Keep the neutral name because the value semantics are unknown. */
 u32 Unk02d15c_Unk_02d9f8(u32 arg0)
 {
   switch(arg0) {
@@ -258,6 +279,8 @@ u8 *Unk02d15c_GetManagerRecord(int i)
     return (u8 *)Unk095560_GetManager() + 180 + i * 84;
 }
 
+/* Stores at 0202dc84..0202dc9c reset five entries and word 6, and copy b
+ * to both record headers. Index a must be valid for both borrowed records. */
 int Unk02d15c_ResetRecord(int a, s32 b)
 {
     u8 *rec = Unk02d15c_GetManagerRecord(a);
