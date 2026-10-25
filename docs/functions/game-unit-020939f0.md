@@ -23,19 +23,28 @@ fields, helper prototypes and per-function contracts preserve their code
 shape. Object comparison verifies instructions and relocations directly;
 this card does not require new runtime tests. No module boundary changed.
 
-## Other existing C bodies
+## M1-T618 verified functions
 
-- `Unk0939f0_Unk_093ea8`: decompiler-derived, also verified at 100%.
-- `Unk0939f0_Unk_093f0c`: decompiler-derived, also verified at 100%.
+All eight functions below match at 100% in objdiff. Parameters and borrowed
+record layouts follow original loads, stores and helper calls; no ownership
+transfer is inferred except publication of the allocation in `func_02093a1c`.
 
-## Not done in M1-T618
+| Function | Contract and evidence |
+| --- | --- |
+| `Unk0939f0_Unk_093ea8` | Requires a writable record. When the shared handle is nonzero, derives increments at +0x3c/+0x40/+0x44 from 0xff000 minus coordinates, dividing by 0xd000, then sets +0x6c to 4. |
+| `Unk0939f0_Unk_093f0c` | Initializes a writable record: clears 0x20 bytes at +0xc, sets three byte defaults to 255, coordinates to 0xff000, six words to 255 and three words to zero. Preserves +0x6c. |
+| `func_02093d14` | Returns a borrowed record for kinds 0–3. Kind 1 scans sixteen identifiers at +0xdd with stride 0x70; an unsuccessful scan falls through to kind 2. Invalid kinds return null. |
+| `func_02093dfc` | Updates three fixed-point coordinates via `func_0206d950`, using signed halfword values and increments and bound 255; original shifts establish 12 fractional bits. |
+| `func_0209432c` | Rejects indices above the original count-minus-one bound, then tests the selected query word for positivity. Original switch loads +0xd8/+0xf8/+0x118/+0x138. No additional lower bound is inferred. |
+| `func_02094584` | Returns whether any selected state byte is nonzero. Original scan excludes matched index zero from the indexed state test, and always checks the leading and two trailing states. Null shared handle returns zero. |
+| `func_0209461c` | Tests one selected state byte by kind and identifier. Null shared handle, invalid kind or unsuccessful identifier search returns zero. Original indexed load is at +0xdc with stride 0x70. |
+| `func_02093a1c` | Allocates 0x850 bytes through `func_020611dc`, clears and initializes nineteen records, publishes the shared handle and clears all state bytes. Allocation failure returns without publication. Original callback arguments establish the two callback contracts. |
 
-- `func_02093d14`
-- `func_02094584`
-- `func_02093dfc`
-- `func_0209432c`
-- `func_0209461c`
-- `func_02093a1c`
+No module boundary changed. Existing symbol names remain unchanged because
+higher-level purpose is not established. The 0x70-byte layout includes the
+identifier at +0x6d and trailing padding, as established by the original stride.
+This card requires no new runtime tests; instruction and relocation comparison
+provides the acceptance check.
 
 ## Not done in M1-T619
 
@@ -45,4 +54,4 @@ this card does not require new runtime tests. No module boundary changed.
 
 ## Hard list
 
-None for M1-T617.
+None for M1-T617 or M1-T618.
