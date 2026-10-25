@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T744: match six unit_02068f18 candidate, eligibility, stat, random-merge, and draw routines; document two deferred candidate-combination functions on the hard list.
 - Matched all eight M1-T743 unit_02068f18 record, ID, coordinate and alpha helpers; documented their data contracts.
 - Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.
 - Match all eight M1-T708 game/unit_0209d42c request, queue, record-copy, and work-initialization routines; preserve earlier matches and document storage contracts.
