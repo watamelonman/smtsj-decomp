@@ -270,20 +270,22 @@ typedef struct Unk122e1cFull {
     u32 unk_0064;
     s32 count_a;
     s32 unk_006c, unk_0070;
-    u32 unk_0074;
-    u8 pad_0078[0x1c];
+    float unk_0074;
+    u32 flags_a[7];
     u32 secondary[7];
     u32 unk_00b0;
     s32 count_b;
     s32 unk_00b8;
     u32 unk_00bc;
     s32 unk_00c0;
-    u32 unk_00c4;
-    u8 pad_00c8[0x18];
+    float unk_00c4;
+    u32 flags_b[6];
     u32 handles[6];
     u32 slots[6];
-    u8 pad_0110[4];
-    u32 unk_0114;
+    u32 unk_0110;
+    s32 unk_0114;
+    s32 unk_0118, unk_011c;
+    float unk_0120;
 } Unk122e1cFull;
 
 void func_020629c4(u32 handle);
@@ -360,7 +362,7 @@ void func_02123340(Unk122e1cFull *work)
     int i;
     Unk0fedd4_SetState1();
     work->unk_006c = 0;
-    work->unk_0074 = 0x3f800000;
+    work->unk_0074 = 1.0f;
     work->unk_0070 = work->count_a * 15;
     for (i = 0; i < work->count_a; i++) {
         func_0205caa8(work->resources.groups.a[i], data_0213cd7c[i + 2]);
@@ -378,7 +380,7 @@ void func_021233e0(Unk122e1cFull *work)
     int i;
     work->unk_0064 = 0;
     work->unk_006c = -92;
-    work->unk_0074 = 0x3f800000;
+    work->unk_0074 = 1.0f;
     work->unk_0070 = work->count_a * 15;
     for (i = 0; i < work->count_a; i++) {
         func_0205caa8(work->resources.groups.a[i], data_0213cd7c[i + 2]);
@@ -388,7 +390,7 @@ void func_021233e0(Unk122e1cFull *work)
     Unk0cb32c_Unk_0cb57c(work->resources.groups.first[0]);
     work->unk_00b0 = 3;
     work->unk_00b8 = -92;
-    work->unk_00c4 = 0x3f800000;
+    work->unk_00c4 = 1.0f;
     work->unk_00c0 = work->count_b * 15;
     for (i = 0; i < work->count_b; i++) {
         func_0205caa8(work->resources.groups.b[i], data_0213cd7c[i + 9]);
@@ -399,4 +401,370 @@ void func_021233e0(Unk122e1cFull *work)
     work->unk_0114 = 0;
     work->phase = 0;
     work->state = 0;
+}
+
+int func_020cb3dc(void);
+/* Configure counted handles and selection flags, then enter state 4.
+ * Evidence: 0212312c provider IDs and stores; work must cover six handles. */
+void func_0212312c(Unk122e1cFull *work, s32 mode, u32 value)
+{
+    work->unk_0110 = value;
+    switch (mode) {
+    case 0: {
+        int i;
+        switch (func_020cb3dc()) {
+        case 2: work->count_b = 3; break;
+        case 3: work->count_b = 6; break;
+        default: return;
+        }
+        for (i = 0; i < work->count_b; i++)
+            Unk0cb32c_Unk_0cb504(work->handles[i], (u8)work->prefix[1], (u8)(i + 110));
+        break;
+    }
+    case 1: {
+        int i;
+        switch (func_020cb3dc()) {
+        case 3: work->count_b = 2; break;
+        default: return;
+        }
+        for (i = 0; i < work->count_b; i++)
+            Unk0cb32c_Unk_0cb504(work->handles[i], (u8)work->prefix[1], (u8)(i + 120));
+        break;
+    }
+    default: {
+        int i;
+        work->count_b = 4;
+        for (i = 0; i < work->count_b; i++) {
+            Unk0cb32c_Unk_0cb504(work->handles[i], (u8)(i + 1), 0);
+            if (work->prefix[1] - 1 == i) work->flags_b[i] = 0;
+            else work->flags_b[i] = 1;
+        }
+        break;
+    }
+    }
+    work->unk_00bc = mode * 15;
+    Unk0cb32c_Unk_0cb57c(work->resources.groups.first[0]);
+    work->unk_0114 = 0;
+    work->phase = 0;
+    work->state = 4;
+}
+
+/* Borrowed input-provider view; +0x10 is the caller-validated selection index. */
+typedef struct Unk122e1cInput {
+    u8 pad_0000[16];
+    s32 unk_0010;
+} Unk122e1cInput;
+void Unk0cb32c_Unk_0cb4e4(s32 channel, u16 value);
+void Unk0fedd4_Unk_0fee38(void);
+int Unk0bcc7c_Unk_0bcdf8(Unk122e1cInput *input);
+void Unk0a0ce4_Unk_0a0da4(s32 value);
+int func_02053800(s32 channel, s32 mask);
+/* Advance the caller-owned phase byte while polling the input provider.
+ * Evidence: 0212356c switch and calls; input index must fit the work flag array. */
+int func_0212356c(Unk122e1cFull *work, u8 *phase, Unk122e1cInput *input, s32 mode)
+{
+    u8 step = *phase;
+    int result = -1;
+    switch (step) {
+    case 0:
+        func_0212312c(work, mode, 0);
+        step++;
+        break;
+    case 1:
+        if (work->state == 8) {
+            Unk0cb32c_Unk_0cb4e4(1, (u16)(input->unk_0010 + 220));
+            Unk0fedd4_Unk_0fee38();
+            step++;
+        }
+        break;
+    case 2:
+        if (Unk0bcc7c_Unk_0bcdf8(input)) {
+            Unk0a0ce4_Unk_0a0da4(0);
+            Unk0cb32c_Unk_0cb4e4(1, (u16)(input->unk_0010 + 220));
+            Unk0fedd4_Unk_0fee38();
+        } else if (func_02053800(0, 1)) {
+            if (work->flags_b[input->unk_0010]) {
+                Unk0a0ce4_Unk_0a0da4(1);
+                result = 1;
+                step = 0;
+            } else {
+                Unk0a0ce4_Unk_0a0da4(4);
+            }
+        } else if (func_02053800(0, 2)) {
+            Unk0a0ce4_Unk_0a0da4(2);
+            Unk122e1c_Unk_12306c((Unk122e1cWork *)work);
+            step++;
+        }
+        break;
+    case 3:
+        if (work->state == 8) {
+            step = 0;
+            result = 0;
+        }
+        break;
+    }
+    *phase = step;
+    return result;
+}
+
+extern u32 data_0213cd84[];
+void func_0205c704(u32 handle);
+/* Advance the state/phase counters and their interpolated fields, then update
+ * all resource handles. Evidence: 021236b4 switch, division and float addition.
+ * Counts fit the resource arrays; +0x118 and +0x11c must be nonzero divisors. */
+void func_021236b4(Unk122e1cFull *work)
+{
+    int i;
+    if (++*(s32 *)&work->prefix[0] > 65535) work->prefix[0] = 0;
+    switch (work->state) {
+    case 1:
+        switch (work->phase) {
+        case 0:
+            work->unk_006c = (91 / work->unk_011c) * work->unk_0114 - 91;
+            work->unk_0074 += work->unk_0120;
+            if (work->unk_0114++ > work->unk_011c) {
+                work->unk_0114 = 0;
+                work->unk_006c = 0;
+                work->unk_0074 = 1.0f;
+                work->phase++;
+            }
+            break;
+        case 1:
+            work->unk_0070 = (work->count_a * 15 / work->unk_011c) * work->unk_0114;
+            if (work->unk_0114++ > work->unk_011c) {
+                work->unk_0114 = 0;
+                work->unk_0070 = work->count_a * 15;
+                func_0205caa8(work->resources.groups.a[0], 2);
+                work->phase++;
+            }
+            break;
+        case 2:
+            ++work->unk_0114;
+            if (work->unk_0114 % work->unk_0118 == 0) {
+                if (work->count_a == work->unk_0114 / work->unk_0118) {
+                    work->unk_0114 = 0;
+                    func_0205caa8(work->resources.groups.first[0], 0);
+                    work->phase = 0;
+                    work->state = 8;
+                } else {
+                    func_0205caa8(work->resources.groups.a[work->unk_0114 / work->unk_0118],
+                                  data_0213cd84[work->unk_0114 / work->unk_0118]);
+                }
+            }
+            break;
+        }
+        break;
+    case 2:
+        work->unk_006c = (91 / work->unk_011c) * work->unk_0114 - 91;
+        if (work->unk_0114++ > work->unk_011c) {
+            func_0205caa8(work->resources.groups.first[0], 0);
+            work->unk_0114 = 0;
+            work->unk_006c = 0;
+            work->phase = 0;
+            work->state = 8;
+        }
+        break;
+    case 3:
+        work->unk_0114 = 0;
+        work->unk_006c = -92;
+        work->phase = 0;
+        work->state = 0;
+        break;
+    case 4:
+        if (work->unk_0110 == 0) {
+            work->unk_0114 = 0;
+            work->unk_00b8 = 91;
+            work->unk_00c0 = work->count_b * 15;
+            work->unk_00c4 = 1.0f;
+            Unk122e1c_Unk_1241cc((Unk122e1cWork *)work, 1);
+            for (i = 0; i < work->count_b; i++)
+                Unk122e1c_Unk_1241cc((Unk122e1cWork *)work, i + 9);
+            work->phase = 0;
+            work->state = 8;
+        } else {
+            switch (work->phase) {
+            case 0:
+                work->unk_0114 = 0;
+                work->unk_00b8 = 91;
+                work->unk_00c4 = 1.0f;
+                work->phase++;
+                break;
+            case 1:
+                work->unk_00c0 = (work->count_b * 15 / work->unk_011c) * work->unk_0114;
+                if (work->unk_0114++ > work->unk_011c) {
+                    work->unk_0114 = 0;
+                    work->unk_00c0 = work->count_b * 15;
+                    Unk122e1c_Unk_1241cc((Unk122e1cWork *)work, 9);
+                    work->phase++;
+                }
+                break;
+            case 2:
+                ++work->unk_0114;
+                if (work->unk_0114 % work->unk_0118 == 0) {
+                    int index = work->unk_0114 / work->unk_0118;
+                    if (work->count_b == index) {
+                        work->unk_0114 = 0;
+                        Unk122e1c_Unk_1241cc((Unk122e1cWork *)work, 1);
+                        work->phase = 0;
+                        work->state = 8;
+                    } else {
+                        Unk122e1c_Unk_1241cc((Unk122e1cWork *)work, index + 9);
+                    }
+                }
+                break;
+            }
+        }
+        break;
+    case 5:
+        func_021230b4(work);
+        work->unk_0114 = 0;
+        work->phase = 0;
+        work->state = 8;
+        break;
+    case 6:
+        work->unk_006c = (91 / work->unk_011c) * work->unk_0114 - 91;
+        work->unk_00b8 = (182 / work->unk_011c) * work->unk_0114 - 91;
+        if (work->unk_0114++ > work->unk_011c) {
+            work->unk_0114 = 0;
+            work->unk_00b8 = 91;
+            work->unk_006c = 0;
+            func_0205caa8(work->resources.groups.first[1], 1);
+            work->state = 8;
+        }
+        break;
+    case 7:
+        work->unk_006c = (91 / work->unk_011c) * work->unk_0114 - 91;
+        work->unk_00b8 = (182 / work->unk_011c) * work->unk_0114 - 91;
+        if (work->unk_0114-- <= 0) {
+            work->unk_0114 = 0;
+            work->unk_00b8 = -92;
+            work->unk_006c = -92;
+            work->state = 0;
+        }
+        break;
+    case 8:
+        break;
+    }
+    for (i = 0; i < 17; i++) func_0205c704(work->resources.handles[i]);
+    func_0205c704(work->unk_005c);
+}
+
+/* Borrowed provider entry: only the halfword written at +0xe is exposed. */
+typedef struct Unk122e1cEntry {
+    u8 pad_0000[14];
+    s16 unk_000e;
+} Unk122e1cEntry;
+void func_02057524(int mode);
+void func_02057e58(int channel, int start, int count);
+void func_02057eb8(int mask);
+Unk122e1cEntry *func_0205e318(u32 handle, int index);
+void func_0205e048(int screen, u32 handle, Unk122e1cEntry *entry, int x, int y,
+                  float sx, float sy, int rotation, float alpha, int layer, int flags);
+void func_0205de40(int screen, u32 handle, int index, int x, int y,
+                  float sx, float sy, int rotation, float alpha, int layer);
+void func_0205c748(int screen, u32 handle, int x, int y,
+                  float sx, float sy, int rotation, float alpha, int layer);
+void func_02057e18(int alpha);
+int func_0205ca48(u32 handle);
+void func_02057ddc(u32 color);
+void func_02060b60(int screen, u32 handle, int x, int y, int flags, int layer);
+void func_02057df8(void);
+void func_02057fd8(void);
+void func_020572d8(void);
+/* Submit both counted groups, their clips, labels and selection decorations.
+ * Evidence: 02123bc8 draw-provider calls and loops; work borrows all resources
+ * and the provider entry returned for index 15 must be writable. */
+void func_02123bc8(Unk122e1cFull *work)
+{
+    Unk122e1cEntry *entry;
+    int i, j;
+    int x, y;
+    if (work->state == 0) return;
+    func_02057524(4);
+    func_02057e58(0, 0, 10);
+    func_02057e58(1, 10, 10);
+    func_02057e58(2, 20, 10);
+    func_02057eb8(0);
+    entry = func_0205e318(work->unk_0008, 15);
+    entry->unk_000e = work->unk_0070;
+    func_0205e048(2, work->unk_0008, entry, work->unk_006c, 0,
+                 1.0f, 1.0f, 0, 1.0f, 4, 1);
+    func_0205de40(2, work->unk_0008, 3, work->unk_006c, 0,
+                 1.0f, 1.0f, 0, work->unk_0074, 4);
+    func_0205de40(2, work->unk_0008, 8, work->unk_006c, work->unk_0070,
+                 1.0f, 1.0f, 0, work->unk_0074, 4);
+    for (i = 0; i < work->count_a; i++) {
+        func_02057eb8(1);
+        func_0205c748(2, work->resources.groups.a[i], work->unk_006c, i * 15,
+                     1.0f, 1.0f, 0, 1.0f, 4);
+    }
+    func_02057eb8(0);
+    func_0205c748(2, work->resources.groups.first[0], work->unk_006c, work->unk_0064 * 15,
+                 1.0f, 1.0f, 0, 1.0f, 4);
+    func_02057e18(31);
+    for (i = 0; i < work->count_a; i++) {
+        if (func_0205ca48(work->resources.groups.a[i]) == 0) {
+            func_02057eb8(2);
+            func_02057ddc(255);
+            func_02060b60(1, work->secondary[i], work->unk_006c + 5, i * 15 + 31, 0, 6);
+            if (work->flags_a[i]) {
+                func_02057df8();
+            } else {
+                func_02057ddc(0x808080ff);
+            }
+            func_02060b60(1, work->secondary[i], work->unk_006c + 5, i * 15 + 30, 0, 6);
+        }
+    }
+    func_02057eb8(0);
+    entry = func_0205e318(work->unk_0008, 15);
+    entry->unk_000e = work->unk_00c0;
+    func_0205e048(2, work->unk_0008, entry, work->unk_00b8, work->unk_00bc,
+                 1.0f, 1.0f, 0, 1.0f, 7, 1);
+    func_02057eb8(0);
+    func_0205de40(2, work->unk_0008, 3, work->unk_00b8, work->unk_00bc,
+                 1.0f, 1.0f, 0, work->unk_00c4, 7);
+    func_02057eb8(0);
+    func_0205de40(2, work->unk_0008, 8, work->unk_00b8, work->unk_00bc + work->unk_00c0,
+                 1.0f, 1.0f, 0, work->unk_00c4, 7);
+    for (j = 0; j < work->count_b; j++) {
+        func_02057eb8(1);
+        func_0205c748(2, work->resources.groups.b[j], work->unk_00b8, work->unk_00bc + j * 15,
+                     1.0f, 1.0f, 0, 1.0f, 7);
+    }
+    if (work->state == 8) {
+        func_02057eb8(0);
+        func_0205c748(2, work->resources.groups.first[1], work->unk_00b8 - 91,
+                     work->unk_00bc + work->unk_00b0 * 15, 1.0f, 1.0f, 0, 1.0f, 7);
+    }
+    func_02057e18(31);
+    for (i = 0; i < work->count_b; i++) {
+        if (func_0205ca48(work->resources.groups.b[i]) == 0) {
+            x = work->unk_00b8;
+            y = work->unk_00bc + 30 + i * 15;
+            func_02057eb8(2);
+            if (work->state == 4 || work->state == 8) {
+                if (work->slots[i]) {
+                    func_0205de40(2, work->unk_0054, 0, 0, i * 15,
+                                 1.0f, 1.0f, 0, 1.0f, 10);
+                    func_0205c748(2, work->unk_005c, 0, i * 15,
+                                 1.0f, 1.0f, 0, 1.0f, 11);
+                    func_02057e18(31);
+                }
+            }
+            func_02057ddc(255);
+            func_02060b60(1, work->handles[i], x + 5, y + 1, 0, 10);
+            if (work->flags_b[i]) {
+                func_02057df8();
+            } else {
+                func_02057ddc(0x808080ff);
+            }
+            func_02060b60(1, work->handles[i], x + 5, y, 0, 10);
+            func_02057df8();
+        }
+    }
+    func_02057eb8(-1);
+    func_02057fd8();
+    func_02057df8();
+    func_02057e18(31);
+    func_020572d8();
 }

@@ -51,3 +51,27 @@ entries; no new ownership boundary is introduced.
 
 Hard list: none for M1-T749. Validation uses instruction comparison and the
 project match/checksum gates; no behavioral test harness is required by this card.
+
+## M1-T750
+
+All four functions match at 100% objdiff, and all 24 earlier functions in this TU
+remain at 100%. The existing source file is extended rather than recreated.
+Original symbol names are retained because the instructions establish behavior
+without establishing higher-level names. No assembly replacements are needed.
+
+- `func_0212312c` (360 B): stores its third argument at +0x110, configures the counted +0xe0 handles with provider identifiers selected by mode and `func_020cb3dc`, initializes +0xc8 flags for the default mode, writes mode times 15 at +0xbc, notifies the +0x10 provider, and enters state 4. Evidence: switch branches, provider calls, and stores at 0212312c. Counts must fit six handles and flags; unsupported provider results return after the initial +0x110 store.
+- `func_0212356c` (328 B): advances a caller-owned phase byte through setup, waiting for state 8, polling the input provider/buttons, and waiting for state 8 again after cancellation. Returns -1 while pending, 1 on an enabled selection, and 0 after cancellation completes. Evidence: four-way switch, calls, +0xc8 flag lookup and final byte store at 0212356c. The input view exposes only the index word at +0x10; that index must fit the flag array.
+- `func_021236b4` (1300 B): increments the leading signed counter with a reset above 65535, advances states 1–7 and their phase/countdown fields, and updates seventeen +0x10 handles and the +0x5c handle on every call. Evidence: switch table, signed division/remainder calls, post-increment/decrement comparisons, float addition, and final update loop at 021236b4. Division occurs before multiplication as in the original; +0x118/+0x11c must be nonzero whenever used as divisors. +0x74/+0xc4 are now typed as floats, supported by float addition and their draw-provider use; earlier 0x3f800000 stores are expressed as 1.0f with identical instructions.
+- `func_02123bc8` (1540 B): returns immediately for state zero; otherwise submits the two counted groups, clip entries, leading handles, labels, and optional slot decorations in the original order, then restores provider state. Evidence: draw-provider calls, entry-halfword stores at +0xe, group bounds at +0x68/+0xb4 and flags at +0x78/+0xc8/+0xf8 at 02123bc8. Returned entry 15 is borrowed and writable. The additional label submission occurs after either flag branch; the nonzero branch resets provider state and the zero branch selects color 0x808080ff.
+
+The expanded private work view exposes previously padded flags and timing words;
+provider ownership and module boundaries remain unchanged. Separate loop variables
+and switch forms preserve original compiler allocation and count reloads.
+
+Hard list: none for M1-T750.
+
+Validation: `python3 tools/match_gate.py` reports all 28 C functions at 100%;
+`python3 tools/checksum.py` reports all artifacts byte-identical;
+`python3 tools/anticheat.py` passes; the unittest suite passes all nine tests.
+No new behavioral tests are required by the card; original-instruction comparison
+is the acceptance oracle.

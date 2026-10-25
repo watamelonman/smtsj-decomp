@@ -3,6 +3,15 @@
 ## Unreleased
 
 - Match six additional functions in game/unit_020f90dc; document the remaining drawing function for scratch follow-up.
+- Matched eight more game/unit_0209ee4c record and state helpers in readable C.
+- Match all eight M1-T764 entry-selection, descriptor-state, and work-allocation helpers at 100% objdiff.
+
+- Match all eight M1-T763 game/unit_0210a034 helpers, including guarded work creation and cached ID updates.
+- Verified all eight M1-T766 game/unit_0209ee4c functions at 100% objdiff; documented their contracts and typed the packed-state accessor.
+- Match all four M1-T750 game/unit_02122e1c setup, phase, state-update and rendering routines at 100% objdiff, preserving all earlier matches.
+- Match all eight M1-T762 global-work wrappers, record-byte scaling, and strided word clearing helpers at 100% objdiff with typed contracts.
+- Verified the eight M1-T761 global-word accessors and work setters in `game/unit_0210a034`; documented their typed contracts and original instruction evidence.
+- Match all seven M1-T730 game/unit_0211d520 display allocation, list refresh, input, phase, and drawing routines at 100% objdiff.
 
 - Match eight game/unit_020f90dc functions for handle lifecycle and entry selection.
 - Match `func_020b6f28` state-dependent drawing and document two remaining unit_020b6570 hard functions.

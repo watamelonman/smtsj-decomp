@@ -25,3 +25,8 @@ resource providers retain their existing ownership and lifetime contracts.
 `include/game/unit_0203aae8.h` defines borrowed object-prefix and eight-byte
 record views for the script provider dispatchers. Only instruction-observed
 fields are exposed; active work and provider storage retain their ownership.
+
+`include/game/unit_0211d520.h` defines borrowed work, recorded-ID, slot-request,
+and text-rectangle views for the list display callbacks. Offsets and descriptor
+strides follow the original loads and calls. External resource providers retain
+ownership; the work area owns display handles between allocation and teardown.
