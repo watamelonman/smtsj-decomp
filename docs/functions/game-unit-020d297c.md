@@ -21,24 +21,29 @@ The local `Unk0d297cBuffer` view records only the observed pointer and index
 layout. It introduces no shared module boundary or allocation ownership change.
 No new tests are required by this card; objdiff checks the emitted instructions.
 
-## Hard list
-- `Unk0d297c_Unk_0d3250`: decompiler-derived
-- `Unk0d297c_Unk_0d32ac`: decompiler-derived
-- `Unk0d297c_Unk_0d31e8`: decompiler-derived
-- `Unk0d297c_Unk_0d3290`: decompiler-derived
-- `Unk0d297c_Unk_0d33ac`: decompiler-derived
+## M1-T568
 
-## Not done in M1-T568
-- `Unk0d297c_Call_020d297c`
-- `Unk0d297c_Unk_0d2aec`
-- `Unk0d297c_LoadMissionLog`
-- `Unk0d297c_Unk_0d2f18`: decompiler-derived
-- `Unk0d297c_Unk_0d2f3c`: decompiler-derived
-- `Unk0d297c_Unk_0d2f98`: decompiler-derived
-- `Unk0d297c_Unk_0d2b70`: decompiler-derived
-- `Unk0d297c_Unk_0d2c1c`: decompiler-derived
-- `Unk0d297c_Unk_0d2e88`: decompiler-derived
-- `Unk0d297c_Unk_0d32c0`: decompiler-derived
+All eight targets match at 100% objdiff. Contracts follow the original ARM
+instructions; unknown domain meanings retain neutral names. Existing bodies
+already matched on entry; this card adds typed buffer access and evidence comments.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `Unk0d297c_Unk_0d3250` | `0x020d3250` / 20 B | Stores caller words at +0/+4, clears +0x0c/+0x10, preserves +8. Caller provides five writable words. |
+| `Unk0d297c_Unk_0d32ac` | `0x020d32ac` / 20 B | Reads a halfword through the pointer at +0 using signed index at +4. Caller guarantees a valid address; no bounds check. |
+| `Unk0d297c_Call_020d297c` | `0x020d2a8c` / 24 B | Adds 50, truncates to u16 via shifts, tail calls func_020d297c. Unsigned input preserves ARM wrapping arithmetic. |
+| `Unk0d297c_Unk_0d31e8` | `0x020d31e8` / 24 B | Clears +4, +0, +0x0c, +0x10 in that order; preserves +8. Caller provides five writable words. |
+| `Unk0d297c_Unk_0d3290` | `0x020d3290` / 28 B | Signed comparison of +4 and +8 gates a halfword write through +0. Does not advance index or check negative values; caller guarantees valid storage. |
+| `Unk0d297c_Unk_0d33ac` | `0x020d33ac` / 32 B | Passes work's leading slot to FreeSlot, calls func_02053000 with +0x18, then clears +0x18. The second release is unconditional. |
+| `Unk0d297c_Unk_0d2aec` | `0x020d2aec` / 36 B | Queries Unk0e5fb8_Unk_0e6448; nonzero result calls Unk0e5fb8_Unk_0e649c with original argument and mode 2. |
+| `Unk0d297c_LoadMissionLog` | `0x020d2e64` / 36 B | String at data_02150680 identifies Data/Event/Mission/MissionLog.mbb. Calls func_02051610, stores returned handle in data_02176be0, returns 1 without checking it. |
+
+No tests are required by this matching card; objdiff verifies emitted code.
+The borrowed buffer layout is local, with no shared boundary change.
+
+## Hard list
+
+None for M1-T568.
 
 ## Not done in M1-T569
 - `Unk0d297c_FreeSlot`
@@ -66,13 +71,10 @@ No new tests are required by this card; objdiff checks the emitted instructions.
 - `func_020d30b0`
 - `func_020d314c`
 - `func_020d297c`
-- `Unk0d297c_LoadMissionLog`: decompiler-derived (plain cleanup)
 - `Unk0d297c_Unk_0d3308`: decompiler-derived (struct+fix cleanup)
 - `Unk0d297c_Unk_0d3358`: decompiler-derived (struct+fix cleanup)
 - `Unk0d297c_Unk_0d2aa4`: hand-matched
-- `Unk0d297c_Unk_0d2aec`: hand-matched
 - `Unk0d297c_FreeSlot`: hand-matched
-- `Unk0d297c_Call_020d297c`: hand-matched
 - `Unk0d297c_Unk_0d3004`: hand-matched
 - `Unk0d297c_Unk_0d3138`: hand-matched
 - `Unk0d297c_PushU16`: hand-matched
