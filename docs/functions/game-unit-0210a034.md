@@ -16,16 +16,15 @@
 - `Unk10a034_Unk_10b018` (24 B): **100% objdiff**. Copies the borrowed second global work word at +0x10 to +8 when present. Evidence: conditional load/store at 0x0210b024–0x0210b028.
 - `Unk10a034_Unk_10b058` (24 B): **100% objdiff**. Returns the unsigned byte at +2 in the record from `func_020a1740(id)`, multiplied by 300. The provider must return a readable record. Evidence: call, byte load, and multiply at 0x0210b05c–0x0210b068.
 - `Unk10a034_Unk_10aeb0` (32 B): **100% objdiff**. Clears twelve words at offsets +0x2c + 12*i (0 <= i < 12) of borrowed writable storage. The base must be word-aligned and readable/writable through +0xb3. Evidence: counted str/add loop at 0x0210aeb0–0x0210aecc.
-- `Unk10a034_Unk_10b104`: decompiler-derived
-- `Unk10a034_Unk_10af40`: decompiler-derived
-- `Unk10a034_Unk_10af0c`: decompiler-derived
+- `Unk10a034_Unk_10b104` (32 B): **100% objdiff**. Initializes seven writable words with two caller values and five zeros. Evidence: stores at 0x0210b104–0x0210b11c and the caller’s 28-byte allocation.
+- `Unk10a034_Unk_10af40` (44 B): **100% objdiff**. When the ID changes, stores it at data_02176e3c and caches func_020d2eb0(id) in the next word. Evidence: comparison, store, and call at 0x0210af4c–0x0210af60.
+- `Unk10a034_Unk_10af0c` (52 B): **100% objdiff**. Passes the borrowed work halfword at +0xb4 to provider slot 7, invokes provider ID 22 with value -1, and sets the linked work word at +0x18 to 28. Evidence: calls and stores at 0x0210af0c–0x0210af38. The work and its +4 link must be valid.
 
-## Not done in M1-T763
-- `func_0210a034`
-- `Unk10a034_Unk_10a08c`
-- `Unk10a034_Alloc`
-- `Unk10a034_Unk_10b030`
-- `Unk10a034_HasId`
+- `func_0210a034` (40 B): **100% objdiff**. Calls func_0210a0dc with both caller words when data_02176e38 is zero and stores the result there. Evidence: guarded call/store at 0x0210a034–0x0210a054.
+- `Unk10a034_Unk_10a08c` (40 B): **100% objdiff**. Returns true when global work is absent or its +8 word equals 18. Evidence: conditional return and comparison at 0x0210a094–0x0210a0ac.
+- `Unk10a034_Alloc` (40 B): **100% objdiff**. Calls func_0210b080 with both caller words when data_02176e44 is zero and stores the result. Allocation naming is supported by the provider requesting 28 bytes via func_020611dc.
+- `Unk10a034_Unk_10b030` (40 B): **100% objdiff**. Returns true when second global work is absent or its +8 word equals 10. Evidence: conditional return and comparison at 0x0210b038–0x0210b050.
+- `Unk10a034_HasId` (44 B): **100% objdiff**. Tests the four borrowed halfword IDs at +0xc8 against the caller word. Evidence for the name: indexed halfword load/comparison loop at 0x0210aee0–0x0210aefc.
 
 ## Not done in M1-T764
 - `Unk10a034_GetEntry8`
@@ -37,12 +36,8 @@
 - `func_0210a0dc`
 - `func_0210b080`
 - `Unk10a034_Unk_10ac28`: decompiler-derived (struct cleanup)
-- `Unk10a034_Unk_10a08c`: hand-matched
-- `Unk10a034_HasId`: hand-matched
 - `Unk10a034_ClearById`: hand-matched
 - `Unk10a034_GetEntry8`: hand-matched
-- `Unk10a034_Alloc`: hand-matched
-- `Unk10a034_Unk_10b030`: hand-matched
 - `Unk10a034_Unk_10b484`: hand-matched
 
 ## M1-T761 verification
@@ -52,3 +47,7 @@ The eight entries above use the original ARM loads/stores as naming and behavior
 ## M1-T762 verification
 
 All eight requested functions match at 100% in the generated objdiff report. Neutral names retain the instruction-established contracts without guessing subsystem purpose. Existing source bodies were refined rather than creating a duplicate TU. No new tests were added (`tests_required = false`); original-object comparison verifies the instruction sequences. Build, anticheat, nine repository tests, match, and byte-identical checksum gates pass. No hard functions remain for this card.
+
+## M1-T763 verification
+
+The TU already existed from earlier cards; its seven existing requested bodies were retained and the missing guarded creator was added. Provider declarations now specify the observed arguments, including the ID retained in r0 across the cache update. All eight requested functions match 100%; no hard functions remain. Original-object comparison supplies acceptance coverage (`tests_required = false`), without adding behavioral tests that duplicate the instructions.
