@@ -232,7 +232,7 @@ u32 ImageBgDual3D_Unk_125618(ImageBgDual3DWork *work)
 }
 
 extern u32 data_02176e98[];
-int func_021257f4(u32 buffer, u32 value, u32 mode);
+void func_021257f4(u32 buffer, u32 value, u32 mode);
 void ImageBgDual3D_Unk_125910(u32 value);
 /* At 0x02125cd4, forwards the opaque word to 0x02125910 when the
  * predicate is true; otherwise calls 0x021257f4 with the shared buffer and 1. */
@@ -287,11 +287,15 @@ void ImageBgDual3D_Unk_1252b4(u32 *arg0)
   return;
 }
 
-int Unk02f2a8_Unk_035440();
-int Unk095560_Unk_0956e8();
-int func_021177b8();
-/* decompiler-derived */
-void ImageBgDual3D_Unk_125b10(int arg0)
+void Unk02f2a8_Unk_035440(u32 value);
+void Unk095560_Unk_0956e8(void);
+void func_021177b8(void);
+void ImageObj_Unk_0773bc(void);
+void Unk116598_Unk_1172bc(void);
+void Unk02cad4_Unk_02cbdc(s32 value);
+/* At 0x02125b10, runs teardown helpers, clears the global work, and
+ * releases work words 8 (only for kind 3) and 4. Work is borrowed, non-null. */
+void ImageBgDual3D_Unk_125b10(ImageBgDual3DWork *arg0)
 {
   Unk095560_Unk_0956e8();
   ImageBgDual3D_Unk_125d48();
@@ -300,17 +304,18 @@ void ImageBgDual3D_Unk_125b10(int arg0)
   Unk116598_Unk_1172bc();
   func_021177b8();
   *data_02176e94 = 0;
-  if (((ImageBgDual3DWork *)arg0)->unk_0004 == 3) {
-    Unk02f2a8_Unk_035440(((ImageBgDual3DWork *)arg0)->unk_0008);
+  if (arg0->unk_0004 == 3) {
+    Unk02f2a8_Unk_035440(arg0->unk_0008);
   }
-  Unk02cad4_Unk_02cbdc(((ImageBgDual3DWork *)arg0)->unk_0004);
+  Unk02cad4_Unk_02cbdc(arg0->unk_0004);
   return;
 }
 
 extern u8 data_02176e90[];
 int func_02061698(u8 *handle);
 int func_020616c0(u8 *handle);
-/* decompiler-derived */
+/* At 0x021258a0, resolves a valid global handle, forwards the argument
+ * with its offset-0x8c word to two helpers, then sets offset 0x208 to one. */
 void ImageBgDual3D_Unk_1258a0(u32 arg0)
 {
   int tmp1;
@@ -372,6 +377,8 @@ void ImageBgDual3D_Unk_125910(u32 x)
     FIELD(u32, q, 0) = 0;
 }
 
+/* At 0x02125a90, calls setup helpers and initializes the four work words
+ * to 0, 13, 1, 0 only when helper 0x02095b28(3) succeeds. Work is borrowed. */
 void ImageBgDual3D_Unk_125a90(ImageBgDual3DWork *work)
 {
     func_02077314();
@@ -397,4 +404,92 @@ void ImageBgDual3D_AllocBuf(void)
         return;
     }
     *data_02176e98 = func_0205ba98(0x28000, 0x800, data_02152180, 22);
+}
+
+void func_0205c3dc(u32 handle);
+void func_0205ddb4(u32 handle);
+void func_0205c368(u32 handle);
+void func_02053000(u32 handle);
+/* At 0x021255b4, releases and clears words 0x8c, 0x84 and 0x88 when
+ * nonzero, then unconditionally releases and clears word 0x7c. Work is borrowed. */
+void func_021255b4(ImageBgDual3DWork *work)
+{
+    if (work->unk_008c != 0) {
+        func_0205c3dc(work->unk_008c);
+        work->unk_008c = 0;
+    }
+    if (FIELD(u32, work, 0x84) != 0) {
+        func_0205ddb4(FIELD(u32, work, 0x84));
+        FIELD(u32, work, 0x84) = 0;
+    }
+    if (FIELD(u32, work, 0x88) != 0) {
+        func_0205c368(FIELD(u32, work, 0x88));
+        FIELD(u32, work, 0x88) = 0;
+    }
+    func_02053000(FIELD(u32, work, 0x7c));
+    FIELD(u32, work, 0x7c) = 0;
+}
+
+void func_02057524(u32 value);
+void func_02057534(void);
+void func_0205c748(u32 mode, u32 handle, s32 x, s32 y,
+                  float a, float b, u32 c, float d, u32 e);
+/* At 0x02125738, work state 5 enables the offset-0x8c helper call with
+ * coordinates (0, 0), bracketed by 0x02057524(0) and 0x02057534. */
+void func_02125738(ImageBgDual3DWork *work)
+{
+    if (work->unk_0000 != 5) return;
+    func_02057524(0);
+    func_0205c748(2, work->unk_008c, 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    func_02057534();
+}
+
+/* At 0x02125790, the same state-5 helper sequence uses coordinates
+ * (0, -256). Borrowed work supplies the handle at offset 0x8c. */
+void func_02125790(ImageBgDual3DWork *work)
+{
+    if (work->unk_0000 != 5) return;
+    func_02057524(0);
+    func_0205c748(2, work->unk_008c, 0, -256, 1.0f, 1.0f, 0, 1.0f, 0);
+    func_02057534();
+}
+
+void func_02125678(ImageBgDual3DWork *work);
+void func_02125b60(ImageBgDual3DWork *work);
+void func_02125314(ImageBgDual3DWork *work, u32 value);
+void func_021253c4(ImageBgDual3DWork *work, u32 value);
+/* Callback receives borrowed work owned by the task provider. */
+typedef void (*ImageBgDual3DCallback)(ImageBgDual3DWork *work);
+ImageBgDual3DWork *func_020611dc(ImageBgDual3DCallback update,
+    ImageBgDual3DCallback first, ImageBgDual3DCallback second,
+    ImageBgDual3DCallback cleanup, u32 size, u32 a, u32 b, u32 c);
+void func_020615ec(u8 *handle, ImageBgDual3DWork *work);
+/* At 0x02125a08, creates a 16-byte callback work and calls 0x02125a90
+ * on success. Returns zero on allocation failure, otherwise the created address. */
+u32 func_02125a08(void)
+{
+    ImageBgDual3DWork *work = func_020611dc(func_02125b60,
+        (ImageBgDual3DCallback)ImageBgDual3D_Nop_125c3c, 0,
+        ImageBgDual3D_Unk_125b10, 16, 0, 0, 1);
+    if (work == 0) return 0;
+    ImageBgDual3D_Unk_125a90(work);
+    return (u32)work;
+}
+
+/* At 0x021257f4, creates 0x20c bytes with four observed callbacks,
+ * stores buffer/value at 0x90/0x80 and publishes its handle. Mode zero
+ * additionally calls both initialization helpers and sets state 5. */
+void func_021257f4(u32 buffer, u32 value, u32 mode)
+{
+    ImageBgDual3DWork *work = func_020611dc(func_02125678,
+        func_02125738, func_02125790, ImageBgDual3D_Thunk_021255b4,
+        0x20c, 0, 0, 1);
+    FIELD(u32, work, 0x90) = buffer;
+    FIELD(u32, work, 0x80) = value;
+    func_020615ec(data_02176e90, work);
+    if (mode != 0) return;
+    func_02125314(work, 0);
+    func_021253c4(work, 0);
+    ImageBgDual3D_Unk_125650(work);
+    work->unk_0000 = 5;
 }
