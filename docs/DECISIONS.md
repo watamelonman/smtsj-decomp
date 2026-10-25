@@ -277,3 +277,14 @@ the two table lookups differently and changes register allocation. Repeated
 addition reproduces the original shifted add and all preceding instructions
 without volatile accesses or compiler directives. Table values must keep the
 signed index arithmetic in range, and both table indices must be valid.
+
+
+## DEC-016 — Preserve 02098b9c register allocation
+
+The record/permission dispatcher at 02098b9c assigns its state and coordinate
+arguments to r6/r5/r4, with kind and enabled in r7/r8. mwccarm 2.0/sp1p5 lifetime
+optimization instead assigns kind/enabled to r4/r5 and shifts the arguments to
+r8/r7/r6. Scope `opt_lifetimes off` to this function to retain the original
+allocation without volatile accesses or changes to C behavior. Typed borrowed
+bitfield views preserve the observed shift pairs for packed permission fields.
+All 1104 bytes then match; the pragma is popped immediately after the function.

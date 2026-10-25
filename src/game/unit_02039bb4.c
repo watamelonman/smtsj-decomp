@@ -18,7 +18,8 @@ typedef struct Unk039bb4Work {
     s32 unk_00dc;
 } Unk039bb4Work;
 
-int func_0203a334();
+/* The existing callers pass the work pointer as a 32-bit address. */
+int func_0203a334(int workAddress, int selector);
 /* decompiler-derived */
 u32 Unk039bb4_Unk_03a9ec(int arg0)
 {
@@ -95,67 +96,72 @@ u32 Unk039bb4_Unk_03a298(int arg0)
 
 
 void func_0203ab84(void);
-/* forwards to `func_0203ab84` */
+/* Tail-forwards to func_0203ab84; the literal at 0x02039d0c identifies the target. */
 void Unk039bb4_Thunk_0203ab84(void) { func_0203ab84(); }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a1c8(int arg0)
+/* Advances the signed field at +0x18 and returns 1; work must be valid. */
+u32 Unk039bb4_Unk_03a1c8(Unk039bb4Work *work)
 {
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a2f8(int arg0)
+/* Advances the signed field at +0x18 and returns 1; work must be valid. */
+u32 Unk039bb4_Unk_03a2f8(Unk039bb4Work *work)
 {
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a7f8(int arg0)
+/* Calls func_0203a334 with selector 0, then advances +0x18 and returns 1.
+ * The original loads +0x18 after the call, preserving any changes made by the callee. */
+u32 Unk039bb4_Unk_03a7f8(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,0);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 0);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a81c(int arg0)
+/* Calls func_0203a334 with selector 1, then advances +0x18 and returns 1.
+ * The original loads +0x18 after the call, preserving any changes made by the callee. */
+u32 Unk039bb4_Unk_03a81c(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,1);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 1);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a840(int arg0)
+/* Calls func_0203a334 with selector 2, then advances +0x18 and returns 1.
+ * The original loads +0x18 after the call, preserving any changes made by the callee. */
+u32 Unk039bb4_Unk_03a840(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,2);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 2);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a864(int arg0)
+/* Calls func_0203a334 with selector 3, then advances +0x18 and returns 1.
+ * The original loads +0x18 after the call, preserving any changes made by the callee. */
+u32 Unk039bb4_Unk_03a864(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,3);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 3);
+  work->unk_0018 += 1;
   return 1;
 }
 
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a9c8(int arg0)
+/* Calls func_0203a334 with selector 4, then advances +0x18 and returns 1.
+ * The original loads +0x18 after the call, preserving any changes made by the callee. */
+u32 Unk039bb4_Unk_03a9c8(Unk039bb4Work *work)
 {
-  func_0203a334(arg0,4);
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  func_0203a334((int)work, 4);
+  work->unk_0018 += 1;
   return 1;
 }
 
