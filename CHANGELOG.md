@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Match all four M1-T709 game/unit_0209d42c weighted-selection, cell-update, mode-polling, and record-work routines at 100% objdiff.
+- M1-T719: match all eight unit_020ce578 registration, setup, teardown, dispatcher and event functions with typed borrowed work layouts.
+- Matched all eight M1-T743 unit_02068f18 record, ID, coordinate and alpha helpers; documented their data contracts.
+- Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.
 - Match all eight M1-T708 game/unit_0209d42c request, queue, record-copy, and work-initialization routines; preserve earlier matches and document storage contracts.
 - Matched all eight M1-T729 game/unit_0211d520 routines, including resource teardown and selected-entry text setup, at 100% objdiff.
 - Match M1-T697 resource path formatting and record loading routines at 100% objdiff, with typed borrowed layouts and instruction evidence.
