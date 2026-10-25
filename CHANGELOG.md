@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the two M1-T685 game/unit_020f2e78 selection and relocation handlers at 100% objdiff; documented their phase contracts and instruction evidence.
 - Matched the eight M1-T684 game/unit_020f2e78 transition, cell-reset and dispatcher functions with typed layouts and per-function documentation.
 - Match all eight M1-T655 record setters, bit update, resource search, record copy and tier-size helper functions at 100% objdiff; document typed contracts and instruction evidence.
 - Matched all eight M1-T680 game/unit_020afc28 routines; documented record layouts, signed-byte lookups, coordinate checks and spread arithmetic.
