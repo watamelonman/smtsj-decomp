@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all four M1-T709 game/unit_0209d42c weighted-selection, cell-update, mode-polling, and record-work routines at 100% objdiff.
 - Match all eight M1-T708 game/unit_0209d42c request, queue, record-copy, and work-initialization routines; preserve earlier matches and document storage contracts.
 - Matched all eight M1-T729 game/unit_0211d520 routines, including resource teardown and selected-entry text setup, at 100% objdiff.
 - Match M1-T697 resource path formatting and record loading routines at 100% objdiff, with typed borrowed layouts and instruction evidence.
