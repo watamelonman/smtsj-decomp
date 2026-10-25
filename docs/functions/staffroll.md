@@ -52,13 +52,6 @@ register allocation without changing behavior.
 
 Hard list for M1-T641: none. All eight functions match; no scratch is needed.
 
-## Not done in M1-T643
-- `func_021182f0`
-- `func_0211882c`
-- `func_02117f94`
-- `func_02118974`
-- `func_0211882c`: hand-written. Parses staff-roll command list and lays out text lines.
-
 ## M1-T642 — verified 100% objdiff
 
 Existing neutral symbols are retained. Evidence is the original ARM instructions
@@ -84,3 +77,20 @@ comparison provide the behavioral regression checks for these assembly targets;
 no new unit tests were required by the card.
 
 Hard list for M1-T642: none. All eight functions match; no scratch is needed.
+
+## M1-T643
+
+Existing neutral symbols are retained. All views are borrowed. Original ARM
+instructions at the listed addresses provide the contracts below.
+
+| Function | Evidence and result |
+| --- | --- |
+| `func_021182f0` | **100%**. Derives viewport +0xE0 using unsigned frame progress and nonzero +0xD8, retires old slots, and queues at most one line inside the 480-line lookahead. Advances through type-4 commands, records exhaustion at +0xF4, and advances spacing and line index. Command and text indexes must be valid. |
+| `func_0211882c` | **100%**. Parses 20-byte commands; types 1..3 clamp timing arguments, type 4 records the first text command and accumulates spacing from 496. Requires cmdCount readable entries. The pre-existing draft already matched and now has its contract documented. |
+| `func_02118974` | **100%**. Preserves an existing global owner, otherwise allocates 776 bytes with four callbacks; returns on failure. Loads resources 43/44, allocates four images using 20-byte records and 32 text handles, initializes viewport fields, and parses the commands. |
+| `func_02117f94` | **100%**. Selects an image resource using the 40-byte table rows at 0x0213CC44 and 20-byte image records at 0x0213CBF4. Advances four asynchronous load states, waits for readiness byte +0x59, and after four images sets state +0xAC to 2 and computes unsigned duration +0xC8. Requires valid table indices and writable work/images. |
+
+Hard list for M1-T643: none. All four functions are verified by objdiff.
+The image-loader lookup uses a borrowed row pointer and repeated addition to
+preserve the original instruction scheduling and registers; see DEC-015.
+No unit tests were required for these instruction-matching targets.
