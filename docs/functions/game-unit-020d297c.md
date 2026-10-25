@@ -66,18 +66,6 @@ The buffer view remains local, with no module boundary change.
 
 None for M1-T568 or M1-T569.
 
-## Pending later cards
-- `Unk0d297c_Unk_0d3330`: decompiler-derived
-- `Unk0d297c_Unk_0d3200`: decompiler-derived
-
-## Not done in M1-T570
-- `Unk0d297c_Unk_0d3308`
-- `Unk0d297c_PushU16`
-- `Unk0d297c_Unk_0d3004`
-- `Unk0d297c_Unk_0d2aa4`
-- `func_020d2f60`
-- `func_020d2b10`
-
 ## Not done in M1-T572
 - `func_020d33cc`
 - `func_020d2c44`
@@ -91,9 +79,25 @@ None for M1-T568 or M1-T569.
 - `func_020d30b0`
 - `func_020d314c`
 - `func_020d297c`
-- `Unk0d297c_Unk_0d3308`: decompiler-derived (struct+fix cleanup)
 - `Unk0d297c_Unk_0d3358`: decompiler-derived (struct+fix cleanup)
-- `Unk0d297c_Unk_0d2aa4`: hand-matched
-- `Unk0d297c_Unk_0d3004`: hand-matched
 - `Unk0d297c_Unk_0d3138`: hand-matched
-- `Unk0d297c_PushU16`: hand-matched
+
+## M1-T570
+
+All eight targets match at 100% objdiff. The instruction addresses below establish
+contracts; unknown record meanings retain neutral names. No module boundary changes.
+The original instructions and objdiff serve as the acceptance oracle; no new tests
+are required by the card.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `Unk0d297c_Unk_0d3308` | `0x020d3308` / 40 B | Calls leading-buffer reset, clears extension words +0x14/+0x18/+0x1c and sets +0x20 to 256. Takes a writable work pointer. |
+| `Unk0d297c_Unk_0d3330` | `0x020d3330` / 40 B | Calls 0x02008848 with allocation +0x18, zero fill and +0x20 shifted left two bytes; clears +0x1c. Caller provides valid allocated storage. |
+| `Unk0d297c_Unk_0d3200` | `0x020d3200` / 44 B | Stores signed halfword capacity at +8, clears +4, allocates capacity shifted left one bytes, stores allocation at +0, clears +0x0c/+0x10. |
+| `Unk0d297c_PushU16` | `0x020d3264` / 44 B | Signed count +4 < capacity +8 gates halfword store at data[count] and count increment. The store and increment support the existing descriptive name. Caller guarantees storage and nonnegative count. |
+| `Unk0d297c_Unk_0d3004` | `0x020d3004` / 48 B | Returns zero for absent mission-log handle; otherwise resolves table zero, entry zero through 0x0204fe68 and 0x0204fed8. |
+| `Unk0d297c_Unk_0d2aa4` | `0x020d2aa4` / 56 B | For zero query result, forwards index with mode 1 to 0x020e649c and 0x020e651c, then stores it through +0x9a0 setter. Nonzero query returns immediately. |
+| `func_020d2f60` | `0x020d2f60` / 56 B | Looks up caller index through 0x020d2eb0; null returns zero. Otherwise resolves handle 29, table 2, entry selected by low seven bits of record byte +3. Local byte bitfield preserves original lsl/lsr extraction. |
+| `func_020d2b10` | `0x020d2b10` / 72 B | Decrements selector modulo 256; values >=5 return zero. Null lookup returns zero. Reads signed word at +4 + selector*4: negative returns one, otherwise queries 0x020e666c with the word. |
+
+Hard list for M1-T570: none.

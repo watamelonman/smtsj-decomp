@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T570 buffer initialization, halfword append, record query and lookup helpers at 100% objdiff; documented typed contracts and instruction evidence.
 - Verified all eight M1-T569 lookup, slot release, setup and next-halfword helpers at 100% objdiff; made register-carried arguments explicit and documented typed contracts.
 - Verified all eight M1-T599 game/unit_0206a224 functions at 100% objdiff; corrected wrapper argument/result contracts and documented field and slot evidence.
 - Matched all eight M1-T577 request, record lookup, condition and kind mapping functions at 100% objdiff; documented typed request contracts and instruction evidence.
