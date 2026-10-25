@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T576 manager predicates, image release, setup, record reset and constant mapping helpers at 100% objdiff; documented typed contracts and instruction evidence.
 - Verified all eight M1-T575 manager-pair, record-address and status helpers at 100% objdiff; added typed declarations and evidence-based contracts.
 - Corrected the M1-T567 low-pair wrapper to forward its typed table index and describe its two-bit return value.
 - Verified all eight M1-T567 wrappers and buffer accessors in `game/unit_020d297c` at 100% objdiff, with typed arguments, return values, and documented assembly evidence.
