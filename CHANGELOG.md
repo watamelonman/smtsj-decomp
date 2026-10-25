@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T634: matched seven selector, coordinate-probe, initialization, and record-search functions; documented the remaining dispatcher on the hard list.
 - Matched all eight M1-T633 game/unit_020986ac flag, selector, and bounded record scan functions at 100% objdiff; documented typed contracts and compiler propagation control.
 - Verified all eight M1-T650 initialization, work-view and record-call helpers at 100% objdiff; clarified typed calls and borrowed-address contracts.
 - Match all eight M1-T642 StaffRoll state, resource, drawing, and teardown functions at 100% objdiff with typed borrowed views.

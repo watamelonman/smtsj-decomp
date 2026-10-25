@@ -59,12 +59,36 @@ checks and register allocation (See DEC-014). No behavior tests are required by
 this card; instruction identity and full-image checksum are the acceptance checks.
 No M1-T633 functions remain on the hard list.
 
-## Not done in M1-T634
-- `func_02098b14`
-- `func_02099318`
-- `func_02098a08`
-- `func_020987ac`
-- `func_02099174`
-- `func_020993a8`
-- `func_02098fec`
-- `func_02098b9c`
+## M1-T634
+
+Seven targets match at 100% objdiff; all 31 C functions in the unit pass the
+match gate. Anticheat, all nine repository tests, and the full-image checksum
+pass. All pointers are borrowed;
+unknown selectors and record meanings retain the existing neutral symbols.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_02098b14` | Repeatedly probes the external operation while active, queues selector 2 on success, and updates output +60 and predicate +48; calls and stores at 0x02098b14 (136 B). |
+| `func_02099318` | Initializes 72 bytes, stores borrowed source/record pointers, creates handle +16, and sets pending selector -1 for a zero source word. The initial load precedes the null check, so the state pointer must be readable; 0x02099318 (144 B). |
+| `func_02098a08` | Looks up the record table, finds its first empty entry, and returns the sum of external values 0x5f80/0x5f81 plus 32, with ten units per index above 5, clamped at index 19; 0x02098a08 (160 B). |
+| `func_020987ac` | Searches ids 111..210 with a matching middle field and enabled predicate; selectors 0/1/4 accept high nibble >= value, others require equality. Uses the existing DEC-014 scoped propagation control to preserve loop-entry comparisons; 0x020987ac (180 B). |
+| `func_02099174` | Updates count +56 and derived outputs, conditionally calls external operation 14, and queues selector 3 when count reaches 1; requires a live state/header when the global state exists; 0x02099174 (188 B). |
+| `func_020993a8` | Applies pending state, updates current state, then dispatches selector +44. Cases 0..2 probe signed coordinates at work-area +868/+869; case 4 queues teardown and resets fields; 0x020993a8 (236 B). |
+| `func_02098fec` | Probes current coordinates then a direction-selected neighbor; on success stores selector 2, record field +16, coordinate bytes, and derived output. Directions 1/2/3/0 adjust x+/y+/x-/y-; 0x02098fec (304 B). |
+| `func_02098b9c` | Still supplied by the original delinked object (1104 B); see hard list below. |
+
+The selector predicate's signature now accepts the two extra integer arguments
+observed at the new call sites. Its existing body ignores those arguments and
+retains its original instructions. No behavioral tests are required by this card;
+standalone instruction comparisons, objdiff, and the ROM checksum validate the work.
+
+### Hard list
+
+- `func_02098b9c`: reconstructed the record-type probes, directional mask,
+  packed permission fields, and final selector updates in readable C. Corrected
+  fallthrough between record probes and used typed bitfields for the original
+  shift pairs. The closest candidate reached 1104 bytes but differed in register
+  allocation: kind/enabled/record used r8/r9/r7 instead of r7/r8/r9. Tried scoped
+  propagation control, local declaration order/scope, shared versus separate
+  record temporaries, and explicit coordinate locals. Omitted the nonmatching
+  body; a human can create a scratch with `tools/decompme.py`.

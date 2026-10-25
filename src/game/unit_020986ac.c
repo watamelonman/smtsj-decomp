@@ -188,7 +188,7 @@ void Unk0986ac_Unk_098aa8(u8 *p)
 
 /* Return whether the borrowed selector at +44 equals 0, 1, or 2.
  * The three explicit comparisons at 0x02098ae0 support the predicate name. */
-int Unk0986ac_IsMode012(u8 *p)
+int Unk0986ac_IsMode012(u8 *p, int arg1, int arg2)
 {
     u32 v = FIELD(u32, p, 44);
     int r = 0;
@@ -376,3 +376,204 @@ int func_02098740(int field)
 }
 
 #pragma pop
+
+/* Borrowed 72-byte selector state, laid out by loads/stores at 0x02099318. */
+typedef struct Unk0986acWork {
+    s32 unk_00;
+    u8 *unk_04;
+    s32 *unk_08;
+    s32 unk_0c, unk_10, unk_14, unk_18, unk_1c, unk_20, unk_24;
+    s32 unk_28, unk_2c, unk_30, unk_34, unk_38, unk_3c, unk_40;
+    u8 unk_44;
+    s8 unk_45, unk_46;
+    u8 pad_47;
+} Unk0986acWork;
+void func_02008848(void *p, int value, u32 size);
+int func_020629ac(int a, int b, int c, int d);
+int func_02059c70(int id, int kind);
+int func_0202d170(void);
+int func_0202d710(Unk0986acWork *p, int x, int y);
+void func_0202d198(void);
+void Unk0a0ce4_Unk_0a0da4(int id);
+int func_02098a08(u8 *p, int index);
+int func_02098b14(Unk0986acWork *p, int x, int y);
+int func_02098b9c(Unk0986acWork *p, int x, int y);
+int func_02098fec(Unk0986acWork *p, int x, int y);
+u8 *Unk02e000_GetWorkArea(void);
+int func_0209bf00(int x, int y, int direction, int adjacent);
+u8 *Unk02f2a8_Unk_034970(u8 *p, int x, int y);
+u8 *Unk09a268_Unk_09c4a8(u8 *p, int x, int y);
+
+/* Initialize borrowed state and allocate its handle; the initial word is read
+ * before the null comparison at 0x02099318, so p must be readable. */
+void func_02099318(Unk0986acWork *p, u8 *record, s32 *source, int arg3)
+{
+    if (p->unk_00 == 1 || p == 0 || source == 0) return;
+    func_02008848(p, 0, 72);
+    p->unk_00 = 1;
+    p->unk_04 = record;
+    p->unk_08 = source;
+    p->unk_0c = arg3;
+    p->unk_14 = 0;
+    p->unk_18 = 0;
+    p->unk_1c = -1;
+    p->unk_20 = -1;
+    p->unk_28 = 0;
+    p->unk_34 = 0;
+    p->unk_2c = -1;
+    p->unk_10 = func_020629ac(5, 1, 1, 1);
+    if (*source == 0) p->unk_18 = -1;
+}
+
+/* Derive a value from the first empty entry, clamped to indices 5..19;
+ * constants 0x5f80/0x5f81 and stride 10 are observed at 0x02098a08. */
+int func_02098a08(u8 *p, int index)
+{
+    u32 n = Unk0986ac_FindEmpty((void *)func_0204fed8(FIELD(u32, p, 4), index));
+    int a;
+    if (n <= 5) {
+        a = func_02059c70(0x5f80, 2);
+        return a + func_02059c70(0x5f81, 2) + 32;
+    }
+    if (n >= 19) {
+        a = func_02059c70(0x5f80, 2);
+        return a + func_02059c70(0x5f81, 2) + 172;
+    }
+    a = func_02059c70(0x5f80, 2);
+    return a + func_02059c70(0x5f81, 2) + 32 + (n - 5) * 10;
+}
+
+/* Queue selector 2 when the external operation succeeds; observed fields and
+ * calls at 0x02098b14 require a live borrowed state and record. */
+int func_02098b14(Unk0986acWork *p, int x, int y)
+{
+    while (func_0202d170() != 0) {
+        if (func_0202d710(p, x, y) == 1) {
+            p->unk_18 = 2;
+            p->unk_1c = 0;
+            p->unk_3c = func_02098a08(p->unk_04, p->unk_28);
+            p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 1, 0);
+            return 1;
+        }
+        func_0202d198();
+    }
+    return 0;
+}
+
+/* Advance the borrowed count and output fields, queueing selector 3 at the
+ * threshold; branch/load evidence is the original 0x02099174 routine. */
+void func_02099174(u8 *raw)
+{
+    Unk0986acWork *p = (void *)raw;
+    Unk09911cState *gs = GetGameState();
+    if (gs == 0) return;
+    if (p->unk_38 == 0) {
+        if (gs->hdr->unk_10 == 1) p->unk_38 = 1;
+        else {
+            Unk0986ac_Unk_098aa8(raw);
+            return;
+        }
+    }
+    if (p->unk_38 == 1 && p->unk_30 == 1) {
+        Unk0a0ce4_Unk_0a0da4(14);
+        p->unk_30 = 0;
+    }
+    if (p->unk_38 == 1) p->unk_34 = 1;
+    p->unk_38++;
+    Unk0986ac_Unk_098aa8(raw);
+    if (p->unk_38 < 1) return;
+    p->unk_18 = 3;
+    p->unk_38 = 1;
+    p->unk_40 = p->unk_3c;
+    p->unk_44 = 31;
+}
+
+/* Preserve loop-entry checks as in the preceding record scans. See DEC-014. */
+#pragma push
+#pragma opt_propagation off
+/* Search ids 111..210 for a matching middle field and high nibble; selectors
+ * 0/1/4 accept a nibble >= value, others require equality (0x020987ac). */
+int func_020987ac(int field, int value)
+{
+    int result = 0;
+    int at_least = 0;
+    int id;
+    switch (field) {
+    case 0: case 1: case 4: at_least = 1; break;
+    case 2: case 3: case 5: break;
+    }
+    id = 111;
+    while (id <= 210) {
+        Unk09974cFlags *record = Unk09974c_Unk_099d78(id);
+        if (record != 0 && field == Unk09974c_GetFlagsMidMinus1(record) &&
+            Unk09974c_Unk_0998d8(id) != 0) {
+            if (at_least) {
+                if (value <= record->unk_04_hi) { result = 1; break; }
+            } else if (value == record->unk_04_hi) { result = 1; break; }
+        }
+        id++;
+    }
+    return result;
+}
+#pragma pop
+
+/* Probe the current and adjacent coordinates, retaining borrowed coordinates
+ * and record selector on success; direction dispatch is at 0x02098fec. */
+int func_02098fec(Unk0986acWork *p, int x, int y)
+{
+    int found = 0;
+    u8 *record;
+    if (func_0209bf00(x, y, FIELD(int, Unk02e000_GetWorkArea(), 856), found) == 1) {
+        p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 0);
+        found = 1;
+    } else {
+        switch (FIELD(u32, Unk02e000_GetWorkArea(), 856)) {
+        case 1: x++; break;
+        case 2: y++; break;
+        case 3: x--; break;
+        case 0: y--; break;
+        }
+        if (func_0209bf00(x, y, FIELD(int, Unk02e000_GetWorkArea(), 856), 1) == 1) {
+            p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 1);
+            found = 1;
+        }
+    }
+    if (found != 1) return 0;
+    record = Unk09a268_Unk_09c4a8(Unk02f2a8_Unk_034970((u8 *)GetGameState() + 4, x, y), x, y);
+    p->unk_18 = 2;
+    p->unk_1c = 3;
+    p->unk_28 = FIELD(int, record, 16);
+    p->unk_45 = x;
+    p->unk_46 = y;
+    p->unk_3c = func_02098a08(p->unk_04, FIELD(int, record, 16));
+    return 1;
+}
+
+/* Run pending/current state handlers then probe coordinates for selectors 0..2;
+ * selector 4 queues teardown. The jump table at 0x020993a8 defines the cases. */
+void func_020993a8(Unk0986acWork *p)
+{
+    int x, y, result;
+    if (p->unk_00 == 0) return;
+    if (p->unk_18 != -1) Unk0986ac_Unk_099274((u8 *)p);
+    Unk0986ac_Unk_0992b0((u8 *)p);
+    switch (p->unk_2c) {
+    case 0: case 1: case 2:
+        if (p->unk_14 == 3) return;
+        x = FIELD(s8, Unk02e000_GetWorkArea() + 768, 100);
+        y = FIELD(s8, Unk02e000_GetWorkArea() + 768, 101);
+        result = func_02098b14(p, x, y);
+        if (result == 0) result = func_02098b9c(p, x, y);
+        if (result == 0) func_02098fec(p, x, y);
+        p->unk_2c = -1;
+        break;
+    case 3: break;
+    case 4:
+        p->unk_20 = p->unk_1c;
+        p->unk_1c = -1;
+        p->unk_18 = 4;
+        p->unk_34 = 0;
+        p->unk_2c = -1;
+        break;
+    }
+}
