@@ -18,7 +18,7 @@ int Unk0f3db4_Unk_0f4528(u32 arg0);
 void Unk0f3db4_Unk_0f4550(u8 *arg0);
 int Unk0f3db4_Unk_0f3db4(void);
 void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1);
-u32 Unk0f3db4_Unk_0f4490(u32 arg0,int arg1);
+u32 Unk0f3db4_Unk_0f4490(u32 arg0,u16 arg1);
 
 /* Extract the low two packed state bits; higher bits do not affect the result. */
 u32 Unk0f3db4_Unk_0f44a8(u32 arg0)
@@ -65,7 +65,7 @@ void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1)
 }
 
 /* Read low state bits at arg1 in the table selected by arg0; caller bounds it. */
-u32 Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
+u32 Unk0f3db4_Unk_0f4490(u32 arg0,u16 arg1)
 {
   int value;
   value = Unk0f3db4_Unk_0f3ec8(arg0);
@@ -227,13 +227,13 @@ void Unk0f3db4_Unk_0f4538(u32 arg0,int arg1)
 }
 
 /* Forwards (base + offset, value) to Unk0f3db4_Unk_0f44d0. */
-void Unk0f3db4_Unk_0f44b0(u32 arg0, int offset, u8 value)
+void Unk0f3db4_Unk_0f44b0(u32 arg0, u16 offset, u8 value)
 {
     Unk0f3db4_Unk_0f44d0((u8 *)Unk0f3db4_Unk_0f3ec8(arg0) + offset, value);
 }
 
 /* Promotes state 2 to state 3. */
-void Unk0f3db4_Unk_0f44e4(u32 arg0, int offset)
+void Unk0f3db4_Unk_0f44e4(u32 arg0, u16 offset)
 {
     if (Unk0f3db4_Unk_0f4490(arg0, offset) != 2) {
         return;
@@ -317,7 +317,7 @@ typedef struct Unk0f3db4List {
 
 /* Append ID/index only if no existing record has the same string at +22;
  * 020f40c8 resolves entries through the range mapper and record accessor. */
-void func_020f40c8(Unk0f3db4List *list, const u8 *record, u16 index)
+void func_020f40c8(Unk0f3db4List *list, const u8 *record, u32 index)
 {
     int i;
     for (i = 0; i < list->count; i++) {
@@ -359,4 +359,123 @@ int func_020f4560(int selector)
         if (Unk0f3db4_Unk_0f4490(selector, index) == 2) return 1;
     }
     return 0;
+}
+
+int Unk0e651c_Unk_0e666c(int id);
+int Unk044394_HasEntry(int index);
+int func_020e49cc(int kind, int id);
+
+/* Borrowed record prefix: signed query IDs at +4, +6, and +8. */
+typedef struct Unk0f3db4Record {
+    u16 id;
+    u8 kind;
+    u8 unknown;
+    s16 query[3];
+} Unk0f3db4Record;
+
+/* Require all present query IDs to pass 020e666c. The signed sentinel
+ * comparisons and short-circuit call sequence are observed at 020f3fcc. */
+int func_020f3fcc(const Unk0f3db4Record *record)
+{
+    if (record->query[0] <= -1) return 1;
+    if (record->query[1] <= -1) {
+        if (Unk0e651c_Unk_0e666c(record->query[0])) return 1;
+    } else if (record->query[2] <= -1) {
+        if (Unk0e651c_Unk_0e666c(record->query[0]) &&
+            Unk0e651c_Unk_0e666c(record->query[1])) return 1;
+    } else {
+        if (Unk0e651c_Unk_0e666c(record->query[0]) &&
+            Unk0e651c_Unk_0e666c(record->query[1]) &&
+            Unk0e651c_Unk_0e666c(record->query[2])) return 1;
+    }
+    return 0;
+}
+
+
+/* Return the integer percentage of eligible records whose state is at least
+ * two. 020f45c0 excludes IDs accepted by 020e49cc(2,id); empty sets return zero. */
+u32 func_020f45c0(int selector)
+{
+    u32 ready;
+    u32 total;
+    int i;
+    if (!Unk044394_HasEntry(8)) return 0;
+    Unk0f3db4_Unk_0f3db4();
+    ready = 0;
+    total = 0;
+    i = 0;
+    for (; i < (int)Unk0f3db4_Unk_0f3e6c(selector); i++) {
+        Unk0f3db4Record *record = (Unk0f3db4Record *)func_020f3de8(selector, (u16)i);
+        if (!func_020e49cc(2, record->id)) {
+            if ((int)Unk0f3db4_Unk_0f4490(selector, (u16)i) >= 2) ready++;
+            total++;
+        }
+    }
+    if (total == 0) return 0;
+    return 100 * ready / total;
+}
+
+/* Writable prefix observed at 020f4180; caller supplies append capacity.
+ * The later list starts at this same address and has its own count at +252. */
+typedef struct Unk0f3db4Scan {
+    int partial;
+    int ready;
+    int count;
+    Unk0f3db4ListEntry entries[1];
+} Unk0f3db4Scan;
+
+/* Scan six tables, promote qualifying packed states, and append records.
+ * Kind dispatch, query calls, and the two list layouts follow 020f4180;
+ * subsystem meanings remain unknown, so the existing neutral name is retained. */
+void func_020f4180(Unk0f3db4Scan *out)
+{
+    u32 selector;
+    for (selector = 0; (int)selector < 6; selector++) {
+        int count = Unk0f3db4_Unk_0f3e6c(selector);
+        int i;
+        for (i = 0; (int)i < (int)count; i++) {
+            u8 *record = func_020f3de8(selector, i);
+            int state;
+            if (func_020e49cc(2, ((Unk0f3db4Record *)record)->id)) continue;
+            state = Unk0f3db4_Unk_0f4490(selector, i);
+            if (state >= 2) continue;
+            switch (((Unk0f3db4Record *)record)->kind) {
+            case 0:
+                if (func_020f3fcc((Unk0f3db4Record *)record)) {
+                    Unk0f3db4_Unk_0f44b0(selector, i, 2);
+                    if (Unk0f3db4_IsName((char *)record + 22)) out->ready = 1;
+                    else func_020f40c8((Unk0f3db4List *)out, record, i);
+                }
+                break;
+            case 1:
+                if (func_020f3fcc((Unk0f3db4Record *)record)) {
+                    switch (func_020f4070((Unk0f3db4Obj *)record)) {
+                    case 0: break;
+                    case 1:
+                        if (state == 0) {
+                            Unk0f3db4_Unk_0f44b0(selector, i, 1);
+                            if (Unk0f3db4_IsName((char *)record + 22)) out->partial = 1;
+                            else func_020f40c8((Unk0f3db4List *)out, record, i);
+                        }
+                        break;
+                    case 2:
+                        Unk0f3db4_Unk_0f44b0(selector, i, 2);
+                        if (Unk0f3db4_IsName((char *)record + 22)) out->ready = 1;
+                        else func_020f40c8((Unk0f3db4List *)out, record, i);
+                        break;
+                    }
+                }
+                break;
+            case 2:
+                if (func_020f3fcc((Unk0f3db4Record *)record) && func_020f4070((Unk0f3db4Obj *)record) == 2) {
+                    out->entries[out->count].id = ((Unk0f3db4Record *)record)->id;
+                    out->entries[out->count].index = i;
+                    out->count++;
+                    Unk0f3db4_Unk_0f4398((Unk0f3db4Obj *)record, 1);
+                    Unk0f3db4_Unk_0f44b0(selector, i, 2);
+                }
+                break;
+            }
+        }
+    }
 }

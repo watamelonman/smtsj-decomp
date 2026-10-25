@@ -3,6 +3,11 @@
 ## Unreleased
 
 - Match all six M1-T510 game/unit_020fd9f0 helpers, including both resource-layer rendering functions and their fixed-point opacity pulse.
+- Verified all eight M1-T549 game/unit_020a5680 entry and state helpers at 100% objdiff; added typed ID contracts and per-function assembly evidence.
+- Verified all eight M1-T538 ImageBgDual3D record checks, buffer operations and dispatch helpers at 100% objdiff; documented typed contracts and explicit forwarded arguments.
+- Verified the eight M1-T545 object-header, callback and context helpers against the original instructions; documented their contracts.
+- Matched all three M1-T506 record-query, table-percentage, and six-table scanner functions in `game/unit_020f3db4` at 100% objdiff.
+- Matched all three M1-T528 state-update and drawing callbacks at 100% objdiff, with typed floating state and documented instruction evidence.
 - Verified all eight M1-T537 ImageBgDual3D predicates, field updates and helper sequences at 100% objdiff; added typed contracts and instruction evidence.
 - Matched all eight M1-T527 context, money-window lifecycle, state initialization and numeric-output functions at 100% objdiff; documented instruction evidence and typed contracts.
 - Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.
