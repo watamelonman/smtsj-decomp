@@ -300,7 +300,7 @@ extern char data_0214c854[];
 extern char data_0214c874[];
 void func_02013c3c(char *buf, const char *fmt, ...);
 u8 *Unk02e000_GetWorkArea(void);
-u32 Unk02f2a8_GetRes36Unk19(u16 n);
+u32 Unk02f2a8_GetRes36Unk19(int n);
 int func_02096448(int id);
 
 /* Borrowed work-area prefix: both path and ID dispatch read +0x35c. */
@@ -738,4 +738,129 @@ int func_02095f94(void)
     work->unk_18 = 1;
     work->slot = Unk095560_Unk_095d1c();
     return 1;
+}
+
+extern char data_0214c8a0[], data_0214c8b8[], data_0214c8d8[], data_0214c8ec[];
+extern char data_0214c900[], data_0214c918[], data_0214c930[], data_0214c948[];
+extern const char *data_0214c6b0[];
+u32 Unk02f2a8_GetRes36Unk1a(int id);
+int Unk0e651c_Unk_0e66c0(int index);
+/* 0x02096280 formats a resource path into caller-owned storage. The
+ * format literals and slot-specific table establish the dispatch; IDs in
+ * slots 1 and 8 must index their respective tables. */
+void func_02096280(char *buf, int slot, int id)
+{
+    if (func_02096448(slot)) {
+        func_02013c3c(buf, data_0214c8a0, id);
+        return;
+    }
+    if (slot == 0) {
+        int a, b;
+        Unk02f2a8_GetRes36Unk19(id);
+        Unk02f2a8_GetRes36Unk1a(id);
+        if (id >= 980) { a = 99; b = id - 979; }
+        else { a = Unk02f2a8_GetRes36Unk19(id); b = Unk02f2a8_GetRes36Unk1a(id); }
+        func_02013c3c(buf, data_0214c8b8, a, b);
+        return;
+    }
+    if (slot == 1) {
+        if (id == 1) {
+            int variant = Unk0e651c_Unk_0e66c0(0);
+            char name[20] = {0};
+            func_02013c3c(name, data_0214c6b0[id], (u8)(variant + 1));
+            func_02013c3c(buf, data_0214c8d8, name);
+            return;
+        }
+        func_02013c3c(buf, data_0214c8ec, data_0214c6b0[id]);
+        return;
+    }
+    if (slot == 8) {
+        switch (id) {
+        case 0: func_02013c3c(buf, data_0214c900); return;
+        case 1: func_02013c3c(buf, data_0214c918); return;
+        case 2: func_02013c3c(buf, data_0214c930); return;
+        case 3: func_02013c3c(buf, data_0214c948); return;
+        }
+    }
+}
+
+/* Borrowed record layout established by the loads/stores in 095d5c. */
+typedef struct Unk095560LoadRecord {
+    u8 *buffer;
+    u32 unk_04;
+    u32 unk_08;
+    u8 *entries;
+    u8 work[0x40];
+    int id;
+} Unk095560LoadRecord;
+/* Five-byte signature value copied from the resource-format marker. */
+typedef struct Unk095560Signature { s8 bytes[5]; } Unk095560Signature;
+extern const char data_0213bdd8[5];
+extern char data_0214c894[];
+u8 *func_02051610(const char *path);
+int func_0204af3c(void *work, const void *data, int mode);
+void func_0204af70(void *work, void *manager);
+void Unk02d15c_ResetRecord(int slot, int id);
+void func_0204aff0(void *work, const char *name);
+int func_0204b044(void *work);
+/* 0x02095d5c loads the formatted resource, validates its four-byte signature
+ * and version, and initializes the borrowed record work. The resource buffer
+ * is retained by the record; 09560c releases it on validation failure. */
+int func_02095d5c(u32 slot, u32 input, int mode)
+{
+    Unk095560LoadRecord *record = (Unk095560LoadRecord *)Unk02d15c_GetManagerRecord(slot);
+    int *paired = Unk094fe0_Unk_094fec(slot);
+    int id = input;
+    u8 *buffer;
+    u32 offset, size, entries;
+    int i;
+    func_02052f58(0);
+    if (id >= 0) {
+        Unk095560_Unk_09560c(slot);
+        char path[64] = {0};
+        func_02096280(path, slot, id);
+        buffer = func_02051610(path);
+        if (buffer != 0) {
+            record->buffer = buffer;
+            record->entries = 0;
+            Unk095560Signature signature = *(const Unk095560Signature *)data_0213bdd8;
+            for (i = 0; i < 4; i++) {
+                if (signature.bytes[i] != Unk095560_GetSignedByte((s8 *)buffer, i)) {
+                    Unk095560_Unk_09560c(slot);
+                    goto failure;
+                }
+            }
+            offset = Unk095560_ReadU32LE(buffer, 8);
+            size = Unk095560_ReadU32LE(buffer, 12);
+            entries = Unk095560_ReadU32LE(buffer, 52);
+            func_0204ae84(record->work);
+            if (!func_0204af3c(record->work, buffer + (offset + size), 0)) {
+                Unk095560_Unk_09560c(slot);
+                goto failure;
+            }
+            func_0204af70(record->work, Unk095560_GetManagerAlias());
+            record->unk_04 = Unk095560_ReadU32LE(buffer, 40);
+            record->unk_08 = Unk095560_ReadU32LE(buffer, 44);
+            record->entries = buffer + offset + entries;
+            if (record->unk_04 != 4) {
+                Unk095560_Unk_09560c(slot);
+                goto failure;
+            }
+            if (mode == 1) {
+                Unk0202dcfc_InitWorker((Worker *)Unk095560_GetManagerAlias(), slot);
+                Unk02d15c_ResetRecord(slot, id);
+            } else { *paired = id; record->id = id; }
+            func_0204aff0(record->work, data_0214c894);
+            switch (func_0204b044(record->work)) {
+            case 1: default: Unk095560_Unk_09560c(slot); break;
+            case 2: break;
+            }
+            *(u16 *)(record->work + 12) = *(u16 *)(Unk095560_GetManagerAlias() + 12);
+            func_02052f68();
+            return 1;
+        }
+    }
+failure:
+    func_02052f68();
+    return 0;
 }

@@ -311,3 +311,18 @@ original load/store ordering and register allocation; casting the byte array
 at each update produced different instructions. This changes no ownership or
 storage allocation: the singleton remains externally defined. All earlier
 functions and the eight M1-T708 additions remain at 100% objdiff.
+## DEC-018 — Preserve 02039bb4 stack-handler code generation
+
+For the record initializer, disable strength reduction and common-subexpression
+elimination locally: the original indexes both stack arrays independently and
+recomputes the selected record address after the name copy. Explicit do/while
+loops retain the original first-iteration control flow. For the directory scan,
+disable lifetime optimization and reuse the directory count as the record index;
+declaration order retains the original registers across string comparisons.
+For tagged negation, disable lifetime optimization and common-subexpression
+elimination so the float store recomputes its stack address after subtraction.
+For binary operations, disable propagation to retain separate global result
+stores and reloads. Explicit branches assign boolean results; logical float
+operands compare against double zero as established by the conversion calls.
+Each setting is restored immediately after its function. These choices preserve
+ordinary memory semantics without volatile accesses or assembly.
