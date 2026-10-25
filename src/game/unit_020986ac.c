@@ -65,8 +65,8 @@ int Unk0986ac_Unk_0986c0(int arg0)
 
 
 
-int func_0204fed8();
-void func_02061f10();
+int func_0204fed8(u32 handle, int index);
+void func_02061f10(int handle, int arg1, int arg2, int arg3, int value);
 void Unk0986ac_SetFlagBit(int bit, int on)
 {
     u8 *p = (u8 *)Unk0986ac_Unk_0986c0(bit);
@@ -78,13 +78,16 @@ void Unk0986ac_SetFlagBit(int bit, int on)
     }
 }
 
+/* Test one bit in borrowed flag storage; the mask at 0x02098714 uses
+ * bit & 7. The caller must provide an in-range storage index. */
 int Unk0986ac_TestFlagBit(int bit)
 {
     u8 *p = (u8 *)Unk0986ac_Unk_0986c0(bit);
     return (*p & (u8)(1 << (bit & 7))) != 0;
 }
 
-/* decompiler-derived */
+/* Store the supplied byte in borrowed storage + 13; strb at 0x02098990
+ * establishes the width and offset, but not the byte's application meaning. */
 void Unk0986ac_Unk_098990(u8 arg0)
 {
   int value;
@@ -92,9 +95,10 @@ void Unk0986ac_Unk_098990(u8 arg0)
   *(u8 *)(value + 0xd) = arg0;
 }
 
-int Unk02e000_Unk_02e0cc();
-int Unk05b82c_Unk_05b82c();
-/* decompiler-derived */
+void Unk02e000_Unk_02e0cc(void);
+void Unk05b82c_Unk_05b82c(int id);
+/* Call the two external operations in order, passing 191 to the second,
+ * then return 1; call relocations at 0x02099300 establish this contract. */
 u32 Unk0986ac_Unk_099300(void)
 {
   Unk02e000_Unk_02e0cc();
@@ -102,10 +106,11 @@ u32 Unk0986ac_Unk_099300(void)
   return 1;
 }
 
-int Unk09974c_Unk_099d78();
-int Unk09974c_HasFlagsMid();
-int Unk09974c_GetFlagsMidMinus1();
-/* decompiler-derived */
+int Unk09974c_Unk_099d78(void);
+int Unk09974c_HasFlagsMid(void);
+int Unk09974c_GetFlagsMidMinus1(int value);
+/* Return zero unless both external predicates succeed, then transform the
+ * first result. The conditional calls at 0x02098918 establish their order. */
 u32 Unk0986ac_Unk_098918(void)
 {
   int value1;
@@ -128,16 +133,21 @@ u8 Unk0986ac_Unk_098980(void)
   return *(u8 *)(tmp1 + 0xd);
 }
 
+/* Borrow p through offset 4 to obtain the lookup handle; 0x020989a4 passes
+ * the lookup result as the fifth argument with fixed arguments -1, 0, 0. */
 void Unk0986ac_Unk_0989a4(int a, u8 *p, int c)
 {
     func_02061f10(a, -1, 0, 0, func_0204fed8(FIELD(u32, p, 4), c));
 }
 
+/* Borrowed two-byte table entry; only the first signed byte is examined. */
 typedef struct Unk0986acPair {
     s8 a;
     s8 b;
 } Unk0986acPair;
 
+/* Find the first zero first-byte among 23 borrowed entries, or return 23.
+ * The stride-two signed loads and zero comparison at 0x020989dc support the name. */
 u32 Unk0986ac_FindEmpty(const Unk0986acPair *t)
 {
     u32 j;
@@ -149,6 +159,9 @@ u32 Unk0986ac_FindEmpty(const Unk0986acPair *t)
     return 23;
 }
 
+/* Update borrowed fields +64 and +68 from signed fields +56 and +60;
+ * 0x02098aa8 clears both outputs for nonpositive +56 and truncates +68 to a byte.
+ * The caller supplies aligned storage through +68 and representable arithmetic. */
 void Unk0986ac_Unk_098aa8(u8 *p)
 {
     s32 n = FIELD(s32, p, 56);
@@ -161,6 +174,8 @@ void Unk0986ac_Unk_098aa8(u8 *p)
     FIELD(u8, p, 68) = n * 31;
 }
 
+/* Return whether the borrowed selector at +44 equals 0, 1, or 2.
+ * The three explicit comparisons at 0x02098ae0 support the predicate name. */
 int Unk0986ac_IsMode012(u8 *p)
 {
     u32 v = FIELD(u32, p, 44);

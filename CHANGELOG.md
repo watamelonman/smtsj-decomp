@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T632 game/unit_020986ac targets at 100% objdiff; documented typed calls, borrowed field contracts, and instruction evidence.
 - Verified the eight M1-T631 game/unit_020986ac flag-storage helpers and no-op callback; documented typed contracts and instruction evidence.
 - M1-T622: matched all eight game/unit_020f7188 targets; documented callback descriptors, state setters and typed request builders.
 - Matched all eight M1-T627 game/unit_020a163c comparison, resource lookup, ID conversion and state callback functions at 100% objdiff.
