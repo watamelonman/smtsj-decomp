@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched five M1-T669 packing, validation, and table encoding functions in game/unit_02111400; documented two remaining hard functions.
 - Matched all eight M1-T668 functions in game/unit_02111400 with typed C and documented assembly evidence.
 - Matched all six M1-T658 game/unit_020cd6ec state, input, message, and item-rebuild handlers at 100% objdiff; preserved the eight earlier matches.
 - Verified all eight M1-T664 game/unit_0203aae8 functions at 100% objdiff; typed helper calls, made query-result forwarding explicit, and documented assembly evidence.
