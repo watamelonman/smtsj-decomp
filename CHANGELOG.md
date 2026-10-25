@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T550 table lookup, selector refresh, insertion, and resolved-object helpers at 100% objdiff; documented typed layouts and instruction contracts.
 - Verified all eight M1-T549 game/unit_020a5680 entry and state helpers at 100% objdiff; added typed ID contracts and per-function assembly evidence.
 - Verified all eight M1-T538 ImageBgDual3D record checks, buffer operations and dispatch helpers at 100% objdiff; documented typed contracts and explicit forwarded arguments.
 - Verified the eight M1-T545 object-header, callback and context helpers against the original instructions; documented their contracts.
