@@ -30,14 +30,39 @@ field meanings remain neutral where assembly establishes only an offset.
 
 No M1-T599 hard-list entries remain. Other cards' status is retained below.
 
-## Not done in M1-T600
-- `Unk06a224_Unk_06a3a4`
-- `Unk06a224_Unk_06a998`
-- `Unk06a224_Unk_06aa0c`
-- `Unk06a224_Unk_06aafc`
-- `Unk06a224_Unk_06ab64`
-- `Unk06a224_Unk_06accc`
-- `Unk06a224_Unk_06adc0`
+## M1-T600
+
+All eight functions match at 100% objdiff. Evidence is each corresponding
+symbol in `build/delinks/src/game/unit_0206a224.o`; names remain neutral because
+instruction offsets and request constants do not establish higher-level intent.
+
+- `Unk06a224_Unk_06a3a4` (80 bytes): reads signed halfwords from a borrowed
+  object. For even +0x154, returns whether it is below (+0x158 - 1); for odd
+  +0x154, returns whether (+0x156 + 24) is below +0x158. Signed remainder
+  behavior includes negative odd selections.
+- `Unk06a224_Unk_06a998` (100 bytes): indexes the borrowed pointer table at
+  +0x15c. A nonnull entry supplies its leading unsigned halfword to
+  `func_02099b10(id, 1)`. Clears the pointer and halfwords +0x154/+0x156,
+  calls `func_02067d54`, and stores the used-slot count plus one at +0x158.
+  The caller must provide a valid table index; the table length is unknown.
+- `Unk06a224_Unk_06aa0c` (100 bytes): clears two flag bytes and sixteen
+  request words, sets word 1 to 24 and flag 2, then submits to
+  `func_020bcbc4` on channel 3.
+- `Unk06a224_Unk_06aafc` (104 bytes): same request initialization, with
+  word 1 = 2, word 7 = the caller's full word, and flags 0x82.
+- `Unk06a224_Unk_06ab64` (104 bytes): calls `CampStatus_Copy12c` before
+  initializing a request with word 1 = 11 and flag 2, submitted on channel 3.
+- `Unk06a224_Unk_06accc` (104 bytes): submits the initialized request with
+  word 1 = 10, word 7 = the caller's full word, and flags 0x82 on channel 3.
+- `Unk06a224_Unk_06adc0` (104 bytes): submits the initialized request with
+  word 1 = 25, word 7 = the caller's full word, and flags 0x82 on channel 3.
+- `Unk06a224_Unk_06ae28` (108 bytes): tests group-zero masks 0x40, 0x80,
+  0x20, and 0x10 through `func_020537b8`. Each nonzero result latches the
+  corresponding word at +0x440, +0x444, +0x448, or +0x44c to one. Zero
+  results preserve existing values in the caller-owned object.
+
+Requests are stack-local and borrowed during submission. Their two alignment
+bytes remain untouched, as in the target. No M1-T600 hard-list entries remain.
 
 ## Not done in M1-T601
 - `Unk06a224_Unk_06ac54`
@@ -46,12 +71,5 @@ No M1-T599 hard-list entries remain. Other cards' status is retained below.
 - `func_0206aa70`
 - `func_0206a2ac`
 - `func_0206a3f4`
-- `Unk06a224_Unk_06a3a4`: hand-matched
-- `Unk06a224_Unk_06a998`: hand-matched
-- `Unk06a224_Unk_06aa0c`: hand-matched
-- `Unk06a224_Unk_06aafc`: hand-matched
-- `Unk06a224_Unk_06ab64`: hand-matched
 - `Unk06a224_Unk_06ac54`: hand-matched
-- `Unk06a224_Unk_06accc`: hand-matched
 - `Unk06a224_Unk_06ad40`: hand-matched
-- `Unk06a224_Unk_06adc0`: hand-matched

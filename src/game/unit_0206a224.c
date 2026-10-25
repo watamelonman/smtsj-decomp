@@ -67,7 +67,7 @@ void Unk06a224_SetUnk00(u32 arg0)
 }
 
 
-int func_020537b8();
+int func_020537b8(int group, int mask);
 typedef struct Unk06a224Slot {
     u16 id;
     u16 pad_0002;
@@ -102,6 +102,8 @@ int Unk06a224_Unk_06a374(const Unk06a224Selection *o)
     return o->unk_156 > 0;
 }
 
+/* Test the signed selection bounds at +0x154/+0x156 against +0x158.
+ * The borrowed object must contain these halfwords; odd selections use a 24 offset. */
 int Unk06a224_Unk_06a3a4(u8 *o)
 {
     s16 a = FIELD(s16, o, 0x154);
@@ -117,12 +119,14 @@ int Unk06a224_Unk_06a3a4(u8 *o)
 
 typedef struct Unk06a224Ctl {
     u8 pad_0000[348];
-    u16 *slots[4]; /* count guessed; only the +348 offset is confirmed */
+    u16 *slots[]; /* Borrowed entries at +0x15c; caller supplies a valid index. */
 } Unk06a224Ctl;
-void func_02099b10();
-void func_02067d54();
+void func_02099b10(int id, int value);
+void func_02067d54(Unk06a224Ctl *c);
 s16 Unk06a224_CountUsedSlots(void);
 
+/* Notify func_02099b10 for a populated borrowed slot, clear it, and refresh
+ * selection halfwords. The caller guarantees i indexes the slot pointer table. */
 void Unk06a224_Unk_06a998(Unk06a224Ctl *c, int i)
 {
     u8 *p = (u8 *)c;
@@ -133,19 +137,23 @@ void Unk06a224_Unk_06a998(Unk06a224Ctl *c, int i)
         c->slots[i] = 0;
         FIELD(u16, p + 0x100, 84) = 0;
         FIELD(u16, p + 0x100, 86) = 0;
-        func_02067d54(p);
+        func_02067d54(c);
         FIELD(s16, p + 0x100, 88) = Unk06a224_CountUsedSlots();
         FIELD(s16, p + 0x100, 88)++;
     }
 }
 
+/* Stack request view from target stores: two flag bytes and sixteen words.
+ * The two alignment bytes are not initialized by the original routines. */
 typedef struct Unk06a224Msg {
     u8 flags[2];
     u8 pad_02[2];
     u32 w[16];
 } Unk06a224Msg;
-void func_020bcbc4();
+void func_020bcbc4(int channel, const Unk06a224Msg *message);
 
+/* Submit word-1 value 24 with flag 2 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06aa0c(void)
 {
     Unk06a224Msg m;
@@ -161,6 +169,8 @@ void Unk06a224_Unk_06aa0c(void)
     func_020bcbc4(3, &m);
 }
 
+/* Submit word-1 value 2 and caller word 7 with flags 0x82 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06aafc(u32 x)
 {
     Unk06a224Msg m;
@@ -177,12 +187,13 @@ void Unk06a224_Unk_06aafc(u32 x)
     func_020bcbc4(3, &m);
 }
 
-void func_020bcbc4();
 void func_020bcacc();
 void func_020bc9f4();
 void CampStatus_SetUnk1a8();
 void CampStatus_Copy12c();
 
+/* Call CampStatus_Copy12c before submitting word-1 value 11 with flag 2.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06ab64(void)
 {
     Unk06a224Msg m;
@@ -217,6 +228,8 @@ void Unk06a224_Unk_06ac54(u32 x)
     func_020bcbc4(3, &m);
 }
 
+/* Submit word-1 value 10 and caller word 7 with flags 0x82 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06accc(u32 x)
 {
     Unk06a224Msg m;
@@ -251,6 +264,8 @@ void Unk06a224_Unk_06ad40(void)
     CampStatus_SetUnk1a8(0);
 }
 
+/* Submit word-1 value 25 and caller word 7 with flags 0x82 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06adc0(u32 x)
 {
     Unk06a224Msg m;
@@ -267,25 +282,20 @@ void Unk06a224_Unk_06adc0(u32 x)
     func_020bcbc4(3, &m);
 }
 
-/* decompiler-derived */
-void Unk06a224_Unk_06ae28(Unk06a224Work *arg0){
-  int tmp1;
-  tmp1 = func_020537b8(0,0x40);
-  if (tmp1 != 0) {
-    arg0->unk_0440 = 1;
-  }
-  tmp1 = func_020537b8(0,0x80);
-  if (tmp1 != 0) {
-    arg0->unk_0444 = 1;
-  }
-  tmp1 = func_020537b8(0,0x20);
-  if (tmp1 != 0) {
-    arg0->unk_0448 = 1;
-  }
-  tmp1 = func_020537b8(0,0x10);
-  if (tmp1 != 0) {
-    arg0->unk_044c = 1;
-  }
-  return;
+/* Latch words at +0x440..+0x44c when group-zero masks 0x40, 0x80,
+ * 0x20, and 0x10 test nonzero. Unset masks leave existing words untouched. */
+void Unk06a224_Unk_06ae28(Unk06a224Work *work)
+{
+    if (func_020537b8(0, 0x40) != 0) {
+        work->unk_0440 = 1;
+    }
+    if (func_020537b8(0, 0x80) != 0) {
+        work->unk_0444 = 1;
+    }
+    if (func_020537b8(0, 0x20) != 0) {
+        work->unk_0448 = 1;
+    }
+    if (func_020537b8(0, 0x10) != 0) {
+        work->unk_044c = 1;
+    }
 }
-
