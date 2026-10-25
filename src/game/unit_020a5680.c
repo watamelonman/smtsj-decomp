@@ -1,15 +1,15 @@
-/* src/game/unit_020a5680.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Entry lookup and state helpers; layouts reflect observed ARM field accesses. */
 #include "types.h"
 
 
 extern u32 data_02176b14[];
-/* decompiler-derived */
+/* Clear the global owner slot; 0x020a5718 stores zero to data_02176b14. */
 void Unk0a5680_Clear_data_02176b14(void)
 {
   *data_02176b14 = 0;
 }
 
-extern u8 data_0213c3e0[];
+extern s16 data_0213c3e0[];
 /* Entry returned by func_020a5680. */
 typedef struct Unk0a5680Entry {
     u8 pad_0000[0x14];
@@ -18,7 +18,7 @@ typedef struct Unk0a5680Entry {
     u8 unk_0020[4];             /* +0x20 sub-block */
 } Unk0a5680Entry;
 
-Unk0a5680Entry *func_020a5680();
+Unk0a5680Entry *func_020a5680(u32 id);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
@@ -27,7 +27,7 @@ int func_0206f24c();
 int func_02044ec4();
 int func_0204a244();
 extern s8 data_0213c3d4[];
-int func_020616c0();
+u8 *func_020616c0(void *handle);
 int Unk0a5680_Unk_0a572c(u8 *p, u32 c);
 
 int Unk0a5680_Unk_0a572c(u8 *p, u32 c)
@@ -50,41 +50,43 @@ int Unk0a5680_Unk_0a5778(u8 *p, int force)
     return 1;
 }
 
-s32 Unk0a5680_GetEntryUnk14(u32 a, u32 b)
+/* Return entry +0x14, or -1 when absent (loads at 0x020a5e48). */
+s32 Unk0a5680_GetEntryUnk14(u32 id)
 {
-    Unk0a5680Entry *e = func_020a5680(a, b);
+    Unk0a5680Entry *e = func_020a5680(id);
     if (e != 0) {
         return e->unk_0014;
     }
     return -1;
 }
 
-u8 *Unk0a5680_GetEntrySub20(u32 a, u32 b)
+/* Borrow entry +0x20, or NULL when absent (address at 0x020a5e60). */
+u8 *Unk0a5680_GetEntrySub20(u32 id)
 {
-    Unk0a5680Entry *e = func_020a5680(a, b);
+    Unk0a5680Entry *e = func_020a5680(id);
     if (e != 0) {
         return e->unk_0020;
     }
     return 0;
 }
 
-/* decompiler-derived */
-int Unk0a5680_Unk_0a5e78(int arg0)
+/* Read a signed halfword; 0x020a5e78 indexes data_0213c3e0 without bounds checks. */
+int Unk0a5680_Unk_0a5e78(int index)
 {
-  return (int)*(short *)(((int)data_0213c3e0) + arg0 * 2);
+  return data_0213c3e0[index];
 }
 
-int Unk0a5680_Unk_0a5e28();
-/* decompiler-derived */
-void Unk0a5680_Unk_0a6150(void)
+u8 *Unk0a5680_Unk_0a5e28(u32 id);
+/* Set resolved bytes +0x38/+0x39 to 1/0 if present (0x020a6150 stores). */
+void Unk0a5680_Unk_0a6150(u32 id)
 {
-  int value;
-  value = Unk0a5680_Unk_0a5e28();
+  u8 *value;
+  value = Unk0a5680_Unk_0a5e28(id);
   if (value == 0) {
     return;
   }
-  *(u8 *)(value + 0x38) = 1;
-  *(u8 *)(value + 0x39) = 0;
+  value[0x38] = 1;
+  value[0x39] = 0;
 }
 
 
@@ -102,8 +104,8 @@ int Unk0a5680_Unk_0a5c14(u32 arg0,u32 arg1,u32 arg2)
 
 int func_0205c41c();
 int func_0205ca88();
-int Unk0a5680_Unk_0a5e28(id)
-    u32 id;
+/* Resolve the handle at entry +8; 0x020a5e28 returns NULL for missing IDs. */
+u8 *Unk0a5680_Unk_0a5e28(u32 id)
 {
     u8 *e = (u8 *)func_020a5680(id);
     if (e == 0) {
@@ -113,11 +115,11 @@ int Unk0a5680_Unk_0a5e28(id)
 }
 
 /* decompiler-derived */
-void Unk0a5680_Unk_0a611c(void)
+void Unk0a5680_Unk_0a611c(u32 id)
 {
   u32 *v1;
   int value;
-  v1 = (u32 *)Unk0a5680_Unk_0a5e28();
+  v1 = (u32 *)Unk0a5680_Unk_0a5e28(id);
   if (v1 == (u32 *)0x0) {
     return;
   }
@@ -126,13 +128,14 @@ void Unk0a5680_Unk_0a611c(void)
   *(u8 *)(v1 + 0xe) = 0;
 }
 
-int func_020a5e8c();
-/* decompiler-derived */
+void func_020a5e8c(u32 owner);
+/* Forward the global owner to func_020a5e8c (tail call at 0x020a5fb0). */
 void Unk0a5680_Unk_0a5fb0(void)
 {
   func_020a5e8c(*data_02176b14);
 }
 
+/* Normalize resolved byte +0x38 to 0/1; missing IDs yield 0 (0x020a60fc). */
 int Unk0a5680_Unk_0a60fc(u32 id)
 {
     u8 *e = (u8 *)Unk0a5680_Unk_0a5e28(id);

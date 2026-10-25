@@ -1,91 +1,78 @@
-/*
- * src/game/unit_0209974c.c: matched functions (see docs). Bodies marked 'decompiler-derived' were
- * lifted from Ghidra output and cleaned; field meanings are not known yet.
- */
-typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
-typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
+#include "types.h"
+
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
-typedef struct Unk09974cWork {
-    u8 unk_0000[0x20];
-    u16 UnkField0020;
-} Unk09974cWork;
+/* Borrowed record view; the subtraction routines require a readable first halfword. */
+typedef struct Unk09974cRecord {
+    u16 unk_00;
+} Unk09974cRecord;
 
+/* Borrowed record view for the halfword loaded at +0x20. */
+typedef struct Unk09974cRecord20 {
+    u8 padding_00[0x20];
+    u16 unk_20;
+} Unk09974cRecord20;
 
-int func_0209993c();
-
-int Unk09974c_Unk_099860(u16 *arg0,u16 *arg1);
-int Unk09974c_Unk_099870(u16 *arg0,u16 *arg1);
-int Unk09974c_Unk_099880(Unk09974cWork *work,int arg1);
-int Unk09974c_Unk_099890(u16 *arg0,u16 *arg1);
-int Unk09974c_Unk_0998a0(u16 *arg0,u16 *arg1);
-int Unk09974c_Unk_0998b0(u16 *arg0,u16 *arg1);
-int Unk09974c_Unk_0998d8(void);
-
-/* decompiler-derived */
-int Unk09974c_Unk_099860(u16 *arg0,u16 *arg1)
-{
-  return (u32)*arg0 - (u32)*arg1;
-}
-
-/* decompiler-derived */
-int Unk09974c_Unk_099870(u16 *arg0,u16 *arg1)
-{
-  return (u32)*arg0 - (u32)*arg1;
-}
-
-/* decompiler-derived */
-int Unk09974c_Unk_099880(Unk09974cWork *work,int arg1)
-{
-  return (u32)work->UnkField0020 - (u32)((Unk09974cWork *)arg1)->UnkField0020;
-}
-
-/* decompiler-derived */
-int Unk09974c_Unk_099890(u16 *arg0,u16 *arg1)
-{
-  return (u32)*arg0 - (u32)*arg1;
-}
-
-/* decompiler-derived */
-int Unk09974c_Unk_0998a0(u16 *arg0,u16 *arg1)
-{
-  return (u32)*arg0 - (u32)*arg1;
-}
-
-/* decompiler-derived */
-int Unk09974c_Unk_0998b0(u16 *arg0,u16 *arg1)
-{
-  return (u32)*arg0 - (u32)*arg1;
-}
-
+/* Range-table entry: FindEntry tests the inclusive bounds and returns this view. */
 typedef struct Unk09974cEntry {
     s32 lo;
     s32 hi;
     u8 unk_0008;
     u8 unk_0009;
-    u8 pad_000a[0x2];
+    u8 padding_0a[2];
 } Unk09974cEntry;
 
-Unk09974cEntry *Unk09974c_FindEntry(int id);
+extern Unk09974cEntry *Unk09974c_FindEntry(int id);
+extern s32 func_0209993c(u32 id);
 
-u8 Unk09974c_GetEntryUnk08(u32 id)
+/* Subtract unsigned halfwords at +0; evidence: loads at 0x02099860/64. */
+s32 Unk09974c_Unk_099860(const Unk09974cRecord *left, const Unk09974cRecord *right)
 {
-    Unk09974cEntry *e = Unk09974c_FindEntry(id);
-    if (e != 0) {
-        return e->unk_0008;
-    }
-    return 0;
+    return left->unk_00 - right->unk_00;
 }
 
-/* decompiler-derived */
-int Unk09974c_Unk_0998d8(void)
+/* Subtract unsigned halfwords at +0; evidence: loads at 0x02099870/74. */
+s32 Unk09974c_Unk_099870(const Unk09974cRecord *left, const Unk09974cRecord *right)
 {
-  int value;
-  value = func_0209993c();
-  return 0 < value;
+    return left->unk_00 - right->unk_00;
 }
 
+/* Subtract unsigned halfwords at +0x20; evidence: loads at 0x02099880/84. */
+s32 Unk09974c_Unk_099880(const Unk09974cRecord20 *left, const Unk09974cRecord20 *right)
+{
+    return left->unk_20 - right->unk_20;
+}
+
+/* Subtract unsigned halfwords at +0; evidence: loads at 0x02099890/94. */
+s32 Unk09974c_Unk_099890(const Unk09974cRecord *left, const Unk09974cRecord *right)
+{
+    return left->unk_00 - right->unk_00;
+}
+
+/* Subtract unsigned halfwords at +0; evidence: loads at 0x020998a0/a4. */
+s32 Unk09974c_Unk_0998a0(const Unk09974cRecord *left, const Unk09974cRecord *right)
+{
+    return left->unk_00 - right->unk_00;
+}
+
+/* Subtract unsigned halfwords at +0; evidence: loads at 0x020998b0/b4. */
+s32 Unk09974c_Unk_0998b0(const Unk09974cRecord *left, const Unk09974cRecord *right)
+{
+    return left->unk_00 - right->unk_00;
+}
+
+/* Return entry byte +8, or zero for an absent id (0x020998c4..d0). */
+u32 Unk09974c_GetEntryUnk08(u32 id)
+{
+    Unk09974cEntry *entry = Unk09974c_FindEntry(id);
+    return entry != 0 ? entry->unk_0008 : 0;
+}
+
+/* Return whether the helper result is signed-positive (0x020998dc..e8). */
+s32 Unk09974c_Unk_0998d8(u32 id)
+{
+    return func_0209993c(id) > 0;
+}
 
 int func_020445f4();
 int func_0204fed8();
