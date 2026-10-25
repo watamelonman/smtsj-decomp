@@ -46,12 +46,29 @@ None for M1-T681.
 - `func_020b04b4`
 - `func_020b0310`
 
-## Not done in M1-T682
-- `func_020b0adc`
-- `func_020b0874`
-- `func_020b071c`
-- `func_020b017c`
-- `func_020b00c0`
-- `func_020b0234`
-- `func_020b0974`
-- `func_020affc8`
+## M1-T682
+
+Seven functions match at 100% objdiff. Existing prerequisite functions retain
+100%. Neutral canonical names remain because no strings or callers establish
+more specific roles. Provider storage is borrowed; arithmetic intermediates
+must fit the widths used by the original.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_020b0adc` | Requires kind 9; scales selector 23 by +0x17a, doubles the selector when the predicate succeeds, divides by 100, adds five, halves, adds spread and clamps to one. Evidence: provider calls, halfword load and signed division sequences. |
+| `func_020b0874` | Missing ID provider returns zero. Perturbs selector 6 by a random -5..5, clamps at zero, adds three for ID class one when global bit 10 is clear, scales by the supplied percentage and caps at 65535. Packs its low sixteen bits at bits 10..25, the provider byte +0x1dc at bits 2..9, and sets bit zero. Evidence: shifts, ORs, masks and provider calls. |
+| `func_020b071c` | Counts matching IDs in ten global slots, excluding selector-one state. Nonzero flag additionally excludes selector-zero state and kinds 1/7. Third argument is unused, as incoming r2 is never read. Evidence: ten-slot loop and bit extraction from each first word. |
+| `func_020b017c` | Uses source/target selector 4, source twice minus target selector and target level, and source plus 8*source/10+5. Applies rounded 20.12 products, delegates to 0affc8 and spreads/clamps the result. Evidence: provider selectors and SMULL/add/shift chains. |
+| `func_020b00c0` | Uses source selector 3 minus target selector 5, the supplied level minus target level, and source plus 4*level/10+5. Applies the supplied fixed-point factor, delegates to 0affc8 and spreads/clamps. Evidence: provider calls and signed scaling instructions. |
+| `func_020affc8` | Combines forwarded selector 13/12 results, the mapped target selector divided by 100, supplied factor and base using rounded 20.12 products. Source +0x282 bit two applies factor 0x119a. Returns integer units. Evidence: SMULL chains, bit extraction and final signed shift. Corrects the prerequisite forwarding helper's return type to expose the result already left in r0; that helper still matches. |
+| `func_020b0974` | Returns zero for absent +0x170 record or signed state below zero/equal one. With x zero, accepts nonzero y below state. Otherwise compares a random unsigned 0..99 draw with `(x*selector7+10)/(6*selector2/10+15)+10*state`. Evidence: signed byte/halfword loads, division, SMLABB and unsigned comparison. Denominator must be nonzero. |
+| `func_020b0234` | Not emitted. Original averages source selectors 3/4, subtracts target selector 5, optionally replaces their sum via 0a120 when source +0x1d8 is zero, then applies a target-level multiplier and delegates to 0affc8 with selector 18 before spread/clamp. |
+
+### Hard list
+
+- `func_020b0234`: best local objdiff 99.27273%. Tried direct and inline
+  rounded products, separating base calculation, signed/unsigned stat views,
+  variable reuse and declaration ordering. Remaining difference is allocation
+  of the sum and multiplier to r5/r6 (including the sum's shift destination).
+  Leave linked from the delink; a human can open a scratch with
+  `tools/decompme.py`. No nonmatching C implementation is retained.

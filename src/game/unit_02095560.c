@@ -206,7 +206,8 @@ void Unk095560_Unk_096170(void)
 
 
 
-/* decompiler-derived */
+/* 0x02095a2c resets all nine slots, loads slot 1, and on success forwards
+ * the result to 0958c8 and calls 02d91c; returns normalized success. */
 u32 Unk095560_Unk_095a2c(u32 arg0)
 {
   int value;
@@ -220,24 +221,35 @@ u32 Unk095560_Unk_095a2c(u32 arg0)
   return 0;
 }
 
-int Unk02d15c_GetManagerRecord();
-int Unk095560_Unk_09560c();
-/* decompiler-derived */
+/* Borrowed record prefix observed in 09560c/0959d0: buffer at +0,
+ * provider subobject at +0x10, paired word at +0x14 and ID at +0x50. */
+typedef struct Unk095560Rec {
+    u32 buf;
+    u8 pad_04[12];
+    u8 unk_10[4];
+    u32 unk_14;
+    u8 pad_18[56];
+    s32 id;
+} Unk095560Rec;
+u8 *Unk02d15c_GetManagerRecord(int index);
+s32 *Unk094fe0_Unk_094fec(int index);
+int Unk095560_Unk_09560c(int index);
+/* 0x02095660 clears borrowed slots 2 through 7 via 09560c and writes
+ * -1 to both record identifiers; provider storage remains borrowed. */
 u32 Unk095560_Unk_095660(void)
 {
-  u32 *v1;
-  int value1;
-  int value2;
-  value2 = 2;
-  do {
-    v1 = (u32 *)Unk094fe0_Unk_094fec(value2);
-    value1 = Unk02d15c_GetManagerRecord(value2);
-    Unk095560_Unk_09560c(value2);
-    *v1 = 0xffffffff;
-    value2 = value2 + 1;
-    *(u32 *)(value1 + 0x50) = 0xffffffff;
-  } while (value2 < 8);
-  return 1;
+    s32 *slot;
+    Unk095560Rec *record;
+    int index = 2;
+    do {
+        slot = Unk094fe0_Unk_094fec(index);
+        record = (Unk095560Rec *)Unk02d15c_GetManagerRecord(index);
+        Unk095560_Unk_09560c(index);
+        *slot = -1;
+        index++;
+        record->id = -1;
+    } while (index < 8);
+    return 1;
 }
 
 
@@ -246,7 +258,7 @@ int func_02052f58();
 int func_02052f68();
 int func_02052fe0();
 int func_02052ff0();
-int func_02053000();
+void func_02053000(u32 handle);
 int func_0205f508();
 int func_0205f534();
 int func_0205f590();
@@ -387,62 +399,54 @@ u32 Unk095560_Unk_0956c8(void)
     return 1;
 }
 
-int func_0204af80();
-/* decompiler-derived */
+void func_0204af80(void *context);
+/* 0x020956e8 clears manager offset 0x14, passes that manager to 04af80, then resets
+ * slots 0 through 8, stopping immediately if any reset reports failure. */
 u32 Unk095560_Unk_0956e8(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = (int)(Unk095560_GetManagerAlias());
-  *(u32 *)(tmp1 + 0x14) = 0;
-  func_0204af80();
-  tmp1 = 0;
-  do {
-    tmp2 = Unk095560_Unk_09560c(tmp1);
-    if (tmp2 == 0) {
-      return 0;
-    }
-    tmp1 = tmp1 + 1;
-  } while (tmp1 < 9);
-  return 1;
+    u8 *manager = Unk095560_GetManagerAlias();
+    int index;
+    FIELD(u32, manager, 0x14) = 0;
+    func_0204af80(manager);
+    index = 0;
+    do {
+        if (Unk095560_Unk_09560c(index) == 0) {
+            return 0;
+        }
+        index++;
+    } while (index < 9);
+    return 1;
 }
 
-int func_02008848();
-int func_0204ae84();
-/* decompiler-derived */
+void func_02008848(void *dest, int value, u32 size);
+void func_0204ae84(void *context);
+/* 0x02095598 zeroes the 0x3c0-byte manager, initializes all nine
+ * record subobjects at +0x10, and marks both identifiers and +0x18 as -1. */
 void Unk095560_Unk_095598(void)
 {
-  u32 tmp1;
-  int tmp2;
-  int tmp3;
-  u32 *v4;
-  int tmp5;
-  tmp1 = (unsigned int)(Unk095560_GetManager());
-  tmp2 = (int)(Unk095560_GetManagerAlias());
-  func_02008848(tmp1,0,0x3c0);
-  tmp5 = 0;
-  do {
-    tmp3 = Unk02d15c_GetManagerRecord(tmp5);
-    v4 = (u32 *)Unk094fe0_Unk_094fec(tmp5);
-    func_0204ae84(tmp3 + 0x10);
-    *(u32 *)(tmp3 + 0x50) = 0xffffffff;
-    tmp5 = tmp5 + 1;
-    *v4 = 0xffffffff;
-  } while (tmp5 < 9);
-  *(u32 *)(tmp2 + 0x18) = 0xffffffff;
+    u8 *manager = Unk095560_GetManager();
+    u8 *alias = Unk095560_GetManagerAlias();
+    Unk095560Rec *record;
+    s32 *slot;
+    int index;
+    func_02008848(manager, 0, 0x3c0);
+    index = 0;
+    do {
+        record = (Unk095560Rec *)Unk02d15c_GetManagerRecord(index);
+        slot = Unk094fe0_Unk_094fec(index);
+        func_0204ae84(record->unk_10);
+        record->id = -1;
+        index++;
+        *slot = -1;
+    } while (index < 9);
+    FIELD(s32, alias, 0x18) = -1;
 }
 
-typedef struct Unk095560Rec {
-    u32 buf;
-    u8 pad_04[12];
-    u8 unk_10[4];
-    u32 unk_14;
-    u8 pad_18[56];
-    s32 id;
-} Unk095560Rec;
-int func_02053000();
+void func_02053000(u32 handle);
 int Unk095560_Unk_0959d0(s32 a, s32 *out);
 
+/* 0x0209560c releases a nonzero record buffer, clears its paired word,
+ * marks both identifiers -1, and resets the borrowed subobject at +0x10. */
 int Unk095560_Unk_09560c(int i)
 {
     Unk095560Rec *r = (Unk095560Rec *)Unk02d15c_GetManagerRecord(i);
@@ -458,6 +462,8 @@ int Unk095560_Unk_09560c(int i)
     return 1;
 }
 
+/* 0x0209596c interprets 0959d0 status: 0 fails, 2 succeeds immediately;
+ * otherwise forwards the selected slot and input word to 095950. */
 int Unk095560_Unk_09596c(u32 a)
 {
     s32 slot = -1;
@@ -472,6 +478,8 @@ int Unk095560_Unk_09596c(u32 a)
     return Unk095560_Unk_095950(slot, a);
 }
 
+/* 0x020959d0 scans slots 2 through 7 in order: matching ID returns 2;
+ * first -1 ID writes the borrowed output slot and returns 1; exhaustion is 0. */
 int Unk095560_Unk_0959d0(s32 a, s32 *out)
 {
     int i;
@@ -533,5 +541,22 @@ int Unk095560_Unk_096484(void)
     case 6:
     default:
         return 1;
+    }
+}
+
+/* 0x02096448's jump table accepts IDs 2 through 7. The path builder
+ * 095b48 uses this predicate before formatting the record's +0x50 word. */
+int func_02096448(int id)
+{
+    switch (id) {
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+        return 1;
+    default:
+        return 0;
     }
 }

@@ -227,7 +227,7 @@ void Unk039bb4_Unk_039d94(int workAddress, u32 value)
 }
 
 
-int func_02039dc0();
+int func_02039dc0(int workAddress);
 /* When +0x1c is nonzero, sets +0x18 to the helper result plus one.
  * Work is borrowed; zero leaves it untouched and returns 0. */
 u32 Unk039bb4_Unk_03a26c(Unk039bb4Work *work)
@@ -319,13 +319,13 @@ u32 Unk039bb4_Unk_03a158(Unk039bb4Work *work)
   return 1;
 }
 
-int func_02039e50();
+float func_02039e50(int workAddress);
 /* Stores the helper result in the +0xdc table, then advances +0x18.
  * Borrowed tables must be valid; read the entry index after the helper call. */
 u32 Unk039bb4_Unk_03a190(Unk039bb4Work *work)
 {
-  u32 value = func_02039e50((int)work);
-  *(u32 *)(work->unk_00dc +
+  float value = func_02039e50((int)work);
+  *(float *)(work->unk_00dc +
       (u32)*(u16 *)(work->unk_00bc + work->unk_0018 * 4 + 2) * 4) = value;
   work->unk_0018 += 1;
   return 1;
@@ -354,37 +354,142 @@ u32 Unk039bb4_Unk_039f80(Unk039bb4Work *work)
 }
 
 extern u8 data_0215de58[];
-/* decompiler-derived */
-u32 Unk039bb4_Unk_039fbc(int arg0)
+/* Appends the selected global float word with tag 1 and advances the entry.
+ * Evidence: indexed loads at 0x02039fbc; tables and append space are borrowed. */
+u32 Unk039bb4_Unk_039fbc(Unk039bb4Work *work)
 {
-  Unk039bb4_Unk_039d3c(arg0,*(u32 *)
-                         (data_0215de58 +
-                         (u32)*(u16 *)
-                                (((Unk039bb4Work *)arg0)->unk_00bc + ((Unk039bb4Work *)arg0)->unk_0018 * 4 + 2) * 4));
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  Unk039bb4_Unk_039d3c((int)work, *(u32 *)(data_0215de58 +
+      (u32)*(u16 *)(work->unk_00bc + work->unk_0018 * 4 + 2) * 4));
+  work->unk_0018 += 1;
   return 1;
 }
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a0e0(int arg0)
+/* Stores a popped integer into the selected global word and advances the entry.
+ * Evidence: 0x0203a0e0; the entry index is read after the pop. */
+u32 Unk039bb4_Unk_03a0e0(Unk039bb4Work *work)
 {
-  u32 tmp1;
-  tmp1 = func_02039dc0();
-  *(u32 *)
-   (data_0215e258 +
-   (u32)*(u16 *)(((Unk039bb4Work *)arg0)->unk_00bc + ((Unk039bb4Work *)arg0)->unk_0018 * 4 + 2) * 4) = tmp1;
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  s32 value = func_02039dc0((int)work);
+  *(s32 *)(data_0215e258 +
+      (u32)*(u16 *)(work->unk_00bc + work->unk_0018 * 4 + 2) * 4) = value;
+  work->unk_0018 += 1;
   return 1;
 }
 
-/* decompiler-derived */
-u32 Unk039bb4_Unk_03a11c(int arg0)
+/* Stores a popped float into the selected global word and advances the entry.
+ * Evidence: 0x0203a11c; the entry index is read after the pop. */
+u32 Unk039bb4_Unk_03a11c(Unk039bb4Work *work)
 {
-  u32 tmp1;
-  tmp1 = func_02039e50();
-  *(u32 *)
-   (data_0215de58 +
-   (u32)*(u16 *)(((Unk039bb4Work *)arg0)->unk_00bc + ((Unk039bb4Work *)arg0)->unk_0018 * 4 + 2) * 4) = tmp1;
-  ((Unk039bb4Work *)arg0)->unk_0018 = ((Unk039bb4Work *)arg0)->unk_0018 + 1;
+  float value = func_02039e50((int)work);
+  *(float *)(data_0215de58 +
+      (u32)*(u16 *)(work->unk_00bc + work->unk_0018 * 4 + 2) * 4) = value;
+  work->unk_0018 += 1;
   return 1;
 }
+
+/* Pops a tagged value as a signed integer, converting float tags.
+ * Evidence: switch and conversion calls at 0x02039dc0; stack must be nonempty. */
+int func_02039dc0(int workAddress)
+{
+  Unk039bb4Work *work = (Unk039bb4Work *)workAddress;
+  int index = --work->unk_001c;
+  switch (*(u8 *)(workAddress + index + 0x20)) {
+  case 0:
+  case 4: return *(s32 *)(workAddress + index * 4 + 0x3c);
+  case 1: return (s32)*(float *)(workAddress + index * 4 + 0x3c);
+  case 2: return ((s32 *)data_0215e258)[*(s32 *)(workAddress + index * 4 + 0x3c)];
+  case 3: return (s32)((float *)data_0215de58)[*(s32 *)(workAddress + index * 4 + 0x3c)];
+  default: return 0;
+  }
+}
+
+/* Pops a tagged value as float; tag 4 yields zero.
+ * Evidence: switch and conversion calls at 0x02039e50; stack must be nonempty. */
+float func_02039e50(int workAddress)
+{
+  Unk039bb4Work *work = (Unk039bb4Work *)workAddress;
+  int index = --work->unk_001c;
+  switch (*(u8 *)(workAddress + index + 0x20)) {
+  case 0: return (float)*(s32 *)(workAddress + index * 4 + 0x3c);
+  case 4: return 0.0f;
+  case 1: return *(float *)(workAddress + index * 4 + 0x3c);
+  case 2: return (float)((s32 *)data_0215e258)[*(s32 *)(workAddress + index * 4 + 0x3c)];
+  case 3: return ((float *)data_0215de58)[*(s32 *)(workAddress + index * 4 + 0x3c)];
+  default: return 0.0f;
+  }
+}
+
+/* Replaces an integer or float stack value with its zero comparison, then advances.
+ * Evidence: 0x0203a944; unsupported tags leave the stack unchanged. */
+u32 func_0203a944(Unk039bb4Work *work)
+{
+  switch (*((u8 *)work + work->unk_001c + 0x1f)) {
+  case 0:
+  case 2:
+    Unk039bb4_Unk_039d10((int)work, func_02039dc0((int)work) == 0);
+    break;
+  case 1:
+  case 3:
+    Unk039bb4_Unk_039d10((int)work, 0.0f == func_02039e50((int)work));
+    break;
+  case 4:
+    break;
+  }
+  work->unk_0018 += 1;
+  return 1;
+}
+
+/* Duplicates the saved tag/word at +0x3b/+0xa8 into the borrowed stack.
+ * Evidence: 0x0203a0a0; caller provides space for one more value. */
+/* See DEC-017 for the scoped propagation setting. */
+#pragma push
+#pragma opt_propagation off
+u32 func_0203a0a0(Unk039bb4Work *work)
+{
+  u32 *slot;
+  u32 value;
+  *((u8 *)work + work->unk_001c + 0x20) = *((u8 *)work + 0x3b);
+  slot = (u32 *)((u8 *)work + work->unk_001c * 4 + 0x3c);
+  value = *(u32 *)((u8 *)work + 0xa8);
+  *slot = value;
+  work->unk_001c++;
+  work->unk_0018++;
+  return 1;
+}
+
+#pragma pop
+
+/* Eight-byte callback records observed at 0x0212b40c; providers own storage. */
+typedef struct Unk039bb4Callback {
+  int (*callback)(void);
+  int consumed;
+} Unk039bb4Callback;
+/* Borrowed +4 view of each callback record, with the same eight-byte stride. */
+typedef struct Unk039bb4Count {
+  s32 consumed;
+  s32 nextCallback;
+} Unk039bb4Count;
+extern u32 data_0215de34[];
+
+/* Dispatches the entry's callback and consumes its declared stack arguments.
+ * Evidence: 0x0203a1dc; work, entries and callback records must be valid. */
+/* See DEC-017 for the scoped propagation setting. */
+#pragma push
+#pragma opt_propagation off
+u32 func_0203a1dc(Unk039bb4Work *work)
+{
+  Unk039bb4Callback *callbacks = (Unk039bb4Callback *)0x0212b40c;
+  int previous = work->unk_0018;
+  u16 index = *(u16 *)(work->unk_00bc + previous * 4 + 2);
+  int (*callback)(void) = callbacks[index].callback;
+  int result;
+  data_0215de34[1] = (u32)work;
+  result = callback == 0 ? 1 : callback();
+  if (result == 0) return 2;
+  if (result == 2) return 0;
+  Unk039bb4Count *counts = (Unk039bb4Count *)0x0212b410;
+  work->unk_001c -= counts[index].consumed;
+  if (previous == work->unk_0018) work->unk_0018++;
+  return result == 3 ? 2 : 1;
+}
+
+#pragma pop

@@ -288,3 +288,16 @@ r8/r7/r6. Scope `opt_lifetimes off` to this function to retain the original
 allocation without volatile accesses or changes to C behavior. Typed borrowed
 bitfield views preserve the observed shift pairs for packed permission fields.
 All 1104 bytes then match; the pragma is popped immediately after the function.
+
+
+## DEC-017 — Preserve 0203a0a0 and 0203a1dc propagation boundaries
+
+Scope `opt_propagation off` separately to these two functions and restore
+compiler settings immediately afterward. For the saved-value duplicate,
+explicit slot/value temporaries retain the original word-copy registers.
+For callback dispatch, local typed pointers retain the numeric table-base
+literal loads instead of folding the addresses into immediate additions.
+Initialize the count view after early callback returns, matching its original
+lifetime. Its eight-byte stride exposes the consumed-count word at record +4.
+These settings preserve ordinary C behavior without volatile accesses,
+assembly, or changes to the human-owned relocation configuration.
