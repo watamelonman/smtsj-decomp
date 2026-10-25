@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all four M1-T750 game/unit_02122e1c setup, phase, state-update and rendering routines at 100% objdiff, preserving all earlier matches.
 - Match eight more game/unit_02122e1c resource and state routines, with typed work views and evidence documentation.
 - Match all eight M1-T748 slot, flag, and state helper functions in game/unit_02122e1c.
 - Verified all eight M1-T747 work-field accessors, byte predicates and call wrappers at 100% objdiff; added typed object parameters and instruction evidence.
