@@ -7,13 +7,16 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 extern u32 data_0213d898[];
-int Unk095560_GetManagerSub3a8();
+/* Borrowed manager storage; layouts are established by the accessors in unit_02095560. */
+u8 *Unk095560_GetManagerSub3a8(void);
+u8 *Unk095560_GetManager(void);
 
 u32 Unk02d15c_Unk_02d934(void);
 u32 Unk02d15c_Unk_02d944(void);
 void Unk02d15c_Unk_02d81c(void);
 void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1);
 
+/* Reset the manager pair to (second word 0, first word -1); see 0202d15c. */
 void Unk02d15c_Call_02d91c(void)
 {
     Unk02d15c_Unk_02d91c(0, -1);
@@ -21,7 +24,7 @@ void Unk02d15c_Call_02d91c(void)
 
 int Unk095560_Unk_095d1c();
 int func_0202d668();
-int Unk094fe0_Call_020950b4();
+int Unk094fe0_Call_020950b4(int index);
 void ImageObj_Unk_077894();
 void Unk02dcfc_SetField68();
 void Unk095560_Unk_095cd8();
@@ -67,6 +70,7 @@ int Unk02d15c_IsMode0Match(int a)
     return func_0202d668(Unk095560_Unk_095d1c(), a, 0, 0, -1) == 1;
 }
 
+/* Accept negative sentinel indices or status 1; comparison at 0202d35c prove the name. */
 int Unk02d15c_IsStatus1OrNeg(int a)
 {
     if (a < 0) {
@@ -75,6 +79,7 @@ int Unk02d15c_IsStatus1OrNeg(int a)
     return Unk094fe0_Call_020950b4(a) == 1;
 }
 
+/* Accept negative sentinel indices or status 0; comparison at 0202d380 prove the name. */
 int Unk02d15c_IsStatus0OrNeg(int a)
 {
     if (a < 0) {
@@ -118,15 +123,13 @@ int Unk02d15c_Setup(int a, int b, int c, int d)
     return 1;
 }
 
-/* decompiler-derived */
+/* Return the second manager-pair word (load at 0202d93c); ownership stays with manager. */
 u32 Unk02d15c_Unk_02d934(void)
 {
-  int value;
-  value = Unk095560_GetManagerSub3a8();
-  return *(u32 *)(value + 4);
+    return ((u32 *)Unk095560_GetManagerSub3a8())[1];
 }
 
-/* decompiler-derived */
+/* Return the first manager-pair word (load at 0202d94c); its meaning is unknown. */
 u32 Unk02d15c_Unk_02d944(void)
 {
   u32 *v1;
@@ -134,7 +137,7 @@ u32 Unk02d15c_Unk_02d944(void)
   return *v1;
 }
 
-/* decompiler-derived */
+/* Store the -1 sentinel in data_0213d898, as observed at 0202d824. */
 void Unk02d15c_Unk_02d81c(void)
 {
   *data_0213d898 = 0xffffffff;
@@ -159,7 +162,7 @@ int Unk02d15c_Unk_02d8a8(int a, int b, int c)
     return Unk02d15c_Setup(a, b, e, -1);
 }
 
-/* decompiler-derived */
+/* Store arg1 then arg0 in the manager pair; store-multiple at 0202d92c establishes order. */
 void Unk02d15c_Unk_02d91c(u32 arg0,u32 arg1)
 {
   u32 *v1;
@@ -248,6 +251,8 @@ u32 Unk02d15c_Unk_02da48(u32 arg0)
   }
 }
 
+/* Borrow record i: 0202dc50 adds manager offset 0xb4 and uses stride 0x54.
+ * Caller must supply a valid index; the original performs no bounds check. */
 u8 *Unk02d15c_GetManagerRecord(int i)
 {
     return (u8 *)Unk095560_GetManager() + 180 + i * 84;
