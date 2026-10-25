@@ -32,7 +32,7 @@ prior investigation in `docs/hard_functions.md`. A human can use
 
 ## M1-T719
 
-Seven functions below match at 100% in the objdiff report. Provider names remain
+All eight functions below match at 100% in the objdiff report. Provider names remain
 external; the neutral `func_` symbols are retained because the instructions do
 not establish gameplay names. The work area is 0xe4 bytes, with counted
 26-byte records at +0x14 and item handles at +0x88.
@@ -42,21 +42,18 @@ not establish gameplay names. The work area is 0xe4 bytes, with counted
 | `func_020ce578` | No arguments. Query 02f0e8, store global mode at +4, conditionally call 02f0c4, then initialize providers. A zero de8b0 result enables the final three calls with bc928(20, 65535, 0). |
 | `func_020ce628` | Fill a borrowed callback descriptor with size 0xe4, zero flags, and six function pointers at +0xc through +0x20. The reserved word at +8 is not written. |
 | `func_020ce7cc` | Unless saved value +0xd8 equals 15, release counted non-null items, clear their slots, and release/reset the +0x10 handle and providers. Always call bc9b4(10, 0), dea60, and clear the global owner. |
-| `func_020cecb8` | Pass the supplied word and phase address +8 to cb5b4. Results 1, 2, 3 respectively invoke cf2cc, cf360 followed by cec98, or SetState with +4. Deferred; see hard list below. |
+| `func_020cecb8` | Pass the supplied word and phase address +8 to cb5b4. Results 1, 2, 3 respectively invoke cf2cc, cf360 followed by cec98, or SetState with +4. The phase word remains owned by the work area. |
 | `func_020cf2cc` | Release counted non-null items, reset their slots and +0x10 handle, tear down providers in observed call order, then clear +0xdc and +0xe0. |
 | `func_020cf360` | Recreate providers and items using 26-byte records. First record ID 604 adjusts both index and count by minus one. Configure the handle using the stored +0xd0 count, then set +0xdc and +0xe0 to one. |
 | `func_020cf454` | Convert the low 16 bits of +0xa8 into provider mode 0..4; selection zero uses d3138 to choose 0 or 5. The switch and 124224 call establish the mapping. |
 | `func_020cf4d0` | Requires a valid message. Kind 1 calls bc504(work, 0). Kind 3 requires state 5 and decodes payload word +0x10 only when flag bit 3 is set. Selection 100 deactivates counted items and enters state 2; other selections save +0xd4, pass record +0x20+26*index to dec94 and enter state 7. Other kinds do nothing. |
 
-## Hard list (M1-T719)
+## Verification (M1-T719)
 
-- `func_020cecb8` (96 bytes): a typed switch implementation compiled to the
-  same 24 instructions and relocation targets. `objdiff-cli diff` reported
-  100%, but `objdiff-cli report generate` consistently reported 99.791664%,
-  including single-threaded deduplicated reporting. Moving the definition
-  before SetState did not change that result. The candidate was removed to
-  respect the strict report gate; the original delink remains authoritative.
-  A human can investigate with `tools/decompme.py` and the report/diff discrepancy.
+All eight task functions report 100% in the match gate, including the restored
+typed switch dispatcher `func_020cecb8`. The prior partial attempt's dispatcher
+report discrepancy did not recur on the completed source. No task functions
+remain on the hard list.
 
 ## Not done in M1-T720
 - `func_020ce684`

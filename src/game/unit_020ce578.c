@@ -5,7 +5,7 @@
 typedef struct Unk0ce578Work {
     s32 unk_0000;
     u32 unk_0004;
-    u8 pad_0008[0x4];
+    s32 phase;
     s32 unk_000c;
     u32 unk_0010;
     u8 records[0x74];
@@ -128,6 +128,7 @@ void CaveNpc_SetActive(u32 item, s32 active);
 void Unk124c5c_Unk_124cb0(void);
 void Unk122e1c_Unk_123048(u32 handle);
 void Unk0bc1a8_Unk_0bc504(Unk0ce578Work *work, s32 zero);
+s32 func_020cb5b4(u32 value, s32 *phase);
 void func_020cf2cc(Unk0ce578Work *work);
 void func_020cf360(Unk0ce578Work *work);
 void func_020cf454(Unk0ce578Work *work);
@@ -318,5 +319,22 @@ void func_020cf4d0(Unk0ce578Work *work, const u32 *message)
     }
     case 4: break;
     case 1: Unk0bc1a8_Unk_0bc504(work, 0); break;
+    }
+}
+
+/** Advance the borrowed phase at +8; helper results select release, setup or state. */
+void func_020cecb8(Unk0ce578Work *work, u32 value)
+{
+    switch (func_020cb5b4(value, &work->phase)) {
+    case 1:
+        func_020cf2cc(work);
+        break;
+    case 2:
+        func_020cf360(work);
+        Unk0ce578_Unk_0cec98(work);
+        break;
+    case 3:
+        Unk0ce578_SetState(work, work->unk_0004);
+        break;
     }
 }
