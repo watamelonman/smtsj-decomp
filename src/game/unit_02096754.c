@@ -392,3 +392,110 @@ int func_0209701c(int enabled)
     }
     return weight;
 }
+
+void func_02008848(void *dest, int value, u32 size);
+void Unk02ee5c_Unk_02efa4(void);
+void func_020b8660(int value);
+void func_020b8298(void *area, s8 index);
+/* At 0x02096b74, clears the borrowed area, copies two zero-terminated
+ * lists (at most eight IDs each) and four IDs, then refreshes paired fields. */
+void func_02096b74(int value, int mode, const u16 *first, const u16 *second, const u16 *ids)
+{
+    u8 *area = (u8 *)Unk02e000_Thunk_0202e788();
+    int i;
+    func_02008848(area, 0, 0x74);
+    FIELD(u8, area, 0x6e) = value;
+    FIELD(u8, area, 0x70) = 128;
+    for (i = 0; i < 8; i++) {
+        u16 id = first[i];
+        if (id) ((u16 *)area)[i + 36] = id;
+        else { FIELD(u16, area + i * 2, 0x48) = 0; break; }
+    }
+    FIELD(u16, area, 0x58) = 0;
+    for (i = 0; i < 8; i++) {
+        u16 id = second[i];
+        if (id) ((u16 *)area)[i + 45] = id;
+        else { FIELD(u16, area + i * 2, 0x5a) = 0; break; }
+    }
+    FIELD(u16, area, 0x6a) = 0;
+    Unk02ee5c_Unk_02efa4();
+    func_020b8660(mode);
+    if (FIELD(u8, area, 0x6e) > 1)
+        func_020b8298(area, (s8)(FIELD(u8, area, 0x6e) - 1));
+    FIELD(u16, area, 0) = ids[0];
+    FIELD(u16, area, 2) = ids[1];
+    FIELD(u16, area, 4) = ids[2];
+    FIELD(u16, area, 6) = ids[3];
+    func_02096c8c();
+    FIELD(s16, area, 28) = FIELD(s16, area, 18);
+    FIELD(s16, area, 30) = FIELD(s16, area, 20);
+}
+
+/* Six halfwords are passed by value by the original derived-field helper. */
+typedef struct Unk096754Values { u16 v[6]; } Unk096754Values;
+void func_02008904(const void *source, void *dest, u32 size);
+void func_020b875c(Unk096754Values *values, u32 index);
+void func_020b89c4(u32 value, void *dest, Unk096754Values values);
+void func_0209835c(void *area, const u16 *values);
+/* At 0x02096c8c, rebuilds signed derived fields from four resolved IDs,
+ * clamps five bytes to 1..99, and limits the two current halfwords. */
+void func_02096c8c(void)
+{
+    Unk096754Values copy;
+    u16 extra[6];
+    Unk096754Values values;
+    u8 *area = (u8 *)Unk02e000_Thunk_0202e788();
+    s16 first = 0;
+    s16 second = 0;
+    int i;
+    int key;
+    func_02008904(area + 8, area + 18, 10);
+    for (i = 0; i < 4; i++) {
+        u8 *record;
+        switch (i) {
+        case 0: key = FIELD(u16, area, 0); break;
+        case 1: key = FIELD(u16, area, 2); break;
+        case 2: key = FIELD(u16, area, 4); break;
+        case 3: key = FIELD(u16, area, 6); break;
+        }
+        if (key == 0) continue;
+        record = (u8 *)Unk09974c_Unk_099c60(key);
+        if (record == 0) continue;
+        FIELD(s8, area, 22) += FIELD(s8, record, 16);
+        FIELD(s8, area, 23) += FIELD(s8, record, 17);
+        FIELD(s8, area, 24) += FIELD(s8, record, 18);
+        FIELD(s8, area, 25) += FIELD(s8, record, 19);
+        FIELD(s8, area, 26) += FIELD(s8, record, 20);
+        first += FIELD(s8, record, 21);
+        second += FIELD(s8, record, 22);
+    }
+    if (FIELD(s8, area, 22) <= 0) FIELD(s8, area, 22) = 1;
+    if (FIELD(s8, area, 23) <= 0) FIELD(s8, area, 23) = 1;
+    if (FIELD(s8, area, 24) <= 0) FIELD(s8, area, 24) = 1;
+    if (FIELD(s8, area, 25) <= 0) FIELD(s8, area, 25) = 1;
+    if (FIELD(s8, area, 26) <= 0) FIELD(s8, area, 26) = 1;
+    if (FIELD(s8, area, 22) > 99) FIELD(s8, area, 22) = 99;
+    if (FIELD(s8, area, 23) > 99) FIELD(s8, area, 23) = 99;
+    if (FIELD(s8, area, 24) > 99) FIELD(s8, area, 24) = 99;
+    if (FIELD(s8, area, 25) > 99) FIELD(s8, area, 25) = 99;
+    if (FIELD(s8, area, 26) > 99) FIELD(s8, area, 26) = 99;
+    func_020b875c(&values, FIELD(u8, area, 111));
+    {
+        copy.v[0] = values.v[0];
+        copy.v[1] = values.v[1];
+        copy.v[2] = values.v[2];
+        copy.v[3] = values.v[3];
+        copy.v[4] = values.v[4];
+        copy.v[5] = values.v[5];
+        func_020b89c4(FIELD(u8, area, 110), area + 18, copy);
+    }
+    FIELD(s16, area, 18) += first;
+    FIELD(s16, area, 20) += second;
+    for (i = 0; i < 6; i++) extra[i] = 0;
+    Unk096754_Unk_097204((u32)extra);
+    func_0209835c(area + 18, extra);
+    if (FIELD(s16, area, 28) > FIELD(s16, area, 18))
+        FIELD(s16, area, 28) = FIELD(s16, area, 18);
+    if (FIELD(s16, area, 30) > FIELD(s16, area, 20))
+        FIELD(s16, area, 30) = FIELD(s16, area, 20);
+}
