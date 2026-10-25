@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all seven M1-T730 game/unit_0211d520 display allocation, list refresh, input, phase, and drawing routines at 100% objdiff.
 - Matched all eight M1-T729 game/unit_0211d520 routines, including resource teardown and selected-entry text setup, at 100% objdiff.
 - Match M1-T697 resource path formatting and record loading routines at 100% objdiff, with typed borrowed layouts and instruction evidence.
 - Matched all eight M1-T721 forwarding and record/table submission helpers in game/unit_020f51dc, with typed contracts and per-function evidence.
