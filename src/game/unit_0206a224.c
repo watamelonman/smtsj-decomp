@@ -12,16 +12,26 @@ typedef struct Unk06a224Work {
 
 
 
-void CampStatus_Copy168(void);
-u32 Unk0986ac_Unk_098978(void);
-void Unk0986ac_Thunk_02098714(u32 a);
-void Unk06a224_Unk_06a9fc(void)
+/* Six byte pairs, matching the assignment in CampStatus_Copy168. */
+typedef struct Unk06a224Pairs {
+    u8 pairs[6][2];
+} Unk06a224Pairs;
+
+void CampStatus_Copy168(const Unk06a224Pairs *src);
+int Unk0986ac_Unk_098978(int id);
+int Unk0986ac_Thunk_02098714(int bit);
+
+/* Preserve the mapped flag test result; the callees map id - 0x6f and test it. */
+int Unk06a224_Unk_06a9fc(int id)
 {
-    Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978());
+    return Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(id));
 }
 
-/* forwards to `CampStatus_Copy168` */
-void Unk06a224_Thunk_020d6cac(void) { CampStatus_Copy168(); }
+/* Forward a borrowed six-pair source; CampStatus_Copy168 copies it to +0x168. */
+void Unk06a224_Thunk_020d6cac(const Unk06a224Pairs *src)
+{
+    CampStatus_Copy168(src);
+}
 
 /* Globals block at 0x0216b9b0; fields named by their accessors. */
 typedef struct Unk06a224Globals {
@@ -32,32 +42,37 @@ typedef struct Unk06a224Globals {
 
 extern Unk06a224Globals data_0216b9b0;
 
+/* Read the word at global +8; its meaning is not established. */
 u32 Unk06a224_Unk_06a224(void)
 {
     return data_0216b9b0.unk_08;
 }
 
+/* Read global +0, as evidenced by the target ldr [r0]. */
 u32 Unk06a224_GetUnk00(void)
 {
     return data_0216b9b0.unk_00;
 }
 
+/* Store the supplied word at global +8 without normalization. */
 void Unk06a224_Unk_06a244(u32 arg0)
 {
     data_0216b9b0.unk_08 = arg0;
 }
 
+/* Store global +0, as evidenced by the target str [r1]. */
 void Unk06a224_SetUnk00(u32 arg0)
 {
     data_0216b9b0.unk_00 = arg0;
 }
 
 
-int func_020537b8();
+int func_020537b8(int group, int mask);
 typedef struct Unk06a224Slot {
     u16 id;
     u16 pad_0002;
 } Unk06a224Slot;
+/* Count nonzero halfword IDs in the 489 four-byte records at work +0x408. */
 s16 Unk06a224_CountUsedSlots(void)
 {
     s16 n = 0;
@@ -70,14 +85,25 @@ s16 Unk06a224_CountUsedSlots(void)
     return n;
 }
 
-int Unk06a224_Unk_06a374(u8 *o)
+/* Borrowed object view; signed halfwords are established by target ldrsh. */
+typedef struct Unk06a224Selection {
+    u8 pad_000[0x154];
+    s16 unk_154;
+    s16 unk_156;
+} Unk06a224Selection;
+
+/* Return true for an odd +0x154 value or a positive +0x156 value.
+ * Signed remainder behavior is retained for negative values; meaning is unknown. */
+int Unk06a224_Unk_06a374(const Unk06a224Selection *o)
 {
-    if (FIELD(s16, o, 0x154) % 2 != 0) {
+    if (o->unk_154 % 2 != 0) {
         return 1;
     }
-    return FIELD(s16, o, 0x156) > 0;
+    return o->unk_156 > 0;
 }
 
+/* Test the signed selection bounds at +0x154/+0x156 against +0x158.
+ * The borrowed object must contain these halfwords; odd selections use a 24 offset. */
 int Unk06a224_Unk_06a3a4(u8 *o)
 {
     s16 a = FIELD(s16, o, 0x154);
@@ -93,12 +119,14 @@ int Unk06a224_Unk_06a3a4(u8 *o)
 
 typedef struct Unk06a224Ctl {
     u8 pad_0000[348];
-    u16 *slots[4]; /* count guessed; only the +348 offset is confirmed */
+    u16 *slots[]; /* Borrowed entries at +0x15c; caller supplies a valid index. */
 } Unk06a224Ctl;
-void func_02099b10();
-void func_02067d54();
+void func_02099b10(int id, int value);
+void func_02067d54(Unk06a224Ctl *c);
 s16 Unk06a224_CountUsedSlots(void);
 
+/* Notify func_02099b10 for a populated borrowed slot, clear it, and refresh
+ * selection halfwords. The caller guarantees i indexes the slot pointer table. */
 void Unk06a224_Unk_06a998(Unk06a224Ctl *c, int i)
 {
     u8 *p = (u8 *)c;
@@ -109,19 +137,23 @@ void Unk06a224_Unk_06a998(Unk06a224Ctl *c, int i)
         c->slots[i] = 0;
         FIELD(u16, p + 0x100, 84) = 0;
         FIELD(u16, p + 0x100, 86) = 0;
-        func_02067d54(p);
+        func_02067d54(c);
         FIELD(s16, p + 0x100, 88) = Unk06a224_CountUsedSlots();
         FIELD(s16, p + 0x100, 88)++;
     }
 }
 
+/* Stack request view from target stores: two flag bytes and sixteen words.
+ * The two alignment bytes are not initialized by the original routines. */
 typedef struct Unk06a224Msg {
     u8 flags[2];
     u8 pad_02[2];
     u32 w[16];
 } Unk06a224Msg;
-void func_020bcbc4();
+void func_020bcbc4(int channel, const Unk06a224Msg *message);
 
+/* Submit word-1 value 24 with flag 2 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06aa0c(void)
 {
     Unk06a224Msg m;
@@ -137,6 +169,8 @@ void Unk06a224_Unk_06aa0c(void)
     func_020bcbc4(3, &m);
 }
 
+/* Submit word-1 value 2 and caller word 7 with flags 0x82 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06aafc(u32 x)
 {
     Unk06a224Msg m;
@@ -153,12 +187,13 @@ void Unk06a224_Unk_06aafc(u32 x)
     func_020bcbc4(3, &m);
 }
 
-void func_020bcbc4();
 void func_020bcacc();
 void func_020bc9f4();
 void CampStatus_SetUnk1a8();
 void CampStatus_Copy12c();
 
+/* Call CampStatus_Copy12c before submitting word-1 value 11 with flag 2.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06ab64(void)
 {
     Unk06a224Msg m;
@@ -193,6 +228,8 @@ void Unk06a224_Unk_06ac54(u32 x)
     func_020bcbc4(3, &m);
 }
 
+/* Submit word-1 value 10 and caller word 7 with flags 0x82 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06accc(u32 x)
 {
     Unk06a224Msg m;
@@ -227,6 +264,8 @@ void Unk06a224_Unk_06ad40(void)
     CampStatus_SetUnk1a8(0);
 }
 
+/* Submit word-1 value 25 and caller word 7 with flags 0x82 to channel 3.
+ * The request is borrowed for the duration of func_020bcbc4. */
 void Unk06a224_Unk_06adc0(u32 x)
 {
     Unk06a224Msg m;
@@ -243,25 +282,20 @@ void Unk06a224_Unk_06adc0(u32 x)
     func_020bcbc4(3, &m);
 }
 
-/* decompiler-derived */
-void Unk06a224_Unk_06ae28(Unk06a224Work *arg0){
-  int tmp1;
-  tmp1 = func_020537b8(0,0x40);
-  if (tmp1 != 0) {
-    arg0->unk_0440 = 1;
-  }
-  tmp1 = func_020537b8(0,0x80);
-  if (tmp1 != 0) {
-    arg0->unk_0444 = 1;
-  }
-  tmp1 = func_020537b8(0,0x20);
-  if (tmp1 != 0) {
-    arg0->unk_0448 = 1;
-  }
-  tmp1 = func_020537b8(0,0x10);
-  if (tmp1 != 0) {
-    arg0->unk_044c = 1;
-  }
-  return;
+/* Latch words at +0x440..+0x44c when group-zero masks 0x40, 0x80,
+ * 0x20, and 0x10 test nonzero. Unset masks leave existing words untouched. */
+void Unk06a224_Unk_06ae28(Unk06a224Work *work)
+{
+    if (func_020537b8(0, 0x40) != 0) {
+        work->unk_0440 = 1;
+    }
+    if (func_020537b8(0, 0x80) != 0) {
+        work->unk_0444 = 1;
+    }
+    if (func_020537b8(0, 0x20) != 0) {
+        work->unk_0448 = 1;
+    }
+    if (func_020537b8(0, 0x10) != 0) {
+        work->unk_044c = 1;
+    }
 }
-
