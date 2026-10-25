@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- M1-T634: matched seven selector, coordinate-probe, initialization, and record-search functions; documented the remaining dispatcher on the hard list.
+- M1-T634: matched all eight selector, coordinate-probe, initialization, record-search, and permission-dispatch functions at 100% objdiff.
 - Matched all six M1-T658 game/unit_020cd6ec state, input, message, and item-rebuild handlers at 100% objdiff; preserved the eight earlier matches.
 - Verified all eight M1-T664 game/unit_0203aae8 functions at 100% objdiff; typed helper calls, made query-result forwarding explicit, and documented assembly evidence.
 - Match all four M1-T643 StaffRoll viewport, script-layout, owner-initialization, and asynchronous image-loader functions at 100% objdiff.

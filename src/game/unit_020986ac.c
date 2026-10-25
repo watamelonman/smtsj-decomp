@@ -549,6 +549,138 @@ int func_02098fec(Unk0986acWork *p, int x, int y)
     return 1;
 }
 
+/* Preserve the original register allocation. See DEC-016. */
+#pragma push
+#pragma opt_lifetimes off
+/* Borrowed packed permissions: instruction shift pairs select these fields. */
+typedef struct Unk0986acIndex {
+    u32 index : 8;
+    u32 rest : 24;
+} Unk0986acIndex;
+/* Borrowed permission word; bit ranges follow the original shift pairs. */
+typedef struct Unk0986acPermission {
+    u32 mask : 4;
+    u32 level : 4;
+    u32 index : 8;
+    u32 rest : 16;
+} Unk0986acPermission;
+u8 *Unk0a6174_Unk_0a6a88(int id);
+u8 *Unk02e000_Unk_02e8b8(void);
+u8 *Unk0a6174_Unk_0a6aac(u8 *base, int id);
+u8 *Unk0a6174_Unk_0a6ab4(u8 *base, int id);
+void func_020773dc(int value);
+u8 *Unk038fbc_Unk_039160(u8 *base, int x, int y);
+u8 *Unk038fbc_GetElement(u8 *base, int kind, int index);
+int Unk0e651c_Get2Bits(int bits, int index);
+int Unk02f2a8_Unk_0349c4(u8 *base, int x, int y);
+u8 *Unk09ee4c_Unk_0a03b8(int kind);
+
+/* Probe current and direction-adjacent borrowed records, decode permission
+ * fields, and queue selector 2 with the selected record's output. Offsets,
+ * type checks and permission shifts are established at 0x02098b9c..02098fe8.
+ * Providers retain all records; p must be live and coordinates valid. */
+int func_02098b9c(Unk0986acWork *p, int x, int y)
+{
+    int kind = -1;
+    int enabled = 0;
+    u8 *record = Unk0a6174_Unk_0a6a88(p->unk_0c);
+    if (FIELD(s8, record, 0) == 1) {
+        u8 *a = Unk0a6174_Unk_0a6aac(Unk02e000_Unk_02e8b8(), record[1]);
+        if (a[13] == 1 && FIELD(int, a, 0) == 2 && func_020987ac(1, a[9]) == 1) {
+            p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 0);
+            kind = 1;
+            enabled = 1;
+            goto selected;
+        }
+    }
+    if (FIELD(s8, record, 0) == 2) {
+        record = Unk0a6174_Unk_0a6ab4(Unk02e000_Unk_02e8b8(), record[1]);
+        if (record[14] == 1 && FIELD(int, record, 0) == 2 && func_020987ac(0, record[10]) == 1) {
+            if (FIELD(s16, record, 4) >= 0) GetGameState();
+            func_020773dc(1);
+            p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 0);
+            kind = 0;
+            enabled = 1;
+            goto selected;
+        }
+    }
+    record = Unk038fbc_Unk_039160((u8 *)GetGameState() + 576, x, y);
+    if (record != 0 && record[0] == 36) {
+        u8 *a = Unk038fbc_GetElement((u8 *)GetGameState() + 576, 12, record[1]);
+        kind = Unk0e651c_Get2Bits(FIELD(u16, Unk02e000_GetWorkArea(), 860), ((Unk0986acIndex *)a)->index);
+        enabled = 0;
+        if (func_020987ac(4, 1) == 1 || func_020987ac(4, 2) == 1) enabled = 1;
+        if (kind >= 2 && enabled == 1) {
+            p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 1);
+            kind = 4;
+            enabled = 1;
+        } else {
+            p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 1);
+            kind = 4;
+            enabled = 0;
+        }
+        goto selected;
+    }
+    {
+        int mask = 0;
+        u8 *tile;
+        switch (FIELD(u32, Unk02e000_GetWorkArea(), 856)) {
+        case 1: x++; mask = 4; break;
+        case 2: y++; mask = 1; break;
+        case 3: x--; mask = 8; break;
+        case 0: y--; mask = 2; break;
+        }
+        tile = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970((u8 *)GetGameState() + 4, x, y), x, y);
+        if (tile == 0) goto selected;
+        if ((u8)(tile[0] + 232) <= 1) {
+            Unk0986acPermission *a = (void *)Unk038fbc_GetElement(Unk02f2a8_Unk_034970((u8 *)GetGameState() + 4, x, y), 7, tile[1]);
+            if (mask & a->mask) {
+                mask = Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4((u8 *)GetGameState() + 4, x, y), a->index);
+                if (mask != 3) {
+                    int ok = func_020987ac(2, a->level + 1);
+                    if (mask == 2 && ok == 1) {
+                        p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 1);
+                        kind = 2; enabled = 1;
+                    } else {
+                        p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 1);
+                        kind = 2; enabled = 0;
+                    }
+                    goto selected;
+                }
+            }
+        }
+        if ((u8)(tile[0] + 230) <= 1) {
+            u8 *a = Unk038fbc_GetElement(Unk02f2a8_Unk_034970((u8 *)GetGameState() + 4, x, y), 8, tile[1]);
+            mask = Unk0e651c_Get2Bits(Unk02f2a8_Unk_0349c4((u8 *)GetGameState() + 4, x, y), a[0]);
+            if (mask != 3) {
+                int ok = func_020987ac(5, ((Unk0986acPermission *)(a + 4))->level + 1);
+                if (mask == 2 && ok == 1) {
+                    p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 1);
+                    kind = 5; enabled = 1;
+                } else {
+                    p->unk_30 = Unk0986ac_IsMode012((u8 *)p, 0, 1);
+                    kind = 5; enabled = 0;
+                }
+            }
+        }
+    }
+selected:
+    if (kind != -1) {
+        u8 *a = Unk09ee4c_Unk_0a03b8(kind);
+        p->unk_18 = 2;
+        p->unk_1c = enabled ? 2 : 1;
+        p->unk_28 = enabled ? FIELD(int, a, 20) : 2;
+        p->unk_24 = kind;
+        p->unk_3c = func_02098a08(p->unk_04, FIELD(int, a, 20));
+        p->unk_45 = x;
+        p->unk_46 = y;
+        return 1;
+    }
+    return 0;
+}
+
+#pragma pop
+
 /* Run pending/current state handlers then probe coordinates for selectors 0..2;
  * selector 4 queues teardown. The jump table at 0x020993a8 defines the cases. */
 void func_020993a8(Unk0986acWork *p)
