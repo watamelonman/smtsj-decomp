@@ -77,7 +77,23 @@ the original instruction ordering in func_02098050.
 None for M1-T475. Instruction matching supplies the acceptance check; the card
 requires no new behavioral tests.
 
-## Not done in M1-T476
-- `func_02097a20`
-- `func_02097f68`
-- `func_02097c18`
+## M1-T476: matched functions
+
+All three functions match at 100% objdiff. Pointer arguments borrow storage;
+no module boundary changes were needed. Names remain neutral because field and
+ID gameplay meanings are not established.
+
+| Function | Contract and original-code evidence |
+| --- | --- |
+| `func_02097a20` | 02097a20, 176 bytes. NULL records and states 1/7 return zero. When 0202e840 and the enable argument hold, queries IDs 144/158 and record ID 396 with weights 1/3/3. A nonzero weight returns signed record +0x0a times weight divided by 100, truncated toward zero and bounded below by 1. State checks, calls and signed multiply/divide at 02097a20..02097acc establish this behavior. |
+| `func_02097f68` | 02097f68, 232 bytes. Computes a float average of unsigned +0x38 over present selected slots. Modes 0/1 visit CountEntries slots at work +0x348; mode 2 visits three at +0x354. Modes 0/2 also include global unsigned +0x6e. Negative slots are skipped. Other modes and empty selections retain the original zero-divided-by-zero behavior. Float conversion, accumulation and division calls at 02097f68..0209804c establish the calculation. |
+| `func_02097c18` | 02097c18, 316 bytes. Copies nineteen packed pairs from metadata +0x3a into caller-owned output, preserving ten-bit low and six-bit high fields. For each index, queries 02096548 using the borrowed ID list and replaces the high field when 0202f190 allows it. High field 5 halves the low field, then caps it to 50. Three nineteen-iteration loops and bitfield accesses at 02097c38..02097d50 establish the layout and transformations. Metadata and ID storage must be valid; output holds at least nineteen pairs. |
+
+The first copy loop and subsequent query loops use separate counters to preserve
+the original register allocation. Existing accessors allocate twenty pairs, but
+the builder initializes nineteen, as shown by each original comparison to 0x13.
+
+### Hard list
+
+None for M1-T476. No new tests are required; instruction matching validates the
+implementation against the original.
