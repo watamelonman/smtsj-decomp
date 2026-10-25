@@ -214,3 +214,14 @@ compiler, forward and backward local call relocations have different encoded
 branch addends; the report's fuzzy comparison distinguishes them even when the
 interactive diff resolves both to the same symbol. Callee placement reproduces
 the original call direction without changing behavior or tool configuration.
+
+
+## DEC-012 — Preserve address-based optional-word copies in 020ff140
+
+The original initializer stores constants in two stack words as well as copying
+those words into the outgoing presence-tagged message. An inline helper taking
+a typed pointer eliminates the separate stores with mwccarm 2.0/sp1p5. Pass the
+borrowed source as a 32-bit DS address and dereference it as s32 inside the helper;
+this retains the observed copies without volatile access or extra side effects.
+The caller owns both source words until the inline copy finishes. The helper is
+private to this TU; its index must be in 0..15.

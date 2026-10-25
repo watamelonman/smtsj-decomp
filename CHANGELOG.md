@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M1-T614: match four additional game/unit_020ff030 functions; document the remaining message callback on the hard list.
+
 - Match all eight M1-T613 callbacks in game/unit_020ff030 with typed C and documented field contracts.
 - M1-T612: matched the 1924-byte BattleTask initialization routine at 100% objdiff with typed request, output, work, and packed-ID views.
 - Matched all eight M1-T571 file-entry, record lookup, selector and buffer-allocation functions at 100% objdiff; documented original contracts.
