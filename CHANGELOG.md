@@ -2,6 +2,23 @@
 
 ## Unreleased
 - M1-T744: match six unit_02068f18 candidate, eligibility, stat, random-merge, and draw routines; document two deferred candidate-combination functions on the hard list.
+
+- Match all eight M1-T763 game/unit_0210a034 helpers, including guarded work creation and cached ID updates.
+- Verified all eight M1-T766 game/unit_0209ee4c functions at 100% objdiff; documented their contracts and typed the packed-state accessor.
+- Match all four M1-T750 game/unit_02122e1c setup, phase, state-update and rendering routines at 100% objdiff, preserving all earlier matches.
+- Match all eight M1-T762 global-work wrappers, record-byte scaling, and strided word clearing helpers at 100% objdiff with typed contracts.
+- Verified the eight M1-T761 global-word accessors and work setters in `game/unit_0210a034`; documented their typed contracts and original instruction evidence.
+- Match all seven M1-T730 game/unit_0211d520 display allocation, list refresh, input, phase, and drawing routines at 100% objdiff.
+
+- Match eight game/unit_020f90dc functions for handle lifecycle and entry selection.
+- Match `func_020b6f28` state-dependent drawing and document two remaining unit_020b6570 hard functions.
+- Match eight more game/unit_02122e1c resource and state routines, with typed work views and evidence documentation.
+- Match all eight M1-T748 slot, flag, and state helper functions in game/unit_02122e1c.
+- Verified all eight M1-T747 work-field accessors, byte predicates and call wrappers at 100% objdiff; added typed object parameters and instruction evidence.
+- M1-T720: match all four remaining unit_020ce578 setup, state and input handlers at 100% objdiff, with typed work parameters and observed provider contracts.
+- Matched the eight M1-T745 game/unit_020b6570 query, status, resource, cleanup, and graphics setup functions with typed contracts.
+- Match all four M1-T709 game/unit_0209d42c weighted-selection, cell-update, mode-polling, and record-work routines at 100% objdiff.
+- M1-T719: match all eight unit_020ce578 registration, setup, teardown, dispatcher and event functions with typed borrowed work layouts.
 - Matched all eight M1-T743 unit_02068f18 record, ID, coordinate and alpha helpers; documented their data contracts.
 - Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.
 - Match all eight M1-T708 game/unit_0209d42c request, queue, record-copy, and work-initialization routines; preserve earlier matches and document storage contracts.

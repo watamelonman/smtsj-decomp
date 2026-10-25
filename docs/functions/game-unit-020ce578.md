@@ -30,18 +30,53 @@ value on both branches removes the compare (8 bytes). These agree with the
 prior investigation in `docs/hard_functions.md`. A human can use
 `tools/decompme.py` for further compiler investigation.
 
-## Not done in M1-T719
-- `func_020ce628`
-- `func_020cecb8`
-- `func_020cf454`
-- `func_020ce578`
-- `func_020cf2cc`
-- `func_020ce7cc`
-- `func_020cf360`
-- `func_020cf4d0`
+## M1-T719
+
+All eight functions below match at 100% in the objdiff report. Provider names remain
+external; the neutral `func_` symbols are retained because the instructions do
+not establish gameplay names. The work area is 0xe4 bytes, with counted
+26-byte records at +0x14 and item handles at +0x88.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_020ce578` | No arguments. Query 02f0e8, store global mode at +4, conditionally call 02f0c4, then initialize providers. A zero de8b0 result enables the final three calls with bc928(20, 65535, 0). |
+| `func_020ce628` | Fill a borrowed callback descriptor with size 0xe4, zero flags, and six function pointers at +0xc through +0x20. The reserved word at +8 is not written. |
+| `func_020ce7cc` | Unless saved value +0xd8 equals 15, release counted non-null items, clear their slots, and release/reset the +0x10 handle and providers. Always call bc9b4(10, 0), dea60, and clear the global owner. |
+| `func_020cecb8` | Pass the supplied word and phase address +8 to cb5b4. Results 1, 2, 3 respectively invoke cf2cc, cf360 followed by cec98, or SetState with +4. The phase word remains owned by the work area. |
+| `func_020cf2cc` | Release counted non-null items, reset their slots and +0x10 handle, tear down providers in observed call order, then clear +0xdc and +0xe0. |
+| `func_020cf360` | Recreate providers and items using 26-byte records. First record ID 604 adjusts both index and count by minus one. Configure the handle using the stored +0xd0 count, then set +0xdc and +0xe0 to one. |
+| `func_020cf454` | Convert the low 16 bits of +0xa8 into provider mode 0..4; selection zero uses d3138 to choose 0 or 5. The switch and 124224 call establish the mapping. |
+| `func_020cf4d0` | Requires a valid message. Kind 1 calls bc504(work, 0). Kind 3 requires state 5 and decodes payload word +0x10 only when flag bit 3 is set. Selection 100 deactivates counted items and enters state 2; other selections save +0xd4, pass record +0x20+26*index to dec94 and enter state 7. Other kinds do nothing. |
+
+## Verification (M1-T719)
+
+All eight task functions report 100% in the match gate, including the restored
+typed switch dispatcher `func_020cecb8`. The prior partial attempt's dispatcher
+report discrepancy did not recur on the completed source. No task functions
+remain on the hard list.
 
 ## Not done in M1-T720
 - `func_020ce684`
 - `func_020cefac`
 - `func_020ced18`
 - `func_020ce868`
+
+## M1-T720
+
+All four requested functions match at 100% objdiff with the configured compiler.
+They borrow the existing 0xe4-byte work area. Phase operations here use only the
+byte at +8; the cursor selection at +0xc4 is a signed word. Neutral original
+symbols are retained because the observed operations do not establish gameplay
+names. The records passed to deaa0 are a halfword-aligned, 114-byte value;
+the separate selection argument follows that value on the stack.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_020ce684` | Initialize records through de960(mode 1), construct the counted item handles with the ID-604 index adjustment, initialize cursors at +0x98/+0xb4, publish the borrowed work in data_02176bd0, and initialize states and status words. Requires writable work and valid provider results. |
+| `func_020ce868` | Dispatch states 0 through 10, polling provider completion before transitions. States 3 and 7 pass the 114-byte record block by value to deaa0(kind 20); state 5 updates item activity from the selected index. A nonzero +0x10 handle receives the +0xa8/+0xc4 selections after dispatch. |
+| `func_020ced18` | Advance six byte phases at +8 through provider release, SaveLoadTask_SelectEntry(5 for selection 1, otherwise 2), completion polling and item reconstruction. Rebuilt items preserve the ID-604 adjustment; cancellation enters state 1 with saved value 15. |
+| `func_020cefac` | Act only in state 4. Nonnegative e807c results select transition requests; negative results enable ordered 53824/53800 input-mask handling. Selection +0xa8 controls handle queries, save/load entry, counted-item states and the +0xb4 cursor flow. |
+
+Validation used the delinked object as the instruction oracle, then the full
+project gates. No new behavior tests are required by this matching-only card.
+No M1-T720 functions are deferred; the earlier M1-T718 hard list is unchanged.
