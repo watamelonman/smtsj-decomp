@@ -20,6 +20,13 @@ typedef struct Unk10a034Work {
     u32 unk_002c;
     u8 pad_0030[0x84];
     u16 unk_00b4;
+    u16 pad_00b6;
+    u32 unk_00b8;
+    u16 unk_00bc[5];
+    u16 pad_00c6;
+    u16 unk_00c8[4];
+    u32 unk_00d0;
+    u32 unk_00d4;
 } Unk10a034Work;
 
 extern u32 data_02176e38[];
@@ -267,11 +274,12 @@ void Unk10a034_Unk_10af0c(Unk10a034Work *arg0)
   return;
 }
 
-int Unk02e000_GetAreaRecord();
-int Unk02e000_HasField36();
-int Unk096754_Unk_096ab0();
-int func_020a1428();
-/* decompiler-derived */
+int Unk02e000_GetAreaRecord(int index);
+int Unk02e000_HasField36(void);
+int Unk096754_Unk_096ab0(int index);
+int func_020a1428(u32 id);
+/* Initializes twelve borrowed entry records from area IDs and provider kinds.
+ * Evidence: area +0x36 and record +2 loads at 0x0210ac48..90. */
 void Unk10a034_Unk_10ac28(int arg0)
 {
   int tmp1;
@@ -474,4 +482,139 @@ u32 func_0210b080(u32 a, u32 b)
     if (work == 0) return 0;
     Unk10a034_Unk_10b104((u32 *)work, a, b);
     return work;
+}
+
+/* Initializes the 216-byte borrowed work and its entry/selection arrays.
+ * Evidence: original stores and entry initializer call at 0x0210a160. */
+void func_0210a160(u32 *work, u32 a, u32 b)
+{
+    int i;
+    work[0] = a;
+    work[1] = b;
+    work[2] = 0;
+    work[3] = 0;
+    work[4] = 0;
+    work[5] = 0;
+    work[6] = 1;
+    work[7] = 0;
+    work[8] = 0;
+    FIELD(u16, work, 0xb4) = 0;
+    FIELD(u32, work, 0xb8) = 0;
+    Unk10a034_Unk_10ac28((int)work);
+    for (i = 0; i < 5; i++) ((Unk10a034Work *)work)->unk_00bc[i] = 0;
+    for (i = 0; i < 4; i++) ((Unk10a034Work *)work)->unk_00c8[i] = 0;
+    FIELD(u32, work, 0xd4) = 0;
+}
+
+void Unk02e000_GetWorkArea(void);
+void func_02099a28(u32 id, s32 value);
+void Unk0979d8_AddField344(s32 value);
+s32 Unk096754_Unk_096a14(void);
+void Unk097514_Unk_0977f0(s32 index, u32 id, int flags);
+/* Applies the linked descriptor through its kind-specific provider.
+ * Evidence: descriptor +0x18 switch at 0x0210b3a8; work remains borrowed. */
+void func_0210b3a8(u8 *work)
+{
+    u8 *record;
+    int index;
+    Unk02e000_GetWorkArea();
+    record = FIELD(u8 *, work, 0x14);
+    switch (FIELD(u16, record, 0x18)) {
+    case 1:
+        func_02099a28(FIELD(u16, record, 0x1a), FIELD(s32, record, 0x1c));
+        break;
+    case 2:
+        Unk0979d8_AddField344(FIELD(s32, record, 0x1c));
+        break;
+    case 3:
+        index = Unk096754_Unk_096a14();
+        if (FIELD(u32, work, 0x18)) {
+            Unk0979d8_AddField344(Unk10a034_Unk_10b058(FIELD(u16, record, 0x1a)));
+        } else if (index >= 0) {
+            Unk097514_Unk_0977f0(index, FIELD(u16, record, 0x1a), 0);
+        }
+        break;
+    }
+}
+
+int func_020d314c(u8 *entry);
+void func_0209993c(u32 id);
+void func_02099b10(u32 id, s32 value);
+void func_020fc734(s32 value);
+s32 func_02096af4(u32 id);
+void func_02096958(s32 index);
+/* Applies four linked eight-byte entries, using selected IDs for kind 4.
+ * Evidence: stride-eight loop and provider calls at 0x0210ab60. */
+void func_0210ab60(u8 *work)
+{
+    u8 i;
+    u8 *entry;
+    int index;
+    Unk02e000_GetWorkArea();
+    for (i = 0; i < 4; i++) {
+        entry = FIELD(u8 *, work, 0x14) + 0x20 + i * 8;
+        if (func_020d314c(entry)) {
+            switch (FIELD(u16, entry, 0)) {
+            case 1:
+                func_0209993c(FIELD(u16, entry, 2));
+                func_02099b10(FIELD(u16, entry, 2), FIELD(s32, entry, 4));
+                break;
+            case 2:
+                Unk0979d8_AddField344(-FIELD(s32, entry, 4));
+                func_020fc734(-FIELD(s32, entry, 4));
+                break;
+            case 3:
+                index = func_02096af4(FIELD(u16, entry, 2));
+                if (index >= 0) func_02096958(index);
+                break;
+            case 4:
+                index = func_02096af4(((Unk10a034Work *)work)->unk_00c8[i]);
+                if (index >= 0) func_02096958(index);
+                break;
+            }
+        }
+    }
+}
+
+u32 Unk0a163c_Unk_0a1814(u32 id);
+void func_0204fcb0(u16 slot, u32 value);
+/* Fills five selection IDs for the current kind/page and publishes labels.
+ * Evidence: twelve-entry filter and five-slot paging at 0x0210ad64.
+ * The work and its entry table are borrowed writable storage. */
+void func_0210ad64(Unk10a034Work *work)
+{
+    int i;
+    int skip;
+    int count, limit;
+    int skipped;
+    int written;
+    Unk10a034Ent *entry;
+    i = 0;
+    skip = 0;
+    for (; i < 5; i++) work->unk_00bc[i] = 0;
+    count = func_0210ad00((Unk10a034Obj *)work, work->unk_00b4);
+    if (count <= 5) limit = count;
+    else {
+        skip = work->unk_00b8 * 5;
+        limit = count - skip;
+        if (limit > 5) limit = 5;
+    }
+    skipped = 0;
+    written = 0;
+    entry = (Unk10a034Ent *)((u8 *)work + 0x24);
+    for (i = 0; i < 12; i++, entry++) {
+        if (entry->used && entry->pad == work->unk_00b4 && entry->val == 0 &&
+            !Unk10a034_HasId((Unk10a034Obj *)work, entry->id)) {
+            if (skipped < skip) skipped++;
+            else {
+                work->unk_00bc[written] = entry->id;
+                func_0204fcb0((u16)(written + 1), Unk0a163c_Unk_0a1814(entry->id));
+                written++;
+                if (written >= limit) break;
+            }
+        }
+    }
+    if (count <= 5) limit--;
+    else func_0204fcb0((u16)(written + 1), Unk0d297c_Unk_0d2f98(21));
+    Unk0d297c_Unk_0d2f98(limit + 15);
 }
