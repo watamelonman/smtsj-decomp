@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Match four more game/unit_020fd9f0 helpers for movement, countdown, drawing, and secondary object setup; document two remaining rendering matches.
+- Match all six M1-T510 game/unit_020fd9f0 helpers, including both resource-layer rendering functions and their fixed-point opacity pulse.
 - Verified all eight M1-T537 ImageBgDual3D predicates, field updates and helper sequences at 100% objdiff; added typed contracts and instruction evidence.
 - Matched all eight M1-T527 context, money-window lifecycle, state initialization and numeric-output functions at 100% objdiff; documented instruction evidence and typed contracts.
 - Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.

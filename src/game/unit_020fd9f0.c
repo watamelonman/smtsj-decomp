@@ -350,3 +350,64 @@ void func_020fe1f8(u8 *work)
     func_0205de40(2, FIELD(u32, work, 28), 0, x, y, 1.0f, 1.0f, 0, 1.0f, 12);
     Unk0fd9f0_Unk_0fe2b0();
 }
+
+extern s16 data_0212629c[];
+
+/* Draw resource +0 layers and the mode-selected pulse. Evidence: 020fde4c uses
+ * indices 0/2/4 and the signed interleaved table at 0212629c.
+ * Work is borrowed; +0x3c is the frame counter and +0x28 selects the mode. */
+void func_020fde4c(u8 *work)
+{
+    s32 x, y;
+    Unk0fd9f0_Unk_0fe278();
+    x = FIELD(s32, work, 8);
+    y = FIELD(s32, work, 12);
+    func_0205de40(2, FIELD(u32, work, 0), 0, x, y, 1.0f, 1.0f, 0, 1.0f, 12);
+    if (FIELD(s32, work, 40) == 0 || FIELD(s32, work, 40) == 2)
+        func_02057ddc(0x299ce700);
+    else
+        func_02057ddc(0x4a4a4a00);
+    func_0205de40(2, FIELD(u32, work, 0), 2, x, y, 1.0f, 1.0f, 0, 1.0f, 13);
+    if (FIELD(s32, work, 40) == 2) {
+        s32 phase;
+        u16 angle;
+        float opacity;
+        func_02057e18(31);
+        phase = (FIELD(s32, work, 60) * 180 / 60 % 180) << 12;
+        angle = ((s64)phase * 0xb60b60b60bLL + 0x80000000000LL) >> 44;
+        opacity = (float)(u32)(((data_0212629c[(angle >> 4) * 2] * 30) >> 12) + 20) / 100.0f;
+        func_02057ddc(-1);
+        func_0205de40(2, FIELD(u32, work, 0), 4, x, y, 1.0f, 1.0f, 0, opacity, 14);
+    }
+    Unk0fd9f0_Unk_0fe2b0();
+}
+
+/* Draw resource +0 layers and the mode-selected pulse. Evidence: 020fe004 uses
+ * indices 1/3/5 and the signed interleaved table at 0212629c.
+ * Work is borrowed; +0x3c is the frame counter and +0x28 selects the mode. */
+void func_020fe004(u8 *work)
+{
+    s32 x, y;
+    Unk0fd9f0_Unk_0fe278();
+    x = FIELD(s32, work, 8);
+    y = FIELD(s32, work, 12);
+    func_0205de40(2, FIELD(u32, work, 0), 1, x, y, 1.0f, 1.0f, 0, 1.0f, 12);
+    func_02057e18(31);
+    if (FIELD(s32, work, 40) == 0 || FIELD(s32, work, 40) == 3)
+        func_02057ddc(0x299ce700);
+    else
+        func_02057ddc(0x4a4a4a00);
+    func_0205de40(2, FIELD(u32, work, 0), 3, x, y, 1.0f, 1.0f, 0, 1.0f, 13);
+    if (FIELD(s32, work, 40) == 3) {
+        s32 phase;
+        u16 angle;
+        float opacity;
+        func_02057e18(31);
+        phase = (FIELD(s32, work, 60) * 180 / 60 % 180) << 12;
+        angle = ((s64)phase * 0xb60b60b60bLL + 0x80000000000LL) >> 44;
+        opacity = (float)(u32)(((data_0212629c[(angle >> 4) * 2] * 30) >> 12) + 20) / 100.0f;
+        func_02057ddc(-1);
+        func_0205de40(2, FIELD(u32, work, 0), 5, x, y, 1.0f, 1.0f, 0, opacity, 14);
+    }
+    Unk0fd9f0_Unk_0fe2b0();
+}

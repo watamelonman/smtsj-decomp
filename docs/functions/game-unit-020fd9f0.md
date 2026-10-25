@@ -51,8 +51,8 @@ All pointers below borrow valid work storage.
 
 ## M1-T510
 
-Four of the six functions match at 100%. The remaining two retain their original
-implementations through the delinked object. Parameters are typed borrowed work
+All six functions match at 100%, including both rendering functions completed
+in attempt 2. The TU still links through the delinked object pending human completion. Parameters are typed borrowed work
 views; offsets refer to the original ARM instructions.
 
 | Function | Evidence and contract |
@@ -61,22 +61,18 @@ views; offsets refer to the original ARM instructions.
 | `func_020fdd90` | 020fdd90 increments signed +0x3c, wrapping at 65535, then clamps movement to x=0 and y=-11..0. In state 2, a positive +0x40 countdown decrements and clears +0x30 on expiration. |
 | `func_020fe1f8` | 020fe1f8 draws resource +0x1c, index 0, at signed coordinates +8/+12 with unit scales/opacity and order 12. It selects the rendering color using +0x30, updates the optional +0x24 object with all-one color bits, and brackets drawing with the existing setting helpers. |
 | `func_020fdc88` | 020fdc88 advances signed coordinates +8/+12 by signed velocities +0x10/+0x14, clamping each moving axis to its supplied limits and clearing the corresponding velocity. Reaching the upper y bound in state 2 creates the secondary object. Any hit with nonzero +0x34 sets y velocity to 1, installs state +0x38, and clears +0x34. |
-| `func_020fde4c` | Unmatched: draws resource +0 indices 0/2, choosing color 0x299ce700 for modes 0/2 and 0x4a4a4a00 otherwise. Mode 2 also draws index 4 with a pulsing opacity from the frame counter and the interleaved signed fixed-point table at 0212629c. Orders are 12/13/14. |
-| `func_020fe004` | Unmatched: analogous draw sequence for indices 1/3 and mode-3 index 5; it also calls 02057e18(31) after the first draw. |
+| `func_020fde4c` | Draws resource +0 indices 0/2, choosing color 0x299ce700 for modes 0/2 and 0x4a4a4a00 otherwise. Mode 2 also draws index 4 with a pulsing opacity from the frame counter and the interleaved signed fixed-point table at 0212629c. Orders are 12/13/14. |
+| `func_020fe004` | Analogous draw sequence for indices 1/3 and mode-3 index 5; it also calls 02057e18(31) after the first draw. |
 
 No new runtime tests are required by this card. Exact instruction and relocation
-comparison verifies the four retained definitions; full-image checksum checks
+comparison verifies all six definitions at 100%; full-image checksum checks
 the existing delink-based link. No module boundaries change.
 
 ### Hard list for M1-T510
 
-- `func_020fde4c` and `func_020fe004`: readable C reproduced the original
-  440/452-byte sizes and fixed-point computation: `frame * 180 / 60 % 180`,
-  shifted by 12, multiplied by 0xb60b60b60b with rounding 0x80000000000,
-  shifted by 44 to a 16-bit angle, then table lookup, signed sample times 30,
-  shift by 12, add 20, unsigned-to-float conversion and division by 100.
-  Only the table/factor register allocation and commuted table-load operands
-  differed. Tried operand ordering, typed local factors, inline lookup/scaling
-  helpers, short/int sample types, and pointer/array/struct lookup views.
-  No nonmatching definitions or unused helpers retained. A human can use these
-  observations for decomp.me scratches via tools/decompme.py.
+None. Both rendering functions now reproduce the original 440/452-byte bodies.
+The pulse uses signed `frame * 180 / 60 % 180`, converted to a 16-bit angle
+with the original rounded fixed-point multiplication. A direct signed-short
+interleaved table expression preserves the table register and the 30-factor
+register allocation, including the original signed halfword multiplication.
+The resulting unsigned intensity converts to float and divides by 100.
