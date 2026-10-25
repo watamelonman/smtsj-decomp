@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T687: match and document eight game/unit_020de678 state setters, record counter, and helper dispatch routines.
+- Verify M1-T691 manager accessors and forwarding wrappers; preserve typed arguments and predicate results.
 - Match all four M1-T656 slot, record-field, work-transfer and record-initialization functions at 100% objdiff; document instruction evidence and borrowed storage contracts.
 
 - Match eight more unit_02039bb4 entry/table handlers with typed work parameters and documented contracts.
