@@ -318,6 +318,8 @@ int Unk10a034_HasId(Unk10a034Obj *p, u32 x)
     return 0;
 }
 
+/* Clears the first used entry with this ID; borrows twelve writable entries.
+ * Evidence for ClearById: ID comparison and +8 zero store at 0x0210ae98. */
 void Unk10a034_ClearById(u8 *p, u32 id)
 {
     int i;
@@ -332,6 +334,8 @@ void Unk10a034_ClearById(u8 *p, u32 id)
 }
 
 u32 func_0210b080(u32 a, u32 b);
+/* Returns a borrowed eight-byte entry for indices 0..3, or zero.
+ * Evidence for GetEntry8: bounds checks and index shift at 0x0210af8c. */
 u32 Unk10a034_GetEntry8(int i)
 {
     u32 p;
@@ -367,6 +371,8 @@ int Unk10a034_Unk_10b030(void)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
+/* Reads the linked descriptor only when +0x18 is set; returns its +0x1c
+ * word or scaled provider value. Evidence: cases at 0x0210b484. */
 int Unk10a034_Unk_10b484(u8 *p)
 {
     u8 *q;
@@ -393,4 +399,79 @@ void func_0210a034(u32 a, u32 b)
         return;
     }
     *data_02176e38 = func_0210a0dc(a, b);
+}
+
+/* Selects the first used, unmarked entry with the requested +2 halfword.
+ * Evidence: scan at 0x0210acac; a nonzero mark claims its +8 word. */
+u32 func_0210acac(u8 *work, u32 kind, int mark)
+{
+    int i;
+    Unk10a034Ent *entry = (Unk10a034Ent *)(work + 0x24);
+    for (i = 0; i < 12; i++, entry++) {
+        if (entry->used != 0 && entry->val == 0 && entry->pad == kind) {
+            if (mark != 0) entry->val = 1;
+            return entry->id;
+        }
+    }
+    return 0;
+}
+
+/* Counts unmarked entries of the requested kind whose IDs are absent from
+ * the four-ID list. Evidence: scan and HasId call at 0x0210ad00. */
+int func_0210ad00(Unk10a034Obj *work, u32 kind)
+{
+    int count = 0;
+    int i;
+    Unk10a034Ent *entry = (Unk10a034Ent *)((u8 *)work + 0x24);
+    for (i = 0; i < 12; i++, entry++) {
+        if (entry->used != 0 && entry->pad == kind && entry->val == 0) {
+            if (!Unk10a034_HasId(work, entry->id)) count++;
+        }
+    }
+    return count;
+}
+
+int Unk096754_Unk_096b44(u32 id);
+/* Recomputes +0x18 from the linked descriptor; both borrowed objects must
+ * exist. Evidence: descriptor cases and provider test at 0x0210b42c. */
+void func_0210b42c(u8 *work)
+{
+    u8 *record;
+    FIELD(u32, work, 0x18) = 0;
+    record = FIELD(u8 *, work, 0x14);
+    switch (FIELD(u16, record, 0x18)) {
+    case 1: return;
+    case 2: FIELD(u32, work, 0x18) = 1; return;
+    case 3:
+        if (Unk096754_Unk_096b44(FIELD(u16, record, 0x1a)) == 0)
+            FIELD(u32, work, 0x18) = 1;
+        return;
+    }
+}
+
+u32 func_020611dc(void (*update)(u8 *), u32 hook1, u32 hook2,
+                 void (*cleanup)(void), u32 size, u32 priority, u32 flags, u32 enabled);
+void func_0210a1d8(u8 *work);
+void func_0210b124(u8 *work);
+void func_0210a160(u32 *work, u32 a, u32 b);
+/* Allocates 216 bytes with the original callbacks and initializes the work.
+ * Evidence: allocator arguments at 0x0210a0dc; returns zero on failure. */
+u32 func_0210a0dc(u32 a, u32 b)
+{
+    u32 work = func_020611dc(func_0210a1d8, 0, 0,
+        Unk10a034_Clear_data_02176e38, 216, 3, 0, 1);
+    if (work == 0) return 0;
+    func_0210a160((u32 *)work, a, b);
+    return work;
+}
+
+/* Allocates 28 bytes with the original callbacks and initializes seven words.
+ * Evidence: allocator arguments at 0x0210b080; returns zero on failure. */
+u32 func_0210b080(u32 a, u32 b)
+{
+    u32 work = func_020611dc(func_0210b124, 0, 0,
+        Unk10a034_Clear_data_02176e44, 28, 3, 0, 1);
+    if (work == 0) return 0;
+    Unk10a034_Unk_10b104((u32 *)work, a, b);
+    return work;
 }

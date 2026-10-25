@@ -26,20 +26,6 @@
 - `Unk10a034_Unk_10b030` (40 B): **100% objdiff**. Returns true when second global work is absent or its +8 word equals 10. Evidence: conditional return and comparison at 0x0210b038–0x0210b050.
 - `Unk10a034_HasId` (44 B): **100% objdiff**. Tests the four borrowed halfword IDs at +0xc8 against the caller word. Evidence for the name: indexed halfword load/comparison loop at 0x0210aee0–0x0210aefc.
 
-## Not done in M1-T764
-- `Unk10a034_GetEntry8`
-- `Unk10a034_ClearById`
-- `Unk10a034_Unk_10b484`
-- `func_0210acac`
-- `func_0210b42c`
-- `func_0210ad00`
-- `func_0210a0dc`
-- `func_0210b080`
-- `Unk10a034_Unk_10ac28`: decompiler-derived (struct cleanup)
-- `Unk10a034_ClearById`: hand-matched
-- `Unk10a034_GetEntry8`: hand-matched
-- `Unk10a034_Unk_10b484`: hand-matched
-
 ## M1-T761 verification
 
 The eight entries above use the original ARM loads/stores as naming and behavior evidence. Global accessors take no arguments. The two work setters borrow a writable `Unk10a034Work` and do not transfer ownership; only offsets +8 and +0x10 change. No hard functions remain for this card.
@@ -51,3 +37,16 @@ All eight requested functions match at 100% in the generated objdiff report. Neu
 ## M1-T763 verification
 
 The TU already existed from earlier cards; its seven existing requested bodies were retained and the missing guarded creator was added. Provider declarations now specify the observed arguments, including the ID retained in r0 across the cache update. All eight requested functions match 100%; no hard functions remain. Original-object comparison supplies acceptance coverage (`tests_required = false`), without adding behavioral tests that duplicate the instructions.
+
+## M1-T764 verification
+
+- `Unk10a034_GetEntry8` (52 B): **100% objdiff**. Returns a borrowed eight-byte entry at global work +0x20 + 8*i for indices 0..3, or zero for an invalid index or absent work. Naming evidence: bounds checks and shifted-index addition at 0x0210af8c.
+- `Unk10a034_ClearById` (60 B): **100% objdiff**. Clears +8 in the first used twelve-byte entry with a matching halfword ID. Borrows twelve writable entries at +0x24. Naming evidence: comparison and zero store at 0x0210ae98.
+- `Unk10a034_Unk_10b484` (76 B): **100% objdiff**. Returns zero when work +0x18 is clear; otherwise reads the linked descriptor. Kind 2 returns its +0x1c word; kind 3 scales the provider record selected by its +0x1a ID; other kinds return zero. Evidence: original descriptor cases at 0x0210b484.
+- `func_0210acac` (84 B): **100% objdiff**. Scans twelve entries at +0x24 for a used, unmarked entry with the requested +2 halfword. Optionally sets its +8 word and returns its ID; exhaustion returns zero. Evidence: loads, comparisons, and conditional store at 0x0210acac.
+- `func_0210b42c` (88 B): **100% objdiff**. Clears work +0x18, then sets it for linked descriptor kind 2 or for kind 3 when the ID provider returns zero. Kind 1 and other kinds leave it clear. Both borrowed objects must exist. Evidence: descriptor switch at 0x0210b42c.
+- `func_0210ad00` (100 B): **100% objdiff**. Counts used, unmarked entries of the requested kind whose IDs are absent from the four-ID list. Evidence: twelve-entry loop and HasId call at 0x0210ad00.
+- `func_0210a0dc` (112 B): **100% objdiff**. Requests 216 bytes from func_020611dc with update callback func_0210a1d8, global-clear cleanup, and arguments 3/0/1. Initializes successful allocations with both caller words; returns zero on failure. Evidence: original allocator call and initialization at 0x0210a0dc.
+- `func_0210b080` (112 B): **100% objdiff**. Requests 28 bytes with update callback func_0210b124, second-global cleanup, and arguments 3/0/1. Initializes seven words after successful allocation and returns zero on failure. Evidence: original allocator call and initialization at 0x0210b080.
+
+The existing TU and three already matching requested bodies were retained. Original-object comparison provides acceptance coverage (`tests_required = false`). No hard functions remain for this card. The unrelated decompiler-derived `Unk10a034_Unk_10ac28` remains outside this card.
