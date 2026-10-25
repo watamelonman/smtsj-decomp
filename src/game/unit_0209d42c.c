@@ -449,3 +449,83 @@ void func_0209d500(void)
     }
     }
 }
+
+u32 func_02050074(u32 low, u32 high);
+/* Selects a weighted category and record from table one, then fills missing
+ * ID/value bytes from the category or table zero. All tables are borrowed. */
+u16 func_0209d7f4(Unk09d42cRecord *record, u16 id, int mode)
+{
+    u8 *table = Unk09d42c_GetTable1Entry(id);
+    u16 selected = 0;
+    int category = 2;
+    u32 roll = func_02050074(0, table[2] + table[3] + table[4] - 1);
+    int i;
+    u16 *entries = 0;
+    int count = 0;
+    u32 total;
+    for (i = 0; i < 3; i++) {
+        if (roll < table[i + 2]) { category = i; break; }
+        roll -= table[i + 2];
+    }
+    switch (category) {
+    case 0: entries = (u16 *)(table + 6); count = 15; break;
+    case 1: entries = (u16 *)(table + 66); count = 5; break;
+    case 2: entries = (u16 *)(table + 86); count = 5; break;
+    }
+    total = 0;
+    for (i = 0; i < count; i++) total += entries[i * 2 + 1];
+    roll = func_02050074(0, total - 1);
+    for (i = 0; i < count; i++) {
+        if (roll < entries[i * 2 + 1]) { selected = entries[i * 2]; break; }
+        roll -= entries[i * 2 + 1];
+    }
+    func_02008904(Unk09d42c_GetTable2Entry(selected), record, 24);
+    {
+        u8 *defaults = Unk09d42c_GetTable0Entry(mode);
+        if (record->id == 0) {
+            if (table[0] != 0) record->id = table[0];
+            else record->id = defaults[0];
+        }
+        if (record->value == 0) {
+            if (table[1] != 0) record->value = table[1];
+            else record->value = defaults[1];
+        }
+    }
+    return selected;
+}
+
+void *Unk02f2a8_Unk_034970(void *state, int x, int y);
+u8 *Unk038fbc_Unk_039160(void *map, int x, int y);
+u32 *Unk038fbc_GetElement(void *map, int table, int index);
+u8 *Unk09a268_Unk_09c484(int index);
+void Unk09a268_Unk_09a80c(void *cell, int value);
+void Unk09a268_Unk_09a830(void *cell, int value);
+void Unk09a268_SetOnlyBit(void *cell, int bit);
+void *Unk02f2a8_Unk_0349c4(void *state, int x, int y);
+void Unk0e651c_Set2Bits(void *cell, u8 key, u8 value);
+/* Advances the selected cell's counter; on predicate success updates its
+ * flags, cycles its byte index, and writes phase bits to the mapped cell. */
+int func_0209de58(u8 *state)
+{
+    int y = FIELD(s8, state + 29696, 131);
+    int x = FIELD(s8, state + 29696, 130);
+    int result = 0;
+    u8 *entry = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(state + 4, x, y), x, y);
+    u32 *element = Unk038fbc_GetElement(Unk02f2a8_Unk_034970(state + 4,
+        FIELD(s8, state + 29696, 130), FIELD(s8, state + 29696, 131)), 11, entry[1]);
+    u8 *data = Unk09a268_Unk_09c484(23);
+    u8 *cell = (u8 *)Unk02f2a8_GetCell38e8(FIELD(s8, state + 29696, 130), FIELD(s8, state + 29696, 131));
+    FIELD(u16, cell, 2)++;
+    if (Unk09a268_Unk_09a844() == 1) {
+        Unk09a268_Unk_09a80c(cell, 1);
+        Unk09a268_Unk_09a830(cell, 1);
+        Unk09a268_SetOnlyBit(cell, data[25]);
+        if (++cell[1] >= 8) cell[1] = result;
+        FIELD(u16, cell, 2) = 0;
+        Unk0e651c_Set2Bits(Unk02f2a8_Unk_0349c4(state + 4,
+            FIELD(s8, state + 29696, 130), FIELD(s8, state + 29696, 131)),
+            (u8)*element, (u8)FIELD(u32, state + 28672, 1008));
+        result = 1;
+    }
+    return result;
+}
