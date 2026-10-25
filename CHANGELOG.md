@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T707 game/unit_0209d42c routines, including phase dispatch; document table strides, ID mapping, and state/root updates.
 - Verified all eight M1-T706 game/unit_0209d42c functions at 100% objdiff; added typed helper declarations and documented singleton, table, cell, and callback contracts.
 - M1-T690: match seven game/unit_020de678 transition, record selection, and callback state handlers with typed arguments.
 - Match and document all eight M1-T695 manager reset, record search and ID predicate routines at 100% objdiff, with typed borrowed record access.
