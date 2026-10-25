@@ -79,8 +79,34 @@ objdiff reports 100% for all eight. Existing neutral symbols are retained.
 Hard list for M1-T505: none. The original object supplies the instruction-level
 acceptance oracle; this card requires no new behavioral tests.
 
-## Remaining functions outside M1-T505
+## M1-T506: three matched functions
 
-- `func_020f3fcc`
-- `func_020f45c0`
-- `func_020f4180`
+Evidence: ARM instructions and relocations in the original delinked object.
+All three functions match at 100% in objdiff; names remain neutral.
+
+- `func_020f3fcc` (164 B): reads signed halfwords at +4, +6, and +8.
+  A negative first ID succeeds immediately. Otherwise it queries one, two,
+  or three IDs through `Unk0e651c_Unk_0e666c`, stopping at the first failure;
+  negative later IDs delimit the query sequence.
+- `func_020f45c0` (180 B): requires resource entry 8, then scans the selected
+  table. IDs accepted by `func_020e49cc(2, id)` are excluded. Returns the
+  unsigned integer percentage of remaining records with state at least 2,
+  or zero if none remain. The work-address call is retained.
+- `func_020f4180` (536 B): scans six tables, excluding the same ID predicate
+  and states at least 2. Record kind 0 promotes passing queries to state 2;
+  kind 1 uses the three-entry count query to choose state 1 or 2. Named
+  records set flags at +0/+4; others use the existing list at +252/+256.
+  Kind 2 appends ID/index to the separate list at +8/+12, submits its three
+  entry counts with multiplier 1, and promotes to state 2. Caller provides
+  capacity for both lists; the original performs no capacity checks.
+
+Halfword accessor/writer parameters reflect the original call-site extensions;
+the existing promotion wrapper uses the same width. The append helper accepts
+a full-width index and truncates on its halfword store. These corrected
+prototypes preserve all earlier matches. Scanner selector storage is unsigned,
+with signed loop bounds matching the original comparisons. Defining the query
+helper before the scanner avoids the documented objdiff local-call scoring
+artifact; instruction comparison independently confirms the bodies.
+
+Hard list for M1-T506: none. No behavioral tests are required by this card;
+the original object is the instruction-level acceptance oracle.
