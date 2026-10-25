@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T560 entry scans, predicates and area field clamps at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Verified all eight M1-T559 area access, copy, reset, forwarding and count-limit functions at 100% objdiff; documented signed fields and call contracts.
 - Matched all four M1-T540 ImageBgDual3D resource initialization and state callbacks; documented borrowed layouts and original instruction evidence.
 - Matched all eight M1-T550 table lookup, selector refresh, insertion, and resolved-object helpers at 100% objdiff; documented typed layouts and instruction contracts.
