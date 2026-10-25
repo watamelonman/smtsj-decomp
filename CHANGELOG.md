@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched seven M1-T603 table/resource and buffer initialization functions; documented the remaining slot-claim function for scratch investigation.
 - Verified all eight M1-T602 table, buffer-slot and mask helpers in `game/unit_0206ea70` at 100% objdiff; documented their offset evidence and caller contracts.
 - Match four remaining game/unit_0202d15c cursor, request and entry-validation functions.
 - Verified all eight M1-T600 selection, request, and flag-latch functions at 100% objdiff; documented borrowed layouts and call contracts.

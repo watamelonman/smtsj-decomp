@@ -31,7 +31,7 @@ u32 Unk06ea70_FindByMask(u32 mask)
     return data_02170cd4[0];
 }
 
-int func_02053000();
+int func_02053000(u32 address);
 void Unk06ea70_Unk_06f4e4(void);
 
 /* Clear the sixteen global entries and release both global allocations through the original cleanup sequence. */
@@ -43,7 +43,7 @@ void Unk06ea70_Unk_06eb54(void)
     }
     func_02053000(data_02170ccc.table->count);
     data_02170ccc.table->count = 0;
-    func_02053000(data_02170ccc.table);
+    func_02053000((u32)data_02170ccc.table);
     data_02170ccc.table = 0;
     Unk06ea70_Unk_06f4e4();
 }
@@ -61,12 +61,12 @@ int Unk06ea70_Unk_06ebb8(int i)
 typedef struct Unk06ea70Bufs {
     u8 *buf_00;                 /* 512-byte slots */
     u8 *buf_04;                 /* 512-byte slots */
-    u8 pad_0008[4];
+    s32 count;                 /* number of 512-byte slots */
     u32 mask_0c;
     u32 mask_10;
 } Unk06ea70Bufs;
 
-void func_02061424();
+void func_02061424(u32 entry);
 void Unk06ea70_SetMask0cBit(int i);
 /* Release a nonzero table entry through func_02061424 and clear its slot. Caller supplies a valid table index. */
 void Unk06ea70_ReleaseEntry(int i)
@@ -114,7 +114,6 @@ void Unk06ea70_Unk_06edf4(int *arg0,int *arg1,int *arg2,u16 *arg3)
 }
 
 
-int func_02053000();
 /* Pass the state address at global +0x04 to func_02053000, then clear it (0x0206f4ec..0x0206f4fc). The helper ownership semantics remain unidentified. */
 void Unk06ea70_Unk_06f4e4(void)
 {
@@ -165,4 +164,48 @@ void Unk06ea70_SetMask10Bit(int i)
         return;
     }
     ((Unk06ea70Bufs *)data_02170ccc.unk_04)->mask_10 |= 1u << i;
+}
+
+void *func_02052fe0(u32 size);
+void func_02008848(void *destination, int value, u32 size);
+u8 *Unk05b540_Unk_05b7d0(void);
+u32 func_02051610(const void *name);
+u32 func_0205f2e4(u32 resource);
+u32 func_0205f41c(u32 resource, u32 index);
+extern const u8 data_02145828[];
+
+/* Allocate and clear a state with count 512-byte slots, borrowing buffer04.
+ * Evidence: 0206f460 allocates count*512+20 and marks each slot at +0x10.
+ * The caller supplies a nonnegative count below 32 and a suitably sized buffer. */
+void func_0206f460(int count, u8 *buffer04)
+{
+    int i;
+    data_02170ccc.unk_04 = (u32)func_02052fe0(count * 512 + 20);
+    func_02008848((void *)data_02170ccc.unk_04, 0, count * 512 + 20);
+    ((Unk06ea70Bufs *)data_02170ccc.unk_04)->buf_00 = (u8 *)data_02170ccc.unk_04 + 20;
+    ((Unk06ea70Bufs *)data_02170ccc.unk_04)->count = count;
+    ((Unk06ea70Bufs *)data_02170ccc.unk_04)->buf_04 = buffer04;
+    for (i = 0; i < ((Unk06ea70Bufs *)data_02170ccc.unk_04)->count; i++) {
+        Unk06ea70_SetMask10Bit(i);
+    }
+}
+
+/* Initialize the singleton table, six buffer slots and up to sixteen resources.
+ * Evidence: 0206eab4 allocates 28 bytes and enumerates the resource named by
+ * data_02145828 through 0205f2e4/0205f41c. Initialization requires no live state. */
+void func_0206eab4(void)
+{
+    u32 count;
+    u32 i;
+    data_02170ccc.table = func_02052fe0(28);
+    func_02008848(data_02170ccc.table, 0, 28);
+    func_0206f460(6, Unk05b540_Unk_05b7d0());
+    data_02170ccc.table->count = func_02051610(data_02145828);
+    count = func_0205f2e4(data_02170ccc.table->count);
+    if (count > 16) {
+        count = 16;
+    }
+    for (i = 0; i < count; i++) {
+        data_02170cd4[i] = func_0205f41c(data_02170ccc.table->count, i);
+    }
 }
