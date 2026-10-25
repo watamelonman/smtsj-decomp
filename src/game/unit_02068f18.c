@@ -505,3 +505,168 @@ void func_02069b24(Unk068f18Work *work, Unk068f18Unit *target, u16 *source, u8 c
         if (id != 0) target->ids[used++] = id;
     }
 }
+
+/* Copies size bytes between caller-owned nonoverlapping records. */
+void func_02008904(const void *source, void *destination, u32 size);
+/* Copies halfword-aligned data; size is measured in bytes. */
+void func_0200866c(const void *source, void *destination, u32 size);
+/* Allocates owned scratch storage, released with func_02053000. */
+void *func_02052fe0(u32 size);
+/* Releases storage allocated by func_02052fe0. */
+void func_02053000(void *storage);
+/* Queries whether the metadata default record may supply candidate IDs. */
+int Unk02e000_GetRecordFlag1(int id);
+
+/* Eighteen-byte intermediate row: source identity, count, level, six IDs.
+ * These offsets follow the stores before calls to 0206970c and 0206902c. */
+typedef struct Unk068f18Candidates {
+    u16 id;
+    u16 count;
+    u8 level;
+    u8 pad_05;
+    u16 ids[6];
+} Unk068f18Candidates;
+
+/* Combines two six-ID candidate lists into target's first five slots.
+ * ARM calls establish ascending selection and a single descending fallback;
+ * the optional ID changes only the temporary target used for filtering. */
+void func_020690d0(Unk068f18Work *work, Unk068f18Unit *target,
+    Unk068f18Unit *first, Unk068f18Unit *second, u16 id)
+{
+    Unk068f18Candidates candidates[2];
+    Unk068f18Record records[12];
+    Unk068f18Unit temporary;
+    func_02008848(candidates, 0, 36);
+    candidates[0].id = first->id;
+    candidates[1].id = second->id;
+    candidates[0].level = first->level;
+    candidates[1].level = second->level;
+    func_02008904(target, &temporary, 60);
+    if (id != 0) temporary.id = id;
+    candidates[0].count = func_0206970c(work, &temporary, first, candidates[0].ids);
+    candidates[1].count = func_0206970c(work, &temporary, second, candidates[1].ids);
+    if (candidates[0].count == 0 && candidates[1].count == 0) {
+        func_02068f78(work, records, first, target->id);
+        func_02068f78(work, records + 6, second, target->id);
+        func_02013c68(records, 12, 4, Unk068f18_CompareKeyDesc);
+        int slot = 0;
+        int j;
+        int candidate = 0;
+        while (slot < 5) {
+            if (target->ids[slot] == 0 && records[candidate].id != 0 && records[candidate].id != 65535) {
+                for (j = 0; j < slot; j++) {
+                    if (target->ids[j] == records[candidate].id || work->metadata[records[candidate].id].flags == 0) break;
+                }
+                if (j == slot) {
+                    target->ids[slot] = records[candidate].id;
+                    return;
+                }
+                candidate++;
+            } else slot++;
+        }
+    } else {
+        func_0206902c((u8 *)work, records, (u16 *)&candidates[0]);
+        func_0206902c((u8 *)work, records + 6, (u16 *)&candidates[1]);
+        func_02013c68(records, 12, 4, Unk068f18_CompareKeyAsc);
+        int slot = 0;
+        int j;
+        int candidate = 0;
+        while (slot < 5) {
+            if (target->ids[slot] == 0 && records[candidate].id != 0) {
+                for (j = 0; j < slot; j++) {
+                    if (target->ids[j] == records[candidate].id) break;
+                }
+                if (j == slot) target->ids[slot++] = records[candidate].id;
+                candidate++;
+            } else slot++;
+        }
+    }
+}
+
+/* Borrowed 28-byte row; source IDs start at halfword +2. */
+typedef struct Unk068f18Row {
+    u16 unk_00;
+    u16 ids[13];
+} Unk068f18Row;
+
+/* Builds candidates for the selected 28-byte row at work +148, using active
+ * units or metadata defaults (+46), then fills the target's first five slots.
+ * Scratch ownership ends here on both selection paths. Work +851 is the
+ * signed source count, as established by the original signed-byte loads. */
+void func_02069324(Unk068f18Work *work, Unk068f18Unit *target, int row)
+{
+    Unk068f18Candidates *candidates = func_02052fe0(FIELD(s8, work, 851) * 18);
+    Unk068f18Record *records = func_02052fe0(FIELD(s8, work, 851) * 24);
+    Unk068f18Unit temporary;
+    int i;
+    int count;
+    int offset;
+    int slot;
+    int candidate;
+    int j;
+    func_02008848(candidates, 0, FIELD(s8, work, 851) * 18);
+    func_02008848(&temporary, 0, 60);
+    for (i = 0; i < FIELD(s8, work, 851); i++) {
+        if (((Unk068f18Row *)FIELD(void *, work, 148))[row].ids[i] != 0) {
+            int index = Unk068f18_Unk_06a1a8((u8 *)work, ((Unk068f18Row *)FIELD(void *, work, 148))[row].ids[i]);
+            Unk068f18Info *info = func_020a1428(((Unk068f18Row *)FIELD(void *, work, 148))[row].ids[i]);
+            if (index >= 0) {
+                candidates[i].id = work->units[index]->id;
+                candidates[i].level = work->units[index]->level;
+                candidates[i].count = func_0206970c(work, target, work->units[index], candidates[i].ids);
+            } else if (Unk02e000_GetRecordFlag1(info->id) != 0) {
+                candidates[i].id = info->id;
+                candidates[i].level = info->level;
+                func_0200866c((u8 *)info + 46, temporary.ids, 12);
+                candidates[i].count = func_0206970c(work, target, &temporary, candidates[i].ids);
+            }
+        }
+    }
+    count = 0;
+    for (i = 0; i < FIELD(s8, work, 851); i++) {
+        if (candidates[i].count != 0) count++;
+    }
+    if (count <= 0) {
+        for (i = 0, offset = 0; i < FIELD(s8, work, 851); i++, offset += 6) {
+            if (((Unk068f18Row *)FIELD(void *, work, 148))[row].ids[i] != 0) {
+                int index = Unk068f18_Unk_06a1a8((u8 *)work, ((Unk068f18Row *)FIELD(void *, work, 148))[row].ids[i]);
+                if (index >= 0) func_02068f78(work, records + offset, work->units[index], target->id);
+            }
+        }
+        func_02013c68(records, FIELD(s8, work, 851) * 6, 4, Unk068f18_CompareKeyDesc);
+        slot = 0;
+        candidate = 0;
+        while (slot < 5) {
+            if (target->ids[slot] == 0 && records[candidate].id != 0 && records[candidate].id != 65535) {
+                for (j = 0; j < slot; j++) {
+                    if (target->ids[j] == records[candidate].id || work->metadata[records[candidate].id].flags == 0) break;
+                }
+                if (j == slot) {
+                    target->ids[slot] = records[candidate].id;
+                    goto cleanup;
+                }
+                candidate++;
+            } else slot++;
+        }
+    } else {
+        func_02008848(records, 0, FIELD(s8, work, 851) * 24);
+        for (i = 0, offset = 0; i < FIELD(s8, work, 851); i++, offset += 6) {
+            func_0206902c((u8 *)work, records + offset, (u16 *)&candidates[i]);
+        }
+        func_02013c68(records, FIELD(s8, work, 851) * 6, 4, Unk068f18_CompareKeyAsc);
+        slot = 0;
+        candidate = 0;
+        while (slot < 5) {
+            if (target->ids[slot] == 0 && records[candidate].id != 0) {
+                for (j = 0; j < slot; j++) {
+                    if (target->ids[j] == records[candidate].id) break;
+                }
+                if (j == slot) target->ids[slot++] = records[candidate].id;
+                candidate++;
+            } else slot++;
+        }
+    }
+cleanup:
+    func_02053000(records);
+    func_02053000(candidates);
+}
