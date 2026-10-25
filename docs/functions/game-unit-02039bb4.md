@@ -24,16 +24,15 @@
 - `Unk039bb4_Unk_03a26c`: Returns 0 without changes when work +0x1c is zero. Otherwise calls func_02039dc0 with the work address, writes its result plus one to +0x18, and returns 1. Evidence: ARM instructions at `0x02003a26c`. The wider purpose remains unknown, so the neutral name is retained.
 - `Unk039bb4_Unk_039f1c`: Appends the current four-byte entry’s unsigned halfword at +2 using the tag-zero helper, reloads and increments work +0x18, and returns 1. Evidence: ARM instructions at `0x020039f1c`. The wider purpose remains unknown, so the neutral name is retained.
 - `Unk039bb4_Unk_039ee8`: Increments work +0x18 before reading a full word from that entry in the +0xbc table; appends it using the tag-zero helper, reloads and increments +0x18 again, and returns 1. Evidence: ARM instructions at `0x020039ee8`. The wider purpose remains unknown, so the neutral name is retained.
-- `Unk039bb4_Unk_039f4c`: decompiler-derived
-- `Unk039bb4_Unk_039ff8`: decompiler-derived
-- `Unk039bb4_Unk_03a030`: decompiler-derived
-- `Unk039bb4_Unk_03a068`: decompiler-derived
-- `Unk039bb4_Unk_03a158`: decompiler-derived
-- `Unk039bb4_Unk_03a190`: decompiler-derived
-- `Unk039bb4_Unk_03a2c0`: decompiler-derived
+- `Unk039bb4_Unk_039f4c`: Advances +0x18, appends the next entry’s full word with tag 1, then reloads and advances +0x18 again. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x020039f4c`; no wider semantic name is established.
+- `Unk039bb4_Unk_039ff8`: Appends with tag 0 the word selected from the +0xd8 table by the current entry’s unsigned +2 halfword, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x020039ff8`; no wider semantic name is established.
+- `Unk039bb4_Unk_03a030`: Appends with tag 1 the word selected from the +0xdc table by the current entry’s unsigned +2 halfword, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x02003a030`; no wider semantic name is established.
+- `Unk039bb4_Unk_03a068`: Appends with tag 5 the +0xc0 base plus the current entry’s unsigned +2 halfword, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x02003a068`; no wider semantic name is established.
+- `Unk039bb4_Unk_03a158`: Calls func_02039dc0(work), stores its result in the +0xd8 word table using the entry’s unsigned +2 halfword read after the call, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x02003a158`; no wider semantic name is established.
+- `Unk039bb4_Unk_03a190`: Calls func_02039e50(work), stores its result in the +0xdc word table using the entry’s unsigned +2 halfword read after the call, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x02003a190`; no wider semantic name is established.
+- `Unk039bb4_Unk_03a2c0`: Appends the current +0x18 with tag 4, then selects a 0x20-byte record in the +0xb4 table using the reloaded entry’s unsigned +2 halfword and replaces +0x18 with the record’s +0x18 word. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x02003a2c0`; no wider semantic name is established.
 
-## Not done in M1-T677
-- `Unk039bb4_Unk_039f80`
+- `Unk039bb4_Unk_039f80`: Appends with tag 0 the word selected from data_0215e258 by the current entry’s unsigned +2 halfword, then advances +0x18. Returns 1. Work, tables, and append space are borrowed and must be valid. Evidence: ARM instructions at `0x020039f80`; no wider semantic name is established.
 
 ## Not done in M1-T678
 - `Unk039bb4_Unk_039fbc`
@@ -50,7 +49,6 @@
 - `func_02039bb4`
 - `func_0203a888`
 - `func_0203a334`
-- `Unk039bb4_Unk_039f80`: decompiler-derived (struct cleanup)
 - `Unk039bb4_Unk_039fbc`: decompiler-derived (struct cleanup)
 - `Unk039bb4_Unk_03a0e0`: decompiler-derived (struct cleanup)
 - `Unk039bb4_Unk_03a11c`: decompiler-derived (struct cleanup)
@@ -91,3 +89,16 @@ Validation: all eight targets report 100% objdiff; the match gate passes all
 and byte-identical artifact checksum gate pass.
 
 Hard list for M1-T676: none.
+
+## M1-T677 verification
+
+The eight bodies already existed in the starting tree. This card adds explicit
+work-pointer parameters, readable field accesses, behavior contracts, and explicit
+work arguments to the two value-fetch helpers, as required by the original calls.
+No module boundary changes or inferred semantic names are introduced.
+Instruction matching validates behavior; this card requires no new tests.
+
+Validation: all eight targets report 100% objdiff; the match gate passes all
+110 checked C functions. Full build, anticheat, unit tests, and checksum pass.
+
+Hard list for M1-T677: none.

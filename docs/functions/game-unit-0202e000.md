@@ -137,13 +137,20 @@ Names describe only instruction-established offsets, flags and table operations.
 | `Unk02e000_SetRecordFlag1f_1` | 0x0202ecf8 / 100 | Same normalization, inserting into +0x1f bit 1 and preserving all other bits. |
 | `Unk02e000_SetRecordUnk1e` | 0x0202eb48 / 112 | Signed inputs above 100 become 100; others truncate to low seven bits. Stores +0x1e bits 0..6 while preserving bit 7; negative inputs are not clamped to zero. |
 
-## Not done in M1-T656
-- `Unk02e000_SetRecordUnk1f_2`
-- `Unk02e000_GetSlotPtr`
-- `func_0202e5dc`
-- `func_0202e23c`
-- `Unk02e000_GetSlotPtr`: hand-matched
-- `Unk02e000_SetRecordUnk1f_2`: hand-matched
+## M1-T656
+
+All four targets verified at **100% objdiff**. Retained the two matching
+small candidates and finished both larger candidates using typed array indexing,
+signed sentinel stores and declaration ordering to preserve register allocation.
+The TU already existed. No tests added (`tests_required = false`); objdiff
+compares generated instructions directly. No M1-T656 targets remain hard.
+
+| Function | Address / bytes | Instruction evidence and contract |
+| --- | --- | --- |
+| `Unk02e000_SetRecordUnk1f_2` | 0x0202eda8 / 112 | Caps signed input above 63, otherwise truncates into record byte +0x1f bits 2..7; preserves bits 0..1. IDs above 491 return zero; valid allocated IDs are 1..491. |
+| `Unk02e000_GetSlotPtr` | 0x0202e468 / 116 | Four contiguous tiers start at indices 0, 3, 11, 31, with strides 152, 96, 64, 32. Returns borrowed allocation view; indices at least 91 return null, negative indices are not rejected. |
+| `func_0202e5dc` | 0x0202e5dc / 356 | Transfers fields between supplied work and indexed 72-byte record, packs bits 67..69 into record +0x27, selects three entry halfwords, stores counter and global word zero. The 34-byte copy passes work+0x28 as destination and record+2 as source. Requires valid allocated index and writable work storage; broader purpose unknown. |
+| `func_0202e23c` | 0x0202e23c / 420 | Clears 0x6538 bytes, assigns twelve entry indices and signed-byte sentinels, calls two initialization providers, seeds 491 records from resource byte/halfword fields, clears flags and writes three trailing -1 words. Missing resources remain cleared; module retains storage ownership. |
 
 ## M1-T651
 
