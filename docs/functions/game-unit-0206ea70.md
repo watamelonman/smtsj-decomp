@@ -2,15 +2,6 @@
 
 - `Unk06ea70_Unk_06edf4`: decompiler-derived
 
-## Not done in M1-T603
-- `Unk06ea70_Unk_06ebb8`
-- `Unk06ea70_ReleaseEntry`
-- `Unk06ea70_FindByMask`
-- `func_0206f5cc`
-- `Unk06ea70_Unk_06eb54`
-- `func_0206f460`
-- `func_0206eab4`
-
 ## Not done in M1-T604
 - `func_0206f508`
 - `func_0206ee3c`
@@ -45,3 +36,30 @@ original ARM9 addresses. All eight functions match at 100% in objdiff.
 ### Hard list for M1-T602
 
 None. The TU remains linked from the delink pending human completion marking.
+
+## M1-T603
+
+Seven of the eight requested functions match at 100% in objdiff. Evidence below
+is the original ARM disassembly; all indices require valid initialized storage.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk06ea70_Unk_06ebb8` | 0206ebb8: returns -1 for an absent table or entry, otherwise returns the borrowed buffer-04 slot. |
+| `Unk06ea70_ReleaseEntry` | 0206ebe8: passes a nonzero entry to 02061424 and clears the table slot. The call and subsequent store support the release name. |
+| `Unk06ea70_FindByMask` | 0206ea70: tests sixteen selection bits from 021457e8 and returns the first nonzero selected entry, falling back to entry zero. |
+| `Unk06ea70_Unk_06edf4` | 0206edf4: expands 256 RGB555 words into three component arrays, shifted left by 15; all four arrays must have 256 elements. |
+| `Unk06ea70_Unk_06eb54` | 0206eb54: clears sixteen entries, passes the table's first word and table address to 02053000, then clears buffer state. |
+| `func_0206f460` | 0206f460: allocates count*512+20 bytes, clears it, sets buffer bases and count, then marks each slot in mask_10. The external buffer remains borrowed. |
+| `func_0206eab4` | 0206eab4: allocates and clears a 28-byte table, creates six buffer slots, loads the resource named at 02145828, and enumerates at most sixteen entries. |
+| `func_0206f5cc` | 0206f5cc: scans the signed slot count at state +8 and claims the first clear bit at +0x0c, returning -1 when full. Body omitted; original delink remains authoritative. |
+
+### Hard list for M1-T603
+
+- `func_0206f5cc`: ordinary typed struct and word-array loops produced 80 bytes
+  versus 84 because the compiler cached the count. Volatile state/count accesses
+  restored 84 bytes and reached 98.10%, but allocated state in r3 and the mask in
+  ip, opposite the original. Explicit count reloads, loop forms, bit temporaries,
+  and declaration ordering did not resolve this. A decomp.me scratch is needed.
+
+The TU remains linked from its original delink; no assembly stub is required by
+this project's build scheme. No completion configuration was changed.

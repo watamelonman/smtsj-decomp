@@ -69,18 +69,6 @@ None for M1-T568 or M1-T569.
 ## Not done in M1-T572
 - `func_020d33cc`
 - `func_020d2c44`
-- `Unk0d297c_Unk_0d2fbc`: decompiler-derived
-- `Unk0d297c_Unk_0d3034`: decompiler-derived
-
-## Not done in M1-T571
-- `Unk0d297c_Unk_0d3358`
-- `func_020d2eb0`
-- `func_020d2b98`
-- `func_020d30b0`
-- `func_020d314c`
-- `func_020d297c`
-- `Unk0d297c_Unk_0d3358`: decompiler-derived (struct+fix cleanup)
-- `Unk0d297c_Unk_0d3138`: hand-matched
 
 ## M1-T570
 
@@ -101,3 +89,25 @@ are required by the card.
 | `func_020d2b10` | `0x020d2b10` / 72 B | Decrements selector modulo 256; values >=5 return zero. Null lookup returns zero. Reads signed word at +4 + selector*4: negative returns one, otherwise queries 0x020e666c with the word. |
 
 Hard list for M1-T570: none.
+
+## M1-T571
+
+All eight targets match at 100% objdiff. Neutral names are retained because the
+instructions establish mechanics rather than domain meanings. Local borrowed
+views describe only observed offsets; ownership and module boundaries are unchanged.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `Unk0d297c_Unk_0d2fbc` | `0x020d2fbc` / 72 B | Returns zero for absent mission-log handle or record; otherwise resolves table zero using record word +0x40. Loads and calls at 0x020d2fc0..2ff8 establish the lookup chain. |
+| `Unk0d297c_Unk_0d3358` | `0x020d3358` / 84 B | Writable work pointer and signed halfword capacity. If +0x14 is zero, initializes leading buffer, releases any old +0x18 allocation, allocates +0x20 words and sets +0x14. Always clears extension storage afterward. The release receives the loaded allocation in r0. |
+| `Unk0d297c_Unk_0d3034` | `0x020d3034` / 100 B | Unsigned selector dispatches 1 to 0x02099bac, 3 to 0x020a1814, and 4 through query 2 at 0x0204fb14 with u16 truncation. Other selectors return zero; jump table and shifts establish the contract. |
+| `func_020d2eb0` | `0x020d2eb0` / 104 B | Searches handle 28 table zero, comparing each 68-byte record's first byte with caller index. Index outside 1..count becomes one. Returns borrowed record address or zero. Original cmp/cmpcs preserves the inclusive range check. |
+| `func_020d2b98` | `0x020d2b98` / 132 B | Decrements u8 selector with wrapping; values >=5 return. Query states 1/2 store index at +0x9a0 and call 0x020e64c8; a zero result forwards mode 2. Looks up the record and sets its selected nonnegative word through 0x020e66a4. Original comparison after 0x020e64c8 proves its return is consumed. |
+| `func_020d30b0` | `0x020d30b0` / 136 B | Counts handle 28 records with byte +3 high bit set, and how many pass the index query at 0x02095320. Returns matched * 100 / total using signed division. No zero-total guard exists in the original. |
+| `func_020d314c` | `0x020d314c` / 156 B | Null returns zero. Halfword tag 1 requires index <0x5b5 and nonzero payload; tag 2 requires nonzero payload; tag 3 compares index with 0x020a1728; tag 4 returns one; others zero. Literal at 0x020d31e4 supplies the bound. |
+| `func_020d297c` | `0x020d297c` / 272 B | Formats u16 id into a zeroed 64-byte path using data_02150660. Missing path returns one. Loads the file with allocation-mode setup/restore, visits 12-byte entries, truncates their two status words to s16, and forwards index to 0x0209596c only if both status queries pass. Stops at the last entry, releases the file, returns one. Calls and stride at 0x020d29b8..2a78 establish behavior. |
+
+Validation: match gate passed all 53 C definitions in the changed unit; checksum
+reported all artifacts byte-identical; anticheat passed; all nine unit tests passed.
+No new tests are required by this card; objdiff checks the original instructions.
+Hard list for M1-T571: none.
