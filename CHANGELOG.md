@@ -2,6 +2,15 @@
 
 ## Unreleased
 - M1-T719: match all eight unit_020ce578 registration, setup, teardown, dispatcher and event functions with typed borrowed work layouts.
+- Matched all eight M1-T743 unit_02068f18 record, ID, coordinate and alpha helpers; documented their data contracts.
+- Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.
+- Match all eight M1-T708 game/unit_0209d42c request, queue, record-copy, and work-initialization routines; preserve earlier matches and document storage contracts.
+- Matched all eight M1-T729 game/unit_0211d520 routines, including resource teardown and selected-entry text setup, at 100% objdiff.
+- Match M1-T697 resource path formatting and record loading routines at 100% objdiff, with typed borrowed layouts and instruction evidence.
+- Matched all eight M1-T721 forwarding and record/table submission helpers in game/unit_020f51dc, with typed contracts and per-function evidence.
+- Match all four M1-T679 record selection, name search, tagged negation and binary operator functions at 100% objdiff.
+- Match all eight M1-T707 game/unit_0209d42c routines, including phase dispatch; document table strides, ID mapping, and state/root updates.
+- Match all eight M1-T696 manager dispatch, phase, record-work and EventMessage path routines with typed inputs and documented ARM evidence.
 - M1-T718: verified six game/unit_020ce578 callbacks and state helpers at 100% objdiff, added typed helper contracts, and documented two deferred compare-and-return accessors.
 - Match M1-T683 selector-factor chance routine 020b0310; document 020afe64 and 020b04b4 on the hard list.
 - Verified all eight M1-T706 game/unit_0209d42c functions at 100% objdiff; added typed helper declarations and documented singleton, table, cell, and callback contracts.

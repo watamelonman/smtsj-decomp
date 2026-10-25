@@ -19,7 +19,7 @@ typedef struct Unk039bb4Work {
 } Unk039bb4Work;
 
 /* The existing callers pass the work pointer as a 32-bit address. */
-int func_0203a334(int workAddress, int selector);
+void func_0203a334(int workAddress, int selector);
 /* Calls func_0203a334 with selector 5, then advances +0x18 and returns 1.
  * Work is borrowed and valid; reload +0x18 after any callee changes. */
 u32 Unk039bb4_Unk_03a9ec(Unk039bb4Work *work)
@@ -490,6 +490,298 @@ u32 func_0203a1dc(Unk039bb4Work *work)
   work->unk_001c -= counts[index].consumed;
   if (previous == work->unk_0018) work->unk_0018++;
   return result == 3 ? 2 : 1;
+}
+
+#pragma pop
+
+/* See DEC-018 for scoped optimizer settings. */
+#pragma push
+#pragma opt_strength_reduction off
+#pragma opt_common_subs off
+/* Selects a +0xb4 record, copies its terminated name and resets execution state.
+ * Evidence: 0x02039bb4; invalid indices return zero without mutation.
+ * Work/header/records are borrowed; selected names must terminate within work. */
+u32 func_02039bb4(Unk039bb4Work *work, int index)
+{
+  int offset;
+  int i;
+  if (index < 0 || index >= *(s32 *)(*(u32 *)((u8 *)work + 0xb0) + 8)) return 0;
+  i = 0;
+  offset = index * 32;
+  *(u8 *)work = *(u8 *)(work->unk_00b4 + index * 32);
+  if (*(s8 *)work != 0) {
+    do {
+      i++;
+      *((s8 *)work + i) = *(s8 *)(offset + work->unk_00b4 + i);
+    } while (*((s8 *)work + i) != 0);
+  }
+  work->unk_0018 = *(s32 *)(work->unk_00b4 + index * 32 + 24);
+  work->unk_001c = 0;
+  i = 0;
+  do {
+    *((u8 *)work + i + 32) = 0;
+    *(u32 *)((u8 *)work + i * 4 + 60) = 0;
+    i++;
+  } while (i < 28);
+  *(s32 *)((u8 *)work + 0xc4) = index;
+  *(s32 *)((u8 *)work + 0xcc) = 0;
+  *(s32 *)((u8 *)work + 0xd0) = 0;
+  return 1;
+}
+
+
+#pragma pop
+/* Borrowed file directory entries; offsets/counts are established at 0x02039c60. */
+typedef struct Unk039bb4DirectoryEntry {
+  s32 kind;
+  s32 unk_04;
+  s32 count;
+  s32 offset;
+} Unk039bb4DirectoryEntry;
+int func_020152cc(const char *left, const char *right);
+/* See DEC-018 for scoped optimizer settings. */
+#pragma push
+#pragma opt_lifetimes off
+/* Finds a named 32-byte record in directory kind zero; returns -1 if absent.
+ * Evidence: directory scan and string comparison at 0x02039c60.
+ * A null file returns -1; directory offsets, counts and strings must be valid. */
+int func_02039c60(const u8 *file, const char *name)
+{
+  int count;
+  const char *records = 0;
+  const Unk039bb4DirectoryEntry *entries;
+  int i;
+  if (file == 0) return -1;
+  count = *(s32 *)(file + 16);
+  entries = (const Unk039bb4DirectoryEntry *)(file + 32);
+  for (i = 0; i < count; i++) {
+    if (entries[i].kind == 0) {
+      records = (const char *)file + entries[i].offset;
+      break;
+    }
+  }
+  if (records == 0) return -1;
+  {
+    int recordCount = entries[i].count;
+    for (count = 0; count < recordCount; count++, records += 32) {
+      if (func_020152cc(records, name) == 0) return count;
+    }
+  }
+  return -1;
+}
+
+
+#pragma pop
+/* See DEC-018 for scoped optimizer settings. */
+#pragma push
+#pragma opt_lifetimes off
+#pragma opt_common_subs off
+/* Negates the top value in place, following global references for tags 2/3.
+ * Evidence: switch at 0x0203a888; stack and referenced indices must be valid.
+ * The borrowed work address retains the unit's 32-bit address ABI. */
+u32 func_0203a888(int workAddress)
+{
+  Unk039bb4Work *work = (Unk039bb4Work *)workAddress;
+  int count = work->unk_001c;
+  switch (*(u8 *)(workAddress + count + 31)) {
+  case 0:
+    *(s32 *)(workAddress + count * 4 + 56) = -*(s32 *)(workAddress + count * 4 + 56);
+    break;
+  case 1: {
+    float value = 0.0f - *(float *)(workAddress + count * 4 + 56);
+    *(float *)(workAddress + count * 4 + 56) = value;
+    break;
+  }
+  case 2: {
+    int index = *(s32 *)(workAddress + count * 4 + 56);
+    ((s32 *)data_0215e258)[index] = -((s32 *)data_0215e258)[index];
+    break;
+  }
+  case 3: {
+    int index = *(s32 *)(workAddress + count * 4 + 56);
+    ((float *)data_0215de58)[index] = 0.0f - ((float *)data_0215de58)[index];
+    break;
+  }
+  case 4: break;
+  }
+  work->unk_0018++;
+  return 1;
+}
+
+
+#pragma pop
+
+/* See DEC-018 for scoped optimizer settings. */
+#pragma push
+#pragma opt_propagation off
+/* Evaluates the selected binary operator on the top two tagged values.
+ * Evidence: 0x0203a334; operand/result scratch lives in data_0215de34.
+ * Work is borrowed, contains two values, and uses selectors 0 through 11.
+ * Integer arithmetic must remain representable and divisors must be nonzero. */
+void func_0203a334(int workAddress, int selector)
+{
+  Unk039bb4Work *work = (Unk039bb4Work *)workAddress;
+  u8 *top = (u8 *)work + work->unk_001c;
+  data_0215de34[4] = top[31];
+  data_0215de34[3] = top[30];
+  if ((data_0215de34[4] == 0 || data_0215de34[4] == 2) &&
+      (data_0215de34[3] == 0 || data_0215de34[3] == 2)) {
+    ((s32 *)data_0215de34)[2] = func_02039dc0(workAddress);
+    ((s32 *)data_0215de34)[0] = func_02039dc0(workAddress);
+    switch (selector) {
+    case 0:
+      ((s32 *)data_0215de34)[8] = ((s32 *)data_0215de34)[2] + ((s32 *)data_0215de34)[0];
+      break;
+    case 1:
+      ((s32 *)data_0215de34)[8] = ((s32 *)data_0215de34)[2] - ((s32 *)data_0215de34)[0];
+      break;
+    case 2:
+      ((s32 *)data_0215de34)[8] = ((s32 *)data_0215de34)[2] * ((s32 *)data_0215de34)[0];
+      break;
+    case 3:
+      ((s32 *)data_0215de34)[8] = ((s32 *)data_0215de34)[2] / ((s32 *)data_0215de34)[0];
+      break;
+    case 4:
+      if (((s32 *)data_0215de34)[2] || ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    case 5:
+      if (((s32 *)data_0215de34)[2] && ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    case 6:
+      if (((s32 *)data_0215de34)[2] == ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    case 7:
+      if (((s32 *)data_0215de34)[2] != ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    case 8:
+      if (((s32 *)data_0215de34)[2] < ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    case 9:
+      if (((s32 *)data_0215de34)[2] > ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    case 10:
+      if (((s32 *)data_0215de34)[2] <= ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    case 11:
+      if (((s32 *)data_0215de34)[2] >= ((s32 *)data_0215de34)[0]) {
+        ((s32 *)data_0215de34)[8] = 1;
+      } else {
+        ((s32 *)data_0215de34)[8] = 0;
+      }
+      break;
+    }
+    Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+  } else {
+    ((float *)data_0215de34)[7] = func_02039e50(workAddress);
+    ((float *)data_0215de34)[6] = func_02039e50(workAddress);
+    switch (selector) {
+    case 0:
+      ((float *)data_0215de34)[5] = ((float *)data_0215de34)[7] + ((float *)data_0215de34)[6];
+      break;
+    case 1:
+      ((float *)data_0215de34)[5] = ((float *)data_0215de34)[7] - ((float *)data_0215de34)[6];
+      break;
+    case 2:
+      ((float *)data_0215de34)[5] = ((float *)data_0215de34)[7] * ((float *)data_0215de34)[6];
+      break;
+    case 3:
+      ((float *)data_0215de34)[5] = ((float *)data_0215de34)[7] / ((float *)data_0215de34)[6];
+      break;
+    case 4:
+      if ((0.0 != ((float *)data_0215de34)[7]) || (0.0 != ((float *)data_0215de34)[6])) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    case 5:
+      if ((0.0 != ((float *)data_0215de34)[7]) && (0.0 != ((float *)data_0215de34)[6])) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    case 6:
+      if (((float *)data_0215de34)[7] == ((float *)data_0215de34)[6]) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    case 7:
+      if (((float *)data_0215de34)[7] != ((float *)data_0215de34)[6]) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    case 8:
+      if (((float *)data_0215de34)[7] < ((float *)data_0215de34)[6]) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    case 9:
+      if (((float *)data_0215de34)[7] > ((float *)data_0215de34)[6]) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    case 10:
+      if (((float *)data_0215de34)[7] <= ((float *)data_0215de34)[6]) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    case 11:
+      if (((float *)data_0215de34)[7] >= ((float *)data_0215de34)[6]) {
+        data_0215de34[8] = 1;
+      } else {
+        data_0215de34[8] = 0;
+      }
+      Unk039bb4_Unk_039d10(workAddress, data_0215de34[8]);
+      return;
+    }
+    Unk039bb4_Unk_039d3c(workAddress, ((u32 *)data_0215de34)[5]);
+  }
 }
 
 #pragma pop
