@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T539 ImageBgDual3D callback, work creation, cleanup and initialization functions at 100% objdiff; documented typed contracts and instruction evidence.
 - Verified all eight M1-T538 ImageBgDual3D record checks, buffer operations and dispatch helpers at 100% objdiff; documented typed contracts and explicit forwarded arguments.
 - Verified the eight M1-T545 object-header, callback and context helpers against the original instructions; documented their contracts.
 - Matched all three M1-T506 record-query, table-percentage, and six-table scanner functions in `game/unit_020f3db4` at 100% objdiff.
