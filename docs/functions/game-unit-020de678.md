@@ -39,12 +39,30 @@ Unknown state and selector meanings retain their existing neutral symbols.
 No hard-list entries for M1-T687. Existing routines belonging to later cards
 remain outside this card's implementation scope.
 
-## Not done in M1-T688
-- `Unk0de678_Unk_0df4f0`
-- `Unk0de678_GetPair`
-- `func_020df520`
-- `func_020de720`
-- `func_020de784`
+## M1-T688
+
+All eight ARM functions match at 100% against the delinked object. Evidence is
+instruction offsets and relocations in `build/delinks/src/game/unit_020de678.o`;
+the three newly added bodies also pass direct instruction/relocation comparison.
+The five existing bodies were retained, documented, and their helper prototypes
+typed. No runtime tests were added: the card does not require them, and exact
+instruction comparison verifies the original behavior.
+
+| Function | Size | Evidence and contract |
+| --- | --- | --- |
+| `Unk0de678_Unk_0df4f0` | 48 B | Clears words at global offsets 32/36, calls `Unk095560_Unk_0958a8(0, 0)`, then clears offset 16. No arguments. |
+| `Unk0de678_GetPair` | 52 B | At 0x020dedf8, copies low bytes from offsets 32/36 when offset 16 is nonzero, otherwise writes two zeros. Caller supplies two writable bytes. The pair of byte stores supports its existing name. |
+| `Unk0de678_Unk_0de870` | 64 B | Returns immediately when global offset 0xc8 is nonzero; otherwise calls the eight observed helpers in order, including selector 30. No arguments. |
+| `Unk0de678_Unk_0df064` | 64 B | Calls nine helpers in relocation order, passing selectors 194, 1, 0, 30, and 2 where observed. No arguments. |
+| `Unk0de678_Unk_0dec94` | 68 B | Calls the preparation and value-query helpers, then `Unk02d15c_Unk_02d8a8(1, value, argument)`. On nonzero result clears offset 0xcc and returns 1; otherwise returns 0. |
+| `func_020df520` | 88 B | Sets global offset 40, forwards the integer argument and selectors 1/0 with `data_02150904` to `func_0209db70`, then invokes selectors 8, (1,1,2,0,3), and 10 in order. |
+| `func_020de720` | 100 B | Obtains resource 22/4, then its record pointer and unsigned count. Searches 28-byte records by leading unsigned halfword against the full word argument; returns the first borrowed record or null. |
+| `func_020de784` | 100 B | Same resource and key comparison; returns the first zero-based index or -1. Does not retain or modify resource storage. |
+
+The search argument uses a full word because the original compares the loaded
+halfword directly with the incoming register without narrowing it. Existing
+callers pass narrower keys, but that does not establish a narrower callee contract.
+No hard-list entries for M1-T688.
 
 ## Not done in M1-T689
 - `func_020dec18`
@@ -63,5 +81,3 @@ remain outside this card's implementation scope.
 - `func_020de960`
 - `func_020def0c`
 - `func_020df0cc`
-- `Unk0de678_GetPair`: hand-matched
-- `Unk0de678_Unk_0df4f0`: hand-matched
