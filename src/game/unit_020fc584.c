@@ -12,7 +12,15 @@ typedef struct Unk0fc584Work {
 /* Borrowed field views; gaps describe only offsets observed in this unit. */
 typedef struct Unk0fc584State {
     u32 unk_0000;
-    u8 pad_0004[0x28];
+    u8 pad_0004[8];
+    s32 unk_000c;
+    u32 unk_0010;
+    s32 unk_0014;
+    u32 unk_0018;
+    s32 unk_001c;
+    s32 unk_0020;
+    s32 unk_0024;
+    s32 unk_0028;
     u32 unk_002c;
     u32 unk_0030;
 } Unk0fc584State;
@@ -100,22 +108,20 @@ void Unk0fc584_Unk_0fcfb0(void)
 }
 
 
-int Unk0fc584_IsBelow64();
-/* decompiler-derived */
+/* Clear +0x28 and copy +0x24 to +0x20 when below 64 (020fc824 stores). */
 void Unk0fc584_Unk_0fc824(void)
 {
-  int value;
-  value = Unk0fc584_IsBelow64();
-  if (value == 0) {
+  Unk0fc584State *work;
+  if (Unk0fc584_IsBelow64() == 0) {
     return;
   }
-  value = Unk0fc584_Get_data_02176e14();
-  *(u32 *)(value + 0x28) = 0;
-  *(u32 *)(value + 0x20) = *(u32 *)(value + 0x24);
+  work = (Unk0fc584State *)Unk0fc584_Get_data_02176e14();
+  work->unk_0028 = 0;
+  work->unk_0020 = work->unk_0024;
 }
 
-int func_020fc8bc();
-/* decompiler-derived */
+u32 func_020fc8bc(u32 arg0);
+/* Create and publish a singleton only when absent (020fc674 call and store). */
 void Unk0fc584_Unk_0fc674(u32 arg0)
 {
   int value1;
@@ -131,35 +137,38 @@ void Unk0fc584_Unk_0fc674(u32 arg0)
 
 int func_0205bb68();
 int func_0205ddb4();
+/* Select +0x1c or its negation for +0x14; 020fc6b8 proves the sign selection. */
 void Unk0fc584_SetDir(int flag)
 {
-    u32 p = Unk0fc584_Get_data_02176e14();
+    Unk0fc584State *p = (Unk0fc584State *)Unk0fc584_Get_data_02176e14();
     if (p == 0) {
         return;
     }
     if (flag != 0) {
-        FIELD(int, p, 20) = FIELD(int, p, 28);
+        p->unk_0014 = p->unk_001c;
     } else {
-        FIELD(int, p, 20) = -FIELD(int, p, 28);
+        p->unk_0014 = -p->unk_001c;
     }
 }
 
+/* Test signed +0x0c against 64; absent singleton returns false (020fc6e4). */
 int Unk0fc584_IsBelow64(void)
 {
-    u32 p = Unk0fc584_Get_data_02176e14();
+    Unk0fc584State *p = (Unk0fc584State *)Unk0fc584_Get_data_02176e14();
     if (p == 0) {
         return 0;
     }
-    return FIELD(int, p, 12) < 64;
+    return p->unk_000c < 64;
 }
 
+/* Test +0x0c for zero; absent singleton returns false (020fc70c). */
 int Unk0fc584_IsFieldCZero(void)
 {
-    u32 p = Unk0fc584_Get_data_02176e14();
+    Unk0fc584State *p = (Unk0fc584State *)Unk0fc584_Get_data_02176e14();
     if (p == 0) {
         return 0;
     }
-    return FIELD(int, p, 12) == 0;
+    return p->unk_000c == 0;
 }
 
 /* decompiler-derived */
@@ -200,19 +209,19 @@ void Unk0fc584_LoadMoneyWindow(int arg0,int arg1)
   ((Unk0fc584Work *)arg0)->unk_0008 = tmp1;
 }
 
-int func_020fc734();
-void Unk0fc584_Unk_0fc86c();
-/* decompiler-derived */
+void func_020fc734(s32 value);
+void Unk0fc584_Unk_0fc86c(void);
+/* Dispatch input via +0x2c/+0x30 for kind one, otherwise directly (020fc7b8). */
 void Unk0fc584_Unk_0fc7b8(u32 arg0)
 {
   int tmp1;
-  int *v2;
+  Unk0fc584State *v2;
   tmp1 = Unk0fc584_IsBelow64();
   if (tmp1 == 0) {
     return;
   }
-  v2 = (int *)Unk0fc584_Get_data_02176e14();
-  if (*v2 == 1) {
+  v2 = (Unk0fc584State *)Unk0fc584_Get_data_02176e14();
+  if (v2->unk_0000 == 1) {
     Unk0fc584_Unk_0fc84c((u32)arg0);
     Unk0fc584_Unk_0fc86c();
     return;
@@ -220,20 +229,22 @@ void Unk0fc584_Unk_0fc7b8(u32 arg0)
   func_020fc734(arg0);
 }
 
+/* Compare +0x20 and +0x24 only when below 64 (020fc7f4 loads and compare). */
 int Unk0fc584_Unk_0fc7f4(void)
 {
-    u32 p;
+    Unk0fc584State *p;
     if (Unk0fc584_IsBelow64() == 0) {
         return 0;
     }
-    p = Unk0fc584_Get_data_02176e14();
-    return FIELD(int, p, 32) != FIELD(int, p, 36);
+    p = (Unk0fc584State *)Unk0fc584_Get_data_02176e14();
+    return p->unk_0020 != p->unk_0024;
 }
 
+/* Forward +0x2c only when singleton, +0x30 and +0x2c are nonzero (020fc86c). */
 void Unk0fc584_Unk_0fc86c(void)
 {
-    u32 p = Unk0fc584_Get_data_02176e14();
-    if (p != 0 && FIELD(u32, p, 48) != 0 && FIELD(u32, p, 44) != 0) {
-        func_020fc734(FIELD(u32, p, 44));
+    Unk0fc584State *p = (Unk0fc584State *)Unk0fc584_Get_data_02176e14();
+    if (p != 0 && p->unk_0030 != 0 && p->unk_002c != 0) {
+        func_020fc734(p->unk_002c);
     }
 }
