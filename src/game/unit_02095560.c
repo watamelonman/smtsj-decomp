@@ -167,7 +167,7 @@ void Unk095560_Unk_0957c0(u32 arg0)
 }
 
 u32 Unk095560_Unk_0956e8(void);
-int func_020958c8(int value);
+int func_020958c8(void);
 /* 0x02095af8 resets through 0956e8, calls 095950 with slot 0, and
  * forwards a nonzero result to 0958c8; returns normalized success. */
 u32 Unk095560_Unk_095af8(u32 arg0)
@@ -176,7 +176,7 @@ u32 Unk095560_Unk_095af8(u32 arg0)
   Unk095560_Unk_0956e8();
   value = Unk095560_Unk_095950(0,arg0);
   if (value != 0) {
-    func_020958c8(value);
+    func_020958c8();
     return 1;
   }
   return 0;
@@ -206,61 +206,72 @@ void Unk095560_Unk_096170(void)
 
 
 
-/* decompiler-derived */
+/* 0x02095a2c resets all nine slots, loads slot 1, and on success forwards
+ * the result to 0958c8 and calls 02d91c; returns normalized success. */
 u32 Unk095560_Unk_095a2c(u32 arg0)
 {
   int value;
   Unk095560_Unk_0956e8();
   value = Unk095560_Unk_095950(1,arg0);
   if (value != 0) {
-    func_020958c8(value);
+    func_020958c8();
     Unk02d15c_Call_02d91c();
     return 1;
   }
   return 0;
 }
 
-int Unk02d15c_GetManagerRecord();
-int Unk095560_Unk_09560c();
-/* decompiler-derived */
+/* Borrowed record prefix observed in 09560c/0959d0: buffer at +0,
+ * provider subobject at +0x10, paired word at +0x14 and ID at +0x50. */
+typedef struct Unk095560Rec {
+    u32 buf;
+    u8 pad_04[12];
+    u8 unk_10[4];
+    u32 unk_14;
+    u8 pad_18[56];
+    s32 id;
+} Unk095560Rec;
+u8 *Unk02d15c_GetManagerRecord(int index);
+s32 *Unk094fe0_Unk_094fec(int index);
+int Unk095560_Unk_09560c(int index);
+/* 0x02095660 clears borrowed slots 2 through 7 via 09560c and writes
+ * -1 to both record identifiers; provider storage remains borrowed. */
 u32 Unk095560_Unk_095660(void)
 {
-  u32 *v1;
-  int value1;
-  int value2;
-  value2 = 2;
-  do {
-    v1 = (u32 *)Unk094fe0_Unk_094fec(value2);
-    value1 = Unk02d15c_GetManagerRecord(value2);
-    Unk095560_Unk_09560c(value2);
-    *v1 = 0xffffffff;
-    value2 = value2 + 1;
-    *(u32 *)(value1 + 0x50) = 0xffffffff;
-  } while (value2 < 8);
-  return 1;
+    s32 *slot;
+    Unk095560Rec *record;
+    int index = 2;
+    do {
+        slot = Unk094fe0_Unk_094fec(index);
+        record = (Unk095560Rec *)Unk02d15c_GetManagerRecord(index);
+        Unk095560_Unk_09560c(index);
+        *slot = -1;
+        index++;
+        record->id = -1;
+    } while (index < 8);
+    return 1;
 }
 
 
 
-int func_02052f58();
-int func_02052f68();
-int func_02052fe0();
-int func_02052ff0();
-int func_02053000();
-int func_0205f508();
-int func_0205f534();
-int func_0205f590();
-int func_0205f5f0();
-int func_0205f668();
-/* decompiler-derived */
+void func_02052f58(int mode);
+void func_02052f68(void);
+u32 func_02052fe0(void);
+u32 func_02052ff0(void);
+void func_02053000(u32 handle);
+void func_0205f508(void *work, u32 source);
+u32 func_0205f534(void *work);
+void func_0205f590(void *work, u32 handle, u32 size);
+void func_0205f5f0(void *work, u32 handle, u32 arg);
+void func_0205f668(void *work, u32 handle, u32 arg, u32 value);
+/* 0x02095a60 uses a 12-byte provider work area, releases the temporary
+ * handle and returns 052fe0's word. Only the first two inputs are consumed. */
 u32
-func_02095a60(u32 arg0,u32 arg1,u32 arg2,u32 arg3)
+func_02095a60(u32 arg0, u32 arg1)
 {
   u32 value1;
   u32 value2;
   u8 auStack_20 [12];
-  u32 uStack_14;
-  uStack_14 = arg3;
   func_02052f58(0);
   func_0205f508(auStack_20,arg0);
   value1 = func_0205f534(auStack_20);
@@ -292,13 +303,21 @@ u8 *Unk02e000_GetWorkArea(void);
 u32 Unk02f2a8_GetRes36Unk19(u16 n);
 int func_02096448(int id);
 
-/* Mission/progress record returned by Unk02d15c_GetManagerRecord. */
+/* Borrowed work-area prefix: both path and ID dispatch read +0x35c. */
+typedef struct Unk095560WorkArea {
+    u8 pad_000[0x35c];
+    u16 id;
+} Unk095560WorkArea;
+
+/* Borrowed record prefix; only the +0x50 word is used for path formatting. */
 typedef struct MissionInfo {
     u8  pad_0000[0x50];
     u32 stage;                  /* +0x50 */
 } MissionInfo;
 
-/* Builds the event-message .bin path for event id `id` into `buf`. */
+/* 0x02095b48 formats provider-owned EventMessage paths into caller storage.
+ * data_0214c6f8/720 contain EventMessageMission%03d.bin and
+ * EventMessageDungeonGimmic%02d.bin; buf must hold the formatted path. */
 void func_02095b48(char *buf, int id)
 {
     u16 n;
@@ -309,7 +328,7 @@ void func_02095b48(char *buf, int id)
         return;
     }
     if (id == 0) {
-        n = *(u16 *)(Unk02e000_GetWorkArea() + 0x35c);
+        n = ((Unk095560WorkArea *)Unk02e000_GetWorkArea())->id;
         v = Unk02f2a8_GetRes36Unk19(n);
         if (n >= 0x3d4) {
             v = 99;
@@ -387,62 +406,54 @@ u32 Unk095560_Unk_0956c8(void)
     return 1;
 }
 
-int func_0204af80();
-/* decompiler-derived */
+void func_0204af80(void *context);
+/* 0x020956e8 clears manager offset 0x14, passes that manager to 04af80, then resets
+ * slots 0 through 8, stopping immediately if any reset reports failure. */
 u32 Unk095560_Unk_0956e8(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = (int)(Unk095560_GetManagerAlias());
-  *(u32 *)(tmp1 + 0x14) = 0;
-  func_0204af80();
-  tmp1 = 0;
-  do {
-    tmp2 = Unk095560_Unk_09560c(tmp1);
-    if (tmp2 == 0) {
-      return 0;
-    }
-    tmp1 = tmp1 + 1;
-  } while (tmp1 < 9);
-  return 1;
+    u8 *manager = Unk095560_GetManagerAlias();
+    int index;
+    FIELD(u32, manager, 0x14) = 0;
+    func_0204af80(manager);
+    index = 0;
+    do {
+        if (Unk095560_Unk_09560c(index) == 0) {
+            return 0;
+        }
+        index++;
+    } while (index < 9);
+    return 1;
 }
 
-int func_02008848();
-int func_0204ae84();
-/* decompiler-derived */
+void func_02008848(void *dest, int value, u32 size);
+void func_0204ae84(void *context);
+/* 0x02095598 zeroes the 0x3c0-byte manager, initializes all nine
+ * record subobjects at +0x10, and marks both identifiers and +0x18 as -1. */
 void Unk095560_Unk_095598(void)
 {
-  u32 tmp1;
-  int tmp2;
-  int tmp3;
-  u32 *v4;
-  int tmp5;
-  tmp1 = (unsigned int)(Unk095560_GetManager());
-  tmp2 = (int)(Unk095560_GetManagerAlias());
-  func_02008848(tmp1,0,0x3c0);
-  tmp5 = 0;
-  do {
-    tmp3 = Unk02d15c_GetManagerRecord(tmp5);
-    v4 = (u32 *)Unk094fe0_Unk_094fec(tmp5);
-    func_0204ae84(tmp3 + 0x10);
-    *(u32 *)(tmp3 + 0x50) = 0xffffffff;
-    tmp5 = tmp5 + 1;
-    *v4 = 0xffffffff;
-  } while (tmp5 < 9);
-  *(u32 *)(tmp2 + 0x18) = 0xffffffff;
+    u8 *manager = Unk095560_GetManager();
+    u8 *alias = Unk095560_GetManagerAlias();
+    Unk095560Rec *record;
+    s32 *slot;
+    int index;
+    func_02008848(manager, 0, 0x3c0);
+    index = 0;
+    do {
+        record = (Unk095560Rec *)Unk02d15c_GetManagerRecord(index);
+        slot = Unk094fe0_Unk_094fec(index);
+        func_0204ae84(record->unk_10);
+        record->id = -1;
+        index++;
+        *slot = -1;
+    } while (index < 9);
+    FIELD(s32, alias, 0x18) = -1;
 }
 
-typedef struct Unk095560Rec {
-    u32 buf;
-    u8 pad_04[12];
-    u8 unk_10[4];
-    u32 unk_14;
-    u8 pad_18[56];
-    s32 id;
-} Unk095560Rec;
-int func_02053000();
+void func_02053000(u32 handle);
 int Unk095560_Unk_0959d0(s32 a, s32 *out);
 
+/* 0x0209560c releases a nonzero record buffer, clears its paired word,
+ * marks both identifiers -1, and resets the borrowed subobject at +0x10. */
 int Unk095560_Unk_09560c(int i)
 {
     Unk095560Rec *r = (Unk095560Rec *)Unk02d15c_GetManagerRecord(i);
@@ -458,6 +469,8 @@ int Unk095560_Unk_09560c(int i)
     return 1;
 }
 
+/* 0x0209596c interprets 0959d0 status: 0 fails, 2 succeeds immediately;
+ * otherwise forwards the selected slot and input word to 095950. */
 int Unk095560_Unk_09596c(u32 a)
 {
     s32 slot = -1;
@@ -472,6 +485,8 @@ int Unk095560_Unk_09596c(u32 a)
     return Unk095560_Unk_095950(slot, a);
 }
 
+/* 0x020959d0 scans slots 2 through 7 in order: matching ID returns 2;
+ * first -1 ID writes the borrowed output slot and returns 1; exhaustion is 0. */
 int Unk095560_Unk_0959d0(s32 a, s32 *out)
 {
     int i;
@@ -516,7 +531,9 @@ void Unk095560_Call_020773dc(void)
     func_020773dc(1);
 }
 
-int func_0206552c();
+int func_0206552c(void);
+
+/* 0x02096484 waits on 06552c in modes 0, 2 and 3; other modes are ready. */
 
 int Unk095560_Unk_096484(void)
 {
@@ -534,4 +551,191 @@ int Unk095560_Unk_096484(void)
     default:
         return 1;
     }
+}
+
+/* 0x02096448's jump table accepts IDs 2 through 7. The path builder
+ * 095b48 uses this predicate before formatting the record's +0x50 word. */
+int func_02096448(int id)
+{
+    switch (id) {
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
+/* Borrowed views expose only fields established by the original loads/stores. */
+typedef struct Unk095560State {
+    u8 pad_00[0x3b8];
+    s32 phase;
+    s32 count;
+} Unk095560State;
+typedef struct Unk095560Active {
+    u8 pad_00[0x18];
+    u32 unk_18;
+    u8 pad_1c[0x24];
+    s32 slot;
+    u8 pad_44[0x20];
+    u32 pending_64;
+    u32 pending_68;
+} Unk095560Active;
+typedef struct Unk095560RecordView {
+    u8 pad_00[12];
+    u8 *entries;
+    u8 work[0x40];
+    s32 id;
+} Unk095560RecordView;
+int BattleTask_Unk_0481d4(void);
+u32 Unk02cad4_GetUnk00(void);
+void func_020d297c(u16 value);
+void Unk0d297c_Call_020d297c(u16 value);
+u32 func_020cb3dc(void);
+u32 Unk02d15c_Unk_02d9a8(u32 value);
+u32 Unk02d15c_Unk_02d9f8(u32 value);
+
+/* 0x02095818 maps provider modes to six categories; battle overrides to 1. */
+int func_02095818(void)
+{
+    if (BattleTask_Unk_0481d4()) return 1;
+    switch (Unk02cad4_GetUnk00()) {
+    case 3: return 0;
+    case 5: case 6: case 7: case 8: case 9: return 2;
+    case 10: return 3;
+    case 11: return 4;
+    case 14: return 5;
+    default: return 6;
+    }
+}
+
+/* 0x020958c8 forwards category-specific IDs, truncating provider IDs to u16. */
+int func_020958c8(void)
+{
+    switch (func_02095818()) {
+    case 0:
+        func_020d297c(1);
+        func_020d297c(2);
+        Unk0d297c_Call_020d297c(((Unk095560WorkArea *)Unk02e000_GetWorkArea())->id);
+        break;
+    case 1: break;
+    case 2:
+        func_020d297c(1);
+        func_020d297c(3);
+        func_020d297c((u16)Unk02d15c_Unk_02d9a8(func_020cb3dc()));
+        func_020d297c((u16)Unk02d15c_Unk_02d9f8(func_020cb3dc()));
+        break;
+    case 3: break;
+    }
+    return 1;
+}
+
+int Unk02d15c_Unk_02d934(void);
+int Unk02d15c_Unk_02d944(void);
+int Unk02dcfc_HasField50(void *record);
+void Unk02d15c_Unk_02d91c(int slot, int value);
+/* 0x02096074 preserves the selected record ID across reset, then selects
+ * its matching or first greater slot. IDs and records remain provider-owned. */
+int func_02096074(void)
+{
+    int slot = Unk02d15c_Unk_02d934();
+    int value = Unk02d15c_Unk_02d944();
+    int id = -1;
+    if (slot >= 2 && slot < 8) {
+        Unk095560RecordView *record = (Unk095560RecordView *)Unk02d15c_GetManagerRecord(slot);
+        if (Unk02dcfc_HasField50(record)) id = record->id;
+    }
+    Unk095560_Unk_095660();
+    func_020958c8();
+    if (id >= 0) {
+        for (slot = 2; slot < 8; slot++) {
+            int current = ((Unk095560RecordView *)Unk02d15c_GetManagerRecord(slot))->id;
+            if (current == id) { Unk02d15c_Unk_02d91c(slot, value); return 1; }
+            if (current > id) { Unk02d15c_Unk_02d91c(slot, -1); return 1; }
+        }
+        Unk02d15c_Unk_02d91c(9, -1);
+        return 1;
+    }
+    return 1;
+}
+
+void func_0204b054(void *work);
+int func_0204b404(void *work);
+void func_0202d198(void);
+void ScanVisor_Unk_0a2920(int enabled);
+/* 0x020961a0 advances phases 1 and 2, handles pending actions and wraps
+ * the counter at 65535. Returns the original phase-1 activity flag. */
+int func_020961a0(void)
+{
+    Unk095560State *state = (Unk095560State *)Unk095560_GetManager();
+    int active = 0;
+    Unk095560Active *work;
+    switch (state->phase) {
+    case 0: break;
+    case 1:
+        active = 1;
+        work = (Unk095560Active *)Unk095560_GetManagerAlias();
+        func_0204b054(work);
+        if (++state->count >= 65535) state->count = 1;
+        if (!func_0204b404(work)) break;
+        Unk095560_Unk_096170();
+        if (work->pending_64) { func_02096074(); work->pending_64 = 0; }
+        func_0202d198();
+        if (work->pending_68) { Unk02d15c_Call_02d91c(); work->pending_68 = 0; }
+        state->phase = 2;
+    case 2:
+        if (Unk095560_Unk_096484()) {
+            active = 0;
+            state->phase = 0;
+            ScanVisor_Unk_0a2920(1);
+        }
+        break;
+    }
+    return active;
+}
+
+void Unk02dcfc_SetField70(u32 value);
+void func_020ba918(void);
+void func_0204fa94(void);
+int Unk0de678_Get_data_021508d4(void);
+int ImageObj_Unk_0777e0(void);
+void func_0204afe0(void *work, int value);
+void func_02008904(const void *source, void *dest, u32 size);
+/* 0x02095f94 starts phase 1 and copies the selected record's 64-byte
+ * work area. A negative entry uses the explicit fallback value instead. */
+int func_02095f94(void)
+{
+    Unk095560State *state = (Unk095560State *)Unk095560_GetManager();
+    Unk095560Active *work;
+    int entry;
+    int value;
+    Unk095560RecordView *record;
+    state->phase = 1;
+    state->count = 0;
+    Unk02dcfc_SetField70(0);
+    func_020ba918();
+    func_0204fa94();
+    if (func_02095818() == 2) {
+        if (Unk0de678_Get_data_021508d4()) func_020773dc(4);
+        else func_020773dc(3);
+    }
+    if (ImageObj_Unk_0777e0()) ScanVisor_Unk_0a2920(0);
+    work = (Unk095560Active *)Unk095560_GetManagerAlias();
+    entry = Unk095560_Unk_095d2c();
+    record = (Unk095560RecordView *)Unk02d15c_GetManagerRecord(Unk095560_Unk_095d1c());
+    if (entry < 0) {
+        value = Unk095560_Unk_095d4c();
+        if (value < 0) return 0;
+    } else {
+        value = record->entries[entry * 48];
+    }
+    func_0204afe0(record->work, value);
+    func_02008904(record->work, work, 64);
+    work->unk_18 = 1;
+    work->slot = Unk095560_Unk_095d1c();
+    return 1;
 }
