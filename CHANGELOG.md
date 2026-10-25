@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T537 ImageBgDual3D predicates, field updates and helper sequences at 100% objdiff; added typed contracts and instruction evidence.
 - Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Matched eight more game/unit_020f3db4 functions: table selection, record lookup, state scans, and list insertion.
 - Verified all eight M1-T526 singleton predicates, field updates, creation and dispatch helpers at 100% objdiff; documented original instruction evidence and contracts.

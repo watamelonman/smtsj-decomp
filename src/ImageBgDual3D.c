@@ -123,10 +123,11 @@ void ImageBgDual3D_Unk_1259e0(void)
 }
 
 
-int Unk065e88_Unk_065e88();
-int func_020773dc();
-void ImageBgDual3D_AllocBuf();
-/* decompiler-derived */
+void Unk065e88_Unk_065e88(void);
+void func_020773dc(u32 arg0);
+void ImageBgDual3D_AllocBuf(void);
+/* At 0x02125a68, allocates the shared buffer, calls 0x02065e88, then
+ * calls 0x020773dc with one. No results are consumed. */
 void ImageBgDual3D_Unk_125a68(void)
 {
   ImageBgDual3D_AllocBuf();
@@ -135,7 +136,8 @@ void ImageBgDual3D_Unk_125a68(void)
 }
 
 u32 ImageBgDual3D_Unk_12594c(void);
-/* decompiler-derived */
+/* At 0x02125ca4, returns one exactly when 0x0212594c returns zero;
+ * all other values produce zero. */
 int ImageBgDual3D_Unk_125ca4(void)
 {
   int value;
@@ -144,7 +146,8 @@ int ImageBgDual3D_Unk_125ca4(void)
 }
 
 
-/* decompiler-derived */
+/* At 0x02125cbc, returns one exactly when 0x0212594c returns one;
+ * all other values produce zero. */
 int ImageBgDual3D_Unk_125cbc(void)
 {
   int value;
@@ -153,7 +156,8 @@ int ImageBgDual3D_Unk_125cbc(void)
 }
 
 void ImageBgDual3D_Unk_1258e8(void);
-/* decompiler-derived */
+/* At 0x02125d30, calls 0x021258e8 only when the predicate at
+ * 0x02125cbc is nonzero; no arguments or results are forwarded. */
 void ImageBgDual3D_Unk_125d30(void)
 {
   int value;
@@ -165,19 +169,21 @@ void ImageBgDual3D_Unk_125d30(void)
 }
 
 
-/* decompiler-derived */
+/* At 0x021259c4, stores the opaque argument at work offset 4 and one
+ * at offset 0xc. The global getter supplies a non-null borrowed work address. */
 void ImageBgDual3D_Unk_1259c4(u32 arg0)
 {
-  int value;
-  value = ImageBgDual3D_Get_data_02176e94();
-  *(u32 *)(value + 4) = arg0;
-  *(u32 *)(value + 0xc) = 1;
+  ImageBgDual3DWork *work;
+  work = (ImageBgDual3DWork *)ImageBgDual3D_Get_data_02176e94();
+  work->unk_0004 = arg0;
+  work->unk_000c = 1;
 }
 
-int Unk116598_Unk_117294();
-int Unk116598_Unk_117790();
-int func_02125a08();
-/* decompiler-derived */
+void Unk116598_Unk_117294(void);
+void Unk116598_Unk_117790(void);
+u32 func_02125a08(void);
+/* At 0x02125c40, calls 0x02117790 then 0x02117294, and publishes the
+ * word returned by 0x02125a08 in data_02176e94; its ownership is unspecified. */
 void ImageBgDual3D_Unk_125c40(void)
 {
   u32 value;
@@ -188,7 +194,8 @@ void ImageBgDual3D_Unk_125c40(void)
 }
 
 void ImageBgDual3D_Unk_1258a0(u32 arg0);
-/* decompiler-derived */
+/* At 0x02125d10, forwards the opaque word to 0x021258a0 only when
+ * the predicate at 0x02125cbc is nonzero. */
 void ImageBgDual3D_Unk_125d10(u32 arg0)
 {
   int value;
@@ -199,9 +206,11 @@ void ImageBgDual3D_Unk_125d10(u32 arg0)
   ImageBgDual3D_Unk_1258a0(arg0);
 }
 
-int func_0205c408();
-int func_0205c6e0();
-/* decompiler-derived */
+void func_0205c408(u32 handle, u32 arg1);
+void func_0205c6e0(u32 handle);
+/* At 0x02125650, passes the word at offset 0x8c to 0x0205c408
+ * with zero, then to 0x0205c6e0, and clears offset 0x208. Work is borrowed
+ * and non-null; neither helper result is consumed. */
 void ImageBgDual3D_Unk_125650(ImageBgDual3DWork *work)
 {
   func_0205c408(work->unk_008c,0);
