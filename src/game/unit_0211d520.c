@@ -3,11 +3,20 @@
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk11d520Work {
-    u8 pad_0000[0x18];
+    s32 state;
+    s32 group;
+    s32 list_count;
+    s32 list_000c;
+    s32 first;
+    s32 list_0014;
     s32 unk_0018;
-    u8 pad_001c[0x8c];
+    s32 list_001c[2];
+    s32 cursor[29];
+    u8 pad_0098[0x10];
     u32 *unk_00a8;
-    u8 pad_00ac[0x1c0];
+    s32 count;
+    s32 *flags;
+    u8 pad_00b4[0x1b8];
     u32 unk_026c;
     u32 unk_0270;
     u32 unk_0274;
@@ -19,6 +28,10 @@ typedef struct Unk11d520Work {
     u32 unk_02d8;
     u32 unk_02dc;
     u32 unk_02e0;
+    s32 direction;
+    s32 widths[11];
+    s32 title_width;
+    s32 delay;
 } Unk11d520Work;
 
 /* Read the selected table entry; the index at 0x18 must address the table at 0xa8. */
@@ -156,4 +169,133 @@ void func_0211da70(Unk11d520Work *p)
         func_02061f10(p->unk_02e0, -1, 0, 0,
             Unk11d520_Unk_11d520(p, id, Unk118b04_Unk_118b78(id) ? 2 : 3));
     }
+}
+
+void func_0211d884(Unk11d520Work *p);
+void func_0211db58(Unk11d520Work *p);
+s32 func_02061a04(s32 font, u32 text, s32 mode);
+void func_02053000(void *p);
+s32 func_02119460(s32 group);
+void *func_02052fe0(s32 size);
+void func_0211955c(u32 *entries, s32 count, s32 group);
+void Unk0bcef4_Unk_0bcef4(s32 *list, s32 visible, s32 count, s32 mode);
+void Unk0bcef4_Unk_0bd29c(s32 *cursor, s32 *list);
+void func_020bd1a8(s32 *cursor, s32 *list, s32 *flags, s32 mode);
+
+s32 func_020537b8(s32 device, s32 mask);
+s32 func_02053800(s32 device, s32 mask);
+s32 func_02053824(s32 device, s32 mask);
+s32 func_020bce08(s32 *list, s32 mode);
+void Unk0a0ce4_Unk_0a0da4(s32 sound);
+void Unk0bc1a8_SetFlag4Inv(Unk11d520Work *p, s32 enabled);
+void func_0205257c(s32 mode);
+
+/* Handle list movement, wrapped group changes and cancel; masks and state stores follow ARM. */
+void func_0211e0ec(Unk11d520Work *p)
+{
+    s32 first, next;
+    if (func_020537b8(0, 512)) p->direction = -1;
+    else if (func_020537b8(0, 256)) p->direction = 1;
+    else p->direction = 0;
+    first = p->first;
+    if (func_020bce08(&p->list_count, 1)) {
+        next = p->first;
+        Unk0a0ce4_Unk_0a0da4(0);
+        if (next != first) func_0211d884(p);
+        func_0211da70(p);
+        func_020bd1a8(p->cursor, &p->list_count, p->flags, 1);
+        return;
+    }
+    if (func_02053800(0, 512)) {
+        if (--p->group < 0) p->group = 6;
+        func_0211db58(p);
+        Unk0a0ce4_Unk_0a0da4(11);
+        Unk0bc1a8_SetFlag4Inv(p, 0);
+        p->delay = 2;
+        return;
+    }
+    if (func_02053800(0, 256)) {
+        if (++p->group >= 7) p->group = 0;
+        func_0211db58(p);
+        Unk0a0ce4_Unk_0a0da4(11);
+        Unk0bc1a8_SetFlag4Inv(p, 0);
+        p->delay = 2;
+        return;
+    }
+    if (func_02053824(0, 2)) {
+        Unk0a0ce4_Unk_0a0da4(2);
+        func_0205257c(3);
+        p->state = 3;
+        Unk0bc1a8_SetFlag4Inv(p, 0);
+    }
+}
+void func_02063920(void);
+u32 func_02063a44(u32 text, s32 slot);
+u32 func_02063a30(u32 text);
+s32 func_020619b8(s32 font, s32 value);
+
+/* Resolve visible-entry text and widths; IDs >=128 use the key and resource-36 lookups. */
+void func_0211d884(Unk11d520Work *p)
+{
+    s32 first = p->first;
+    s32 i;
+    u32 text, resolved;
+    s32 id, group;
+    func_02063920();
+    for (i = 0; i < p->list_count; i++) {
+        id = p->unk_00a8[first + i];
+        if (id >= 128) {
+            if (Unk118b04_Unk_118b78(id)) {
+                id = Unk118b04_GetEntryKey(id);
+                text = Unk11d520_Unk_11d520(p, 128, 0);
+                resolved = func_02063a44(text, 0);
+                p->widths[i] = func_02061a04(1, text, 0);
+                if (id >= 0) {
+                    text = Unk11d520_Unk_11d838(p, Unk02f2a8_GetRes36Unk19(id));
+                    resolved = func_02063a44(text, 1);
+                    p->widths[i] += func_02061a04(1, text, 0);
+                    p->widths[i] += func_020619b8(1, 1);
+                    text = Unk11d520_Unk_11d858(p, id);
+                    resolved = func_02063a30(text);
+                    p->widths[i] += func_02061a04(1, text, 0);
+                }
+            } else {
+                text = Unk11d520_Unk_11d520(p, 128, 1);
+                p->widths[i] = func_02061a04(1, text, 0);
+                resolved = func_02063a30(text);
+            }
+        } else {
+            group = Unk118b04_Unk_118b78(id);
+            if (group != 0) group = 0;
+            else group = 1;
+            text = Unk11d520_Unk_11d520(p, id, group);
+            resolved = func_02063a30(text);
+            p->widths[i] = func_02061a04(1, text, 0);
+        }
+    }
+    func_02061f10(p->unk_02d8, -1, 0, 0, resolved);
+}
+/* Rebuild the group's entry and flag arrays; ARM establishes the group-five title lookup. */
+void func_0211db58(Unk11d520Work *p)
+{
+    u32 text = func_0204fed8(func_0204fe68(p->unk_026c, 5), p->group);
+    s32 i, visible;
+    func_02061f10(p->unk_02d4, -1, 0, 0, text);
+    p->title_width = func_02061a04(1, text, 0);
+    func_02053000(p->unk_00a8);
+    p->unk_00a8 = 0;
+    func_02053000(p->flags);
+    p->flags = 0;
+    p->count = func_02119460(p->group);
+    p->unk_00a8 = func_02052fe0(p->count * 4);
+    p->flags = func_02052fe0(p->count * 4);
+    func_0211955c(p->unk_00a8, p->count, p->group);
+    for (i = 0; i < p->count; i++) p->flags[i] = 1;
+    visible = 11;
+    if (p->count < 11) visible = p->count;
+    Unk0bcef4_Unk_0bcef4(&p->list_count, visible, p->count, 1);
+    Unk0bcef4_Unk_0bd29c(p->cursor, &p->list_count);
+    func_020bd1a8(p->cursor, &p->list_count, p->flags, 1);
+    func_0211d884(p);
+    func_0211da70(p);
 }
