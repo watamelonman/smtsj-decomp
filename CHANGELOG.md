@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T500 work reset, callback descriptor, empty callback and lookup helpers in `game/unit_020fa7e8`; documented typed contracts and original instruction evidence.
 
 - Matched all eight M1-T494 rectangle, displacement, interpolation task, and command dispatch functions at 100% objdiff; documented original record contracts.
 
