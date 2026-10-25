@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all four M1-T540 ImageBgDual3D resource initialization and state callbacks; documented borrowed layouts and original instruction evidence.
 - Matched all eight M1-T539 ImageBgDual3D callback, work creation, cleanup and initialization functions at 100% objdiff; documented typed contracts and instruction evidence.
 - Matched all eight M1-T553 record subtraction, entry-byte lookup and predicate functions in `game/unit_0209974c` with typed record views and per-function evidence.
 
