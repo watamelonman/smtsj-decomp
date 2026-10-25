@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match four remaining game/unit_0202d15c cursor, request and entry-validation functions.
 - Matched all eight M1-T577 request, record lookup, condition and kind mapping functions at 100% objdiff; documented typed request contracts and instruction evidence.
 - Verified all eight M1-T568 buffer, release, mode and mission-log helpers at 100% objdiff; documented instruction evidence and typed buffer contracts.
 - Matched all eight M1-T576 manager predicates, image release, setup, record reset and constant mapping helpers at 100% objdiff; documented typed contracts and instruction evidence.
