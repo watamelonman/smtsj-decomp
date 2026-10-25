@@ -3,19 +3,19 @@
 
 
 
-/* empty callback */
+/* Intentionally empty callback: the original consists solely of a return. */
 void Unk03aae8_Nop_03ae0c(void) { }
 
 extern u8 data_0215de34[];
-/* decompiler-derived */
+/* Return the borrowed active-work address stored at singleton offset +4. */
 u32 Unk03aae8_Unk_03ad14(void)
 {
   return *(u32 *)(((int)data_0215de34) + 4);
 }
 
-int func_0203ac00();
-int Unk094fe0_Call_0209502c();
-/* decompiler-derived */
+int func_0203ac00(int argumentIndex);
+int Unk094fe0_Call_0209502c(int value, int mode);
+/* Forward argument zero as a signed 16-bit value with mode zero; return status 1. */
 u32 Unk03aae8_Unk_03aef0(void)
 {
   short v1;
@@ -24,9 +24,10 @@ u32 Unk03aae8_Unk_03aef0(void)
   return 1;
 }
 
-int Unk03aae8_Unk_03acf4();
-int func_02050074();
-int Unk094fe0_Call_020950b4();
+void Unk03aae8_Unk_03acf4(u32 value);
+int func_02050074(int selector, int index);
+int Unk094fe0_Call_020950b4(int value);
+/* Store whether the signed 16-bit argument query is nonzero; return status 1. */
 int Unk03aae8_Unk_03af14(void)
 {
     if (Unk094fe0_Call_020950b4((s16)func_0203ac00(0))) {
@@ -37,18 +38,19 @@ int Unk03aae8_Unk_03af14(void)
     return 1;
 }
 
-/* decompiler-derived */
+/* Query selector zero using the one-based argument minus one and store its result. */
 u32 Unk03aae8_Unk_03b878(void)
 {
   int value;
   value = func_0203ac00(0);
-  func_02050074(0,value + -1);
-  Unk03aae8_Unk_03acf4();
+  Unk03aae8_Unk_03acf4(func_02050074(0, value - 1));
   return 1;
 }
 
 
-/* decompiler-derived */
+void Unk02dcfc_Unk_02df00(u32 work, int value);
+
+/* Forward work field +0xe8 and signed 16-bit argument zero; return status 3. */
 u32 Unk03aae8_Unk_03af50(void)
 {
   short v1;
@@ -114,8 +116,9 @@ u32 Unk03aae8_Unk_03ae68(void)
   return 1;
 }
 
-/* decompiler-derived */
-int Unk03aae8_Unk_03acf4(u32 arg0)
+/* Clear active-work byte +0x3b, then store the full result word at +0xa8.
+ * Reload the singleton pointer between writes, as in the original. */
+void Unk03aae8_Unk_03acf4(u32 arg0)
 {
   int tmp1;
   tmp1 = (int)(data_0215de34);
@@ -253,6 +256,8 @@ int Unk03aae8_Unk_03b6ec(void)
     return 1;
 }
 
+/* Store the unsigned comparison of argument zero against the indexed query.
+ * Argument one is a one-based index; both result branches return status 1. */
 int Unk03aae8_Unk_03b89c(void)
 {
     u32 a = func_0203ac00(0);
