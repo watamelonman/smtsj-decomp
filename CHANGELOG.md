@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match six more game/unit_0209974c functions, including mode-based storage updates and packed record adjustments.
 - Verified all eight M1-T556 resource searches and conditional record helpers at 100% objdiff; documented instruction evidence and caller contracts.
 - Verified all eight M1-T560 entry scans, predicates and area field clamps at 100% objdiff; documented instruction evidence and typed helper contracts.
 - Matched all eight M1-T547 state, callback and request functions in game/unit_020bc1a8 at 100% objdiff, with instruction evidence and typed contracts.

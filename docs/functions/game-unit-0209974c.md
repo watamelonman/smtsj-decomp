@@ -89,30 +89,25 @@ reads only that halfword. No module boundary changed. No new tests are required;
 objdiff instruction comparison is the acceptance oracle. No hard functions remain
 for M1-T556. The TU remains linked from the original delink pending human approval.
 
-## Not done in M1-T557
-- `Unk09974c_Unk_099ea4`
-- `func_02099a28`
-- `func_0209993c`
-- `func_02099b10`
-- `func_02099f7c`
-- `Unk09974c_GetEntryUnk08`: hand-matched
-- `Unk09974c_HasFlagsMid`: hand-matched
-- `Unk09974c_FindEntry`: hand-matched
-- `Unk09974c_Unk_0998f0`: hand-matched
-- `Unk09974c_Unk_099cc4`: hand-matched
-- `Unk09974c_Unk_09a090`: hand-matched
-- `Unk09974c_Unk_09a0c0`: hand-matched
-- `Unk09974c_IsKind1or14`: hand-matched
-- `Unk09974c_GetFlagsMidMinus1`: hand-matched
-- `Unk09974c_SetSeenBit`: hand-matched
-- `Unk09974c_Unk_099bfc`: hand-matched
-- `Unk09974c_Unk_099c60`: hand-matched
-- `Unk09974c_Unk_099d14`: hand-matched
-- `Unk09974c_Unk_099d78`: hand-matched
-- `Unk09974c_Unk_099ddc`: hand-matched
-- `Unk09974c_Unk_0999d4`: hand-matched
-- `Unk09974c_Unk_099abc`: hand-matched
-- `Unk09974c_Unk_099e40`: hand-matched
-- `Unk09974c_Unk_099ea4`: hand-matched
-- `Unk09974c_Unk_099f24`: hand-matched
-- `Unk09974c_Unk_09a1e4`: hand-matched
+## M1-T557
+
+All six requested functions match the original instructions at 100%. The two
+inherited implementations were retained and their contracts documented; four
+missing functions were added. Neutral linker names are retained because the
+fields' gameplay meanings are not established.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk09974c_Unk_0997c8` | `0x020997c8..985c`: categories 0..9 select subblock offsets 0, 15, 75, 88, 138, 188, 238, 288, 1268, 1488. Other categories return zero. Returned storage is borrowed. |
+| `Unk09974c_Unk_099ea4` | `0x02099ea4..9f20`: missing resource record returns zero; record byte +0x17 bits 0, 2, 1 accept tiers 4, 5, 1 respectively. |
+| `func_0209993c` | `0x0209993c..99d0`: missing entry returns zero; mode 0 tests the indexed bit, mode 1 returns the indexed byte, mode 2 tests the indexed halfword for nonzero. Index is id minus signed range lower bound. |
+| `func_02099a28` | `0x02099a28..9ab8`: zero amount or absent entry does nothing; mode 0 sets the indexed bit; mode 1 adds an unsigned amount and caps the unsigned sum at 99. Every present mode calls SetBit6ac. Addition follows original unsigned 32-bit wrap semantics. |
+| `func_02099b10` | `0x02099b10..9ba8`: zero amount or absent entry does nothing; mode 0 clears the bit, mode 1 subtracts the unsigned amount with a zero floor, mode 2 clears the halfword. |
+| `func_02099f7c` | `0x02099f7c..a08c`: resolve optional ids at input +4/+6, then process 19 packed halfwords at resource +24. Source low 10 bits and high 6 bits are signed; destination fields are unsigned. For each slot, each record accepted by 02f190 replaces the destination kind and pending adjustment; the last accepted adjustment is added modulo 1024 after both records. Missing records contribute nothing. |
+
+Mode buffers and resource records are borrowed. Mutation routines require writable
+buffers; valid entry ranges provide nonnegative indices. The packed routine's
+caller supplies 19 writable destination halfwords. No module boundary changed.
+The card requires no new tests: original instruction comparison is the acceptance
+oracle. No hard functions remain. The TU stays linked from the original delink
+until a human marks it complete.
