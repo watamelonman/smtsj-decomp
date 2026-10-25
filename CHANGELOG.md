@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T628 resource, list, selector and output routines in game/unit_020a163c at 100% objdiff with typed field views.
 - Matched all eight M1-T627 game/unit_020a163c comparison, resource lookup, ID conversion and state callback functions at 100% objdiff.
 - Matched all five M1-T616 game/unit_021218d0 field and slot initialization functions with typed record views and documented contracts.
 
