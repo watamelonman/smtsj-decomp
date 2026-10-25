@@ -501,6 +501,14 @@ static inline u32 Unk0f7188_Value(const Unk0f7188Request *request, int index)
     }
     return value;
 }
+/* Preserve the default when the requested record is absent. */
+static inline void Unk0f7188_ReadValue(const Unk0f7188Request *request, int index, u32 *value)
+{
+    if (request != 0) {
+        Unk0f7188Word supplied;
+        if (Unk0f7188_Read(request, index, &supplied)) *value = supplied.value;
+    }
+}
 void Unk0bc1a8_Unk_0bc504(Unk0f7188Record *p, u32 value);
 
 /* Handle kinds 1..4, retaining absent fields and notifying borrowed callbacks.
@@ -542,8 +550,10 @@ void func_020f7248(Unk0f7188Record *p, const Unk0f7188Event *event)
         {
             u32 first, second;
             if (p->unk_0c == 11) return;
-            first = Unk0f7188_Value(request, 6);
-            second = Unk0f7188_Value(request, 7);
+            first = 0;
+            second = 0;
+            Unk0f7188_ReadValue(request, 6, &first);
+            Unk0f7188_ReadValue(request, 7, &second);
             switch (first) {
             case 0:
                 switch (second) {

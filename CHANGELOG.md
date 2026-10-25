@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T623: matched all five remaining game/unit_020f7188 progression, event and selector handlers at 100% objdiff.
 - M1-T622: matched all eight game/unit_020f7188 targets; documented callback descriptors, state setters and typed request builders.
 - Matched all eight M1-T627 game/unit_020a163c comparison, resource lookup, ID conversion and state callback functions at 100% objdiff.
 - Matched all five M1-T616 game/unit_021218d0 field and slot initialization functions with typed record views and documented contracts.

@@ -68,9 +68,37 @@ record copies preserve the observed source stack stores (See DEC-013).
 No new tests are required by this card: exact instruction/relocation comparison
 and the project gates provide validation. No M1-T622 functions remain hard.
 
-## Not done in M1-T623
-- `func_020f7188`
-- `func_020f7ae8`
-- `func_020f7888`
-- `func_020f7578`
-- `func_020f7248`
+## M1-T623: verified matches
+
+All five requested functions score 100% with the configured ARM compiler.
+Existing neutral symbols are retained: instruction evidence establishes field
+and service behavior, but does not establish gameplay names. Pointers are
+borrowed and must reference the fields accessed below.
+
+- `func_020f7188` (136 B): after `func_020fec00` permits advancement,
+  adds signed field 0x14 to 0x10. Crossing either signed bound at 0x18/0x1c
+  clamps the value, clears the increment, copies 0x0c to 8 and returns one.
+  Otherwise returns zero. Bounds and strict comparisons follow ARM branches.
+- `func_020f7ae8` (196 B): requires a readable event. Kind zero checks
+  presence of request word 4 twice, passing its inverse to 02065604 and
+  020655b4 around 02065bc0. Other kinds have no effects. The stored word
+  value is unused; ARM tests the flag, not the value.
+- `func_020f7888` (600 B): advances registered state phases 0 through 4
+  when the observed service predicates permit. Phase zero configures ID
+  slots 6/7 and the mode selected by field 0x10; later phases wait, record
+  the result at offset 8 and submit a kind-1 request containing words 0/3.
+  ARM calls establish service order, flags 0x101 and slot 25 polling.
+- `func_020f7578` (660 B): dispatches bits 5..8 of input word 0x24 after
+  submitting its halfword at 0x20. Selectors 0..8 choose the original
+  service and request sequences, including slot 30 and the byte-0x23
+  comparison with 7. The input must expose bytes through offset 0x27.
+- `func_020f7248` (816 B): handles event kinds 1..4 using request words
+  0, 2, 6 and 7. Updates signed progression fields, forwards selected
+  requests, and invokes optional callbacks at offsets 0x34/0x38/0x3c.
+  Word presence is separate from value; absent values default to zero.
+  ARM accesses establish a writable 0x40-byte record and borrowed event.
+
+The inlined output helper initializes both selector defaults before reading
+records, preserving the original instruction sequence and separate temporary
+word slots. Exact instruction/relocation comparison supplies validation;
+this card requires no new tests. No M1-T623 functions remain hard.
