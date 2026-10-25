@@ -112,29 +112,37 @@ the shared provider header is outside this card's owned paths.
 | `Unk02e000_GetRecordFlag1` | 0x0202ed5c / 76 | Loads record byte +0x1f, extracts bit one and normalizes to 0/1. Same ID/allocation contract. |
 | `Unk02e000_SetSlot40` | 0x0202ea68 / 80 | Obtains allocated work before checking signed index 0..2; copies 36 bytes to work+0x5c0c+i*40. Returns one for copy, zero for invalid index. Source must expose 36 bytes for valid indices; views remain borrowed. |
 
-## Not done in M1-T655
-- `Unk02e000_SetRecordUnk1c`
-- `func_0202e520`
-- `Unk02e000_GetRecord`
-- `Unk02e000_FindIndex_02e3e4`
-- `Unk02e000_SetBit_02e968`
-- `Unk02e000_SetRecordFlag1f`
-- `Unk02e000_SetRecordFlag1f_1`
-- `Unk02e000_SetRecordUnk1e`
+## M1-T655
+
+All eight targets verified at **100% objdiff**. Seven existing matching C
+bodies were retained; added `func_0202e520` and corrected its declaration to
+an integer argument and return. Typed the FindIndex resource-provider calls
+and GetRecord destination pointer. The source already existed despite the
+card's creation wording. No tests added (`tests_required = false`); original
+instruction comparison is the acceptance check. No M1-T655 targets remain hard.
+
+Record helpers address the borrowed 36-byte table at Unk_02e774+0x16fc,
+indexed by id-1. They reject IDs above 491, but do not reject zero; callers
+must provide IDs 1..491 and an existing allocation. Successful writes return one.
+Names describe only instruction-established offsets, flags and table operations.
+
+| Function | Address / bytes | Instruction evidence and contract |
+| --- | --- | --- |
+| `Unk02e000_SetRecordUnk1c` | 0x0202eab8 / 84 | Stores input halfword at +0x1c, reloads it unsigned and caps values above 500. |
+| `func_0202e520` | 0x0202e520 / 88 | Sign-extends input low halfword, calls FindIndex then GetTier; switch returns 152, 96, 64, 32 for tiers 0..3, otherwise zero. Neutral name retained because broader argument meaning is unknown. |
+| `Unk02e000_GetRecord` | 0x0202ea10 / 88 | Copies 36 bytes to caller destination using func_02008904, then sets source byte +0xb bit 1. Destination must expose 36 writable bytes; copy precedes flag mutation. |
+| `Unk02e000_FindIndex_02e3e4` | 0x0202e3e4 / 92 | Requests resource (35,0); passes its handle to data and count providers, compares signed halfwords against input using an unsigned loop count. First equal index or -1; resource storage remains borrowed. |
+| `Unk02e000_SetBit_02e968` | 0x0202e968 / 96 | Rejects signed indices outside 0..89, then sets or clears work+0x374 byte index i/8, bit i&7 according to nonzero/zero second argument. Requires allocation for valid indices. |
+| `Unk02e000_SetRecordFlag1f` | 0x0202ec48 / 100 | Normalizes nonzero input to one, inserts into +0x1f bit 0 and preserves all other bits. |
+| `Unk02e000_SetRecordFlag1f_1` | 0x0202ecf8 / 100 | Same normalization, inserting into +0x1f bit 1 and preserving all other bits. |
+| `Unk02e000_SetRecordUnk1e` | 0x0202eb48 / 112 | Signed inputs above 100 become 100; others truncate to low seven bits. Stores +0x1e bits 0..6 while preserving bit 7; negative inputs are not clamped to zero. |
 
 ## Not done in M1-T656
 - `Unk02e000_SetRecordUnk1f_2`
 - `Unk02e000_GetSlotPtr`
 - `func_0202e5dc`
 - `func_0202e23c`
-- `Unk02e000_FindIndex_02e3e4`: hand-matched
 - `Unk02e000_GetSlotPtr`: hand-matched
-- `Unk02e000_SetBit_02e968`: hand-matched
-- `Unk02e000_GetRecord`: hand-matched
-- `Unk02e000_SetRecordUnk1c`: hand-matched
-- `Unk02e000_SetRecordUnk1e`: hand-matched
-- `Unk02e000_SetRecordFlag1f`: hand-matched
-- `Unk02e000_SetRecordFlag1f_1`: hand-matched
 - `Unk02e000_SetRecordUnk1f_2`: hand-matched
 
 ## M1-T651
