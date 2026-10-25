@@ -22,13 +22,26 @@ from the original ARM instructions and relocations in
 No new behavioral tests: this card sets `tests_required = false`; original-object
 comparison is the acceptance test. No hard functions remain for M1-T706.
 
-## Not done in M1-T707
-- `Unk09d42c_GetTable1Entry`
-- `Unk09d42c_GetTable2Entry`
-- `Unk09d42c_GetTable3Entry`
-- `Unk09d42c_MapId`
-- `func_0209e020`
-- `Unk09d42c_Unk_09d73c`
+## M1-T707 — verified matching functions
+
+All eight functions report 100% against the original delinked object. Seven
+implementations were already present; this card adds `func_0209e020`, types the
+flag predicate parameter, and documents the contracts. Evidence is the original
+ARM instructions and relocations in `build/delinks/src/game/unit_0209d42c.o`.
+
+| Function | Size | Evidence and contract |
+| --- | ---: | --- |
+| `Unk09d42c_Unk_09e2f4` | 72 | Null state returns immediately. Resolves the input through work-area +0x358 and `func_0203611c`, writes root +0x18, sets root +0x14 to 4 and state +0x73e8 to 1. Present state requires valid root/work storage. Neutral name retained. |
+| `Unk09d42c_GetTable1Entry` | 76 | Resource arguments (9, 1) and 106-byte stride support the name. Negative/out-of-range indices return the borrowed table base. |
+| `Unk09d42c_GetTable2Entry` | 76 | Resource arguments (9, 2) and 24-byte stride support the name. Negative/out-of-range indices return the borrowed table base. |
+| `Unk09d42c_GetTable3Entry` | 76 | Resource arguments (9, 3) and 52-byte stride support the name. Negative/out-of-range indices return the borrowed table base. |
+| `Unk09d42c_MapId` | 80 | Explicit comparisons map zero to one and, for nonzero second argument, 62/63/64 to 65/66/67. Other inputs return their low byte. These ID substitutions support the name. |
+| `Unk09d42c_Unk_09e2a4` | 80 | Null state returns immediately. Resolves the input through work-area +0x358 and `func_0203611c`, writes root +0x18, sets root +0x14 to 2, clears root +0xc and state +0x73e8. Present state requires valid root/work storage. Neutral name retained. |
+| `func_0209e020` | 96 | Dispatches state word +0x73f0. At zero, predicate `Unk0a23f4_Unk_0a246c` returning 1 invokes `ScanVisor_Unk_0a2b18` then increments that word. At one, returns whether `Unk0a23f4_Unk_0a2448` is zero; otherwise returns zero. State must exist; neutral name retained. |
+| `Unk09d42c_Unk_09d73c` | 108 | Scans group 9/table 4 six-byte records: flag/key/value halfwords. Returns the first matching key's value when the flag predicate succeeds, otherwise the input ID. Storage is borrowed. Neutral name retained. |
+
+No new behavioral tests (`tests_required = false`); original-object comparison
+checks every instruction and relocation. No hard functions remain for M1-T707.
 
 ## Not done in M1-T708
 - `func_0209e33c`
@@ -45,8 +58,3 @@ comparison is the acceptance test. No hard functions remain for M1-T706.
 - `func_0209d7f4`
 - `func_0209e0b0`
 - `func_0209db70`
-- `Unk09d42c_MapId`: hand-matched
-- `Unk09d42c_GetTable1Entry`: hand-matched
-- `Unk09d42c_GetTable2Entry`: hand-matched
-- `Unk09d42c_GetTable3Entry`: hand-matched
-- `Unk09d42c_Unk_09d73c`: hand-matched
