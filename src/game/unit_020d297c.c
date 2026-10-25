@@ -8,7 +8,11 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0d297cWork {
-    u8 pad_0000[0x14];
+    u16 *data;
+    s32 count;
+    s32 capacity;
+    s32 index;
+    s32 unk_0010;
     u32 unk_0014;
     u32 unk_0018;
     u32 unk_001c;
@@ -389,8 +393,9 @@ void Unk0d297c_FreeSlot(u32 *slot)
 }
 
 /** Append one halfword and advance count if signed count < capacity; evidence: 0x020d3264.
- * Caller supplies valid storage and a nonnegative count; no lower bound check exists. */
-void Unk0d297c_PushU16(Unk0d297cU16Vec *v, u16 x)
+ * Stores the low halfword of x. Caller supplies valid storage and a nonnegative
+ * count; no lower bound check exists. */
+void Unk0d297c_PushU16(Unk0d297cU16Vec *v, u32 x)
 {
     if (v->n < v->cap) {
         v->buf[v->n] = x;
@@ -535,4 +540,43 @@ int func_020d297c(u16 id)
     }
     func_02053000(handle);
     return 1;
+}
+
+int func_02062268(const u16 *stream);
+int func_0204f9fc(int token);
+int func_0204f9d8(int token);
+int func_0204f8c0(int token);
+
+/** Copy a terminated halfword stream, replacing 0x8001 with zero and recording
+ * section starts; calls and stores at 0x020d33cc..34dc establish the contract.
+ * Caller supplies a valid terminated stream and writable work storage. */
+void func_020d33cc(Unk0d297cWork *work, const u16 *stream)
+{
+    int token, position, i;
+    Unk0d297c_Unk_0d3358(work, func_02062268(stream) + 1);
+    token = stream[0];
+    position = 0;
+    ((s32 *)work->unk_0018)[0] = position;
+    position++;
+    while (!func_0204f9fc(token)) {
+        if (!func_0204f9d8(token)) {
+            Unk0d297c_PushU16((Unk0d297cU16Vec *)work, token);
+            token = stream[position++];
+        } else {
+            if (token == 0x8001) {
+                Unk0d297c_PushU16((Unk0d297cU16Vec *)work, 0);
+                work->unk_001c++;
+                ((s32 *)work->unk_0018)[work->unk_001c] = work->count;
+            } else {
+                Unk0d297c_PushU16((Unk0d297cU16Vec *)work, token);
+            }
+            token = func_0204f8c0(token);
+            for (i = 0; i < token; i++, position++) {
+                Unk0d297c_PushU16((Unk0d297cU16Vec *)work, stream[position]);
+            }
+            token = stream[position];
+            position++;
+        }
+    }
+    Unk0d297c_PushU16((Unk0d297cU16Vec *)work, 0);
 }
