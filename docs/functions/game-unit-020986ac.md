@@ -19,17 +19,24 @@ No new behavior tests are required by this card: instruction identity is checked
 against the original object, with the full-image checksum checking the linked build.
 No M1-T631 functions remain on the hard list.
 
-## Hard list
-- `Unk0986ac_Unk_098990`: decompiler-derived
-- `Unk0986ac_Unk_099300`: decompiler-derived
-- `Unk0986ac_Unk_098918`: decompiler-derived
+## M1-T632
 
-## Not done in M1-T632
-- `Unk0986ac_TestFlagBit`
-- `Unk0986ac_FindEmpty`
-- `Unk0986ac_IsMode012`
-- `Unk0986ac_Unk_0989a4`
-- `Unk0986ac_Unk_098aa8`
+All eight targets match at 100% objdiff. Existing C bodies already produced the
+original instructions; this card verifies them and replaces provisional contracts.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `Unk0986ac_Unk_098990` | Stores the argument byte at borrowed flag storage +13; `strb` at 0x02098990 (20 B). |
+| `Unk0986ac_Unk_099300` | Calls `Unk02e000_Unk_02e0cc`, then `Unk05b82c_Unk_05b82c(191)`, and returns 1; relocations and immediate moves at 0x02099300 (24 B). |
+| `Unk0986ac_TestFlagBit` | Tests mask `1 << (bit & 7)` in the byte returned by the storage helper; returns 0 or 1. Caller enforces index bounds; 0x02098714 (44 B). |
+| `Unk0986ac_FindEmpty` | Scans 23 two-byte entries for a zero first signed byte; returns the index or sentinel 23. Stride-two loads and zero comparisons at 0x020989dc support the name (44 B). |
+| `Unk0986ac_Unk_098918` | Takes a signed id, looks it up with `Unk09974c_Unk_099d78(id)`, and returns 0 for a missing borrowed record or absent middle flag field; otherwise returns `Unk09974c_GetFlagsMidMinus1(record)`. The incoming r0 reaches the lookup at 0x02098920 unchanged; its pointer result remains in r0 for `HasFlagsMid(record)` at 0x0209892c and is saved in r4 for the decoder. Caller 0x020c3090 loads the id from a table into r0 before calling at 0x020c3094 (52 B). |
+| `Unk0986ac_IsMode012` | Returns 1 for the selector at +44 equal to 0, 1, or 2, otherwise 0. Three comparisons at 0x02098ae0 support the name (52 B). |
+| `Unk0986ac_Unk_0989a4` | Reads the handle at borrowed record +4, looks it up with the third argument, and passes the result as argument five to `func_02061f10(a, -1, 0, 0, result)`; relocations and stack store at 0x020989a4 (56 B). |
+| `Unk0986ac_Unk_098aa8` | Reads signed n at +56. For n <= 0 clears word +64 and byte +68; otherwise writes `(word_at_60 - 16) * n + 16` and the low byte of `31 * n`. Caller supplies aligned storage through +68 and representable signed arithmetic; 0x02098aa8 (56 B). |
+
+No M1-T632 functions remain on the hard list. No new behavior tests are required;
+objdiff checks instruction identity and checksum checks the linked original image.
 
 ## Not done in M1-T633
 - `Unk0986ac_Unk_099274`
@@ -51,11 +58,6 @@ No M1-T631 functions remain on the hard list.
 - `func_02098fec`
 - `func_02098b9c`
 - `Unk0986ac_SetFlagBit`: hand-matched
-- `Unk0986ac_TestFlagBit`: hand-matched
-- `Unk0986ac_Unk_0989a4`: hand-matched
-- `Unk0986ac_FindEmpty`: hand-matched
-- `Unk0986ac_Unk_098aa8`: hand-matched
-- `Unk0986ac_IsMode012`: hand-matched
 - `Unk0986ac_Unk_099234`: hand-matched
 - `Unk0986ac_Unk_099274`: hand-matched
 - `Unk0986ac_Unk_0992b0`: hand-matched
