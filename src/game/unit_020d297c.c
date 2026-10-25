@@ -205,16 +205,16 @@ u16 Unk0d297c_Unk_0d32c0(const Unk0d297cBuffer *buffer)
 }
 
 
-int func_02008848();
-/* decompiler-derived */
+void func_02008848(u32 destination, int value, u32 byte_count);
+/** Clear the +0x18 allocation for +0x20 words, then reset +0x1c (0x020d3330). */
 void Unk0d297c_Unk_0d3330(Unk0d297cWork *arg0){
   func_02008848(arg0->unk_0018,0,arg0->unk_0020 << 2);
   arg0->unk_001c = 0;
   return;
 }
 
-int func_02052fe0();
-/* decompiler-derived */
+u32 func_02052fe0(u32 byte_count);
+/** Allocate capacity halfwords and clear indices +4/+0x0c/+0x10; evidence: 0x020d3200. */
 void Unk0d297c_Unk_0d3200(u32 *arg0,int arg1)
 {
   u32 tmp1;
@@ -229,7 +229,7 @@ void Unk0d297c_Unk_0d3200(u32 *arg0,int arg1)
 
 
 
-int func_020d2eb0();
+int func_020d2eb0(u32 index);
 /* decompiler-derived */
 u32 Unk0d297c_Unk_0d2fbc(u32 arg0)
 {
@@ -283,14 +283,14 @@ u32 Unk0d297c_LoadMissionLog(void)
   return 1;
 }
 
-/* decompiler-derived */
-void Unk0d297c_Unk_0d3308(int arg0)
+/** Reset the leading buffer and extension; +0x20 defaults to 256 words (0x020d3308). */
+void Unk0d297c_Unk_0d3308(Unk0d297cWork *arg0)
 {
   Unk0d297c_Unk_0d31e8((u32 *)arg0);
-  ((Unk0d297cWork *)arg0)->unk_0014 = 0;
-  ((Unk0d297cWork *)arg0)->unk_0018 = 0;
-  ((Unk0d297cWork *)arg0)->unk_001c = 0;
-  ((Unk0d297cWork *)arg0)->unk_0020 = 0x100;
+  arg0->unk_0014 = 0;
+  arg0->unk_0018 = 0;
+  arg0->unk_001c = 0;
+  arg0->unk_0020 = 0x100;
 }
 
 /* decompiler-derived */
@@ -312,7 +312,7 @@ void Unk0d297c_Unk_0d3358(int arg0, int arg1)
 
 void Unk0e5fb8_Unk_0e649c(u32 obj, int mode);
 
-/* Mode 1 setup unless Unk0e5fb8_Unk_0e6448 reports already active. */
+/** Forward index with mode 1 to both helpers and store +0x9a0 only when query is zero; 0x020d2aa4. */
 void Unk0d297c_Unk_0d2aa4(u32 obj)
 {
     if (Unk0e5fb8_Unk_0e6448(obj) != 0) {
@@ -333,11 +333,13 @@ void Unk0d297c_Unk_0d2aec(u32 obj)
 }
 
 int Unk0e651c_Unk_0e666c(u32 index);
+/** Local borrowed halfword storage; signed count/capacity follow 0x020d3264. */
 typedef struct Unk0d297cU16Vec {
     u16 *buf;
     int n;
     int cap;
 } Unk0d297cU16Vec;
+/** Resolve entry zero of table zero from the mission-log handle, or return zero (0x020d3004). */
 int Unk0d297c_Unk_0d3004(void)
 {
     int v;
@@ -364,10 +366,55 @@ void Unk0d297c_FreeSlot(u32 *slot)
     *slot = 0;
 }
 
+/** Append one halfword and advance count if signed count < capacity; evidence: 0x020d3264.
+ * Caller supplies valid storage and a nonnegative count; no lower bound check exists. */
 void Unk0d297c_PushU16(Unk0d297cU16Vec *v, u16 x)
 {
     if (v->n < v->cap) {
         v->buf[v->n] = x;
         v->n++;
     }
+}
+
+/** Borrowed lookup record prefix; byte +3 and five signed words are observed below. */
+typedef struct Unk0d297cRecord {
+    u8 unk_0000[3];
+    u8 unk_0003 : 7;
+    u8 unk_0003_high : 1;
+    s32 unk_0004[5];
+} Unk0d297cRecord;
+
+/** Resolve table 2 of handle 29 using byte +3's low seven bits; null record returns zero.
+ * Evidence: ldrb/lsl/lsr at 0x020d2f84 through 0x020d2f8c. */
+u32 func_020d2f60(u32 index)
+{
+    Unk0d297cRecord *record = (Unk0d297cRecord *)func_020d2eb0(index);
+    u32 table;
+    if (record == 0) {
+        return 0;
+    }
+    table = func_0204459c(29);
+    table = func_0204fe68(table, 2);
+    return func_0204fed8(table, record->unk_0003);
+}
+
+/** Select word 1..5 after byte-wrapped decrement; missing/out-of-range returns zero.
+ * Negative words return one, others are queried at 0x020e666c; evidence: 0x020d2b10. */
+int func_020d2b10(u32 index, u8 selector)
+{
+    Unk0d297cRecord *record;
+    s32 value;
+    selector = (u8)(selector - 1);
+    if (selector >= 5) {
+        return 0;
+    }
+    record = (Unk0d297cRecord *)func_020d2eb0(index);
+    if (record == 0) {
+        return 0;
+    }
+    value = record->unk_0004[selector];
+    if (value < 0) {
+        return 1;
+    }
+    return Unk0e651c_Unk_0e666c(value);
 }
