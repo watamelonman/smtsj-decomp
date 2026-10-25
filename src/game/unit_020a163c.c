@@ -6,10 +6,44 @@ typedef struct Unk0a163cWork {
     u32 unk_000c;
 } Unk0a163cWork;
 
+/* Borrowed resource record: offsets 0x5a and 0x6a are established by loads. */
+typedef struct Unk0a163cRecord {
+    u16 id;
+    u8 unk_0002[88];
+    u8 unk_005a;
+    u8 unk_005b[15];
+    s16 unk_006a;
+    u8 unk_006c[20];
+} Unk0a163cRecord;
+
+/* Signed offsets belong to the borrowed entry metadata. */
+typedef struct Unk0a163cMetadata {
+    u16 unk_0000;
+    s16 unk_0002;
+    s16 unk_0004;
+} Unk0a163cMetadata;
+
+/* Entry stride 0x3a0 and the three pointers follow the original list loads. */
+typedef struct Unk0a163cEntry {
+    u16 id;
+    u8 unk_0002[394];
+    Unk0a163cMetadata *unk_018c;
+    void *unk_0190;
+    void *unk_0194;
+    u8 unk_0198[520];
+} Unk0a163cEntry;
+
+/* Output routines write coordinates at +0xc and +0x10. */
+typedef struct Unk0a163cOutput {
+    u32 unk_0000[3];
+    s32 unk_000c;
+    s32 unk_0010;
+} Unk0a163cOutput;
+
 /* The original list routines read a count and a borrowed entry buffer. */
 typedef struct Unk0a163cList {
     u32 count;
-    void *entries;
+    Unk0a163cEntry *entries;
 } Unk0a163cList;
 
 extern void *func_020445d0(int group, int table);
@@ -18,7 +52,7 @@ extern u32 func_0204fe18(void *resource);
 extern void *func_0204fed8(void *resource, u32 index);
 extern int func_020a1b08(Unk0a163cList *list, u16 id, u32 value);
 extern int func_020a208c(Unk0a163cWork *work);
-extern void *func_020a2218(Unk0a163cList *list, u16 id);
+extern Unk0a163cEntry *func_020a2218(Unk0a163cList *list, u16 id);
 
 /* ARM 0x020a1718: compare the first unsigned halfword of two records.
  * The subtraction promotes both values to int, giving a signed ordering. */
@@ -75,4 +109,119 @@ int Unk0a163c_Thunk_020a208c(Unk0a163cWork *work)
 void *Unk0a163c_Call_020a2218(Unk0a163cList *list, u16 id)
 {
     return func_020a2218(list, (u16)(id + 500));
+}
+
+extern void func_020a1a24(Unk0a163cList *list);
+extern void func_02053000(void *allocation);
+extern void *func_0204fde0(void *resource);
+extern void *func_02011810(const void *key, const void *base, u32 count,
+                          u32 stride, int (*compare)(const u16 *, const u16 *));
+extern s32 func_02011804(s32 value);
+extern s32 Unk02e000_GetRecordUnk1e(u16 id);
+extern const u8 data_0213c258[];
+extern const u8 data_0213c244[];
+extern Unk0a163cEntry *func_020a2250(Unk0a163cList *list, u16 id);
+extern Unk0a163cOutput *func_02065fc0(void *a, void *b, u32 value, int mode, int flags);
+extern Unk0a163cOutput *func_0205f41c(void *object);
+extern Unk0a163cOutput *func_0205adb4(int mode, s32 *coordinates);
+extern s32 func_0205accc(Unk0a163cOutput *object);
+extern s32 func_0205acd4(Unk0a163cOutput *object);
+extern void func_0205b9a0(Unk0a163cOutput *object);
+extern void func_0205b900(Unk0a163cOutput *object);
+
+/* ARM 0x020a1740: search resource (19, 1) by its leading halfword.
+ * The original uses a 128-byte stack key and 128-byte resource stride. */
+Unk0a163cRecord *func_020a1740(u16 id)
+{
+    Unk0a163cRecord key;
+    void *resource = func_020445d0(19, 1);
+    void *base = func_0204fde0(resource);
+    u32 count = func_0204fe18(resource);
+    key.id = id;
+    return func_02011810(&key, base, count, 128, Unk0a163c_Unk_0a1718);
+}
+
+/* ARM 0x020a1798: map the signed record selector through two byte tables,
+ * returning its magnitude via func_02011804 when it is negative. */
+u16 Unk0a163c_Unk_0a1798(u16 id)
+{
+    s16 selector = func_020a1740(id)->unk_006a;
+    if (selector < 0) return (u16)func_02011804(selector);
+    selector = data_0213c258[selector];
+    return data_0213c244[selector];
+}
+
+/* ARM 0x020a17d8: compare the record byte at +0x5a with the shared
+ * record query; a negative selector at +0x6a returns true immediately. */
+int Unk0a163c_Unk_0a17d8(u16 id)
+{
+    Unk0a163cRecord *record = func_020a1740(id);
+    if (record->unk_006a < 0) return 1;
+    return Unk02e000_GetRecordUnk1e(id) < record->unk_005a;
+}
+
+/* ARM 0x020a1ae0: run list cleanup, release its entry buffer, and clear
+ * count and pointer. The list container stays owned by the caller. */
+int Unk0a163c_Unk_0a1ae0(Unk0a163cList *list)
+{
+    func_020a1a24(list);
+    func_02053000(list->entries);
+    list->entries = 0;
+    list->count = 0;
+    return 1;
+}
+
+/* ARM 0x020a1b68: translate the record selector into a u16 list id.
+ * Negative selectors use 500 minus the selector before insertion. */
+int func_020a1b68(Unk0a163cList *list, u16 id, u32 value)
+{
+    u16 selector;
+    s32 raw = func_020a1740(id)->unk_006a;
+    if (raw < 0) selector = 500 - raw;
+    else selector = raw;
+    return func_020a1b08(list, selector, value);
+}
+
+/* ARM 0x020a2218: scan count entries of stride 0x3a0 for the leading
+ * u16 id; return a borrowed entry, or null when no entry matches. */
+Unk0a163cEntry *func_020a2218(Unk0a163cList *list, u16 id)
+{
+    u32 i;
+    Unk0a163cEntry *entry;
+    i = 0;
+    if (i < list->count) {
+        entry = list->entries;
+        do {
+            if (entry->id == id) return entry;
+            i++;
+            entry++;
+        } while (i < list->count);
+    }
+    return 0;
+}
+
+/* ARM 0x020a22e0: create an output from a matching entry and negate
+ * its metadata offsets into output +0xc/+0x10. Missing entries return null. */
+Unk0a163cOutput *func_020a22e0(Unk0a163cList *list, u16 id, u32 value)
+{
+    Unk0a163cEntry *entry = func_020a2250(list, id);
+    Unk0a163cOutput *output;
+    if (entry == 0) return 0;
+    output = func_02065fc0(entry->unk_0194, entry->unk_0190, value, 1, 0);
+    output->unk_000c = -entry->unk_018c->unk_0002;
+    output->unk_0010 = -entry->unk_018c->unk_0004;
+    return output;
+}
+
+/* ARM 0x020a239c: obtain the object's borrowed view, construct an output,
+ * copy both queried coordinates, and select its finalizer by the flag. */
+Unk0a163cOutput *func_020a239c(void *object, u32 argument, int flag)
+{
+    Unk0a163cOutput *view = func_0205f41c(object);
+    Unk0a163cOutput *output = func_0205adb4(0, &view->unk_000c);
+    output->unk_000c = func_0205accc(view);
+    output->unk_0010 = func_0205acd4(view);
+    if (flag) func_0205b9a0(output);
+    else func_0205b900(output);
+    return output;
 }
