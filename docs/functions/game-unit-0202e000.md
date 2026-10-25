@@ -36,18 +36,25 @@ No allocation ownership transfers and no bounds checks occur in these helpers.
 
 ## Hard list
 
-No M1-T650 targets remain. Historical unresolved candidate:
-- `Unk02e000_Unk_02e144`: decompiler-derived
+No M1-T650 or M1-T652 targets remain on the hard list.
 
-## Not done in M1-T652
-- `Unk02e000_SetMgrUnk38`
-- `Unk02e000_HasField36`
-- `Unk02e000_Unk_02e0cc`
-- `Unk02e000_GetTier`
-- `Unk02e000_EnsureAlloc7718`
-- `Unk02e000_AddCounter5fc4`
-- `Unk02e000_SetSlot`
+## M1-T652
 
+All eight existing C candidates verified at **100% objdiff**. Retained matching
+logic, added instruction-based contracts and typed the allocation and resource
+callee parameters. The TU already existed despite the card's creation wording.
+No new tests are required by this card; objdiff checks generated instructions.
+
+| Function | Address / bytes | Instruction evidence and contract |
+| --- | --- | --- |
+| `Unk02e000_SetMgrUnk38` | 0x0202e070 / 32 | Conditional stores of the two input words to manager +0x38/+0x3c; null is ignored. |
+| `Unk02e000_HasField36` | 0x0202e904 / 32 | Null returns zero; otherwise loads an unsigned halfword at +0x36 and normalizes to boolean. Borrowed storage must support the halfword load. |
+| `Unk02e000_Unk_02e0cc` | 0x0202e0cc / 40 | Calls func_0205ad2c(data_0213d89c[0]), then func_0205ad78(data_02140ac8, 0xde). Purpose unknown; neutral name retained. |
+| `Unk02e000_GetTier` | 0x0202e440 / 40 | Sign tests after subtracting 3, 11 and 31 select tiers 0..3. GetSlotPtr uses these same tier boundaries; intended inputs are slot indices. |
+| `Unk02e000_Unk_02e144` | 0x0202e144 / 44 | Calls Unk_02e180, func_0202e23c and Call_02008848 in order, then loops over Unk_02e5c4(0) and (1). Requires allocation; overall purpose unconfirmed. |
+| `Unk02e000_EnsureAlloc7718` | 0x0202e114 / 48 | If global word +4 is zero, calls func_02052fe0(0x7718) and stores its result there. Module retains ownership; no allocation failure handling in original. |
+| `Unk02e000_AddCounter5fc4` | 0x0202e1f8 / 48 | Adds input to work word +0x5fc4, then stores the smaller unsigned value of the wrapped sum and 35999999. Requires allocation. |
+| `Unk02e000_SetSlot` | 0x0202e000 / 52 | Rejects null manager and signed indices outside 0..15; stores input word at manager +0x74 + index*4. Borrowed manager remains externally owned. |
 
 ## Not done in M1-T653
 - `Unk02e000_Unk_02e7c0`
@@ -84,18 +91,11 @@ No M1-T650 targets remain. Historical unresolved candidate:
 - `Unk02e000_GetSlotPtr`
 - `func_0202e5dc`
 - `func_0202e23c`
-- `Unk02e000_Unk_02e0cc`: decompiler-derived (plain cleanup)
 - `Unk02e000_Unk_02e180`: decompiler-derived (plain cleanup)
-- `Unk02e000_SetSlot`: hand-matched
 - `Unk02e000_GetSlot`: hand-matched
-- `Unk02e000_SetMgrUnk38`: hand-matched
-- `Unk02e000_EnsureAlloc7718`: hand-matched
-- `Unk02e000_AddCounter5fc4`: hand-matched
-- `Unk02e000_GetTier`: hand-matched
 - `Unk02e000_Unk_02e7c0`: hand-matched
 - `Unk02e000_FindEntryIndex`: hand-matched
 - `Unk02e000_Unk_02e840`: hand-matched
-- `Unk02e000_HasField36`: hand-matched
 - `Unk02e000_TestFlag`: hand-matched
 - `Unk02e000_SetRecord`: hand-matched
 - `Unk02e000_SetSlot40`: hand-matched

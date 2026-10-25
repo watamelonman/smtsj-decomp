@@ -266,3 +266,14 @@ that constant and removes the entry comparison and branch. Scope
 control flow without changing their ordinary C behavior. Declaring the result
 before the id also reproduces the original register allocation. All three
 functions then match at 100%; the pragma is popped before any later code.
+
+
+## DEC-015 — Preserve StaffRoll image lookup scheduling
+
+In func_02117f94, retain a borrowed pointer to the selected ten-word table row
+and add its selected value twice before adding the image record's resource
+index. With mwccarm 2.0/sp1p5, spelling this as multiplication by two schedules
+the two table lookups differently and changes register allocation. Repeated
+addition reproduces the original shifted add and all preceding instructions
+without volatile accesses or compiler directives. Table values must keep the
+signed index arithmetic in range, and both table indices must be valid.
