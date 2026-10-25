@@ -8,8 +8,6 @@ typedef struct Unk0afc28Work {
 } Unk0afc28Work;
 
 
-
-
 /* Add a signed delta to field +0x20; the caller owns the work area. */
 void Unk0afc28_Unk_0afc28(Unk0afc28Work *arg0, int arg1){
   arg0->unk_0020 = arg0->unk_0020 + arg1;
@@ -18,9 +16,6 @@ void Unk0afc28_Unk_0afc28(Unk0afc28Work *arg0, int arg1){
 
 int func_020492ec(u32 selector, int value);
 int func_0204a67c(const void *work, u32 selector);
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
 typedef struct Unk0afc28Pos12 {
     u32 w[3];
 } Unk0afc28Pos12;
@@ -40,7 +35,7 @@ Unk0afc28Ptrs *Unk044904_Get_data_0215ee98(void);
 typedef struct Unk0afc28Pos Unk0afc28Pos;
 Unk0afc28Pos *func_020982c0(int id);
 int Unk0afc28_IsOrigin(Unk0afc28Pos *p);
-/* Owns a three-word record at +0x24; earlier fields are unknown. */
+/* Borrowed work view with a three-word record at +0x24. */
 typedef struct Unk0afc28RecordWork {
     u8 pad_0000[0x24];
     Unk0afc28Pos12 unk_0024;
@@ -69,7 +64,6 @@ void Unk0afc28_Unk_0afdd0(const void *arg0, u32 arg1, int arg2)
   func_020492ec(arg1,tmp1);
   return;
 }
-
 
 
 /* Map selectors 0..7 to 8..15, otherwise 26; evidence: jump-table returns. */
