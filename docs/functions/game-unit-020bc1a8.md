@@ -46,16 +46,28 @@ that observed read with volatile gives identical instructions (DEC-010).
 All eight requested functions report 100%. No M1-T546 hard functions remain.
 No new tests: the card waives them and objdiff verifies the original instructions.
 
-## Not done in M1-T547
-- `Unk0bc1a8_IsSlotEmptyOrFlag8`
-- `Unk0bc1a8_Unk_0bc490`
-- `func_020bc1a8`
-- `func_020bc8c8`
-- `func_020bc3bc`
-- `func_020bc428`
-- `func_020bcbc4`
-- `func_020bc6fc`
-- `Unk0bc1a8_Unk_0bc928`: decompiler-derived
+## M1-T547
+
+Evidence is the original ARM instructions in
+`build/delinks/src/game/unit_020bc1a8.o`. All eight functions match at 100%.
+The existing source was extended rather than recreated, preserving earlier cards.
+
+| Function | Size | Evidence and contract |
+| --- | ---: | --- |
+| `Unk0bc1a8_IsSlotEmptyOrFlag8` | 76 | 020bc688: signed index >=41, an empty slot, or mask 8 at object +36 returns 1. Other indices require initialized context and a valid slot. |
+| `Unk0bc1a8_Unk_0bc490` | 80 | 020bc490: invokes callback +24 on payload +52 unless absent or mask 1 at +36 is set; brackets the call with mode-2 helpers and 0580ec toggles. Requires a live object. |
+| `func_020bc1a8` | 88 | 020bc1a8: requires 03fa28 success, clear state bit 3 at +64, zero state +92 and zero 04a968 result for state +140. State returned by 044904 is borrowed. |
+| `func_020bc8c8` | 96 | 020bc8c8: initializes a 72-byte request; signed slots below 41 succeed. Other slots fail, with an optional callback at data_02176ba8 +4 for slot 0xfffe and mode 3. Source is a DS address of a 68-byte payload or zero. |
+| `func_020bc3bc` | 100 | 020bc3bc: invokes callback +16 when masks 4/16 at +36 are clear and context mode is nonzero; then invokes callback +12 when mask 2 is clear. Both callbacks are optional and borrow payload +52. |
+| `func_020bc428` | 104 | 020bc428: invokes callback +20 unless absent or mask 1 is set; brackets it with mode-2 calls and toggles conditioned on 0bc420. Requires a live object. |
+| `func_020bcbc4` | 112 | 020bcbc4: builds a mode-4 request; missing source sets first presence bit and word 0xffff, then dispatches through 0bc770. The 72-byte stack request is borrowed only during calls. |
+| `func_020bc6fc` | 116 | 020bc6fc: stores mode, then copies a 68-byte source payload or clears two flag bytes and sixteen words. Destination requires word alignment and 72 writable bytes; padding at +6/+7 is left untouched for null source. |
+
+Internal layout types express only observed fields. Word alignment of the stack
+request and reading flags before storing a payload word preserve the original
+access sequence. Application meanings remain unknown, so existing neutral names
+are retained. No new tests are required by the card; objdiff checks instruction
+identity. No M1-T547 hard functions remain.
 
 ## Not done in M1-T548
 - `func_020bc770`
@@ -64,5 +76,5 @@ No new tests: the card waives them and objdiff verifies the original instruction
 - `func_020bc9f4`
 - `func_020bcacc`
 - `func_020bc200`
-- `Unk0bc1a8_Unk_0bc490`: hand-matched
-- `Unk0bc1a8_IsSlotEmptyOrFlag8`: hand-matched
+
+`Unk0bc1a8_Unk_0bc928` remains decompiler-derived for M1-T548.

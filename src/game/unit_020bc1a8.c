@@ -14,11 +14,13 @@ void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1);
 /* Returns the constant zero, as shown by mov r0, #0 at 020bc420. */
 int Unk0bc1a8_GetConst0(void) { return 0; }
 
-void Unk06ae94_Unk_06ae94();
-void func_020580ec();
-void Unk06ae94_Unk_06aeb4();
+void Unk06ae94_Unk_06ae94(int mode);
+void func_020580ec(int mode);
+void Unk06ae94_Unk_06aeb4(int mode);
 u32 Unk0bc1a8_Unk_0bcc34(int arg0);
 typedef void (*Unk0bc1a8Fn)(u8 *);
+/* Evidence: 020bc490 invokes callback +24 on payload +52 unless absent or
+ * flag 1 is set, bracketed by mode-2 calls and 020580ec toggles. */
 void Unk0bc1a8_Unk_0bc490(u8 *p)
 {
     if (FIELD(u32, p, 24) == 0 || (FIELD(u32, p, 36) & 1) == 1) {
@@ -52,7 +54,7 @@ void Unk0bc1a8_Unk_0bc504(u32 arg0,u32 arg1)
 
 
 int func_020bc770(u32 slot, void *request);
-int func_020bc8c8(void *request, u32 slot, u32 value, int mode);
+int func_020bc8c8(void *request, s32 slot, u32 value, int mode);
 /* Evidence: 020bc5c0 stores at payload -4 and returns success. A non-null
  * p must have a writable, word-aligned header word immediately before it. */
 int Unk0bc1a8_SetPrevWord(u32 *p, u32 value)
@@ -237,6 +239,8 @@ int Unk0bc1a8_IsSlotEmpty(int i)
     return (*(Unk0bc1a8Slot **)*data_02176ba8)[i].obj == 0;
 }
 
+/* Evidence: 020bc688 returns 1 for index >=41, an empty slot, or flag 8
+ * at object +36. Other indices require a valid initialized slot table. */
 int Unk0bc1a8_IsSlotEmptyOrFlag8(int i)
 {
     u8 *o;
@@ -262,4 +266,113 @@ void func_020bc614(void)
             FIELD(u32, object, 36) = FIELD(u32, object, 40);
         }
     }
+}
+
+int Unk03e43c_Unk_03fa28(void);
+u8 *Unk044904_Get_data_0215ee98(void);
+int func_0204a968(void *record, int mode);
+/* Borrowed state prefix: the original reads bit 3 of the word at +64. */
+typedef struct Unk0bc1a8State {
+    u8 prefix[64];
+    u32 unused : 3;
+    u32 flag3 : 1;
+    u32 remaining : 28;
+} Unk0bc1a8State;
+
+/* Evidence: 020bc1a8 requires 03fa28 success, clear state bit 3 and +92,
+ * and a zero result from 04a968 for the record at +140. State is borrowed. */
+int func_020bc1a8(void)
+{
+    u8 *state;
+    if (!Unk03e43c_Unk_03fa28()) return 0;
+    state = Unk044904_Get_data_0215ee98();
+    if (((Unk0bc1a8State *)state)->flag3) return 0;
+    if (FIELD(u32, state, 92) != 0) return 0;
+    return func_0204a968(state + 140, 0) == 0;
+}
+
+/* Evidence: 020bc3bc gates callback +16 on flags 4/16 and context mode,
+ * then callback +12 on flag 2. Callbacks borrow the live payload at +52. */
+void func_020bc3bc(u8 *p)
+{
+    if (FIELD(Unk0bc1a8Fn, p, 16) != 0 &&
+        (FIELD(u32, p, 36) & 4) != 4 &&
+        (FIELD(u32, p, 36) & 16) != 16 && Unk0bc1a8_Unk_0bc6e8()) {
+        FIELD(Unk0bc1a8Fn, p, 16)(p + 52);
+    }
+    if (FIELD(Unk0bc1a8Fn, p, 12) != 0 && (FIELD(u32, p, 36) & 2) != 2) {
+        FIELD(Unk0bc1a8Fn, p, 12)(p + 52);
+    }
+}
+
+/* Evidence: 020bc428 invokes callback +20 unless absent or flag 1 set;
+ * 0bc420 controls the surrounding 0580ec toggles. Object remains live. */
+void func_020bc428(u8 *p)
+{
+    if (FIELD(u32, p, 20) == 0 || (FIELD(u32, p, 36) & 1) == 1) return;
+    Unk06ae94_Unk_06ae94(2);
+    if (!Unk0bc1a8_GetConst0()) func_020580ec(0);
+    FIELD(Unk0bc1a8Fn, p, 20)(p + 52);
+    if (!Unk0bc1a8_GetConst0()) func_020580ec(1);
+    Unk06ae94_Unk_06aeb4(2);
+}
+
+/* Request payload is copied by value; the two padding bytes are not cleared
+ * by the original null-source initialization. */
+typedef struct Unk0bc1a8Payload {
+    u8 flags[2];
+    u32 words[16];
+} Unk0bc1a8Payload;
+
+/* A null payload is ignored; indices 0..15 set a word and its presence bit.
+ * Read flags before writing the word, as observed at 020bcc08..020bcc18. */
+static inline void Unk0bc1a8_SetPayloadWord(Unk0bc1a8Payload *p, int index, u32 value)
+{
+    u32 flags;
+    if (!p) return;
+    flags = p->flags[index >> 3];
+    p->words[index] = value;
+    p->flags[index >> 3] = flags | (1 << (index & 7));
+}
+
+/* Evidence: 020bc6fc writes mode, copies 68 source bytes if present, or
+ * clears two flag bytes and sixteen words. Destination owns 72 bytes. */
+void func_020bc6fc(u8 *request, u32 mode, const Unk0bc1a8Payload *source)
+{
+    FIELD(u32, request, 0) = mode;
+    if (source) {
+        *(Unk0bc1a8Payload *)(request + 4) = *source;
+    } else {
+        int i;
+        if (!(request + 4)) return;
+        for (i = 0; i < 2; ++i) FIELD(u8, request + i, 4) = 0;
+        for (i = 0; i < 16; ++i) ((Unk0bc1a8Payload *)(request + 4))->words[i] = 0;
+    }
+}
+
+/* Evidence: 020bc8c8 initializes the borrowed request, accepts signed slots
+ * below 41, and for slot 0xfffe/mode 3 calls the optional global callback. */
+int func_020bc8c8(void *request, s32 slot, u32 value, int mode)
+{
+    func_020bc6fc(request, mode, (const Unk0bc1a8Payload *)value);
+    if (slot >= 41) {
+        if (slot == 0xfffe && mode == 3) {
+            Unk0bc1a8Fn callback = FIELD(Unk0bc1a8Fn, data_02176ba8, 4);
+            if (callback) callback(request);
+        }
+        return 0;
+    }
+    return 1;
+}
+
+/* Evidence: 020bcbc4 builds mode 4, marks a missing source with flag 1
+ * and word 0xffff, then dispatches through 0bc770. Request is stack-borrowed. */
+void func_020bcbc4(u32 slot, u32 source)
+{
+    u32 request[18];
+    if (!func_020bc8c8(request, slot, source, 4)) return;
+    if (!source) {
+        Unk0bc1a8_SetPayloadWord((Unk0bc1a8Payload *)(request + 1), 0, 0xffff);
+    }
+    func_020bc770(slot, request);
 }
