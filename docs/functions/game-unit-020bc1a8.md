@@ -69,12 +69,26 @@ access sequence. Application meanings remain unknown, so existing neutral names
 are retained. No new tests are required by the card; objdiff checks instruction
 identity. No M1-T547 hard functions remain.
 
-## Not done in M1-T548
-- `func_020bc770`
-- `func_020bc814`
-- `func_020bc2fc`
-- `func_020bc9f4`
-- `func_020bcacc`
-- `func_020bc200`
+## M1-T548
 
-`Unk0bc1a8_Unk_0bc928` remains decompiler-derived for M1-T548.
+All seven functions report 100% in objdiff. The existing source was extended,
+preserving previous cards. Evidence is the original ARM instructions in
+`build/delinks/src/game/unit_020bc1a8.o`; offsets are bytes.
+
+| Function | Size | Evidence and contract |
+| --- | ---: | --- |
+| `Unk0bc1a8_Unk_0bc928` | 140 | Builds mode 0, creates the slot object, sets header +36 mask 4, clears +40 low four bits, stores value at +48 and dispatches the request. Source is a borrowed payload DS address or zero; fourth argument is unused. |
+| `func_020bc770` | 164 | Slot 0xfffe invokes the optional global callback; signed slots 0..40 dispatch object callback +32 with payload +52 and request. Returns 0 for invalid, empty or callback-free slots, otherwise 1. Request is borrowed. |
+| `func_020bc814` | 180 | Validates signed slot 0..40, clears a 36-byte descriptor, invokes slot +4 to fill it, creates an object and stores its slot/value at +44/+48. Optional slot +8 receives payload +52. Requires successful allocation; returns payload or null for invalid/unconfigured slot. |
+| `func_020bc2fc` | 192 | Selects wrappers according to descriptor callbacks +12/+16, +20 and +24; allocates descriptor size +52, copies 36 bytes and clears header +36..51. Descriptor is borrowed; null allocation returns null. |
+| `func_020bc9f4` | 216 | Builds mode 2; optional first payload word updates object +48 except sentinel 0xfffb. Sentinel 0xfffc instead selects +40 mask 24, otherwise mask 12; then dispatches. Requires a live slot object. |
+| `func_020bcacc` | 248 | Builds mode 3; ignores empty slots, clears +40 mask 24 for first-word sentinel 0xfffc, otherwise mask 15. Missing source supplies presence bit 0 and first word 0xffff, then dispatches. |
+| `func_020bc200` | 252 | Resolves a record and category from metadata +36 bits 21..27. Requires a nonzero work halfword at +902 + category*2, excludes categories 12/13, nonzero 04a968/record flag, record +642 bits 1/2 and registered IDs. Requires record mode-2 value below state +140 mode-2 value. State/work/record views are borrowed. |
+
+The descriptor and flag views encode only observed storage. Neutral names remain
+because the application meaning of these operations is not established. Local
+callee placement preserves original relocation matching (DEC-011). No boundary
+changes or new dependencies. No new tests are required by the card; objdiff
+checks every instruction against the original.
+
+Hard list: none.
