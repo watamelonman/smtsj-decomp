@@ -5,7 +5,8 @@
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0939f0Work {
-    u8 pad_0000[8];
+    s32 unk_0000;
+    s32 unk_0004;
     u32 unk_0008;
     u8 unk_000c;
     u8 unk_000d;
@@ -14,7 +15,7 @@ typedef struct Unk0939f0Work {
     s32 unk_002c;
     s32 unk_0030;
     s32 unk_0034;
-    u8 pad_0038[0x4];
+    s32 unk_0038;
     u32 unk_003c;
     u32 unk_0040;
     u32 unk_0044;
@@ -303,4 +304,201 @@ void func_02093a1c(void)
     }
     base[17].unk_006c = 0;
     base[18].unk_006c = 0;
+}
+
+void func_020086bc(const void *source, void *destination, u32 size);
+const void *Unk06e4d8_Unk_06e4d8(s32 id);
+const void *Unk06e4d8_Unk_06e4f0(s32 id);
+const void *Unk06e4d8_Unk_06e508(s32 id);
+const void *Unk06e4d8_Unk_06e520(s32 id);
+void func_0207112c(u8 *bytes, u32 *field_5c, u32 *field_64,
+                   u32 *field_3c, u32 *field_4c);
+/* Advance the borrowed record's timed state machine. Evidence: original state
+ * switch at +0x6c, timing words +0/+4/+8 and kind-selected 32-byte copies. */
+void func_02093b6c(int kind, Unk0939f0Ent *entry)
+{
+    Unk0939f0Work *work = (Unk0939f0Work *)entry;
+    u8 saved[8];
+    switch (work->unk_006c) {
+    case 1:
+        if ((s32)work->unk_0008 < work->unk_0000) break;
+        switch (kind) {
+        case 0:
+            func_020086bc(&work->unk_000c, saved, 8);
+            func_020086bc(Unk06e4d8_Unk_06e4d8(work->unk_006d), &work->unk_000c, 32);
+            func_020086bc(saved, &work->unk_000c, 8);
+            break;
+        case 1:
+            func_020086bc(Unk06e4d8_Unk_06e4f0(work->unk_006d), &work->unk_000c, 32);
+            break;
+        case 2:
+            func_020086bc(Unk06e4d8_Unk_06e508(work->unk_006d), &work->unk_000c, 32);
+            break;
+        case 3:
+            func_020086bc(Unk06e4d8_Unk_06e520(work->unk_006d), &work->unk_000c, 32);
+            break;
+        }
+        work->unk_002c = work->unk_000c << 12;
+        work->unk_0030 = work->unk_000d << 12;
+        work->unk_0034 = work->unk_000e << 12;
+        work->unk_0038 = work->pad_000f[0] << 12;
+        func_0207112c(&work->unk_000c, &work->unk_005c, &work->unk_0064,
+                      &work->unk_003c, &work->unk_004c);
+        work->unk_006c = 2;
+    case 2:
+        Unk0939f0_Unk_093dbc(work);
+        if ((s32)work->unk_0008 < work->unk_0004) break;
+        if (work->unk_0068 == 1) work->unk_006c = 3;
+        else Unk0939f0_Reset(work);
+        break;
+    case 3:
+        Unk0939f0_Unk_093ea8(work);
+    case 4:
+        func_02093dfc(work);
+        if ((s32)work->unk_0008 < work->unk_0004 + 13) break;
+        work->unk_006c = 5;
+    case 5:
+        Unk0939f0_Reset(work);
+        break;
+    }
+    work->unk_0008++;
+}
+
+/* Return the selected duration, adding thirteen ticks for a nonwhite triplet.
+ * Evidence: original byte packing at +0xd4/+0xd5/+0xd6 (stride 0x20),
+ * comparison against 0xffffff00 and query duration words. */
+s32 func_020943dc(u32 kind, s32 index)
+{
+    u32 packed;
+    s32 duration;
+    if (!func_0209432c(kind, index)) return 0;
+    if (*data_02175d90 == 0) return 0;
+    switch (kind) {
+    case 0:
+        packed = (((u8 *)Unk06dddc_Unk_06e058(index))[0xd4] << 24) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0xd5] << 16) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0xd6] << 8);
+        duration = Unk06dddc_Unk_06e058(index)->unk_00d8;
+        if (packed != 0xffffff00) return duration + 13;
+        return duration;
+    case 1:
+        packed = (((u8 *)Unk06dddc_Unk_06e058(index))[0xf4] << 24) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0xf5] << 16) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0xf6] << 8);
+        duration = Unk06dddc_Unk_06e058(index)->unk_00f8;
+        if (packed != 0xffffff00) return duration + 13;
+        return duration;
+    case 2:
+        packed = (((u8 *)Unk06dddc_Unk_06e058(index))[0x114] << 24) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0x115] << 16) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0x116] << 8);
+        duration = Unk06dddc_Unk_06e058(index)->unk_0118;
+        if (packed != 0xffffff00) return duration + 13;
+        return duration;
+    case 3:
+        packed = (((u8 *)Unk06dddc_Unk_06e058(index))[0x134] << 24) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0x135] << 16) |
+                 (((u8 *)Unk06dddc_Unk_06e058(index))[0x136] << 8);
+        duration = Unk06dddc_Unk_06e058(index)->unk_0138;
+        if (packed != 0xffffff00) return duration + 13;
+        return duration;
+    }
+    return 0;
+}
+
+extern u8 data_0216bb9c[];
+extern u8 data_0216bb9d[];
+extern u8 data_0216bb9e[];
+extern s32 data_0216bba0[];
+extern u8 data_0216bbbc[];
+extern u8 data_0216bbbd[];
+extern u8 data_0216bbbe[];
+extern s32 data_0216bbc0[];
+extern u8 data_0216bbdc[];
+extern u8 data_0216bbdd[];
+extern u8 data_0216bbde[];
+extern s32 data_0216bbe0[];
+extern u8 data_0216bbfc[];
+extern u8 data_0216bbfd[];
+extern u8 data_0216bbfe[];
+extern s32 data_0216bc00[];
+/* Set up active records from the indexed table. Evidence: original four
+ * availability checks, 0x148-byte table stride and sixteen-slot state scan.
+ * The shared group must already exist; records remain borrowed. */
+void func_02093f70(s32 index)
+{
+    Unk0939f0Work *work;
+    s32 z, y, x;
+    u32 packed;
+    if (func_0209432c(0, index)) {
+        if (func_0209461c(0, index)) {
+            work = func_02093d14(0, 0);
+            x = work->unk_002c >> 12;
+            y = work->unk_0030 >> 12;
+            z = work->unk_0034 >> 12;
+            Unk0939f0_Unk_093f0c(work);
+            work->unk_000c = x;
+            work->unk_000d = y;
+            work->unk_000e = z;
+        }
+        func_02093d14(0, 0)->unk_0008 = 0;
+        func_02093d14(0, 0)->unk_006c = 1;
+        func_02093d14(0, 0)->unk_006d = index;
+        packed = (data_0216bb9c[index * 0x148] << 24) |
+                 (data_0216bb9d[index * 0x148] << 16) |
+                 (data_0216bb9e[index * 0x148] << 8);
+        func_02093d14(0, 0)->unk_0004 = *(s32 *)((u8 *)data_0216bba0 + index * 0x148);
+        if (packed != 0xffffff00)
+            func_02093d14(0, 0)->unk_0068 = 1;
+        else
+            func_02093d14(0, 0)->unk_0068 = 2;
+    }
+    if (func_0209432c(1, index)) {
+        s32 i;
+        Unk0939f0Work *cursor;
+        Unk0939f0Work *base = (Unk0939f0Work *)*data_02175d90;
+        cursor = base;
+        for (i = 0; i < 16; i++, cursor++) {
+            if (cursor[1].unk_006c == 0) {
+                ((Unk0939f0Group *)base)->entries[i].unk_006d = index;
+                break;
+            }
+        }
+        func_02093d14(1, index)->unk_0008 = 0;
+        func_02093d14(1, index)->unk_006c = 1;
+        packed = (data_0216bbbc[index * 0x148] << 24) |
+                 (data_0216bbbd[index * 0x148] << 16) |
+                 (data_0216bbbe[index * 0x148] << 8);
+        func_02093d14(1, index)->unk_0004 = *(s32 *)((u8 *)data_0216bbc0 + index * 0x148);
+        if (packed != 0xffffff00)
+            func_02093d14(1, index)->unk_0068 = 1;
+        else
+            func_02093d14(1, index)->unk_0068 = 2;
+    }
+    if (func_0209432c(2, index)) {
+        func_02093d14(2, 0)->unk_0008 = 0;
+        func_02093d14(2, 0)->unk_006c = 1;
+        func_02093d14(2, 0)->unk_006d = index;
+        packed = (data_0216bbdc[index * 0x148] << 24) |
+                 (data_0216bbdd[index * 0x148] << 16) |
+                 (data_0216bbde[index * 0x148] << 8);
+        func_02093d14(2, 0)->unk_0004 = *(s32 *)((u8 *)data_0216bbe0 + index * 0x148);
+        if (packed != 0xffffff00)
+            func_02093d14(2, 0)->unk_0068 = 1;
+        else
+            func_02093d14(2, 0)->unk_0068 = 2;
+    }
+    if (func_0209432c(3, index)) {
+        func_02093d14(3, 0)->unk_0008 = 0;
+        func_02093d14(3, 0)->unk_006c = 1;
+        func_02093d14(3, 0)->unk_006d = index;
+        packed = (data_0216bbfc[index * 0x148] << 24) |
+                 (data_0216bbfd[index * 0x148] << 16) |
+                 (data_0216bbfe[index * 0x148] << 8);
+        func_02093d14(3, 0)->unk_0004 = *(s32 *)((u8 *)data_0216bc00 + index * 0x148);
+        if (packed != 0xffffff00)
+            func_02093d14(3, 0)->unk_0068 = 1;
+        else
+            func_02093d14(3, 0)->unk_0068 = 2;
+    }
 }

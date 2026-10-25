@@ -6,8 +6,8 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int Unk02e000_Unk_02e774();
-void Unk0986ac_SetFlagBit();
+int Unk02e000_Unk_02e774(void);
+void Unk0986ac_SetFlagBit(int bit, int on);
 int Unk0986ac_TestFlagBit(int bit);
 
 void Unk0986ac_Nop_099230(void);
@@ -18,31 +18,35 @@ void Unk0986ac_Unk_09895c(u32 arg0);
 int Unk0986ac_Unk_0986ac(void);
 int Unk0986ac_Unk_0986c0(int arg0);
 
-/* empty callback */
+/* No-op callback: the original at 0x02099230 consists only of bx lr. */
 void Unk0986ac_Nop_099230(void) { }
 
-/* decompiler-derived */
+/* Convert an external id to a bit index by subtracting 111 (0x02098978).
+ * Callers in BattleShowingTask.c pass the result to the flag-test wrapper. */
 int Unk0986ac_Unk_098978(int arg0)
 {
   return arg0 + -0x6f;
 }
 
-/* forwards to `Unk0986ac_TestFlagBit` */
+/* Preserve the bit-test result; 0x0209896c tail-calls TestFlagBit unchanged. */
 int Unk0986ac_Thunk_02098714(int bit) { return Unk0986ac_TestFlagBit(bit); }
 
-/* decompiler-derived */
+/* Set the indexed flag; 0x0209894c forwards bit and constant 1 to SetFlagBit.
+ * The caller must supply an index within the borrowed flag storage. */
 void Unk0986ac_Unk_09894c(u32 arg0)
 {
   Unk0986ac_SetFlagBit(arg0,1);
 }
 
-/* decompiler-derived */
+/* Clear the indexed flag; 0x0209895c forwards bit and constant 0 to SetFlagBit.
+ * The caller must supply an index within the borrowed flag storage. */
 void Unk0986ac_Unk_09895c(u32 arg0)
 {
   Unk0986ac_SetFlagBit(arg0,0);
 }
 
-/* decompiler-derived */
+/* Return a borrowed 32-bit address at base + 0x5c80; the two additions at
+ * 0x020986ac establish the offset, but do not establish the storage size. */
 int Unk0986ac_Unk_0986ac(void)
 {
   int value;
@@ -50,7 +54,8 @@ int Unk0986ac_Unk_0986ac(void)
   return value + 0x5c80;
 }
 
-/* decompiler-derived */
+/* Locate the byte for a bit index in borrowed storage (0x020986c0 uses
+ * arithmetic shift by three). Callers are responsible for index bounds. */
 int Unk0986ac_Unk_0986c0(int arg0)
 {
   int value;
@@ -114,7 +119,8 @@ u32 Unk0986ac_Unk_098918(void)
   return value3;
 }
 
-/* decompiler-derived */
+/* Read the unsigned byte at borrowed storage + 13; ldrb at 0x02098988
+ * establishes width and offset, while its application meaning is unknown. */
 u8 Unk0986ac_Unk_098980(void)
 {
   int tmp1;

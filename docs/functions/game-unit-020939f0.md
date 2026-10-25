@@ -46,12 +46,23 @@ identifier at +0x6d and trailing padding, as established by the original stride.
 This card requires no new runtime tests; instruction and relocation comparison
 provides the acceptance check.
 
-## Not done in M1-T619
+## M1-T619 verified functions
 
-- `func_02093b6c`
-- `func_020943dc`
-- `func_02093f70`
+All three functions match the original ARM object at 100% objdiff, including
+relocations. Neutral original symbols are retained because higher-level game
+semantics are not established. Evidence is the corresponding instructions in
+`build/delinks/src/game/unit_020939f0.o`.
+
+| Function | Contract and evidence |
+| --- | --- |
+| `func_02093b6c` | Advances a borrowed writable 0x70-byte record by one tick. The state byte at +0x6c selects initialization, update, return interpolation and reset. Kinds 0–3 select the original 32-byte providers; kind 0 preserves the first eight bytes. Original comparisons use signed timing words at +0, +4 and +8. Fallthrough performs newly selected states in the same tick. |
+| `func_020943dc` | Returns zero when the kind/index query is unavailable or the shared group is absent. Otherwise returns the selected duration word, adding thirteen ticks when the three packed bytes differ from 0xffffff00. Original query calls, byte offsets +0xd4/+0xd5/+0xd6 and 0x20 stride establish this behavior; repeated provider calls are retained. |
+| `func_02093f70` | Requires an initialized shared group and a valid table index. Starts each available kind using the 0x148-byte table stride, resets ticks, sets state 1 and selects mode 1 or 2 from the packed byte triplet. Kind 0 retains current integer coordinates when already active; kind 1 claims the first inactive indexed record. Original identifier scan and lookup fallthrough are preserved, including behavior when no slot is free. |
+
+The existing private layout now exposes the observed signed timing words and
+fourth coordinate. No module boundary changed. Runtime tests are not required
+by this card; object comparison checks the exact instructions and relocations.
 
 ## Hard list
 
-None for M1-T617 or M1-T618.
+None for M1-T617, M1-T618 or M1-T619.
