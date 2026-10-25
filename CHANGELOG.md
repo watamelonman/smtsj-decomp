@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched all eight M1-T640 StaffRoll helpers at 100% objdiff, including the free-record search; added typed contracts and original-instruction evidence.
+- Verified the eight M1-T631 game/unit_020986ac flag-storage helpers and no-op callback; documented typed contracts and instruction evidence.
 - M1-T622: matched all eight game/unit_020f7188 targets; documented callback descriptors, state setters and typed request builders.
 - Matched all eight M1-T627 game/unit_020a163c comparison, resource lookup, ID conversion and state callback functions at 100% objdiff.
 - Matched all five M1-T616 game/unit_021218d0 field and slot initialization functions with typed record views and documented contracts.
