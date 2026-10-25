@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T622: matched all eight game/unit_020f7188 targets; documented callback descriptors, state setters and typed request builders.
 - Matched all eight M1-T621 `game/unit_020f7188` functions at 100% objdiff; documented their field contracts and added a typed state layout.
 - M1-T620: matched seven game/unit_020f6250 scene transition and resource-selection functions; documented the remaining sine-alpha function on the hard list.
 - Verified all eight M1-T617 game/unit_020939f0 helpers at 100% objdiff; added typed work fields, helper contracts and per-function evidence.

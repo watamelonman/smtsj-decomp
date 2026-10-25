@@ -244,3 +244,14 @@ changing both register allocation and the transfer setup. Use a volatile word
 view for this single reload to reproduce the observed access. This matching
 constraint does not imply concurrent mutation or hardware ownership. Slot
 contents and the scan itself remain ordinary memory accesses.
+
+
+## DEC-013 — Preserve one-word request records in 020f7188
+
+The four request builders store selected values both in source stack slots and
+in outgoing request words. Model each outgoing word as a one-word record and
+copy a local record into it. With mwccarm 2.0/sp1p5 this reproduces those stores
+without volatile accesses, padding stores or compiler directives. Ordinary scalar
+assignments remove the source copies. The two flag bytes and sixteen records
+are cleared separately, leaving the two alignment bytes unspecified as in ARM.
+These private views describe only the observed request layout, not gameplay meaning.
