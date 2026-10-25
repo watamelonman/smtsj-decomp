@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all four M1-T679 record selection, name search, tagged negation and binary operator functions at 100% objdiff.
 - Match all eight M1-T678 game/unit_02039bb4 handlers, including saved-value duplication and callback dispatch; resolve both hard-function deferrals.
 - Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.
 - Match seven M1-T689 state, iterator, callback, and palette routines; document the remaining pair updater.
