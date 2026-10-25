@@ -48,17 +48,39 @@ observed fields; the table selector and offset remain caller-bounded.
 Hard list for M1-T504: none. No new behavioral tests are required by the card;
 the original object is the instruction-level acceptance oracle.
 
-## Not done in M1-T506
+## M1-T505: eight matched functions
+
+Evidence: ARM disassembly and relocations from the delinked original object;
+objdiff reports 100% for all eight. Existing neutral symbols are retained.
+
+- `Unk0f3db4_Unk_0f3e6c` (92 B): returns lengths 50, 50, 50, 50,
+  100, 60 for selectors 0..5 and zero otherwise.
+- `func_020f4560` (96 B): rejects selectors outside 0..5, then returns
+  whether any packed state equals 2. The offset counter is a halfword.
+- `Unk0f3db4_Unk_0f3ec8` (100 B): returns the borrowed work address
+  plus 0, 50, 100, 150, 200, or 300, or null for an invalid selector.
+- `func_020f43d4` (116 B): scans all six tables with halfword offsets,
+  promoting state 2 to 3 while preserving the writer's bit-2 rule.
+- `func_020f3de8` (132 B): selects resource 8, mapping selectors 0/1
+  to table 0 and 2..5 to tables 1..4. Selector 1 adds 50 to the halfword
+  index with wraparound. Calls 0204fe18, then obtains the base through
+  0204fde0 and returns the indexed 46-byte record. Ownership stays external.
+- `func_020f40c8` (152 B): resolves existing eight-byte entries using
+  their ID at +4 and index at +2. Compares strings at record +22 and
+  appends the incoming ID/index only when no equal string exists.
+  The caller provides writable capacity; no bound is present in the original.
+- `Unk0f3db4_Unk_0f4674` (152 B): copies only low two state bits for
+  byte ranges [0,100), [100,150), [150,200), and [300,360).
+  The gap [200,300) is intentionally untouched, following the original.
+- `func_020f3f2c` (160 B): maps signed ID ranges 211..260, 261..310,
+  311..360, 361..410, 111..210, and 51..110 to selectors 0..5.
+  Other IDs return zero.
+
+Hard list for M1-T505: none. The original object supplies the instruction-level
+acceptance oracle; this card requires no new behavioral tests.
+
+## Remaining functions outside M1-T505
+
 - `func_020f3fcc`
 - `func_020f45c0`
 - `func_020f4180`
-- `Unk0f3db4_Unk_0f3e6c`: decompiler-derived
-- `Unk0f3db4_Unk_0f3ec8`: decompiler-derived
-- `Unk0f3db4_Unk_0f4674`: decompiler-derived
-
-## Not done in M1-T505
-- `func_020f4560`
-- `func_020f43d4`
-- `func_020f3de8`
-- `func_020f40c8`
-- `func_020f3f2c`

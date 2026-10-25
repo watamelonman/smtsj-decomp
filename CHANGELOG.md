@@ -3,6 +3,13 @@
 ## Unreleased
 
 - Match four more game/unit_020fd9f0 helpers for movement, countdown, drawing, and secondary object setup; document two remaining rendering matches.
+- Verified all eight M1-T537 ImageBgDual3D predicates, field updates and helper sequences at 100% objdiff; added typed contracts and instruction evidence.
+- Matched all eight M1-T527 context, money-window lifecycle, state initialization and numeric-output functions at 100% objdiff; documented instruction evidence and typed contracts.
+- Verified all eight M1-T536 ImageBgDual3D forwarders, global accessors and helper sequences at 100% objdiff; documented instruction evidence and typed helper contracts.
+- Matched eight more game/unit_020f3db4 functions: table selection, record lookup, state scans, and list insertion.
+- Verified all eight M1-T526 singleton predicates, field updates, creation and dispatch helpers at 100% objdiff; documented original instruction evidence and contracts.
+- Verified the six ImageBgDual3D no-op callbacks and two forwarding thunks for M1-T535; documented each instruction-level contract.
+- Matched all five M1-T529 cell interaction and state-machine functions in `game/unit_020d1ee8` at 100% objdiff, with typed owner views and per-function evidence.
 - M1-T509: matched seven battle help/talk initialization, resource cleanup and state helpers; documented 020fdaa8 on the hard list.
 - Added C for M1-T501 message dispatch wrappers and work-state/event handlers in `game/unit_020fa7e8`, with typed message and callback contracts.
 - Matched all eight M1-T504 table, record-query, and packed-state functions in `game/unit_020f3db4`, with typed contracts and instruction evidence.

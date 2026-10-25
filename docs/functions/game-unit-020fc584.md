@@ -26,37 +26,57 @@ delinked unit until a human marks it complete.
 
 None. All eight requested functions match.
 
-### Outside M1-T525
+## M1-T526 — verified matches
 
-- `Unk0fc584_Unk_0fc824`: existing decompiler-derived body.
-- `Unk0fc584_Unk_0fc674`: existing decompiler-derived body.
+All eight requested functions report 100% in objdiff. Parameters carry words or
+boolean flags; singleton field views remain borrowed. Evidence below comes from
+the original ARM instructions at the listed entry addresses.
 
-## Not done in M1-T526
-- `Unk0fc584_IsBelow64`
-- `Unk0fc584_IsFieldCZero`
-- `Unk0fc584_Unk_0fc86c`
-- `Unk0fc584_SetDir`
-- `Unk0fc584_Unk_0fc7f4`
-- `Unk0fc584_Unk_0fc7b8`
-- `Unk0fc584_Unk_0fc9fc`: decompiler-derived
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk0fc584_IsBelow64` | 020fc6e4 returns false without a singleton, otherwise compares signed +0x0c against 64. The load and signed comparison support the existing descriptive name. |
+| `Unk0fc584_IsFieldCZero` | 020fc70c returns false without a singleton, otherwise tests +0x0c for zero, supporting the field-based name. |
+| `Unk0fc584_Unk_0fc824` | 020fc824 requires IsBelow64, clears +0x28, then copies +0x24 into +0x20. |
+| `Unk0fc584_Unk_0fc86c` | 020fc86c requires a singleton and nonzero +0x30 and +0x2c; forwards +0x2c to 020fc734. It does not clear either field. |
+| `Unk0fc584_Unk_0fc674` | 020fc674 creates through 020fc8bc with the supplied word only when the singleton is absent, then publishes its returned address. |
+| `Unk0fc584_SetDir` | 020fc6b8 copies +0x1c into +0x14 for a nonzero flag and negates it for zero; absent singleton does nothing. This sign selection supports the existing direction name without assigning further meaning to the fields. |
+| `Unk0fc584_Unk_0fc7f4` | 020fc7f4 returns false unless IsBelow64; otherwise returns whether +0x20 and +0x24 differ. |
+| `Unk0fc584_Unk_0fc7b8` | 020fc7b8 requires IsBelow64. Kind +0x00 equal to one dispatches through 020fc84c and 020fc86c; other kinds pass the supplied word directly to 020fc734. |
 
-## Not done in M1-T527
-- `func_020fc584`
-- `Unk0fc584_LoadMoneyWindow`
-- `func_020fcf5c`
-- `func_020fc5d4`
-- `func_020fc944`
-- `func_020fc734`
-- `func_020fc8bc`
+The original-object comparison is the acceptance test; this card requires no new
+unit tests. The unit continues linking from the delinked object pending human
+completion marking.
+
+### Hard list for M1-T526
+
+None. All eight requested functions match.
+
+## M1-T527 — verified matches
+
+All eight requested functions report 100% in objdiff. Evidence is the original
+ARM instruction flow at the entry addresses. State and panel pointers are borrowed;
+020fc8bc returns the allocator-owned address using the existing word-address ABI.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_020fc584` | Sets context +4 to zero for unsigned kind <=1, otherwise two; calls 020a4e48(0), then forwards all three input words to 020a4eb0. Absent context does nothing. |
+| `Unk0fc584_LoadMoneyWindow` | 020fc9ac selects resource 0xda and cave_moneywindow for zero kind, or resource 0x59 and battle_money otherwise. The layout strings support the existing name. Stores the returned handle at +8. |
+| `func_020fcf5c` | Clamps signed state +0x20 to 0..99999999 and forwards it with format data_021510a0 and the three supplied output words to 020a9fd8. |
+| `Unk0fc584_Unk_0fc9fc` | For either kind, releases a nonzero +8 handle through 0205ddb4, clears it, calls 0205bb68, and clears the singleton. The explicit handle argument preserves the original r0 flow. |
+| `func_020fc5d4` | With a context, sets +0x28b8 to one, writes 189 and byte five at panel +0x2c/+0x37, then forwards the panel and supplied word to 0205fd10. Repeated context loads follow the original instructions. |
+| `func_020fc944` | Initializes the 64-byte state. Kind zero selects +0x0c/+0x18=64 and +0x1c=-6; other kinds select 97 and -16. Leaves +0x28/+0x34 untouched as in the original. |
+| `func_020fc734` | Requires IsBelow64; synchronizes +0x24 with +0x20, stores signed input/60 at +0x28 with minimum magnitude one for nonzero input, calls 020a0da4(12), adds the input to +0x24 and sets +0x3c=3. |
+| `func_020fc8bc` | Allocates 64 bytes through 020611dc with callbacks 020fca5c, kind-selected 020fcc10/020fcd18, and 020fc9fc. Returns zero on allocation failure; otherwise initializes state and loads the money-window layout. |
+
+The original-object comparison supplies the acceptance test; the card requires no
+new unit tests. This unit continues linking from the delinked original pending a
+human completion marking. No module boundary changes are introduced.
+
+### Hard list for M1-T527
+
+None. All eight requested functions match.
 
 ## Not done in M1-T528
 - `func_020fcc10`
 - `func_020fca5c`
 - `func_020fcd18`
-- `Unk0fc584_LoadMoneyWindow`: decompiler-derived (plain cleanup)
-- `Unk0fc584_Unk_0fc7b8`: decompiler-derived (plain+fix cleanup)
-- `Unk0fc584_SetDir`: hand-matched
-- `Unk0fc584_IsBelow64`: hand-matched
-- `Unk0fc584_IsFieldCZero`: hand-matched
-- `Unk0fc584_Unk_0fc7f4`: hand-matched
-- `Unk0fc584_Unk_0fc86c`: hand-matched
