@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T722 submission helpers in game/unit_020f51dc at 100% objdiff, with typed arguments and instruction-based contracts.
 - Matched all eight M1-T721 forwarding and record/table submission helpers in game/unit_020f51dc, with typed contracts and per-function evidence.
 - Match all four M1-T679 record selection, name search, tagged negation and binary operator functions at 100% objdiff.
 - Match all eight M1-T707 game/unit_0209d42c routines, including phase dispatch; document table strides, ID mapping, and state/root updates.
