@@ -293,6 +293,9 @@ void Unk09974c_Unk_099abc(int id, u16 v)
     Unk09974c_SetBit6ac(id);
 }
 
+/* Search resource (5, 0) using the id's low halfword at record +0;
+ * evidence: 0x020099bfc passes stride 8 and comparator 099860 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099bfc(int id)
 {
     Unk09974cRec8 key;
@@ -308,6 +311,9 @@ void *Unk09974c_Unk_099bfc(int id)
     return func_02011810(&key, base, n, 8, Unk09974c_Unk_099860);
 }
 
+/* Search resource (5, 2) using the id's low halfword at record +0;
+ * evidence: 0x020099c60 passes stride 80 and comparator 099870 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099c60(int id)
 {
     Unk09974cRec80 key;
@@ -347,6 +353,9 @@ s32 Unk09974c_Unk_099cc4(Unk09974cStat *p)
     return q;
 }
 
+/* Search resource (5, 1) using the id's low halfword at record +32;
+ * evidence: 0x020099d14 passes stride 56 and comparator 099880 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099d14(int id)
 {
     Unk09974cRec56 key;
@@ -362,6 +371,9 @@ void *Unk09974c_Unk_099d14(int id)
     return func_02011810(&key, base, n, 56, Unk09974c_Unk_099880);
 }
 
+/* Search resource (5, 3) using the id's low halfword at record +0;
+ * evidence: 0x020099d78 passes stride 16 and comparator 099890 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099d78(int id)
 {
     Unk09974cRec16 key;
@@ -377,6 +389,9 @@ void *Unk09974c_Unk_099d78(int id)
     return func_02011810(&key, base, n, 16, Unk09974c_Unk_099890);
 }
 
+/* Search resource (5, 4) using the id's low halfword at record +0;
+ * evidence: 0x020099ddc passes stride 16 and comparator 0998a0 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099ddc(int id)
 {
     Unk09974cRec16 key;
@@ -396,6 +411,9 @@ int Unk02ee5c_GetTierFromField70();
 void *Unk02e000_Thunk_0202e788();
 int func_0209a158(int id);
 
+/* Search resource (5, 5) using the id's low halfword at record +0;
+ * evidence: 0x020099e40 passes stride 16 and comparator 0998b0 to 02011810.
+ * Returns a borrowed record, or null for an absent resource or search miss. */
 void *Unk09974c_Unk_099e40(int id)
 {
     Unk09974cRec16 key;
@@ -430,6 +448,9 @@ int Unk09974c_Unk_099ea4(int id)
     return 0;
 }
 
+/* For an id accepted by 099ea4, store its low halfword in subblock slot
+ * 0..3 selected by record byte +2 values 3..6; evidence: 0x02099f24..f78.
+ * Accepted ids require a present record and a writable four-halfword subblock. */
 void Unk09974c_Unk_099f24(int id)
 {
     u16 *w;
@@ -534,6 +555,9 @@ void Unk09974c_SetBit6ac(int id)
     f[i] |= (u8)(1 << (k & 7));
 }
 
+/* Return zero for an already-set 6ac bit, else category 0's record byte +5,
+ * one for categories 8/9, or zero; evidence: 0x0209a1e4..a238.
+ * Requires id >=51 for the bit test and a present record for category zero. */
 int Unk09974c_Unk_09a1e4(int id)
 {
     if (func_0209a158(id) != 0) {
