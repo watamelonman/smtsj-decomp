@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T719: match seven unit_020ce578 registration, setup, teardown and event functions; document the dispatcher report discrepancy on the hard list.
 - M1-T718: verified six game/unit_020ce578 callbacks and state helpers at 100% objdiff, added typed helper contracts, and documented two deferred compare-and-return accessors.
 - Match M1-T683 selector-factor chance routine 020b0310; document 020afe64 and 020b04b4 on the hard list.
 - Verified all eight M1-T706 game/unit_0209d42c functions at 100% objdiff; added typed helper declarations and documented singleton, table, cell, and callback contracts.
