@@ -41,9 +41,25 @@ Addresses below refer to the original ARM9 instructions.
 No M1-T493 functions remain on the hard list. Neutral names remain where the
 instructions establish operations but do not establish subsystem intent.
 
-## Remaining work outside M1-T493
+## M1-T494 — verified matches
 
-The inherited bodies for `Unk0946e0_Unk_094958`,
-`Unk0946e0_Unk_0949e0`, and `Unk0946e0_Unk_094bd4` remain unchanged.
-Functions still provided only by the delink include `func_02094750`,
-`func_02094af8`, `func_02094c74`, `func_02094da0`, and `func_02094ef4`.
+All eight functions match at 100% in objdiff with the configured MWCC compiler.
+The card's `Unk0946e0_SetViewBox` is the function configured under the neutral
+symbol `Unk0946e0_Unk_0949e0`; the protected symbol configuration is retained.
+The delink remains the link source until a human marks this unit complete.
+
+| Function | Size | Contract and evidence |
+| --- | ---: | --- |
+| `Unk0946e0_Unk_094bd4` | 124 B | Allocates a 20-byte task, sets elapsed to -1, converts percentage to a 256-based target, stores duration/mode and schedules it. Stores at 0x02094c10–0x02094c40. |
+| `Unk0946e0_Unk_0949e0` (card: `SetViewBox`) | 132 B | Converts shared position/dimensions to fixed-point bounds passed to `func_020575ac`; arithmetic and call at 0x020949ec–0x02094a5c. |
+| `Unk0946e0_Unk_094958` | 136 B | Updates the record found through state +0x7870, adds its signed displacement to shared origin, then applies indices 0/1/2/3/6. Calls at 0x02094960–0x020949d8. |
+| `func_02094da0` | 144 B | Allocates a 28-byte pair task with elapsed -1, duration/mode and targets independently clamped to [-64,64], then schedules it. 0x02094da8–0x02094e1c. |
+| `func_02094af8` | 160 B | Modes 0/1/2 select interpolation for shared width, with height three quarters of width; increments elapsed until duration, returning completion. 0x02094b04–0x02094b94. |
+| `func_02094ef4` | 236 B | Dispatches an eight-byte borrowed command record, modes 0–8, to the existing task constructors; mode 0 does nothing. Jump table at 0x02094f0c and loads at 0x02094f30–0x02094fd4. |
+| `func_02094c74` | 240 B | Interpolates two shared origin halfwords with mode 0/1/2; advances elapsed and reports completion at duration. Loads/stores at 0x02094c80–0x02094d60. |
+| `func_02094750` | 428 B | Updates six writable halfwords: clears expired finite duration, waits through negative delay, attenuates amplitudes in the last three frames, samples displacement and signs, and increments elapsed only below 32766. Branches/arithmetic at 0x02094758–0x020948f4; the original literal is 0x7ffe. |
+
+The task mode values are preserved without introducing a default output: the
+original interpolation dispatch also leaves results unspecified outside 0–2.
+The existing wrappers and all sixteen prior-card functions remain matched.
+No M1-T494 functions remain on the hard list.

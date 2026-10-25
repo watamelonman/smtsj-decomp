@@ -190,7 +190,7 @@ typedef struct Unk0979d8Pair {
 } Unk0979d8Pair;
 
 int func_020a1428(u16 id);
-void func_02097c18(Unk0979d8Pair *out, int a, u8 *b);
+void func_02097c18(Unk0979d8Pair *out, Unk0979d8Pair *a, u8 *b);
 u8 *Unk02e000_GetWorkArea(void);
 u8 *Unk02e000_GetAreaRecord(int index);
 u32 Unk0979d8_Unk_0979fc(Unk0979d8Work *arg0);
@@ -204,7 +204,7 @@ void Unk096754_ResetAreaPos(void);
 int Unk0979d8_GetPairLo(u8 *p, int i)
 {
     Unk0979d8Pair buf[20];
-    func_02097c18(buf, func_020a1428(FIELD(u16, p, 54)), p + 40);
+    func_02097c18(buf, (Unk0979d8Pair *)func_020a1428(FIELD(u16, p, 54)), p + 40);
     return buf[i].lo;
 }
 
@@ -213,7 +213,7 @@ int Unk0979d8_GetPairLo(u8 *p, int i)
 int Unk0979d8_GetPairHi(u8 *p, int i)
 {
     Unk0979d8Pair buf[20];
-    func_02097c18(buf, func_020a1428(FIELD(u16, p, 54)), p + 40);
+    func_02097c18(buf, (Unk0979d8Pair *)func_020a1428(FIELD(u16, p, 54)), p + 40);
     return buf[i].hi;
 }
 
@@ -377,4 +377,97 @@ int func_02098050(int mode)
         }
     }
     return sum;
+}
+
+/* Computes a minimum-one percentage of signed +0x0a when eligible.
+ * Evidence: state exclusions, IDs 144/158/396 and signed division by 100
+ * at 02097a20..02097acc. NULL, excluded states and zero weight return zero. */
+int func_02097a20(u8 *record, int enabled)
+{
+    int score;
+    if (record == 0) return 0;
+    if (FIELD(u16, record, 52) == 1 || FIELD(u16, record, 52) == 7) return 0;
+    score = 0;
+    if (Unk02e000_Unk_02e840(record) && enabled) {
+        if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(144))) score++;
+        if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(158))) score += 3;
+        if (Unk0979d8_HasId(record, 396)) score += 3;
+    }
+    if (score) {
+        int value = FIELD(s16, record, 10) * score / 100;
+        if (value <= 0) value = 1;
+        return value;
+    }
+    return 0;
+}
+
+/* Averages unsigned +0x38 across present slots; modes 0/2 include global
+ * +0x6e. Evidence: float accumulation/division at 02097f68..0209804c.
+ * Empty selections preserve the original floating-point zero division. */
+float func_02097f68(int mode)
+{
+    float sum = 0;
+    float count = 0;
+    int size;
+    s8 *slots;
+    int i;
+    if (mode == 0 || mode == 2) {
+        sum += FIELD(u8, Unk02e000_Thunk_0202e788(), 110);
+        count += 1;
+    }
+    size = 0;
+    slots = 0;
+    switch (mode) {
+    case 0:
+    case 1:
+        size = Unk096754_CountEntries();
+        slots = (s8 *)(Unk02e000_GetWorkArea() + 840);
+        break;
+    case 2:
+        size = 3;
+        slots = (s8 *)(Unk02e000_GetWorkArea() + 852);
+        break;
+    }
+    for (i = 0; i < size; i++) {
+        if (slots[i] >= 0) {
+            sum += FIELD(u8, Unk02e000_GetAreaRecord(slots[i]), 56);
+            count += 1;
+        }
+    }
+    return sum / count;
+}
+
+int func_02096548(u8 *ids, int index);
+int Unk02f078_IsAllowed_02f190(int current, int candidate);
+/* Copies nineteen packed pairs from metadata +0x3a, replaces permitted high
+ * fields using the ID list, then halves/caps low fields with high field 5.
+ * Evidence: three loops at 02097c38/02097c8c/02097cf0. Buffers are borrowed;
+ * out must hold nineteen pairs and metadata must expose the source pairs. */
+void func_02097c18(Unk0979d8Pair *out, Unk0979d8Pair *metadata, u8 *ids)
+{
+    int i;
+    Unk0979d8Pair *src = metadata + 29;
+    Unk0979d8Pair *p = out;
+    int j;
+    for (i = 0; i < 19; i++) {
+        p->lo = src->lo;
+        p->hi = src->hi;
+        src++;
+        p++;
+    }
+    p = out;
+    for (j = 0; j < 19; j++) {
+        int candidate = func_02096548(ids, j);
+        if (Unk02f078_IsAllowed_02f190(p->hi, candidate)) {
+            p->hi = (u16)candidate;
+        }
+        p++;
+    }
+    for (j = 0; j < 19; j++) {
+        if (out->hi == 5) {
+            out->lo = (u16)(out->lo >> 1);
+            if (out->lo > 50) out->lo = 50;
+        }
+        out++;
+    }
 }

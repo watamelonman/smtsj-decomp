@@ -1,9 +1,7 @@
-/* src/game/unit_020fd9f0.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
+/* Battle help/talk work helpers; field meanings are limited to observed accesses. */
 #include "types.h"
 
 
-
-/* decompiler-derived */
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk0fd9f0Work {
@@ -22,22 +20,24 @@ typedef struct Unk0fd9f0Work {
     u32 unk_0040;
 } Unk0fd9f0Work;
 
-void Unk0fd9f0_Unk_0fdc0c(int arg0)
+/* Store -1 at +0x14 of a valid borrowed work object (020fdc0c). */
+void Unk0fd9f0_Unk_0fdc0c(Unk0fd9f0Work *work)
 {
-  ((Unk0fd9f0Work *)arg0)->unk_0014 = 0xffffffff;
+  work->unk_0014 = 0xffffffff;
   return;
 }
 
 extern u32 data_02176e20[];
-/* decompiler-derived */
+/* Read the singleton address; the literal load at 020fdb04 names data_02176e20.
+ * Zero means no work object has been installed. */
 u32 Unk0fd9f0_Get_data_02176e20(void)
 {
   return *data_02176e20;
 }
 
-int func_020572d8();
-int func_02057eb8();
-/* decompiler-derived */
+void func_020572d8(void);
+void func_02057eb8(s32 value);
+/* Issue the -1 setting then finalize it, as observed at 020fe2b0. */
 void Unk0fd9f0_Unk_0fe2b0(void)
 {
   func_02057eb8(0xffffffff);
@@ -45,8 +45,8 @@ void Unk0fd9f0_Unk_0fe2b0(void)
   return;
 }
 
-int func_02061424();
-/* decompiler-derived */
+void func_02061424(u32 address);
+/* Forward the installed singleton to 02061424 only when nonzero (020fda14). */
 void Unk0fd9f0_Unk_0fda14(void)
 {
   int tmp1;
@@ -54,12 +54,12 @@ void Unk0fd9f0_Unk_0fda14(void)
   if (tmp1 == 0) {
     return;
   }
-  func_02061424();
+  func_02061424((u32)tmp1);
   return;
 }
 
-int func_020fdb14();
-/* decompiler-derived */
+u32 func_020fdb14(void);
+/* Install the result of 020fdb14 only if the singleton is absent (020fd9f0). */
 void Unk0fd9f0_Unk_0fd9f0(void)
 {
   int tmp1;
@@ -78,27 +78,30 @@ void Unk0fd9f0_Unk_0fd9f0(void)
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
+/* Store +1 for nonzero flags, -1 otherwise; 020fda28 writes singleton +0x14.
+ * The existing SetDir symbol describes this signed direction setting. */
 void Unk0fd9f0_SetDir(int flag)
 {
-    u32 p = Unk0fd9f0_Get_data_02176e20();
+    Unk0fd9f0Work *p = (Unk0fd9f0Work *)Unk0fd9f0_Get_data_02176e20();
     if (p == 0) {
         return;
     }
     if (flag != 0) {
-        FIELD(int, p, 20) = 1;
+        p->unk_0014 = 1;
     } else {
-        FIELD(int, p, 20) = -1;
+        p->unk_0014 = -1;
     }
 }
 
-/* decompiler-derived */
-void Unk0fd9f0_Unk_0fe33c(int arg0)
+/* Release the nonzero +0x24 handle through 02061424, then clear it (020fe33c).
+ * The caller retains ownership of the borrowed work object. */
+void Unk0fd9f0_Unk_0fe33c(Unk0fd9f0Work *work)
 {
-  if (((Unk0fd9f0Work *)arg0)->unk_0024 == 0) {
+  if (work->unk_0024 == 0) {
     return;
   }
-  func_02061424();
-  ((Unk0fd9f0Work *)arg0)->unk_0024 = 0;
+  func_02061424((u32)work->unk_0024);
+  work->unk_0024 = 0;
   return;
 }
 
@@ -160,7 +163,7 @@ int func_0205ddb4();
 /* decompiler-derived */
 void Unk0fd9f0_Unk_0fdc18(int *arg0)
 {
-  Unk0fd9f0_Unk_0fe33c((int)arg0);
+  Unk0fd9f0_Unk_0fe33c((Unk0fd9f0Work *)arg0);
   if (arg0[8] != 0) {
     func_0205c368();
     arg0[8] = 0;
@@ -178,8 +181,6 @@ void Unk0fd9f0_Unk_0fdc18(int *arg0)
   *data_02176e20 = 0;
 }
 
-void Unk0fd9f0_Unk_0fdc0c();
-void Unk0fd9f0_Unk_0fe33c();
 void func_020fde4c();
 void func_020fe004();
 void func_020fe1f8();
@@ -198,6 +199,8 @@ void Unk0fd9f0_Update(u8 *p)
     }
 }
 
+/* Return the packed color selected by modes 1 and 2, or the default.
+ * Evidence: 020fe300 passes this result to Unk065e88_SetUnkField28. */
 u32 Unk0fd9f0_GetColor(int x)
 {
     switch (x) {
@@ -222,8 +225,8 @@ void Unk0fd9f0_Unk_0fda58(u32 x)
     case 2:
         FIELD(u32, p, 52) = 1;
         FIELD(u32, p, 56) = 1;
-        Unk0fd9f0_Unk_0fdc0c(p);
-        Unk0fd9f0_Unk_0fe33c(p);
+        Unk0fd9f0_Unk_0fdc0c((Unk0fd9f0Work *)p);
+        Unk0fd9f0_Unk_0fe33c((Unk0fd9f0Work *)p);
         return;
     }
 }

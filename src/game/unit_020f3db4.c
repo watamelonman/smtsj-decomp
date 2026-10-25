@@ -6,10 +6,10 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int Unk02e000_Unk_02e774();
-int Unk044394_Unk_044428();
-int Unk044394_Unk_044534();
-int Unk0f3db4_Unk_0f3ec8();
+int Unk02e000_Unk_02e774(void);
+int Unk044394_Unk_044428(int index);
+int Unk044394_Unk_044534(int index);
+int Unk0f3db4_Unk_0f3ec8(u32 arg0);
 
 u32 Unk0f3db4_Unk_0f44a8(u32 arg0);
 void Unk0f3db4_Unk_0f3dc8(void);
@@ -20,37 +20,37 @@ int Unk0f3db4_Unk_0f3db4(void);
 void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1);
 u32 Unk0f3db4_Unk_0f4490(u32 arg0,int arg1);
 
-/* decompiler-derived */
+/* Extract the low two packed state bits; higher bits do not affect the result. */
 u32 Unk0f3db4_Unk_0f44a8(u32 arg0)
 {
   return arg0 & 3;
 }
 
-/* decompiler-derived */
+/* Forward fixed index 8 to 044428, discarding its result (020f3dc8 assembly). */
 void Unk0f3db4_Unk_0f3dc8(void)
 {
   Unk044394_Unk_044428(8);
 }
 
-/* decompiler-derived */
+/* Forward fixed index 8 to 044534, discarding its result (020f3dd8 assembly). */
 void Unk0f3db4_Unk_0f3dd8(void)
 {
   Unk044394_Unk_044534(8);
 }
 
-/* decompiler-derived */
+/* Return a normalized boolean for packed flag bit 2, independent of other bits. */
 int Unk0f3db4_Unk_0f4528(u32 arg0)
 {
   return (arg0 & 4) != 0;
 }
 
-/* decompiler-derived */
+/* Set packed flag bit 2 in a writable byte, preserving every other bit. */
 void Unk0f3db4_Unk_0f4550(u8 *arg0)
 {
   *arg0 = *arg0 | 4;
 }
 
-/* decompiler-derived */
+/* Return the borrowed work address at base + 0x5e52 (020f3db4 assembly). */
 int Unk0f3db4_Unk_0f3db4(void)
 {
   int value;
@@ -58,18 +58,17 @@ int Unk0f3db4_Unk_0f3db4(void)
   return value + 0x5e52;
 }
 
-/* decompiler-derived */
+/* Replace a writable packed byte with its old bit 2 OR arg1; arg1 is unmasked. */
 void Unk0f3db4_Unk_0f44d0(u8 *arg0,u8 arg1)
 {
-  *arg0 = *arg0 & 4 | arg1;
+  *arg0 = (*arg0 & 4) | arg1;
 }
 
-/* decompiler-derived */
-/* Low two bits of byte `offset` of the table. */
+/* Read low state bits at arg1 in the table selected by arg0; caller bounds it. */
 u32 Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
 {
   int value;
-  value = Unk0f3db4_Unk_0f3ec8();
+  value = Unk0f3db4_Unk_0f3ec8(arg0);
   return Unk0f3db4_Unk_0f44a8(*(u8 *)(value + arg1));
 }
 
@@ -79,7 +78,7 @@ u32 Unk0f3db4_Unk_0f4490(u32 arg0,int arg1)
 void Unk0f3db4_Unk_0f4510(u32 arg0,int arg1)
 {
   int value;
-  value = Unk0f3db4_Unk_0f3ec8();
+  value = Unk0f3db4_Unk_0f3ec8(arg0);
   Unk0f3db4_Unk_0f4528(*(u8 *)(value + arg1));
 }
 

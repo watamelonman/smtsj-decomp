@@ -2,7 +2,15 @@
 
 ## Unreleased
 - Added C for M1-T501 message dispatch wrappers and work-state/event handlers in `game/unit_020fa7e8`, with typed message and callback contracts.
+- Verified all eight M1-T508 singleton, direction, handle-cleanup and color helpers at 100% objdiff; added explicit call arguments, typed work parameters and evidence documentation.
+- M1-T507: matched four game/unit_020469d8 setup, phase, and queue callbacks; documented the remaining dispatcher on the hard list.
+- Verified all eight M1-T503 packed-state and work-access helpers at 100% objdiff; documented contracts and made table-selector forwarding explicit.
+- Matched all eight M1-T502 game/unit_0210947c callbacks, constructor, snapshot refresh and field helpers with typed layouts and documented contracts.
 - Matched all eight M1-T500 work reset, callback descriptor, empty callback and lookup helpers in `game/unit_020fa7e8`; documented typed contracts and original instruction evidence.
+
+- Matched all eight M1-T494 rectangle, displacement, interpolation task, and command dispatch functions at 100% objdiff; documented original record contracts.
+
+- Matched all three M1-T476 weighted record, packed-pair builder and floating average functions at 100% objdiff with typed parameters and documented contracts.
 
 - Verified eight M1-T493 shared-record and task wrapper matches; documented their contracts and explicit task-update arguments.
 - Matched all seven M1-T499 game/unit_020a03cc record queries, state-machine updates, table reset and mode dispatcher in readable typed C.
