@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Matched seven M1-T682 game/unit_020afc28 fixed-point, packed-result and slot-count routines; documented 020b0234 on the hard list.
 - Matched all eight M1-T681 game/unit_020afc28 slot, selector, predicate and scaling routines with typed borrowed layouts. 
 - M1-T676: clarify eight game/unit_02039bb4 record, tagged append, and entry handlers with typed work views and behavior contracts.
 - Matched the eight M1-T684 game/unit_020f2e78 transition, cell-reset and dispatcher functions with typed layouts and per-function documentation.
