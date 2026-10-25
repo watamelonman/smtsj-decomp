@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match eight more unit_02039bb4 entry/table handlers with typed work parameters and documented contracts.
 - M1-T676: clarify eight game/unit_02039bb4 record, tagged append, and entry handlers with typed work views and behavior contracts.
 - Matched the eight M1-T684 game/unit_020f2e78 transition, cell-reset and dispatcher functions with typed layouts and per-function documentation.
 - Match all eight M1-T655 record setters, bit update, resource search, record copy and tier-size helper functions at 100% objdiff; document typed contracts and instruction evidence.
