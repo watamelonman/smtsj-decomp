@@ -44,15 +44,26 @@ are borrowed; cleanup receives a caller-owned writable 0x48-byte area.
 No module boundary changed. The original instruction sequences are the acceptance
 oracle; this card explicitly requires no new tests. No M1-T554 hard functions remain.
 
-## Not done in M1-T555
-- `Unk09974c_Unk_09a0c0`
-- `Unk09974c_SetSeenBit`
-- `Unk09974c_FindEntry`
-- `func_0209a158`
-- `Unk09974c_Unk_0998f0`
-- `Unk09974c_Unk_099cc4`
-- `Unk09974c_Unk_0999d4`
-- `Unk09974c_Unk_099abc`
+## M1-T555
+
+All eight requested functions match at 100% objdiff. Existing matching C was
+retained, with typed parameters and instruction evidence documented; the missing
+`func_0209a158` implementation was added. No hard functions remain for this card.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk09974c_Unk_09a0c0` | `0x0209a0c0..a0f0`: signed ids 51..110 require a present record; byte +0x2d equal to 1 or 3 returns 1, otherwise 0. |
+| `Unk09974c_SetBit6ac` (card: `Unk09974c_SetSeenBit`) | `0x0209a1a0..a1e0`: set bit `(id - 51) & 7` at subblock +0x6ac plus signed byte index `(id - 51) >> 3`; indices >=162 are ignored. Callers require id >=51. The protected symbol map names this SetBit6ac, so that linker name is preserved; gameplay meaning “seen” is not established. |
+| `Unk09974c_FindEntry` | `0x02099780..97c4`: scan ten 12-byte entries with signed inclusive bounds; return a borrowed entry or null. |
+| `func_0209a158` | `0x0209a158..a19c`: test the same +0x6ac bit, returning exactly 0 or 1; indices >=162 return 0. Callers require id >=51. Subblock storage is borrowed. |
+| `Unk09974c_Unk_0998f0` | `0x020998f0..9938`: absent entries or zero helper results return 0; mode byte +9 equal to 1 additionally requires signed result >=99; otherwise return 1. |
+| `Unk09974c_Unk_099cc4` | `0x02099cc4..9d10`: multiply unsigned ten-bit field +4 by halfword percent +0x0e, divide unsigned by 100 and clamp nonzero products to at least 1; either zero input returns 0; 100 percent returns the field directly. |
+| `Unk09974c_Unk_0999d4` | `0x020999d4..9a24`: mode 2 reads halfword at index id minus entry lower bound in the selected borrowed buffer; absent entry or other modes return 0. |
+| `Unk09974c_Unk_099abc` | `0x02099abc..9b0c`: absent entry or zero value does nothing; mode 2 writes the indexed halfword; all present modes with nonzero value call SetBit6ac. The selected mode-2 buffer must be writable. |
+
+No module boundary changed. Instruction comparison is the acceptance oracle;
+this card requires no new tests. The TU remains linked from the original delink
+until a human marks it complete.
 
 ## Not done in M1-T556
 - `Unk09974c_Unk_099f24`
