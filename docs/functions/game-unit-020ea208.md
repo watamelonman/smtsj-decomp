@@ -49,12 +49,28 @@ changing the generated code.
 ## Hard list
 None from M1-T770.
 
+## M1-T771 — verified matches
+
+All eight functions are 100% in the local objdiff report. Evidence below comes
+from the delinked ARM and its relocation targets. These functions borrow the
+singleton, table and slot memory; none allocates or transfers ownership. The
+shared views are `Unk0ea208Work` (singleton) and `Unk0ea208Slot` (one of the six
+56-byte records at work+0x70).
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `Unk0ea208_GetFieldC` | 40 B | Returns the borrowed work word at +0x0c when the singleton exists and its +0x1cc word is nonzero; otherwise 0. Evidence: `cmp r0,#0`, `ldr r1,[r0,#460]`, `ldrne r0,[r0,#12]`. |
+| `Unk0ea208_GetField3c` | 40 B | Same guard as GetFieldC, returning the borrowed word at +0x3c. Evidence: `ldrne r0,[r0,#60]`. |
+| `Unk0ea208_ForEachSlot` | 40 B | Calls `func_020eb034` once per slot: six records from +0x70, stride 56. Evidence: `add r5,r0,#112`, loop bound 6, `add r5,r5,#56`, and the call relocation. |
+| `Unk0ea208_Unk_0eb2cc` | 44 B | Returns the first of the six +0x70 slot records whose +0x00 word is zero, or NULL when all are occupied. Evidence: `ldr r1,[r0]` / `bxeq lr`, stride 56, bound 6, final `mov r0,#0`. |
+| `Unk0ea208_Unk_0ea828` | 52 B | Visits the first `Unk0e8228_Unk_0e8460()` entries of the 0e8228 +0x40 table and passes each to `func_020ea744`. Evidence: the count guard and the paired `bl Unk0e8228_GetArr40` / `bl func_020ea744` loop. |
+| `Unk0ea208_Unk_0eb230` | 52 B | Calls `func_020eb0a8` for every +0x70 slot whose +0x00 word is nonzero. Evidence: `ldr r0,[r5]` / `beq` skip, stride 56, bound 6, and the call relocation. |
+| `Unk0ea208_Unk_0ea390` | 60 B | Bounds-checks index 0..5, then forwards `work->UnkTable0024[i]` and the caller value to `func_02061f10` with fixed middle args -1, 0, 0. Evidence: `cmp r5,#6` / `popge`, `ldr r0,[r0,r5,lsl #2]` at +36, `mvn r1,#0`, and the stack argument store. |
+| `Unk0ea208_Unk_0eada8` | 60 B | When the singleton exists and its +0x1cc word is nonzero, resolves group 39 entry 0 and passes it to `func_0204fed8` with selector 3; returns 0 on either guard failure. Evidence: `ldr r0,[r0,#460]`, `mov r0,#39` / `mov r1,#0`, then `mov r1,#3`. |
+
+No M1-T771 function remains on the hard list.
+
 ## Not done in M1-T771
-- `Unk0ea208_GetFieldC`
-- `Unk0ea208_GetField3c`
-- `Unk0ea208_ForEachSlot`
-- `Unk0ea208_Unk_0ea828`
-- `Unk0ea208_Unk_0ea390`
 - `Unk0ea208_Unk_0eade4`: decompiler-derived
 - `Unk0ea208_Unk_0eb264`: decompiler-derived
 - `Unk0ea208_Unk_0eae40`: decompiler-derived
