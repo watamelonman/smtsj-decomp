@@ -98,17 +98,49 @@ retained where the field meanings are not established.
 
 Hard list for M1-T924: none.
 
-`ImageObj_Unk_077228` and `ImageObj_Unk_077688` remain decompiler-derived and
-are outside this card's function list.
+## M1-T925 — verified ARM functions (8/8)
 
-## Not done in M1-T925
-- `ImageObj_Unk_0775a0`
-- `ImageObj_GetOrCreate`
-- `ImageObj_Unk_077d98`
-- `ImageObj_Unk_077640`
-- `ImageObj_Unk_077708`
-- `ImageObj_Unk_077554`
-- `ImageObj_Unk_0779a0`: decompiler-derived
+All eight entries match at 100% in objdiff. Evidence is from the delinked
+object `build/delinks/src/ImageObj.o`; neutral names are retained where the
+symbols do not establish a better description.
+
+- `ImageObj_Unk_0775a0` (56 B, 020775a0): with no singleton it does nothing;
+  otherwise it releases the work object when `0776d4` finds no slot in state
+  9 or 10, and only sets flag `+0xc8` when one is found. Singleton LDR at
+  020775a8, BL at 020775b4, flag store at 020775c0, Release BL at 020775cc.
+- `ImageObj_GetOrCreate` (60 B, 02077478): returns the cached handle in slot
+  `index`; when the slot is empty it creates the handle through
+  `func_02077900` and caches it. Indexed LDR at 02077488, BL at 020774a4 and
+  indexed STR at 020774ac. Requires a live slot table and an index in 0..47.
+- `ImageObj_Unk_077228` (68 B, 02077228): scans slots zero through two; a
+  live slot whose node reports state 9 or 10 makes it return zero, otherwise
+  each live slot is torn down via `077554` and it returns one. BLs at
+  02077234, 02077240 and 02077254; loop bound CMP at 0207725c.
+- `ImageObj_Unk_077d98` (68 B, 02077d98): maps the system state to a display
+  parameter (8 for states 0 and 2, zero otherwise) and forwards it with the
+  node's `+0x68` handle to `Unk065e88_SetPair04`. BL at 02077da0, case MOVs at
+  02077db8 and 02077dc0, final BL at 02077dd4.
+- `ImageObj_Unk_077640` (72 B, 02077640): with no singleton, or when
+  `079028` reports that the state word `+0x14` is not four, it returns;
+  otherwise it releases and clears the `+0x18` handle, calls the two shared
+  flush helpers, then clears `+0x14`. BL at 02077650, loads/stores at
+  0207765c..02077680.
+- `ImageObj_Unk_077708` (72 B, 02077708): returns one when the singleton is
+  absent, or when every slot handle is zero or has a zero word at `+4`; the
+  first live handle stops the scan with zero. Loop BL at 02077724 and
+  conditional LDR at 02077728..02077730.
+- `ImageObj_Unk_077554` (76 B, 02077554): tears down one slot when both the
+  singleton and its handle exist. A node in state 9 or 10 only marks flag
+  `+0xc4`; otherwise the node is torn down through `02077e74` and the slot is
+  cleared through `079184`. BLs at 02077574, 02077590 and 02077598; flag
+  store at 02077584.
+- `ImageObj_Unk_077688` (76 B, 02077688): returns one when the singleton is
+  absent, when every slot handle is zero, and when the work word at `+0x10`
+  is zero; any live slot or a nonzero `+0x10` yields zero. Loop BL at
+  020776a4 and LDR/CMP at 020776c0.
+
+Hard list for M1-T925: none. `ImageObj_Unk_0779a0` is outside this card's
+function list and remains covered by its own entry.
 
 ## Not done in M1-T926
 - `ImageObj_Unk_0777e0`
