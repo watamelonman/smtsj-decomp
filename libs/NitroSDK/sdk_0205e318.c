@@ -21,7 +21,10 @@ typedef struct Unk05e318State {
     /* The original explicitly reloads this allocation slot after writing it. */
     void * volatile unk_9c;
     u32 unk_a0;
-    u8 pad_a4[0x28];
+    u8 unk_a4;
+    u8 unk_a5;
+    u8 pad_a6[0x22];
+    float unk_c8;
     int unk_cc;
     int unk_d0;
     u32 unk_d4;
@@ -29,6 +32,11 @@ typedef struct Unk05e318State {
     int unk_dc;
 } Unk05e318State;
 extern Unk05e318State data_0216b348;
+/* Eight four-byte slots observed in the initialization loop. */
+extern u32 data_0216b3f0[8];
+void func_02029de4(void);
+void func_0202a0e4(u32 *slot);
+void func_0205e3e4(u32 unused, u32 id, void *buffer);
 void *func_02052ff0(u32 id);
 void *func_0202b768(void *resource, u32 id);
 void func_0202b124(Unk05e318State *state, void *buffer, void *resource, int mode);
@@ -124,4 +132,29 @@ int func_0205e4f8(int id)
         }
     }
     return 0;
+}
+
+/* Initializes the eight slots and shared state; mode 1 skips resource binding.
+ * Evidence: loop at 0205e368 and stores at 0205e38c..0205e3d4.
+ * Argument four is unused; buffer is borrowed by the existing resource binder. */
+void func_0205e348(u32 unused, u32 id, void *buffer, u32 unused4, u32 mode)
+{
+    Unk05e318State *state = &data_0216b348;
+    int i;
+    u32 *slot;
+    func_02029de4();
+    for (i = 0, slot = data_0216b3f0; i < 8; i++, slot++) {
+        func_0202a0e4(slot);
+    }
+    state->unk_9c = 0;
+    data_0216b348.unk_d8 = mode;
+    if (mode != 1) {
+        func_0205e3e4(unused, id, buffer);
+    }
+    state->unk_a4 = 1;
+    state->unk_a5 = 127;
+    data_0216b348.unk_c8 = 1.0f;
+    data_0216b348.unk_cc = -1;
+    data_0216b348.unk_d0 = -1;
+    data_0216b348.unk_dc = 1;
 }

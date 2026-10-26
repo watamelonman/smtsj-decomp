@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Match the five remaining interpreter submission wrappers (codes 33–37) in `libs/unknown/lib_020b91a8.c`.
+- Matched the remaining shared-state initializer `func_0205e348` in `libs/NitroSDK/sdk_0205e318.c` (M2-T087).
 
 - Add matching C for eight submission wrappers in `libs/unknown/lib_020b91a8.c`, with typed contracts and per-function documentation.
 - Match the six remaining script command wrappers in `lib_020b9e3c` (M2-T082).
