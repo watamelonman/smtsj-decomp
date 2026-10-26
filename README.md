@@ -1,3 +1,6 @@
+# Preface
+This project is an experiment regarding AI reverse engineering using Claude, Codex, Deepseek and Grok working in tandem with one another. God willing this produces something usable, I would very much like the OG Strange Journey to be preserved.
+
 # Shin Megami Tensei: Strange Journey (NDS) decompilation
 
 A work-in-progress matching decompilation of *Shin Megami Tensei: Strange Journey* for the Nintendo DS
