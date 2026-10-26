@@ -30,47 +30,43 @@ No M1-T790 functions remain on the hard list. The pre-existing candidates
 already had the expected instruction shapes; the two wrappers needed explicit
 argument forwarding to express the original register flow correctly in C.
 
+## M1-T791 — verified at 100% objdiff
+
+These routines share the borrowed `Unk0a7d54Entry` view (40-byte stride) and the
+`Unk0a7d54Work` view whose 32-entry table starts at +0x48. Offsets are taken from
+the loads/stores in the original instructions; unknown fields keep neutral names.
+
+- `Unk0a7d54_Unk_0a7d54` (020a7d54, 44 B): scans the 32 entry slots for the
+  first one whose word +0 is zero and returns it; returns null when all are
+  occupied. The `add #0x48`, `add #0x28` per iteration and `cmp #0x20` establish
+  the stride and bound.
+- `Unk0a7d54_Unk_0a7e64` (020a7e64, 40 B): clears the entry's lifecycle words in
+  the original store order: +4, +0, byte +12, +20, +24, +28, +32, then +8.
+  Word +16 is not cleared.
+- `Unk0a7d54_Unk_0a7e8c` (020a7e8c, 44 B): if word +8 is nonzero, passes it to
+  02061424, clears +8, then resets the entry through `Unk0a7d54_Unk_0a7e64`.
+  The `ldr [r4, #8]` / `bl` / zero stores establish the sequence.
+- `Unk0a7d54_IsField8Is3` (020a8628, 32 B): null-safe predicate; returns true
+  only when entry word +8 equals 3. The `ldr [r0, #8]`, `cmp #3` and `movcc`
+  sequence supports the name.
+- `Unk0a7d54_Unk_0a84a4` (020a84a4, 40 B): walks all 32 entries from work+0x48
+  and releases each with `Unk0a7d54_Unk_0a7e8c`.
+- `Unk0a7d54_Unk_0a8534` (020a8534, 40 B): identical 32-slot release walk as
+  020a84a4; the two functions are emitted separately, so both are kept.
+- `Unk0a7d54_Unk_0a8b44` (020a8b44, 44 B): ignores null entries; when
+  `Unk0a7d54_IsField8Is3` is true, sets word +8 to 4 and clears word +16.
+  The `bl 020a8628` and `str #4` sequence establishes the transition.
+- `Unk0a7d54_Unk_0a9390` (020a9390, 40 B): while entry word +0x1c is positive,
+  releases one unit through 0205bb68 and decrements it. Non-positive counters
+  return immediately, as shown by the `cmp #0` / `pople`.
+
 ## Hard list
-- `Unk0a7d54_Unk_0a7e64`: decompiler-derived
-- `Unk0a7d54_Unk_0a7d54`: decompiler-derived
-- `Unk0a7d54_Unk_0a8b44`: decompiler-derived
+None for M1-T791. All eight functions above are at 100% objdiff with the same
+instruction bytes as the delinked original.
 
-## Not done in M1-T791
-- `Unk0a7d54_IsField8Is3`
-- `Unk0a7d54_Unk_0a84a4`
-- `Unk0a7d54_Unk_0a8534`
-- `Unk0a7d54_Unk_0a9390`
-- `Unk0a7d54_Unk_0a7e8c`
-- `Unk0a7d54_Unk_0a8c40`: decompiler-derived
-- `Unk0a7d54_Unk_0a84cc`: decompiler-derived
-- `Unk0a7d54_Unk_0a8500`: decompiler-derived
-
-## Not done in M1-T792
-- `Unk0a7d54_Unk_0a8ad0`
-- `Unk0a7d54_AddSlot`
-- `Unk0a7d54_Unk_0a93b8`
-- `Unk0a7d54_FindByKey`
-- `Unk0a7d54_Unk_0a8b70`
-- `Unk0a7d54_Unk_0a8bac`: decompiler-derived
-- `Unk0a7d54_Unk_0a916c`: decompiler-derived
-
-## Not done in M1-T793
-- `Unk0a7d54_Unk_0a8c04`
-- `Unk0a7d54_Unk_0a8b00`
-- `func_020a85ac`
-- `func_020a7d80`
-- `func_020a9218`
-- `func_020a82f0`
-- `Unk0a7d54_Unk_0a7e8c`: decompiler-derived (plain+fix cleanup)
-- `Unk0a7d54_Unk_0a84a4`: hand-matched
-- `Unk0a7d54_Unk_0a8534`: hand-matched
-- `Unk0a7d54_FindByKey`: hand-matched
-- `Unk0a7d54_HasField8`: hand-matched
-- `Unk0a7d54_IsField8Is3`: hand-matched
-- `Unk0a7d54_Unk_0a8ad0`: hand-matched
-- `Unk0a7d54_Unk_0a8b00`: hand-matched
-- `Unk0a7d54_Unk_0a8b70`: hand-matched
-- `Unk0a7d54_Unk_0a8c04`: hand-matched
-- `Unk0a7d54_AddSlot`: hand-matched
-- `Unk0a7d54_Unk_0a9390`: hand-matched
-- `Unk0a7d54_Unk_0a93b8`: hand-matched
+## Later tasks
+M1-T792 and M1-T793 matched the other small helpers in this unit; their entries
+remain in the source with their original evidence comments. The large functions
+(`func_020a7d80`, `func_020a7ee8`, `func_020a82f0`, `func_020a85ac`,
+`func_020a8658`, `func_020a8c6c`, `func_020a8e5c`, `func_020a9218`) belong to
+later cards (M1-T793/M1-T794) and are not claimed by M1-T791.

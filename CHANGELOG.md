@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Verified all eight M1-T774 game/unit_020ea208 table rebuild, display-queue, slot effect, descriptor-stage and work-release routines at 100% objdiff; added typed descriptor/graphic views and documented the instruction evidence.
+- Verified all eight M1-T791 game/unit_020a7d54 entry scan, reset, release, predicate, and counter routines at 100% objdiff; added shared typed entry/work views, typed provider arguments, and per-function instruction evidence.
+- M1-T785: matched the four game/unit_0204bb9c slot-allocation, key-release and packed-record-clear routines at 100% objdiff, with typed context slot arrays and instruction evidence.
 - Verified all eight M1-T773 game/unit_020ea208 table getter/setters, slot dispatch, id translation and jump-table handlers at 100% objdiff; typed the slot handle layout and documented the instruction evidence.
 - Verified all eight M1-T790 game/unit_020a7d54 field helpers and lookup wrappers at 100% objdiff; added typed field views, explicit argument forwarding, and per-function contracts.
 - M1-T784: added the three missing game/unit_0204bb9c context accessors and documented all eight requested context/kind routines, verified at 100% objdiff with the original image checksum preserved.
