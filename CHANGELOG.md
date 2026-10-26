@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match all eight M1-T765 game/unit_0210a034 slot, state-machine, paging, and initialization functions at 100% objdiff; document their typed borrowed-work contracts.
+
 - Match all eight M1-T764 entry-selection, descriptor-state, and work-allocation helpers at 100% objdiff.
 
 - Match all eight M1-T763 game/unit_0210a034 helpers, including guarded work creation and cached ID updates.

@@ -52,6 +52,40 @@ void Unk10a034_Unk_10b018(void);
 int Unk10a034_Unk_10b058(u32 id);
 void Unk10a034_Unk_10aeb0(u8 *work);
 
+/* Eight-byte selection entry read by func_0210a9b8: kind, ID, and a value. */
+typedef struct Unk10a034Slot {
+    u16 kind;
+    u16 id;
+    u32 value;
+} Unk10a034Slot;
+
+int func_0204fb14(u32 id);
+void func_0204faf0(u32 slot, u32 value);
+u32 Unk0d297c_Unk_0d2f98(u32 id);
+int func_02065544(void);
+void func_02065c10(void);
+void func_02065864(u32 handle, s32 value);
+void func_020656ac(u32 handle, s32 value);
+void Unk0caea8_Unk_0caf98(u32 value);
+void Unk0a0ce4_Unk_0a0da4(u32 value);
+int func_02065e1c(void);
+void func_02065c80(void);
+int Unk0fc584_IsFieldCZero(void);
+void Unk0fc584_SetDir(s32 dir);
+int Unk0fc584_Unk_0fc894(void);
+void Unk0fc584_Unk_0fc84c(void);
+void Unk0fc584_Unk_0fc7b8(void);
+int Unk0fc584_Unk_0fc7f4(void);
+int func_0209993c(u32 id);
+u32 Unk09974c_GetEntryUnk08(u32 id);
+u8 *Unk02e000_Thunk_0202e788(void);
+int Unk096754_HasEntryId(u32 id);
+int Unk096754_Unk_096ab0(int index);
+int Unk096754_Unk_0969f0(void);
+s32 func_02096af4(u32 id);
+u32 func_0210ad64(Unk10a034Work *work);
+int func_0210a9b8(Unk10a034Work *work);
+
 /* Returns the word at 0x02176e38; the original loads this global directly. */
 u32 Unk10a034_Get_data_02176e38(void)
 {
@@ -506,7 +540,7 @@ void func_0210a160(u32 *work, u32 a, u32 b)
     FIELD(u32, work, 0xd4) = 0;
 }
 
-void Unk02e000_GetWorkArea(void);
+u8 *Unk02e000_GetWorkArea(void);
 void func_02099a28(u32 id, s32 value);
 void Unk0979d8_AddField344(s32 value);
 s32 Unk096754_Unk_096a14(void);
@@ -538,7 +572,7 @@ void func_0210b3a8(u8 *work)
 }
 
 int func_020d314c(u8 *entry);
-void func_0209993c(u32 id);
+int func_0209993c(u32 id);
 void func_02099b10(u32 id, s32 value);
 void func_020fc734(s32 value);
 s32 func_02096af4(u32 id);
@@ -581,17 +615,18 @@ void func_0204fcb0(u16 slot, u32 value);
 /* Fills five selection IDs for the current kind/page and publishes labels.
  * Evidence: twelve-entry filter and five-slot paging at 0x0210ad64.
  * The work and its entry table are borrowed writable storage. */
-void func_0210ad64(Unk10a034Work *work)
+u32 func_0210ad64(Unk10a034Work *work)
 {
     int i;
     int skip;
     int count, limit;
     int skipped;
     int written;
+    int j;
     Unk10a034Ent *entry;
     i = 0;
-    skip = 0;
     for (; i < 5; i++) work->unk_00bc[i] = 0;
+    skip = 0;
     count = func_0210ad00((Unk10a034Obj *)work, work->unk_00b4);
     if (count <= 5) limit = count;
     else {
@@ -602,7 +637,7 @@ void func_0210ad64(Unk10a034Work *work)
     skipped = 0;
     written = 0;
     entry = (Unk10a034Ent *)((u8 *)work + 0x24);
-    for (i = 0; i < 12; i++, entry++) {
+    for (j = 0; j < 12; j++, entry++) {
         if (entry->used && entry->pad == work->unk_00b4 && entry->val == 0 &&
             !Unk10a034_HasId((Unk10a034Obj *)work, entry->id)) {
             if (skipped < skip) skipped++;
@@ -616,5 +651,402 @@ void func_0210ad64(Unk10a034Work *work)
     }
     if (count <= 5) limit--;
     else func_0204fcb0((u16)(written + 1), Unk0d297c_Unk_0d2f98(21));
-    Unk0d297c_Unk_0d2f98(limit + 15);
+    return Unk0d297c_Unk_0d2f98(limit + 15);
+}
+
+int func_0210a9b8(Unk10a034Work *work)
+{
+    int count;
+    u8 *area;
+    u8 i;
+    int found;
+    int match;
+    Unk10a034Slot *slot;
+    u8 *record;
+    u32 value;
+    count = 0;
+    Unk10a034_Unk_10aeb0((u8 *)work);
+    area = Unk02e000_GetWorkArea();
+    i = 0;
+    found = 0;
+    for (; i < 4; i++) {
+        slot = (Unk10a034Slot *)(FIELD(u8 *, work, 0x14) + 0x20) + i;
+        if (func_020d314c((u8 *)slot) == 0) continue;
+        switch (slot->kind) {
+        case 0:
+            break;
+        case 1:
+            value = (u32)func_0209993c(slot->id);
+            if (value < slot->value) return -1;
+            if (value == slot->value) {
+                value = Unk09974c_GetEntryUnk08(slot->id);
+                record = Unk02e000_Thunk_0202e788();
+                match = found;
+                switch (value) {
+                case 3:
+                    if (FIELD(u16, record, 0) == slot->id) match = 1;
+                    break;
+                case 4:
+                    if (FIELD(u16, record, 2) == slot->id) match = 1;
+                    break;
+                case 5:
+                    if (FIELD(u16, record, 4) == slot->id) match = 1;
+                    break;
+                case 6:
+                    if (FIELD(u16, record, 6) == slot->id) match = 1;
+                    break;
+                }
+                if (match != 0) {
+                    func_0204faf0(8, slot->id);
+                    return -2;
+                }
+            }
+            count++;
+            break;
+        case 2:
+            if (FIELD(u32, area, 0x344) < slot->value) return -1;
+            FIELD(u32, work, 0x20) = 1;
+            count++;
+            break;
+        case 3:
+            if (Unk096754_HasEntryId(slot->id) == 0) return -1;
+            count++;
+            break;
+        case 4:
+            if (func_0210acac((u8 *)work, slot->id, 1) == 0) return -1;
+            count++;
+            break;
+        }
+    }
+    Unk10a034_Unk_10aeb0((u8 *)work);
+    return count;
+}
+
+/* Runs the second work object's state machine (fields +8/+0xc/+0x14/+0x18).
+ * Each state either advances the state word via Unk10a034_Unk_10b394 or
+ * returns without changing it; 28-byte allocations are shared with
+ * func_0210b080. Evidence: switch table at 0x0210b124..0x0210b390. */
+void func_0210b124(u8 *work)
+{
+    u8 *record;
+    s32 value;
+    switch (FIELD(u32, work, 8)) {
+    case 0:
+        Unk10a034_Unk_10af40(FIELD(u32, work, 0));
+        FIELD(u32, work, 0x14) = Unk10a034_Unk_10af7c();
+        if (func_02065544() == 0) func_02065c10();
+        func_02065864(Unk0d297c_Unk_0d2f98(2), -1);
+        Unk0caea8_Unk_0caf98(1);
+        Unk0a0ce4_Unk_0a0da4(41);
+        FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+        Unk10a034_Unk_10b394((Unk10a034Work *)work, 1, 0);
+        return;
+    case 1:
+        record = (u8 *)FIELD(u32, work, 0x14);
+        if (func_020d314c(record + 0x18) == 0) {
+            Unk10a034_Unk_10b394((Unk10a034Work *)work, 9, 1);
+            return;
+        }
+        func_0210b42c(work);
+        if (FIELD(u32, work, 0x18) != 0) {
+            Unk0fc584_SetDir(1);
+            if (Unk0fc584_Unk_0fc894() == 1) {
+                Unk10a034_Unk_10b484(work);
+                Unk0fc584_Unk_0fc84c();
+            }
+        }
+        value = 0;
+        switch (FIELD(u16, record, 0x18)) {
+        case 1:
+            value = Unk0d297c_Unk_0d2f98(4);
+            break;
+        case 2:
+            value = Unk0d297c_Unk_0d2f98(6);
+            break;
+        case 3:
+            if (FIELD(u32, work, 0x18) != 0) {
+                value = Unk0d297c_Unk_0d2f98(7);
+                func_0204faf0(1, Unk10a034_Unk_10b058(FIELD(u16, record, 0x1a)));
+            } else {
+                value = Unk0d297c_Unk_0d2f98(5);
+            }
+            break;
+        }
+        func_020656ac(value, -1);
+        FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+        Unk10a034_Unk_10b394((Unk10a034Work *)work, 5, 0);
+        return;
+    case 5:
+        if (FIELD(u32, work, 0x18) != 0) {
+            if (Unk0fc584_IsFieldCZero() == 0) return;
+            Unk10a034_Unk_10b484(work);
+            Unk0fc584_Unk_0fc7b8();
+            func_0210b3a8(work);
+            Unk10a034_Unk_10b394((Unk10a034Work *)work, 6, 1);
+            return;
+        }
+        func_0210b3a8(work);
+        Unk10a034_Unk_10b394((Unk10a034Work *)work, 9, 1);
+        return;
+    case 9:
+        func_02065c80();
+        Unk10a034_Unk_10b394((Unk10a034Work *)work, 10, 1);
+        return;
+    case 10:
+        Unk0fc584_SetDir(0);
+        return;
+    case 6:
+        if (Unk0fc584_Unk_0fc7f4() != 0) return;
+        Unk10a034_Unk_10b394((Unk10a034Work *)work, 7, 1);
+        FIELD(u32, work, 0xc) = 10;
+        return;
+    case 7:
+        value = FIELD(s32, work, 0xc) - 1;
+        FIELD(s32, work, 0xc) = value;
+        if (value >= 1) return;
+        Unk10a034_Unk_10b394((Unk10a034Work *)work, 9, 1);
+        return;
+    }
+}
+
+/* Runs the 216-byte work object's state machine on the state word at +8.
+ * States drive selection, linked descriptors, and provider notifications;
+ * every transition goes through Unk10a034_Unk_10a9a4. The work, its +4 link,
+ * and its +0x14 descriptor are borrowed; 28-byte records are owned by them.
+ * Evidence: switch table at 0x0210a1d8..0x0210a96c. */
+void func_0210a1d8(u8 *p)
+{
+    Unk10a034Work *work = (Unk10a034Work *)p;
+    Unk10a034Slot *slot;
+    int i;
+    int index;
+    u32 state;
+    u32 handle;
+    u16 id;
+    s32 ret;
+    switch (FIELD(u32, work, 8)) {
+    case 0:
+        Unk10a034_Unk_10af40(FIELD(u32, work, 0));
+        FIELD(u32, work, 0x14) = Unk10a034_Unk_10af7c();
+        ret = func_0210a9b8(work);
+        if (ret == -2) {
+            if (func_02065544() == 0) func_02065c10();
+            func_02065864(Unk0d297c_Unk_0d2f98(15), -1);
+            FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+            Unk10a034_Unk_10a9a4(work, 11, 0);
+            return;
+        }
+        if (ret == -1) {
+            Unk10a034_Unk_10a9a4(work, 12, 1);
+            return;
+        }
+        if (ret == 0) {
+            if (FIELD(u16, FIELD(u32, work, 0x14), 0x18) == 3) {
+                Unk10a034_Unk_10a9a4(work, 7, 1);
+                return;
+            }
+            FIELD(u32, work, 0x18) = 1;
+            Unk10a034_Unk_10a9a4(work, 18, 1);
+            return;
+        }
+        if (func_02065544() == 0) func_02065c10();
+        FIELD(u32, work, 0x1c) = 0;
+        for (i = 0; i < 4; i++) work->unk_00c8[i] = 0;
+        Unk10a034_Unk_10a9a4(work, 2, 1);
+        if (FIELD(u32, work, 0x20) != 0) Unk0fc584_SetDir(1);
+        return;
+    case 1:
+        switch (func_02065e1c()) {
+        case 1:
+            if (FIELD(u16, work, 0xd0) == 4)
+                Unk10a034_Unk_10a9a4(work, 4, 1);
+            else
+                Unk10a034_Unk_10a9a4(work, 13, 1);
+            Unk10a034_Unk_10aeb0((u8 *)work);
+            return;
+        case 2:
+            if (FIELD(u16, work, 0xd0) != 4) {
+                Unk10a034_Unk_10a9a4(work, 13, 1);
+                Unk10a034_Unk_10aeb0((u8 *)work);
+            } else {
+                Unk10a034_Unk_10a9a4(work, 5, 1);
+            }
+            return;
+        }
+        switch (FIELD(u16, work, 0xd0)) {
+        case 3:
+        case 4:
+            id = (u16)func_0204fb14(2);
+            FIELD(u16, (u8 *)work + FIELD(u32, work, 0x1c) * 2, 0xc6) = id;
+            Unk10a034_ClearById((u8 *)work, id);
+            break;
+        }
+        if (FIELD(u16, work, 0xd0) == 4) {
+            Unk10a034_Unk_10a9a4(work, 3, 0);
+            return;
+        }
+        Unk10a034_Unk_10a9a4(work, 2, 0);
+        return;
+    case 2:
+        for (index = FIELD(u32, work, 0x1c); index < 4;
+             index = FIELD(u32, work, 0x1c)) {
+            slot = (Unk10a034Slot *)(FIELD(u32, work, 0x14) + 0x20) + index;
+            FIELD(u16, work, 0xd0) = slot->kind;
+            FIELD(u32, work, 0x1c) = FIELD(u32, work, 0x1c) + 1;
+            if (func_020d314c((u8 *)slot) == 0) continue;
+            if (slot->kind == 3 &&
+                Unk096754_Unk_096ab0(func_02096af4(slot->id)) == 0) {
+                func_0204faf0(1, FIELD(u32, work, 0x1c));
+                func_02065864(Unk0d297c_Unk_0d2f98(11), -1);
+                FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+                Unk10a034_Unk_10a9a4(work, 13, 0);
+                return;
+            }
+            if (slot->kind == 4) {
+                FIELD(u16, work, 0xb4) = slot->id;
+                if (func_0210ad00((Unk10a034Obj *)work, slot->id) > 1) {
+                    Unk10a034_Unk_10af0c(work);
+                    Unk10a034_Unk_10a9a4(work, 5, 0);
+                    return;
+                }
+            }
+            state = 8;
+            switch (slot->kind) {
+            case 1:
+                state = 8;
+                break;
+            case 2:
+                state = 10;
+                Unk0fc584_SetDir(1);
+                break;
+            case 3:
+                state = 9;
+                break;
+            case 4:
+                state = 9;
+                break;
+            }
+            handle = Unk0d297c_Unk_0d2f98(state);
+            func_0204faf0(1, FIELD(u32, work, 0x1c));
+            func_0204faf0(2, slot->id);
+            if (slot->kind == 4)
+                func_0204faf0(2, func_0210acac((u8 *)work, FIELD(u16, work, 0xb4), 0));
+            FIELD(u32, FIELD(u32, work, 4), 0x18) = 9;
+            func_02065864(handle, 1);
+            Unk10a034_Unk_10a9a4(work, 1, 0);
+            return;
+        }
+        if (FIELD(u16, FIELD(u32, work, 0x14), 0x18) == 3)
+            Unk10a034_Unk_10a9a4(work, 7, 1);
+        else
+            Unk10a034_Unk_10a9a4(work, 14, 1);
+        return;
+    case 3:
+        FIELD(u32, work, 0xd4) = 1;
+        func_0204faf0(6, FIELD(u16, (u8 *)work + FIELD(u32, work, 0x1c) * 2, 0xc6));
+        Unk0caea8_Unk_0caf98(1);
+        Unk0a0ce4_Unk_0a0da4(35);
+        func_02065864(Unk0d297c_Unk_0d2f98(25), -1);
+        FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+        Unk10a034_Unk_10a9a4(work, 2, 0);
+        return;
+    case 4:
+        if (FIELD(u32, work, 0xd4) != 0) {
+            func_02065864(Unk0d297c_Unk_0d2f98(26), -1);
+            FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+        }
+        Unk10a034_Unk_10a9a4(work, 13, 0);
+        return;
+    case 5:
+        FIELD(u32, work, 0xb8) = 0;
+        func_02065864(func_0210ad64(work), 2);
+        FIELD(u32, FIELD(u32, work, 4), 0x18) = 9;
+        Unk10a034_Unk_10a9a4(work, 6, 0);
+        return;
+    case 6:
+        id = work->unk_00bc[func_02065e1c()];
+        if (id == 0) {
+            FIELD(u32, work, 0xb8) = FIELD(u32, work, 0xb8) + 1;
+            if (func_0210ad00((Unk10a034Obj *)work, FIELD(u16, work, 0xb4)) <=
+                FIELD(s32, work, 0xb8) * 5)
+                FIELD(s32, work, 0xb8) = 0;
+            func_02065864(func_0210ad64(work), 2);
+            FIELD(u32, FIELD(u32, work, 4), 0x18) = 9;
+            Unk10a034_Unk_10a9a4(work, 6, 0);
+            return;
+        }
+        handle = Unk0d297c_Unk_0d2f98(23);
+        func_0204faf0(1, FIELD(u32, work, 0x1c));
+        func_0204faf0(2, id);
+        FIELD(u32, FIELD(u32, work, 4), 0x18) = 9;
+        func_02065864(handle, 0);
+        Unk10a034_Unk_10a9a4(work, 1, 0);
+        return;
+    case 7:
+        if (Unk096754_Unk_0969f0() == 0) {
+            if (func_02065544() == 0) func_02065c10();
+            func_02065864(Unk0d297c_Unk_0d2f98(12), -1);
+            FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+            Unk10a034_Unk_10a9a4(work, 9, 0);
+            return;
+        }
+    case 8:
+        if (Unk096754_HasEntryId(FIELD(u16, FIELD(u32, work, 0x14), 0x1a)) == 1) {
+            if (func_02065544() == 0) func_02065c10();
+            func_02065864(Unk0d297c_Unk_0d2f98(13), -1);
+            FIELD(u32, FIELD(u32, work, 4), 0x18) = 0x1c;
+            Unk10a034_Unk_10a9a4(work, 9, 0);
+            Unk0fc584_SetDir(1);
+            return;
+        }
+        Unk10a034_Unk_10a9a4(work, 14, 1);
+        return;
+    case 9:
+        FIELD(u32, FIELD(u32, work, 4), 0x18) = 9;
+        func_02065864(Unk0d297c_Unk_0d2f98(14), 0);
+        Unk10a034_Unk_10a9a4(work, 10, 0);
+        return;
+    case 10:
+        if (func_02065e1c() == 1) {
+            Unk10a034_Unk_10a9a4(work, 13, 1);
+            return;
+        }
+        Unk10a034_Unk_10a9a4(work, 14, 1);
+        return;
+    case 14:
+        if (FIELD(u32, work, 0x20) != 0 && Unk0fc584_IsFieldCZero() == 0) return;
+        func_0210ab60((u8 *)work);
+        FIELD(u32, work, 0x18) = 1;
+        if (FIELD(u32, work, 0x20) != 0) {
+            Unk10a034_Unk_10a9a4(work, 15, 1);
+            return;
+        }
+        Unk10a034_Unk_10a9a4(work, 18, 1);
+        return;
+    case 11:
+        Unk10a034_Unk_10a9a4(work, 18, 1);
+        FIELD(u32, work, 0x18) = 0;
+        return;
+    case 12:
+        Unk10a034_Unk_10a9a4(work, 18, 1);
+        FIELD(u32, work, 0x18) = 2;
+        return;
+    case 13:
+        Unk10a034_Unk_10a9a4(work, 18, 1);
+        FIELD(u32, work, 0x18) = 0;
+        return;
+    case 18:
+        Unk0fc584_SetDir(0);
+        return;
+    case 15:
+        if (Unk0fc584_Unk_0fc7f4() != 0) return;
+        Unk10a034_Unk_10a9a4(work, 16, 1);
+        FIELD(u32, work, 0xc) = 10;
+        return;
+    case 16:
+        FIELD(s32, work, 0xc) = FIELD(s32, work, 0xc) - 1;
+        if (FIELD(s32, work, 0xc) >= 1) return;
+        Unk10a034_Unk_10a9a4(work, 18, 1);
+        return;
+    }
 }

@@ -50,3 +50,16 @@ The TU already existed from earlier cards; its seven existing requested bodies w
 - `func_0210b080` (112 B): **100% objdiff**. Requests 28 bytes with update callback func_0210b124, second-global cleanup, and arguments 3/0/1. Initializes seven words after successful allocation and returns zero on failure. Evidence: original allocator call and initialization at 0x0210b080.
 
 The existing TU and three already matching requested bodies were retained. Original-object comparison provides acceptance coverage (`tests_required = false`). No hard functions remain for this card. The unrelated decompiler-derived `Unk10a034_Unk_10ac28` remains outside this card.
+
+## M1-T765 verification
+
+- `func_0210a160` (120 B): **100% objdiff**. Initializes the 216-byte work: two caller words, five cleared words, a state of 1, zeroed selection fields and ID arrays, then calls `Unk10a034_Unk_10ac28`. Evidence: stores and initializer call at 0x0210a160.
+- `Unk10a034_Unk_10ac28` (132 B): **100% objdiff**. Fills twelve borrowed twelve-byte entries from area IDs, provider kinds, and record byte +2. Evidence: area +0x36 and record +2 loads at 0x0210ac48–0x0210ac90.
+- `func_0210b3a8` (132 B): **100% objdiff**. Applies the linked descriptor by kind: kind 1 submits an ID/value pair, kind 2 adds a signed amount, kind 3 selects an entry or adds its scaled value. The work and descriptor are borrowed. Evidence: descriptor switch at 0x0210b3a8.
+- `func_0210ab60` (200 B): **100% objdiff**. Applies up to four linked eight-byte entries; kinds 1–3 use entry fields, kind 4 uses the work's selected IDs. Evidence: stride-eight loop and provider calls at 0x0210ab60.
+- `func_0210ad64` (288 B): **100% objdiff**. Publishes the current five-slot page of selected IDs and labels, resetting an out-of-range page counter. Evidence: twelve-entry filter, five-slot paging, and label calls at 0x0210ad64.
+- `func_0210a9b8` (424 B): **100% objdiff**. Validates four linked eight-byte slots against area/record providers and returns the accepted count, -1 on rejection, and -2 when the ID is already listed. Evidence: slot table and provider calls at 0x0210a9b8–0x0210ab28.
+- `func_0210b124` (624 B): **100% objdiff**. Runs the 28-byte work state machine over states 0–10, driving descriptor application and provider notifications. Evidence: switch table at 0x0210b124–0x0210b390.
+- `func_0210a1d8` (1996 B): **100% objdiff**. Runs the 216-byte work state machine over states 0–18, covering slot validation, paging, descriptor application, and provider callbacks. Evidence: switch table at 0x0210a1d8–0x0210a96c.
+
+The three previously untyped provider declarations gained observed return values (`func_0209993c`, `Unk02e000_GetWorkArea`) and the two state machines share the existing borrowed `Unk10a034Work` layout. No hard functions remain for this card.
