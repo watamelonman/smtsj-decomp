@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T873: match eight grid insertion, reconstruction, record clearing, weighted selection, and provider-check functions in `game/unit_020a6174`; document caller contracts and instruction evidence.
+- M1-T868: match eight game/unit_020cb32c selector, descriptor, handle and state helpers; document typed contracts and instruction evidence.
 - Match eight more unit_02116598 allocation, teardown, and state functions (M1-T806).
 - M1-T867: verify eight more `game/unit_020cb32c` functions at 100% objdiff; add typed call contracts, explicit work forwarding and per-function instruction evidence.
 - Matched M1-T872 record-bank scanning, address, clearing, and insertion helpers; documented their field contracts.
