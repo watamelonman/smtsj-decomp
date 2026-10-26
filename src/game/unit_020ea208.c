@@ -9,8 +9,8 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 /*
  * One of the six 56-byte slot records that start at work+0x70. The two
  * single handles at +0x20/+0x34 and the four-entry handle table at +0x24 are
- * released by func_020eb034; +0x00..+0x1c are the words zeroed by
- * Unk0ea208_Unk_0eae20.
+ * released by func_020eb034; +0x00, +0x04 and +0x10..+0x1c (not +0x08/+0x0c)
+ * are zeroed by Unk0ea208_Unk_0eae20.
  */
 typedef struct Unk0ea208Slot {
     u32 UnkField00;
@@ -51,15 +51,13 @@ typedef struct Unk0ea208Work {
 
 
 extern u32 data_02176ddc[];
-/* Two parallel 8-byte key/value tables consulted by func_020eacb4. */
+/* Two 8-byte key/value tables consulted by func_020eacb4; every value is zero. */
 typedef struct Unk0ea208IdMap {
     u32 key;
     u32 value;
 } Unk0ea208IdMap;
-extern Unk0ea208IdMap data_02150c80[];
-extern Unk0ea208IdMap data_02150c84[];
-extern Unk0ea208IdMap data_02150ca0[];
-extern Unk0ea208IdMap data_02150ca4[];
+extern Unk0ea208IdMap data_02150c80[4];
+extern Unk0ea208IdMap data_02150ca0[5];
 /* Default object used by func_020ea208 when Unk09974c_Unk_099bac finds none. */
 extern u32 data_02150cc8[];
 
@@ -372,16 +370,12 @@ u32 Unk0ea208_GetArr58(int i)
 }
 
 /*
- * Run the per-slot teardown when the singleton exists and its +0x1cc word is nonzero.
- * Evidence: `bl Unk0ea208_Get_data_02176ddc`, `cmp r0,#0`, `ldrne r1,[r0,#460]`,
- * `cmpne r1,#0`, then `bl Unk0ea208_ForEachSlot` with the singleton as the argument.
- * Callers are the state handlers in game/unit_020f470c and game/unit_020f4c50.
- */
-/*
  * Run the fixed selector dispatch: 0/1/5/6/7 call func_020eacb4, 2 -> 0ead3c,
  * 3 -> 0ead1c, 4 -> 0ead4c, 8 -> 0ead64, 9 -> 0eada8, 10 -> 0eade4; other
  * selectors return 0. Evidence: the `cmp r0,#10` / `addls pc,pc,r0,lsl #2`
- * jump table and each call relocation. Callees own any side effects.
+ * jump table and each call relocation. Callees own any side effects; the
+ * void-callee arms (2, 3, 4, 8) intentionally leave the callee's r0 as the
+ * result, matching the original.
  */
 u32 func_020ea630(int selector)
 {
@@ -400,17 +394,14 @@ u32 func_020ea630(int selector)
     case 5:
     case 6:
     case 7:
-        func_020eacb4(selector);
-        break;
+        return func_020eacb4(selector);
     case 8:
         Unk0ea208_Unk_0ead64();
         break;
     case 9:
-        Unk0ea208_Unk_0eada8();
-        break;
+        return Unk0ea208_Unk_0eada8();
     case 10:
-        Unk0ea208_Unk_0eade4();
-        break;
+        return Unk0ea208_Unk_0eade4();
     default:
         return 0;
     }
@@ -438,6 +429,12 @@ void func_020ea6ac(u32 a, u32 b, u32 c, u32 d, u32 e)
     func_020eae84(slot, a, b, c, d, e);
 }
 
+/*
+ * Run the per-slot teardown when the singleton exists and its +0x1cc word is nonzero.
+ * Evidence: `bl Unk0ea208_Get_data_02176ddc`, `cmp r0,#0`, `ldrne r1,[r0,#460]`,
+ * `cmpne r1,#0`, then `bl Unk0ea208_ForEachSlot` with the singleton as the argument.
+ * Callers are the state handlers in game/unit_020f470c and game/unit_020f4c50.
+ */
 void Unk0ea208_Unk_0ea70c(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
@@ -467,10 +464,9 @@ void Unk0ea208_Unk_0eaca0(void)
 
 /*
  * Translate an id through the two static key/value tables: five entries from
- * data_02150ca0/data_02150ca4, then four from data_02150c80/data_02150c84;
- * return 0 when neither table has the id. Evidence: the two `ldr
- * [r2,r3,lsl #3]` loops with bounds 5 and 4 and the final `mov r0,#0`. Tables
- * are read-only and borrowed.
+ * data_02150ca0, then four from data_02150c80; return 0 when neither table has
+ * the id. Evidence: the two `ldr [r2,r3,lsl #3]` loops with bounds 5 and 4 and
+ * the final `mov r0,#0`. Tables are read-only and borrowed.
  */
 u32 func_020eacb4(u32 id)
 {
@@ -478,12 +474,12 @@ u32 func_020eacb4(u32 id)
 
     for (i = 0; i < 5; i++) {
         if (id == data_02150ca0[i].key) {
-            return data_02150ca4[i].key;
+            return data_02150ca0[i].value;
         }
     }
     for (i = 0; i < 4; i++) {
         if (id == data_02150c80[i].key) {
-            return data_02150c84[i].key;
+            return data_02150c80[i].value;
         }
     }
     return 0;
