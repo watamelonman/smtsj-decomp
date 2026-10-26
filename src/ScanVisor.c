@@ -41,25 +41,31 @@ typedef struct ScanVisor {
 } ScanVisor;
 void Unk0fc584_SetDir(void);
 
-/* Empty callbacks (called from ScanVisor_Draw). */
+/** No-op draw callback: original 0x020a34a4 is only bx lr; Draw passes sv. */
 void ScanVisor_Nop_0a34a4(ScanVisor *sv) { }
+
+/** No-op draw callback: original 0x020a34a8 is only bx lr; Draw passes sv. */
 void ScanVisor_Nop_0a34a8(ScanVisor *sv) { }
 
-/* Constant: 20 (used by six different systems). */
+/** Return the fixed query value; original 0x020a2bb0 moves immediate 20 into r0. */
 int ScanVisor_GetConst20(void) { return 20; }
 
-/* Constant: 6. */
+/** Return the fixed query value; original 0x020a4e40 moves immediate 6 into r0. */
 int ScanVisor_GetConst6(void) { return 6; }
 
+/** Read word +0x14 from a valid object (ldr at 0x020a45f8); meaning unknown. */
 u32 ScanVisor_Unk_0a45f8(ScanVisor *sv) { return sv->field14; }
 
-/* Forwards to Unk0fc584_SetDir. */
+/** Forward the no-argument call; original 0x020a28e8 branches through the
+ * Unk0fc584_SetDir literal relocation, without a local stack frame. */
 void ScanVisor_Thunk_020fc6b8(void) { Unk0fc584_SetDir(); }
 
-/* Reads entry `index` of the slot table at 0x1C0. */
+/** Read the caller-selected word from a valid object, without bounds checks.
+ * Original 0x020a42b8 adds index * 4 then loads +0x1c0 (the slot table). */
 u32 ScanVisor_GetSlot(ScanVisor *sv, int index) { return sv->slots[index]; }
 
-/* Sets the 0x1C/0x20 pair. */
+/** Store the caller's pair in a valid record; original 0x020a43dc writes
+ * +0x1c then +0x20. Range units and ordering constraints remain unknown. */
 void ScanVisor_SetRange(ScanVisor *sv, u32 a, u32 b) {
     sv->rangeA = a;
     sv->rangeB = b;
@@ -67,62 +73,70 @@ void ScanVisor_SetRange(ScanVisor *sv, u32 a, u32 b) {
 
 
 
-/* set +0x24 and +0x28 */
-void ScanVisor_SetUnkFields24_28(void *obj, u32 a, u32 b) {
-    ((ScanVisor *)obj)->unk_0024 = a;
-    ((ScanVisor *)obj)->unk_0028 = b;
+/* Store a caller-supplied value pair in the slot record at +0x24/+0x28.
+ * Original 0x020a43e8: str r1,[r0,#36]; str r2,[r0,#40]; bx lr. Callers
+ * pass slot records and either (8, 0) or (0, 0); the value units are unknown. */
+void ScanVisor_SetUnkFields24_28(ScanVisor *sv, u32 a, u32 b) {
+    sv->unk_0024 = a;
+    sv->unk_0028 = b;
 }
 
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a4904(int arg0)
+/* Set the word at +0x1bc to 1. Original 0x020a4904: mov r1,#1;
+ * str r1,[r0,#444]; bx lr. Callers pass the list object at base+0x24c. */
+void ScanVisor_Unk_0a4904(ScanVisor *sv)
 {
-  ((ScanVisor *)arg0)->unk_01bc = 1;
-  return;
+  sv->unk_01bc = 1;
 }
 
 
-/* decompiler-derived */
-void ScanVisor_ClearUnkField198(int arg0)
+/* Reset the word at +0x198 to 0. Original 0x020a4988: mov r1,#0;
+ * str r1,[r0,#408]; bx lr. Callers pass the list object at base+0x24c. */
+void ScanVisor_ClearUnkField198(ScanVisor *sv)
 {
-  ((ScanVisor *)arg0)->unk_0198 = 0;
-  return;
+  sv->unk_0198 = 0;
 }
 
-int ScanVisor_AnySlotField14();
-/* forwards to `ScanVisor_AnySlotField14` */
-void ScanVisor_Thunk_020a4600(void) { ScanVisor_AnySlotField14(); }
+int ScanVisor_AnySlotField14(u8 *p);
+/* Borrow the list pointer and return the callee's 0/1 query result. Original
+ * 0x020a49cc tail-branches to 0x020a4600; the caller at 0x020a35bc passes
+ * base+0x24c and compares the returned r0 with zero at 0x020a35c4. */
+int ScanVisor_Thunk_020a4600(u8 *p) { return ScanVisor_AnySlotField14(p); }
 
 extern u32 data_02176b04[];
-/* decompiler-derived */
+/* Return the word at data_02176b04 (bss). Original 0x020a2cfc: ldr r0,
+ * literal; ldr r0,[r0]; bx lr. Callers null-check the result before using
+ * it as the work-object base. */
 u32 ScanVisor_Get_data_02176b04(void)
 {
   return *data_02176b04;
 }
 
 void ScanVisor_Unk_0a4a44(int arg0);
-/* decompiler-derived */
-void ScanVisor_Unk_0a3620(int arg0)
+/* Forward the list at base+0x24c to ScanVisor_Unk_0a4a44. Original
+ * 0x020a3620: ldr ip,[pc,#4]; add r0,r0,#588; bx ip. */
+void ScanVisor_Unk_0a3620(ScanVisor *sv)
 {
-  ScanVisor_Unk_0a4a44(arg0 + 0x24c);
-  return;
+  ScanVisor_Unk_0a4a44((int)sv + 0x24c);
 }
 
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a465c(int arg0)
+/* Clear the two words at +0x10 and +0x14. Original 0x020a465c: mov r1,#0;
+ * str r1,[r0,#16]; str r1,[r0,#20]; bx lr. ScanVisor_SetById passes the
+ * idle slot record returned by ScanVisor_FindSlotByKey. */
+void ScanVisor_Unk_0a465c(ScanVisor *sv)
 {
-  ((ScanVisor *)arg0)->unk_0010 = 0;
-  ((ScanVisor *)arg0)->field14 = 0;
-  return;
+  sv->unk_0010 = 0;
+  sv->field14 = 0;
 }
 
 void ScanVisor_Unk_0a4950(int arg0,u32 arg1,int arg2);
-/* decompiler-derived */
-void ScanVisor_Unk_0a4a30(u32 arg0)
+/* Forward the list object at base+0x24c to ScanVisor_Unk_0a4950 with
+ * arguments (1, 1). Original 0x020a4a30: ldr ip,[pc,#8]; mov r1,#1;
+ * mov r2,r1; bx ip; .word 0x020a4950. The callee owns all stores. */
+void ScanVisor_Unk_0a4a30(u32 obj)
 {
-  ScanVisor_Unk_0a4950(arg0,1,1);
-  return;
+  ScanVisor_Unk_0a4950(obj,1,1);
 }
 
 
@@ -172,7 +186,7 @@ void ScanVisor_Unk_0a2acc(void)
   if (tmp1 == 0) {
     return;
   }
-  ScanVisor_ClearUnkField198(tmp1 + 0x24c);
+  ScanVisor_ClearUnkField198((ScanVisor *)(tmp1 + 0x24c));
   return;
 }
 
@@ -372,7 +386,7 @@ void ScanVisor_Unk_0a2b7c(void)
     return;
   }
   Unk0a7d54_Unk_0a8c40(tmp1 + 0x428);
-  ScanVisor_ClearUnkField198(tmp1 + 0x24c);
+  ScanVisor_ClearUnkField198((ScanVisor *)(tmp1 + 0x24c));
   return;
 }
 
@@ -498,7 +512,6 @@ int func_020c8f08();
 int Unk0c855c_Unk_0ca648();
 int Unk0fc584_Unk_0fc6a0();
 int Unk0fd9f0_Unk_0fda14();
-void ScanVisor_Unk_0a4904();
 void ScanVisor_Unk_0a4864();
 void ScanVisor_Unk_0a4910();
 void ScanVisor_Unk_0a48b4();
@@ -548,7 +561,7 @@ void ScanVisor_Unk_0a2920(int on)
         return;
     }
     if (on) {
-        ScanVisor_Unk_0a4904(v + 588);
+        ScanVisor_Unk_0a4904((ScanVisor *)(v + 588));
     } else {
         ScanVisor_Unk_0a4864(v + 588);
     }
@@ -728,7 +741,7 @@ void ScanVisor_Unk_0a4864(int arg0)
   v2 = (int *)(arg0 + 0x20);
   do {
     if (*v2 != 0) {
-      ScanVisor_SetUnkFields24_28(v2,8,0);
+      ScanVisor_SetUnkFields24_28((ScanVisor *)v2,8,0);
     }
     tmp1 = tmp1 + 1;
     v2 = v2 + 0xd;
@@ -786,7 +799,7 @@ u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
     v1[0xb] = *(u32 *)(tmp2 + 4);
     v1[0xc] = *(u32 *)(tmp2 + 8);
     ScanVisor_SetRange((ScanVisor *)v1, (u32)0x50, (u32)0);
-    ScanVisor_SetUnkFields24_28(v1,0,0);
+    ScanVisor_SetUnkFields24_28((ScanVisor *)v1,0,0);
     return v1;
   }
   return (u32 *)0x0;
@@ -840,7 +853,7 @@ void ScanVisor_Draw(ScanVisor *sv)
         func_02057eb8(1);
         Unk0a7d54_Unk_0a8ad0((u8 *)sv + 0x428);
         func_02057eb8(1);
-        ScanVisor_Unk_0a3620((int)sv);
+        ScanVisor_Unk_0a3620(sv);
         func_02057eb8(-1);
         break;
     }
@@ -976,5 +989,5 @@ void ScanVisor_Unk_0a4a18(u32 list, u32 id)
     if (sv == 0) {
         return;
     }
-    ScanVisor_Unk_0a465c((int)sv);
+    ScanVisor_Unk_0a465c(sv);
 }
