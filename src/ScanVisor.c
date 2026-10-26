@@ -97,11 +97,11 @@ void ScanVisor_ClearUnkField198(ScanVisor *sv)
   sv->unk_0198 = 0;
 }
 
-int ScanVisor_AnySlotField14();
-/* Forward r0 unchanged to ScanVisor_AnySlotField14. Original 0x020a49cc:
- * ldr ip,[pc]; bx ip; .word 0x020a4600. The callee is declared without a
- * prototype so the forwarder does not materialise an argument in r0. */
-void ScanVisor_Thunk_020a4600(void) { ScanVisor_AnySlotField14(); }
+int ScanVisor_AnySlotField14(u8 *p);
+/* Borrow the list pointer and return the callee's 0/1 query result. Original
+ * 0x020a49cc tail-branches to 0x020a4600; the caller at 0x020a35bc passes
+ * base+0x24c and compares the returned r0 with zero at 0x020a35c4. */
+int ScanVisor_Thunk_020a4600(u8 *p) { return ScanVisor_AnySlotField14(p); }
 
 extern u32 data_02176b04[];
 /* Return the word at data_02176b04 (bss). Original 0x020a2cfc: ldr r0,

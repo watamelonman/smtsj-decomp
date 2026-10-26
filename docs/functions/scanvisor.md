@@ -50,7 +50,10 @@ delinked `src/ScanVisor.o`; they do not establish further gameplay meaning.
   base+0x24c by `ScanVisor_Unk_0a2acc` and `ScanVisor_Unk_0a2b7c`.
 - `ScanVisor_Thunk_020a4600` (0x020a49cc, 12 bytes): `ldr ip,[pc]; bx ip`
   with an ABS32 relocation to `ScanVisor_AnySlotField14` (0x020a4600). The
-  no-argument forward keeps r0 unchanged; the callee returns an int.
+  typed `u8 *` parameter explicitly forwards the borrowed list pointer and
+  the thunk returns the callee's integer 0/1 result. The caller at 0x020a35bc
+  passes base+0x24c, calls at 0x020a35c0, and compares r0 with zero at
+  0x020a35c4, establishing that the return value must be preserved.
 - `ScanVisor_Get_data_02176b04` (0x020a2cfc, 16 bytes): `ldr r0, literal;
   ldr r0,[r0]; bx lr`, returning the bss word at 0x02176b04. Callers
   null-check it before using the result as the work-object base.
