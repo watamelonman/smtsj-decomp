@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T095: reconstruct eight NitroSDK VRAM bank allocation getters in matching C.
+- M2-T101: match eight CRI mode and state forwarding wrappers in `cri_0208a978.c`.
+- Match eight NitroSDK BG2/BG3 text and affine control setters in `sdk_020544b0` (M2-T099).
 
 - Match the five remaining interpreter submission wrappers (codes 33–37) in `libs/unknown/lib_020b91a8.c`.
 - Matched the remaining shared-state initializer `func_0205e348` in `libs/NitroSDK/sdk_0205e318.c` (M2-T087).
