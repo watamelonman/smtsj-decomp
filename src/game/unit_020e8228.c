@@ -427,7 +427,7 @@ void Unk0e8228_Unk_0e940c(void)
 
 
 int func_020e8628(void);
-int func_020ea0ec(void);
+void func_020ea0ec(void);
 int func_020ea160(void);
 /* Original 020e9728 calls 0ea0ec when 0e8628 returns exactly one; otherwise
  * calls 0ea160. Callee meanings are unestablished, so the name stays neutral. */
@@ -581,7 +581,7 @@ extern u8 data_02176ce4[];
 void Unk0e8228_Unk_0e9f18(u32 *arg0);
 void Unk0e8228_Unk_0e9f38(u32 *arg0, u32 arg1);
 int func_020e9ca8(u32 work, u32 selector);
-int func_020e9b54();
+int func_020e9b54(u32 work);
 u8 *func_020982c0(int value);
 /* Original 020e8260 clears the 24-byte global row at +8 for selector zero,
  * or initializes rows at +32 with value zero for selectors 1..3.
@@ -987,4 +987,166 @@ void func_020e9fd0(void)
                               func_020eb6e4, 0x1d8, 1, 0, 1);
     *data_02176ddc = handle;
     Unk0ea208_Unk_0eb308(handle);
+}
+
+/* Original 020e946c uses work +0x28 to select a packed low-half sentinel
+ * and byte selector, or returns the caller's fallback. Addresses are borrowed. */
+u32 func_020e946c(u32 work, u32 arg0, u32 arg2)
+{
+    u32 base;
+    u32 value;
+    switch (FIELD(u32, work, 0x28)) {
+    case 1:
+        value = (FIELD(u32, arg0, 0) >> 16) & 255;
+        if (value == 1) value = 2;
+        else if (value == 2) value = 1;
+        else value = 0;
+        base = 0xfffe;
+        value <<= 24;
+        base |= value >> 8;
+        return base;
+    case 2:
+        value = FIELD(u32, work, 4);
+        base = 0xfffe;
+        value <<= 24;
+        base |= value >> 8;
+        return base;
+    }
+    return arg2;
+}
+
+/* Original 020e9b54 scans bank +0x30, or +0x40 for state two, and
+ * reports any nonzero 0e8ce8 result. Work and table entries must be valid. */
+int func_020e9b54(u32 work)
+{
+    int count = FIELD(s32, data_02150c30, 0x34) + 1;
+    u32 *bank = (u32 *)(work + 0x30);
+    int i;
+    if (FIELD(u32, work, 4) == 2) {
+        count = FIELD(s32, data_02150c30, 0x2c) + 1;
+        bank = (u32 *)(work + 0x40);
+    }
+    for (i = 0; i < count; i++) {
+        if (bank[i] != 0 && Unk0e8228_Unk_0e8ce8(func_02044ec4(bank[i])) != 0)
+            return 1;
+    }
+    return 0;
+}
+
+void func_0204a7b4(u32 entry, u32 selector);
+/* Original 020e86a0 resets the visor, forwards selector four for each
+ * resolved nonzero bank +0x30 entry, then clears work +0x10 via its setter. */
+void func_020e86a0(void)
+{
+    u32 work = Unk0e8228_Get_data_02176ce0();
+    int count;
+    u32 *bank;
+    int i;
+    if (work == 0) return;
+    Unk0e8228_Unk_0e8cd8();
+    count = FIELD(s32, data_02150c30, 0x34) + 1;
+    bank = (u32 *)(work + 0x30);
+    for (i = 0; i < count; i++) {
+        if (bank[i] != 0) {
+            u32 entry = func_02044ec4(bank[i]);
+            if (entry != 0) func_0204a7b4(entry, 4);
+        }
+    }
+    Unk0e8228_Unk_0e9020(0);
+}
+
+/* Original 020e8f74 counts state-seven entries after slot zero in bank
+ * +0x30; exactly three yields one. Missing shared work yields zero. */
+int func_020e8f74(void)
+{
+    u32 work = Unk0e8228_Get_data_02176ce0();
+    int count;
+    u32 *bank;
+    int total, i;
+    if (work == 0) return 0;
+    count = FIELD(s32, data_02150c30, 0x34) + 1;
+    bank = (u32 *)(work + 0x30);
+    total = 0;
+    for (i = 1; i < count; i++) {
+        if (bank[i] != 0 && func_0204a244(func_02044ec4(bank[i])) == 7)
+            total++;
+    }
+    return total == 3;
+}
+
+/* Original 020e9814 finds the next bank slot accepted by 0e8ce8 after
+ * the supplied index, returning ten when absent. Caller supplies valid work. */
+int func_020e9814(u32 work, int index)
+{
+    int result = 10;
+    int count = FIELD(s32, data_02150c30, 0x34) + 1;
+    u32 *bank = (u32 *)(work + 0x30);
+    int i;
+    if (FIELD(u32, work, 4) == 2) {
+        count = FIELD(s32, data_02150c30, 0x2c) + 1;
+        bank = (u32 *)(work + 0x40);
+    }
+    for (i = index + 1; i < count; i++) {
+        if (bank[i] != 0 && Unk0e8228_Unk_0e8ce8(func_02044ec4(bank[i])) != 0) {
+            result = i;
+            break;
+        }
+    }
+    return result;
+}
+
+/* Original 020e9aa0 resolves selector seven and dispatches the current
+ * entry with its +0x1e8 record and selected +0x58 word; success resets selector. */
+u32 func_020e9aa0(u32 arg0, u32 work, u32 arg1)
+{
+    int index = func_020e9ca8(work, 7);
+    if (index != -1 && arg0 != 0) {
+        u32 entry = func_02044ec4(Unk0e8228_Unk_0e8c80());
+        if (func_020e8d38(entry, entry + 0x1e8,
+                         FIELD(u32, work + index * 4, 0x58), arg1) == 0)
+            arg0 = 0;
+        else
+            Unk0e8228_Unk_0e8d18(0);
+    } else {
+        arg0 = 0;
+    }
+    return arg0;
+}
+
+u16 *func_0204a0d8(u32 entry);
+int Unk0cb0d0_IsAbove15e(u32 value);
+/* Original 020e852c counts up to six nonzero provider halfwords not accepted
+ * by IsAbove15e, adding one (capped at six) when work +0x24 is nonzero. */
+int func_020e852c(void)
+{
+    u16 *values;
+    int count, i;
+    if (Unk0e8228_Get_data_02176ce0() == 0) return 0;
+    values = func_0204a0d8(func_02044ec4(Unk0e8228_Unk_0e8c80()));
+    count = 0;
+    for (i = 0; i < 6; i++) {
+        if (values[i] == 0) break;
+        if (Unk0cb0d0_IsAbove15e(values[i]) != 1) count++;
+    }
+    if (Unk0e8228_Unk_0e8c68() != 0) {
+        count++;
+        if (count > 6) count = 6;
+    }
+    return count;
+}
+
+extern u8 data_02150ca0[];
+void func_02061f10(u32 handle, u32 selector, u32 arg2, u32 arg3, u32 value);
+/* Original 020ea0ec requires provider +0x1cc, updates five handles using
+ * eight-byte descriptors, then clears byte +0x1c0. Provider owns all storage. */
+void func_020ea0ec(void)
+{
+    u32 provider = Unk0ea208_Get_data_02176ddc();
+    unsigned int i;
+    if (provider == 0 || FIELD(u32, provider, 0x1cc) == 0) return;
+    for (i = 0; i < 5; i++) {
+        func_02061f10(((u32 *)provider)[i + 4], -1, 0, 0,
+                      ((u32 (*)[2])data_02150ca0)[i][1]);
+    }
+    FIELD(u8, provider, 0x1c0) = 0;
 }
