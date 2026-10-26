@@ -51,3 +51,30 @@ the original instruction stream and objdiff provide the exact acceptance oracle.
   helper; none produced the original UMULL chain. Omitted the body; use a
   decomp.me scratch to investigate the compiler multiplication idiom.
 
+
+## M1-T837
+
+All eight requested functions report 100% in objdiff. The pre-existing
+`Unk11fc20_Unk_120a58` body was retained and verified. The other seven bodies
+are added in C; no functions from this card remain on the hard list.
+Names remain those in the symbol configuration because the broader scene purpose
+is not established. Evidence below is the original ARM instruction stream.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_02120cb4` | 02120cb4: increments slot +36, invokes 02120d7c for kind 3, integrates acceleration and velocity, then clears slots beyond the extent-expanded 128 by 192 bounds. Requires a valid 44-byte slot; coordinates are 20.12. |
+| `Unk11fc20_Unk_120a58` | 02120a58: scans the global work pools at +72, +1832, +424 and +2536 for selectors 1, 2, 3 and 4, with bounds 8, 16, 32 and 128 respectively. Returns the first inactive borrowed slot or null; selector 0 and invalid selectors return null. Requires initialized global work. |
+| `func_02120bd4` | 02120bd4: rejects kind 4 above Y=0xa0000, obtains a free slot, and initializes all eleven words. The signed 64-bit angle product uses 0xb60b60b60b with rounding 0x80000000000 and shift 44, followed by a 16-bit wrap and shift 4. Read-only interleaved signed halfwords at 0212629c supply cosine/sine; speed products shift by 12 and Y velocity is negated. Angle is 20.12 degrees; coordinates, extent, speed and accelerations are 20.12. Exhausted pools produce no writes. |
+| `func_02120970` | 02120970: signed quotient/remainder by 10 split work +16 into two groups of rectangles through 02120898. Tens advance X by 5; units advance X by 3 and use the second row only if tens are positive. Requires valid work. |
+| `func_021212f4` | 021212f4: inactive slots return immediately. Converts center-minus-extent to pixel coordinates and twice the extent to dimensions; kinds 0–4 select the original five colors. Kind 4 adjusts dimensions and origin during phases 0–7 and 16–23 of its signed 32-tick remainder. Requires valid slot storage. |
+| `func_0211fd7c` | 0211fd7c: inactive slots return; extent grows by 4096 every 46 calls until at least 16384. Provider 020537b8 masks 32/16/64/128 determine movement, using 12288 per axis or diagonal scale 0x21f0. Clamps center by extent and submits kind 1 on mask 1. Requires valid slot storage. |
+| `func_021206a8` | 021206a8: state 4 returns before provider setup. States 0 and 3 submit transition rectangles using signed `(transition << 6) / 100`; other states draw the counter and four pools in selector order 1/2/3/4. Draws the slot at +28 when the signed countdown remainder modulo 4 is below 2. Requires the full 0x1fe8-byte work storage. |
+| `func_0212034c` | 0212034c: dispatches states 0–4, applies transition decay `value * 90 / 100`, invokes 0211ff14 during state 1 and starts state 2 after tick 880 when pool 3 is empty. Updates all four pools, resolves pool-4/player collisions through 0212066c, then pool-3/pool-1 collisions through 02120650, maintaining work +16. Requires full work storage. |
+
+The private slot/full-work views expose only observed fields and pool boundaries;
+provider ownership and module boundaries are unchanged. Separate traversal scopes
+retain the original register lifetimes. The trig table is declared const because
+these routines only read it; this also preserves the original load scheduling.
+No new tests are required by the card: original instructions and objdiff are the
+acceptance oracle. Validation includes the full build, unit suite, anticheat,
+match gate and image checksum.

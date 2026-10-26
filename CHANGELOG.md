@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T837: match all eight requested game/unit_0211fc20 slot, input, drawing and state-update functions at 100% objdiff; document typed layouts and instruction evidence.
 - M1-T836: match six additional game/unit_0211fc20 initialization, allocation and coordinate-forwarding functions; document two remaining hard functions for scratch follow-up.
 
 - Match eight more functions in game/unit_021071e4: record updates, descriptor setup, color selection, and handle cleanup.
