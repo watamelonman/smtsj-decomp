@@ -31,6 +31,8 @@ incomplete in the human-owned link configuration.
 
 ## Validation
 
-The match gate checks every defined function against objdiff. The checksum gate
-checks the original image; because this TU remains incomplete, it still links
-from the delink. The unit tests and anticheat gate also run for this change.
+Validation on 2026-10-26: `python3 tools/match_gate.py` built the project and
+reported all eight defined functions at 100%. `python3 tools/checksum.py`
+reported all artifacts byte-identical to the original; because this TU remains
+incomplete, it still links from the delink. `python3 -m unittest discover -s tests
+-t . -q` passed all nine tests, and `python3 tools/anticheat.py` passed.
