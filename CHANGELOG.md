@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T773 game/unit_020ea208 table getter/setters, slot dispatch, id translation and jump-table handlers at 100% objdiff; typed the slot handle layout and documented the instruction evidence.
 - Verified all eight M1-T772 game/unit_020ea208 guarded table getters, teardown, object setters and record/table lookups at 100% objdiff; added typed work/slot parameters and instruction evidence.
 - Matched all eight M1-T776 game/unit_0210fe28 resource setup, teardown, entry update and table submission functions at 100% objdiff; documented typed work fields and contracts.
 - Verified all eight M1-T771 game/unit_020ea208 guarded-field, slot-walk, table-forwarding and handle routines at 100% objdiff; added typed work/slot views and instruction evidence.
