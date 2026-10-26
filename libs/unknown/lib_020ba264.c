@@ -1,3 +1,5 @@
+#include "types.h"
+
 /* Script handler wrappers; the original symbols are retained for delink matching. */
 
 /* Reads a signed script argument by its zero-based index. */
@@ -71,3 +73,85 @@ int func_020ba390(void)
     return 1;
 }
 
+
+/* Borrowed record prefix: ARM 020ba3b8 reads only byte +5. */
+typedef struct {
+    u8 reserved[5];
+    u8 value;
+} Unk020ba264Record;
+
+/* Returns a borrowed record selected by the halfword ID at query-input +0x1d8. */
+extern const Unk020ba264Record *func_020a1428(u32 id);
+/* Returns the address of provider-owned storage; indexed words start at +0x30. */
+extern u32 Unk044904_Unk_045064(void);
+/* Returns the address of provider-owned storage; the queried halfword is at +0x38. */
+extern u32 Unk044904_Get_data_0215ee98(void);
+/* Dispatches a request with three word arguments and returns its script result. */
+extern int func_020b8b38(int request, int first, int second, int third);
+
+/* ARM 020ba2e4: forwards script operand 0 with selector 21; returns completion 1. */
+int func_020ba2e4(void)
+{
+    func_020b8b18(21, func_0203ac00(0));
+    return 1;
+}
+
+/* ARM 020ba304: forwards script operand 0 with selector 22; returns completion 1. */
+int func_020ba304(void)
+{
+    func_020b8b18(22, func_0203ac00(0));
+    return 1;
+}
+
+/* ARM 020ba324: forwards script operand 0 with selector 23; returns completion 1. */
+int func_020ba324(void)
+{
+    func_020b8b18(23, func_0203ac00(0));
+    return 1;
+}
+
+/* ARM 020ba3a4: resolves the halfword at input +0x1d8 and publishes record byte +5.
+ * Both records remain provider-owned; no explicit handler arguments are consumed. */
+int func_020ba3a4(void)
+{
+    u16 id = *(const u16 *)(func_020b8ad8() + 0x1d8);
+    Unk03aae8_Unk_03acf4(func_020a1428(id)->value);
+    return 1;
+}
+
+/* ARM 020ba3c8: publishes indexed word at provider +0x30; operand 0 must be valid. */
+int func_020ba3c8(void)
+{
+    u32 storage = Unk044904_Unk_045064();
+    int index = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(*(int *)(storage + index * 4 + 0x30));
+    return 1;
+}
+
+/* ARM 020ba3f0: stores operand 1 at provider +0x30 indexed by operand 0.
+ * The script must supply a valid index into provider-owned word storage. */
+int func_020ba3f0(void)
+{
+    u32 storage = Unk044904_Unk_045064();
+    int index = func_0203ac00(0);
+    int value = func_0203ac00(1);
+    *(int *)(storage + index * 4 + 0x30) = value;
+    return 1;
+}
+
+/* ARM 020ba420: publishes provider halfword +0x38 modulo operand 0.
+ * Operand 0 is a signed divisor and must be nonzero. */
+int func_020ba420(void)
+{
+    int divisor = func_0203ac00(0);
+    int value = *(const u16 *)(Unk044904_Get_data_0215ee98() + 0x38);
+    Unk03aae8_Unk_03acf4(value % divisor);
+    return 1;
+}
+
+/* ARM 020ba450: submits request 106 with zero arguments and publishes its result. */
+int func_020ba450(void)
+{
+    Unk03aae8_Unk_03acf4(func_020b8b38(106, 0, 0, 0));
+    return 1;
+}
