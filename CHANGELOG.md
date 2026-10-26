@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T1026: match eight NitroSDK command-stream, node-callback and packet helpers in `sdk_020222d8.c` (`func_02022498`, `func_02022af4`, `func_020224dc`, `func_020251c8`, `func_02022cd8`, `func_020225a4`, `func_02022610`, `func_02024a64`).
+- M2-T1057: match seven font/text forwarding and render-object setter functions in `libs/unknown/lib_02061798.c`; the split four-byte `func_02062264` epilogue is documented as hard.
 - M2-T1025: reconstruct seven NitroSDK shared-state, matrix-cache and callback helpers in `sdk_020222d8.c`; document the `func_0202242c` literal-pool hard case.
 - M2-T1054: match the MSL bounded output callback, vsnprintf/vsscanf engines, strncpy, strncat, strchr, strrchr and strstr in `libs/MSL/msl_02012aa4.c`.
 - M2-T1053: match the MSL formatted-output/input wrappers and strlen, strcat and strncmp in `libs/MSL/msl_02012aa4.c`; document the unreachable qsort epilogue at `func_02013dc4` as a hard case.
