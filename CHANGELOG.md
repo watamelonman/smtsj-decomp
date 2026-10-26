@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T936: match seven `game/unit_0206fb70` cursor-advance, dispatcher, channel-update and value-add functions at 100% objdiff; document `func_020717e4`'s measured 97.5% zero-block register-allocation blocker on the hard list.
 - M1-T935: verified all eight requested `game/unit_0206fb70` channel-advance and manager-teardown functions at 100% objdiff, adding the missing `func_02071d6c` manager cleanup with typed fields and instruction evidence.
 - M1-T901: verify eight `game/unit_020e8228` flag, forwarding and lifecycle helpers at 100% objdiff; replace decompiler-derived bodies with typed C and document instruction-based contracts.
 - M1-T926: match all eight ImageObj initialization, descriptor, pair-update and cleanup helpers at 100% objdiff; document typed contracts and instruction evidence.
