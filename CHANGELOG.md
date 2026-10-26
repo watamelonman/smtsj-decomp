@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Match `func_0209f0d8` descriptor dispatch in game/unit_0209ee4c and record the two remaining large functions as hard.
 - Matched eight more game/unit_0209ee4c record and state helpers in readable C.
 - Match all eight M1-T764 entry-selection, descriptor-state, and work-allocation helpers at 100% objdiff.
 

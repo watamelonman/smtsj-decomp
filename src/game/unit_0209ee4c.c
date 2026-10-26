@@ -370,39 +370,63 @@ int func_0209f2e0(int base, u32 first, u32 second, u8 *descriptor, int index)
 void func_0204f6d8(int base, u32 id, void *record);
 u32 func_0204aa18(void *resource);
 void func_0204f158(int base, u32 first, u32 second, u32 value);
+
+/* One 8-byte descriptor entry: an unsigned value followed by its flag word. */
+typedef struct Unk09ee4cRecord {
+    u32 value;
+    u32 bits;
+} Unk09ee4cRecord;
+
+/* Bit view of Unk09ee4cRecord.bits; only the observed low bits are named. */
+typedef struct Unk09ee4cBits {
+    u32 bit0 : 1;
+    u32 bit1 : 1;
+    u32 bit2 : 1;
+    u32 bits34 : 2;
+    u32 bit5 : 1;
+    u32 bit6 : 1;
+    u32 rest : 25;
+} Unk09ee4cBits;
+
+/* Descriptor header: +8 is the signed entry count and +12 starts the entries. */
+typedef struct Unk09ee4cDescriptor {
+    u8 pad00[8];
+    int count;
+    Unk09ee4cRecord entries[64];
+} Unk09ee4cDescriptor;
+
 /* Dispatches each descriptor entry, advancing base by 20 per entry, then
  * optionally submits the +100 object. Evidence: category/flag shifts and calls.
  * Descriptor +8 is the signed entry count; storage must cover that count. */
-void func_0209f0d8(int base, u32 id, u8 *descriptor, u32 suppress)
+void func_0209f0d8(int base, u32 id, Unk09ee4cDescriptor *descriptor, u32 suppress)
 {
     int i;
-    
-    for (i = 0; i < FIELD(int, descriptor, 8); i++, base += 20) {
-        Unk09ee4cEntry *entry = (Unk09ee4cEntry *)(descriptor + (i << 3) + 12);
+    for (i = 0; i < descriptor->count; base += 20, i++) {
+        Unk09ee4cBits *flags = (Unk09ee4cBits *)&descriptor->entries[i].bits;
         u32 kind = FIELD(Unk09ee4cCategory, descriptor, 132).category;
-        if (entry->bit5) kind = 7;
-        if (entry->bits34) kind = 8;
+        if (flags->bit5) kind = 7;
+        if (flags->bits34) kind = 8;
         if (kind == 5) {
             if ((FIELD(u32, descriptor, 132) << 9) >> 31) kind = 6;
         }
         switch (kind) {
         case 6:
-            func_0204f650(base, id, FIELD(u32, descriptor + (i << 3), 12), 21);
-            func_0204f24c(base, id, FIELD(u32, descriptor + (i << 3), 12), 1, i, 1);
+            func_0204f650(base, id, descriptor->entries[i].value, 21);
+            func_0204f24c(base, id, descriptor->entries[i].value, 1, i, 1);
             break;
         case 7:
-            func_0204f650(base, id, FIELD(u32, descriptor + (i << 3), 12), 22);
-            func_0204f24c(base, id, FIELD(u32, descriptor + (i << 3), 12), 3, i, 1);
+            func_0204f650(base, id, descriptor->entries[i].value, 22);
+            func_0204f24c(base, id, descriptor->entries[i].value, 3, i, 1);
             break;
         case 8:
-            func_0204f5e0(base, id, FIELD(u32, descriptor + (i << 3), 12));
-            func_0204f24c(base, id, FIELD(u32, descriptor + (i << 3), 12), 2, i, 1);
+            func_0204f5e0(base, id, descriptor->entries[i].value);
+            func_0204f24c(base, id, descriptor->entries[i].value, 2, i, 1);
             break;
         }
     }
     if (suppress != 0) return;
     if (FIELD(u32, descriptor, 100) == 0) return;
-    func_0204f6d8(base, id, descriptor + 100);
+    func_0204f6d8(base, id, (u8 *)descriptor + 100);
     if (FIELD(u32, descriptor, 100) == 1)
         func_0204f158(base, 60, 12, func_0204aa18(func_02044ec4(id)));
 }
