@@ -62,3 +62,8 @@ whose +8 origin is caller supplied. Provider ownership remains unchanged.
 wrapper's flag distinguishes a borrowed resource from one released at teardown;
 the independent 320-byte buffer is caller-owned. These helpers depend only on
 base types and existing copy, fill, allocation, and resource-release providers.
+
+`include/libs/unknown/lib_0204915c.h` exposes borrowed singleton resource slots
++0x7990/+0x7994/+0x7998 and a callback input flag at +0x40. The lookup helpers
+depend only on base types and existing resource/setup providers; they neither
+allocate nor transfer ownership of the singleton, tables or returned entries.

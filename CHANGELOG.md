@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T140: match all seven setup and resource-table helpers in `lib_0204915c`.
+
 - M2-T132: match NitroSDK card DMA setup in `sdk_02008b9c`; document three hard decompression/unfilter routines.
 
 - M2-T127: match seven resource-table and buffer lifetime helpers in `sdk_0205c1c8`; document the remaining table binder.
