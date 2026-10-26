@@ -227,6 +227,9 @@ void Unk06fb70_Unk_0705f8(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
+/* ARM 0x02070758 bounds channel 1's signed state at four and searches later
+ * keys for a positive time delta; the key loads and stores establish the
+ * limit, velocity and 20.12 maximum before advancing the selected state. */
 void Unk06fb70_Unk_070758(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     int s;
@@ -249,6 +252,9 @@ void Unk06fb70_Unk_070758(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
+/* ARM 0x02070094 advances channel 0 only while its signed state is below four.
+ * Its tick compare and BL 0x020705f8 show expiry resets tick/three velocities
+ * and selects the next key; the other path clamps all three positions. */
 void Unk06fb70_Unk_070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[0] >= 4) {
