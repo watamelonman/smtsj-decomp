@@ -9,15 +9,15 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 extern u8 data_02150c30[];
 extern u32 data_02176cdc[];
 extern u32 data_02176ce0[];
-void Unk044904_GetFlag18(void);
-int func_02057524();
+int Unk044904_GetFlag18(void);
+void func_02057524(int value);
 void func_02057534(void);
-int func_02057eb8();
-int func_02061424();
-int Unk09974c_Unk_099d14();
-int ScanVisor_Unk_0a29a0();
-int Unk0e8228_Unk_0e8374();
-int Unk0e8228_GetArr88Field20();
+void func_02057eb8(int value);
+void func_02061424(u32 handle);
+void *Unk09974c_Unk_099d14(int id);
+void ScanVisor_Unk_0a29a0(u32 value);
+int Unk0e8228_Unk_0e8374(u32 x);
+int Unk0e8228_GetArr88Field20(int i);
 void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1);
 void Unk0e8228_Unk_0e8e8c(u32 arg0);
 int func_020e9c00();
@@ -26,12 +26,12 @@ int Unk0ea208_Get_data_02176ddc();
 
 void Unk0e8228_Nop_0e93d4(void);
 void Unk0e8228_Thunk_02057534(void);
-void Unk0e8228_Thunk_02045c38(void);
+int Unk0e8228_Thunk_02045c38(void);
 void Unk0e8228_Unk_0e8cd8(void);
 void Unk0e8228_Unk_0e8e50(void);
 void Unk0e8228_Unk_0e8e6c(void);
 void Unk0e8228_Unk_0e8e7c(void);
-void Unk0e8228_Unk_0e8eac(int arg0);
+void Unk0e8228_Unk_0e8eac(u32 arg0);
 u32 Unk0e8228_Get_data_02176ce0(void);
 void Unk0e8228_Unk_0e8398(void);
 int Unk0e8228_Unk_0e8460(void);
@@ -39,7 +39,7 @@ int Unk0e8228_Unk_0e8474(void);
 int Unk0e8228_Unk_0e8488(void);
 void Unk0e8228_Unk_0e9c94(u32 arg0,u32 arg1);
 u32 Unk0e8228_Unk_0e84e4(void);
-void Unk0e8228_Unk_0e84fc(void);
+void *Unk0e8228_Unk_0e84fc(void);
 u16 Unk0e8228_Unk_0e8514(void);
 void Unk0e8228_Unk_0e8b7c(void);
 void Unk0e8228_Unk_0e8b94(void);
@@ -51,87 +51,101 @@ u32 Unk0e8228_Unk_0e8f20(void);
 u32 Unk0e8228_Unk_0e8f38(void);
 void Unk0e8228_Unk_0e8f50(u32 arg0);
 void Unk0e8228_Unk_0e9020(u32 arg0);
-int Unk0e8228_Unk_0e9048(int *arg0,int *arg1);
+struct Unk0e8228SortRecord;
+int Unk0e8228_Unk_0e9048(const struct Unk0e8228SortRecord *const *arg0,
+                                const struct Unk0e8228SortRecord *const *arg1);
 void Unk0e8228_Unk_0ea028(void);
 u32 Unk0e8228_Unk_0ea040(void);
 int Unk0e8228_IsSet_data_02176cdc(void);
 
-/* empty callback */
+/* At 020e93d4, bx lr returns immediately: this callback has no work. */
 void Unk0e8228_Nop_0e93d4(void) { }
 
-/* forwards to `func_02057534` */
+/* At 020e8e60, the literal target and bx ip forward to func_02057534. */
 void Unk0e8228_Thunk_02057534(void) { func_02057534(); }
 
-/* forwards to `Unk044904_GetFlag18` */
-void Unk0e8228_Thunk_02045c38(void) { Unk044904_GetFlag18(); }
+/* At 020e8f68, bx ip forwards the flag getter result unchanged to the caller. */
+int Unk0e8228_Thunk_02045c38(void) { return Unk044904_GetFlag18(); }
 
-/* decompiler-derived */
+/* At 020e8cd8, mvn r0, #0 forwards the unsigned sentinel to ScanVisor_Unk_0a29a0. */
 void Unk0e8228_Unk_0e8cd8(void)
 {
   ScanVisor_Unk_0a29a0(0xffffffff);
 }
 
-/* decompiler-derived */
+/* At 020e8e50, mov r0, #4 forwards the fixed value to func_02057524. */
 void Unk0e8228_Unk_0e8e50(void)
 {
   func_02057524(4);
 }
 
-/* decompiler-derived */
+/* At 020e8e6c, mov r0, #2 forwards the fixed value to func_02057eb8. */
 void Unk0e8228_Unk_0e8e6c(void)
 {
   func_02057eb8(2);
 }
 
-/* decompiler-derived */
+/* At 020e8e7c, mvn r0, #0 forwards the signed sentinel -1 to func_02057eb8. */
 void Unk0e8228_Unk_0e8e7c(void)
 {
-  func_02057eb8(0xffffffff);
+  func_02057eb8(-1);
 }
 
-/* decompiler-derived */
-void Unk0e8228_Unk_0e8eac(int arg0)
+/* At 020e8eac, add r0, r0, #8 offsets the value modulo 2^32 before forwarding. */
+void Unk0e8228_Unk_0e8eac(u32 arg0)
 {
   Unk0e8228_Unk_0e8e8c(arg0 + 8);
 }
 
-/* decompiler-derived */
+/* At 020e9038, loads the global object pointer stored in data_02176ce0. The
+ * name comes from that data symbol; callers use the result as the shared work
+ * object (see Unk0e8228_Unk_0e84e4). */
 u32 Unk0e8228_Get_data_02176ce0(void)
 {
   return *data_02176ce0;
 }
 
-/* decompiler-derived */
+/* At 020e8398, forwards the fixed selector 7 and the unsigned sentinel -1 to
+ * Unk0e8228_Unk_0e8d90. Callers invoke it before scanning the entries counted
+ * by Unk0e8228_Unk_0e8488; the callee is opaque, so the name stays neutral. */
 void Unk0e8228_Unk_0e8398(void)
 {
   Unk0e8228_Unk_0e8d90(7,0xffffffff);
 }
 
-/* decompiler-derived */
+/* At 020e8460, returns the word stored at data_02150c30 + 0x2c plus one.
+ * Callers use the result as an exclusive loop bound (src/game/unit_020eed24.c);
+ * the meaning of the stored word itself is not established. */
 int Unk0e8228_Unk_0e8460(void)
 {
   return *(int *)(((int)data_02150c30) + 0x2c) + 1;
 }
 
-/* decompiler-derived */
+/* At 020e8474, returns the word at data_02150c30 + 0x34 plus one. Callers use
+ * it as an exclusive loop bound over 64-byte records (unit_020eed24.c). */
 int Unk0e8228_Unk_0e8474(void)
 {
   return *(int *)(((int)data_02150c30) + 0x34) + 1;
 }
 
-/* decompiler-derived */
+/* At 020e8488, returns the word at data_02150c30 + 0x3c plus one. Callers use
+ * it as an exclusive loop bound and treat a value below one as empty
+ * (unit_020f0be0.c, unit_020f4c50.c). */
 int Unk0e8228_Unk_0e8488(void)
 {
   return *(int *)(((int)data_02150c30) + 0x3c) + 1;
 }
 
-/* decompiler-derived */
+/* At 020e9c94, reorders its two arguments and tail-calls func_020e9c00 with
+ * the constant selector 2 in between: (arg0, 2, arg1). */
 void Unk0e8228_Unk_0e9c94(u32 arg0,u32 arg1)
 {
   func_020e9c00(arg0,2,arg1);
 }
 
-/* decompiler-derived */
+/* At 020e84e4, returns the word at offset 0x178 of the shared work object, or
+ * zero when Get_data_02176ce0 reports no object. Callers use the result as a
+ * record count (unit_020ef248.c). */
 u32 Unk0e8228_Unk_0e84e4(void)
 {
   int value1;
@@ -146,182 +160,196 @@ u32 Unk0e8228_Unk_0e84e4(void)
   return value2;
 }
 
-/* decompiler-derived */
-void Unk0e8228_Unk_0e84fc(void)
+/* At 020e84fc, runs the sequence select-8 (Unk_0e8374), refreshes one row-88
+ * record, then performs the Unk09974c lookup, returning that lookup result.
+ * Argument flow per the original assembly: the selector-8 result is forwarded
+ * to GetArr88Field20, and its result is in turn forwarded to Unk09974c_Unk_099d14
+ * as the lookup id. unit_020ef248.c consumes the returned pointer as a borrowed
+ * record. */
+void *Unk0e8228_Unk_0e84fc(void)
 {
-  Unk0e8228_Unk_0e8374(8);
-  Unk0e8228_GetArr88Field20();
-  Unk09974c_Unk_099d14();
+  int index = Unk0e8228_Unk_0e8374(8);
+  int row = Unk0e8228_GetArr88Field20(index);
+  return Unk09974c_Unk_099d14(row);
 }
 
-/* decompiler-derived */
+/* Borrowed field views: offsets are established by the loads/stores at
+ * 020e8514, 020e8b7c, 020e8c50, 020e8db8 and 020e8f20. Providers own storage. */
+typedef struct Unk0e8228WorkFields {
+  u8 pad_0000[0x10];
+  u32 unk_0010;
+  u8 pad_0014[4];
+  u32 unk_0018;
+  u8 pad_001c[8];
+  u32 unk_0024;
+  u32 unk_0028;
+  u8 pad_002c[0x150];
+  u32 unk_017c;
+  u32 unk_0180;
+  u32 unk_0184;
+} Unk0e8228WorkFields;
+
+/* Borrowed provider record; only its halfword at offset 0x20 is established. */
+typedef struct Unk0e8228RecordFields {
+  u8 pad_0000[0x20];
+  u16 unk_0020;
+} Unk0e8228RecordFields;
+
+/* Original 020e8514 reads the provider's halfword at 0x20, or zero when
+ * no record exists. Its domain meaning is unknown, so the name stays neutral. */
 u16 Unk0e8228_Unk_0e8514(void)
 {
-  u16 value1;
-  int value2;
-  value2 = Unk0ea208_GetArr58();
-  if (value2 == 0) {
-    value1 = 0;
+  Unk0e8228RecordFields *record = (Unk0e8228RecordFields *)Unk0ea208_GetArr58();
+  if (record == 0) {
+    return 0;
   }
-  else {
-    value1 = *(u16 *)(value2 + 0x20);
-  }
-  return value1;
+  return record->unk_0020;
 }
 
-/* decompiler-derived */
+/* Original 020e8b7c sets the work word at 0x18 to one when work exists. */
 void Unk0e8228_Unk_0e8b7c(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x18) = 1;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0018 = 1;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8b94 clears the same word at 0x18 when work exists. */
 void Unk0e8228_Unk_0e8b94(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x18) = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0018 = 0;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8bac returns the work word at 0x18, or zero without work. */
 u32 Unk0e8228_Unk_0e8bac(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x18);
-  }
-  return value2;
+  return work->unk_0018;
 }
 
-/* decompiler-derived */
+/* Original 020e8c50 stores the full 32-bit argument at work offset 0x24;
+ * an absent work object leaves storage untouched. */
 void Unk0e8228_Unk_0e8c50(u32 arg0)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x24) = arg0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0024 = arg0;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8c68 returns the work word at 0x24, or zero without work. */
 u32 Unk0e8228_Unk_0e8c68(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x24);
-  }
-  return value2;
+  return work->unk_0024;
 }
 
-/* decompiler-derived */
+/* Original 020e8db8 sets the work word at 0x184 to one when work exists. */
 void Unk0e8228_Unk_0e8db8(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x184) = 1;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0184 = 1;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8f20 returns the work word at 0x180, using 27 when absent;
+ * the field's domain meaning is not established by this accessor. */
 u32 Unk0e8228_Unk_0e8f20(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0x1b;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 27;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x180);
-  }
-  return value2;
+  return work->unk_0180;
 }
 
-/* decompiler-derived */
+/* Original 020e8f38 returns the work word at 0x17c, or zero without work. */
 u32 Unk0e8228_Unk_0e8f38(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x17c);
-  }
-  return value2;
+  return work->unk_017c;
 }
 
-/* decompiler-derived */
+/* Original 020e8f50 stores the full argument at work offset 0x28 if present. */
 void Unk0e8228_Unk_0e8f50(u32 arg0)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x28) = arg0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0028 = arg0;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e9020 stores the full argument at work offset 0x10 if present. */
 void Unk0e8228_Unk_0e9020(u32 arg0)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x10) = arg0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0010 = arg0;
   }
 }
 
-/* decompiler-derived */
-int Unk0e8228_Unk_0e9048(int *arg0,int *arg1)
+/* Borrowed comparison records; original 020e9048 observes only byte 0x2e. */
+typedef struct Unk0e8228SortRecord {
+  u8 pad_0000[0x2e];
+  u8 unk_002e;
+} Unk0e8228SortRecord;
+
+/* Original 020e9048 subtracts unsigned bytes at 0x2e, yielding -255..255.
+ * Both arguments must point to valid record pointers; no null checks exist. */
+int Unk0e8228_Unk_0e9048(const Unk0e8228SortRecord *const *arg0,
+                                const Unk0e8228SortRecord *const *arg1)
 {
-  return (u32)*(u8 *)(*arg0 + 0x2e) - (u32)*(u8 *)(*arg1 + 0x2e);
+  return (int)(*arg0)->unk_002e - (int)(*arg1)->unk_002e;
 }
 
-/* decompiler-derived */
+/* Original 020ea028 releases the provider through func_02061424 only when it is
+ * present: the provider pointer is returned in r0 and stays there unchanged
+ * across the `cmp r0,#0; popeq` guard, so it becomes the call's first (and
+ * only) argument. The typed declaration matches src/game/unit_020ea208.c:122,
+ * and docs/functions/game-unit-020fedd4.md calls func_02061424 the task
+ * release call. */
 void Unk0e8228_Unk_0ea028(void)
 {
-  int value;
-  value = Unk0ea208_Get_data_02176ddc();
-  if (value == 0) {
+  void *provider = (void *)Unk0ea208_Get_data_02176ddc();
+  if (provider == 0) {
     return;
   }
-  func_02061424();
+  func_02061424((u32)provider);
 }
 
-/* decompiler-derived */
+/* Borrowed provider view; only the word at 0x1cc is established by 020ea040. */
+typedef struct Unk0e8228ProviderFields {
+  u8 pad_0000[0x1cc];
+  u32 unk_01cc;
+} Unk0e8228ProviderFields;
+
+/* Original 020ea040 returns the provider word at 0x1cc, or zero if absent. */
 u32 Unk0e8228_Unk_0ea040(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0ea208_Get_data_02176ddc();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228ProviderFields *provider =
+      (Unk0e8228ProviderFields *)Unk0ea208_Get_data_02176ddc();
+  if (provider == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x1cc);
-  }
-  return value2;
+  return provider->unk_01cc;
 }
 
-/* decompiler-derived */
+/* Original 020e8228 tests the word at data_02176cdc and returns exactly 0 or 1;
+ * the global relocation establishes the descriptive name. */
 int Unk0e8228_IsSet_data_02176cdc(void)
 {
   return *data_02176cdc != 0;
@@ -489,7 +517,7 @@ u32 Unk0e8228_Unk_0e8dfc(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_02008848();
+int func_02008848(u32 buffer, u32 value, u32 size);
 int func_020e9060();
 /* decompiler-derived */
 void Unk0e8228_Unk_0e9fa4(u32 arg0)
@@ -528,10 +556,11 @@ u32 Unk0e8228_Unk_0e85c8(void)
 }
 
 extern u8 data_02176ce4[];
-/* decompiler-derived */
+/* Original 020e8244 tail-calls func_02008848(data_02176ce4, 0, 0xf8).
+ * The relocation and fixed arguments establish the Call name. */
 void Unk0e8228_Call_02008848(void)
 {
-  func_02008848(data_02176ce4,0,0xf8);
+  func_02008848((u32)data_02176ce4,0,0xf8);
 }
 
 #ifndef FIELD

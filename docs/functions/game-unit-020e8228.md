@@ -1,39 +1,102 @@
 # src/game/unit_020e8228.c
 
-- `Unk0e8228_Nop_0e93d4` (4 B): empty callback
-- `Unk0e8228_Thunk_02057534` (12 B): forwards to `func_02057534`
-- `Unk0e8228_Thunk_02045c38` (12 B): forwards to `Unk044904_GetFlag18`
-- `Unk0e8228_Unk_0e8cd8` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8e50` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8e6c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8e7c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8eac` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Get_data_02176ce0` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8398` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8460` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8474` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8488` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e9c94` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e84e4` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e84fc` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8514` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8b7c` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8b94` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8bac` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8c50` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8c68` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8db8` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8f20` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8f38` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8f50` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e9020` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e9048` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0ea028` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0ea040` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_IsSet_data_02176cdc` (28 B): decompiler-derived (Ghidra output, cleaned)
+## M1-T897 verified wrappers
+
+All eight functions match at 100% objdiff. Evidence below comes from the
+original ARM instructions and relocations in the delinked object. Unknown
+argument meanings retain neutral names; no domain semantics are inferred.
+
+- `Unk0e8228_Nop_0e93d4` (4 B, 020e93d4): `bx lr` only; a no-op callback taking no parameters.
+- `Unk0e8228_Thunk_02057534` (12 B, 020e8e60): literal-load and `bx ip` tail-call `func_02057534`, taking no parameters.
+- `Unk0e8228_Thunk_02045c38` (12 B, 020e8f68): literal-load and `bx ip` tail-call `Unk044904_GetFlag18`; returns its integer flag result unchanged. The callee implementation in `src/game/unit_02044904.c` confirms the return contract.
+- `Unk0e8228_Unk_0e8cd8` (16 B, 020e8cd8): `mvn r0, #0` and a relocation to `ScanVisor_Unk_0a29a0` pass `0xffffffff` as an unsigned sentinel, with no caller parameters.
+- `Unk0e8228_Unk_0e8e50` (16 B, 020e8e50): `mov r0, #4` and a relocation to `func_02057524` pass the fixed integer 4, with no caller parameters.
+- `Unk0e8228_Unk_0e8e6c` (16 B, 020e8e6c): `mov r0, #2` and a relocation to `func_02057eb8` pass the fixed integer 2, with no caller parameters.
+- `Unk0e8228_Unk_0e8e7c` (16 B, 020e8e7c): `mvn r0, #0` and a relocation to `func_02057eb8` pass -1, with no caller parameters.
+- `Unk0e8228_Unk_0e8eac` (16 B, 020e8eac): `add r0, r0, #8` and a relocation to `Unk0e8228_Unk_0e8e8c` forward the unsigned argument plus eight. Unsigned arithmetic preserves ARM wraparound for the full input range.
+
+No M1-T897 functions remain on the hard list. The empty callback is intentional,
+as demonstrated by its single original return instruction.
+
+## M1-T898 verified functions
+
+All eight functions match at 100% objdiff. Evidence comes from the delinked
+ARM instructions and relocations plus the callers named below. Names stay
+neutral where the callers only show a loop bound or an opaque forwarding.
+
+- `Unk0e8228_Get_data_02176ce0` (16 B, 020e9038): loads the global pointer
+  stored in `data_02176ce0` and returns it. The data symbol supplies the name;
+  users treat the result as the shared work object (see
+  `Unk0e8228_Unk_0e84e4`).
+- `Unk0e8228_Unk_0e8398` (20 B, 020e8398): calls `Unk0e8228_Unk_0e8d90(7,
+  0xffffffff)`, forwarding selector 7 and the unsigned -1 sentinel. Callers
+  run it before scanning the entries counted by `Unk0e8228_Unk_0e8488()`, but
+  the callee is opaque, so the name stays neutral.
+- `Unk0e8228_Unk_0e8460` (20 B, 020e8460): returns the word stored at
+  `data_02150c30 + 0x2c` plus one. Used as an exclusive loop bound in
+  `src/game/unit_020eed24.c` and as a count guard in `src/game/unit_020ea208.c`;
+  the meaning of the stored word itself is not established.
+- `Unk0e8228_Unk_0e8474` (20 B, 020e8474): returns `*(s32 *)(data_02150c30 +
+  0x34) + 1`; `unit_020eed24.c` iterates that many 64-byte records.
+- `Unk0e8228_Unk_0e8488` (20 B, 020e8488): returns `*(s32 *)(data_02150c30 +
+  0x3c) + 1`; callers use it as a loop bound and compare it with one to detect
+  an empty table (`unit_020f0be0.c`, `unit_020f4c50.c`).
+- `Unk0e8228_Unk_0e9c94` (20 B, 020e9c94): tail-calls `func_020e9c00(arg0, 2,
+  arg1)`, inserting constant selector 2 between the two forwarded arguments.
+- `Unk0e8228_Unk_0e84e4` (24 B, 020e84e4): returns the word at shared-work
+  offset 0x178, or zero when `Get_data_02176ce0` returns null. Callers compare
+  and iterate it as a record count (`src/game/unit_020ef248.c`).
+- `Unk0e8228_Unk_0e84fc` (24 B, 020e84fc): calls
+  `Unk0e8228_Unk_0e8374(8)`, forwards its result to
+  `Unk0e8228_GetArr88Field20`, then forwards that result as the id to
+  `Unk09974c_Unk_099d14`; the third call's result is returned, and
+  `unit_020ef248.c` consumes it as a borrowed record pointer. The argument
+  flow is visible in the delinked original (`mov r0,#8; bl ...; bl ...; bl ...`).
+
+## M1-T899 verified field accessors
+
+All eight functions are 24 bytes and match at 100% objdiff. The original ARM
+loads, stores and conditional instructions establish the following contracts.
+The two private layout views borrow provider storage and expose only observed
+fields; their padding represents offsets, not inferred content. The work
+provider keeps its existing integer-address ABI for other functions in this TU.
+Field meanings remain unknown, so function names stay neutral.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e8514` | Calls `Unk0ea208_GetArr58`; `ldrhne [r0,#0x20]` returns an unsigned halfword, with `moveq r0,#0` for an absent record. |
+| `Unk0e8228_Unk_0e8b7c` | Calls the shared work getter; `movne r1,#1; strne [r0,#0x18]` sets the word only when work exists. |
+| `Unk0e8228_Unk_0e8b94` | The same null check and `strne [r0,#0x18]` clear that word to zero. |
+| `Unk0e8228_Unk_0e8bac` | `moveq r0,#0; ldrne [r0,#0x18]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8c50` | Preserves the full unsigned argument in r4 across the getter call and conditionally stores it at work offset 0x24. |
+| `Unk0e8228_Unk_0e8c68` | `moveq r0,#0; ldrne [r0,#0x24]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8db8` | `movne r1,#1; strne [r0,#0x184]` sets the word only when work exists. |
+| `Unk0e8228_Unk_0e8f20` | `moveq r0,#27; ldrne [r0,#0x180]` returns the word, defaulting to 27 without work. |
+
+No M1-T899 functions remain on the hard list. No new behavioral tests were
+required by this card; objdiff checks the emitted instructions against retail.
+
+## M1-T900 verified functions
+
+All eight functions match at 100% objdiff. Evidence is the original ARM
+instructions and relocations in the delinked object. Layouts borrow provider
+storage; unknown field meanings retain neutral names. No new behavioral tests
+are required by this card; objdiff verifies the emitted instructions directly.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e8f38` (24 B, 020e8f38) | Calls the work getter; `moveq r0,#0; ldrne r0,[r0,#0x17c]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8f50` (24 B, 020e8f50) | Preserves the unsigned argument in r4 across the getter; `strne r4,[r0,#0x28]` writes only when work exists. |
+| `Unk0e8228_Unk_0e9020` (24 B, 020e9020) | Same argument preservation and null check, with `strne r4,[r0,#0x10]`. |
+| `Unk0e8228_Unk_0e9048` (24 B, 020e9048) | Dereferences both record pointers, loads unsigned bytes at 0x2e, then subtracts the second from the first. Valid nonnull pointers are required; result ranges from -255 to 255. |
+| `Unk0e8228_Unk_0ea028` (24 B, 020ea028) | Calls `Unk0ea208_Get_data_02176ddc`, returns immediately on null, otherwise calls `func_02061424` with the provider handle. The getter result in r0 is not clobbered by `cmp r0,#0; popeq`, so it is still r0 at the call: the provider pointer is func_02061424's handle argument. `src/game/unit_020ea208.c:122` declares `void func_02061424(u32 handle)`, and `docs/functions/game-unit-020fedd4.md` identifies it as the task release call. |
+| `Unk0e8228_Unk_0ea040` (24 B, 020ea040) | Calls the same provider; returns its word at 0x1cc or zero if absent. |
+| `Unk0e8228_IsSet_data_02176cdc` (28 B, 020e8228) | Relocation names the global; loads its word and uses conditional moves to return exactly zero or one for its nonzero test. |
+| `Unk0e8228_Call_02008848` (28 B, 020e8244) | At 020e8244, relocations identify the tail-call target and `data_02176ce4`; immediate arguments are zero and 0xf8. These establish the existing Call name without inferring the callee's purpose. |
+
+No M1-T900 functions remain on the hard list.
 
 ## Hard list
-- `Unk0e8228_Call_02008848`: no candidate matched locally
 - `Unk0e8228_Unk_0e82ac`: decompiler-derived
 - `Unk0e8228_Unk_0e8684`: decompiler-derived
 - `Unk0e8228_Unk_0e8cbc`: decompiler-derived
@@ -112,7 +175,6 @@
 - `func_020e9060`
 - `func_020e94d8`
 - `func_020e8710`
-- `Unk0e8228_Call_02008848`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8260`: hand-matched
