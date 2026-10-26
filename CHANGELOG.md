@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T874: match eight `game/unit_020a6174` provider-update, weighted-selection, grid-rebuild and placement functions at 100% objdiff; document their borrowed record contracts and the scoped 020a65c4 allocation pragma.
 - Matched all eight M1-T894 SaveLoadTask helpers at 100% objdiff, with typed parameters and instruction-based contracts.
 - M1-T877: match the event callback and state updater in `game/unit_020f1128` at 100%; keep the initializer, input callback and draw callback delinked, with measured best-attempt C (98.73%, 81.02%, 92.32%) and specific remaining blockers documented.
 - M1-T882: verify all eight `game/unit_02044904` slot sweep, AI-script path, re-init and readiness functions at 100% objdiff; add typed parameter/local views, name the manager `+0x58` word, and document each instruction contract.
