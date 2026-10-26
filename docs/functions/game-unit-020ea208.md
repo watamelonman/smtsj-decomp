@@ -24,20 +24,30 @@ already matched; typed call declarations now express the r0 forwarding rather
 than relying on unspecified argument lists. Typing the shared 0cb044 declaration
 also requires the existing 0ead1c caller to pass its saved result explicitly.
 
-## Hard list
-- `Unk0ea208_Unk_0eb308`: decompiler-derived
-- `Unk0ea208_Unk_0eac80`: decompiler-derived
-- `Unk0ea208_Unk_0ead1c`: decompiler-derived
-- `Unk0ea208_Unk_0eae20`: decompiler-derived
+## M1-T770 — verified matches
 
-## Not done in M1-T770
-- `Unk0ea208_Unk_0ea70c`
-- `Unk0ea208_GetField0`
-- `Unk0ea208_GetField4`
-- `Unk0ea208_GetField8`
-- `Unk0ea208_Unk_0eb2cc`: decompiler-derived
-- `Unk0ea208_Unk_0eb230`: decompiler-derived
-- `Unk0ea208_Unk_0eada8`: decompiler-derived
+All eight functions are 100% in the local objdiff report. Evidence below is
+from the original delinked ARM instructions and their relocation targets.
+Neutral names are retained because the higher-level purposes are unproven.
+None of these functions allocate or transfer ownership.
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `Unk0ea208_Unk_0eb308` | 28 B | Resets the caller-owned work: word +0x1c4 = 1, words +0x1c8/+0x1cc = 0, byte +0x1d0 = 0. Evidence: `mov r1,#1` / `str r1,[r0,#452]`, zero stores at +456/+460, and a zero `strb` at +464. |
+| `Unk0ea208_Unk_0ea70c` | 32 B | When the singleton at `data_02176ddc` and its +0x1cc word are both nonzero, calls `Unk0ea208_ForEachSlot` on the singleton. Evidence: the `cmp`/`ldrne`/`cmpne` guard and the call; callers are the state handlers in game/unit_020f470c and game/unit_020f4c50. |
+| `Unk0ea208_Unk_0eac80` | 32 B | Fixed teardown sequence: `func_02057e18(31)`, `func_02057ddc(-1)`, `func_02057524(4)`. Evidence: `mov r0,#31`, `mvn r0,#0`, `mov r0,#4` before the three calls. |
+| `Unk0ea208_Unk_0ead1c` | 32 B | Calls `Unk0e8228_Unk_0e8f38`; if the result is zero, calls `Unk0ea208_Unk_0ea85c`, otherwise forwards the borrowed result to `Unk0caea8_Unk_0cb044`. Evidence: the `cmp r0,#0` / `bne` split and both call relocations. |
+| `Unk0ea208_Unk_0eae20` | 32 B | Zeroes six caller-owned words at +0x00, +0x04, +0x10, +0x14, +0x18 and +0x1c; +0x08 and +0x0c are left alone. Evidence: six zero `str` stores at exactly those offsets. |
+| `Unk0ea208_GetField0` | 40 B | Returns the borrowed singleton word at +0x00, or 0 when the singleton is null or its +0x1cc word is zero. Evidence: `data_02176ddc` load, `[r0,#460]` check, `ldrne r0,[r0]`. |
+| `Unk0ea208_GetField4` | 40 B | Same guard, returning the borrowed singleton word at +0x04. Evidence: `ldrne r0,[r0,#4]`. |
+| `Unk0ea208_GetField8` | 40 B | Same guard, returning the borrowed singleton word at +0x08. Evidence: `ldrne r0,[r0,#8]`. |
+
+No M1-T770 functions remain on the hard list. The typed work parameter and the
+per-function comments record the observed stores, guards and forwarding without
+changing the generated code.
+
+## Hard list
+None from M1-T770.
 
 ## Not done in M1-T771
 - `Unk0ea208_GetFieldC`

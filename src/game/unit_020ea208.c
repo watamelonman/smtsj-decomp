@@ -46,6 +46,11 @@ void Unk0ea208_Unk_0ea390(int i, u32 x)
     func_02061f10(FIELD(u32, Unk0ea208_Get_data_02176ddc() + i * 4, 36), -1, 0, 0, x);
 }
 
+/*
+ * Return the borrowed word at +0x00 of the singleton when the singleton exists and its
+ * +0x1cc word is nonzero; otherwise return 0. Evidence: null check on the 02176ddc load,
+ * `ldr r1,[r0,#460]`, then `ldrne r0,[r0]`.
+ */
 u32 Unk0ea208_GetField0(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
@@ -58,6 +63,11 @@ u32 Unk0ea208_GetField0(void)
     return FIELD(u32, p, 0);
 }
 
+/*
+ * Return the borrowed word at +0x04 of the singleton when the singleton exists and its
+ * +0x1cc word is nonzero; otherwise return 0. Evidence: same guarded shape as GetField0,
+ * with the final load at `[r0, #4]`.
+ */
 u32 Unk0ea208_GetField4(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
@@ -70,6 +80,11 @@ u32 Unk0ea208_GetField4(void)
     return FIELD(u32, p, 4);
 }
 
+/*
+ * Return the borrowed word at +0x08 of the singleton when the singleton exists and its
+ * +0x1cc word is nonzero; otherwise return 0. Evidence: same guarded shape as GetField0,
+ * with the final load at `[r0, #8]`.
+ */
 u32 Unk0ea208_GetField8(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
@@ -173,6 +188,12 @@ u32 Unk0ea208_GetArr58(int i)
     return FIELD(u32, p + i * 4, 88);
 }
 
+/*
+ * Run the per-slot teardown when the singleton exists and its +0x1cc word is nonzero.
+ * Evidence: `bl Unk0ea208_Get_data_02176ddc`, `cmp r0,#0`, `ldrne r1,[r0,#460]`,
+ * `cmpne r1,#0`, then `bl Unk0ea208_ForEachSlot` with the singleton as the argument.
+ * Callers are the state handlers in game/unit_020f470c and game/unit_020f4c50.
+ */
 void Unk0ea208_Unk_0ea70c(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
@@ -238,7 +259,11 @@ void Unk0ea208_Unk_0ead4c(void)
 
 
 
-/* decompiler-derived */
+/*
+ * Reset the work state fields: store 1 at +0x1c4, zero the words at +0x1c8 and +0x1cc,
+ * and zero the byte at +0x1d0. Evidence: `mov r1,#1`, `str r1,[r0,#452]`, then zero
+ * stores at +456/+460 and a zero `strb` at +464. The caller owns `work`.
+ */
 void Unk0ea208_Unk_0eb308(Unk0ea208Work *work)
 {
   work->UnkField01c4 = 1;
@@ -250,7 +275,11 @@ void Unk0ea208_Unk_0eb308(Unk0ea208Work *work)
 int func_02057524();
 int func_02057ddc();
 int func_02057e18();
-/* decompiler-derived */
+/*
+ * Apply the fixed teardown sequence: select value 31, then -1, then mode 4 in three
+ * consecutive provider calls. Evidence: `mov r0,#31; bl func_02057e18`,
+ * `mvn r0,#0; bl func_02057ddc`, `mov r0,#4; bl func_02057524`.
+ */
 void Unk0ea208_Unk_0eac80(void)
 {
   func_02057e18(0x1f);
@@ -258,8 +287,12 @@ void Unk0ea208_Unk_0eac80(void)
   func_02057524(4);
 }
 
-int Unk0ea208_Unk_0ea85c();
-/* decompiler-derived */
+int Unk0ea208_Unk_0ea85c(void);
+/*
+ * Consume the 0e8f38 result: when it is zero, fall back to the group-39/entry-3 lookup
+ * wrapper; otherwise forward the borrowed result to the 0cb044 sink. Evidence: the
+ * `cmp r0,#0` / `bne` split and the relocations to 0ea85c and 0cb044.
+ */
 void Unk0ea208_Unk_0ead1c(void)
 {
   int value;
@@ -272,7 +305,11 @@ void Unk0ea208_Unk_0ead1c(void)
 }
 
 
-/* decompiler-derived */
+/*
+ * Zero six caller-owned words at +0x00, +0x04, +0x10, +0x14, +0x18 and +0x1c; the
+ * words at +0x08 and +0x0c are intentionally untouched. Evidence: six `str r1` stores
+ * with r1 fixed at zero and exactly those offsets.
+ */
 void Unk0ea208_Unk_0eae20(u32 *arg0)
 {
   *arg0 = 0;

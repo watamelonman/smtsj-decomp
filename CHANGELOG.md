@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T770 game/unit_020ea208 reset, slot-walk, teardown and guarded-field routines at 100% objdiff; documented their typed contracts and instruction evidence.
 - Verified all eight M1-T769 game/unit_020ea208 functions at 100% objdiff; documented their contracts and made register-forwarded call arguments explicit.
 
 - Match six additional functions in game/unit_020f90dc; document the remaining drawing function for scratch follow-up.
