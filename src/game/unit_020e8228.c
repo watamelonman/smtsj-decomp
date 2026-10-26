@@ -13,7 +13,7 @@ int Unk044904_GetFlag18(void);
 void func_02057524(int value);
 void func_02057534(void);
 void func_02057eb8(int value);
-int func_02061424();
+void func_02061424(u32 handle);
 void *Unk09974c_Unk_099d14(int id);
 void ScanVisor_Unk_0a29a0(u32 value);
 int Unk0e8228_Unk_0e8374(u32 x);
@@ -316,14 +316,19 @@ int Unk0e8228_Unk_0e9048(const Unk0e8228SortRecord *const *arg0,
   return (int)(*arg0)->unk_002e - (int)(*arg1)->unk_002e;
 }
 
-/* Original 020ea028 calls func_02061424 only when the provider is present.
- * The provider address is a presence check; no argument is passed onward. */
+/* Original 020ea028 releases the provider through func_02061424 only when it is
+ * present: the provider pointer is returned in r0 and stays there unchanged
+ * across the `cmp r0,#0; popeq` guard, so it becomes the call's first (and
+ * only) argument. The typed declaration matches src/game/unit_020ea208.c:122,
+ * and docs/functions/game-unit-020fedd4.md calls func_02061424 the task
+ * release call. */
 void Unk0e8228_Unk_0ea028(void)
 {
-  if (Unk0ea208_Get_data_02176ddc() == 0) {
+  void *provider = (void *)Unk0ea208_Get_data_02176ddc();
+  if (provider == 0) {
     return;
   }
-  func_02061424();
+  func_02061424((u32)provider);
 }
 
 /* Borrowed provider view; only the word at 0x1cc is established by 020ea040. */
@@ -512,7 +517,7 @@ u32 Unk0e8228_Unk_0e8dfc(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_02008848();
+int func_02008848(u32 buffer, u32 value, u32 size);
 int func_020e9060();
 /* decompiler-derived */
 void Unk0e8228_Unk_0e9fa4(u32 arg0)
@@ -555,7 +560,7 @@ extern u8 data_02176ce4[];
  * The relocation and fixed arguments establish the Call name. */
 void Unk0e8228_Call_02008848(void)
 {
-  func_02008848(data_02176ce4,0,0xf8);
+  func_02008848((u32)data_02176ce4,0,0xf8);
 }
 
 #ifndef FIELD
