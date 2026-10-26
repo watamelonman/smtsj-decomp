@@ -9,6 +9,9 @@ typedef struct Unk0222d8State {
     u32 command;
     u32 parameters[62];
     u32 flags;
+    /** Tail words written only by 020222d8; the array is flexible so the shared
+     *  prefix keeps its original size for every other accessor. */
+    u32 unk_100[];
 } Unk0222d8State;
 /** Borrowed callback record; callbacks may update the record before flags/count change. */
 typedef struct Unk0222d8Record Unk0222d8Record;
@@ -221,4 +224,187 @@ void func_02022e44(Unk0222d8Record *record);
 void func_02025224(void);
 /** Reset the first word of a caller-owned buffer. */
 void func_0202523c(u32 *buffer);
+
+/** Borrowed 392-byte render state scratch used by the draw-command builder. */
+typedef struct Unk0222d8RenderBase {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+    u32 unk_0c;
+    u32 unk_10;
+    u8 pad_14;
+    u8 tag_15;
+    u8 tag_16;
+    u8 pad_17;
+    u32 unk_18;
+    u32 unk_1c;
+    u32 unk_20;
+    u32 unk_24;
+} Unk0222d8RenderBase;
+
+/** Command block read by the draw-command builder at 02022b3c. */
+typedef struct Unk0222d8RenderCmd {
+    u32 flags;
+    Unk0222d8RenderBase *base;
+    u8 pad_08[0x18];
+    void *unk_20;
+    u8 unk_24;
+    u8 unk_25;
+    u8 pad_26[2];
+    void (*callback)(void *);
+    u8 pad_2c[4];
+    void *unk_30;
+} Unk0222d8RenderCmd;
+
+/** Render state produced by 02022b3c; only the touched fields are named. */
+typedef struct Unk0222d8RenderState {
+    u32 unk_00;
+    Unk0222d8RenderCmd *cmd;
+    u32 flags;
+    u32 arr_0c[32];
+    u8 arr_8c[0x38];
+    u32 unk_c4;
+    u8 pad_c8[0x0c];
+    u32 unk_d4;
+    u32 unk_d8;
+    u32 unk_dc;
+    u32 unk_e0;
+    u32 unk_e4;
+    u32 unk_e8;
+    u32 unk_ec;
+    u32 unk_f0;
+    u8 pad_f4[0x94];
+} Unk0222d8RenderState;
+
+/** Table object probed by the texture handler before committing its word. */
+typedef struct Unk0222d8TexObject {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+    u32 unk_0c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+    int (*callback)(void *, u32, u32);
+    u32 unk_20[11];
+    u32 bits[8];
+} Unk0222d8TexObject;
+
+/** Command state for the texture handler at 02022e6c. */
+typedef struct Unk0222d8TexState {
+    u8 *command;
+    Unk0222d8TexObject *object;
+    u32 flags;
+    u32 unk_0c;
+    u32 unk_10;
+    void (*callback)(void *);
+    u32 unk_18;
+    u32 unk_1c;
+    u8 pad_20[0x6e];
+    u8 state;
+    u8 pad_8f[0x1d];
+    u8 current;
+    u8 pad_ad[0x0b];
+    u32 *unk_b8;
+    u8 pad_bc[0xc8];
+    u32 shared;
+} Unk0222d8TexState;
+
+/** Command state for the display-list handler at 02024988. */
+typedef struct Unk0222d8DlState {
+    u8 *command;
+    u32 unk_04;
+    u32 flags;
+    u32 unk_0c;
+    u32 unk_10;
+    u32 unk_14;
+    u32 unk_18;
+    u32 unk_1c;
+    u32 unk_20;
+    u32 unk_24;
+    u32 unk_28;
+    u32 unk_2c;
+    u32 unk_30;
+    void (*callback)(void *);
+    u8 pad_38[0x5e];
+    u8 state;
+} Unk0222d8DlState;
+
+/** GX state block read by the matrix command handler at 02024ad4. */
+typedef struct Unk0222d8Buf {
+    u32 unk_00;
+    u32 unk_04;
+    u32 unk_08;
+    u32 unk_0c;
+    u32 unk_10;
+    u8 pad_14[0x18];
+    u16 unk_2c;
+    u16 unk_2e;
+} Unk0222d8Buf;
+
+/** Shape/material record prefix; `flags` and `data` are at the fixed offsets read
+ *  by the matrix handler (the delinked code assumes a valid dictionary entry). */
+typedef struct Unk0222d8ShapeData {
+    u16 itemTag;
+    u16 size;
+    u8 pad_04[0x1a];
+    u16 flags;
+    u8 pad_20[0x0c];
+    u8 data[1];
+} Unk0222d8ShapeData;
+
+/** Command state for the matrix handler at 02024ad4. */
+typedef struct Unk0222d8MtxState {
+    u8 *command;
+    u32 unk_04;
+    u32 flags;
+    u32 pad_0c[12];
+    void (*callback)(void *);
+    u8 pad_40[0x58];
+    u8 state;
+    u8 pad_99[0x17];
+    Unk0222d8Buf *buf;
+    u8 pad_b4[0x24];
+    Unk0222d8ResourceMat *res;
+} Unk0222d8MtxState;
+
+/** Command state for the material handler at 02023bc0. */
+typedef struct Unk0222d8MatState {
+    u8 *command;
+    u32 unk_04;
+    u32 flags;
+    u8 pad_0c[0x1c];
+    void (*callback)(void *);
+    u8 pad_2c[0x67];
+    u8 state;
+} Unk0222d8MatState;
+
+/** Command state for the shape handler at 02023ec8. */
+typedef struct Unk0222d8ShpState {
+    u8 *command;
+    u32 unk_04;
+    u32 flags;
+    u8 pad_0c[0x1c];
+    u32 unk_28;
+    void (*callback)(void *);
+    u8 pad_30[0x64];
+    u8 state;
+} Unk0222d8ShpState;
+
+/** Two-word GX fog command image shared with the matrix handler. */
+typedef struct Unk0222d8FogCmd {
+    u32 unk_00;
+    u32 unk_04;
+    u32 command;
+    u32 value;
+} Unk0222d8FogCmd;
+
+void func_020222d8(void);
+void func_02022b3c(void *scratch, Unk0222d8RenderCmd *command);
+void func_02022e6c(Unk0222d8TexState *object);
+void func_02024988(Unk0222d8DlState *object);
+void func_02024ad4(Unk0222d8MtxState *object);
+void func_02023bc0(Unk0222d8MatState *object, u32 option);
+void func_02023ec8(Unk0222d8ShpState *object, u32 option);
+void func_020252fc(u32 command, const u32 *parameters, u32 count);
 #endif

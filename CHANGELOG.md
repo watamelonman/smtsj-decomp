@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T1028: match eight NitroSDK G3X command submission, state initialisation, render-state, texture, display-list, matrix, material and shape handlers in `libs/NitroSDK/sdk_020222d8.c` (`func_020252fc`, `func_020222d8`, `func_02022b3c`, `func_02022e6c`, `func_02024988`, `func_02024ad4`, `func_02023bc0`, `func_02023ec8`).
 - M2-T1027: match eight NitroSDK draw/dispatch, callback and display-list transfer helpers in `libs/NitroSDK/sdk_020222d8.c` (`func_02022a6c`, `func_02022d40`, `func_02022fe8`, `func_0202353c`, `func_020235ec`, `func_020236c0`, `func_02025248`, `func_020253e0`).
 - M2-T1097: match eight MSL double-math wrappers, a sign-bit helper, a heap-free wrapper and an integer-bound helper in `libs/MSL/msl_02017850.c` (`func_0201ba48`, `func_0201ba54`, `func_0201ba60`, `func_0201ba6c`, `func_0201bb30`, `func_0201cf28`, `func_0201cfd8`, `func_0201e048`).
 - M2-T1060: match eight font/text state, bit-mask, singleton and allocation helpers in `libs/unknown/lib_02061798.c` (`func_02061e98`, `func_020629ac`, `func_02062a5c`, `func_0206541c`, `func_0206552c`, `func_0206559c`, `func_02065628`, `func_020658a0`).
