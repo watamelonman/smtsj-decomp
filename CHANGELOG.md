@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T1098: match four MSL sign/exponent and decimal-state helpers in `libs/MSL/msl_02017850.c` (`func_0201b3ec`, `func_0201b254`, `func_0201cfac`, `func_0201bb34`); document `func_0201bae4` and the `_dfix`/`_dflt`/`_dfltu` runtime routines as hard hand-written assembly.
+- M2-T1061: match eight render-state predicates, a glyph-advance multiply and singleton/state setters in `libs/unknown/lib_02061798.c` (`func_0206232c`, `func_02062a3c`, `func_0206431c`, `func_0206433c`, `func_02065438`, `func_0206557c`, `func_0206567c`, `func_02065c10`).
+- M2-T1027: match eight NitroSDK draw/dispatch, callback and display-list transfer helpers in `libs/NitroSDK/sdk_020222d8.c` (`func_02022a6c`, `func_02022d40`, `func_02022fe8`, `func_0202353c`, `func_020235ec`, `func_020236c0`, `func_02025248`, `func_020253e0`).
 - M2-T1097: match eight MSL double-math wrappers, a sign-bit helper, a heap-free wrapper and an integer-bound helper in `libs/MSL/msl_02017850.c` (`func_0201ba48`, `func_0201ba54`, `func_0201ba60`, `func_0201ba6c`, `func_0201bb30`, `func_0201cf28`, `func_0201cfd8`, `func_0201e048`).
 - M2-T1060: match eight font/text state, bit-mask, singleton and allocation helpers in `libs/unknown/lib_02061798.c` (`func_02061e98`, `func_020629ac`, `func_02062a5c`, `func_0206541c`, `func_0206552c`, `func_0206559c`, `func_02065628`, `func_020658a0`).
 - M2-T1059: match eight font-record state predicates, setters and tail wrappers in `libs/unknown/lib_02061798.c` (`func_02061eb4`, `func_02062a74`, `func_02063a30`, `func_020642a8`, `func_0206435c`, `func_02065604`, `func_02065614`, `func_0206569c`).

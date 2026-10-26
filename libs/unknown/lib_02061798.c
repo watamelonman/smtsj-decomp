@@ -14,8 +14,13 @@ extern void *func_02060a48(u32 a, u32 b, u32 mode);
 /* Updates object state; func_020658a0 tail-calls it with both modes set
  * to 1. */
 extern void func_020658b4(void *object, u32 first, u32 second);
-/* State helper called by func_0206541c for states 0 and 2. */
+/* State helper called by func_0206541c and func_02065438 for their 0/1 and
+ * 1/2 state pairs. */
 extern void func_02065374(Unk061798Object *object);
+/* Applies a flag after func_0206567c has cleared the singleton's text state. */
+extern void func_0206563c(s32 flag);
+/* Resets shared render state before func_02065c10 sets the new mode. */
+extern void func_02065bc0(void);
 
 /* The +4 word of this bss object is the shared result singleton. */
 typedef struct Unk061798Bss {
@@ -85,6 +90,16 @@ s32 func_02061eb4(Unk061798Object *object, u32 mask)
     return (object->unk_0004 & mask) != 0;
 }
 
+/* Returns count times the object's glyph advance: func_02061960 supplies the
+ * first header byte of the font record selected by the object's font id, and
+ * the signed byte at +0x35 is added to it before the multiply. */
+s32 func_0206232c(Unk061798Object *object, s32 count)
+{
+    s32 advance = func_02061960(object->unk_0028);
+    advance += object->unk_0035;
+    return count * advance;
+}
+
 /* Forwards the first, second and fourth arguments to func_02060a48 and drops
  * the third: callers set all four registers before calling (call sites
  * 0x02065f54/0x02066940/0x0211d5c0), and the original moves r3 into r2.
@@ -101,6 +116,20 @@ void *func_020629ac(u32 a, u32 b, u32 ignored, u32 c)
 Unk061798FontData *func_02062a2c(Unk061798Object *object)
 {
     return func_0206190c(object->unk_0028);
+}
+
+/* True when the object's +0x10 word is neither 0 nor 1; the original tests
+ * both values with `cmp #0; cmpne #1` and branches to a +1 return. */
+s32 func_02062a3c(Unk061798Object *object)
+{
+    u32 value = object->unk_0010;
+    switch (value) {
+    case 0:
+    case 1:
+        return 0;
+    default:
+        return 1;
+    }
 }
 
 /* Returns 1 when the object's +0x10 word is 2 or 3, else 0; the caller at
@@ -191,6 +220,34 @@ s32 func_020642a8(Unk061798Object *object)
     return object->unk_0068 > 0;
 }
 
+/* True when the object's +0x38 word is neither 1 nor 3; the original tests
+ * both values with `cmp #1; cmpne #3` and branches to a +1 return. */
+s32 func_0206431c(Unk061798Object *object)
+{
+    u32 value = object->unk_0038;
+    switch (value) {
+    case 1:
+    case 3:
+        return 0;
+    default:
+        return 1;
+    }
+}
+
+/* True when the object's +0x44 word is neither 1 nor 3; same compare shape as
+ * func_0206431c but on the +0x44 word. */
+s32 func_0206433c(Unk061798Object *object)
+{
+    u32 value = object->unk_0044;
+    switch (value) {
+    case 1:
+    case 3:
+        return 0;
+    default:
+        return 1;
+    }
+}
+
 /* Stores 2 at +0x8 and 5 at +0xc of the object; call site 0x02065488 resets
  * these before writing two bytes at +0x54/+0x55. */
 void func_0206435c(Unk061798Object *object)
@@ -208,11 +265,30 @@ void func_0206541c(Unk061798Object *object)
     if (state == 0 || state == 2) func_02065374(object);
 }
 
+/* Calls func_02065374 when the object's +0x6c word is 1 or 2 and returns
+ * otherwise; the original keeps the word in r1 across the two compares and a
+ * `popne`. */
+void func_02065438(Unk061798Object *object)
+{
+    s32 state = object->unk_006c;
+    if (state != 1 && state != 2) return;
+    func_02065374(object);
+}
+
 /* Returns 1 when func_02063a50, the shared result singleton, exists; call
  * sites 0x0203bda4/0x020964b4 test the result. */
 s32 func_0206552c(void)
 {
     return func_02063a50() != 0;
+}
+
+/* Reads the render object at +0 of the shared result singleton and returns
+ * func_02062a3c's answer for it; returns 0 when the singleton is absent. */
+s32 func_0206557c(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return 0;
+    return func_02062a3c(result->unk_0000);
 }
 
 /* Returns the signed word at +0x5c of the shared result singleton, or 0 when
@@ -245,6 +321,18 @@ void func_02065628(u32 value)
     func_02063a60()->unk_0020 = value;
 }
 
+/* Clears the +0x60 and +0x64 words of the func_02063a60 singleton, then
+ * forwards the same zero to func_0206563c. The reused local keeps the zero in
+ * r1, matching the original `mov r0, r1` before the call. */
+void func_0206567c(void)
+{
+    Unk061798ResultB *result = func_02063a60();
+    s32 zero = 0;
+    result->unk_0060 = zero;
+    result->unk_0064 = zero;
+    func_0206563c(zero);
+}
+
 /* Tail wrapper for func_020656ac that fixes the second argument to -1; call
  * sites 0x0203c690/0x020d20dc/0x020dfe5c ignore the result. */
 s32 func_0206569c(void *object)
@@ -257,4 +345,16 @@ s32 func_0206569c(void *object)
 void func_020658a0(void *object)
 {
     func_020658b4(object, 1, 1);
+}
+
+/* Runs func_02065bc0 and then sets the +0x8, +0xc and +0x58 words of the
+ * func_02063a50 singleton to 1; the original does not null-check the
+ * singleton. */
+void func_02065c10(void)
+{
+    func_02065bc0();
+    Unk061798ResultB *result = func_02063a50();
+    result->unk_0008 = 1;
+    result->unk_000c = 1;
+    result->unk_0058 = 1;
 }
