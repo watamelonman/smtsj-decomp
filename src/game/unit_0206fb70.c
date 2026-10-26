@@ -9,8 +9,8 @@ typedef struct Unk06fb70Work {
 
 
 
-int func_0206d68c();
-/* decompiler-derived */
+int func_0206d68c(int mode, u32 value, int scale);
+/* ARM 0x020717c0 adds func_0206d68c(2, value, 100) to field +0x120. */
 void Unk06fb70_Unk_0717c0(Unk06fb70Work *arg0, u32 arg1){
   int tmp1;
   tmp1 = func_0206d68c(2,arg1,100);
@@ -18,9 +18,10 @@ void Unk06fb70_Unk_0717c0(Unk06fb70Work *arg0, u32 arg1){
   return;
 }
 
-int func_0200219c();
-int func_02007e94();
-/* decompiler-derived */
+int func_0200219c(s32 numerator, s32 denominator);
+void func_02007e94(void);
+/* ARM 0x0206fb70 divides the value delta by the time delta, both scaled
+ * by 4096; a zero time delta first calls 0x02007e94. */
 int Unk06fb70_Unk_06fb70(int arg0,int arg1,int arg2,int arg3)
 {
   if (arg1 - arg0 == 0) {
@@ -80,6 +81,8 @@ void Unk06fb70_Unk_06ff28(u32 arg0,u32 arg1)
   return;
 }
 
+/* ARM 0x020713fc clamps the sum toward lim according to the sign of d;
+ * p owns a writable signed accumulator in the same units as d and lim. */
 void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim)
 {
     *p += d;
@@ -92,19 +95,23 @@ void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim)
     }
 }
 
-void func_0207142c();
-void func_02071898();
-void func_020703b4();
+void func_0207142c(int a, int b, int c, int d, int e, int option, int f, int g);
+void func_02071898(int a, int b, int c, int d, int e, int option, int f, int g);
+void func_020703b4(void *a, void *b, void *c, void *d, void *e, void *f, void *g, void *h);
+/* Target ARM call to 0207142c forwards seven words, inserting zero as word six. */
 void Unk06fb70_Call_07142c(int a, int b, int c, int d, int e, int f, int g)
 {
     func_0207142c(a, b, c, d, e, 0, f, g);
 }
 
+/* Target ARM call to 02071898 forwards seven words, inserting zero as word six. */
 void Unk06fb70_Call_071898(int a, int b, int c, int d, int e, int f, int g)
 {
     func_02071898(a, b, c, d, e, 0, f, g);
 }
 
+/* ARM 0x02071d28 forwards views at +0x16c, +0x2c, +0x28, +0x30,
+ * +0, +0xc, +0x18 and +0x34; o must cover all these object fields. */
 void Unk06fb70_Call_0703b4(u8 *o)
 {
     func_020703b4(o + 364, o + 44, o + 40, o + 48, o, o + 12, o + 24, o + 52);
@@ -203,6 +210,8 @@ void Unk06fb70_Unk_070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[2], a->vel[2], a->max[2]);
 }
 
+/* ARM 0x02070114 advances channel 1 while its signed state is below 4;
+ * on expiry resets tick/velocity and selects the next key, else clamps position. */
 void Unk06fb70_Unk_070114(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[1] >= 4) {
@@ -217,6 +226,8 @@ void Unk06fb70_Unk_070114(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[3], a->vel[3], a->max[3]);
 }
 
+/* ARM 0x02070168 advances channel 2 while its signed state is below 4;
+ * on expiry resets tick/velocity and selects the next key, else clamps position. */
 void Unk06fb70_Unk_070168(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[2] >= 4) {
@@ -231,6 +242,9 @@ void Unk06fb70_Unk_070168(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[4], a->vel[4], a->max[4]);
 }
 
+/* ARM 0x020701bc advances animation channel 3 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070950, otherwise it clamps position 5 within its maximum. */
 void Unk06fb70_Unk_0701bc(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[3] >= 4) {
@@ -245,6 +259,9 @@ void Unk06fb70_Unk_0701bc(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[5], a->vel[5], a->max[5]);
 }
 
+/* ARM 0x02070210 advances animation channel 4 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070a6c, otherwise it clamps position 6 within its maximum. */
 void Unk06fb70_Unk_070210(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[4] >= 4) {
@@ -259,6 +276,9 @@ void Unk06fb70_Unk_070210(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[6], a->vel[6], a->max[6]);
 }
 
+/* ARM 0x02070264 advances animation channel 5 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070b88, otherwise it clamps position 7 within its maximum. */
 void Unk06fb70_Unk_070264(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[5] >= 4) {
@@ -273,6 +293,9 @@ void Unk06fb70_Unk_070264(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[7], a->vel[7], a->max[7]);
 }
 
+/* ARM 0x020702b8 advances animation channel 6 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070cc0, otherwise it clamps position 8 within its maximum. */
 void Unk06fb70_Unk_0702b8(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[6] >= 4) {
@@ -287,6 +310,9 @@ void Unk06fb70_Unk_0702b8(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[8], a->vel[8], a->max[8]);
 }
 
+/* ARM 0x0207030c advances animation channel 7 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070df8, otherwise it clamps position 9 within its maximum. */
 void Unk06fb70_Unk_07030c(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[7] >= 4) {
@@ -301,6 +327,9 @@ void Unk06fb70_Unk_07030c(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[9], a->vel[9], a->max[9]);
 }
 
+/* ARM 0x02070360 advances animation channel 8 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070f30, otherwise it clamps position 10 within its maximum. */
 void Unk06fb70_Unk_070360(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[8] >= 4) {
@@ -533,7 +562,34 @@ void Unk06fb70_Unk_070f30(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
+/* ARM 0x02071844 tears down a manager: it releases the 50 objects at +0x234,
+ * zeroes the words at +0x24..+0x30, clears the word reached through +0x224
+ * when non-null, then calls func_02061424 on the manager. */
 void Unk06fb70_Unk_071844(Unk06fb70Mgr *m)
+{
+    int i;
+    if (m == 0) {
+        return;
+    }
+    for (i = 0; i < 50; i++) {
+        Unk06ae94_Unk_06c0b0(m->objs[i]);
+    }
+    m->unk_24 = 0;
+    m->unk_28 = 0;
+    m->unk_2c = 0;
+    m->unk_30 = 0;
+    if (m->unk_224 != 0) {
+        *m->unk_224 = 0;
+    }
+    func_02061424(m);
+}
+
+/* ARM 0x02071d6c releases a second manager of the same layout: it tears down
+ * the 50 objects at +0x234, zeroes the words at +0x24..+0x30, clears the word
+ * pointed to by +0x224 (when present), then calls func_02061424 on the manager.
+ * The identical body at 0x02071844 is a separate original function, so this
+ * one is emitted as its own C definition rather than an alias. */
+void func_02071d6c(Unk06fb70Mgr *m)
 {
     int i;
     if (m == 0) {
