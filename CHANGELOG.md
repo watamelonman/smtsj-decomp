@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T937: match all eight requested `game/unit_0206fb70` float-ratio, second-animation channel-advance and key-selection functions at 100% objdiff; add the typed second animation view and document instruction evidence.
+- M1-T906: match eight `game/unit_020e8228` bank scans, packed-selector, dispatch and provider-update helpers at 100% objdiff; document typed instruction contracts.
 - M1-T958: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add the missing state dispatcher, and document typed contracts and instruction evidence.
 - M1-T905: match eight `game/unit_020e8228` descriptor, provider, dispatch and state helpers at 100% objdiff; add five missing bodies and document typed instruction contracts.
 - Corrected M1-T957 thunk evidence to describe literal-pool tail branches and reconciled historical match documentation.

@@ -206,15 +206,27 @@ No M1-T905 functions remain on the hard list. No new tests are required by
 this card: exact instruction and relocation matching supplies the acceptance
 oracle, alongside the existing test suite and full-image checksum.
 
-## Not done in M1-T906
-- `func_020e946c`
-- `func_020e9b54`
-- `func_020e86a0`
-- `func_020e8f74`
-- `func_020e9814`
-- `func_020e9aa0`
-- `func_020e852c`
-- `func_020ea0ec`
+## M1-T906 verified functions
+
+All eight functions match at 100% objdiff. Names retain the original neutral
+symbols because instruction evidence establishes behavior but not domain meaning.
+Work, entry and provider addresses are borrowed; providers retain ownership.
+
+| Function | Original ARM evidence and contract |
+| --- | --- |
+| `func_020e946c` (108 B) | Switches on work +0x28. State one swaps selector bytes 1/2 from argument bits 16..23 (other values become zero); state two takes the low byte of work +4. Both pack the byte above low halfword 0xfffe; other states return the fallback argument. Requires readable work and, for state one, a readable argument word. |
+| `func_020e9b54` (108 B) | Scans bank +0x30 using data_02150c30 +0x34 plus one as its signed bound; work +4 equal to two selects bank +0x40 and bound +0x2c plus one. Returns one on the first nonzero key whose resolved entry passes 0e8ce8, otherwise zero. |
+| `func_020e86a0` (112 B) | Guards shared work, calls 0e8cd8, scans bank +0x30 with global +0x34 plus one as bound, calls 0204a7b4(entry, 4) for each nonzero resolved entry, then calls 0e9020(0). |
+| `func_020e8f74` (112 B) | Missing work returns zero. Counts keys in bank +0x30 starting at slot one whose resolved 0204a244 state equals seven; returns whether the count equals three. Uses global +0x34 plus one as bound. |
+| `func_020e9814` (112 B) | Uses the same state-dependent banks/bounds as 0e9b54, starting after the supplied signed index. Returns the first slot whose nonzero key resolves to an entry accepted by 0e8ce8, or ten when absent. Caller supplies valid work and a valid starting range. |
+| `func_020e9aa0` (112 B) | Resolves selector seven through 0e9ca8; minus one or a zero first argument yields zero. Otherwise resolves the current entry, calls 0e8d38(entry, entry +0x1e8, selected bank +0x58 word, last argument). Failure yields zero; success calls 0e8d18(0) and preserves the first argument. |
+| `func_020e852c` (116 B) | Missing work returns zero. Reads up to six halfwords from 0204a0d8(current entry), stopping at zero; counts values for which IsAbove15e differs from one. Nonzero 0e8c68 adds one, capped at six. Provider must supply the readable halfwords. |
+| `func_020ea0ec` (116 B) | Requires a provider and nonzero provider +0x1cc. For five handles at +0x10, calls 02061f10(handle, -1, 0, 0, descriptor word +4) using eight-byte descriptors at data_02150ca0. Clears provider byte +0x1c0. No return value is consumed by callers. |
+
+No M1-T906 functions remain on the hard list. Register allocation in 0e946c
+matches when packing explicitly updates the base word before returning it.
+The exact instruction/relocation comparison is the acceptance oracle; the card
+requires no new behavioral tests.
 
 ## Not done in M1-T907
 - `func_020e9884`
