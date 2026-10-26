@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- M1-T975: add the missing `func_020ec704` C definition and individually verify all three CaveArea render/state callbacks (`func_020ecc24`, `func_020ec704`, `func_020ebb14`) at 100% objdiff, with typed work-field contracts and instruction evidence.
+- M1-T975: add the missing `func_020ec704` C definition and individually verify all three CaveArea render/state callbacks (`func_020ecc24`, `func_020ec704`, `func_020ebb14`) at 100% objdiff, with documented work-field offsets and instruction evidence.
 - Match all eight M1-T979 selection, ID-list submission and drawing helpers at 100% objdiff; document original stack-overrun behavior and scoped optimization settings.
 - M1-T986: verify eight ScanVisor forwarding, query and threshold helpers at 100% objdiff; document typed call contracts and original instruction evidence.
 - Verified all eight M1-T994 helpers in `game/unit_0206ae94` against the original ARM code; added typed declarations and per-function evidence contracts.

@@ -210,6 +210,7 @@ void func_020eb7e0(CaveAreaCallbacks *p)
 {
     p->size = 360;
     p->enabled = 1;
+    /* The descriptor stores mixed-signature callbacks in a void(*)(void) array. */
     p->callbacks[0] = (void (*)(void))func_020ebb14;
     p->callbacks[1] = (void (*)(void))func_020ec330;
     p->callbacks[2] = (void (*)(void))func_020ec704;
@@ -798,7 +799,7 @@ extern u32 data_0213c814[];
 /* 0x020ec704 draws the selected area's layout, frame and handle overlays.
  * Borrows work through +0x158, indexed width/handle arrays, and the provider
  * objects at +0x50/+0x84; area +0xbc must index those arrays. No ownership moves.
- * See DEC-025 for the scoped propagation/common-subexpression settings. */
+ * See DEC-026 for the scoped propagation/common-subexpression settings. */
 #pragma push
 #pragma opt_propagation off
 #pragma opt_common_subs off
@@ -884,6 +885,9 @@ void func_020ecc24(CaveAreaWork *p)
     func_02057e58(3, 35, 20);
     func_02057e18(31);
     func_02057df8();
+    /* The two frame-submission paths must stay duplicated: hoisting the shared
+     * strip/frame sequence before the +0xa8 test changes the original branch
+     * layout and objdiff drops func_020ecc24 well below 100% (see DEC-027). */
     if (FIELD(u8, p, 0xa8) == 0) {
         func_02057eb8(0);
         func_02058e9c(1, FIELD(int, p, 0x130) << 7, 0, 0, 1.0f, 0.0f, 6);
@@ -924,9 +928,6 @@ void func_020ecc24(CaveAreaWork *p)
     func_020572d8();
 }
 
-void func_0205c748(int mode, u32 handle, int x, int y, float sx, float sy,
-                   int zero, float scale, int layer);
-void func_02057e58(int a, int b, int c);
 /* 0x020ebb14 advances the 22-state area transition and updates 23 handles.
  * Borrows writable work through +0x164, including per-area offset/alpha arrays,
  * selection and request fields; providers retain ownership of all handles. */
@@ -1051,8 +1052,9 @@ void func_020ebb14(CaveAreaWork *p)
         CaveAreaRequest request;
         int j;
         if (func_020523a8() == 1) break;
-        j = 0;
-        FIELD(u8, p, 0xc8) = j;
+        FIELD(u8, p, 0xc8) = 0;
+        /* Byte-wise clear of the two flag bytes; indexing the raw record keeps
+         * the original byte-pointer loop instead of a flag-array access. */
         for (j = 0; j < 2; j++) ((u8 *)&request)[j] = 0;
         for (j = 0; j < 16; j++) request.words[j] = 0;
         if (FIELD(u8, p, 0xa8) == 0) {

@@ -184,7 +184,10 @@ string, data-table, or caller evidence supports a stronger description.
   strips using the shifted indices at +0x130/+0x134, submits frame 19 at float
   +0x128 offset by -192 and again unshifted, submits frame 18 at the origin,
   then dispatches marker rendering to `func_020ed800` or `func_020ed8f4`
-  according to byte +0xa8. `CaveAreaWork` storage must cover those fields.
+  according to byte +0xa8. The two background/frame paths are deliberately
+  written out in full rather than hoisted above the test; hoisting changes the
+  branch layout and drops objdiff to about 55% (see DEC-027). `CaveAreaWork`
+  storage must cover those fields.
 - `func_020ec704` (1156 bytes): render callback. States 16..18 draw the layout
   object at +0x50 from its origin words +0x14/+0x18 through `func_020eda38`,
   using width entries at +0x138/+0x14c/+0x158 and color 0x26fffcff; states
@@ -193,7 +196,7 @@ string, data-table, or caller evidence supports a stronger description.
   pair at +0x14/+0x18 for the current area, and handles +0x44/+0x48. The
   still-delinked row renderer `func_020ec514` is called with the area index.
   Work storage must include the indexed width arrays and live borrowed provider
-  objects at +0x50/+0x84. See DEC-025: propagation/common-subexpression settings
+  objects at +0x50/+0x84. See DEC-026: propagation/common-subexpression settings
   preserve the branch setup and three conditional byte-state comparisons.
   Initial readable C measured 91.30%; indexed array expressions and scoped
   settings reached 99.76%, then local declaration order restored r4/r5 and 100%.
