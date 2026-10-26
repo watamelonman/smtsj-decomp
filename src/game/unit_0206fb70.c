@@ -13,7 +13,23 @@ typedef struct Unk06fb70Work {
  * declared after the dispatchers that forward these pointers. */
 typedef struct Unk06fb70Anim Unk06fb70Anim;
 
+/* Second animation object used by 0x020703b4..0x02071334. Each of its four
+ * keys is 24 bytes and holds three value/time pairs at +0/+4, +8/+12 and
+ * +16/+20; the offsets are established by the original mla sequences
+ * (+0x44 + key * 24 + channel * 8). */
+typedef struct Unk06fb70Key2 {
+    s32 value0;
+    s32 time0;
+    s32 value1;
+    s32 time1;
+    s32 value2;
+    s32 time2;
+} Unk06fb70Key2;
 
+typedef struct Unk06fb70Anim2 {
+    u8 pad_0000[68];
+    Unk06fb70Key2 keys[4];
+} Unk06fb70Anim2;
 
 int func_0206d68c(int mode, u32 value, int scale);
 /* ARM 0x020717c0 adds func_0206d68c(2, value, 100) to field +0x120. */
@@ -44,6 +60,25 @@ int Unk06fb70_Unk_06fb70(int arg0,int arg1,int arg2,int arg3)
     func_02007e94();
   }
   return func_0200219c((arg3 - arg2) * 0x1000,(arg1 - arg0) * 0x1000);
+}
+
+/* ARM 0x0206fb9c converts a float delta over an integer time delta into the
+ * same 20.12 scale as 0x0206fb70, rounding away from zero by half a unit.
+ * A zero time delta first calls 0x02007e94, as the integer variant does. */
+int func_0206fb9c(s32 t0, s32 t1, float f0, float f1)
+{
+    s32 dt;
+    float value;
+    if (t1 - t0 == 0) {
+        func_02007e94();
+    }
+    dt = (t1 - t0) * 0x1000;
+    if (f1 - f0 > 0.0f) {
+        value = 0.5f + 4096.0f * (f1 - f0);
+    } else {
+        value = 4096.0f * (f1 - f0) - 0.5f;
+    }
+    return func_0200219c((s32)value, dt);
 }
 
 
@@ -115,7 +150,10 @@ void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim)
 
 void func_0207142c(int a, int b, int c, int d, int e, int option, int f, int g);
 void func_02071898(int a, int b, int c, int d, int e, int option, int f, int g);
-void func_020703b4(void *a, void *b, void *c, void *d, void *e, void *f, void *g, void *h);
+void func_020703b4(Unk06fb70Anim2 *anim, s32 *tick, s32 *state, s32 *limit, s32 *pos, s32 *vel, s32 *max, s32 *extra);
+void func_02070440(Unk06fb70Anim2 *anim, s32 *tick, s32 *state, s32 *limit, s32 *pos, s32 *vel, s32 *max);
+void func_02071068(Unk06fb70Anim2 *anim, s32 *state, s32 *limit, s32 *vel, s32 *max);
+void func_0207112c(Unk06fb70Anim2 *anim, s32 *state, s32 *limit, s32 *vel, s32 *max);
 /* Target ARM call to 0207142c forwards seven words, inserting zero as word six. */
 void Unk06fb70_Call_07142c(int a, int b, int c, int d, int e, int f, int g)
 {
@@ -131,7 +169,9 @@ void Unk06fb70_Call_071898(int a, int b, int c, int d, int e, int f, int g)
  * +0x30, +0, +0xc, +0x18 and +0x34. */
 void Unk06fb70_Call_0703b4(u8 *o)
 {
-    func_020703b4(o + 364, o + 44, o + 40, o + 48, o, o + 12, o + 24, o + 52);
+    func_020703b4((Unk06fb70Anim2 *)(o + 364), (s32 *)(o + 44), (s32 *)(o + 40),
+                  (s32 *)(o + 48), (s32 *)o, (s32 *)(o + 12), (s32 *)(o + 24),
+                  (s32 *)(o + 52));
 }
 
 typedef struct Unk06fb70Key {
@@ -187,6 +227,9 @@ void Unk06fb70_Unk_0705f8(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
+/* ARM 0x02070758 bounds channel 1's signed state at four and searches later
+ * keys for a positive time delta; the key loads and stores establish the
+ * limit, velocity and 20.12 maximum before advancing the selected state. */
 void Unk06fb70_Unk_070758(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     int s;
@@ -209,6 +252,9 @@ void Unk06fb70_Unk_070758(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
+/* ARM 0x02070094 advances channel 0 only while its signed state is below four.
+ * Its tick compare and BL 0x020705f8 show expiry resets tick/three velocities
+ * and selects the next key; the other path clamps all three positions. */
 void Unk06fb70_Unk_070094(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[0] >= 4) {
@@ -361,6 +407,55 @@ void Unk06fb70_Unk_070360(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[10], a->vel[10], a->max[10]);
 }
 
+/* ARM 0x020703b4 advances the first channel of the second animation object.
+ * The state word at *state gates the update at four; tick expiry clears tick,
+ * position, velocity and the extra component before selecting the next key
+ * through 0x02071068, otherwise the position is clamped by velocity. */
+void func_020703b4(Unk06fb70Anim2 *anim, s32 *tick, s32 *state, s32 *limit,
+                   s32 *pos, s32 *vel, s32 *max, s32 *extra)
+{
+    if (*state >= 4) {
+        return;
+    }
+    if (++*tick > *limit) {
+        *tick = 0;
+        *vel = 0;
+        *pos = 0;
+        *extra = 0;
+        func_02071068(anim, state, limit, vel, max);
+        return;
+    }
+    Unk06fb70_AddClamped(pos, *vel, *max);
+}
+
+/* ARM 0x02070440 advances the three value channels of the second animation
+ * object. A completed state clears its four position words; tick expiry clears
+ * tick and the four velocity words before selecting the next keys through
+ * 0x0207112c, otherwise each position is clamped by its velocity. */
+void func_02070440(Unk06fb70Anim2 *anim, s32 *tick, s32 *state, s32 *limit,
+                   s32 *pos, s32 *vel, s32 *max)
+{
+    if (*state >= 4) {
+        pos[0] = 0;
+        pos[1] = 0;
+        pos[2] = 0;
+        pos[3] = 0;
+        return;
+    }
+    if (++*tick > *limit) {
+        *tick = 0;
+        vel[0] = 0;
+        vel[1] = 0;
+        vel[2] = 0;
+        vel[3] = 0;
+        func_0207112c(anim, state, limit, vel, max);
+        return;
+    }
+    Unk06fb70_AddClamped(&pos[0], vel[0], max[0]);
+    Unk06fb70_AddClamped(&pos[1], vel[1], max[1]);
+    Unk06fb70_AddClamped(&pos[2], vel[2], max[2]);
+}
+
 typedef struct Unk06fb70Mgr {
     u8 pad_000[0x24];
     u32 unk_24;
@@ -374,8 +469,8 @@ typedef struct Unk06fb70Mgr {
     s32 end;                    /* +0x230 */
     u32 objs[50];               /* +0x234: count from the % 50 / < 50 bounds */
 } Unk06fb70Mgr;
-void func_0207126c();
-void func_02071334();
+void func_0207126c(Unk06fb70Anim2 *anim, s8 *state, s32 *limit, s32 *vel, s32 *max);
+void func_02071334(Unk06fb70Anim2 *anim, s8 *state, s32 *limit, s32 *vel, s32 *max);
 void Unk06ae94_Unk_06c0b0();
 void func_02061424();
 
@@ -632,6 +727,73 @@ void Unk06fb70_Unk_070f30(Unk06fb70Anim *a, Unk06fb70Anim *b)
             a->vel[10] = Unk06fb70_Unk_06fb70(a->keys[a->state[8]].t[8], a->keys[a->state[8] + k].t[8], a->keys[a->state[8]].h3, a->keys[a->state[8] + k].h3);
             a->max[10] = a->keys[a->state[8] + k].h3 << 12;
             a->state[8] = a->state[8] + k;
+            return;
+        }
+    }
+}
+
+/* ARM 0x02071068 selects the next key for channel 0 of the second animation
+ * object. It stops at key four, sets the time delta limit, and on a positive
+ * limit stores the value-derived velocity and maximum before advancing state.
+ * Unlike the later channels, this one derives the maximum from the current
+ * key's value, exactly as the original load at +0x44 does. */
+void func_02071068(Unk06fb70Anim2 *anim, s32 *state, s32 *limit, s32 *vel, s32 *max)
+{
+    s32 k = 1;
+    if (*state + 1 >= 4) {
+        return;
+    }
+    for (; *state + k < 4; k++) {
+        *limit = anim->keys[*state + k].time0 - anim->keys[*state].time0;
+        if (*limit > 0) {
+            *vel = Unk06fb70_Unk_06fb70(anim->keys[*state].time0, anim->keys[*state + k].time0, 0,
+                                        anim->keys[*state].value0);
+            *max = anim->keys[*state].value0 << 12;
+            *state += k;
+            return;
+        }
+    }
+}
+
+/* ARM 0x0207126c is the channel 1 counterpart of 0x02071068. It derives both
+ * velocity and maximum from the value/time pair at key +8/+12 and advances the
+ * signed byte state only when the next key has a later time. */
+void func_0207126c(Unk06fb70Anim2 *anim, s8 *state, s32 *limit, s32 *vel, s32 *max)
+{
+    s32 k = 1;
+    if (*state + 1 >= 4) {
+        return;
+    }
+    for (; *state + k < 4; k++) {
+        *limit = anim->keys[*state + k].time1 - anim->keys[*state].time1;
+        if (*limit > 0) {
+            *vel = Unk06fb70_Unk_06fb70(anim->keys[*state].time1, anim->keys[*state + k].time1,
+                                        anim->keys[*state].value1,
+                                        anim->keys[*state + k].value1);
+            *max = anim->keys[*state + k].value1 << 12;
+            *state += k;
+            return;
+        }
+    }
+}
+
+/* ARM 0x02071334 is the channel 2 counterpart of 0x0207126c, using the
+ * value/time pair at key +16/+20. The same signed byte state and four-key
+ * bound apply. */
+void func_02071334(Unk06fb70Anim2 *anim, s8 *state, s32 *limit, s32 *vel, s32 *max)
+{
+    s32 k = 1;
+    if (*state + 1 >= 4) {
+        return;
+    }
+    for (; *state + k < 4; k++) {
+        *limit = anim->keys[*state + k].time2 - anim->keys[*state].time2;
+        if (*limit > 0) {
+            *vel = Unk06fb70_Unk_06fb70(anim->keys[*state].time2, anim->keys[*state + k].time2,
+                                        anim->keys[*state].value2,
+                                        anim->keys[*state + k].value2);
+            *max = anim->keys[*state + k].value2 << 12;
+            *state += k;
             return;
         }
     }

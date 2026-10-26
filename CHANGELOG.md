@@ -2,6 +2,10 @@
 
 ## Unreleased
 - M1-T907: match five `game/unit_020e8228` bank scans, selection-bit, index-advance, state teardown and object-state functions at 100% objdiff; add typed contracts and document the three remaining allocator/literal-pool hard cases.
+
+- Match eight more game/unit_020cf5e8 callback, slot, range and state functions in C.
+- M1-T937: match all eight requested `game/unit_0206fb70` float-ratio, second-animation channel-advance and key-selection functions at 100% objdiff; add the typed second animation view and document instruction evidence.
+- M1-T959: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add three missing bodies, and document typed instruction contracts.
 - M1-T906: match eight `game/unit_020e8228` bank scans, packed-selector, dispatch and provider-update helpers at 100% objdiff; document typed instruction contracts.
 - M1-T958: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add the missing state dispatcher, and document typed contracts and instruction evidence.
 - M1-T905: match eight `game/unit_020e8228` descriptor, provider, dispatch and state helpers at 100% objdiff; add five missing bodies and document typed instruction contracts.
