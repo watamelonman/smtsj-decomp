@@ -1,13 +1,25 @@
 # src/game/unit_020e8228.c
 
-- `Unk0e8228_Nop_0e93d4` (4 B): empty callback
-- `Unk0e8228_Thunk_02057534` (12 B): forwards to `func_02057534`
-- `Unk0e8228_Thunk_02045c38` (12 B): forwards to `Unk044904_GetFlag18`
-- `Unk0e8228_Unk_0e8cd8` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8e50` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8e6c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8e7c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8eac` (16 B): decompiler-derived (Ghidra output, cleaned)
+## M1-T897 verified wrappers
+
+All eight functions match at 100% objdiff. Evidence below comes from the
+original ARM instructions and relocations in the delinked object. Unknown
+argument meanings retain neutral names; no domain semantics are inferred.
+
+- `Unk0e8228_Nop_0e93d4` (4 B, 020e93d4): `bx lr` only; a no-op callback taking no parameters.
+- `Unk0e8228_Thunk_02057534` (12 B, 020e8e60): literal-load and `bx ip` tail-call `func_02057534`, taking no parameters.
+- `Unk0e8228_Thunk_02045c38` (12 B, 020e8f68): literal-load and `bx ip` tail-call `Unk044904_GetFlag18`; returns its integer flag result unchanged. The callee implementation in `src/game/unit_02044904.c` confirms the return contract.
+- `Unk0e8228_Unk_0e8cd8` (16 B, 020e8cd8): `mvn r0, #0` and a relocation to `ScanVisor_Unk_0a29a0` pass `0xffffffff` as an unsigned sentinel, with no caller parameters.
+- `Unk0e8228_Unk_0e8e50` (16 B, 020e8e50): `mov r0, #4` and a relocation to `func_02057524` pass the fixed integer 4, with no caller parameters.
+- `Unk0e8228_Unk_0e8e6c` (16 B, 020e8e6c): `mov r0, #2` and a relocation to `func_02057eb8` pass the fixed integer 2, with no caller parameters.
+- `Unk0e8228_Unk_0e8e7c` (16 B, 020e8e7c): `mvn r0, #0` and a relocation to `func_02057eb8` pass -1, with no caller parameters.
+- `Unk0e8228_Unk_0e8eac` (16 B, 020e8eac): `add r0, r0, #8` and a relocation to `Unk0e8228_Unk_0e8e8c` forward the unsigned argument plus eight. Unsigned arithmetic preserves ARM wraparound for the full input range.
+
+No M1-T897 functions remain on the hard list. The empty callback is intentional,
+as demonstrated by its single original return instruction.
+
+## Other task functions
+
 - `Unk0e8228_Get_data_02176ce0` (16 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e8398` (20 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e8460` (20 B): decompiler-derived (Ghidra output, cleaned)
