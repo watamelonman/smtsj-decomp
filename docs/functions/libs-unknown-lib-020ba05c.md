@@ -50,10 +50,30 @@ external provider; the wrappers acquire no storage.
 | `func_020ba224` | 15 | Store operand zero with selector 15; return 1. |
 | `func_020ba244` | 16 | Store operand zero with selector 16; return 1. |
 
+## M2-T043: result-publishing requests
+
+A public-source search of pret/pokeplatinum script-command interfaces found no
+matching implementation. The existing neutral symbols remain; request-code
+meanings and SDK provenance are not established.
+
+| Function | Request code | Behavior |
+| --- | ---: | --- |
+| `func_020ba05c` | 104 | Submit `(104, 0, 0, 0)` through `func_020b8b38`, publish its result through `Unk03aae8_Unk_03acf4`, and return 1. |
+| `func_020ba080` | 105 | Submit `(105, 0, 0, 0)` through `func_020b8b38`, publish its result through `Unk03aae8_Unk_03acf4`, and return 1. |
+
+Both original 36-byte ARM bodies consume no incoming arguments and use the
+implicit runtime context. The request helper at 0x020b8b38 writes four words to
+work offsets 0x20 through 0x2c, calls `func_0204e9d8`, and normalizes its return
+to 0 or 1. The result publisher at 0x0203acf4 clears active-work byte 0x3b and
+stores the result word at 0xa8. These wrappers acquire no storage and do not
+change ownership. Direct compilation and relocation-aware instruction comparison
+against the ROM match both functions exactly.
+
 ## Validation
 
 `python3 tools/match_gate.py` built successfully and verified all sixteen C
-functions at 100% objdiff. `python3 tools/checksum.py` verified all artifacts
+functions at 100% objdiff for M2-T042. M2-T043 verifies all eighteen definitions
+at 100% with the same gate. `python3 tools/checksum.py` verified all artifacts
 byte-identical to the original. `python3 tools/anticheat.py` passed, and
 `python3 -m unittest discover -s tests -t . -q` passed all nine tests.
 No new behavioral tests are required by this card; the original object is the
@@ -61,5 +81,5 @@ instruction-level acceptance reference.
 
 ## Hard list
 
-None of the sixteen implemented functions. Other functions in this translation
-unit remain supplied by the delinked original, as required by the card.
+None. All eighteen functions in this translation unit are implemented. The TU
+continues to link from the delinked original until a human marks it complete.

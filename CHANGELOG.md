@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M2-T043: match the two result-publishing request wrappers in `libs/unknown/lib_020ba05c`, completing all eighteen C functions in the unit.
 - M2-T042: reconstruct eight operand-supplied selector wrappers in `libs/unknown/lib_020ba05c` with typed contracts and instruction evidence.
 - M1-T998: match `game/unit_0206ae94` render constructor `func_0206af04` and axis-angle setter `func_0206b6e0` at 100% objdiff; document the five remaining render/state bodies as hard cases.
 - M2-T035: match the five remaining operand-supplied request wrappers (`func_020ba4e8`, `func_020ba55c`, `func_020ba588`, `func_020ba620`, `func_020ba64c`) in `libs/unknown/lib_020ba474` at 100% objdiff; all thirteen C definitions in the TU now match.
