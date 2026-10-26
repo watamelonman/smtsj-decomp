@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T927: match all eight ImageObj allocation, deferred cleanup, restart and display setup functions, with typed layouts and instruction evidence.
 - M1-T926: match all eight ImageObj initialization, descriptor, pair-update and cleanup helpers at 100% objdiff; document typed contracts and instruction evidence.
 - Verified all eight M1-T934 arithmetic, forwarding and channel-update helpers in `game/unit_0206fb70` at 100% objdiff, with typed callee contracts and instruction evidence.
 - M1-T886: match the 768-byte slot-selection and tone-transition helper `func_02046148` at 100% objdiff.
