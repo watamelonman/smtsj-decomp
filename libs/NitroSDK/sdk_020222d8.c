@@ -20,7 +20,7 @@ extern void func_020086e4(const void *source, void *destination, u32 size);
 /** Geometry command submission: command id, parameter block, 32-bit word count. */
 extern void func_020252fc(u32 command, const u32 *parameters, u32 count);
 extern void func_020086a0(u32 value, void *destination, u32 size);
-extern void func_02022b3c(void *scratch, Unk0222d8RenderCmd *command);
+extern void func_02022b3c(Unk0222d8RenderState *state, Unk0222d8RenderCmd *command);
 extern int func_02004210(s32 *matrix);
 extern int func_02004240(s32 *matrix);
 extern void func_020017b0(const s32 *source, s32 *destination);
@@ -189,14 +189,14 @@ void func_02022d40(Unk0222d8DrawObject *object)
         object->flags &= ~0x10;
     }
     if (data_02156f8c != 0) {
-        func_02022b3c(data_02156f8c, (Unk0222d8RenderCmd *)object);
+        func_02022b3c((Unk0222d8RenderState *)data_02156f8c, (Unk0222d8RenderCmd *)object);
         return;
     }
     {
         u8 scratch[392];
 
         data_02156f8c = scratch;
-        func_02022b3c(scratch, (Unk0222d8RenderCmd *)object);
+        func_02022b3c((Unk0222d8RenderState *)scratch, (Unk0222d8RenderCmd *)object);
         data_02156f8c = 0;
     }
 }
@@ -372,7 +372,8 @@ void func_02024a64(Unk0222d8Packet *packet, u32 flag)
     packet->unk_00++;
 }
 
-/** Evidence: 020251c8 waits when busy, then fills the staged block and clears its count. */
+/** Evidence: 020251c8 waits when busy, then copies the staged block to the GX
+ *  FIFO and clears its count. */
 void func_020251c8(void)
 {
     if (data_02159c90.busy != 0) {
@@ -508,9 +509,10 @@ void func_020252fc(u32 command, const u32 *parameters, u32 count)
 }
 
 /** Initialise the shared G3X state block data_02156d28: command defaults,
- *  projection/viewport constants, matrix tables and the two 0x1000-sized
- *  staging words, then run the three SDK setup helpers. Evidence: the fixed
- *  register-image constants written at the delinked offsets. */
+ *  projection/viewport constants, matrix tables, the three 0x1000 staging
+ *  sizes in parameters[58..60], the 0x1000 tail word, the zeroed tail words
+ *  and the -0x1000 sentinel, then run the three SDK setup helpers. Evidence:
+ *  the fixed register-image constants written at the delinked offsets. */
 void func_020222d8(void)
 {
     data_02156d28.command = 0x17101610;
@@ -562,19 +564,18 @@ void func_020222d8(void)
  *  pointers, matrix bases, material/joint/visibility dispatch tables, optional
  *  binding slot and flag bits, then run the command callback and the shared
  *  command dispatcher. The scratch block belongs to the caller. */
-void func_02022b3c(void *scratch, Unk0222d8RenderCmd *command)
+void func_02022b3c(Unk0222d8RenderState *state, Unk0222d8RenderCmd *command)
 {
-    Unk0222d8RenderState *state = scratch;
-
     func_0200870c(0, state, 392);
     state->unk_c4 = 1;
     state->flags = 1;
     /* The target writes the base word and the command pointer with two separate
-     * stores; the volatile qualifier prevents mwcc from folding them into stmia. */
+     * stores; the volatile qualifier on the first prevents mwcc from folding them
+     * into one stmia. */
     *(volatile u32 *)&state->unk_00 = command->unk_30
         ? (u32)command->unk_30
         : (u32)((u8 *)command->base + command->base->unk_04);
-    *(u32 *)((u8 *)state + 4) = (u32)command;
+    state->cmd = command;
     state->unk_d4 = command->base ? (u32)((u8 *)command->base + 64) : 0;
     {
         u32 value;
@@ -894,7 +895,10 @@ void func_02023bc0(Unk0222d8MatState *object, u32 option)
 
 /** Shape SBC handler. Mirrors the material handler but submits the shape
  *  matrix/light block and fixes up the normal-matrix sign depending on which
- *  matrix half is active. The cursor advance depends on `option`. */
+ *  matrix half is active. The cursor advance depends on `option`.
+ *  This duplication of 02023bc0 is deliberate: the two are distinct SBC
+ *  dispatch targets, so their instruction sequences must not be factored into
+ *  a shared helper. */
 void func_02023ec8(Unk0222d8ShpState *object, u32 option)
 {
     u32 valueA;

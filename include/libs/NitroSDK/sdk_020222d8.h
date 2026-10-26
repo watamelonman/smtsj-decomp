@@ -399,12 +399,20 @@ typedef struct Unk0222d8FogCmd {
     u32 value;
 } Unk0222d8FogCmd;
 
+/** Initialise the shared G3X state block with its command, parameter and matrix-table defaults. */
 void func_020222d8(void);
-void func_02022b3c(void *scratch, Unk0222d8RenderCmd *command);
+/** Build the 392-byte render state from a borrowed command block; the scratch block belongs to the caller. */
+void func_02022b3c(Unk0222d8RenderState *state, Unk0222d8RenderCmd *command);
+/** Texture SBC handler; the borrowed state's cursor advances by 3. */
 void func_02022e6c(Unk0222d8TexState *object);
+/** Display-list SBC handler; the borrowed state's cursor advances by 9. */
 void func_02024988(Unk0222d8DlState *object);
+/** Matrix SBC handler; the borrowed state's cursor advances by 3. */
 void func_02024ad4(Unk0222d8MtxState *object);
+/** Material SBC handler; the borrowed state's cursor advances by the option-dependent count. */
 void func_02023bc0(Unk0222d8MatState *object, u32 option);
+/** Shape SBC handler; the borrowed state's cursor advances by the option-dependent count. */
 void func_02023ec8(Unk0222d8ShpState *object, u32 option);
+/** Send a GX command plus `count` parameter words; the parameter block is borrowed for the call. */
 void func_020252fc(u32 command, const u32 *parameters, u32 count);
 #endif
