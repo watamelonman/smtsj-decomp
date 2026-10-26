@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T132: match NitroSDK card DMA setup in `sdk_02008b9c`; document three hard decompression/unfilter routines.
+
 - Match NitroSystem joint blending, material SBC, node-description SBC, and cached envelope matrix mixing in sdk_020222d8; document the remaining projection-map mismatch.
 
 - M2-T126: match both XSI texture-matrix constructors in `lib_0202923c`.
