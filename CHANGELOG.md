@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T1064: match all eight font/text dispatch, lookup, teardown and state helpers, including the four-slot registry lookup.
+- M2-T120: match eight MTBL index, random-stream and integer-power helpers in `libs/NitroSDK/sdk_0204ff30.c`.
 
 - M2-T1099: match four MSL decimal and double-classification helpers in `libs/MSL/msl_02017850.c` (`func_0201ba78`, `func_0201bdc4`, `func_0201ce94`, `func_0201cf3c`); document `func_0201d458` and the `_dgeq`/`_dgr`/`_deq` flag-returning comparison primitives as hard hand-written assembly.
 - M2-T112: match four NitroSDK sub-engine BG control setters and the free-block sort comparator in `libs/NitroSDK/sdk_02054284.c`; document the `func_02054294` free-block allocator as a hard register-allocation case.
