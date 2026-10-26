@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M2-T023: match the CRI four-record pool reset, allocation, and request-2 helpers at 100% objdiff; all eleven functions in the TU now match.
 - M1-T982: match ID-bank validation and paired-panel drawing at 100% objdiff; document two remaining grid-rendering hard cases.
 - M1-T989: verify eight ScanVisor state, slot lookup and provider helpers at 100% objdiff; document typed contracts and original instruction evidence.
 - Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
