@@ -76,18 +76,27 @@ Field meanings remain unknown, so function names stay neutral.
 No M1-T899 functions remain on the hard list. No new behavioral tests were
 required by this card; objdiff checks the emitted instructions against retail.
 
-## Other TU functions
+## M1-T900 verified functions
 
-- `Unk0e8228_Unk_0e8f38` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8f50` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e9020` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e9048` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0ea028` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0ea040` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_IsSet_data_02176cdc` (28 B): decompiler-derived (Ghidra output, cleaned)
+All eight functions match at 100% objdiff. Evidence is the original ARM
+instructions and relocations in the delinked object. Layouts borrow provider
+storage; unknown field meanings retain neutral names. No new behavioral tests
+are required by this card; objdiff verifies the emitted instructions directly.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e8f38` (24 B, 020e8f38) | Calls the work getter; `moveq r0,#0; ldrne r0,[r0,#0x17c]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8f50` (24 B, 020e8f50) | Preserves the unsigned argument in r4 across the getter; `strne r4,[r0,#0x28]` writes only when work exists. |
+| `Unk0e8228_Unk_0e9020` (24 B, 020e9020) | Same argument preservation and null check, with `strne r4,[r0,#0x10]`. |
+| `Unk0e8228_Unk_0e9048` (24 B, 020e9048) | Dereferences both record pointers, loads unsigned bytes at 0x2e, then subtracts the second from the first. Valid nonnull pointers are required; result ranges from -255 to 255. |
+| `Unk0e8228_Unk_0ea028` (24 B, 020ea028) | Calls `Unk0ea208_Get_data_02176ddc`, returns immediately on null, otherwise calls `func_02061424` with the provider handle. The getter result in r0 is not clobbered by `cmp r0,#0; popeq`, so it is still r0 at the call: the provider pointer is func_02061424's handle argument. `src/game/unit_020ea208.c:122` declares `void func_02061424(u32 handle)`, and `docs/functions/game-unit-020fedd4.md` identifies it as the task release call. |
+| `Unk0e8228_Unk_0ea040` (24 B, 020ea040) | Calls the same provider; returns its word at 0x1cc or zero if absent. |
+| `Unk0e8228_IsSet_data_02176cdc` (28 B, 020e8228) | Relocation names the global; loads its word and uses conditional moves to return exactly zero or one for its nonzero test. |
+| `Unk0e8228_Call_02008848` (28 B, 020e8244) | At 020e8244, relocations identify the tail-call target and `data_02176ce4`; immediate arguments are zero and 0xf8. These establish the existing Call name without inferring the callee's purpose. |
+
+No M1-T900 functions remain on the hard list.
 
 ## Hard list
-- `Unk0e8228_Call_02008848`: no candidate matched locally
 - `Unk0e8228_Unk_0e82ac`: decompiler-derived
 - `Unk0e8228_Unk_0e8684`: decompiler-derived
 - `Unk0e8228_Unk_0e8cbc`: decompiler-derived
@@ -166,7 +175,6 @@ required by this card; objdiff checks the emitted instructions against retail.
 - `func_020e9060`
 - `func_020e94d8`
 - `func_020e8710`
-- `Unk0e8228_Call_02008848`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8260`: hand-matched
