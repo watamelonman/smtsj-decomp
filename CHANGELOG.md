@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T1099: match four MSL decimal and double-classification helpers in `libs/MSL/msl_02017850.c` (`func_0201ba78`, `func_0201bdc4`, `func_0201ce94`, `func_0201cf3c`); document `func_0201d458` and the `_dgeq`/`_dgr`/`_deq` flag-returning comparison primitives as hard hand-written assembly.
+- M2-T112: match four NitroSDK sub-engine BG control setters and the free-block sort comparator in `libs/NitroSDK/sdk_02054284.c`; document the `func_02054294` free-block allocator as a hard register-allocation case.
+- M2-T1063: match the font-registry reset, text-buffer init, slot release, device-state setter, singleton counter and three singleton state helpers in `libs/unknown/lib_02061798.c` (`func_02061798`, `func_02062a00`, `func_02063920`, `func_02063f54`, `func_020641c4`, `func_02065c80`, `func_02065ca8`, `func_02065cd0`).
 - M2-T1028: match eight NitroSDK G3X command submission, state initialisation, render-state, texture, display-list, matrix, material and shape handlers in `libs/NitroSDK/sdk_020222d8.c` (`func_020252fc`, `func_020222d8`, `func_02022b3c`, `func_02022e6c`, `func_02024988`, `func_02024ad4`, `func_02023bc0`, `func_02023ec8`).
 - M2-T111: match seven NitroSDK extended palette upload and bank helpers in `libs/NitroSDK/sdk_0200500c.c` (`func_0200500c`, `func_0200507c`, `func_020050c4`, `func_0200510c`, `func_02005178`, `func_020051bc`, `func_020051d4`).
 - M2-T1062: match a font-table index, a render-object countdown and six message/release/state helpers in `libs/unknown/lib_02061798.c` (`func_02061928`, `func_020641f0`, `func_020658b4`, `func_0206597c`, `func_02065b74`, `func_02065b98`, `func_02065c30`, `func_02065c58`).
