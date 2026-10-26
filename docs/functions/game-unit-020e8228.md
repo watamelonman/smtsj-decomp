@@ -18,24 +18,66 @@ argument meanings retain neutral names; no domain semantics are inferred.
 No M1-T897 functions remain on the hard list. The empty callback is intentional,
 as demonstrated by its single original return instruction.
 
-## Other task functions
+## M1-T898 verified functions
 
-- `Unk0e8228_Get_data_02176ce0` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8398` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8460` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8474` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8488` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e9c94` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e84e4` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e84fc` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8514` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8b7c` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8b94` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8bac` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8c50` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8c68` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8db8` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8f20` (24 B): decompiler-derived (Ghidra output, cleaned)
+All eight functions match at 100% objdiff. Evidence comes from the delinked
+ARM instructions and relocations plus the callers named below. Names stay
+neutral where the callers only show a loop bound or an opaque forwarding.
+
+- `Unk0e8228_Get_data_02176ce0` (16 B, 020e9038): loads the global pointer
+  stored in `data_02176ce0` and returns it. The data symbol supplies the name;
+  users treat the result as the shared work object (see
+  `Unk0e8228_Unk_0e84e4`).
+- `Unk0e8228_Unk_0e8398` (20 B, 020e8398): calls `Unk0e8228_Unk_0e8d90(7,
+  0xffffffff)`, forwarding selector 7 and the unsigned -1 sentinel. Callers
+  run it before scanning the entries counted by `Unk0e8228_Unk_0e8488()`, but
+  the callee is opaque, so the name stays neutral.
+- `Unk0e8228_Unk_0e8460` (20 B, 020e8460): returns the word stored at
+  `data_02150c30 + 0x2c` plus one. Used as an exclusive loop bound in
+  `src/game/unit_020eed24.c` and as a count guard in `src/game/unit_020ea208.c`;
+  the meaning of the stored word itself is not established.
+- `Unk0e8228_Unk_0e8474` (20 B, 020e8474): returns `*(s32 *)(data_02150c30 +
+  0x34) + 1`; `unit_020eed24.c` iterates that many 64-byte records.
+- `Unk0e8228_Unk_0e8488` (20 B, 020e8488): returns `*(s32 *)(data_02150c30 +
+  0x3c) + 1`; callers use it as a loop bound and compare it with one to detect
+  an empty table (`unit_020f0be0.c`, `unit_020f4c50.c`).
+- `Unk0e8228_Unk_0e9c94` (20 B, 020e9c94): tail-calls `func_020e9c00(arg0, 2,
+  arg1)`, inserting constant selector 2 between the two forwarded arguments.
+- `Unk0e8228_Unk_0e84e4` (24 B, 020e84e4): returns the word at shared-work
+  offset 0x178, or zero when `Get_data_02176ce0` returns null. Callers compare
+  and iterate it as a record count (`src/game/unit_020ef248.c`).
+- `Unk0e8228_Unk_0e84fc` (24 B, 020e84fc): calls
+  `Unk0e8228_Unk_0e8374(8)`, forwards its result to
+  `Unk0e8228_GetArr88Field20`, then forwards that result as the id to
+  `Unk09974c_Unk_099d14`; the third call's result is returned, and
+  `unit_020ef248.c` consumes it as a borrowed record pointer. The argument
+  flow is visible in the delinked original (`mov r0,#8; bl ...; bl ...; bl ...`).
+
+## M1-T899 verified field accessors
+
+All eight functions are 24 bytes and match at 100% objdiff. The original ARM
+loads, stores and conditional instructions establish the following contracts.
+The two private layout views borrow provider storage and expose only observed
+fields; their padding represents offsets, not inferred content. The work
+provider keeps its existing integer-address ABI for other functions in this TU.
+Field meanings remain unknown, so function names stay neutral.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e8514` | Calls `Unk0ea208_GetArr58`; `ldrhne [r0,#0x20]` returns an unsigned halfword, with `moveq r0,#0` for an absent record. |
+| `Unk0e8228_Unk_0e8b7c` | Calls the shared work getter; `movne r1,#1; strne [r0,#0x18]` sets the word only when work exists. |
+| `Unk0e8228_Unk_0e8b94` | The same null check and `strne [r0,#0x18]` clear that word to zero. |
+| `Unk0e8228_Unk_0e8bac` | `moveq r0,#0; ldrne [r0,#0x18]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8c50` | Preserves the full unsigned argument in r4 across the getter call and conditionally stores it at work offset 0x24. |
+| `Unk0e8228_Unk_0e8c68` | `moveq r0,#0; ldrne [r0,#0x24]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8db8` | `movne r1,#1; strne [r0,#0x184]` sets the word only when work exists. |
+| `Unk0e8228_Unk_0e8f20` | `moveq r0,#27; ldrne [r0,#0x180]` returns the word, defaulting to 27 without work. |
+
+No M1-T899 functions remain on the hard list. No new behavioral tests were
+required by this card; objdiff checks the emitted instructions against retail.
+
+## Other TU functions
+
 - `Unk0e8228_Unk_0e8f38` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e8f50` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e9020` (24 B): decompiler-derived (Ghidra output, cleaned)

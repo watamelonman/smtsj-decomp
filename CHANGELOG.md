@@ -1,6 +1,13 @@
 # Changelog
 
 ## Unreleased
+- M1-T924: verify all eight ImageObj release, predicate and slot-visit helpers at 100% objdiff; add typed node parameters and per-function instruction evidence.
+- Match all eight M1-T931 callback, record-dispatch and bounded-update functions in `game/unit_020c855c` at 100% objdiff, with typed contracts and instruction evidence.
+- M1-T899: verify eight `game/unit_020e8228` field accessors at 100% objdiff, with typed borrowed layouts and documented null/default contracts.
+- Verify all eight M1-T923 ImageObj helpers at 100% objdiff, document instruction contracts, and explicitly forward the indexed handle to its provider.
+- Verified seven M1-T930 record/table helpers at 100% objdiff; documented the remaining handle helper and compiler scheduling attempts on its hard list.
+- Verified all eight M1-T898 `game/unit_020e8228` accessors, table reset and forwarding helpers at 100% objdiff; added per-function behaviour comments and cited caller evidence in the function doc.
+- M1-T896: verify six SaveLoadTask functions at 100% objdiff, adding dispatch, setup and resource lifecycle C; document the two remaining hard functions.
 - M1-T884: match all eight `game/unit_02044904` rank-comparator, slot-sweep, AI-script and script-state helpers at 100% objdiff; add typed slot/script-table fields and document the raw rank table plus scoped pragmas (DEC-022).
 - Verified all eight M1-T922 ImageObj helpers at 100% objdiff, documented instruction evidence, and typed the release wrapper's forwarded work pointer.
 - M1-T875: match both `game/unit_020a6174` second-bank map-rebuild and provider-bank respawn functions at 100% objdiff; document the table-selection and two-bank record contracts.
