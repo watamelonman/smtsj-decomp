@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Add matching C for the remaining request-67 and request-70 script wrappers in `libs/unknown/lib_020b9820`.
+- Match eight script argument/result wrappers in `libs/unknown/lib_020b8f8c.c` (M2-T073), with typed contracts and selector evidence.
+- Match the NitroSDK sub-display palette reset wrappers, shared VRAM bank disable helper, and main BG extended palette disable wrapper (M2-T061).
 - M2-T057: reconstruct the eight remaining `lib_020ba264` script selector, record, indexed-word, remainder and request handlers with instruction evidence.
 - M2-T043: match the two result-publishing request wrappers in `libs/unknown/lib_020ba05c`, completing all eighteen C functions in the unit.
 - M2-T021: match the CRI four-record allocation helper `func_0207c868` at 100% objdiff with typed source and callback contracts.
@@ -460,7 +462,10 @@
 - Match all four `libs/NitroSDK/sdk_0205e800` routines, including bounded input adjustment and global setters.
 - Match all eight `libs/unknown/lib_02049998` packed-status and paired-record helpers with typed layouts and per-function contracts.
 
+- Reconstruct the NitroSystem Si3D joint-scale routine in `libs/unknown/lib_02028810.c`.
 - Add matching C for eight script request/result wrappers in `libs/unknown/lib_020b9820`.
+
+- Added matching C for the eight M2-T071 CRI word-pair setters and indexed worker wrappers, with instruction evidence and typed contracts.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
