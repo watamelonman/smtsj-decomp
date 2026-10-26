@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T975: add the missing `func_020ec704` C definition and individually verify all three CaveArea render/state callbacks (`func_020ecc24`, `func_020ec704`, `func_020ebb14`) at 100% objdiff, with documented work-field offsets and instruction evidence.
+- M1-T980: match seven ID cursor, deletion, dispatch, input and drawing helpers; document the remaining message-handler pointer advancement hard case.
 - M1-T987: verify and clean up eight ScanVisor work-field selectors, slot allocation and list-refresh helpers at 100% objdiff, with typed parameters and instruction/caller evidence.
 - M1-T995: verify seven game/unit_0206ae94 forwarding, transform, scan and release helpers at 100% objdiff; document the cursor helper instruction-order blocker.
 - Match all eight M1-T979 selection, ID-list submission and drawing helpers at 100% objdiff; document original stack-overrun behavior and scoped optimization settings.
