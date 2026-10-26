@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T885: document seven matching command/result helpers and the remaining 95.43% result accumulator on its hard list; record successful checksum and local gates.
 - M1-T924: verify all eight ImageObj release, predicate and slot-visit helpers at 100% objdiff; add typed node parameters and per-function instruction evidence.
 - Match all eight M1-T931 callback, record-dispatch and bounded-update functions in `game/unit_020c855c` at 100% objdiff, with typed contracts and instruction evidence.
 - M1-T899: verify eight `game/unit_020e8228` field accessors at 100% objdiff, with typed borrowed layouts and documented null/default contracts.
