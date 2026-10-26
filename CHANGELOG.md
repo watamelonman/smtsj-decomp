@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verify all eight M1-T879 nullable manager subobject accessors at 100% objdiff; document offsets and borrowed address contracts.
 - Verified all eight M1-T878 registration, record-update, and wrapper functions in `game/unit_02044904` at 100% objdiff, with instruction-based contracts.
 - Match both M1-T809 unit_02116598 primary callback and coordinate/event predicate functions.
 - M1-T869: match seven game/unit_020cb32c dispatch, descriptor, paired drawing and teardown functions; document the remaining setup function for scratch follow-up.

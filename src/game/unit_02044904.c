@@ -271,123 +271,131 @@ int Unk044904_Unk_044f4c(u32 k)
     return -1;
 }
 
-/* decompiler-derived */
+/* 020044fd8: returns the borrowed manager +0x379c address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_044fd8(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x379c;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x379c;
+    }
+    return address;
 }
 
 
-/* decompiler-derived */
+/* 020044ff4: returns the borrowed manager +0x3fb0 address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_044ff4(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x3fb0;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x3fb0;
+    }
+    return address;
 }
 
 
-/* decompiler-derived */
+/* 020045010: returns the borrowed manager +0x77bc address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_045010(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x77bc;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x77bc;
+    }
+    return address;
 }
 
 
-/* decompiler-derived */
+/* 02004502c: returns the borrowed manager +0x372c address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_04502c(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x372c;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x372c;
+    }
+    return address;
 }
 
 
-/* decompiler-derived */
+/* 020045048: returns the borrowed manager +0x7804 address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_045048(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x7804;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x7804;
+    }
+    return address;
 }
 
 
-/* decompiler-derived */
+/* 020045064: returns the borrowed manager +0x7874 address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_045064(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x7874;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x7874;
+    }
+    return address;
 }
 
 
-/* decompiler-derived */
+/* 020045080: returns the borrowed manager +0x78e4 address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_045080(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x78e4;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x78e4;
+    }
+    return address;
 }
 
 
-/* decompiler-derived */
+/* 02004509c: returns the borrowed manager +0x7970 address word, or zero.
+ * The original conditional adds establish the byte offset; ownership stays with
+ * the registered manager and no subobject is dereferenced here.
+ */
 int Unk044904_Unk_04509c(void)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  if (value == 0) {
-    value = 0;
-  }
-  else {
-    value = value + 0x7970;
-  }
-  return value;
+    u32 address = Unk044904_Get_data_0215ee98();
+    if (address == 0) {
+        address = 0;
+    } else {
+        address += 0x7970;
+    }
+    return address;
 }
 
 
