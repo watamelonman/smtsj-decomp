@@ -347,6 +347,23 @@ The provider's byte store at work +0x361 consumes only the low byte (see
 to insert an extra caller-side mask here. No value range for the mapping inputs
 is assumed, and no full-result truncation is introduced.
 
+## DEC-021 — Preserve descriptor indexing and local zero-store order
+
+**Date:** 2026-10-26 · **Status:** Active
+**Context.** `func_020cc3c0` and `func_020cc5d8` access the 68-byte descriptor
+at work +0xdc. Caching an `Unk0cb32cParams *` local makes mwcc keep the
+address in a register, changing the original `adds r1,r4,#0xdc` null check and
+the `work + i` / `work + i*4` scaled loop stores. In `func_020cccc4`, a scalar
+`index = 0` lets mwcc schedule the work-state load before the zero store, while
+the original stores zero through a materialized `&index` first.
+**Decision.** Access the work descriptor through the typed
+`Unk0cb32cWorkParams` view, and declare the event index as a one-element
+`u32 index[1] = {0}` in the case block. Both are local code-generation
+constraints; the fields remain ordinary borrowed memory.
+**Cost accepted.** The source spells two MWCC-specific matching shapes instead
+of the cleanest scalar form.
+**What would make us revisit.** Compiler or original-type evidence that
+reproduces the same accesses with ordinary scalar locals.
 ## DEC-021 — Preserve the 020a65c4 radius-scan register split
 
 Scope `opt_strength_reduction off` to `func_020a65c4` and restore the setting
@@ -356,3 +373,14 @@ uses the opposite split and conditional-move schedule. Disabling strength
 reduction for this function preserves the original r6/r7 assignment and the
 `movge`/`movlt` order while leaving the C semantics ordinary. No assembly,
 volatile accesses or byte blobs are involved.
+
+
+## DEC-022 — Keep the 020cbce4 index reset in the provider argument
+
+The state-3 path clears work +0xd4 and submits a halfword-aligned 114-byte list
+by value to 020deaa0. Express the clear as the final index argument assignment.
+With a separate preceding statement, mwcc schedules the work store before the
+outgoing stack-address calculation; the original calculates that address first.
+The argument assignment preserves both the reset-before-call contract and the
+original instruction order. The list copy reads +0x20..+0x91, disjoint from the
+reset word, so argument evaluation order does not change the submitted data.

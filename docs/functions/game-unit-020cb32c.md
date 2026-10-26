@@ -158,5 +158,82 @@ Validation: original instructions are the acceptance oracle; this card does
 not require behavioral tests. Objdiff covers all seven new definitions and
 all earlier definitions in this TU; checksum covers the linked original image.
 
-## Not done in M1-T871
-- `func_020cbce4`
+## M1-T870
+
+Seven of the eight requested functions match at 100% objdiff. Names remain
+neutral: instruction and call evidence establishes the operations, not the
+surrounding subsystem's purpose. Work pointers are borrowed; providers keep
+ownership and the allocation stays live for the callback's duration.
+
+- `func_020cb810` (232 B): selects nested display +0x94 or +0x98 from the word
+  at display +0x64, then draws the paired passes. Evidence: the branch and
+  paired `func_02060b60` BLs at 020cb810.
+- `func_020cc27c` (324 B): advances the byte substate at work +4 through five
+  provider-gated stages. Evidence: the five-way switch and guarded BLs at
+  020cc27c.
+- `func_020cbb00` (336 B): initializes the borrowed 0x130-byte work, builds the
+  stride-26 list handles and display, and publishes the global work cell.
+  Evidence: ordered stores and provider BLs at 020cbb00.
+- `func_020cccc4` (372 B): interprets event kinds 1/3/4 and either hides list
+  handles or selects a stride-26 entry. The local index is a one-element array
+  with an initializer because that reproduces the original
+  `add r1,sp; mov r0,#0; str r0,[r1]` zero store ordered before the state load
+  (see DEC-021). Evidence: the event jump table and guarded field tests at
+  020cccc4.
+- `func_020cb5b4` (416 B): drives six byte substates and returns completion
+  codes 1/2/3. Evidence: the switch, descriptor loops and guarded byte
+  writeback at 020cb5b4.
+- `func_020cc3c0` (536 B): advances five substates and constructs the slot-16
+  parameters in work +0xdc. Descriptor accesses use a typed work view so mwcc
+  emits the original `work + i` / `work + i*4` scaled indexing instead of a
+  cached descriptor pointer (DEC-021). Evidence: descriptor flag stores and
+  guarded BLs at 020cc3c0.
+- `func_020cc5d8` (1192 B): handles provider selection and input only in state
+  4 and prepares the state-6 parameters. The selection branch is an `if/else`
+  with no trailing return, so the empty case returns through the shared
+  epilogue as in the original. Evidence: the jump table, ordered input masks
+  and BLs at 020cc5d8.
+
+### M1-T870 hard list
+
+- `func_020ccba0` (196 B): left undefined in C, retaining the delinked
+  original. A typed C version reproduces the target instruction sequence,
+  including the stride-26 halfword loads and ordered provider calls, but
+  mwccarm 2.0/sp1p5 assigns `work` to r4 and `count` to r6 where the original
+  uses `work` r7 and `count` r4; the other loop values are correspondingly
+  permuted (i r7 vs r5, record r8 vs r6, count-1 r5 vs r8). Tried: local work
+  aliases, explicit record and count-1 pointers, declaration reordering,
+  one-element array locals, `register` qualifiers, const/restrict parameters,
+  inlined loop/setup helpers, and per-function `opt_*` pragmas. Only
+  `opt_strength_reduction off` moved work to r7, but it also removed the
+  record induction pointer (emitting `mla` with stride registers) and changed
+  the rest of the function. No non-matching body is retained. A human can use
+  `tools/decompme.py` for further register-allocation investigation.
+
+Validation: the original instructions are the acceptance oracle; objdiff
+covers all seven new definitions and every earlier definition in this TU, and
+the checksum covers the linked original image.
+
+## M1-T871
+
+- `func_020cbce4` (1336 B): matches at 100% objdiff. Takes a borrowed,
+  word-aligned writable work allocation covering 0x130 bytes. Dispatches states
+  0..14, waits for the corresponding providers, restores saved states, changes
+  list-handle visibility, and updates the live display selectors at +0xa8/+0xc4.
+  State 4 and out-of-range states perform only the final guarded display update.
+  Evidence: original jump table at 020cbd00, ordered provider calls, field loads
+  and stores, and the display guard at 020cc1f8. The neutral symbol is retained
+  because these instructions do not establish the subsystem's meaning.
+  States 3 and 11 pass a 114-byte halfword-aligned list by value to 020deaa0,
+  followed by the selected index. The state-3 index argument also resets work
+  +0xd4; keeping the assignment in the argument reproduces instruction scheduling
+  (See DEC-022). The descriptor stores the callback through the same opaque
+  function-pointer representation as its other typed callbacks.
+
+Validation: match gate reports all 214 checked C functions at 100%, including
+this callback and the earlier definitions. The original instructions are the
+acceptance oracle; this card requires no new behavioral tests.
+
+### M1-T871 hard list
+
+None.
