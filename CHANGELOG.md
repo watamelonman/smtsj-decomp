@@ -2,6 +2,8 @@
 
 ## Unreleased
 - M1-T982: match ID-bank validation and paired-panel drawing at 100% objdiff; document two remaining grid-rendering hard cases.
+- M1-T989: verify eight ScanVisor state, slot lookup and provider helpers at 100% objdiff; document typed contracts and original instruction evidence.
+- Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
 - M1-T981: match five grid, cursor and drawing helpers; document three input/drawing instruction-generation hard cases.
 - M1-T996: match all eight remaining `game/unit_0206ae94` constructors, scale, bounce, angle and transform helpers at 100% objdiff; document typed contracts and the ARM-to-Thumb call resolved by linked objdiff.
 - Matched all three M2-T009 heap-state and animation-bank functions in `libs/NitroSDK/sdk_02020744.c`, with typed contracts and public-source evidence.
@@ -409,6 +411,12 @@
 - Matched all three M1-T301 functions in `game/unit_02122a78`, with typed callback state and documented resource/handle initialization.
 - Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.
 - Matched all seven M1-T300 functions in `game/unit_02115fbc` at 100% objdiff, with typed resource/state/record views and per-function contracts.
+
+- Reconstruct all four NitroSystem G3D animation unlink and texture-size routines in libs/unknown/lib_02021920.
+
+- Add matching C for all three sdk_02027dac NitroSystem visibility and basic joint-transform routines.
+
+- Match all eight requested CRI `cri_0207c82c` record helpers with typed fields and instruction-based contracts.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
