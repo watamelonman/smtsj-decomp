@@ -28,11 +28,16 @@ typedef struct Unk061798ResultB {
     u8 pad_002c[0x20];
     u32 unk_004c;
     u32 unk_0050;
-    u8 pad_0054[4];
+    u8 unk_0054;
+    s8 unk_0055;
+    u8 pad_0056[2];
     u32 unk_0058;
     s32 unk_005c;
     u32 unk_0060;
     u32 unk_0064;
+    u8 pad_0068[8];
+    u32 unk_0070;
+    u8 unk_0074;
 } Unk061798ResultB;
 
 /* Opaque record behind the pointer at +0x28 of a font record; callers read
@@ -84,7 +89,8 @@ struct Unk061798Object {
     u32 unk_0030;
     u8 unk_0034;
     s8 unk_0035;
-    u8 pad_0036[2];
+    s8 unk_0036;
+    u8 pad_0037;
     u32 unk_0038;
     u32 unk_003c;
     u8 pad_0040[4];
@@ -92,7 +98,9 @@ struct Unk061798Object {
     u32 unk_0048;
     u16 unk_004c;
     u16 unk_004e;
-    u8 pad_0050[0x18];
+    u8 pad_0050[0x0c];
+    u32 unk_005c;
+    u8 pad_0060[8];
     s8 unk_0068;
     u8 pad_0069[3];
     s32 unk_006c;
@@ -243,4 +251,24 @@ void func_020629c4(Unk061798Object *object);
 /* Applies mode; -1 suppresses shared state/provider updates afterward. */
 void func_02065864(void *object, s32 mode);
 
+/* Borrowed four-word metric output; the existing +8 origin is preserved. */
+typedef struct Unk061798Metrics {
+    s32 unk_0000, unk_0004, unk_0008, unk_000c;
+} Unk061798Metrics;
+/* Returns glyph advance adjusted by the optional signed bearing pair. */
+s32 func_020619b8(u32 id, s32 index);
+/* Tests the provider, object state and countdown before allowing progress. */
+s32 func_02064268(Unk061798Object *object);
+/* Enables the singleton flag once, or clears it when flag is zero. */
+void func_0206563c(s32 flag);
+/* Releases both render objects and clears the shared singleton references. */
+void func_02063b08(Unk061798ResultB *result);
+/* Clears the shared state and resets an active child through its providers. */
+void func_02064370(Unk061798ResultB *result);
+/* Applies an unsigned mode of at least three when no transition is active. */
+void func_02065454(u32 mode);
+/* Writes vertical metric bounds; count and offset use font metric units. */
+void func_02061ec8(Unk061798Object *object, Unk061798Metrics *out, s32 count, s32 offset);
+/* Prepares the object's slot and chooses initialization by provider state. */
+void func_020621c0(Unk061798Object *object);
 #endif

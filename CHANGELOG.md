@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T122: reconstruct eight script request wrappers for codes 51–56 and 58–59 in `lib_020b95f0`.
+- Match eight more text-library font metric, state, and teardown functions (M2-T1065).
 
 - M2-T121: match the startup wrapper `func_0204ffa8`; document the remaining two-coordinate distance helper as hard.
 
