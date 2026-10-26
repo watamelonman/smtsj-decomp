@@ -1,7 +1,8 @@
 # libs/unknown/lib_02061798
 
-Seven of the card's eight functions are reconstructed from the original ARM
-instructions and match at 100%. `func_02062264` is the exception: it is a
+Twenty-three functions of this TU are reconstructed from the original ARM
+instructions and match at 100%: seven from M2-T1057, eight from M2-T1058 and
+the eight covered by M2-T1059. `func_02062264` is the exception: it is a
 four-byte copy of the preceding function's unreachable epilogue and cannot be
 expressed as a standalone C function (see Hard list).
 
@@ -16,14 +17,29 @@ Searched the public NitroSystem reconstruction
 ([ntrtwl/NitroSystem](https://github.com/ntrtwl/NitroSystem)) for the font and
 text-canvas code around `g2d_Font.c`, `g2d_TextCanvas.c` and
 `g2d_CharCanvas.c`. No implementation with this 56-byte four-entry font
-registry, its `+0x30` / `+0x34` / `+0x48` render-object fields, or the
-`data_0216b5a0` / `data_0216b9a8` text globals was found. The code is therefore
-reconstructed from the instructions and keeps the neutral symbols.
+registry, its `+0x28` / `+0x30` / `+0x34` / `+0x48` / `+0x81` render-object
+fields, or the `data_0216b5a0` / `data_0216b9a8` text globals was found. The
+code is therefore reconstructed from the instructions and keeps the neutral
+symbols.
 
 The C declares only the fields observed in the instructions. Unrelated bytes
-in the caller's objects stay in `pad_*` arrays; no SDK struct layout is claimed.
-`func_02063a44` and `func_02063a60` return two different globals, so the header
-uses two distinct opaque types, `Unk061798ResultA` and `Unk061798ResultB`.
+in the caller's objects stay in `pad_*` arrays; no SDK struct layout is
+claimed. `func_02063a44` and `func_02063a60` return two different globals, so
+the header uses two distinct opaque types, `Unk061798ResultA` and
+`Unk061798ResultB`. The pointer at font-record `+0x28` is typed as an opaque
+`Unk061798FontData *` because callers dereference it (call site `0x020601f4`).
+`func_02063584` takes `s8` because `func_0206358c` forwards the signed byte at
+`+0x81` and the original emits `ldrsb`. M2-T1059 added the object words at
+`+0x4`, `+0x8`, `+0xc`, `+0x10`, the signed byte at `+0x68`, and the word at
+`+0x1c` of `Unk061798ResultB`; the padding around them keeps every earlier
+offset unchanged.
+
+## func_0206190c — 16 bytes
+
+Calls `func_020618cc(id)` and returns the pointer at `+0x28` of the selected
+font record. Callers dereference the result (call sites `0x0205f810`,
+`0x0205fd24`, `0x02060124`, `0x020601f0`; the last reads field `+0x10` of the
+result). Objdiff: 100%.
 
 ## func_0206191c — 12 bytes
 
@@ -32,24 +48,56 @@ Tail wrapper for `func_020618cc`. Takes the font id passed by callers in r0
 56-byte font record; its glyph table starts at +0 and callers read it with
 `ldrh` at +0 and at `+2*index`. Objdiff: 100%.
 
+## func_02061950 — 16 bytes
+
+Calls `func_020618cc(id)` and returns a pointer to the first header byte at
+`+0x24` of the selected record. The only direct callers are `func_02061960`
+and `func_02061970` (relocations at `0x02061964` and `0x02061974`). Objdiff:
+100%.
+
+## func_02061960 — 16 bytes
+
+Returns the first header byte (`+0x24`) of the font record selected by the id
+in r0; it forwards through `func_02061950` before the `ldrb`. Call sites
+include `0x02060c54` and `0x02060e50`. Objdiff: 100%.
+
+## func_02061970 — 16 bytes
+
+Returns the second header byte (`+0x25`) of the font record selected by the id
+in r0; it forwards through `func_02061950` before the `ldrb` at offset 1.
+Callers use the byte as part of a glyph advance (call site `0x02061b9c`).
+Objdiff: 100%.
+
 ## func_020619f8 — 12 bytes
 
 Tail wrapper for `func_02061970`, with the font id passed in r0 (call site
-`0x02061b9c`). `func_02061970` forwards r0 through `func_02061950` to
-`func_020618cc(id)` and loads byte +1 of that record. The caller adds the
-returned u8 to a coordinate stored at +4. Objdiff: 100%.
+`0x02061b9c`). Objdiff: 100%.
 
-## func_02063a44 — 12 bytes
+## func_02061eb4 — 20 bytes
 
-Tail wrapper for `func_02063954`. Forwards the text pointer in r0 and the
-character code in r1 and returns the result object (call sites `0x0211c464`,
-`0x0211d8f8`, `0x0211d93c`). Objdiff: 100%.
+Tests whether any bit of the mask in r1 is set in the object's `+0x4` word and
+returns 0/1; call sites `0x020605a8`, `0x020625a8` and `0x020632e4` branch on
+the result. The original emits `tst; movne #1; moveq #0`. Objdiff: 100%.
 
-## func_02063a60 — 12 bytes
+## func_02062a2c — 16 bytes
 
-No-argument tail wrapper for `func_02063a50`, which returns the singleton from
-`data_0216b9a8` +4. Callers test the result for null and read fields through it
-(call sites `0x020641c8`, `0x0206545c`). Objdiff: 100%.
+Reads the font id at `+0x28` of a render object and tail-calls
+`func_0206190c` with it, returning the selected record's `+0x28` pointer. Call
+sites `0x02060614`, `0x02060a38` and `0x020620a8` dereference the result.
+Objdiff: 100%.
+
+## func_02062a74 — 20 bytes
+
+Returns 1 when the object's `+0x10` word is zero, else 0 (`ldr; cmp #0;
+moveq #1; movne #0`). Call site `0x02060b94` returns from its caller when the
+result is non-zero; the other call sites are `0x02063c10` and `0x02064128`.
+Objdiff: 100%.
+
+## func_02063490 — 16 bytes
+
+Clears the two halfwords at `+0x4e` and `+0x4c` of a render object, in that
+store order. Call site `0x02063418` does this while resetting the object's
+text state. Objdiff: 100%.
 
 ## func_0206357c — 8 bytes
 
@@ -59,15 +107,78 @@ Callers pass a glyph/record value before advancing text (call sites
 
 ## func_02063584 — 8 bytes
 
-Takes a render-object pointer and a byte; stores the byte at +0x34. Callers use
-it for a mode 0/1/2 and for the active count (call sites `0x02062634`,
-`0x02063640`, `0x020636e4`). Objdiff: 100%.
+Takes a render-object pointer and a signed byte; stores the byte at +0x34.
+Callers use it for a mode 0/1/2 and for the active count (call sites
+`0x02062634`, `0x02063640`, `0x020636e4`). Objdiff: 100%.
+
+## func_0206358c — 16 bytes
+
+Loads the signed byte at `+0x81` of a render object and tail-calls
+`func_02063584` to store it at `+0x34` (call sites `0x0206255c`,
+`0x0206258c`, `0x020636b8`). Objdiff: 100%.
 
 ## func_0206359c — 8 bytes
 
 Takes a render-object pointer and a 32-bit value; stores the value at +0x48.
 Call site `0x02063e88` uses it to clear the field on the object's first pointer
 (also `0x02063ec4`). Objdiff: 100%.
+
+## func_02063a30 — 20 bytes
+
+Tail wrapper for `func_02063954`: forwards the text pointer in r0 and the
+constant append code `0x8001` in r1, returning the result object. Call site
+`0x0206733c` keeps that pointer across a loop. The pool holds
+`func_02063954` followed by `0x00008001`, matching the original literal order.
+Objdiff: 100%.
+
+## func_02063a44 — 12 bytes
+
+Tail wrapper for `func_02063954`. Forwards the text pointer in r0 and the
+character code in r1 and returns the result object (call sites `0x0211c464`,
+`0x0211d8f8`, `0x0211d93c`). Objdiff: 100%.
+
+## func_02063a50 — 16 bytes
+
+Returns word `+4` of the bss object `data_0216b9a8`, the shared result
+singleton. Callers test it for null before reading fields (call sites
+`0x020654d0`, `0x02065530`, `0x02065548`). Objdiff: 100%.
+
+## func_02063a60 — 12 bytes
+
+No-argument tail wrapper for `func_02063a50`, which returns the singleton from
+`data_0216b9a8` +4. Callers test the result for null and read fields through it
+(call sites `0x020641c8`, `0x0206545c`). Objdiff: 100%.
+
+## func_020642a8 — 20 bytes
+
+Loads the signed byte at `+0x68` of the object with `ldrsb` and returns 1 when
+it is positive, else 0. Call site `0x02064294` selects between a reset and a
+field update, and `0x020642e8` is the other caller. Objdiff: 100%.
+
+## func_0206435c — 20 bytes
+
+Stores 2 at `+0x8` and 5 at `+0xc` of the object, in that order. Call site
+`0x02065488` does this before writing bytes at `+0x54`/`+0x55`; further call
+sites are `0x02065c04`, `0x02065db0` and `0x02065dc8`. Objdiff: 100%.
+
+## func_02065604 — 16 bytes
+
+Stores the value in r0 at `+0` of the bss object `data_0216b9a8`, the object
+behind the shared singleton. Call sites `0x020f7b4c`/`0x020f7b58` pass 0/1;
+`0x020fa838` and `0x021156f8` also call it. Objdiff: 100%.
+
+## func_02065614 — 20 bytes
+
+Stores the value in r0 at `+0x1c` of the singleton returned by
+`func_02063a60`. It keeps the argument in r4 across the call, matching the
+original `push {r4, lr}`; call sites `0x020dfe1c`/`0x020dfe28` pass 1/0.
+Objdiff: 100%.
+
+## func_0206569c — 16 bytes
+
+Tail wrapper for `func_020656ac`: passes the object in r0 through and sets the
+second argument to `-1` (`mvn r1, #0`). Call sites include `0x0203c690`,
+`0x020d20dc` and `0x020dfe5c`; the result is ignored. Objdiff: 100%.
 
 ## Hard list
 
@@ -84,6 +195,7 @@ Call site `0x02063e88` uses it to clear the field on the object's first pointer
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for each of the seven reconstructed functions.
-`ninja`, `tools/match_gate.py`, `tools/checksum.py`, `tools/anticheat.py` and
-the repository unit tests are run before handing the change back.
+`tools/hand/cmp.py` reports OK for each of the twenty-three reconstructed
+functions. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
+`tools/anticheat.py` and the repository unit tests are run before handing the
+change back.
