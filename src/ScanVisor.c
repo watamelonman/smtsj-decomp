@@ -41,25 +41,31 @@ typedef struct ScanVisor {
 } ScanVisor;
 void Unk0fc584_SetDir(void);
 
-/* Empty callbacks (called from ScanVisor_Draw). */
+/** No-op draw callback: original 0x020a34a4 is only bx lr; Draw passes sv. */
 void ScanVisor_Nop_0a34a4(ScanVisor *sv) { }
+
+/** No-op draw callback: original 0x020a34a8 is only bx lr; Draw passes sv. */
 void ScanVisor_Nop_0a34a8(ScanVisor *sv) { }
 
-/* Constant: 20 (used by six different systems). */
+/** Return the fixed query value; original 0x020a2bb0 moves immediate 20 into r0. */
 int ScanVisor_GetConst20(void) { return 20; }
 
-/* Constant: 6. */
+/** Return the fixed query value; original 0x020a4e40 moves immediate 6 into r0. */
 int ScanVisor_GetConst6(void) { return 6; }
 
+/** Read word +0x14 from a valid object (ldr at 0x020a45f8); meaning unknown. */
 u32 ScanVisor_Unk_0a45f8(ScanVisor *sv) { return sv->field14; }
 
-/* Forwards to Unk0fc584_SetDir. */
+/** Forward the no-argument call; original 0x020a28e8 branches through the
+ * Unk0fc584_SetDir literal relocation, without a local stack frame. */
 void ScanVisor_Thunk_020fc6b8(void) { Unk0fc584_SetDir(); }
 
-/* Reads entry `index` of the slot table at 0x1C0. */
+/** Read the caller-selected word from a valid object, without bounds checks.
+ * Original 0x020a42b8 adds index * 4 then loads +0x1c0 (the slot table). */
 u32 ScanVisor_GetSlot(ScanVisor *sv, int index) { return sv->slots[index]; }
 
-/* Sets the 0x1C/0x20 pair. */
+/** Store the caller's pair in a valid record; original 0x020a43dc writes
+ * +0x1c then +0x20. Range units and ordering constraints remain unknown. */
 void ScanVisor_SetRange(ScanVisor *sv, u32 a, u32 b) {
     sv->rangeA = a;
     sv->rangeB = b;

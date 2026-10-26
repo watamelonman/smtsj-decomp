@@ -2,7 +2,15 @@
 
 ## Unreleased
 - M1-T907: match seven `game/unit_020e8228` bank scans, selection-bit, index-advance, request-builder, state teardown and object-state functions at 100% objdiff; add typed contracts and document the remaining literal-pool alias hard case.
+- Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.
+- Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
 
+- M1-T973: match all eight requested CaveArea cleanup, selection, draw and provider helpers at 100% objdiff; document typed contracts and the scoped lifetime pragma that restores `func_020ecf20`'s original register allocation.
+- M1-T962: match the 2040-byte `game/unit_020cf5e8` mission-scene state machine `func_020cf9a0` at 100% objdiff; record the measured switch-return layout blocker for `func_020d09b4` on the hard list.
+- Match eight more CaveArea helpers, with typed records and instruction-based contracts.
+- Verified all eight M1-T971 CaveArea helpers at 100% objdiff and documented typed parameters, field contracts, and ARM evidence.
+
+- M1-T961: match seven `game/unit_020cf5e8` scene/state functions at 100% objdiff, extend the work view with typed record, provider-block and selection sub-objects, and record `func_020d11f0`'s register-allocation blocker on the hard list.
 - Match eight more game/unit_020cf5e8 callback, slot, range and state functions in C.
 - M1-T937: match all eight requested `game/unit_0206fb70` float-ratio, second-animation channel-advance and key-selection functions at 100% objdiff; add the typed second animation view and document instruction evidence.
 - M1-T959: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add three missing bodies, and document typed instruction contracts.

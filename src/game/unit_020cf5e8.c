@@ -3,9 +3,68 @@
  * lifted from Ghidra output and cleaned; field meanings are not known yet.
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
+/* 114-byte by-value message payload starting at work+0x24 (the leading
+ * halfword record stream); func_020deaa0 copies it onto the argument stack.
+ * Evidence: 28 double-halfword copies plus one trailing halfword at
+ * 0x020cfc44 and 0x020cfe94. */
+typedef struct Unk0cf5e8RecordBlock { u16 words[57]; } Unk0cf5e8RecordBlock;
+
+int Unk02cad4_Unk_02cbdc(u32 value);
+int func_020deb68(void);
+int func_020df5e8(void);
+int func_020fa92c(s32 value);
+int func_020fa9a0(void);
+void CaveNpc_SetActive(u32 handle, s32 active);
+int func_020decd8(void);
+int Unk0de678_Unk_0debf8(void);
+void func_020deaa0(s32 kind, Unk0cf5e8RecordBlock records, u32 selection);
+int func_0212356c();
+u32 Unk0cb32c_Unk_0cb440(u32 value);
+void Unk124c5c_Unk_124cb0(void);
+void Unk122e1c_Unk_123024(u32 handle);
+void Unk122e1c_Unk_123048(u32 handle);
+void Unk122e1c_Unk_1232c8(u32 handle);
+void Unk122e1c_Unk_122ff0(u32 handle);
+int Unk122e1c_Unk_122f54(u32 handle);
+void Unk122e1c_SetUnkFields64_b0(u32 handle, u32 a, u32 b);
+void Unk0fd268_SetDir(s32 value);
+void func_020e7f44(s32 a, s32 b, s32 c, s32 d);
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
+
+/** One 26-byte leading record; only the kind halfword is observed. The array
+ * is size-bounded by the four handle words that mirror it. */
+typedef struct Unk0cf5e8Record {
+    u16 kind;
+    u8 data[24];
+} Unk0cf5e8Record;
+
+/** Four 28-byte provider blocks at 0x2a0..0x30f; the words at +0x10 of the
+ * second and third blocks are read by state transitions. */
+typedef struct Unk0cf5e8Part {
+    u32 unk_000[4];
+    u32 unk_010;
+    u32 unk_014;
+    u32 unk_018;
+} Unk0cf5e8Part;
+
+/** 0x318 block: two flag bytes, then sixteen words published to a provider. */
+typedef struct Unk0cf5e8Sel {
+    u8 flags[2];
+    u8 pad_002[2];
+    u32 words[16];
+} Unk0cf5e8Sel;
+
+/** 496-byte provider block at 0x98; the first two words and the word at
+ * 0x194 are compared by state predicates, the rest is opaque. */
+typedef struct Unk0cf5e8Block {
+    u8 pad_000[8];
+    s32 unk_00a0;
+    u8 pad_00a4[0xf0];
+    s32 unk_0194;
+    u8 pad_0198[0xf0];
+} Unk0cf5e8Block;
 
 /** Partial work layout; padding preserves the offsets observed in ARM loads/stores. */
 typedef struct Unk0cf5e8Work {
@@ -16,17 +75,22 @@ typedef struct Unk0cf5e8Work {
     u32 unk_000c;
     u32 handles[4];
     u32 unk_0020;
-    u8 pad_0024[0x7c];
-    s32 unk_00a0;
-    u8 pad_00a4[0xf0];
-    s32 unk_0194;
-    u8 pad_0198[0xf0];
+    u8 unk_0024[8];
+    u8 unk_002c;
+    u8 unk_002d;
+    Unk0cf5e8Record records[4];
+    u8 pad_0096[2];
+    Unk0cf5e8Block block;
     s32 unk_0288;
     s32 unk_028c;
     u32 unk_0290;
     u32 unk_0294;
     s32 unk_0298;
-    u8 pad_029c[0xc0];
+    u32 unk_029c;
+    Unk0cf5e8Part parts[4];
+    s32 unk_0310;
+    u32 unk_0314;
+    Unk0cf5e8Sel sel;
     u32 unk_035c;
     u32 unk_0360;
     u32 unk_0364;
@@ -49,7 +113,7 @@ int Unk0cf5e8_Unk_0d13fc(Unk0cf5e8Work *work);
 void func_020cb3dc();
 void Unk095560_Unk_095a2c();
 int func_020de8b0();
-void Unk0bc1a8_Unk_0bc928();
+void Unk0bc1a8_Unk_0bc928(s32 a, s32 b, void *sel);
 void Unk044394_Unk_044428();
 void Unk122a78_Unk_122a78();
 void Unk1241ec_Unk_1241ec();
@@ -101,7 +165,7 @@ void Unk0cf5e8_Thunk_0212424c(void) { Unk1241ec_Thunk_02124338(); }
  */
 int Unk0cf5e8_Unk_0d139c(Unk0cf5e8Work *work)
 {
-  return work->unk_028c < work->unk_0194;
+  return work->unk_028c < work->block.unk_0194;
 }
 
 /** Return 0/1 for signed word[0x288] < word[0xa0] on a valid work block.
@@ -109,7 +173,7 @@ int Unk0cf5e8_Unk_0d139c(Unk0cf5e8Work *work)
  */
 int Unk0cf5e8_Unk_0d13fc(Unk0cf5e8Work *work)
 {
-  return work->unk_0288 < work->unk_00a0;
+  return work->unk_0288 < work->block.unk_00a0;
 }
 
 
@@ -544,8 +608,8 @@ typedef struct Unk0cf5e8Callbacks {
     u32 unk_08;
     void (*callbacks[6])(void);
 } Unk0cf5e8Callbacks;
-void func_020cf9a0(void);
-void func_020d09b4(void);
+void func_020cf9a0(Unk0cf5e8Work *work);
+void func_020d09b4(Unk0cf5e8Work *work);
 void func_020d11f0(void);
 /** Initialize size, flags and six callbacks, preserving word 8.
  * Evidence: stores and symbol literals at 0x020cf668; descriptor is borrowed. */
@@ -553,8 +617,8 @@ void func_020cf668(Unk0cf5e8Callbacks *descriptor)
 {
     descriptor->size = 900;
     descriptor->flags = 0;
-    descriptor->callbacks[0] = func_020cf9a0;
-    descriptor->callbacks[1] = func_020d09b4;
+    descriptor->callbacks[0] = (void (*)(void))func_020cf9a0;
+    descriptor->callbacks[1] = (void (*)(void))func_020d09b4;
     descriptor->callbacks[2] = Unk0cf5e8_Nop_0d11e8;
     descriptor->callbacks[3] = Unk0cf5e8_Nop_0d11ec;
     descriptor->callbacks[4] = (void (*)(void))func_020cf8e8;
@@ -579,4 +643,797 @@ int func_020d174c(s32 index)
         break;
     }
     return 1;
+}
+
+/* ---------------------------------------------------------------------------
+ * M1-T961: remaining unit functions.
+ * ------------------------------------------------------------------------ */
+
+u8 *Unk0f3db4_Unk_0f3db4(void);
+int Unk0f3db4_Unk_0f44a8(u8 value);
+
+/** Provider byte block returned by Unk0f3db4_Unk_0f3db4. Scan cases 0 and 1
+ * read the 50 bytes at 0x00, case 2 at 0x64, case 3 at 0x96, case 4 the 100
+ * bytes at 0xc8 and case 5 the 60 bytes at 0x12c. The gaps are never touched,
+ * so only those offsets are contractual. */
+typedef struct Unk0f3db4Flags {
+    u8 unk_000[50];
+    u8 pad_032[50];
+    u8 unk_064[50];
+    u8 unk_096[50];
+    u8 unk_0c8[100];
+    u8 unk_12c[60];
+} Unk0f3db4Flags;
+
+/** Return 1 when every flag byte selected by provider records passes.
+ * Evidence: switch table at 0x020d14d4 has six cases; per-case loop bounds
+ * 50/50/50/50/100/60 and byte offsets 0/0/100/150/200/300 come from the
+ * original ldrb addresses. The record halfword is passed as provider kind 2.
+ */
+int func_020d14cc(s32 index)
+{
+    int ok = 1;
+    Unk0f3db4Flags *flags = (Unk0f3db4Flags *)Unk0f3db4_Unk_0f3db4();
+    int i;
+
+    switch (index) {
+    case 0:
+        for (i = 0; i < 50; i++) {
+            u8 *record = func_020f3de8(index, (u16)i);
+            if (func_020e49cc(2, FIELD(u16, record, 0)) == 0) {
+                if (Unk0f3db4_Unk_0f44a8(flags->unk_000[i]) != 0) {
+                    ok = 0;
+                    break;
+                }
+            }
+        }
+        break;
+    case 1:
+        for (i = 0; i < 50; i++) {
+            u8 *record = func_020f3de8(index, (u16)i);
+            if (func_020e49cc(2, FIELD(u16, record, 0)) == 0) {
+                if (Unk0f3db4_Unk_0f44a8(flags->unk_000[i]) != 0) {
+                    ok = 0;
+                    break;
+                }
+            }
+        }
+        break;
+    case 2:
+        for (i = 0; i < 50; i++) {
+            u8 *record = func_020f3de8(index, (u16)i);
+            if (func_020e49cc(2, FIELD(u16, record, 0)) == 0) {
+                if (Unk0f3db4_Unk_0f44a8(flags->unk_064[i]) != 0) {
+                    ok = 0;
+                    break;
+                }
+            }
+        }
+        break;
+    case 3:
+        for (i = 0; i < 50; i++) {
+            u8 *record = func_020f3de8(index, (u16)i);
+            if (func_020e49cc(2, FIELD(u16, record, 0)) == 0) {
+                if (Unk0f3db4_Unk_0f44a8(flags->unk_096[i]) != 0) {
+                    ok = 0;
+                    break;
+                }
+            }
+        }
+        break;
+    case 4:
+        for (i = 0; i < 100; i++) {
+            u8 *record = func_020f3de8(index, (u16)i);
+            if (func_020e49cc(2, FIELD(u16, record, 0)) == 0) {
+                if (Unk0f3db4_Unk_0f44a8(flags->unk_0c8[i]) != 0) {
+                    ok = 0;
+                    break;
+                }
+            }
+        }
+        break;
+    case 5:
+        for (i = 0; i < 60; i++) {
+            u8 *record = func_020f3de8(index, (u16)i);
+            if (func_020e49cc(2, FIELD(u16, record, 0)) == 0) {
+                if (Unk0f3db4_Unk_0f44a8(flags->unk_12c[i]) != 0) {
+                    ok = 0;
+                    break;
+                }
+            }
+        }
+        break;
+    }
+    return ok;
+}
+
+extern u32 data_0213c558[];
+void Unk05b82c_Unk_05b82c(u32 value);
+void func_020de7e8(s32 a, s32 b);
+void Unk0f3db4_Unk_0f3dc8(void);
+u32 func_02122abc(void);
+void func_02123340(void);
+int func_020ffd48(s32 kind, s32 index, s32 count);
+void func_0212351c(u32 handle, u32 value, s32 kind);
+void func_02124c5c(void);
+
+/** Bring up the mission scene: reset four globals, install providers, then
+ * build the handle table from the leading records and enter the scene.
+ * Evidence: ordered BLs/stores at 0x020d10ac; the two per-record handle calls
+ * pass kind 604's records with shifted bounds. */
+void func_020d10ac(Unk0cf5e8Work *work)
+{
+    u32 i;
+    int count;
+    s32 j;
+
+    for (i = 0; i < 4; i++) {
+        Unk05b82c_Unk_05b82c(data_0213c558[i]);
+    }
+    func_020de7e8(1, 0);
+    Unk0f3db4_Unk_0f3dc8();
+    Unk122a78_Unk_122a78();
+    Unk1241ec_Unk_1241ec();
+    Unk044394_Unk_044428(11);
+    Unk044394_Unk_044428(7);
+    ImageBg_Unk_0e54d4(work->unk_002c);
+    Unk0fd268_Unk_0fd380(2);
+    Unk0fd268_SetDir(1);
+    work->unk_0020 = func_02122abc();
+    func_02123340();
+    func_020d185c(work);
+    count = Unk0de678_CountLeading(work->unk_0024);
+    for (j = 0; j < count; j++) {
+        if (work->records[0].kind == 604) {
+            work->handles[j] = func_020ffd48(work->records[j].kind, j - 1, count - 1);
+        } else {
+            work->handles[j] = func_020ffd48(work->records[j].kind, j, count);
+        }
+    }
+    func_0212351c(work->unk_0020, work->unk_0310, 3);
+    Unk0bc1a8_Unk_0bc928(10, 21, 0);
+    func_02124c5c();
+    func_02124ce8(1);
+    Unk1241ec_Thunk_02124338();
+    func_020d19d4(work);
+    work->unk_0364 = 1;
+}
+
+void func_020de960(void *records, s32 kind);
+void func_020119c0(void *dest, s32 value, s32 size);
+void func_020f4180(void *block);
+void Unk0bcef4_Unk_0bcef4(void *part, s32 a, s32 b, s32 c);
+void func_02052634(s32 a, s32 b, s32 c);
+void Unk0cb32c_Unk_0cb35c(u8 value);
+
+/** Initialize the mission work block: publish the global, reset four slots,
+ * build the record handle table, reset the 0x318 flag block, then seed the
+ * state machine. Evidence: ordered BLs/stores at 0x020cf6c4. */
+void func_020cf6c4(Unk0cf5e8Work *work)
+{
+    u32 i;
+    int count;
+    s32 j;
+
+    data_02176bd8 = (u32)work;
+    for (i = 0; i < 4; i++) {
+        Unk05b82c_Unk_05b82c(data_0213c558[i]);
+    }
+    func_020de960(work->unk_0024, 3);
+    Unk0f3db4_Unk_0f3dc8();
+    func_020119c0(&work->block, 0, 496);
+    func_020f4180(&work->block);
+    Unk044394_Unk_044428(11);
+    Unk044394_Unk_044428(7);
+    work->unk_0020 = func_02122abc();
+    ImageBg_Unk_0e54d4(work->unk_002c);
+    Unk0fd268_Unk_0fd380(2);
+    count = Unk0de678_CountLeading(work->unk_0024);
+    work->unk_0310 = count;
+    for (j = 0; j < work->unk_0310; j++) {
+        if (work->records[0].kind == 604) {
+            work->handles[j] = func_020ffd48(work->records[j].kind, j - 1, work->unk_0310 - 1);
+        } else {
+            work->handles[j] = func_020ffd48(work->records[j].kind, j, work->unk_0310);
+        }
+    }
+    work->unk_0314 = 0;
+    func_0212351c(work->unk_0020, work->unk_0310, 3);
+    Unk0bc1a8_Unk_0bc928(10, 21, 0);
+    Unk1241ec_Thunk_02124338();
+    Unk0bcef4_Unk_0bcef4(&work->parts[0], 5, 5, 1);
+    Unk0bcef4_Unk_0bcef4(&work->parts[1], 6, 6, 1);
+    Unk0bcef4_Unk_0bcef4(&work->parts[2], 2, 2, 1);
+    Unk0bcef4_Unk_0bcef4(&work->parts[3], 4, 4, 1);
+    func_02052634(1, 0, 31);
+    if (&work->sel != 0) {
+        for (j = 0; j < 2; j++) {
+            work->sel.flags[j] = 0;
+        }
+        for (j = 0; j < 16; j++) {
+            work->sel.words[j] = 0;
+        }
+    }
+    Unk0cf5e8_InitSlots((Unk0cf5e8Slots *)work);
+    work->unk_028c = 0;
+    work->unk_0288 = 0;
+    work->unk_0290 = 0;
+    work->unk_0294 = 0;
+    work->unk_029c = 0;
+    work->unk_0298 = 0;
+    work->step = 0;
+    work->unk_035c = 8;
+    func_020d1360(work, 0);
+    work->unk_0004 = 2;
+    work->unk_0360 = 0;
+    work->unk_0364 = 1;
+    work->unk_0368 = 0;
+    work->unk_000c = 0;
+    func_020d185c(work);
+    func_020d19d4(work);
+    Unk0cb32c_Unk_0cb35c(work->unk_002d);
+}
+
+void func_0212312c(u32 handle, s32 a, s32 b);
+
+/** Drive the intro sequence through six stages; stage 3 advances twice and
+ * stage 5 hands control to state 10. Evidence: six-entry table and ordered
+ * provider calls at 0x020d0198. */
+void func_020d0198(Unk0cf5e8Work *work)
+{
+    switch (work->step) {
+    case 0:
+        Unk0fc584_SetDir(1);
+        func_0212312c(work->unk_0020, 0, 1);
+        Unk124c5c_Set_124d6c(0, 1);
+        Unk124c5c_Set_124d8c(1, 0);
+        Unk1241ec_Unk_124224((u16)(work->parts[1].unk_010 + 10));
+        work->step++;
+        break;
+    case 1:
+        if (Unk124c5c_IsKind31()) {
+            if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+                Unk0cf5e8_Thunk_02124258();
+                func_02124ce8(3);
+                work->step++;
+            }
+        }
+        break;
+    case 2:
+        work->step++;
+        break;
+    case 3:
+        if (func_020523a8() == 1) {
+            return;
+        }
+        Unk0d1a18_Unk_0d1aa4();
+        func_020d1a18();
+        work->step++;
+        /* Falls through: the original shares stage 4's tail. */
+    case 4:
+        Unk124c5c_Set_124d8c(0, 31);
+        work->step++;
+        /* Falls through into the final stage. */
+    case 5:
+        if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+            work->step = 0;
+            func_020d1360(work, 10);
+        }
+        break;
+    }
+}
+
+void Unk0e7ac4_Unk_0e804c(u32 value);
+void Unk122e1c_Unk_1232f8(u32 handle);
+void func_021230b4(u32 handle);
+void Unk124c5c_Unk_124cc4(void);
+
+/** Drive five stages of the mission start; branch on the saved word 0x29c,
+ * then choose between the success (13) and failure (4) exit states.
+ * Evidence: five-entry table, ordered calls, shared state store at 0x020d0498. */
+void func_020d0498(Unk0cf5e8Work *work)
+{
+    s32 value = work->unk_029c;
+    s32 state;
+
+    switch (work->step) {
+    case 0:
+        func_020d185c(work);
+        func_02124ce8(3);
+        Unk0e7ac4_Unk_0e804c(0);
+        if (value == 0) {
+            work->step = 2;
+            return;
+        }
+        Unk124c5c_Set_124d6c(0, 1);
+        Unk124c5c_Set_124d8c(1, 0);
+        work->step = 1;
+        break;
+    case 1:
+        if (Unk124c5c_IsKind31() == 0) {
+            return;
+        }
+        Unk0bc1a8_Unk_0bc9b4(3, 0);
+        work->step++;
+        break;
+    case 2:
+        if (func_020523a8() == 1) {
+            return;
+        }
+        if (value != 0) {
+            Unk0cf5e8_Thunk_0212424c();
+            Unk124c5c_Set_124d8c(0, 31);
+        }
+        work->step = 3;
+        break;
+    case 3:
+        if (func_020d1958(work)) {
+            Unk122e1c_Unk_1232f8(work->unk_0020);
+            Unk1241ec_Unk_124224((u16)(work->parts[2].unk_010 + 20));
+            state = 13;
+        } else {
+            Unk122e1c_Unk_123048(work->unk_0020);
+            func_021230b4(work->unk_0020);
+            func_020d19d4(work);
+            state = 4;
+        }
+        work->unk_0004 = state;
+        func_02124ce8(1);
+        Unk124c5c_Unk_124cc4();
+        work->step++;
+        break;
+    case 4:
+        if (Unk122e1c_Unk_122f68(work->unk_0020) == 0) {
+            return;
+        }
+        work->step = 0;
+        func_020d1360(work, work->unk_0004);
+        work->unk_029c = 0;
+        break;
+    }
+}
+
+void func_0205257c(s32 value);
+int func_02052728(void);
+void func_020525cc(s32 value);
+void func_0209b960(void);
+int Unk09a268_Unk_09bb38(void);
+void func_020bcbc4(s32 channel, Unk0cf5e8Sel *sel);
+
+/** Five-stage teardown/start path; stage 2 clears the 0x318 flag block and
+ * selects message 5 or 6 from query 0x73a. Evidence: six-entry table and the
+ * literal 0x73a at 0x020d0600. */
+void func_020d0600(Unk0cf5e8Work *work)
+{
+    s32 j;
+
+    switch (work->step) {
+    case 0:
+        func_0205257c(0);
+        work->step++;
+        break;
+    case 1:
+        if (func_02052728() != 0) {
+            return;
+        }
+        func_020d0ff4(work);
+        work->step++;
+        break;
+    case 2:
+        func_0209b960();
+        if (&work->sel != 0) {
+            for (j = 0; j < 2; j++) {
+                work->sel.flags[j] = 0;
+            }
+            for (j = 0; j < 16; j++) {
+                work->sel.words[j] = 0;
+            }
+        }
+        if (Unk0e651c_Unk_0e666c(0x73a) != 0) {
+            if (&work->sel != 0) {
+                work->sel.words[7] = 5;
+                work->sel.flags[0] |= 0x80;
+            }
+        } else {
+            if (&work->sel != 0) {
+                work->sel.words[7] = 6;
+                work->sel.flags[0] |= 0x80;
+            }
+        }
+        func_020bcbc4(2, &work->sel);
+        work->step++;
+        break;
+    case 3:
+        if (Unk09a268_Unk_09bb38() == 0) {
+            return;
+        }
+        func_020d10ac(work);
+        work->step++;
+        break;
+    case 4:
+        if (ImageBg_IsMode1or2() != 0) {
+            return;
+        }
+        func_020525cc(0);
+        work->step++;
+        break;
+    case 5:
+        if (func_02052728() != 0) {
+            return;
+        }
+        work->step = 0;
+        func_020d1360(work, 4);
+        break;
+    }
+}
+
+int Unk0bc1a8_IsSlotEmpty(s32 slot);
+void Unk0fedd4_SetState0(void);
+void func_020e7f44(s32 a, s32 b, s32 c, s32 d);
+void func_021233e0(u32 handle);
+
+/** Five-stage mission tail: clear the 0x318 block, publish the flag words and
+ * message 5, then hand over to the four final providers and state 11.
+ * Evidence: five-entry table, flag-5 store and ordered BLs at 0x020d0784. */
+void func_020d0784(Unk0cf5e8Work *work)
+{
+    s32 j;
+    s32 value;
+
+    switch (work->step) {
+    case 0:
+        if (Unk0bc1a8_IsSlotEmpty(22) == 0) {
+            return;
+        }
+        func_020d0ff4(work);
+        work->step++;
+        break;
+    case 1:
+        func_0209b960();
+        if (&work->sel != 0) {
+            for (j = 0; j < 2; j++) {
+                work->sel.flags[j] = 0;
+            }
+            for (j = 0; j < 16; j++) {
+                work->sel.words[j] = 0;
+            }
+        }
+        if (&work->sel != 0) {
+            work->sel.words[7] = 5;
+            work->sel.flags[0] |= 0x80;
+        }
+        func_020bcbc4(2, &work->sel);
+        work->step++;
+        break;
+    case 2:
+        if (Unk09a268_Unk_09bb38() == 0) {
+            return;
+        }
+        func_020d10ac(work);
+        Unk0fc584_SetDir(1);
+        Unk0fedd4_SetState0();
+        work->step++;
+        break;
+    case 3:
+        if (ImageBg_IsMode1or2() != 0) {
+            return;
+        }
+        Unk0cf5e8_Thunk_02124258();
+        work->step++;
+        break;
+    case 4:
+        Unk0d1a18_Unk_0d1aa4();
+        func_020d1a18();
+        if (&work->sel != 0) {
+            for (j = 0; j < 2; j++) {
+                work->sel.flags[j] = 0;
+            }
+            for (j = 0; j < 16; j++) {
+                work->sel.words[j] = 0;
+            }
+        }
+        value = work->parts[1].unk_010;
+        if (&work->sel != 0) {
+            work->sel.words[3] = value;
+            work->sel.flags[0] |= 8;
+        }
+        Unk0bc1a8_Unk_0bc928(22, 21, &work->sel);
+        func_020bcbc4(22, 0);
+        func_02124ce8(1);
+        Unk0e7ac4_Unk_0e804c(1);
+        func_020e7f44(5, 0, 0, 0);
+        func_021233e0(work->unk_0020);
+        work->step = 0;
+        func_020d1360(work, 11);
+        break;
+    }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * M1-T962: the long callback-driven mission-scene state machine.
+ * ------------------------------------------------------------------------ */
+
+/** Advance the mission scene through states 0..23 and refresh the handle's
+ * two selected fields at the end. Evidence: 24-entry state table at
+ * 0x020cf9a0, by-value record copies, and ordered provider calls. */
+void func_020cf9a0(Unk0cf5e8Work *work)
+{
+    s32 i;
+    u32 value;
+
+    switch (work->unk_0000) {
+    case 0:
+        if (work->step == 0) {
+            if (ImageBg_IsMode1or2() != 0) {
+                break;
+            }
+            Unk0fd268_SetDir(1);
+            func_02124c5c();
+            func_02124ce8(1);
+            func_020525cc(0);
+            work->step++;
+            break;
+        }
+        if (func_02052728() != 0) {
+            break;
+        }
+        work->step = 0;
+        if (func_020deb68() != 0) {
+            goto set_state_6;
+        }
+        if (func_020df5e8() != 0) {
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d13fc(work)) {
+            Unk0cf5e8_Unk_0d1414(work);
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d139c(work)) {
+            Unk0cf5e8_Unk_0d13b4(work);
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d1454((Unk0cf5e8Obj *)work)) {
+            Unk0cf5e8_Unk_0d1470(work);
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d1490((Unk0cf5e8Obj *)work)) {
+            Unk0cf5e8_Unk_0d14ac(work);
+            goto set_state_6;
+        }
+        Unk122e1c_Unk_123024(work->unk_0020);
+        func_020d1360(work, work->unk_0004);
+        work->unk_0004 = 4;
+        break;
+    set_state_6:
+        func_020d1360(work, 6);
+        work->unk_0004 = 2;
+        break;
+    case 1:
+        if (func_02052728() != 0) {
+            break;
+        }
+        Unk02cad4_Unk_02cbdc(work->unk_035c);
+        break;
+    case 2:
+        if (Unk122e1c_Unk_122f68(work->unk_0020) == 0) {
+            break;
+        }
+        func_020d1360(work, work->unk_0004);
+        break;
+    case 3:
+        if (Unk122e1c_Unk_122f54(work->unk_0020)) {
+            func_020d1360(work, work->unk_0004);
+            switch ((s32)work->unk_0000) {
+            case 1:
+                if (Unk0de678_Unk_0debf8() != 0) {
+                    func_020d1360(work, 6);
+                } else {
+                    func_0205257c(0);
+                }
+                break;
+            case 11:
+                func_02124ce8(1);
+                Unk0e7ac4_Unk_0e804c(1);
+                func_020e7f44(5, 0, 0, 0);
+                Unk0bc1a8_Unk_0bc928(22, 21, &work->sel);
+                break;
+            case 7:
+                Unk0de678_Unk_0dec94((u8 *)work + 0x30);
+                work->unk_0004 = 2;
+                break;
+            case 5:
+                func_020deaa0(21, *(Unk0cf5e8RecordBlock *)((u8 *)work + 0x24), work->unk_0314 = 0);
+                break;
+            case 17:
+                break;
+            }
+        } else if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+            func_020d1360(work, work->unk_0004);
+        }
+        break;
+    case 5:
+        work->unk_0314 = func_020fa92c(work->unk_0314);
+        if (func_020fa9a0()) {
+            for (i = 0; i < Unk0de678_CountLeading((u8 *)work + 36); i++) {
+                CaveNpc_SetActive(work->handles[i], 1);
+            }
+        } else {
+            for (i = 0; i < Unk0de678_CountLeading((u8 *)work + 36); i++) {
+                if (i == work->unk_0314) {
+                    CaveNpc_SetActive(work->handles[i], 0);
+                } else {
+                    CaveNpc_SetActive(work->handles[i], 1);
+                }
+            }
+        }
+        break;
+    case 6:
+        if (func_020decd8() == 0) {
+            break;
+        }
+        if (work->unk_0004 == 2) {
+            if (work->unk_0368 == 0) {
+                if (func_020deb68() != 0) {
+                    break;
+                }
+            }
+            if (func_020df5e8() != 0) {
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d13fc(work)) {
+                Unk0cf5e8_Unk_0d1414(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d139c(work)) {
+                Unk0cf5e8_Unk_0d13b4(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d1454((Unk0cf5e8Obj *)work)) {
+                Unk0cf5e8_Unk_0d1470(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d1490((Unk0cf5e8Obj *)work)) {
+                Unk0cf5e8_Unk_0d14ac(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            func_020d1360(work, work->unk_0004);
+            work->unk_0004 = 4;
+            Unk122e1c_Unk_123024(work->unk_0020);
+        } else if (Unk0de678_Unk_0debf8() == 0) {
+            func_0205257c(0);
+            func_020d1360(work, work->unk_0004);
+        }
+        break;
+    case 7:
+        if (func_020decd8() == 0) {
+            break;
+        }
+        func_020d1360(work, work->unk_0004);
+        if (work->unk_0004 == 5) {
+            func_020deaa0(21, *(Unk0cf5e8RecordBlock *)((u8 *)work + 0x24), work->unk_0314);
+        } else {
+            Unk124c5c_Unk_124cb0();
+            Unk122e1c_Unk_123048(work->unk_0020);
+            work->unk_0004 = 4;
+        }
+        break;
+    case 8:
+        func_020d0198(work);
+        break;
+    case 9:
+        func_020d02c0(work);
+        break;
+    case 15:
+        func_020d03c0(work);
+        break;
+    case 16:
+        func_020d0498(work);
+        break;
+    case 11:
+        if (Unk0bc1a8_IsSlotEmpty(22) == 0) {
+            break;
+        }
+        Unk122e1c_Unk_1232f8(work->unk_0020);
+        func_02124ce8(3);
+        Unk0e7ac4_Unk_0e804c(0);
+        value = Unk0cf5e8_Unk_0d182c();
+        Unk122e1c_Unk_122f88(work->unk_0020, 1, value == 0);
+        Unk0cf5e8_InitSlots((Unk0cf5e8Slots *)work);
+        work->unk_0004 = 10;
+        func_020d1360(work, 2);
+        break;
+    case 12:
+        switch (work->step) {
+        case 0:
+            func_0212312c(work->unk_0020, 1, 0);
+            work->step++;
+            break;
+        case 1:
+            if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+                work->step++;
+            }
+            break;
+        case 2:
+            Unk1241ec_Unk_124224((u16)(work->parts[2].unk_010 + 20));
+            work->step++;
+            break;
+        case 3:
+            func_020d1360(work, 13);
+            work->step = 0;
+            break;
+        }
+        break;
+    case 14:
+        switch (work->step) {
+        case 0:
+            Unk122e1c_Unk_12306c(work->unk_0020);
+            work->step++;
+            break;
+        case 1:
+            if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+                Unk124c5c_Unk_124cb0();
+                func_020d19d4(work);
+                work->step = 0;
+                func_020d1360(work, 4);
+            }
+            break;
+        }
+        break;
+    case 17:
+        func_02124ce8(1);
+        Unk0e7ac4_Unk_0e804c(1);
+        func_020e7f44(0, 0, 0, 0);
+        Unk0bc1a8_Unk_0bc928(22, 21, &work->sel);
+        func_020d1360(work, 18);
+        break;
+    case 18:
+        if (Unk0bc1a8_IsSlotEmpty(22) == 0) {
+            break;
+        }
+        func_020d1360(work, 16);
+        break;
+    case 20:
+        Unk0cf5e8_Unk_0d0960(work, work->unk_000c);
+        break;
+    case 21:
+        switch (func_0212356c(work->unk_0020, (u8 *)work + 8, (u8 *)work + 0x2f4, 4)) {
+        case 0:
+            Unk124c5c_Unk_124cb0();
+            func_020d19d4(work);
+            func_020d1360(work, 4);
+            break;
+        case 1:
+            Unk0cf5e8_Unk_0d0fc4(work, Unk0cb32c_Unk_0cb440(work->parts[3].unk_010 + 1));
+            break;
+        }
+        break;
+    case 22:
+        func_020d0600(work);
+        break;
+    case 23:
+        func_020d0784(work);
+        break;
+    }
+
+    if (work->unk_0020 != 0) {
+        value = 0;
+        switch (work->unk_0298) {
+        case 1:
+            value = work->parts[1].unk_010;
+            break;
+        case 2:
+            value = work->parts[2].unk_010;
+            break;
+        case 3:
+            value = work->parts[3].unk_010;
+            break;
+        }
+        Unk122e1c_SetUnkFields64_b0(work->unk_0020, work->parts[0].unk_010, value);
+    }
 }

@@ -5,9 +5,11 @@
 
 /* Object passed as first arg in this file; layout from observed accesses. */
 typedef struct Unk113294Work {
-    u8 pad_0000[0x8];
+    u32 unk_0000;
+    s32 unk_0004;
     u8 unk_0008;
-    u8 pad_0009[0x7];
+    u8 pad_0009[3];
+    s32 unk_000c;
     u32 unk_0010;
     u8 pad_0014[0x8];
     u32 unk_001c;
@@ -16,6 +18,8 @@ typedef struct Unk113294Work {
     u32 unk_0028;
     u8 pad_002c[0xa4];
     u32 unk_00d0;
+    u8 pad_00d4[4];
+    u16 unk_00d8;
 } Unk113294Work;
 
 int Unk0a0ce4_Unk_0a0da4();
@@ -34,9 +38,11 @@ typedef struct Unk113294Ids {
     u8 pad[216];
     u16 ids[16];
 } Unk113294Ids;
-int Unk113294_Unk_113e90(u8 *p)
+/* Tests the observed conjunction: halfword +0xd8 and word +0xc are zero,
+ * and word +4 is one. No broader state meaning is established. */
+int Unk113294_Unk_113e90(const Unk113294Work *work)
 {
-    return FIELD(u16, p, 216) == 0 && FIELD(u32, p, 12) == 0 && FIELD(u32, p, 4) == 1;
+    return work->unk_00d8 == 0 && work->unk_000c == 0 && work->unk_0004 == 1;
 }
 
 void Unk113294_Unk_113eb4(u8 *p)
@@ -68,42 +74,47 @@ void Unk113294_Unk_115698(u8 *arg0)
 
 
 /* get u32 at +0x20 */
-u32 Unk113294_GetUnkField20(void *obj) { return ((Unk113294Work *)obj)->unk_0020; }
+/* Returns the word at +0x20, directly evidenced by the load at 0x02115650. */
+u32 Unk113294_GetUnkField20(const Unk113294Work *work)
+{
+    return work->unk_0020;
+}
 
-int Unk113294_Unk_1150e8();
+int Unk113294_Unk_1150e8(u32 a, u32 b);
 /* decompiler-derived */
+/* Tail-calls the halfword lookup with fixed arguments (1, 53). */
 int Unk113294_Unk_115110(void)
 {
-  return Unk113294_Unk_1150e8(1,0x35);
+    return Unk113294_Unk_1150e8(1, 53);
 }
 
-int func_020655b4();
-int func_02065604();
-int func_02065bc0();
+void func_020655b4(int value);
+void func_02065604(int value);
+void func_02065bc0(void);
 /* decompiler-derived */
+/* Runs the three observed subsystem calls, passing 1 to the final two. */
 void Unk113294_Unk_1156ec(void)
 {
-  func_02065bc0();
-  func_02065604(1);
-  func_020655b4(1);
-  return;
+    func_02065bc0();
+    func_02065604(1);
+    func_020655b4(1);
 }
 
-int func_020445f4();
-int func_0204fed8();
+void *func_020445f4(int group, u32 index);
+u16 *func_0204fed8(void *resource, u32 index);
 /* decompiler-derived */
-u16 *Unk113294_Unk_1150c8(u32 arg0,u32 arg1)
+/* Resolves resource group 42 at the first index, then its second index. */
+u16 *Unk113294_Unk_1150c8(u32 index, u32 entry)
 {
-  u32 tmp1;
-  tmp1 = func_020445f4(0x2a,arg0);
-  return (u16 *)func_0204fed8(tmp1,arg1);
+    return func_0204fed8(func_020445f4(42, index), entry);
 }
 
 
 /* decompiler-derived */
-int Unk113294_Unk_115124(int arg0)
+/* Looks up byte +8 plus one and the low halfword of word +0x10. */
+int Unk113294_Unk_115124(const Unk113294Work *work)
 {
-  return Unk113294_Unk_1150e8(((Unk113294Work *)arg0)->unk_0008 + 1,((Unk113294Work *)arg0)->unk_0010 & 0xffff);
+    return Unk113294_Unk_1150e8(work->unk_0008 + 1, (u16)work->unk_0010);
 }
 
 
@@ -142,7 +153,7 @@ void Unk113294_Unk_11508c(u32 a, u32 b)
 }
 
 u16 *Unk113294_Unk_1150c8(u32 arg0, u32 arg1);
-int Unk113294_Unk_115124(int arg0);
+int Unk113294_Unk_115124(const Unk113294Work *work);
 int Unk113294_Unk_115110(void);
 typedef struct Unk113294Pair {
     u16 a;
@@ -161,7 +172,7 @@ int Unk113294_Unk_1150e8(u32 a, u32 b)
 void Unk113294_Unk_115144(u8 *p)
 {
     Unk113294Pair t = {0, 0};
-    t.a = Unk113294_Unk_115124((int)p);
+    t.a = Unk113294_Unk_115124((const Unk113294Work *)p);
     func_02061f10(FIELD(u32, p, 196), -1, 0, 0, &t);
 }
 
@@ -183,6 +194,8 @@ void Unk113294_Unk_11518c(u32 arg0)
 }
 
 extern u8 data_0215159c[];
+/* IsOtherId is supported by the comparison at 0x021155d0: a nonzero id
+ * qualifies only when it differs from the fixed (1,53) lookup result. */
 int Unk113294_IsOtherId(u32 id)
 {
     if (id == 0) {
@@ -231,9 +244,10 @@ int Unk113294_FindEmpty(Unk113294Ids *p)
     return 7;
 }
 
-int Unk113294_Unk_115734(u8 *p)
+/* Returns zero for byte +8 values 0 and 1, and one for every other value. */
+int Unk113294_Unk_115734(const Unk113294Work *work)
 {
-    switch (p[8]) {
+    switch (work->unk_0008) {
     case 0:
     case 1:
         return 0;

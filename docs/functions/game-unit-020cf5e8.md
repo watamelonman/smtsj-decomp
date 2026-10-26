@@ -130,3 +130,103 @@ The four-word handle view spans 0x10..0x1c, bounded by the observed handle at
 0x20; the original leading-record count controls iteration. The six-slot view
 is established by the loop bound. No module boundary changed. No M1-T960 hard
 functions remain. The TU still links from its delink pending human completion.
+
+## M1-T961: verified matches
+
+Seven of the eight requested functions match the original ARM instructions and
+relocations. The work view was extended with typed sub-objects rather than raw
+offsets: 26-byte leading records at 0x2e (kind halfword + 24-byte payload,
+bounded by the four handles), four 28-byte provider blocks at 0x2a0, the
+496-byte provider block at 0x98 (which contains the 0xa0/0x194 predicate
+words), and the 0x318 block (two flag bytes followed by sixteen words).
+All pointers are borrowed; no provider ownership changed.
+
+- `func_020cf6c4` (548 B): publishes the work pointer to `data_02176bd8`,
+  resets four ids, initializes the 0x98 provider block, builds the handle table
+  from the leading records (kind 604 shifts both bounds), clears the 0x318
+  block, publishes four provider blocks and seeds state `func_020d1360(work, 0)`,
+  word 4 = 2 and the 0x35c..0x368 words. Evidence: ordered calls/stores at
+  0x020cf6c4. Loop bound is re-read from word 0x310, which the original also
+  does (signed compare).
+- `func_020d0198` (296 B): six-stage intro: stage 0 sets direction, a provider
+  and two slot flags, stage 1 waits on two providers before `func_02124ce8(3)`,
+  stage 2 just advances, stages 3 and 4 share their tail (fallthrough in the
+  original) and stage 5 resets the byte and enters state 10. Evidence: six-entry
+  jump table and ordered calls at 0x020d0198.
+- `func_020d0498` (360 B): five stages keyed on the saved word 0x29c; stage 3
+  chooses state 13 (success provider path) or 4 (failure path) and shares one
+  store and the `func_02124ce8(1)`/`Unk124c5c_Unk_124cc4` tail. Evidence: table,
+  conditional branches and shared store at 0x020d0498.
+- `func_020d0600` (388 B): five-stage teardown/start; stage 2 zeroes the 0x318
+  block and selects message 5 or 6 from query 0x73a before publishing the block,
+  stage 3 runs `func_020d10ac`. Evidence: literal 0x73a and ordered calls at
+  0x020d0600.
+- `func_020d0784` (476 B): five-stage tail; clears and publishes the 0x318
+  block with message 5, then writes word 6 of the block from the third provider
+  block and flag 8 before publishing with (22,21), entering state 11. Evidence:
+  table, flag-5/flag-8 stores and ordered BLs at 0x020d0784.
+- `func_020d10ac` (292 B): scene bring-up: resets four ids, installs providers,
+  builds the handle table from the leading records, then publishes the handle
+  range and enters the scene sequence (`func_02124c5c`, `func_02124ce8(1)`,
+  `func_020d19d4`). Evidence: ordered calls/stores at 0x020d10ac.
+- `func_020d14cc` (556 B): per-index flag scan over the provider byte block
+  returned by `Unk0f3db4_Unk_0f3db4`; six switch cases use bounds
+  50/50/50/50/100/60 and byte offsets 0/0/100/150/200/300. A record whose
+  halfword kind 2 query returns zero must also pass the byte predicate.
+  Evidence: six-entry table, loop bounds and `ldrb` offsets at 0x020d14cc.
+
+## M1-T961 hard list
+
+- `func_020d11f0` (368 B): the event callback was reproduced instruction for
+  instruction except for three allocator effects: the original keeps the
+  command selection in a 4-byte stack slot (frame `sub sp,#4`, five saved
+  registers), uses a second callee-saved register for the handle-activation
+  loop's argument copy, and advances the command pointer with a write-back
+  `ldr r2,[r1],#4` (ours folds `+4` into the payload offsets). A scalar,
+  `volatile`, one-field struct and one-element-array form of the selection all
+  either avoid the frame or reload it after the 0x788 store; loop forms
+  (`j = i`, `for (i, j)`, cached bound) are coalesced into one register by
+  mwcc unless both counters are incremented, which adds instructions the
+  original does not have. Every other instruction matches (checked with
+  `tools/hand/cmp.py -v`). Needs a human decomp.me/permuter pass; the body is
+  left as the delink assembly rather than faked.
+
+The TU still links from its delink pending human completion. No module boundary
+changed.
+
+## M1-T962: verified match and hard list
+
+`func_020cf9a0` (2040 B) reports 100% in `build/report.json`. It drives the
+mission scene through states 0..23 from the saved state word. Evidence: the
+24-entry jump table at 0x020cf9a0, the by-value 114-byte record copy passed to
+`func_020deaa0`, and the ordered provider calls/stores in each case. The record
+block and the selected-part words are borrowed views of the existing work
+storage; no provider ownership changed.
+
+- `func_020cf9a0` (2040 B): state 0 polls the image background and input
+  providers, then either enters state 6 or selects the first failing record
+  predicate and enters the matching transition; states 1..23 dispatch the
+  scene stages, including the four callback tables at states 8/9/15/16, the
+  slot/entry strings at 11/12/14, and the final selected-record publication
+  through `Unk122e1c_SetUnkFields64_b0`. Evidence: ordered loads, calls and
+  stores at 0x020cf9a0.
+
+### M1-T962 hard list
+
+- `func_020d09b4` (1504 B): the complete C reconstruction is semantically
+  equivalent and compiles to the same 376 instructions, size and relocation
+  set, but three switch-table slots differ. The original duplicates
+  `pop {r3,r4,r5,pc}` into the result-switch default padding, the case-3 table
+  slot and the provider-word switch default; mwcc 2.0/sp1p5 tail-merges those
+  returns into the case-2 epilogue and emits `b` to it. Reproduced with the
+  signed `result < 0` guard before the switch (the guard's `blt` is required
+  for state 4), while every guard form tried (`goto`, `if/else`, early return,
+  `while`, `do/while`) tail-merges. Without the guard the table slots match but
+  negative results no longer reach the fail block. A flexible-array handle
+  table (`+0xc8`) fixed the state 10/13 indexed load, but the state-10
+  selection store still schedules the `parts[1]` word after the `&sel` null
+  test where the original loads it before. Left as the delink assembly rather
+  than faked; needs a decomp.me/permuter pass on the switch-return layout.
+
+No module boundary changed. The TU still links from its delink pending human
+completion.
