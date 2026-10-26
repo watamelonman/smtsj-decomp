@@ -22,7 +22,31 @@ All eight targets match at 100% objdiff. The unit remains linked from its
 original delink pending human completion marking. Tests are not required by
 the card; instruction matching and full-image checksum verify this change.
 
+## M2-T102: remaining five functions
+
+The public CRI reconstruction search above was repeated for CRI ADX Nintendo DS
+wrappers; no matching public implementation was established. Existing neutral
+symbols are retained. The mode tables and call order come directly from ARM
+instructions; worker-row meanings remain unknown.
+
+| Function | Bytes | Instruction evidence and contract |
+| --- | ---: | --- |
+| `func_0208a988` | 88 | Resolve the global mode through 0208aa68; mode 1 calls all eight rows through 0208aa3c, mode 2 calls row 5, mode 3 calls rows 6 and 7. Other modes do nothing. Always return zero. |
+| `func_0208a9e0` | 92 | Resolve the global mode; mode 2 calls row 0, mode 3 calls rows 0, 1, 2, 3 and 5 in that order. Other modes do nothing. Always return zero. |
+| `func_0208aa3c` | 44 | Calls 02082608 through 02082678 in address order, discards worker results, and returns zero. Those wrappers select rows 0 through 7. |
+| `func_0208aac8` | 52 | Preserve three arguments across 0208ae78, forward through 0208aafc, call 0208ae7c, and preserve the returned opaque pointer. |
+| `func_0208aafc` | 44 | Prepend the borrowed global state to an opaque signed argument, storage pointer and signed byte capacity for 0208afe8. Return its opaque result without inspection. |
+
+The storage/capacity interpretation follows 0208afe8: it advances the third
+argument by 224 bytes and reduces the fourth by 224 before forwarding both to
+0208b4fc. Its result is a provider entry pointer also passed to 0208b0c4.
+The provider retains its existing ownership contract; these wrappers do not
+inspect storage or validate its capacity. No module boundary changes are needed.
+
+All thirteen functions in the unit now report 100% objdiff, including all five
+M2-T102 targets. Anticheat, all nine repository tests, and the full build checksum
+gate pass. The unit remains linked from the delink pending human completion.
+
 ## Hard list
 
-None of the eight requested functions remain unmatched. Other functions in
-the unit were outside this card.
+None of the requested functions remain unmatched.

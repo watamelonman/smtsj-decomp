@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Match the four remaining NitroSDK BG0/BG1 and BG3 extended affine control setters in `sdk_020544b0` (M2-T100).
+- M2-T102: match five CRI mode dispatch and storage forwarding functions in `cri_0208a978.c`.
+- M2-T096: match six NitroSDK VRAM bank disable wrappers and two sub-display extended palette getters.
 
 - M2-T095: reconstruct eight NitroSDK VRAM bank allocation getters in matching C.
 - M2-T101: match eight CRI mode and state forwarding wrappers in `cri_0208a978.c`.
