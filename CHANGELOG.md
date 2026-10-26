@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T791 game/unit_020a7d54 entry scan, reset, release, predicate, and counter routines at 100% objdiff; added shared typed entry/work views, typed provider arguments, and per-function instruction evidence.
 - Verified all eight M1-T790 game/unit_020a7d54 field helpers and lookup wrappers at 100% objdiff; added typed field views, explicit argument forwarding, and per-function contracts.
 - M1-T784: added the three missing game/unit_0204bb9c context accessors and documented all eight requested context/kind routines, verified at 100% objdiff with the original image checksum preserved.
 - Verified all eight M1-T772 game/unit_020ea208 guarded table getters, teardown, object setters and record/table lookups at 100% objdiff; added typed work/slot parameters and instruction evidence.
