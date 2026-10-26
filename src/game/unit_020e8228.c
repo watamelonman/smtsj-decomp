@@ -14,10 +14,10 @@ void func_02057524(int value);
 void func_02057534(void);
 void func_02057eb8(int value);
 int func_02061424();
-void *Unk09974c_Unk_099d14();
+void *Unk09974c_Unk_099d14(int id);
 void ScanVisor_Unk_0a29a0(u32 value);
-int Unk0e8228_Unk_0e8374();
-int Unk0e8228_GetArr88Field20();
+int Unk0e8228_Unk_0e8374(u32 x);
+int Unk0e8228_GetArr88Field20(int i);
 void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1);
 void Unk0e8228_Unk_0e8e8c(u32 arg0);
 int func_020e9c00();
@@ -111,9 +111,9 @@ void Unk0e8228_Unk_0e8398(void)
   Unk0e8228_Unk_0e8d90(7,0xffffffff);
 }
 
-/* At 020e8460, returns the word at data_02150c30 + 0x2c plus one. Callers use
- * it as an exclusive loop bound (src/game/unit_020eed24.c), so the plus one is
- * a stored count followed by the count itself. */
+/* At 020e8460, returns the word stored at data_02150c30 + 0x2c plus one.
+ * Callers use the result as an exclusive loop bound (src/game/unit_020eed24.c);
+ * the meaning of the stored word itself is not established. */
 int Unk0e8228_Unk_0e8460(void)
 {
   return *(int *)(((int)data_02150c30) + 0x2c) + 1;
@@ -158,14 +158,17 @@ u32 Unk0e8228_Unk_0e84e4(void)
   return value2;
 }
 
-/* At 020e84fc, runs the sequence select-8 (Unk_0e8374), refresh the row-88
- * record area, then the Unk09974c step, returning that final lookup result.
- * unit_020ef248.c consumes the returned pointer as a borrowed record. */
+/* At 020e84fc, runs the sequence select-8 (Unk_0e8374), refreshes one row-88
+ * record, then performs the Unk09974c lookup, returning that lookup result.
+ * Argument flow per the original assembly: the selector-8 result is forwarded
+ * to GetArr88Field20, and its result is in turn forwarded to Unk09974c_Unk_099d14
+ * as the lookup id. unit_020ef248.c consumes the returned pointer as a borrowed
+ * record. */
 void *Unk0e8228_Unk_0e84fc(void)
 {
-  Unk0e8228_Unk_0e8374(8);
-  Unk0e8228_GetArr88Field20();
-  return Unk09974c_Unk_099d14();
+  int index = Unk0e8228_Unk_0e8374(8);
+  int row = Unk0e8228_GetArr88Field20(index);
+  return Unk09974c_Unk_099d14(row);
 }
 
 /* decompiler-derived */

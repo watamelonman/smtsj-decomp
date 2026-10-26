@@ -32,9 +32,10 @@ neutral where the callers only show a loop bound or an opaque forwarding.
   0xffffffff)`, forwarding selector 7 and the unsigned -1 sentinel. Callers
   run it before scanning the entries counted by `Unk0e8228_Unk_0e8488()`, but
   the callee is opaque, so the name stays neutral.
-- `Unk0e8228_Unk_0e8460` (20 B, 020e8460): returns `*(s32 *)(data_02150c30 +
-  0x2c) + 1`. Used as an exclusive loop bound in `src/game/unit_020eed24.c`
-  and as a count guard in `src/game/unit_020ea208.c`.
+- `Unk0e8228_Unk_0e8460` (20 B, 020e8460): returns the word stored at
+  `data_02150c30 + 0x2c` plus one. Used as an exclusive loop bound in
+  `src/game/unit_020eed24.c` and as a count guard in `src/game/unit_020ea208.c`;
+  the meaning of the stored word itself is not established.
 - `Unk0e8228_Unk_0e8474` (20 B, 020e8474): returns `*(s32 *)(data_02150c30 +
   0x34) + 1`; `unit_020eed24.c` iterates that many 64-byte records.
 - `Unk0e8228_Unk_0e8488` (20 B, 020e8488): returns `*(s32 *)(data_02150c30 +
@@ -46,9 +47,11 @@ neutral where the callers only show a loop bound or an opaque forwarding.
   offset 0x178, or zero when `Get_data_02176ce0` returns null. Callers compare
   and iterate it as a record count (`src/game/unit_020ef248.c`).
 - `Unk0e8228_Unk_0e84fc` (24 B, 020e84fc): calls
-  `Unk0e8228_Unk_0e8374(8)`, then `Unk0e8228_GetArr88Field20()`, then
-  `Unk09974c_Unk_099d14()`; the third call's result is returned, and
-  `unit_020ef248.c` consumes it as a borrowed record pointer.
+  `Unk0e8228_Unk_0e8374(8)`, forwards its result to
+  `Unk0e8228_GetArr88Field20`, then forwards that result as the id to
+  `Unk09974c_Unk_099d14`; the third call's result is returned, and
+  `unit_020ef248.c` consumes it as a borrowed record pointer. The argument
+  flow is visible in the delinked original (`mov r0,#8; bl ...; bl ...; bl ...`).
 
 ## Other TU functions
 
