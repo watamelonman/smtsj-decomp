@@ -4,6 +4,12 @@
 
 - M2-T072: match the six remaining CRI callback dispatch, row wrapper and reference-counted reset functions in `cri_0208256c`.
 
+- Match the four remaining script wrappers in `libs/unknown/lib_020b8f8c.c` (M2-T074), including the ordered two-argument selector 19 command.
+
+- Match all six sdk_020587fc record-pool and resource-slot helpers with typed layouts.
+- Match five NitroSDK 2D BG character upload and extended palette setup functions in `sdk_02004dec`.
+- Add matching C for the remaining request-67 and request-70 script wrappers in `libs/unknown/lib_020b9820`.
+- Match eight script argument/result wrappers in `libs/unknown/lib_020b8f8c.c` (M2-T073), with typed contracts and selector evidence.
 - Match the NitroSDK sub-display palette reset wrappers, shared VRAM bank disable helper, and main BG extended palette disable wrapper (M2-T061).
 - M2-T057: reconstruct the eight remaining `lib_020ba264` script selector, record, indexed-word, remainder and request handlers with instruction evidence.
 - M2-T043: match the two result-publishing request wrappers in `libs/unknown/lib_020ba05c`, completing all eighteen C functions in the unit.

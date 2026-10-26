@@ -69,6 +69,17 @@ s32 func_020b9938(void)
     return 1;
 }
 
+/* At 020b9970: submit request 67 with operands 0 and 1,
+ * publish its result, and return script completion status 1.
+ * Evidence: the original ARM calls the operand, request, and result helpers. */
+s32 func_020b9970(void)
+{
+    s32 first = func_0203ac00(0);
+    s32 second = func_0203ac00(1);
+    Unk03aae8_Unk_03acf4(func_020b8b38(67, first, second, 0));
+    return 1;
+}
+
 /* At 020b99a8: submit request 68 with operand 0,
  * publish its result, and return script completion status 1. */
 s32 func_020b99a8(void)
@@ -84,6 +95,17 @@ s32 func_020b99d4(void)
 {
     s32 first = func_0203ac00(0);
     Unk03aae8_Unk_03acf4(func_020b8b38(69, first, 0, 0));
+    return 1;
+}
+
+/* At 020b9a00: submit request 70 with operands 0 and 1,
+ * publish its result, and return script completion status 1.
+ * Evidence: the original ARM calls the operand, request, and result helpers. */
+s32 func_020b9a00(void)
+{
+    s32 first = func_0203ac00(0);
+    s32 second = func_0203ac00(1);
+    Unk03aae8_Unk_03acf4(func_020b8b38(70, first, second, 0));
     return 1;
 }
 

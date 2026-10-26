@@ -201,6 +201,15 @@ constraint, not evidence of hardware ownership or synchronization. Ordinary
 accesses let mwcc cache the count and hoist the second size load; revisit if
 original declaration evidence permits reproducing the accesses otherwise.
 
+## DEC-009 — Preserve integer address calculation in 02058824
+
+The teardown wrapper computes a 48-byte record offset, then reloads the global
+base after its first call. Using typed array indexing for both calls lets mwcc
+retain the whole record address and removes two original instructions. Compute
+the first address as a 32-bit integer plus the byte offset, then use the typed
+record view for the second call. This preserves the original instructions on
+the DS's 32-bit address space without changing record layout or call semantics.
+Revisit if original SDK declarations explain this distinction.
 ## DEC-009 — Keep the SDK build record in the startup text section
 
 `BuildInfo` at 0x02000ba0 is data inside the original executable section, not a
