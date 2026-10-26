@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T127: match seven resource-table and buffer lifetime helpers in `sdk_0205c1c8`; document the remaining table binder.
+
 - M2-T126: match both XSI texture-matrix constructors in `lib_0202923c`.
 
 - M2-T123: match the remaining script request wrappers for codes 57 and 60 in `lib_020b95f0`.
