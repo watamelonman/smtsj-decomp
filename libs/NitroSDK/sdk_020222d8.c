@@ -61,3 +61,7 @@ void func_0202523c(u32 *buffer)
 {
     *buffer = 0;
 }
+
+/* func_0202242c (0x0202242c) is still provided by the delink: MWCC 2.0/sp1p5
+ * will not reproduce its duplicate literal-pool slot plus explicit `add`.
+ * See docs/functions/libs-nitrosdk-sdk-020222d8.md, "Hard list". */

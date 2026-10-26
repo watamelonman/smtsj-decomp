@@ -5,9 +5,10 @@ established. Evidence below comes from the delinked ARM instructions, their
 relocations, and the callers already reconstructed in `src/game/`. No module
 boundary changes are introduced.
 
-Public-source search: no reconstructed copy of this address range was present
-in the workspace, and web search was unavailable during this attempt. The SDK
-classification on the card is therefore not treated as provenance for names.
+Public-source search: no reconstructed copy of this address range is present in
+the workspace, and web search was unavailable in both attempts (the second
+attempt's query was cancelled). The SDK classification on the card is therefore
+not treated as provenance for names; the neutral `func_` symbols are kept.
 
 The shared `data_02156d28` view models only the accessed words: a command at
 offset 0, 62 parameter words from offset 4, and the flag word at byte 252.
@@ -29,17 +30,23 @@ offset 0, 62 parameter words from offset 4, and the flag word at byte 252.
 - `func_0202242c` (60 bytes, best 99.67%): the target loads the address of
   `data_02156d28` into two separate literal-pool slots that both have addend
   zero, loads the command word through the first, adds `4` to the second, and
-  only then calls `func_020252fc`. MWCC 2.0/sp1p5 either folds the `+4` into a
-  second relocation addend (`data_02156d28+0x4`), producing a 56-byte function
-  with no `add`, or, when the source expresses the command and parameter pointer
-  as `p[0]`/`p+1`, strength-reduces them to `ldr r0,[r1],#4`. Declaring a
+  only then calls `func_020252fc`. MWCC 2.0/sp1p5 folds the `+4` into a second
+  relocation addend (`data_02156d28+0x4`), producing a 56-byte function with no
+  `add`; when the source expresses the command and parameter pointer as
+  `p[0]`/`p+1`, it strength-reduces them to `ldr r0,[r1],#4`. Declaring a
   separate alias name for the state generates the required duplicate slot and
   explicit `add`, but leaves the second relocation naming the alias instead of
   `data_02156d28`, so objdiff stops at 99.67%; the alias is also only a compile-
-  time name and would not resolve when the unit links from C. Tried struct
-  member access, array indexing, a hoisted command local, local parameter
-  pointers, volatile and integer-cast forms, a union with a word view, separate
-  base expressions, an alias declaration, and the `opt_propagation`,
+  time name and is not a second address when the unit links from C. A local
+  `volatile` pointer is the only non-alias shape seen that emits the `add`, but
+  it also homes the pointer on the stack, adding stack traffic and changing the
+  frame.
+  Attempt 2 re-derived the exact target and retried struct member access, array
+  indexing, `&member`/`member + 1`/subscript forms, a hoisted command local,
+  local pointer variables (plain, `const`, `register`, `volatile`), a union with
+  a word view, a raw `extern u32[]` view with two compatible block-scope
+  declarations, casts through `u8 *`/`void *`/`u32`, integer-address arithmetic,
+  separate base expressions, an alias declaration, and the `opt_propagation`,
   `opt_common_subs`, `opt_strength_reduction`, `opt_lifetimes`,
   `opt_foldconstants`, `opt_movepostops`, and `peephole` pragmas; none produced
   the duplicate slot with the explicit add under the canonical symbol. A human
