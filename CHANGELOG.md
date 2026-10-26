@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M2-T035: match the five remaining operand-supplied request wrappers (`func_020ba4e8`, `func_020ba55c`, `func_020ba588`, `func_020ba620`, `func_020ba64c`) in `libs/unknown/lib_020ba474` at 100% objdiff; all thirteen C definitions in the TU now match.
+- M1-T997: match six `game/unit_0206ae94` updater, ring-walk, angle and random-ratio helpers at 100% objdiff; document the four-instruction vector-copy blocker for `func_0206ba4c` and `func_0206d268`.
 - M2-T033: match the three-operand `func_020b9b18` request handler, completing all nine C definitions in `libs/unknown/lib_020b9a38` at 100% objdiff.
 - M1-T992: match all eight ScanVisor lifecycle, mode dispatch, coordinate and drawing functions at 100% objdiff; document instruction evidence and ownership contracts.
 
