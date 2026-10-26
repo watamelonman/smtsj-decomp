@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the four M1-T794 game/unit_020a7d54 entry state machine, top-level script driver and two work-setup state machines at 100% objdiff; added signed entry/work fields and the motion-object view with instruction evidence.
 - Verified all eight M1-T793 game/unit_020a7d54 descriptor-entry setup, state dispatch, work reset/teardown and slot state-machine functions at 100% objdiff; added typed descriptor/slot views and instruction evidence, and cleaned the four remaining decompiler-derived bodies into named work fields.
 - Document and verify the eight M1-T799 empty callbacks and argument-preserving forwarders in game/unit_02116598.
 - M1-T775: matched game/unit_020ea208 `func_020eaa90`, `func_020eae84` and `func_020eb488` at 100% objdiff; added the +0x1d4 frame counter to the work view and documented the accessor, graphic-creation and state-machine evidence.
