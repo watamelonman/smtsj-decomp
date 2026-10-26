@@ -459,6 +459,7 @@
 - Match all eight `libs/unknown/lib_02049998` packed-status and paired-record helpers with typed layouts and per-function contracts.
 
 - Reconstruct the NitroSystem Si3D joint-scale routine in `libs/unknown/lib_02028810.c`.
+- Add matching C for eight script request/result wrappers in `libs/unknown/lib_020b9820`.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
