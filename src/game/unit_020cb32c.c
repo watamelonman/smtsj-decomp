@@ -285,9 +285,9 @@ typedef struct Unk0cb32cDescriptor {
     void (*callbacks[6])(void);
 } Unk0cb32cDescriptor;
 void func_020cbce4(void);
-void func_020cc5d8(void);
+void func_020cc5d8(Unk0cb32cFullWork *work);
 void func_020cbc50(Unk0cb32cFullWork *work);
-void func_020cccc4(void);
+void func_020cccc4(Unk0cb32cFullWork *work, const void *event);
 /* Fill the descriptor size, flags and six callback addresses, leaving +8 intact;
  * evidence: STR offsets and relocated literals at 020cbaa4..020cbafc. */
 void func_020cbaa4(Unk0cb32cDescriptor *descriptor)
@@ -295,11 +295,11 @@ void func_020cbaa4(Unk0cb32cDescriptor *descriptor)
     descriptor->size = 0x130;
     descriptor->flags = 0;
     descriptor->callbacks[0] = func_020cbce4;
-    descriptor->callbacks[1] = func_020cc5d8;
+    descriptor->callbacks[1] = (void (*)(void))func_020cc5d8;
     descriptor->callbacks[2] = (void (*)(void))func_020cccb4;
     descriptor->callbacks[3] = Unk0cb32c_Nop_0cccc0;
     descriptor->callbacks[4] = (void (*)(void))func_020cbc50;
-    descriptor->callbacks[5] = func_020cccc4;
+    descriptor->callbacks[5] = (void (*)(void))func_020cccc4;
 }
 
 /* Map provider selectors 8,7,9,5 to 1,2,3,4; the original jump table
@@ -397,4 +397,496 @@ void func_020cb36c(void)
     descriptor.words[7]=Unk0cb32c_Unk_0cb54c();
     descriptor.flags[0] |= 0x80;
     Unk0bc1a8_Unk_0bc928(36,65535,(u32)&descriptor);
+}
+
+/* Each original list record occupies 26 bytes, with its ID at +2. */
+typedef struct Unk0cb32cRecord { u8 bytes[2]; u16 id; u8 rest[22]; } Unk0cb32cRecord;
+/* Borrowed list prefix: four records start at work +0x28. */
+typedef struct Unk0cb32cListView { u8 prefix[0x28]; Unk0cb32cRecord records[4]; } Unk0cb32cListView;
+
+void func_020cb78c(void *slot, u32 selector);
+u32 func_020ffd48(u32 entry, int index, int count);
+int func_02117170(void);
+void func_0212351c(void *display, int count, u32 value);
+void Unk044394_Unk_044428(u32 selector);
+/* Refresh borrowed list handles and display, then enable slot 16; evidence:
+ * 020ccba0's stride-26 halfword loads and ordered provider calls. */
+void func_020ccba0(Unk0cb32cFullWork *work)
+{
+    int count, i;
+    func_020cb78c(&work->display, FIELD(u8,work,0x28));
+    count=Unk0de678_CountLeading(work->list);
+    for(i=0;i<count;i++) {
+        u32 handle;
+        if(FIELD(u16,work,0x2a)==604)
+            handle=func_020ffd48(((Unk0cb32cListView *)work)->records[i].id,i-1,count-1);
+        else
+            handle=func_020ffd48(((Unk0cb32cListView *)work)->records[i].id,i,count);
+        work->handles[i]=handle;
+    }
+    func_02117170();
+    func_0212351c(work->display,FIELD(int,work,0xd0),1);
+    Unk044394_Unk_044428(37);
+    Unk0bc1a8_Unk_0bc928(16,15,0);
+    func_020bc9f4(16,0);
+    func_020ccc64((Unk0cb32cStateWork *)work);
+    work->field_124=1;
+}
+
+/* Select nested +0x94/+0x98 using +0x64, then draw two passes;
+ * evidence: branch and paired provider BLs at 020cb810. */
+void func_020cb810(s32 x,s32 y,u32 value)
+{
+    if(!data_02176bc4) return;
+    func_02057ddc(255);
+    if(FIELD(u32,data_02176bc4->display,0x64)==0) {
+        func_02060b60(1,FIELD(u32,data_02176bc4->display,0x94),x,y+1,0,value);
+        func_02057df8();
+        func_02060b60(1,FIELD(u32,data_02176bc4->display,0x94),x,y,0,value);
+    } else {
+        func_02060b60(1,FIELD(u32,data_02176bc4->display,0x98),x,y+1,0,value);
+        func_02057df8();
+        func_02060b60(1,FIELD(u32,data_02176bc4->display,0x98),x,y,0,value);
+    }
+}
+
+void Unk122e1c_Unk_122ff0(void *display);
+void Unk0fedd4_SetState1b(void);
+void Unk124c5c_Set_124d6c(u32 a,u32 b);
+void Unk124c5c_Set_124d8c(u32 a,u32 b);
+int Unk124c5c_IsKind31(void);
+int Unk122e1c_Unk_122f54(void *display);
+void func_020e7f44(u32 a,u32 b,u32 c,u32 d);
+int func_020523a8(void);
+void func_020bcacc(u32 slot,void *descriptor);
+void Unk1241ec_Unk_1242b4(u32 value);
+int Unk0bc1a8_IsSlotEmptyOrFlag8(u32 slot);
+void func_02124c5c(void);
+void Unk122e1c_Unk_123048(void *display);
+int Unk124c5c_IsKind0(void);
+int Unk122e1c_Unk_122f68(void *display);
+/* Advance the byte substate only after each provider completes; borrowed work
+ * must cover +0xdc. Evidence: five-way switch and BL guards at 020cc27c. */
+void func_020cc27c(Unk0cb32cFullWork *work)
+{
+    switch(FIELD(u8,work,4)) {
+    case 0:
+        Unk122e1c_Unk_122ff0(work->display);
+        Unk0fedd4_SetState1b();
+        Unk124c5c_Set_124d6c(0,1);
+        Unk124c5c_Set_124d8c(1,0);
+        FIELD(u8,work,4)++;
+        break;
+    case 1:
+        if(!Unk124c5c_IsKind31()) return;
+        if(!Unk122e1c_Unk_122f54(work->display)) return;
+        func_020e7f44(0,0,0,0);
+        FIELD(u8,work,4)++;
+        break;
+    case 2:
+        if(func_020523a8()==1) return;
+        func_020bcacc(16,(u8 *)work+0xdc);
+        Unk1241ec_Unk_1242b4(0);
+        FIELD(u8,work,4)++;
+        break;
+    case 3:
+        if(!Unk0bc1a8_IsSlotEmptyOrFlag8(16)) return;
+        func_02124c5c();
+        Unk122e1c_Unk_123048(work->display);
+        Unk1241ec_Unk_1242b4(1);
+        Unk124c5c_Set_124d8c(0,31);
+        FIELD(u8,work,4)++;
+        break;
+    case 4:
+        if(!Unk124c5c_IsKind0()) return;
+        if(!Unk122e1c_Unk_122f68(work->display)) return;
+        FIELD(u8,work,4)=0;
+        Unk0cb32c_Unk_0ccaa8((int *)work,4);
+        break;
+    }
+}
+
+void func_0205257c(u32 value);
+int func_02052728(void);
+void func_0209b774(u32 value);
+void func_0209b960(void);
+void func_020bcbc4(u32 value,void *descriptor);
+int Unk09a268_Unk_09bb38(void);
+int Unk0bc1a8_IsSlotEmpty(u32 slot);
+int ImageBg_IsMode1or2(void);
+void func_020525cc(u32 value);
+/* Drive the six byte substates, returning completion codes 1/2/3; evidence:
+ * original 020cb5b4 switch, descriptor loops and guarded byte writeback. */
+int func_020cb5b4(u32 value,u32 *field)
+{
+    u8 state=*(u8 *)field;
+    int result=0;
+    struct { u8 flags[2]; u16 reserved; u32 words[16]; } descriptor;
+    int i;
+    switch(state) {
+    case 0:
+        func_0205257c(0);
+        state++;
+        break;
+    case 1:
+        if(!func_02052728()) { state++; result=1; }
+        break;
+    case 2:
+        switch(value) {
+        case 0: func_0209b774(2); break;
+        case 1:
+            func_0209b960();
+            for(i=0;i<2;i++) descriptor.flags[i]=0;
+            for(i=0;i<16;i++) descriptor.words[i]=0;
+            descriptor.words[7]=3;
+            descriptor.flags[0]|=128;
+            func_020bcbc4(2,&descriptor);
+            break;
+        case 2:
+            Unk044394_Unk_044428(30);
+            func_020cb36c();
+            break;
+        }
+        state++;
+        break;
+    case 3:
+        switch(value) {
+        case 0: case 1:
+            if(Unk09a268_Unk_09bb38()) { state++; result=2; }
+            break;
+        case 2:
+            if(Unk0bc1a8_IsSlotEmpty(36)) {
+                Unk044394_Unk_044534(30);
+                state++;
+                result=2;
+            }
+            break;
+        }
+        break;
+    case 4:
+        if(!ImageBg_IsMode1or2()) { func_020525cc(0); state++; }
+        break;
+    case 5:
+        if(!func_02052728()) { result=3; state=0; }
+        break;
+    }
+    *(u8 *)field=state;
+    return result;
+}
+
+void func_020de960(void *list,u32 value);
+void *func_02122abc(void);
+void ImageBg_Unk_0e54d4(u32 selector);
+void Unk0fd268_Unk_0fd380(u32 value);
+void Unk0bcef4_Unk_0bcef4(void *work,u32 a,u32 b,u32 c);
+void func_02052634(u32 a,u32 b,u32 c);
+/* Initialize the borrowed 0x130-byte work and its owned handles; evidence:
+ * list stride 26, provider BLs and explicit stores at 020cbb00. */
+void func_020cbb00(Unk0cb32cFullWork *work)
+{
+    int i;
+    func_020de960(work->list,4);
+    work->display=func_02122abc();
+    ImageBg_Unk_0e54d4(FIELD(u8,work,0x28));
+    Unk0fd268_Unk_0fd380(2);
+    FIELD(int,work,0xd0)=Unk0de678_CountLeading(work->list);
+    for(i=0;i<FIELD(int,work,0xd0);i++) {
+        u32 handle;
+        if(FIELD(u16,work,0x2a)==604)
+            handle=func_020ffd48(((Unk0cb32cListView *)work)->records[i].id,i-1,FIELD(int,work,0xd0)-1);
+        else
+            handle=func_020ffd48(((Unk0cb32cListView *)work)->records[i].id,i,FIELD(int,work,0xd0));
+        work->handles[i]=handle;
+    }
+    FIELD(u32,work,0xd4)=0;
+    func_02117170();
+    func_0212351c(work->display,FIELD(int,work,0xd0),1);
+    Unk0bc1a8_Unk_0bc928(10,15,0);
+    Unk044394_Unk_044428(37);
+    func_02117170();
+    Unk0bcef4_Unk_0bcef4((u8 *)work+0x98,3,3,1);
+    Unk0bcef4_Unk_0bcef4((u8 *)work+0xb4,4,4,1);
+    data_02176bc4=work;
+    FIELD(u8,work,4)=0;
+    FIELD(u32,work,0xd8)=5;
+    work->state=0;
+    work->field_008=2;
+    FIELD(u32,work,0x120)=0;
+    work->field_124=1;
+    work->field_00c=0;
+    FIELD(u32,work,0x12c)=0;
+    func_020ccc64((Unk0cb32cStateWork *)work);
+    Unk0cb32c_Unk_0cb35c(FIELD(u8,work,0x29));
+    func_02052634(1,0,31);
+}
+
+/* Providers use this nullable, borrowed 68-byte descriptor; bit n marks
+ * words[n] as present. Original accesses preserve unused bytes +2/+3. */
+typedef struct Unk0cb32cParams { u8 flags[2]; u16 reserved; u32 words[16]; } Unk0cb32cParams;
+static inline void ClearParams(Unk0cb32cParams *p)
+{
+    int i;
+    if(p) {
+        for(i=0;i<2;i++) p->flags[i]=0;
+        for(i=0;i<16;i++) p->words[i]=0;
+    }
+}
+static inline void SetParam(Unk0cb32cParams *p,int index,u32 value)
+{
+    if(p) {
+        p->words[index]=value;
+        p->flags[index/8]|=1<<(index%8);
+    }
+}
+static inline void GetParam(const Unk0cb32cParams *p,int index,u32 *value)
+{
+    if(value && p) {
+        u32 word=p->words[index];
+        if(p->flags[index/8] & (1<<(index%8))) *value=word;
+    }
+}
+u32 func_0211708c(void);
+void func_02124ce8(u32 value);
+void Unk122e1c_Unk_123024(void *display);
+/* Advance the five byte substates and construct slot 16 parameters in borrowed
+ * work +0xdc; evidence: descriptor flags and guarded BLs at 020cc3c0. */
+void func_020cc3c0(Unk0cb32cFullWork *work)
+{
+    u32 value;
+    Unk0cb32cParams *params=(Unk0cb32cParams *)((u8 *)work+0xdc);
+    switch(FIELD(u8,work,4)) {
+    case 0:
+        if(FIELD(u32,work,0x12c)) {
+            Unk124c5c_Set_124d6c(0,1);
+            Unk124c5c_Set_124d8c(1,0);
+            FIELD(u8,work,4)++;
+        } else {
+            func_020e7f44(0,0,0,0);
+            FIELD(u8,work,4)=2;
+        }
+        break;
+    case 1:
+        if(!Unk124c5c_IsKind31()) return;
+        func_020e7f44(0,0,0,0);
+        FIELD(u8,work,4)++;
+        break;
+    case 2:
+        value=func_0211708c();
+        ClearParams(params);
+        if(value<=4 || value==8) SetParam(params,1,0);
+        else SetParam(params,1,1);
+        if(FIELD(u32,work,0x12c)) SetParam(params,3,2);
+        else SetParam(params,3,1);
+        func_020bcacc(16,params);
+        Unk1241ec_Unk_1242b4(0);
+        FIELD(u8,work,4)++;
+        break;
+    case 3:
+        if(!Unk0bc1a8_IsSlotEmptyOrFlag8(16)) return;
+        Unk1241ec_Unk_1242b4(1);
+        Unk124c5c_Set_124d8c(0,31);
+        FIELD(u8,work,4)++;
+        break;
+    case 4:
+        if(!Unk124c5c_IsKind0()) return;
+        func_02124c5c();
+        func_02124ce8(1);
+        Unk122e1c_Unk_123024(work->display);
+        FIELD(u8,work,4)=0;
+        work->field_008=4;
+        Unk0cb32c_Unk_0ccaa8((int *)work,2);
+        break;
+    }
+}
+void Unk0de678_Unk_0dec94(void *entry);
+void CaveNpc_SetActive(u32 handle,u32 active);
+void Unk124c5c_Unk_124cb0(void);
+void Unk0bc1a8_Unk_0bc504(void *work,u32 value);
+/* Interpret event kinds 1/3/4, hide list handles or select a stride-26 entry;
+ * evidence: original event jump table and flag tests at 020cccc4. */
+void func_020cccc4(Unk0cb32cFullWork *work,const void *event)
+{
+    const Unk0cb32cParams *params=(const Unk0cb32cParams *)((const u8 *)event+4);
+    u32 index;
+    int i;
+    switch(*(const u32 *)event) {
+    case 3:
+        index=0;
+        if(work->state!=5) return;
+        GetParam(params,3,&index);
+        if(index!=100) {
+            FIELD(u32,work,0xd4)=index;
+            Unk0de678_Unk_0dec94((u8 *)work+0x2c+index*26);
+            work->field_008=5;
+            Unk0cb32c_Unk_0ccaa8((int *)work,11);
+        } else {
+            for(i=0;i<Unk0de678_CountLeading(work->list);i++)
+                CaveNpc_SetActive(work->handles[i],0);
+            Unk124c5c_Unk_124cb0();
+            Unk122e1c_Unk_123048(work->display);
+            work->field_008=4;
+            Unk0cb32c_Unk_0ccaa8((int *)work,2);
+        }
+        break;
+    case 1:
+        Unk0bc1a8_Unk_0bc504(work,0);
+        break;
+    case 4:
+        GetParam(params,7,&FIELD(u32,work,0x120));
+        if(FIELD(u32,work,0x120)==100) {
+            FIELD(u32,work,0x120)=0;
+            func_020ccc64((Unk0cb32cStateWork *)work);
+        } else {
+            work->field_008=9;
+            Unk0cb32c_Unk_0ccaa8((int *)work,7);
+        }
+        break;
+    }
+}
+
+int func_020e807c(void);
+int func_02053824(u32 device,u32 mask);
+int func_02053800(u32 device,u32 mask);
+void func_020bcc7c(void *selector);
+void func_020bccec(void *selector);
+void func_020bcfc4(void *selector,u32 value);
+int Unk122e1c_Unk_122f94(void *display,u32 index);
+void Unk122e1c_Unk_123534(void *display);
+int func_02117208(void);
+u32 func_02117250(void);
+void Unk124c5c_Unk_124cc4(void);
+/* Handle provider selection and input only in state 4, preparing nullable
+ * descriptor fields for state 6; evidence: branches/BLs at 020cc5d8.
+ * Work is borrowed and must cover the original 0x130-byte allocation. */
+void func_020cc5d8(Unk0cb32cFullWork *work)
+{
+    int selection;
+    u8 flag;
+    u32 value;
+    Unk0cb32cParams *params=(Unk0cb32cParams *)((u8 *)work+0xdc);
+    if(work->state!=4) return;
+    selection=func_020e807c();
+    if(selection>=0) {
+        switch(selection) {
+        case 0: Unk0cb32c_Unk_0ccac8((u8 *)work,2); break;
+        case 1: Unk0cb32c_Unk_0ccac8((u8 *)work,0); break;
+        case 2:
+            if(Unk0e651c_Unk_0e666c(0x705))
+                Unk0cb32c_Unk_0ccac8((u8 *)work,1);
+            break;
+        case 3: break;
+        }
+        return;
+    }
+    if(func_02053824(0,64)) {
+        Unk0a0ce4_Unk_0a0da4(0);
+        func_020bcc7c((u8 *)work+0x98);
+        func_020ccc64((Unk0cb32cStateWork *)work);
+        return;
+    }
+    if(func_02053824(0,128)) {
+        Unk0a0ce4_Unk_0a0da4(0);
+        func_020bccec((u8 *)work+0x98);
+        func_020ccc64((Unk0cb32cStateWork *)work);
+        return;
+    }
+    if(func_02053800(0,1024)) {
+        Unk0cb32c_Unk_0ccac8((u8 *)work,2);
+        return;
+    }
+    if(func_02053800(0,2048)) {
+        Unk0cb32c_Unk_0ccac8((u8 *)work,0);
+        return;
+    }
+    if(func_02053800(0,1)) {
+        if(func_02117170()) {
+            switch(FIELD(u32,work,0xa8)) {
+            case 0:
+                if(!Unk122e1c_Unk_122f94(work->display,0)) {
+                    Unk0a0ce4_Unk_0a0da4(4);
+                    return;
+                }
+                Unk122e1c_Unk_123534(work->display);
+                Unk0a0ce4_Unk_0a0da4(1);
+                ClearParams(params);
+                SetParam(params,3,0);
+                flag=func_02117208()==0;
+                value=func_02117250();
+                SetParam(params,1,flag);
+                SetParam(params,2,value);
+                Unk0cb32c_Unk_0ccaa8((int *)work,6);
+                break;
+            case 1:
+                if(FIELD(u32,work,0xd0)==0) {
+                    Unk0a0ce4_Unk_0a0da4(4);
+                    Unk0cb32c_Unk_0ccaa8((int *)work,4);
+                } else if(FIELD(u32,work,0xd0)==1) {
+                    Unk0a0ce4_Unk_0a0da4(1);
+                    Unk124c5c_Unk_124cc4();
+                    Unk122e1c_Unk_122ff0(work->display);
+                    work->field_008=11;
+                    Unk0cb32c_Unk_0ccaa8((int *)work,3);
+                } else {
+                    Unk0a0ce4_Unk_0a0da4(1);
+                    Unk124c5c_Unk_124cc4();
+                    Unk122e1c_Unk_122ff0(work->display);
+                    work->field_008=5;
+                    Unk0cb32c_Unk_0ccaa8((int *)work,3);
+                }
+                break;
+            case 2:
+                Unk0a0ce4_Unk_0a0da4(1);
+                Unk124c5c_Unk_124cc4();
+                FIELD(u8,work,4)=0;
+                Unk0cb32c_Unk_0ccaa8((int *)work,14);
+                break;
+            }
+        } else {
+            switch(FIELD(u32,work,0xa8)) {
+            case 0:
+                if(!Unk122e1c_Unk_122f94(work->display,0)) {
+                    Unk0a0ce4_Unk_0a0da4(4);
+                    return;
+                }
+                Unk0a0ce4_Unk_0a0da4(1);
+                ClearParams(params);
+                SetParam(params,3,0);
+                value=func_02117250();
+                SetParam(params,1,0);
+                SetParam(params,2,value);
+                Unk0cb32c_Unk_0ccaa8((int *)work,6);
+                break;
+            case 1:
+                if(FIELD(u32,work,0xd0)==0) {
+                    Unk0a0ce4_Unk_0a0da4(4);
+                    Unk0cb32c_Unk_0ccaa8((int *)work,4);
+                } else if(FIELD(u32,work,0xd0)==1) {
+                    Unk0a0ce4_Unk_0a0da4(1);
+                    Unk124c5c_Unk_124cc4();
+                    Unk122e1c_Unk_122ff0(work->display);
+                    work->field_008=11;
+                    Unk0cb32c_Unk_0ccaa8((int *)work,3);
+                } else {
+                    Unk0a0ce4_Unk_0a0da4(1);
+                    Unk124c5c_Unk_124cc4();
+                    Unk122e1c_Unk_122ff0(work->display);
+                    work->field_008=5;
+                    Unk0cb32c_Unk_0ccaa8((int *)work,3);
+                }
+                break;
+            case 2:
+                Unk0a0ce4_Unk_0a0da4(1);
+                Unk124c5c_Unk_124cc4();
+                FIELD(u8,work,4)=0;
+                Unk0cb32c_Unk_0ccaa8((int *)work,14);
+                break;
+            }
+        }
+        return;
+    }
+    if(func_02053800(0,2) && FIELD(u32,work,0xa8)!=2) {
+        Unk0a0ce4_Unk_0a0da4(0);
+        func_020bcfc4((u8 *)work+0x98,2);
+        func_020ccc64((Unk0cb32cStateWork *)work);
+    }
 }
