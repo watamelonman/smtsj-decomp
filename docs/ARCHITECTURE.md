@@ -61,3 +61,12 @@ whose +8 origin is caller supplied. Provider ownership remains unchanged.
 view: the handle is at +0x2058 and associated state blocks begin at +0x205c and
 +0x2084. The wrapper depends only on SDK bank, geometry and resource providers;
 callers retain the work storage and provider calls govern resource lifetime.
+`include/libs/NitroSDK/sdk_0205c1c8.h` defines borrowed resource-prefix,
+12-byte entry and 40-byte record views for the resource wrapper helpers. The
+wrapper's flag distinguishes a borrowed resource from one released at teardown;
+the independent 320-byte buffer is caller-owned. These helpers depend only on
+base types and existing copy, fill, allocation, and resource-release providers.
+
+The same resource wrapper header exposes caller-owned path output and owned
+resource loading through the existing prefix, string, path-probe and loader
+providers. Constructed loader paths must fit the original 64-byte stack buffer.

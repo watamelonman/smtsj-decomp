@@ -4,6 +4,10 @@
 
 - M2-T133: match five graphics-bank, texture-capacity and resource-lifetime wrappers; document two remaining compiler mismatches.
 
+- M2-T128: match compressed/fallback resource path construction and the owned `.gtan` resource wrapper in `sdk_0205c1c8`.
+- M2-T132: match NitroSDK card DMA setup in `sdk_02008b9c`; document three hard decompression/unfilter routines.
+
+- M2-T127: match seven resource-table and buffer lifetime helpers in `sdk_0205c1c8`; document the remaining table binder.
 - Match NitroSystem joint blending, material SBC, node-description SBC, and cached envelope matrix mixing in sdk_020222d8; document the remaining projection-map mismatch.
 
 - M2-T126: match both XSI texture-matrix constructors in `lib_0202923c`.
