@@ -1,13 +1,33 @@
 # src/ImageObj.c
 
-- `ImageObj_Get_data_0217231c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `ImageObj_Unk_0775d8` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `ImageObj_Unk_07784c` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `ImageObj_Unk_077880` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `ImageObj_Unk_0778d4` (20 B): decompiler-derived (Ghidra output, cleaned)
-- `ImageObj_Unk_0778e8` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `ImageObj_Unk_07916c` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `ImageObj_Unk_0772f8` (28 B): decompiler-derived (Ghidra output, cleaned)
+## M1-T922 — verified ARM functions
+
+All eight entries match at 100% in the objdiff report. Evidence comes from
+`extract/arm9/arm9.bin`, with addresses and sizes from `config/arm9/symbols.txt`.
+Existing symbol names are retained; unknown field meanings are not inferred.
+
+- `ImageObj_Get_data_0217231c` (16 B, 02077218): loads and returns the word at
+  `data_0217231c`; the literal load followed by a word load supports the accessor name.
+- `ImageObj_Unk_0775d8` (20 B, 020775d8): calls `077620`, `0775a0`, then
+  `077640` in order. No parameters are consumed.
+- `ImageObj_Unk_07784c` (20 B, 0207784c): forwards the supplied word as the
+  second argument to `func_02079238`, with first argument zero.
+- `ImageObj_Unk_077880` (20 B, 02077880): forwards the supplied integer plus
+  one to `func_02079238`, with first argument one.
+- `ImageObj_Unk_0778d4` (20 B, 020778d4): forwards the supplied integer plus
+  three to `func_02079238`, with first argument two.
+- `ImageObj_Unk_0778e8` (24 B, 020778e8): calls the singleton accessor, then
+  reads the word at offset `4 + index * 4`. Requires a live singleton and valid index;
+  the original has no null or bounds check.
+- `ImageObj_Unk_07916c` (24 B, 0207916c): for a valid work pointer whose word
+  at offset 4 equals one, stores `256 - word[0x2c]` at offset 0x1c. Conditional
+  LDR/RSB/STR instructions establish the field offsets, but not their meanings.
+- `ImageObj_Unk_0772f8` (28 B, 020772f8): passes its incoming work pointer to
+  `ImageObj_Release`, then clears `data_0217231c`. The incoming r0 is preserved up
+  to the BL, so the C signature explicitly accepts and forwards that pointer.
+
+Hard list for M1-T922: none.
+
 - `ImageObj_Unk_079028`: decompiler-derived
 - `ImageObj_Unk_0773bc`: decompiler-derived
 - `ImageObj_Unk_07782c`: decompiler-derived

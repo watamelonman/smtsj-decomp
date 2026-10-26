@@ -2,6 +2,9 @@
 
 ## Unreleased
 - M1-T896: verify six SaveLoadTask functions at 100% objdiff, adding dispatch, setup and resource lifecycle C; document the two remaining hard functions.
+- M1-T884: match all eight `game/unit_02044904` rank-comparator, slot-sweep, AI-script and script-state helpers at 100% objdiff; add typed slot/script-table fields and document the raw rank table plus scoped pragmas (DEC-022).
+- Verified all eight M1-T922 ImageObj helpers at 100% objdiff, documented instruction evidence, and typed the release wrapper's forwarded work pointer.
+- M1-T875: match both `game/unit_020a6174` second-bank map-rebuild and provider-bank respawn functions at 100% objdiff; document the table-selection and two-bank record contracts.
 - Verified all eight M1-T897 wrappers in `game/unit_020e8228` at 100% objdiff, with typed forwarding contracts and instruction evidence.
 - M1-T871: match the 1336-byte game/unit_020cb32c state callback at 100% objdiff, with typed work and by-value list contracts.
 - M1-T870: match seven game/unit_020cb32c refresh, state, descriptor and input functions at 100% objdiff; document the remaining refresh loop for scratch follow-up.

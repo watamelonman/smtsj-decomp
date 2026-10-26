@@ -97,11 +97,24 @@ void Unk044904_AddRecUnk08(u32 a, u32 b, int n)
     r->unk_08 += n;
 }
 
+/* Shared slot and embedded-entry view. The twelve embedded entries at manager
+ * +0x36c use the same field layout and are 0x2e0 bytes apart. */
 typedef struct Unk044904Obj {
-    u32 unk_0000;               /* bits 16-23 tested as "active" */
-    u8 pad_0004[0x1da];
+    u32 unk_0000;               /* bits 16-23 tested as "type" */
+    u8 pad_0004[0x1d4];
+    u16 unk_01d8;
+    u8 pad_01da[2];
+    u8 unk_01dc;
+    u8 unk_01dd;
     u8 unk_01de;
+    u8 pad_01df[0x101];
 } Unk044904Obj;
+
+/* Manager +0x60 script-table view; only the +0x3c field is observed here. */
+typedef struct Unk044904ScriptTable {
+    u8 pad_0000[0x3c];
+    u32 unk_003c;
+} Unk044904ScriptTable;
 
 typedef struct Unk044904Mgr {
     u8 pad_0000[0x40];
@@ -119,7 +132,7 @@ typedef struct Unk044904Mgr {
     u32 unk_0054;
     u32 unk_0058;
     u32 unk_005c;               /* compared with 1 by Unk044904_Unk_045460 */
-    u8 pad_0060[0x4];
+    Unk044904ScriptTable *unk_0060;
     Unk044904Obj *slots[10];    /* +0x64 */
     u8 pad_008c[0x1f0];
     u32 unk_027c;               /* compared with 4 by func_02046538 */
@@ -157,6 +170,117 @@ int func_02046538(u16 *state);
 void func_0204a780();
 void func_0204a694();
 void Unk0bc1a8_Unk_0bc928();
+/* Loader record used by the comparator: kind 1 reads +0x34, other kinds +0x4c. */
+typedef struct Unk044904RankRecord {
+    u8 pad_0000[0x34];
+    u32 unk_0034;
+    u8 pad_0038[0x14];
+    u32 unk_004c;
+} Unk044904RankRecord;
+
+/* Twelve-byte id entry; the script list stores eight before its +0x60 count. */
+typedef struct Unk044904IdEntry {
+    u16 id;
+    u8 pad_0002[10];
+} Unk044904IdEntry;
+
+typedef struct Unk044904IdList {
+    Unk044904IdEntry entries[8];
+    u32 count;
+} Unk044904IdList;
+
+u8 Unk09974c_GetEntryUnk08(u32 id);
+Unk044904RankRecord *Unk09974c_Unk_099d14(u32 id);
+Unk044904RankRecord *Unk09974c_Unk_099c60(u32 id);
+void func_0204aba8(Unk044904Obj *o);
+void func_0204a7b4(Unk044904Obj *o, int value);
+int func_0204a870(Unk044904Obj *o);
+Unk044904Obj *func_0204acdc(Unk044904Obj *o);
+void func_0204af80(Unk044904Obj *o);
+void func_0204ae84(Unk044904Obj *o);
+void func_0204aecc(Unk044904Obj *o, const char *path, int mode);
+void func_0204af70(Unk044904Obj *o, Unk044904Obj *src);
+void func_020449c4(void *view, u32 id);
+int func_0204a244(Unk044904Obj *o);
+int func_020b07c4(int mode);
+int func_02052624(void);
+void func_0205257c(int mode);
+s8 Unk0a50d4_GetUnk06(void);
+void Unk0a4e48_Unk_0a4e9c(int value);
+void Unk118b04_Unk_118e50(int id, int value);
+s32 func_02118dec(u16 id);
+void Unk118b04_SetFlag(int id, int value);
+void func_0205e590(int value);
+void func_020456d8(int mode);
+void func_020455cc(int mode);
+int func_02050074(int selector, int index);
+void Unk039774_Unk_039b74(int mode);
+void func_02045138(void);
+void func_020451d8(void);
+void func_020457e8(void);
+void func_020458e8(void);
+
+/* Comparator input: only the leading id halfword is read. */
+typedef struct Unk044904SortRec { u16 id; } Unk044904SortRec;
+
+/* 02044b84: sorts two records by their table rank and, for unranked
+ * entries, by the category value reached through the kind-1/kind-2 loaders.
+ * Returns negative, zero or positive; both records are borrowed. See DEC-022
+ * for the raw rank-table literal and the scoped propagation setting. */
+#pragma push
+#pragma opt_propagation off
+s32 func_02044b84(Unk044904SortRec *a, Unk044904SortRec *b)
+{
+    u32 kindA = Unk09974c_GetEntryUnk08(a->id);
+    u32 kindB = Unk09974c_GetEntryUnk08(b->id);
+    u8 *ranks = (u8 *)0x0212cc24;
+    u8 rankA = ranks[kindA];
+    u8 rankB = ranks[kindB];
+    s32 result = rankB - rankA;
+    if (result != 0) {
+        return result;
+    }
+    if (rankA == 0) {
+        u32 valueA = 0;
+        u32 valueB = 0;
+        Unk044904RankRecord *rec;
+        if (kindA == 1) {
+            rec = Unk09974c_Unk_099d14(a->id);
+            if (rec != 0) {
+                valueA = rec->unk_0034;
+            }
+        } else {
+            rec = Unk09974c_Unk_099c60(a->id);
+            if (rec != 0) {
+                valueA = rec->unk_004c;
+            }
+        }
+        if (kindB == 1) {
+            rec = Unk09974c_Unk_099d14(b->id);
+            if (rec != 0) {
+                valueB = rec->unk_0034;
+            }
+        } else {
+            rec = Unk09974c_Unk_099c60(b->id);
+            if (rec != 0) {
+                valueB = rec->unk_004c;
+            }
+        }
+        if (valueB == valueA) {
+            result = 0;
+        } else if (valueB > valueA) {
+            result = 1;
+        } else {
+            result = -1;
+        }
+    }
+    if (result == 0) {
+        result = a->id - b->id;
+    }
+    return result;
+}
+#pragma pop
+
 /* 02044fa0: returns the borrowed pointer from manager slot i (word array at
  * +0x64), or null when unregistered, i is negative, or i is 4 or greater
  * (cmp #0 / cmp #4 with signed branches in the original). */
@@ -564,13 +688,9 @@ typedef struct Unk044904Bits {
     u8 pad_0044[0x8];
     u32 unk_004c;
 } Unk044904Bits;
-typedef struct Unk044904Item {
-    u32 hdr;
-    u8 pad[732];
-} Unk044904Item;
 typedef struct Unk044904Items {
     u8 pad_0000[876];
-    Unk044904Item items[12];
+    Unk044904Obj items[12];
 } Unk044904Items;
 void func_02121d84();
 void func_02122188();
@@ -608,7 +728,7 @@ void Unk044904_Unk_045480(void)
     m->b20 = 1;
     func_02121d84();
     for (i = 0; i < 12; i++) {
-        if (((it->items[i].hdr >> 16) & 0xff) == 1) {
+        if (((it->items[i].unk_0000 >> 16) & 0xff) == 1) {
             func_02122188(&it->items[i]);
         }
     }
@@ -627,7 +747,7 @@ u32 Unk044904_Unk_046448(u16 *arg0)
 
 
 void func_020450b8(void);
-int func_02045138();
+void func_02045138(void);
 void Unk044904_Unk_04527c();
 int Unk0aa118_Clear814();
 int func_020f8098();
@@ -854,6 +974,147 @@ void func_020450b8(void)
     state->unk_0068 = 0;
 }
 
+/* 02045138: shuffles a ten-entry permutation and copies one byte from it to
+ * the +0x1dc field of each non-null manager slot, in slot order. See DEC-022
+ * for the scoped propagation setting and explicit loop form. */
+#pragma push
+#pragma opt_propagation off
+void func_02045138(void)
+{
+    u8 order[10];
+    u8 i;
+    int j;
+    int n;
+    u8 *end;
+    u8 *value;
+    i = 0;
+    do {
+        order[i] = i;
+        i++;
+    } while (i < 10);
+    j = 10;
+    end = &order[j - 1];
+    j--;
+    do {
+        u32 k = func_02050074(0, j);
+        if (k != (u32)j) {
+            u8 tmp = *end;
+            *end = order[k];
+            order[k] = tmp;
+        }
+        end--;
+        j--;
+    } while (j >= 0);
+    value = order;
+    n = 0;
+    do {
+        Unk044904Obj *o = UNK044904_MGR()->slots[n];
+        if (o != 0) {
+            o->unk_01dc = *value;
+        }
+        value++;
+        n++;
+    } while (n < 10);
+}
+#pragma pop
+
+/* 020451d8: resets every active manager slot and every active embedded
+ * 0x2e0-byte entry; an embedded entry is also reset when no slot matches it.
+ * Type byte is bits 16-23 of the leading word. */
+void func_020451d8(void)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    Unk044904Items *items = (Unk044904Items *)m;
+    int i;
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = m->slots[i];
+        if (o != 0 && ((o->unk_0000 >> 16) & 0xff) != 0) {
+            func_0204aba8(o);
+            func_0204a7b4(o, 2);
+        }
+    }
+    {
+        int j;
+        Unk044904Obj *o = items->items;
+        for (j = 0; j < 12; j++) {
+            if (((o->unk_0000 >> 16) & 0xff) != 0) {
+                if (Unk044904_Unk_044f4c(o->unk_0000) < 0) {
+                    func_0204aba8(o);
+                    func_0204a7b4(o, 2);
+                }
+            }
+            o++;
+        }
+    }
+}
+
+/* 020457e8: finishes every accepted manager slot, and every accepted embedded
+ * 0x2e0-byte entry when manager flag bit 10 is set. Each resource is detached
+ * from its context before the callback, then given back to it. */
+void func_020457e8(void)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    Unk044904Items *items = (Unk044904Items *)m;
+    int i;
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = m->slots[i];
+        if (o != 0 && func_0204a870(o) != 0) {
+            Unk044904Obj *resource = func_0204acdc(o);
+            func_0204af80(resource);
+            func_0204ae84(resource);
+        }
+    }
+    if (m->flag_0040_10) {
+        int j;
+        Unk044904Obj *o = items->items;
+        for (j = 0; j < 12; j++) {
+            if (func_0204a870(o) != 0) {
+                Unk044904Obj *resource = func_0204acdc(o);
+                func_0204af80(resource);
+                func_0204ae84(resource);
+            }
+            o++;
+        }
+    }
+    Unk039774_Unk_039b74(1);
+}
+
+/* 020458e8: loads the AI script named by the halfword at +0x1d8 of each
+ * manager slot whose type is 2 (or any nonzero type while manager flag bit 10
+ * is set), then binds it to the slot's resource. */
+void func_020458e8(void)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    char path[128];
+    int i;
+    int mode = 1;
+    func_020457e8();
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = m->slots[i];
+        if (o == 0) {
+            continue;
+        }
+        if (UNK044904_MGR()->flag_0040_10) {
+            if (((o->unk_0000 >> 16) & 0xff) != 0) {
+                goto load_slot;
+            }
+        } else {
+            if (((o->unk_0000 >> 16) & 0xff) == 2) {
+                goto load_slot;
+            }
+        }
+        goto next_slot;
+load_slot:
+        Unk044904_BuildEnemyAiPath(path, o->unk_01d8);
+        o = func_0204acdc(o);
+        func_0204ae84(o);
+        func_0204aecc(o, path, mode);
+        func_0204af70(o, o);
+next_slot:
+        ;
+    }
+}
+
 /* 02045a30: tests whether manager slot `slot` holds the tagged key
  * 0x10000 | (u16)id. On a match, stores that key through `out` when non-null
  * and returns 1. Returns 0 for a missing or mismatched slot. The original also
@@ -880,6 +1141,89 @@ int func_02045a30(s32 slot, s32 id, u32 *out)
         }
     }
     return found;
+}
+
+/* 02045fec: refreshes the two script providers when idle and, unless manager
+ * flag bit 10 is set or the script table's +0x3c byte field exceeds 1, flags
+ * every listed id accepted by func_02118dec. Always submits mode 10. */
+/* 02045ca8: reports 1 when mode 1 is already busy; otherwise requires mode 2
+ * to be busy, applies Unk_04502c to slots of type 2 whose func_0204a244 value
+ * is 7, and reports 1. Mode 2 idle is the only zero path. */
+int func_02045ca8(void)
+{
+    Unk044904Mgr *m;
+    int i;
+    if (func_020b07c4(1) != 0) {
+        return 1;
+    }
+    if (func_020b07c4(2) != 0) {
+        m = UNK044904_MGR();
+        for (i = 0; i < 10; i++) {
+            Unk044904Obj *o = m->slots[i];
+            if (o != 0 && ((o->unk_0000 >> 16) & 0xff) == 2 && func_0204a244(o) == 7) {
+                func_020449c4((void *)Unk044904_Unk_04502c(), o->unk_0000);
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+
+int func_02045fec(void)
+{
+    Unk044904Mgr *m;
+    if (func_02052624() == 0) {
+        func_0205257c(3);
+    }
+    if (Unk0a50d4_GetUnk06() == 0) {
+        Unk0a4e48_Unk_0a4e9c(2);
+    }
+    m = UNK044904_MGR();
+    if (!m->flag_0040_10) {
+        u32 field = (m->unk_0060->unk_003c << 22) >> 24;
+        if (field <= 1) {
+            Unk044904IdList *list;
+            u32 i;
+            Unk118b04_Unk_118e50(1, 1);
+            list = (Unk044904IdList *)Unk044904_Unk_04502c();
+            for (i = 0; i < list->count; i++) {
+                s32 result = func_02118dec(list->entries[i].id);
+                if (result >= 0) {
+                    Unk118b04_SetFlag(result, 1);
+                }
+            }
+        }
+    }
+    func_0205e590(10);
+    return 1;
+}
+
+/* 0204649c: advances the battle script state word. Flag bit 16 with a
+ * matching +0x5c word, or flag bit 10, writes state 2 and returns; otherwise
+ * clears a pending +0x50/+0x54 pair and sends the mode-1 request. */
+int func_0204649c(u16 *state)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    if (m->flag_0040_16) {
+        if (Unk044904_Unk_045460(2) != 0) {
+            *state = 2;
+            return 2;
+        }
+    }
+    if (m->flag_0040_10) {
+        func_020456d8(1);
+        func_020455cc(1);
+        *state = 2;
+        return 2;
+    }
+    if (m->unk_0050 != 0 && m->unk_0054 != 0) {
+        m->unk_0050 = 0;
+        m->unk_0054 = 0;
+    }
+    if (Unk044904_Unk_0459ec() == 0) {
+        Unk044904_Unk_045c58(1);
+    }
+    return 1;
 }
 
 /* 02046538: advances the enemy talk-tone script. Returns 0 while Unk_045c7c
