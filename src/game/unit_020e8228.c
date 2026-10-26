@@ -1153,7 +1153,7 @@ void func_020ea0ec(void)
 
 void func_02057e58(int a, int b, int c);
 void func_020f7e48(u32 kind, u32 first, u32 second);
-void func_020bcacc(u32 kind, const Unk0e8228Sel *request);
+void func_020bcacc(u32 kind, const void *request);
 int Unk0bc1a8_IsSlotEmpty(u32 slot);
 void Unk0bc1a8_Unk_0bc9b4(u32 slot, u32 value);
 u32 func_020ea630(u32 value);
@@ -1320,4 +1320,85 @@ void func_020e9778(u32 work, u32 selector)
         if (Unk0e8228_IsField4One()) Unk0e8228_Unk_0e8cbc();
         return;
     }
+}
+
+u32 func_020445f4(int index, int item);
+u32 func_0204fed8(u32 resource, int index);
+int Unk0e651c_Unk_0e666c(u32 flag);
+extern u32 data_02150c80[][2];
+/* Original 020ea058 updates three provider handles from resource 39. Flag
+ * 0x707 selects entry 2 versus 13; provider storage remains borrowed. */
+void func_020ea058(void)
+{
+    u32 provider = Unk0ea208_Get_data_02176ddc();
+    u32 resource;
+    int i;
+    if (provider == 0 || FIELD(u32, provider, 0x1cc) == 0) return;
+    resource = func_020445f4(39, 0);
+    for (i = 0; i < 3; i++) {
+        int selector = i + 1;
+        if (selector == 2 && Unk0e651c_Unk_0e666c(0x707) == 0) selector = 13;
+        func_02061f10(((u32 *)provider)[i + 4], -1, 0, 0,
+                      func_0204fed8(resource, selector));
+    }
+}
+/* func_020ea160 is intentionally left to the delinked object. Its original
+ * object uses two literal-pool words that both resolve to data_02150c80, but
+ * the delink cannot distinguish the source alias that produced the second
+ * word, so this TU cannot reproduce it without a new symbol. See the function
+ * document. */
+
+/* Request layout submitted to 020bc9f4/020bcacc: two flag bytes and sixteen
+ * one-word records, as in the builders in unit_020f7188.c. See DEC-013. */
+typedef struct Unk0e8228RequestWord {
+    u32 value;
+} Unk0e8228RequestWord;
+typedef struct Unk0e8228Request {
+    u8 flags[2];
+    u8 pad[2];
+    Unk0e8228RequestWord words[16];
+} Unk0e8228Request;
+
+/* Clear the request; inlining reproduces the original two loops at both call
+ * sites. See DEC-013. */
+static inline void Unk0e8228_ClearRequest(Unk0e8228Request *p)
+{
+    int j;
+    for (j = 0; j < 2; j++) p->flags[j] = 0;
+    for (j = 0; j < 16; j++) p->words[j].value = 0;
+}
+
+void func_020bc9f4(u32 kind, const void *request);
+/* Original 020e8a30 submits two stack-owned requests for kind 35, then clears
+ * work +0x184. The first passes words 2/3 through one-word records; the second
+ * passes word 0 and a flag selected by work +0x184. Consumers run synchronously. */
+void func_020e8a30(u32 value, u32 mode)
+{
+    Unk0e8228Request request;
+    Unk0e8228RequestWord enabled;
+    Unk0e8228RequestWord selected;
+    u32 work;
+    int i;
+    work = Unk0e8228_Get_data_02176ce0();
+    if (work == 0) return;
+    func_020f7e48(35, 1, mode);
+    Unk0e8228_ClearRequest(&request);
+    enabled.value = 1;
+    request.words[2] = enabled;
+    selected.value = value;
+    request.words[3] = selected;
+    request.flags[0] |= 12;
+    func_020bc9f4(35, &request);
+    Unk0e8228_ClearRequest(&request);
+    request.words[0].value = 35;
+    request.flags[0] |= 1;
+    if (FIELD(u32, work, 0x184) != 0) {
+        request.words[1].value = 1;
+        request.flags[0] |= 2;
+    } else {
+        request.words[1].value = 0;
+        request.flags[0] |= 2;
+    }
+    FIELD(u32, work, 0x184) = 0;
+    func_020bcacc(13, &request);
 }

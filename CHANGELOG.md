@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- M1-T907: match five `game/unit_020e8228` bank scans, selection-bit, index-advance, state teardown and object-state functions at 100% objdiff; add typed contracts and document the three remaining allocator/literal-pool hard cases.
+- M1-T907: match seven `game/unit_020e8228` bank scans, selection-bit, index-advance, request-builder, state teardown and object-state functions at 100% objdiff; add typed contracts and document the remaining literal-pool alias hard case.
 
 - Match eight more game/unit_020cf5e8 callback, slot, range and state functions in C.
 - M1-T937: match all eight requested `game/unit_0206fb70` float-ratio, second-animation channel-advance and key-selection functions at 100% objdiff; add the typed second animation view and document instruction evidence.
