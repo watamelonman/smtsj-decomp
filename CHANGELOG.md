@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T990: match all eight ScanVisor list and record helpers at 100% objdiff; add the signed-coordinate record query and document instruction evidence.
+- M1-T982: match ID-bank validation and paired-panel drawing at 100% objdiff; document two remaining grid-rendering hard cases.
 - M1-T989: verify eight ScanVisor state, slot lookup and provider helpers at 100% objdiff; document typed contracts and original instruction evidence.
 - Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
 - M1-T981: match five grid, cursor and drawing helpers; document three input/drawing instruction-generation hard cases.
@@ -417,6 +418,8 @@
 - Add matching C for all three sdk_02027dac NitroSystem visibility and basic joint-transform routines.
 
 - Match all eight requested CRI `cri_0207c82c` record helpers with typed fields and instruction-based contracts.
+
+- Matched all eight M2-T022 CRI record helpers with typed fields and documented instruction evidence.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
