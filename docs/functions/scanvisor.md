@@ -392,3 +392,51 @@ checks compiled behavior. No hard functions or omissions for M1-T991.
 - `ScanVisor_FindSlotByKey`: hand-matched
 - `ScanVisor_AnySlotField14`: hand-matched
 - `ScanVisor_AllSlotsF28Is80`: hand-matched
+
+## M1-T992: mode dispatch, lifecycle and coordinate updates
+
+Names retain the configured symbols. Evidence is the delinked ARM instructions
+at each function's address; no additional gameplay meaning is inferred.
+The existing TU and its prior matched functions are preserved.
+
+- `func_020a269c` (160 bytes): null-guard the global work getter and dispatch
+  the caller flag by mode. Modes 0/2 call five setters, mode 1 calls four,
+  mode 3 calls three; other modes do nothing.
+- `func_020a2c00` (144 bytes): snapshot the global work mode into destination
+  word +0, then write query results to byte +4 bits 4, 1, 5 and 0 in order.
+  Other bits survive; null global work leaves the destination untouched.
+  Query returns are truncated to eight bits before bitfield assignment,
+  reproducing the original `and #255` instructions.
+- `func_020a3008` (172 bytes): add signed velocities +0x10/+0x14 to the
+  coordinates +8/+0xc, clamp against four caller bounds and clear a velocity
+  when its bound is reached. Negative directions precede positive directions.
+  The caller owns writable storage and must avoid signed arithmetic overflow.
+- `func_020a2f3c` (204 bytes): increment signed work counter +4 and wrap at
+  65535. Modes 0/2 update sub-objects +0x24, +8, +0x78, +0x24c and +0x428;
+  modes 1/3 update +0x24 and +0x78. Other modes only advance the counter.
+- `func_020a3630` (220 bytes): acquire ten resources using data_0214cda8,
+  copy the four-word data_0213c3b8 descriptor to the stack, and allocate four
+  handles at +0xd0 with 0x60 stride. The first uses ID 192 unless mode is 3;
+  the other path uses data_0214cdd0 and value 0x664. Finally initialize provider
+  2 and store ID 194's handle at global provider work +0x1244.
+- `ScanVisor_Unk_0a2e5c` (224 bytes): release nonzero handles at +8/+0x24/
+  +0x40/+0x24c, clear those fields and +0x5c, tear down the sub-objects and
+  resource providers, and clear data_02176b04. The pre-existing body omitted
+  the handle arguments to 0205ddb4; these now follow the original loads.
+- `ScanVisor_Draw` (320 bytes): existing draw body verified unchanged at
+  instruction level. Modes 1/3 submit layer 2 and modes 0/2 layer 1 through
+  02057e58, run their drawing callbacks, then restore 020580ec(1).
+  These rendering calls support the retained descriptive symbol.
+- `func_020a2d0c` (336 bytes): allocate 0x970-byte task work with update,
+  draw and release callbacks, publish it globally, and initialize the mode's
+  providers and fields. Returns null on allocation failure. Mode 1 falls
+  through into mode 3's list setup; mode 2 disables the selected setters.
+  The task provider owns the allocation.
+
+Validation: all eight functions are 100% in objdiff; the match gate checks all
+88 C definitions in this TU at 100%. Anticheat, all nine unittest tests, build
+and original-image checksum pass. No new tests are required by this card;
+objdiff checks the complete compiled instruction behavior. The TU continues to
+link from the delink pending the human-owned completion flag.
+
+No hard functions for M1-T992.
