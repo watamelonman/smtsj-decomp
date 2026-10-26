@@ -411,6 +411,8 @@
 - Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.
 - Matched all seven M1-T300 functions in `game/unit_02115fbc` at 100% objdiff, with typed resource/state/record views and per-function contracts.
 
+- Reconstruct all four NitroSystem G3D animation unlink and texture-size routines in libs/unknown/lib_02021920.
+
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
