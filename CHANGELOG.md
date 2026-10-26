@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match the NitroSDK sub-display palette reset wrappers, shared VRAM bank disable helper, and main BG extended palette disable wrapper (M2-T061).
 - M2-T021: match the CRI four-record allocation helper `func_0207c868` at 100% objdiff with typed source and callback contracts.
 - M2-T042: reconstruct eight operand-supplied selector wrappers in `libs/unknown/lib_020ba05c` with typed contracts and instruction evidence.
 - M1-T998: match `game/unit_0206ae94` render constructor `func_0206af04` and axis-angle setter `func_0206b6e0` at 100% objdiff; document the five remaining render/state bodies as hard cases.
