@@ -242,6 +242,9 @@ void Unk06fb70_Unk_070168(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[4], a->vel[4], a->max[4]);
 }
 
+/* ARM 0x020701bc advances animation channel 3 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070950, otherwise it clamps position 5 within its maximum. */
 void Unk06fb70_Unk_0701bc(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[3] >= 4) {
@@ -256,6 +259,9 @@ void Unk06fb70_Unk_0701bc(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[5], a->vel[5], a->max[5]);
 }
 
+/* ARM 0x02070210 advances animation channel 4 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070a6c, otherwise it clamps position 6 within its maximum. */
 void Unk06fb70_Unk_070210(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[4] >= 4) {
@@ -270,6 +276,9 @@ void Unk06fb70_Unk_070210(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[6], a->vel[6], a->max[6]);
 }
 
+/* ARM 0x02070264 advances animation channel 5 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070b88, otherwise it clamps position 7 within its maximum. */
 void Unk06fb70_Unk_070264(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[5] >= 4) {
@@ -284,6 +293,9 @@ void Unk06fb70_Unk_070264(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[7], a->vel[7], a->max[7]);
 }
 
+/* ARM 0x020702b8 advances animation channel 6 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070cc0, otherwise it clamps position 8 within its maximum. */
 void Unk06fb70_Unk_0702b8(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[6] >= 4) {
@@ -298,6 +310,9 @@ void Unk06fb70_Unk_0702b8(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[8], a->vel[8], a->max[8]);
 }
 
+/* ARM 0x0207030c advances animation channel 7 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070df8, otherwise it clamps position 9 within its maximum. */
 void Unk06fb70_Unk_07030c(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[7] >= 4) {
@@ -312,6 +327,9 @@ void Unk06fb70_Unk_07030c(Unk06fb70Anim *a, Unk06fb70Anim *b)
     Unk06fb70_AddClamped(&a->pos[9], a->vel[9], a->max[9]);
 }
 
+/* ARM 0x02070360 advances animation channel 8 while its signed key state is
+ * below 4; on tick expiry it resets tick/velocity and selects the next key
+ * through 0x02070f30, otherwise it clamps position 10 within its maximum. */
 void Unk06fb70_Unk_070360(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
     if (a->state[8] >= 4) {
@@ -544,7 +562,34 @@ void Unk06fb70_Unk_070f30(Unk06fb70Anim *a, Unk06fb70Anim *b)
     }
 }
 
+/* ARM 0x02071844 tears down a manager: it releases the 50 objects at +0x234,
+ * zeroes the words at +0x24..+0x30, clears the word reached through +0x224
+ * when non-null, then calls func_02061424 on the manager. */
 void Unk06fb70_Unk_071844(Unk06fb70Mgr *m)
+{
+    int i;
+    if (m == 0) {
+        return;
+    }
+    for (i = 0; i < 50; i++) {
+        Unk06ae94_Unk_06c0b0(m->objs[i]);
+    }
+    m->unk_24 = 0;
+    m->unk_28 = 0;
+    m->unk_2c = 0;
+    m->unk_30 = 0;
+    if (m->unk_224 != 0) {
+        *m->unk_224 = 0;
+    }
+    func_02061424(m);
+}
+
+/* ARM 0x02071d6c releases a second manager of the same layout: it tears down
+ * the 50 objects at +0x234, zeroes the words at +0x24..+0x30, clears the word
+ * pointed to by +0x224 (when present), then calls func_02061424 on the manager.
+ * The identical body at 0x02071844 is a separate original function, so this
+ * one is emitted as its own C definition rather than an alias. */
+void func_02071d6c(Unk06fb70Mgr *m)
 {
     int i;
     if (m == 0) {
