@@ -1,4 +1,4 @@
-# sdk_020544b0 BG control setters (M2-T099)
+# sdk_020544b0 BG control setters (M2-T099 / M2-T100)
 
 Evidence: public [NitroSDK gx_bgcnt.h](https://github.com/ntrtwl/NitroSDK/blob/master/include/nitro/gx/gx_bgcnt.h),
 compared with the original ARM instructions at each symbol address. The SDK
@@ -64,8 +64,34 @@ and area-over policy at bit 13, in that order. The SDK extended-palette
 affine mode constant is zero; this ordering distinguishes it from the ordinary
 affine setter even though its register value formula is equivalent.
 
+## func_020544b0
+
+Corresponds to `G2S_SetBG0Control`; MMIO `0x04001008`. Parameters:
+`(size, color, screen_base, character_base, palette_slot)`. Writes shifts
+14, 7, 8, 2, and 13 in order. The palette slot selects the extended palette
+pair (0 or 1); the caller must configure text mode.
+
+## func_0205453c
+
+Corresponds to `G2_SetBG1Control`; MMIO `0x0400000a`. Parameters and
+expression order match `func_020544b0`, targeting main-engine BG1.
+
+## func_02054570
+
+Corresponds to `G2_SetBG0Control`; MMIO `0x04000008`. Parameters and
+expression order match `func_020544b0`, targeting main-engine BG0.
+The caller must select 2D rather than 3D BG0 display.
+
+## func_020546ac
+
+Corresponds to `G2_SetBG3Control256x16Affine`; MMIO `0x0400000e`.
+Parameters: `(size, wrap, screen_base, character_base)`. Writes shifts
+14, 2, 8, and 13 in order. The SDK extended palette mode constant is zero.
+The caller must configure an extended affine BG mode.
+
 ## Scope and hard list
 
-Only the eight M2-T099 functions are reconstructed. The other functions in this
-shared TU belong to M2-T100 and remain in the delinked object. No hard cases
-are identified for M2-T099. The human-owned delink completion flag is unchanged.
+All twelve functions in this shared TU are reconstructed, including the four
+M2-T100 functions. No hard cases remain. The human-owned delink completion
+flag is unchanged. Validation uses compiled ARM objdiff comparisons and the
+original-image checksum; no host MMIO tests are added.
