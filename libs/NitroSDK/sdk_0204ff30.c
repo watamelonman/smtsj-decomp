@@ -1,5 +1,39 @@
 #include "types.h"
 
+extern u32 data_0213ce44;
+extern void func_02006d0c(void);
+extern void func_020026a0(void);
+extern void func_020026a4(void);
+extern void func_02002824(void);
+extern void func_0200e860(void);
+extern void func_020535cc(void);
+extern void func_02053c08(void);
+extern void func_02052e68(u32 first, u32 second);
+extern void func_02051378(void);
+extern void func_02007460(void);
+void func_0205002c(u32 stream, u32 seed);
+
+/* Runs the observed startup call sequence; forwards both words unchanged to 02052e68.
+ * The original stores the startup flag and seeds both streams with 1192. */
+u32 func_0204ffa8(u32 first, u32 second)
+{
+    func_02006d0c();
+    func_020026a0();
+    data_0213ce44 = 1;
+    func_020026a4();
+    func_02002824();
+    *(volatile u32 *)0x04001000 &= ~0x10000;
+    func_0200e860();
+    func_020535cc();
+    func_02053c08();
+    func_02052e68(first, second);
+    func_02051378();
+    func_0205002c(0, 1192);
+    func_0205002c(1, 1192);
+    func_02007460();
+    return 1;
+}
+
 /* Borrowed MTBL prefix; offsets and signature come from 0204ff30/0204ff64. */
 typedef struct TableHeader {
     u32 signature;
