@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+- Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.
+- Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
 
 - M1-T974: match seven CaveArea initialization, input, message, marker and motion functions; document the remaining list-renderer register allocation blocker.
 
