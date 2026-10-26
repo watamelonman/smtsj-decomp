@@ -145,3 +145,28 @@ existing body already left in r0 (needed by `func_020ea3cc`).
 - `Unk0ea208_Unk_0eac40`: hand-matched
 - `Unk0ea208_ForEachSlot`: hand-matched
 - `Unk0ea208_Unk_0ead64`: hand-matched
+
+## M1-T774 — verified matches
+
+All eight functions are 100% in the local objdiff report. Evidence below comes
+from the original delinked ARM instructions and their relocation targets. The
+functions borrow the singleton, the battle entry, its id array and the +0x70
+slot records; none allocates or transfers ownership. `Unk0ea208Work` is the
+singleton view, `Unk0ea208Slot` one 56-byte slot, `Unk0ea208Desc` the borrowed
+resource descriptor used by func_020eb324, and `Unk0ea208Graphic` the object
+returned by `Unk065e88_Call_02065fc0`.
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `func_020ea290` | 144 B | Rebuild the six-entry +0x58 table for one battle entry: after the singleton/ready guard, reserve index 0 with group-39/entry-3 when the `0e8c68` state word is set, then copy each halfword of the entry's id array through `func_020ea320`, skipping values for which `Unk0cb0d0_IsAbove15e` returns 1. Evidence: the guarded `ldr [r0,#460]`, the `movne r6,#1` index base, the `ldrh`/`cmp #1` skip, and the six-iteration loop. |
+| `func_020ea744` | 228 B | Resolve the id to a battle entry and queue its display request: the `0xa9`/thunk guard, the `0e8f20` mode word (passed as the field selector to `func_02049f6c`), the jump-table cases 1/3/4 setting the extra flag, the `*20` then divide-by-100 threshold, and the `func_02049c28` pair plus `func_0204a244` result passed to `func_020ea6ac`. Evidence: the `cmp r1,#27`, `addls pc`, `0x51eb851f` magic and the five-argument call setup. |
+| `func_020eb0a8` | 208 B | Advance one slot's graphics state: state 1 waits for `func_0205ca48` on the +0x20 object, releases it, creates a replacement with `Unk065e88_Call_02065fc0(GetField8(), GetFieldC(), 1, 0)`, configures its animation through `func_0205c408`/`0205c41c`/`0205c6e0`, chooses 0xff0000ff when +0x10 is set otherwise 0xa5ff31ff, and stores the object with state 2. States other than 1/2 are ignored. Evidence: the two state compares, the +0x20 dereference/release, and the two colour literals. |
+| `func_020eb178` | 184 B | Emit a finished slot's effects when `GetField8` is nonzero and the slot is in state 2: the +0x1c guard selects `func_0205de40(2, resource8, 5, +0x08, +0x0c, 1.0f, 1.0f, 0, 1.0f, 10)`; the +0x14 guard selects `func_02058e9c(2, +0x18, +0x08+15, +0x0c+15, 1.0f, 0, 12)`. Evidence: the saved `mov r1,r0`, the two guarded stack-argument blocks and the 0x3f800000/10/12 immediates. |
+| `func_020eb324` | 356 B | Step through four descriptor stages in work+0x1d0: stage 0 loads descriptor 0xd3 after clearing +0x14, stage 1 does the same for ids 1..3, stage 2 creates the four named entries through `Unk05b82c_CreateNamedEntry` and runs `func_0205b9a0`, and stage 3 waits for all four `Unk05ae50_Unk_05b388` checks before running `Unk05ae50_Unk_05af2c` on each. The byte advances after stage 0/1/2/3; stages outside 0..3 and a completed stage 3 return 1, intermediate stages return 0. Evidence: the `ldrsb [work,#0x1d0]` jump table, the data_0213c72c-indexed loops and the +1 stores. |
+| `func_020eb6e4` | 252 B | Release one work object: run `ForEachSlot`, free +0x0c/+0x08/+0x04/+0x00, clear the six +0x24, five +0x10 and one +0x3c handles through `func_020629c4`, call `Unk0fedd4_Unk_0fee18`, run `func_0205bb68` four times, and clear the singleton at `data_02176ddc`. Evidence: the four guarded release pairs, the bounds 6 and 5, the four-iteration loop and the final literal store. |
+| `Unk0ea208_Unk_0ea878` | 268 B | Refresh a mode-1 entry's display table: read four accessor values, store group-14 entries 1/2/3 in slots 4/5/6, compare the remaining accessors and either store both in slots 3/4 then submit group-14 entry 0 with selector 3, or store the second in slot 3 and submit with selector 2. Evidence: the accessor argument 1, the 0xe table calls, the slot immediates 4/5/6/3/4 and the selectors 3/2. The body was already decompiler-derived and 100%; only its comment was rewritten. |
+| `Unk0ea208_Unk_0ea984` | 268 B | Same refresh for a mode-0 entry: store group-14 entries 1/2/3 in slots 1/2/3, compare the remaining accessors and either store both in slots 1/2 then submit with selector 1, or store the second in slot 1 and submit with selector 0; return the submitted resource. Evidence: the accessor argument 0, the 0xe table calls, slots 1/2/3/1/2 and selectors 1/0. The body was already decompiler-derived and 100%; only its comment was rewritten. |
+
+No M1-T774 functions remain on the hard list. The two decompiler-derived
+bodies that were already at 100% (`0ea878`, `0ea984`) kept their generated
+code; only the comments were expanded.
