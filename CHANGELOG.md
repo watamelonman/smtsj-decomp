@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T873: match eight grid insertion, reconstruction, record clearing, weighted selection, and provider-check functions in `game/unit_020a6174`; document caller contracts and instruction evidence.
 - Matched M1-T872 record-bank scanning, address, clearing, and insertion helpers; documented their field contracts.
 - M1-T860: match record-list navigation, animation-state handling, and layered record/grid drawing; document the remaining initializer in game/unit_021071e4.
 - M1-T805: match seven unit_02116598 predicates, state updates and guarded call sequences; document the initializer at 87.65% for human scratch follow-up.
