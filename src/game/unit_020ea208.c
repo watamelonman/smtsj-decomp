@@ -47,6 +47,7 @@ typedef struct Unk0ea208Work {
     u32 UnkField01c8;
     u32 UnkField01cc;
     s8 UnkField01d0;
+    s32 UnkField01d4;
 } Unk0ea208Work;
 
 /* Borrowed resource descriptor returned by func_0205ad9c; the two named words
@@ -1014,6 +1015,88 @@ u32 Unk0ea208_Unk_0ea984(u32 arg0)
   return func_0204fed8(tmp1,0);
 }
 
+extern char data_02150cd4[];
+extern char data_02150ce8[];
+extern char data_02150d00[];
+extern char data_02150d18[];
+u32 func_0205dcd4(const char *path, u32 mode);
+u32 func_0205c2c4(const char *path);
+u32 func_020629ac(int a, int b, int c, int d);
+u32 func_02062208(u16 *values);
+void Unk0fedd4_Alloc(u32 id);
+void Unk044394_Unk_044428(u32 group);
+int Unk0e651c_Unk_0e666c(u32 flag);
+u32 Unk0ddeb0_Unk_0ddfd8(u32 id);
+u32 Unk0ca69c_Unk_0ca6a4(u32 value);
+
+/*
+ * Refresh one battle entry's display table for its zero-mode accessors, then
+ * scan the resulting id array. The four accessor values fill table slots 1..3
+ * through group 14, the two remaining accessors choose selector 5 when they
+ * differ or selector 4 when they match, and the returned halfword array is
+ * scanned for a 0x8001 entry outside the 0xffff/0xfffe-delimited ranges.
+ * Evidence: the func_0204a1xx accessor calls with argument 0, the 0xe table
+ * relocations, immediates 1/2/3 and 5/4, and the 0x8001/0xfffe/0xffff literal
+ * pool loaded by the scan loop. The entry and array are borrowed.
+ */
+u32 func_020eaa90(u32 arg0)
+{
+  u32 tmp1;
+  u32 tmp2;
+  u32 tmp3;
+  u32 tmp4;
+  u32 tmp5;
+  u32 tmp6;
+  u16 *values;
+  u32 count;
+  u32 stopped;
+  u32 flag;
+  u32 i;
+
+  tmp1 = func_0204a1d0(arg0, 0);
+  tmp2 = func_0204a160(arg0, 0);
+  tmp3 = func_0204a1e8(arg0, 0);
+  tmp4 = func_0204a190(arg0, 0);
+  tmp5 = func_020445f4(0xe, 1);
+  tmp1 = func_0204fed8(tmp5, tmp1);
+  func_0204fcb0(1, tmp1);
+  tmp1 = func_020445f4(0xe, 2);
+  tmp1 = func_0204fed8(tmp1, tmp2);
+  func_0204fcb0(2, tmp1);
+  tmp1 = func_020445f4(0xe, 3);
+  tmp1 = func_0204fed8(tmp1, tmp3);
+  func_0204fcb0(3, tmp1);
+  tmp6 = func_0204a1b0(arg0, 0);
+  tmp1 = func_020445f4(0xe, 0);
+  if (tmp4 != tmp6) {
+    func_0204faf0(1, tmp4);
+    func_0204faf0(2, tmp6);
+    values = (u16 *)func_0204fed8(tmp1, 5);
+  } else {
+    func_0204faf0(1, tmp6);
+    values = (u16 *)func_0204fed8(tmp1, 4);
+  }
+  count = func_02062208(values);
+  stopped = 0;
+  flag = 0;
+  i = 0;
+  for (i = 0; i < count; i++) {
+    u16 value = values[i];
+    if (value == 0xffff) {
+      flag = 1;
+    } else if (value == 0xfffe) {
+      flag = 0;
+    } else if (flag == 0 && value == 0x8001) {
+      stopped = 1;
+      break;
+    }
+  }
+  if (stopped != 0) {
+    values = &values[i + 1];
+  }
+  return (u32)values;
+}
+
 /* Resolve group 39, entry 4, then pass its result with selector 1. */
 int Unk0ea208_Unk_0eac24(void)
 {
@@ -1048,6 +1131,69 @@ void Unk0ea208_Unk_0ead64(void)
         return;
     }
     Unk0a163c_Unk_0a1814(FIELD(u16, record, 472));
+}
+
+/*
+ * Initialize one +0x70 slot record and build its graphics objects: store the
+ * position minus 12, the caller flags and the resolved +0x18 value, create the
+ * main graphic (state 1) with animation 6 and colour 0xa5ff31ff, or 0xff0000ff
+ * when +0x10 is set. Unless the caller's fifth argument is nonzero, also create
+ * the state-1 companion with animation 5 at +0x34 and four more at +0x24 with
+ * animation 0..3. Evidence: the GetField8/GetFieldC guard, the -12 position
+ * offsets, the 065fc0 creation arguments (1,0), the 0205c408 animation values
+ * 6/5/loop index, the colour literals, the -1 colour for the extra objects and
+ * the func_02050074(1,4) shift for the companion animation. The slot stays
+ * owned by the work area.
+ */
+void func_020eae84(Unk0ea208Slot *slot, u32 a, u32 b, u32 c, u32 d, u32 e)
+{
+  Unk0ea208Graphic *object;
+  u32 resource8;
+  u32 resourceC;
+  u32 color;
+  int i;
+
+  resource8 = Unk0ea208_GetField8();
+  resourceC = Unk0ea208_GetFieldC();
+  if (resource8 == 0 || resourceC == 0) {
+    return;
+  }
+  slot->UnkField00 = 1;
+  slot->UnkField04 = 1;
+  slot->UnkField08 = a - 12;
+  slot->UnkField0c = b - 12;
+  slot->UnkField10 = c;
+  slot->UnkField14 = e;
+  slot->UnkField1c = d;
+  if (e != 0) {
+    slot->UnkField18 = Unk0ca69c_Unk_0ca6a4(Unk0ddeb0_Unk_0ddfd8((u16)e));
+  }
+  object = Unk065e88_Call_02065fc0(resource8, resourceC, 1, 0);
+  func_0205c408((void *)object->UnkLink00, 6);
+  func_0205c41c((void *)object->UnkLink00, 0);
+  func_0205c6e0((void *)object->UnkLink00);
+  color = 0xa5ff31ff;
+  if (slot->UnkField10 != 0) {
+    color = 0xff0000ff;
+  }
+  Unk0ea208_Unk_0eae40((u32)object, a - 12, b - 12, color);
+  slot->UnkHandle20 = (u32)object;
+  if (d != 0) {
+    return;
+  }
+  object = Unk065e88_Call_02065fc0(resource8, resourceC, 1, 0);
+  func_0205c408((void *)object->UnkLink00, 5);
+  func_0205c41c((void *)object->UnkLink00, func_02050074(1, 4) << 2);
+  func_0205c6e0((void *)object->UnkLink00);
+  Unk0ea208_Unk_0eae40((u32)object, a - 12, b - 12, 0xffffffff);
+  slot->UnkHandle34 = (u32)object;
+  for (i = 0; i < 4; i++) {
+    object = Unk065e88_Call_02065fc0(resource8, resourceC, 1, 0);
+    func_0205c408((void *)object->UnkLink00, i);
+    func_0205c6e0((void *)object->UnkLink00);
+    Unk0ea208_Unk_0eae40((u32)object, a - 12, b - 12, 0xffffffff);
+    slot->UnkTable24[i] = (u32)object;
+  }
 }
 
 /*
@@ -1180,6 +1326,92 @@ int func_020eb324(Unk0ea208Work *work)
         return 1;
     }
     return 0;
+}
+
+/*
+ * Advance the work state machine one step: bump the +0x1d4 frame counter,
+ * wrapping it to zero at 0xffff, then process state +0x1c4. State 1 waits for
+ * func_020eb324 and moves to 2; state 2 allocates the shared 0fedf4 object and
+ * falls into state 3, which creates the five +0x10 and six +0x24 text objects
+ * plus +0x3c; state 4 loads the four battle resources; state 5 falls into 6,
+ * which rebuilds the two id value tables, submits the +0x3c resource, and
+ * advances to 7; state 7 marks the work ready; state 8 advances the slots.
+ * Evidence: the 0xffff wrap compare, the addls jump table, the 020629ac text
+ * creation argument sets, the 02150cd4/02150ce8/02150d00/02150d18 resource
+ * names, the 0x703 conditional selector, the 0204fed8 id-table stores, and the
+ * state byte immediates. The work and its handles stay caller-owned.
+ */
+void func_020eb488(Unk0ea208Work *work)
+{
+  s32 frame;
+  u32 selector;
+  int n;
+  s32 resource;
+  u32 j;
+
+  frame = work->UnkField01d4 + 1;
+  work->UnkField01d4 = frame;
+  if (frame >= 0xffff) {
+    work->UnkField01d4 = 0;
+  }
+  switch (work->UnkField01c4) {
+  case 1:
+    if (func_020eb324(work) == 0) {
+      return;
+    }
+    work->UnkField01c8 = 0;
+    work->UnkField01c4 = 2;
+    break;
+  case 2:
+    Unk0fedd4_Alloc(1);
+    work->UnkField01c4 = 3;
+    /* fall through */
+  case 3:
+    for (n = 0; n < 5; n++) {
+      work->UnkTable0010[n] = func_020629ac(4, 1, 1, 1);
+    }
+    for (n = 0; n < 6; n++) {
+      work->UnkTable0024[n] = func_020629ac(4, 1, 1, 1);
+    }
+    work->UnkField003c = func_020629ac(2, 3, 1, 0);
+    work->UnkField01c4 = 4;
+    break;
+  case 4:
+    work->UnkField0000 = func_0205dcd4(data_02150cd4, 1);
+    work->UnkField0004 = func_0205dcd4(data_02150ce8, 1);
+    work->UnkField0008 = func_0205dcd4(data_02150d00, 1);
+    work->UnkField000c = func_0205c2c4(data_02150d18);
+    work->UnkField01c4 = 5;
+    break;
+  case 5:
+    work->UnkField01c4 = 6;
+    /* fall through */
+  case 6:
+    Unk044394_Unk_044428(39);
+    resource = func_020445f4(39, 0);
+    for (j = 0; j < 5; j++) {
+      selector = j + 4;
+      if (selector == 7 && Unk0e651c_Unk_0e666c(0x703) == 0) {
+        selector = 13;
+      }
+      data_02150ca0[j].value = func_0204fed8(resource, selector);
+    }
+    for (j = 0; j < 4; j++) {
+      data_02150c80[j].value = func_0204fed8(resource, j + 9);
+    }
+    Unk0ea208_Unk_0eac40(work);
+    work->UnkField01c4 = 7;
+    /* fall through */
+  case 7:
+    work->UnkField01c4 = 8;
+    work->UnkField01cc = 1;
+    break;
+  case 8:
+    Unk0ea208_Unk_0eb230(work);
+    break;
+  default:
+    break;
+  }
 }
 
 /*

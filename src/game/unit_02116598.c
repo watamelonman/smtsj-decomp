@@ -40,9 +40,11 @@ void Unk116598_Call_02117400(u32 a, u32 b, u32 c, u32 d, u8 e)
     func_02117400(a, b, c, d, e);
 }
 
-/* Empty callbacks (no direct callers; function-table slots). */
+/* Original 0x02116b44 is only bx lr: return without changing caller state. */
 void Unk116598_Nop_116b44(void) { }
+/* Original 0x02116b68 is only bx lr: return without changing caller state. */
 void Unk116598_Nop_116b68(void) { }
+/* Original 0x02116b6c is only bx lr: return without changing caller state. */
 void Unk116598_Nop_116b6c(void) { }
 void Unk116598_Call_02117360b(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
@@ -54,12 +56,16 @@ void Unk116598_Call_02117400b(u32 a, u32 b, u32 c, u32 d, u8 e)
     func_02117400(a, b, c, d, e);
 }
 
+/* Original 0x02117cd0 is only bx lr: return without changing caller state. */
 void Unk116598_Nop_117cd0(void) { }
 
-/* Forwarders: pass the caller's arguments straight through. */
+/* Original literal at 0x021166f0 targets Set; forward both words unchanged. */
 void Unk116598_Thunk_021177e0(u32 a, u32 b) { Unk116598_Set(a, b); }
+/* Original literal at 0x021166fc targets Reset; preserve its no-argument contract. */
 void Unk116598_Unk_1166f4(void) { Unk116598_Reset(); }
+/* Original literal at 0x0211680c targets func_021172fc; forward control unchanged. */
 void Unk116598_Unk_116804(void) { func_021172fc(); }
+/* Original literal at 0x02117958 targets Set; forward both words unchanged. */
 void Unk116598_Unk_117950(u32 a, u32 b) { Unk116598_Set(a, b); }
 
 
