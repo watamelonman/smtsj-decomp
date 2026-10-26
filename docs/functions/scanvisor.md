@@ -73,18 +73,48 @@ checksum gate pass. No new tests were required by this card.
 
 No hard functions for M1-T984.
 
-## Existing work on other cards
+## M1-T985: work-object wrappers, list updates and slot helpers
 
-- `ScanVisor_Unk_0a4644`: decompiler-derived
-- `ScanVisor_Unk_0a2a1c`: decompiler-derived
-- `ScanVisor_Unk_0a2ab0`: decompiler-derived
-- `ScanVisor_Unk_0a2acc`: decompiler-derived
-- `ScanVisor_Unk_0a27e0`: decompiler-derived
-- `ScanVisor_Unk_0a2800`: decompiler-derived
+Names retain the configured symbols; the wrappers all use the work-object word
+returned by `ScanVisor_Get_data_02176b04` and no-op when it is null. Evidence is
+from the delinked `src/ScanVisor.o`; none of these functions establishes a
+higher-level gameplay meaning.
 
-## Not done in M1-T985
-- `ScanVisor_Unk_0a4a18`
-- `ScanVisor_Unk_0a2980`
+- `ScanVisor_Unk_0a4644` (0x020a4644, 24 bytes): `cmp r1,#0; movne r1,#13;
+  strne r1,[r0,#16]; mov r1,#1; str r1,[r0,#20]; bx lr`. Requires a valid slot
+  record and marks it active by storing 1 at +0x14; when the second parameter
+  is non-zero it also stores 13 at +0x10. `ScanVisor_SetById` passes the slot
+  returned by `ScanVisor_FindSlotByKey` and its own `on` flag.
+- `ScanVisor_Unk_0a4a18` (0x020a4a18, 24 bytes): looks up `id` with
+  `ScanVisor_FindSlotByKey` on the supplied list and, when found, calls
+  `ScanVisor_Unk_0a465c` to clear the slot's +0x10/+0x14 words. A missing slot
+  is a no-op. The caller at 0x020a2a8c passes work+0x24c.
+- `ScanVisor_Unk_0a2a1c` (0x020a2a1c, 28 bytes): forwards work+0x78 to
+  `Unk0c855c_Unk_0c9d8c`; a null work object returns before the call.
+- `ScanVisor_Unk_0a2ab0` (0x020a2ab0, 28 bytes): forwards work+0x24c to
+  `ScanVisor_Unk_0a4a30`, which applies the fixed (1, 1) list update; null work
+  returns early.
+- `ScanVisor_Unk_0a2acc` (0x020a2acc, 28 bytes): clears the +0x198 word of the
+  list at work+0x24c through `ScanVisor_ClearUnkField198`; null work returns
+  early.
+- `ScanVisor_Unk_0a27e0` (0x020a27e0, 32 bytes): forwards its argument to
+  `Unk0fd268_SetDir` after checking the work object. `ScanVisor_Unk_0a2660`
+  passes 0 and `ScanVisor_Unk_0a273c` passes the same value it gives the sibling
+  helper at 0x020a2800.
+- `ScanVisor_Unk_0a2800` (0x020a2800, 32 bytes): forwards its argument to
+  `Unk0fd268_Unk_0fd3f0` after checking the work object; the same caller pair
+  supplies the value.
+- `ScanVisor_Unk_0a2980` (0x020a2980, 32 bytes): returns 1 when the work object
+  is null; otherwise forwards work+0x78 to `Unk0c855c_Unk_0c9bac` and returns
+  that callee's integer result (`moveq r0,#1` on the null path).
+
+Validation: all eight functions report 100% in `build/report.json`; the match
+gate, anticheat gate, unittest suite and original-image checksum gate pass. No
+new tests were required by this card; objdiff checks the instruction behavior.
+
+No hard functions for M1-T985.
+
+### Not cleaned up in M1-T985
 - `ScanVisor_Unk_0a2b18`: decompiler-derived
 - `ScanVisor_Unk_0a2b38`: decompiler-derived
 - `ScanVisor_Unk_0a29a0`: decompiler-derived
