@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Matched the remaining shared-state initializer `func_0205e348` in `libs/NitroSDK/sdk_0205e318.c` (M2-T087).
+
 - Matched eight record access and state submission functions in `libs/NitroSDK/sdk_0205e318.c`.
 - Verified all four Maya texture matrix specializations in libs/unknown/lib_02028354 at 100% objdiff and documented their fixed-point contracts.
 - M2-T072: match the six remaining CRI callback dispatch, row wrapper and reference-counted reset functions in `cri_0208256c`.
