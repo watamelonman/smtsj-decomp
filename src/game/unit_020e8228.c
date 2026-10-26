@@ -430,8 +430,9 @@ int func_020e8628(void);
 void func_020ea0ec(void);
 void func_020ea160(void);
 /* Original 020e9728 calls 0ea0ec when 0e8628 returns exactly one; otherwise
- * calls 0ea160. Callee meanings are unestablished, so the name stays neutral. */
-void Unk0e8228_Unk_0e9728(void)
+ * calls 0ea160. The initializer forwards work in r0, which this callee ignores.
+ * Callee meanings are unestablished, so the name stays neutral. */
+void Unk0e8228_Unk_0e9728(u32 unusedWork)
 {
   int value;
   value = func_020e8628();
@@ -1401,4 +1402,434 @@ void func_020e8a30(u32 value, u32 mode)
     }
     FIELD(u32, work, 0x184) = 0;
     func_020bcacc(13, &request);
+}
+
+extern u32 data_02176cec[];
+extern u32 data_02176d04[][6];
+
+/* Original 020e9ca8 selects a global six-word row using work +8.
+ * Selector zero uses the common word; selector five can use its override.
+ * Storage is borrowed and work must be readable. */
+int func_020e9ca8(u32 work, u32 selector)
+{
+  int index;
+  u32 *row;
+  if (FIELD(s32, work, 8) >= 10) { return 0; }
+  if (selector == 0) { return FIELD(u32, data_02176ce4, 0); }
+  if (selector == 5 && Unk0e8228_Unk_0e8bac() != 0) { return FIELD(u32, data_02176ce4, 4); }
+  index = FIELD(s32, work, 8);
+  if (index == 0) {
+    row = data_02176cec;
+    switch (selector) {
+    case 1: return row[0];
+    case 3: case 4: return row[1];
+    case 8: return row[2];
+    case 5: return row[3];
+    case 6: return row[4];
+    case 7: return row[5];
+    }
+  } else if (index != -1) {
+    row = data_02176d04[index - 1];
+    switch (selector) {
+    case 1: return row[1];
+    case 4: return row[2];
+    case 5: return row[3];
+    case 6: return row[4];
+    case 7: return row[5];
+    }
+  }
+  return 0;
+}
+
+/* Original 020e9de4 selects a global six-word row using work +8.
+ * Selector zero uses the common word; selector five can use its override.
+ * Storage is borrowed and work must be readable. */
+void func_020e9de4(u32 work, u32 selector, u32 value)
+{
+  int index;
+  u32 *row;
+  if (FIELD(s32, work, 8) >= 10) { return; }
+  if (selector == 0) { FIELD(u32, data_02176ce4, 0) = value; return; }
+  if (selector == 5 && Unk0e8228_Unk_0e8bac() != 0) { FIELD(u32, data_02176ce4, 4) = value; return; }
+  index = FIELD(s32, work, 8);
+  if (index == 0) {
+    row = data_02176cec;
+    switch (selector) {
+    case 1: row[0] = value; return;
+    case 3: case 4: row[1] = value; return;
+    case 8: row[2] = value; return;
+    case 5: row[3] = value; return;
+    case 6: row[4] = value; return;
+    case 7: row[5] = value; return;
+    }
+  } else if (index != -1) {
+    row = data_02176d04[index - 1];
+    switch (selector) {
+    case 1: row[1] = value; return;
+    case 4: row[2] = value; return;
+    case 5: row[3] = value; return;
+    case 6: row[4] = value; return;
+    case 7: row[5] = value; return;
+    }
+  }
+  return;
+}
+
+/* Original 020e9900 dispatches entry actions for selectors two through five.
+ * It preserves the nonzero input token on success and returns zero on failure.
+ * Bank offsets and provider byte 0x23 follow the original ARM loads. */
+u32 func_020e9900(u32 token, u32 work, u32 selector)
+{
+    u32 entry;
+    u32 record;
+    u32 key;
+    int index;
+    if (token != 0) {
+        entry = func_02044ec4(Unk0e8228_Unk_0e8c80());
+        switch (selector) {
+        case 5:
+            index = func_020e9ca8(work, 7);
+            if (index == -1) { token = 0; break; }
+            if (func_020e8d38(entry, entry + 0x1e8,
+                            FIELD(u32, work + index * 4, 0x58), 5) == 0) {
+                token = 0; break;
+            }
+            Unk0e8228_Unk_0e8d18(0);
+            break;
+        case 2: case 3:
+            func_020e9ca8(work, 4);
+            record = func_020cb1a0(Unk0e8228_Unk_0e8514());
+            key = FIELD(u32, work + func_020e9ca8(work, 6) * 4, 0x30);
+            if (FIELD(u8, record, 0x23) == 7) {
+                index = func_020e9ca8(work, 7);
+                if (index == -1) { token = 0; break; }
+                key = FIELD(u32, work + index * 4, 0x58);
+            }
+            if (func_020e8d38(entry, entry + 0x1e8, key, selector) == 0) {
+                token = 0; break;
+            }
+            Unk0e8228_Unk_0e8d18(0);
+            break;
+        case 4:
+            record = FIELD(u32, work + func_020e9ca8(work, 6) * 4, 0x30);
+            if (Unk0e8228_Unk_0e8fe4(Unk0e8228_GetArr88Field20(func_020e9ca8(work, 8))) == 1) {
+                index = func_020e9ca8(work, 7);
+                if (index == -1) { token = 0; break; }
+                record = FIELD(u32, work + index * 4, 0x58);
+            }
+            if (func_020e8d38(entry, entry + 0x1e8, record, selector) == 0) {
+                token = 0; break;
+            }
+            Unk0e8228_Unk_0e8d18(0);
+            break;
+        }
+    } else {
+        token = 0;
+    }
+    return token;
+}
+
+u32 func_020b0874(u32 key, u32 scale);
+u32 Unk044904_Unk_044fd8(void);
+void func_020aa188(u32 provider, const void *request);
+void func_0204a780(u32 entry, u32 state);
+
+/* Original 020e94d8 fills six request words at the supplied writable address.
+ * The source key and packed value seed the request; selector-specific provider
+ * fields determine the remaining words. Successful requests are submitted
+ * synchronously and mark the resolved entry with state four. */
+u32 func_020e94d8(u32 work, u32 source, u32 request, u32 value, u32 selector)
+{
+    u32 record = FIELD(u32, source, 0);
+    u32 *out = (u32 *)request;
+    int valid = 1;
+    out[0] = record;
+    out[1] = value;
+    switch (selector) {
+    case 0: case 1:
+        out[2] = 1;
+        out[5] = func_020b0874(out[0], 100) | 0x50000000;
+        if (((value >> 16) & 255) == 0) valid = 0;
+        break;
+    case 3:
+        if (func_020e9ca8(work, 3) == 0) {
+            out[2] = 7;
+            out[5] = func_020b0874(out[0], 100) | 0x50000000;
+            if (((value >> 16) & 255) == 0) valid = 0;
+            break;
+        }
+    case 2:
+        func_020e9ca8(work, 4);
+        record = func_020cb1a0(Unk0e8228_Unk_0e8514());
+        out[3] = FIELD(u16, record, 0x20);
+        out[2] = 6;
+        out[5] = func_020b0874(out[0], 100) | 0x50000000;
+        if (FIELD(u8, record, 0x23) == 7) out[4] = func_020e9ca8(work, 6);
+        if (((value >> 16) & 255) == 0) valid = 0;
+        break;
+    case 7:
+        out[2] = 2;
+        out[1] = out[0];
+        out[5] = func_020b0874(out[0], 100) | 0xe0000000;
+        break;
+    case 4:
+        record = Unk0e8228_GetArr88Field20(func_020e9ca8(work, 8));
+        out[2] = 5;
+        out[3] = record;
+        out[5] = func_020b0874(out[0], 100) | 0xd8000000;
+        if (Unk0e8228_Unk_0e8fe4(record) == 1) out[4] = func_020e9ca8(work, 6);
+        if (((value >> 16) & 255) == 0) valid = 0;
+        break;
+    case 6:
+        out[2] = 3;
+        out[1] = out[0];
+        out[5] = func_020b0874(out[0], 100) | 0xe8000000;
+        break;
+    case 5:
+        out[2] = 3;
+        out[1] = out[0];
+        record = func_020e9ca8(work, 6);
+        if (record == 0) { valid = 0; break; }
+        out[3] = record;
+        out[4] = (u16)FIELD(u32, work + func_020e9ca8(work, 7) * 4, 0x58);
+        out[5] = func_020b0874(out[0], 100) | 0xf0000000;
+        break;
+    }
+    if (valid != 0) {
+        func_020aa188(Unk044904_Unk_044fd8(), out);
+        func_0204a780(func_02044ec4(out[0]), 4);
+    }
+    return valid;
+}
+
+void Unk0feba0_Unk_0feba0(void);
+u32 Unk044904_Get_data_0215ee98(void);
+int func_0209993c(u32 id);
+void func_02013c68(void *base, int count, int size,
+                  int (*compare)(const Unk0e8228SortRecord *const *, const Unk0e8228SortRecord *const *));
+int Unk0cb0d0_Unk_0cb1f8(void);
+void Unk044394_Unk_044428(u32 id);
+void Unk044394_Unk_044534(u32 id);
+void Unk0bc1a8_Unk_0bc928(u32 slot, u32 kind, const void *request);
+
+/* Borrowed bank layout established by 020e9060's indexed stores. */
+typedef struct Unk0e8228InitBanks {
+    u8 prefix[0x30];
+    u32 bank30[4];
+    u32 bank40[6];
+    u32 bank58[12];
+    u32 bank88[60];
+} Unk0e8228InitBanks;
+/* Provider prefix exposes only the ten pointers read by initialization. */
+typedef struct Unk0e8228InitProvider {
+    u8 prefix[0x64];
+    u32 entries[10];
+} Unk0e8228InitProvider;
+
+/* Original 020e9060 initializes borrowed work and gathers keys from provider
+ * tables, sorts eligible records by byte 0x2e, then starts the provider path
+ * when a usable entry exists. All offsets and bounds come from ARM loads. */
+void func_020e9060(u32 work)
+{
+    int count2, count1, count3, count4, id;
+    Unk0e8228InitBanks *banks = (Unk0e8228InitBanks *)work;
+    u32 provider, record;
+    FIELD(u32, work, 0) = 1;
+    FIELD(u32, work, 4) = 1;
+    FIELD(s32, work, 8) = -1;
+    Unk0e8228_Unk_0e8b94();
+    FIELD(u32, work, 0x10) = 0;
+    FIELD(u32, work, 0x14) = 0;
+    FIELD(u32, work, 0x1c) = 0;
+    FIELD(u32, work, 0x20) = 0;
+    FIELD(u32, work, 0x24) = 0;
+    FIELD(u32, work, 0x28) = 0;
+    FIELD(u32, work, 0x2c) = 0;
+    FIELD(u32, work, 0x184) = 0;
+    FIELD(u32, work, 0x17c) = 0;
+    FIELD(u32, work, 0x180) = 27;
+    Unk0feba0_Unk_0feba0();
+    Unk0e8228_ClearSel((Unk0e8228SelHost *)work);
+    provider = Unk044904_Get_data_0215ee98();
+    count2 = 0; count1 = 0; count3 = 0;
+    for (int i = 0; i < 4; i++, count1++) {
+        record = ((Unk0e8228InitProvider *)provider)->entries[i];
+        if (record != 0) banks->bank30[count1] = FIELD(u32, record, 0);
+        else banks->bank30[count1] = 0;
+    }
+    for (int i = 0; i < 10; i++) {
+        record = ((Unk0e8228InitProvider *)provider)->entries[i];
+        if (record != 0) {
+            u32 key = FIELD(u32, record, 0);
+            if (((key >> 16) & 255) == 2) {
+                banks->bank40[count2] = key;
+                count2++;
+            }
+        }
+    }
+    int j;
+    u32 *cursor = (u32 *)(provider + 0x36c);
+    for (j = 0; j < 12; j++, cursor += 0xb8) {
+        u32 key = *cursor;
+        if (((key >> 16) & 255) == 1) {
+            banks->bank58[count3] = key;
+            count3++;
+        }
+    }
+    count4 = 0;
+    for (id = 0; id < 60; id++) {
+        record = (u32)Unk09974c_Unk_099d14(id + 51);
+        switch (FIELD(u8, record, 0x2d)) {
+        case 2: case 3:
+            if (func_0209993c(id + 51) > 0) {
+                banks->bank88[count4] = record;
+                count4++;
+            }
+            break;
+        }
+    }
+    FIELD(u32, work, 0x178) = count4;
+    func_02013c68((void *)(work + 0x88), count4, 4, Unk0e8228_Unk_0e9048);
+    FIELD(s32, data_02150c30, 0x34) = count1 - 1;
+    FIELD(s32, data_02150c30, 0x2c) = count2 - 1;
+    FIELD(s32, data_02150c30, 0x3c) = count3 - 1;
+    FIELD(s32, data_02150c30, 0x24) = Unk0cb0d0_Unk_0cb1f8() - 1;
+    Unk0e8228_Unk_0e9728(work);
+    if (func_020e9b54(work) == 0) {
+        FIELD(u32, work, 0x2c) = 1;
+        Unk044394_Unk_044428(39);
+        func_020e82c8();
+        Unk044394_Unk_044534(39);
+        return;
+    }
+    func_020e9fd0();
+    Unk0e8228_Unk_0e9c94(work, 0);
+    for (u32 i = 0; i < 9; i++) {
+        u32 slot = data_02150c0c[i];
+        Unk0bc1a8_Unk_0bc928(slot, 26, 0);
+        func_020bc9f4(slot, (void *)(work + 392));
+    }
+    if (Unk0e8228_Unk_0e82ac() != 0) return;
+    Unk0e8228_Call_02008848();
+}
+
+void Unk0ea208_Unk_0ea70c(void);
+void Unk0ea208_Unk_0ea828(void);
+/* Borrowed bitfield views follow the original shift pairs: record bits 5..8
+ * and provider byte 0x2a bit seven. */
+typedef struct Unk0e8228ActionRecord {
+    u8 prefix[0x24];
+    u32 low : 5;
+    u32 kind : 4;
+    u32 high : 23;
+} Unk0e8228ActionRecord;
+typedef struct Unk0e8228ActionFlag {
+    u8 prefix[0x2a];
+    u8 low : 7;
+    u8 flag : 1;
+} Unk0e8228ActionFlag;
+
+/* Original 020e8710 submits kind-35 requests using a stack-owned flag/word
+ * descriptor. Selector, record kind and work +0x184 choose the action and
+ * optional word four; the provider consumes the descriptor synchronously.
+ * See DEC-013 for the stack-owned one-word request records. */
+void func_020e8710(u32 value, u32 selector, u32 record)
+{
+    Unk0e8228Request request;
+    Unk0e8228RequestWord enabled, selected;
+    Unk0e8228RequestWord word4, word5, word6, word7, word8, word9, word10;
+    u32 work;
+    u32 action;
+    u32 kind;
+    work = Unk0e8228_Get_data_02176ce0();
+    if (work == 0) return;
+    func_020f7e48(35, 1, selector);
+    Unk0e8228_ClearRequest(&request);
+    enabled.value = 1;
+    request.words[2] = enabled;
+    selected.value = value;
+    request.words[3] = selected;
+    request.flags[0] |= 12;
+    func_020bc9f4(35, &request);
+    Unk0e8228_ClearRequest(&request);
+    action = 0;
+    switch (selector) {
+    case 0: case 1: action = 0; break;
+    case 4:
+        if (FIELD(u32, work, 0x184) != 0) { action = 2; break; }
+        if (record != 0) {
+            kind = ((Unk0e8228ActionRecord *)record)->kind;
+            switch (kind) {
+            case 3: case 8: action = 4; break;
+            case 4: {
+                action = 5;
+                word4.value = FIELD(u32, work, 8);
+                request.words[4] = word4;
+                request.flags[0] |= 16;
+                break;
+            }
+            default:
+                record = Unk0e8228_Unk_0e8374(6);
+                if (Unk0e8228_Unk_0e82ac() == 0) record = 0;
+                word5.value = record;
+                request.words[4] = word5;
+                request.flags[0] |= 16;
+                break;
+            }
+        } else {
+            if (((Unk0e8228ActionFlag *)Unk0e8228_Unk_0e84fc())->flag) { action = 4; break; }
+            action = 0;
+            record = Unk0e8228_Unk_0e8374(6);
+            if (Unk0e8228_Unk_0e82ac() == 0) record = 0;
+            word6.value = record;
+            request.words[4] = word6;
+            request.flags[0] |= 16;
+        }
+        break;
+    case 2: case 3:
+        if (FIELD(u32, work, 0x184) != 0) { action = 2; break; }
+        if (FIELD(u8, record, 0x23) == 7) { action = 3; break; }
+        switch (((Unk0e8228ActionRecord *)record)->kind) {
+        case 5:
+            Unk0ea208_Unk_0ea70c();
+            Unk0ea208_Unk_0ea828();
+        case 3: case 8:
+            action = 4;
+            break;
+        case 4:
+            action = 5;
+            word7.value = FIELD(u32, work, 8);
+            request.words[4] = word7;
+            request.flags[0] |= 16;
+            break;
+        default:
+            action = 0;
+            record = Unk0e8228_Unk_0e8374(6);
+            if (Unk0e8228_Unk_0e82ac() == 0) record = 0;
+            word8.value = record;
+            request.words[4] = word8;
+            request.flags[0] |= 16;
+            break;
+        }
+        break;
+    case 5:
+        action = Unk0e8228_Unk_0e8374(6);
+        if (Unk0e8228_Unk_0e82ac() == 0) action = 0;
+        word9.value = action;
+        request.words[4] = word9;
+        request.flags[0] |= 16;
+        action = 1;
+        break;
+    case 6: case 7:
+        action = 5;
+        word10.value = FIELD(u32, work, 8);
+        request.words[4] = word10;
+        request.flags[0] |= 16;
+        break;
+    }
+    selected.value = action;
+    request.words[3] = selected;
+    request.flags[0] |= 8;
+    FIELD(u32, work, 0x184) = 0;
+    Unk0bc1a8_Unk_0bc928(14, 35, &request);
 }
