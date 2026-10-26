@@ -24,13 +24,24 @@ signed truncation, immediate arguments, call relocations and early-return path.
 No new behavioral tests are required by this card; instruction matching is the
 acceptance check.
 
-## Existing functions outside this card
+## M1-T297: verified matches
 
-- `Unk03c6a4_Unk_03c6a4`: existing decompiler-derived body; 100% in the local report.
-- `Unk03c6a4_Unk_03c954`: existing hand-matched body; 100% in the local report.
-- `Unk03c6a4_Unk_03c9c0`: existing hand-matched body; 100% in the local report.
-- `func_0203c748`: remains supplied by the delink, outside M1-T296.
+All four functions below match at 100% with the configured compiler. The existing
+wrappers remain at 100%. Parameters and worker fields reflect ARM instruction
+usage; game-specific meanings remain unknown.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk03c6a4_Unk_03c6a4` | No parameters. Reads script argument 0, obtains owner +0xe8, initializes worker +0x2c if zero, resolves the argument through `Unk03aae8_Unk_03ae10`, polls/starts the subsystem, forwards the resolved value and sets worker state +0x18 to 28. Returns 3. Requires a valid owner and worker. |
+| `Unk03c6a4_Unk_03c954` | No parameters. Reads signed low 16 bits of argument 0; argument 1 selects mode 1 or 2, otherwise 0. Forwards kind/option 0 and flags 0x101 to `func_0203c748`, returning its result. |
+| `Unk03c6a4_Unk_03c9c0` | No parameters. Reads four script arguments in order; signed argument 0 supplies value, argument 1 supplies kind, argument 2 selects mode 1 or 2, otherwise 0. Argument 3 is read but unused. Forwards option/flags 0 and returns the callee result. |
+| `func_0203c748` | Five integer parameters: mode, value, kind, option, flags. Requires owner +0xe8. If `func_020ba944` is nonzero, calls the two global helpers, forwards a signed 16-bit result to `Unk03aae8_Unk_03acf4` and returns 1. Otherwise sets worker state 9; kind 0 initializes +0x28 and resolves through `Unk03aae8_Unk_03ad98`, kind 1 initializes +0x2c and resolves through `Unk03aae8_Unk_03ae10`. Other kinds forward zero. Polls/starts the subsystem, forwards resolved value/mode/option/flags and returns 0. |
+
+The worker layout models only observed offsets. Keeping the dispatcher before its
+wrappers preserves matching local call relocations in objdiff. No module boundary
+changes or new behavior assumptions are introduced. This card requires no new
+behavioral tests; instruction matching verifies branches, argument order and stores.
 
 ## Hard list
 
-None for M1-T296.
+None.
