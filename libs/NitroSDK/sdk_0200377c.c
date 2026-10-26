@@ -16,6 +16,8 @@ typedef struct {
     u16 objExtPltt;
     u16 subBg;
     u16 subObj;
+    u16 subBgExtPltt;
+    u16 subObjExtPltt;
 } VramAllocationState;
 
 extern VramAllocationState data_021521a4;
@@ -90,4 +92,87 @@ u32 func_020038dc(void)
 u32 func_020038ec(void)
 {
     return data_021521a4.subObj;
+}
+
+/* Clear a borrowed allocation slot, disable its banks, release their SDK lock,
+ * and return the previous bank mask. Evidence: original helper at 02003650
+ * and disableBankForX_ in pret/pokediamond GX_vramcnt.c.
+ */
+extern u32 func_02003650(u16 *bank);
+extern u16 data_021521ac;
+extern u16 data_021521ae;
+extern u16 data_021521b0;
+extern u16 data_021521aa;
+extern u16 data_021521b6;
+
+/* Disable the Tex VRAM banks and return their previous mask (bits 0-8).
+ * Evidence: original slot literal and GX_DisableBankForTex in
+ * pret/pokediamond GX_vramcnt.c; the helper clears the slot and unlocks banks.
+ */
+u32 func_020037a0(void)
+{
+    return func_02003650(&data_021521ac);
+}
+
+/* Disable the TexPltt VRAM banks and return their previous mask (bits 0-8).
+ * Evidence: original slot literal and GX_DisableBankForTexPltt in
+ * pret/pokediamond GX_vramcnt.c; the helper clears the slot and unlocks banks.
+ */
+u32 func_020037b4(void)
+{
+    return func_02003650(&data_021521ae);
+}
+
+/* Disable the ClearImage VRAM banks and return their previous mask (bits 0-8).
+ * Evidence: original slot literal and GX_DisableBankForClearImage in
+ * pret/pokediamond GX_vramcnt.c; the helper clears the slot and unlocks banks.
+ */
+u32 func_020037c8(void)
+{
+    return func_02003650(&data_021521b0);
+}
+
+/* Disable the ARM7 VRAM banks and return their previous mask (bits 0-8).
+ * Evidence: original slot literal and GX_DisableBankForARM7 in
+ * pret/pokediamond GX_vramcnt.c; the helper clears the slot and unlocks banks.
+ */
+u32 func_020037dc(void)
+{
+    return func_02003650(&data_021521aa);
+}
+
+/* Disable the LCDC VRAM banks and return their previous mask (bits 0-8).
+ * Evidence: original slot literal and GX_DisableBankForLCDC in
+ * pret/pokediamond GX_vramcnt.c; the helper clears the slot and unlocks banks.
+ */
+u32 func_020037f0(void)
+{
+    return func_02003650(&data_021521a4.lcdc);
+}
+
+/* Disable the SubBG VRAM banks and return their previous mask (bits 0-8).
+ * Evidence: original slot literal and GX_DisableBankForSubBG in
+ * pret/pokediamond GX_vramcnt.c; the helper clears the slot and unlocks banks.
+ */
+u32 func_02003804(void)
+{
+    return func_02003650(&data_021521b6);
+}
+
+/* Return the SubBGExtPltt bank mask (bits 0-8) without changing allocation.
+ * Evidence: original u16 load at state +0x16 and the corresponding
+ * GX_SetBankForSubBGExtPltt field in pret/pokediamond GX_vramcnt.c.
+ */
+u32 func_020038fc(void)
+{
+    return data_021521a4.subBgExtPltt;
+}
+
+/* Return the SubOBJExtPltt bank mask (bits 0-8) without changing allocation.
+ * Evidence: original u16 load at state +0x18 and the corresponding
+ * GX_SetBankForSubOBJExtPltt field in pret/pokediamond GX_vramcnt.c.
+ */
+u32 func_0200390c(void)
+{
+    return data_021521a4.subObjExtPltt;
 }
