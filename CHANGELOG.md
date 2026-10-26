@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T802: match and document eight unit_02116598 mapping, work-field setter and call-sequence routines at 100% objdiff, with typed arguments and instruction evidence.
 - Matched and documented the eight M1-T801 unit_02116598 BSS-cell clear/read routines, byte fifth-argument forwarders, three-call wrapper and null-guard (`func_021177b8`); added typed contracts and instruction evidence for all eight at 100% objdiff.
 - Matched all eight M1-T835 global-work and countdown helpers in `game/unit_0211fc20` at 100% objdiff, with typed layouts and instruction-based contracts.
 - M1-T777: match `game/unit_0210fe28`'s event handler and draw/advance dispatcher in readable C at 100% objdiff; extend the typed work/message/event views, and document the remaining grid-drawing function (`func_02110a24`, measured 92.65%) for scratch follow-up rather than claiming a match.

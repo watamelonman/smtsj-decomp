@@ -336,3 +336,13 @@ this transformation preserves the original `movne 0; moveq 1` sequence while
 retaining readable C and ordinary memory semantics. The input handler follows
 its local callees in source, as in the delink; this also preserves its 100% score
 in the project report. No assembly or volatile accesses are required.
+
+## DEC-020 — Preserve the 0211727c word argument to the byte setter
+
+The call at 0x02117288 forwards the complete result of 0x021171c8 in r0 to
+0x0202f20c, without a byte mask, and returns the complete saved result afterward.
+Declare the provider argument as a word in this TU to describe that observed ABI.
+The provider's byte store at work +0x361 consumes only the low byte (see
+`src/game/unit_0202f078.c`); its implementation's byte parameter would cause mwcc
+to insert an extra caller-side mask here. No value range for the mapping inputs
+is assumed, and no full-result truncation is introduced.
