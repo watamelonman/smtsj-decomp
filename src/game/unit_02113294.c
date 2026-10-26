@@ -126,7 +126,7 @@ int Unk113294_Unk_115124(const Unk113294Work *work)
 void func_021144e4(u8 *work);
 void func_02114588(u8 *work);
 void func_02114604(u8 *work);
-int func_021146a4();
+void func_021146a4(u8 *work);
 int func_021148ec();
 int func_02114a1c();
 /* At 0x02114488, skips inactive work; otherwise updates the palette unless
@@ -142,7 +142,7 @@ void Unk113294_Unk_114488(char *arg0)
   func_021144e4((u8 *)arg0);
   func_02114588((u8 *)arg0);
   func_02114604((u8 *)arg0);
-  func_021146a4(arg0);
+  func_021146a4((u8 *)arg0);
   func_021148ec(arg0);
   func_02114a1c(arg0);
   return;
@@ -832,3 +832,95 @@ void func_0211527c(u8 *work)
 }
 
 #pragma opt_strength_reduction reset
+
+void func_0204fcb0(int mode, const u16 *ids);
+/* At 0x02113ca8, validates the two ID banks and advances state four with
+ * message 120/121/122/125. Providers borrow the terminated stack lists. */
+#pragma opt_propagation off
+void func_02113ca8(u8 *work)
+{
+    switch (FIELD(int, work, 4)) {
+    case 0:
+        if (work[9] == 0) {
+            if (Unk113294_AnyLo((Unk113294Ids *)work)) {
+                work[9] = 1;
+                Unk113294_Unk_11508c(FIELD(u32, work, 140), 110);
+                FIELD(int, work, 12) = 8;
+                Unk0a0ce4_Unk_0a0da4(1);
+            } else {
+                Unk0a0ce4_Unk_0a0da4(4);
+                Unk113294_Unk_1156ec();
+                FIELD(u16, work, 20) = 125;
+                work[0] = 4;
+            }
+            return;
+        }
+        if (work[9] != 1) return;
+        switch (Unk113294_Unk_11558c((Unk113294Ids *)work)) {
+        case 0: {
+            u16 hi[9] = {0,0,0,0,0,0,0,0,0};
+            u16 lo[9] = {0,0,0,0,0,0,0,0,0};
+            Unk113294IdBlock *dest = (Unk113294IdBlock *)hi;
+            const Unk113294IdBlock *src = (const Unk113294IdBlock *)(work + 232);
+            *dest = *src;
+            dest = (Unk113294IdBlock *)lo;
+            src = (const Unk113294IdBlock *)(work + 216);
+            *dest = *src;
+            Unk113294_Unk_1156ec();
+            Unk0a0ce4_Unk_0a0da4(1);
+            func_0204fcb0(1, lo);
+            func_0204fcb0(2, hi);
+            FIELD(u16, work, 20) = 120;
+            work[0] = 4;
+            return;
+        }
+        case 1: case 2: case 3:
+            Unk0a0ce4_Unk_0a0da4(4);
+            Unk113294_Unk_1156ec();
+            FIELD(u16, work, 20) = 122;
+            work[0] = 4;
+            return;
+        }
+        break;
+    case 1:
+        Unk113294_Unk_1156ec();
+        Unk0a0ce4_Unk_0a0da4(1);
+        FIELD(u16, work, 20) = 121;
+        work[0] = 4;
+        break;
+    }
+}
+#pragma opt_propagation reset
+
+/* At 0x021146a4, draws the two borrowed panel handles and highlights
+ * the state-three choice using handle coordinates +20/+24. */
+void func_021146a4(u8 *work)
+{
+    int x, y;
+    func_0205c748(2, FIELD(u32, work, 112), 0, 0, 1.0f, 1.0f, 0, 1.0f, 4);
+    func_0205c748(2, FIELD(u32, work, 116), 0, 0, 1.0f, 1.0f, 0, 1.0f, 4);
+    if (work[0] < 1) return;
+    if (work[0] == 1 && work[1] < 2) return;
+    x = FIELD(int, FIELD(u8 *, work, 112), 20);
+    y = FIELD(int, FIELD(u8 *, work, 112), 24);
+    if (work[0] == 3 && FIELD(int, work, 28) == 2) {
+        func_02057ddc(0xffffff);
+        func_0205de40(2, FIELD(u32, work, 36), 19, x, y, 1.0f, 1.0f, 0, 1.0f, 5);
+        func_02057df8();
+        func_0205c748(2, FIELD(u32, work, 104), x, y, 1.0f, 1.0f, 0, 1.0f, 5);
+        func_02057e18(31);
+    } else {
+        func_0205de40(2, FIELD(u32, work, 36), 19, x, y, 1.0f, 1.0f, 0, 1.0f, 5);
+    }
+    x = FIELD(int, FIELD(u8 *, work, 116), 20);
+    y = FIELD(int, FIELD(u8 *, work, 116), 24);
+    if (work[0] == 3 && FIELD(int, work, 28) == 3) {
+        func_02057ddc(0xffffff);
+        func_0205de40(2, FIELD(u32, work, 36), 21, x, y, 1.0f, 1.0f, 0, 1.0f, 5);
+        func_02057df8();
+        func_0205c748(2, FIELD(u32, work, 108), x, y, 1.0f, 1.0f, 0, 1.0f, 5);
+        func_02057e18(31);
+    } else {
+        func_0205de40(2, FIELD(u32, work, 36), 21, x, y, 1.0f, 1.0f, 0, 1.0f, 5);
+    }
+}
