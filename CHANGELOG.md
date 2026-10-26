@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Add matching C for the remaining request-67 and request-70 script wrappers in `libs/unknown/lib_020b9820`.
 - M2-T057: reconstruct the eight remaining `lib_020ba264` script selector, record, indexed-word, remainder and request handlers with instruction evidence.
 - M2-T043: match the two result-publishing request wrappers in `libs/unknown/lib_020ba05c`, completing all eighteen C functions in the unit.
 - M2-T021: match the CRI four-record allocation helper `func_0207c868` at 100% objdiff with typed source and callback contracts.
