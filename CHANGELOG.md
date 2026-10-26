@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T884: match all eight `game/unit_02044904` rank-comparator, slot-sweep, AI-script and script-state helpers at 100% objdiff; add typed slot/script-table fields and document the raw rank table plus scoped pragmas (DEC-022).
 - M1-T883: match the remaining four `game/unit_02044904` talk-tone lookup, state-reset and script-advance functions in C and document all eight requested functions at 100% objdiff, with typed manager/tone-state views and instruction-based contracts.
 - M1-T874: match eight `game/unit_020a6174` provider-update, weighted-selection, grid-rebuild and placement functions at 100% objdiff; document their borrowed record contracts and the scoped 020a65c4 allocation pragma.
 - Matched all eight M1-T894 SaveLoadTask helpers at 100% objdiff, with typed parameters and instruction-based contracts.
