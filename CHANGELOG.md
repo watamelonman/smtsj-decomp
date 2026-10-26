@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match the six remaining script command wrappers in `lib_020b9e3c` (M2-T082).
+
 - Added matching C for eight `lib_020b9e3c` callbacks submitting IDs 95–102 and forwarding their results.
 - Match the four remaining script wrappers in `libs/unknown/lib_020b8f8c.c` (M2-T074), including the ordered two-argument selector 19 command.
 
