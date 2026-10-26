@@ -44,7 +44,7 @@ void func_020907b4(u8 *buffer, u32 size)
     data_02175d68.cached_08 = 0;
 }
 
-/* ARM stores at 020907d4: reset the second borrowed arena and all three caches.
+/* ARM stores at 020907d4: reset the first borrowed arena and its three caches.
  * The caller supplies word-aligned storage and retains its ownership. */
 void func_020907d4(u8 *buffer, u32 size)
 {
