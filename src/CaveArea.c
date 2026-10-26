@@ -202,7 +202,7 @@ void func_020ebb14(void);
 void func_020ec330(void);
 void func_020ec704(void);
 void func_020ecc24(void);
-void func_020eba60(void);
+void func_020eba60(CaveAreaWork *p);
 void func_020ecfe8(void);
 
 /* 0x020eb7e0 populates a caller-owned descriptor, preserving word +8. */
@@ -214,7 +214,7 @@ void func_020eb7e0(CaveAreaCallbacks *p)
     p->callbacks[1] = func_020ec330;
     p->callbacks[2] = func_020ec704;
     p->callbacks[3] = func_020ecc24;
-    p->callbacks[4] = func_020eba60;
+    p->callbacks[4] = (void (*)(void))func_020eba60;
     p->callbacks[5] = func_020ecfe8;
 }
 
@@ -275,4 +275,177 @@ void func_020edad8(CaveAreaWork *p, u32 handle, u32 value)
     } else selection.words[0] = p->unk_00bc + 5;
     selection.words[0]++;
     func_020fa8a8(handle, &selection, value);
+}
+
+void *func_0205e328(u32 handle, int index, int value);
+void *func_0205e318(u32 handle, int index);
+void func_0205e048(int mode, u32 handle, void *record, int value, int frame,
+                    float x, float y, int zero, u32 extra, int a, int b);
+/* 0x020ed768 copies work coordinates into borrowed provider records, then
+ * submits the frame at +0x88 minus one. Work storage must cover +0x104. */
+void func_020ed768(CaveAreaWork *p)
+{
+    void *a = func_0205e328(p->unk_0000, 5, 0);
+    void *b = func_0205e318(p->unk_0000, 43);
+    FIELD(u16, b, 14) = FIELD(u32, p, 0x94);
+    FIELD(u16, a, 6) = FIELD(u32, p, 0x94);
+    FIELD(u16, a, 2) = FIELD(u32, p, 0x90);
+    func_0205e048(2, p->unk_0000, b, 0, (int)FIELD(float, p, 0x88)-1,
+                   1.0f, 1.0f, 0, FIELD(u32,p,0x104), 2, 1);
+}
+
+void func_0205c748(int mode, u32 handle, int x, int y, float sx, float sy,
+                    int zero, float scale, int layer);
+/* 0x020ecb88 draws handle +0xc or +0x10 only in byte states 2 and 3. */
+void func_020ecb88(CaveAreaWork *p, int x, int y)
+{
+    if (p->unk_00c8 < 2) return;
+    if (p->unk_00c8 > 3) return;
+    if (p->unk_00a8 == 0)
+        func_0205c748(2, FIELD(u32,p,12), x,y,1.0f,1.0f,0,1.0f,6);
+    else
+        func_0205c748(2, FIELD(u32,p,16), x,y,1.0f,1.0f,0,1.0f,6);
+}
+
+/* Borrowed provider object: only its handle and signed visibility byte are known. */
+typedef struct CaveAreaDrawObject { u32 handle; u8 pad[60]; s8 hidden; } CaveAreaDrawObject;
+void func_02060dd4(void *out, CaveAreaDrawObject *p, int zero, int value, int extra);
+void func_02057ddc(u32 color);
+void func_02059f70(u32 handle, int zero, int x, int y, void *record, int value, int extra);
+/* 0x020eda38 submits two adjacent rows with separate colors when +0x40 is zero.
+ * The provider borrows the four-word stack record during each call. */
+void func_020eda38(CaveAreaDrawObject *p, int x, int y, int value, int extra, int layer, u32 color)
+{
+    u32 record[4];
+    if (p->hidden != 0) return;
+    func_02060dd4(record,p,0,value,extra);
+    func_02057ddc(255);
+    func_02059f70(p->handle,0,x,y+1,record,0,layer);
+    func_02057ddc(color);
+    func_02059f70(p->handle,0,x,y,record,0,layer);
+}
+
+int func_02053824(int device, int mask);
+int func_02053800(int device, int mask);
+int func_02117170(void);
+/* 0x020ec28c prioritizes masks 64/128, then conditional masks 32/16,
+ * followed by masks 1/2; the result is a selector in 0..5. */
+int func_020ec28c(void)
+{
+    if (func_02053824(0,64)) return 1;
+    if (func_02053824(0,128)) return 2;
+    if (func_02117170()) {
+        if (func_02053800(0,32)) return 3;
+        if (func_02053800(0,16)) return 3;
+    }
+    if (func_02053800(0,1)) return 4;
+    if (func_02053800(0,2)) return 5;
+    return 0;
+}
+
+/* Prefix view exposes the 23 contiguous owned handle slots at +0xc. */
+typedef struct CaveAreaHandleView { u32 prefix[3]; u32 handles[23]; } CaveAreaHandleView;
+void func_020629c4(u32 handle);
+void func_0205c3dc(u32 handle);
+void func_0205c368(u32 handle);
+void func_0205ddb4(u32 handle);
+extern u32 data_02176de0;
+/* 0x020eba60 releases 23 handles and three parent handles, clearing each
+ * released slot, then invokes nine cleanup calls and clears the global word. */
+void func_020eba60(CaveAreaWork *p)
+{
+    int i;
+    CaveArea_Unk_0ed26c(p);
+    func_020629c4(FIELD(u32,p,0x84));
+    for (i=0;i<23;i++) {
+        if (((CaveAreaHandleView *)p)->handles[i]) {
+            func_0205c3dc(((CaveAreaHandleView *)p)->handles[i]);
+            ((CaveAreaHandleView *)p)->handles[i]=0;
+        }
+    }
+    if (FIELD(u32,p,8)) { func_0205c368(FIELD(u32,p,8)); FIELD(u32,p,8)=0; }
+    if (p->unk_0000) { func_0205ddb4(p->unk_0000); p->unk_0000=0; }
+    if (p->unk_0004) { func_0205ddb4(p->unk_0004); p->unk_0004=0; }
+    for (i=0;(u32)i<9;i++) func_0205bb68();
+    data_02176de0=0;
+}
+
+int func_0211708c(void);
+void Unk05b82c_Unk_05b82c(int index);
+/* 0x020ed290 selects two provider indices from the area and alternate flag,
+ * retaining them at +0x130/+0x134 before forwarding both. */
+void func_020ed290(CaveAreaWork *p)
+{
+    int area=func_0211708c();
+    if (p->unk_00a8==0) {
+        if (area<=4) { FIELD(int,p,0x130)=area+103; FIELD(int,p,0x134)=area+112; }
+        else if (area==5) { FIELD(int,p,0x130)=107; FIELD(int,p,0x134)=116; }
+        else { FIELD(int,p,0x130)=108; FIELD(int,p,0x134)=117; }
+    } else {
+        if (area>=5) {
+            if (area==8) { FIELD(int,p,0x130)=109; FIELD(int,p,0x134)=118; }
+            else { int index=area-5; FIELD(int,p,0x130)=index+109; FIELD(int,p,0x134)=index+118; }
+        } else { FIELD(int,p,0x130)=111; FIELD(int,p,0x134)=120; }
+    }
+    Unk05b82c_Unk_05b82c(FIELD(int,p,0x130));
+    Unk05b82c_Unk_05b82c(FIELD(int,p,0x134));
+}
+
+void Unk0bcef4_Unk_0bcef4(void *record, int a, int b, int enabled);
+/* 0x020ecf20 initializes the selection at +0xac and flags for mode 0 or 1.
+ * Other modes only reset signed byte +0x164 to -1. */
+void func_020ecf20(CaveAreaWork *p, int mode)
+{
+    int area, index;
+    p->unk_0164=-1;
+    area=func_0211708c();
+    index=0;
+    switch (mode) {
+    case 0:
+        if (area<=4) {
+            index=area+1;
+            Unk0bcef4_Unk_0bcef4((u8 *)p+0xac,index,index,1);
+        } else {
+            index=area==5 ? 5:6;
+        }
+        if (func_02117170()) { p->unk_0164=index; index++; }
+        Unk0bcef4_Unk_0bcef4((u8 *)p+0xac,index,index,1);
+        p->unk_00a8=0;
+        break;
+    case 1:
+        if (area<=7) index=area-4;
+        else if (area==8) index=1;
+        p->unk_0164=index;
+        Unk0bcef4_Unk_0bcef4((u8 *)p+0xac,index+1,index+1,1);
+        p->unk_00a8=1;
+        break;
+    }
+}
+
+/* Table entries have an observed eight-byte stride. */
+typedef struct CaveAreaCoordinate { int value; int adjacent; } CaveAreaCoordinate;
+extern CaveAreaCoordinate data_0213c7dc[], data_0213c7e0[], data_0213c740[], data_0213c744[];
+int Unk02ee5c_GetTierFromField70(void);
+void func_02057df8(void);
+/* 0x020edb94 selects paired coordinates from eight-byte table entries and
+ * handle slot 19..21 from the tier. Tables require a valid nonnegative index. */
+void func_020edb94(CaveAreaWork *p, int alternate, int index)
+{
+    int x,y,slot;
+    u32 color;
+    if (alternate==0) {
+        if (index>=7) return;
+        x=data_0213c7dc[index].value; y=data_0213c7e0[index].value;
+    } else {
+        if (index>=4) return;
+        x=data_0213c740[index].value; y=data_0213c744[index].value;
+    }
+    switch (Unk02ee5c_GetTierFromField70()) {
+    case 4: slot=19; color=0x00ffffff; break;
+    case 5: slot=20; color=0xff7b63ff; break;
+    default: slot=21; color=0xffffffff; break;
+    }
+    func_02057ddc(color);
+    func_0205c748(2,((CaveAreaHandleView *)p)->handles[slot],x,y,1.0f,1.0f,0,1.0f,7);
+    func_02057df8();
 }
