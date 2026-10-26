@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T995: verify seven game/unit_0206ae94 forwarding, transform, scan and release helpers at 100% objdiff; document the cursor helper instruction-order blocker.
 - Verified all eight M1-T994 helpers in `game/unit_0206ae94` against the original ARM code; added typed declarations and per-function evidence contracts.
 - M1-T985: verify the eight ScanVisor work-object wrappers, list-update helpers and slot activate/deactivate functions at 100% objdiff; type their parameters and document instruction and caller evidence.
 - M1-T908: match all six `game/unit_020e8228` row access, initialization, dispatch and request-builder functions at 100% objdiff; document typed contracts and borrowed layouts.
