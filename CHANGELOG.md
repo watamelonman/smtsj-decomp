@@ -9,6 +9,8 @@
 - Verified all eight M1-T770 game/unit_020ea208 reset, slot-walk, teardown and guarded-field routines at 100% objdiff; documented their typed contracts and instruction evidence.
 - Verified all eight M1-T769 game/unit_020ea208 functions at 100% objdiff; documented their contracts and made register-forwarded call arguments explicit.
 
+- Match all eight M1-T765 game/unit_0210a034 slot, state-machine, paging, and initialization functions at 100% objdiff; document their typed borrowed-work contracts.
+
 - Match `func_0209f0d8` descriptor dispatch in game/unit_0209ee4c and record the two remaining large functions as hard.
 - Match six additional functions in game/unit_020f90dc; document the remaining drawing function for scratch follow-up.
 - Matched eight more game/unit_0209ee4c record and state helpers in readable C.
