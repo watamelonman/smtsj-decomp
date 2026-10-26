@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Verified all eight M1-T773 game/unit_020ea208 table getter/setters, slot dispatch, id translation and jump-table handlers at 100% objdiff; typed the slot handle layout and documented the instruction evidence.
+- Verified all eight M1-T790 game/unit_020a7d54 field helpers and lookup wrappers at 100% objdiff; added typed field views, explicit argument forwarding, and per-function contracts.
+- M1-T784: added the three missing game/unit_0204bb9c context accessors and documented all eight requested context/kind routines, verified at 100% objdiff with the original image checksum preserved.
 - Verified all eight M1-T772 game/unit_020ea208 guarded table getters, teardown, object setters and record/table lookups at 100% objdiff; added typed work/slot parameters and instruction evidence.
 - Matched all eight M1-T776 game/unit_0210fe28 resource setup, teardown, entry update and table submission functions at 100% objdiff; documented typed work fields and contracts.
 - Verified all eight M1-T771 game/unit_020ea208 guarded-field, slot-walk, table-forwarding and handle routines at 100% objdiff; added typed work/slot views and instruction evidence.
@@ -9,6 +11,9 @@
 - Verified all eight M1-T770 game/unit_020ea208 reset, slot-walk, teardown and guarded-field routines at 100% objdiff; documented their typed contracts and instruction evidence.
 - Verified all eight M1-T769 game/unit_020ea208 functions at 100% objdiff; documented their contracts and made register-forwarded call arguments explicit.
 
+- Match all eight M1-T765 game/unit_0210a034 slot, state-machine, paging, and initialization functions at 100% objdiff; document their typed borrowed-work contracts.
+
+- Match `func_0209f0d8` descriptor dispatch in game/unit_0209ee4c and record the two remaining large functions as hard.
 - Match six additional functions in game/unit_020f90dc; document the remaining drawing function for scratch follow-up.
 - Matched eight more game/unit_0209ee4c record and state helpers in readable C.
 - Match all eight M1-T764 entry-selection, descriptor-state, and work-allocation helpers at 100% objdiff.
