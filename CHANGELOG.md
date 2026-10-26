@@ -464,6 +464,8 @@
 - Reconstruct the NitroSystem Si3D joint-scale routine in `libs/unknown/lib_02028810.c`.
 - Add matching C for eight script request/result wrappers in `libs/unknown/lib_020b9820`.
 
+- Added matching C for the eight M2-T071 CRI word-pair setters and indexed worker wrappers, with instruction evidence and typed contracts.
+
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
