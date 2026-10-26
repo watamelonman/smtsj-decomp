@@ -346,3 +346,21 @@ The provider's byte store at work +0x361 consumes only the low byte (see
 `src/game/unit_0202f078.c`); its implementation's byte parameter would cause mwcc
 to insert an extra caller-side mask here. No value range for the mapping inputs
 is assumed, and no full-result truncation is introduced.
+
+## DEC-021 — Preserve descriptor indexing and local zero-store order
+
+**Date:** 2026-10-26 · **Status:** Active
+**Context.** `func_020cc3c0` and `func_020cc5d8` access the 68-byte descriptor
+at work +0xdc. Caching an `Unk0cb32cParams *` local makes mwcc keep the
+address in a register, changing the original `adds r1,r4,#0xdc` null check and
+the `work + i` / `work + i*4` scaled loop stores. In `func_020cccc4`, a scalar
+`index = 0` lets mwcc schedule the work-state load before the zero store, while
+the original stores zero through a materialized `&index` first.
+**Decision.** Access the work descriptor through the typed
+`Unk0cb32cWorkParams` view, and declare the event index as a one-element
+`u32 index[1] = {0}` in the case block. Both are local code-generation
+constraints; the fields remain ordinary borrowed memory.
+**Cost accepted.** The source spells two MWCC-specific matching shapes instead
+of the cleanest scalar form.
+**What would make us revisit.** Compiler or original-type evidence that
+reproduces the same accesses with ordinary scalar locals.
