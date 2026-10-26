@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T926: match all eight ImageObj initialization, descriptor, pair-update and cleanup helpers at 100% objdiff; document typed contracts and instruction evidence.
 - M1-T925: verify all eight ImageObj slot-get, slot-teardown, work-release and state-mapping helpers at 100% objdiff; add typed slot parameters, per-function behaviour comments and instruction evidence.
 - M1-T900: verify eight `game/unit_020e8228` access, comparison and forwarding helpers at 100% objdiff, with typed borrowed views and instruction-based contracts.
 - M1-T885: match all eight command/result helpers in `game/unit_02044904` at 100% objdiff, including the corrected `func_020449c4` accumulator.

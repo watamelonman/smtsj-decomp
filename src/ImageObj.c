@@ -313,7 +313,9 @@ int ImageObj_Unk_077688(void)
 
 
 
-/* decompiler-derived */
+/* Initializes the observed node defaults, including pair (400,400), mode 2,
+ * flag +0x48 = 1 and sentinel +0x54 = -1. Stores at 020779a0..020779f0
+ * establish the layout; the caller owns writable storage of at least 0x70 bytes. */
 void ImageObj_Unk_0779a0(u32 *arg0,u32 arg1)
 {
   arg0[3] = 0;
@@ -422,6 +424,8 @@ void Unk065e88_SetPair04();
 void ImageObj_ReleaseField68(ImageObjNode *node);
 void ImageObj_Unk_077ea4();
 void func_020a1a24();
+/* Returns one if any of three live slots has a zero word at +0x48.
+ * Evidence: indexed load and conditional comparison at 020777fc..02077808. */
 int ImageObj_Unk_0777e0(void)
 {
     Unk077Tbl *t = (Unk077Tbl *)ImageObj_Get_data_0217231c();
@@ -444,6 +448,9 @@ void Unk0a163c_Call_020a1b08();
 void func_020a1b68();
 void Unk0a163c_Unk_0a21f8();
 
+/* Maps signed byte +0x38 below 31 to three high color bytes (value*255/31),
+ * otherwise uses all ones, then updates a live +0x68 handle. Evidence:
+ * signed byte load, division and shifts at 02077a0c..02077a3c. Null is allowed. */
 void ImageObj_Unk_0779f4(ImageObjNode *n)
 {
     s32 v;
@@ -460,7 +467,10 @@ void ImageObj_Unk_0779f4(ImageObjNode *n)
     Unk065e88_SetUnkField28(n->unk_68, c);
 }
 
-void ImageObj_Unk_077a4c(void *o, int kind)
+/* Copies one of three static descriptors into caller-owned storage for kinds
+ * 0..2; other kinds do nothing. Evidence: branches and data relocations at
+ * 02077a4c..02077a98. The last two parameters are unused (caller 02077f30). */
+void ImageObj_Unk_077a4c(void *o, int kind, const void *arg2, const void *arg3)
 {
     switch (kind) {
     case 0:
@@ -475,6 +485,9 @@ void ImageObj_Unk_077a4c(void *o, int kind)
     }
 }
 
+/* Dispatches node +0x50 as a 16-bit ID through the singleton sub-object,
+ * selecting the translated-ID path when +0x70 is set; refreshes it and marks
+ * +0x6c. Evidence: BLs at 02077c58..02077c8c. Requires a live singleton. */
 void ImageObj_Unk_077c30(ImageObjNode *n)
 {
     ImageObjWork *w = (ImageObjWork *)ImageObj_Get_data_0217231c();
@@ -573,6 +586,9 @@ void ImageObj_Release(ImageObjWork *work)
 
 void func_0205c368();
 
+/* For a live +0x68 handle, releases and clears handles +0x68, +0x60 and
+ * +0x64 in that order, skipping absent handles. Evidence: guarded BL/store
+ * pairs at 02077ebc..02077ef4. Requires a valid node. */
 void ImageObj_Unk_077ea4(ImageObjNode *n)
 {
     if (n->unk_68 == 0) {
@@ -635,4 +651,47 @@ void func_02077e74(ImageObjNode *node)
         return;
     }
     ImageObj_Unk_077ea4(node);
+}
+
+/* Offsets the handle's pair by (128, 151 - node[0x30]) plus caller offsets.
+ * Evidence: predicate BL at 02077e1c and arithmetic at 02077e58..02077e6c.
+ * Requires a valid node; only type 2 nodes with +0x50 below 600 are updated. */
+void func_02077e0c(ImageObjNode *node, int x, int y)
+{
+    int baseX;
+    int baseY;
+    if (ImageObj_Unk_077d68((s32 *)node) == 0) {
+        return;
+    }
+    baseX = 128;
+    switch (func_02095818()) {
+    case 0:
+        baseX = 128;
+        baseY = 151;
+        break;
+    case 2:
+        baseX = 128;
+        baseY = 151;
+        break;
+    default:
+        baseY = 151;
+        break;
+    }
+    baseY -= node->unk_30;
+    baseX += x;
+    baseY += y;
+    Unk065e88_SetPair04(node->unk_68, baseX, baseY);
+}
+
+extern u8 data_02145ab4[];
+extern u8 data_02145ab8[];
+void func_0205ad2c(void *descriptor);
+/* Builds a zeroed 64-byte descriptor, applies the kind-specific data and
+ * submits it. Evidence: byte-clear loop at 02077f48..02077f60 and BLs at
+ * 02077f70/02077f78. The two data pointers are unused by 077a4c. */
+void func_02077f30(int kind)
+{
+    u8 descriptor[64] = {0};
+    ImageObj_Unk_077a4c(descriptor, kind, data_02145ab4, data_02145ab8);
+    func_0205ad2c(descriptor);
 }
