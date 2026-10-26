@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Matched M2-T008 rotation/reciprocal-scale wrapper in C using the public SDK sine/cosine table declaration; documented the table symbol required before linking from C.
+- M1-T988: verify eight ScanVisor forwarding, list traversal and work-state helpers at 100% objdiff; document typed contracts and original instruction evidence.
 - Matched the NitroSDK no-op and typed 100-byte startup build record in `sdk_02000b9c` at 100% objdiff.
 - M1-T975: add the missing `func_020ec704` C definition and individually verify all three CaveArea render/state callbacks (`func_020ecc24`, `func_020ec704`, `func_020ebb14`) at 100% objdiff, with documented work-field offsets and instruction evidence.
 - M1-T980: match seven ID cursor, deletion, dispatch, input and drawing helpers; document the remaining message-handler pointer advancement hard case.
