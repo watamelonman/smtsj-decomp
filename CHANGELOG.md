@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T775: matched game/unit_020ea208 `func_020eaa90`, `func_020eae84` and `func_020eb488` at 100% objdiff; added the +0x1d4 frame counter to the work view and documented the accessor, graphic-creation and state-machine evidence.
+- Verified the eight M1-T792 game/unit_020a7d54 slot insert/lookup, entry walk, state-reset and countdown helpers at 100% objdiff; typed the work header (including the +0x1c counter) and entry pointer returns, and documented the instruction evidence for each.
 - Verified all eight M1-T774 game/unit_020ea208 table rebuild, display-queue, slot effect, descriptor-stage and work-release routines at 100% objdiff; added typed descriptor/graphic views and documented the instruction evidence.
 - Verified all eight M1-T791 game/unit_020a7d54 entry scan, reset, release, predicate, and counter routines at 100% objdiff; added shared typed entry/work views, typed provider arguments, and per-function instruction evidence.
 - M1-T785: matched the four game/unit_0204bb9c slot-allocation, key-release and packed-record-clear routines at 100% objdiff, with typed context slot arrays and instruction evidence.
