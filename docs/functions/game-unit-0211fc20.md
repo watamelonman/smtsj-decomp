@@ -78,3 +78,28 @@ these routines only read it; this also preserves the original load scheduling.
 No new tests are required by the card: original instructions and objdiff are the
 acceptance oracle. Validation includes the full build, unit suite, anticheat,
 match gate and image checksum.
+
+## M1-T838
+
+Both requested functions report 100% in objdiff. Names retain the configured
+neutral symbols: instruction evidence establishes behavior but not the scene's
+broader purpose. No functions from this card remain on the hard list.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_0211ff14` | 0211ff14–02120348: signed switch on work +20 submits two kind-3 requests at ticks 30, 200, 360, 480, 600, 720, 840 and 880. Coordinates, extents, angles, speeds and accelerations follow the original immediate operands and the existing pixel/fixed-point provider contracts. Requires initialized full work storage. |
+| `func_02120d7c` | 02120d7c–021212f0: dispatches slot +8 subtypes 1–8 using elapsed ticks at +36 and pixel coordinates derived from +12/+16. Implements timed paired requests, velocity decay, aimed fans, radial requests, randomized acceleration, sine-modulated angles and side-dependent requests. Unknown/zero subtypes have no effects. Requires a valid 44-byte slot; stored positions, velocity and acceleration use 20.12 units. Trig conversion uses the same rounded signed 64-bit arithmetic and read-only interleaved halfword table as 02120bd4. |
+
+No new tests are required by this card; the delinked instructions and objdiff
+are the acceptance oracle. No module boundary or provider ownership changes.
+
+### Existing match-gate issue
+
+The gate additionally checks existing `func_0212034c`, which reports 99.97409%
+both before and after this card (verified by compiling the HEAD source separately).
+The sole diff is its call to `Unk11fc20_Unk_120650`: both sides have the same
+`R_ARM_PC24` relocation and addend -8, and the instruction comparison succeeds.
+Objdiff assigns the target call a spurious internal branch destination at 2600
+(the next function's address 2608 minus 8), whereas the compiler emits individual
+function sections. This is an existing object-layout/objdiff issue, not an
+instruction change. Protected configuration and tooling are left unchanged.

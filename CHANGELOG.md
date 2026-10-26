@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T838: match both remaining requested game/unit_0211fc20 timed request dispatchers at 100% objdiff; document the existing caller relocation comparison issue.
 - M1-T837: match all eight requested game/unit_0211fc20 slot, input, drawing and state-update functions at 100% objdiff; document typed layouts and instruction evidence.
 - M1-T804: verify and document seven unit_02116598 guards, work initializers and setter at 100% objdiff; record func_02117250 at 98.91% for human scratch follow-up.
 - M1-T803: verify eight unit_02116598 work setters, call sequences, mappings and guards at 100% objdiff; add typed work accesses and per-function instruction contracts.
