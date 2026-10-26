@@ -449,7 +449,72 @@ equals 1. The original materialises the boolean with `moveq #1; movne #0`.
 Call sites include `0x0204b128`, `0x0204b13c`, `0x0204b16c`, `0x020a07f8`
 and `0x020a3e7c`/`0x020a3eb8`. Objdiff: 100%.
 
+
+## M2-T1064 source search
+
+Searched public NitroSDK/font rendering sources before reconstruction. The
+[NNS G2D API list](https://twlsdk.randommeaninglesscharacters.com/docs/twl/TwlSystem/g2d/g2d.html)
+did not identify an equivalent four-slot registry or these command wrappers.
+No public implementation was reused; field and call contracts below follow
+the original instructions, retaining neutral symbol names.
+
+## func_02063b4c — 52 bytes
+
+Five-case dispatch on the second argument's word: only state 1 calls
+`Unk0bc1a8_Unk_0bc504(object, 0)`. The jump table at 0x02063b58 establishes
+the range, including no-op cases. Objdiff: 100%.
+
+## func_02063f84 — 52 bytes
+
+Queries device 0 for mask 0x400 through `func_02053824`. When nonzero, sets
++0x24 and +0x2c on the supplied object and +0x84 on its first pointer to one.
+The stores at 0x02063fa4..0x02063fb0 establish the borrowed child view.
+Objdiff: 100%.
+
+## func_02065498 — 52 bytes
+
+Checks `data_0216b9a8` +4 directly. When null, forwards (25, 0xffff, 0) to
+`Unk0bc1a8_Unk_0bc928`; returns one in either case. Objdiff: 100%.
+
+## func_02061980 — 56 bytes
+
+Selects the font by id and returns null if its +0x30 halfword table is null.
+Otherwise decrements the signed index and clamps it to zero when at or above
+the +0x34 count; negative indices are preserved. The returned pointer is
+borrowed. See DEC-030 for the observed pointer reload. Objdiff: 100%.
+
+## func_02065544 — 56 bytes
+
+Returns zero if the shared singleton is absent or its +0x4c word is zero;
+otherwise tests its +8 word for nonzero. Objdiff: 100%.
+
+## func_020629c4 — 60 bytes
+
+Nullable teardown: calls `func_02060160`, optionally `func_0205bb68` on the
+first pointer, then `func_02060248`, `func_02062a00`, and `func_02061424` on
+the supplied object. Order follows 0x020629d0..0x020629f8. Objdiff: 100%.
+
+## func_02065864 — 60 bytes
+
+Calls `func_020656ac(object, mode)` and obtains the shared singleton even
+when mode is -1. Other modes call `func_02065b98`, forward mode to
+`func_020ba964`, and forward the singleton child's +0x90 byte to
+`func_020babec`. Objdiff: 100%.
+
+## func_020618cc — 64 bytes (hard)
+
+Four-slot font-id lookup at +0x20 with stride 56, returning the matching
+borrowed record or null. Remains supplied by the delink object. Indexed C
+with strength reduction and loop rotation disabled produces the same size
+and operations, but exchanges r3 and ip for the base and entry pointers.
+Tried explicit base/stride locals, for/while/do loops, signed and unsigned
+indices, volatile loads, register declarations, and local optimizer options.
+No exact match; no nonmatching definition retained.
+
 ## Hard list
+
+- `func_020618cc`: register allocation mismatch detailed above; a human can
+  open a scratch with `tools/decompme.py`.
 
 - `func_02062264` (4 bytes): the original instruction is only
   `pop {r3, r4, r5, r6, r7, pc}` (0xe8bd80f8). It is the unreachable trailing
@@ -464,7 +529,7 @@ and `0x020a3e7c`/`0x020a3eb8`. Objdiff: 100%.
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for each of the fifty-five reconstructed
-functions. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
+`tools/hand/cmp.py` reports OK for the seven functions added for M2-T1064. The match gate
+reports all 92 compiled functions in the changed unit at 100%. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.

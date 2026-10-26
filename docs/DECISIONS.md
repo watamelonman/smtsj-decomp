@@ -516,3 +516,12 @@ font registry with `mla r1, ip, r0, r2` and 56 in r0, branches forward to the
 `mla`; reducing the two loop transforms reproduces the target's indexed
 unsigned loop exactly. The neighbouring matched functions in the same TU are
 outside the pragma scope and keep their original code.
+
+
+## DEC-030 — Preserve the optional font table reload
+
+`func_02061980` reads the optional +0x30 pointer to check for null, then
+reads the count at +0x34 and reloads the pointer for indexing. A local volatile
+view preserves these observed reads without changing the registry layout or
+qualifying every registry access. The ordinary view reuses the first pointer
+and produces 52 bytes instead of the original 56.

@@ -562,3 +562,92 @@ s32 func_02065cd0(void)
     if (result == 0) return 1;
     return result->unk_0000->unk_003c == 1;
 }
+
+/* Provider contracts follow the register arguments at the calls below. */
+extern void Unk0bc1a8_Unk_0bc504(void *object, u32 value);
+extern s32 func_02053824(u32 device, u32 mask);
+extern void Unk0bc1a8_Unk_0bc928(u32 id, u32 value, u32 mode);
+extern void func_02060160(Unk061798Object *object);
+extern void func_0205bb68(Unk061798Object *object);
+extern void func_02060248(Unk061798Object *object);
+extern void func_02061424(Unk061798Object *object);
+extern void func_020ba964(s32 mode);
+
+/* Dispatches only state 1 to the provider with value zero; the original
+ * five-entry switch at 0x02063b58 establishes the accepted state range. */
+void func_02063b4c(void *object, const u32 *state)
+{
+    switch (*state) {
+    case 0: break;
+    case 1: Unk0bc1a8_Unk_0bc504(object, 0); break;
+    case 2: break;
+    case 3: break;
+    case 4: break;
+    }
+}
+
+/* Sets the object's two flags and its child's +0x84 flag only when device
+ * zero reports mask 0x400 (loads/stores at 0x02063f90..0x02063fb0). */
+void func_02063f84(Unk061798Object *object)
+{
+    if (func_02053824(0, 0x400) == 0) return;
+    object->unk_0024 = 1;
+    object->unk_002c = 1;
+    object->unk_0000->unk_0084 = 1;
+}
+
+/* Sends command 25 with value 0xffff only while the shared singleton is
+ * absent; the original always returns one (0x020654a0..0x020654bc). */
+s32 func_02065498(void)
+{
+    if (data_0216b9a8.unk_0004 == 0)
+        Unk0bc1a8_Unk_0bc928(25, 0xffff, 0);
+    return 1;
+}
+
+/* Returns a borrowed halfword entry from the optional +0x30 font table.
+ * As in 0x0206199c..0x020619b0, only the upper bound is clamped.
+ * Volatile preserves the observed second table-pointer load; see DEC-030. */
+u16 *func_02061980(u32 id, s32 index)
+{
+    volatile Unk061798Font *font = func_020618cc(id);
+    if (font->unk_0030 == 0) return 0;
+    index--;
+    if (index >= font->unk_0034) index = 0;
+    return &font->unk_0030[index];
+}
+
+/* Requires a singleton, its +0x4c flag, and its +8 state to be nonzero;
+ * these three guards are explicit at 0x0206554c..0x02065574. */
+s32 func_02065544(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return 0;
+    if (result->unk_004c == 0) return 0;
+    return result->unk_0008 != 0;
+}
+
+/* Tears down a nullable object in provider order, including its optional
+ * first pointer and +0x14 slot (calls at 0x020629d0..0x020629f8). */
+void func_020629c4(Unk061798Object *object)
+{
+    if (object == 0) return;
+    func_02060160(object);
+    if (object->unk_0000 != 0) func_0205bb68(object->unk_0000);
+    func_02060248(object);
+    func_02062a00(object);
+    func_02061424(object);
+}
+
+/* Applies the requested object mode; -1 suppresses the subsequent shared
+ * state and provider updates (0x0206587c..0x02065898). */
+void func_02065864(void *object, s32 mode)
+{
+    Unk061798ResultB *result;
+    func_020656ac(object, mode);
+    result = func_02063a60();
+    if (mode == -1) return;
+    func_02065b98();
+    func_020ba964(mode);
+    func_020babec(result->unk_0000->unk_0090);
+}

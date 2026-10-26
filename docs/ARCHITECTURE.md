@@ -38,3 +38,9 @@ ownership; the work area owns display handles between allocation and teardown.
 `include/game/unit_020cb32c.h` exposes borrowed work/display prefix views and
 provider declarations for the list teardown and paired drawing helpers.
 Offsets follow original loads and stores; resource providers retain ownership.
+
+`include/libs/unknown/lib_02061798.h` exposes borrowed font-table and render
+object views for the text library. The optional halfword table is at font
+record +0x30; the render object's first pointer references a child whose
++0x84 flag is updated by device polling. These views add no ownership or
+lifetime guarantees and depend only on base types and existing providers.
