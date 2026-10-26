@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T1057: match seven font/text forwarding and render-object setter functions in `libs/unknown/lib_02061798.c`; the split four-byte `func_02062264` epilogue is documented as hard.
 - M2-T103: reconstruct the eight lazy resource-cache and arena setters in `libs/unknown/lib_020907a0.c`.
 - M2-T097: match four NitroSDK VRAM disable wrappers and three BG screen-address getters.
 
