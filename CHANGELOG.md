@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T980: match seven ID cursor, deletion, dispatch, input and drawing helpers; document the remaining message-handler pointer advancement hard case.
 - Match all eight M1-T979 selection, ID-list submission and drawing helpers at 100% objdiff; document original stack-overrun behavior and scoped optimization settings.
 - M1-T986: verify eight ScanVisor forwarding, query and threshold helpers at 100% objdiff; document typed call contracts and original instruction evidence.
 - Verified all eight M1-T994 helpers in `game/unit_0206ae94` against the original ARM code; added typed declarations and per-function evidence contracts.
