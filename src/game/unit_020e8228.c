@@ -9,13 +9,13 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 extern u8 data_02150c30[];
 extern u32 data_02176cdc[];
 extern u32 data_02176ce0[];
-void Unk044904_GetFlag18(void);
-int func_02057524();
+int Unk044904_GetFlag18(void);
+void func_02057524(int value);
 void func_02057534(void);
-int func_02057eb8();
+void func_02057eb8(int value);
 int func_02061424();
 int Unk09974c_Unk_099d14();
-int ScanVisor_Unk_0a29a0();
+void ScanVisor_Unk_0a29a0(u32 value);
 int Unk0e8228_Unk_0e8374();
 int Unk0e8228_GetArr88Field20();
 void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1);
@@ -26,12 +26,12 @@ int Unk0ea208_Get_data_02176ddc();
 
 void Unk0e8228_Nop_0e93d4(void);
 void Unk0e8228_Thunk_02057534(void);
-void Unk0e8228_Thunk_02045c38(void);
+int Unk0e8228_Thunk_02045c38(void);
 void Unk0e8228_Unk_0e8cd8(void);
 void Unk0e8228_Unk_0e8e50(void);
 void Unk0e8228_Unk_0e8e6c(void);
 void Unk0e8228_Unk_0e8e7c(void);
-void Unk0e8228_Unk_0e8eac(int arg0);
+void Unk0e8228_Unk_0e8eac(u32 arg0);
 u32 Unk0e8228_Get_data_02176ce0(void);
 void Unk0e8228_Unk_0e8398(void);
 int Unk0e8228_Unk_0e8460(void);
@@ -56,41 +56,41 @@ void Unk0e8228_Unk_0ea028(void);
 u32 Unk0e8228_Unk_0ea040(void);
 int Unk0e8228_IsSet_data_02176cdc(void);
 
-/* empty callback */
+/* At 020e93d4, bx lr returns immediately: this callback has no work. */
 void Unk0e8228_Nop_0e93d4(void) { }
 
-/* forwards to `func_02057534` */
+/* At 020e8e60, the literal target and bx ip forward to func_02057534. */
 void Unk0e8228_Thunk_02057534(void) { func_02057534(); }
 
-/* forwards to `Unk044904_GetFlag18` */
-void Unk0e8228_Thunk_02045c38(void) { Unk044904_GetFlag18(); }
+/* At 020e8f68, bx ip forwards the flag getter result unchanged to the caller. */
+int Unk0e8228_Thunk_02045c38(void) { return Unk044904_GetFlag18(); }
 
-/* decompiler-derived */
+/* At 020e8cd8, mvn r0, #0 forwards the unsigned sentinel to ScanVisor_Unk_0a29a0. */
 void Unk0e8228_Unk_0e8cd8(void)
 {
   ScanVisor_Unk_0a29a0(0xffffffff);
 }
 
-/* decompiler-derived */
+/* At 020e8e50, mov r0, #4 forwards the fixed value to func_02057524. */
 void Unk0e8228_Unk_0e8e50(void)
 {
   func_02057524(4);
 }
 
-/* decompiler-derived */
+/* At 020e8e6c, mov r0, #2 forwards the fixed value to func_02057eb8. */
 void Unk0e8228_Unk_0e8e6c(void)
 {
   func_02057eb8(2);
 }
 
-/* decompiler-derived */
+/* At 020e8e7c, mvn r0, #0 forwards the signed sentinel -1 to func_02057eb8. */
 void Unk0e8228_Unk_0e8e7c(void)
 {
-  func_02057eb8(0xffffffff);
+  func_02057eb8(-1);
 }
 
-/* decompiler-derived */
-void Unk0e8228_Unk_0e8eac(int arg0)
+/* At 020e8eac, add r0, r0, #8 offsets the value modulo 2^32 before forwarding. */
+void Unk0e8228_Unk_0e8eac(u32 arg0)
 {
   Unk0e8228_Unk_0e8e8c(arg0 + 8);
 }

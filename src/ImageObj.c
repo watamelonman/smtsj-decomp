@@ -25,8 +25,8 @@ extern u32 data_0217231c[];
 void ImageObj_Unk_0775a0(void);
 void ImageObj_Unk_077620(void);
 void ImageObj_Unk_077640(void);
-void ImageObj_Release();
-int func_02079238();
+void ImageObj_Release(ImageObjWork *work);
+int func_02079238(u32 slot, s32 value);
 
 u32 ImageObj_Get_data_0217231c(void);
 void ImageObj_Unk_0775d8(void);
@@ -35,15 +35,15 @@ void ImageObj_Unk_077880(int arg0);
 void ImageObj_Unk_0778d4(int arg0);
 u32 ImageObj_Unk_0778e8(int arg0);
 void ImageObj_Unk_07916c(ImageObjWork *work);
-void ImageObj_Unk_0772f8(void);
+void ImageObj_Unk_0772f8(ImageObjWork *work);
 
-/* decompiler-derived */
+/* Returns the singleton word: 02077218 loads through data_0217231c. */
 u32 ImageObj_Get_data_0217231c(void)
 {
   return *data_0217231c;
 }
 
-/* decompiler-derived */
+/* Runs the three maintenance helpers in the order of BLs at 020775dc..020775e4. */
 void ImageObj_Unk_0775d8(void)
 {
   ImageObj_Unk_077620();
@@ -51,25 +51,26 @@ void ImageObj_Unk_0775d8(void)
   ImageObj_Unk_077640();
 }
 
-/* decompiler-derived */
+/* Forwards value to slot 0; MOV operands at 02077850..02077854 are the evidence. */
 void ImageObj_Unk_07784c(u32 arg0)
 {
   func_02079238(0,arg0);
 }
 
-/* decompiler-derived */
+/* Forwards value + 1 to slot 1, as encoded at 02077884..02077888. */
 void ImageObj_Unk_077880(int arg0)
 {
   func_02079238(1,arg0 + 1);
 }
 
-/* decompiler-derived */
+/* Forwards value + 3 to slot 2, as encoded at 020778d8..020778dc. */
 void ImageObj_Unk_0778d4(int arg0)
 {
   func_02079238(2,arg0 + 3);
 }
 
-/* decompiler-derived */
+/* Reads the indexed word at singleton + 4; caller supplies a valid live table index.
+ * Evidence: shifted ADD and LDR at 020778f4..020778f8. */
 u32 ImageObj_Unk_0778e8(int arg0)
 {
   int value;
@@ -77,7 +78,8 @@ u32 ImageObj_Unk_0778e8(int arg0)
   return *(u32 *)(value + arg0 * 4 + 4);
 }
 
-/* decompiler-derived */
+/* In state 1, sets field 1c to 256 minus field 2c (0207916c..0207917c).
+ * The work pointer must be valid; field semantics remain unknown. */
 void ImageObj_Unk_07916c(ImageObjWork *work)
 {
   if (work->UnkField0004 == 1) {
@@ -85,10 +87,11 @@ void ImageObj_Unk_07916c(ImageObjWork *work)
   }
 }
 
-/* decompiler-derived */
-void ImageObj_Unk_0772f8(void)
+/* Forwards the live work pointer to Release, then clears the singleton.
+ * Evidence: BL at 020772fc preserves incoming r0; STR at 02077308 clears the word. */
+void ImageObj_Unk_0772f8(ImageObjWork *work)
 {
-  ImageObj_Release();
+  ImageObj_Release(work);
   *data_0217231c = 0;
 }
 
@@ -314,7 +317,7 @@ void ImageObj_Unk_0775a0(void)
   }
   tmp1 = ImageObj_Unk_0776d4();
   if (tmp1 == 0) {
-    ImageObj_Release(tmp2);
+    ImageObj_Release((ImageObjWork *)tmp2);
     return;
   }
   *(u32 *)(tmp2 + 200) = 1;
