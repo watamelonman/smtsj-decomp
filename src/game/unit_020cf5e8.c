@@ -76,10 +76,16 @@ void Unk0cf5e8_Nop_0d11e8(void) { }
 /** Return without side effects; the original at 0x020d11ec is only BX LR. */
 void Unk0cf5e8_Nop_0d11ec(void) { }
 
-/** Forward with no arguments; the original BL targets 0x02124258. */
+/** Tail-forwards to Unk1241ec_Unk_124258 (0x02124258) via the literal-pool
+ * ldr ip,[pc]; bx ip branch; incoming registers pass through. The local (void)
+ * prototype mirrors the target's current declaration.
+ */
 void Unk0cf5e8_Thunk_02124258(void) { Unk1241ec_Unk_124258(); }
 
-/** Forward with no arguments; the original BL targets 0x0212424c. */
+/** Tail-forwards to Unk1241ec_Thunk_02124338 (0x0212424c) via the literal-pool
+ * ldr ip,[pc]; bx ip branch; incoming registers pass through. The local (void)
+ * prototype mirrors the target's current declaration.
+ */
 void Unk0cf5e8_Thunk_0212424c(void) { Unk1241ec_Thunk_02124338(); }
 
 /** Return 0/1 for signed word[0x28c] < word[0x194] on a valid work block.

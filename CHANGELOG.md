@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Corrected M1-T957 thunk evidence to describe literal-pool tail branches and reconciled historical match documentation.
 - Verified all eight M1-T957 functions in `game/unit_020cf5e8` against the original ARM code; documented typed contracts and cleared the stale predicate hard-list entry.
 - M1-T903: match all eight requested `game/unit_020e8228` dispatch, state, lookup and initialization helpers at 100% objdiff; add the state callback and document instruction contracts.
 - M1-T927: match all eight ImageObj allocation, deferred cleanup, restart and display setup functions, with typed layouts and instruction evidence.
