@@ -30,9 +30,9 @@ int Unk0a6174_FindFree10d(u8 *p)
     return -1;
 }
 
-/* Four-byte weighted entries; the selection routine consumes exactly eight. */
+/* Four-byte weighted entries; the selector reads the +2 weight, callers the +0 key. */
 typedef struct Unk0a6174Slot {
-    u8 pad_00[2];
+    u16 key;
     u8 weight;
     u8 pad_03;
 } Unk0a6174Slot;
@@ -256,7 +256,7 @@ void func_020a7ca4(u8 *grid, u8 *records)
     u8 *record;
     func_02008848(grid, 0, 0xe14);
     record = records;
-    for (i = 0; i < 16; i++, record += 16) {
+    for (i = 0; i < 16; record += 16, i++) {
         if (record[12] != 0) func_020a6280(grid, record[10], record[11], 1, (u8)i);
     }
     {
@@ -369,8 +369,7 @@ void func_020a7bd0(u8 *records, u8 *provider, int on)
     int i;
     u8 *record;
     if (provider == 0 || FIELD(void *, provider, 0) == 0) return;
-    record = records + 256;
-    for (i = 0; i < 16; i++, record += 16) {
+    for (i = 0, record = records + 256; i < 16; record += 16, i++) {
         if (record[13] != 0 && FIELD(s16, record, 4) > -1) {
             int offset = FIELD(s16, record, 4) * 88;
             u8 *entry = FIELD(u8 *, provider, 8) + offset;
@@ -624,4 +623,263 @@ void func_020a6e94(u8 *grid, u8 *records)
         }
     }
     Unk0387bc_Unk_038d58(work);
+}
+
+int Unk0387bc_Unk_038e7c(u32 *work);
+void Unk0387bc_Unk_038edc(u32 *work);
+u8 *Unk0387bc_GetEntry36b(u32 *work, u32 id);
+Unk0a6174Slot *Unk0387bc_GetEntry32b(u32 *work, u32 id);
+void Unk044394_Unk_044428(int mode);
+void Unk044394_Unk_044534(int mode);
+u16 *Unk09d42c_GetTable2Entry(u32 id);
+/* Original second-bank map rebuild: same rectangle scan as func_020a6e94 but
+ * it consumes the +0xe12 counter, 020a6468, 020a6548, FindFree10d and kind 2.
+ * Of the six populated table slots it picks the populated_count/2-th one. */
+void func_020a7108(u8 *grid, u8 *records)
+{
+    u32 count;
+    u8 *bounds, *table;
+    int startx, x, y;
+    int left, right, bottom, top;
+    int limit;
+    u8 i;
+    u8 selected;
+    Unk0a6174Slot *candidate, *entry;
+    int slot;
+    int starty;
+    int inserted;
+    if (grid == 0) return;
+    u32 work[5] = {0};
+    if (!Unk0387bc_Unk_038e7c(work)) return;
+    bounds = FIELD(u8 *, GetGameState(), 0x240);
+    if (bounds != 0) {
+        left = bounds[8];
+        top = bounds[9];
+        right = left + bounds[10] - 1;
+        bottom = top + bounds[11] - 1;
+        count = (u8)func_02098740(0);
+        if (count != 0) {
+            table = Unk0387bc_GetEntry36b(work, FIELD(u16, Unk02e000_GetWorkArea(), 0x35c));
+            if (table != 0) {
+                func_020caea8();
+                Unk044394_Unk_044428(9);
+                limit = FIELD(u16, table + (count - 1) * 4, 2);
+                if (FIELD(s16, grid, 0xe12) < limit) limit = FIELD(s16, grid, 0xe12);
+                for (i = 0; i < limit; i++) {
+                    selected = func_020a6468(table, count);
+                    candidate = Unk0387bc_GetEntry32b(work, FIELD(u16, table + selected * 4, -4));
+                    entry = Unk0a6174_Unk_0a6548(candidate);
+                    if (entry == 0) break;
+                    slot = Unk0a6174_FindFree10d(records);
+                    if (slot == -1) break;
+                    startx = func_02050088(1, left, right);
+                    starty = func_02050088(1, top, bottom);
+                    y = starty;
+                    x = startx;
+                    inserted = 0;
+                    do {
+                        if (func_020a65c4(grid, GetGameState() + 0x240, 0, x, y, 2) == 1) {
+                            inserted = func_020a6280(grid, x, y, 2, (u8)slot);
+                            break;
+                        }
+                        x++;
+                        if (right < x) { x = left; y++; }
+                        if (bottom < y) y = top;
+                    } while (startx != x || starty != y);
+                    if (inserted == 1) {
+                        u16 *entries = Unk09d42c_GetTable2Entry(entry->key);
+                        u16 chosen = 0;
+                        u32 present[6] = {0};
+                        int populated = 0;
+                        int choice, j;
+                        for (j = 0; j < 6; j++) {
+                            if (entries[j + 2] != 0) {
+                                present[j] = 1;
+                                populated++;
+                            }
+                        }
+                        if (populated <= 0) populated = 1;
+                        choice = 0;
+                        switch (populated) {
+                        case 0: break;
+                        case 1: choice = 0; break;
+                        case 2: choice = 1; break;
+                        case 3: choice = 1; break;
+                        case 4: choice = 2; break;
+                        case 5: choice = 2; break;
+                        case 6: choice = 3; break;
+                        }
+                        populated = 0;
+                        for (j = 0; j < 6; j++) {
+                            if (present[j] != 1) continue;
+                            if (choice == populated) {
+                                chosen = entries[j + 2];
+                                break;
+                            }
+                            populated++;
+                        }
+                        func_020a6224(records, 0, -1, entry->key, chosen,
+                                      selected, (s8)x, (s8)y, 1, slot);
+                    }
+                }
+                Unk044394_Unk_044534(9);
+                Unk0caea8_Unk_0caf48();
+            }
+        }
+    }
+    Unk0387bc_Unk_038edc(work);
+}
+
+void func_02038ff8(void *destination, u8 *groups, u8 region, u8 count);
+void Unk038fbc_Unk_039138(void *work);
+int Unk0e5fb8_Unk_0e63c8(int level);
+int Unk02f2a8_Unk_035c14(int id, u32 region);
+/* Original clears both record banks' grid cells for one region, refills both
+ * provider banks, then spawns occupied cells back into records. The 140-byte
+ * provider work buffer and the two 16-word bank flags are caller-owned. */
+void func_020a7474(u8 *grid, u8 *records, u8 *map, u8 *groups,
+                   int id, u32 region, int mode)
+{
+    int i;
+    u8 *record, *cell, *state;
+    int filter;
+    s32 count;
+    s8 level;
+    /* Separate per-bank spawn state reproduces the original stack slots. */
+    int j1, starty1, inserted1;
+    int j2, starty2, inserted2;
+    u8 *cursor2;
+    int right2, left2, bottom2, top2;
+    u8 *cursor1;
+    int right1, left1, bottom1, top1;
+
+    if (grid == 0 || FIELD(void *, map, 0) == 0) return;
+    level = *(s8 *)(groups + region + 27);
+    if (level < 0) return;
+    count = Unk0e5fb8_Unk_0e63c8(level);
+    u32 work[35] = {0};
+    if (count > 0) func_02038ff8(work, groups, (u8)region, (u8)count);
+    func_020caea8();
+    u32 first[16] = {0};
+    u32 second[16] = {0};
+
+    record = records;
+    for (i = 0; i < 16; record += 16, i++) {
+        if (record[12] != 1) continue;
+        cell = Unk038fbc_Unk_039160(map, record[10], record[11]);
+        if (cell == 0) continue;
+        if (region != FIELD(Unk0a6174Flags, cell, 4).region) continue;
+        if (mode == 1 && FIELD(s16, record, 4) == -1) {
+            u8 *target = (u8 *)Unk0a6174_Unk_0a6a88((int)grid, record[10], record[11]);
+            func_02008848(target, 0, 2);
+            first[i] = 1;
+        } else {
+            func_020a6a08(grid, records, record[10], record[11]);
+        }
+    }
+    {
+        int j;
+        u8 *record2;
+        for (j = 0, record2 = records + 256; j < 16; record2 += 16, j++) {
+            if (record2[13] != 1) continue;
+            cell = Unk038fbc_Unk_039160(map, record2[11], record2[12]);
+            if (cell == 0) continue;
+            if (region != FIELD(Unk0a6174Flags, cell, 4).region) continue;
+            if (mode == 1 && FIELD(s16, record2, 4) == -1) {
+                u8 *target = (u8 *)Unk0a6174_Unk_0a6a88((int)grid, record2[11], record2[12]);
+                func_02008848(target, 0, 2);
+                second[j] = 1;
+            } else {
+                func_020a6a08(grid, records, record2[11], record2[12]);
+            }
+        }
+    }
+
+    state = GetGameState();
+    filter = Unk02f2a8_Unk_035c14(id, region);
+    func_020a6ac0(grid, records, state + 0x3134, map, id, region, filter);
+    state = GetGameState();
+    filter = Unk02f2a8_Unk_035c14(id, region);
+    func_020a6c98(grid, records, state + 0x3140, map, id, region, filter);
+
+    if (mode == 1) {
+        u8 *bounds = FIELD(u8 *, map, 0);
+        int startx, x, y, found;
+        cursor1 = records;
+        left1 = bounds[8];
+        top1 = bounds[9];
+        right1 = left1 + bounds[10] - 1;
+        bottom1 = top1 + bounds[11] - 1;
+        for (j1 = 0; j1 < 16; j1++, cursor1 += 16) {
+            if (first[j1] != 1) continue;
+            startx = func_02050088(1, left1, right1);
+            starty1 = func_02050088(1, top1, bottom1);
+            y = starty1;
+            x = startx;
+            inserted1 = 0;
+            do {
+                found = 0;
+                cell = Unk038fbc_Unk_039160(map, x, y);
+                if (cell != 0 && region == FIELD(Unk0a6174Flags, cell, 4).region) {
+                    if (count > 0) found = func_020a65c4(grid, map, (u8 *)work, x, y, 1);
+                    else found = func_020a65c4(grid, map, 0, x, y, 1);
+                }
+                if (found == 1) {
+                    inserted1 = func_020a6280(grid, x, y, 1, j1);
+                    if (inserted1 == 1) {
+                        FIELD(u32, cursor1, 0) = 0;
+                        cursor1[10] = (u8)x;
+                        cursor1[11] = (u8)y;
+                        cursor1[14] = 0;
+                    }
+                    break;
+                }
+                x++;
+                if (right1 < x) { x = left1; y++; }
+                if (bottom1 < y) y = top1;
+            } while (startx != x || starty1 != y);
+            if (inserted1 == 0) func_02008848(cursor1, 0, 16);
+        }
+    }
+    if (mode == 1) {
+        u8 *bounds = FIELD(u8 *, map, 0);
+        int startx, x, y, found;
+        cursor2 = records + 256;
+        left2 = bounds[8];
+        top2 = bounds[9];
+        right2 = left2 + bounds[10] - 1;
+        bottom2 = top2 + bounds[11] - 1;
+        for (j2 = 0; j2 < 16; j2++, cursor2 += 16) {
+            if (second[j2] != 1) continue;
+            startx = func_02050088(1, left2, right2);
+            starty2 = func_02050088(1, top2, bottom2);
+            y = starty2;
+            x = startx;
+            inserted2 = 0;
+            do {
+                found = 0;
+                cell = Unk038fbc_Unk_039160(map, x, y);
+                if (cell != 0 && region == FIELD(Unk0a6174Flags, cell, 4).region) {
+                    if (count > 0) found = func_020a65c4(grid, map, (u8 *)work, x, y, 2);
+                    else found = func_020a65c4(grid, map, 0, x, y, 2);
+                }
+                if (found == 1) {
+                    inserted2 = func_020a6280(grid, x, y, 2, j2);
+                    if (inserted2 == 1) {
+                        FIELD(u32, cursor2, 0) = 0;
+                        cursor2[11] = (u8)x;
+                        cursor2[12] = (u8)y;
+                        cursor2[15] = 0;
+                    }
+                    break;
+                }
+                x++;
+                if (right2 < x) { x = left2; y++; }
+                if (bottom2 < y) y = top2;
+            } while (startx != x || starty2 != y);
+            if (inserted2 == 0) func_02008848(cursor2, 0, 16);
+        }
+    }
+    Unk0caea8_Unk_0caf48();
+    if (count > 0) Unk038fbc_Unk_039138(work);
 }

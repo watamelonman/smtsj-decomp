@@ -2,6 +2,11 @@
 
 ## Unreleased
 - M1-T884: match all eight `game/unit_02044904` rank-comparator, slot-sweep, AI-script and script-state helpers at 100% objdiff; add typed slot/script-table fields and document the raw rank table plus scoped pragmas (DEC-022).
+- M1-T875: match both `game/unit_020a6174` second-bank map-rebuild and provider-bank respawn functions at 100% objdiff; document the table-selection and two-bank record contracts.
+- Verified all eight M1-T897 wrappers in `game/unit_020e8228` at 100% objdiff, with typed forwarding contracts and instruction evidence.
+- M1-T871: match the 1336-byte game/unit_020cb32c state callback at 100% objdiff, with typed work and by-value list contracts.
+- M1-T870: match seven game/unit_020cb32c refresh, state, descriptor and input functions at 100% objdiff; document the remaining refresh loop for scratch follow-up.
+- Verify all eight M1-T895 SaveLoadTask helpers at 100% objdiff and document their instruction-based contracts.
 - M1-T883: match the remaining four `game/unit_02044904` talk-tone lookup, state-reset and script-advance functions in C and document all eight requested functions at 100% objdiff, with typed manager/tone-state views and instruction-based contracts.
 - M1-T874: match eight `game/unit_020a6174` provider-update, weighted-selection, grid-rebuild and placement functions at 100% objdiff; document their borrowed record contracts and the scoped 020a65c4 allocation pragma.
 - Matched all eight M1-T894 SaveLoadTask helpers at 100% objdiff, with typed parameters and instruction-based contracts.
