@@ -414,6 +414,10 @@
 
 - Reconstruct all four NitroSystem G3D animation unlink and texture-size routines in libs/unknown/lib_02021920.
 
+- Add matching C for all three sdk_02027dac NitroSystem visibility and basic joint-transform routines.
+
+- Match all eight requested CRI `cri_0207c82c` record helpers with typed fields and instruction-based contracts.
+
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
 - Verified all eight M1-T296 handlers in `game/unit_0203c6a4` at 100% objdiff, with typed forwarding declarations and instruction-based contracts.
