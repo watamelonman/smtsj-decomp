@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T1099: match four MSL decimal and double-classification helpers in `libs/MSL/msl_02017850.c` (`func_0201ba78`, `func_0201bdc4`, `func_0201ce94`, `func_0201cf3c`); document `func_0201d458` and the `_dgeq`/`_dgr`/`_deq` flag-returning comparison primitives as hard hand-written assembly.
 - M2-T1098: match four MSL sign/exponent and decimal-state helpers in `libs/MSL/msl_02017850.c` (`func_0201b3ec`, `func_0201b254`, `func_0201cfac`, `func_0201bb34`); document `func_0201bae4` and the `_dfix`/`_dflt`/`_dfltu` runtime routines as hard hand-written assembly.
 - M2-T1061: match eight render-state predicates, a glyph-advance multiply and singleton/state setters in `libs/unknown/lib_02061798.c` (`func_0206232c`, `func_02062a3c`, `func_0206431c`, `func_0206433c`, `func_02065438`, `func_0206557c`, `func_0206567c`, `func_02065c10`).
 - M2-T1027: match eight NitroSDK draw/dispatch, callback and display-list transfer helpers in `libs/NitroSDK/sdk_020222d8.c` (`func_02022a6c`, `func_02022d40`, `func_02022fe8`, `func_0202353c`, `func_020235ec`, `func_020236c0`, `func_02025248`, `func_020253e0`).

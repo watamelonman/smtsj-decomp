@@ -14,11 +14,6 @@ extern double func_020188ac(double value);
  * free wrapper below reaches the allocator. */
 extern s32 func_02007170(s32 arena, s32 heap, void *block);
 
-/** MSL decimal mantissa helper. It receives the decimal state and a digit
- * count, leaves the count untouched, and returns a negative value when the
- * digit list cannot be used at that length (see its use in func_0201bb34). */
-extern int func_0201ba78(MslDecimal *value, int digits);
-
 /** MSL decimal mantissa increment helper. It adds one to the n-digit decimal
  * mantissa, carrying toward the most significant digit and bumping the
  * exponent on overflow. This routine is still delinked assembly (see the
@@ -63,6 +58,32 @@ double func_0201ba60(double value)
 double func_0201ba6c(double value)
 {
     return func_020188ac(value);
+}
+
+/** Decide whether the decimal mantissa must round up at digit `digits`.
+ * Evidence: the body compares the digit at that index with 5, scans the
+ * following digits for a nonzero value when it is exactly 5, and otherwise
+ * tests the previous digit's low bit, which is round-half-to-even. Returns 1
+ * to increment the mantissa and -1 to round down; func_0201bb34 tests the
+ * sign of this result. */
+int func_0201ba78(MslDecimal *value, int digits)
+{
+    u8 *p = value->digits + digits;
+
+    if (*p > 5)
+        return 1;
+    if (*p < 5)
+        return -1;
+    {
+        u8 *end = value->digits + value->length;
+        for (p++; p < end; p++) {
+            if (*p != 0)
+                return 1;
+        }
+    }
+    if (value->digits[digits - 1] & 1)
+        return 1;
+    return -1;
 }
 
 /** Do nothing.
@@ -116,6 +137,46 @@ void func_0201bb34(MslDecimal *value, int digits)
     func_0201bae4(value, digits);
 }
 
+/** Parse the integer digit run at `text` into `value`, then decide the rounding
+ * flag from the first discarded character. Evidence: the body copies at most
+ * 32 characters minus '0' into digits[+5], stores the count at +4 and the
+ * binary exponent at +2, then compares the next character with 5 and scans
+ * following zeros before calling func_0201bae4. This is MSL's `__str2dec`
+ * (the same routine is reconstructed under that name in the public MSL
+ * sources), with the sign byte cleared first. */
+void func_0201bdc4(MslDecimal *value, const s8 *text, s16 exponent)
+{
+    int i = 0;
+    int c;
+
+    value->exponent = exponent;
+    value->sign = 0;
+    while (i < 32 && *text != 0) {
+        value->digits[i++] = *text++ - '0';
+    }
+    value->length = i;
+    c = *text;
+    if (c == 0)
+        return;
+    if (c < 5)
+        return;
+    if (c > 5)
+        goto round;
+    c = text[1];
+    text++;
+    if (c != 0) {
+        do {
+            if (c != '0')
+                goto round;
+            c = *++text;
+        } while (c != 0);
+    }
+    if ((value->digits[i - 1] & 1) == 0)
+        return;
+round:
+    func_0201bae4(value, value->length);
+}
+
 /** Add an integer to a double's binary exponent.
  * Evidence: the body splits the double with func_0201b5cc, adds the third
  * argument to the stored exponent, then rebuilds the double with
@@ -130,6 +191,23 @@ double func_0201cfac(double value, int exponent_adjust)
     return func_0201b688(value, exponent);
 }
 
+/** Population count of a 64-bit word. Evidence: the body is the standard
+ * 64-bit SWAR sequence with the masks 0x55555555, 0x33333333 and 0x0f0f0f0f,
+ * then adds the two halves and returns the low byte. The dtoa caller subtracts
+ * the count from 53 to size the significant-digit run of a normalised
+ * mantissa. The value is passed as one u64 so the ABI keeps it in r0/r1. */
+int func_0201ce94(u64 value)
+{
+    value = value - ((value >> 1) & 0x5555555555555555ULL);
+    value = (value & 0x3333333333333333ULL) +
+            ((value >> 2) & 0x3333333333333333ULL);
+    value = (value + (value >> 4)) & 0x0f0f0f0f0f0f0f0fULL;
+    value = value + (value >> 8);
+    value = value + (value >> 16);
+    value = value + (value >> 32);
+    return value & 0xff;
+}
+
 /** Return the sign bit of `value` as an s32.
  * Evidence: the high word of the double argument is masked with 0x80000000.
  * The argument is spilled to the stack because the code inspects its
@@ -137,6 +215,30 @@ double func_0201cfac(double value, int exponent_adjust)
 s32 func_0201cf28(double value)
 {
     return ((MslDoubleBits *)&value)->words[1] & 0x80000000;
+}
+
+/** Classify a double by its IEEE-754 bit pattern. Evidence: the body masks the
+ * high word with 0x7ff00000 and returns 3 for zero, 5 for a denormal, 2 for an
+ * infinity, 1 for a NaN and 4 for a normal value; the mantissa/low-word tests
+ * distinguish zero from denormal and infinity from NaN. Callers compare the
+ * result with 1 and 2, matching the NaN/infinity checks in func_0201c648. */
+int func_0201cf3c(double value)
+{
+    u32 exponent = ((u32 *)&value)[1] & 0x7ff00000;
+
+    if (exponent == 0)
+        goto zero;
+    if (exponent != 0x7ff00000)
+        goto normal;
+    if ((((u32 *)&value)[1] & 0xfffff) != 0 || ((u32 *)&value)[0] != 0)
+        return 1;
+    return 2;
+zero:
+    if ((((u32 *)&value)[1] & 0xfffff) != 0 || ((u32 *)&value)[0] != 0)
+        return 5;
+    return 3;
+normal:
+    return 4;
 }
 
 /** Release `block` through MSL's arena allocator.
