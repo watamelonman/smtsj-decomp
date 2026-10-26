@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched and documented the eight M1-T801 unit_02116598 BSS-cell clear/read routines, byte fifth-argument forwarders, three-call wrapper and null-guard (`func_021177b8`); added typed contracts and instruction evidence for all eight at 100% objdiff.
+- Matched all eight M1-T835 global-work and countdown helpers in `game/unit_0211fc20` at 100% objdiff, with typed layouts and instruction-based contracts.
+- M1-T777: match `game/unit_0210fe28`'s event handler and draw/advance dispatcher in readable C at 100% objdiff; extend the typed work/message/event views, and document the remaining grid-drawing function (`func_02110a24`, measured 92.65%) for scratch follow-up rather than claiming a match.
 - Verified the eight M1-T800 unit_02116598 tail-call thunks, BSS work-pointer getters, stack-argument forwarders and small call wrappers at 100% objdiff; documented their instruction evidence and typed contracts.
 - Verified all eight M1-T793 game/unit_020a7d54 descriptor-entry setup, state dispatch, work reset/teardown and slot state-machine functions at 100% objdiff; added typed descriptor/slot views and instruction evidence, and cleaned the four remaining decompiler-derived bodies into named work fields.
 - Document and verify the eight M1-T799 empty callbacks and argument-preserving forwarders in game/unit_02116598.
