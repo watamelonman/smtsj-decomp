@@ -114,7 +114,9 @@ typedef struct Unk044904Mgr {
     u8 pad_0044[0xc];
     u32 unk_0050;
     u32 unk_0054;
-    u8 pad_0058[0xc];
+    u8 pad_0058[0x4];
+    u32 unk_005c;               /* compared with 1 by Unk044904_Unk_045460 */
+    u8 pad_0060[0x4];
     Unk044904Obj *slots[10];    /* +0x64 */
 } Unk044904Mgr;
 
@@ -148,6 +150,8 @@ void Unk044904_Unk_04527c(void)
     }
 }
 
+/* 020453ac: clears the byte at +0x1de of every registered slot; null slots are
+ * skipped (cmp/strbne), matching the other ten-slot walks in this file. */
 void Unk044904_ClearSlotsUnk1de(void)
 {
     int i;
@@ -191,11 +195,15 @@ void Unk044904_Unk_0459fc(void)
     UNK044904_MGR()->unk_0054 = 0;
 }
 
+/* 02045c38: exposes manager bit 18 as 0/1 (ldr word at +0x40, lsl #13, lsr #31);
+ * the same bitfield layout is used by Unk044904_Unk_0459fc. */
 int Unk044904_GetFlag18(void)
 {
     return UNK044904_MGR()->flag_0040_18 ? 1 : 0;
 }
 
+/* 02045c58: only argument 1 triggers the call to Unk0bc1a8_Unk_0bc928 with
+ * (26, 0xffff, 0); every other value returns immediately (cmp #1 / popne). */
 void Unk044904_Unk_045c58(int x)
 {
     if (x != 1) {
@@ -413,12 +421,11 @@ void Unk044904_Unk_0453dc(void)
     FIELD(u32, Unk044904_Get_data_0215ee98(), 88) = 0;
 }
 
-/* decompiler-derived */
+/* 02045c7c: reports that slot 26 (0x1a) is not empty, inverting the 0/1 result
+ * of Unk0bc1a8_IsSlotEmpty with cmp/moveq/movne. */
 int Unk044904_Unk_045c7c(void)
 {
-  int value;
-  value = Unk0bc1a8_IsSlotEmpty(0x1a);
-  return value == 0;
+    return Unk0bc1a8_IsSlotEmpty(26) == 0;
 }
 
 int func_020452c4();
@@ -435,6 +442,8 @@ int Unk044904_Unk_046468(s16 *st)
     return 1;
 }
 
+/* 0204661c: one-shot script step: if the s16 at +2 is 1, write state 2 to the
+ * s16 at +0; otherwise call Unk044904_Unk_045bd0(0). Always returns 2. */
 int Unk044904_Unk_04661c(s16 *st)
 {
     if (st[1] == 1) {
@@ -455,7 +464,9 @@ int Unk044904_Unk_046644(void)
     return 1;
 }
 
-/* decompiler-derived */
+/* 02046688: calls func_020452c4, Unk044904_Unk_044fd8, Unk0aa118_SortRemaining
+ * and Unk044904_Unk_045c98 in that order, discarding every result (bare bls);
+ * returns 1 unconditionally. */
 u32 Unk044904_Unk_046688(void)
 {
   func_020452c4();
@@ -466,12 +477,11 @@ u32 Unk044904_Unk_046688(void)
 }
 
 
-/* decompiler-derived */
+/* 02045460: reports whether the argument equals the manager's +0x5c word (the
+ * word is loaded with ldr r0,[r0,#92] after registration; cmp/moveq/movne). */
 int Unk044904_Unk_045460(int arg0)
 {
-  int value;
-  value = Unk044904_Get_data_0215ee98();
-  return arg0 == *(int *)(value + 0x5c);
+  return arg0 == UNK044904_MGR()->unk_005c;
 }
 
 int func_02045ca8();
@@ -538,12 +548,11 @@ void Unk044904_Unk_045480(void)
     func_02122200();
 }
 
-/* decompiler-derived */
+/* 02046448: when func_02045ca8 reports pending work, writes state 2 through the
+ * caller's halfword pointer (movne r0,#2; strhne); always returns 1. */
 u32 Unk044904_Unk_046448(u16 *arg0)
 {
-  int value;
-  value = func_02045ca8();
-  if (value != 0) {
+  if (func_02045ca8() != 0) {
     *arg0 = 2;
   }
   return 1;
