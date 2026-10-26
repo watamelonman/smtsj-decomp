@@ -39,6 +39,10 @@ ownership; the work area owns display handles between allocation and teardown.
 provider declarations for the list teardown and paired drawing helpers.
 Offsets follow original loads and stores; resource providers retain ownership.
 
+`include/libs/MSL/msl_02017850.h` exposes a borrowed formatting-request prefix
+for the MSL decimal formatter: only the signed precision at offset two is read.
+The request and decimal output storage remain caller-owned; the helpers depend
+only on existing MSL numeric routines and base types.
 `include/libs/unknown/lib_02061798.h` exposes borrowed font-table and render
 object views for the text library. The optional halfword table is at font
 record +0x30; the render object's first pointer references a child whose

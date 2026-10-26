@@ -4,6 +4,9 @@
 
 - Match eight more text-library font metric, state, and teardown functions (M2-T1065).
 
+- M2-T121: match the startup wrapper `func_0204ffa8`; document the remaining two-coordinate distance helper as hard.
+
+- M2-T1100: match MSL frexp, decimal equality/ordering and num2dec formatting helpers; document four remaining runtime or symbol-configuration hard cases.
 - M2-T1064: match all eight font/text dispatch, lookup, teardown and state helpers, including the four-slot registry lookup.
 - M2-T120: match eight MTBL index, random-stream and integer-power helpers in `libs/NitroSDK/sdk_0204ff30.c`.
 
