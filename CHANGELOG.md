@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T996: match all eight remaining `game/unit_0206ae94` constructors, scale, bounce, angle and transform helpers at 100% objdiff; document typed contracts and the ARM-to-Thumb call resolved by linked objdiff.
 - M1-T995: verify seven game/unit_0206ae94 forwarding, transform, scan and release helpers at 100% objdiff; document the cursor helper instruction-order blocker.
 - Match all eight M1-T979 selection, ID-list submission and drawing helpers at 100% objdiff; document original stack-overrun behavior and scoped optimization settings.
 - M1-T986: verify eight ScanVisor forwarding, query and threshold helpers at 100% objdiff; document typed call contracts and original instruction evidence.
