@@ -56,21 +56,53 @@ Validation: objdiff verifies the original instruction sequences, register
 allocation, literals and relocations for all eight; no new behavioral tests
 are required by this matching card.
 
+## M1-T868
+
+All eight requested functions match at 100% objdiff. Work/handle pointers are
+borrowed and word-aligned; callers retain ownership. Names remain neutral because
+instruction evidence does not establish a subsystem purpose.
+
+- `Unk0cb32c_Unk_0ccaf8` (48 B): takes writable work through `+0xd8` and
+  a 32-bit value. Calls `123294` with the `+0x94` handle, stores the value at
+  `+0xd8`, sets `+8` to 1, then enters state 3 through `0ccaa8`. Evidence:
+  original LDR, ordered STRs and BLs at `020ccaf8..020ccb24`.
+- `Unk0cb32c_Unk_0cb754` (56 B): takes a writable handle slot; calls
+  `0bc9b4(10,0)`, releases the handle through `2122e1c`, clears the slot,
+  then calls `0e5530`, `0fd3ac`, `0cb344`, `0de870` in order. Evidence:
+  original LDR/STR and BL sequence at `020cb754..020cb788`.
+- `Unk0cb32c_Unk_0cb440` (72 B): maps unsigned selectors 0,1,2,3,4 to
+  6,8,7,9,5 respectively and returns other inputs unchanged. Evidence:
+  unsigned jump-table bound and five immediate-return blocks.
+- `Unk0cb32c_Unk_0cb504` (72 B): takes a handle and two 32-bit selectors;
+  calls `063920(handle)`, resolves the selectors through `0cb4e4`, converts
+  that result through `063a30`, then forwards it as the fifth argument of
+  `061f10(handle,-1,0,0,value)`. Evidence: BLs and stack store at `020cb504`.
+- `func_020ccc64` (80 B): reads the low halfword of the work word at
+  `+0xa8`. Selector 0 tests provider entry `0x5f1` and chooses 0 when
+  nonzero or 3 otherwise; selector 1 chooses 1; all others choose 2.
+  Calls `124224` with that result. Evidence: shifts, branches, literal and BLs.
+- `func_020cba20` (84 B): forwards `0cb3dc()` to `095a2c`, then tests
+  `0de8b0(0)`. If zero, calls `0cb32c`, `0bc928(15,65535,0)`,
+  `0bc928(16,15,0)` and `0bc9f4(16,0)` in order. Evidence: conditional
+  return and BL/literal sequence at `020cba20..020cba70`.
+- `Unk0cb32c_Unk_0cb488` (92 B): borrows a handle word and takes signed
+  x/y coordinates plus three 32-bit values. Builds a 16-byte stack descriptor
+  with `060dd4(buffer,handle,0,index,arg4)`, then submits it through
+  `059f70(*handle,0,x,y,buffer,0,arg5)`. Evidence: stack allocation,
+  outgoing argument stores and two BLs at `020cb488..020cb4e0`.
+- `func_020cbaa4` (92 B): writes descriptor size `0x130`, flags zero and
+  six callback addresses at `+0x0c..+0x20`, preserving `+8`. Callback order:
+  `0cbce4`, `0cc5d8`, `0cccb4`, `0cccc0`, `0cbc50`, `0cccc4`.
+  Evidence: original STR offsets and six relocated literals. Callback types
+  are opaque storage types here; this initializer never invokes them.
+
+Validation: objdiff checks instructions, register allocation, literals and
+relocations for all eight and preserves earlier matches. Behavioral tests are
+not required by this matching card; the original instructions are the oracle.
+
 ## Hard list
 
-None for M1-T867.
-
-## Other existing bodies outside M1-T867
-- `Unk0cb32c_Unk_0cb754`: decompiler-derived
-- `Unk0cb32c_Unk_0cb440`: decompiler-derived
-- `Unk0cb32c_Unk_0cb488`: decompiler-derived
-
-## Not done in M1-T868
-- `Unk0cb32c_Unk_0ccaf8`
-- `Unk0cb32c_Unk_0cb504`
-- `func_020ccc64`
-- `func_020cba20`
-- `func_020cbaa4`
+None for M1-T866, M1-T867 or M1-T868.
 
 ## Not done in M1-T869
 - `func_020cc21c`
@@ -84,5 +116,3 @@ None for M1-T867.
 
 ## Not done in M1-T871
 - `func_020cbce4`
-- `Unk0cb32c_Unk_0ccaf8`: decompiler-derived (plain+fix cleanup)
-- `Unk0cb32c_Unk_0cb504`: hand-matched

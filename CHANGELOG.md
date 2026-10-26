@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T868: match eight game/unit_020cb32c selector, descriptor, handle and state helpers; document typed contracts and instruction evidence.
 - M1-T867: verify eight more `game/unit_020cb32c` functions at 100% objdiff; add typed call contracts, explicit work forwarding and per-function instruction evidence.
 - Matched M1-T872 record-bank scanning, address, clearing, and insertion helpers; documented their field contracts.
 - M1-T860: match record-list navigation, animation-state handling, and layered record/grid drawing; document the remaining initializer in game/unit_021071e4.
