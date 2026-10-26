@@ -38,3 +38,8 @@ ownership; the work area owns display handles between allocation and teardown.
 `include/game/unit_020cb32c.h` exposes borrowed work/display prefix views and
 provider declarations for the list teardown and paired drawing helpers.
 Offsets follow original loads and stores; resource providers retain ownership.
+
+`include/libs/NitroSDK/sdk_020222d8.h` adds borrowed NitroSystem material,
+joint-result, model-resource and SBC scratch views. The SBC handlers depend
+only on existing SDK providers and geometry hardware; model/animation storage
+stays with its provider, while the draw operation owns scratch and cache flags.

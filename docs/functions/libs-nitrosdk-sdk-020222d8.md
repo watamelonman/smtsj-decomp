@@ -1,14 +1,16 @@
 # libs/NitroSDK/sdk_020222d8.c
 
-The existing `func_` symbols are retained because the subsystem identity is not
-established. Evidence below comes from the delinked ARM instructions, their
-relocations, and the callers already reconstructed in `src/game/`. No module
-boundary changes are introduced.
+The existing `func_` linker symbols are retained. Public NitroSystem source
+identifies the animation blending and G3D SBC renderer by matching command
+numbers, callback stages, resource layouts, and matrix operations. Evidence
+below also comes from the delinked ARM instructions and relocations.
 
-Public-source search: no reconstructed copy of this address range is present in
-the workspace, and the earlier web-search attempt was cancelled. The SDK
-classification on the card is therefore not treated as provenance for names;
-the neutral `func_` symbols are kept.
+Public-source reference: [ntrtwl/NitroSystem](https://github.com/ntrtwl/NitroSystem),
+[`libraries/g3d/src/anm.c`](https://github.com/ntrtwl/NitroSystem/blob/main/libraries/g3d/src/anm.c)
+and [`libraries/g3d/src/sbc.c`](https://github.com/ntrtwl/NitroSystem/blob/main/libraries/g3d/src/sbc.c).
+The four M2-T1029 implementations adapt those routines to existing linker names,
+borrowed layout views, and geometry-provider declarations. No public API renaming
+or new game-layer dependency is introduced.
 
 The shared `data_02156d28` view models only the accessed words: a command at
 offset 0, 62 parameter words from offset 4, and the flag word at byte 252. A
@@ -53,6 +55,11 @@ delinked instructions.
 | `func_02023bc0` | Material SBC handler. Increments the cursor count for options 0x20/0x40/0x60, emits command 20 with the option-selected cursor byte when flag bit 8 is clear, runs the state-1/3 callback protocol (slot 0x28, state byte 0x93), builds the 16-word matrix through `func_02004210`/`func_02000fb4`/`func_020017e4`, records three matrix columns and three `func_02002380` results, and sends the flag-selected material block (or the fallback `data_0213d474` block). Option 0x20/0x60 may emit command 19, then the cursor advances by the option-dependent count. | 100% |
 | `func_02023ec8` | Shape SBC handler. Same option/count and callback protocol as 02023bc0 but with callback slot 0x2c, state byte 0x94, shape tables `data_0213d4ec`/`data_0213d4f8`, and an extra normal-matrix sign fix on `data_0213d4c8` selected by `matC[5]/matC[6]`. It emits the same projection/normal matrix commands and flag-selected shape blocks, then advances by the option-dependent count. | 100% |
 | `func_0202242c` | Would submit the command at offset 0 with the pointer at offset 4 and count 62, then clear flag bits 0 and 1. Left in the delink; see the hard list. | Left in delink |
+| `func_02022680` | `NNSi_G3dAnmBlendJnt` in `anm.c`. Blends a borrowed animation chain into an 88-byte caller-owned joint result. Null or unusable chains return false; a single applicable provider is called directly. Multiple providers use normalised positive 20.12 weights, intersect result flags, accumulate scale/translation/rotation, and rebuild the rotation basis with cross products and normalisation. Original first-provider axes are retained when the blended axes vanish. | 100% |
+| `func_020230b4` | `NNSi_G3dFuncSbc_MAT_InternalDefault` in `sbc.c`. Runs material callback stages A/B/C; selects recorded, cached, or temporary 56-byte results; merges resource colors with shared register defaults; decodes optional texture SRT; blends material animation; and submits GX material/texture commands unless disabled or transparent. The caller supplies a valid material index/resource, and callbacks may replace the borrowed result pointer. The eight static color masks mirror the public source and original read-only table at 0x0212b390. | 100% |
+| `func_02023760` | `NNSi_G3dFuncSbc_NODEDESC` in `sbc.c`. Resolves recorded or animated joint SRT, decodes compact pivot rotations or full rotation records, calls the selected scaling/matrix providers, and optionally restores/stores matrix-stack slots. Callbacks can skip each stage; the joint-result pointer is cleared after submission. The cursor advances by four bytes plus option-selected stack operands. The static 9-by-4 pivot table mirrors the public source and original at 0x0212b3b0. | 100% |
+| `func_0202422c` | `NNSi_G3dFuncSbc_NODEMIX` with envelope caching enabled in `sbc.c`. Reads stack-slot/joint/byte-weight triples, caches clip and normal matrices in 100-byte entries, accumulates weighted matrix components with 64-bit fixed-point products, restores projection state and stores the mixed matrix. Requires a valid model envelope resource and at least two stream entries, as in the SDK source. Advances the cursor by `3 + 3 * count`. | 100% |
+| `func_02024e18` | `NNSi_G3dFuncSbc_PRJMAP` in `sbc.c`. Projection texture mapping with callback stages, material effect matrix, GX matrix readback and texture-coordinate packing. Left in the delink; see the hard list. | Left in delink |
 
 ## Hard list
 
@@ -80,3 +87,20 @@ delinked instructions.
   `opt_foldconstants`, `opt_movepostops`, and `peephole` pragmas; none produced
   the duplicate slot with the explicit add under the canonical symbol. A human
   can use `tools/decompme.py` (`nds_arm9`) to permute the source.
+
+- `func_02024e18` (944 bytes, best range-preserving candidate 99.78814%):
+  adapted the public `NNSi_G3dFuncSbc_PRJMAP`, including callback slots 0x40/0x99,
+  matrix-stack slot 30, the shared texture-generation command and projection
+  matrix, effect-matrix resource lookup, shared transform selection, hardware
+  readback and final coordinate packing. All remaining instruction differences
+  in the report were register assignments around texture-coordinate conversion.
+  The target preserves the shifted S input in r2 while it reuses r1 for the
+  shifted T input; the candidate reuses r1 for S and r0 for T, then uses r2
+  for the narrowed S component. Tried direct expressions, signed/unsigned
+  intermediate widths, conversion helpers, reordered operands and locals, and
+  inline submission wrappers with MWCC 2.0/sp1p5. Narrowing both input locals
+  to s16 gave 99.98305%, but changed the shifts from 8/16 to 16/24 and lost
+  input range, so that candidate was rejected. No unmatched body is retained
+  in C. A human can open an `nds_arm9` scratch with `tools/decompme.py` using
+  the public PRJMAP source and the original function; the coordinate packing
+  is the remaining permutation target.
