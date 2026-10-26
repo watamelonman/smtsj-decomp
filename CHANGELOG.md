@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the eight M1-T792 game/unit_020a7d54 slot insert/lookup, entry walk, state-reset and countdown helpers at 100% objdiff; typed the work header and entry pointer returns, and documented the instruction evidence for each.
 - Verified all eight M1-T791 game/unit_020a7d54 entry scan, reset, release, predicate, and counter routines at 100% objdiff; added shared typed entry/work views, typed provider arguments, and per-function instruction evidence.
 - M1-T785: matched the four game/unit_0204bb9c slot-allocation, key-release and packed-record-clear routines at 100% objdiff, with typed context slot arrays and instruction evidence.
 - Verified all eight M1-T773 game/unit_020ea208 table getter/setters, slot dispatch, id translation and jump-table handlers at 100% objdiff; typed the slot handle layout and documented the instruction evidence.
