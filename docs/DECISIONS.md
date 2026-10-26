@@ -430,3 +430,21 @@ conditional compares and separate branch argument setup. Array views preserve
 base-plus-index loads, and declaring the pair index before the area index
 reproduces the original r4/r5 allocation. These settings leave the draw behavior
 unchanged; the individual 1156-byte function verifies at 100% in objdiff.
+## DEC-025 — Preserve 02113294 branch, list-loop and sentinel behavior
+
+`func_02113974` uses a switch for the word +32 assignment and scopes
+`opt_propagation off` to retain the original branch-and-merged-store shape.
+`func_021151fc` scopes the same setting to retain the original group/index
+register allocation; explicit do loops avoid redundant initial bounds checks.
+`func_02115500` scopes `opt_strength_reduction off` to retain the original
+halfword-index sum rather than independently incremented byte pointers.
+All settings are restored immediately after the relevant function.
+
+The original 02115500 reserves 76 stack bytes (including the outgoing argument),
+zeroes 72 bytes at stack +4, and writes sentinel 0x8001 at stack +36, +70 and
++104. The final write exceeds that buffer and the local stack reservation.
+The matching implementation retains this original defect as `ids[50]` in a
+36-halfword array; extending the array would change the stack frame and fail
+instruction matching. This is a reconstruction of observed behavior, not a safe
+buffer contract for new callers. The TU continues linking from the delinked
+original until a human marks it complete.

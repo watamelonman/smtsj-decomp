@@ -124,8 +124,8 @@ int Unk113294_Unk_115124(const Unk113294Work *work)
 
 
 int func_021144e4();
-int func_02114588();
-int func_02114604();
+void func_02114588(u8 *work);
+void func_02114604(u8 *work);
 int func_021146a4();
 int func_021148ec();
 int func_02114a1c();
@@ -140,8 +140,8 @@ void Unk113294_Unk_114488(char *arg0)
     Unk_LoadPalette_020de678(((Unk113294Work *)arg0)->unk_0028);
   }
   func_021144e4(arg0);
-  func_02114588(arg0);
-  func_02114604(arg0);
+  func_02114588((u8 *)arg0);
+  func_02114604((u8 *)arg0);
   func_021146a4(arg0);
   func_021148ec(arg0);
   func_02114a1c(arg0);
@@ -188,7 +188,8 @@ void Unk113294_Unk_115144(u8 *p)
     func_02061f10(FIELD(u32, p, 196), -1, 0, 0, &t);
 }
 
-/* decompiler-derived */
+/* At 0x0211518c, initializes the provider and submits resource entries
+ * 102 and 103 after conversion. The handle is borrowed. */
 void Unk113294_Unk_11518c(u32 arg0)
 {
   u32 tmp1;
@@ -353,3 +354,142 @@ int func_02115994(Unk113294SelectionWork *work)
     }
     return accepted;
 }
+
+void func_02113a6c(u8 *work, u32 id, int start, int count);
+void func_021153a4(u8 *work);
+void func_02115500(u8 *work);
+/* At 0x02113974, toggles byte +8 between zero and one; value two emits
+ * provider event four. Other values retain their byte and refresh the ID.
+ * See DEC-025 for the switch form and scoped propagation setting. */
+#pragma opt_propagation off
+void func_02113974(u8 *work)
+{
+    switch (work[8]) {
+    case 0: work[8] = 1; break;
+    case 1: work[8] = 0; break;
+    case 2: Unk0a0ce4_Unk_0a0da4(4); return;
+    }
+    switch (work[8]) {
+    case 1: ((Unk113294Work *)work)->unk_0020 = 1; break;
+    default: ((Unk113294Work *)work)->unk_0020 = 0; break;
+    }
+    Unk0a0ce4_Unk_0a0da4(1);
+    Unk113294_Unk_115144(work);
+}
+#pragma opt_propagation reset
+/* At 0x021139f0, dispatches ID insertion using word +4 and byte +9.
+ * Work must expose the ID slots consumed by the downstream callbacks. */
+void func_021139f0(u8 *work, u32 id)
+{
+    switch (FIELD(int, work, 4)) {
+    case 0:
+        if (work[9] == 0) {
+            func_02113a6c(work, id, 0, 8);
+            func_021153a4(work);
+        } else if (work[9] == 1) {
+            func_02113a6c(work, id, 8, 8);
+            func_021153a4(work);
+        }
+        break;
+    case 1:
+        func_02113a6c(work, id, 0, 32);
+        func_02115500(work);
+        break;
+    }
+}
+/* At 0x02113a6c, writes the selected halfword and advances the cursor.
+ * The observed low-ID transition selects cursor eight and resource 110.
+ * The cursor must address writable ID storage in the borrowed work area. */
+void func_02113a6c(u8 *work, u32 id, int start, int count)
+{
+    ((Unk113294Ids *)work)->ids[FIELD(int, work, 12)] = id;
+    if (FIELD(int, work, 12) == start + count - 1) {
+        if (FIELD(int, work, 4) == 0 && work[9] == 0) {
+            if (Unk113294_AnyLo((Unk113294Ids *)work) == 1) {
+                work[9] = 1;
+                Unk113294_Unk_11508c(FIELD(u32, work, 140), 110);
+                FIELD(int, work, 12) = 8;
+            }
+        }
+    } else {
+        FIELD(int, work, 12)++;
+    }
+    Unk0a0ce4_Unk_0a0da4(1);
+}
+void func_0205c748(int mode, u32 handle, int a, int b, float c, float d, int e, float f, int g);
+int Unk0cb32c_Unk_0cb58c(u32 handle);
+void func_02057e18(int value);
+void func_02060b60(int mode, u32 handle, int a, int b, int c, int d);
+/* At 0x02114588, submits handle +56 with unit scale and draws provider
+ * entry 13 at 154 when that handle's status is nonzero. Borrows work. */
+void func_02114588(u8 *work)
+{
+    func_0205c748(2, FIELD(u32, work, 56), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    if (Unk0cb32c_Unk_0cb58c(FIELD(u32, work, 56)) == 0) return;
+    func_02057e18(31);
+    func_02060b60(1, FIELD(u32, work, 140), 13, 154, 0, 5);
+}
+/* At 0x02114604, selects handles +128/+132 for state three according to
+ * byte +1, otherwise +124. Each provider call uses unit scale. */
+void func_02114604(u8 *work)
+{
+    if (work[0] == 3) {
+        if (work[1] <= 1) {
+            func_0205c748(2, FIELD(u32, work, 128), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+        } else {
+            func_0205c748(2, FIELD(u32, work, 132), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+        }
+    } else {
+        func_0205c748(2, FIELD(u32, work, 124), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    }
+}
+/* At 0x021151fc, submits three groups of 54 lookup IDs plus a zero
+ * terminator. Providers borrow the stack buffer only during each call.
+ * See DEC-025 for the scoped propagation setting. */
+#pragma opt_propagation off
+void func_021151fc(u8 *work)
+{
+    int group;
+    u16 ids[55];
+    int index;
+    group = 0;
+    do {
+        index = 0;
+        do {
+            ids[index] = Unk113294_Unk_1150e8(group + 1, (u16)index);
+            index++;
+        } while (index < 54);
+        ids[54] = 0;
+        func_02061f10(((u32 *)(work + 148))[group], -1, 8, 6, ids);
+        group++;
+    } while (group < 3);
+}
+#pragma opt_propagation reset
+
+void func_02008848(void *dest, int value, u32 size);
+void func_020119a0(void *dest, const void *source, u32 size);
+/* At 0x02115500, copies two 32-byte ID blocks into a zeroed 72-byte
+ * submission buffer. The original also writes a sentinel beyond that buffer
+ * (stack +104); retained here solely to reproduce the observed instructions.
+ * See DEC-025 for this original overrun and scoped loop optimization. */
+#pragma opt_strength_reduction off
+void func_02115500(u8 *work)
+{
+    u16 ids[36];
+    int block;
+    int offset;
+    func_02008848(ids, 0, 72);
+    ids[16] = 0x8001;
+    ids[33] = 0x8001;
+    ids[50] = 0x8001;
+    block = 0;
+    offset = 0;
+    do {
+        func_020119a0(ids + (block + offset), work + 216 + offset * 2, 32);
+        block++;
+        offset += 16;
+    } while (block < 2);
+    func_02061f10(FIELD(u32, work, 192), -1, 0, 2, ids);
+}
+
+#pragma opt_strength_reduction reset
