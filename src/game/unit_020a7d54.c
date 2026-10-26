@@ -7,7 +7,8 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 
 /* One 40-byte entry in the 32-slot table starting at +0x48 of the work area.
  * Offsets come from the loads/stores in the entry routines below; the words whose
- * purpose is unknown stay neutral. */
+ * purpose is unknown stay neutral. Words +0x14/+0x18 are signed because
+ * 020a7ee8 compares their sums with movpl/blt/bgt after `adds`. */
 typedef struct Unk0a7d54Entry {
     u32 unk_00;
     u32 unk_04;
@@ -16,8 +17,8 @@ typedef struct Unk0a7d54Entry {
     s8 unk_0d;
     u8 pad_0e[2];
     s32 unk_10;
-    u32 unk_14;
-    u32 unk_18;
+    s32 unk_14;
+    s32 unk_18;
     s32 unk_1c;
     u32 unk_20;
     u32 pad_24;
@@ -26,12 +27,14 @@ typedef struct Unk0a7d54Entry {
 /* Borrowed work-area view: 020a7d54/020a84a4/020a8534 walk 32 entries from +0x48.
  * The state machine at 020a9218 uses the eight slot words at +0x24, the +0x1c
  * counter, the +0x20 state word and the +0x44 flag; 020a7d80 additionally reads
- * the two words at +0x14/+0x18. Entry fields remain the 40-byte view above. */
+ * the two words at +0x14/+0x18. Word +0x0c is signed: 020a8658 takes a signed
+ * modulo by four (`lsr #31`/`rsb`/`ror #30` at 020a88c8) of the phase counter.
+ * Entry fields remain the 40-byte view above. */
 typedef struct Unk0a7d54Work {
     u32 unk_00;
     u32 unk_04;
     u32 unk_08;
-    u32 unk_0c;
+    s32 unk_0c;
     u32 unk_10;
     u32 unk_14;
     u32 unk_18;
@@ -177,7 +180,10 @@ void Unk0a7d54_Unk_0a8c40(Unk0a7d54Work *work)
   return;
 }
 
-int func_020a7ee8();
+void func_020a7ee8(Unk0a7d54Entry *entry);
+int func_020a8c6c(Unk0a7d54Work *work);
+int func_020a8e5c(Unk0a7d54Work *work);
+void func_020a8658(Unk0a7d54Work *work, u32 arg);
 /* Walk all 32 entry slots from work+0x48 and forward each occupied entry to
  * 020a7ee8. The LDR/CMP at the loop head, the 0x28 pointer step and the
  * `cmp #0x20` bound at 020a84cc establish the visit condition and stride. */
@@ -724,6 +730,584 @@ void func_020a82f0(Unk0a7d54Entry *entry)
     case 24:
     case 25:
         Unk0a9a90_Nop_0a9a90(entry->unk_04, entry->unk_10 % 15);
+        return;
+    }
+}
+
+/* ---- M1-T794: the unit's remaining state-machine functions ---- */
+
+/* Motion fields of the object held at entry +8. 020a7ee8 adds to both words
+ * and tests +0xc with signed compares (adds/blt/bgt), so they are s32. */
+typedef struct Unk0a7d54Motion {
+    u8 pad_00[0xc];
+    s32 unk_0c;
+    s32 unk_10;
+} Unk0a7d54Motion;
+
+void func_02057e58(u32 a, u32 b, u32 c);
+void Unk02f2a8_SetRootUnk60(u32 a, u32 b);
+void ScanVisor_Unk_0a4864(u32 arg);
+void ScanVisor_Unk_0a4950(u32 arg0, u32 arg1, u32 arg2);
+void ScanVisor_ClearUnkField198(u32 arg);
+void ScanVisor_Unk_0a4904(u32 arg);
+void GameState_ClearRootUnk60(void);
+void func_0205264c(u32 a, u32 b, u32 c, u32 d, u32 e);
+void func_0205de1c(u32 a, s32 b);
+u32 func_0205dcd4(u32 a, s32 b);
+u32 func_0205c2c4(u32 a);
+extern u8 data_0214d264[];
+extern u8 data_0214d274[];
+void Unk065e88_SetUnkField20(void *object, float value);
+void Unk065e88_SetUnkField28(void *object, u32 value);
+void Unk065e88_SetUnkField2C(void *object, u32 value);
+
+/* Advance one entry by its signed phase at +13 (0 = linear motion, 1 = apply
+ * the two deltas together), then dispatch its byte state at +12. States 1/2
+ * ramp a float alpha over 8 steps; state 3 runs the sub-phase at +13 through
+ * four stages; states 6..10 and 29 run a timed three-stage sequence that
+ * releases keys 1/2/21/22/23 and finishes the entry; state 15 counts to 140;
+ * state 17 waits 10 frames before enabling the phase at +13; states 24/25
+ * count frames. Evidence: the ldrsb [r5,#13] dispatch at 020a7ef0, the
+ * addls table at 020a8034, the addls [r5,#13] table at 020a8110 and the
+ * per-case immediates. All pointers are borrowed from entry +4/+8. */
+void func_020a7ee8(Unk0a7d54Entry *entry)
+{
+    Unk0a7d54Motion *obj;
+    Unk0a7d54Work *work;
+    s32 delta;
+
+    switch (entry->unk_0d) {
+    case 0:
+        delta = entry->unk_1c;
+        if (delta > 0) {
+            obj = (Unk0a7d54Motion *)entry->unk_08;
+            if (obj != 0) {
+                obj->unk_0c += delta;
+                obj = (Unk0a7d54Motion *)entry->unk_08;
+                if (obj->unk_0c >= 0) {
+                    obj->unk_0c = 0;
+                    entry->unk_1c = 0;
+                }
+            } else {
+                entry->unk_14 += delta;
+                if (entry->unk_14 >= 0) {
+                    entry->unk_14 = 0;
+                    entry->unk_1c = 0;
+                }
+            }
+        }
+        if (entry->unk_1c < 0) {
+            obj = (Unk0a7d54Motion *)entry->unk_08;
+            if (obj != 0) {
+                obj->unk_0c += entry->unk_1c;
+                obj = (Unk0a7d54Motion *)entry->unk_08;
+                if (obj->unk_0c <= 0) {
+                    obj->unk_0c = 0;
+                    entry->unk_1c = 0;
+                }
+            } else {
+                entry->unk_14 += entry->unk_1c;
+                if (entry->unk_14 <= 0) {
+                    entry->unk_14 = 0;
+                    entry->unk_1c = 0;
+                }
+            }
+        }
+        break;
+    case 1:
+        obj = (Unk0a7d54Motion *)entry->unk_08;
+        if (obj != 0) {
+            obj->unk_0c += entry->unk_1c;
+            obj = (Unk0a7d54Motion *)entry->unk_08;
+            obj->unk_10 += entry->unk_20;
+        } else {
+            entry->unk_14 += entry->unk_1c;
+            entry->unk_18 += entry->unk_20;
+        }
+        break;
+    }
+
+    work = (Unk0a7d54Work *)entry->unk_04;
+    if (work == 0) {
+        return;
+    }
+    switch (entry->unk_0c) {
+    case 0:
+        break;
+    case 1:
+    case 2:
+        switch (entry->unk_0d) {
+        case 0:
+            Unk065e88_SetUnkField20((void *)entry->unk_08, (float)entry->unk_10 / 8.0f);
+            entry->unk_10++;
+            if (entry->unk_10 > 8) {
+                entry->unk_0d = 1;
+            }
+            break;
+        case 1:
+            break;
+        }
+        return;
+    case 3:
+        switch (entry->unk_0d) {
+        case 0:
+            entry->unk_10 = 0;
+            entry->unk_0d++;
+            /* fall through */
+        case 1:
+            if (entry->unk_10 < 9) {
+                entry->unk_10++;
+            }
+            break;
+        case 2:
+            entry->unk_10 = 9;
+            entry->unk_0d++;
+            break;
+        case 3:
+            entry->unk_10--;
+            if (entry->unk_10 < 1) {
+                Unk0a7d54_Unk_0a7e8c(entry);
+            }
+            break;
+        }
+        break;
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+    case 29:
+        switch (entry->unk_0d) {
+        case 0:
+            entry->unk_10++;
+            if (entry->unk_10 < 5) {
+                return;
+            }
+            entry->unk_0d++;
+            entry->unk_10 = 0;
+            return;
+        case 1:
+            entry->unk_10++;
+            if (entry->unk_10 < 90) {
+                return;
+            }
+            Unk0a7d54_Unk_0a8594(work, 1);
+            Unk0a7d54_Unk_0a8594(work, 2);
+            Unk0a7d54_Unk_0a9158((Unk0a7d54Fields *)work);
+            entry->unk_10 = 0;
+            entry->unk_0d++;
+            return;
+        case 2:
+            entry->unk_10++;
+            if (entry->unk_10 < 80) {
+                return;
+            }
+            Unk0a7d54_Unk_0a8594(work, 21);
+            Unk0a7d54_Unk_0a8594(work, 22);
+            Unk0a7d54_Unk_0a8594(work, 23);
+            if (work->unk_08 != 11) {
+                Unk0a7d54_SetUnkField8((Unk0a7d54Fields *)work, 9);
+                Unk0a0ce4_Unk_0a0da4(82);
+            }
+            Unk0a7d54_Unk_0a7e8c(entry);
+            return;
+        default:
+            return;
+        }
+    case 15:
+        if (entry->unk_10 < 140) {
+            entry->unk_10++;
+        }
+        return;
+    case 17:
+        switch (entry->unk_0d) {
+        case 0:
+            entry->unk_10++;
+            if (entry->unk_10 <= 10) {
+                return;
+            }
+            entry->unk_10 = 0;
+            entry->unk_0d = 1;
+            return;
+        case 1:
+            entry->unk_10++;
+            return;
+        default:
+            return;
+        }
+    case 24:
+    case 25:
+        entry->unk_10++;
+        return;
+    }
+}
+
+/* Drive the work area's setup sequence (work +0x10). State 0 allocates the two
+ * resources at +0x14/+0x18 on first use and adds selector slots; state 1 runs
+ * the slot state machine 020a9218 and steps on success; state 2 configures one
+ * object per selector and increments; state 3 releases the selector resource
+ * and creates selector 3; state 4 reports success. Evidence: the ldrsb
+ * work->unk_10 jump table at 020a8c78, the str pairs after each
+ * func_0205dcd4/func_0205c2c4 call, and the duplicate AddSlot(0x23) bodies for
+ * selector 0/1 at 020a8cec/020a8cfc. Returns 1 only in state 4. */
+int func_020a8c6c(Unk0a7d54Work *work)
+{
+    Unk0a7d54Entry *entry;
+
+    switch (work->unk_10) {
+    case 0:
+        if (work->unk_14 == 0) {
+            Unk02e000_Unk_02e0cc();
+            work->unk_14 = func_0205dcd4((u32)data_0214d264, 0);
+            work->unk_18 = func_0205c2c4((u32)data_0214d274);
+        }
+        switch (work->unk_00) {
+        case 1:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x23);
+            break;
+        case 0:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x23);
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x21);
+            break;
+        }
+        Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x1d);
+        work->unk_10++;
+        /* fall through */
+    case 1:
+        if (func_020a9218(work) == 1) {
+            work->unk_10++;
+        }
+        break;
+    case 2:
+        switch (work->unk_00) {
+        case 1:
+            func_0205de1c(work->unk_14, 0xb);
+            entry = func_020a7d80(work, 1);
+            if (entry != 0) {
+                Unk065e88_SetUnkField20((void *)entry->unk_08, 0.0f);
+                Unk065e88_SetUnkField28((void *)entry->unk_08, 0xffff00);
+            }
+            break;
+        case 0:
+            func_0205de1c(work->unk_14, 0xb);
+            entry = func_020a7d80(work, 2);
+            if (entry != 0) {
+                Unk065e88_SetUnkField20((void *)entry->unk_08, 0.0f);
+                Unk065e88_SetUnkField28((void *)entry->unk_08, 0xffff00);
+            }
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            func_0205de1c(work->unk_14, 9);
+            func_020a7d80(work, 0x1a);
+            break;
+        }
+        work->unk_10++;
+        break;
+    case 3:
+        func_0205de1c(work->unk_14, 5);
+        func_020a7d80(work, 3);
+        work->unk_10++;
+        break;
+    case 4:
+        return 1;
+    }
+    return 0;
+}
+
+/* Second half of the work setup sequence (work +0x10). State 0 checks the
+ * resource at +0x14 and adds selector slots, then the common slots 0x18/0x19;
+ * state 1 runs 020a9218; state 2 configures one object per selector (selector 5
+ * also gets the alternate animation word); state 3/4 release selector
+ * resources; state 5 creates the shared group and turns on the two +0x2c
+ * flags; state 6 reports success. Evidence: the ldrsb work->unk_10 jump table
+ * at 020a8e68, the slot immediates at 020a8ec8..020a8f04, the selector table at
+ * 020a8f6c and the two FindByKey(4/5) calls at 020a90dc/020a90f0. Returns 1
+ * only when there is no resource (state 0) or in state 6. */
+int func_020a8e5c(Unk0a7d54Work *work)
+{
+    Unk0a7d54Entry *entry;
+
+    switch (work->unk_10) {
+    case 0:
+        if (work->unk_14 == 0) {
+            return 1;
+        }
+        switch (work->unk_00) {
+        case 1:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x1a);
+            break;
+        case 0:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x1b);
+            break;
+        case 2:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x1c);
+            break;
+        case 3:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x1e);
+            break;
+        case 4:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x1f);
+            break;
+        case 5:
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x22);
+            Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x20);
+            break;
+        }
+        Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x18);
+        Unk0a7d54_AddSlot((Unk0a7d54Slots *)work, 0x19);
+        work->unk_10++;
+        /* fall through */
+    case 1:
+        if (func_020a9218(work) == 1) {
+            work->unk_10++;
+        }
+        break;
+    case 2:
+        switch (work->unk_00) {
+        case 1:
+            func_0205de1c(work->unk_14, 2);
+            func_020a7d80(work, 6);
+            break;
+        case 0:
+            func_0205de1c(work->unk_14, 3);
+            func_020a7d80(work, 7);
+            break;
+        case 2:
+            func_0205de1c(work->unk_14, 4);
+            func_020a7d80(work, 8);
+            break;
+        case 3:
+            func_0205de1c(work->unk_14, 6);
+            func_020a7d80(work, 9);
+            break;
+        case 4:
+            func_0205de1c(work->unk_14, 7);
+            func_020a7d80(work, 10);
+            break;
+        case 5:
+            func_0205de1c(work->unk_14, 0xa);
+            func_0205de1c(work->unk_14, 8);
+            entry = func_020a7d80(work, 0x1d);
+            if (entry != 0) {
+                Unk065e88_SetUnkField28((void *)entry->unk_08, 0xf78c2100);
+            }
+            func_020a7d80(work, 0x1c);
+            break;
+        }
+        work->unk_10++;
+        break;
+    case 3:
+        func_0205de1c(work->unk_14, 0);
+        work->unk_10++;
+        break;
+    case 4:
+        func_0205de1c(work->unk_14, 1);
+        work->unk_10++;
+        break;
+    case 5:
+        func_020a7d80(work, 4);
+        func_020a7d80(work, 5);
+        func_020a7d80(work, 0xd);
+        func_020a7d80(work, 0xe);
+        func_020a7d80(work, 0x12);
+        func_020a7d80(work, 0x13);
+        func_020a7d80(work, 0x10);
+        func_020a7d80(work, 0x14);
+        func_020a7d80(work, 0x11);
+        entry = Unk0a7d54_FindByKey(work, 4);
+        Unk065e88_SetUnkField2C((void *)entry->unk_08, 1);
+        entry = Unk0a7d54_FindByKey(work, 5);
+        Unk065e88_SetUnkField2C((void *)entry->unk_08, 1);
+        work->unk_10++;
+        break;
+    case 6:
+        return 1;
+    }
+    return 0;
+}
+
+/* Top-level script driver for the work area at +0x08. It ignores null work and
+ * state zero, registers three sprite handles, walks the entries through
+ * 020a84cc, then dispatches on work->unk_08 (ldrsb jump table at 020a8694).
+ * States 1/2 wait on 020a8c6c, 4/5 on 020a8e5c and release the 0x800/10 root
+ * object for selectors 0/1, 6/7 create the entry groups and arm the 140-frame
+ * and 7-frame phases, 8 toggles the two animation words every other frame via
+ * the signed modulo sequence at 020a88c8, 9 tears the groups down and arms the
+ * key/value table, 10 waits then calls 020a8b70/ScanVisor_Unk_0a4904, and 11
+ * runs 020a9218 then 020a8bac, restarting at state 1 when +0x44 is set.
+ * Evidence: the addls table at 020a86b8, the immediate pairs passed to
+ * func_02057e58, the selector tables at 020a8934/020a8a40 and the
+ * Unk0a7d54_Unk_0a7ec8 key/value list at 020a89c0. The second argument is the
+ * ScanVisor sub-object passed in r1 by ScanVisor 020a2f8c. */
+void func_020a8658(Unk0a7d54Work *work, u32 arg)
+{
+    Unk0a7d54Entry *entry;
+
+    if (work == 0 || work->unk_08 == 0) {
+        return;
+    }
+    func_02057e58(2, 0x32, 6);
+    func_02057e58(3, 0x38, 3);
+    func_02057e58(4, 0x3b, 3);
+    Unk0a7d54_Unk_0a84cc(work);
+
+    switch (work->unk_08) {
+    case 0:
+        break;
+    case 1:
+        work->unk_0c--;
+        if (work->unk_0c >= 1) {
+            return;
+        }
+        if (func_020a8c6c(work) != 1) {
+            return;
+        }
+        work->unk_08 = 2;
+        work->unk_0c = 9;
+        return;
+    case 2:
+        work->unk_0c--;
+        if (work->unk_0c < 1) {
+            work->unk_08 = 3;
+        }
+        return;
+    case 3:
+        break;
+    case 4:
+        if (func_020a8e5c(work) == 0) {
+            return;
+        }
+        ScanVisor_Unk_0a4864(arg);
+        switch (work->unk_00) {
+        case 0:
+        case 1:
+            Unk02f2a8_SetRootUnk60(0x800, 10);
+            break;
+        }
+        work->unk_08 = 5;
+        work->unk_0c = 5;
+        /* fall through */
+    case 5:
+        work->unk_0c--;
+        if (work->unk_0c < 1) {
+            work->unk_08 = 6;
+        }
+        return;
+    case 6:
+        Unk0a0ce4_Unk_0a0da4(0x1d);
+        if (work->unk_00 != 5) {
+            func_020a7d80(work, 0xb);
+            func_020a7d80(work, 0x15);
+            func_020a7d80(work, 0x16);
+            func_020a7d80(work, 0x17);
+        }
+        func_020a7d80(work, 0xc);
+        func_020a7d80(work, 0xf);
+        ScanVisor_Unk_0a4950(arg, 2, 1);
+        work->unk_08 = 7;
+        work->unk_0c = 0x8c;
+        /* fall through */
+    case 7:
+        work->unk_0c--;
+        if (work->unk_0c >= 1) {
+            return;
+        }
+        work->unk_08 = 8;
+        func_020a7d80(work, 0x19);
+        func_020a7d80(work, 0x18);
+        ScanVisor_Unk_0a4950(arg, 3, 0);
+        if (work->unk_00 != 5) {
+            return;
+        }
+        entry = Unk0a7d54_FindByKey(work, 0x1d);
+        Unk065e88_SetUnkField28((void *)entry->unk_08, 0x29ffff00);
+        work->unk_0c = 7;
+        return;
+    case 8:
+        if (work->unk_0c <= 0) {
+            return;
+        }
+        work->unk_0c--;
+        if (work->unk_00 != 5) {
+            return;
+        }
+        entry = Unk0a7d54_FindByKey(work, 0x1d);
+        Unk065e88_SetUnkField28((void *)entry->unk_08, 0x29ffff00);
+        if (work->unk_0c % 4 < 2) {
+            Unk065e88_SetUnkField28((void *)entry->unk_08, 0x29ffff00);
+        } else {
+            Unk065e88_SetUnkField28((void *)entry->unk_08, 0xf78c2100);
+        }
+        return;
+    case 9:
+        if (work->unk_00 == 5) {
+            Unk0a7d54_Unk_0a8594(work, 0x1a);
+            Unk0a7d54_Unk_0a8594(work, 0x1c);
+            Unk0a7d54_Unk_0a8594(work, 0x1d);
+            func_020a7d80(work, 0x1b);
+        }
+        Unk0a7d54_Unk_0a8594(work, 0xc);
+        Unk0a7d54_Unk_0a8594(work, 0xf);
+        Unk0a7d54_Unk_0a8594(work, 0xb);
+        ScanVisor_ClearUnkField198(arg);
+        Unk0a7d54_Unk_0a8594(work, 0x11);
+        switch (work->unk_00) {
+        case 0:
+        case 1:
+            GameState_ClearRootUnk60();
+            break;
+        }
+        work->unk_0c = 10;
+        work->unk_08 = 10;
+        func_0205264c(2, 4, 0x1f, 1, 2);
+        Unk0a7d54_Unk_0a8594(work, 0x19);
+        Unk0a7d54_Unk_0a8594(work, 0x18);
+        Unk0a7d54_Unk_0a7ec8(work, 4, -7);
+        Unk0a7d54_Unk_0a7ec8(work, 5, 7);
+        Unk0a7d54_Unk_0a7ec8(work, 0xd, -7);
+        Unk0a7d54_Unk_0a7ec8(work, 0xe, -7);
+        Unk0a7d54_Unk_0a7ec8(work, 0x10, -7);
+        Unk0a7d54_Unk_0a7ec8(work, 0x14, 7);
+        Unk0a7d54_Unk_0a7ec8(work, 0x11, 7);
+        Unk0a7d54_Unk_0a7ec8(work, 0x12, -7);
+        Unk0a7d54_Unk_0a7ec8(work, 0x13, 7);
+        entry = Unk0a7d54_FindByKey(work, 3);
+        if (entry != 0) {
+            entry->unk_0d = 2;
+        }
+        return;
+    case 10:
+        work->unk_0c--;
+        if (work->unk_0c >= 1) {
+            return;
+        }
+        Unk0a7d54_Unk_0a8b70(work);
+        ScanVisor_Unk_0a4904(arg);
+        return;
+    case 11:
+        if (func_020a9218(work) != 1) {
+            return;
+        }
+        Unk0a7d54_Unk_0a8bac(work);
+        if (work->unk_44 == 0) {
+            return;
+        }
+        work->unk_08 = 1;
+        work->unk_44 = 0;
         return;
     }
 }
