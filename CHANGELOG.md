@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T900: verify eight `game/unit_020e8228` access, comparison and forwarding helpers at 100% objdiff, with typed borrowed views and instruction-based contracts.
+- M1-T885: match all eight command/result helpers in `game/unit_02044904` at 100% objdiff, including the corrected `func_020449c4` accumulator.
 - M1-T924: verify all eight ImageObj release, predicate and slot-visit helpers at 100% objdiff; add typed node parameters and per-function instruction evidence.
 - Match all eight M1-T931 callback, record-dispatch and bounded-update functions in `game/unit_020c855c` at 100% objdiff, with typed contracts and instruction evidence.
 - M1-T899: verify eight `game/unit_020e8228` field accessors at 100% objdiff, with typed borrowed layouts and documented null/default contracts.
