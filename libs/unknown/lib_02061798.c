@@ -11,9 +11,18 @@ extern s32 func_020656ac(void *object, s32 mode);
 /* Allocates a record from the arguments and stores mode at +0x28;
  * func_020629ac forwards its first, second and fourth arguments here. */
 extern void *func_02060a48(u32 a, u32 b, u32 mode);
-/* Updates object state; func_020658a0 tail-calls it with both modes set
- * to 1. */
-extern void func_020658b4(void *object, u32 first, u32 second);
+/* Frees the slot referenced by an object's +0x14 word (call site 0x02065b74
+ * passes both render objects of the shared singleton). */
+extern void func_02062a00(Unk061798Object *object);
+/* Applies a mode to an object before func_020658b4 forwards its value. */
+extern void func_02065864(void *object, s32 mode);
+/* Stores a value in its own module-level state (call site 0x020658b4). */
+extern void func_020bac00(u32 value);
+/* Looks up the message object for `message` (call sites 0x02065a7c and
+ * 0x020a07dc pass small ids); returns null when the lookup fails. */
+extern void *Unk095560_Unk_095778(s32 message);
+/* Stores a value in its own module-level state (called by func_02065b98). */
+extern void func_020babec(u32 value);
 /* State helper called by func_0206541c and func_02065438 for their 0/1 and
  * 1/2 state pairs. */
 extern void func_02065374(Unk061798Object *object);
@@ -41,6 +50,18 @@ Unk061798FontData *func_0206190c(u32 id)
 Unk061798Font *func_0206191c(u32 id)
 {
     return func_020618cc(id);
+}
+
+/* Returns the 4-byte table entry at index-1 of the font record's +0x2c table,
+ * or entry 0 when index-1 is at or above the signed count at +0x34. The caller
+ * at 0x02061b3c reads bytes +2/+3 of the returned entry. */
+u32 *func_02061928(u32 id, s32 index)
+{
+    s32 i = index;
+    Unk061798Font *font = func_020618cc(id);
+    i -= 1;
+    if (i >= font->unk_0034) i = 0;
+    return &font->unk_002c[i];
 }
 
 /* Returns a pointer to the first header byte of the font record selected by
@@ -213,6 +234,16 @@ Unk061798ResultB *func_02063a60(void)
     return func_02063a50();
 }
 
+/* Decrements the signed byte at +0x68 of the object, but only while the shared
+ * singleton's render object makes func_0206557c return non-zero; it returns
+ * without touching the object when func_0206557c returns zero. Caller
+ * 0x02063b90 invokes it after func_020641c4. */
+void func_020641f0(Unk061798Object *object)
+{
+    if (func_0206557c() == 0) return;
+    if (object->unk_0068 > 0) object->unk_0068--;
+}
+
 /* True when the object's signed +0x68 byte is positive; call site 0x02064294
  * uses it to pick between two field updates. */
 s32 func_020642a8(Unk061798Object *object)
@@ -347,6 +378,51 @@ void func_020658a0(void *object)
     func_020658b4(object, 1, 1);
 }
 
+/* Applies `mode` to the object through func_02065864, then stores `value`
+ * through func_020bac00 unless mode is -1. Call site 0x020658e4 forwards its
+ * own first three arguments unchanged. */
+void func_020658b4(void *object, s32 mode, u32 value)
+{
+    func_02065864(object, mode);
+    if (mode == -1) return;
+    func_020bac00(value);
+}
+
+/* Calls func_02063a60 with its result unused, then looks up the
+ * message object for `message`; when the lookup succeeds it hands the object
+ * to func_020656ac with mode -1. Call sites 0x020a07dc and 0x02065a7c pass
+ * small message ids (4 and 13). */
+void func_0206597c(s32 message)
+{
+    func_02063a60();
+    void *object = Unk095560_Unk_095778(message);
+    if (object == 0) return;
+    func_020656ac(object, -1);
+}
+
+/* Releases both render objects of the func_02063a50 singleton through
+ * func_02062a00 (the pointers at +0 and +4); does nothing when the singleton
+ * is absent. Call sites 0x0204809c/0x0204813c and the two state setters
+ * below call it. */
+void func_02065b74(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return;
+    func_02062a00(result->unk_0000);
+    func_02062a00(result->unk_0004);
+}
+
+/* Marks the func_02063a60 singleton's +0x50 word as state 2, clears its +0x5c
+ * word, and forwards byte +0x90 of its render object to func_020babec. Its
+ * only caller 0x02065884 is inside func_02065864. */
+void func_02065b98(void)
+{
+    Unk061798ResultB *result = func_02063a60();
+    result->unk_0050 = 2;
+    result->unk_005c = 0;
+    func_020babec(result->unk_0000->unk_0090);
+}
+
 /* Runs func_02065bc0 and then sets the +0x8, +0xc and +0x58 words of the
  * func_02063a50 singleton to 1; the original does not null-check the
  * singleton. */
@@ -357,4 +433,28 @@ void func_02065c10(void)
     result->unk_0008 = 1;
     result->unk_000c = 1;
     result->unk_0058 = 1;
+}
+
+/* Moves the func_02063a50 singleton to state 3/5 and then releases its render
+ * objects through func_02065b74; does nothing when the singleton is absent.
+ * Call site 0x020a3ec4 runs it when func_02065cd0 reports state 1. */
+void func_02065c30(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return;
+    result->unk_0008 = 3;
+    result->unk_000c = 5;
+    func_02065b74();
+}
+
+/* Moves the func_02063a50 singleton to state 4/5 and then releases its render
+ * objects through func_02065b74; same null-check and tail as func_02065c30.
+ * Call site 0x020a0804 follows a func_0206597c(4) message reset. */
+void func_02065c58(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return;
+    result->unk_0008 = 4;
+    result->unk_000c = 5;
+    func_02065b74();
 }

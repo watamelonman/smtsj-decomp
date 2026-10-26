@@ -17,13 +17,15 @@ typedef struct Unk061798Object Unk061798Object;
  * by func_02065c10. */
 typedef struct Unk061798ResultB {
     Unk061798Object *unk_0000;
-    u8 pad_0004[4];
+    Unk061798Object *unk_0004;
     u32 unk_0008;
     u32 unk_000c;
     u8 pad_0010[0x0c];
     u32 unk_001c;
     u32 unk_0020;
-    u8 pad_0024[0x34];
+    u8 pad_0024[0x2c];
+    u32 unk_0050;
+    u8 pad_0054[4];
     u32 unk_0058;
     s32 unk_005c;
     u32 unk_0060;
@@ -44,7 +46,9 @@ typedef struct Unk061798Font {
     u8 unk_0025;
     u8 pad_0026[2];
     Unk061798FontData *unk_0028;
-    u8 pad_002c[0x0c];
+    u32 *unk_002c;
+    u8 pad_0030[4];
+    s32 unk_0034;
 } Unk061798Font;
 
 /* Partial view of the larger render object whose fields these functions
@@ -74,6 +78,8 @@ struct Unk061798Object {
     s32 unk_006c;
     u8 pad_0070[0x11];
     s8 unk_0081;
+    u8 pad_0082[0x0e];
+    u8 unk_0090;
 };
 
 /* Returns the +0x28 pointer of the font record selected by id. */
@@ -86,6 +92,9 @@ u8 func_02061960(u32 id);
 u8 func_02061970(u32 id);
 /* Tail wrapper: selects a font record by id; its glyph table starts at +0. */
 Unk061798Font *func_0206191c(u32 id);
+/* Returns entry index-1 of the font record's +0x2c table, or entry 0 when the
+ * index is at or above the signed +0x34 count. */
+u32 *func_02061928(u32 id, s32 index);
 /* Tail wrapper: returns the second header byte of the font record for id,
  * which callers pass in r0. */
 u8 func_020619f8(u32 id);
@@ -108,6 +117,8 @@ Unk061798ResultA *func_02063a44(const void *text, u32 code);
 Unk061798ResultB *func_02063a50(void);
 /* Tail wrapper: returns the shared Unk061798ResultB singleton, or null. */
 Unk061798ResultB *func_02063a60(void);
+/* Decrements the signed +0x68 byte when func_0206557c returns non-zero. */
+void func_020641f0(Unk061798Object *object);
 /* True when any bit of mask is set in the word at +0x4 of the object. */
 s32 func_02061eb4(Unk061798Object *object, u32 mask);
 /* True when the word at +0x10 of the object is zero. */
@@ -157,8 +168,23 @@ void func_02065628(u32 value);
 void func_0206567c(void);
 /* Tail wrapper: calls func_020658b4 with the object and two 1 arguments. */
 void func_020658a0(void *object);
+/* Applies mode through func_02065864, then value through func_020bac00 unless
+ * mode is -1. */
+void func_020658b4(void *object, s32 mode, u32 value);
+/* Sends the message object for `message` to func_020656ac with mode -1. */
+void func_0206597c(s32 message);
+/* Releases both render objects of the shared singleton through
+ * func_02062a00. */
+void func_02065b74(void);
+/* Marks the shared singleton as state 2/0 and forwards its object's +0x90
+ * byte to func_020babec. */
+void func_02065b98(void);
 /* Runs func_02065bc0, then sets +0x8, +0xc and +0x58 of the shared singleton
  * to 1. */
 void func_02065c10(void);
+/* Moves the shared singleton to state 3/5 and releases its render objects. */
+void func_02065c30(void);
+/* Moves the shared singleton to state 4/5 and releases its render objects. */
+void func_02065c58(void);
 
 #endif
