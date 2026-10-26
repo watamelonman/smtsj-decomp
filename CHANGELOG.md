@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T143: reconstruct six NitroSDK main/sub BG screen and character upload wrappers.
+
 - M2-T140: match all seven setup and resource-table helpers in `lib_0204915c`.
 
 - M2-T128: match compressed/fallback resource path construction and the owned `.gtan` resource wrapper in `sdk_0205c1c8`.
