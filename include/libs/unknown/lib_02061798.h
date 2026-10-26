@@ -8,11 +8,15 @@
 typedef struct Unk061798ResultA Unk061798ResultA;
 
 /* Object returned through func_02063a60; it is distinct from
- * Unk061798ResultA and is backed by data_0216b9a8 + 4. Only the word at
- * +0x1c, written by func_02065614, is named; the rest is padding. */
+ * Unk061798ResultA and is backed by data_0216b9a8 + 4. Only the words at
+ * +0x1c and +0x20, written by func_02065614/func_02065628, and the word at
+ * +0x5c, read by func_0206559c, are named; the rest is padding. */
 typedef struct Unk061798ResultB {
     u8 pad_0000[0x1c];
     u32 unk_001c;
+    u32 unk_0020;
+    u8 pad_0024[0x38];
+    s32 unk_005c;
 } Unk061798ResultB;
 
 /* Opaque record behind the pointer at +0x28 of a font record; callers read
@@ -51,7 +55,9 @@ typedef struct Unk061798Object {
     u16 unk_004e;
     u8 pad_0050[0x18];
     s8 unk_0068;
-    u8 pad_0069[0x18];
+    u8 pad_0069[3];
+    s32 unk_006c;
+    u8 pad_0070[0x11];
     s8 unk_0081;
 } Unk061798Object;
 
@@ -103,5 +109,23 @@ void func_02065614(u32 value);
 s32 func_0206569c(void *object);
 /* Tail wrapper: appends 0x8001 through func_02063954. */
 Unk061798ResultA *func_02063a30(const void *text);
+/* Sets or clears bits of mask in the object's +0x4 word: mode 1 sets, any
+ * other mode clears. */
+void func_02061e98(Unk061798Object *object, u32 mask, s32 mode);
+/* Forwards a, b and the fourth argument to func_02060a48 (the third argument
+ * is dropped) and returns the new record, or null. */
+void *func_020629ac(u32 a, u32 b, u32 ignored, u32 c);
+/* True when the object's +0x10 word is 2 or 3. */
+s32 func_02062a5c(Unk061798Object *object);
+/* Calls func_02065374 when the object's +0x6c word is 0 or 2. */
+void func_0206541c(Unk061798Object *object);
+/* True when the shared result singleton exists. */
+s32 func_0206552c(void);
+/* Returns the +0x5c word of the shared singleton, or 0 when it is absent. */
+s32 func_0206559c(void);
+/* Stores value at +0x20 of the shared result singleton. */
+void func_02065628(u32 value);
+/* Tail wrapper: calls func_020658b4 with the object and two 1 arguments. */
+void func_020658a0(void *object);
 
 #endif

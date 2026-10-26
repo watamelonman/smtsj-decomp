@@ -1,10 +1,10 @@
 # libs/unknown/lib_02061798
 
-Twenty-three functions of this TU are reconstructed from the original ARM
-instructions and match at 100%: seven from M2-T1057, eight from M2-T1058 and
-the eight covered by M2-T1059. `func_02062264` is the exception: it is a
-four-byte copy of the preceding function's unreachable epilogue and cannot be
-expressed as a standalone C function (see Hard list).
+Thirty-one functions of this TU are reconstructed from the original ARM
+instructions and match at 100%: seven from M2-T1057, eight from M2-T1058,
+eight from M2-T1059 and the eight covered by M2-T1060. `func_02062264` is the
+exception: it is a four-byte copy of the preceding function's unreachable
+epilogue and cannot be expressed as a standalone C function (see Hard list).
 
 All names remain neutral linker symbols: the surrounding records and the
 public SDK sources found below do not establish an application-level API name.
@@ -19,8 +19,10 @@ text-canvas code around `g2d_Font.c`, `g2d_TextCanvas.c` and
 `g2d_CharCanvas.c`. No implementation with this 56-byte four-entry font
 registry, its `+0x28` / `+0x30` / `+0x34` / `+0x48` / `+0x81` render-object
 fields, or the `data_0216b5a0` / `data_0216b9a8` text globals was found. The
-code is therefore reconstructed from the instructions and keeps the neutral
-symbols.
+same source area covers the eight M2-T1060 helpers (singleton state
+predicates, allocation wrappers and bit-word updates); no public
+implementation was identified for them either. The code is therefore
+reconstructed from the instructions and keeps the neutral symbols.
 
 The C declares only the fields observed in the instructions. Unrelated bytes
 in the caller's objects stay in `pad_*` arrays; no SDK struct layout is
@@ -73,11 +75,29 @@ Objdiff: 100%.
 Tail wrapper for `func_02061970`, with the font id passed in r0 (call site
 `0x02061b9c`). Objdiff: 100%.
 
+## func_02061e98 — 28 bytes
+
+Sets or clears bits of `mask` in the object's `+0x4` word. The original
+compares the third argument with 1 (`cmp r2, #1`), ORs on equality and
+otherwise ANDs the loaded word with the complement of `mask`. Call sites
+`0x020605c0`/`0x020605cc` pass 0 and 1 in r2; `0x0206699c`, `0x020d5594` and
+`0x0211d5d0` are further callers. Objdiff: 100%.
+
 ## func_02061eb4 — 20 bytes
 
 Tests whether any bit of the mask in r1 is set in the object's `+0x4` word and
 returns 0/1; call sites `0x020605a8`, `0x020625a8` and `0x020632e4` branch on
 the result. The original emits `tst; movne #1; moveq #0`. Objdiff: 100%.
+
+## func_020629ac — 24 bytes
+
+Wrapper around `func_02060a48`. Callers set all four argument registers before
+calling it (call sites `0x02065f54`, `0x0206683c`, `0x02066940`, `0x0209938c`,
+`0x0211d5c0`), and the original moves r3 into r2 before the call, so the
+wrapper forwards its first, second and fourth arguments and drops the third.
+It returns the allocated record, or 0 when `func_02060a48` returned 0; the
+explicit null test reproduces the original `cmp; moveq r0, #0` rather than a
+tail call. Objdiff: 100%.
 
 ## func_02062a2c — 16 bytes
 
@@ -85,6 +105,14 @@ Reads the font id at `+0x28` of a render object and tail-calls
 `func_0206190c` with it, returning the selected record's `+0x28` pointer. Call
 sites `0x02060614`, `0x02060a38` and `0x020620a8` dereference the result.
 Objdiff: 100%.
+
+## func_02062a5c — 24 bytes
+
+Loads the object's `+0x10` word and returns 1 when it is 2 or 3, else 0. Call
+site `0x02064224` returns early when the result is zero. Writing the test as
+`value != 2 && value != 3` keeps the original `cmp #2; cmpne #3` pair with the
+predicated `movne r0, #0; moveq r0, #1`; the positive `==` form swapped the
+two moves. Objdiff: 100%.
 
 ## func_02062a74 — 20 bytes
 
@@ -161,6 +189,26 @@ Stores 2 at `+0x8` and 5 at `+0xc` of the object, in that order. Call site
 `0x02065488` does this before writing bytes at `+0x54`/`+0x55`; further call
 sites are `0x02065c04`, `0x02065db0` and `0x02065dc8`. Objdiff: 100%.
 
+## func_0206541c — 28 bytes
+
+Loads the object's `+0x6c` word, returns when it is neither 0 nor 2, and
+otherwise calls `func_02065374(object)`. The original keeps the word in r1
+across `cmp #0; cmpne #2; popne`, so the early return is written with the
+negated conjunction. The function address is loaded at `0x02065f20` for use as
+a callback. Objdiff: 100%.
+
+## func_0206552c — 24 bytes
+
+Returns 1 when `func_02063a50` (the shared result singleton from
+`data_0216b9a8` +4) is non-null, else 0. Call sites include `0x0203bda4` and
+`0x020964b4`; the original emits `cmp; movne #1; moveq #0`. Objdiff: 100%.
+
+## func_0206559c — 24 bytes
+
+Returns the signed word at `+0x5c` of the `func_02063a50` singleton, or 0 when
+the singleton is absent (`cmp; moveq r0, #0; ldrne r0, [r0, #92]`). Call site
+`0x0204b1a4` compares the result with 1. Objdiff: 100%.
+
 ## func_02065604 — 16 bytes
 
 Stores the value in r0 at `+0` of the bss object `data_0216b9a8`, the object
@@ -174,11 +222,24 @@ Stores the value in r0 at `+0x1c` of the singleton returned by
 original `push {r4, lr}`; call sites `0x020dfe1c`/`0x020dfe28` pass 1/0.
 Objdiff: 100%.
 
+## func_02065628 — 20 bytes
+
+Stores the argument at `+0x20` of the `func_02063a60` singleton. The original
+keeps the argument in r4 across the call (`push {r4, lr}`), which the local
+store reproduces; callers at `0x020dfdfc` and `0x0211c4ac` pass 1. Objdiff:
+100%.
+
 ## func_0206569c — 16 bytes
 
 Tail wrapper for `func_020656ac`: passes the object in r0 through and sets the
 second argument to `-1` (`mvn r1, #0`). Call sites include `0x0203c690`,
 `0x020d20dc` and `0x020dfe5c`; the result is ignored. Objdiff: 100%.
+
+## func_020658a0 — 20 bytes
+
+Tail wrapper for `func_020658b4`: loads its address, sets r1 and r2 both to 1
+(`mov r1, #1; mov r2, r1`) and branches. Call site `0x021107fc` passes the
+object held in r4. Objdiff: 100%.
 
 ## Hard list
 
@@ -195,7 +256,7 @@ second argument to `-1` (`mvn r1, #0`). Call sites include `0x0203c690`,
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for each of the twenty-three reconstructed
+`tools/hand/cmp.py` reports OK for each of the thirty-one reconstructed
 functions. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.
