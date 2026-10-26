@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M1-T973: match all eight requested CaveArea cleanup, selection, draw and provider helpers at 100% objdiff; document typed contracts and the scoped lifetime pragma that restores `func_020ecf20`'s original register allocation.
 - Match eight more CaveArea helpers, with typed records and instruction-based contracts.
 - Verified all eight M1-T971 CaveArea helpers at 100% objdiff and documented typed parameters, field contracts, and ARM evidence.
 

@@ -74,15 +74,49 @@ functions already matched; four missing bodies were reconstructed from ARM
 instructions. Exact object comparison is the acceptance oracle; the task card
 exempts new behavioral tests.
 
-## Not done in M1-T973
-- `func_020ed768`
-- `func_020ecb88`
-- `func_020eda38`
-- `func_020ec28c`
-- `func_020eba60`
-- `func_020ed290`
-- `func_020ecf20`
-- `func_020edb94`
+## M1-T973 verified functions
+
+All eight match the delinked ARM object at 100%. Work and draw-object pointers
+borrow writable storage covering the fields named below; no ownership is
+transferred.
+
+- `func_020ed768` (0x020ed768, 152 bytes): borrows provider records through
+  `func_0205e328(handle, 5, 0)` and `func_0205e318(handle, 43)`, copies work
+  coordinates +0x90/+0x94 into their u16 fields, and submits frame
+  `(int)work+0x88 - 1` with unit scale, layer 2, and work word +0x104.
+- `func_020ecb88` (0x020ecb88, 156 bytes): draws handle +0xc when work byte
+  +0xa8 is zero, otherwise handle +0x10; only byte states 2 and 3 at +0xc8
+  draw, and both calls use unit scale, layer 6.
+- `func_020eda38` (0x020eda38, 160 bytes): returns when the borrowed draw
+  object's signed byte +0x40 is nonzero. Otherwise it fills a four-word record
+  from the object, selects color 255, submits the row at y+1, then selects the
+  caller color and submits the row at y at the given layer.
+- `func_020ec28c` (0x020ec28c, 164 bytes): prioritizes device masks 64/128,
+  then 32/16 only when `func_02117170` is true, then 1/2, returning selector
+  0..5. Mask helpers are queried on device 0.
+- `func_020eba60` (0x020eba60, 180 bytes): runs the +0x124 cleanup, releases
+  work word +0x84, then releases and clears 23 handles starting at +0xc, word
+  +8, and the two handles at +0/+4. Nine no-argument cleanups run before the
+  global `data_02176de0` is cleared.
+- `func_020ed290` (0x020ed290, 196 bytes): maps the area from
+  `func_0211708c` and work byte +0xa8 to provider indices stored at +0x130 and
+  +0x134, then forwards both to `Unk05b82c_Unk_0b82c`. Normal areas above 4
+  clamp to the 5/6 pair; alternate areas collapse area 8 to index 1.
+- `func_020ecf20` (0x020ecf20, 200 bytes): resets signed byte +0x164 to -1 and
+  derives a selection index plus byte +0xa8 for mode 0 or 1; other modes do
+  nothing further. Mode 0 maps areas to 1..6, optionally advances when
+  `func_02117170` is true, and clears +0xa8; mode 1 maps areas 0..8 to 0..4.
+  The scoped `opt_lifetimes off` pragma is required: with default lifetime
+  splitting the compiler keeps `index` in caller-saved `ip`, while the original
+  keeps one `r4` range whose zero initialization is scheduled after the area
+  call (see DEC-023).
+- `func_020edb94` (0x020edb94, 228 bytes): indexes paired +0/+4 coordinates
+  from eight-byte table entries (seven normal, four alternate, rejecting larger
+  indices), then selects handle slot 19, 20, or 21 and white, 0xff7b63ff, or
+  white by `Unk02ee5c_GetTierFromField70` when the tier is 4, 5, or other.
+
+No hard-list entries remain for M1-T973. Exact object comparison is the
+acceptance oracle; the task card exempts behavioral tests.
 
 ## Not done in M1-T974
 - `func_020ed800`

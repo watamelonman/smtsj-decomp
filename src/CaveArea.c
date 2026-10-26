@@ -393,10 +393,13 @@ void func_020ed290(CaveAreaWork *p)
 
 void Unk0bcef4_Unk_0bcef4(void *record, int a, int b, int enabled);
 /* 0x020ecf20 initializes the selection at +0xac and flags for mode 0 or 1.
- * Other modes only reset signed byte +0x164 to -1. */
+ * Other modes only reset signed byte +0x164 to -1. See DEC-023 for the
+ * lifetime pragma that keeps the original single r4 index range. */
+#pragma push
+#pragma opt_lifetimes off
 void func_020ecf20(CaveAreaWork *p, int mode)
 {
-    int area, index;
+    int index, area;
     p->unk_0164=-1;
     area=func_0211708c();
     index=0;
@@ -421,6 +424,7 @@ void func_020ecf20(CaveAreaWork *p, int mode)
         break;
     }
 }
+#pragma pop
 
 /* Table entries have an observed eight-byte stride. */
 typedef struct CaveAreaCoordinate { int value; int adjacent; } CaveAreaCoordinate;
