@@ -247,11 +247,40 @@ No hard functions or omissions for M1-T988.
 Earlier planning entries outside this card: `ScanVisor_Unk_0a284c`,
 `ScanVisor_Unk_0a28b0`, `ScanVisor_Unk_0a2660`, `ScanVisor_Unk_0a273c`.
 
-## Not done in M1-T989
-- `ScanVisor_FindSlotByKey`
-- `ScanVisor_Unk_0a4950`
-- `ScanVisor_AllSlotsF28Is80`
-- `ScanVisor_Unk_0a3760`
+## M1-T989: eight verified state and slot helpers
+
+All eight implementations already existed and matched when this card began.
+Names retain configured symbols; evidence is from the delinked ScanVisor object.
+Pointers are borrowed, and opaque field values have no established units.
+
+- `ScanVisor_Unk_0a284c` (0x020a284c, 56 bytes): null work returns;
+  nonzero `on` clears work+0x14, while zero writes -54 there and clears +0x1c.
+- `ScanVisor_Unk_0a28b0` (0x020a28b0, 56 bytes): null work returns;
+  nonzero `on` clears work+0x210, while zero writes 50 there and clears +0x214.
+- `ScanVisor_FindSlotByKey` (0x020a45c0, 56 bytes): scans seven 52-byte
+  slots at list+0x20, returning the first with nonzero +0x00 and matching
+  +0x04 key, or null. These loads support the configured descriptive name.
+- `ScanVisor_Unk_0a4950` (0x020a4950, 56 bytes): writes the caller value
+  at list+0x190. Nonzero `on` writes 1 at +0x198 and the GetConst6 result
+  at +0x194; zero writes 2 and 4096 respectively. Requires a valid list.
+- `ScanVisor_AllSlotsF28Is80` (0x020a4994, 56 bytes): scans seven 52-byte
+  slots at list+0x20; returns zero if any occupied slot's +0x1c word differs
+  from 80, otherwise one. The configured F28 denotes decimal offset 28.
+- `ScanVisor_Unk_0a2660` (0x020a2660, 60 bytes): null work returns;
+  calls SetField34, 0a27e0, SetRangeA and SetField214 with zero, in that
+  order, then 0a4864 on the saved work+0x24c list.
+- `ScanVisor_Unk_0a3760` (0x020a3760, 60 bytes): passes work+0x78 and
+  three caller values to func_020c9db4, then submits its result to
+  func_020616ec with the reloaded work pointer. Requires valid work;
+  the original reload permits the first provider to change the global.
+- `ScanVisor_Unk_0a273c` (0x020a273c, 64 bytes): null work returns;
+  forwards its value to 0a27a8, 0a2800, 0a284c, 0a28b0 and 0a2950,
+  preserving this original call order.
+
+Validation: all eight report 100% objdiff. The full match, anticheat,
+unittest and original-image checksum gates were run locally.
+No new tests are required by the card; objdiff checks compiled behavior.
+No hard functions or omissions for M1-T989.
 
 ## Not done in M1-T990
 - `ScanVisor_Unk_0a4910`
@@ -284,7 +313,7 @@ Earlier planning entries outside this card: `ScanVisor_Unk_0a284c`,
 - `func_020a2d0c`
 - `ScanVisor_LoadSearchParts`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
-- `ScanVisor_Unk_0a4950`: decompiler-derived (plain cleanup)
+- `ScanVisor_Unk_0a4950`: verified in M1-T989
 - `ScanVisor_Unk_0a4864`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4910`: decompiler-derived (plain+fix cleanup)
 - `ScanVisor_Unk_0a48b4`: decompiler-derived (plain+fix cleanup)

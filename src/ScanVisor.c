@@ -489,38 +489,42 @@ void ScanVisor_Unk_0a27a8(int arg0)
 
 
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a284c(int arg0)
+/* Null work is a no-op. Original 0x020a284c stores zero at work+0x14
+ * for nonzero on; zero on stores -54 at +0x14 and zero at +0x1c.
+ * The stores establish field behavior only; units remain unknown. */
+void ScanVisor_Unk_0a284c(int on)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  if (arg0 == 0) {
-    *(u32 *)(tmp1 + 0x14) = 0xffffffca;
-    *(u32 *)(tmp1 + 0x1c) = 0;
+  if (on == 0) {
+    *(u32 *)(work + 0x14) = 0xffffffca;
+    *(u32 *)(work + 0x1c) = 0;
     return;
   }
-  *(u32 *)(tmp1 + 0x14) = 0;
+  *(u32 *)(work + 0x14) = 0;
   return;
 }
 
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a28b0(int arg0)
+/* Null work is a no-op. Original 0x020a28b0 stores zero at work+0x210
+ * for nonzero on; zero on stores 50 at +0x210 and zero at +0x214.
+ * Field units remain unknown. */
+void ScanVisor_Unk_0a28b0(int on)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  if (arg0 == 0) {
-    *(u32 *)(tmp1 + 0x210) = 0x32;
-    *(u32 *)(tmp1 + 0x214) = 0;
+  if (on == 0) {
+    *(u32 *)(work + 0x210) = 0x32;
+    *(u32 *)(work + 0x214) = 0;
     return;
   }
-  *(u32 *)(tmp1 + 0x210) = 0;
+  *(u32 *)(work + 0x210) = 0;
   return;
 }
 
@@ -528,36 +532,40 @@ void ScanVisor_SetField34(int on);
 void ScanVisor_SetRangeA(int on);
 void ScanVisor_SetField214(int on);
 void ScanVisor_Unk_0a4864(int list);
-/* decompiler-derived */
+/* Apply four zero-argument updates, then refresh the borrowed list at
+ * work+0x24c. Original 0x020a2660 preserves work across the four calls
+ * in the order below; null work returns before any update. */
 void ScanVisor_Unk_0a2660(void)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
   ScanVisor_SetField34(0);
   ScanVisor_Unk_0a27e0(0);
   ScanVisor_SetRangeA(0);
   ScanVisor_SetField214(0);
-  ScanVisor_Unk_0a4864(tmp1 + 0x24c);
+  ScanVisor_Unk_0a4864(work + 0x24c);
   return;
 }
 
 void ScanVisor_Unk_0a2950(int on);
-/* decompiler-derived */
-void ScanVisor_Unk_0a273c(u32 arg0)
+/* Forward one opaque value through five helpers in the order below.
+ * Original 0x020a273c preserves it in r4 across the calls and returns
+ * without calling when the work getter is null. */
+void ScanVisor_Unk_0a273c(u32 value)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  ScanVisor_Unk_0a27a8(arg0);
-  ScanVisor_Unk_0a2800(arg0);
-  ScanVisor_Unk_0a284c(arg0);
-  ScanVisor_Unk_0a28b0(arg0);
-  ScanVisor_Unk_0a2950(arg0);
+  ScanVisor_Unk_0a27a8(value);
+  ScanVisor_Unk_0a2800(value);
+  ScanVisor_Unk_0a284c(value);
+  ScanVisor_Unk_0a28b0(value);
+  ScanVisor_Unk_0a2950(value);
   return;
 }
 
@@ -680,7 +688,7 @@ extern u8 data_0214ce2c[];
 int Unk0c855c_Unk_0c9bac();
 int Unk0a7d54_Unk_0a8c04(u8 *object);
 void Unk0c855c_Unk_0c9890(u8 *object, int value);
-int func_020c9db4();
+int func_020c9db4(u8 *object, u32 a, u32 b, u32 c);
 int func_020c9eb0(u8 *object, u32 a, u32 b);
 void func_020616ec(u32 object, int value);
 int func_02057eb8();
@@ -801,19 +809,21 @@ void ScanVisor_Unk_0a4a44(ScanVisor *list)
   func_020a4a70((int)list);
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a4950(int arg0,u32 arg1,int arg2)
+/* Store the caller value at list+0x190. Original 0x020a4950 stores
+ * (1, GetConst6()) at +0x198/+0x194 for nonzero on, otherwise (2, 4096).
+ * Caller supplies a valid writable list; state units remain unknown. */
+void ScanVisor_Unk_0a4950(int list,u32 value,int on)
 {
-  u32 tmp1;
-  *(u32 *)(arg0 + 400) = arg1;
-  if (arg2 != 0) {
-    ((ScanVisor *)arg0)->unk_0198 = 1;
-    tmp1 = ScanVisor_GetConst6();
-    *(u32 *)(arg0 + 0x194) = tmp1;
+  u32 count;
+  *(u32 *)(list + 400) = value;
+  if (on != 0) {
+    ((ScanVisor *)list)->unk_0198 = 1;
+    count = ScanVisor_GetConst6();
+    *(u32 *)(list + 0x194) = count;
     return;
   }
-  ((ScanVisor *)arg0)->unk_0198 = 2;
-  *(u32 *)(arg0 + 0x194) = 0x1000;
+  ((ScanVisor *)list)->unk_0198 = 2;
+  *(u32 *)(list + 0x194) = 0x1000;
 }
 
 /* decompiler-derived */
@@ -984,6 +994,9 @@ s8 ScanVisor_Unk_0a3274(void)
     return r;
 }
 
+/* Submit the work+0x78 provider result with three opaque caller values.
+ * Original 0x020a3760 reloads data_02176b04 after func_020c9db4 before
+ * calling func_020616ec; valid work is required, with no null guard. */
 void ScanVisor_Unk_0a3760(u32 a, u32 b, u32 c)
 {
     func_020616ec(*data_02176b04, func_020c9db4((u8 *)*data_02176b04 + 120, a, b, c));
@@ -1024,6 +1037,9 @@ void ScanVisor_Unk_0a4578(u32 *p)
     }
 }
 
+/* Borrow the first occupied slot whose key matches, or return null.
+ * Original 0x020a45c0 scans seven 52-byte records at list+0x20, testing
+ * +0x00 occupancy and +0x04 key; this supports the configured name. */
 ScanVisor *ScanVisor_FindSlotByKey(u32 p, u32 k)
 {
     int j;
@@ -1048,6 +1064,9 @@ int ScanVisor_AnySlotField14(u8 *p)
     return 0;
 }
 
+/* Return 1 when every occupied slot has word +0x1c equal to 80.
+ * Original 0x020a4994 visits seven 52-byte entries at list+0x20; empty
+ * slots are ignored, so an empty list also returns 1. F28 denotes decimal 28. */
 int ScanVisor_AllSlotsF28Is80(u8 *p)
 {
     int j;
