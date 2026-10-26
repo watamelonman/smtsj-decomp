@@ -332,8 +332,9 @@ void Unk116598_Unk_1172bc(void)
 }
 
 
-int func_02117a68();
-/* decompiler-derived */
+int func_02117a68(void);
+/* ARM 0x02117cd4 initializes both shared work cells, calls 0x02117a68,
+   and stores its returned word in secondary work cell data_02176e68. */
 void Unk116598_Unk_117cd4(void)
 {
   u32 value;
@@ -469,8 +470,8 @@ void Unk116598_Unk_1177cc(u32 arg0)
     *(u32 *)*data_02176e64 = arg0;
 }
 
-int func_02117550();
-/* decompiler-derived */
+int func_02117550(void);
+/* ARM 0x021172dc calls 0x02117550 only when data_02176e60 is nonzero. */
 void Unk116598_Unk_1172dc(void)
 {
   if (*data_02176e60 == 0) {
@@ -479,8 +480,10 @@ void Unk116598_Unk_1172dc(void)
   func_02117550();
 }
 
-int Unk0bc1a8_IsSlotEmpty();
-/* decompiler-derived */
+int Unk0bc1a8_IsSlotEmpty(int slot);
+void Unk0bc1a8_Unk_0bc9b4(int slot, int value);
+/* ARM 0x021167e0 calls 0x020bc9b4(24, 0) only when the slot-empty
+   predicate at 0x020bc650 returns zero. No work pointer is required. */
 void Unk116598_Unk_1167e0(void)
 {
   int tmp1;
@@ -491,7 +494,8 @@ void Unk116598_Unk_1167e0(void)
   Unk0bc1a8_Unk_0bc9b4(0x18,0);
 }
 
-/* decompiler-derived */
+/* ARM 0x02117a28 repeats the slot-24 predicate and conditional call
+   to 0x020bc9b4(24, 0); no wider purpose is established. */
 void Unk116598_Unk_117a28(void)
 {
   int tmp1;
@@ -502,8 +506,9 @@ void Unk116598_Unk_117a28(void)
   Unk0bc1a8_Unk_0bc9b4(0x18,0);
 }
 
-int func_021174d0();
-/* decompiler-derived */
+int func_021174d0(void);
+/* ARM 0x02117294 populates data_02176e60 from 0x021174d0 only if
+   the cell is zero; existing borrowed work is preserved. */
 void Unk116598_Unk_117294(void)
 {
   int tmp1;
@@ -514,8 +519,9 @@ void Unk116598_Unk_117294(void)
   *data_02176e60 = tmp1;
 }
 
-int func_021178c0();
-/* decompiler-derived */
+int func_021178c0(void);
+/* ARM 0x02117790 populates data_02176e64 from 0x021178c0 only if
+   the cell is zero; existing borrowed work is preserved. */
 void Unk116598_Unk_117790(void)
 {
   int tmp1;
@@ -575,14 +581,17 @@ void Unk116598_Unk_1168cc(Unk116598Work *work)
 #endif
 int Unk0de678_Unk_0dee2c();
 int Unk02e000_Unk_02e774();
-int Unk02f078_Unk_02f220();
-int func_02117208();
+int Unk02f078_Unk_02f220(void);
+int func_02117208(void);
 int func_02051ba4();
 void Unk095560_Unk_0958a8();
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
+/* ARM 0x021177e0 stores 1, the low byte of a, b, and 0 at offsets
+   +0, +8, +4, +12 through data_02176e64. Requires initialized work.
+   The existing Set symbol is supported by these direct field writes. */
 void Unk116598_Set(u32 a, u32 b)
 {
     u8 *w = (u8 *)*data_02176e64;
