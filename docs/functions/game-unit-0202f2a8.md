@@ -1,5 +1,9 @@
 # unit_0202f2a8
 
+The TU's local struct views, the `FIELD`/`UNK02F2A8_RES36` helper macros and callee
+prototypes live in `include/game/unit_0202f2a8.h`. They were moved there so the source stays
+under the 3000-line file limit. Moving declarations does not change codegen.
+
 ## M1-T1104: 8 small functions
 
 - `Unk02f2a8_Nop_0303c8` (4 bytes): empty callback; compiles to a bare return.
@@ -579,3 +583,315 @@ state +0x5b, buffer `body.unk_0214` = +0x218) and names the buffers +0x358,
 
 Hard list for M1-T1115: none. No new tests are required by the card; objdiff
 compares every instruction against the original implementation.
+
+## M1-T1116: direction tables, counter targets, start-up and fixed-point helpers
+
+- `func_0203611c` (208 bytes): maps a pair of 0..3 directions to 0..3 through a
+  fixed 4x4 table, 2 for pairs outside it. Written as a switch whose cases sit
+  in handler-address order (1, 2, 3, 0); the `r = 2` assignments are kept so the
+  compares and early exits stay as in the original.
+- `func_020361ec` (220 bytes): rotates direction `dir` by `amount` through a
+  second 4x4 table; callers (Unk02f2a8_Unk_02fc10 and the step helper) pass the
+  cached heading. Out-of-range input returns `dir`, which is what the original
+  leaves in r0.
+- `func_0203572c` (244 bytes): loads a temporary map block (`Unk02f2a8MapBlock`,
+  zero-initialised on the stack) keyed by the 16-byte name of resource-36 row
+  `row`, reads bits 20..23 of the cell at (x, y), releases the block and returns
+  the row's s16 at +0x10 for that value. C99 block-order declarations put the two
+  stack initialisers after the resource call, as in the original.
+- `func_02030d84` (252 bytes): counter-target check behind func_020352f4. When
+  the kind-0 target (+0x7522) is set and reached and every kind 1..7 column-0
+  counter reached its target, it calls 118bec(id, 1) and 0953f0; with kind 1 it
+  also calls 118bec(90 + 2e + j - 1, 1) for each reached column j of a kind whose
+  id e (resource-36 row copy at +0x18, byte +0x1b + kind) is nonnegative. The id
+  formula is the same as in func_02036654.
+- `func_0203428c` (252 bytes): creates gGameState once: 0x75c0-byte task with
+  GameState_Shutdown as teardown, the three sub-objects at +0x3134/+0x3140/+0x314c,
+  default words +0x73c8..+0x73ec, the root task over body +0x23c, then the
+  start-up calls (resource 36, work-area id +0x35c, 052634(1, 3, 32)).
+- `func_02035cb4` (260 bytes): 20.12 fixed-point interpolation
+  `from + (to - from) * t / n`, with t and n converted through rounded float
+  (`x * 4096 +/- 0.5`); returns `to` for n == 0 or t >= n and `from` for t <= 0.
+- `func_02035db8` (268 bytes): stores the position of grid cell (x, z):
+  x and z in 20.12 fixed point times 4.0, height 0x8cd.
+
+Typing: `Unk02f2a8Res36` names the 16-byte key and the s16 table at +0x10.
+`Unk02f2a8Tally` now holds the resource-36 row copy at +0x18 and a union for the
+target (+0x74f2) and counter (+0x751e) tables. Both are indexed by kind with
+row 0 unused, so the unused counter row overlaps the end of the target table.
+`Unk02f2a8State` gains +0x3140/+0x314c and +0x73d0/+0x73d8/+0x73e8/+0x73ec.
+
+Hard list for M1-T1116:
+- `func_0202fc50` (276 bytes, action type 4 step): the structure matches
+  (counter +0x1c, sub-type swing through 0205eae0 around the heading angle,
+  flags +0x48/+0x4c/+0x44 at steps 3/6/8, `% 0x10000` then `+0x10000` if
+  negative). It still fails because mwcc builds the negative swing constants as
+  `sub rX, rZero, #K` from the zero-initialised local, while the original uses
+  `mov #K; rsb` and leaves the sub-type-0 branch unpredicated. Tried: if/else
+  chain, switch with and without default, else-branch zero init, swapped
+  declaration order, `amp = len` copy, s16 amplitude, and the negative constants
+  written as `-(int)16384.0f`, `-(0x10000 / 4)` and `0x8000 * -1`. Needs a
+  decomp.me scratch.
+
+Attempt 2 review verification: the map-work and direction-table comments now sit
+directly above their respective definitions, and the fixed-point interpolation
+comment explains why both helpers retain inline rounding expressions. Local
+validation passed: `ninja`, anticheat, all nine unit tests, match (all 102 C
+functions considered by the gate at 100%), and checksum (all artifacts identical).
+
+## M1-T1117: 8 functions
+
+All eight are at 100% in objdiff (match gate, checksum and anticheat pass). Every caller
+(func_02031758, func_02032020, func_02032fb8, func_02033400, func_02033f1c, func_0203428c)
+passes the game-state task object, so all but the last two take `Unk02f2a8State *`. Names stay
+neutral: the evidence covers the shape of each function but not what it is for in the game.
+- `func_02031274` (304 bytes): rebuilds the +0x5508 buffer against the Unk02e000_Unk_02e8b8
+  buffer. It clears it, adds sub-objects +0x3134/+0x3140 over body map block +0x23c for
+  work-area id +0x35c, then adds the seven slots that Unk02f2a8_Unk_035c14 enables.
+  The 45x40 cell table at +0x38e8 ends exactly at +0x5508, and +0x5508 has the same 0xe14
+  size as +0x631c, so the state view now splits there.
+- `func_02031628` (304 bytes): visor refresh, called with `mode`. It is gated on +0x73e0/+0x7498
+  being clear, on mode 4 not having event 12/14/37, and on body +0 being 1. It links
+  +0x3134/+0x3140 for the current 04bb9c context id. Then, for each of the seven entries, it
+  shows the entry (0a2a60) if its 0a03b8 descriptor +0 predicate returns 1, or hides it (0a2a8c).
+- `func_02032e18` (292 bytes): mode-6 handler. A 4-step sequence on +0x7481, with frame counter
+  +0x7484 (signed compare, so `s32`): free map block +0x358, reload for id +0x7480 after 3
+  frames, call 0a4e9c(0) after 6 frames, then request mode 2.
+- `func_02033cd0` (312 bytes): latches requested mode +0x73cc into +0x73c8 (the request resets
+  to -1) and runs that mode's entry action through a jump table; case 0 is an empty case.
+- `func_02033e08` (276 bytes): per-frame dispatch on +0x73c8, one helper per mode. Mode 1 arms
+  root +0x44/+0x4c/+0x50/+0x54 and starts +0x7598 with 180. Mode 12 is an empty case.
+- `func_02034128` (284 bytes): the second callback of the task that func_0203428c creates.
+  It runs the 037d50 rebuild, updates +0x7550/+0x7598, then runs the event/visor descriptor
+  callbacks (+8 for modes 3/4, +0xc for mode 5) and 12168c.
+- `func_02036368` (288 bytes): writes `to * t / n` in 20.12 fixed point to obj +0x1c and
+  returns 0, using the same rounded-float conversion as func_02035cb4. The out-of-range
+  cases return 1. The ROM places the `t >= n` store after the main path, so the code is
+  written as `if (t < n) { ...; return 0; }`.
+- `func_020370e8` (308 bytes): marks records in the sorted 16-byte list whose
+  [+8, +0xa] range (clamped to +-0x1555) is closed off by earlier unmarked records.
+  Unk02f2a8SortEntry now types +8/+0xa as s16 and +0xc/+0xd as the s8 grid x/y;
+  func_02036fb8 is still at 100%.
+
+Shared view changes: Body +0/+0x14, Root +0x9c, State +0x5508/+0x7410/+0x7490/+0x7550,
+s8 +0x7480/+0x7481, Descriptor +0 and +0xc are now function pointers, a new Unk02f2a8Lerp
+view, and a real `void *Unk02e000_Unk_02e8b8(void)` prototype.
+
+Not done in this card: none. Hard list: none.
+
+## M1-T1118: five matched functions; three hard functions
+
+The current build uses mwccarm 2.0/sp1p5. Five new definitions match at 100%:
+
+| Function | Bytes | Contract and evidence from original instructions |
+| --- | ---: | --- |
+| `func_0203480c` | 328 | Tears down the borrowed body and clears 0x3130 bytes. Mode 0 preserves the halfword-aligned 40-byte block at +0x214 and word-aligned 140-byte map at +0x354; mode 1 releases that map. A nonlive body only performs the optional map release. The original preserves r0 across the initial live check because 020396cc takes the body. |
+| `func_0203076c` | 340 | Copies the resource row's 16-byte key into a terminated local, resolves a current-cell selector, and calls 020392f8. Bits 12..15 take precedence; bits 16..19 use the signed byte table starting at row +0x1c with a one-based index and predicate 0e63c8; otherwise bits 20..23 are used. |
+| `func_0202f3d8` | 344 | Saves the work-area grid coordinates, advances them by the rotated direction, resets action +0x1c and sets +0x5c. It notifies visor/event helpers, clears +0xc when 09beb0 rejects the cell, conditionally calls 03538c, then sends the new coordinates to 09aa00. The action pointer is borrowed. |
+| `func_02030bb0` | 368 | Runs a two-phase body reload on state +0x73fc. Phase 0 closes auxiliary work and initializes reload helpers, then falls through. Phase 1 calls 0343ec with the current map id and grid coordinates; success refreshes cells, resets the phase, and returns 1. Other paths return 0. |
+| `func_020364bc` | 408 | Applies predicate-dependent scaling to a u16 increment and accumulates it at work +0xaf2, comparing signed halfword counters against +0xaf4. Predicates 142, event 0x70a, and 1125e8 can reset it. Nonzero increments receive the original per-step u16 truncation, minimum 1 and maximum 100. Float multiplication uses unsigned conversion for the 3.5 multiplier. |
+
+Names remain the existing neutral symbols: observed field accesses and callees do
+not establish the gameplay purpose. State +0x73fc is now explicitly typed; the
+40-byte and 140-byte local views preserve the original copy alignment. There is
+no module boundary change. No new tests are required by this card; comparison
+against the original machine code is the acceptance oracle.
+
+### Hard list
+
+These three functions remain supplied by the original delinked object. No
+nonmatching definitions or assembly stubs were added to the C source.
+
+- `func_02035edc` (396 bytes): builds two points around a borrowed position using
+  the u16 angle at object +0x18, the resident interleaved sin/cos table at
+  0x0212629c, and fixed-point distances -0x2000 and 0x10000. Best candidate:
+  **99.60%** under sp1p5. All instructions and register allocation match except
+  four `ldrsh` instructions: the compiler emits `[index, table]` where the
+  original has `[table, index]`. Tried direct scalar expressions, a vector
+  temporary and inline vector addition, scalar load/sum ordering, signed modulo
+  with negative-angle normalization, inline lookup, array and pointer forms,
+  and integer-address addition. Integer-address addition restores the operand
+  order but hoists the table address and changes register allocation. sp2p4
+  retains the same four operand differences. Needs a human scratch.
+- `func_0203675c` (396 bytes): numeric helper using fixed-point divisions by
+  100 and 2.5, coefficient 70, upper clamp 100, predicate-dependent divisions by
+  5 and 10 (ids 152/163), and lower clamp 1; modes 1/3/4 return 0. Best sp1p5
+  candidate: **96.63%**. The compiler emits a zero high-word multiply-add and
+  different register allocation. Tried signed/unsigned 64-bit constants,
+  operand order, inline fixed multiplication, local coefficients, float-folded
+  coefficients, and explicit signed high-word correction. Compiler comparison
+  found **100.00% objdiff under 2.0/sp2p4**, with the same configured flags.
+- `func_020368e8` (396 bytes): same contract as 0203675c with coefficient 55.
+  Same experiments and **96.63% under sp1p5 / 100.00% under sp2p4**.
+
+The compiler comparison used temporary objects and `objdiff-cli diff` against
+`build/delinks/src/game/unit_0202f2a8.o`; neither the configured compiler nor any
+protected file was changed. 2.0/base, sp1 and sp1p7 retain the extra multiply-add.
+This provides evidence for a human toolchain investigation, not authorization
+to change the compiler for the other units. The two sp2p4 matches were verified
+by objdiff's `match_percent`, not inferred solely from textual disassembly.
+
+Candidate source for the two numeric helpers (for a human decomp.me scratch;
+not compiled into this unit):
+
+```c
+/* Preserve the original signed 20.12 rounding contract at inline call sites. */
+static inline s32 Unk02f2a8_MulFixed(s32 a, s32 b)
+{
+    return (s32)(((s64)a * b + 0x800) >> 12);
+}
+
+/* Derive a bounded score from two signed inputs in 20.12 fixed point.
+ * Modes 1, 3 and 4 suppress it; predicates 152/163 divide it by 5/10.
+ * The constants and ordering are evidenced by the original at 0203675c. */
+int func_0203675c(int mode, int a, int b)
+{
+    int coefficient = (int)(4096.0f * 70.0f + 0.5f);
+    int x;
+    int y;
+    if (mode == 1 || mode == 3 || mode == 4) {
+        b = 0;
+    } else {
+        a = func_0200219c((int)((float)a > 0 ? 4096.0f * (float)a + 0.5f : 4096.0f * (float)a - 0.5f), 0x64000);
+        b = func_0200219c((int)((float)b > 0 ? 4096.0f * (float)b + 0.5f : 4096.0f * (float)b - 0.5f), 0x2800);
+        b = (Unk02f2a8_MulFixed(coefficient, a) - b) >> 12;
+        if (b > 100) b = 100;
+        x = Unk0986ac_Unk_098978(152);
+        y = Unk0986ac_Unk_098978(163);
+        if (Unk0986ac_Thunk_02098714(x) == 1) b /= 5;
+        if (Unk0986ac_Thunk_02098714(y) == 1) b /= 10;
+        if (b < 1) b = 1;
+    }
+    return b;
+}
+
+/* Same score contract as 0203675c, with a 55.0 rather than 70.0
+ * fixed-point coefficient, as evidenced by the original multiply. */
+int func_020368e8(int mode, int a, int b)
+{
+    int coefficient = (int)(4096.0f * 55.0f + 0.5f);
+    int x;
+    int y;
+    if (mode == 1 || mode == 3 || mode == 4) {
+        b = 0;
+    } else {
+        a = func_0200219c((int)((float)a > 0 ? 4096.0f * (float)a + 0.5f : 4096.0f * (float)a - 0.5f), 0x64000);
+        b = func_0200219c((int)((float)b > 0 ? 4096.0f * (float)b + 0.5f : 4096.0f * (float)b - 0.5f), 0x2800);
+        b = (Unk02f2a8_MulFixed(coefficient, a) - b) >> 12;
+        if (b > 100) b = 100;
+        x = Unk0986ac_Unk_098978(152);
+        y = Unk0986ac_Unk_098978(163);
+        if (Unk0986ac_Thunk_02098714(x) == 1) b /= 5;
+        if (Unk0986ac_Thunk_02098714(y) == 1) b /= 10;
+        if (b < 1) b = 1;
+    }
+    return b;
+}
+
+```
+
+Final local validation: `ninja` passed; anticheat passed; all nine Python unit
+tests passed; the match gate verified all 122 retained C definitions at 100%;
+checksum reported all artifacts byte-identical to the original. The match gate
+covers the retained definitions, not the three omitted hard functions above.
+`git diff --check` also passed.
+
+## M1-T1119: 8 functions
+
+All eight are 100% in objdiff (match gate, checksum and anticheat pass). Names stay neutral:
+the evidence shows what each function does to the state, not what it is for in the game.
+- `func_02031448` (480 bytes): moves the player off cell kinds 10/11/12. It reads direction bits
+  4..6 of element word 0 (kinds 10/11) or word 1 (kind 12), and keeps the current heading when
+  those bits are outside 1..4. Then it calls `Unk02f2a8_SetGridPos`.
+- `func_02033ae8` (428 bytes): mode-10 handler (called from `func_02033e08` case 10). A six-step
+  sequence on +0x7481: wait five frames, then two, reload the body, restore the display helpers,
+  then set +0x73cc to 2.
+- `func_02033f1c` (524 bytes): the first callback passed to `func_020611dc` by `func_0203428c`
+  (its partner is `func_02034128`). It runs pending work for +0x73e0 (032a08), +0x743c (031758),
+  root +0x4c (031628 mode 1) and +0x74a4 (031df8). It runs the mode entry (033cd0, skipped when
+  +0x73cc is -1) and the per-frame mode handler (033e08), and updates +0x7550 and +0x7598. While
+  +0x7430 is nonzero it moves to the 052dd8 grid position; when that is null it retries through
+  052d7c(+0x7430, +0x7434) if +0x7438 is 1, otherwise it clears both words. A root +0x5c request
+  rebuilds map work: one cell from +0x7482/+0x7483 along the work-area heading when +0x748c is 1
+  (y+1/x-1/y-1/x+1 for headings 0..3, unless +0x7400 is set), otherwise through `func_02034e90`.
+  The jump-table cases are written in handler-address order (0, 2, 3, 1).
+- `func_02034b7c` (480 bytes): arms a map/grid transition. It stores its eight arguments at
+  +0x744c..+0x7468, snapshots the work-area id/x/y/heading into +0x7454..+0x7458, and sets
+  +0x746c when the destination id differs. It calls 05e590(9) when +0x73d4 differs from the
+  destination's 03572c selector, then sets up the display transition (0a4e9c with 2 or 3 by mode
+  when the brightness flag is set and the sub brightness is not at max). The stores go through
+  `((Unk02f2a8State *)gGameState)->`; a local or static-inline pointer changes the code.
+- `func_02035008` (428 bytes): runs the descriptor callback of the lead actor (+0x6c id) and up
+  to three members (+0x34 id). In mode 1 it also adds four per-actor values into the flagged pairs
+  at +0x74a8/+0x74c8, changed when +0x74f0 differs from 03fa28. It always sets +0x74a4.
+- `func_02035578` (436 bytes): joins the two resource strings for a key (16 and 6 halfwords) with
+  resource (1,47) as a separator. It copies at most 19 halfwords to `dst` and terminates it.
+  Matching needed `firstLength * sizeof(u16)` as the first copy size (`* 2` schedules differently).
+- `func_02035890` (480 bytes): searches the loaded map for cell kind 14 and writes the cell next to
+  it (picked by the element's low two bits) plus a heading into the 8-byte position record. It
+  returns 1 only when it finds a cell. The grid bounds are bytes +8..+11 of the block that map
+  word +0 points to, so `Unk02f2a8MapBlock.unk_0000` is now a `u8 *`. The X bounds must be loaded
+  before the Y bounds.
+- `func_02036a74` (468 bytes): samples `func_02036068` at the four corners of a 4-unit square
+  around `center` (20.12 fixed point, int-to-fx rounding written out). It stores the max/min at
+  result +8/+0xa when forced, or when they lie inside (-0x1555, 0x1555). Declaring `row` after
+  the other locals is needed for the stack-slot order.
+
+New typed state fields: root +0x5c; state +0x73d4, +0x7430..+0x7438, +0x7440..+0x746c,
++0x7482/+0x7483, +0x748c, +0x74f0. The copy helper `func_0200866c` now has a real prototype.
+Hard list for this card: none.
+
+## M1-T1120: five matched functions; three hard functions
+
+Five definitions match at **100%** with the configured mwccarm 2.0/sp1p5.
+The three hard functions below remain supplied by the delinked original;
+the match gate checks retained C definitions and does not establish completion
+of all eight functions on this card. Names remain neutral because the original
+instructions establish field-level behavior, not the gameplay purpose.
+
+| Function | Bytes | Contract and evidence from the original instructions |
+| --- | ---: | --- |
+| `func_020338b0` | 536 | Seven-phase handler on signed byte +0x7481 with signed frame counter +0x7484. Clears +0x73d8, sets display mode zero on frame 3, waits through frame 4, sends value 0xffff to slot 8, initializes +0x73f4, waits for slot 8 to empty, then reloads the body and restores display helpers. The last phase requests mode 2. The state and its root are borrowed. |
+| `func_02031df8` | 552 | Applies pending signed changes to four actors. Actor zero uses current values +0x1c/+0x1e, maxima +0x12/+0x14 and id +0x6c; the other actors use +0x1e/+0x20, +0xa/+0xc and id +0x34. Null actors and id 1 are skipped. The first value is bounded to [1,max]; the second to [0,max] and deferred while +0x74e8 is at most 10. Posts mode events 48..51 when +0x74ec is armed. **Hard: omitted.** |
+| `func_0202fea0` | 588 | Prioritizes input masks 1, 0x800, 0x400, 0x100 and 0x200, latching action words. Mask 0xf0 enters directional selection; mask 2 changes whether a direction requests movement or rotation. Calls 0202fd64/0202fe08 to choose action +0x14 and posts 118e50 events 8/9/10. Returns whether input was handled. Borrows the action. |
+| `func_02032020` | 636 | Two-phase reload handler on +0x7481. Phase zero waits for 02030bb0, restores map work and marks the current id. Phase one either copies +0x5508 and selects mode 4, or rebuilds map work, checks the cell ahead for kind 14, drains pending mode-1 requests and selects the next mode. Resets the phase after phase one. Borrows state/root. |
+| `func_02030924` | 652 | Loads the body map at +0x354 using the key at +0x214. Marks kind-24/25 cells using element-type-7 ids and the persistent two-bit predicate. For each enabled signed id at body +0x230..+0x236, loads a temporary 140-byte map, overlays matching cells and releases that map. Finishes through 0210b7e4(id). **Hard: omitted.** |
+| `func_0202f8f0` | 800 | Advances task +0x1c, converts cached grid coordinates to 20.12 fixed point and scales by four units with signed 64-bit rounding. Applies the relative-direction offset from 02035cb4 for the first three frames. Sets flags on frames 3/4; at frame 15 restores action 1, direction 2, clears +0x9c and snaps to cached grid position. Borrows the 0xa0-byte task. |
+| `func_02036c48` | 880 | Collects cell records into a 0x794-byte work block. Offsets the viewpoint by 3.5 units using the resident sin/cos table at 0x0212629c, clamps radius+1 to 7 and bounds to the 45x40 grid. Filters boundary cells through descriptor byte +0x18, rejects absolute relative angles >=0x1b05 and distances <0x2800, then records corner angles, distance and signed grid coordinates. **Hard: omitted.** |
+| `func_0202f530` | 892 | Advances a task across a cell using 02035cb4(0x4000,0,24,frame), the rotated direction and the same fixed-point coordinate conversion as 0202f8f0. Sets flags on frames 3/6/8 and restores idle fields at frame 24. The completion checks singleton fields +0x7564/+0x7578; the tail may arm +0x5c through 0204b4c4/0204cb90. Borrows the 0xa0-byte task. |
+
+The task view now exposes the animation flags at +0x34..+0x4c, position
+words +0x70/+0x74/+0x78 and +0x9c. The action view exposes the input latch
+at +0x58. The dispatcher passes its existing action pointer through typed
+animation-handler parameters and still matches at 100%. No module boundary
+changed. New behavioral tests are not required by this card; original-object
+instruction comparison is the acceptance oracle.
+
+### Hard list for M1-T1120
+
+- `func_02031df8`: best candidate **99.35%**, initial candidate **99.06%**.
+  The initial candidate has the same instruction sequence apart from allocation
+  of the loop index, second-value pointer and second maximum: original uses
+  r6/r7/r8, candidate r8/r6/r7. Tried declaration order inside/outside the loop,
+  separate amount scopes, register-qualified index, and signed-halfword maxima.
+  These did not produce an exact match. A human scratch should start from the
+  actor/value contracts above and focus on register allocation.
+- `func_02030924`: best candidate **93.52%**. Reconstructed both grid scans,
+  cell overlays, temporary-map initialization/release and the final notification.
+  Tried byte wrap expressed as addition rather than subtraction, pointer/index
+  forms for the signed entry table, local slot initialization order, X/Y local
+  declaration order and the loader's stack-argument typing. Remaining differences
+  include scan-register allocation, loop-constant hoisting and stack scheduling.
+  Loader experiments preserved its own 100% match but did not match this caller;
+  those helper changes were removed with the candidate.
+- `func_02036c48`: best candidate **80.97%** (initial **80.17%**).
+  Reconstructed the viewpoint, grid bounds, boundary predicate, angle/distance
+  filters and output records. Tried signed angle modulo with explicit negative
+  normalization and both fixed-multiply operand orders. The configured compiler
+  emits extra high-word multiply-adds for the 3.5 coefficient, different sin/cos
+  load operand order and different scheduling/register allocation. This resembles
+  the compiler-sensitive fixed-point issues documented under M1-T1118, but no
+  alternate compiler match was established for this function.
+
+No nonmatching C definitions, assembly stubs or code-byte arrays are retained.
+These three functions need human decomp.me scratches through `tools/decompme.py`.
