@@ -3,6 +3,32 @@
  * lifted from Ghidra output and cleaned; field meanings are not known yet.
  */
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
+/* 114-byte by-value message payload starting at work+0x24 (the leading
+ * halfword record stream); func_020deaa0 copies it onto the argument stack.
+ * Evidence: 28 double-halfword copies plus one trailing halfword at
+ * 0x020cfc44 and 0x020cfe94. */
+typedef struct Unk0cf5e8RecordBlock { u16 words[57]; } Unk0cf5e8RecordBlock;
+
+int Unk02cad4_Unk_02cbdc(u32 value);
+int func_020deb68(void);
+int func_020df5e8(void);
+int func_020fa92c(s32 value);
+int func_020fa9a0(void);
+void CaveNpc_SetActive(u32 handle, s32 active);
+int func_020decd8(void);
+int Unk0de678_Unk_0debf8(void);
+void func_020deaa0(s32 kind, Unk0cf5e8RecordBlock records, u32 selection);
+int func_0212356c();
+u32 Unk0cb32c_Unk_0cb440(u32 value);
+void Unk124c5c_Unk_124cb0(void);
+void Unk122e1c_Unk_123024(u32 handle);
+void Unk122e1c_Unk_123048(u32 handle);
+void Unk122e1c_Unk_1232c8(u32 handle);
+void Unk122e1c_Unk_122ff0(u32 handle);
+int Unk122e1c_Unk_122f54(u32 handle);
+void Unk122e1c_SetUnkFields64_b0(u32 handle, u32 a, u32 b);
+void Unk0fd268_SetDir(s32 value);
+void func_020e7f44(s32 a, s32 b, s32 c, s32 d);
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
@@ -582,8 +608,8 @@ typedef struct Unk0cf5e8Callbacks {
     u32 unk_08;
     void (*callbacks[6])(void);
 } Unk0cf5e8Callbacks;
-void func_020cf9a0(void);
-void func_020d09b4(void);
+void func_020cf9a0(Unk0cf5e8Work *work);
+void func_020d09b4(Unk0cf5e8Work *work);
 void func_020d11f0(void);
 /** Initialize size, flags and six callbacks, preserving word 8.
  * Evidence: stores and symbol literals at 0x020cf668; descriptor is borrowed. */
@@ -591,8 +617,8 @@ void func_020cf668(Unk0cf5e8Callbacks *descriptor)
 {
     descriptor->size = 900;
     descriptor->flags = 0;
-    descriptor->callbacks[0] = func_020cf9a0;
-    descriptor->callbacks[1] = func_020d09b4;
+    descriptor->callbacks[0] = (void (*)(void))func_020cf9a0;
+    descriptor->callbacks[1] = (void (*)(void))func_020d09b4;
     descriptor->callbacks[2] = Unk0cf5e8_Nop_0d11e8;
     descriptor->callbacks[3] = Unk0cf5e8_Nop_0d11ec;
     descriptor->callbacks[4] = (void (*)(void))func_020cf8e8;
@@ -1123,3 +1149,291 @@ void func_020d0784(Unk0cf5e8Work *work)
     }
 }
 
+
+/* ---------------------------------------------------------------------------
+ * M1-T962: the long callback-driven mission-scene state machine.
+ * ------------------------------------------------------------------------ */
+
+/** Advance the mission scene through states 0..23 and refresh the handle's
+ * two selected fields at the end. Evidence: 24-entry state table at
+ * 0x020cf9a0, by-value record copies, and ordered provider calls. */
+void func_020cf9a0(Unk0cf5e8Work *work)
+{
+    s32 i;
+    u32 value;
+
+    switch (work->unk_0000) {
+    case 0:
+        if (work->step == 0) {
+            if (ImageBg_IsMode1or2() != 0) {
+                break;
+            }
+            Unk0fd268_SetDir(1);
+            func_02124c5c();
+            func_02124ce8(1);
+            func_020525cc(0);
+            work->step++;
+            break;
+        }
+        if (func_02052728() != 0) {
+            break;
+        }
+        work->step = 0;
+        if (func_020deb68() != 0) {
+            goto set_state_6;
+        }
+        if (func_020df5e8() != 0) {
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d13fc(work)) {
+            Unk0cf5e8_Unk_0d1414(work);
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d139c(work)) {
+            Unk0cf5e8_Unk_0d13b4(work);
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d1454((Unk0cf5e8Obj *)work)) {
+            Unk0cf5e8_Unk_0d1470(work);
+            goto set_state_6;
+        }
+        if (Unk0cf5e8_Unk_0d1490((Unk0cf5e8Obj *)work)) {
+            Unk0cf5e8_Unk_0d14ac(work);
+            goto set_state_6;
+        }
+        Unk122e1c_Unk_123024(work->unk_0020);
+        func_020d1360(work, work->unk_0004);
+        work->unk_0004 = 4;
+        break;
+    set_state_6:
+        func_020d1360(work, 6);
+        work->unk_0004 = 2;
+        break;
+    case 1:
+        if (func_02052728() != 0) {
+            break;
+        }
+        Unk02cad4_Unk_02cbdc(work->unk_035c);
+        break;
+    case 2:
+        if (Unk122e1c_Unk_122f68(work->unk_0020) == 0) {
+            break;
+        }
+        func_020d1360(work, work->unk_0004);
+        break;
+    case 3:
+        if (Unk122e1c_Unk_122f54(work->unk_0020)) {
+            func_020d1360(work, work->unk_0004);
+            switch ((s32)work->unk_0000) {
+            case 1:
+                if (Unk0de678_Unk_0debf8() != 0) {
+                    func_020d1360(work, 6);
+                } else {
+                    func_0205257c(0);
+                }
+                break;
+            case 11:
+                func_02124ce8(1);
+                Unk0e7ac4_Unk_0e804c(1);
+                func_020e7f44(5, 0, 0, 0);
+                Unk0bc1a8_Unk_0bc928(22, 21, &work->sel);
+                break;
+            case 7:
+                Unk0de678_Unk_0dec94((u8 *)work + 0x30);
+                work->unk_0004 = 2;
+                break;
+            case 5:
+                func_020deaa0(21, *(Unk0cf5e8RecordBlock *)((u8 *)work + 0x24), work->unk_0314 = 0);
+                break;
+            case 17:
+                break;
+            }
+        } else if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+            func_020d1360(work, work->unk_0004);
+        }
+        break;
+    case 5:
+        work->unk_0314 = func_020fa92c(work->unk_0314);
+        if (func_020fa9a0()) {
+            for (i = 0; i < Unk0de678_CountLeading((u8 *)work + 36); i++) {
+                CaveNpc_SetActive(work->handles[i], 1);
+            }
+        } else {
+            for (i = 0; i < Unk0de678_CountLeading((u8 *)work + 36); i++) {
+                if (i == work->unk_0314) {
+                    CaveNpc_SetActive(work->handles[i], 0);
+                } else {
+                    CaveNpc_SetActive(work->handles[i], 1);
+                }
+            }
+        }
+        break;
+    case 6:
+        if (func_020decd8() == 0) {
+            break;
+        }
+        if (work->unk_0004 == 2) {
+            if (work->unk_0368 == 0) {
+                if (func_020deb68() != 0) {
+                    break;
+                }
+            }
+            if (func_020df5e8() != 0) {
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d13fc(work)) {
+                Unk0cf5e8_Unk_0d1414(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d139c(work)) {
+                Unk0cf5e8_Unk_0d13b4(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d1454((Unk0cf5e8Obj *)work)) {
+                Unk0cf5e8_Unk_0d1470(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            if (Unk0cf5e8_Unk_0d1490((Unk0cf5e8Obj *)work)) {
+                Unk0cf5e8_Unk_0d14ac(work);
+                work->unk_0368 = 1;
+                break;
+            }
+            func_020d1360(work, work->unk_0004);
+            work->unk_0004 = 4;
+            Unk122e1c_Unk_123024(work->unk_0020);
+        } else if (Unk0de678_Unk_0debf8() == 0) {
+            func_0205257c(0);
+            func_020d1360(work, work->unk_0004);
+        }
+        break;
+    case 7:
+        if (func_020decd8() == 0) {
+            break;
+        }
+        func_020d1360(work, work->unk_0004);
+        if (work->unk_0004 == 5) {
+            func_020deaa0(21, *(Unk0cf5e8RecordBlock *)((u8 *)work + 0x24), work->unk_0314);
+        } else {
+            Unk124c5c_Unk_124cb0();
+            Unk122e1c_Unk_123048(work->unk_0020);
+            work->unk_0004 = 4;
+        }
+        break;
+    case 8:
+        func_020d0198(work);
+        break;
+    case 9:
+        func_020d02c0(work);
+        break;
+    case 15:
+        func_020d03c0(work);
+        break;
+    case 16:
+        func_020d0498(work);
+        break;
+    case 11:
+        if (Unk0bc1a8_IsSlotEmpty(22) == 0) {
+            break;
+        }
+        Unk122e1c_Unk_1232f8(work->unk_0020);
+        func_02124ce8(3);
+        Unk0e7ac4_Unk_0e804c(0);
+        value = Unk0cf5e8_Unk_0d182c();
+        Unk122e1c_Unk_122f88(work->unk_0020, 1, value == 0);
+        Unk0cf5e8_InitSlots((Unk0cf5e8Slots *)work);
+        work->unk_0004 = 10;
+        func_020d1360(work, 2);
+        break;
+    case 12:
+        switch (work->step) {
+        case 0:
+            func_0212312c(work->unk_0020, 1, 0);
+            work->step++;
+            break;
+        case 1:
+            if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+                work->step++;
+            }
+            break;
+        case 2:
+            Unk1241ec_Unk_124224((u16)(work->parts[2].unk_010 + 20));
+            work->step++;
+            break;
+        case 3:
+            func_020d1360(work, 13);
+            work->step = 0;
+            break;
+        }
+        break;
+    case 14:
+        switch (work->step) {
+        case 0:
+            Unk122e1c_Unk_12306c(work->unk_0020);
+            work->step++;
+            break;
+        case 1:
+            if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+                Unk124c5c_Unk_124cb0();
+                func_020d19d4(work);
+                work->step = 0;
+                func_020d1360(work, 4);
+            }
+            break;
+        }
+        break;
+    case 17:
+        func_02124ce8(1);
+        Unk0e7ac4_Unk_0e804c(1);
+        func_020e7f44(0, 0, 0, 0);
+        Unk0bc1a8_Unk_0bc928(22, 21, &work->sel);
+        func_020d1360(work, 18);
+        break;
+    case 18:
+        if (Unk0bc1a8_IsSlotEmpty(22) == 0) {
+            break;
+        }
+        func_020d1360(work, 16);
+        break;
+    case 20:
+        Unk0cf5e8_Unk_0d0960(work, work->unk_000c);
+        break;
+    case 21:
+        switch (func_0212356c(work->unk_0020, (u8 *)work + 8, (u8 *)work + 0x2f4, 4)) {
+        case 0:
+            Unk124c5c_Unk_124cb0();
+            func_020d19d4(work);
+            func_020d1360(work, 4);
+            break;
+        case 1:
+            Unk0cf5e8_Unk_0d0fc4(work, Unk0cb32c_Unk_0cb440(work->parts[3].unk_010 + 1));
+            break;
+        }
+        break;
+    case 22:
+        func_020d0600(work);
+        break;
+    case 23:
+        func_020d0784(work);
+        break;
+    }
+
+    if (work->unk_0020 != 0) {
+        value = 0;
+        switch (work->unk_0298) {
+        case 1:
+            value = work->parts[1].unk_010;
+            break;
+        case 2:
+            value = work->parts[2].unk_010;
+            break;
+        case 3:
+            value = work->parts[3].unk_010;
+            break;
+        }
+        Unk122e1c_SetUnkFields64_b0(work->unk_0020, work->parts[0].unk_010, value);
+    }
+}

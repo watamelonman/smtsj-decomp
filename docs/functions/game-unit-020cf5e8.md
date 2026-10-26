@@ -193,3 +193,40 @@ All pointers are borrowed; no provider ownership changed.
 
 The TU still links from its delink pending human completion. No module boundary
 changed.
+
+## M1-T962: verified match and hard list
+
+`func_020cf9a0` (2040 B) reports 100% in `build/report.json`. It drives the
+mission scene through states 0..23 from the saved state word. Evidence: the
+24-entry jump table at 0x020cf9a0, the by-value 114-byte record copy passed to
+`func_020deaa0`, and the ordered provider calls/stores in each case. The record
+block and the selected-part words are borrowed views of the existing work
+storage; no provider ownership changed.
+
+- `func_020cf9a0` (2040 B): state 0 polls the image background and input
+  providers, then either enters state 6 or selects the first failing record
+  predicate and enters the matching transition; states 1..23 dispatch the
+  scene stages, including the four callback tables at states 8/9/15/16, the
+  slot/entry strings at 11/12/14, and the final selected-record publication
+  through `Unk122e1c_SetUnkFields64_b0`. Evidence: ordered loads, calls and
+  stores at 0x020cf9a0.
+
+### M1-T962 hard list
+
+- `func_020d09b4` (1504 B): the complete C reconstruction is semantically
+  equivalent and compiles to the same 376 instructions, size and relocation
+  set, but three switch-table slots differ. The original duplicates
+  `pop {r3,r4,r5,pc}` into the result-switch default padding, the case-3 table
+  slot and the provider-word switch default; mwcc 2.0/sp1p5 tail-merges those
+  returns into the case-2 epilogue and emits `b` to it. Reproduced with the
+  signed `result < 0` guard before the switch (the guard's `blt` is required
+  for state 4), while every guard form tried (`goto`, `if/else`, early return,
+  `while`, `do/while`) tail-merges. Without the guard the table slots match but
+  negative results no longer reach the fail block. A flexible-array handle
+  table (`+0xc8`) fixed the state 10/13 indexed load, but the state-10
+  selection store still schedules the `parts[1]` word after the `&sel` null
+  test where the original loads it before. Left as the delink assembly rather
+  than faked; needs a decomp.me/permuter pass on the switch-return layout.
+
+No module boundary changed. The TU still links from its delink pending human
+completion.
