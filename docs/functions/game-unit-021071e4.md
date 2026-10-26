@@ -119,9 +119,45 @@ anticheat and full-image checksum. No new tests are required by this card.
 
 None for M1-T859.
 
-## Not done in M1-T860
-- `func_02107a9c`
-- `func_0210743c`
-- `func_021076f0`
-- `func_02108290`
-- `func_02107c60`
+## M1-T860
+
+Names remain neutral. Contracts below follow ARM loads, stores, and symbol-backed
+calls in the original functions; no broader purpose is inferred.
+
+- `func_02107a9c`: button masks 64/128 move the selected index by rows in a
+  three-column list, with special handling for the main record and partial final
+  rows. Masks 32/16 call the bounded index helper with -1/+1. Returns whether
+  selection changed; counts no greater than one return zero.
+- `func_0210743c` (not implemented; see hard list): allocates the resource and five animation handles, then orders
+  signed record IDs with the three preferred IDs first. Initializes label handles,
+  opacity values, selection, flags, and computed values. Resource addresses and
+  allocation calls are evidenced by original relocations.
+- `func_021076f0`: dispatches states 1, 2, 3, 6, and 7; advances opacity in half
+  steps, polls animation completion, deducts the computed value from area+0x344,
+  and recomputes eligibility. Updates five handles whenever state is nonzero.
+- `func_02108290`: draws the category and signed halfword values. Below full
+  opacity only the base is drawn. The first value uses a warning color below
+  one fifth of its limit; positive values draw bars scaled to 30 pixels, with
+  a minimum width of one. Callers provide valid nonzero limits for positive values.
+- `func_02107c60`: draws main-record and three-column area-grid layers, labels,
+  selection highlights, and state-six overlays. Grid positions use 81-pixel
+  columns and 33-pixel rows; record opacity is selected in groups of four.
+
+The extended work view remains local to the translation unit. The four float
+opacity slots expose only offsets +0x48 through +0x54 seen in the instructions.
+No module boundary changes are introduced. Tests are not required by this card;
+instruction comparison and the project gates provide validation.
+
+### Hard list
+
+- `func_0210743c` remains supplied by the delink. A complete C candidate had
+  the correct 524-byte size but measured 99.01% in objdiff. Standalone comparison
+  showed different register allocation for the preferred-ID loop and its insertion
+  counter. Tried shared/separate loop counters, signed-byte versus explicit-cast
+  iteration, declaration ordering, and initialization order; none matched exactly.
+  The candidate was omitted as required by the card. A human can open a scratch
+  with `tools/decompme.py` for this function.
+
+The other four functions match at 100%. Full-width drawing arguments are retained
+at the call boundary, while the callee reads their low signed/unsigned halfwords;
+this preserves the original main-record caller's untruncated getter results.
