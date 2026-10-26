@@ -20,13 +20,14 @@ typedef struct Unk0c855cWork {
     u32 unk_01b4;
 } Unk0c855cWork;
 
-int Unk0c855c_Unk_0ca690(int arg0)
+/* Return the subregion at byte offset 0x6180; original uses two adds. */
+u8 *Unk0c855c_Unk_0ca690(u8 *arg0)
 {
   return arg0 + 0x6180;
 }
 
 
-/* decompiler-derived */
+/* Clear words 0, 5, 6 and 7; caller must provide at least eight words. */
 void Unk0c855c_Unk_0ca58c(u32 *arg0)
 {
   *arg0 = 0;
@@ -35,16 +36,16 @@ void Unk0c855c_Unk_0ca58c(u32 *arg0)
   arg0[7] = 0;
 }
 
-int func_020c98ec();
-/* decompiler-derived */
+void func_020c98ec(int record, u32 value, u32 mode);
+/* Forward value with mode zero for the selected 0x60-byte record. */
 void Unk0c855c_Unk_0c9b90(int arg0,int arg1,u32 arg2)
 {
   func_020c98ec(arg1 * 0x60 + arg0,arg2,0);
 }
 
 
-/* decompiler-derived */
-void Unk0c855c_Unk_0c9d8c(int arg0)
+/* Set word 0x1c on each of four records whose word 0x30 is nonzero. */
+void Unk0c855c_Unk_0c9d8c(u8 *arg0)
 {
   int value;
   value = 0;
@@ -58,8 +59,8 @@ void Unk0c855c_Unk_0c9d8c(int arg0)
 }
 
 
-/* decompiler-derived */
-u32 Unk0c855c_Unk_0c9bac(int arg0)
+/* Return one only when word 0x30 is nonzero in all four records. */
+u32 Unk0c855c_Unk_0c9bac(u8 *arg0)
 {
   int value;
   value = 0;
@@ -143,16 +144,16 @@ void Unk0c855c_Unk_0c855c(int arg0)
 }
 
 extern u8 data_0213c54c[];
-int Unk0ca69c_Unk_0ca6a4();
-/* decompiler-derived */
-void Unk0c855c_Unk_0c92c0(int arg0)
+void Unk0ca69c_Unk_0ca6a4(u32 value);
+/* Dispatch the byte table entry indexed by the unsigned halfword at 0x3a. */
+void Unk0c855c_Unk_0c92c0(Unk0c855cWork *arg0)
 {
   Unk0ca69c_Unk_0ca6a4(*(u8 *)(data_0213c54c + (u32)((Unk0c855cWork *)arg0)->unk_003a));
 }
 
 extern u8 data_0213c51c[];
-/* decompiler-derived */
-u32 Unk0c855c_Unk_0c92dc(int arg0)
+/* Return the word table entry; the halfword at 0x3a must be a valid index. */
+u32 Unk0c855c_Unk_0c92dc(Unk0c855cWork *arg0)
 {
   return *(u32 *)(data_0213c51c + (u32)((Unk0c855cWork *)arg0)->unk_003a * 4);
 }

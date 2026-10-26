@@ -2,6 +2,8 @@
 
 ## Unreleased
 - M1-T899: verify eight `game/unit_020e8228` field accessors at 100% objdiff, with typed borrowed layouts and documented null/default contracts.
+- Verify all eight M1-T923 ImageObj helpers at 100% objdiff, document instruction contracts, and explicitly forward the indexed handle to its provider.
+- Verified seven M1-T930 record/table helpers at 100% objdiff; documented the remaining handle helper and compiler scheduling attempts on its hard list.
 - Verified all eight M1-T898 `game/unit_020e8228` accessors, table reset and forwarding helpers at 100% objdiff; added per-function behaviour comments and cited caller evidence in the function doc.
 - M1-T896: verify six SaveLoadTask functions at 100% objdiff, adding dispatch, setup and resource lifecycle C; document the two remaining hard functions.
 - M1-T884: match all eight `game/unit_02044904` rank-comparator, slot-sweep, AI-script and script-state helpers at 100% objdiff; add typed slot/script-table fields and document the raw rank table plus scoped pragmas (DEC-022).
