@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T990: match all eight ScanVisor list and record helpers at 100% objdiff; add the signed-coordinate record query and document instruction evidence.
 - M1-T989: verify eight ScanVisor state, slot lookup and provider helpers at 100% objdiff; document typed contracts and original instruction evidence.
 - Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
 - M1-T981: match five grid, cursor and drawing helpers; document three input/drawing instruction-generation hard cases.

@@ -718,6 +718,9 @@ int ScanVisor_Unk_0a2b58(void)
     return Unk0a7d54_Unk_0a8c04(v + 40 + 1024);
 }
 
+/* Clear the leading word and flag bits 0..4 and 6..7, preserving bit 5.
+ * Original 0x020a2bb8 uses byte read/modify/write operations at +4; callers
+ * supply writable flag storage, and the bit meanings remain unknown. */
 void ScanVisor_ResetBits(ScanVisorBits *p)
 {
     p->word = 0;
@@ -826,54 +829,60 @@ void ScanVisor_Unk_0a4950(int list,u32 value,int on)
   *(u32 *)(list + 0x194) = 0x1000;
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a4864(int arg0)
+/* Apply (8, 0) to occupied slots through SetUnkFields24_28, then clear
+ * list+0x1bc. Original 0x020a4864 scans seven 52-byte slots at +0x20.
+ * Requires a writable list; the field values have no established units. */
+void ScanVisor_Unk_0a4864(int list)
 {
-  int tmp1;
-  int *v2;
-  tmp1 = 0;
-  v2 = (int *)(arg0 + 0x20);
+  int index;
+  int *slot;
+  index = 0;
+  slot = (int *)(list + 0x20);
   do {
-    if (*v2 != 0) {
-      ScanVisor_SetUnkFields24_28((ScanVisor *)v2,8,0);
+    if (*slot != 0) {
+      ScanVisor_SetUnkFields24_28((ScanVisor *)slot,8,0);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
-  ((ScanVisor *)arg0)->unk_01bc = 0;
+    index = index + 1;
+    slot = slot + 0xd;
+  } while (index < 7);
+  ((ScanVisor *)list)->unk_01bc = 0;
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a4910(int arg0)
+/* Apply (0, 0) through SetRange to each occupied slot. Original
+ * 0x020a4910 scans seven 52-byte slots at list+0x20; it does not change
+ * list+0x1bc. Requires a valid writable list; range units are unknown. */
+void ScanVisor_Unk_0a4910(int list)
 {
-  int tmp1;
-  int *v2;
-  tmp1 = 0;
-  v2 = (int *)(arg0 + 0x20);
+  int index;
+  int *slot;
+  index = 0;
+  slot = (int *)(list + 0x20);
   do {
-    if (*v2 != 0) {
-      ScanVisor_SetRange((ScanVisor *)v2, (u32)0, (u32)0);
+    if (*slot != 0) {
+      ScanVisor_SetRange((ScanVisor *)slot, (u32)0, (u32)0);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
+    index = index + 1;
+    slot = slot + 0xd;
+  } while (index < 7);
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a48b4(int arg0)
+/* Apply (80, 0) through SetRange to occupied slots, then clear
+ * list+0x1bc. Original 0x020a48b4 scans seven 52-byte slots at +0x20.
+ * Requires a writable list; range units are unknown. */
+void ScanVisor_Unk_0a48b4(int list)
 {
-  int tmp1;
-  int *v2;
-  tmp1 = 0;
-  v2 = (int *)(arg0 + 0x20);
+  int index;
+  int *slot;
+  index = 0;
+  slot = (int *)(list + 0x20);
   do {
-    if (*v2 != 0) {
-      ScanVisor_SetRange((ScanVisor *)v2, (u32)0x50, (u32)0);
+    if (*slot != 0) {
+      ScanVisor_SetRange((ScanVisor *)slot, (u32)0x50, (u32)0);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
-  *(u32 *)(arg0 + 0x1bc) = 0;
+    index = index + 1;
+    slot = slot + 0xd;
+  } while (index < 7);
+  *(u32 *)(list + 0x1bc) = 0;
 }
 
 int ScanVisor_FindEnt20(u32 id);
@@ -1025,6 +1034,9 @@ int ScanVisor_FindEnt20(u32 id)
     return 0;
 }
 
+/* For each occupied slot, call func_02057eb8(2), then func_020a43f4
+ * with the current leading list word. Original 0x020a4578 reloads that
+ * word after the first call; the seven borrowed slots start at +0x20. */
 void ScanVisor_Unk_0a4578(u32 *p)
 {
     int j;
@@ -1052,6 +1064,9 @@ ScanVisor *ScanVisor_FindSlotByKey(u32 p, u32 k)
     return 0;
 }
 
+/* Return whether any occupied slot has nonzero +0x14. Original
+ * 0x020a4600 calls the +0x14 accessor on seven 52-byte slots at +0x20;
+ * these observed loads support the configured query name. */
 int ScanVisor_AnySlotField14(u8 *p)
 {
     int j;
@@ -1079,7 +1094,10 @@ int ScanVisor_AllSlotsF28Is80(u8 *p)
     return 1;
 }
 
-/* Looks up the visor entry; if idle, (optionally with SE 28) applies `on`. */
+/* Find the caller ID and activate its slot only when +0x14 is zero.
+ * Original 0x020a49d8 calls FindSlotByKey and the +0x14 accessor, then
+ * calls Unk0a0ce4_Unk_0a0da4(28) for nonzero on before applying on.
+ * A missing or already active slot is unchanged; the list is borrowed. */
 void ScanVisor_SetById(u32 list, u32 id, int on)
 {
     ScanVisor *sv = ScanVisor_FindSlotByKey(list, id);
@@ -1107,4 +1125,24 @@ void ScanVisor_Unk_0a4a18(u32 list, u32 id)
         return;
     }
     ScanVisor_Unk_0a465c(sv);
+}
+
+
+s8 *Unk0a6174_Unk_0a6a88(void *records, int x, int y);
+void func_02034dd0(void);
+void Unk118b04_Unk_118e50(int id, int on);
+/* Query the record at signed coordinates work+0x7482/+0x7483. Original
+ * 0x020a3ac0 passes work+0x5508 to the provider and tests its signed first
+ * byte against 1; on equality it calls 02034dd0, then 118e50(6, 1).
+ * Requires valid borrowed work and provider record; returns a 0/1 result. */
+int func_020a3ac0(u8 *work)
+{
+    s8 *record = Unk0a6174_Unk_0a6a88(work + 0x5508,
+        *(s8 *)(work + 0x7482), *(s8 *)(work + 0x7483));
+    if (*record != 1) {
+        return 0;
+    }
+    func_02034dd0();
+    Unk118b04_Unk_118e50(6, 1);
+    return 1;
 }
