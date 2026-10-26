@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match eight NitroSDK BG2/BG3 text and affine control setters in `sdk_020544b0` (M2-T099).
+
 - Matched the remaining shared-state initializer `func_0205e348` in `libs/NitroSDK/sdk_0205e318.c` (M2-T087).
 
 - Add matching C for eight submission wrappers in `libs/unknown/lib_020b91a8.c`, with typed contracts and per-function documentation.
