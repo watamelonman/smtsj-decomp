@@ -538,13 +538,15 @@ void Unk0e8228_Unk_0e9fa4(u32 arg0)
 
 
 
-int Unk044904_Unk_0459fc();
-int func_02053800();
-int func_020e82c8();
+int Unk044904_Unk_0459fc(void);
+int func_02053800(u32 selector, u32 mask);
+int func_020e82c8(void);
 int Unk0e8228_IsField4One(void);
-int Unk0fd9f0_Unk_0fda58();
-int Unk100208_Unk_100208();
-/* decompiler-derived */
+int Unk0fd9f0_Unk_0fda58(u32 value);
+int Unk100208_Unk_100208(u32 value);
+/* Original 020e85c8 requires work, field +4 equal to one and a nonzero
+ * 02053800(0, 0x400) result, then performs five calls in order and returns
+ * one. Otherwise returns zero; opaque selectors retain their literal values. */
 u32 Unk0e8228_Unk_0e85c8(void)
 {
   int value;
@@ -581,6 +583,9 @@ void Unk0e8228_Unk_0e9f38(u32 *arg0, u32 arg1);
 int func_020e9ca8(u32 work, u32 selector);
 int func_020e9b54();
 u8 *func_020982c0(int value);
+/* Original 020e8260 clears the 24-byte global row at +8 for selector zero,
+ * or initializes rows at +32 with value zero for selectors 1..3.
+ * Other unsigned selectors leave the global table unchanged. */
 void Unk0e8228_Unk_0e8260(u32 i)
 {
     u8 *base = data_02176ce4;
@@ -647,6 +652,9 @@ int Unk0e8228_GetArr40(int i)
     return FIELD(u32, p + i * 4, 64);
 }
 
+/* Original 020e849c bounds-checks index 0..59 in the pointer table at +0x88,
+ * then returns the record halfword at +0x20. Missing work/record returns zero.
+ * These observed offsets support the existing accessor name. */
 int Unk0e8228_GetArr88Field20(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
@@ -756,7 +764,7 @@ void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1)
   func_020e9de4(tmp1,arg0,arg1);
 }
 
-int func_020cb1a0();
+int func_020cb1a0(u32 key);
 typedef struct Unk0e8228Sel {
     u8 a[2];
     u8 pad[2];
@@ -881,4 +889,102 @@ int func_020e9b10(void)
     }
   }
   return ScanVisor_Unk_0a2980() != 0;
+}
+
+/* Original 020e8628 returns 3 without work and 2 unless work +4 equals one.
+ * With that flag, +8 selects zero for -1, one for zero, and two otherwise. */
+int func_020e8628(void)
+{
+    u32 work = Unk0e8228_Get_data_02176ce0();
+    if (work == 0) {
+        return 3;
+    }
+    if (FIELD(u32, work, 4) != 1) {
+        return 2;
+    }
+    switch (FIELD(s32, work, 8)) {
+    case -1: return 0;
+    case 0: return 1;
+    case 10: break;
+    }
+    return 2;
+}
+
+u32 func_020e946c(u32 work, u32 arg0, u32 arg2);
+u32 func_020e94d8(u32 work, u32 arg0, u32 arg1, u32 value, u32 arg3);
+/* Original 020e8d38 returns zero without work. Otherwise resolves a value
+ * with 020e946c(work, arg0, arg2), then forwards it and the remaining words
+ * to 020e94d8. All selectors remain opaque; work is borrowed. */
+u32 func_020e8d38(u32 arg0, u32 arg1, u32 arg2, u32 arg3)
+{
+    u32 work = Unk0e8228_Get_data_02176ce0();
+    u32 value;
+    if (work == 0) {
+        return 0;
+    }
+    value = func_020e946c(work, arg0, arg2);
+    return func_020e94d8(work, arg0, arg1, value, arg3);
+}
+
+/* Original 020e8ebc stores the selector at work +0x17c. Zero or a record
+ * byte +0x23 equal to 4/8 sets +0x180 to 27; otherwise bits 12..16 of the
+ * record word +0x24 select values 8..39. Null work leaves storage untouched. */
+void func_020e8ebc(u32 selector)
+{
+    u32 work = Unk0e8228_Get_data_02176ce0();
+    u32 record;
+    u32 kind;
+    if (work == 0) {
+        return;
+    }
+    FIELD(u32, work, 0x17c) = selector;
+    if (selector == 0) {
+        FIELD(u32, work, 0x180) = 27;
+        return;
+    }
+    record = func_020cb1a0(FIELD(u32, work, 0x17c));
+    kind = FIELD(u8, record, 0x23);
+    switch (kind) {
+    case 4:
+    case 8:
+        FIELD(u32, work, 0x180) = 27;
+        break;
+    default:
+        FIELD(u32, work, 0x180) = ((FIELD(u32, record, 0x24) << 15) >> 27) + 8;
+        break;
+    }
+}
+
+void func_020e92a8(u32 object);
+/* Original 020e9f58 initializes selected words of a caller-owned descriptor;
+ * relocations establish four callback addresses. Offset +8 is preserved.
+ * The caller must supply at least 36 writable bytes. */
+void func_020e9f58(u32 *descriptor)
+{
+    descriptor[0] = 0x1cc;
+    descriptor[1] = 0;
+    descriptor[3] = (u32)func_020e92a8;
+    descriptor[4] = 0;
+    descriptor[5] = (u32)Unk0e8228_Nop_0e93d4;
+    descriptor[6] = 0;
+    descriptor[7] = (u32)Unk0e8228_Unk_0e940c;
+    descriptor[8] = (u32)func_020e93d8;
+}
+
+void func_020eb488(u32 object);
+void Unk0ea208_Unk_0eb6cc(u32 object);
+void func_020eb6e4(u32 object);
+void Unk0ea208_Unk_0eb308(u32 object);
+u32 func_020611dc(void (*callback0)(u32), void (*callback1)(u32), u32 value,
+                  void (*callback3)(u32), u32 size, u32 flag0, u32 zero, u32 flag1);
+extern u32 data_02176ddc[];
+/* Original 020e9fd0 allocates through 020611dc with three relocated callbacks,
+ * 0x1d8 bytes and flags 1/0/1, publishes the handle in data_02176ddc, then
+ * forwards it to 020eb308. Provider ownership follows those external calls. */
+void func_020e9fd0(void)
+{
+    u32 handle = func_020611dc(func_020eb488, Unk0ea208_Unk_0eb6cc, 0,
+                              func_020eb6e4, 0x1d8, 1, 0, 1);
+    *data_02176ddc = handle;
+    Unk0ea208_Unk_0eb308(handle);
 }
