@@ -6,16 +6,16 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int func_0205e484();
-int func_020cb3dc();
+void func_0205e484(u32 arg0, u32 group);
+u32 func_020cb3dc(void);
 int Unk0cb32c_Unk_0cb4e4(u32 arg0, u32 arg1);
-int Unk0cb32c_Unk_0cb564();
-int Unk122a78_Unk_122a78();
-int Unk122a78_Unk_122aa0();
-int Unk1241ec_Unk_1241ec();
-int Unk1241ec_Unk_124214();
-int Unk1241ec_Thunk_02124338();
-int Unk1241ec_Unk_124258();
+int Unk0cb32c_Unk_0cb564(u32 arg0, u32 unused);
+void Unk122a78_Unk_122a78(void);
+void Unk122a78_Unk_122aa0(void);
+void Unk1241ec_Unk_1241ec(void);
+void Unk1241ec_Unk_124214(void);
+void Unk1241ec_Thunk_02124338(void);
+void Unk1241ec_Unk_124258(void);
 
 void Unk0cb32c_Nop_0cba74(void);
 void Unk0cb32c_Nop_0cccc0(void);
@@ -23,27 +23,27 @@ void Unk0cb32c_Unk_0cb35c(u32 arg0);
 void Unk0cb32c_Unk_0cb57c(u32 arg0);
 u32 Unk0cb32c_Unk_0cb32c(void);
 u32 Unk0cb32c_Unk_0cb344(void);
-void Unk0cb32c_Unk_0cb54c(void);
+u32 Unk0cb32c_Unk_0cb54c(void);
 
-/* empty callback */
+/* Original 020cba74 is only BX LR: this callback has no side effects. */
 void Unk0cb32c_Nop_0cba74(void) { }
 
-/* empty callback */
+/* Original 020cccc0 is only BX LR: this callback has no side effects. */
 void Unk0cb32c_Nop_0cccc0(void) { }
 
-/* decompiler-derived */
+/* Forward arg0 with group 30 to 0205e484; original 020cb35c sets r1 to 30. */
 void Unk0cb32c_Unk_0cb35c(u32 arg0)
 {
   func_0205e484(arg0,0x1e);
 }
 
-/* decompiler-derived */
+/* Forward arg0 to 020cb564; original 020cb57c also clears unused r1. */
 void Unk0cb32c_Unk_0cb57c(u32 arg0)
 {
-  Unk0cb32c_Unk_0cb564(arg0,0);
+  Unk0cb32c_Unk_0cb564(arg0, 0);
 }
 
-/* decompiler-derived */
+/* Call 122a78, 124338 and 1241ec in that order, then return 1; evidenced by the three BL instructions at 020cb330..020cb338. */
 u32 Unk0cb32c_Unk_0cb32c(void)
 {
   Unk122a78_Unk_122a78();
@@ -52,7 +52,7 @@ u32 Unk0cb32c_Unk_0cb32c(void)
   return 1;
 }
 
-/* decompiler-derived */
+/* Call 124214, 124258 and 122aa0 in that order, then return 1; evidenced by the three BL instructions at 020cb348..020cb350. */
 u32 Unk0cb32c_Unk_0cb344(void)
 {
   Unk1241ec_Unk_124214();
@@ -61,12 +61,12 @@ u32 Unk0cb32c_Unk_0cb344(void)
   return 1;
 }
 
-/* decompiler-derived */
-void Unk0cb32c_Unk_0cb54c(void)
+/* Pass only the low byte returned by 020cb3dc to 020cb4e4 with index 0; original 020cb554 masks r0 with 255. */
+u32 Unk0cb32c_Unk_0cb54c(void)
 {
   u8 value;
   value = func_020cb3dc();
-  Unk0cb32c_Unk_0cb4e4(value,0);
+  return Unk0cb32c_Unk_0cb4e4(value,0);
 }
 
 
@@ -186,7 +186,7 @@ void Unk0cb32c_Unk_0ccaf8(int arg0,u32 arg1)
 int func_0205c41c();
 int func_0205c6ec();
 /* decompiler-derived */
-int Unk0cb32c_Unk_0cb564(u32 arg0)
+int Unk0cb32c_Unk_0cb564(u32 arg0, u32 unused)
 {
   func_0205c41c();
   func_0205c6ec(arg0);
@@ -205,4 +205,19 @@ int Unk0cb32c_Unk_0cb7f0(void)
 int Unk0cb32c_Unk_0cca80(u8 *p)
 {
     return Unk122e1c_Unk_122f88(FIELD(u32, p, 148), 0, Unk0e651c_Unk_0e666c(0x5f1));
+}
+
+/* Partial borrowed work view: original 020cccb4 reads only the word at +0x124. */
+typedef struct Unk0cb32cWork {
+    u8 reserved_000[0x124];
+    u32 field_124;
+} Unk0cb32cWork;
+
+/* Inspect +0x124 without changing work; original LDR/CMP/BX has no branch or
+ * store. Both paths return without changing the work. */
+void func_020cccb4(const Unk0cb32cWork *work)
+{
+    if (work->field_124 != 0) {
+        return;
+    }
 }
