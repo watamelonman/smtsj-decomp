@@ -76,10 +76,6 @@ No M1-T873 functions remain on the hard list. No runtime tests were added:
 this card disables that requirement and exact object comparison checks all
 instructions against the original rather than adding guessed game semantics.
 
-## Not done in M1-T875
-- `func_020a7108`
-- `func_020a7474`
-
 ## M1-T874
 
 All eight functions below are 100% in objdiff. Names stay neutral because the
@@ -138,6 +134,37 @@ tables and work buffers remain borrowed from the caller.
   DEC-021. No behaviour changes: the pragma only affects allocation.
 
 `func_020a6224` remains on the M1-T872 hard list and is not part of this card.
-The M1-T875 functions above remain out of scope; no runtime tests were added
-because this card disables that requirement and exact object comparison covers
-all instructions.
+
+## M1-T875
+
+Both functions below are 100% in objdiff. Names remain the address-derived
+symbols because the instruction evidence establishes mechanics, not game meaning.
+
+- `func_020a7108` (0x020a7108): second-bank twin of `func_020a6e94`. Clears a
+  five-word work block, reads the rectangle at game-state+0x240, gets the count
+  from `func_02098740(0)`, the table from `Unk0387bc_GetEntry36b(work,
+  work-area+0x35c)`, and caps iteration by the signed counter at grid+0xe12.
+  Each iteration selects a weight with `func_020a6468`, an entry with
+  `Unk0387bc_GetEntry32b` and `Unk0a6174_Unk_0a6548`, and a free slot with
+  `Unk0a6174_FindFree10d`. Placement uses kind 2 through `func_020a65c4` and
+  `func_020a6280`; then one of the six +4 halfwords from
+  `Unk09d42c_GetTable2Entry` is chosen (index = populated count / 2, clamped to
+  at least one) and the record is inserted through `func_020a6224`.
+  `Unk044394_Unk_044428(9)`/`Unk044394_Unk_044534(9)` and the `0x020caea8`
+  calls bracket the scan; `Unk0387bc_Unk_038edc` releases the work block.
+- `func_020a7474` (0x020a7474): for one region, clears both banks' grid cells
+  (provider lookup via `Unk038fbc_Unk_039160`, region bits 16-19 at cell+4,
+  signed key -1 and mode 1), then rebuilds both provider banks through
+  `func_020a6ac0`/`func_020a6c98` using game-state+0x3134/+0x3140. When mode is
+  1, it respawns each marked cell into the matching record bank: a random
+  rectangle start from `func_02050088(1, low, high)`, a cyclic scan through
+  `func_020a65c4` (kind 1/2, passing the 140-byte `func_02038ff8` block or null),
+  placement through `func_020a6280`, and record writes +0/+10/+11/+14 (first
+  bank) or +0/+11/+12/+15 (second bank). Failed placements clear the 16-byte
+  entry. `Unk038fbc_Unk_039138` releases the work block when
+  `Unk0e5fb8_Unk_0e63c8` returned a positive count. The two spawn blocks keep
+  separate locals so the original stack slots are reproduced.
+
+No runtime tests were added because this card disables that requirement and
+exact object comparison checks every instruction against the original rather
+than adding guessed game semantics.
