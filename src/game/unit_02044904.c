@@ -102,7 +102,9 @@ typedef struct Unk044904Obj {
 
 typedef struct Unk044904Mgr {
     u8 pad_0000[0x40];
-    u32 pad_0040_0 : 10;
+    u32 pad_0040_0 : 4;
+    u32 flag_0040_4 : 1;        /* selects 0 or 3 for the tone state's +0x44 bits 5..12 */
+    u32 pad_0040_5 : 5;
     u32 flag_0040_10 : 1;
     u32 pad_0040_11 : 4;
     u32 flag_0040_15 : 1;
@@ -116,9 +118,39 @@ typedef struct Unk044904Mgr {
     u32 unk_005c;               /* compared with 1 by Unk044904_Unk_045460 */
     u8 pad_0060[0x4];
     Unk044904Obj *slots[10];    /* +0x64 */
+    u8 pad_008c[0x1f0];
+    u32 unk_027c;               /* compared with 4 by func_02046538 */
 } Unk044904Mgr;
 
+/* Enemy talk-tone state at manager +0x7804 (Unk044904_Unk_045048). The +0x44
+ * word holds single-bit flags followed by an 8-bit field at bits 5..12; the
+ * +0x58 index is 15 while no tone set is loaded. */
+typedef struct Unk044904Tone {
+    u8 pad_0000[0x40];
+    u32 owner_0040;
+    u32 flag_0044_0 : 1;
+    u32 flag_0044_1 : 1;
+    u32 flag_0044_2 : 1;
+    u32 flag_0044_3 : 2;
+    u32 unk_0044_5 : 8;
+    u32 pad_0044_13 : 19;
+    u32 unk_0048;
+    u32 unk_004c;
+    u32 unk_0050;
+    u8 name_0054;
+    u8 pad_0055[3];
+    s32 index_0058;
+    void *talkTone_005c;
+    void *tone_0060;
+    u16 unk_0064;
+    u8 pad_0066[2];
+    u32 unk_0068;
+} Unk044904Tone;
+
 #define UNK044904_MGR() ((Unk044904Mgr *)Unk044904_Get_data_0215ee98())
+Unk044904Obj *func_02044ec4(u32 key);
+int func_02045a30(s32 slot, s32 id, u32 *out);
+int func_02046538(u16 *state);
 void func_0204a780();
 void func_0204a694();
 void Unk0bc1a8_Unk_0bc928();
@@ -587,7 +619,7 @@ u32 Unk044904_Unk_046448(u16 *arg0)
 }
 
 
-int func_020450b8();
+void func_020450b8(void);
 int func_02045138();
 void Unk044904_Unk_04527c();
 int Unk0aa118_Clear814();
@@ -756,5 +788,113 @@ int Unk044904_Unk_0465c0(u16 *p)
     *p = 2;
     Unk044904_Unk_044fd8();
     Unk0aa118_Clear814();
+    return 1;
+}
+
+/* 02044ec4: finds the keyed object used for an enemy talk-tone record. Scans
+ * the ten manager slot pointers first (skipping null slots), then the twelve
+ * embedded 0x2e0-byte entries at manager +0x36c. Returns the first borrowed
+ * object accepted by func_02049a84, or null when none match or the manager is
+ * not registered. */
+Unk044904Obj *func_02044ec4(u32 key)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    int i;
+    int j;
+    if (m == 0) {
+        return 0;
+    }
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = m->slots[i];
+        if (o != 0 && func_02049a84(o, key) != 0) {
+            return o;
+        }
+    }
+    for (j = 0; j < 12; j++) {
+        Unk044904Obj *o = (Unk044904Obj *)&((Unk044904Items *)m)->items[j];
+        if (func_02049a84(o, key) != 0) {
+            return o;
+        }
+    }
+    return 0;
+}
+
+/* 020450b8: resets the enemy talk-tone state at manager +0x7804. Clears the
+ * owner id, the four low flag fields, and the loaded tone-set fields; the
+ * 8-bit +0x44 field becomes 3, or 0 when manager flag bit 4 is set. This puts
+ * the state back to "no tone set loaded" (index 15, both file pointers null). */
+void func_020450b8(void)
+{
+    Unk044904Tone *state = (Unk044904Tone *)Unk044904_Unk_045048();
+    state->owner_0040 = 0;
+    state->flag_0044_0 = 0;
+    state->flag_0044_1 = 0;
+    state->flag_0044_2 = 0;
+    state->flag_0044_3 = 0;
+    state->unk_0044_5 = UNK044904_MGR()->flag_0040_4 ? 0 : 3;
+    state->index_0058 = 15;
+    state->talkTone_005c = 0;
+    state->tone_0060 = 0;
+    state->unk_0064 = 0;
+    state->unk_0068 = 0;
+}
+
+/* 02045a30: tests whether manager slot `slot` holds the tagged key
+ * 0x10000 | (u16)id. On a match, stores that key through `out` when non-null
+ * and returns 1. Returns 0 for a missing or mismatched slot. The original also
+ * returns 1 when both arguments are negative (cmplt/movlt/blt), without
+ * reading a slot or writing `out`; that corner is preserved. */
+int func_02045a30(s32 slot, s32 id, u32 *out)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    Unk044904Obj *o;
+    u16 value;
+    u32 key;
+    int found = 0;
+    if (slot < 0 && id < 0) {
+        found = 1;
+    } else {
+        value = id;
+        key = (u16)(value & 0xffff) | 0x10000;
+        o = m->slots[slot];
+        if (o != 0 && o->unk_0000 == key) {
+            found = 1;
+            if (out != 0) {
+                *out = key;
+            }
+        }
+    }
+    return found;
+}
+
+/* 02046538: advances the enemy talk-tone script. Returns 0 while Unk_045c7c
+ * reports pending work. If the tone state's owner type byte (bits 16-23 of
+ * +0x40) is 2, writes state 3. Otherwise, when Unk_0459ec reports a loaded
+ * request, stops the current tone with Unk_045bd0(0) and advances it with
+ * func_020454f4(1); writes state 4 when the manager's +0x27c word is 4, else
+ * runs func_020455cc(1) and ScanVisor_Unk_0a2a1c and writes state 2. Returns 1
+ * on every path after the pending check. */
+int func_02046538(u16 *state)
+{
+    Unk044904Tone *tone;
+    if (Unk044904_Unk_045c7c() != 0) {
+        return 0;
+    }
+    tone = (Unk044904Tone *)Unk044904_Unk_045048();
+    if (((tone->owner_0040 >> 16) & 0xff) == 2) {
+        *state = 3;
+    } else {
+        if (Unk044904_Unk_0459ec() != 0) {
+            Unk044904_Unk_045bd0(0);
+            func_020454f4(1);
+        }
+        if (UNK044904_MGR()->unk_027c == 4) {
+            *state = 4;
+        } else {
+            func_020455cc(1);
+            ScanVisor_Unk_0a2a1c();
+            *state = 2;
+        }
+    }
     return 1;
 }

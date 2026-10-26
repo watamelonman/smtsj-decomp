@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T883: match the remaining four `game/unit_02044904` talk-tone lookup, state-reset and script-advance functions in C and document all eight requested functions at 100% objdiff, with typed manager/tone-state views and instruction-based contracts.
 - M1-T882: verify all eight `game/unit_02044904` slot sweep, AI-script path, re-init and readiness functions at 100% objdiff; add typed parameter/local views, name the manager `+0x58` word, and document each instruction contract.
 - M1-T881: verify all eight `game/unit_02044904` slot lookup, slot scan and script-state functions at 100% objdiff; add typed contracts, instruction evidence, and clean the remaining decompiler-derived `Unk044904_Unk_046108` locals.
 - M1-T880: verify all eight `game/unit_02044904` slot-clearing, flag-query and script-step functions at 100% objdiff; add the typed manager `+0x5c` word and document each instruction contract.
