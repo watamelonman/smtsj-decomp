@@ -374,6 +374,18 @@ reduction for this function preserves the original r6/r7 assignment and the
 `movge`/`movlt` order while leaving the C semantics ordinary. No assembly,
 volatile accesses or byte blobs are involved.
 
+## DEC-022 — Preserve the 02044b84 rank table and 02045138 loop form
+
+The delinked 02044b84 object embeds 0x0212cc24 as a plain literal-pool word
+with no relocation; no symbol exists for that byte table in the human-owned
+symbol map. Reference the table by its observed address and scope
+`opt_propagation off` to the function so mwccarm 2.0/sp1p5 emits the literal
+load instead of folding the address into immediate additions. The same scoped
+setting on 02045138 keeps mwcc from constant-folding `sizeof(order)-1` and the
+descending pointer into an immediate stack offset; explicit do/while loops
+retain the original store-before-test shape and avoid loop rotation. Both
+pragmas are restored immediately after their functions. No assembly, volatile
+accesses, relocation changes or byte blobs are involved.
 
 ## DEC-022 — Keep the 020cbce4 index reset in the provider argument
 
