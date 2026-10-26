@@ -149,11 +149,58 @@ state machine; the entry stride remains 0x28 and the table starts at work+0x48.
   0x1a, 0x1b, 0x1c, 0x1e and 0x1f; selectors 0..5 and values above 10 return
   zero. Evidence: the `addls pc` table and the five `mov` immediates.
 
+## M1-T794 — verified at 100% objdiff
+
+All four remaining functions are matched with the same instruction bytes as the
+delinked original. The entry words +0x14/+0x18, the work word +0x0c and the
+object word +0x0c are signed; the original uses `adds`/`movpl` and `blt`/`bgt`
+on them, so the shared views now declare them `s32`. The object stored in entry
++0x08 is modelled by `Unk0a7d54Motion` for the two words updated here.
+
+- `func_020a7ee8` (020a7ee8, 1032 B): per-entry update and byte-state dispatch.
+  The signed phase at +13 selects the linear-motion path (`ldrsb` at 020a7ef0,
+  `adds`/`movpl` at 020a7f50) or the paired +0xc/+0x10 delta path (020a7fcc).
+  The byte state at +12 dispatches through the 30-entry `addls` table at
+  020a8034: states 1/2 ramp `((float)+0x10)/8.0f` into the object through
+  `_fflt`/`_fdiv`/`Unk065e88_SetUnkField20` and flip the phase after 8 frames;
+  state 3 runs the four-stage +13 sub-state table at 020a8110; states 6..10 and
+  29 share a three-stage wait (5/90/80 frames) that releases keys 1/2/21/22/23
+  and resets the entry; state 15 stops at 140; state 17 waits 10 frames then
+  sets +13 (the `cmp #10`/`pople` sequence at 020a82b4); states 24/25 count
+  frames. Pointer +4 is the work owner and +8 the motion object.
+- `func_020a8658` (020a8658, 1144 B): top-level driver for the work at +8.
+  It registers handles 2/3/4 via `func_02057e58`, walks entries with
+  020a84cc, then dispatches on work +8 through the 12-entry table at 020a86b8.
+  States 1/2 gate on 020a8c6c, 4/5 on 020a8e5c and raise the selector-0/1
+  root object 0x800/10, 6/7 create the entry groups and arm the 140- and
+  7-frame phases, 8 alternates the two animation words every other frame using
+  the signed `% 4` sequence at 020a88c8, 9 tears the groups down and applies the
+  nine key/value pairs at 020a89c0, 10 waits then calls 020a8b70/020a4904, and
+  11 runs 020a9218/020a8bac and restarts at state 1 when +0x44 is set. The
+  second argument is the ScanVisor sub-object passed in r1 by 020a2f8c.
+- `func_020a8c6c` (020a8c6c, 496 B): first setup state machine on work +0x10.
+  State 0 allocates +0x14 via `func_0205dcd4(data_0214d264, 0)` and +0x18 via
+  `func_0205c2c4(data_0214d274)`, adds selector slots (0x23 for selectors 0/1,
+  0x21 for 5) and always slot 0x1d; state 1 advances on 020a9218; state 2
+  configures one object per selector (0/1 share resource 0xb and the 0xffff00
+  word, 5 uses resource 9 and entry 0x1a); state 3 releases resource 5 and
+  creates selector 3; state 4 returns one. Selector 0 and 1 keep separate
+  duplicated `AddSlot(0x23)` bodies at 020a8cec/020a8cfc, as in the original.
+- `func_020a8e5c` (020a8e5c, 764 B): second setup state machine on work +0x10.
+  State 0 returns one when +0x14 is null, otherwise adds the selector slot
+  (0x1a/0x1b/0x1c/0x1e/0x1f, or 0x22+0x20 for selector 5) plus 0x18/0x19;
+  state 1 advances on 020a9218; state 2 issues one `func_0205de1c` selector
+  pair and object creation per selector (selector 5 also issues 0xa/8 and sets
+  0xf78c2100 on entry 0x1d); states 3/4 release selectors 0/1; state 5 creates
+  entries 4/5/0xd/0xe/0x12/0x13/0x10/0x14/0x11 and sets +0x2c on entries 4/5;
+  state 6 returns one. Jump tables at 020a8e74 and 020a8f6c.
+
+No M1-T794 functions remain on the hard list.
+
 ## Hard list
-None for M1-T793. All functions above are at 100% objdiff with the same
-instruction bytes as the delinked original.
+None for M1-T793 or M1-T794. All functions above are at 100% objdiff with the
+same instruction bytes as the delinked original.
 
 ## Later tasks
-M1-T794 owns the remaining four functions in this unit: `func_020a7ee8`,
-`func_020a8658`, `func_020a8c6c` and `func_020a8e5c`. They stay linked from the
-delink until that card matches them.
+All functions in this unit are matched. The TU stays linked from the delink
+until a human marks it `complete` in `config/arm9/delinks.txt`.
