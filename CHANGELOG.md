@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T978 ID scan, copy, provider and polling helpers at 100% objdiff; document observed contracts and the scoped copy propagation setting.
 - Verified all eight M1-T977 table, resource and state helpers at 100% objdiff; documented their instruction-based contracts.
 - Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.
 - Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
