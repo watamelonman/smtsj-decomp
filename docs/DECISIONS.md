@@ -535,3 +535,13 @@ the original. Using a single array expression swaps those registers. As with
 DEC-029, scope strength reduction and loop rotation off to retain the indexed
 `mla` loop and forward condition branch; restore options afterward. The stride
 uses `sizeof(Unk061798Font)` so it follows the documented 56-byte layout.
+
+## DEC-032 — Preserve graphics wrapper address and temporary allocation
+
+Scope `opt_propagation off` separately to `func_02058420` and `func_020584d4`,
+restoring compiler settings after each. Default propagation folds the absolute
+bank table pointer into multi-instruction address arithmetic inside the loop.
+The original instead loads 0x0212e350 once; this literal has no relocation or
+configured symbol. The same setting preserves explicit status, singleton and
+GXSTAT pointer temporaries in the geometry initializer, reproducing its register
+allocation. Both functions retain ordinary typed C data operations.

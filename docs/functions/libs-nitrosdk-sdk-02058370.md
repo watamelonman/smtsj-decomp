@@ -1,6 +1,6 @@
 # sdk_02058370
 
-The five implemented functions match the original ARM instructions. Names remain
+All seven implemented functions match the original ARM instructions. Names remain
 neutral because the exact middleware wrapper identities are not established.
 No tests were added: this card uses instruction matching and ROM checksum gates.
 
@@ -14,9 +14,9 @@ GX bank getters establish the texture and texture-palette mask roles.
 | --- | --- |
 | `func_02058370` | Matched, 60 bytes. Calls all thirteen neighboring SDK bank release helpers. |
 | `func_020583ac` | Matched, 116 bytes. Selects all LCDC banks, clears 0xa4000 VRAM bytes, releases LCDC, fills main/sub OAM with 192 and clears their palettes. |
-| `func_02058420` | Hard, 56 bytes. Sums capacities for selected masks across nine eight-byte records at 0x0212e350. See below. |
+| `func_02058420` | Matched, 56 bytes. Sums capacities for selected masks across nine eight-byte records at 0x0212e350. |
 | `func_02058458` | Matched, 124 bytes. Counts assigned texture banks A-D using a 16-bit counter, adds texture-palette E/F/G capacities of 64/16/16 KiB and calls 020584d4. |
-| `func_020584d4` | Hard, 84 bytes. Calls 020222d8, sets GXSTAT bits 30-31 to 2, sets singleton byte +20, and calls 0202990c(count) and 02029c00(paletteBytes, 1). See below. |
+| `func_020584d4` | Matched, 84 bytes. Calls 020222d8, sets GXSTAT bits 30-31 to 2, sets singleton byte +20, and calls 0202990c(count) and 02029c00(paletteBytes, 1). |
 | `func_02058528` | Matched, 32 bytes. Stores 02051610's returned handle at caller-owned work +0x2058 and returns one. |
 | `func_02058548` | Matched, 96 bytes. Returns zero for an absent handle; otherwise finalizes work +0x205c/+0x2084, calls two resource helpers, clears the handle and returns one. |
 
@@ -25,15 +25,14 @@ resource provider determines handle ownership; this unit pairs acquisition with
 its observed release calls. State-block extents beyond accessed starting addresses
 are intentionally unspecified.
 
+## Compiler details
+
+See DEC-032. Locally disabling propagation preserves the absolute descriptor
+address and explicit geometry initialization temporaries. The descending
+nine-record do/while loop reproduces the original initial count subtraction
+without an extra entry test. The table address has no relocation or configured
+symbol, so it remains a typed absolute data pointer.
+
 ## Hard list
 
-- `func_02058420`: direct absolute table pointer C compiles with address arithmetic
-  inside the loop rather than the original single literal load. Tried descending
-  for/predecrement loops, different index widths, volatile table reads, and delayed
-  pointer initialization. None matched. Left undefined so the original delink
-  remains authoritative; a human can use tools/decompme.py for further work.
-- `func_020584d4`: ordinary masked volatile GXSTAT updates matched operation order
-  and size but allocated the singleton address and status value to r1/r2 instead
-  of r2/r1 (97.62% objdiff). Tried explicit temporaries, early singleton pointer
-  initialization, volatile singleton access and a two-bit GXSTAT bitfield. Left
-  undefined for a human scratch; no substitute instruction sequence is retained.
+None. All seven functions have C definitions with identical instructions.

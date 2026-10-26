@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- M2-T133: match five graphics-bank, texture-capacity and resource-lifetime wrappers; document two remaining compiler mismatches.
+- M2-T133: match all seven graphics-bank, texture-capacity, geometry initialization and resource-lifetime wrappers.
 
 - M2-T128: match compressed/fallback resource path construction and the owned `.gtan` resource wrapper in `sdk_0205c1c8`.
 - M2-T132: match NitroSDK card DMA setup in `sdk_02008b9c`; document three hard decompression/unfilter routines.

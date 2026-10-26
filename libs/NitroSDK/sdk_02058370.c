@@ -54,6 +54,58 @@ void func_020583ac(void)
     func_0200870c(0, (void *)0x05000400, 0x400);
 }
 
+/** Eight-byte bank descriptors observed at 0212e350; storage belongs to the provider. */
+typedef struct {
+    u32 mask;
+    u32 bytes;
+} Unk058370Bank;
+extern u8 data_0215f05c[];
+extern void func_020222d8(void);
+extern void func_0202990c(u32 count);
+extern void func_02029c00(u32 paletteBytes, int enabled);
+
+/* See DEC-032: retain the original address and temporary allocation. */
+#pragma push
+#pragma opt_propagation off
+/** Evidence: nine mask/capacity records at 0212e350; sum the selected capacities. */
+u32 func_02058420(u32 mask)
+{
+    const Unk058370Bank *banks;
+    u32 total;
+    int i;
+    i = 9;
+    banks = (const Unk058370Bank *)0x0212e350;
+    --i;
+    total = 0;
+    do {
+        if (mask & banks[i].mask) total += banks[i].bytes;
+    } while (--i >= 0);
+    return total;
+}
+#pragma pop
+
+/* See DEC-032: retain the original address and temporary allocation. */
+#pragma push
+#pragma opt_propagation off
+/** Evidence: GXSTAT FIFO mode bits, singleton +20, and geometry allocator calls. */
+int func_020584d4(u32 count, u32 paletteBytes)
+{
+    u32 status;
+    u8 *state;
+    volatile u32 *gxstat;
+    func_020222d8();
+    gxstat = (volatile u32 *)0x04000600;
+    state = data_0215f05c;
+    status = *gxstat;
+    *gxstat = (status & ~0xc0000000) | 0x80000000;
+    state[20] = 1;
+    func_0202990c(count);
+    func_02029c00(paletteBytes, 1);
+    return 1;
+}
+
+#pragma pop
+
 /** Evidence: SDK texture-bank masks; A-D count individually, E/F/G add 64/16/16 KiB. */
 int func_02058458(void)
 {
