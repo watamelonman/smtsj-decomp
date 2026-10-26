@@ -604,6 +604,9 @@ int Unk0e8228_Unk_0e8374(u32 x)
     return func_020e9ca8(p, x);
 }
 
+/* Original 020e83ac returns entry i of the four-word table at work +0x30.
+ * Null work and indices outside 0..3 return zero. The table's meaning is not
+ * established, so the name stays neutral. */
 int Unk0e8228_GetArr30(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
@@ -616,6 +619,8 @@ int Unk0e8228_GetArr30(int i)
     return FIELD(u32, p + i * 4, 48);
 }
 
+/* Original 020e83e8 returns entry i of the twelve-word table at work +0x58.
+ * Null work and indices outside 0..11 return zero. */
 int Unk0e8228_GetArr58(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
@@ -628,6 +633,8 @@ int Unk0e8228_GetArr58(int i)
     return FIELD(u32, p + i * 4, 88);
 }
 
+/* Original 020e8424 returns entry i of the six-word table at work +0x40.
+ * Null work and indices outside 0..5 return zero. */
 int Unk0e8228_GetArr40(int i)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
@@ -676,6 +683,9 @@ int Unk0e8228_IsFieldCOne(void)
     return FIELD(u32, p, 12) == 1;
 }
 
+/* Original 020e8be8 resolves slot zero's state and returns zero for states
+ * 1, 7 and 11. Otherwise it returns func_020e9b54(work), or zero when the
+ * shared work object is absent; neither callee meaning is established. */
 int Unk0e8228_Unk_0e8be8(void)
 {
     u32 p;
@@ -767,6 +777,10 @@ int Unk0e8228_IsState3(void)
     return FIELD(u32, p, 0) == 3;
 }
 
+/* Original 020e8fe4 looks up x through Unk09974c_Unk_099d14, reads the
+ * unsigned halfword at +0x22, and, when nonzero, passes it to func_020cb1a0
+ * and reports whether the byte at +0x23 is exactly 7. A null argument or
+ * zero halfword returns zero. */
 int Unk0e8228_Unk_0e8fe4(u32 x)
 {
     u32 h;
@@ -795,6 +809,10 @@ int Unk0e8228_GetCurEntry(u8 *p)
     return FIELD(u32, p + i * 4, 64);
 }
 
+/* Original 020e9bc0 tests the embedded selection at host +392 and returns
+ * when that address is null, then clears its two flag bytes and sixteen
+ * words. The caller owns the host storage; the layout records only the
+ * offsets observed by the original instructions. */
 void Unk0e8228_ClearSel(Unk0e8228SelHost *p)
 {
     int j;
@@ -823,4 +841,44 @@ void func_020e93d8(u32 object, const u32 *state)
     case 3: break;
     case 4: break;
     }
+}
+
+extern u32 data_02150c0c[];
+int Unk0bc1a8_IsSlotEmptyOrFlag8(int i);
+int ScanVisor_Unk_0a2980(void);
+int func_020ea058(void);
+
+/* Original 020e942c stores the selector at work +0x0c, then dispatches:
+ * selector 0 calls 020ea058; selector 1 calls 020e8628 and invokes 020ea0ec
+ * only when that returns exactly one, otherwise 020ea160; other selectors
+ * return without a call. */
+void func_020e942c(u32 work, u32 value)
+{
+  FIELD(u32, work, 12) = value;
+  switch (value) {
+  case 0:
+    func_020ea058();
+    return;
+  case 1:
+    if (func_020e8628() == 1) {
+      func_020ea0ec();
+      return;
+    }
+    func_020ea160();
+    return;
+  }
+}
+
+/* Original 020e9b10 scans the first nine words of data_02150c0c through
+ * Unk0bc1a8_IsSlotEmptyOrFlag8. A false result returns zero immediately;
+ * when all nine are true it returns whether ScanVisor_Unk_0a2980 is nonzero. */
+int func_020e9b10(void)
+{
+  u32 i;
+  for (i = 0; i < 9; i++) {
+    if (Unk0bc1a8_IsSlotEmptyOrFlag8(data_02150c0c[i]) == 0) {
+      return 0;
+    }
+  }
+  return ScanVisor_Unk_0a2980() != 0;
 }

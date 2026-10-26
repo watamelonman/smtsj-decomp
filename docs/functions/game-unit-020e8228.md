@@ -163,16 +163,27 @@ No M1-T903 functions remain on the hard list. No new behavioral tests were
 added: the acceptance oracle is exact instruction/relocation matching against
 the original object, followed by the existing tests and full-image checksum.
 
-## Not done in M1-T904
-- `Unk0e8228_GetArr30`
-- `Unk0e8228_GetArr58`
-- `Unk0e8228_GetArr40`
-- `Unk0e8228_Unk_0e8fe4`
-- `func_020e942c`
-- `Unk0e8228_ClearSel`
-- `Unk0e8228_Unk_0e8be8`
-- `func_020e9b10`
-- `Unk0e8228_Unk_0e85c8`: decompiler-derived
+## M1-T904 verified functions
+
+All eight functions match at 100% objdiff. Six bodies already matched from
+earlier waves; this card added the two missing definitions (`func_020e942c`,
+`func_020e9b10`) and documented every contract from the original instructions.
+No domain meaning is inferred where the evidence only shows an offset, bound
+or fixed selector, so those names stay neutral.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_GetArr30` (60 B, 020e83ac) | Calls the work getter; null work returns zero. Indices outside 0..3 return zero, otherwise `ldr [work + i*4 + 0x30]` returns the four-word table entry. |
+| `Unk0e8228_GetArr58` (60 B, 020e83e8) | Same null guard; valid indices 0..11 return the twelve-word table entry at work +0x58. |
+| `Unk0e8228_GetArr40` (60 B, 020e8424) | Same null guard; valid indices 0..5 return the six-word table entry at work +0x40. |
+| `Unk0e8228_Unk_0e8fe4` (60 B, 020e8fe4) | Null argument returns zero. Looks up the argument through `Unk09974c_Unk_099d14`, reads the unsigned halfword at +0x22; zero returns zero, otherwise `func_020cb1a0(halfword)` supplies a record whose byte at +0x23 is compared with 7. |
+| `func_020e942c` (64 B, 020e942c) | `str r1,[r0,#0x0c]` stores the selector at work +0x0c. A two-way switch calls `func_020ea058` for selector 0; selector 1 calls `func_020e8628` and invokes `func_020ea0ec` only when it returns exactly one, otherwise `func_020ea160`. Other selectors return without a call. |
+| `Unk0e8228_ClearSel` (64 B, 020e9bc0) | `adds r1,r0,#392; bxeq lr` returns when the embedded selection address is null. Otherwise it clears the two flag bytes at +392 and the sixteen words at +396. The caller owns the host storage; the layout records only these observed offsets. |
+| `Unk0e8228_Unk_0e8be8` (68 B, 020e8be8) | Resolves slot zero through `GetArr30`, `func_02044ec4` and `func_0204a244`; states 1, 7 and 11 return zero. Otherwise it returns `func_020e9b54(work)`, or zero when the shared work object is absent. |
+| `func_020e9b10` (68 B, 020e9b10) | Scans the first nine words of `data_02150c0c` through `Unk0bc1a8_IsSlotEmptyOrFlag8`; a zero result returns zero immediately. After all nine, it returns whether `ScanVisor_Unk_0a2980` is nonzero. |
+
+No M1-T904 functions remain on the hard list. `Unk0e8228_Unk_0e85c8` is still
+decompiler-derived but is outside this card.
 
 ## Not done in M1-T905
 - `Unk0e8228_GetArr88Field20`
