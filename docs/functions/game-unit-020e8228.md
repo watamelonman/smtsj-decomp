@@ -182,17 +182,29 @@ or fixed selector, so those names stay neutral.
 | `Unk0e8228_Unk_0e8be8` (68 B, 020e8be8) | Resolves slot zero through `GetArr30`, `func_02044ec4` and `func_0204a244`; states 1, 7 and 11 return zero. Otherwise it returns `func_020e9b54(work)`, or zero when the shared work object is absent. |
 | `func_020e9b10` (68 B, 020e9b10) | Scans the first nine words of `data_02150c0c` through `Unk0bc1a8_IsSlotEmptyOrFlag8`; a zero result returns zero immediately. After all nine, it returns whether `ScanVisor_Unk_0a2980` is nonzero. |
 
-No M1-T904 functions remain on the hard list. `Unk0e8228_Unk_0e85c8` is still
-decompiler-derived but is outside this card.
+No M1-T904 functions remain on the hard list.
 
-## Not done in M1-T905
-- `Unk0e8228_GetArr88Field20`
-- `Unk0e8228_Unk_0e8260`
-- `func_020e9f58`
-- `func_020e8d38`
-- `func_020e9fd0`
-- `func_020e8628`
-- `func_020e8ebc`
+## M1-T905 verified functions
+
+All eight functions match at 100% objdiff. The existing table accessors,
+row selector and guarded call sequence already matched; five missing bodies
+were added. Contracts follow original ARM instructions and relocations.
+Opaque selectors retain neutral names and provider storage remains borrowed.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_GetArr88Field20` (72 B, 020e849c) | Guards nullable work and indices outside 0..59, loads the pointer at work +0x88 + index*4, then returns its unsigned halfword +0x20 or zero for null. The observed offsets support the existing accessor name. |
+| `Unk0e8228_Unk_0e8260` (76 B, 020e8260) | Selector zero clears the global 24-byte row at data_02176ce4 +8 through 020e9f18. Unsigned selectors 1..3 call 020e9f38 with row +32 +(selector-1)*24 and value zero; other selectors do nothing. |
+| `func_020e9f58` (76 B, 020e9f58) | Initializes descriptor +0 to 0x1cc, clears +4/+0x10/+0x18, and stores relocated callback addresses 020e92a8, 020e93d4, 020e940c and 020e93d8 at +0x0c/+0x14/+0x1c/+0x20. Leaves +8 unchanged; requires 36 writable bytes. |
+| `func_020e8d38` (88 B, 020e8d38) | Returns zero without work; otherwise computes 020e946c(work, arg0, arg2), then returns 020e94d8(work, arg0, arg1, result, arg3). The fifth argument is passed on the stack. |
+| `func_020e9fd0` (88 B, 020e9fd0) | Calls 020611dc with relocated callbacks 020eb488/020eb6cc/020eb6e4, a zero third argument, size 0x1d8 and stack flags 1/0/1. Stores the returned handle in data_02176ddc, then passes it to 020eb308. |
+| `func_020e8628` (92 B, 020e8628) | Returns 3 without work, 2 when work +4 differs from one; otherwise switches on signed work +8, returning 0 for -1, 1 for zero, and 2 for ten or other values. The original retains a comparison against ten. |
+| `Unk0e8228_Unk_0e85c8` (96 B, 020e85c8) | Requires work, IsField4One and nonzero 02053800(0, 0x400). Calls 020459fc, 020e8cd8, 020e82c8, 020fda58(2), 02100208(7), then returns one; any failed guard returns zero. |
+| `func_020e8ebc` (100 B, 020e8ebc) | Null work returns. Stores selector at +0x17c; selector zero sets +0x180 to 27. Otherwise looks up 020cb1a0(selector): record byte +0x23 of 4 or 8 sets 27, while other kinds set bits 12..16 of record word +0x24 plus eight. |
+
+No M1-T905 functions remain on the hard list. No new tests are required by
+this card: exact instruction and relocation matching supplies the acceptance
+oracle, alongside the existing test suite and full-image checksum.
 
 ## Not done in M1-T906
 - `func_020e946c`
