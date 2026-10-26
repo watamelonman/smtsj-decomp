@@ -657,3 +657,178 @@ void func_02113620(u8 *work)
     default: func_021139f0(work, Unk113294_Unk_115124((Unk113294Work *)work)); break;
     }
 }
+
+void func_02114014(u8 *work);
+void func_02114308(u8 *work);
+/* At 0x02113edc, draws four borrowed handles, then the mode-specific panel.
+ * Requires a readable word before work for the palette-state check. */
+void func_02113edc(u8 *work)
+{
+    if (!work[0]) return;
+    if (FIELD(int, work, -4) != 6) Unk_LoadPalette_020de678(FIELD(u32, work, 40));
+    func_0205c748(2, FIELD(u32, work, 72), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    func_0205c748(2, FIELD(u32, work, 68), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    func_0205c748(2, FIELD(u32, work, 64), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    func_0205c748(2, FIELD(u32, work, 60), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    switch (FIELD(int, work, 4)) {
+    case 0:
+        func_0205c748(2, FIELD(u32, work, 76), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+        func_02114014(work);
+        break;
+    case 1: func_02114308(work); break;
+    }
+}
+
+int func_02053824(int device, int mask);
+/* At 0x02113450, wraps the selected index in an eleven-column grid.
+ * Returns one when a directional input updates the writable index at +16. */
+int func_02113450(u8 *work)
+{
+    int changed = 0;
+    if (func_02053824(0, 32)) {
+        if (FIELD(int, work, 16) == 0 || FIELD(int, work, 16) % 11 == 0)
+            FIELD(int, work, 16) += 10;
+        else if (work[8] != 2 && FIELD(int, work, 16) == 54)
+            FIELD(int, work, 16) -= 2;
+        else FIELD(int, work, 16)--;
+        changed = 1;
+    } else if (func_02053824(0, 16)) {
+        if (FIELD(int, work, 16) == 0) FIELD(int, work, 16) = 1;
+        else if (FIELD(int, work, 16) % 11 == 10) FIELD(int, work, 16) -= 10;
+        else if (work[8] != 2 && FIELD(int, work, 16) >= 53) FIELD(int, work, 16) = 44;
+        else FIELD(int, work, 16)++;
+        changed = 1;
+    } else if (func_02053824(0, 64)) {
+        if (FIELD(int, work, 16) == 0) FIELD(int, work, 16) = 44;
+        else if (FIELD(int, work, 16) / 11 == 0) FIELD(int, work, 16) += 44;
+        else FIELD(int, work, 16) -= 11;
+        changed = 1;
+    } else if (func_02053824(0, 128)) {
+        if (FIELD(int, work, 16) == 0) FIELD(int, work, 16) = 11;
+        else if (FIELD(int, work, 16) / 11 != 4) FIELD(int, work, 16) += 11;
+        else FIELD(int, work, 16) %= 11;
+        changed = 1;
+    }
+    return changed;
+}
+
+/* At 0x021136f8, advances the cursor through populated slots and switches
+ * from low to high slots when available. Work owns the writable ID storage. */
+void func_021136f8(u8 *work)
+{
+    switch (FIELD(int, work, 4)) {
+    case 0:
+        if (work[9] == 0) {
+            int advance;
+            if (((Unk113294Ids *)work)->ids[FIELD(int, work, 12)] == 0) {
+                if (Unk113294_AnyLo((Unk113294Ids *)work)) {
+                    work[9] = 1;
+                    FIELD(int, work, 12) = 8;
+                    Unk113294_Unk_11508c(FIELD(u32, work, 140), 110);
+                    Unk0a0ce4_Unk_0a0da4(1);
+                    return;
+                }
+                Unk0a0ce4_Unk_0a0da4(4);
+                Unk113294_Unk_1156ec();
+                FIELD(u16, work, 20) = 125;
+                work[0] = 4;
+                return;
+            }
+            advance = 0;
+            if (FIELD(int, work, 12) == 7) {
+                if (Unk113294_AnyLo((Unk113294Ids *)work)) {
+                    work[9] = 1;
+                    Unk113294_Unk_11508c(FIELD(u32, work, 140), 110);
+                    advance = 1;
+                }
+            } else advance = 1;
+            if (advance) {
+                FIELD(int, work, 12)++;
+                Unk0a0ce4_Unk_0a0da4(1);
+                return;
+            }
+            Unk0a0ce4_Unk_0a0da4(4);
+            Unk113294_Unk_1156ec();
+            FIELD(u16, work, 20) = 125;
+            work[0] = 4;
+            return;
+        }
+        if (work[9] != 1) return;
+        if (FIELD(int, work, 12) >= 15) { Unk0a0ce4_Unk_0a0da4(4); return; }
+        if (((Unk113294Ids *)work)->ids[FIELD(int, work, 12)] == 0) {
+            Unk0a0ce4_Unk_0a0da4(4); return;
+        }
+        Unk0a0ce4_Unk_0a0da4(1);
+        FIELD(int, work, 12)++;
+        break;
+    case 1:
+        if (FIELD(int, work, 12) >= 31) { Unk0a0ce4_Unk_0a0da4(4); return; }
+        if (((Unk113294Ids *)work)->ids[FIELD(int, work, 12)] == 0) {
+            Unk0a0ce4_Unk_0a0da4(4); return;
+        }
+        Unk0a0ce4_Unk_0a0da4(1);
+        FIELD(int, work, 12)++;
+        break;
+    }
+}
+
+void func_0205de40(int mode, u32 handle, int a, int x, int y,
+                    float sx, float sy, int b, float scale, int c);
+void func_02057ddc(u32 color);
+void func_02057df8(void);
+/* At 0x02114308, draws the 2x16 slot background and cursor at eleven/fifteen
+ * pixel spacing, then submits the borrowed text handle at +192. */
+void func_02114308(u8 *work)
+{
+    int row, col, x, y;
+    func_0205c748(2, FIELD(u32, work, 84), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    if (work[0] <= 1) return;
+    for (row = 0, y = 0; row < 2; row++, y += 15) {
+        for (col = 0, x = 0; col < 16; col++, x += 11)
+            func_0205de40(2, FIELD(u32, work, 36), 26, x, y, 1.0f, 1.0f, 0, 1.0f, 1);
+    }
+    if (FIELD(int, work, 12) == 0)
+        func_0205c748(2, FIELD(u32, work, 92), 0, 0, 1.0f, 1.0f, 0, 1.0f, 2);
+    else
+        func_0205c748(2, FIELD(u32, work, 92), (FIELD(int, work, 12) % 16) * 11,
+                      (FIELD(int, work, 12) / 16) * 15, 1.0f, 1.0f, 0, 1.0f, 2);
+    func_02057e18(31);
+    func_02057ddc(0x39f7efff);
+    func_02060b60(1, FIELD(u32, work, 192), 42, 84, 0, 6);
+    func_02057df8();
+}
+
+#pragma opt_strength_reduction off
+/* See DEC-027 for the scoped index-generation setting. */
+/* At 0x0211527c, builds six 5x11 resource grids; unavailable row tails
+ * use the fixed lookup ID and 0x8001 terminator. Providers borrow the stack grid. */
+void func_0211527c(u8 *work)
+{
+    u16 ids[55];
+    u16 *line;
+    int base;
+    int row, col, group;
+    for (group = 0; group < 6; group++) {
+        func_02008848(ids, 0, 110);
+        for (row = 0, line = ids, base = 0; row < 5; row++, line += 11, base += 11) {
+            for (col = 0; col < 11; col++) {
+                if (Unk113294_Unk_115778(group, row, col)) {
+                    if (col == 10 && row == 4) line[col] = 0;
+                    else line[col] = Unk113294_Unk_1150e8(1, (u16)(col + base));
+                } else {
+                    if (row == 4) line[col] = 0;
+                    else {
+                        for (; col < 11; col++) {
+                            if (col == 10) line[col] = 0x8001;
+                            else line[col] = Unk113294_Unk_115110();
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+        func_02061f10(FIELD(u32, work + group * 4, 160), -1, 8, 6, ids);
+    }
+}
+
+#pragma opt_strength_reduction reset

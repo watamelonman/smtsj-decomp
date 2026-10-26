@@ -2,6 +2,8 @@
 
 ## Unreleased
 - Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
+- M1-T981: match five grid, cursor and drawing helpers; document three input/drawing instruction-generation hard cases.
+- M1-T996: match all eight remaining `game/unit_0206ae94` constructors, scale, bounce, angle and transform helpers at 100% objdiff; document typed contracts and the ARM-to-Thumb call resolved by linked objdiff.
 - Matched all three M2-T009 heap-state and animation-bank functions in `libs/NitroSDK/sdk_02020744.c`, with typed contracts and public-source evidence.
 - Matched M2-T008 rotation/reciprocal-scale wrapper in C using the public SDK sine/cosine table declaration; documented the table symbol required before linking from C.
 - M1-T988: verify eight ScanVisor forwarding, list traversal and work-state helpers at 100% objdiff; document typed contracts and original instruction evidence.
