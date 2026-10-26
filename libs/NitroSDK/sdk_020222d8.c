@@ -7,16 +7,6 @@ extern s32 data_02156e88[12];
 extern Unk0222d8Submission data_02159c90;
 /** Recompute the two matrices from shared state (observed calls at 020224dc). */
 extern void func_020224dc(void);
-/** Submit a command with count parameter words; storage is borrowed during the call. */
-extern void func_020252fc(u32 command, const u32 *parameters, u32 count);
-
-/** Evidence: 0202242c submits words 1..62, then clears flag bits 0 and 1. */
-void func_0202242c(void)
-{
-    func_020252fc(data_02156d28.command, data_02156d28.parameters, 62);
-    data_02156d28.flags &= ~1;
-    data_02156d28.flags &= ~2;
-}
 
 /** Evidence: 02022468 copies three words only for non-null input; clears mask 0xa4. */
 void func_02022468(const Unk0222d8Vector *value)
@@ -60,13 +50,13 @@ void func_02022e44(Unk0222d8Record *record)
     record->flags |= 0x20;
 }
 
-/** Evidence: 02025224 repeatedly loads shared offset 4 until it is zero. */
+/** Evidence: 02025224 spins while the shared submission status word is nonzero. */
 void func_02025224(void)
 {
     while (data_02159c90.busy) {}
 }
 
-/** Evidence: 0202523c writes zero to the first word of its non-null argument. */
+/** Evidence: 0202523c unconditionally writes zero to the first word of its argument. */
 void func_0202523c(u32 *buffer)
 {
     *buffer = 0;

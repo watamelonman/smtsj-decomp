@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T1025: reconstruct seven NitroSDK shared-state, matrix-cache and callback helpers in `sdk_020222d8.c`; document the `func_0202242c` literal-pool hard case.
 - M2-T102: match five CRI mode dispatch and storage forwarding functions in `cri_0208a978.c`.
 - M2-T096: match six NitroSDK VRAM bank disable wrappers and two sub-display extended palette getters.
 

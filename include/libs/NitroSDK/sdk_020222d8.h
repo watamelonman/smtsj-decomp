@@ -25,8 +25,6 @@ typedef struct Unk0222d8Submission {
     volatile u32 busy;
 } Unk0222d8Submission;
 
-/** Submit the shared command and clear its two low status bits. */
-void func_0202242c(void);
 /** Copy a non-null three-component value and invalidate dependent cached flags. */
 void func_02022468(const Unk0222d8Vector *value);
 /** Return the first borrowed cached matrix, computing both when invalid. */
