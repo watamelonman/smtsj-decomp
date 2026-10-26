@@ -345,9 +345,10 @@ void Unk116598_Unk_117cd4(void)
 }
 
 
-int Unk02e000_GetWorkArea();
-int func_02116c20();
-/* decompiler-derived */
+int Unk02e000_GetWorkArea(void);
+int func_02116c20(u16 id, u32 a, u32 b, int mode);
+/* ARM 0x02117050 reads provider halfword +0x35c and calls 0x02116c20
+   with mode 1; returns 2 only for result 1, otherwise 0. */
 u32 Unk116598_Unk_117050(u32 arg0,u32 arg1)
 {
   int value1;
@@ -361,10 +362,11 @@ u32 Unk116598_Unk_117050(u32 arg0,u32 arg1)
   return value2;
 }
 
-int func_02057524();
-int func_02057534();
-int func_021176c0();
-/* decompiler-derived */
+int func_02057524(u32 value);
+int func_02057534(void);
+int func_021176c0(u32 value, u8 byte, int mode);
+/* ARM 0x02117620 requires borrowed work: +0x18 must be zero, +0xc
+   must be 1 or 2, and +4 nonzero; brackets the mode-22 call with providers. */
 void Unk116598_Unk_117620(Unk116598Work *work)
 {
   if (work->unk_0018 != 0) {
@@ -382,7 +384,8 @@ void Unk116598_Unk_117620(Unk116598Work *work)
 }
 
 
-/* decompiler-derived */
+/* ARM 0x02117670 uses the same borrowed-work contract as 0x02117620,
+   but accepts +0xc values 1 or 3; forwards +8 and byte +0x13. */
 void Unk116598_Unk_117670(Unk116598Work *work)
 {
   if (work->unk_0018 != 0) {
@@ -470,14 +473,14 @@ void Unk116598_Unk_1177cc(u32 arg0)
     *(u32 *)*data_02176e64 = arg0;
 }
 
-int func_02117550(void);
+void func_02117550(Unk116598Work *work);
 /* ARM 0x021172dc calls 0x02117550 only when data_02176e60 is nonzero. */
 void Unk116598_Unk_1172dc(void)
 {
   if (*data_02176e60 == 0) {
     return;
   }
-  func_02117550();
+  func_02117550((Unk116598Work *)*data_02176e60);
 }
 
 int Unk0bc1a8_IsSlotEmpty(int slot);
@@ -579,12 +582,12 @@ void Unk116598_Unk_1168cc(Unk116598Work *work)
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-int Unk0de678_Unk_0dee2c();
-int Unk02e000_Unk_02e774();
+int Unk0de678_Unk_0dee2c(int id);
+int Unk02e000_Unk_02e774(void);
 int Unk02f078_Unk_02f220(void);
 int func_02117208(void);
-int func_02051ba4();
-void Unk095560_Unk_0958a8();
+int func_02051ba4(void);
+void Unk095560_Unk_0958a8(int a, int b);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
@@ -601,6 +604,8 @@ void Unk116598_Set(u32 a, u32 b)
     FIELD(u32, w, 12) = 0;
 }
 
+/* ARM 0x02117808 clears work words +0, +0x10 and +0x14, then calls
+   0x020958a8(0, 0). Requires initialized data_02176e64. */
 void Unk116598_Reset(void)
 {
     u8 *w = (u8 *)*data_02176e64;
@@ -641,4 +646,45 @@ void func_021177b8(void)
 {
     if (*data_02176e64 == 0)
         return;
+}
+
+/* ARM 0x02117170 returns 1 when provider 0x020dee2c(5) is nonzero
+   or provider byte +0x5fbf is 1; provider work must be initialized. */
+int func_02117170(void)
+{
+    if (Unk0de678_Unk_0dee2c(5) != 0 ||
+        FIELD(u8, Unk02e000_Unk_02e774(), 0x5fbf) == 1) {
+        return 1;
+    }
+    return 0;
+}
+
+/* ARM 0x02117208 dispatches provider IDs 0..8 through a jump table;
+   only IDs 5, 6 and 7 return zero; all other IDs return one. */
+int func_02117208(void)
+{
+    switch (Unk02f078_Unk_02f220()) {
+    case 5: case 6: case 7:
+        return 0;
+    case 0: case 1: case 2: case 3: case 4: case 8:
+    default:
+        return 1;
+    }
+}
+
+/* ARM 0x02117744 maps nonzero input flags to work +0xc: both=1,
+   first=2, second=3. If +0 is zero, resulting state 1 becomes 2.
+   Both flags zero preserve +0xc before that final adjustment. */
+void func_02117744(Unk116598Work *work, int first, int second)
+{
+    if (first != 0 && second != 0) {
+        work->unk_000c = 1;
+    } else if (first != 0) {
+        work->unk_000c = 2;
+    } else if (second != 0) {
+        work->unk_000c = 3;
+    }
+    if (work->unk_0000 == 0 && work->unk_000c == 1) {
+        work->unk_000c = 2;
+    }
 }

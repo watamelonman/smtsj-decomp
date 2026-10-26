@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T805: match seven unit_02116598 predicates, state updates and guarded call sequences; document the initializer at 87.65% for human scratch follow-up.
 - M1-T804: verify and document seven unit_02116598 guards, work initializers and setter at 100% objdiff; record func_02117250 at 98.91% for human scratch follow-up.
 - M1-T803: verify eight unit_02116598 work setters, call sequences, mappings and guards at 100% objdiff; add typed work accesses and per-function instruction contracts.
 - M1-T836: match six additional game/unit_0211fc20 initialization, allocation and coordinate-forwarding functions; document two remaining hard functions for scratch follow-up.
