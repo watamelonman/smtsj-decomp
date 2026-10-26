@@ -81,3 +81,42 @@ the build, anticheat, all nine unit tests, and byte-identical artifact checksum
 checks pass.
 
 Hard list for M2-T096: none.
+
+## M2-T097: remaining disable wrappers and BG screen addresses
+
+Known source was checked before implementation:
+[pret/pokediamond GX_vramcnt.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/GX_vramcnt.c)
+provides the four corresponding disable wrappers, and
+[pret/pokediamond GX_bgcnt.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/GX_bgcnt.c)
+provides the three screen-pointer getters. Original instructions independently
+confirm register addresses, masks, allocation slots, and operation order.
+Existing linker names are retained; no module boundary changes are introduced.
+
+All seven functions take `void`. Disable wrappers return a `u32` previous bank
+mask (bits 0-8 for A-I), clear the relevant extended palette enable bit when
+applicable, and call `func_02003650` to clear bookkeeping, disable banks, and
+release their SDK lock. The getters return borrowed `void *` addresses without
+allocating or transferring ownership. They read volatile hardware registers;
+BG screen blocks are 2 KiB and the main display has an additional shared screen
+base in 64 KiB units. They do not validate whether the selected banks are mapped.
+
+| Function | Known SDK role | Original evidence | Size |
+| --- | --- | --- | --- |
+| `func_0200377c` | `GX_DisableBankForOBJExtPltt` | Main DISPCNT bit 31; slot `0x021521b4` | 36 bytes |
+| `func_02003818` | `GX_DisableBankForSubOBJ` | Slot `0x021521b8` | 20 bytes |
+| `func_0200382c` | `GX_DisableBankForSubBGExtPltt` | Sub DISPCNT bit 30; slot `0x021521ba` | 40 bytes |
+| `func_02003854` | `GX_DisableBankForSubOBJExtPltt` | Sub DISPCNT bit 31; slot `0x021521bc` | 40 bytes |
+| `func_0200391c` | `G2_GetBG0ScrPtr` | BG0CNT `0x04000008`, mask `0x1f00`; DISPCNT mask `0x38000000` | 52 bytes |
+| `func_02003950` | `G2S_GetBG0ScrPtr` | Sub BG0CNT `0x04001008`, mask `0x1f00`; base `0x06200000` | 32 bytes |
+| `func_02003970` | `G2_GetBG1ScrPtr` | BG1CNT `0x0400000a`, mask `0x1f00`; DISPCNT mask `0x38000000` | 52 bytes |
+
+No runtime tests are required by this card: object comparison verifies the
+register operations and instruction order against the delinked originals.
+The unit remains linked from its delink pending human completion.
+
+Hard list for M2-T097: none.
+
+Local validation for M2-T097: all seven requested functions and all sixteen
+previous definitions report 100% objdiff. The build, anticheat, all nine unit
+tests, and byte-identical artifact checksum checks pass. `git diff --check`
+also passes.

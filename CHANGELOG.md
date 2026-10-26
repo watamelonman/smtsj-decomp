@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T097: match four NitroSDK VRAM disable wrappers and three BG screen-address getters.
+
 - M2-T096: match six NitroSDK VRAM bank disable wrappers and two sub-display extended palette getters.
 
 - M2-T095: reconstruct eight NitroSDK VRAM bank allocation getters in matching C.
