@@ -35,17 +35,48 @@ are inferred. Existing C bodies were already present when this card started.
 
 None.
 
-## Not done in M1-T935
-- `Unk06fb70_Unk_0701bc`
-- `Unk06fb70_Unk_070210`
-- `Unk06fb70_Unk_070264`
-- `Unk06fb70_Unk_0702b8`
-- `Unk06fb70_Unk_07030c`
-- `Unk06fb70_Unk_070360`
-- `Unk06fb70_Unk_071844`
-- `func_02071d6c`
-- `Unk06fb70_Unk_06feb4`: decompiler-derived
-- `Unk06fb70_Unk_06ff28`: decompiler-derived
+## M1-T935 — verified against original ARM
+
+All eight functions match at 100% in objdiff. The six per-channel advances reuse
+the `Unk06fb70Anim` view: each returns when its signed key state is at least 4,
+otherwise increments its tick, and either selects the next key on expiry or
+clamps the channel position. The two manager teardowns use the same
+`Unk06fb70Mgr` layout. Evidence is the original instruction sequence at each
+address (field offsets, signed compares, loop bound 50 and BL targets).
+
+- `Unk06fb70_Unk_0701bc` (0x020701bc, 84 bytes): advances channel 3. It exits
+  when `state[3] >= 4`; when `tick[3]` exceeds `limit[3]` it resets the tick and
+  velocity and calls 0x02070950 to pick the next key, otherwise it clamps
+  `pos[5]` by `vel[5]` within `max[5]`.
+- `Unk06fb70_Unk_070210` (0x02070210, 84 bytes): channel 4 counterpart using
+  `state[4]`, `tick[4]`, `limit[4]`, `pos[6]`, `vel[6]`, `max[6]` and selecting
+  the next key through 0x02070a6c.
+- `Unk06fb70_Unk_070264` (0x02070264, 84 bytes): channel 5 counterpart using
+  `state[5]`, `tick[5]`, `limit[5]`, `pos[7]`, `vel[7]`, `max[7]` and selecting
+  the next key through 0x02070b88.
+- `Unk06fb70_Unk_0702b8` (0x020702b8, 84 bytes): channel 6 counterpart using
+  `state[6]`, `tick[6]`, `limit[6]`, `pos[8]`, `vel[8]`, `max[8]` and selecting
+  the next key through 0x02070cc0.
+- `Unk06fb70_Unk_07030c` (0x0207030c, 84 bytes): channel 7 counterpart using
+  `state[7]`, `tick[7]`, `limit[7]`, `pos[9]`, `vel[9]`, `max[9]` and selecting
+  the next key through 0x02070df8.
+- `Unk06fb70_Unk_070360` (0x02070360, 84 bytes): channel 8 counterpart using
+  `state[8]`, `tick[8]`, `limit[8]`, `pos[10]`, `vel[10]`, `max[10]` and
+  selecting the next key through 0x02070f30.
+- `Unk06fb70_Unk_071844` (0x02071844, 84 bytes): null-checked manager teardown.
+  It calls 0x0206c0b0 for each of the 50 object words at +0x234, zeroes the
+  words at +0x24, +0x28, +0x2c and +0x30, clears the word reached through
+  +0x224 when non-null, then calls func_02061424 on the manager.
+- `func_02071d6c` (0x02071d6c, 84 bytes): the same null-checked manager teardown
+  for a second manager instance. The name is neutral because only the address
+  identifies it; the caller in `unit_0206ae94.c` iterates `arg0[6]` entries from
+  +0x44 and passes each one here. Its instruction sequence is byte-identical to
+  0x02071844, but it is a separate original symbol, so it is emitted as its own
+  C function rather than an alias.
+
+### Hard list for M1-T935
+
+None.
 
 ## Not done in M1-T936
 - `func_020717e4`
