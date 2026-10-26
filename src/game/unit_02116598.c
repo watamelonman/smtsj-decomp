@@ -364,7 +364,7 @@ u32 Unk116598_Unk_117050(u32 arg0,u32 arg1)
 
 int func_02057524(u32 value);
 int func_02057534(void);
-int func_021176c0(u32 value, u8 byte, int mode);
+void func_021176c0(u32 value, u8 byte, int mode);
 /* ARM 0x02117620 requires borrowed work: +0x18 must be zero, +0xc
    must be 1 or 2, and +4 nonzero; brackets the mode-22 call with providers. */
 void Unk116598_Unk_117620(Unk116598Work *work)
@@ -564,6 +564,8 @@ void Unk02d15c_Unk_02d91c(int a, int b);
 void Unk02d15c_Setup(int a, int b, int c, int d);
 void func_02095f94(void);
 
+/* ARM 0x021168cc initializes primary borrowed work after provider setup;
+   entry-30 allocation and provider mode 1 determine the stored fields. */
 void Unk116598_Unk_1168cc(Unk116598Work *work)
 {
     func_02077314();
@@ -620,6 +622,8 @@ void Unk116598_Reset(void)
     Unk095560_Unk_0958a8(0, 0);
 }
 
+/* ARM 0x02117af8 initializes secondary borrowed work using provider mode 2;
+   requires writable work through +0x10. */
 void Unk116598_Unk_117af8(Unk116598Work *work)
 {
     func_02077314();
@@ -762,4 +766,134 @@ int func_021174d0(void)
     if (work == 0) return 0;
     func_02117550(work);
     return (int)work;
+}
+
+void func_02057e18(u32 value);
+void func_02057fd8(void);
+void func_02057dcc(int a, int b, int c, int d);
+void func_02057b50(int x, int y, int width, int height, int mode);
+void func_02057df8(void);
+void func_02057e30(int value);
+/* ARM 0x021176c0 brackets a 256 by 192 provider operation with byte setup;
+   a zero byte suppresses all calls, and value selects 255 or -1 components. */
+void func_021176c0(u32 value, u8 byte, int mode)
+{
+    if (byte == 0) return;
+    func_02057e18(byte);
+    func_02057fd8();
+    if (value == 0) func_02057dcc(255, 255, 255, 255);
+    else func_02057dcc(-1, -1, -1, -1);
+    func_02057b50(0, 0, 256, 192, mode);
+    func_02057df8();
+    func_02057e30(0);
+    func_02057e18(31);
+}
+
+void Unk0bc1a8_Unk_0bc928(int slot, int value, int zero);
+int func_020445f4(int id, int value);
+void func_0204fed8(int value, int zero);
+void func_020fc5d4(void);
+/* ARM 0x02116758 initializes empty slot 24 with 65535, maps IDs 0..4
+   through an explicit switch, and forwards the entry-30 result to providers. */
+void func_02116758(u32 id)
+{
+    int value;
+    if (Unk0bc1a8_IsSlotEmpty(24) != 0)
+        Unk0bc1a8_Unk_0bc928(24, 65535, 0);
+    value = 0;
+    switch (id) {
+    case 0: value = 0; break;
+    case 1: value = 1; break;
+    case 2: value = 2; break;
+    case 3: value = 3; break;
+    case 4: value = 4; break;
+    }
+    func_0204fed8(func_020445f4(30, value), 0);
+    func_020fc5d4();
+}
+/* ARM 0x021179a0 initializes empty slot 24 with 65535, maps IDs 0..4
+   through an explicit switch, and forwards the entry-30 result to providers. */
+void func_021179a0(u32 id)
+{
+    int value;
+    if (Unk0bc1a8_IsSlotEmpty(24) != 0)
+        Unk0bc1a8_Unk_0bc928(24, 65535, 0);
+    value = 0;
+    switch (id) {
+    case 0: value = 0; break;
+    case 1: value = 1; break;
+    case 2: value = 2; break;
+    case 3: value = 3; break;
+    case 4: value = 4; break;
+    }
+    func_0204fed8(func_020445f4(30, value), 0);
+    func_020fc5d4();
+}
+
+/* ARM 0x0211708c scans marked provider bytes in descending order; the
+   predicate selects IDs 7..6 plus fallback 8/5, or IDs 5..0 plus fallback 0. */
+int func_0211708c(void)
+{
+    int i;
+    if (Unk116598_Unk_1171a8()) {
+        for (i = 7; i >= 6; --i) {
+            if (((u8 *)Unk02e000_Unk_02e774())[i + 0x5fba] == 1) return i;
+        }
+        return *(u8 *)(Unk02e000_Unk_02e774() + 0x5fc2) == 1 ? 8 : 5;
+    }
+    for (i = 5; i >= 0; --i) {
+        if (((u8 *)Unk02e000_Unk_02e774())[i + 0x5fba] == 1) return i;
+    }
+    return 0;
+}
+
+/* ARM 0x02117594 advances byte +0x12 until its unsigned threshold,
+   then adjusts signed byte +0x13 by +0x11, clamping to 0 or 31 by state. */
+void func_02117594(Unk116598Work *work)
+{
+    u8 *bytes = (u8 *)work;
+    if (bytes[18] >= bytes[16]) {
+        switch (work->unk_0004) {
+        case 1:
+            bytes[19] = (s8)bytes[19] - bytes[17];
+            if ((s8)bytes[19] < 0) {
+                bytes[19] = 0;
+                work->unk_0004 = 0;
+            }
+            break;
+        case 2:
+            bytes[19] = (s8)bytes[19] + bytes[17];
+            if ((s8)bytes[19] > 31) bytes[19] = 31;
+            break;
+        }
+        bytes[18] = 0;
+    } else {
+        bytes[18]++;
+    }
+}
+
+int Unk095560_Unk_095764(u8 id);
+s8 *func_0204fde0(int value);
+u32 func_0204fe18(int value);
+/* ARM 0x02117834 consumes a signed-byte pair from provider data, then
+   advances its unsigned index; the loop flag selects restart or Reset. */
+void func_02117834(void)
+{
+    int value;
+    u8 *work = (u8 *)*data_02176e64;
+    s8 *table;
+    if (FIELD(u32, work, 0) == 0) return;
+    value = Unk095560_Unk_095764(work[8]);
+    table = func_0204fde0(value);
+    table += FIELD(u32, work, 12) * 2;
+    FIELD(s32, work, 16) = table[0];
+    FIELD(s32, work, 20) = table[1];
+    Unk095560_Unk_0958a8(FIELD(s32, work, 16), FIELD(s32, work, 20));
+    FIELD(u32, work, 12)++;
+    if (FIELD(u32, work, 12) < func_0204fe18(value)) return;
+    if (FIELD(u32, work, 4) != 0) {
+        FIELD(u32, work, 12) = 0;
+        return;
+    }
+    Unk116598_Reset();
 }
