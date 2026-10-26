@@ -100,8 +100,11 @@ void Unk0cb32c_Unk_0cba78(void)
 }
 
 
-int func_02122e1c();
-/* decompiler-derived */
+void func_02122e1c(u32 handle);
+void ImageBg_Unk_0e5530(void);
+void Unk0fd268_Unk_0fd3ac(void);
+/* Release the borrowed handle and clear its slot before the four cleanup calls;
+ * evidence: LDR/BL/STR and BL order at 020cb754..020cb788. */
 void Unk0cb32c_Unk_0cb754(u32 *arg0)
 {
   Unk0bc1a8_Unk_0bc9b4(10,0);
@@ -114,7 +117,8 @@ void Unk0cb32c_Unk_0cb754(u32 *arg0)
 }
 
 
-/* decompiler-derived */
+/* Map selectors 0..4 to 6,8,7,9,5; preserve other unsigned values.
+ * Evidence: unsigned jump-table bound and MOV returns at 020cb440. */
 u32 Unk0cb32c_Unk_0cb440(u32 arg0)
 {
   switch(arg0) {
@@ -133,15 +137,14 @@ u32 Unk0cb32c_Unk_0cb440(u32 arg0)
   }
 }
 
-int func_02059f70();
-int func_02060dd4();
-/* decompiler-derived */
-void Unk0cb32c_Unk_0cb488(u32 *arg0,u32 arg1,u32 arg2,u32 arg3,
+void func_02059f70(u32 handle, u32 zero, s32 x, s32 y, void *descriptor, u32 flags, u32 value);
+void func_02060dd4(void *descriptor, const u32 *handle, u32 zero, u32 index, u32 value);
+/* Build a 16-byte descriptor and submit it with the borrowed handle and coordinates;
+ * evidence: stack buffer and two BLs at 020cb488..020cb4e0. */
+void Unk0cb32c_Unk_0cb488(u32 *arg0,s32 arg1,s32 arg2,u32 arg3,
                   u32 arg4,u32 arg5)
 {
   u8 auStack_24 [16];
-  u32 uStack_14;
-  uStack_14 = arg3;
   func_02060dd4(auStack_24,arg0,0,arg3,arg4);
   func_02059f70(*arg0,0,arg1,arg2,auStack_24,0,arg5);
 }
@@ -156,13 +159,15 @@ int Unk0cb32c_Unk_0cb4e4(u32 arg0, u32 arg1)
 }
 
 int Unk0a0ce4_Unk_0a0da4(u32 value);
-void func_02063920();
-int func_02063a30();
-void func_02061f10();
+void func_02063920(u32 handle);
+int func_02063a30(int handle);
+void func_02061f10(u32 handle, int index, u32 zero, u32 flags, int value);
 int func_0205caa0(u32 value);
 int func_0205ca88(u32 value);
 int Unk0e651c_Unk_0e666c(u32 index);
 int Unk122e1c_Unk_122f88(u32 handle, u32 index, int value);
+/* Reset a handle, resolve (b,c), then submit its converted value with index -1;
+ * evidence: four ordered BLs and stack fifth argument at 020cb504. */
 void Unk0cb32c_Unk_0cb504(u32 a, u32 b, u32 c)
 {
     func_02063920(a);
@@ -179,12 +184,28 @@ void Unk0cb32c_Unk_0ccac8(u8 *arg0,u32 arg1)
   *(u32 *)(arg0 + 0xc) = arg1;
 }
 
-/* decompiler-derived */
-void Unk0cb32c_Unk_0ccaf8(int arg0,u32 arg1)
+/* Borrowed, word-aligned work prefix used by the two target state helpers.
+ * Padding exposes only offsets established by their original LDR/STRs. */
+typedef struct Unk0cb32cStateWork {
+    s32 state;
+    u32 reserved_004;
+    u32 field_008;
+    u8 reserved_00c[0x88];
+    u32 handle_094;
+    u8 reserved_098[0x10];
+    u32 selector_0a8;
+    u8 reserved_0ac[0x2c];
+    u32 field_0d8;
+} Unk0cb32cStateWork;
+
+void Unk122e1c_Unk_123294(u32 handle);
+/* Clear the +0x94 handle through its provider, store the new +0xd8 value,
+ * set +8 to 1 and enter state 3; STR/BL evidence at 020ccaf8. */
+void Unk0cb32c_Unk_0ccaf8(Unk0cb32cStateWork *arg0,u32 arg1)
 {
-  Unk122e1c_Unk_123294(*(u32 *)(arg0 + 0x94));
-  *(u32 *)(arg0 + 0xd8) = arg1;
-  *(u32 *)(arg0 + 8) = 1;
+  Unk122e1c_Unk_123294(arg0->handle_094);
+  arg0->field_0d8 = arg1;
+  arg0->field_008 = 1;
   Unk0cb32c_Unk_0ccaa8((int *)arg0, (int)3);
 }
 
@@ -231,4 +252,60 @@ void func_020cccb4(const Unk0cb32cWork *work)
     if (work->field_124 != 0) {
         return;
     }
+}
+
+u32 Unk095560_Unk_095a2c(u32 value);
+int func_020de8b0(int bypass);
+void Unk0bc1a8_Unk_0bc928(u32 slot, u32 value, u32 source);
+void func_020bc9f4(u32 slot, u32 source);
+/* Forward the current selector, then initialize slots only when de8b0(0)
+ * returns zero; evidence: conditional return and BL order at 020cba20. */
+void func_020cba20(void)
+{
+    Unk095560_Unk_095a2c(func_020cb3dc());
+    if (func_020de8b0(0) != 0) return;
+    Unk0cb32c_Unk_0cb32c();
+    Unk0bc1a8_Unk_0bc928(15, 65535, 0);
+    Unk0bc1a8_Unk_0bc928(16, 15, 0);
+    func_020bc9f4(16, 0);
+}
+
+void Unk1241ec_Unk_124224(u32 value);
+/* Select a provider mode from the low halfword at +0xa8; selector zero
+ * also tests entry 0x5f1. Evidence: shifts, branches and BLs at 020ccc64. */
+void func_020ccc64(const Unk0cb32cStateWork *work)
+{
+    u32 value;
+    switch ((u16)work->selector_0a8) {
+    case 0: value = Unk0e651c_Unk_0e666c(0x5f1) ? 0 : 3; break;
+    case 1: value = 1; break;
+    default: value = 2; break;
+    }
+    Unk1241ec_Unk_124224(value);
+}
+
+/* Borrowed descriptor prefix; callback signatures remain opaque because this
+ * initializer only stores their addresses and never invokes them. */
+typedef struct Unk0cb32cDescriptor {
+    u32 size;
+    u32 flags;
+    u32 reserved_008;
+    void (*callbacks[6])(void);
+} Unk0cb32cDescriptor;
+void func_020cbce4(void);
+void func_020cc5d8(void);
+void func_020cbc50(void);
+void func_020cccc4(void);
+/* Fill the descriptor size, flags and six callback addresses, leaving +8 intact;
+ * evidence: STR offsets and relocated literals at 020cbaa4..020cbafc. */
+void func_020cbaa4(Unk0cb32cDescriptor *descriptor)
+{
+    descriptor->size = 0x130;
+    descriptor->flags = 0;
+    descriptor->callbacks[0] = func_020cbce4;
+    descriptor->callbacks[1] = func_020cc5d8;
+    descriptor->callbacks[2] = (void (*)(void))func_020cccb4;
+    descriptor->callbacks[3] = Unk0cb32c_Nop_0cccc0;
+    descriptor->callbacks[4] = func_020cbc50;
+    descriptor->callbacks[5] = func_020cccc4;
 }
