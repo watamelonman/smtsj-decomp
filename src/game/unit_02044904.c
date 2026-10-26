@@ -19,9 +19,17 @@ void Unk044904_Unk_044e90(int arg0);
 int Unk044904_Unk_045fd4(void);
 void Unk044904_Unk_044ea8(void);
 
-typedef struct Unk044904Rec {
-    u8 pad_0000[0x8];
+typedef union Unk044904Rec {
+    u32 words[3];
+    struct {
+    u16 id;
+    u16 count;
+    u16 countFlag;
+    u16 total;
     u16 unk_08;
+    u16 flag0 : 1;
+    u16 otherFlags : 15;
+    };
 } Unk044904Rec;
 
 /* 8 x 12-byte keyed slots followed by a count (see Unk044904_Unk_044948). */
@@ -107,7 +115,13 @@ typedef struct Unk044904Obj {
     u8 unk_01dc;
     u8 unk_01dd;
     u8 unk_01de;
-    u8 pad_01df[0x101];
+    u8 pad_01df;
+    u16 unk_01e0;
+    u16 unk_01e2;
+    u16 unk_01e4;
+    u8 pad_01e6[2];
+    u32 command[2][6];
+    u8 pad_0218[0xc8];
 } Unk044904Obj;
 
 /* Manager +0x60 script-table view; only the +0x3c field is observed here. */
@@ -120,12 +134,13 @@ typedef struct Unk044904Mgr {
     u8 pad_0000[0x40];
     u32 pad_0040_0 : 4;
     u32 flag_0040_4 : 1;        /* selects 0 or 3 for the tone state's +0x44 bits 5..12 */
-    u32 pad_0040_5 : 5;
+    u32 pad_0040_5 : 4;
+    u32 flag_0040_9 : 1;
     u32 flag_0040_10 : 1;
     u32 pad_0040_11 : 4;
     u32 flag_0040_15 : 1;
     u32 flag_0040_16 : 1;
-    u32 pad_0040_17 : 1;
+    u32 flag_0040_17 : 1;
     u32 flag_0040_18 : 1;
     u8 pad_0044[0xc];
     u32 unk_0050;
@@ -212,6 +227,7 @@ s32 func_02118dec(u16 id);
 void Unk118b04_SetFlag(int id, int value);
 void func_0205e590(int value);
 void func_020456d8(int mode);
+void func_020454f4(int mode);
 void func_020455cc(int mode);
 int func_02050074(int selector, int index);
 void Unk039774_Unk_039b74(int mode);
@@ -609,7 +625,7 @@ int Unk044904_Unk_045c7c(void)
     return Unk0bc1a8_IsSlotEmpty(26) == 0;
 }
 
-int func_020452c4();
+void func_020452c4(void);
 int Unk0aa118_SortRemaining();
 void Unk044904_Unk_045bd0();
 void func_020456d8();
@@ -1256,4 +1272,380 @@ int func_02046538(u16 *state)
         }
     }
     return 1;
+}
+
+int func_0204a968(Unk044904Obj *o, int mode);
+u32 func_020b0874(u32 id, int value);
+u32 func_020b1144(int kind);
+u32 func_020b0d48(int mode, u32 id);
+void func_020aa188(int list, u32 *command);
+int func_0204a7f4(Unk044904Obj *o, int mode);
+void func_0204ac4c(Unk044904Obj *o);
+void func_02049a98(Unk044904Obj *o);
+void func_0204aca4(Unk044904Obj *o);
+void Unk0e8228_Unk_0e8260(int slot);
+
+/* 020456d8: submits kind-8 commands for the selected slot type. Mode zero
+ * selects type 2; other modes require manager flag 10 and select type 1.
+ * Evidence: +0x1e8 command stores and the aa188/a780 submission pair. */
+void func_020456d8(int mode)
+{
+    int i;
+    if (mode && !UNK044904_MGR()->flag_0040_10) return;
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = UNK044904_MGR()->slots[i];
+        if (o == 0) continue;
+        if (mode) {
+            if ((o->unk_0000 >> 16 & 255) == 1) goto submit456;
+        } else {
+            if ((o->unk_0000 >> 16 & 255) == 2) goto submit456;
+        }
+        goto next456;
+submit456:
+        if (func_0204a968(o, 0)) continue;
+        o->command[0][0] = o->unk_0000;
+        o->command[0][2] = 8;
+        o->command[0][5] = func_020b0874(o->unk_0000, 100) | 0x50000000;
+        func_020aa188(Unk044904_Unk_044fd8(), o->command[0]);
+        func_0204a780(o, 4);
+next456:;
+    }
+}
+
+/* 020454f4: submits kind-1 commands for active slots matching the optional
+ * type filter (zero accepts either type). The provider reverses types 1/2. */
+void func_020454f4(int mode)
+{
+    int i;
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = UNK044904_MGR()->slots[i];
+        u32 kind;
+        int target;
+        if (!o) continue;
+        kind = o->unk_0000 >> 16 & 255;
+        if (!kind) continue;
+        if (mode && mode != kind) continue;
+        if (func_0204a968(o, 0)) continue;
+        o->command[0][0] = o->unk_0000;
+        kind = o->unk_0000 >> 16 & 255;
+        if (kind == 1) target = 2;
+        else if (kind == 2) target = 1;
+        else target = 0;
+        o->command[0][1] = func_020b1144(target);
+        o->command[0][2] = 1;
+        o->command[0][5] = func_020b0874(o->unk_0000, 100) | 0x50000000;
+        func_020aa188(Unk044904_Unk_044fd8(), o->command[0]);
+        func_0204a780(o, 4);
+    }
+}
+
+/* 020455cc: submits kind-10 commands for slot states 5 and 11, using the
+ * caller's mode for state 5 and zero for state 11; mode also filters types. */
+void func_020455cc(int mode)
+{
+    int i;
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = UNK044904_MGR()->slots[i];
+        u32 kind;
+        int state;
+        if (!o) continue;
+        kind = o->unk_0000 >> 16 & 255;
+        if (!kind) continue;
+        if (mode && mode != kind) continue;
+        state = func_0204a244(o);
+        if (state == 5) {
+            o->command[0][0] = o->unk_0000;
+            o->command[0][1] = func_020b0d48(mode, o->unk_0000);
+            o->command[0][2] = 10;
+            o->command[0][5] = func_020b0874(o->unk_0000, 100) | 0x50000000;
+            func_020aa188(Unk044904_Unk_044fd8(), o->command[0]);
+            func_0204a780(o, 4);
+        } else if (state == 11) {
+            o->command[0][0] = o->unk_0000;
+            o->command[0][1] = func_020b0d48(0, o->unk_0000);
+            o->command[0][2] = 10;
+            o->command[0][5] = func_020b0874(o->unk_0000, 100) | 0x50000000;
+            func_020aa188(Unk044904_Unk_044fd8(), o->command[0]);
+            func_0204a780(o, 4);
+        }
+    }
+}
+
+/* 020452c4: refreshes active slots' two 24-byte commands. Kind 2 requests
+ * state zero; kind 6 with argument 247 marks manager +0x58. */
+void func_020452c4(void)
+{
+    int i, j;
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = UNK044904_MGR()->slots[i];
+        if (!o || !(o->unk_0000 >> 16 & 255)) continue;
+        func_0204a7b4(o, 11);
+        if (!func_0204a7f4(o, 4)) {
+            for (j = 0; j < 2; j++) o->command[j][2] = 0;
+        }
+        func_0204ac4c(o);
+        func_02049a98(o);
+        int k;
+        Unk044904Obj *cursor = o;
+        for (k = 0; k < 2; k++, cursor = (Unk044904Obj *)((u8 *)cursor + 24)) {
+            switch (cursor->command[0][2]) {
+            case 2: func_0204a780(o, 0); break;
+            case 6:
+                if (cursor->command[0][3] == 247) UNK044904_MGR()->unk_0058 = 1;
+                break;
+            }
+        }
+    }
+}
+
+/* 02045a9c: removes the resolved object from its registered slot, or replaces
+ * the requested slot with a type-1 id when the resolver fails. Slot is 0..9. */
+void func_02045a9c(u32 id, int slot, int value)
+{
+    int found = func_02045a30(slot, value, &id);
+    Unk044904Mgr *m = UNK044904_MGR();
+    if (found) {
+        slot = (int)func_02044ec4(id);
+        func_0204aca4((Unk044904Obj *)slot);
+        for (found = 0; found < 10; found++) {
+            if (m->slots[found] == (Unk044904Obj *)slot) {
+                Unk0e8228_Unk_0e8260(found);
+                m->slots[found] = 0;
+                return;
+            }
+        }
+    } else {
+        if (m->slots[slot]) {
+            func_0204aca4(m->slots[slot]);
+            Unk0e8228_Unk_0e8260(slot);
+        }
+        u16 shortValue = value;
+        m->slots[slot] = func_02044ec4((u16)(shortValue & 0xffff) | 0x10000);
+    }
+}
+
+/* Borrowed result accumulator: eight keyed records precede totals. */
+typedef struct Unk044904Results {
+    Unk044904Rec entries[8];
+    u32 count;
+    u32 totalA;
+    u32 totalB;
+    u16 maximum;
+    u16 countAll;
+} Unk044904Results;
+/* Provider statistics observed at +0x5c and +0x60. */
+typedef struct Unk044904Drop {
+    u16 id;
+    u16 chance;
+    u16 flag;
+} Unk044904Drop;
+typedef struct Unk044904Stats {
+    u8 pad[0x48];
+    Unk044904Drop drops[3];
+    u8 pad_005a[2];
+    u32 totalA;
+    u32 totalB;
+} Unk044904Stats;
+int func_02049d80(Unk044904Obj *o, int selector);
+int Unk02e000_GetRecordUnk1f(u16 id);
+void Unk02e000_SetRecordUnk1f_2(u16 id, int value);
+int Unk02e000_GetRecordUnk1c(u16 id);
+void Unk02e000_SetRecordUnk1c(u16 id, int value);
+
+/* The original capacity helper returns a normalized Boolean. */
+static inline int Unk044904_HasRoom(Unk044904Results *v)
+{
+    if (v->count < 8) return 1;
+    return 0;
+}
+
+/* 020449c4: accumulates type-2 slot statistics into the caller's eight-entry
+ * result table, saturates its counters, and updates the persistent record.
+ * Evidence: keyed lookup plus provider totals at +0x5c/+0x60. */
+#pragma push
+#pragma opt_propagation off
+void func_020449c4(void *view, u32 id)
+{
+    Unk044904Results *v = view;
+    Unk044904Obj *o;
+    Unk044904Rec *r;
+    Unk044904Stats *stats;
+    int count, maximum, flag, value;
+    u32 sum, contribution;
+    if (!v) return;
+    if ((id >> 16 & 255) != 2) return;
+    o = func_02044ec4(id);
+    if (!o) return;
+    if (Unk044904_HasRoom(v) <= 0U) return;
+    r = Unk044904_Unk_044948((u32)v, o->unk_01d8);
+    if (!r) return;
+    if (r->count < 65535) r->count++;
+    if (UNK044904_MGR()->unk_0058) {
+        if (r->countFlag < 65535) r->countFlag++;
+    }
+    r->total += o->unk_01e4;
+    stats = (Unk044904Stats *)func_020a1740(o->unk_01d8);
+    count = v->countAll + 1;
+    if (count >= 65535) v->countAll = 65535;
+    else if (count <= 0) v->countAll = 0;
+    else v->countAll = count;
+    contribution = stats->totalA;
+    sum = v->totalA + contribution;
+    if (sum >= 0xffffffff) v->totalA = 0xffffffff;
+    else if (sum <= 0) v->totalA = 0;
+    else v->totalA = sum;
+    contribution = stats->totalB;
+    sum = v->totalB + contribution;
+    if (sum >= 0xffffffff) v->totalB = 0xffffffff;
+    else if (sum <= 0) v->totalB = 0;
+    else v->totalB = sum;
+    maximum = func_02049d80(o, 2);
+    if (v->maximum < maximum) v->maximum = maximum;
+    flag = Unk02e000_GetRecordUnk1f(o->unk_01d8);
+    if (!flag) {
+        r->flag0 = 1;
+        Unk02e000_SetRecordUnk1f_2(o->unk_01d8, flag + 1);
+    }
+    value = Unk02e000_GetRecordUnk1c(o->unk_01d8) - 5;
+    Unk02e000_SetRecordUnk1c(o->unk_01d8, value < 0 ? 0 : value);
+}
+
+#pragma pop
+
+int func_0204a0e8(Unk044904Obj *o, int selector);
+int Unk02e000_GetRecordUnk1e(u16 id);
+void func_0204a720(Unk044904Obj *o, s8 *request);
+int func_020b1488(u32 *out);
+int func_02049350(int mode);
+void func_0204f158(int a, int b, int c, int d);
+void func_0204f108(int a, int b, int c, int d);
+void func_0204f0d4(void);
+void Unk0aa118_Unk_0ab34c(void);
+int Unk0caea8_GetInRange(int id);
+
+/* 02045d90: resolves the post-probe mode, applies slot requests when a type-1
+ * slot satisfies selector 401, and queues provider messages. Evidence: the
+ * b1488 mode dispatch and +0x5c state stores. Returns zero only while busy. */
+int func_02045d90(void)
+{
+    Unk044904Mgr *m;
+    int found, requested, i, mode, message;
+    s8 request[6];
+    u32 out;
+    if (func_020a4f3c()) return 0;
+    if (func_02052728()) return 0;
+    m = UNK044904_MGR();
+    found = 0;
+    requested = 0;
+    for (i = 0; i < 10; i++) {
+        Unk044904Obj *o = m->slots[i];
+        if (o && (o->unk_0000 >> 16 & 255) == 1) {
+            if (func_0204a0e8(o, 401)) { found = 1; break; }
+        }
+    }
+    if (found) {
+        func_02008848(request, 0, 6);
+        request[0] = -1;
+        request[1] = -1;
+        request[2] = -1;
+        int j;
+        for (j = 0; j < 10; j++) {
+            Unk044904Obj *o = m->slots[j];
+            if (o && (o->unk_0000 >> 16 & 255) == 2) {
+                if (Unk02e000_GetRecordUnk1e(o->unk_01d8) >= 100) {
+                    func_0204a720(o, request);
+                    requested = 1;
+                }
+            }
+        }
+    }
+    out = 0;
+    mode = func_020b1488(&out);
+    message = 0;
+    switch (mode) {
+    case 1:
+        m->unk_005c = 1;
+        message = func_02049350(1);
+        break;
+    case 2:
+        m->unk_005c = 2;
+        func_0204f158(0, 32, 2, 0);
+        break;
+    case 3:
+        func_0204f158(0, 32, 2, 0);
+        message = func_02049350(3);
+        break;
+    }
+    if (mode == 2) Unk044904_Unk_045bd0(0);
+    else if (m->flag_0040_17) Unk044904_Unk_045bd0(1);
+    else Unk044904_Unk_045bd0(0);
+    if (!m->flag_0040_9) Unk0aa118_Unk_0ab34c();
+    if (message) {
+        func_0204f0d4();
+        func_0204f108(0, 32, message, 0);
+    }
+    if (requested) {
+        int extra = Unk0caea8_GetInRange(401);
+        if (extra) {
+            func_0204f0d4();
+            func_0204f108(0, 32, extra, 0);
+        }
+    }
+    return 1;
+}
+
+/* Twelve-byte result records are copied intact to the six-record output. */
+typedef struct Unk044904Loot {
+    Unk044904Rec entries[6];
+    u32 any;
+} Unk044904Loot;
+int Unk0e651c_Unk_0e666c(int flag);
+int Unk09974c_Unk_0998f0(u16 id);
+int Unk0986ac_Unk_098978(int id);
+int Unk0986ac_Thunk_02098714(int value);
+void func_02013c68(void *base, u32 count, u32 stride,
+                   s32 (*compare)(Unk044904SortRec *, Unk044904SortRec *));
+
+/* 02044c48: rolls three provider drops per counted result, coalesces matching
+ * ids, sorts by 02044b84, and copies at most six records. Flag 1811 gates all
+ * drops; provider flag 170 adds five to the chance. Caller owns both tables. */
+void func_02044c48(Unk044904Loot *out, Unk044904Results *results)
+{
+    Unk044904Rec drops[24];
+    u32 count = 0, i, j, k;
+    int times, n;
+    func_02008848(drops, 0, sizeof(drops));
+    func_02008848(out, 0, sizeof(*out));
+    if (!Unk0e651c_Unk_0e666c(1811)) return;
+    for (i = 0; i < results->count; i++) {
+        Unk044904Stats *stats = (Unk044904Stats *)func_020a1740(results->entries[i].id);
+        times = results->entries[i].count;
+        for (n = 0; n < times; n++) {
+            for (j = 0; j < 3; j++) {
+                Unk044904Drop *drop = &stats->drops[j];
+                u32 chance;
+                int index;
+                if (!drop->id) continue;
+                if (Unk09974c_Unk_0998f0(drop->id)) continue;
+                if (drop->flag && !Unk0e651c_Unk_0e666c(drop->flag)) continue;
+                chance = drop->chance;
+                if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(170))) chance += 5;
+                if ((u32)func_02050074(0, 99) >= chance) continue;
+                index = -1;
+                for (k = 0; k < count; k++) {
+                    if (drops[k].id == drop->id) { index = k; break; }
+                }
+                if (index < 0) index = count++;
+                drops[index].id = drop->id;
+                drops[index].count++;
+            }
+        }
+    }
+    func_02013c68(drops, count, 12, func_02044b84);
+    int finalIndex;
+    for (finalIndex = 0; finalIndex < count; finalIndex++) {
+        if (finalIndex >= 6) return;
+        out->entries[finalIndex] = drops[finalIndex];
+        if (out->entries[finalIndex].count) out->any = 1;
+    }
 }
