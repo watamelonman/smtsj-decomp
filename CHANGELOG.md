@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T1100: match MSL frexp, decimal equality/ordering and num2dec formatting helpers; document four remaining runtime or symbol-configuration hard cases.
+
 - M2-T1099: match four MSL decimal and double-classification helpers in `libs/MSL/msl_02017850.c` (`func_0201ba78`, `func_0201bdc4`, `func_0201ce94`, `func_0201cf3c`); document `func_0201d458` and the `_dgeq`/`_dgr`/`_deq` flag-returning comparison primitives as hard hand-written assembly.
 - M2-T112: match four NitroSDK sub-engine BG control setters and the free-block sort comparator in `libs/NitroSDK/sdk_02054284.c`; document the `func_02054294` free-block allocator as a hard register-allocation case.
 - M2-T1063: match the font-registry reset, text-buffer init, slot release, device-state setter, singleton counter and three singleton state helpers in `libs/unknown/lib_02061798.c` (`func_02061798`, `func_02062a00`, `func_02063920`, `func_02063f54`, `func_020641c4`, `func_02065c80`, `func_02065ca8`, `func_02065cd0`).

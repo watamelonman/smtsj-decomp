@@ -20,10 +20,6 @@ extern s32 func_02007170(s32 arena, s32 heap, void *block);
  * function document), but func_0201bb34 calls it with the decimal state. */
 extern void func_0201bae4(MslDecimal *value, int digits);
 
-/** MSL exponent helper: returns the mantissa of `value` and stores the binary
- * exponent through `exponent` (frexp-style split). */
-extern double func_0201b5cc(double value, int *exponent);
-
 /** MSL exponent helper: rebuilds a double from a mantissa and binary exponent
  * (ldexp-style combine); it is the inverse of func_0201b5cc. */
 extern double func_0201b688(double value, int exponent);
@@ -255,4 +251,113 @@ s32 func_0201cfd8(void *block)
 s32 func_0201e048(void)
 {
     return 0x7fffffff;
+}
+
+/** Convert a double to internal numeric decimal digits for formatting. */
+extern void func_0201c648(MslDecimal *value, double number);
+
+/** Split a finite double into a signed fraction and binary exponent.
+ * Evidence: IEEE exponent mask and 2^54 scaling match MSL frexp semantics;
+ * zero and nonfinite inputs are returned unchanged with exponent zero.
+ * The named archived MSL frexp body is cited in the function document. */
+double func_0201b5cc(double value, int *exponent)
+{
+    int high = ((int *)&value)[1];
+    int low = ((int *)&value)[0];
+    int magnitude = high & 0x7fffffff;
+    *exponent = 0;
+    if (magnitude >= 0x7ff00000 || (magnitude | low) == 0)
+        return value;
+    if (magnitude < 0x100000) {
+        value *= 18014398509481984.0;
+        *exponent = -54;
+        high = ((int *)&value)[1];
+        magnitude = high & 0x7fffffff;
+    }
+    *exponent += (magnitude >> 20) - 1022;
+    ((int *)&value)[1] = (high & 0x800fffff) | 0x3fe00000;
+    return value;
+}
+
+/** Compare unsigned decimal magnitudes for equality, ignoring trailing zeros.
+ * Evidence: exponent comparison followed by paired digits and a zero-tail scan;
+ * a leading zero represents zero regardless of the exponent. This matches
+ * archived MSL __equals_dec (source link in the function document). */
+int func_0201c1e4(const MslDecimal *left, const MslDecimal *right)
+{
+    int i, length;
+    if (left->digits[0] == 0)
+        return right->digits[0] == 0;
+    if (right->digits[0] == 0)
+        return left->digits[0] == 0;
+    if (left->exponent == right->exponent) {
+        length = left->length;
+        if (length > right->length)
+            length = right->length;
+        for (i = 0; i < length; i++) {
+            if (left->digits[i] != right->digits[i])
+                return 0;
+        }
+        if (length == left->length)
+            left = right;
+        for (; i < left->length; i++) {
+            if (left->digits[i] != 0)
+                return 0;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+/** Order unsigned decimal magnitudes, ignoring trailing zeros.
+ * Evidence: zero checks, signed exponent ordering and lexicographic digits;
+ * signs are deliberately not consulted by this internal magnitude helper.
+ * See archived MSL __less_dec, cited in the function document. */
+int func_0201c2c4(const MslDecimal *left, const MslDecimal *right)
+{
+    int i, length;
+    if (left->digits[0] == 0)
+        return right->digits[0] != 0;
+    if (right->digits[0] == 0)
+        return 0;
+    if (left->exponent == right->exponent) {
+        length = left->length;
+        if (length > right->length)
+            length = right->length;
+        for (i = 0; i < length; i++) {
+            if (left->digits[i] < right->digits[i])
+                return 1;
+            if (right->digits[i] < left->digits[i])
+                return 0;
+        }
+        if (length == left->length) {
+            for (; i < right->length; i++) {
+                if (right->digits[i] != 0)
+                    return 1;
+            }
+        }
+        return 0;
+    }
+    return left->exponent < right->exponent;
+}
+
+/** Produce ASCII digits at the requested precision (capped at 32).
+ * Evidence: converter call, decimal rounding helper, zero padding, exponent
+ * adjustment, and addition of '0'; special markers above nine pass through.
+ * See archived MSL __num2dec, cited in the function document. */
+void func_0201c7c8(const MslDecimalFormat *format, double number, MslDecimal *value)
+{
+    int precision = format->digits;
+    int i;
+    func_0201c648(value, number);
+    if (value->digits[0] > 9)
+        return;
+    if (precision > 32)
+        precision = 32;
+    func_0201bb34(value, precision);
+    while (value->length < precision)
+        value->digits[value->length++] = 0;
+    value->exponent -= value->length - 1;
+    for (i = 0; i < value->length; i++)
+        value->digits[i] += '0';
 }

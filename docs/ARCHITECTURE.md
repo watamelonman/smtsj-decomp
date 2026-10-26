@@ -38,3 +38,8 @@ ownership; the work area owns display handles between allocation and teardown.
 `include/game/unit_020cb32c.h` exposes borrowed work/display prefix views and
 provider declarations for the list teardown and paired drawing helpers.
 Offsets follow original loads and stores; resource providers retain ownership.
+
+`include/libs/MSL/msl_02017850.h` exposes a borrowed formatting-request prefix
+for the MSL decimal formatter: only the signed precision at offset two is read.
+The request and decimal output storage remain caller-owned; the helpers depend
+only on existing MSL numeric routines and base types.
