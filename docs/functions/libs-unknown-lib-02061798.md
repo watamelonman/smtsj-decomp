@@ -1,11 +1,12 @@
 # libs/unknown/lib_02061798
 
-Forty-seven functions of this TU are reconstructed from the original ARM
+Fifty-five functions of this TU are reconstructed from the original ARM
 instructions and match at 100%: seven from M2-T1057, eight from M2-T1058,
 eight from M2-T1059, the eight covered by M2-T1060, the eight covered by
-M2-T1061 and the eight covered by M2-T1062. `func_02062264` is the exception:
-it is a four-byte copy of the preceding function's unreachable epilogue and
-cannot be expressed as a standalone C function (see Hard list).
+M2-T1061, the eight covered by M2-T1062 and the eight covered by M2-T1063.
+`func_02062264` is the exception: it is a four-byte copy of the preceding
+function's unreachable epilogue and cannot be expressed as a standalone C
+function (see Hard list).
 
 All names remain neutral linker symbols: the surrounding records and the
 public SDK sources found below do not establish an application-level API name.
@@ -44,7 +45,21 @@ words to `Unk061798ResultB`, and typed its `+0` word as the render-object
 pointer that `func_0206557c` forwards to `func_02062a3c`. M2-T1062 typed the
 `+4` word of `Unk061798ResultB` as a second render-object pointer and added
 its `+0x50` word, gave `Unk061798Font` the `+0x2c` table pointer and the signed
-`+0x34` count, and added byte `+0x90` to `Unk061798Object`.
+`+0x34` count, and added byte `+0x90` to `Unk061798Object`. M2-T1063 added the
+`+0x14`, `+0x24`, `+0x2c` and `+0x3c` words of `Unk061798Object`, the `+0x28` and
+`+0x4c` words of `Unk061798ResultB`, the four-entry `data_0216b4c0` font
+registry, and the `data_0216b5a0`/`data_0216b5a8` text-buffer descriptor. The
+descriptor is typed as an 8-byte pointer/length pair because `data_0216b5a8`
+follows it in bss and the initialiser points the first word at that buffer.
+
+## func_02061798 — 48 bytes
+
+Initialises the four-entry font registry at `data_0216b4c0` by storing -1 in
+the id word at `+0x20` of every 56-byte entry, marking all slots free for
+`func_020618cc`. The target keeps an indexed `mla` loop (`mla r1, ip, r0, r2`
+with 56 in r0) rather than a strength-reduced pointer walk, so
+`opt_strength_reduction` and `opt_rotateloops` are scoped off around this
+function. Its only direct caller is `0x0202cc0c`. Objdiff: 100%.
 
 ## func_0206190c — 16 bytes
 
@@ -126,6 +141,15 @@ It returns the allocated record, or 0 when `func_02060a48` returned 0; the
 explicit null test reproduces the original `cmp; moveq r0, #0` rather than a
 tail call. Objdiff: 100%.
 
+## func_02062a00 — 44 bytes
+
+Releases the object's `+0x14` slot through `Unk0d297c_FreeSlot`, but only when
+the slot pointer is non-null and the state word at `+0xc` is 1 or 3. The
+original loads `+0x14` first, then tests `+0xc` with `cmp #1; cmpne #3` and a
+`popne`; the address it passes is `object + 0x14`. Call sites include
+`0x02061f4c`, `0x020629f0`, `0x020633fc`, the two `func_02065b74` calls at
+`0x02065b88`/`0x02065b90` and `0x020d1b44`. Objdiff: 100%.
+
 ## func_02062a2c — 16 bytes
 
 Reads the font id at `+0x28` of a render object and tail-calls
@@ -186,6 +210,16 @@ Takes a render-object pointer and a 32-bit value; stores the value at +0x48.
 Call site `0x02063e88` uses it to clear the field on the object's first pointer
 (also `0x02063ec4`). Objdiff: 100%.
 
+## func_02063920 — 52 bytes
+
+Clears the shared 1024-byte text buffer at `data_0216b5a8` with
+`func_02008644(0, data_0216b5a8, 0x400)`, then resets the descriptor at
+`data_0216b5a0` so its `+0` word points at that buffer and its `+4` length
+word is zero. The two bss objects are adjacent and the literal reload after
+the fill proves the pointer store. Call sites include `0x02067310`,
+`0x0206737c`, `0x0206a2cc`, `0x02090d4c` and many other text resets.
+Objdiff: 100%.
+
 ## func_02063a30 — 20 bytes
 
 Tail wrapper for `func_02063954`: forwards the text pointer in r0 and the
@@ -211,6 +245,24 @@ singleton. Callers test it for null before reading fields (call sites
 No-argument tail wrapper for `func_02063a50`, which returns the singleton from
 `data_0216b9a8` +4. Callers test the result for null and read fields through it
 (call sites `0x020641c8`, `0x0206545c`). Objdiff: 100%.
+
+## func_02063f54 — 48 bytes
+
+Queries device 0 with mask 1 through `func_02053800`, returning the query
+result. When the result is non-zero it stores 1 at the object's `+0x24` word
+and 0 at `+0x2c`; when it is zero the object is untouched and the query's zero
+result is returned. The target keeps the result in r0 across the stores (so
+the constants use r1) and has no `mov r0` on either return path, which
+establishes the status return type. Call sites are `0x02064150`,
+`0x0206418c` and `0x02064198`. Objdiff: 100%.
+
+## func_020641c4 — 44 bytes
+
+Increments the `+0x28` word of the `func_02063a60` singleton and stores the
+new value, wrapping it back to zero once it reaches 0xffff. The literal at
+`0x020641ec` is `0x0000ffff`, and the original stores the incremented value
+before the conditional `movge`/`strge` reset. Its only caller is
+`0x02063b88`, immediately before `func_020641f0`. Objdiff: 100%.
 
 ## func_020641f0 — 40 bytes
 
@@ -374,6 +426,29 @@ Same null-check and release tail as `func_02065c30`, but stores 4 at `+0x8`
 and 5 at `+0xc`. Call site `0x020a0804` follows a `func_0206597c(4)` message
 reset. Objdiff: 100%.
 
+## func_02065c80 — 40 bytes
+
+Returns when the `func_02063a50` singleton is null; otherwise stores 3 at
+`+0x8` and 0 at `+0xc`, then calls `func_02065b74` to release its render
+objects. Call sites are `0x0204b148`, `0x0204b180`, `0x0210b324` and
+`0x0211c864`. Objdiff: 100%.
+
+## func_02065ca8 — 40 bytes
+
+Returns when the `func_02063a50` singleton is null; otherwise stores 0 at
+`+0x8` and at `+0x4c`, then calls `Unk0bc1a8_Unk_0bc9b4` with id 25. The
+original keeps 25 in r0 after the two stores. Call sites include
+`0x0203be94`, `0x0203bffc`, `0x02048f28`, `0x02063de4` and many text resets.
+Objdiff: 100%.
+
+## func_02065cd0 — 44 bytes
+
+Returns 1 when the `func_02063a50` singleton is absent; otherwise loads its
+`+0` render-object pointer and returns whether that object's `+0x3c` word
+equals 1. The original materialises the boolean with `moveq #1; movne #0`.
+Call sites include `0x0204b128`, `0x0204b13c`, `0x0204b16c`, `0x020a07f8`
+and `0x020a3e7c`/`0x020a3eb8`. Objdiff: 100%.
+
 ## Hard list
 
 - `func_02062264` (4 bytes): the original instruction is only
@@ -389,7 +464,7 @@ reset. Objdiff: 100%.
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for each of the forty-seven reconstructed
+`tools/hand/cmp.py` reports OK for each of the fifty-five reconstructed
 functions. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.
