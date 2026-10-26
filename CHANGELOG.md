@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T874: match eight `game/unit_020a6174` provider-update, weighted-selection, grid-rebuild and placement functions at 100% objdiff; document their borrowed record contracts and the scoped 020a65c4 allocation pragma.
 - M1-T873: match eight grid insertion, reconstruction, record clearing, weighted selection, and provider-check functions in `game/unit_020a6174`; document caller contracts and instruction evidence.
 - M1-T868: match eight game/unit_020cb32c selector, descriptor, handle and state helpers; document typed contracts and instruction evidence.
 - Match eight more unit_02116598 allocation, teardown, and state functions (M1-T806).

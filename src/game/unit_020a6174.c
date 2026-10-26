@@ -402,10 +402,13 @@ int func_020cafbc(u16 x, u16 y);
 /* Keep absolute-value arithmetic inline for the bounded coordinate differences. */
 static inline int Unk0a6174_Abs(int value)
 {
-    return value < 0 ? -value : value;
+    return value >= 0 ? value : -value;
 }
 /* Original kind byte, bits 6/7, radius-four occupancy and neighboring +12
- * metadata reject placement. Grid/provider buffers remain caller-owned. */
+ * metadata reject placement. Grid/provider buffers remain caller-owned.
+ * See DEC-021 for the scoped strength-reduction setting. */
+#pragma push
+#pragma opt_strength_reduction off
 int func_020a65c4(u8 *grid, u8 *provider, u8 *overlay, int x, int y, int kind)
 {
     u8 *cell;
@@ -422,7 +425,6 @@ int func_020a65c4(u8 *grid, u8 *provider, u8 *overlay, int x, int y, int kind)
     for (row = y - 4; row <= y + 4; row++) {
         if (row < 0 || row >= 40) continue;
         for (col = x - 4; col <= x + 4; col++) {
-            int dy, dx;
             if (col < 0 || col >= 45) continue;
             if (Unk0a6174_Abs(x - col) + Unk0a6174_Abs(y - row) > 4) continue;
             cell = (u8 *)Unk0a6174_Unk_0a6a88((int)grid, col, row);
@@ -430,28 +432,29 @@ int func_020a65c4(u8 *grid, u8 *provider, u8 *overlay, int x, int y, int kind)
         }
     }
     {
-    int row, col;
-    for (row = y - 1; row <= y + 1; row++) {
-        if (row < 0 || row >= 40) continue;
-        for (col = x - 1; col <= x + 1; col++) {
-            if (col == x && row == y) continue;
-            if (col < 0 || col >= 45) continue;
-            cell = 0;
-            if (overlay != 0) {
-                cell = Unk038fbc_Unk_039160(overlay, col, row);
-                if (cell != 0 && cell[0] == 0) cell = 0;
-            }
-            if (cell == 0) cell = Unk038fbc_Unk_039160(provider, col, row);
-            if (cell != 0) {
-                cell = Unk09a268_Unk_09c498(cell[0]);
-                if (cell != 0 && FIELD(u32, cell, 12) == 2) return 0;
+        int col, row;
+        for (row = y - 1; row <= y + 1; row++) {
+            if (row < 0 || row >= 40) continue;
+            for (col = x - 1; col <= x + 1; col++) {
+                if (col == x && row == y) continue;
+                if (col < 0 || col >= 45) continue;
+                cell = 0;
+                if (overlay != 0) {
+                    cell = Unk038fbc_Unk_039160(overlay, col, row);
+                    if (cell != 0 && cell[0] == 0) cell = 0;
+                }
+                if (cell == 0) cell = Unk038fbc_Unk_039160(provider, col, row);
+                if (cell != 0) {
+                    cell = Unk09a268_Unk_09c498(cell[0]);
+                    if (cell != 0 && FIELD(u32, cell, 12) == 2) return 0;
+                }
             }
         }
-    }
     }
     if (func_020cafbc((u16)x, (u16)y) == 1) return 0;
     return 1;
 }
+#pragma pop
 
 u32 func_0204fe18(void *header);
 int Unk0e5fb8_Unk_0e62c8(u32 index);
@@ -561,22 +564,19 @@ void Unk0caea8_Unk_0caf48(void);
  * map rectangle cyclically from a random cell. All work buffers are borrowed. */
 void func_020a6e94(u8 *grid, u8 *records)
 {
-    u32 work[5];
-    u8 *bounds, *table;
-    int left, top, right, bottom;
     u32 count;
+    u8 *bounds, *table;
+    int startx, x, y;
+    int left, right, bottom, top;
     int limit;
     u8 i;
     u8 selected;
-    Unk0a6174KeySlot *entry;
-    int slot, starty, inserted;
-    int startx, x, y;
+    Unk0a6174KeySlot *candidate, *entry;
+    int slot;
+    int starty;
+    int inserted;
     if (grid == 0) return;
-    {
-        u32 *buffer = work;
-        buffer[0] = 0; buffer[1] = 0; buffer[2] = 0;
-        buffer[3] = 0; buffer[4] = 0;
-    }
+    u32 work[5] = {0};
     if (!Unk0387bc_Unk_038cf8(work)) return;
     bounds = FIELD(u8 *, GetGameState(), 0x240);
     if (bounds != 0) {
@@ -593,16 +593,16 @@ void func_020a6e94(u8 *grid, u8 *records)
                 if (FIELD(s16, grid, 0xe10) < limit) limit = FIELD(s16, grid, 0xe10);
                 for (i = 0; i < limit; i++) {
                     selected = func_020a62ec(table, count);
-                    entry = Unk0387bc_GetEntry32(work, FIELD(u16, table + selected * 4, -4));
-                    entry = func_020a63cc(entry);
+                    candidate = Unk0387bc_GetEntry32(work, FIELD(u16, table + selected * 4, -4));
+                    entry = func_020a63cc(candidate);
                     if (entry == 0) break;
                     slot = Unk0a6174_FindFree0c(records);
                     if (slot == -1) break;
                     startx = func_02050088(1, left, right);
                     starty = func_02050088(1, top, bottom);
                     y = starty;
-                    inserted = 0;
                     x = startx;
+                    inserted = 0;
                     do {
                         if (func_020a65c4(grid, GetGameState() + 0x240, 0, x, y, 1) == 1) {
                             inserted = func_020a6280(grid, x, y, 1, (u8)slot);

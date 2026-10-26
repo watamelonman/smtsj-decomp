@@ -346,3 +346,13 @@ The provider's byte store at work +0x361 consumes only the low byte (see
 `src/game/unit_0202f078.c`); its implementation's byte parameter would cause mwcc
 to insert an extra caller-side mask here. No value range for the mapping inputs
 is assumed, and no full-result truncation is introduced.
+
+## DEC-021 — Preserve the 020a65c4 radius-scan register split
+
+Scope `opt_strength_reduction off` to `func_020a65c4` and restore the setting
+immediately afterward. With the default setting, mwccarm 2.0/sp1p5 gives the
+outer row counter r7 and the `y - row` absolute-value temporary r6; the original
+uses the opposite split and conditional-move schedule. Disabling strength
+reduction for this function preserves the original r6/r7 assignment and the
+`movge`/`movlt` order while leaving the C semantics ordinary. No assembly,
+volatile accesses or byte blobs are involved.
