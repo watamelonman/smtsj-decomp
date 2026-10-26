@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T988: verify eight ScanVisor forwarding, list traversal and work-state helpers at 100% objdiff; document typed contracts and original instruction evidence.
 - M1-T987: verify and clean up eight ScanVisor work-field selectors, slot allocation and list-refresh helpers at 100% objdiff, with typed parameters and instruction/caller evidence.
 - M1-T995: verify seven game/unit_0206ae94 forwarding, transform, scan and release helpers at 100% objdiff; document the cursor helper instruction-order blocker.
 - Match all eight M1-T979 selection, ID-list submission and drawing helpers at 100% objdiff; document original stack-overrun behavior and scoped optimization settings.
