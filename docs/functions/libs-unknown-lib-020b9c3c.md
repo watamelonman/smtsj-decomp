@@ -4,11 +4,13 @@ The public-source search considered pret/pokeplatinum and NitroSDK/NitroSystem
 implementations; no corresponding source was identified. Despite the library split
 name, these functions call the game script helpers at 0x0203ac00 and 0x0203acf4.
 The original ARM instructions are the behavior evidence; no SDK identity is assumed.
-Existing neutral symbol names are retained for relocation compatibility.
+The existing neutral symbol name `Unk03aae8_Unk_03acf4` for the result helper is
+retained, matching `config/arm9/symbols.txt` and the rest of the tree, so the C
+relocates against the same symbol as the delinked original.
 
-Each handler takes no explicit parameters, reads signed 32-bit script operands,
+Each handler takes no explicit parameters, reads 32-bit script operand words,
 calls `func_020b8b38(command, operand0, operand1, 0)`, publishes its return value
-through `func_0203acf4`, and returns status 1. The result helper stores the word at
+through `Unk03aae8_Unk_03acf4`, and returns status 1. The result helper stores the word at
 script context +0xa8 and clears the byte at +0x3b. The dispatcher stores its four
 arguments in a work record at +0x20 through +0x2c before calling 0x0204e9d8.
 These observations do not establish the semantic meanings of the command IDs.
