@@ -19,10 +19,10 @@ typedef struct Unk06ae94Work {
 } Unk06ae94Work;
 
 extern u32 data_021457e0[];
-int func_02052d34();
-int func_02052d58();
+void func_02052d34(void);
+void func_02052d58(void);
 
-u32 Unk06ae94_GetUnkField4c(void *obj);
+u32 Unk06ae94_GetUnkField4c(const Unk06ae94Work *obj);
 void Unk06ae94_Unk_06c8e0(Unk06ae94Work *work,u32 arg1,u32 arg2);
 void Unk06ae94_Unk_06ae94(u32 arg0);
 void Unk06ae94_Unk_06aeb4(u32 arg0);
@@ -30,18 +30,23 @@ void Unk06ae94_Unk_06aeb4(u32 arg0);
 u32 func_020445d0(int kind, u32 id);
 void func_0204fde0(u32 h);
 void func_0204fe18(u32 h);
+/* At 0x0206aed4, resolve category 2 and pass its handle to func_0204fde0. */
 void Unk06ae94_Unk_06aed4(u32 id)
 {
     func_0204fde0(func_020445d0(2, id));
 }
 
+/* At 0x0206aeec, resolve category 2 and pass its handle to func_0204fe18. */
 void Unk06ae94_Unk_06aeec(u32 id)
 {
     func_0204fe18(func_020445d0(2, id));
 }
 
-/* get u32 at +0x4c */
-u32 Unk06ae94_GetUnkField4c(void *obj) { return ((Unk06ae94Work *)obj)->unk_004c; }
+/* The load at 0x0206c764 reads +0x4c; obj must reference a valid work object. */
+u32 Unk06ae94_GetUnkField4c(const Unk06ae94Work *obj)
+{
+    return obj->unk_004c;
+}
 
 typedef struct Unk06ae94Pair {
     u32 a;
@@ -53,6 +58,8 @@ typedef struct Unk06ae94Pairs {
     Unk06ae94Pair pair[2];      /* +0x158 */
 } Unk06ae94Pairs;
 
+/* Stores at 0x0206c8d4/8 identify the pair at +0x158 with stride 8.
+ * The signed comparison clamps indices >= 2 to 1; callers must supply i >= 0. */
 void Unk06ae94_SetPair(Unk06ae94Pairs *p, u32 a, u32 b, int i)
 {
     if (i >= 2) {
@@ -62,7 +69,8 @@ void Unk06ae94_SetPair(Unk06ae94Pairs *p, u32 a, u32 b, int i)
     p->pair[i].b = b;
 }
 
-/* decompiler-derived */
+/* Stores at 0x0206c8e0 set bit 2 at +0x34, then write arg2/arg1 at +0x3c/+0x40.
+ * work must be valid; the field meanings are unknown. */
 void Unk06ae94_Unk_06c8e0(Unk06ae94Work *work,u32 arg1,u32 arg2)
 {
   work->unk_0034 = work->unk_0034 | 4;
@@ -70,7 +78,8 @@ void Unk06ae94_Unk_06c8e0(Unk06ae94Work *work,u32 arg1,u32 arg2)
   work->unk_0040 = arg1;
 }
 
-/* decompiler-derived */
+/* The test at 0x0206aea0 calls func_02052d34 only when
+ * arg0 overlaps the global word at data_021457e0; bit meanings are unknown. */
 void Unk06ae94_Unk_06ae94(u32 arg0)
 {
   if ((*data_021457e0 & arg0) == 0) {
@@ -79,7 +88,8 @@ void Unk06ae94_Unk_06ae94(u32 arg0)
   func_02052d34();
 }
 
-/* decompiler-derived */
+/* The test at 0x0206aec0 calls func_02052d58 only when
+ * arg0 overlaps the global word at data_021457e0; bit meanings are unknown. */
 void Unk06ae94_Unk_06aeb4(u32 arg0)
 {
   if ((*data_021457e0 & arg0) == 0) {
@@ -169,7 +179,8 @@ void Unk06ae94_Unk_06c0b0(u32 o)
     func_02061424(o);
 }
 
-int Unk06ae94_CompareU32(u32 *a, u32 *b)
+/* Unsigned branches at 0x0206c0dc return -1/0/1 for the two valid u32 inputs. */
+int Unk06ae94_CompareU32(const u32 *a, const u32 *b)
 {
     if (*a < *b) {
         return -1;

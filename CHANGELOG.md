@@ -2,6 +2,13 @@
 
 ## Unreleased
 - M1-T975: match the three remaining CaveArea render/state callbacks (`func_020ecc24`, `func_020ec704`, `func_020ebb14`) at 100% objdiff, with typed work-field contracts and instruction evidence.
+- M1-T986: verify eight ScanVisor forwarding, query and threshold helpers at 100% objdiff; document typed call contracts and original instruction evidence.
+- Verified all eight M1-T994 helpers in `game/unit_0206ae94` against the original ARM code; added typed declarations and per-function evidence contracts.
+- M1-T985: verify the eight ScanVisor work-object wrappers, list-update helpers and slot activate/deactivate functions at 100% objdiff; type their parameters and document instruction and caller evidence.
+- M1-T908: match all six `game/unit_020e8228` row access, initialization, dispatch and request-builder functions at 100% objdiff; document typed contracts and borrowed layouts.
+- M1-T984: explicitly forward the ScanVisor query thunk's typed list pointer and return its boolean integer result, as required by its caller.
+- M1-T984: verified the eight ScanVisor setter, thunk, clear and work-object getter helpers at 100% objdiff; typed their parameters and documented instruction and caller evidence.
+- Match all eight M1-T978 ID scan, copy, provider and polling helpers at 100% objdiff; document observed contracts and the scoped copy propagation setting.
 - M1-T907: match seven `game/unit_020e8228` bank scans, selection-bit, index-advance, request-builder, state teardown and object-state functions at 100% objdiff; add typed contracts and document the remaining literal-pool alias hard case.
 - Verified all eight M1-T977 table, resource and state helpers at 100% objdiff; documented their instruction-based contracts.
 - Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.

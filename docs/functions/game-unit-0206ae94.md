@@ -1,15 +1,27 @@
 # src/game/unit_0206ae94.c
 
-- `Unk06ae94_GetUnkField4c` (8 B): get u32 at +0x4c
-- `Unk06ae94_Unk_06c8e0` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk06ae94_Unk_06ae94` (32 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk06ae94_Unk_06aeb4` (32 B): decompiler-derived (Ghidra output, cleaned)
+## M1-T994: verified matching functions
+
+All eight functions below match the original ARM instructions at 100% objdiff.
+Evidence is the instruction stream at the listed addresses, not inferred game semantics.
+Pointers must reference valid objects; no ownership is transferred.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `Unk06ae94_GetUnkField4c` | 0x0206c764 / 8 B | Returns the word at +0x4c, as shown by the single load. |
+| `Unk06ae94_Unk_06aed4` | 0x0206aed4 / 24 B | Resolves `(2, id)` through `func_020445d0`, then forwards the handle to `func_0204fde0`. Callee meanings remain unknown. |
+| `Unk06ae94_Unk_06aeec` | 0x0206aeec / 24 B | Resolves `(2, id)` through `func_020445d0`, then forwards the handle to `func_0204fe18`. Callee meanings remain unknown. |
+| `Unk06ae94_SetPair` | 0x0206c8c8 / 24 B | Signed comparison clamps indices >= 2 to 1, then stores two words at +0x158/+0x15c with stride 8. Caller must supply a nonnegative index. |
+| `Unk06ae94_Unk_06c8e0` | 0x0206c8e0 / 24 B | ORs bit 2 into +0x34; stores arg2 at +0x3c and arg1 at +0x40. Field meanings remain unknown. |
+| `Unk06ae94_Unk_06ae94` | 0x0206ae94 / 32 B | Calls `func_02052d34` only when the input mask overlaps the word at `data_021457e0`. |
+| `Unk06ae94_Unk_06aeb4` | 0x0206aeb4 / 32 B | Calls `func_02052d58` under the same mask condition. |
+| `Unk06ae94_CompareU32` | 0x0206c0d4 / 32 B | Unsigned compare of two pointed-to words returns -1, 0, or 1. Carry/HI branches establish unsigned ordering. |
 
 ## Hard list
-- `Unk06ae94_Unk_06aed4`: no candidate matched locally
-- `Unk06ae94_Unk_06aeec`: no candidate matched locally
-- `Unk06ae94_SetPair`: no candidate matched locally
-- `Unk06ae94_CompareU32`: no candidate matched locally
+
+None for M1-T994. The existing bodies already matched; this task verifies them and
+adds typed declarations and evidence-based contracts. Other task entries below are
+retained as historical notes rather than M1-T994 acceptance results.
 
 ## Not done in M1-T995
 - `Unk06ae94_Unk_06c0b0`
