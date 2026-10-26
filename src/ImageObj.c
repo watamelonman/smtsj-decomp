@@ -23,13 +23,26 @@ typedef struct ImageObjWork {
 /* Per-slot effect object reached through the singleton table. Field meanings are
  * unknown; the offsets come from the original loads and stores. */
 typedef struct ImageObjNode {
-    u8 pad_00[0x30];
+    u32 kind;
+    u32 state;
+    u32 previous;
+    u8 pad_0c[0x18];
+    s32 x;
+    s32 y;
+    u32 unk_2c;
     s32 unk_30;
     u8 pad_34[4];
     s8 unk_38;
-    u8 pad_39[0x17];
+    u8 pad_39[3];
+    u32 unk_3c;
+    u32 unk_40;
+    u16 unk_44;
+    u8 pad_46[2];
+    u32 unk_48;
+    u32 unk_4c;
     u32 unk_50;
-    u8 pad_54[0xc];
+    s32 unk_54;
+    u8 pad_58[8];
     u32 unk_60;
     u32 unk_64;
     u32 unk_68;
@@ -225,8 +238,9 @@ u32 ImageObj_Unk_0776d4(void)
 
 /* Returns zero when a live slot is in state 9 or 10; otherwise tears down each
  * live slot and returns one. Evidence: BLs at 02077234, 02077240 and 02077254;
- * loop bound CMP at 0207725c. Requires the slot table to stay valid. */
-u32 ImageObj_Unk_077228(void)
+ * loop bound CMP at 0207725c. Requires the slot table to stay valid; the
+ * forwarded work argument is unused (r0 is retained by caller 0207726c). */
+u32 ImageObj_Unk_077228(ImageObjWork *unused)
 {
   int value1;
   int value2;
@@ -252,7 +266,7 @@ typedef struct Unk077Tbl {
     u32 unk_00c4;
 } Unk077Tbl;
 
-u32 func_02077900();
+u32 func_02077900(int slot, int value);
 int func_02077a9c(ImageObjNode *node);
 void func_02077e74(ImageObjNode *node);
 void ImageObj_Unk_079184(int arg0);
@@ -395,8 +409,8 @@ void ImageObj_Unk_077640(void)
 }
 
 int ImageObj_GetOrCreate(int index, int arg);
-int func_020774b4();
-int func_02079268();
+void func_020774b4(ImageObjNode *node, int value);
+int func_02079268(ImageObjNode *node, u32 value);
 /* Returns one when the singleton is absent, or when every slot handle is zero
  * or has a zero word at +4; the first live handle stops the scan with zero.
  * Evidence: loop BL at 02077724 and conditional LDR at 02077728..02077730. */
@@ -537,26 +551,25 @@ void ImageObj_Unk_077d98(ImageObjNode *node)
     Unk065e88_SetPair04(node->unk_68, 0, value);
 }
 
-/* decompiler-derived */
-void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
+/* Creates an absent slot or restarts an inactive/different node, then stores
+ * the caller's +0x70 flag. Evidence: loads and calls at 020791bc..02079230.
+ * Requires a live singleton and a valid slot index. */
+void ImageObj_Unk_0791a8(u32 slot, int value, u32 arg, u32 flag)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = ImageObj_Unk_0778e8(arg0);
-  if (tmp1 == 0) {
-    tmp1 = ImageObj_GetOrCreate(arg0,arg1);
-    func_02079268(tmp1,arg2);
-  }
-  else {
-    if (((*(int *)(tmp1 + 0x48) == 1) || (*(int *)(tmp1 + 0x50) != arg1)) &&
-       (tmp2 = func_02077a9c((ImageObjNode *)tmp1), tmp2 == 0)) {
-      func_020774b4(tmp1,arg1);
+    ImageObjNode *node = (ImageObjNode *)ImageObj_Unk_0778e8(slot);
+    if (node == 0) {
+        node = (ImageObjNode *)ImageObj_GetOrCreate(slot, value);
+        func_02079268(node, arg);
+    } else {
+        if ((node->unk_48 == 1 || node->unk_50 != value) &&
+            func_02077a9c(node) == 0) {
+            func_020774b4(node, value);
+        }
+        if (node->unk_48 != 0) {
+            func_02079268(node, arg);
+        }
     }
-    if (*(int *)(tmp1 + 0x48) != 0) {
-      func_02079268(tmp1,arg2);
-    }
-  }
-  *(u32 *)(tmp1 + 0x70) = arg3;
+    node->unk_70 = flag;
 }
 
 /* Clears the singleton table slot named by *arg0 when the singleton exists.
@@ -694,4 +707,186 @@ void func_02077f30(int kind)
     u8 descriptor[64] = {0};
     ImageObj_Unk_077a4c(descriptor, kind, data_02145ab4, data_02145ab8);
     func_0205ad2c(descriptor);
+}
+
+/* Borrowed singleton layout; the three handles and trailing flags are established
+ * by indexed loads at 020772a4 and stores at 02077398..020773a8. */
+typedef struct ImageObjTable {
+    u32 kind;
+    u32 slots[3];
+    u32 handle;
+    u32 state;
+    u32 auxiliary;
+    u8 pad_1c[0x18];
+    u8 sub[0x8c];
+    u32 flag_c0;
+    u32 flag_c4;
+    u32 flag_c8;
+} ImageObjTable;
+
+/* Services deferred flags, waiting for all three slots before releasing +0xc0.
+ * Evidence: flag loads and loop at 02077274..020772c8. Work must remain live. */
+void func_0207726c(ImageObjTable *work)
+{
+    int i;
+    if (work->flag_c4 != 0) {
+        if (ImageObj_Unk_077228((ImageObjWork *)work) != 0) work->flag_c4 = 0;
+    }
+    if (work->flag_c0 != 0) {
+        for (i = 0; i < 3; i++) {
+            if (work->slots[i] != 0) return;
+        }
+        func_02061424((u32)work);
+        work->flag_c0 = 0;
+    }
+    if (work->flag_c8 != 0) {
+        if (ImageObj_Unk_0776d4() != 0) return;
+        ImageObj_Release((ImageObjWork *)work);
+        work->flag_c8 = 0;
+    }
+}
+
+void Unk065e88_SetUnkFieldsc_10(u32 handle, int x, int y);
+/* Stores the pair in slots zero and two; only live type-two display handles
+ * are updated, using the offset path when eligible. Evidence: skips at
+ * 02077764/02077794 and BLs through 020777cc. Requires a live slot table. */
+void func_02077750(int x, int y)
+{
+    ImageObjNode *node;
+    int i;
+    for (i = 0; i < 3; i++) {
+        if (i == 1) continue;
+        node = (ImageObjNode *)ImageObj_Unk_0778e8(i);
+        if (node == 0) continue;
+        node->x = x;
+        node->y = y;
+        if (node->unk_68 == 0) continue;
+        if (node->kind != 2) continue;
+        if (ImageObj_Unk_077d68((s32 *)node)) {
+            func_02077e0c(node, node->x, node->y);
+        } else {
+            ImageObj_Unk_077d98(node);
+            Unk065e88_SetUnkFieldsc_10(node->unk_68, node->x, node->y);
+        }
+    }
+}
+
+extern u8 data_02145a04[];
+u32 func_0205ba98(u32 size, u32 align, const void *name, u32 value);
+void func_020a19b4(void *sub, int value);
+/* Allocates singleton storage for kinds 1..5, then enables its sub-object.
+ * Evidence: switch at 020773f8 and allocation arguments at 02077448..02077464. */
+void func_020773dc(u32 kind)
+{
+    ImageObjTable *work = (ImageObjTable *)ImageObj_Get_data_0217231c();
+    u32 size;
+    if (work->handle != 0) return;
+    size = 0;
+    switch (kind) {
+    case 0: return;
+    case 1: size = 256; break;
+    case 2: size = 256; break;
+    case 3: size = 128; break;
+    case 4: size = 256; break;
+    case 5: size = 32; break;
+    }
+    work->handle = func_0205ba98(size << 8, 1024, data_02145a04, 336);
+    func_020a19b4(work->sub, 1);
+    work->kind = kind;
+}
+
+extern u8 data_02145a10[], data_02145a28[], data_02145a3c[];
+/* Restarts a nonnull node in state nine, preserving its old state at +8.
+ * Evidence: STMIB at 020774cc, descriptor relocations and stores through 77540. */
+void func_020774b4(ImageObjNode *node, int value)
+{
+    if (node == 0) return;
+    node->previous = node->state;
+    node->state = 9;
+    switch (node->kind) {
+    case 0: node->unk_3c = 17; func_0205ad2c(data_02145a10); break;
+    case 1: node->unk_3c = 15; func_0205ad2c(data_02145a28); break;
+    case 2: node->unk_3c = 0; func_0205ad2c(data_02145a3c); break;
+    }
+    node->unk_40 = 1;
+    node->unk_44 = 0;
+    node->unk_50 = value;
+    node->unk_54 = -1;
+}
+
+void func_02078730(ImageObjNode *node);
+void func_020780f4(ImageObjNode *node);
+u32 func_020611dc(void (*init)(void *), void (*tick)(void *),
+                 void (*other)(void *), void (*release)(void *),
+                 u32 size, u32 group, u32 zero, u32 one);
+/* Allocates a 116-byte slot node, initializes it and starts state nine (ten
+ * for slot one). Evidence: allocator stack words and stores at 02077910..7798c. */
+u32 func_02077900(int slot, int value)
+{
+    ImageObjTable *work = (ImageObjTable *)ImageObj_Get_data_0217231c();
+    ImageObjNode *node = (ImageObjNode *)func_020611dc(
+        (void (*)(void *))func_020780f4, (void (*)(void *))func_02078730,
+        (void (*)(void *))func_02078730, (void (*)(void *))ImageObj_Unk_079000,
+        116, 3, 0, 1);
+    if (node == 0) return 0;
+    ImageObj_Unk_0779a0((u32 *)node, slot);
+    func_020774b4(node, value);
+    if (slot == 1) {
+        work->state = 1;
+        node->state = 10;
+    }
+    return (u32)node;
+}
+
+/* Creates the singleton only when absent, initializing the three slots and
+ * observed control words. Evidence: allocation and stores at 02077330..773a8. */
+void func_02077314(void)
+{
+    ImageObjTable *work;
+    int i;
+    if (*data_0217231c != 0) return;
+    work = (ImageObjTable *)func_020611dc((void (*)(void *))func_0207726c,
+        0, 0, (void (*)(void *))ImageObj_Unk_0772f8, 204, 3, 0, 1);
+    if (work == 0) return;
+    work->kind = 0;
+    for (i = 0; i < 3; i++) work->slots[i] = 0;
+    work->handle = 0;
+    work->state = 0;
+    work->auxiliary = 0;
+    work->flag_c0 = 0;
+    work->flag_c4 = 0;
+    *data_0217231c = (u32)work;
+}
+
+/* Borrowed handle/resource prefixes; offsets follow 02077d08..02077d4c. */
+typedef struct ImageObjDisplay { u32 handle; u8 pad_04[32]; u32 unk_24;
+    u8 pad_28[8]; u32 unk_30; } ImageObjDisplay;
+typedef struct ImageObjResource { u8 pad_00[396]; s16 *pair; } ImageObjResource;
+ImageObjDisplay *func_020a22e0(void *sub, u32 id, int flag);
+ImageObjResource *func_020a2250(void *sub, u32 id);
+void func_0205c408(u32 handle, int value);
+void func_0205c41c(u32 handle, int value);
+void func_0205c6e0(u32 handle);
+int func_02050074(int low, int high);
+/* Creates the display for the node's low-16-bit ID, sets its parameters and
+ * derives the vertical offset from resource halfword +10. Evidence: calls and
+ * LDRSH at 02077cb8..02077d5c. Null nodes are accepted; singleton must be live. */
+void func_02077ca0(ImageObjNode *node)
+{
+    ImageObjTable *work = (ImageObjTable *)ImageObj_Get_data_0217231c();
+    if (node == 0) return;
+    node->unk_68 = (u32)func_020a22e0(work->sub, (u16)node->unk_50, 1);
+    func_0205c408(((ImageObjDisplay *)node->unk_68)->handle, 0);
+    { int value = func_02050074(0, 4);
+      func_0205c41c(((ImageObjDisplay *)node->unk_68)->handle, value << 2); }
+    func_0205c6e0(((ImageObjDisplay *)node->unk_68)->handle);
+    ((ImageObjDisplay *)node->unk_68)->unk_24 = node->unk_3c;
+    if (func_02095818() == 0) {
+        ((ImageObjDisplay *)node->unk_68)->unk_30 = 2;
+    } else {
+        ((ImageObjDisplay *)node->unk_68)->unk_30 = 4;
+    }
+    node->unk_30 = func_020a2250(work->sub, (u16)node->unk_50)->pair[5];
+    func_02077e0c(node, 0, 0);
+    ImageObj_Unk_0779f4(node);
 }
