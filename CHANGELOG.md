@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T900: verify eight `game/unit_020e8228` access, comparison and forwarding helpers at 100% objdiff, with typed borrowed views and instruction-based contracts.
 - M1-T899: verify eight `game/unit_020e8228` field accessors at 100% objdiff, with typed borrowed layouts and documented null/default contracts.
 - Verify all eight M1-T923 ImageObj helpers at 100% objdiff, document instruction contracts, and explicitly forward the indexed handle to its provider.
 - Verified seven M1-T930 record/table helpers at 100% objdiff; documented the remaining handle helper and compiler scheduling attempts on its hard list.
