@@ -42,18 +42,42 @@ All seven retained card functions report 100% objdiff.
   No mismatching C body is retained. A human can use `tools/decompme.py`
   for a scratch focused on this allocation/order difference.
 
-## Other existing functions
+## M1-T931
 
-- `Unk0c855c_Unk_0c9890`: decompiler-derived
-- `Unk0c855c_Unk_0c9c5c`: decompiler-derived
-- `Unk0c855c_Unk_0c855c`: decompiler-derived
+All eight requested functions report 100% objdiff. Existing matching bodies
+were retained and documented; three missing bodies were added. No new hard
+functions remain for this card. Names stay neutral where instruction evidence
+does not establish a higher-level purpose.
 
-## Not done in M1-T931
-- `Unk0c855c_InitCallbacks`
-- `Unk0c855c_Unk_0ca648`
-- `func_020c9bd8`
-- `func_020c9234`
-- `func_020ca5a4`
+- `Unk0c855c_InitCallbacks` (020ca550–020ca588): initializes a nine-word
+  descriptor with size 32 and callbacks `func_020ca2e4` and `func_020c9ee0`;
+  preserves word 2. Evidence: stores and the two pointer relocations.
+- `Unk0c855c_Unk_0ca648` (020ca648–020ca68c): calls `func_0205bb68`
+  once for selectors 0/1, twelve times for 2, and never otherwise.
+  Evidence: three-way branch and counted loop.
+- `Unk0c855c_Unk_0c9890` (020c9890–020c98e8): obtains three values
+  from `func_02057fd8` after the reset call, forwarding them and the input
+  value to `func_020c92f0` for indices 0..3. The caller owns the work area.
+- `Unk0c855c_Unk_0c9c5c` (020c9c5c–020c9cb8): scans four 0x60-byte
+  records, dispatches value 2 for state 3 at offset 4, then value 3 for
+  a nonnegative selected index. That index must be valid for the array.
+- `Unk0c855c_Unk_0c855c` (020c855c–020c85c4): latches nonzero
+  `func_020537b8` results for masks 0x40/0x80/0x20/0x10 into words
+  0x1a8/0x1ac/0x1b0/0x1b4 of borrowed writable work.
+- `func_020c9bd8` (020c9bd8–020c9c58): dispatches value 2 to state-2
+  records and retains the last result. For a nonnegative selected index,
+  a nonzero result becomes the mode passed directly to `func_020c98ec`;
+  otherwise the wrapper dispatches value 1 with mode zero. Evidence:
+  r2 is assigned the wrapper result and survives the loop exit. The wrapper
+  now exposes its forwarded return value without changing its instructions.
+- `func_020c9234` (020c9234–020c92bc): adds signed velocity at 0x19c
+  to position at 0x198, clamps at the supplied bounds, and zeroes velocity
+  upon reaching a bound. It updates four records and conditionally calls
+  `func_020c8a24` when word 0x1a0 is nonzero. Work must cover these fields.
+- `func_020ca5a4` (020ca5a4–020ca644): resets the provider then calls
+  `Unk05b82c_Unk_05b82c` with ID 195 for selector 0, ID 196 for 1,
+  or IDs 197..208 for 2. Other selectors only perform the reset.
+  Evidence: immediate ID arguments and explicit branch arms.
 
 ## Not done in M1-T932
 - `func_020c9cbc`
@@ -66,5 +90,3 @@ All seven retained card functions report 100% objdiff.
 - `func_020ca2e4`
 - `Unk0c855c_Unk_0c92c0`: decompiler-derived (struct cleanup)
 - `Unk0c855c_Unk_0c92dc`: decompiler-derived (struct cleanup)
-- `Unk0c855c_InitCallbacks`: hand-matched
-- `Unk0c855c_Unk_0ca648`: hand-matched

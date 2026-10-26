@@ -53,16 +53,31 @@ neutral where the callers only show a loop bound or an opaque forwarding.
   `unit_020ef248.c` consumes it as a borrowed record pointer. The argument
   flow is visible in the delinked original (`mov r0,#8; bl ...; bl ...; bl ...`).
 
+## M1-T899 verified field accessors
+
+All eight functions are 24 bytes and match at 100% objdiff. The original ARM
+loads, stores and conditional instructions establish the following contracts.
+The two private layout views borrow provider storage and expose only observed
+fields; their padding represents offsets, not inferred content. The work
+provider keeps its existing integer-address ABI for other functions in this TU.
+Field meanings remain unknown, so function names stay neutral.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e8514` | Calls `Unk0ea208_GetArr58`; `ldrhne [r0,#0x20]` returns an unsigned halfword, with `moveq r0,#0` for an absent record. |
+| `Unk0e8228_Unk_0e8b7c` | Calls the shared work getter; `movne r1,#1; strne [r0,#0x18]` sets the word only when work exists. |
+| `Unk0e8228_Unk_0e8b94` | The same null check and `strne [r0,#0x18]` clear that word to zero. |
+| `Unk0e8228_Unk_0e8bac` | `moveq r0,#0; ldrne [r0,#0x18]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8c50` | Preserves the full unsigned argument in r4 across the getter call and conditionally stores it at work offset 0x24. |
+| `Unk0e8228_Unk_0e8c68` | `moveq r0,#0; ldrne [r0,#0x24]` returns the word or zero without work. |
+| `Unk0e8228_Unk_0e8db8` | `movne r1,#1; strne [r0,#0x184]` sets the word only when work exists. |
+| `Unk0e8228_Unk_0e8f20` | `moveq r0,#27; ldrne [r0,#0x180]` returns the word, defaulting to 27 without work. |
+
+No M1-T899 functions remain on the hard list. No new behavioral tests were
+required by this card; objdiff checks the emitted instructions against retail.
+
 ## Other TU functions
 
-- `Unk0e8228_Unk_0e8514` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8b7c` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8b94` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8bac` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8c50` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8c68` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8db8` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0e8228_Unk_0e8f20` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e8f38` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e8f50` (24 B): decompiler-derived (Ghidra output, cleaned)
 - `Unk0e8228_Unk_0e9020` (24 B): decompiler-derived (Ghidra output, cleaned)

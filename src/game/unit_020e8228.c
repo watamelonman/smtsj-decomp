@@ -171,104 +171,101 @@ void *Unk0e8228_Unk_0e84fc(void)
   return Unk09974c_Unk_099d14(row);
 }
 
-/* decompiler-derived */
+/* Borrowed field views: offsets are established by the loads/stores at
+ * 020e8514, 020e8b7c, 020e8c50, 020e8db8 and 020e8f20. Providers own storage. */
+typedef struct Unk0e8228WorkFields {
+  u8 pad_0000[0x18];
+  u32 unk_0018;
+  u8 pad_001c[8];
+  u32 unk_0024;
+  u8 pad_0028[0x158];
+  u32 unk_0180;
+  u32 unk_0184;
+} Unk0e8228WorkFields;
+
+/* Borrowed provider record; only its halfword at offset 0x20 is established. */
+typedef struct Unk0e8228RecordFields {
+  u8 pad_0000[0x20];
+  u16 unk_0020;
+} Unk0e8228RecordFields;
+
+/* Original 020e8514 reads the provider's halfword at 0x20, or zero when
+ * no record exists. Its domain meaning is unknown, so the name stays neutral. */
 u16 Unk0e8228_Unk_0e8514(void)
 {
-  u16 value1;
-  int value2;
-  value2 = Unk0ea208_GetArr58();
-  if (value2 == 0) {
-    value1 = 0;
+  Unk0e8228RecordFields *record = (Unk0e8228RecordFields *)Unk0ea208_GetArr58();
+  if (record == 0) {
+    return 0;
   }
-  else {
-    value1 = *(u16 *)(value2 + 0x20);
-  }
-  return value1;
+  return record->unk_0020;
 }
 
-/* decompiler-derived */
+/* Original 020e8b7c sets the work word at 0x18 to one when work exists. */
 void Unk0e8228_Unk_0e8b7c(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x18) = 1;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0018 = 1;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8b94 clears the same word at 0x18 when work exists. */
 void Unk0e8228_Unk_0e8b94(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x18) = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0018 = 0;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8bac returns the work word at 0x18, or zero without work. */
 u32 Unk0e8228_Unk_0e8bac(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x18);
-  }
-  return value2;
+  return work->unk_0018;
 }
 
-/* decompiler-derived */
+/* Original 020e8c50 stores the full 32-bit argument at work offset 0x24;
+ * an absent work object leaves storage untouched. */
 void Unk0e8228_Unk_0e8c50(u32 arg0)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x24) = arg0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0024 = arg0;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8c68 returns the work word at 0x24, or zero without work. */
 u32 Unk0e8228_Unk_0e8c68(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x24);
-  }
-  return value2;
+  return work->unk_0024;
 }
 
-/* decompiler-derived */
+/* Original 020e8db8 sets the work word at 0x184 to one when work exists. */
 void Unk0e8228_Unk_0e8db8(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x184) = 1;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0184 = 1;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e8f20 returns the work word at 0x180, using 27 when absent;
+ * the field's domain meaning is not established by this accessor. */
 u32 Unk0e8228_Unk_0e8f20(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0x1b;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 27;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x180);
-  }
-  return value2;
+  return work->unk_0180;
 }
 
 /* decompiler-derived */
