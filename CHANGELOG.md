@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M1-T961: match seven `game/unit_020cf5e8` scene/state functions at 100% objdiff, extend the work view with typed record, provider-block and selection sub-objects, and record `func_020d11f0`'s register-allocation blocker on the hard list.
 - Match eight more game/unit_020cf5e8 callback, slot, range and state functions in C.
 - M1-T937: match all eight requested `game/unit_0206fb70` float-ratio, second-animation channel-advance and key-selection functions at 100% objdiff; add the typed second animation view and document instruction evidence.
 - M1-T959: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add three missing bodies, and document typed instruction contracts.
