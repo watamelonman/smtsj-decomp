@@ -11,9 +11,10 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 typedef struct Unk0cf5e8Work {
     u32 unk_0000;
     u32 unk_0004;
-    u8 pad_0008[0x4];
+    u8 step;
+    u8 pad_0009[3];
     u32 unk_000c;
-    u8 pad_0010[0x10];
+    u32 handles[4];
     u32 unk_0020;
     u8 pad_0024[0x7c];
     s32 unk_00a0;
@@ -24,12 +25,18 @@ typedef struct Unk0cf5e8Work {
     s32 unk_028c;
     u32 unk_0290;
     u32 unk_0294;
-    u8 pad_0298[0xc4];
+    s32 unk_0298;
+    u8 pad_029c[0xc0];
     u32 unk_035c;
+    u32 unk_0360;
+    u32 unk_0364;
+    u32 unk_0368;
+    u32 slots[6];
 } Unk0cf5e8Work;
 
 void Unk1241ec_Thunk_02124338(void);
 void Unk1241ec_Unk_124258(void);
+void Unk1241ec_Unk_124214(void);
 
 void Unk0cf5e8_Nop_0cf62c(void);
 void Unk0cf5e8_Nop_0d11e8(void);
@@ -319,7 +326,7 @@ int func_020d16f8(s32 first, s32 end)
 }
 
 void Unk122e1c_Unk_122f88(u32 handle, s32 slot, s32 enabled);
-void func_020d1958(Unk0cf5e8Work *work);
+int func_020d1958(Unk0cf5e8Work *work);
 /** Publish whether halfword 0x2e is nonzero for slot 3, optionally refresh,
  * then update. Evidence: calls at 0x020d185c; borrowed work spans word 0x298.
  */
@@ -345,4 +352,231 @@ void func_020d19d4(Unk0cf5e8Work *work)
         return;
     }
     Unk1241ec_Unk_124224(value);
+}
+
+int func_020d14cc(s32 index);
+void Unk122e1c_Unk_122fa0(u32 handle, s32 slot, s32 value);
+/** Refresh six slot flags and values; ARM calls at 0x020d18a0 establish order.
+ * The borrowed work must include all six slots at 0x36c. */
+void func_020d18a0(Unk0cf5e8Work *work)
+{
+    int i;
+    for (i = 0; i < 6; i++) {
+        Unk122e1c_Unk_122fa0(work->unk_0020, i, func_020d14cc(i) == 0);
+    }
+    for (i = 0; i < 6; i++) {
+        Unk122e1c_SetSlot(work->unk_0020, i, work->slots[i]);
+    }
+}
+
+/** Query both ranges, optionally publish individual failures, then publish and
+ * return their union. Evidence: calls/loads at 0x020d1958; work is borrowed. */
+int func_020d1958(Unk0cf5e8Work *work)
+{
+    int failed = 0;
+    int mode = work->unk_0298 == 2;
+    int i;
+    for (i = 0; i < 2; i++) {
+        int slotFailed = 0;
+        if (func_020d174c(i) == 0) {
+            failed = 1;
+            slotFailed = 1;
+        }
+        if (mode) Unk122e1c_Unk_122fa0(work->unk_0020, i, slotFailed);
+    }
+    Unk122e1c_Unk_122f88(work->unk_0020, 1, failed);
+    return failed;
+}
+
+
+void Unk124c5c_Set_124d6c(s32 a, s32 b);
+void Unk124c5c_Set_124d8c(s32 a, s32 b);
+int Unk124c5c_IsKind31(void);
+void func_02124ce8(s32 value);
+int func_020523a8(void);
+void Unk0d1a18_Unk_0d1aa4(void);
+void func_020d1a18(void);
+void Unk0fc584_SetDir(s32 value);
+void Unk122e1c_Unk_12306c(u32 handle);
+int Unk122e1c_Unk_122f68(u32 handle);
+void func_02124c5c(void);
+/** Advance the five-step provider sequence and finally enter state 17.
+ * Evidence: byte 8 switch at 0x020d03c0; work is borrowed. */
+void func_020d03c0(Unk0cf5e8Work *work)
+{
+    switch (work->step) {
+    case 0:
+        Unk124c5c_Set_124d6c(0,1);
+        Unk124c5c_Set_124d8c(1,0);
+        work->step++;
+        break;
+    case 1:
+        if (Unk124c5c_IsKind31()) {
+            Unk0cf5e8_Thunk_02124258();
+            func_02124ce8(3);
+            work->step++;
+        }
+        break;
+    case 2:
+        if (func_020523a8() != 1) {
+            Unk0d1a18_Unk_0d1aa4();
+            func_020d1a18();
+            work->step++;
+        }
+        break;
+    case 3:
+        Unk0fc584_SetDir(1);
+        Unk124c5c_Set_124d8c(0,31);
+        work->step++;
+        break;
+    case 4:
+        work->step = 0;
+        func_020d1360(work,17);
+        break;
+    }
+}
+
+/** Advance byte 8 through five provider stages, finally entering state 4.
+ * Evidence: switch and polling calls at 0x020d02c0; work is borrowed. */
+void func_020d02c0(Unk0cf5e8Work *work)
+{
+    switch (work->step) {
+    case 0:
+        Unk0fc584_SetDir(0);
+        Unk122e1c_Unk_12306c(work->unk_0020);
+        Unk124c5c_Set_124d6c(0,1);
+        Unk124c5c_Set_124d8c(1,0);
+        work->step++;
+        break;
+    case 1:
+        if (Unk124c5c_IsKind31()) {
+            Unk0bc1a8_Unk_0bc9b4(3,0);
+            work->step++;
+        }
+        break;
+    case 2:
+        work->step++;
+        break;
+    case 3:
+        if (func_020523a8() != 1) {
+            func_020d19d4(work);
+            Unk0cf5e8_Thunk_0212424c();
+            Unk124c5c_Set_124d8c(0,31);
+            work->step++;
+        }
+        break;
+    case 4:
+        if (Unk122e1c_Unk_122f68(work->unk_0020)) {
+            func_02124ce8(1);
+            func_02124c5c();
+            work->step = 0;
+            func_020d1360(work,4);
+        }
+        break;
+    }
+}
+
+int Unk0de678_CountLeading(const void *records);
+void func_020ffebc(u32 handle);
+void Unk0fd268_Unk_0fd3ac(void);
+void ImageBg_Unk_0e5530(void);
+void func_02122e1c(u32 handle);
+void Unk0f3db4_Unk_0f3dd8(void);
+void Unk0de678_Unk_0dea60(void);
+void func_0205bb68(void);
+extern u32 data_02176bd8;
+/** Release indexed handles and providers, then clear the global word.
+ * Evidence: ordered calls at 0x020cf8e8; work and record storage are borrowed. */
+void func_020cf8e8(Unk0cf5e8Work *work)
+{
+    int i;
+    Unk1241ec_Unk_124258();
+    Unk0bc1a8_Unk_0bc9b4(10,0);
+    for (i = 0; i < Unk0de678_CountLeading((u8 *)work + 36); i++) {
+        if (work->handles[i]) {
+            func_020ffebc(work->handles[i]);
+            work->handles[i] = 0;
+        }
+    }
+    Unk0fd268_Unk_0fd3ac();
+    ImageBg_Unk_0e5530();
+    func_02122e1c(work->unk_0020);
+    work->unk_0020 = 0;
+    Unk044394_Unk_044534(7);
+    Unk044394_Unk_044534(11);
+    Unk0f3db4_Unk_0f3dd8();
+    Unk0de678_Unk_0dea60();
+    for (i = 0; (u32)i < 4; i++) func_0205bb68();
+    data_02176bd8 = 0;
+}
+
+/** Clear word 0x364, release indexed handles, and perform the exit provider
+ * sequence. Evidence: ordered calls at 0x020d0ff4; work is borrowed. */
+void func_020d0ff4(Unk0cf5e8Work *work)
+{
+    int i;
+    work->unk_0364 = 0;
+    Unk1241ec_Unk_124258();
+    Unk0bc1a8_Unk_0bc9b4(10,0);
+    for (i = 0; i < Unk0de678_CountLeading((u8 *)work + 36); i++) {
+        if (work->handles[i]) {
+            func_020ffebc(work->handles[i]);
+            work->handles[i] = 0;
+        }
+    }
+    func_02122e1c(work->unk_0020);
+    work->unk_0020 = 0;
+    Unk0fd268_Unk_0fd3ac();
+    ImageBg_Unk_0e5530();
+    Unk044394_Unk_044534(7);
+    Unk044394_Unk_044534(11);
+    Unk1241ec_Unk_124214();
+    Unk122a78_Unk_122aa0();
+    Unk0f3db4_Unk_0f3dd8();
+    for (i = 0; (u32)i < 4; i++) func_0205bb68();
+    Unk0de678_Unk_0de870();
+}
+
+/** Borrowed callback descriptor; offsets follow stores at 0x020cf668. */
+typedef struct Unk0cf5e8Callbacks {
+    u32 size;
+    u32 flags;
+    u32 unk_08;
+    void (*callbacks[6])(void);
+} Unk0cf5e8Callbacks;
+void func_020cf9a0(void);
+void func_020d09b4(void);
+void func_020d11f0(void);
+/** Initialize size, flags and six callbacks, preserving word 8.
+ * Evidence: stores and symbol literals at 0x020cf668; descriptor is borrowed. */
+void func_020cf668(Unk0cf5e8Callbacks *descriptor)
+{
+    descriptor->size = 900;
+    descriptor->flags = 0;
+    descriptor->callbacks[0] = func_020cf9a0;
+    descriptor->callbacks[1] = func_020d09b4;
+    descriptor->callbacks[2] = Unk0cf5e8_Nop_0d11e8;
+    descriptor->callbacks[3] = Unk0cf5e8_Nop_0d11ec;
+    descriptor->callbacks[4] = (void (*)(void))func_020cf8e8;
+    descriptor->callbacks[5] = func_020d11f0;
+}
+
+/** Require every provider range selected by index 0/1 to succeed; other indices
+ * succeed. Evidence: immediate bounds and branches at 0x020d174c. */
+int func_020d174c(s32 index)
+{
+    switch (index) {
+    case 0:
+        if (!func_020d16f8(211,260)) return 0;
+        if (!func_020d16f8(261,310)) return 0;
+        if (!func_020d16f8(311,360)) return 0;
+        if (!func_020d16f8(361,410)) return 0;
+        if (!func_020d16f8(51,110)) return 0;
+        break;
+    case 1:
+        if (!func_020d16f8(901,1120)) return 0;
+        if (!func_020d16f8(1121,1340)) return 0;
+        break;
+    }
+    return 1;
 }

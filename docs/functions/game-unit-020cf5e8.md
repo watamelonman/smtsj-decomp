@@ -92,14 +92,41 @@ parameters borrow valid work storage; provider ownership is unchanged.
 No M1-T959 hard functions remain. No module boundary changed. The unit
 continues to link from the delink pending human completion approval.
 
-## Historical M1-T960 omissions
-- `func_020cf668`
-- `func_020d18a0`
-- `func_020d1958`
-- `func_020cf8e8`
-- `func_020d0ff4`
-- `func_020d03c0`
-- `func_020d174c`
-- `func_020d02c0`
-- `Unk0cf5e8_Enter`: hand-matched
-- `Unk0cf5e8_InitSlots`: hand-matched
+## M1-T960: verified matches
+
+All eight functions match the original ARM instructions, including symbol
+relocations. Existing symbol names are retained because provider and field
+semantics remain unknown. All work/descriptor pointers borrow valid storage;
+no provider ownership contract changes.
+
+- `func_020cf668` (92 B): initializes descriptor size 900, flags zero and six
+  callback addresses at 0x0c..0x20, preserving word 8. Evidence: original
+  stores and function-symbol literal pool at 0x020cf668. Callback signatures
+  other than the known work-taking cleanup remain unknown.
+- `func_020d18a0` (104 B): queries six indices, publishes whether each query
+  returned zero, then publishes the six saved slots at 0x36c. Evidence:
+  original loop bounds, loads and ordered calls at 0x020d18a0.
+- `func_020d1958` (124 B): queries indices 0/1, publishes individual failures
+  only in mode 2 (word 0x298), and always publishes/returns their union.
+  Evidence: original comparisons and calls at 0x020d1958. Its return type was
+  corrected to int, matching the final move into r0.
+- `func_020cf8e8` (184 B): releases nonzero indexed handles, clears their
+  words, tears down providers in order, performs four calls and clears
+  global word `data_02176bd8`. Evidence: original calls/stores at 0x020cf8e8.
+- `func_020d0ff4` (184 B): clears word 0x364, releases indexed handles,
+  clears handle 0x20 and performs the distinct ordered exit-provider sequence.
+  Evidence: original loads, stores and calls at 0x020d0ff4.
+- `func_020d03c0` (216 B): switches on byte 8 through stages 0..4, polling
+  providers before advancing, then resets the byte and enters state 17.
+  Evidence: jump table and original calls/stores at 0x020d03c0.
+- `func_020d174c` (224 B): checks five half-open ranges for index 0 and two
+  for index 1, stopping on failure; other indices succeed. Evidence: original
+  immediate bounds and branches at 0x020d174c.
+- `func_020d02c0` (256 B): switches on byte 8 through stages 0..4, including
+  one unconditional advance and two provider polls, then resets it and enters
+  state 4. Evidence: jump table and original calls/stores at 0x020d02c0.
+
+The four-word handle view spans 0x10..0x1c, bounded by the observed handle at
+0x20; the original leading-record count controls iteration. The six-slot view
+is established by the loop bound. No module boundary changed. No M1-T960 hard
+functions remain. The TU still links from its delink pending human completion.
