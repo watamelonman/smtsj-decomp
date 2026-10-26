@@ -68,6 +68,17 @@ s32 func_020b96fc(void)
     return 1;
 }
 
+/* ARM evidence at 0x020b9734: submit request 57 with operands 0, 1 and 2,
+ * publish the provider result, and return script completion status 1. */
+s32 func_020b9734(void)
+{
+    s32 first = func_0203ac00(0);
+    s32 second = func_0203ac00(1);
+    s32 third = func_0203ac00(2);
+    Unk03aae8_Unk_03acf4(func_020b8b38(57, first, second, third));
+    return 1;
+}
+
 /* ARM evidence at 0x020b9778: submit request 58 with operands 0 and 1,
  * publish the provider result, and return script completion status 1. */
 s32 func_020b9778(void)
@@ -85,6 +96,16 @@ s32 func_020b97b0(void)
     s32 first = func_0203ac00(0);
     s32 second = func_0203ac00(1);
     Unk03aae8_Unk_03acf4(func_020b8b38(59, first, second, 0));
+    return 1;
+}
+
+/* ARM evidence at 0x020b97e8: submit request 60 with operands 0 and 1,
+ * publish the provider result, and return script completion status 1. */
+s32 func_020b97e8(void)
+{
+    s32 first = func_0203ac00(0);
+    s32 second = func_0203ac00(1);
+    Unk03aae8_Unk_03acf4(func_020b8b38(60, first, second, 0));
     return 1;
 }
 

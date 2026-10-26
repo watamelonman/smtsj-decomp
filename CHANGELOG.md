@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T123: match the remaining script request wrappers for codes 57 and 60 in `lib_020b95f0`.
+
 - M2-T122: reconstruct eight script request wrappers for codes 51–56 and 58–59 in `lib_020b95f0`.
 - Match eight more text-library font metric, state, and teardown functions (M2-T1065).
 
