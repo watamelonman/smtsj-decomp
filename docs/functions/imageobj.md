@@ -173,15 +173,48 @@ Existing neutral symbols are retained; offsets describe observed storage only.
 
 Hard list for M1-T926: none. No module boundary changes.
 
-## Not done in M1-T927
-- `func_0207726c`
-- `func_02077750`
-- `ImageObj_Unk_0791a8`
-- `func_020773dc`
-- `func_020774b4`
-- `func_02077900`
-- `func_02077314`
-- `func_02077ca0`
+## M1-T927 — verified ARM functions (8/8)
+
+All eight functions match at 100% against `build/delinks/src/ImageObj.o`.
+Names remain neutral; layouts describe instruction-observed fields, not inferred
+semantics. The added views are private to this translation unit.
+
+- `func_0207726c` (140 B): services deferred flags +0xc4, +0xc0 and +0xc8;
+  the +0xc0 release waits for all three slots to clear, and +0xc8 waits for
+  the state-nine/ten predicate. Loads, loop and calls at 02077274..020772ec.
+  Its call to 077228 forwards the unused work pointer in r0.
+- `func_02077750` (144 B): stores a pair in slots zero and two. Nonzero
+  display handles on type-two nodes take either the offset-update path or
+  the direct pair path. Slot-one skip at 02077764, type check at 02077790,
+  and calls at 02077798..020777cc establish the conditions.
+- `ImageObj_Unk_0791a8` (144 B): creates an absent slot; existing nodes with
+  flag +0x48 equal to one or a different +0x50 are restarted unless in
+  state nine/ten. Updates the argument when +0x48 is nonzero and stores
+  caller flag +0x70. Loads and calls at 020791bc..02079230 establish this.
+- `func_020773dc` (156 B): with no existing +0x10 handle, maps kinds 1..5
+  to allocation sizes (65536, 65536, 32768, 65536, 8192), enables the +0x34
+  sub-object and records the kind. Kind zero returns; other kinds use size
+  zero. Switch and arguments at 020773f8..02077470 are the evidence.
+- `func_020774b4` (160 B): null-safe restart in state nine, saving the prior
+  state at +8. Kinds zero through two submit distinct descriptors and set
+  +0x3c to 17, 15 or zero; then resets +0x40/+0x44/+0x54 and sets +0x50.
+  STMIB at 020774cc and relocations/stores through 02077550 establish this.
+- `func_02077900` (160 B): allocates a 116-byte node using the four original
+  callbacks, initializes its slot and restarts it; slot one sets singleton
+  state one and node state ten. Allocation stack arguments and stores at
+  02077910..0207798c establish the layout. Allocation failure returns zero.
+- `func_02077314` (168 B): allocates the 204-byte singleton only when absent,
+  clears the three slots and observed control words, and publishes it only
+  after successful allocation. Calls and stores at 02077330..020773ac.
+  The original does not explicitly initialize flag +0xc8 here.
+- `func_02077ca0` (200 B): accepts null nodes; otherwise creates a display
+  using low 16 bits of +0x50, configures its handle, descriptor value and
+  state-dependent mode, derives +0x30 from resource halfword +10, then
+  updates offsets and color. Calls and LDRSH at 02077cb8..02077d60 establish
+  the sequence. Requires a live singleton and valid provider results.
+
+Hard list for M1-T927: none. No new behavioral tests are required by this card;
+instruction comparison and the match/checksum gates validate the reconstruction.
 
 ## Not done in M1-T929
 - `func_02078940`
@@ -198,7 +231,7 @@ Hard list for M1-T926: none. No module boundary changes.
 - `func_020780f4`
 - `ImageObj_Unk_0775a0`: decompiler-derived (plain cleanup)
 - `ImageObj_Unk_077640`: decompiler-derived (plain cleanup)
-- `ImageObj_Unk_0791a8`: decompiler-derived (proto cleanup)
+- `ImageObj_Unk_0791a8`: hand-matched, typed node view (M1-T927)
 - `ImageObj_Unk_079000`: decompiler-derived (plain cleanup)
 - `ImageObj_Release`: hand-matched
 - `ImageObj_GetOrCreate`: hand-matched

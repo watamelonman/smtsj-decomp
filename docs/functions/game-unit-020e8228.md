@@ -122,38 +122,68 @@ implicit-argument call in `Unk0e8228_Unk_0e8bc4` explicit
 
 No M1-T901 functions remain on the hard list.
 
-## Other decompiler-derived functions in this TU
-- `Unk0e8228_Unk_0e9728`: decompiler-derived
-- `Unk0e8228_Unk_0e9f18`: decompiler-derived
-- `Unk0e8228_Unk_0e9f38`: decompiler-derived
-- `Unk0e8228_Unk_0e8bc4`: decompiler-derived
-- `Unk0e8228_Unk_0e8c2c`: decompiler-derived
+## M1-T902 verified helpers
 
-## Not done in M1-T902
-- `Unk0e8228_Unk_0e8374`
-- `Unk0e8228_IsField4One`
-- `Unk0e8228_IsFieldCOne`
-- `Unk0e8228_Unk_0e8dd0`: decompiler-derived
-- `Unk0e8228_Unk_0e8dfc`: decompiler-derived
-- `Unk0e8228_Unk_0e9fa4`: decompiler-derived
+All eight functions match at 100% objdiff. Evidence is the original ARM
+instructions at the addresses below; callers retain ownership of all storage.
 
-## Not done in M1-T903
-- `Unk0e8228_Unk_0e8d90`
-- `Unk0e8228_IsState3`
-- `Unk0e8228_Unk_0e8ce8`
-- `Unk0e8228_GetCurEntry`
-- `func_020e93d8`
+| Function | Instruction contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e9728` (32 B, 020e9728) | Calls `func_020e8628`, compares against exactly one, and calls `func_020ea0ec` on equality or `func_020ea160` otherwise. Takes no arguments. |
+| `Unk0e8228_Unk_0e9f18` (32 B, 020e9f18) | Six word stores clear offsets 0 through 20. Requires a writable 24-byte row; 020e8260 supplies global table storage. |
+| `Unk0e8228_Unk_0e9f38` (32 B, 020e9f38) | Stores the second argument at offset zero, then clears offsets 4 through 20. Requires a writable 24-byte row, as supplied by 020e8260. |
+| `Unk0e8228_Unk_0e8374` (36 B, 020e8374) | Preserves the selector in r4 across the work getter; returns zero without work, otherwise calls `func_020e9ca8(work, selector)`. |
+| `Unk0e8228_Unk_0e8bc4` (36 B, 020e8bc4) | Calls `GetArr30(0)`, passes its result to `func_02044ec4`, forwards that result in r0 to `Unk_0e8ce8`, then normalizes to zero or one. The C now makes both forwarded arguments explicit. |
+| `Unk0e8228_Unk_0e8c2c` (36 B, 020e8c2c) | Returns without work; otherwise stores one at +0x1c and 180 at +0x20. No units are inferred. |
+| `Unk0e8228_IsField4One` (40 B, 020e85a0) | Returns zero without work; otherwise loads +4 and returns exactly whether it equals one. Offset and comparison support the existing name. |
+| `Unk0e8228_IsFieldCOne` (40 B, 020e8b54) | Returns zero without work; otherwise loads +0x0c and returns exactly whether it equals one. Offset and comparison support the existing name. |
 
-## Not done in M1-T904
-- `Unk0e8228_GetArr30`
-- `Unk0e8228_GetArr58`
-- `Unk0e8228_GetArr40`
-- `Unk0e8228_Unk_0e8fe4`
-- `func_020e942c`
-- `Unk0e8228_ClearSel`
-- `Unk0e8228_Unk_0e8be8`
-- `func_020e9b10`
-- `Unk0e8228_Unk_0e85c8`: decompiler-derived
+No M1-T902 functions remain on the hard list. Existing bodies already matched;
+this card verifies them and adds typed contracts and instruction evidence.
+The no-argument `IsField4One` call no longer supplies an unused work argument.
+
+## M1-T903 verified functions
+
+All eight functions match at 100% objdiff. Contracts below follow the original
+ARM instructions and relocations; opaque parameters remain unsigned DS words
+or addresses. Borrowed storage remains owned by the caller/provider.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e8d90` (40 B) | 020e8d9c obtains work; null returns immediately, otherwise 020e8db0 forwards work and both opaque words to 020e9de4. |
+| `Unk0e8228_IsState3` (40 B) | 020e8e3c loads work +0 and compares with 3, yielding a boolean; null work yields zero. This comparison supports the existing name. |
+| `Unk0e8228_Unk_0e8dd0` (44 B) | 020e8de0 guards nullable work, then calls 020e9900 with first word, work, second word; returns its result or zero without work. |
+| `Unk0e8228_Unk_0e8dfc` (44 B) | 020e8e0c guards nullable work, then calls 020e9aa0 with first word, work, second word; returns its result or zero without work. |
+| `Unk0e8228_Unk_0e9fa4` (44 B) | 020e9fb4 clears 0x1cc writable bytes; publishes the address in data_02176ce0 and calls 020e9060. Caller must supply valid storage. |
+| `Unk0e8228_Unk_0e8ce8` (48 B) | Null entry returns zero. Calls 0204a244, sign-extends its low byte for 020982c0, then returns one for a missing record or its signed byte at +2. |
+| `Unk0e8228_GetCurEntry` (48 B) | 020e9750 loads selection +8 and clamps negative indices to zero. IsField4One selects entry bank +0x30 or +0x40. The entry-key use in 0e8c80 and its callers supports the name; caller supplies valid work and index. |
+| `func_020e93d8` (52 B) | 020e93dc reads the state word; a five-slot switch calls 020bc504 with the borrowed object address and zero only for state 1. All other states return. |
+
+No M1-T903 functions remain on the hard list. No new behavioral tests were
+added: the acceptance oracle is exact instruction/relocation matching against
+the original object, followed by the existing tests and full-image checksum.
+
+## M1-T904 verified functions
+
+All eight functions match at 100% objdiff. Six bodies already matched from
+earlier waves; this card added the two missing definitions (`func_020e942c`,
+`func_020e9b10`) and documented every contract from the original instructions.
+No domain meaning is inferred where the evidence only shows an offset, bound
+or fixed selector, so those names stay neutral.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_GetArr30` (60 B, 020e83ac) | Calls the work getter; null work returns zero. Indices outside 0..3 return zero, otherwise `ldr [work + i*4 + 0x30]` returns the four-word table entry. |
+| `Unk0e8228_GetArr58` (60 B, 020e83e8) | Same null guard; valid indices 0..11 return the twelve-word table entry at work +0x58. |
+| `Unk0e8228_GetArr40` (60 B, 020e8424) | Same null guard; valid indices 0..5 return the six-word table entry at work +0x40. |
+| `Unk0e8228_Unk_0e8fe4` (60 B, 020e8fe4) | Null argument returns zero. Looks up the argument through `Unk09974c_Unk_099d14`, reads the unsigned halfword at +0x22; zero returns zero, otherwise `func_020cb1a0(halfword)` supplies a record whose byte at +0x23 is compared with 7. |
+| `func_020e942c` (64 B, 020e942c) | `str r1,[r0,#0x0c]` stores the selector at work +0x0c. A two-way switch calls `func_020ea058` for selector 0; selector 1 calls `func_020e8628` and invokes `func_020ea0ec` only when it returns exactly one, otherwise `func_020ea160`. Other selectors return without a call. |
+| `Unk0e8228_ClearSel` (64 B, 020e9bc0) | `adds r1,r0,#392; bxeq lr` returns when the embedded selection address is null. Otherwise it clears the two flag bytes at +392 and the sixteen words at +396. The caller owns the host storage; the layout records only these observed offsets. |
+| `Unk0e8228_Unk_0e8be8` (68 B, 020e8be8) | Resolves slot zero through `GetArr30`, `func_02044ec4` and `func_0204a244`; states 1, 7 and 11 return zero. Otherwise it returns `func_020e9b54(work)`, or zero when the shared work object is absent. |
+| `func_020e9b10` (68 B, 020e9b10) | Scans the first nine words of `data_02150c0c` through `Unk0bc1a8_IsSlotEmptyOrFlag8`; a zero result returns zero immediately. After all nine, it returns whether `ScanVisor_Unk_0a2980` is nonzero. |
+
+No M1-T904 functions remain on the hard list. `Unk0e8228_Unk_0e85c8` is still
+decompiler-derived but is outside this card.
 
 ## Not done in M1-T905
 - `Unk0e8228_GetArr88Field20`
@@ -192,15 +222,11 @@ No M1-T901 functions remain on the hard list.
 - `func_020e94d8`
 - `func_020e8710`
 - `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
-- `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8260`: hand-matched
-- `Unk0e8228_Unk_0e8374`: hand-matched
 - `Unk0e8228_GetArr30`: hand-matched
 - `Unk0e8228_GetArr58`: hand-matched
 - `Unk0e8228_GetArr40`: hand-matched
 - `Unk0e8228_GetArr88Field20`: hand-matched
-- `Unk0e8228_IsField4One`: hand-matched
-- `Unk0e8228_IsFieldCOne`: hand-matched
 - `Unk0e8228_Unk_0e8be8`: hand-matched
 - `Unk0e8228_Unk_0e8c80`: hand-matched
 - `Unk0e8228_Unk_0e8ce8`: hand-matched
