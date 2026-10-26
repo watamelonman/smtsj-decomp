@@ -11,20 +11,37 @@
 - `func_020df99c`
 - `func_020e0168`
 
-## Existing functions outside M1-T894
-- `SaveLoadTask_Unk_0df94c`: decompiler-derived
-- `SaveLoadTask_Unk_0df86c`: decompiler-derived
-- `SaveLoadTask_Unk_0dff68`: decompiler-derived
-
-## Not done in M1-T895
-- `func_020e0034`
-- `func_020dff20`
-- `func_020dfe80`
-- `SaveLoadTask_Unk_0df814`
-- `func_020df8c4`
-
 - `SaveLoadTask_SelectEntry`: save/load menu entry dispatch (cases 0-7).
-- `SaveLoadTask_Unk_0df814`: decompiler-derived (plain cleanup)
+
+## M1-T895: verified matching helpers
+
+All eight requested functions match at 100% in the generated objdiff report.
+Evidence for the contracts below is the original ARM loads, stores, comparisons,
+and provider calls, as recorded in the source comments. Existing neutral symbols
+are retained because the broader provider semantics are unconfirmed. Work storage
+is borrowed and must cover every listed offset. The TU still links from the
+delinked original until a human marks it complete.
+
+| Function | Size | Contract and instruction evidence |
+| --- | ---: | --- |
+| `func_020e0034` | 56 | Writes 1 through 6 to six words starting at work +0x18, then clears +0x34. Requires writable storage through +0x37. |
+| `func_020dff20` | 72 | Increments the signed index at +0xdc, scans six byte flags starting at +0xe0, and stores/returns the next flagged index or -1 on exhaustion. The incoming index must be at least -1 and incrementable without signed overflow. |
+| `SaveLoadTask_Unk_0df94c` | 80 | Calls `SaveLoadTask_Unk_0df814` unless the kind is 5 through 9 and `Unk124c5c_IsKind0` returns nonzero. No arguments or result. |
+| `func_020dfe80` | 84 | Selectors 2/6 first pass work +0x4c/+0x48 and words +0xf0/+0xf4 to `func_02109f94`, then pass its result to `func_020616ec`. All selectors dispatch through `func_020dfd9c` with three zero flags. Requires storage through +0xf7 and the dispatcher's work contract. |
+| `SaveLoadTask_Unk_0df814` | 88 | Kinds 5 through 9 call `Unk124c5c_Set_124d8c(0, 31)`; other kinds call `func_020525cc(3)`. No arguments or result. |
+| `SaveLoadTask_Unk_0df86c` | 88 | Kinds 5 through 9 call `Unk124c5c_Set_124d8c(1, 0)`; other kinds call `func_0205257c(3)`. No arguments or result. |
+| `SaveLoadTask_Unk_0dff68` | 132 | Scans using `func_020dff20`; exhaustion returns 0. Slot 0 selects transition 12, others 13; slots 1/4 and 2/5 call provider group 1 with values 1 and 2 respectively. Dispatches with flags (1, 0, 0) and returns 1. Inherits scan and dispatcher work contracts. |
+| `func_020df8c4` | 136 | For kinds 5 through 9 returns the negated kind-0 predicate when its integer flag is nonzero, otherwise the negated kind-31 predicate. Other kinds return whether `func_02052728` is nonzero. Result is always 0 or 1. |
+
+Validation: anticheat passes; all nine unit tests pass; the match gate reports all
+20 checked C functions at 100%; checksum reports every artifact byte-identical.
+The match gate also runs the full build. This card requires no new test files;
+instruction comparison verifies the requested behavior and relocations directly.
+
+### M1-T895 hard list
+
+None; all eight requested functions match. Attempt 2 corrects the stale function
+status documentation left by the previous attempt without changing matching C.
 
 ## M1-T894: verified matching helpers
 
