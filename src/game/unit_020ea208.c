@@ -146,19 +146,25 @@ u32 Unk0ea208_GetFieldC(void)
     return work->UnkField000c;
 }
 
+/*
+ * Return entry i of the five-word table at work+0x10, or 0 when the singleton
+ * is missing or not ready (+0x1cc is zero) or i is outside 0..4. The returned
+ * word is a borrowed handle. Evidence: the `cmp r4,#5` bound and the final
+ * `ldr r0,[r0,#16]` after `add r0,r0,r4,lsl #2`.
+ */
 u32 Unk0ea208_GetArr10(int i)
 {
-    u32 p = Unk0ea208_Get_data_02176ddc();
-    if (p == 0) {
+    Unk0ea208Work *work = (Unk0ea208Work *)Unk0ea208_Get_data_02176ddc();
+    if (work == 0) {
         return 0;
     }
-    if (FIELD(u32, p, 460) == 0) {
+    if (work->UnkField01cc == 0) {
         return 0;
     }
     if (i < 0 || i >= 5) {
         return 0;
     }
-    return FIELD(u32, p + i * 4, 16);
+    return work->UnkTable0010[i];
 }
 
 void Unk0ea208_ForEachSlot(Unk0ea208Work *work);
@@ -168,19 +174,25 @@ int Unk0e8228_Unk_0e8460(void);
 int Unk0e8228_GetArr40(int index);
 int func_020445f4(int group, int index);
 int func_0204fed8(int resource, int selector);
+/*
+ * Return entry i of the six-word table at work+0x24, or 0 when the singleton
+ * is missing or not ready (+0x1cc is zero) or i is outside 0..5. The returned
+ * word is a borrowed handle. Evidence: the `cmp r4,#6` bound and the final
+ * `ldr r0,[r0,#36]` after `add r0,r0,r4,lsl #2`.
+ */
 u32 Unk0ea208_GetArr24(int i)
 {
-    u32 p = Unk0ea208_Get_data_02176ddc();
-    if (p == 0) {
+    Unk0ea208Work *work = (Unk0ea208Work *)Unk0ea208_Get_data_02176ddc();
+    if (work == 0) {
         return 0;
     }
-    if (FIELD(u32, p, 460) == 0) {
+    if (work->UnkField01cc == 0) {
         return 0;
     }
     if (i < 0 || i >= 6) {
         return 0;
     }
-    return FIELD(u32, p + i * 4, 36);
+    return work->UnkTable0024[i];
 }
 
 /*
@@ -200,19 +212,25 @@ u32 Unk0ea208_GetField3c(void)
     return work->UnkField003c;
 }
 
+/*
+ * Return entry i of the six-word table at work+0x40, or 0 when the singleton
+ * is missing or not ready (+0x1cc is zero) or i is outside 0..5. The returned
+ * word is a borrowed handle. Evidence: the `cmp r4,#6` bound and the final
+ * `ldr r0,[r0,#64]` after `add r0,r0,r4,lsl #2`.
+ */
 u32 Unk0ea208_GetArr40(int i)
 {
-    u32 p = Unk0ea208_Get_data_02176ddc();
-    if (p == 0) {
+    Unk0ea208Work *work = (Unk0ea208Work *)Unk0ea208_Get_data_02176ddc();
+    if (work == 0) {
         return 0;
     }
-    if (FIELD(u32, p, 460) == 0) {
+    if (work->UnkField01cc == 0) {
         return 0;
     }
     if (i < 0 || i >= 6) {
         return 0;
     }
-    return FIELD(u32, p + i * 4, 64);
+    return work->UnkTable0040[i];
 }
 
 u32 Unk0ea208_GetArr58(int i)
@@ -435,51 +453,69 @@ u32 Unk0ea208_Unk_0eada8(void)
 
 
 
-/* decompiler-derived */
+/*
+ * When the singleton exists and its +0x1cc word is nonzero, resolve group 39
+ * entry 2 and pass that handle to func_0204fed8 with selector 2; otherwise
+ * return 0. Evidence: the guarded +0x1cc load, `mov r0,#39` / `mov r1,#2`,
+ * and a second `mov r1,#2` before the 0204fed8 call. The handle is borrowed.
+ */
 u32 Unk0ea208_Unk_0eade4(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0ea208_Get_data_02176ddc();
-  if (value1 == 0) {
+  Unk0ea208Work *work;
+  work = (Unk0ea208Work *)Unk0ea208_Get_data_02176ddc();
+  if (work == 0) {
     return 0;
   }
-  if (*(int *)(value1 + 0x1cc) != 0) {
-    value2 = func_020445f4(0x27,2);
-    value2 = func_0204fed8(value2,2);
-    return value2;
+  if (work->UnkField01cc == 0) {
+    return 0;
   }
-  return 0;
+  return func_0204fed8(func_020445f4(0x27, 2), 2);
 }
 
-int func_020eb178();
-/* decompiler-derived */
-void Unk0ea208_Unk_0eb264(int arg0)
+void func_020eb178(Unk0ea208Slot *slot);
+/*
+ * Tear down the six +0x70 slot records: run the fixed teardown, call
+ * func_020eb178 for each record whose +0x00 word is nonzero, then run the
+ * closing teardown. Evidence: `add r5,r4,#112`, the `ldr r0,[r5]` / `beq`
+ * skip, stride 56, loop bound 6, and the two teardown call relocations.
+ */
+void Unk0ea208_Unk_0eb264(Unk0ea208Work *work)
 {
-  int value;
-  int *v2;
+  int i;
+  Unk0ea208Slot *slot;
   Unk0ea208_Unk_0eac80();
-  v2 = (int *)(arg0 + 0x70);
-  value = 0;
+  slot = work->UnkSlot0070;
+  i = 0;
   do {
-    if (*v2 != 0) {
-      func_020eb178(v2);
+    if (slot->UnkField00 != 0) {
+      func_020eb178(slot);
     }
-    value = value + 1;
-    v2 = v2 + 0xe;
-  } while (value < 6);
+    i = i + 1;
+    slot = slot + 1;
+  } while (i < 6);
   Unk0ea208_Unk_0eaca0();
 }
 
 
-/* decompiler-derived */
-void Unk0ea208_Unk_0eae40(u32 arg0,u32 arg1,u32 arg2,u32 arg3)
+void Unk065e88_SetUnkFieldsc_10(u32 obj, u32 a, u32 b);
+void Unk065e88_SetUnkField28(u32 obj, u32 value);
+void Unk065e88_SetUnkField24(u32 obj, u32 value);
+void Unk065e88_SetUnkField30(u32 obj, u32 value);
+void Unk065e88_SetUnkField3c(u32 obj, u32 value);
+/*
+ * Initialize an object through the 065e88 setters: pass the first three
+ * inputs to SetUnkFieldsc_10 (fields +0x0c/+0x10), then store the fourth input
+ * at +0x28 and the constants 10, 4 and 2 at +0x24, +0x30 and +0x3c. Evidence:
+ * the first call receives the untouched r0/r1/r2, while r3 is saved in r4 for
+ * SetUnkField28 before the constant moves. The object is caller-owned.
+ */
+void Unk0ea208_Unk_0eae40(u32 obj, u32 a, u32 b, u32 c)
 {
-  Unk065e88_SetUnkFieldsc_10();
-  Unk065e88_SetUnkField28(arg0,arg3);
-  Unk065e88_SetUnkField24(arg0,10);
-  Unk065e88_SetUnkField30(arg0,4);
-  Unk065e88_SetUnkField3c(arg0,2);
+  Unk065e88_SetUnkFieldsc_10(obj, a, b);
+  Unk065e88_SetUnkField28(obj, c);
+  Unk065e88_SetUnkField24(obj, 10);
+  Unk065e88_SetUnkField30(obj, 4);
+  Unk065e88_SetUnkField3c(obj, 2);
 }
 
 int func_0204a160();
@@ -565,22 +601,34 @@ int Unk0ea208_Unk_0eac24(void)
     return func_0204fed8(func_020445f4(39, 4), 1);
 }
 
-void Unk0ea208_Unk_0eac40(u8 *p)
+/*
+ * Resolve group 39 entry 2 and submit it with work+0x3c to func_02061f10 using
+ * the fixed middle arguments -1, 0 and 3. Evidence: `mov r0,#39` / `mov r1,#2`
+ * for 020445f4, selector 1 for 0204fed8, the stack store of its result,
+ * `ldr r0,[r4,#60]`, `mvn r1,#0`, `mov r2,#0` and `mov r3,#3`.
+ */
+void Unk0ea208_Unk_0eac40(Unk0ea208Work *work)
 {
-    func_02061f10(FIELD(u32, p, 60), -1, 0, 3, func_0204fed8(func_020445f4(39, 2), 1));
+    func_02061f10(work->UnkField003c, -1, 0, 3, func_0204fed8(func_020445f4(39, 2), 1));
 }
 
-int Unk0e8228_GetArr40();
-int func_02044ec4();
-void Unk0a163c_Unk_0a1814();
+void *func_02044ec4(u32 key);
+void Unk0a163c_Unk_0a1814(u32 id);
+/*
+ * Resolve group 5 through the 0e8228 table, then report the result of
+ * func_02044ec4: when bit 2 of its byte +0x282 is set report id 0x17d, otherwise
+ * report the halfword at +0x1d8. Evidence: `mov r0,#5`, the two table calls,
+ * `ldrb [r0,#642]` shifted to isolate bit 2, `add r0,r0,#256` and
+ * `ldrh [r0,#216]`. The record is borrowed.
+ */
 void Unk0ea208_Unk_0ead64(void)
 {
-    u8 *q = (u8 *)func_02044ec4(Unk0e8228_GetArr40(Unk0e8228_Unk_0e8374(5)));
-    if (((u32)(q[642] << 29) >> 31) != 0) {
+    u8 *record = (u8 *)func_02044ec4(Unk0e8228_GetArr40(Unk0e8228_Unk_0e8374(5)));
+    if (((u32)(record[642] << 29) >> 31) != 0) {
         Unk0a163c_Unk_0a1814(0x17d);
         return;
     }
-    Unk0a163c_Unk_0a1814(FIELD(u16, q, 472));
+    Unk0a163c_Unk_0a1814(FIELD(u16, record, 472));
 }
 
 /*
@@ -604,5 +652,5 @@ void Unk0ea208_Unk_0eb6cc(Unk0ea208Work *work)
   if (work->UnkField01c4 != 8) {
     return;
   }
-  Unk0ea208_Unk_0eb264((int)work);
+  Unk0ea208_Unk_0eb264(work);
 }

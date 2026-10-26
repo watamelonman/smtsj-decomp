@@ -75,12 +75,29 @@ No M1-T771 function remains on the hard list.
 - `Unk0ea208_Unk_0eb264`: decompiler-derived
 - `Unk0ea208_Unk_0eae40`: decompiler-derived
 
-## Not done in M1-T772
-- `Unk0ea208_Unk_0eac40`
-- `Unk0ea208_Unk_0ead64`
-- `Unk0ea208_GetArr10`
-- `Unk0ea208_GetArr24`
-- `Unk0ea208_GetArr40`
+## M1-T772 — verified matches
+
+All eight functions are 100% in the local objdiff report. Evidence below is from
+the original delinked ARM instructions and their relocation targets. The
+functions borrow the singleton, table, slot and record views; none allocates or
+transfers ownership. `Unk0ea208Work` is the singleton view and `Unk0ea208Slot`
+is one of the six 56-byte records at work+0x70.
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `Unk0ea208_Unk_0eade4` | 60 B | When the singleton exists and its +0x1cc word is nonzero, resolve group 39 entry 2 and pass the handle to `func_0204fed8` with selector 2; otherwise return 0. Evidence: guarded `ldr [r0,#460]`, `mov r0,#39` / `mov r1,#2`, then a second `mov r1,#2` before the 0204fed8 call. |
+| `Unk0ea208_Unk_0eac40` | 64 B | Resolve group 39 entry 2 and submit it with work+0x3c to `func_02061f10` using fixed middle arguments -1, 0 and 3. Evidence: the 020445f4/0204fed8 pair with selector 1, the stack store of the result, `ldr r0,[r4,#60]`, `mvn r1,#0`, `mov r2,#0` and `mov r3,#3`. |
+| `Unk0ea208_Unk_0eb264` | 64 B | Run the fixed teardown, call `func_020eb178` for each +0x70 slot whose +0x00 word is nonzero, then run the closing teardown. Evidence: `add r5,r4,#112`, the `ldr r0,[r5]` / `beq` skip, stride 56, bound 6, and both teardown call relocations. |
+| `Unk0ea208_Unk_0ead64` | 68 B | Resolve group 5 through the 0e8228 table and inspect the `func_02044ec4` record: when bit 2 of byte +0x282 is set, report id 0x17d, otherwise report the halfword at +0x1d8. Evidence: `mov r0,#5`, the paired table calls, `ldrb [r0,#642]` shifted to isolate bit 2, `add r0,r0,#256` and `ldrh [r0,#216]`. |
+| `Unk0ea208_Unk_0eae40` | 68 B | Initialize a caller-owned object: pass the first three inputs to `Unk065e88_SetUnkFieldsc_10` (+0x0c/+0x10), store the fourth at +0x28, then write 10, 4 and 2 at +0x24, +0x30 and +0x3c. Evidence: the first call receives the untouched r0/r1/r2, r3 is saved in r4 for SetUnkField28, and the constant moves precede the remaining setter calls. |
+| `Unk0ea208_GetArr10` | 76 B | Return entry i of the five-word table at work+0x10, or 0 when the singleton is missing/not ready (+0x1cc zero) or i is outside 0..4. Evidence: `cmp r4,#5` and `ldr r0,[r0,#16]` after `add r0,r0,r4,lsl #2`. |
+| `Unk0ea208_GetArr24` | 76 B | Return entry i of the six-word table at work+0x24, or 0 under the same singleton guard or when i is outside 0..5. Evidence: `cmp r4,#6` and `ldr r0,[r0,#36]` after the scaled add. |
+| `Unk0ea208_GetArr40` | 76 B | Return entry i of the six-word table at work+0x40, or 0 under the same singleton guard or when i is outside 0..5. Evidence: `cmp r4,#6` and `ldr r0,[r0,#64]` after the scaled add. |
+
+No M1-T772 targets remain on the hard list. The three guarded table getters
+were rewritten to use the typed work view without changing the original
+generated instructions, and the two setter/teardown bodies now name their
+pointer parameters.
 
 ## Not done in M1-T773
 - `Unk0ea208_GetArr58`
