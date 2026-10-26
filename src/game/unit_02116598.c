@@ -167,52 +167,56 @@ void Unk116598_Unk_117b80(Unk116598Work *work)
 }
 
 
-int Unk116598_Unk_1171c8();
-/* decompiler-derived */
-u32 Unk116598_Unk_11727c(void)
+int Unk116598_Unk_1171c8(int arg0, int arg1);
+/* This call site passes a full register; the provider stores only its low byte.
+   Use the observed word-wide ABI here to avoid caller narrowing. See DEC-020. */
+void Unk02f078_Unk_02f20c(u32 value);
+/* ARM 0x0211727c forwards both signed arguments to 0x021171c8, sends the
+   mapped result to the byte setter at 0x0202f20c, and returns the full result. */
+u32 Unk116598_Unk_11727c(int arg0, int arg1)
 {
-  u32 value;
-  value = Unk116598_Unk_1171c8();
-  Unk02f078_Unk_02f20c();
-  return value;
+    u32 value = Unk116598_Unk_1171c8(arg0, arg1);
+    Unk02f078_Unk_02f20c(value);
+    return value;
 }
 
 
-/* decompiler-derived */
+/* ARM 0x02116700 writes the argument at +4 and one at +0xc in the
+   work returned by 0x0211682c; the work pointer must be initialized. */
 void Unk116598_Unk_116700(u32 arg0)
 {
-  int value;
-  value = Unk116598_Get_data_02176e5c();
-  *(u32 *)(value + 4) = arg0;
-  *(u32 *)(value + 0xc) = 1;
+    Unk116598Work *work = (Unk116598Work *)Unk116598_Get_data_02176e5c();
+    work->unk_0004 = arg0;
+    work->unk_000c = 1;
 }
 
 void Unk116598_Unk_1167e0(void);
-/* decompiler-derived */
+/* ARM 0x0211671c stores 1 at work +0, then calls 0x021167e0 and
+   0x021168b8 in order. The global work cell must hold a valid pointer. */
 void Unk116598_Unk_11671c(void)
 {
-  u32 *v1;
-  v1 = (u32 *)Unk116598_Get_data_02176e5c();
-  *v1 = 1;
-  Unk116598_Unk_1167e0();
-  Unk116598_Unk_1168b8();
+    Unk116598Work *work = (Unk116598Work *)Unk116598_Get_data_02176e5c();
+    work->unk_0000 = 1;
+    Unk116598_Unk_1167e0();
+    Unk116598_Unk_1168b8();
 }
 
 
-/* decompiler-derived */
+/* ARM 0x02116810 stores 2 at work +0, then calls 0x021167e0 and
+   0x021168b8 in order. The global work cell must hold a valid pointer. */
 void Unk116598_Unk_116810(void)
 {
-  u32 *v1;
-  v1 = (u32 *)Unk116598_Get_data_02176e5c();
-  *v1 = 2;
-  Unk116598_Unk_1167e0();
-  Unk116598_Unk_1168b8();
+    Unk116598Work *work = (Unk116598Work *)Unk116598_Get_data_02176e5c();
+    work->unk_0000 = 2;
+    Unk116598_Unk_1167e0();
+    Unk116598_Unk_1168b8();
 }
 
-int Unk065e88_Unk_065e88();
-int func_020773dc();
-int Unk0a23f4_Unk_0a23f4();
-/* decompiler-derived */
+int Unk065e88_Unk_065e88(void);
+int func_020773dc(int arg0);
+int Unk0a23f4_Unk_0a23f4(int arg0);
+/* ARM 0x0211689c calls 0x020a23f4(2), 0x02065e88(), then
+   0x020773dc(1), discarding results. No broader purpose is established. */
 void Unk116598_Unk_11689c(void)
 {
   Unk0a23f4_Unk_0a23f4(2);
@@ -221,13 +225,13 @@ void Unk116598_Unk_11689c(void)
 }
 
 
-/* decompiler-derived */
+/* ARM 0x02117968 writes the argument at +4 and one at +0xc in the
+   work returned by 0x02117a58; the work pointer must be initialized. */
 void Unk116598_Unk_117968(u32 arg0)
 {
-  int value;
-  value = Unk116598_Get_data_02176e68();
-  *(u32 *)(value + 4) = arg0;
-  *(u32 *)(value + 0xc) = 1;
+    Unk116598Work *work = (Unk116598Work *)Unk116598_Get_data_02176e68();
+    work->unk_0004 = arg0;
+    work->unk_000c = 1;
 }
 
 
@@ -515,16 +519,20 @@ void Unk116598_Unk_117790(void)
   *data_02176e64 = tmp1;
 }
 
-/* decompiler-derived */
+/* ARM 0x021174a0 stores 1 at +0x18 through BSS cell data_02176e60;
+   the cell must contain a valid work pointer (literal at 0x021174b4). */
 void Unk116598_Unk_1174a0(void)
 {
-  *(u32 *)(*data_02176e60 + 0x18) = 1;
+    Unk116598Work *work = (Unk116598Work *)*data_02176e60;
+    work->unk_0018 = 1;
 }
 
-/* decompiler-derived */
+/* ARM 0x021174b8 stores 0 at +0x18 through BSS cell data_02176e60;
+   the cell must contain a valid work pointer (literal at 0x021174cc). */
 void Unk116598_Unk_1174b8(void)
 {
-  *(u32 *)(*data_02176e60 + 0x18) = 0;
+    Unk116598Work *work = (Unk116598Work *)*data_02176e60;
+    work->unk_0018 = 0;
 }
 
 void func_02077314(void);
