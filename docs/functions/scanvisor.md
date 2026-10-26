@@ -282,15 +282,46 @@ unittest and original-image checksum gates were run locally.
 No new tests are required by the card; objdiff checks compiled behavior.
 No hard functions or omissions for M1-T989.
 
-## Not done in M1-T990
-- `ScanVisor_Unk_0a4910`
-- `ScanVisor_SetById`
-- `func_020a3ac0`
-- `ScanVisor_AnySlotField14`
-- `ScanVisor_ResetBits`
-- `ScanVisor_Unk_0a4578`
-- `ScanVisor_Unk_0a4864`
-- `ScanVisor_Unk_0a48b4`
+## M1-T990: eight verified list and record helpers
+
+Seven C bodies were already present and matched when this card began;
+`func_020a3ac0` was added from the delinked original. Configured symbols are
+retained; unknown semantics are not inferred from the fixed values below.
+All pointers borrow provider storage; list operations require seven 52-byte
+slots starting at +0x20.
+
+- `ScanVisor_Unk_0a4910` (0x020a4910, 64 bytes): for every occupied slot,
+  calls SetRange with (0, 0); leaves list+0x1bc unchanged.
+- `ScanVisor_SetById` (0x020a49d8, 64 bytes): FindSlotByKey locates the ID;
+  missing slots and slots with nonzero +0x14 return immediately. Otherwise
+  nonzero `on` calls Unk0a0ce4_Unk_0a0da4(28), then 0a4644 applies `on`.
+  The lookup and accessor calls support the configured descriptive name.
+- `func_020a3ac0` (0x020a3ac0, 68 bytes): passes work+0x5508 and signed
+  bytes at +0x7482/+0x7483 to Unk0a6174_Unk_0a6a88. If the returned
+  record's signed leading byte is not 1, returns zero; otherwise calls
+  func_02034dd0, then Unk118b04_Unk_118e50(6, 1), and returns one.
+  Work and the provider result must be valid; neither has a null guard.
+- `ScanVisor_AnySlotField14` (0x020a4600, 68 bytes): returns one for the
+  first occupied slot whose +0x14 accessor returns nonzero, otherwise zero.
+  The occupancy load and accessor call establish the query name.
+- `ScanVisor_ResetBits` (0x020a2bb8, 72 bytes): clears the leading word and
+  bits 0..4 and 6..7 of byte +4, preserving bit 5. The original byte
+  read/modify/write sequence supports the name and the C bitfield layout.
+- `ScanVisor_Unk_0a4578` (0x020a4578, 72 bytes): for each occupied slot,
+  calls func_02057eb8(2), reloads the leading list word, then passes the
+  slot and that word to func_020a43f4. Call order and reload are preserved.
+- `ScanVisor_Unk_0a4864` (0x020a4864, 80 bytes): calls
+  SetUnkFields24_28(slot, 8, 0) for every occupied slot, then clears
+  list+0x1bc. Field units remain unknown.
+- `ScanVisor_Unk_0a48b4` (0x020a48b4, 80 bytes): calls
+  SetRange(slot, 80, 0) for every occupied slot, then clears list+0x1bc.
+  Range units remain unknown.
+
+Validation: all eight report 100% objdiff; all 73 C definitions in the
+changed TU pass the match gate. Anticheat, unittest and original-image
+checksum gates were also run locally. No new tests are required by this
+card; objdiff verifies the compiled instruction behavior.
+No hard functions or omissions for M1-T990.
 
 ## Not done in M1-T991
 - `func_020a4df0`
@@ -314,9 +345,6 @@ No hard functions or omissions for M1-T989.
 - `ScanVisor_LoadSearchParts`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4950`: verified in M1-T989
-- `ScanVisor_Unk_0a4864`: decompiler-derived (plain cleanup)
-- `ScanVisor_Unk_0a4910`: decompiler-derived (plain+fix cleanup)
-- `ScanVisor_Unk_0a48b4`: decompiler-derived (plain+fix cleanup)
 - `ScanVisor_Unk_0a42f0`: decompiler-derived (plain+fix cleanup)
 - `ScanVisor_Draw`: hand-matched
 - `ScanVisor_SetById`: hand-matched
