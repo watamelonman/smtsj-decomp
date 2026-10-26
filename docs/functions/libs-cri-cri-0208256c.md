@@ -1,11 +1,11 @@
-# CRI unit 0208256c — M2-T071
+# CRI unit 0208256c — M2-T071 / M2-T072
 
 The public-source search for Nintendo DS CRI/ADX middleware did not identify
 matching source. These functions are reconstructed from the original ARM code.
 The configured `func_` symbols are retained because the middleware API names and
-the meaning of the two stored pairs are not established. All parameters and
-results are 32-bit words; no pointer or callback signature is assumed for the
-opaque pair values.
+the meaning of the two stored pairs are not established. The stored pairs remain opaque words. The dispatcher establishes a callback
+contract taking and returning one 32-bit word; callback storage is borrowed.
+A renewed public-source search for CRI/ADX Nintendo DS source found no match.
 
 | Function | Instruction evidence and contract |
 | --- | --- |
@@ -18,20 +18,30 @@ opaque pair values.
 | `func_02082648` | Tail-calls `func_0208258c(4)` and returns its word result (immediate 4). |
 | `func_02082658` | Tail-calls `func_0208258c(5)` and returns its word result (immediate 5). |
 
+| `func_02082668` | Tail-calls worker row 6, returning its combined result (immediate 6 at 02082670). |
+| `func_02082678` | Tail-calls worker row 7, returning its combined result (immediate 7 at 02082680). |
+| `func_0208258c` | Uses a 72-byte row and six 12-byte entries; calls non-null callbacks with the adjacent argument word, brackets each call with active flag 1/0, ORs results, and increments the row counter. Index must be 0..7. |
+| `func_02082688` | Clears eight active words, four opaque word pairs, the first six row counters, and `data_02173ff0`; does not clear the callback table. Evidence: stores and six-iteration loop at 02082690..020826f8. |
+| `func_02082718` | Resets state when the count at `data_02173fd4+4` is zero, then increments it (0208271c..0208273c). |
+| `func_02082748` | Decrements that count, reloads it, and on zero resets state and clears `data_02173ff4` (02082750..02082778). Caller must balance acquisitions. |
+
 The worker's original instructions select a 72-byte row, iterate over six
 12-byte entries, call each non-null entry callback with the adjacent word, and
 OR the results. This supports the unsigned word return declaration and the row
 terminology, without assigning a middleware-level meaning to these wrappers.
 
+The counter array has eight addressable words, although the original reset loop
+clears only six. This asymmetry is preserved. The reference count is volatile to
+retain the original reload after decrement. Builtin clears express the fixed-size
+zeroing without adding code blobs or assembly.
+
 ## Validation
 
-The card does not require new tests. `python3 tools/match_gate.py` built the
-project and reported all eight functions at 100%. `python3 tools/anticheat.py`
-passed; `python3 -m unittest discover -s tests -t . -q` passed all nine tests.
-`python3 tools/checksum.py` reported all artifacts byte-identical to the
-original. The unit remains linked from the delink pending human completion.
+No new tests are required by the card. All fourteen C functions, including the
+six M2-T072 functions, match at 100% in objdiff. The anticheat, unittest and
+checksum gates pass. The unit remains linked from the delink pending human
+completion.
 
 ## Hard functions
 
-None of the eight functions assigned by M2-T071 are left out. Other functions
-in this translation unit belong to a separate task card.
+None; all functions assigned by M2-T071 and M2-T072 are implemented.
