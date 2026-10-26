@@ -109,7 +109,8 @@ tables and work buffers remain borrowed from the caller.
   +0, cell coordinates +2/+3, filter byte +4 and provider state +8. State 3 is
   skipped. Region zero decrements the signed counter at grid+0xe10 (reset to 16)
   and accepts filter byte 0; other regions must match the four region bits at
-  cell+4 (`>> 12`) and the filter byte. Inserts through `func_020a6848`,
+  cell+4 (bits 16-19, i.e. `(word >> 16) & 0xf`; the object expresses this as
+  `(word << 12) >> 28`) and the filter byte. Inserts through `func_020a6848`,
   `Unk0a6174_FindFree0c`, `func_020a6280` and `func_020a61a0`.
 - `func_020a6c98` (0x020a6c98): second-bank equivalent with 88-byte provider
   entries. Counts down grid+0xe12, enables entries when

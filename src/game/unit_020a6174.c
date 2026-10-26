@@ -343,6 +343,7 @@ void func_020a7ae4(u8 *records, u8 *provider, int on)
             int old;
             int offset = FIELD(s16, records, 4) * 84;
             u8 *entry;
+            /* Normalizing to 0/1 here reproduces the original condition code. */
             if (records[13] != 0) old = 1;
             else old = 0;
             entry = FIELD(u8 *, provider, 8) + offset;
@@ -374,6 +375,7 @@ void func_020a7bd0(u8 *records, u8 *provider, int on)
             int offset = FIELD(s16, record, 4) * 88;
             u8 *entry = FIELD(u8 *, provider, 8) + offset;
             int old = record[14];
+            /* Boolean normalization is required to match the original codegen. */
             old = old != 0;
             if (old == 1) {
                 record[14] = func_020a68b4(entry);
@@ -432,6 +434,7 @@ int func_020a65c4(u8 *grid, u8 *provider, u8 *overlay, int x, int y, int kind)
         }
     }
     {
+        /* Inner scope and declaration order fix register allocation in the original. */
         int col, row;
         for (row = y - 1; row <= y + 1; row++) {
             if (row < 0 || row >= 40) continue;
@@ -499,8 +502,6 @@ insert:
             func_020a61a0(records, value, i, FIELD(s16, entry, 6),
                           entry[8], entry[5], (s8)entry[2], (s8)entry[3], state, slot);
         }
-next:
-        ;
     }
 }
 /* Original 88-byte entries feed the second bank, resetting per-entry provider
@@ -522,6 +523,7 @@ void func_020a6c98(u8 *grid, u8 *records, u8 *provider, u8 *map,
         int enabled;
         entry = FIELD(u8 *, provider, 8) + i * 88;
         if (id != FIELD(s16, entry, 0)) continue;
+        /* Boolean normalization is required to match the original codegen. */
         enabled = 0;
         if (Unk0e5fb8_Unk_0e6348(i) != 3) enabled = 1;
         if (entry[7] == 1) enabled = 1;
@@ -545,8 +547,6 @@ insert:
             func_020a6224(records, 0, i, FIELD(u16, entry, 12),
                           FIELD(u16, entry, 14), entry[5], (s8)entry[2], (s8)entry[3], state, slot);
         }
-next:
-        ;
     }
 }
 
