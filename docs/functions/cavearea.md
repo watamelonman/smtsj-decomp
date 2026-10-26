@@ -169,3 +169,47 @@ No protected configuration or symbol files were changed.
   ordering, explicit color locals, register hints, and scoped lifetime options.
   None matched, so the candidate was removed. A human can use
   `tools/decompme.py` for a scratch; no public upload was performed.
+
+## M1-T975 verified functions
+
+All three C definitions individually match the delinked ARM object at 100%
+(764, 1156 and 1892 bytes respectively). The missing `func_020ec704` definition
+was added and verified directly in the compiled object during attempt 2.
+Names stay neutral:
+callbacks are reached through the six-entry descriptor at 0x020eb824 and no
+string, data-table, or caller evidence supports a stronger description.
+
+- `func_020ecc24` (764 bytes): render callback that returns immediately in
+  state 0 or 12. Otherwise it configures four row ranges and two background
+  strips using the shifted indices at +0x130/+0x134, submits frame 19 at float
+  +0x128 offset by -192 and again unshifted, submits frame 18 at the origin,
+  then dispatches marker rendering to `func_020ed800` or `func_020ed8f4`
+  according to byte +0xa8. The two background/frame paths are deliberately
+  written out in full rather than hoisted above the test; hoisting changes the
+  branch layout and drops objdiff to about 55% (see DEC-027). `CaveAreaWork`
+  storage must cover those fields.
+- `func_020ec704` (1156 bytes): render callback. States 16..18 draw the layout
+  object at +0x50 from its origin words +0x14/+0x18 through `func_020eda38`,
+  using width entries at +0x138/+0x14c/+0x158 and color 0x26fffcff; states
+  7..11 and 16..18 also submit the frame indexed from handle +4. The shared
+  tail submits the +0x104-scaled overlay, provider spans/frame, the handle
+  pair at +0x14/+0x18 for the current area, and handles +0x44/+0x48. The
+  still-delinked row renderer `func_020ec514` is called with the area index.
+  Work storage must include the indexed width arrays and live borrowed provider
+  objects at +0x50/+0x84. See DEC-026: propagation/common-subexpression settings
+  preserve the branch setup and three conditional byte-state comparisons.
+  Initial readable C measured 91.30%; indexed array expressions and scoped
+  settings reached 99.76%, then local declaration order restored r4/r5 and 100%.
+- `func_020ebb14` (1892 bytes): 22-state callback dispatcher. State 1 seeds the
+  per-area rows and selects handle +0xc/+0x10 with the table at data_0213c814;
+  states 5..8 and 16/18 animate the +0x104/+0x110 floats and row offsets;
+  state 12 builds a 16-word request with `func_020bcacc`; states 13..15 drive
+  the layout load; states 20/19 handle the reverse transition; state 21
+  finishes with a float equality check. The +0x114 scroll uses the explicit
+  `func_0200219c` multiply/divide helper observed in the original. Every path
+  except the state-21 early return ends in the common animation and 23-handle
+  update tail.
+
+No hard-list entries were added for M1-T975. Behavioral tests are exempt on
+this card; object comparison is the acceptance oracle and the full checksum
+confirms the image still uses the original delinked TU.

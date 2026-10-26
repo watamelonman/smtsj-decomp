@@ -39,6 +39,18 @@ typedef struct ScanVisor {
     u8  pad_0200[0x4c];
     u32 unk_024c;               /* +0x24C */
 } ScanVisor;
+
+/* One 52-byte entry of the seven-entry scan list starting at +0x20. The
+ * leading word marks occupancy; other users of this layout are FindSlotByKey,
+ * AnySlotField14 and AllSlotsF28Is80. */
+typedef struct ScanVisorSlot {
+    u32 active;
+    u32 key;
+    u8 pad_08[0x14];
+    u32 f28;
+    u8 pad_20[0x14];
+} ScanVisorSlot;
+
 void Unk0fc584_SetDir(void);
 
 /** No-op draw callback: original 0x020a34a4 is only bx lr; Draw passes sv. */
@@ -112,12 +124,12 @@ u32 ScanVisor_Get_data_02176b04(void)
   return *data_02176b04;
 }
 
-void ScanVisor_Unk_0a4a44(int arg0);
+void ScanVisor_Unk_0a4a44(ScanVisor *list);
 /* Forward the list at base+0x24c to ScanVisor_Unk_0a4a44. Original
  * 0x020a3620: ldr ip,[pc,#4]; add r0,r0,#588; bx ip. */
 void ScanVisor_Unk_0a3620(ScanVisor *sv)
 {
-  ScanVisor_Unk_0a4a44((int)sv + 0x24c);
+  ScanVisor_Unk_0a4a44((ScanVisor *)((u8 *)sv + 0x24c));
 }
 
 
@@ -329,15 +341,18 @@ void ScanVisor_Unk_0a2a38(u32 arg0)
 
 
 int Unk0fd9f0_SetDir();
-/* decompiler-derived */
+/* Forward the caller's value to Unk0fd9f0_SetDir only when the work object
+ * exists and its +0x00 mode word is 1. Original 0x020a28f4: load the work
+ * word, return on null, load [work], compare against 1, return on mismatch,
+ * then move the saved argument to r0 and call. The value units are unknown. */
 void ScanVisor_Unk_0a28f4(u32 arg0)
 {
-  int *v1;
-  v1 = (int *)ScanVisor_Get_data_02176b04();
-  if (v1 == (int *)0x0) {
+  u32 *work;
+  work = (u32 *)ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  if (*v1 != 1) {
+  if (work[0] != 1) {
     return;
   }
   Unk0fd9f0_SetDir(arg0);
@@ -345,116 +360,130 @@ void ScanVisor_Unk_0a28f4(u32 arg0)
 }
 
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a2a60(u32 arg0,u32 arg1)
+/* Activate the caller-selected slot on the list at work+0x24c. Original
+ * 0x020a2a60: save both arguments, load the work word, return on null, then
+ * add 0x24c and call ScanVisor_SetById(id, on). The caller at
+ * unit_0202f2a8 passes (i, mode), matching the SetById contract. */
+void ScanVisor_Unk_0a2a60(u32 id,u32 on)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  u32 *work;
+  work = (u32 *)ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  ScanVisor_SetById(tmp1 + 0x24c,arg0,arg1);
+  ScanVisor_SetById((u32)((u8 *)work + 0x24c),id,on);
   return;
 }
 
 
-/* decompiler-derived */
-int * ScanVisor_Unk_0a42c4(int arg0)
+/* Return the first free 52-byte entry among the seven starting at +0x20, or
+ * null when all seven are occupied. Original 0x020a42c4: add 0x20, then loop
+ * seven times over [entry] != 0 with +52 per entry and return the pointer.
+ * ScanVisor_Unk_0a42f0 uses the result to fill a new entry. */
+ScanVisorSlot *ScanVisor_Unk_0a42c4(int base)
 {
-  int *v1;
-  int tmp2;
-  v1 = (int *)(arg0 + 0x20);
-  tmp2 = 0;
+  ScanVisorSlot *entry;
+  int i;
+  entry = (ScanVisorSlot *)((u8 *)base + 0x20);
+  i = 0;
   do {
-    if (*v1 == 0) {
-      return v1;
+    if (entry->active == 0) {
+      return entry;
     }
-    tmp2 = tmp2 + 1;
-    v1 = v1 + 0xd;
-  } while (tmp2 < 7);
-  return (int *)0x0;
+    i = i + 1;
+    entry++;
+  } while (i < 7);
+  return 0;
 }
 
 
-int Unk0a7d54_Unk_0a8b00();
-/* decompiler-derived */
+int Unk0a7d54_Unk_0a8b00(u32 object, u32 a, u32 b);
+/* Forward two opaque values to borrowed work+0x428 when work exists.
+ * Original 0x020a2ae8 preserves both arguments across the getter and calls
+ * Unk0a7d54_Unk_0a8b00; a null work pointer returns without calling. */
 void ScanVisor_Unk_0a2ae8(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  Unk0a7d54_Unk_0a8b00(tmp1 + 0x428,arg0,arg1);
+  Unk0a7d54_Unk_0a8b00(work + 0x428,arg0,arg1);
   return;
 }
 
-int func_020c9cbc();
-/* decompiler-derived */
+int func_020c9cbc(u32 object, u32 a, u32 b, u32 c);
+/* Forward three opaque values to borrowed work+0x78 when work exists.
+ * Original 0x020a29e8 preserves r0-r2 across the getter, then supplies them
+ * as r1-r3 to func_020c9cbc; null work is a no-op. */
 void ScanVisor_Unk_0a29e8(u32 arg0,u32 arg1,u32 arg2)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  func_020c9cbc(tmp1 + 0x78,arg0,arg1,arg2);
+  func_020c9cbc(work + 0x78,arg0,arg1,arg2);
   return;
 }
 
 int ScanVisor_Unk_0a2b58(void);
-int Unk0a7d54_Unk_0a8c40();
-/* decompiler-derived */
+int Unk0a7d54_Unk_0a8c40(u32 object);
+/* Call the +0x428 helper and clear the list field only when work exists
+ * and ScanVisor_Unk_0a2b58 returns nonzero. Original 0x020a2b7c calls
+ * Unk0a7d54_Unk_0a8c40 before ClearUnkField198 on work+0x24c. */
 void ScanVisor_Unk_0a2b7c(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  int ready;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  tmp2 = ScanVisor_Unk_0a2b58();
-  if (tmp2 == 0) {
+  ready = ScanVisor_Unk_0a2b58();
+  if (ready == 0) {
     return;
   }
-  Unk0a7d54_Unk_0a8c40(tmp1 + 0x428);
-  ScanVisor_ClearUnkField198((ScanVisor *)(tmp1 + 0x24c));
+  Unk0a7d54_Unk_0a8c40(work + 0x428);
+  ScanVisor_ClearUnkField198((ScanVisor *)(work + 0x24c));
   return;
 }
 
-int func_020a4370();
-/* decompiler-derived */
-void ScanVisor_Unk_0a4544(int arg0)
+int func_020a4370(ScanVisorSlot *entry);
+/* Visit occupied entries in the borrowed seven-slot list. Original
+ * 0x020a4544 starts at +0x20, advances 52 bytes and calls func_020a4370
+ * only for a nonzero leading word; the caller must supply the full list. */
+void ScanVisor_Unk_0a4544(u8 *list)
 {
-  int tmp1;
-  int *v2;
-  v2 = (int *)(arg0 + 0x20);
-  tmp1 = 0;
+  int i;
+  ScanVisorSlot *entry = (ScanVisorSlot *)(list + 0x20);
+  i = 0;
   do {
-    if (*v2 != 0) {
-      func_020a4370(v2);
+    if (entry->active != 0) {
+      func_020a4370(entry);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
-  return;
+    i = i + 1;
+    entry++;
+  } while (i < 7);
 }
 
 
-/* decompiler-derived */
+/* Select the work words at +0x2c/+0x34; null work is a no-op.
+ * Original 0x020a27a8 stores zero at +0x2c for a nonzero argument, otherwise
+ * stores 0x51 at +0x2c and zero at +0x34. Value units remain unknown. */
 void ScanVisor_Unk_0a27a8(int arg0)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
   if (arg0 == 0) {
-    *(u32 *)(tmp1 + 0x2c) = 0x51;
-    *(u32 *)(tmp1 + 0x34) = 0;
+    *(u32 *)(work + 0x2c) = 0x51;
+    *(u32 *)(work + 0x34) = 0;
     return;
   }
-  *(u32 *)(tmp1 + 0x2c) = 0;
+  *(u32 *)(work + 0x2c) = 0;
   return;
 }
 
@@ -495,10 +524,10 @@ void ScanVisor_Unk_0a28b0(int arg0)
   return;
 }
 
-void ScanVisor_SetField34();
-void ScanVisor_SetRangeA();
-void ScanVisor_SetField214();
-void ScanVisor_Unk_0a4864(int arg0);
+void ScanVisor_SetField34(int on);
+void ScanVisor_SetRangeA(int on);
+void ScanVisor_SetField214(int on);
+void ScanVisor_Unk_0a4864(int list);
 /* decompiler-derived */
 void ScanVisor_Unk_0a2660(void)
 {
@@ -515,7 +544,7 @@ void ScanVisor_Unk_0a2660(void)
   return;
 }
 
-void ScanVisor_Unk_0a2950();
+void ScanVisor_Unk_0a2950(int on);
 /* decompiler-derived */
 void ScanVisor_Unk_0a273c(u32 arg0)
 {
@@ -544,81 +573,92 @@ int func_020c8f08();
 int Unk0c855c_Unk_0ca648();
 int Unk0fc584_Unk_0fc6a0();
 int Unk0fd9f0_Unk_0fda14();
-void ScanVisor_Unk_0a4864();
-void ScanVisor_Unk_0a4910();
-void ScanVisor_Unk_0a48b4();
+void ScanVisor_Unk_0a4864(int list);
+void ScanVisor_Unk_0a4910(int list);
+void ScanVisor_Unk_0a48b4(int list);
+/* Select the work object's +0x34 value: -3 for on, 3 for off. Original
+ * 0x020a277c: getter, null return, then cmp r4,#0 with mvnne #2 / moveq #3
+ * before storing +0x34. The callers in unit_0203c474 use the flag pair to
+ * switch this field, and the configured symbol keeps the Field34 name. */
 void ScanVisor_SetField34(int on)
 {
-    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
-    if (v == 0) {
+    u8 *work = (u8 *)ScanVisor_Get_data_02176b04();
+    if (work == 0) {
         return;
     }
     if (on) {
-        FIELD(s32, v, 52) = -3;
+        FIELD(s32, work, 52) = -3;
     } else {
-        FIELD(s32, v, 52) = 3;
+        FIELD(s32, work, 52) = 3;
     }
 }
 
+/* Select the work object's +0x1c value: 2 for on, -2 for off. Original
+ * 0x020a2820: getter, null return, then cmp r4,#0 with movne #2 / mvneq #1
+ * (the encoded -2) before storing +0x1c. unit_0203c474 calls both arms. */
 void ScanVisor_SetRangeA(int on)
 {
-    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
-    if (v == 0) {
+    u8 *work = (u8 *)ScanVisor_Get_data_02176b04();
+    if (work == 0) {
         return;
     }
     if (on) {
-        FIELD(s32, v, 28) = 2;
+        FIELD(s32, work, 28) = 2;
     } else {
-        FIELD(s32, v, 28) = -2;
+        FIELD(s32, work, 28) = -2;
     }
 }
 
+/* Select the work object's +0x214 value: -3 for on, 3 for off. Original
+ * 0x020a2884: getter, null return, then cmp r4,#0 with mvnne #2 / moveq #3
+ * before storing +0x214. unit_0203c474 calls both arms. */
 void ScanVisor_SetField214(int on)
 {
-    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
-    if (v == 0) {
+    u8 *work = (u8 *)ScanVisor_Get_data_02176b04();
+    if (work == 0) {
         return;
     }
     if (on) {
-        FIELD(s32, v, 532) = -3;
+        FIELD(s32, work, 532) = -3;
     } else {
-        FIELD(s32, v, 532) = 3;
+        FIELD(s32, work, 532) = 3;
     }
 }
 
+/* Toggle the list at work+0x24c: on selects ScanVisor_Unk_0a4904, which sets
+ * the list's +0x1bc word to 1; off selects ScanVisor_Unk_0a4864, which writes
+ * (8, 0) into the +0x24/+0x28 fields of every occupied entry and then stores 0
+ * at +0x1bc. Original 0x020a2920 is 48 bytes: getter, null return, add 0x24c,
+ * then either branch-linked helper. Callers in CampStatus and several game
+ * units pass 0/1 as an enable flag. */
 void ScanVisor_Unk_0a2920(int on)
 {
-    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
-    if (v == 0) {
+    u8 *work = (u8 *)ScanVisor_Get_data_02176b04();
+    if (work == 0) {
         return;
     }
     if (on) {
-        ScanVisor_Unk_0a4904((ScanVisor *)(v + 588));
+        ScanVisor_Unk_0a4904((ScanVisor *)(work + 588));
     } else {
-        ScanVisor_Unk_0a4864(v + 588);
+        ScanVisor_Unk_0a4864((int)(work + 588));
     }
 }
 
+/* Select one of two list helpers on borrowed work+0x24c; null work is a
+ * no-op. Original 0x020a2950 calls 0x020a4910 for nonzero on and
+ * 0x020a48b4 otherwise. Their higher-level purpose is not established. */
 void ScanVisor_Unk_0a2950(int on)
 {
-    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
-    if (v == 0) {
+    u8 *work = (u8 *)ScanVisor_Get_data_02176b04();
+    if (work == 0) {
         return;
     }
     if (on) {
-        ScanVisor_Unk_0a4910(v + 588);
+        ScanVisor_Unk_0a4910((int)(work + 588));
     } else {
-        ScanVisor_Unk_0a48b4(v + 588);
+        ScanVisor_Unk_0a48b4((int)(work + 588));
     }
 }
-
-typedef struct ScanVisorSlot {
-    u32 active;
-    u32 key;
-    u8 pad_08[0x14];
-    u32 f28;
-    u8 pad_20[0x14];
-} ScanVisorSlot;
 
 typedef struct ScanVisorEnt20 {
     u32 id;
@@ -641,8 +681,8 @@ int Unk0c855c_Unk_0c9bac();
 int Unk0a7d54_Unk_0a8c04(u8 *object);
 void Unk0c855c_Unk_0c9890(u8 *object, int value);
 int func_020c9db4();
-int func_020c9eb0();
-void func_020616ec();
+int func_020c9eb0(u8 *object, u32 a, u32 b);
+void func_020616ec(u32 object, int value);
 int func_02057eb8();
 void func_020a43f4();
 /* Query the work object's +0x78 sub-object through Unk0c855c_Unk_0c9bac and
@@ -745,15 +785,20 @@ void ScanVisor_LoadSearchParts(int arg0,u32 arg1)
 int func_02057eb8();
 void ScanVisor_Unk_0a4578();
 int func_020a4a70();
-/* decompiler-derived */
-void ScanVisor_Unk_0a4a44(int arg0)
+/* Refresh the list: call ScanVisor_Unk_0a4578 first, then, only when the
+ * list's +0x198 word is non-zero, call func_02057eb8(1) and func_020a4a70 on
+ * the same list. Original 0x020a4a44: zero-argument first call, load
+ * [list+0x198], pop on zero, else two branch-linked calls. The caller at
+ * 0x020a3620 passes the visor's list at base+0x24c; the list's meaning beyond
+ * that word is unknown. */
+void ScanVisor_Unk_0a4a44(ScanVisor *list)
 {
   ScanVisor_Unk_0a4578();
-  if (((ScanVisor *)arg0)->unk_0198 == 0) {
+  if (list->unk_0198 == 0) {
     return;
   }
   func_02057eb8(1);
-  func_020a4a70(arg0);
+  func_020a4a70((int)list);
 }
 
 /* decompiler-derived */
@@ -821,7 +866,7 @@ void ScanVisor_Unk_0a48b4(int arg0)
   *(u32 *)(arg0 + 0x1bc) = 0;
 }
 
-int ScanVisor_FindEnt20();
+int ScanVisor_FindEnt20(u32 id);
 /* decompiler-derived */
 u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
 {
@@ -944,11 +989,17 @@ void ScanVisor_Unk_0a3760(u32 a, u32 b, u32 c)
     func_020616ec(*data_02176b04, func_020c9db4((u8 *)*data_02176b04 + 120, a, b, c));
 }
 
+/* Submit the +0x78 provider result to func_020616ec on the current work.
+ * Original 0x020a379c reloads data_02176b04 after func_020c9eb0, so that
+ * provider may change the work pointer. Both providers require valid work. */
 void ScanVisor_Unk_0a379c(u32 a, u32 b)
 {
     func_020616ec(*data_02176b04, func_020c9eb0((u8 *)*data_02176b04 + 120, a, b));
 }
 
+/* Find the first matching ID in the six borrowed 20-byte records, or zero.
+ * Original 0x020a4284 loads data_0214ce2c and compares each leading word;
+ * the configured FindEnt20 name describes this observed table traversal. */
 int ScanVisor_FindEnt20(u32 id)
 {
     u32 j;
