@@ -505,3 +505,14 @@ The delinked `func_0208aa8c` loads its second argument through the literal
 symbol, unlike the neighboring state and callee literals. Retain a typed
 absolute data read rather than invent an unresolved external symbol. The
 address is data consumed by the wrapper, not encoded instructions.
+
+## DEC-029 — Keep the 02061798 registry loop indexed
+
+Scope `opt_strength_reduction off` and `opt_rotateloops off` to
+`func_02061798` and restore both afterward. The original walks the four-entry
+font registry with `mla r1, ip, r0, r2` and 56 in r0, branches forward to the
+`cmp ip,#4` test, and returns with `bcc` (unsigned). At the project's default
+`-O4,p`, mwccarm rewrites the same C into a pointer-increment loop without the
+`mla`; reducing the two loop transforms reproduces the target's indexed
+unsigned loop exactly. The neighbouring matched functions in the same TU are
+outside the pragma scope and keep their original code.
