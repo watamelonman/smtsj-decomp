@@ -198,10 +198,10 @@ typedef struct CaveAreaCallbacks {
     u32 preserved;
     void (*callbacks[6])(void);
 } CaveAreaCallbacks;
-void func_020ebb14(void);
+void func_020ebb14(CaveAreaWork *p);
 void func_020ec330(CaveAreaWork *p);
-void func_020ec704(void);
-void func_020ecc24(void);
+void func_020ec704(CaveAreaWork *p);
+void func_020ecc24(CaveAreaWork *p);
 void func_020eba60(CaveAreaWork *p);
 void func_020ecfe8(CaveAreaWork *p, const u32 *message);
 
@@ -210,10 +210,10 @@ void func_020eb7e0(CaveAreaCallbacks *p)
 {
     p->size = 360;
     p->enabled = 1;
-    p->callbacks[0] = func_020ebb14;
+    p->callbacks[0] = (void (*)(void))func_020ebb14;
     p->callbacks[1] = (void (*)(void))func_020ec330;
-    p->callbacks[2] = func_020ec704;
-    p->callbacks[3] = func_020ecc24;
+    p->callbacks[2] = (void (*)(void))func_020ec704;
+    p->callbacks[3] = (void (*)(void))func_020ecc24;
     p->callbacks[4] = (void (*)(void))func_020eba60;
     p->callbacks[5] = (void (*)(void))func_020ecfe8;
 }
@@ -761,4 +761,330 @@ void func_020eb83c(CaveAreaWork *p)
     w->previous=0;
     w->enabled=0;
     w->sentinel=-1;
+}
+
+/* Render helpers used by the cave-area callbacks. */
+typedef struct CaveAreaLayout {
+    u8 pad_0000[0x14];
+    int origin_x;
+    int origin_y;
+} CaveAreaLayout;
+void func_02057524(int value);
+void func_02057e58(int a, int b, int c);
+void func_02057e18(int value);
+void func_02057df8(void);
+void func_02057eb8(int value);
+void func_02057fd8(void);
+void func_020572d8(void);
+void func_02058e9c(int a, int b, int c, int d, float e, float f, int g);
+void func_0205c704(u32 handle);
+void func_020cb810(int a, int b, int c);
+void func_020ec514(CaveAreaWork *p, int area);
+void Unk05ae50_Unk_05af3c(void *p);
+int func_0205b36c(void *p);
+void Unk0cb32c_Unk_0cb564(u32 handle, ...);
+int Unk0cb32c_Unk_0cb58c(u32 handle);
+void Unk0bc1a8_Unk_0bc928(int a, int b, int c);
+void Unk0bc1a8_Unk_0bc9b4(int a, int b);
+void Unk0caea8_Unk_0caf98(int value);
+int func_020523a8(void);
+int func_02052728(void);
+int Unk124c5c_IsKind0(void);
+int Unk124c5c_IsKind31(void);
+void func_020bcacc(int index, CaveAreaRequest *request);
+int func_0200219c(int a, int b);
+extern u32 data_0213c814[];
+
+/* 0x020ecc24 */
+void func_020ecc24(CaveAreaWork *p)
+{
+    if (FIELD(u8, p, 0xc8) == 0 || FIELD(u8, p, 0xc8) == 12) return;
+    func_02057524(4);
+    func_02057e58(0, 0, 5);
+    func_02057e58(1, 5, 10);
+    func_02057e58(2, 15, 20);
+    func_02057e58(3, 35, 20);
+    func_02057e18(31);
+    func_02057df8();
+    if (FIELD(u8, p, 0xa8) == 0) {
+        func_02057eb8(0);
+        func_02058e9c(1, FIELD(int, p, 0x130) << 7, 0, 0, 1.0f, 0.0f, 6);
+        func_02058e9c(1, FIELD(int, p, 0x134) << 7, 0, 128, 1.0f, 0.0f, 6);
+        func_02057eb8(1);
+        func_0205de40(2, FIELD(u32, p, 0), 19,
+                      0, (int)FIELD(float, p, 0x128) - 192,
+                      1.0f, 1.0f, 0, 1.0f, 7);
+        func_02057eb8(1);
+        func_0205de40(2, FIELD(u32, p, 0), 19,
+                      0, (int)FIELD(float, p, 0x128),
+                      1.0f, 1.0f, 0, 1.0f, 7);
+        func_02057eb8(2);
+        func_0205de40(2, FIELD(u32, p, 0), 18, 0, 0,
+                      1.0f, 1.0f, 0, 1.0f, 7);
+        func_020ed800(p);
+    } else {
+        func_02057eb8(0);
+        func_02058e9c(1, FIELD(int, p, 0x130) << 7, 0, 0, 1.0f, 0.0f, 6);
+        func_02058e9c(1, FIELD(int, p, 0x134) << 7, 0, 128, 1.0f, 0.0f, 6);
+        func_02057eb8(1);
+        func_0205de40(2, FIELD(u32, p, 0), 19,
+                      0, (int)FIELD(float, p, 0x128) - 192,
+                      1.0f, 1.0f, 0, 1.0f, 7);
+        func_02057eb8(1);
+        func_0205de40(2, FIELD(u32, p, 0), 19,
+                      0, (int)FIELD(float, p, 0x128),
+                      1.0f, 1.0f, 0, 1.0f, 7);
+        func_02057eb8(2);
+        func_0205de40(2, FIELD(u32, p, 0), 18, 0, 0,
+                      1.0f, 1.0f, 0, 1.0f, 7);
+        func_020ed8f4(p);
+    }
+    func_02057e18(31);
+    func_02057df8();
+    func_02057eb8(-1);
+    func_02057fd8();
+    func_020572d8();
+}
+
+void func_0205c748(int mode, u32 handle, int x, int y, float sx, float sy,
+                   int zero, float scale, int layer);
+void func_02057e58(int a, int b, int c);
+/* 0x020ebb14 */
+void func_020ebb14(CaveAreaWork *p)
+{
+    CaveAreaInitView *view = (CaveAreaInitView *)p;
+    int i;
+    switch (FIELD(u8, p, 0xc8)) {
+    case 0:
+    case 3:
+    case 9:
+    case 10:
+    case 11:
+    case 17:
+        break;
+    case 1:
+        for (i = 0; i < FIELD(int, p, 0xb0); i++) {
+            view->x[i] = 0;
+            view->alpha[i] = 1.0f;
+        }
+        FIELD(int, p, 0x118) = 0;
+        {
+            int index = FIELD(u8, p, 0xa8) != 0;
+            func_0205caa8(view->handles[index], data_0213c814[index]);
+        }
+        FIELD(u8, p, 0xca) = 0;
+        FIELD(u8, p, 0xc8) = 3;
+        break;
+    case 2:
+        for (i = 0; i < 7; i++) {
+            view->x[i] = -107;
+            view->alpha[i] = 0.0f;
+        }
+        CaveArea_Unk_0ed354();
+        if (FIELD(u32, p, 0x160) != 0) {
+            FIELD(u32, p, 0x160) = 0;
+            FIELD(u8, p, 0xc8) = 12;
+        } else {
+            FIELD(u8, p, 0xc8) = 0;
+            FIELD(int, p, 0x10c) = 0;
+            func_020ec4a8(100, 0);
+            Unk0cb32c_Unk_0cb57c(FIELD(u32, p, 0xc));
+            Unk0cb32c_Unk_0cb57c(FIELD(u32, p, 0x10));
+        }
+        break;
+    case 4:
+        if (func_0205b36c((u8 *)p + 0x68) != 0) {
+            Unk05ae50_Unk_05af3c((u8 *)p + 0x68);
+            CaveArea_Unk_0ed364(p);
+            FIELD(u8, p, 0xc8) = 5;
+        }
+        break;
+    case 5:
+        for (i = 0; i < 7; i++) {
+            if (i != FIELD(int, p, 0xbc)) {
+                view->x[i] -= 27;
+            }
+        }
+        FIELD(int, p, 0x118)++;
+        if (FIELD(int, p, 0x118) < 20) break;
+        FIELD(int, p, 0x118) = 0;
+        func_0205caa8(FIELD(u32, p, 0x4c), 18);
+        CaveArea_InitParams((float *)((u8 *)p + 0x88));
+        FIELD(u8, p, 0xc8) = 7;
+        break;
+    case 6: {
+        int index;
+        int count;
+        for (i = 0; i < 7; i++) {
+            if (i != FIELD(int, p, 0xbc)) {
+                view->x[i] += 27;
+            }
+        }
+        count = FIELD(int, p, 0x118) - 1;
+        FIELD(int, p, 0x118) = count;
+        index = FIELD(int, p, 0xbc) * 2;
+        Unk0cb32c_Unk_0cb564(((u32 *)((u8 *)p + 0x14))[index], count);
+        Unk0cb32c_Unk_0cb564(((u32 *)((u8 *)p + 0x18))[index],
+                            FIELD(int, p, 0x118));
+        if (FIELD(int, p, 0x118) > 0) break;
+        FIELD(int, p, 0x118) = 0;
+        if (FIELD(u8, p, 0xa8) == 0) {
+            func_0205caa8(FIELD(u32, p, 0xc), 0);
+        } else {
+            func_0205caa8(FIELD(u32, p, 0x10), 1);
+        }
+        Unk0fedd4_SetState1();
+        FIELD(u8, p, 0xc8) = 3;
+        break;
+    }
+    case 7:
+        FIELD(float, p, 0x104) += FIELD(float, p, 0x120);
+        FIELD(float, p, 0x110) += 0.125f;
+        FIELD(int, p, 0x118)++;
+        if (FIELD(int, p, 0x118) >= 8) {
+            FIELD(float, p, 0x110) = 1.0f;
+            FIELD(int, p, 0x118) = 0;
+            Unk0bc1a8_Unk_0bc928(23, 16, 0);
+            func_020edad8(p, 110, 1);
+            FIELD(u8, p, 0xc9) = 9;
+            FIELD(u8, p, 0xc8) = 10;
+        }
+        if (FIELD(float, p, 0x104) > 1.0f) FIELD(float, p, 0x104) = 1.0f;
+        FIELD(int, p, 0x114) -= func_0200219c(FIELD(int, p, 0xbc) * 0xF000, 0x8000);
+        break;
+    case 8:
+        FIELD(float, p, 0x104) -= 0.125f;
+        FIELD(float, p, 0x110) -= 0.125f;
+        FIELD(int, p, 0x118)++;
+        if (FIELD(int, p, 0x118) >= 8) {
+            FIELD(float, p, 0x104) = 0.0f;
+            FIELD(float, p, 0x110) = 0.0f;
+            FIELD(int, p, 0x118) = 20;
+            CaveArea_Unk_0ed26c(p);
+            Unk0cb32c_Unk_0cb57c(FIELD(u32, p, 0x4c));
+            FIELD(u8, p, 0xc8) = 6;
+        }
+        if (FIELD(float, p, 0x104) < 0.0f) FIELD(float, p, 0x104) = 0.0f;
+        FIELD(int, p, 0x114) += func_0200219c(FIELD(int, p, 0xbc) * 0xF000, 0x8000);
+        break;
+    case 12: {
+        CaveAreaRequest request;
+        int j;
+        if (func_020523a8() == 1) break;
+        j = 0;
+        FIELD(u8, p, 0xc8) = j;
+        for (j = 0; j < 2; j++) ((u8 *)&request)[j] = 0;
+        for (j = 0; j < 16; j++) request.words[j] = 0;
+        if (FIELD(u8, p, 0xa8) == 0) {
+            request.words[1] = 1;
+            request.flags[0] |= 2;
+        } else {
+            request.words[1] = 0;
+            request.flags[0] |= 2;
+        }
+        func_020bcacc(16, &request);
+        break;
+    }
+    case 13:
+        if ((FIELD(int, p, 0x15c) == 1 && func_02052728() == 0) ||
+            (FIELD(int, p, 0x15c) == 2 && Unk124c5c_IsKind0() != 0)) {
+            func_0205caa8(FIELD(u32, p, 0x44), 16);
+            func_0205caa8(FIELD(u32, p, 0x48), 17);
+            CaveArea_LoadAreaLayout(p);
+            FIELD(u8, p, 0xc8) = 14;
+        }
+        break;
+    case 14:
+        if (func_0205b36c((u8 *)p + 0x68) != 0) {
+            Unk05ae50_Unk_05af3c((u8 *)p + 0x68);
+            CaveArea_Unk_0ed364(p);
+            FIELD(u8, p, 0xc8) = 15;
+            Unk0caea8_Unk_0caf98(4);
+        }
+        break;
+    case 15:
+        if (Unk0cb32c_Unk_0cb58c(FIELD(u32, p, 0x44)) != 0) {
+            func_0205caa8(FIELD(u32, p, 0x4c), 18);
+            func_0205caa8(FIELD(u32, p, 0x50), 19);
+            CaveArea_InitParams((float *)((u8 *)p + 0x88));
+            FIELD(u8, p, 0xc8) = 16;
+            Unk0a0ce4_Unk_0a0da4(171);
+        }
+        break;
+    case 16: {
+        int timer;
+        FIELD(float, p, 0x104) += FIELD(float, p, 0x120);
+        FIELD(float, p, 0x110) += 0.125f;
+        timer = FIELD(int, p, 0x118);
+        FIELD(int, p, 0x118) = timer + 1;
+        if (timer >= 8) {
+            FIELD(float, p, 0x110) = 1.0f;
+            FIELD(int, p, 0x118) = 0;
+            Unk0bc1a8_Unk_0bc928(23, 16, 0);
+            func_020edad8(p, 111, 0);
+            FIELD(u8, p, 0xc8) = 17;
+        }
+        if (FIELD(float, p, 0x104) > 1.0f) FIELD(float, p, 0x104) = 1.0f;
+        break;
+    }
+    case 18: {
+        int timer;
+        Unk0cb32c_Unk_0cb564(FIELD(u32, p, 0x50),
+                            7 - FIELD(int, p, 0x118));
+        FIELD(float, p, 0x104) -= 0.125f;
+        FIELD(float, p, 0x110) -= 0.125f;
+        timer = FIELD(int, p, 0x118);
+        FIELD(int, p, 0x118) = timer + 1;
+        if (timer >= 8) {
+            FIELD(float, p, 0x104) = 0.0f;
+            FIELD(float, p, 0x110) = 0.0f;
+            FIELD(int, p, 0x118) = 20;
+            CaveArea_Unk_0ed26c(p);
+            Unk0cb32c_Unk_0cb57c(FIELD(u32, p, 0x4c));
+            FIELD(u8, p, 0xc8) = 20;
+        }
+        if (FIELD(float, p, 0x104) < 0.0f) FIELD(float, p, 0x104) = 0.0f;
+        break;
+    }
+    case 20: {
+        int count = FIELD(int, p, 0x118) - 1;
+        FIELD(int, p, 0x118) = count;
+        Unk0cb32c_Unk_0cb564(FIELD(u32, p, 0x44), count);
+        Unk0cb32c_Unk_0cb564(FIELD(u32, p, 0x48),
+                            FIELD(int, p, 0x118));
+    }
+        if (FIELD(int, p, 0x118) > 0) break;
+        FIELD(int, p, 0x118) = 0;
+        Unk124c5c_Set_124d6c(0, 1);
+        Unk124c5c_Set_124d8c(1, 0);
+        FIELD(u8, p, 0xc8) = 19;
+        Unk0caea8_Unk_0caf98(1);
+        break;
+    case 19:
+        if (Unk124c5c_IsKind31() != 0) {
+            CaveArea_Unk_0ed354();
+            func_020ec4a8(100, 0);
+            FIELD(u8, p, 0xc8) = 0;
+        }
+        break;
+    case 21:
+        FIELD(float, p, 0x104) -= 0.125f;
+        if (FIELD(float, p, 0x104) < 0.0f) FIELD(float, p, 0x104) = 0.0f;
+        FIELD(float, p, 0x110) = FIELD(float, p, 0x104);
+        FIELD(float, p, 0x108) = FIELD(float, p, 0x104);
+        if (Unk124c5c_IsKind31() == 0) break;
+        if (FIELD(float, p, 0x104) == 0.0f) {
+            CaveArea_Unk_0ed26c(p);
+            CaveArea_Unk_0ed354();
+            Unk0bc1a8_Unk_0bc9b4(16, 0);
+            return;
+        }
+        break;
+    }
+    CaveArea_Unk_0ed3cc((float *)((u8 *)p + 0x98));
+    func_020ed634((CaveAreaMotion *)((u8 *)p + 0x88));
+    CaveArea_Unk_0ed9e8((CaveAreaUnk0ed9e8 *)p);
+    for (i = 0; i < 23; i++) {
+        func_0205c704(view->handles[i]);
+    }
 }

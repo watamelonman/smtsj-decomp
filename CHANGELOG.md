@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T975: match the three remaining CaveArea render/state callbacks (`func_020ecc24`, `func_020ec704`, `func_020ebb14`) at 100% objdiff, with typed work-field contracts and instruction evidence.
 - M1-T907: match seven `game/unit_020e8228` bank scans, selection-bit, index-advance, request-builder, state teardown and object-state functions at 100% objdiff; add typed contracts and document the remaining literal-pool alias hard case.
 - Verified all eight M1-T977 table, resource and state helpers at 100% objdiff; documented their instruction-based contracts.
 - Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.
