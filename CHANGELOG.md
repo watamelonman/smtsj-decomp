@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Verified all eight M1-T772 game/unit_020ea208 guarded table getters, teardown, object setters and record/table lookups at 100% objdiff; added typed work/slot parameters and instruction evidence.
+- Matched all eight M1-T776 game/unit_0210fe28 resource setup, teardown, entry update and table submission functions at 100% objdiff; documented typed work fields and contracts.
 - Verified all eight M1-T771 game/unit_020ea208 guarded-field, slot-walk, table-forwarding and handle routines at 100% objdiff; added typed work/slot views and instruction evidence.
 - M1-T744: match all eight unit_02068f18 candidate, eligibility, stat, random-merge, draw, and candidate-combination routines at 100% objdiff.
 - Verified all eight M1-T770 game/unit_020ea208 reset, slot-walk, teardown and guarded-field routines at 100% objdiff; documented their typed contracts and instruction evidence.
