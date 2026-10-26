@@ -6,9 +6,33 @@ typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; ty
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-/* Object passed as the first argument in this file (layout from field accesses; names unknown). */
+/*
+ * One of the six 56-byte slot records that start at work+0x70. Only the first
+ * word is read by the functions in this file; the rest of the record is owned
+ * by func_020eb034 / func_020eb0a8 and is intentionally opaque here.
+ */
+typedef struct Unk0ea208Slot {
+    u32 UnkField00;
+    u8 unk_0004[52];
+} Unk0ea208Slot;
+
+/*
+ * Borrowed view of the singleton reached through data_02176ddc. Offsets come
+ * from the field accesses in this translation unit; the type is a view, not an
+ * allocation contract, so callers keep ownership.
+ */
 typedef struct Unk0ea208Work {
-    u8 unk_0000[0x1c4];
+    u32 UnkField0000;
+    u32 UnkField0004;
+    u32 UnkField0008;
+    u32 UnkField000c;
+    u32 UnkTable0010[5];        /* +0x10..+0x23 (GetArr10) */
+    u32 UnkTable0024[6];        /* +0x24..+0x3b (GetArr24) */
+    u32 UnkField003c;
+    u32 UnkTable0040[6];        /* +0x40..+0x57 (GetArr40) */
+    u32 UnkTable0058[6];        /* +0x58..+0x6f (GetArr58) */
+    Unk0ea208Slot UnkSlot0070[6]; /* +0x70..+0x1bf, stride 56 */
+    u8 unk_01c0[4];
     u32 UnkField01c4;
     u32 UnkField01c8;
     u32 UnkField01cc;
@@ -34,7 +58,14 @@ void Unk0ea208_Unk_0ead4c(void);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
-void func_02061f10();
+void func_02061f10(u32 value, s32 arg1, s32 arg2, s32 arg3, u32 arg4);
+
+/*
+ * Bounds-check a slot index against the six-entry +0x24 table, then pass that
+ * table entry and the caller's value to func_02061f10 with the fixed middle
+ * arguments -1, 0, 0. Evidence: `cmp r5,#6` / `popge`, the scaled
+ * `ldr r0,[r0,r5,lsl #2]` at +36, `mvn r1,#0`, and the stack argument store.
+ */
 void Unk0ea208_Unk_0ea390(int i, u32 x)
 {
     if (i < 0) {
@@ -43,7 +74,8 @@ void Unk0ea208_Unk_0ea390(int i, u32 x)
     if (i >= 6) {
         return;
     }
-    func_02061f10(FIELD(u32, Unk0ea208_Get_data_02176ddc() + i * 4, 36), -1, 0, 0, x);
+    func_02061f10(((Unk0ea208Work *)Unk0ea208_Get_data_02176ddc())->UnkTable0024[i],
+                  -1, 0, 0, x);
 }
 
 /*
@@ -97,16 +129,21 @@ u32 Unk0ea208_GetField8(void)
     return FIELD(u32, p, 8);
 }
 
+/*
+ * Return the borrowed work word at +0x0c when the singleton exists and its
+ * +0x1cc word is nonzero; otherwise 0. Evidence: `cmp r0,#0`,
+ * `ldr r1,[r0,#460]`, then `ldrne r0,[r0,#12]` in the delinked ARM.
+ */
 u32 Unk0ea208_GetFieldC(void)
 {
-    u32 p = Unk0ea208_Get_data_02176ddc();
-    if (p == 0) {
+    Unk0ea208Work *work = (Unk0ea208Work *)Unk0ea208_Get_data_02176ddc();
+    if (work == 0) {
         return 0;
     }
-    if (FIELD(u32, p, 460) == 0) {
+    if (work->UnkField01cc == 0) {
         return 0;
     }
-    return FIELD(u32, p, 12);
+    return work->UnkField000c;
 }
 
 u32 Unk0ea208_GetArr10(int i)
@@ -124,11 +161,11 @@ u32 Unk0ea208_GetArr10(int i)
     return FIELD(u32, p + i * 4, 16);
 }
 
-void Unk0ea208_ForEachSlot(u8 *p);
-void func_020eb034();
-void func_020ea744();
-int Unk0e8228_Unk_0e8460();
-int Unk0e8228_GetArr40();
+void Unk0ea208_ForEachSlot(Unk0ea208Work *work);
+void func_020eb034(Unk0ea208Slot *slot);
+void func_020ea744(u32 value);
+int Unk0e8228_Unk_0e8460(void);
+int Unk0e8228_GetArr40(int index);
 int func_020445f4(int group, int index);
 int func_0204fed8(int resource, int selector);
 u32 Unk0ea208_GetArr24(int i)
@@ -146,16 +183,21 @@ u32 Unk0ea208_GetArr24(int i)
     return FIELD(u32, p + i * 4, 36);
 }
 
+/*
+ * Return the borrowed work word at +0x3c when the singleton exists and its
+ * +0x1cc word is nonzero; otherwise 0. Evidence: same guard as GetFieldC with
+ * the final load `ldrne r0,[r0,#60]`.
+ */
 u32 Unk0ea208_GetField3c(void)
 {
-    u32 p = Unk0ea208_Get_data_02176ddc();
-    if (p == 0) {
+    Unk0ea208Work *work = (Unk0ea208Work *)Unk0ea208_Get_data_02176ddc();
+    if (work == 0) {
         return 0;
     }
-    if (FIELD(u32, p, 460) == 0) {
+    if (work->UnkField01cc == 0) {
         return 0;
     }
-    return FIELD(u32, p, 60);
+    return work->UnkField003c;
 }
 
 u32 Unk0ea208_GetArr40(int i)
@@ -198,7 +240,7 @@ void Unk0ea208_Unk_0ea70c(void)
 {
     u32 p = Unk0ea208_Get_data_02176ddc();
     if (p != 0 && FIELD(u32, p, 460) != 0) {
-        Unk0ea208_ForEachSlot((u8 *)p);
+        Unk0ea208_ForEachSlot((Unk0ea208Work *)p);
     }
 }
 
@@ -236,11 +278,17 @@ u32 Unk0ea208_Unk_0ea72c(void)
   return value2;
 }
 
+/*
+ * Visit every entry in the 0e8228 +0x40 table below the count returned by
+ * Unk0e8228_Unk_0e8460, passing each value to func_020ea744. Evidence: the
+ * `bl Unk0e8228_Unk_0e8460` count guard and the paired
+ * `bl Unk0e8228_GetArr40` / `bl func_020ea744` loop.
+ */
 void Unk0ea208_Unk_0ea828(void)
 {
-    int n = Unk0e8228_Unk_0e8460();
+    int count = Unk0e8228_Unk_0e8460();
     int i;
-    for (i = 0; i < n; i++) {
+    for (i = 0; i < count; i++) {
         func_020ea744(Unk0e8228_GetArr40(i));
     }
 }
@@ -322,57 +370,67 @@ void Unk0ea208_Unk_0eae20(u32 *arg0)
 
 
 
-/* decompiler-derived */
-int * Unk0ea208_Unk_0eb2cc(int arg0)
+/*
+ * Return the first of the six +0x70 slot records whose +0x00 word is zero (a
+ * free slot), or NULL when all six are occupied. Evidence: `add r0,r0,#112`,
+ * the `ldr r1,[r0]` / `bxeq lr` early return, stride `add r0,r0,#56`, loop
+ * bound 6, and the final `mov r0,#0`.
+ */
+Unk0ea208Slot *Unk0ea208_Unk_0eb2cc(Unk0ea208Work *work)
 {
-  int *v1;
-  int value;
-  v1 = (int *)(arg0 + 0x70);
-  value = 0;
+  Unk0ea208Slot *slot;
+  int i;
+  slot = work->UnkSlot0070;
+  i = 0;
   do {
-    if (*v1 == 0) {
-      return v1;
+    if (slot->UnkField00 == 0) {
+      return slot;
     }
-    value = value + 1;
-    v1 = v1 + 0xe;
-  } while (value < 6);
-  return (int *)0x0;
+    i = i + 1;
+    slot = slot + 1;
+  } while (i < 6);
+  return (Unk0ea208Slot *)0x0;
 }
 
-int func_020eb0a8();
-/* decompiler-derived */
-void Unk0ea208_Unk_0eb230(int arg0)
+void func_020eb0a8(Unk0ea208Slot *slot);
+
+/*
+ * Call func_020eb0a8 for every one of the six +0x70 slot records whose +0x00
+ * word is nonzero. Evidence: `ldr r0,[r5]` / `beq` skip, stride 56, loop bound
+ * 6, and the func_020eb0a8 call relocation.
+ */
+void Unk0ea208_Unk_0eb230(Unk0ea208Work *work)
 {
-  int value;
-  int *v2;
-  v2 = (int *)(arg0 + 0x70);
-  value = 0;
+  int i;
+  Unk0ea208Slot *slot;
+  slot = work->UnkSlot0070;
+  i = 0;
   do {
-    if (*v2 != 0) {
-      func_020eb0a8(v2);
+    if (slot->UnkField00 != 0) {
+      func_020eb0a8(slot);
     }
-    value = value + 1;
-    v2 = v2 + 0xe;
-  } while (value < 6);
+    i = i + 1;
+    slot = slot + 1;
+  } while (i < 6);
 }
 
-int func_020445f4(int group, int index);
-int func_0204fed8(int resource, int selector);
-/* decompiler-derived */
+/*
+ * When the singleton exists and its +0x1cc word is nonzero, resolve group 39
+ * entry 0 and pass that handle to func_0204fed8 with selector 3; return 0 on
+ * either guard failure. Evidence: `ldr r0,[r0,#460]`, `mov r0,#39` /
+ * `mov r1,#0`, then `mov r1,#3` before the func_0204fed8 call.
+ */
 u32 Unk0ea208_Unk_0eada8(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0ea208_Get_data_02176ddc();
-  if (value1 == 0) {
+  Unk0ea208Work *work;
+  work = (Unk0ea208Work *)Unk0ea208_Get_data_02176ddc();
+  if (work == 0) {
     return 0;
   }
-  if (*(int *)(value1 + 0x1cc) != 0) {
-    value2 = func_020445f4(0x27,0);
-    value2 = func_0204fed8(value2,3);
-    return value2;
+  if (work->UnkField01cc == 0) {
+    return 0;
   }
-  return 0;
+  return func_0204fed8(func_020445f4(0x27, 0), 3);
 }
 
 
@@ -525,13 +583,18 @@ void Unk0ea208_Unk_0ead64(void)
     Unk0a163c_Unk_0a1814(FIELD(u16, q, 472));
 }
 
-void Unk0ea208_ForEachSlot(u8 *p)
+/*
+ * Invoke func_020eb034 once per +0x70 slot record: six records, 56 bytes apart.
+ * Evidence: `add r5,r0,#112`, loop bound 6, `add r5,r5,#56`, and the
+ * func_020eb034 call relocation.
+ */
+void Unk0ea208_ForEachSlot(Unk0ea208Work *work)
 {
     int i;
-    u8 *q = p + 112;
+    Unk0ea208Slot *slot = work->UnkSlot0070;
     for (i = 0; i < 6; i++) {
-        func_020eb034(q);
-        q += 56;
+        func_020eb034(slot);
+        slot++;
     }
 }
 

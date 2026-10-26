@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T771 game/unit_020ea208 guarded-field, slot-walk, table-forwarding and handle routines at 100% objdiff; added typed work/slot views and instruction evidence.
 - Verified all eight M1-T770 game/unit_020ea208 reset, slot-walk, teardown and guarded-field routines at 100% objdiff; documented their typed contracts and instruction evidence.
 - Verified all eight M1-T769 game/unit_020ea208 functions at 100% objdiff; documented their contracts and made register-forwarded call arguments explicit.
 
