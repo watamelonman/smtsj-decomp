@@ -78,13 +78,53 @@ address (field offsets, signed compares, loop bound 50 and BL targets).
 
 None.
 
-## Not done in M1-T936
-- `func_020717e4`
-- `func_02071cc8`
-- `func_0207153c`
-- `func_020719a8`
-- `Unk06fb70_Unk_070500`
-- `Unk06fb70_Unk_07057c`
+## M1-T936 — verified against original ARM
+
+Seven of the eight functions match at 100% in objdiff. `func_020717e4` is
+left in the delink because its C form could not be made to match exactly; see
+the hard list below.
+
+- `func_02071cc8` (0x02071cc8, 96 bytes): adds
+  `func_0206d68c(2, delta, 100)` to each of the signed words at +0x120,
+  +0x124 and +0x128. Evidence is the three repeated BL/load/add/store groups
+  and the three field offsets.
+- `func_0207153c` (0x0207153c, 108 bytes): starts at the manager cursor
+  +0x22c and advances it while the corresponding `objs` entry at +0x234 is
+  null, stopping at the end sentinel +0x230 or at the first non-null entry.
+  Evidence is the signed cursor check, the `% 50` magic constant
+  (0x51eb851f), the `objs` index scale by four, and the two return paths.
+- `func_020719a8` (0x020719a8, 108 bytes): the same cursor-advance loop for
+  a second manager instance; its instruction sequence is identical to
+  0x0207153c but it is a separate symbol.
+- `Unk06fb70_Unk_06feb4` (0x0206feb4, 116 bytes): calls the eight
+  per-channel advance functions 0x02070094 through 0x02070360, one per
+  channel, with the two animation objects. Evidence is the eight BL targets
+  and the matching per-channel bodies.
+- `Unk06fb70_Unk_06ff28` (0x0206ff28, 116 bytes): the same dispatcher for
+  the second set of channels, calling 0x020705f8 through 0x02070f30.
+- `Unk06fb70_Unk_070500` (0x02070500, 124 bytes): advances one animation
+  channel described by separate tick/state/limit/pos/vel/max pointers; on
+  tick expiry it resets tick and velocity and selects the next key through
+  0x0207126c, otherwise it clamps `pos` by `vel` within `max`.
+- `Unk06fb70_Unk_07057c` (0x0207057c, 124 bytes): the same channel update
+  through 0x02071334.
+
+### Hard list for M1-T936
+
+- `func_020717e4` (0x020717e4, 96 bytes). It forwards the eight object
+  views at +0x16c, +0x2c, +0x28, +0x30, +0, +0xc, +0x18 and +0x34 to
+  `func_020703b4`, then zeroes five words at `sp+0x10` before the call.
+  The surrounding sequence and frame size show a five-word zero-initialised
+  local/outgoing argument area. Writing it as `u32 scratch[5] = {0};`
+  reproduces every instruction except that mwcc assigns the zero block's
+  base to `r2` and the zero to `r1` (target uses `r1`/`r2`), giving 97.5%.
+  Tried: unused and used arrays (u32/s32/void*/struct), pointer locals with
+  several types and read/write uses, volatile arrays, explicit element
+  stores, compound literals, 13-argument call forms, variadic and fixed
+  prototypes, empty-init and nested/aggregate array forms, and every bundled
+  mwccarm 1.2/2.0/dsi version and target proc. No source form produced the
+  retail register assignment without adding instructions, so the original
+  body is left to the delink rather than faking a match.
 
 ## Not done in M1-T937
 - `Unk06fb70_Unk_070094`
