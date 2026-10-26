@@ -1,4 +1,4 @@
-# game/unit_020f1128 — M1-T876
+# game/unit_020f1128 — M1-T876 / M1-T877
 
 All eight requested functions match at 100% with the configured mwccarm compiler.
 Names are retained from the symbol configuration; behavior below is grounded in
@@ -23,4 +23,31 @@ are local to this TU; no module boundary changes were required.
 
 ## Hard list
 
-None for M1-T876. Other functions in this translation unit are outside this card.
+None for M1-T876.
+
+## M1-T877
+
+Two additional functions match at 100%. The prior eight remain at 100%.
+No behavior tests were added: the card disables the test-first requirement for
+this binary-matching work; objdiff is the instruction-level acceptance check.
+
+| Function | Size | Instruction evidence and contract |
+| --- | ---: | --- |
+| `func_020f14ec` | 532 | Borrows work and an event envelope whose first word selects events 0..4. Event 0 reads flag bit 3 and payload word 3 to set +0x4f0/+0x4f4. Event 3 reads flag bit 0/word 0, handles value 7, and optionally reads bit 3/word 3 to select state 11 or cancel pending state. Cancellation releases the selected provider entry and adjusts byte +0x24; both display handles receive flag 1. Other events return. The typed local payload view preserves unconditional word loads before flag testing. |
+| `func_020f1700` | 532 | Borrows full work with handle prefixes pointing to provider objects. State 4 reduces +0x10 by 25 while positive, advances +0x14 up to ten and computes floating progress /10, then activates handles and copies +0x4e8 to state. State 11 waits for slot 7, submits command 32 or a halfword-truncated provider result +24, then enters state 9. States 9/10 increment and clamp byte +0x4ec to 16. State 12 waits before submitting controls 0/2/1/3/10. Every path decrements nonzero byte +0x4fc and signals flag inversion when it expires. |
+| `func_020f1128` | 872 | Initializer creates two display handles and two resource handles; scans provider IDs 111..210 into twelve-byte rows at +0x2c, sorts with `Unk0f0eac_Unk_0f1000`, and submits initial control data. Candidate reconstructed the full routine and reached 98.09174%. Halfword provider bitfields were necessary to reproduce shift extraction rather than AND masking; separate loop locals restored the observed register allocation. Remaining differences: stack frame 0x44 versus 0x4c, omitted temporary stores at sp+0/sp+4 and ordering of the final control stores. Candidate omitted from production. |
+| `func_020f1914` | 2200 | Instruction analysis: returns unless state is 13; handles input masks 0x200/0x100, two-column navigation with signed remainder-by-two and unsigned row-count comparisons, selected-entry provider updates, matching bits 8..13 of provider halfword +6, and three sort modes. The two mode-change paths use distinct comparator symbols (`func_020f1020` versus `func_020f10a4`); they must not be collapsed without proof. No compiled candidate or match claimed. Remains delinked. |
+| `func_020f21b0` | 2636 | Instruction analysis: drawing calls use work fade/progress, a nine-by-two row loop with spacing 13/122, repeated provider predicates, and unsigned fixed-point scrollbar divisions. State 13 draws selection overlays; later state branches use the byte timer. Repeated predicate calls and stack argument lifetimes must be preserved when reconstructing the draw ABI. No compiled candidate or match claimed. Remains delinked. |
+
+### Hard list (M1-T877)
+
+- `func_020f1128`: finish temporary control payload lifetime/stack layout matching;
+  best candidate was 98.09174%, deliberately not retained as C.
+- `func_020f1914`: reconstruct navigation, provider mutations, and sorting as one
+  scratch; no complete candidate yet.
+- `func_020f21b0`: reconstruct drawing ABI and state branches as one scratch;
+  no complete candidate yet.
+
+A human can prepare each scratch with `tools/decompme.py scratch FUNC --check
+--dry-run --write /tmp/FUNC`. These functions remain supplied by the delinked
+object; this DS project does not use PS2 `INCLUDE_ASM` stubs.
