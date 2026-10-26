@@ -5,7 +5,13 @@
 typedef struct Unk06fb70Work {
     u8 pad_0000[0x120];
     s32 unk_0120;
+    s32 unk_0124;
+    s32 unk_0128;
 } Unk06fb70Work;
+
+/* Animation state shared by the per-channel helpers below; the full layout is
+ * declared after the dispatchers that forward these pointers. */
+typedef struct Unk06fb70Anim Unk06fb70Anim;
 
 
 
@@ -16,6 +22,16 @@ void Unk06fb70_Unk_0717c0(Unk06fb70Work *arg0, u32 arg1){
   tmp1 = func_0206d68c(2,arg1,100);
   arg0->unk_0120 = arg0->unk_0120 + tmp1;
   return;
+}
+
+/* ARM 0x02071cc8 adds func_0206d68c(2, delta, 100) to each of the three
+ * signed words at +0x120, +0x124 and +0x128 of the given work object.
+ * The name is neutral because the original symbol name is unknown. */
+void func_02071cc8(Unk06fb70Work *work, u32 delta)
+{
+    work->unk_0120 += func_0206d68c(2, delta, 100);
+    work->unk_0124 += func_0206d68c(2, delta, 100);
+    work->unk_0128 += func_0206d68c(2, delta, 100);
 }
 
 int func_0200219c(s32 numerator, s32 denominator);
@@ -41,18 +57,19 @@ void Unk06fb70_Unk_070264();
 void Unk06fb70_Unk_0702b8();
 void Unk06fb70_Unk_07030c();
 void Unk06fb70_Unk_070360();
-/* decompiler-derived */
-void Unk06fb70_Unk_06feb4(u32 arg0,u32 arg1)
+/* ARM 0x0206feb4 advances all nine animation channels by calling the
+ * per-channel update routines in order, with the two animation objects. */
+void Unk06fb70_Unk_06feb4(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
   Unk06fb70_Unk_070094();
-  Unk06fb70_Unk_070114(arg0,arg1);
-  Unk06fb70_Unk_070168(arg0,arg1);
-  Unk06fb70_Unk_0701bc(arg0,arg1);
-  Unk06fb70_Unk_070210(arg0,arg1);
-  Unk06fb70_Unk_070264(arg0,arg1);
-  Unk06fb70_Unk_0702b8(arg0,arg1);
-  Unk06fb70_Unk_07030c(arg0,arg1);
-  Unk06fb70_Unk_070360(arg0,arg1);
+  Unk06fb70_Unk_070114(a,b);
+  Unk06fb70_Unk_070168(a,b);
+  Unk06fb70_Unk_0701bc(a,b);
+  Unk06fb70_Unk_070210(a,b);
+  Unk06fb70_Unk_070264(a,b);
+  Unk06fb70_Unk_0702b8(a,b);
+  Unk06fb70_Unk_07030c(a,b);
+  Unk06fb70_Unk_070360(a,b);
   return;
 }
 
@@ -66,18 +83,19 @@ void Unk06fb70_Unk_070b88();
 void Unk06fb70_Unk_070cc0();
 void Unk06fb70_Unk_070df8();
 void Unk06fb70_Unk_070f30();
-/* decompiler-derived */
-void Unk06fb70_Unk_06ff28(u32 arg0,u32 arg1)
+/* ARM 0x0206ff28 advances all nine animation channels through the second
+ * group of per-channel update routines (including the float conversions). */
+void Unk06fb70_Unk_06ff28(Unk06fb70Anim *a, Unk06fb70Anim *b)
 {
   Unk06fb70_Unk_0705f8();
-  Unk06fb70_Unk_070758(arg0,arg1);
-  Unk06fb70_Unk_070834(arg0,arg1);
-  Unk06fb70_Unk_070950(arg0,arg1);
-  Unk06fb70_Unk_070a6c(arg0,arg1);
-  Unk06fb70_Unk_070b88(arg0,arg1);
-  Unk06fb70_Unk_070cc0(arg0,arg1);
-  Unk06fb70_Unk_070df8(arg0,arg1);
-  Unk06fb70_Unk_070f30(arg0,arg1);
+  Unk06fb70_Unk_070758(a,b);
+  Unk06fb70_Unk_070834(a,b);
+  Unk06fb70_Unk_070950(a,b);
+  Unk06fb70_Unk_070a6c(a,b);
+  Unk06fb70_Unk_070b88(a,b);
+  Unk06fb70_Unk_070cc0(a,b);
+  Unk06fb70_Unk_070df8(a,b);
+  Unk06fb70_Unk_070f30(a,b);
   return;
 }
 
@@ -109,9 +127,8 @@ void Unk06fb70_Call_071898(int a, int b, int c, int d, int e, int f, int g)
 {
     func_02071898(a, b, c, d, e, 0, f, g);
 }
-
-/* ARM 0x02071d28 forwards views at +0x16c, +0x2c, +0x28, +0x30,
- * +0, +0xc, +0x18 and +0x34; o must cover all these object fields. */
+/* Target ARM call to 020703b4 forwards object views at +0x16c, +0x2c, +0x28,
+ * +0x30, +0, +0xc, +0x18 and +0x34. */
 void Unk06fb70_Call_0703b4(u8 *o)
 {
     func_020703b4(o + 364, o + 44, o + 40, o + 48, o, o + 12, o + 24, o + 52);
@@ -131,7 +148,7 @@ typedef struct Unk06fb70Key {
     u8 pad_3e[2];
     s32 unk_40;                 /* +0x40 */
 } Unk06fb70Key;
-typedef struct Unk06fb70Anim {
+struct Unk06fb70Anim {
     u8 pad_000[16];
     Unk06fb70Key keys[4];       /* +0x10: count from the < 4 bounds */
     u8 pad_120[196];
@@ -144,7 +161,7 @@ typedef struct Unk06fb70Anim {
     s32 tick[9];                /* +0x2c8 */
     u8 pad_2ec[4];
     s32 limit[9];               /* +0x2f0 */
-} Unk06fb70Anim;
+};
 void Unk06fb70_AddClamped(s32 *p, s32 d, s32 lim);
 
 void Unk06fb70_Unk_0705f8(Unk06fb70Anim *a, Unk06fb70Anim *b)
@@ -362,6 +379,61 @@ void func_02071334();
 void Unk06ae94_Unk_06c0b0();
 void func_02061424();
 
+/* ARM 0x0207153c starts at the manager's current slot and advances the
+ * cursor while the slot is empty, stopping early at the end sentinel or at
+ * the first occupied slot. The name is neutral because the original symbol
+ * name is unknown. */
+void func_0207153c(Unk06fb70Mgr *m)
+{
+    s32 *cursor = &m->cur;
+    s32 cur = m->cur;
+    if (cur < 0) {
+        return;
+    }
+    if (m->objs[cur] != 0) {
+        return;
+    }
+    for (;;) {
+        if (m->end == cur) {
+            return;
+        }
+        *cursor = (*cursor + 1) % 50;
+        cur = *cursor;
+        if (m->objs[cur] != 0) {
+            return;
+        }
+    }
+}
+
+/* ARM 0x020719a8 has the same cursor-advance logic as 0x0207153c for a
+ * second manager instance. The name is neutral because the original symbol
+ * name is unknown. */
+void func_020719a8(Unk06fb70Mgr *m)
+{
+    s32 *cursor = &m->cur;
+    s32 cur = m->cur;
+    if (cur < 0) {
+        return;
+    }
+    if (m->objs[cur] != 0) {
+        return;
+    }
+    for (;;) {
+        if (m->end == cur) {
+            return;
+        }
+        *cursor = (*cursor + 1) % 50;
+        cur = *cursor;
+        if (m->objs[cur] != 0) {
+            return;
+        }
+    }
+}
+
+/* ARM 0x02070500 advances one animation channel described by separate
+ * tick/state/limit/pos/vel/max words. It returns once the signed state reaches
+ * four; on tick expiry it clears tick and velocity and selects the next key
+ * through 0x0207126c, otherwise it clamps pos by vel within max. */
 void Unk06fb70_Unk_070500(void *o, s32 *tick, s8 *state, s32 *limit, s32 *pos, s32 *vel, s32 *max)
 {
     if (*state >= 4) {
@@ -376,6 +448,9 @@ void Unk06fb70_Unk_070500(void *o, s32 *tick, s8 *state, s32 *limit, s32 *pos, s
     Unk06fb70_AddClamped(pos, *vel, *max);
 }
 
+/* ARM 0x0207057c is the second channel updater with the same
+ * tick/state/limit/pos/vel/max contract, selecting the next key through
+ * 0x02071334 instead. */
 void Unk06fb70_Unk_07057c(void *o, s32 *tick, s8 *state, s32 *limit, s32 *pos, s32 *vel, s32 *max)
 {
     if (*state >= 4) {

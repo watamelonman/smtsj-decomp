@@ -7,7 +7,7 @@ typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
 
-/* Object passed as first arg in this file; layout from observed accesses. */
+/** Partial work layout; padding preserves the offsets observed in ARM loads/stores. */
 typedef struct Unk0cf5e8Work {
     u8 pad_0000[0x4];
     u32 unk_0004;
@@ -67,28 +67,38 @@ void Unk0cf5e8_Enter(void)
     Unk0bc1a8_Unk_0bc928(21, 0xffff, 0);
 }
 
-/* empty callback */
+/** Return without side effects; the original at 0x020cf62c is only BX LR. */
 void Unk0cf5e8_Nop_0cf62c(void) { }
 
-/* empty callback */
+/** Return without side effects; the original at 0x020d11e8 is only BX LR. */
 void Unk0cf5e8_Nop_0d11e8(void) { }
 
-/* empty callback */
+/** Return without side effects; the original at 0x020d11ec is only BX LR. */
 void Unk0cf5e8_Nop_0d11ec(void) { }
 
-/* forwards to `Unk1241ec_Unk_124258` */
+/** Tail-forwards to Unk1241ec_Unk_124258 (0x02124258) via the literal-pool
+ * ldr ip,[pc]; bx ip branch; incoming registers pass through. The local (void)
+ * prototype mirrors the target's current declaration.
+ */
 void Unk0cf5e8_Thunk_02124258(void) { Unk1241ec_Unk_124258(); }
 
-/* forwards to `Unk1241ec_Thunk_02124338` */
+/** Tail-forwards to Unk1241ec_Thunk_02124338 (0x0212424c) via the literal-pool
+ * ldr ip,[pc]; bx ip branch; incoming registers pass through. The local (void)
+ * prototype mirrors the target's current declaration.
+ */
 void Unk0cf5e8_Thunk_0212424c(void) { Unk1241ec_Thunk_02124338(); }
 
-/* decompiler-derived */
+/** Return 0/1 for signed word[0x28c] < word[0x194] on a valid work block.
+ * Evidence: LDR offsets and MOVLT/MOVGE at 0x020d139c; field roles are unknown.
+ */
 int Unk0cf5e8_Unk_0d139c(Unk0cf5e8Work *work)
 {
   return work->unk_028c < work->unk_0194;
 }
 
-/* decompiler-derived */
+/** Return 0/1 for signed word[0x288] < word[0xa0] on a valid work block.
+ * Evidence: LDR offsets and MOVLT/MOVGE at 0x020d13fc; field roles are unknown.
+ */
 int Unk0cf5e8_Unk_0d13fc(Unk0cf5e8Work *work)
 {
   return work->unk_0288 < work->unk_00a0;
@@ -97,6 +107,7 @@ int Unk0cf5e8_Unk_0d13fc(Unk0cf5e8Work *work)
 
 extern u8 data_02150648[];
 int Unk0de678_Unk_0dec94();
+/** Partial object view preserving the predicate fields observed in the original. */
 typedef struct Unk0cf5e8Obj {
     u8 pad_0000[0x98];
     s32 unk_0098;
@@ -106,6 +117,9 @@ typedef struct Unk0cf5e8Obj {
     s32 unk_0294;
 } Unk0cf5e8Obj;
 
+/** Return 0/1 for word[0x9c] == 1 and word[0x290] == 0 on a valid object.
+ * Evidence: CMP and conditional LDR/CMPEQ at 0x020d1454; field roles are unknown.
+ */
 int Unk0cf5e8_Unk_0d1454(Unk0cf5e8Obj *o)
 {
     return o->unk_009c == 1 && o->unk_0290 == 0;
