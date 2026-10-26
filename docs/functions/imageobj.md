@@ -61,19 +61,45 @@ All eight entries match at 100% in objdiff. Instruction evidence is from
 
 Hard list for M1-T923: none.
 
-## Other existing implementations
-- `ImageObj_Unk_0775ec`: decompiler-derived
-- `ImageObj_Unk_0776d4`: decompiler-derived
+## M1-T924 — verified ARM functions (8/8)
 
-## Not done in M1-T924
-- `ImageObj_Unk_079000`
-- `func_02077a9c`
-- `ImageObj_Unk_077d68`
-- `ImageObj_Release`
-- `func_02077e74`
-- `ImageObj_ReleaseField68`
-- `ImageObj_Unk_077228`: decompiler-derived
-- `ImageObj_Unk_077688`: decompiler-derived
+All eight entries match at 100% in objdiff. Instruction evidence is from the
+delinked object `build/delinks/src/ImageObj.o`; original neutral symbols are
+retained where the field meanings are not established.
+
+- `ImageObj_Unk_079000` (40 B, 02079000): when the singleton exists, clears
+  table slot `4 + *arg0 * 4`. LDR of the singleton at 02079004 and indexed
+  store at 0207901c establish the slot layout; a valid index is required.
+- `func_02077a9c` (44 B, 02077a9c): null-safe predicate returning one when a
+  node's word at +4 equals 9 or 10. LDR/CMP/CMPNE at 02077aa8..02077ab0 and
+  the separate return block at 02077ac0 establish the two accepted states.
+- `ImageObj_Unk_077d68` (48 B, 02077d68): null-safe predicate returning one
+  when the object's first word is 2 and its word at +0x50 is below 600.
+  LDR/CMP at 02077d78 and 02077d84..02077d88 establish both conditions.
+- `ImageObj_Release` (48 B, 02077ddc): when the loaded flag at +0x10 is set,
+  releases the sub-object at +0x34, calls the shared cleanup, then clears the
+  loaded flag and +0. LDR/CMP at 02077de4..02077de8 and the teardown BL at
+  02077df0 establish the guard and field offsets.
+- `func_02077e74` (48 B, 02077e74): null-safe teardown. A nonzero +0x6c word
+  releases the field-68 handle and clears +0x6c; otherwise it forwards to
+  `ImageObj_Unk_077ea4`. LDR/CMP/branch at 02077e80..02077e88 and the store
+  at 02077e94 establish the split.
+- `ImageObj_Unk_0775ec` (52 B, 020775ec): when the singleton exists, visits
+  slots zero through two in order via `ImageObj_Unk_077554`. Accessor BL at
+  020775f0 and loop bound CMP at 02077614 establish the iteration.
+- `ImageObj_Unk_0776d4` (52 B, 020776d4): visits slots zero through two,
+  forwards each slot handle to `func_02077a9c`, and returns one on the first
+  state 9 or 10. BLs at 020776e0 and 020776e4 and bound CMP at 020776f8
+  establish the loop and forwarding.
+- `ImageObj_ReleaseField68` (52 B, 02077efc): releases a nonzero node handle
+  at +0x68 through `func_02061424`, clears +0x68, then refreshes the
+  singleton sub-object at +0x34. LDR at 02077f0c, BLs at 02077f18 and
+  02077f28, and the store at 02077f24 establish the order.
+
+Hard list for M1-T924: none.
+
+`ImageObj_Unk_077228` and `ImageObj_Unk_077688` remain decompiler-derived and
+are outside this card's function list.
 
 ## Not done in M1-T925
 - `ImageObj_Unk_0775a0`

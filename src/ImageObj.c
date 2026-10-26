@@ -20,6 +20,23 @@ typedef struct ImageObjWork {
     u8 unk_0034[4];             /* sub-object released by Unk0a163c_Unk_0a1ae0 */
 } ImageObjWork;
 
+/* Per-slot effect object reached through the singleton table. Field meanings are
+ * unknown; the offsets come from the original loads and stores. */
+typedef struct ImageObjNode {
+    u8 pad_00[0x30];
+    s32 unk_30;
+    u8 pad_34[4];
+    s8 unk_38;
+    u8 pad_39[0x17];
+    u32 unk_50;
+    u8 pad_54[0xc];
+    u32 unk_60;
+    u32 unk_64;
+    u32 unk_68;
+    u32 unk_6c;
+    u32 unk_70;
+} ImageObjNode;
+
 
 extern u32 data_0217231c[];
 void ImageObj_Unk_0775a0(void);
@@ -167,7 +184,8 @@ void ImageObj_Unk_079184(int arg0)
 
 
 void ImageObj_Unk_077554();
-/* decompiler-derived */
+/* If the singleton exists, visits slots zero through two in order.
+ * Evidence: accessor BL at 020775f0 and loop bound CMP at 02077614. */
 void ImageObj_Unk_0775ec(void)
 {
   int value1;
@@ -185,16 +203,16 @@ void ImageObj_Unk_0775ec(void)
   } while (value2 < 3);
 }
 
-int func_02077a9c();
-/* decompiler-derived */
+int func_02077a9c(ImageObjNode *node);
+/* Returns one if any of the three slots is in node state 9 or 10.
+ * Evidence: BLs at 020776e0 and 020776e4, loop bound CMP at 020776f8. */
 u32 ImageObj_Unk_0776d4(void)
 {
   int value1;
   int value2;
   value2 = 0;
   do {
-    ImageObj_Unk_0778e8(value2);
-    value1 = func_02077a9c();
+    value1 = func_02077a9c((ImageObjNode *)ImageObj_Unk_0778e8(value2));
     if (value1 != 0) {
       return 1;
     }
@@ -214,7 +232,7 @@ u32 ImageObj_Unk_077228(void)
   do {
     value1 = ImageObj_Unk_0778e8(value2);
     if (value1 != 0) {
-      value1 = func_02077a9c();
+      value1 = func_02077a9c((ImageObjNode *)value1);
       if (value1 != 0) {
         return 0;
       }
@@ -233,8 +251,8 @@ typedef struct Unk077Tbl {
 } Unk077Tbl;
 
 u32 func_02077900();
-int func_02077a9c();
-void func_02077e74();
+int func_02077a9c(ImageObjNode *node);
+void func_02077e74(ImageObjNode *node);
 void ImageObj_Unk_079184(int arg0);
 int ImageObj_GetOrCreate(int i, int b)
 {
@@ -252,11 +270,11 @@ void ImageObj_Unk_077554(int i)
     if (t == 0 || (o = t->e[i]) == 0) {
         return;
     }
-    if (func_02077a9c(o) != 0) {
+    if (func_02077a9c((ImageObjNode *)o) != 0) {
         t->unk_00c4 = 1;
         return;
     }
-    func_02077e74(o);
+    func_02077e74((ImageObjNode *)o);
     ImageObj_Unk_079184(i);
 }
 
@@ -380,7 +398,7 @@ extern u8 data_02145a88[];
 void func_02013c3c();
 int func_02095818();
 void Unk065e88_SetPair04();
-void ImageObj_ReleaseField68(u32 o);
+void ImageObj_ReleaseField68(ImageObjNode *node);
 void ImageObj_Unk_077ea4();
 void func_020a1a24();
 int ImageObj_Unk_0777e0(void)
@@ -399,20 +417,6 @@ int ImageObj_Unk_0777e0(void)
     return 0;
 }
 
-typedef struct ImageObjNode {
-    u8 pad_00[0x30];
-    s32 unk_30;
-    u8 pad_34[4];
-    s8 unk_38;
-    u8 pad_39[0x17];
-    u32 unk_50;
-    u8 pad_54[0xc];
-    u32 unk_60;
-    u32 unk_64;
-    u32 unk_68;
-    u32 unk_6c;
-    u32 unk_70;
-} ImageObjNode;
 void Unk065e88_SetUnkField28();
 int Unk0a163c_Unk_0a1798();
 void Unk0a163c_Call_020a1b08();
@@ -465,6 +469,8 @@ void ImageObj_Unk_077c30(ImageObjNode *n)
     n->unk_6c = 1;
 }
 
+/* Reports whether a live object is type 2 and its +0x50 word is below 600.
+ * Evidence: LDR/CMP at 02077d78 and LDR/CMP at 02077d84..02077d88. */
 int ImageObj_Unk_077d68(s32 *o)
 {
     if (o == 0) {
@@ -505,7 +511,7 @@ void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
   }
   else {
     if (((*(int *)(tmp1 + 0x48) == 1) || (*(int *)(tmp1 + 0x50) != arg1)) &&
-       (tmp2 = func_02077a9c(tmp1), tmp2 == 0)) {
+       (tmp2 = func_02077a9c((ImageObjNode *)tmp1), tmp2 == 0)) {
       func_020774b4(tmp1,arg1);
     }
     if (*(int *)(tmp1 + 0x48) != 0) {
@@ -515,7 +521,8 @@ void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3)
   *(u32 *)(tmp1 + 0x70) = arg3;
 }
 
-/* decompiler-derived */
+/* Clears the singleton table slot named by *arg0 when the singleton exists.
+ * Evidence: LDR of the singleton at 02079004, indexed store at 0207901c. */
 void ImageObj_Unk_079000(int *arg0)
 {
   if (*data_0217231c == 0) {
@@ -526,7 +533,8 @@ void ImageObj_Unk_079000(int *arg0)
 
 void Unk0a163c_Unk_0a1ae0(void *p);
 
-/* Releases the object if loaded and clears its state. */
+/* Releases the object if loaded and clears its state.
+ * Evidence: LDR/CMP at 02077de4..02077de8, teardown BL at 02077df0. */
 void ImageObj_Release(ImageObjWork *work)
 {
     if (work->unk_0010 == 0) {
@@ -559,13 +567,47 @@ void ImageObj_Unk_077ea4(ImageObjNode *n)
     }
 }
 
-void ImageObj_ReleaseField68(u32 o)
+/* Releases the node's field 68 handle and refreshes the singleton sub-object.
+ * Evidence: LDR at 02077f0c, BL to 02061424 at 02077f18 and BL at 02077f28. */
+void ImageObj_ReleaseField68(ImageObjNode *node)
 {
     u8 *t = (u8 *)ImageObj_Get_data_0217231c();
-    if (FIELD(u32, o, 0x68) == 0) {
+    if (node->unk_68 == 0) {
         return;
     }
-    func_02061424(FIELD(u32, o, 0x68));
-    FIELD(u32, o, 0x68) = 0;
+    func_02061424(node->unk_68);
+    node->unk_68 = 0;
     func_020a1a24(t + 52);
+}
+
+/* Reports whether a live node is in state 9 or 10; null is not live.
+ * Evidence: null test at 02077a9c, LDR/CMP/CMPNE at 02077aa8..02077ab0. */
+int func_02077a9c(ImageObjNode *node)
+{
+    if (node == 0) {
+        return 0;
+    }
+    switch (FIELD(s32, node, 4)) {
+    case 9:
+    case 10:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
+/* Releases the field-68 handle when present, otherwise the node's effect
+ * resources; both branches clear the node's released state on the handle path.
+ * Evidence: LDR at 02077e80, branch at 02077e88, store at 02077e94. */
+void func_02077e74(ImageObjNode *node)
+{
+    if (node == 0) {
+        return;
+    }
+    if (node->unk_6c != 0) {
+        ImageObj_ReleaseField68(node);
+        node->unk_6c = 0;
+        return;
+    }
+    ImageObj_Unk_077ea4(node);
 }
