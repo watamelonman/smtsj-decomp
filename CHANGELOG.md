@@ -3,6 +3,7 @@
 ## Unreleased
 - M1-T992: match all eight ScanVisor lifecycle, mode dispatch, coordinate and drawing functions at 100% objdiff; document instruction evidence and ownership contracts.
 
+- Reconstruct seven matching command and record lookup functions in NitroSDK sdk_0204f7d4; document the remaining literal-pool mismatch.
 - Matched all six libs/unknown/lib_020296b8 texture-matrix and constant-result functions at 100% objdiff, with typed layouts and per-function evidence.
 - Added matching C for script command wrappers 84 and 85 in lib_020b9c3c.
 - M1-T991: match all eight ScanVisor scale, flag, counter, list and resource helpers at 100% objdiff; document instruction evidence and borrowed-storage contracts.
