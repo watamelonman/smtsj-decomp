@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T958: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add the missing state dispatcher, and document typed contracts and instruction evidence.
 - Corrected M1-T957 thunk evidence to describe literal-pool tail branches and reconciled historical match documentation.
 - Verified all eight M1-T957 functions in `game/unit_020cf5e8` against the original ARM code; documented typed contracts and cleared the stale predicate hard-list entry.
 - M1-T936: match seven `game/unit_0206fb70` cursor-advance, dispatcher, channel-update and value-add functions at 100% objdiff; document `func_020717e4`'s measured 97.5% zero-block register-allocation blocker on the hard list.
