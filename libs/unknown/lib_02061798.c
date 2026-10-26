@@ -1,7 +1,5 @@
 #include "libs/unknown/lib_02061798.h"
 
-/* Returns the font record whose id at +0x20 matches, or null. */
-extern Unk061798Font *func_020618cc(u32 id);
 /* Appends a character code; returns the result object that func_02063a44
  * forwards (distinct from func_02063a50's singleton). */
 extern Unk061798ResultA *func_02063954(const void *text, u32 code);
@@ -61,6 +59,26 @@ void func_02061798(void)
     for (i = 0; i < 4; i++) {
         data_0216b4c0[i].unk_0020 = -1;
     }
+}
+#pragma pop
+
+/* Returns the first borrowed record whose +0x20 id matches, or null when
+ * none of the four slots match. Byte-stride lookup and array-index return
+ * preserve the original indexed loop and pointer allocation. See DEC-031. */
+#pragma push
+#pragma opt_strength_reduction off
+#pragma opt_rotateloops off
+Unk061798Font *func_020618cc(u32 id)
+{
+    u32 i;
+    for (i = 0; i < 4; i++) {
+        Unk061798Font *entry = (Unk061798Font *)
+            ((u8 *)data_0216b4c0 + i * sizeof(Unk061798Font));
+        if (id == entry->unk_0020) {
+            return &data_0216b4c0[i];
+        }
+    }
+    return 0;
 }
 #pragma pop
 

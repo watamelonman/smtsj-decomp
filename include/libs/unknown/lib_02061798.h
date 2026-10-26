@@ -104,6 +104,8 @@ struct Unk061798Object {
     u8 unk_0090;
 };
 
+/* Returns the first borrowed font record with this id, or null if absent. */
+Unk061798Font *func_020618cc(u32 id);
 /* Clears the id word of every entry in the four-entry font registry. */
 void func_02061798(void);
 /* Returns the +0x28 pointer of the font record selected by id. */

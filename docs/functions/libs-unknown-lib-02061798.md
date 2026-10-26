@@ -501,20 +501,17 @@ when mode is -1. Other modes call `func_02065b98`, forward mode to
 `func_020ba964`, and forward the singleton child's +0x90 byte to
 `func_020babec`. Objdiff: 100%.
 
-## func_020618cc — 64 bytes (hard)
+## func_020618cc — 64 bytes
 
-Four-slot font-id lookup at +0x20 with stride 56, returning the matching
-borrowed record or null. Remains supplied by the delink object. Indexed C
-with strength reduction and loop rotation disabled produces the same size
-and operations, but exchanges r3 and ip for the base and entry pointers.
-Tried explicit base/stride locals, for/while/do loops, signed and unsigned
-indices, volatile loads, register declarations, and local optimizer options.
-No exact match; no nonmatching definition retained.
+Searches the four 56-byte font records for the first matching unsigned id at
++0x20, returning a borrowed record or null. The registry reset at
+`func_02061798` and the accessors `func_0206190c` / `func_0206191c` establish
+the layout and use. Byte-stride address calculation for the comparison and
+array indexing for the return reproduce the original register allocation;
+loop strength reduction and rotation are disabled locally. See DEC-031.
+Objdiff: 100%.
 
 ## Hard list
-
-- `func_020618cc`: register allocation mismatch detailed above; a human can
-  open a scratch with `tools/decompme.py`.
 
 - `func_02062264` (4 bytes): the original instruction is only
   `pop {r3, r4, r5, r6, r7, pc}` (0xe8bd80f8). It is the unreachable trailing
@@ -529,7 +526,8 @@ No exact match; no nonmatching definition retained.
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for the seven functions added for M2-T1064. The match gate
-reports all 92 compiled functions in the changed unit at 100%. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
+`tools/hand/cmp.py` reports OK for `func_020618cc`; all eight M2-T1064
+functions now match. The match gate reports all 82 compiled functions in the
+changed unit at 100%. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.
