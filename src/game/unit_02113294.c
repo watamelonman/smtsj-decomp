@@ -45,6 +45,8 @@ int Unk113294_Unk_113e90(const Unk113294Work *work)
     return work->unk_00d8 == 0 && work->unk_000c == 0 && work->unk_0004 == 1;
 }
 
+/* At 0x02113eb4, sets object byte +0 to 5, clears the shared word,
+ * then tail-calls the provider with 2. The object must be writable. */
 void Unk113294_Unk_113eb4(u8 *p)
 {
     p[0] = 5;
@@ -52,7 +54,8 @@ void Unk113294_Unk_113eb4(u8 *p)
     Unk0a0ce4_Unk_0a0da4(2);
 }
 
-/* decompiler-derived */
+/* At 0x021156c4, calls provider 11, then writes -1 at +0xd0,
+ * 3 at +0x1c and byte 3 at +0. Requires the observed writable work layout. */
 void Unk113294_Unk_1156c4(u8 *arg0)
 {
   Unk0a0ce4_Unk_0a0da4(0xb);
@@ -62,7 +65,8 @@ void Unk113294_Unk_1156c4(u8 *arg0)
 }
 
 
-/* decompiler-derived */
+/* At 0x02115698, calls provider 11, then writes -1 at +0xd0,
+ * 2 at +0x1c and byte 3 at +0. Requires the observed writable work layout. */
 void Unk113294_Unk_115698(u8 *arg0)
 {
   Unk0a0ce4_Unk_0a0da4(0xb);
@@ -159,6 +163,8 @@ typedef struct Unk113294Pair {
     u16 a;
     u16 b;
 } Unk113294Pair;
+/* At 0x021150e8, returns the first resource halfword unless it is 0xffff;
+ * that sentinel selects the low byte of the second halfword instead. */
 int Unk113294_Unk_1150e8(u32 a, u32 b)
 {
     u16 *q = Unk113294_Unk_1150c8(a, b);
@@ -233,6 +239,8 @@ void Unk113294_CopyIds(u8 *p)
     Unk02ee5c_Unk_02efa4();
 }
 
+/* The halfword scan at 0x02115708 supports FindEmpty: return the first
+ * zero slot among IDs 0..7, or 7 when all are occupied. Borrows p. */
 int Unk113294_FindEmpty(Unk113294Ids *p)
 {
     int i;
@@ -255,12 +263,15 @@ int Unk113294_Unk_115734(const Unk113294Work *work)
     return 1;
 }
 
-/* decompiler-derived */
-u32 Unk113294_Unk_115754(int arg0,int arg1,int arg2)
+/* The address arithmetic at 0x02115754 selects a word from 220-byte
+ * records with 11-word rows. Callers must supply indices within the table. */
+u32 Unk113294_Unk_115754(int record, int row, int column)
 {
-  return *(u32 *)(arg0 * 0xdc + data_0215159c + (arg1 * 0xb + arg2) * 4);
+    return *(u32 *)(record * 0xdc + data_0215159c + (row * 11 + column) * 4);
 }
 
+/* At 0x0211558c, returns 1 when AnyHi is false, otherwise 2 when AnyLo
+ * is false, otherwise 0. Borrows the complete sixteen-ID layout. */
 int Unk113294_Unk_11558c(Unk113294Ids *p)
 {
     if (Unk113294_AnyHi(p) == 0) {
@@ -272,7 +283,9 @@ int Unk113294_Unk_11558c(Unk113294Ids *p)
     return 0;
 }
 
-int Unk113294_Unk_115778(int a, int b, int c)
+/* At 0x02115778, the selected table word is compared to float zero via
+ * _fneq. Uses the same valid record/row/column indices as 0x02115754. */
+int Unk113294_Unk_115778(int record, int row, int column)
 {
-    return ((float *)(data_0215159c + a * 220))[b * 11 + c] != 0.0f;
+    return ((float *)(data_0215159c + record * 220))[row * 11 + column] != 0.0f;
 }
