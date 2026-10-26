@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Added matching C for script command wrappers 84 and 85 in lib_020b9c3c.
 - M2-T023: match the CRI four-record pool reset, allocation, and request-2 helpers at 100% objdiff; all eleven functions in the TU now match.
 - M1-T990: match all eight ScanVisor list and record helpers at 100% objdiff; add the signed-coordinate record query and document instruction evidence.
 - M1-T982: match ID-bank validation and paired-panel drawing at 100% objdiff; document two remaining grid-rendering hard cases.

@@ -50,6 +50,28 @@ int func_020b9ce4(void)
     return 1;
 }
 
+/* Original 0x020b9d1c: read operands 0 and 1, dispatch command 84,
+ * publish the dispatch result through Unk03aae8_Unk_03acf4, and return script status 1.
+ * No explicit arguments: operands come from the current script context. */
+int func_020b9d1c(void)
+{
+    int operand0 = func_0203ac00(0);
+    int operand1 = func_0203ac00(1);
+    Unk03aae8_Unk_03acf4(func_020b8b38(84, operand0, operand1, 0));
+    return 1;
+}
+
+/* Original 0x020b9d54: read operands 0 and 1, dispatch command 85,
+ * publish the dispatch result through Unk03aae8_Unk_03acf4, and return script status 1.
+ * No explicit arguments: operands come from the current script context. */
+int func_020b9d54(void)
+{
+    int operand0 = func_0203ac00(0);
+    int operand1 = func_0203ac00(1);
+    Unk03aae8_Unk_03acf4(func_020b8b38(85, operand0, operand1, 0));
+    return 1;
+}
+
 /* Original 0x020b9d8c: read operand 0, dispatch command 86,
  * publish the dispatch result through Unk03aae8_Unk_03acf4, and return script status 1.
  * No explicit arguments: operands come from the current script context. */
