@@ -2,6 +2,12 @@
 
 ## Unreleased
 - M1-T838: match both remaining requested game/unit_0211fc20 timed request dispatchers at 100% objdiff; document the existing caller relocation comparison issue.
+- Match eight more unit_02116598 allocation, teardown, and state functions (M1-T806).
+- M1-T867: verify eight more `game/unit_020cb32c` functions at 100% objdiff; add typed call contracts, explicit work forwarding and per-function instruction evidence.
+- Matched M1-T872 record-bank scanning, address, clearing, and insertion helpers; documented their field contracts.
+- M1-T860: match record-list navigation, animation-state handling, and layered record/grid drawing; document the remaining initializer in game/unit_021071e4.
+- M1-T805: match seven unit_02116598 predicates, state updates and guarded call sequences; document the initializer at 87.65% for human scratch follow-up.
+- Matched all eight M1-T866 forwarding and callback helpers in `game/unit_020cb32c`, including the work-word inspection at 020cccb4; documented typed contracts and instruction evidence.
 - M1-T837: match all eight requested game/unit_0211fc20 slot, input, drawing and state-update functions at 100% objdiff; document typed layouts and instruction evidence.
 - M1-T804: verify and document seven unit_02116598 guards, work initializers and setter at 100% objdiff; record func_02117250 at 98.91% for human scratch follow-up.
 - M1-T803: verify eight unit_02116598 work setters, call sequences, mappings and guards at 100% objdiff; add typed work accesses and per-function instruction contracts.
