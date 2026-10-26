@@ -17,6 +17,19 @@ extern void func_0208b0c4(Unk0208a978State *state, Unk0208a978Argument *argument
 extern s32 func_0208b10c(Unk0208a978State *state, Unk0208a978Argument *argument);
 extern void func_0208ab44(Unk0208a978Argument *argument);
 extern s32 func_0208ab84(Unk0208a978Argument *argument);
+extern u32 func_02082608(void);
+extern u32 func_02082618(void);
+extern u32 func_02082628(void);
+extern u32 func_02082638(void);
+extern u32 func_02082648(void);
+extern u32 func_02082658(void);
+extern u32 func_02082668(void);
+extern u32 func_02082678(void);
+extern Unk0208a978Argument *func_0208afe8(Unk0208a978State *state,
+    s32 argument, void *storage, s32 size);
+s32 func_0208aa68(s32 mode);
+s32 func_0208aa3c(void);
+Unk0208a978Argument *func_0208aafc(s32 argument, void *storage, s32 size);
 
 /** Store the opaque mode word; the STR at 0208a97c establishes the destination. */
 void func_0208a978(s32 mode)
@@ -72,4 +85,77 @@ s32 func_0208ab60(Unk0208a978Argument *argument)
 s32 func_0208ab84(Unk0208a978Argument *argument)
 {
     return func_0208b10c(data_02148da8, argument);
+}
+
+/** Dispatch resolved modes 1..3 to rows shown by calls at 0208a9bc..0208a9d0. */
+s32 func_0208a988(void)
+{
+    switch (func_0208aa68(data_02148da4)) {
+    case -1:
+    case 0:
+        break;
+    case 1:
+        func_0208aa3c();
+        break;
+    case 2:
+        func_02082658();
+        break;
+    case 3:
+        func_02082668();
+        func_02082678();
+        break;
+    }
+    return 0;
+}
+
+/** Dispatch modes 2 and 3 to ordered worker rows (0208aa14..0208aa2c). */
+s32 func_0208a9e0(void)
+{
+    switch (func_0208aa68(data_02148da4)) {
+    case -1:
+    case 0:
+    case 1:
+        break;
+    case 2:
+        func_02082608();
+        break;
+    case 3:
+        func_02082608();
+        func_02082618();
+        func_02082628();
+        func_02082638();
+        func_02082658();
+        break;
+    }
+    return 0;
+}
+
+/** Invoke all eight worker rows in order; their results are discarded (0208aa40..60). */
+s32 func_0208aa3c(void)
+{
+    func_02082608();
+    func_02082618();
+    func_02082628();
+    func_02082638();
+    func_02082648();
+    func_02082658();
+    func_02082668();
+    func_02082678();
+    return 0;
+}
+
+/** Bracket provider allocation with the helper pair; preserve the borrowed result. */
+Unk0208a978Argument *func_0208aac8(s32 argument, void *storage, s32 size)
+{
+    Unk0208a978Argument *result;
+    func_0208ae78();
+    result = func_0208aafc(argument, storage, size);
+    func_0208ae7c();
+    return result;
+}
+
+/** Supply global state to 0208afe8; storage and byte capacity pass through unchanged. */
+Unk0208a978Argument *func_0208aafc(s32 argument, void *storage, s32 size)
+{
+    return func_0208afe8(data_02148da8, argument, storage, size);
 }
