@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T997: match six `game/unit_0206ae94` updater, ring-walk, angle and random-ratio helpers at 100% objdiff; document the four-instruction vector-copy blocker for `func_0206ba4c` and `func_0206d268`.
 - M1-T996: match all eight remaining `game/unit_0206ae94` constructors, scale, bounce, angle and transform helpers at 100% objdiff; document typed contracts and the ARM-to-Thumb call resolved by linked objdiff.
 - Matched all three M2-T009 heap-state and animation-bank functions in `libs/NitroSDK/sdk_02020744.c`, with typed contracts and public-source evidence.
 - Matched M2-T008 rotation/reciprocal-scale wrapper in C using the public SDK sine/cosine table declaration; documented the table symbol required before linking from C.
