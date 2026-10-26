@@ -141,18 +141,25 @@ void ScanVisor_Unk_0a4a30(u32 obj)
 
 
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a4644(int arg0,int arg1)
+/* Mark a slot record as active: store 1 at +0x14 unconditionally and, when
+ * `on` is non-zero, store 13 at +0x10 first. Original 0x020a4644: cmp r1,#0;
+ * movne r1,#13; strne r1,[r0,#16]; mov r1,#1; str r1,[r0,#20]; bx lr.
+ * ScanVisor_SetById supplies a valid slot from ScanVisor_FindSlotByKey and
+ * passes its own `on` flag here after the SE-28 call. */
+void ScanVisor_Unk_0a4644(ScanVisor *sv, int on)
 {
-  if (arg1 != 0) {
-    ((ScanVisor *)arg0)->unk_0010 = 0xd;
+  if (on != 0) {
+    sv->unk_0010 = 0xd;
   }
-  ((ScanVisor *)arg0)->field14 = 1;
+  sv->field14 = 1;
   return;
 }
 
 int Unk0c855c_Unk_0c9d8c();
-/* decompiler-derived */
+/* Forward the work object's +0x78 sub-object to Unk0c855c_Unk_0c9d8c. The
+ * work object comes from ScanVisor_Get_data_02176b04; when it is null the
+ * helper returns without calling. Original 0x020a2a1c: load the bss word,
+ * test it, add 0x78 and branch-link to the external callee. */
 void ScanVisor_Unk_0a2a1c(void)
 {
   int tmp1;
@@ -165,7 +172,10 @@ void ScanVisor_Unk_0a2a1c(void)
 }
 
 
-/* decompiler-derived */
+/* Apply the fixed (1, 1) state update to the visor list at work+0x24c through
+ * ScanVisor_Unk_0a4a30. The work object comes from
+ * ScanVisor_Get_data_02176b04; a null work object makes this a no-op. Original
+ * 0x020a2ab0: load the bss word, test it, add 0x24c and branch-link. */
 void ScanVisor_Unk_0a2ab0(void)
 {
   int tmp1;
@@ -178,7 +188,10 @@ void ScanVisor_Unk_0a2ab0(void)
 }
 
 
-/* decompiler-derived */
+/* Clear the visor list's +0x198 word through ScanVisor_ClearUnkField198. The
+ * list lives at work+0x24c and the work object comes from
+ * ScanVisor_Get_data_02176b04; a null work object makes this a no-op. Original
+ * 0x020a2acc: load the bss word, test it, add 0x24c and branch-link. */
 void ScanVisor_Unk_0a2acc(void)
 {
   int tmp1;
@@ -191,7 +204,11 @@ void ScanVisor_Unk_0a2acc(void)
 }
 
 int Unk0fd268_SetDir();
-/* decompiler-derived */
+/* Forward the caller's direction value to Unk0fd268_SetDir only when the work
+ * object from ScanVisor_Get_data_02176b04 exists. Original 0x020a27e0 stores
+ * the argument in r4 across the getter call, then forwards it; callers pass 0
+ * (ScanVisor_Unk_0a2660) or the same value used by the sibling 0x020a2800
+ * (ScanVisor_Unk_0a273c). */
 void ScanVisor_Unk_0a27e0(u32 arg0)
 {
   int tmp1;
@@ -204,7 +221,10 @@ void ScanVisor_Unk_0a27e0(u32 arg0)
 }
 
 int Unk0fd268_Unk_0fd3f0();
-/* decompiler-derived */
+/* Forward the caller's value to Unk0fd268_Unk_0fd3f0 only when the work object
+ * from ScanVisor_Get_data_02176b04 exists. Original 0x020a2800 stores the
+ * argument in r4 across the getter call, then forwards it; ScanVisor_Unk_0a273c
+ * passes the same value it gives the sibling helper at 0x020a27e0. */
 void ScanVisor_Unk_0a2800(u32 arg0)
 {
   int tmp1;
@@ -269,7 +289,7 @@ void ScanVisor_Unk_0a29c4(u32 arg0)
   return;
 }
 
-void ScanVisor_Unk_0a4a18();
+void ScanVisor_Unk_0a4a18(u32 list, u32 id);
 /* decompiler-derived */
 void ScanVisor_Unk_0a2a8c(u32 arg0)
 {
@@ -613,6 +633,10 @@ int func_020c9eb0();
 void func_020616ec();
 int func_02057eb8();
 void func_020a43f4();
+/* Query the work object's +0x78 sub-object through Unk0c855c_Unk_0c9bac and
+ * return its integer result. A null work object from
+ * ScanVisor_Get_data_02176b04 returns 1 without calling. Original 0x020a2980:
+ * moveq r0,#1 then pop, otherwise add 0x78 and branch-link. */
 int ScanVisor_Unk_0a2980(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
@@ -980,9 +1004,14 @@ void ScanVisor_SetById(u32 list, u32 id, int on)
     if (on != 0) {
         Unk0a0ce4_Unk_0a0da4(28);
     }
-    ScanVisor_Unk_0a4644((int)sv, on);
+    ScanVisor_Unk_0a4644(sv, on);
 }
 
+/* Look up the slot whose key is `id` inside the list at work+0x24c, then clear
+ * its +0x10/+0x14 words through ScanVisor_Unk_0a465c (deactivate it). A missing
+ * slot leaves the list untouched. Original 0x020a4a18: branch-link to
+ * ScanVisor_FindSlotByKey, test r0, then branch-link to 0x020a465c. The caller
+ * at 0x020a2a8c passes work+0x24c and its own id argument. */
 void ScanVisor_Unk_0a4a18(u32 list, u32 id)
 {
     ScanVisor *sv = ScanVisor_FindSlotByKey(list, id);
