@@ -53,7 +53,7 @@ The existing TU and three already matching requested bodies were retained. Origi
 
 ## M1-T765 verification
 
-- `func_0210a160` (120 B): **100% objdiff**. Initializes the 216-byte work: two caller words, five cleared words, a state of 1, zeroed selection fields and ID arrays, then calls `Unk10a034_Unk_10ac28`. Evidence: stores and initializer call at 0x0210a160.
+- `func_0210a160` (120 B): **100% objdiff**. Initializes the 216-byte work: two caller words, four cleared words, a state of 1, two trailing cleared words, zeroed selection fields and ID arrays, then calls `Unk10a034_Unk_10ac28`. Evidence: stores and initializer call at 0x0210a160.
 - `Unk10a034_Unk_10ac28` (132 B): **100% objdiff**. Fills twelve borrowed twelve-byte entries from area IDs, provider kinds, and record byte +2. Evidence: area +0x36 and record +2 loads at 0x0210ac48–0x0210ac90.
 - `func_0210b3a8` (132 B): **100% objdiff**. Applies the linked descriptor by kind: kind 1 submits an ID/value pair, kind 2 adds a signed amount, kind 3 selects an entry or adds its scaled value. The work and descriptor are borrowed. Evidence: descriptor switch at 0x0210b3a8.
 - `func_0210ab60` (200 B): **100% objdiff**. Applies up to four linked eight-byte entries; kinds 1–3 use entry fields, kind 4 uses the work's selected IDs. Evidence: stride-eight loop and provider calls at 0x0210ab60.
