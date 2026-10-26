@@ -426,10 +426,11 @@ void Unk0e8228_Unk_0e940c(void)
 }
 
 
-int func_020e8628();
-int func_020ea0ec();
-int func_020ea160();
-/* decompiler-derived */
+int func_020e8628(void);
+int func_020ea0ec(void);
+int func_020ea160(void);
+/* Original 020e9728 calls 0ea0ec when 0e8628 returns exactly one; otherwise
+ * calls 0ea160. Callee meanings are unestablished, so the name stays neutral. */
 void Unk0e8228_Unk_0e9728(void)
 {
   int value;
@@ -442,7 +443,8 @@ void Unk0e8228_Unk_0e9728(void)
 }
 
 
-/* decompiler-derived */
+/* Original 020e9f18 clears six consecutive words. The caller must supply
+ * writable storage for all 24 bytes; 020e8260 uses a global table row. */
 void Unk0e8228_Unk_0e9f18(u32 *arg0)
 {
   *arg0 = 0;
@@ -454,7 +456,8 @@ void Unk0e8228_Unk_0e9f18(u32 *arg0)
 }
 
 
-/* decompiler-derived */
+/* Original 020e9f38 stores arg1 in the first word and clears the next five.
+ * The caller owns the writable 24-byte row (see 020e8260). */
 void Unk0e8228_Unk_0e9f38(u32 *arg0,u32 arg1)
 {
   *arg0 = arg1;
@@ -465,19 +468,21 @@ void Unk0e8228_Unk_0e9f38(u32 *arg0,u32 arg1)
   arg0[5] = 0;
 }
 
-int Unk0e8228_GetArr30();
-int Unk0e8228_Unk_0e8ce8();
-/* decompiler-derived */
+int Unk0e8228_GetArr30(int i);
+int Unk0e8228_Unk_0e8ce8(u32 x);
+/* Original 020e8bc4 resolves slot zero through 02044ec4, forwards its result
+ * to 0e8ce8, and normalizes the returned value to exactly zero or one. */
 int Unk0e8228_Unk_0e8bc4(void)
 {
   int value;
-  func_02044ec4(Unk0e8228_GetArr30(0));
-  value = Unk0e8228_Unk_0e8ce8();
+  u32 entry = func_02044ec4(Unk0e8228_GetArr30(0));
+  value = Unk0e8228_Unk_0e8ce8(entry);
   return value != 0;
 }
 
 
-/* decompiler-derived */
+/* Original 020e8c2c stores one at work +0x1c and 180 at +0x20 when work
+ * exists. The units and meanings of these words are not established. */
 void Unk0e8228_Unk_0e8c2c(void)
 {
   int value;
@@ -533,7 +538,7 @@ void Unk0e8228_Unk_0e9fa4(u32 arg0)
 int Unk044904_Unk_0459fc();
 int func_02053800();
 int func_020e82c8();
-int Unk0e8228_IsField4One();
+int Unk0e8228_IsField4One(void);
 int Unk0fd9f0_Unk_0fda58();
 int Unk100208_Unk_100208();
 /* decompiler-derived */
@@ -544,7 +549,7 @@ u32 Unk0e8228_Unk_0e85c8(void)
   if (value == 0) {
     return 0;
   }
-  value = Unk0e8228_IsField4One(value);
+  value = Unk0e8228_IsField4One();
   if ((value != 0) && (value = func_02053800(0,0x400), value != 0)) {
     Unk044904_Unk_0459fc();
     Unk0e8228_Unk_0e8cd8();
@@ -570,7 +575,7 @@ void Unk0e8228_Call_02008848(void)
 extern u8 data_02176ce4[];
 void Unk0e8228_Unk_0e9f18(u32 *arg0);
 void Unk0e8228_Unk_0e9f38(u32 *arg0, u32 arg1);
-int func_020e9ca8();
+int func_020e9ca8(u32 work, u32 selector);
 int func_020e9b54();
 u8 *func_020982c0();
 void Unk0e8228_Unk_0e8260(u32 i)
@@ -585,6 +590,8 @@ void Unk0e8228_Unk_0e8260(u32 i)
     }
 }
 
+/* Original 020e8374 forwards the shared work and selector to 0e9ca8, or
+ * returns zero without work. Selector semantics are not established. */
 int Unk0e8228_Unk_0e8374(u32 x)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
@@ -644,6 +651,8 @@ int Unk0e8228_GetArr88Field20(int i)
     return q == 0 ? 0 : FIELD(u16, q, 32);
 }
 
+/* Original 020e85a0 tests work +4 for exactly one, returning zero without
+ * work. The load offset and comparison establish the descriptive name. */
 int Unk0e8228_IsField4One(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
@@ -653,6 +662,8 @@ int Unk0e8228_IsField4One(void)
     return FIELD(u32, p, 4) == 1;
 }
 
+/* Original 020e8b54 tests work +0x0c for exactly one, returning zero without
+ * work. The load offset and comparison establish the descriptive name. */
 int Unk0e8228_IsFieldCOne(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();

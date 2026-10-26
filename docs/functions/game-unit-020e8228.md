@@ -122,17 +122,27 @@ implicit-argument call in `Unk0e8228_Unk_0e8bc4` explicit
 
 No M1-T901 functions remain on the hard list.
 
-## Other decompiler-derived functions in this TU
-- `Unk0e8228_Unk_0e9728`: decompiler-derived
-- `Unk0e8228_Unk_0e9f18`: decompiler-derived
-- `Unk0e8228_Unk_0e9f38`: decompiler-derived
-- `Unk0e8228_Unk_0e8bc4`: decompiler-derived
-- `Unk0e8228_Unk_0e8c2c`: decompiler-derived
+## M1-T902 verified helpers
 
-## Not done in M1-T902
-- `Unk0e8228_Unk_0e8374`
-- `Unk0e8228_IsField4One`
-- `Unk0e8228_IsFieldCOne`
+All eight functions match at 100% objdiff. Evidence is the original ARM
+instructions at the addresses below; callers retain ownership of all storage.
+
+| Function | Instruction contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e9728` (32 B, 020e9728) | Calls `func_020e8628`, compares against exactly one, and calls `func_020ea0ec` on equality or `func_020ea160` otherwise. Takes no arguments. |
+| `Unk0e8228_Unk_0e9f18` (32 B, 020e9f18) | Six word stores clear offsets 0 through 20. Requires a writable 24-byte row; 020e8260 supplies global table storage. |
+| `Unk0e8228_Unk_0e9f38` (32 B, 020e9f38) | Stores the second argument at offset zero, then clears offsets 4 through 20. Requires a writable 24-byte row, as supplied by 020e8260. |
+| `Unk0e8228_Unk_0e8374` (36 B, 020e8374) | Preserves the selector in r4 across the work getter; returns zero without work, otherwise calls `func_020e9ca8(work, selector)`. |
+| `Unk0e8228_Unk_0e8bc4` (36 B, 020e8bc4) | Calls `GetArr30(0)`, passes its result to `func_02044ec4`, forwards that result in r0 to `Unk_0e8ce8`, then normalizes to zero or one. The C now makes both forwarded arguments explicit. |
+| `Unk0e8228_Unk_0e8c2c` (36 B, 020e8c2c) | Returns without work; otherwise stores one at +0x1c and 180 at +0x20. No units are inferred. |
+| `Unk0e8228_IsField4One` (40 B, 020e85a0) | Returns zero without work; otherwise loads +4 and returns exactly whether it equals one. Offset and comparison support the existing name. |
+| `Unk0e8228_IsFieldCOne` (40 B, 020e8b54) | Returns zero without work; otherwise loads +0x0c and returns exactly whether it equals one. Offset and comparison support the existing name. |
+
+No M1-T902 functions remain on the hard list. Existing bodies already matched;
+this card verifies them and adds typed contracts and instruction evidence.
+The no-argument `IsField4One` call no longer supplies an unused work argument.
+
+## Other decompiler-derived functions in this TU
 - `Unk0e8228_Unk_0e8dd0`: decompiler-derived
 - `Unk0e8228_Unk_0e8dfc`: decompiler-derived
 - `Unk0e8228_Unk_0e9fa4`: decompiler-derived
@@ -194,13 +204,10 @@ No M1-T901 functions remain on the hard list.
 - `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8260`: hand-matched
-- `Unk0e8228_Unk_0e8374`: hand-matched
 - `Unk0e8228_GetArr30`: hand-matched
 - `Unk0e8228_GetArr58`: hand-matched
 - `Unk0e8228_GetArr40`: hand-matched
 - `Unk0e8228_GetArr88Field20`: hand-matched
-- `Unk0e8228_IsField4One`: hand-matched
-- `Unk0e8228_IsFieldCOne`: hand-matched
 - `Unk0e8228_Unk_0e8be8`: hand-matched
 - `Unk0e8228_Unk_0e8c80`: hand-matched
 - `Unk0e8228_Unk_0e8ce8`: hand-matched

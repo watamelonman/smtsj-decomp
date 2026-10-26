@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T902: verify eight `game/unit_020e8228` dispatch, row initialization and field helpers at 100% objdiff; document instruction contracts and explicitly forward the resolved entry.
 - M1-T901: verify eight `game/unit_020e8228` flag, forwarding and lifecycle helpers at 100% objdiff; replace decompiler-derived bodies with typed C and document instruction-based contracts.
 - M1-T926: match all eight ImageObj initialization, descriptor, pair-update and cleanup helpers at 100% objdiff; document typed contracts and instruction evidence.
 - Verified all eight M1-T934 arithmetic, forwarding and channel-update helpers in `game/unit_0206fb70` at 100% objdiff, with typed callee contracts and instruction evidence.
