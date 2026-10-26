@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T133: match five graphics-bank, texture-capacity and resource-lifetime wrappers; document two remaining compiler mismatches.
+
 - Match NitroSystem joint blending, material SBC, node-description SBC, and cached envelope matrix mixing in sdk_020222d8; document the remaining projection-map mismatch.
 
 - M2-T126: match both XSI texture-matrix constructors in `lib_0202923c`.

@@ -56,3 +56,8 @@ lifetime guarantees and depend only on base types and existing providers.
 The text-library borrowed views also expose singleton mode bytes +0x54/+0x55,
 its enable word +0x70 and reset byte +0x74, and a four-word metric buffer
 whose +8 origin is caller supplied. Provider ownership remains unchanged.
+
+`include/libs/NitroSDK/sdk_02058370.h` exposes a borrowed graphics-resource work
+view: the handle is at +0x2058 and associated state blocks begin at +0x205c and
++0x2084. The wrapper depends only on SDK bank, geometry and resource providers;
+callers retain the work storage and provider calls govern resource lifetime.
