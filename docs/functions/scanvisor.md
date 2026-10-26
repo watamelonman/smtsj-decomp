@@ -33,16 +33,48 @@ No new tests were required by this card; objdiff checks the instruction behavior
 
 No hard functions for M1-T983.
 
+## M1-T984: setters, thunks and work-object getter
+
+Names retain the configured symbols. Field stores and call shapes come from the
+delinked `src/ScanVisor.o`; they do not establish further gameplay meaning.
+
+- `ScanVisor_SetUnkFields24_28` (0x020a43e8, 12 bytes): `str r1,[r0,#36];
+  str r2,[r0,#40]; bx lr`. Stores the caller's pair in a slot record at
+  +0x24/+0x28. `ScanVisor_Unk_0a4864` passes (8, 0) and `ScanVisor_Unk_0a42f0`
+  passes (0, 0); the value units remain unknown.
+- `ScanVisor_Unk_0a4904` (0x020a4904, 12 bytes): `mov r1,#1;
+  str r1,[r0,#444]; bx lr`. Sets the word at +0x1bc to 1 on the list object;
+  `ScanVisor_Unk_0a2920` passes base+0x24c.
+- `ScanVisor_ClearUnkField198` (0x020a4988, 12 bytes): `mov r1,#0;
+  str r1,[r0,#408]; bx lr`. Clears +0x198 on the list object passed at
+  base+0x24c by `ScanVisor_Unk_0a2acc` and `ScanVisor_Unk_0a2b7c`.
+- `ScanVisor_Thunk_020a4600` (0x020a49cc, 12 bytes): `ldr ip,[pc]; bx ip`
+  with an ABS32 relocation to `ScanVisor_AnySlotField14` (0x020a4600). The
+  typed `u8 *` parameter explicitly forwards the borrowed list pointer and
+  the thunk returns the callee's integer 0/1 result. The caller at 0x020a35bc
+  passes base+0x24c, calls at 0x020a35c0, and compares r0 with zero at
+  0x020a35c4, establishing that the return value must be preserved.
+- `ScanVisor_Get_data_02176b04` (0x020a2cfc, 16 bytes): `ldr r0, literal;
+  ldr r0,[r0]; bx lr`, returning the bss word at 0x02176b04. Callers
+  null-check it before using the result as the work-object base.
+- `ScanVisor_Unk_0a3620` (0x020a3620, 16 bytes): `ldr ip,[pc,#4];
+  add r0,r0,#588; bx ip` to `ScanVisor_Unk_0a4a44`. Forwards the list object
+  at base+0x24c; `ScanVisor_Draw` supplies the visor pointer.
+- `ScanVisor_Unk_0a465c` (0x020a465c, 16 bytes): `mov r1,#0;
+  str r1,[r0,#16]; str r1,[r0,#20]; bx lr`. Clears the two words at
+  +0x10/+0x14 on the idle slot returned by `ScanVisor_FindSlotByKey`.
+- `ScanVisor_Unk_0a4a30` (0x020a4a30, 20 bytes): `ldr ip,[pc,#8];
+  mov r1,#1; mov r2,r1; bx ip` to `ScanVisor_Unk_0a4950`. Forwards the list
+  object at base+0x24c with arguments (1, 1); the callee owns all stores.
+
+Validation: all eight functions report 100% in `build/report.json` after
+re-typing their parameters; the match gate, anticheat gate and original-image
+checksum gate pass. No new tests were required by this card.
+
+No hard functions for M1-T984.
+
 ## Existing work on other cards
 
-- `ScanVisor_SetUnkFields24_28`: decompiler-derived
-- `ScanVisor_Unk_0a4904`: decompiler-derived
-- `ScanVisor_ClearUnkField198`: decompiler-derived
-- `ScanVisor_Thunk_020a4600`: decompiler-derived
-- `ScanVisor_Get_data_02176b04`: decompiler-derived
-- `ScanVisor_Unk_0a3620`: decompiler-derived
-- `ScanVisor_Unk_0a465c`: decompiler-derived
-- `ScanVisor_Unk_0a4a30`: decompiler-derived
 - `ScanVisor_Unk_0a4644`: decompiler-derived
 - `ScanVisor_Unk_0a2a1c`: decompiler-derived
 - `ScanVisor_Unk_0a2ab0`: decompiler-derived

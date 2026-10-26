@@ -2,10 +2,15 @@
 
 ## Unreleased
 - M1-T908: match all six `game/unit_020e8228` row access, initialization, dispatch and request-builder functions at 100% objdiff; document typed contracts and borrowed layouts.
+- M1-T984: explicitly forward the ScanVisor query thunk's typed list pointer and return its boolean integer result, as required by its caller.
+- M1-T984: verified the eight ScanVisor setter, thunk, clear and work-object getter helpers at 100% objdiff; typed their parameters and documented instruction and caller evidence.
+- Match all eight M1-T978 ID scan, copy, provider and polling helpers at 100% objdiff; document observed contracts and the scoped copy propagation setting.
 - M1-T907: match seven `game/unit_020e8228` bank scans, selection-bit, index-advance, request-builder, state teardown and object-state functions at 100% objdiff; add typed contracts and document the remaining literal-pool alias hard case.
 - Verified all eight M1-T977 table, resource and state helpers at 100% objdiff; documented their instruction-based contracts.
 - Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.
 - Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
+
+- M1-T974: match seven CaveArea initialization, input, message, marker and motion functions; document the remaining list-renderer register allocation blocker.
 
 - M1-T973: match all eight requested CaveArea cleanup, selection, draw and provider helpers at 100% objdiff; document typed contracts and the scoped lifetime pragma that restores `func_020ecf20`'s original register allocation.
 - M1-T962: match the 2040-byte `game/unit_020cf5e8` mission-scene state machine `func_020cf9a0` at 100% objdiff; record the measured switch-return layout blocker for `func_020d09b4` on the hard list.

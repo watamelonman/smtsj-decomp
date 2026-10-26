@@ -407,3 +407,14 @@ changing the instruction schedule. Scope `opt_lifetimes off` to this function
 and restore the setting immediately afterward. The pragma changes no C
 semantics: the index still defaults to zero, mode 0 overwrites it on both area
 paths, and mode 1 only relies on the default when the area exceeds eight.
+
+
+## DEC-024 — Preserve byte-copy pointer order in 02115498
+
+The original copies two byte-aligned sixteen-byte ID blocks with paired-byte
+loops. A byte-array aggregate assignment produces those loops, but default
+mwccarm propagation computes the source pointer first and swaps its register
+with the destination pointer. Explicit destination/source locals with
+`opt_propagation off` reproduce the original destination-first allocation.
+Scope this setting to `func_02115498` and restore it immediately afterward.
+The C still performs ordinary aggregate copies without assembly or code blobs.
