@@ -237,8 +237,10 @@ void ScanVisor_Unk_0a2800(u32 arg0)
 }
 
 
-int Unk0a7d54_Unk_0a8b44();
-/* decompiler-derived */
+int Unk0a7d54_Unk_0a8b44(u32 object);
+/* Forward work+0x428 to Unk0a7d54_Unk_0a8b44 when work exists.
+ * Original 0x020a2b18 null-checks the getter result before adding 0x28
+ * and 0x400; the borrowed sub-object remains owned by the work provider. */
 void ScanVisor_Unk_0a2b18(void)
 {
   int tmp1;
@@ -250,8 +252,10 @@ void ScanVisor_Unk_0a2b18(void)
   return;
 }
 
-int Unk0a7d54_Unk_0a8b70();
-/* decompiler-derived */
+int Unk0a7d54_Unk_0a8b70(u32 object);
+/* Forward work+0x428 to Unk0a7d54_Unk_0a8b70 when work exists.
+ * Original 0x020a2b38 null-checks the getter result before the two adds
+ * and call; the sub-object semantics remain unknown. */
 void ScanVisor_Unk_0a2b38(void)
 {
   int tmp1;
@@ -263,8 +267,10 @@ void ScanVisor_Unk_0a2b38(void)
   return;
 }
 
-int func_020c9bd8();
-/* decompiler-derived */
+int func_020c9bd8(u32 object, u32 value);
+/* Forward the caller value and borrowed work+0x78 to func_020c9bd8.
+ * Original 0x020a29a0 preserves r0 across the getter, passes it in r1,
+ * and returns without calling if the work pointer is null. */
 void ScanVisor_Unk_0a29a0(u32 arg0)
 {
   int tmp1;
@@ -276,8 +282,10 @@ void ScanVisor_Unk_0a29a0(u32 arg0)
   return;
 }
 
-int Unk0c855c_Unk_0c9c5c();
-/* decompiler-derived */
+int Unk0c855c_Unk_0c9c5c(u32 object, u32 value);
+/* Forward the caller value and borrowed work+0x78 to
+ * Unk0c855c_Unk_0c9c5c. Original 0x020a29c4 preserves the argument in
+ * r4 across the getter and skips the call for null work; units unknown. */
 void ScanVisor_Unk_0a29c4(u32 arg0)
 {
   int tmp1;
@@ -290,7 +298,9 @@ void ScanVisor_Unk_0a29c4(u32 arg0)
 }
 
 void ScanVisor_Unk_0a4a18(u32 list, u32 id);
-/* decompiler-derived */
+/* Clear the slot selected by the caller id on the list at work+0x24c.
+ * Original 0x020a2a8c forwards the id in r1 to ScanVisor_Unk_0a4a18,
+ * whose lookup and clear establish this behavior. Null work is a no-op. */
 void ScanVisor_Unk_0a2a8c(u32 arg0)
 {
   int tmp1;
@@ -302,8 +312,10 @@ void ScanVisor_Unk_0a2a8c(u32 arg0)
   return;
 }
 
-void ScanVisor_SetById();
-/* decompiler-derived */
+void ScanVisor_SetById(u32 list, u32 id, int on);
+/* Activate the caller-selected slot on the list at work+0x24c.
+ * Original 0x020a2a38 forwards the id in r1 and fixed 1 in r2 to
+ * ScanVisor_SetById; null work returns without calling. */
 void ScanVisor_Unk_0a2a38(u32 arg0)
 {
   int tmp1;
@@ -390,7 +402,7 @@ void ScanVisor_Unk_0a29e8(u32 arg0,u32 arg1,u32 arg2)
   return;
 }
 
-int ScanVisor_Unk_0a2b58();
+int ScanVisor_Unk_0a2b58(void);
 int Unk0a7d54_Unk_0a8c40();
 /* decompiler-derived */
 void ScanVisor_Unk_0a2b7c(void)
@@ -626,8 +638,8 @@ typedef struct ScanVisorBits {
 
 extern u8 data_0214ce2c[];
 int Unk0c855c_Unk_0c9bac();
-int Unk0a7d54_Unk_0a8c04();
-void Unk0c855c_Unk_0c9890();
+int Unk0a7d54_Unk_0a8c04(u8 *object);
+void Unk0c855c_Unk_0c9890(u8 *object, int value);
 int func_020c9db4();
 int func_020c9eb0();
 void func_020616ec();
@@ -646,6 +658,9 @@ int ScanVisor_Unk_0a2980(void)
     return Unk0c855c_Unk_0c9bac(v + 120);
 }
 
+/* Return 1 for null work, otherwise return the query on borrowed work+0x428.
+ * Original 0x020a2b58 uses moveq r0,#1 on the null path and forwards
+ * the non-null sub-object to Unk0a7d54_Unk_0a8c04. */
 int ScanVisor_Unk_0a2b58(void)
 {
     u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
@@ -888,6 +903,9 @@ void ScanVisor_Draw(ScanVisor *sv)
 ScanVisor *ScanVisor_FindSlotByKey(u32 list, u32 id);
 void Unk0a0ce4_Unk_0a0da4(int se);
 
+/* For a valid borrowed visor, call Unk0c855c_Unk_0c9890 on +0x78 with
+ * value 12 only while signed word +0x210 is below 50. Original 0x020a3254
+ * uses ldr/cmp #50/popge; neither the threshold units nor meaning is known. */
 void ScanVisor_Unk_0a3254(ScanVisor *p)
 {
     if (FIELD(s32, p, 528) >= 50) {
