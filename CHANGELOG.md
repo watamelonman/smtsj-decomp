@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match the eight M1-T807 unit_02116598 provider, initialization and update routines.
 - Match eight more unit_02116598 allocation, teardown, and state functions (M1-T806).
 - M1-T867: verify eight more `game/unit_020cb32c` functions at 100% objdiff; add typed call contracts, explicit work forwarding and per-function instruction evidence.
 - Matched M1-T872 record-bank scanning, address, clearing, and insertion helpers; documented their field contracts.
