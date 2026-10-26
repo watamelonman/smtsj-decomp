@@ -62,3 +62,7 @@ whose +8 origin is caller supplied. Provider ownership remains unchanged.
 wrapper's flag distinguishes a borrowed resource from one released at teardown;
 the independent 320-byte buffer is caller-owned. These helpers depend only on
 base types and existing copy, fill, allocation, and resource-release providers.
+
+The same resource wrapper header exposes caller-owned path output and owned
+resource loading through the existing prefix, string, path-probe and loader
+providers. Constructed loader paths must fit the original 64-byte stack buffer.

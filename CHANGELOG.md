@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T128: match compressed/fallback resource path construction and the owned `.gtan` resource wrapper in `sdk_0205c1c8`.
+
 - M2-T127: match seven resource-table and buffer lifetime helpers in `sdk_0205c1c8`; document the remaining table binder.
 - Match NitroSystem joint blending, material SBC, node-description SBC, and cached envelope matrix mixing in sdk_020222d8; document the remaining projection-map mismatch.
 
