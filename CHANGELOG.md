@@ -3,6 +3,8 @@
 ## Unreleased
 
 - Match the NitroSDK sub-display palette reset wrappers, shared VRAM bank disable helper, and main BG extended palette disable wrapper (M2-T061).
+- M2-T057: reconstruct the eight remaining `lib_020ba264` script selector, record, indexed-word, remainder and request handlers with instruction evidence.
+- M2-T043: match the two result-publishing request wrappers in `libs/unknown/lib_020ba05c`, completing all eighteen C functions in the unit.
 - M2-T021: match the CRI four-record allocation helper `func_0207c868` at 100% objdiff with typed source and callback contracts.
 - M2-T042: reconstruct eight operand-supplied selector wrappers in `libs/unknown/lib_020ba05c` with typed contracts and instruction evidence.
 - M1-T998: match `game/unit_0206ae94` render constructor `func_0206af04` and axis-angle setter `func_0206b6e0` at 100% objdiff; document the five remaining render/state bodies as hard cases.
@@ -452,6 +454,11 @@
 
 - Match eight NitroSDK VRAM reset/disable wrappers in `libs/NitroSDK/sdk_02003568.c`, with typed bank helpers and known-source evidence.
 - Added matching C for eight `libs/unknown/lib_020ba264` script wrappers, with typed declarations and instruction-based contracts.
+
+- Match all six NitroSDK sdk_0200454c geometry matrix and palette transfer helpers, with typed contracts and source evidence.
+
+- Match all four `libs/NitroSDK/sdk_0205e800` routines, including bounded input adjustment and global setters.
+- Match all eight `libs/unknown/lib_02049998` packed-status and paired-record helpers with typed layouts and per-function contracts.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
