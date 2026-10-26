@@ -126,15 +126,51 @@ the hard list below.
   retail register assignment without adding instructions, so the original
   body is left to the delink rather than faking a match.
 
-## Not done in M1-T937
-- `Unk06fb70_Unk_070094`
-- `func_0206fb9c`
-- `func_020703b4`
-- `func_02070440`
-- `func_02071068`
-- `func_0207126c`
-- `func_02071334`
-- `Unk06fb70_Unk_070758`
+## M1-T937 — verified against original ARM
+
+All eight functions match at 100% in objdiff. The two channel helpers
+0x02070094 and 0x02070758 were already defined and verified by earlier work in
+this TU; they remain the bodies already listed above. The remaining six use the
+second animation view (`Unk06fb70Anim2`), whose four 24-byte keys hold three
+value/time pairs. Evidence throughout is the original `mla` sequences
+(`+0x44 + key * 24 + channel * 8`), signed-byte state loads, four-key bound and
+the exact BL targets.
+
+- `Unk06fb70_Unk_070094` (0x02070094, 128 bytes): channel 0 advance for the
+  first animation view. Already matched before this card; it gates on state
+  four, advances tick, and either resets tick/velocities and selects the next
+  key through 0x020705f8 or clamps the three position components.
+- `func_0206fb9c` (0x0206fb9c, 136 bytes): converts the float delta
+  `f1 - f0` over `(t1 - t0) * 4096` into a 20.12 result via 0x0200219c, rounding
+  by half a unit away from zero. A zero time delta calls 0x02007e94. Evidence
+  is the `_fsub`/`_fgr`/`_fmul`/`_fadd`/`_ffix` call sequence and shared
+  conversion path.
+- `func_020703b4` (0x020703b4, 140 bytes): advances the first channel of the
+  second animation view. State gates at four; tick expiry clears tick,
+  position, velocity and the extra word before calling 0x02071068, otherwise
+  the position is clamped by velocity.
+- `func_02070440` (0x02070440, 192 bytes): advances the three value channels of
+  the second view. A completed state clears four position words; tick expiry
+  clears tick and four velocity words before calling 0x0207112c, otherwise each
+  of the three positions is clamped by its velocity.
+- `func_02071068` (0x02071068, 196 bytes): channel 0 key selector for the second
+  view, using the value/time pair at key +0/+4. It sets the time-delta limit and,
+  on a positive limit, stores velocity from 0x0206fb70 and maximum from the
+  current key's value, then advances state. Evidence is the original load at
+  +0x44 where the later channels use the next key.
+- `func_0207126c` (0x0207126c, 200 bytes): channel 1 key selector for the second
+  view, using the value/time pair at key +8/+12. Velocity uses both endpoints
+  through 0x0206fb70 and maximum is the next key's value shifted by 12.
+- `func_02071334` (0x02071334, 200 bytes): channel 2 key selector for the second
+  view, using the value/time pair at key +16/+20, with the same state and
+  four-key bounds as channel 1.
+- `Unk06fb70_Unk_070758` (0x02070758, 220 bytes): channel 1 key selector for the
+  first animation view. Already matched before this card; it resets state to
+  four at the bound and otherwise updates the +4/+12 limit and value pair.
+
+### Hard list for M1-T937
+
+None.
 
 ## Not done in M1-T938
 - `func_0207142c`
