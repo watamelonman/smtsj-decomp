@@ -9,7 +9,6 @@ Each line: function, card, reason. Candidates for decomp.me (tools/decompme.py).
 - `Unk094fe0_SetUnkField9a0` (M1-T380): left out of the card
 - `Unk094fe0_Call_020950b4` (M1-T380): left out of the card
 - `Unk0986ac_Unk_098980` (M1-T631): left out of the card
-- `Unk0cf5e8_Unk_0d1454` (M1-T957): left out of the card
 - `func_0203e2f8` (M1-T019): card skipped
 - `Unk0d297c_Unk_0d3138` (M1-T567): left out of the card
 - card M1-T984: skipped (TU already has a hand-written file; needs merging by hand)
