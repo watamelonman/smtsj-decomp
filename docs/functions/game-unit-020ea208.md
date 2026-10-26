@@ -99,15 +99,30 @@ were rewritten to use the typed work view without changing the original
 generated instructions, and the two setter/teardown bodies now name their
 pointer parameters.
 
-## Not done in M1-T773
-- `Unk0ea208_GetArr58`
-- `func_020ea6ac`
-- `func_020eacb4`
-- `func_020ea3cc`
-- `func_020ea320`
-- `func_020eb034`
-- `func_020ea630`
-- `func_020ea208`
+## M1-T773 — verified matches
+
+All eight functions are 100% in the local objdiff report. Evidence below comes
+from the original delinked ARM instructions and their relocation targets. The
+functions borrow the singleton, its tables and the +0x70 slot records; none
+allocates or transfers ownership. `Unk0ea208Work` is the singleton view,
+`Unk0ea208Slot` is one 56-byte slot, and `Unk0ea208IdMap` is one 8-byte entry of
+the static id tables.
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `Unk0ea208_GetArr58` | 76 B | Return entry i of the six-word table at work+0x58, or 0 when the singleton is missing/not ready (+0x1cc zero) or i is outside 0..5. Evidence: the `cmp r4,#6` bound after the guard and `ldr r0,[r0,#88]` after the scaled add. |
+| `func_020ea6ac` | 96 B | Claim the first free +0x70 slot with `Unk0ea208_Unk_0eb2cc` and forward five caller values to `func_020eae84`; return when the singleton is missing/not ready or no slot is free. Evidence: the `bl Unk0ea208_Unk_0eb2cc` null check, `ldr ip,[sp,#32]` and the two stack stores. |
+| `func_020eacb4` | 104 B | Translate an id through the `data_02150ca0` table (five key/value entries) then the `data_02150c80` table (four entries), returning the matching entry's value; return 0 when absent. Evidence: the two `ldr [r2,r3,lsl #3]` loops with bounds 5 and 4 and the final `mov r0,#0`. |
+| `func_020ea3cc` | 108 B | Dispatch selector 4 to `Unk0ea208_Unk_0ea984(func_02044ec4(...))`, 9 to `func_020eaa90(func_02044ec4(...))`, and all others to group 39 entry 1; submit the result to `Unk0fedd4_Unk_0fee38`. Evidence: the two selector compares and the shared `bl Unk0fedd4_Unk_0fee38` epilogue. |
+| `func_020ea320` | 112 B | Replace +0x58 table entry i: a zero handle clears it, otherwise store the `func_020cb1a0` record and pass i plus the `Unk0caea8_Unk_0cb044` result to `Unk0ea208_Unk_0ea390`. Evidence: `str [r?, #88]` on both paths and the two call relocations. |
+| `func_020eb034` | 116 B | Release a slot's +0x20 and +0x34 handles and its four +0x24 handles through `func_02061424`, clearing each, then zero the scalar words through `Unk0ea208_Unk_0eae20`. Evidence: the guarded loads at +32/+52, the four-iteration +36 loop, and the final call. |
+| `func_020ea630` | 124 B | Selector jump table: 0/1/5/6/7 call `func_020eacb4(selector)`, 2 -> `Unk0ea208_Unk_0ead3c`, 3 -> `Unk0ea208_Unk_0ead1c`, 4 -> `Unk0ea208_Unk_0ead4c`, 8 -> `Unk0ea208_Unk_0ead64`, 9 -> `Unk0ea208_Unk_0eada8`, 10 -> `Unk0ea208_Unk_0eade4`; other selectors return 0. Each arm returns the callee's r0: explicitly for the value-returning arms (0/1/5/6/7/9/10) and by leaving r0 untouched for the void-callee arms (2/3/4/8), matching the original. Evidence: `cmp r0,#10` / `addls pc,pc,r0,lsl #2` and every call relocation. |
+| `func_020ea208` | 136 B | Store the `Unk09974c_Unk_099d14` object in +0x40 table entry i and submit it with the +0x24 handle to `func_02061f10`; a null `Unk09974c_Unk_099bac` result falls back to data_02150cc8. Evidence: `str r0,[r1,#64]`, the `ldreq` literal, `ldr r0,[r1,#36]` and the stack argument. |
+
+No M1-T773 functions remain on the hard list. The two table getters share the
+existing `Unk0ea208Work` view; the slot view gained the handles released by
+`func_020eb034`, and `Unk0ea208_Unk_0ea984` now returns the resource that its
+existing body already left in r0 (needed by `func_020ea3cc`).
 
 ## Not done in M1-T775
 - `func_020eaa90`
