@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T937: match all eight requested `game/unit_0206fb70` float-ratio, second-animation channel-advance and key-selection functions at 100% objdiff; add the typed second animation view and document instruction evidence.
 - M1-T936: match seven `game/unit_0206fb70` cursor-advance, dispatcher, channel-update and value-add functions at 100% objdiff; document `func_020717e4`'s measured 97.5% zero-block register-allocation blocker on the hard list.
 - M1-T904: match all eight requested `game/unit_020e8228` table lookups, selector dispatch, selection reset and slot-scan helpers at 100% objdiff; add the two missing definitions and document instruction contracts.
 - M1-T903: match all eight requested `game/unit_020e8228` dispatch, state, lookup and initialization helpers at 100% objdiff; add the state callback and document instruction contracts.
