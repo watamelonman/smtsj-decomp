@@ -595,15 +595,13 @@ typedef struct Unk068f18Row {
  * signed source count, as established by the original signed-byte loads. */
 void func_02069324(Unk068f18Work *work, Unk068f18Unit *target, int row)
 {
+    /* Declaring the first loop index before the allocated pointers preserves
+     * the original register split between the record base and cursor. */
+    int i;
     Unk068f18Candidates *candidates = func_02052fe0(FIELD(s8, work, 851) * 18);
     Unk068f18Record *records = func_02052fe0(FIELD(s8, work, 851) * 24);
     Unk068f18Unit temporary;
-    int i;
     int count;
-    int offset;
-    int slot;
-    int candidate;
-    int j;
     func_02008848(candidates, 0, FIELD(s8, work, 851) * 18);
     func_02008848(&temporary, 0, 60);
     for (i = 0; i < FIELD(s8, work, 851); i++) {
@@ -627,15 +625,16 @@ void func_02069324(Unk068f18Work *work, Unk068f18Unit *target, int row)
         if (candidates[i].count != 0) count++;
     }
     if (count <= 0) {
-        for (i = 0, offset = 0; i < FIELD(s8, work, 851); i++, offset += 6) {
+        for (i = 0; i < FIELD(s8, work, 851); i++) {
             if (((Unk068f18Row *)FIELD(void *, work, 148))[row].ids[i] != 0) {
                 int index = Unk068f18_Unk_06a1a8((u8 *)work, ((Unk068f18Row *)FIELD(void *, work, 148))[row].ids[i]);
-                if (index >= 0) func_02068f78(work, records + offset, work->units[index], target->id);
+                if (index >= 0) func_02068f78(work, records + i * 6, work->units[index], target->id);
             }
         }
         func_02013c68(records, FIELD(s8, work, 851) * 6, 4, Unk068f18_CompareKeyDesc);
-        slot = 0;
-        candidate = 0;
+        int slot = 0;
+        int j;
+        int candidate = 0;
         while (slot < 5) {
             if (target->ids[slot] == 0 && records[candidate].id != 0 && records[candidate].id != 65535) {
                 for (j = 0; j < slot; j++) {
@@ -650,12 +649,16 @@ void func_02069324(Unk068f18Work *work, Unk068f18Unit *target, int row)
         }
     } else {
         func_02008848(records, 0, FIELD(s8, work, 851) * 24);
-        for (i = 0, offset = 0; i < FIELD(s8, work, 851); i++, offset += 6) {
-            func_0206902c((u8 *)work, records + offset, (u16 *)&candidates[i]);
+        /* Separate index keeps the record offset in a register while the
+         * candidate cursor advances as a pointer, matching the original. */
+        int k;
+        for (k = 0; k < FIELD(s8, work, 851); k++) {
+            func_0206902c((u8 *)work, records + k * 6, (u16 *)&candidates[k]);
         }
         func_02013c68(records, FIELD(s8, work, 851) * 6, 4, Unk068f18_CompareKeyAsc);
-        slot = 0;
-        candidate = 0;
+        int slot = 0;
+        int j;
+        int candidate = 0;
         while (slot < 5) {
             if (target->ids[slot] == 0 && records[candidate].id != 0) {
                 for (j = 0; j < slot; j++) {
