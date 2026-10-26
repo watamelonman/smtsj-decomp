@@ -25,9 +25,34 @@ this ROM's instructions rather than borrowing an unsupported SDK identity.
 | `func_020ba1b4` | 11 | Store selector 11 and value zero through `func_020b8b18`; return 1. |
 | `func_020ba1cc` | 12 | Store selector 12 and value zero through `func_020b8b18`; return 1. |
 
+## M2-T042: operand-supplied selectors
+
+A further search for script dispatch wrappers in pret/pokeplatinum and zeldaret
+public sources did not identify a matching implementation. No SDK provenance or
+selector meaning is inferred from the directory classification.
+
+Each entry below has no explicit parameters. Its original ARM instructions call
+`func_0203ac00(0)`, pass the returned 32-bit value unchanged to
+`func_020b8b18(selector, value)`, then return signed integer 1. The provider in
+`src/game/unit_0203aae8.c` reads a zero-based operand from the implicit script
+stack, resolving its tag and converting numeric values as needed. The wrapper
+performs no additional narrowing or validation. The record remains owned by the
+external provider; the wrappers acquire no storage.
+
+| Function | Selector | Behavior |
+| --- | ---: | --- |
+| `func_020ba134` | 7 | Store operand zero with selector 7; return 1. |
+| `func_020ba154` | 8 | Store operand zero with selector 8; return 1. |
+| `func_020ba174` | 9 | Store operand zero with selector 9; return 1. |
+| `func_020ba194` | 10 | Store operand zero with selector 10; return 1. |
+| `func_020ba1e4` | 13 | Store operand zero with selector 13; return 1. |
+| `func_020ba204` | 14 | Store operand zero with selector 14; return 1. |
+| `func_020ba224` | 15 | Store operand zero with selector 15; return 1. |
+| `func_020ba244` | 16 | Store operand zero with selector 16; return 1. |
+
 ## Validation
 
-`python3 tools/match_gate.py` built successfully and verified all eight
+`python3 tools/match_gate.py` built successfully and verified all sixteen C
 functions at 100% objdiff. `python3 tools/checksum.py` verified all artifacts
 byte-identical to the original. `python3 tools/anticheat.py` passed, and
 `python3 -m unittest discover -s tests -t . -q` passed all nine tests.
@@ -36,5 +61,5 @@ instruction-level acceptance reference.
 
 ## Hard list
 
-None of the eight requested functions. Other functions in this translation
+None of the sixteen implemented functions. Other functions in this translation
 unit remain supplied by the delinked original, as required by the card.
