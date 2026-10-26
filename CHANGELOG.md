@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T1061: match eight render-state predicates, a glyph-advance multiply and singleton/state setters in `libs/unknown/lib_02061798.c` (`func_0206232c`, `func_02062a3c`, `func_0206431c`, `func_0206433c`, `func_02065438`, `func_0206557c`, `func_0206567c`, `func_02065c10`).
 - M2-T1060: match eight font/text state, bit-mask, singleton and allocation helpers in `libs/unknown/lib_02061798.c` (`func_02061e98`, `func_020629ac`, `func_02062a5c`, `func_0206541c`, `func_0206552c`, `func_0206559c`, `func_02065628`, `func_020658a0`).
 - M2-T1059: match eight font-record state predicates, setters and tail wrappers in `libs/unknown/lib_02061798.c` (`func_02061eb4`, `func_02062a74`, `func_02063a30`, `func_020642a8`, `func_0206435c`, `func_02065604`, `func_02065614`, `func_0206569c`).
 - M2-T1058: match the remaining eight font-record accessors and render-object reset/copy wrappers in `libs/unknown/lib_02061798.c`; the split four-byte `func_02062264` epilogue stays documented as hard.

@@ -3,20 +3,31 @@
 
 #include "types.h"
 
-/* Opaque object returned through func_02063a44; it is a different global
+/* Object returned through func_02063a44; it is a different global
  * from the one behind Unk061798ResultB. */
 typedef struct Unk061798ResultA Unk061798ResultA;
 
+/* Render object whose fields these functions update; defined below. */
+typedef struct Unk061798Object Unk061798Object;
+
 /* Object returned through func_02063a60; it is distinct from
- * Unk061798ResultA and is backed by data_0216b9a8 + 4. Only the words at
- * +0x1c and +0x20, written by func_02065614/func_02065628, and the word at
- * +0x5c, read by func_0206559c, are named; the rest is padding. */
+ * Unk061798ResultA and is backed by data_0216b9a8 + 4. Only the words touched
+ * by this unit are named; the rest is padding. The +0 word is the render
+ * object tested by func_0206557c, and +0x8/+0xc/+0x58 are the state words set
+ * by func_02065c10. */
 typedef struct Unk061798ResultB {
-    u8 pad_0000[0x1c];
+    Unk061798Object *unk_0000;
+    u8 pad_0004[4];
+    u32 unk_0008;
+    u32 unk_000c;
+    u8 pad_0010[0x0c];
     u32 unk_001c;
     u32 unk_0020;
-    u8 pad_0024[0x38];
+    u8 pad_0024[0x34];
+    u32 unk_0058;
     s32 unk_005c;
+    u32 unk_0060;
+    u32 unk_0064;
 } Unk061798ResultB;
 
 /* Opaque record behind the pointer at +0x28 of a font record; callers read
@@ -38,7 +49,7 @@ typedef struct Unk061798Font {
 
 /* Partial view of the larger render object whose fields these functions
  * update. Only bytes touched by this unit are named; the rest is padding. */
-typedef struct Unk061798Object {
+struct Unk061798Object {
     u8 pad_0000[4];
     u32 unk_0004;
     u32 unk_0008;
@@ -49,7 +60,11 @@ typedef struct Unk061798Object {
     u8 pad_002c[4];
     u32 unk_0030;
     u8 unk_0034;
-    u8 pad_0035[0x13];
+    s8 unk_0035;
+    u8 pad_0036[2];
+    u32 unk_0038;
+    u8 pad_003c[8];
+    u32 unk_0044;
     u32 unk_0048;
     u16 unk_004c;
     u16 unk_004e;
@@ -59,7 +74,7 @@ typedef struct Unk061798Object {
     s32 unk_006c;
     u8 pad_0070[0x11];
     s8 unk_0081;
-} Unk061798Object;
+};
 
 /* Returns the +0x28 pointer of the font record selected by id. */
 Unk061798FontData *func_0206190c(u32 id);
@@ -99,6 +114,10 @@ s32 func_02061eb4(Unk061798Object *object, u32 mask);
 s32 func_02062a74(Unk061798Object *object);
 /* True when the signed byte at +0x68 of the object is positive. */
 s32 func_020642a8(Unk061798Object *object);
+/* True when the object's +0x38 word is neither 1 nor 3. */
+s32 func_0206431c(Unk061798Object *object);
+/* True when the object's +0x44 word is neither 1 nor 3. */
+s32 func_0206433c(Unk061798Object *object);
 /* Stores 2 at +0x8 and 5 at +0xc of the object. */
 void func_0206435c(Unk061798Object *object);
 /* Stores value at +0 of the shared bss object data_0216b9a8. */
@@ -115,17 +134,31 @@ void func_02061e98(Unk061798Object *object, u32 mask, s32 mode);
 /* Forwards a, b and the fourth argument to func_02060a48 (the third argument
  * is dropped) and returns the new record, or null. */
 void *func_020629ac(u32 a, u32 b, u32 ignored, u32 c);
+/* Returns count times the signed glyph advance of the object's font record. */
+s32 func_0206232c(Unk061798Object *object, s32 count);
+/* True when the object's +0x10 word is neither 0 nor 1. */
+s32 func_02062a3c(Unk061798Object *object);
 /* True when the object's +0x10 word is 2 or 3. */
 s32 func_02062a5c(Unk061798Object *object);
 /* Calls func_02065374 when the object's +0x6c word is 0 or 2. */
 void func_0206541c(Unk061798Object *object);
+/* Calls func_02065374 when the object's +0x6c word is 1 or 2. */
+void func_02065438(Unk061798Object *object);
 /* True when the shared result singleton exists. */
 s32 func_0206552c(void);
+/* True when the render object behind the shared singleton has a +0x10 word
+ * other than 0 or 1; returns 0 when the singleton is absent. */
+s32 func_0206557c(void);
 /* Returns the +0x5c word of the shared singleton, or 0 when it is absent. */
 s32 func_0206559c(void);
 /* Stores value at +0x20 of the shared result singleton. */
 void func_02065628(u32 value);
+/* Clears the singleton's +0x60/+0x64 words and calls func_0206563c(0). */
+void func_0206567c(void);
 /* Tail wrapper: calls func_020658b4 with the object and two 1 arguments. */
 void func_020658a0(void *object);
+/* Runs func_02065bc0, then sets +0x8, +0xc and +0x58 of the shared singleton
+ * to 1. */
+void func_02065c10(void);
 
 #endif
