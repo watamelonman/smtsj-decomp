@@ -190,112 +190,67 @@ void SaveLoadTask_Unk_0e137c(SaveLoadTaskWork *work)
 }
 
 
-int Unk02cad4_GetUnk00();
+int Unk02cad4_GetUnk00(void);
 void SaveLoadTask_Unk_0df814(void);
-int Unk124c5c_IsKind0();
-/* decompiler-derived */
+int Unk124c5c_IsKind0(void);
+/* Original kind switch suppresses the helper call for kinds 5..9 when
+ * Unk124c5c_IsKind0 is nonzero; all other kinds invoke it unconditionally. */
 void SaveLoadTask_Unk_0df94c(void)
 {
-  u32 tmp1;
-  int tmp2;
-  tmp1 = Unk02cad4_GetUnk00();
-  switch(tmp1) {
-  case 0:
-    break;
-  case 1:
-    break;
-  case 2:
-    break;
-  case 3:
-    break;
-  case 4:
-    break;
-  case 5:
-    goto LAB_020df988;
-  case 6:
-    goto LAB_020df988;
-  case 7:
-    goto LAB_020df988;
-  case 8:
-    goto LAB_020df988;
-  case 9:
-LAB_020df988:
-    tmp2 = Unk124c5c_IsKind0();
-    if (tmp2 != 0) {
-      return;
+    switch ((u32)Unk02cad4_GetUnk00()) {
+    case 0: case 1: case 2: case 3: case 4:
+        break;
+    case 5: case 6: case 7: case 8: case 9:
+        if (Unk124c5c_IsKind0()) {
+            return;
+        }
     }
-  }
-  SaveLoadTask_Unk_0df814();
-  return;
+    SaveLoadTask_Unk_0df814();
 }
 
-int func_0205257c();
-int Unk124c5c_Set_124d8c();
-/* decompiler-derived */
+void func_0205257c(int selector);
+void Unk124c5c_Set_124d8c(int kind, int value);
+/* Original kind switch sends (1, 0) to the kind provider for kinds 5..9;
+ * other kinds send selector 3 to func_0205257c. */
 void SaveLoadTask_Unk_0df86c(void)
 {
-  u32 tmp1;
-  tmp1 = Unk02cad4_GetUnk00();
-  switch(tmp1) {
-  case 0:
-    break;
-  case 1:
-    break;
-  case 2:
-    break;
-  case 3:
-    break;
-  case 4:
-    break;
-  case 5:
-    goto LAB_020df8a8;
-  case 6:
-    goto LAB_020df8a8;
-  case 7:
-    goto LAB_020df8a8;
-  case 8:
-    goto LAB_020df8a8;
-  case 9:
-LAB_020df8a8:
-    Unk124c5c_Set_124d8c(1,0);
-    return;
-  }
-  func_0205257c(3);
-  return;
+    switch ((u32)Unk02cad4_GetUnk00()) {
+    case 0: case 1: case 2: case 3: case 4:
+        break;
+    case 5: case 6: case 7: case 8: case 9:
+        Unk124c5c_Set_124d8c(1, 0);
+        return;
+    }
+    func_0205257c(3);
 }
 
-int func_0204faf0();
-int func_020dff20();
-/* decompiler-derived */
-u32 SaveLoadTask_Unk_0dff68(u32 arg0)
+void func_0204faf0(int group, int value);
+int func_020dff20(SaveLoadTaskWork *work);
+/* Original scan result selects transition 12 for slot 0, otherwise 13;
+ * slots 1/4 and 2/5 also update provider group 1. Work is borrowed. */
+u32 SaveLoadTask_Unk_0dff68(SaveLoadTaskWork *arg0)
 {
-  int tmp1;
-  u32 tmp2;
-  tmp1 = func_020dff20();
-  if (tmp1 < 0) {
-    return 0;
-  }
-  tmp2 = 0xd;
-  switch(tmp1) {
-  case 0:
-    tmp2 = 0xc;
-    break;
-  case 1:
-    goto LAB_020dffb0;
-  case 2:
-    goto LAB_020dffc0;
-  case 3:
-    break;
-  case 4:
-LAB_020dffb0:
-    func_0204faf0(1,1);
-    break;
-  case 5:
-LAB_020dffc0:
-    func_0204faf0(1,2);
-  }
-  func_020dfd9c((SaveLoadTaskWork *)arg0,tmp2,1,0,0);
-  return 1;
+    int slot = func_020dff20(arg0);
+    u32 selector;
+    if (slot < 0) {
+        return 0;
+    }
+    selector = 13;
+    switch (slot) {
+    case 0:
+        selector = 12;
+        break;
+    case 1: case 4:
+        func_0204faf0(1, 1);
+        break;
+    case 2: case 5:
+        func_0204faf0(1, 2);
+        break;
+    case 3:
+        break;
+    }
+    func_020dfd9c(arg0, selector, 1, 0, 0);
+    return 1;
 }
 void func_020e1490(u32 entry, int a, int b);
 void Unk02e000_Unk_02e144(void);
@@ -339,35 +294,103 @@ void SaveLoadTask_SelectEntry(u32 entry)
     }
 }
 
-int func_020525cc();
-/* decompiler-derived */
+void func_020525cc(int selector);
+/* Original kind switch sends (0, 31) to the kind provider for kinds 5..9;
+ * other kinds send selector 3 to func_020525cc. */
 void SaveLoadTask_Unk_0df814(void)
 {
-  u32 tmp1;
-  tmp1 = Unk02cad4_GetUnk00();
-  switch(tmp1) {
-  case 0:
-    break;
-  case 1:
-    break;
-  case 2:
-    break;
-  case 3:
-    break;
-  case 4:
-    break;
-  case 5:
-    goto LAB_020df850;
-  case 6:
-    goto LAB_020df850;
-  case 7:
-    goto LAB_020df850;
-  case 8:
-    goto LAB_020df850;
-  case 9:
-LAB_020df850:
-    Unk124c5c_Set_124d8c(0,0x1f);
-    return;
-  }
-  func_020525cc(3);
+    switch ((u32)Unk02cad4_GetUnk00()) {
+    case 0: case 1: case 2: case 3: case 4:
+        break;
+    case 5: case 6: case 7: case 8: case 9:
+        Unk124c5c_Set_124d8c(0, 31);
+        return;
+    }
+    func_020525cc(3);
+}
+
+
+int Unk124c5c_IsKind31(void);
+int func_02052728(void);
+/* Original kind switch tests the complementary provider predicate selected by
+ * flag for kinds 5..9, and func_02052728 for other kinds. Returns boolean 0/1. */
+int func_020df8c4(int flag)
+{
+    switch ((u32)Unk02cad4_GetUnk00()) {
+    case 0: case 1: case 2: case 3: case 4:
+        break;
+    case 5: case 6: case 7: case 8: case 9:
+        if (flag) {
+            if (!Unk124c5c_IsKind0()) {
+                return 1;
+            }
+        } else {
+            if (!Unk124c5c_IsKind31()) {
+                return 1;
+            }
+        }
+        goto inactive;
+    }
+    if (func_02052728()) {
+        return 1;
+    }
+inactive:
+    return 0;
+}
+
+/* Borrowed layout views preserve the indexed access widths from the original. */
+typedef struct SaveLoadScanView {
+    u8 prefix[0xdc];
+    s32 index;
+    u8 flags[6];
+} SaveLoadScanView;
+
+/* Borrowed transition words occupy offsets 0x18 through 0x2c. */
+typedef struct SaveLoadTransitionView {
+    u8 prefix[0x18];
+    s32 words[6];
+} SaveLoadTransitionView;
+
+/* Original signed scan advances work +0xdc, searches six byte flags at +0xe0,
+ * and retains the next flagged index, or -1 on exhaustion. Work is borrowed;
+ * its current index must be at least -1 to keep accesses within the flag array. */
+int func_020dff20(SaveLoadTaskWork *work)
+{
+    int i;
+    FIELD(s32, work, 0xdc)++;
+    for (i = FIELD(s32, work, 0xdc); i < 6; i++) {
+        if (((SaveLoadScanView *)((u32)work + i))->flags[0]) {
+            FIELD(s32, work, 0xdc) = i;
+            return i;
+        }
+    }
+    FIELD(s32, work, 0xdc) = -1;
+    return -1;
+}
+
+int func_02109f94(u32 *cursor, u32 *count, u32 window, u32 value);
+void func_020616ec(SaveLoadTaskWork *work, int value);
+/* Original selectors 2/6 prepare the cursor/count pair using words +0xf0/+0xf4
+ * before dispatching with three zero flags. Work must expose at least 0xf8 bytes. */
+void func_020dfe80(SaveLoadTaskWork *work, u32 selector)
+{
+    if (selector == 2 || selector == 6) {
+        func_020616ec(work, func_02109f94(&FIELD(u32, work, 0x4c),
+            &FIELD(u32, work, 0x48), FIELD(u32, work, 0xf0), FIELD(u32, work, 0xf4)));
+    }
+    func_020dfd9c(work, selector, 0, 0, 0);
+}
+
+/* Original loop fills six words at +0x18 with 1..6 and clears +0x34.
+ * The caller retains ownership of the writable work block. */
+void func_020e0034(SaveLoadTaskWork *work)
+{
+    int i = 0;
+    int value;
+    for (value = 1; value <= 5; value++) {
+        ((SaveLoadTransitionView *)work)->words[i] = value;
+        i++;
+    }
+    ((SaveLoadTransitionView *)work)->words[i] = 6;
+    work->unk_0034 = 0;
 }
