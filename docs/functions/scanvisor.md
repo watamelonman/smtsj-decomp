@@ -114,20 +114,45 @@ new tests were required by this card; objdiff checks the instruction behavior.
 
 No hard functions for M1-T985.
 
-### Not cleaned up in M1-T985
-- `ScanVisor_Unk_0a2b18`: decompiler-derived
-- `ScanVisor_Unk_0a2b38`: decompiler-derived
-- `ScanVisor_Unk_0a29a0`: decompiler-derived
-- `ScanVisor_Unk_0a29c4`: decompiler-derived
-- `ScanVisor_Unk_0a2a8c`: decompiler-derived
-- `ScanVisor_Unk_0a2a38`: decompiler-derived
+## M1-T986: work-object forwarding and threshold helper
 
-## Not done in M1-T986
-- `ScanVisor_Unk_0a3254`
-- `ScanVisor_Unk_0a2b58`
-- `ScanVisor_Unk_0a28f4`: decompiler-derived
-- `ScanVisor_Unk_0a2a60`: decompiler-derived
-- `ScanVisor_Unk_0a42c4`: decompiler-derived
+The eight implementations already existed when this card began. Names retain
+configured symbols; evidence comes from the delinked `src/ScanVisor.o`.
+Work-object wrappers borrow the getter result and never free its storage.
+
+- `ScanVisor_Unk_0a2b18` (0x020a2b18, 32 bytes): null-check the work
+  pointer, then call `Unk0a7d54_Unk_0a8b44` with work+0x428. The original
+  forms the address with adds of 0x28 and 0x400.
+- `ScanVisor_Unk_0a2b38` (0x020a2b38, 32 bytes): the same null-guarded
+  address calculation, forwarding to `Unk0a7d54_Unk_0a8b70` instead.
+- `ScanVisor_Unk_0a3254` (0x020a3254, 32 bytes): requires a valid visor;
+  load signed word +0x210, compare against 50, and return on signed greater
+  or equal. Otherwise call `Unk0c855c_Unk_0c9890` on visor+0x78 with 12.
+  Threshold and argument units remain unknown.
+- `ScanVisor_Unk_0a29a0` (0x020a29a0, 36 bytes): preserve the caller's
+  unsigned value across the getter in r4, then forward work+0x78 and that
+  value to `func_020c9bd8`; null work returns without calling.
+- `ScanVisor_Unk_0a29c4` (0x020a29c4, 36 bytes): the same argument and
+  null handling, forwarding to `Unk0c855c_Unk_0c9c5c`.
+- `ScanVisor_Unk_0a2a8c` (0x020a2a8c, 36 bytes): forward the caller id
+  and work+0x24c to `ScanVisor_Unk_0a4a18`, which finds the slot and clears
+  +0x10/+0x14; null work returns without calling.
+- `ScanVisor_Unk_0a2b58` (0x020a2b58, 36 bytes): return 1 for null work
+  (`moveq r0,#1`); otherwise return the integer query result from
+  `Unk0a7d54_Unk_0a8c04` on work+0x428. The caller at 0x020a2b7c compares
+  the result with zero before performing further updates.
+- `ScanVisor_Unk_0a2a38` (0x020a2a38, 40 bytes): forward work+0x24c,
+  the caller id, and fixed 1 to `ScanVisor_SetById`, activating the selected
+  slot; null work returns without calling.
+
+Validation: all eight functions report 100% in `build/report.json`; the match,
+anticheat, unittest and original-image checksum gates pass. This card requires
+no new tests; objdiff verifies the compiled instruction behavior.
+
+No hard functions for M1-T986.
+
+Carried forward for later cards: `ScanVisor_Unk_0a28f4`,
+`ScanVisor_Unk_0a2a60`, and `ScanVisor_Unk_0a42c4` remain decompiler-derived.
 
 ## Not done in M1-T987
 - `ScanVisor_SetField34`
