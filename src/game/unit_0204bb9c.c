@@ -8,7 +8,14 @@ typedef struct Unk04bb9cCtx {
     u16 unk_000c;
     u16 unk_000e;
     u16 unk_0010;
-    u8 pad_0012[0xa02];
+    u8 pad_0012[0x8a2];
+    s16 unk_08b4[32];
+    u16 unk_08f4[32];
+    u16 unk_0934[32];
+    s16 unk_0974[32];
+    u8 unk_09b4[32];
+    u8 unk_09d4[32];
+    u8 unk_09f4[32];
     u32 unk_0a14;
     u32 unk_0a18;
     u8 pad_0a1c[0x4];
@@ -161,5 +168,95 @@ void func_0204cbac(u16 value)
 {
     if (data_0215eea4 != 0) {
         data_0215eea4->unk_0a20 = value;
+    }
+}
+
+void func_0204b6f4(void);
+
+/* Free-slot insertion: find the first slot whose signed halfword at +0x8b4 is
+   negative, clear it, and record `a` at +0x8f4, `b` at +0x934 and -1 at +0x974.
+   The ldrsh/strh and -1 sentinel stores in 0x0204c4cc are the evidence.
+   Returns the slot index, or -1 when the singleton is absent or all 32 slots are used. */
+int func_0204c4cc(int a, int b)
+{
+    s8 i;
+
+    if (data_0215eea4 == 0) {
+        return -1;
+    }
+    for (i = 0; i < 32; i++) {
+        if (data_0215eea4->unk_08b4[i] < 0) {
+            data_0215eea4->unk_08b4[i] = 0;
+            data_0215eea4->unk_08f4[i] = a;
+            data_0215eea4->unk_0934[i] = b;
+            data_0215eea4->unk_0974[i] = -1;
+            return i;
+        }
+    }
+    return -1;
+}
+
+/* Same free-slot search as func_0204c4cc, but the third value stored at +0x974 is
+   the caller's `c` instead of the -1 sentinel (0x0204c564 stores r2 there).
+   Returns the slot index, or -1 when the singleton is absent or all slots are used. */
+int func_0204c564(int a, int b, int c)
+{
+    s8 i;
+
+    if (data_0215eea4 == 0) {
+        return -1;
+    }
+    for (i = 0; i < 32; i++) {
+        if (data_0215eea4->unk_08b4[i] < 0) {
+            data_0215eea4->unk_08b4[i] = 0;
+            data_0215eea4->unk_08f4[i] = a;
+            data_0215eea4->unk_0934[i] = b;
+            data_0215eea4->unk_0974[i] = c;
+            return i;
+        }
+    }
+    return -1;
+}
+
+/* Release the first occupied entry at +0x9b4 whose keys at +0x9d4/+0x9f4 match
+   (`a`, `b`), clearing all three parallel byte arrays and committing the change
+   through func_0204b6f4; the byte compares and zero stores at 0x0204c780 are the evidence. */
+void func_0204c780(int a, int b)
+{
+    s32 i;
+
+    if (data_0215eea4 == 0) {
+        return;
+    }
+    for (i = 0; i < 32; i++) {
+        if (data_0215eea4->unk_09b4[i] != 0 &&
+            a == data_0215eea4->unk_09d4[i] &&
+            b == data_0215eea4->unk_09f4[i]) {
+            data_0215eea4->unk_09b4[i] = 0;
+            data_0215eea4->unk_09d4[i] = 0;
+            data_0215eea4->unk_09f4[i] = 0;
+            func_0204b6f4();
+            return;
+        }
+    }
+}
+
+/* Release the packed record whose kind is non-zero and whose three byte keys match
+   (`a`, `b`, and `c`, where 980 maps to zero), clearing its kind and all three keys
+   and committing via func_0204b6f4; the `and 63` clear at 0x0204c970 is the evidence. */
+void func_0204c8f4(int a, int b, int c)
+{
+    s8 i;
+
+    for (i = 0; i < 96; i++) {
+        Unk04bb9cEnt *e = Unk02e000_Unk_02e89c(i);
+        if (e->kind != 0 && e->a == a && e->b == b && e->c == (c == 980 ? 0 : c)) {
+            e->kind = 0;
+            e->a = 0;
+            e->b = 0;
+            e->c = 0;
+            func_0204b6f4();
+            return;
+        }
     }
 }

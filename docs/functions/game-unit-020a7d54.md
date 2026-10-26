@@ -30,47 +30,130 @@ No M1-T790 functions remain on the hard list. The pre-existing candidates
 already had the expected instruction shapes; the two wrappers needed explicit
 argument forwarding to express the original register flow correctly in C.
 
+## M1-T791 — verified at 100% objdiff
+
+These routines share the borrowed `Unk0a7d54Entry` view (40-byte stride) and the
+`Unk0a7d54Work` view whose 32-entry table starts at +0x48. Offsets are taken from
+the loads/stores in the original instructions; unknown fields keep neutral names.
+
+- `Unk0a7d54_Unk_0a7d54` (020a7d54, 44 B): scans the 32 entry slots for the
+  first one whose word +0 is zero and returns it; returns null when all are
+  occupied. The `add #0x48`, `add #0x28` per iteration and `cmp #0x20` establish
+  the stride and bound.
+- `Unk0a7d54_Unk_0a7e64` (020a7e64, 40 B): clears the entry's lifecycle words in
+  the original store order: +4, +0, byte +12, +20, +24, +28, +32, then +8.
+  Word +16 is not cleared.
+- `Unk0a7d54_Unk_0a7e8c` (020a7e8c, 44 B): if word +8 is nonzero, passes it to
+  02061424, clears +8, then resets the entry through `Unk0a7d54_Unk_0a7e64`.
+  The `ldr [r4, #8]` / `bl` / zero stores establish the sequence.
+- `Unk0a7d54_IsField8Is3` (020a8628, 32 B): null-safe predicate; returns true
+  only when entry word +8 equals 3. The `ldr [r0, #8]`, `cmp #3` and `movcc`
+  sequence supports the name.
+- `Unk0a7d54_Unk_0a84a4` (020a84a4, 40 B): walks all 32 entries from work+0x48
+  and releases each with `Unk0a7d54_Unk_0a7e8c`.
+- `Unk0a7d54_Unk_0a8534` (020a8534, 40 B): identical 32-slot release walk as
+  020a84a4; the two functions are emitted separately, so both are kept.
+- `Unk0a7d54_Unk_0a8b44` (020a8b44, 44 B): ignores null entries; when
+  `Unk0a7d54_IsField8Is3` is true, sets word +8 to 4 and clears word +16.
+  The `bl 020a8628` and `str #4` sequence establishes the transition.
+- `Unk0a7d54_Unk_0a9390` (020a9390, 40 B): while work header word +0x1c is
+  positive, releases one unit through 0205bb68 and decrements it. Non-positive
+  counters return immediately, as shown by the `cmp #0` / `pople`.
+
+## M1-T792 — verified at 100% objdiff
+
+The work header view was extended with the words these routines touch: state
++8, the +0x1c counter, predicate +0x20 and the +0x44 word. The +0x24..+0x43
+slot array is represented by `Unk0a7d54Slots`, so `Unk0a7d54Work` deliberately
+pads over it. The entry stride remains 0x28 and the table starts at work+0x48.
+
+- `Unk0a7d54_Unk_0a8c40` (020a8c40, 44 B): calls 020a0ce4's 020a0dd8 with id
+  0x1d and, when it returns nonzero, calls 020a0da4 with 0x52 before
+  forwarding the work object to `Unk0a7d54_Unk_0a8b70`. The `mov r0,#29`,
+  `mov r0,#82` and the final `bl` in the original establish both constants
+  and the forwarding.
+- `Unk0a7d54_Unk_0a8ad0` (020a8ad0, 48 B): requires a non-null work pointer
+  and nonzero state word +8, then calls 02057e18(31) and 02057ddc(-1) and
+  hands the work object to `Unk0a7d54_Unk_0a8500`. The `ldrne [r4,#8]` /
+  `cmpne #0` / `popeq` guard and the two BLs support it.
+- `Unk0a7d54_AddSlot` (020a91d4, 48 B): sets the activity flag at +0x20 and
+  stores the argument in the first zero word of the eight-word array at
+  +0x24. The `str #1` to +0x20, the `[r0 + ip*4 + 0x24]` STREQ and the
+  `cmp ip,#8` bound are the evidence; a full array leaves the flag set.
+- `Unk0a7d54_Unk_0a93b8` (020a93b8, 48 B): caches work header word +0x1c as a
+  signed count, returns when it is non-positive, and runs `Unk0a7d54_Unk_0a9390`
+  once per count unit. The `ldr r4,[r6,#28]` / `pople` / `cmp r5,r4` sequence
+  shows the cached count and loop bound. Its only caller, 020a8bac, passes the
+  same work pointer it hands to 020a8534, so the +0x1c word belongs to the work
+  header, not to an entry.
+- `Unk0a7d54_Unk_0a84cc` (020a84cc, 52 B): walks all 32 entry slots from
+  work+0x48 and forwards each occupied entry (word +0 nonzero) to 020a7ee8.
+  The LDR/CMP at the loop head, the 0x28 pointer step and `cmp #0x20` bound
+  establish the visit condition and stride.
+- `Unk0a7d54_Unk_0a8500` (020a8500, 52 B): the same 32-slot occupied-entry walk
+  as 020a84cc, but forwards to 020a82f0. The original emits two separate loops,
+  so both functions are kept.
+- `Unk0a7d54_FindByKey` (020a855c, 56 B): scans the 32 slots for the first
+  occupied entry whose byte +12 equals the key and returns the entry pointer;
+  returns null when none matches. The `ldrb [r0,#12]` / `cmp r2,r1` and the
+  `mov r0,#0` after the bounded loop are the evidence; the return type is now
+  `Unk0a7d54Entry *` to match that use.
+- `Unk0a7d54_Unk_0a8b70` (020a8b70, 60 B): requires state word +8 nonzero,
+  clears word +0x44, then either sets +8 to 11 when the +0x20 predicate is
+  true or continues through 020a8bac. The `str` to +0x44, the call to
+  `Unk0a7d54_Unk_0a9204` and the `movne #11` / `strne` support it.
+
+## M1-T793 — verified at 100% objdiff
+
+The work view now names the header words and the eight slot words used by the
+state machine; the entry stride remains 0x28 and the table starts at work+0x48.
+
+- `func_020a7d80` (020a7d80, 228 B): finds a free entry, indexes the 32-byte
+  descriptor table `data_0214cea4` by the caller's selector, and only builds a
+  game object when descriptor word +0 is non-negative. The object is created
+  from work +0x14/+0x18, configured through the 02065e88/0205c408 helpers, then
+  the descriptor's position and presentation words are copied into the entry.
+  Evidence: `ldr r0,[r1,r7,lsl #5]`, `cmp #0` / `blt`, and the ordered stores
+  starting at 020a7e14.
+- `func_020a82f0` (020a82f0, 436 B): dispatches one live entry by its byte +12
+  state. Cases 6..10 resolve a handle id through `Unk0a7d54_Unk_0a916c` and
+  submit a clipped band through 020a98fc/020a996c, gated by signed byte +13.
+  Cases 3, 15, 16, 17 and 24/25 forward the work link and position/phase words
+  to the 020a95.. helpers; cases 24/25 use the phase modulo 15. Evidence: the
+  `addls pc` table at 020a8318, its targets, and the `smull` remainder sequence
+  at 020a8474.
+- `func_020a85ac` (020a85ac, 92 B): resets a work area. It writes state word
+  +0 to one, clears +4/+8/+12/+0x14/+0x18, calls the release-all walk
+  `Unk0a7d54_Unk_0a84a4`, clears +0x1c/+0x20, zeroes the eight slot words and
+  finally +0x44. Word +0x10 is deliberately left untouched. Evidence: the
+  store order and the BL at 020a85d8.
+- `func_020a9218` (020a9218, 376 B): state machine on work +0x20. State 0
+  succeeds, state 1 initializes every occupied slot object's +0x14 link and
+  retries failed objects, state 2 creates each missing named entry and runs the
+  post-create hook, and state 3 checks the first occupied slot before releasing
+  all occupied slots and returning one. Evidence: the `addls pc` table at
+  020a9228, the `cmp #8` loops, and the four return paths.
+- `Unk0a7d54_Unk_0a8b00` (020a8b00, 68 B): starts a work area in state 1, or
+  raises the +0x44 flag when it is already in state 11. Null and non-initial
+  states are ignored; +4 and +0x10 are cleared, word +0 receives the caller
+  value, and byte +12 becomes selector+1. Evidence: the compare/branch chain and
+  the `stm`/`str` sequence at 020a8b00.
+- `Unk0a7d54_Unk_0a8bac` (020a8bac, 88 B): tears a work area down by draining
+  the +0x1c count, releasing all entries, clearing +8/+4, and releasing the
+  +0x14/+0x18 resources when present. Evidence: the calls to 020a93b8/020a8534,
+  the conditional 0205ddb4/0205c368 calls and the zero stores.
+- `Unk0a7d54_Unk_0a8c04` (020a8c04, 60 B): returns false when the work's +0x20
+  predicate is set or its +8 state is 9, 10 or 11, otherwise true. Evidence: the
+  call to `Unk0a7d54_Unk_0a9204` and the `cmp #9`/`cmpne #10`/`cmpne #11` chain.
+- `Unk0a7d54_Unk_0a916c` (020a916c, 104 B): maps selector 6..10 to handle ids
+  0x1a, 0x1b, 0x1c, 0x1e and 0x1f; selectors 0..5 and values above 10 return
+  zero. Evidence: the `addls pc` table and the five `mov` immediates.
+
 ## Hard list
-- `Unk0a7d54_Unk_0a7e64`: decompiler-derived
-- `Unk0a7d54_Unk_0a7d54`: decompiler-derived
-- `Unk0a7d54_Unk_0a8b44`: decompiler-derived
+None for M1-T793. All functions above are at 100% objdiff with the same
+instruction bytes as the delinked original.
 
-## Not done in M1-T791
-- `Unk0a7d54_IsField8Is3`
-- `Unk0a7d54_Unk_0a84a4`
-- `Unk0a7d54_Unk_0a8534`
-- `Unk0a7d54_Unk_0a9390`
-- `Unk0a7d54_Unk_0a7e8c`
-- `Unk0a7d54_Unk_0a8c40`: decompiler-derived
-- `Unk0a7d54_Unk_0a84cc`: decompiler-derived
-- `Unk0a7d54_Unk_0a8500`: decompiler-derived
-
-## Not done in M1-T792
-- `Unk0a7d54_Unk_0a8ad0`
-- `Unk0a7d54_AddSlot`
-- `Unk0a7d54_Unk_0a93b8`
-- `Unk0a7d54_FindByKey`
-- `Unk0a7d54_Unk_0a8b70`
-- `Unk0a7d54_Unk_0a8bac`: decompiler-derived
-- `Unk0a7d54_Unk_0a916c`: decompiler-derived
-
-## Not done in M1-T793
-- `Unk0a7d54_Unk_0a8c04`
-- `Unk0a7d54_Unk_0a8b00`
-- `func_020a85ac`
-- `func_020a7d80`
-- `func_020a9218`
-- `func_020a82f0`
-- `Unk0a7d54_Unk_0a7e8c`: decompiler-derived (plain+fix cleanup)
-- `Unk0a7d54_Unk_0a84a4`: hand-matched
-- `Unk0a7d54_Unk_0a8534`: hand-matched
-- `Unk0a7d54_FindByKey`: hand-matched
-- `Unk0a7d54_HasField8`: hand-matched
-- `Unk0a7d54_IsField8Is3`: hand-matched
-- `Unk0a7d54_Unk_0a8ad0`: hand-matched
-- `Unk0a7d54_Unk_0a8b00`: hand-matched
-- `Unk0a7d54_Unk_0a8b70`: hand-matched
-- `Unk0a7d54_Unk_0a8c04`: hand-matched
-- `Unk0a7d54_AddSlot`: hand-matched
-- `Unk0a7d54_Unk_0a9390`: hand-matched
-- `Unk0a7d54_Unk_0a93b8`: hand-matched
+## Later tasks
+M1-T794 owns the remaining four functions in this unit: `func_020a7ee8`,
+`func_020a8658`, `func_020a8c6c` and `func_020a8e5c`. They stay linked from the
+delink until that card matches them.
