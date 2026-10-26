@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T803: verify eight unit_02116598 work setters, call sequences, mappings and guards at 100% objdiff; add typed work accesses and per-function instruction contracts.
+- M1-T836: match six additional game/unit_0211fc20 initialization, allocation and coordinate-forwarding functions; document two remaining hard functions for scratch follow-up.
 
 - Match eight more functions in game/unit_021071e4: record updates, descriptor setup, color selection, and handle cleanup.
 - M1-T802: match and document eight unit_02116598 mapping, work-field setter and call-sequence routines at 100% objdiff, with typed arguments and instruction evidence.
