@@ -1,11 +1,40 @@
 # ScanVisor
 
-- `ScanVisor_Nop_0a34a4`, `ScanVisor_Nop_0a34a8`: empty callbacks.
-- `ScanVisor_GetConst20`: returns 20. `ScanVisor_GetConst6`: returns 6.
-- `ScanVisor_Unk_0a45f8`: get u32 at 0x14.
-- `ScanVisor_Thunk_020fc6b8`: forwards to `Unk0fc584_SetDir`.
-- `ScanVisor_GetSlot`: read `slots[index]` (table at 0x1C0).
-- `ScanVisor_SetRange`: set the pair at 0x1C/0x20.
+## M1-T983: small ARM helpers
+
+Names retain the configured symbols. Evidence below comes from the delinked
+`src/ScanVisor.o`; field descriptions do not imply established gameplay meaning.
+The source and the eight implementations already existed when this card began.
+
+- `ScanVisor_Nop_0a34a4` (0x020a34a4, 4 bytes): only `bx lr`.
+  `ScanVisor_Draw` passes its visor pointer; this callback intentionally does nothing.
+- `ScanVisor_Nop_0a34a8` (0x020a34a8, 4 bytes): only `bx lr`.
+  The second empty callback also receives the pointer from `ScanVisor_Draw`.
+- `ScanVisor_GetConst20` (0x020a2bb0, 8 bytes): `mov r0, #20; bx lr`.
+  No parameters; the query returns 20 without accessing state.
+- `ScanVisor_Unk_0a45f8` (0x020a45f8, 8 bytes): `ldr r0, [r0, #0x14]; bx lr`.
+  Requires a valid object and returns its unsigned word at +0x14; semantic name unknown.
+- `ScanVisor_GetConst6` (0x020a4e40, 8 bytes): `mov r0, #6; bx lr`.
+  No parameters; the query returns 6 without accessing state.
+- `ScanVisor_Thunk_020fc6b8` (0x020a28e8, 12 bytes): loads `ip` from a
+  literal with an ABS32 relocation to `Unk0fc584_SetDir`, then `bx ip`.
+  The C no-argument forwarding call preserves this tail-call implementation.
+- `ScanVisor_GetSlot` (0x020a42b8, 12 bytes): adds `index << 2` to the
+  object pointer and loads the word at +0x1c0. Caller supplies a valid table
+  index and object; no check exists in the original. The declaration's 16-word
+  extent is inherited and is not established by this accessor alone.
+- `ScanVisor_SetRange` (0x020a43dc, 12 bytes): stores r1 at +0x1c and r2
+  at +0x20, then returns. Requires a valid writable record. The existing range
+  symbol is retained; units and ordering constraints are unknown.
+
+Validation: all eight functions report 100% in `build/report.json`; the match
+gate, anticheat gate, nine unittest tests, and original-image checksum gate pass.
+No new tests were required by this card; objdiff checks the instruction behavior.
+
+No hard functions for M1-T983.
+
+## Existing work on other cards
+
 - `ScanVisor_SetUnkFields24_28`: decompiler-derived
 - `ScanVisor_Unk_0a4904`: decompiler-derived
 - `ScanVisor_ClearUnkField198`: decompiler-derived
