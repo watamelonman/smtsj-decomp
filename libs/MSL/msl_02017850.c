@@ -14,20 +14,11 @@ extern double func_020188ac(double value);
  * free wrapper below reaches the allocator. */
 extern s32 func_02007170(s32 arena, s32 heap, void *block);
 
-/** MSL decimal mantissa helper. It receives the decimal state and a digit
- * count, leaves the count untouched, and returns a negative value when the
- * digit list cannot be used at that length (see its use in func_0201bb34). */
-extern int func_0201ba78(MslDecimal *value, int digits);
-
 /** MSL decimal mantissa increment helper. It adds one to the n-digit decimal
  * mantissa, carrying toward the most significant digit and bumping the
  * exponent on overflow. This routine is still delinked assembly (see the
  * function document), but func_0201bb34 calls it with the decimal state. */
 extern void func_0201bae4(MslDecimal *value, int digits);
-
-/** MSL exponent helper: returns the mantissa of `value` and stores the binary
- * exponent through `exponent` (frexp-style split). */
-extern double func_0201b5cc(double value, int *exponent);
 
 /** MSL exponent helper: rebuilds a double from a mantissa and binary exponent
  * (ldexp-style combine); it is the inverse of func_0201b5cc. */
@@ -63,6 +54,32 @@ double func_0201ba60(double value)
 double func_0201ba6c(double value)
 {
     return func_020188ac(value);
+}
+
+/** Decide whether the decimal mantissa must round up at digit `digits`.
+ * Evidence: the body compares the digit at that index with 5, scans the
+ * following digits for a nonzero value when it is exactly 5, and otherwise
+ * tests the previous digit's low bit, which is round-half-to-even. Returns 1
+ * to increment the mantissa and -1 to round down; func_0201bb34 tests the
+ * sign of this result. */
+int func_0201ba78(MslDecimal *value, int digits)
+{
+    u8 *p = value->digits + digits;
+
+    if (*p > 5)
+        return 1;
+    if (*p < 5)
+        return -1;
+    {
+        u8 *end = value->digits + value->length;
+        for (p++; p < end; p++) {
+            if (*p != 0)
+                return 1;
+        }
+    }
+    if (value->digits[digits - 1] & 1)
+        return 1;
+    return -1;
 }
 
 /** Do nothing.
@@ -116,6 +133,46 @@ void func_0201bb34(MslDecimal *value, int digits)
     func_0201bae4(value, digits);
 }
 
+/** Parse the integer digit run at `text` into `value`, then decide the rounding
+ * flag from the first discarded character. Evidence: the body copies at most
+ * 32 characters minus '0' into digits[+5], stores the count at +4 and the
+ * binary exponent at +2, then compares the next character with 5 and scans
+ * following zeros before calling func_0201bae4. This is MSL's `__str2dec`
+ * (the same routine is reconstructed under that name in the public MSL
+ * sources), with the sign byte cleared first. */
+void func_0201bdc4(MslDecimal *value, const s8 *text, s16 exponent)
+{
+    int i = 0;
+    int c;
+
+    value->exponent = exponent;
+    value->sign = 0;
+    while (i < 32 && *text != 0) {
+        value->digits[i++] = *text++ - '0';
+    }
+    value->length = i;
+    c = *text;
+    if (c == 0)
+        return;
+    if (c < 5)
+        return;
+    if (c > 5)
+        goto round;
+    c = text[1];
+    text++;
+    if (c != 0) {
+        do {
+            if (c != '0')
+                goto round;
+            c = *++text;
+        } while (c != 0);
+    }
+    if ((value->digits[i - 1] & 1) == 0)
+        return;
+round:
+    func_0201bae4(value, value->length);
+}
+
 /** Add an integer to a double's binary exponent.
  * Evidence: the body splits the double with func_0201b5cc, adds the third
  * argument to the stored exponent, then rebuilds the double with
@@ -130,6 +187,23 @@ double func_0201cfac(double value, int exponent_adjust)
     return func_0201b688(value, exponent);
 }
 
+/** Population count of a 64-bit word. Evidence: the body is the standard
+ * 64-bit SWAR sequence with the masks 0x55555555, 0x33333333 and 0x0f0f0f0f,
+ * then adds the two halves and returns the low byte. The dtoa caller subtracts
+ * the count from 53 to size the significant-digit run of a normalised
+ * mantissa. The value is passed as one u64 so the ABI keeps it in r0/r1. */
+int func_0201ce94(u64 value)
+{
+    value = value - ((value >> 1) & 0x5555555555555555ULL);
+    value = (value & 0x3333333333333333ULL) +
+            ((value >> 2) & 0x3333333333333333ULL);
+    value = (value + (value >> 4)) & 0x0f0f0f0f0f0f0f0fULL;
+    value = value + (value >> 8);
+    value = value + (value >> 16);
+    value = value + (value >> 32);
+    return value & 0xff;
+}
+
 /** Return the sign bit of `value` as an s32.
  * Evidence: the high word of the double argument is masked with 0x80000000.
  * The argument is spilled to the stack because the code inspects its
@@ -137,6 +211,30 @@ double func_0201cfac(double value, int exponent_adjust)
 s32 func_0201cf28(double value)
 {
     return ((MslDoubleBits *)&value)->words[1] & 0x80000000;
+}
+
+/** Classify a double by its IEEE-754 bit pattern. Evidence: the body masks the
+ * high word with 0x7ff00000 and returns 3 for zero, 5 for a denormal, 2 for an
+ * infinity, 1 for a NaN and 4 for a normal value; the mantissa/low-word tests
+ * distinguish zero from denormal and infinity from NaN. Callers compare the
+ * result with 1 and 2, matching the NaN/infinity checks in func_0201c648. */
+int func_0201cf3c(double value)
+{
+    u32 exponent = ((u32 *)&value)[1] & 0x7ff00000;
+
+    if (exponent == 0)
+        goto zero;
+    if (exponent != 0x7ff00000)
+        goto normal;
+    if ((((u32 *)&value)[1] & 0xfffff) != 0 || ((u32 *)&value)[0] != 0)
+        return 1;
+    return 2;
+zero:
+    if ((((u32 *)&value)[1] & 0xfffff) != 0 || ((u32 *)&value)[0] != 0)
+        return 5;
+    return 3;
+normal:
+    return 4;
 }
 
 /** Release `block` through MSL's arena allocator.
@@ -153,4 +251,113 @@ s32 func_0201cfd8(void *block)
 s32 func_0201e048(void)
 {
     return 0x7fffffff;
+}
+
+/** Convert a double to internal numeric decimal digits for formatting. */
+extern void func_0201c648(MslDecimal *value, double number);
+
+/** Split a finite double into a signed fraction and binary exponent.
+ * Evidence: IEEE exponent mask and 2^54 scaling match MSL frexp semantics;
+ * zero and nonfinite inputs are returned unchanged with exponent zero.
+ * The named archived MSL frexp body is cited in the function document. */
+double func_0201b5cc(double value, int *exponent)
+{
+    int high = ((int *)&value)[1];
+    int low = ((int *)&value)[0];
+    int magnitude = high & 0x7fffffff;
+    *exponent = 0;
+    if (magnitude >= 0x7ff00000 || (magnitude | low) == 0)
+        return value;
+    if (magnitude < 0x100000) {
+        value *= 18014398509481984.0;
+        *exponent = -54;
+        high = ((int *)&value)[1];
+        magnitude = high & 0x7fffffff;
+    }
+    *exponent += (magnitude >> 20) - 1022;
+    ((int *)&value)[1] = (high & 0x800fffff) | 0x3fe00000;
+    return value;
+}
+
+/** Compare unsigned decimal magnitudes for equality, ignoring trailing zeros.
+ * Evidence: exponent comparison followed by paired digits and a zero-tail scan;
+ * a leading zero represents zero regardless of the exponent. This matches
+ * archived MSL __equals_dec (source link in the function document). */
+int func_0201c1e4(const MslDecimal *left, const MslDecimal *right)
+{
+    int i, length;
+    if (left->digits[0] == 0)
+        return right->digits[0] == 0;
+    if (right->digits[0] == 0)
+        return left->digits[0] == 0;
+    if (left->exponent == right->exponent) {
+        length = left->length;
+        if (length > right->length)
+            length = right->length;
+        for (i = 0; i < length; i++) {
+            if (left->digits[i] != right->digits[i])
+                return 0;
+        }
+        if (length == left->length)
+            left = right;
+        for (; i < left->length; i++) {
+            if (left->digits[i] != 0)
+                return 0;
+        }
+        return 1;
+    }
+    return 0;
+}
+
+/** Order unsigned decimal magnitudes, ignoring trailing zeros.
+ * Evidence: zero checks, signed exponent ordering and lexicographic digits;
+ * signs are deliberately not consulted by this internal magnitude helper.
+ * See archived MSL __less_dec, cited in the function document. */
+int func_0201c2c4(const MslDecimal *left, const MslDecimal *right)
+{
+    int i, length;
+    if (left->digits[0] == 0)
+        return right->digits[0] != 0;
+    if (right->digits[0] == 0)
+        return 0;
+    if (left->exponent == right->exponent) {
+        length = left->length;
+        if (length > right->length)
+            length = right->length;
+        for (i = 0; i < length; i++) {
+            if (left->digits[i] < right->digits[i])
+                return 1;
+            if (right->digits[i] < left->digits[i])
+                return 0;
+        }
+        if (length == left->length) {
+            for (; i < right->length; i++) {
+                if (right->digits[i] != 0)
+                    return 1;
+            }
+        }
+        return 0;
+    }
+    return left->exponent < right->exponent;
+}
+
+/** Produce ASCII digits at the requested precision (capped at 32).
+ * Evidence: converter call, decimal rounding helper, zero padding, exponent
+ * adjustment, and addition of '0'; special markers above nine pass through.
+ * See archived MSL __num2dec, cited in the function document. */
+void func_0201c7c8(const MslDecimalFormat *format, double number, MslDecimal *value)
+{
+    int precision = format->digits;
+    int i;
+    func_0201c648(value, number);
+    if (value->digits[0] > 9)
+        return;
+    if (precision > 32)
+        precision = 32;
+    func_0201bb34(value, precision);
+    while (value->length < precision)
+        value->digits[value->length++] = 0;
+    value->exponent -= value->length - 1;
+    for (i = 0; i < value->length; i++)
+        value->digits[i] += '0';
 }

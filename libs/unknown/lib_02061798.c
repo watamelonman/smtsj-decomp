@@ -1,7 +1,16 @@
 #include "libs/unknown/lib_02061798.h"
 
-/* Returns the font record whose id at +0x20 matches, or null. */
-extern Unk061798Font *func_020618cc(u32 id);
+/* Provider contracts follow the argument registers in the calls below. */
+extern s32 func_020bab80(void);
+extern void func_0205a21c(Unk061798Object *object, u32 value);
+extern void func_02059ec8(Unk061798Object *object, u32 value);
+extern void func_02062140(Unk061798Object *object);
+extern void func_02007e94(void);
+extern void Unk0d297c_Unk_0d32ac(void **slot);
+extern s32 func_0204f9d8(void);
+extern void func_02062434(Unk061798Object *object);
+extern void func_020623b8(Unk061798Object *object);
+
 /* Appends a character code; returns the result object that func_02063a44
  * forwards (distinct from func_02063a50's singleton). */
 extern Unk061798ResultA *func_02063954(const void *text, u32 code);
@@ -15,7 +24,9 @@ extern void *func_02060a48(u32 a, u32 b, u32 mode);
  * passes both render objects of the shared singleton). */
 extern void func_02062a00(Unk061798Object *object);
 /* Applies a mode to an object before func_020658b4 forwards its value. */
-extern void func_02065864(void *object, s32 mode);
+extern /* Applies the requested object mode; -1 suppresses the subsequent shared
+ * state and provider updates (0x0206587c..0x02065898). */
+void func_02065864(void *object, s32 mode);
 /* Stores a value in its own module-level state (call site 0x020658b4). */
 extern void func_020bac00(u32 value);
 /* Looks up the message object for `message` (call sites 0x02065a7c and
@@ -30,6 +41,15 @@ extern void func_02065374(Unk061798Object *object);
 extern void func_0206563c(s32 flag);
 /* Resets shared render state before func_02065c10 sets the new mode. */
 extern void func_02065bc0(void);
+/* Halfword fill used to clear the shared text buffer; r0 is the fill value,
+ * r1 the destination and r2 the byte count. */
+extern void func_02008644(u32 value, void *dst, u32 size);
+/* Tests a per-device capability mask; callers treat non-zero as available. */
+extern s32 func_02053800(u32 device, u32 mask);
+/* Forwards the id 25 to the sound/command layer. */
+extern void Unk0bc1a8_Unk_0bc9b4(u32 id);
+/* Releases the pointer stored in the slot and clears it. */
+extern void Unk0d297c_FreeSlot(void **slot);
 
 /* The +4 word of this bss object is the shared result singleton. */
 typedef struct Unk061798Bss {
@@ -37,6 +57,43 @@ typedef struct Unk061798Bss {
     Unk061798ResultB *unk_0004;
 } Unk061798Bss;
 extern Unk061798Bss data_0216b9a8;
+
+/* Clears the four font-registry slot ids to -1 so func_020618cc reports them
+ * as unused; the original walks the array with mla and entry size 56. The
+ * target keeps that indexed mla loop instead of strength-reducing it to a
+ * pointer walk, which is what -O4 does here, so the two loop options that
+ * cause the rewrite are scoped off for this function. See DEC-029. */
+#pragma push
+#pragma opt_strength_reduction off
+#pragma opt_rotateloops off
+void func_02061798(void)
+{
+    u32 i;
+    for (i = 0; i < 4; i++) {
+        data_0216b4c0[i].unk_0020 = -1;
+    }
+}
+#pragma pop
+
+/* Returns the first borrowed record whose +0x20 id matches, or null when
+ * none of the four slots match. Byte-stride lookup and array-index return
+ * preserve the original indexed loop and pointer allocation. See DEC-031. */
+#pragma push
+#pragma opt_strength_reduction off
+#pragma opt_rotateloops off
+Unk061798Font *func_020618cc(u32 id)
+{
+    u32 i;
+    for (i = 0; i < 4; i++) {
+        Unk061798Font *entry = (Unk061798Font *)
+            ((u8 *)data_0216b4c0 + i * sizeof(Unk061798Font));
+        if (id == entry->unk_0020) {
+            return &data_0216b4c0[i];
+        }
+    }
+    return 0;
+}
+#pragma pop
 
 /* Returns the +0x28 pointer of the font record selected by id; callers
  * dereference it (call site 0x020601f4). */
@@ -132,6 +189,16 @@ void *func_020629ac(u32 a, u32 b, u32 ignored, u32 c)
     return result;
 }
 
+/* Releases the object's +0x14 slot when the field is non-null and the state
+ * word at +0xc is 1 or 3; func_02065b74 calls it on both singleton render
+ * objects (call sites 0x02065b88/0x02065b90). */
+void func_02062a00(Unk061798Object *object)
+{
+    if (object->unk_0014 == 0) return;
+    if (object->unk_000c != 1 && object->unk_000c != 3) return;
+    Unk0d297c_FreeSlot(&object->unk_0014);
+}
+
 /* Reads the font id at +0x28 of a render object and returns the +0x28 pointer
  * of the selected font record (call sites 0x02060614/0x02060a38/0x020620a8). */
 Unk061798FontData *func_02062a2c(Unk061798Object *object)
@@ -206,6 +273,16 @@ void func_0206359c(Unk061798Object *object, u32 value)
     object->unk_0048 = value;
 }
 
+/* Clears the 1024-byte text buffer and re-points the descriptor at
+ * data_0216b5a0 to it with a zero length; many callers reset the buffer
+ * before appending (call sites 0x02067310/0x0206a2cc/0x02090d4c). */
+void func_02063920(void)
+{
+    func_02008644(0, data_0216b5a8, sizeof(data_0216b5a8));
+    data_0216b5a0.unk_0000 = data_0216b5a8;
+    data_0216b5a0.unk_0004 = 0;
+}
+
 /* Tail wrapper that appends code 0x8001 to a text object and returns the
  * resulting record; call site 0x0206733c keeps it across a loop. */
 Unk061798ResultA *func_02063a30(const void *text)
@@ -232,6 +309,30 @@ Unk061798ResultB *func_02063a50(void)
 Unk061798ResultB *func_02063a60(void)
 {
     return func_02063a50();
+}
+
+/* When device 0 reports mask 1, marks the object's +0x24 word as 1 and clears
+ * its +0x2c word, then returns the query result; a zero query leaves the
+ * object untouched and returns zero. The original keeps the result in r0
+ * across the stores (call sites 0x02064150/0x0206418c/0x02064198). */
+s32 func_02063f54(Unk061798Object *object)
+{
+    s32 result = func_02053800(0, 1);
+    if (result == 0) return result;
+    object->unk_0024 = 1;
+    object->unk_002c = 0;
+    return result;
+}
+
+/* Increments the shared singleton's +0x28 word and wraps it to zero once it
+ * reaches 0xffff; the original keeps 0xffff in r1 across the compare. Call
+ * site 0x02063b88 invokes it before func_020641f0. */
+void func_020641c4(void)
+{
+    Unk061798ResultB *result = func_02063a60();
+    s32 value = result->unk_0028 + 1;
+    result->unk_0028 = value;
+    if (value >= 0xffff) result->unk_0028 = 0;
 }
 
 /* Decrements the signed byte at +0x68 of the object, but only while the shared
@@ -457,4 +558,215 @@ void func_02065c58(void)
     result->unk_0008 = 4;
     result->unk_000c = 5;
     func_02065b74();
+}
+
+/* Moves the func_02063a50 singleton to state 3/0 and then releases its render
+ * objects through func_02065b74; same null-check as func_02065c30 but the
+ * second state word is cleared instead of set to 5. */
+void func_02065c80(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return;
+    result->unk_0008 = 3;
+    result->unk_000c = 0;
+    func_02065b74();
+}
+
+/* Moves the func_02063a50 singleton to state 0/0, clears its +0x4c word and
+ * reports id 25 through Unk0bc1a8_Unk_0bc9b4. The original keeps 25 in r0
+ * after the two stores. */
+void func_02065ca8(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return;
+    result->unk_0008 = 0;
+    result->unk_004c = 0;
+    Unk0bc1a8_Unk_0bc9b4(25);
+}
+
+/* Reports whether the singleton's render object is in state 1 at +0x3c; a
+ * missing singleton counts as state 1. Call site 0x020a3ec4 uses the result
+ * to decide whether to run func_02065c30. */
+s32 func_02065cd0(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return 1;
+    return result->unk_0000->unk_003c == 1;
+}
+
+/* Provider contracts follow the register arguments at the calls below. */
+extern void Unk0bc1a8_Unk_0bc504(void *object, u32 value);
+extern s32 func_02053824(u32 device, u32 mask);
+extern void Unk0bc1a8_Unk_0bc928(u32 id, u32 value, u32 mode);
+extern void func_02060160(Unk061798Object *object);
+extern void func_0205bb68(Unk061798Object *object);
+extern void func_02060248(Unk061798Object *object);
+extern void func_02061424(Unk061798Object *object);
+extern void func_020ba964(s32 mode);
+
+/* Dispatches only state 1 to the provider with value zero; the original
+ * five-entry switch at 0x02063b58 establishes the accepted state range. */
+void func_02063b4c(void *object, const u32 *state)
+{
+    switch (*state) {
+    case 0: break;
+    case 1: Unk0bc1a8_Unk_0bc504(object, 0); break;
+    case 2: break;
+    case 3: break;
+    case 4: break;
+    }
+}
+
+/* Sets the object's two flags and its child's +0x84 flag only when device
+ * zero reports mask 0x400 (loads/stores at 0x02063f90..0x02063fb0). */
+void func_02063f84(Unk061798Object *object)
+{
+    if (func_02053824(0, 0x400) == 0) return;
+    object->unk_0024 = 1;
+    object->unk_002c = 1;
+    object->unk_0000->unk_0084 = 1;
+}
+
+/* Sends command 25 with value 0xffff only while the shared singleton is
+ * absent; the original always returns one (0x020654a0..0x020654bc). */
+s32 func_02065498(void)
+{
+    if (data_0216b9a8.unk_0004 == 0)
+        Unk0bc1a8_Unk_0bc928(25, 0xffff, 0);
+    return 1;
+}
+
+/* Returns a borrowed halfword entry from the optional +0x30 font table.
+ * As in 0x0206199c..0x020619b0, only the upper bound is clamped.
+ * Volatile preserves the observed second table-pointer load; see DEC-030. */
+u16 *func_02061980(u32 id, s32 index)
+{
+    volatile Unk061798Font *font = func_020618cc(id);
+    if (font->unk_0030 == 0) return 0;
+    index--;
+    if (index >= font->unk_0034) index = 0;
+    return &font->unk_0030[index];
+}
+
+/* Returns the font advance minus signed bearings from the optional table (+0x30). */
+s32 func_020619b8(u32 id, s32 index)
+{
+    s32 advance = func_02061960(id);
+    s8 *pair = (s8 *)func_02061980(id, index);
+    if (pair != 0) advance -= pair[0] + pair[1];
+    return advance;
+}
+
+/* Computes metric bounds from font header byte two and signed object byte +0x36. */
+void func_02061ec8(Unk061798Object *object, Unk061798Metrics *out, s32 count, s32 offset)
+{
+    s32 advance = func_02061970(object->unk_0028);
+    out->unk_0000 = count * (advance + object->unk_0036);
+    out->unk_000c = out->unk_0008 + offset;
+    out->unk_0004 = out->unk_0000 + advance;
+}
+
+/* Initializes a missing +0x14 slot and selects the setup provider by func_0204f9d8. */
+void func_020621c0(Unk061798Object *object)
+{
+    object->unk_0008 = 0;
+    if (object->unk_0014 == 0) {
+        func_02007e94();
+    }
+    Unk0d297c_Unk_0d32ac(&object->unk_0014);
+    if (func_0204f9d8() != 0) {
+        func_02062434(object);
+    } else {
+        func_020623b8(object);
+    }
+}
+
+/* Requires a singleton, its +0x4c flag, and its +8 state to be nonzero;
+ * these three guards are explicit at 0x0206554c..0x02065574. */
+s32 func_02065544(void)
+{
+    Unk061798ResultB *result = func_02063a50();
+    if (result == 0) return 0;
+    if (result->unk_004c == 0) return 0;
+    return result->unk_0008 != 0;
+}
+
+/* Tears down a nullable object in provider order, including its optional
+ * first pointer and +0x14 slot (calls at 0x020629d0..0x020629f8). */
+void func_020629c4(Unk061798Object *object)
+{
+    if (object == 0) return;
+    func_02060160(object);
+    if (object->unk_0000 != 0) func_0205bb68(object->unk_0000);
+    func_02060248(object);
+    func_02062a00(object);
+    func_02061424(object);
+}
+
+/* Releases the two borrowed render objects, then clears both shared references. */
+void func_02063b08(Unk061798ResultB *result)
+{
+    result->unk_004c = 0;
+    func_020629c4(result->unk_0000);
+    result->unk_0000 = 0;
+    func_020629c4(result->unk_0004);
+    result->unk_0004 = 0;
+    data_0216b9a8.unk_0004 = 0;
+    data_0216b9a8.unk_0000 = 0;
+}
+
+/* Allows progress only when provider state, +0x5c and the +0x68 countdown permit it. */
+s32 func_02064268(Unk061798Object *object)
+{
+    if (func_020bab80() != 0) return 0;
+    if (object->unk_005c == 1) return 0;
+    return func_020642a8(object) != 1;
+}
+
+/* Clears +0x58 and resets the active child in provider order shown at 0x02064394. */
+void func_02064370(Unk061798ResultB *result)
+{
+    result->unk_0058 = 0;
+    if (result->unk_0000->unk_003c == 0) return;
+    func_0205a21c(result->unk_0000->unk_0000, 0);
+    func_02059ec8(result->unk_0000->unk_0000, 0);
+    func_02062140(result->unk_0000);
+}
+
+/* Clamps mode to three and updates both mode bytes only outside a transition (+0x58). */
+void func_02065454(u32 mode)
+{
+    Unk061798ResultB *result = func_02063a60();
+    if (mode < 3) mode = 3;
+    if (result->unk_0054 == mode) return;
+    if (result->unk_0058 != 0) return;
+    func_0206435c((Unk061798Object *)result);
+    result->unk_0054 = mode;
+    result->unk_0055 = mode;
+}
+
+/* Sets +0x70 once and clears +0x74 on first enable; zero disables without resetting the byte. */
+void func_0206563c(s32 flag)
+{
+    Unk061798ResultB *result = func_02063a60();
+    if (flag != 0) {
+        if (result->unk_0070 != 0) return;
+        result->unk_0070 = 1;
+        result->unk_0074 = 0;
+        return;
+    }
+    result->unk_0070 = 0;
+}
+
+/* Applies the requested object mode; -1 suppresses the subsequent shared
+ * state and provider updates (0x0206587c..0x02065898). */
+void func_02065864(void *object, s32 mode)
+{
+    Unk061798ResultB *result;
+    func_020656ac(object, mode);
+    result = func_02063a60();
+    if (mode == -1) return;
+    func_02065b98();
+    func_020ba964(mode);
+    func_020babec(result->unk_0000->unk_0090);
 }

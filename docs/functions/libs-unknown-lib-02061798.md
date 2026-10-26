@@ -1,11 +1,12 @@
 # libs/unknown/lib_02061798
 
-Forty-seven functions of this TU are reconstructed from the original ARM
+Fifty-five functions of this TU are reconstructed from the original ARM
 instructions and match at 100%: seven from M2-T1057, eight from M2-T1058,
 eight from M2-T1059, the eight covered by M2-T1060, the eight covered by
-M2-T1061 and the eight covered by M2-T1062. `func_02062264` is the exception:
-it is a four-byte copy of the preceding function's unreachable epilogue and
-cannot be expressed as a standalone C function (see Hard list).
+M2-T1061, the eight covered by M2-T1062 and the eight covered by M2-T1063.
+`func_02062264` is the exception: it is a four-byte copy of the preceding
+function's unreachable epilogue and cannot be expressed as a standalone C
+function (see Hard list).
 
 All names remain neutral linker symbols: the surrounding records and the
 public SDK sources found below do not establish an application-level API name.
@@ -44,7 +45,21 @@ words to `Unk061798ResultB`, and typed its `+0` word as the render-object
 pointer that `func_0206557c` forwards to `func_02062a3c`. M2-T1062 typed the
 `+4` word of `Unk061798ResultB` as a second render-object pointer and added
 its `+0x50` word, gave `Unk061798Font` the `+0x2c` table pointer and the signed
-`+0x34` count, and added byte `+0x90` to `Unk061798Object`.
+`+0x34` count, and added byte `+0x90` to `Unk061798Object`. M2-T1063 added the
+`+0x14`, `+0x24`, `+0x2c` and `+0x3c` words of `Unk061798Object`, the `+0x28` and
+`+0x4c` words of `Unk061798ResultB`, the four-entry `data_0216b4c0` font
+registry, and the `data_0216b5a0`/`data_0216b5a8` text-buffer descriptor. The
+descriptor is typed as an 8-byte pointer/length pair because `data_0216b5a8`
+follows it in bss and the initialiser points the first word at that buffer.
+
+## func_02061798 — 48 bytes
+
+Initialises the four-entry font registry at `data_0216b4c0` by storing -1 in
+the id word at `+0x20` of every 56-byte entry, marking all slots free for
+`func_020618cc`. The target keeps an indexed `mla` loop (`mla r1, ip, r0, r2`
+with 56 in r0) rather than a strength-reduced pointer walk, so
+`opt_strength_reduction` and `opt_rotateloops` are scoped off around this
+function. Its only direct caller is `0x0202cc0c`. Objdiff: 100%.
 
 ## func_0206190c — 16 bytes
 
@@ -126,6 +141,15 @@ It returns the allocated record, or 0 when `func_02060a48` returned 0; the
 explicit null test reproduces the original `cmp; moveq r0, #0` rather than a
 tail call. Objdiff: 100%.
 
+## func_02062a00 — 44 bytes
+
+Releases the object's `+0x14` slot through `Unk0d297c_FreeSlot`, but only when
+the slot pointer is non-null and the state word at `+0xc` is 1 or 3. The
+original loads `+0x14` first, then tests `+0xc` with `cmp #1; cmpne #3` and a
+`popne`; the address it passes is `object + 0x14`. Call sites include
+`0x02061f4c`, `0x020629f0`, `0x020633fc`, the two `func_02065b74` calls at
+`0x02065b88`/`0x02065b90` and `0x020d1b44`. Objdiff: 100%.
+
 ## func_02062a2c — 16 bytes
 
 Reads the font id at `+0x28` of a render object and tail-calls
@@ -186,6 +210,16 @@ Takes a render-object pointer and a 32-bit value; stores the value at +0x48.
 Call site `0x02063e88` uses it to clear the field on the object's first pointer
 (also `0x02063ec4`). Objdiff: 100%.
 
+## func_02063920 — 52 bytes
+
+Clears the shared 1024-byte text buffer at `data_0216b5a8` with
+`func_02008644(0, data_0216b5a8, 0x400)`, then resets the descriptor at
+`data_0216b5a0` so its `+0` word points at that buffer and its `+4` length
+word is zero. The two bss objects are adjacent and the literal reload after
+the fill proves the pointer store. Call sites include `0x02067310`,
+`0x0206737c`, `0x0206a2cc`, `0x02090d4c` and many other text resets.
+Objdiff: 100%.
+
 ## func_02063a30 — 20 bytes
 
 Tail wrapper for `func_02063954`: forwards the text pointer in r0 and the
@@ -211,6 +245,24 @@ singleton. Callers test it for null before reading fields (call sites
 No-argument tail wrapper for `func_02063a50`, which returns the singleton from
 `data_0216b9a8` +4. Callers test the result for null and read fields through it
 (call sites `0x020641c8`, `0x0206545c`). Objdiff: 100%.
+
+## func_02063f54 — 48 bytes
+
+Queries device 0 with mask 1 through `func_02053800`, returning the query
+result. When the result is non-zero it stores 1 at the object's `+0x24` word
+and 0 at `+0x2c`; when it is zero the object is untouched and the query's zero
+result is returned. The target keeps the result in r0 across the stores (so
+the constants use r1) and has no `mov r0` on either return path, which
+establishes the status return type. Call sites are `0x02064150`,
+`0x0206418c` and `0x02064198`. Objdiff: 100%.
+
+## func_020641c4 — 44 bytes
+
+Increments the `+0x28` word of the `func_02063a60` singleton and stores the
+new value, wrapping it back to zero once it reaches 0xffff. The literal at
+`0x020641ec` is `0x0000ffff`, and the original stores the incremented value
+before the conditional `movge`/`strge` reset. Its only caller is
+`0x02063b88`, immediately before `func_020641f0`. Objdiff: 100%.
 
 ## func_020641f0 — 40 bytes
 
@@ -374,6 +426,91 @@ Same null-check and release tail as `func_02065c30`, but stores 4 at `+0x8`
 and 5 at `+0xc`. Call site `0x020a0804` follows a `func_0206597c(4)` message
 reset. Objdiff: 100%.
 
+## func_02065c80 — 40 bytes
+
+Returns when the `func_02063a50` singleton is null; otherwise stores 3 at
+`+0x8` and 0 at `+0xc`, then calls `func_02065b74` to release its render
+objects. Call sites are `0x0204b148`, `0x0204b180`, `0x0210b324` and
+`0x0211c864`. Objdiff: 100%.
+
+## func_02065ca8 — 40 bytes
+
+Returns when the `func_02063a50` singleton is null; otherwise stores 0 at
+`+0x8` and at `+0x4c`, then calls `Unk0bc1a8_Unk_0bc9b4` with id 25. The
+original keeps 25 in r0 after the two stores. Call sites include
+`0x0203be94`, `0x0203bffc`, `0x02048f28`, `0x02063de4` and many text resets.
+Objdiff: 100%.
+
+## func_02065cd0 — 44 bytes
+
+Returns 1 when the `func_02063a50` singleton is absent; otherwise loads its
+`+0` render-object pointer and returns whether that object's `+0x3c` word
+equals 1. The original materialises the boolean with `moveq #1; movne #0`.
+Call sites include `0x0204b128`, `0x0204b13c`, `0x0204b16c`, `0x020a07f8`
+and `0x020a3e7c`/`0x020a3eb8`. Objdiff: 100%.
+
+
+## M2-T1064 source search
+
+Searched public NitroSDK/font rendering sources before reconstruction. The
+[NNS G2D API list](https://twlsdk.randommeaninglesscharacters.com/docs/twl/TwlSystem/g2d/g2d.html)
+did not identify an equivalent four-slot registry or these command wrappers.
+No public implementation was reused; field and call contracts below follow
+the original instructions, retaining neutral symbol names.
+
+## func_02063b4c — 52 bytes
+
+Five-case dispatch on the second argument's word: only state 1 calls
+`Unk0bc1a8_Unk_0bc504(object, 0)`. The jump table at 0x02063b58 establishes
+the range, including no-op cases. Objdiff: 100%.
+
+## func_02063f84 — 52 bytes
+
+Queries device 0 for mask 0x400 through `func_02053824`. When nonzero, sets
++0x24 and +0x2c on the supplied object and +0x84 on its first pointer to one.
+The stores at 0x02063fa4..0x02063fb0 establish the borrowed child view.
+Objdiff: 100%.
+
+## func_02065498 — 52 bytes
+
+Checks `data_0216b9a8` +4 directly. When null, forwards (25, 0xffff, 0) to
+`Unk0bc1a8_Unk_0bc928`; returns one in either case. Objdiff: 100%.
+
+## func_02061980 — 56 bytes
+
+Selects the font by id and returns null if its +0x30 halfword table is null.
+Otherwise decrements the signed index and clamps it to zero when at or above
+the +0x34 count; negative indices are preserved. The returned pointer is
+borrowed. See DEC-030 for the observed pointer reload. Objdiff: 100%.
+
+## func_02065544 — 56 bytes
+
+Returns zero if the shared singleton is absent or its +0x4c word is zero;
+otherwise tests its +8 word for nonzero. Objdiff: 100%.
+
+## func_020629c4 — 60 bytes
+
+Nullable teardown: calls `func_02060160`, optionally `func_0205bb68` on the
+first pointer, then `func_02060248`, `func_02062a00`, and `func_02061424` on
+the supplied object. Order follows 0x020629d0..0x020629f8. Objdiff: 100%.
+
+## func_02065864 — 60 bytes
+
+Calls `func_020656ac(object, mode)` and obtains the shared singleton even
+when mode is -1. Other modes call `func_02065b98`, forward mode to
+`func_020ba964`, and forward the singleton child's +0x90 byte to
+`func_020babec`. Objdiff: 100%.
+
+## func_020618cc — 64 bytes
+
+Searches the four 56-byte font records for the first matching unsigned id at
++0x20, returning a borrowed record or null. The registry reset at
+`func_02061798` and the accessors `func_0206190c` / `func_0206191c` establish
+the layout and use. Byte-stride address calculation for the comparison and
+array indexing for the return reproduce the original register allocation;
+loop strength reduction and rotation are disabled locally. See DEC-031.
+Objdiff: 100%.
+
 ## Hard list
 
 - `func_02062264` (4 bytes): the original instruction is only
@@ -389,7 +526,67 @@ reset. Objdiff: 100%.
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for each of the forty-seven reconstructed
-functions. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
+`tools/hand/cmp.py` reports OK for `func_020618cc`; all eight M2-T1064
+functions now match. The match gate reports all 82 compiled functions in the
+changed unit at 100%. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.
+
+## M2-T1065 source search
+
+Searched public NitroSDK/NitroSystem text-rendering references and pret's
+[pokeplatinum rendering documentation](https://github.com/pret/pokeplatinum/blob/main/docs/2d_rendering.md).
+No equivalent implementation was identified; reconstruction uses the original
+instructions and existing neutral symbols. No public source was reused.
+
+## func_020619b8 — 64 bytes
+
+Returns font header byte +0x24 minus the two signed bytes of the optional
++0x30 table entry. A missing table leaves the advance unchanged. The calls
+at 0x020619c4 and 0x020619d4 establish the two font accessors. Objdiff: 100%.
+
+## func_02064268 — 64 bytes
+
+Returns zero when func_020bab80 is nonzero or object +0x5c equals one;
+otherwise returns whether func_020642a8 differs from one. The latter tests
+the signed countdown at +0x68. Objdiff: 100%.
+
+## func_0206563c — 64 bytes
+
+Zero disables singleton +0x70. Nonzero enables it only if currently zero,
+clearing byte +0x74 on this first enable. The singleton is required;
+loads/stores at 0x02065650..0x02065674 establish the layout. Objdiff: 100%.
+
+## func_02063b08 — 68 bytes
+
+Clears singleton +0x4c, releases both render objects in order through
+func_020629c4, and clears their pointers. Finally clears both words of
+data_0216b9a8. Provider calls occur at 0x02063b1c and 0x02063b2c. Objdiff: 100%.
+
+## func_02064370 — 68 bytes
+
+Clears singleton +0x58, then returns if its render object's +0x3c is zero.
+Otherwise calls func_0205a21c(child, 0), func_02059ec8(child, 0), and
+func_02062140(render object), reloading pointers between calls. The zero
+second argument is retained in r1 at the first call. Objdiff: 100%.
+
+## func_02065454 — 68 bytes
+
+Clamps unsigned mode to at least three. If it differs from singleton byte
++0x54 and +0x58 is zero, sets state words +8/+0xc through func_0206435c,
+then writes the mode to bytes +0x54/+0x55. The first byte is unsigned on
+read; the second is only stored here. Objdiff: 100%.
+
+## func_02061ec8 — 72 bytes
+
+Writes metric +0 as count times (font header byte +0x25 plus signed object
+byte +0x36), +0xc as existing metric +8 plus offset, then +4 as metric +0
+plus the header byte. Output is borrowed writable storage; operation order
+and the +8 input follow 0x02061ee8..0x02061f08. Objdiff: 100%.
+
+## func_020621c0 — 72 bytes
+
+Clears object +8 and calls func_02007e94 only when slot +0x14 is null.
+Always passes the slot address to Unk0d297c_Unk_0d32ac, then selects
+func_02062434 for a nonzero func_0204f9d8 result, else func_020623b8.
+The branch at 0x020621d8 skips only the first provider. Objdiff: 100%.
