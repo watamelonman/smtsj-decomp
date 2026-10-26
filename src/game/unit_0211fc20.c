@@ -98,18 +98,20 @@ s32 Unk11fc20_Unk_120944(const Unk11fc20Entries *work)
     return count;
 }
 
-/* Existing helpers outside M1-T835, retained from the previous implementation. */
-int func_02120bd4();
-void func_02057d54();
+/* Request-provider declarations and coordinate forwarding helpers. */
+void func_02120bd4(u32, u32, s32, s32, s32, s32, u32, u32, u32);
+void func_02057d54(u32, s32, s32, u32, u32, u32);
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-void Unk11fc20_Unk_12143c(int arg0,int arg1,u32 arg2)
+/** Submits kind 4 using work coordinates at +12/+16; the second input is in pixels. */
+void Unk11fc20_Unk_12143c(Unk11fc20Work *arg0,int arg1,u32 arg2)
 {
-  func_02120bd4(4,0,((Unk11fc20Work *)arg0)->unknown04[2],((Unk11fc20Work *)arg0)->unknown10,0x3000,
+  func_02120bd4(4,0,arg0->unknown04[2],arg0->unknown10,0x3000,
                 arg1 << 0xc,arg2,0,0);
   return;
 }
 
+/** Initializes the observed work header and signals provider 020a0da4 with 8. */
 void Unk11fc20_Unk_11fd38(u32 *arg0)
 {
   arg0[3] = 100;
@@ -123,6 +125,7 @@ void Unk11fc20_Unk_11fd38(u32 *arg0)
   return;
 }
 
+/** Converts four pixel coordinates to 20.12 before submitting the nine-word request. */
 void Unk11fc20_Unk_120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
                   int arg5,u32 arg6,u32 arg7,u32 arg8)
 {
@@ -131,6 +134,7 @@ void Unk11fc20_Unk_120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
   return;
 }
 
+/** Finds the first free entry in the selected global pool; selector bounds follow 02120a58. */
 int * Unk11fc20_Unk_120a58(u32 arg0)
 {
   int *v1;
@@ -186,8 +190,31 @@ int * Unk11fc20_Unk_120a58(u32 arg0)
   return (int *)0x0;
 }
 
+/** Adds global offsets +4/+8 and the observed 64-pixel X bias before forwarding. */
 void Unk11fc20_Unk_120898(u32 a, int b, int c, u32 d, u32 e, u32 f)
 {
     u8 *w = (u8 *)(u32)data_02176e7c;
     func_02057d54(a, b + (FIELD(int, w, 4) + 64), c + FIELD(int, w, 8), d, e, f);
+}
+
+/** Converts all seven coordinate inputs from pixels to 20.12 for provider 02120bd4. */
+void func_02120b30(u32 a, u32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i)
+{
+    func_02120bd4(a, b, c << 12, d << 12, e << 12, f << 12,
+                   g << 12, h << 12, i << 12);
+}
+
+extern void func_0212034c(Unk11fc20Work *);
+extern void func_021206a8(Unk11fc20Work *);
+extern Unk11fc20Work *func_020611dc(void (*)(Unk11fc20Work *),
+    void (*)(Unk11fc20Work *), u32, void (*)(void), u32, u32, u32, u32);
+/** Allocates 0x1fe8 bytes with the observed callbacks; publishes and initializes successful work. */
+Unk11fc20Work *func_0211fcb0(void)
+{
+    Unk11fc20Work *work = func_020611dc(func_0212034c, func_021206a8, 0,
+        Unk11fc20_Clear_data_02176e7c, 0x1fe8, 4, 0, 1);
+    if (work == 0) return 0;
+    data_02176e7c = work;
+    Unk11fc20_Unk_11fd38((u32 *)work);
+    return work;
 }
