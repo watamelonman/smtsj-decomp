@@ -1,6 +1,6 @@
-# libs/unknown/lib_020b9e3c — M2-T081
+# libs/unknown/lib_020b9e3c — M2-T081 / M2-T082
 
-The eight functions below are parameterless ARM callbacks returning an `int`.
+The eight M2-T081 functions below are parameterless ARM callbacks returning an `int`.
 Each calls `func_020b8b38(id, 0, 0, 0)`, passes its integer result to
 `Unk03aae8_Unk_03acf4`, then returns 1 regardless of that result.
 The original instructions provide the contracts; the IDs' meanings remain unknown.
@@ -30,9 +30,32 @@ These observations support integer arguments/results but no SDK or semantic name
 | `func_020b9fc4` | 101 | 36 bytes | At `0x020b9fc4`, submit ID 101 with three zeros, publish the result, return 1. |
 | `func_020b9fe8` | 102 | 36 bytes | At `0x020b9fe8`, submit ID 102 with three zeros, publish the result, return 1. |
 
+## M2-T082 functions
+
+A further public-source search for the handler and dispatcher addresses in
+pret/pokeplatinum found no matching source. The original delinked ARM object
+(`arm-none-eabi-objdump -dr`) establishes the following additional contracts.
+All six callbacks take no explicit arguments, publish the dispatcher result via
+`Unk03aae8_Unk_03acf4`, and return integer script status 1. For operand callbacks,
+`func_0203ac00(0)` supplies the second dispatcher argument; the remaining two
+arguments are zero. The zero-operand callback supplies three zero arguments.
+Command meanings remain unknown, so existing neutral symbols are retained.
+
+| Symbol | ID | Original size | Operand / instruction evidence |
+| --- | ---: | ---: | --- |
+| `func_020b9e3c` | 90 | 44 bytes | Read script operand 0 at `0x020b9e44`. |
+| `func_020b9e68` | 91 | 44 bytes | Read script operand 0 at `0x020b9e70`. |
+| `func_020b9e94` | 92 | 44 bytes | Read script operand 0 at `0x020b9e9c`. |
+| `func_020b9ec0` | 93 | 44 bytes | Read script operand 0 at `0x020b9ec8`. |
+| `func_020ba00c` | 103 | 36 bytes | Submit three zero arguments at `0x020ba020`. |
+| `func_020ba030` | 94 | 44 bytes | Read script operand 0 at `0x020ba038`. |
+
+These extend the existing TU without changing module boundaries or dependencies.
+
 ## Validation
 
-All eight bodies passed the objdiff match gate at 100% individually. The full
+All fourteen bodies, including the six M2-T082 additions, passed the objdiff
+match gate at 100% individually. The full
 build/checksum gate reported all artifacts byte-identical to the original.
 Anticheat passed, as did all nine repository unit tests. No new behavioral tests are required by this card; instruction equality is
 the acceptance oracle. The TU remains linked from the original delink until a
@@ -40,5 +63,4 @@ human marks it complete.
 
 ## Hard list
 
-None for M2-T081. Functions outside the eight listed above belong to other cards
-and remain in the original delink.
+None for M2-T081 or M2-T082. All fourteen functions are implemented.
