@@ -2,6 +2,20 @@
 
 ## Unreleased
 - M1-T997: match six `game/unit_0206ae94` updater, ring-walk, angle and random-ratio helpers at 100% objdiff; document the four-instruction vector-copy blocker for `func_0206ba4c` and `func_0206d268`.
+- M1-T992: match all eight ScanVisor lifecycle, mode dispatch, coordinate and drawing functions at 100% objdiff; document instruction evidence and ownership contracts.
+
+- Match eight NitroSDK sdk_020555bc scroll, blend, dispatch and transfer wrapper functions in readable C.
+- M2-T031: match the seven remaining NitroSDK sdk_020555bc main/sub BG scroll setters and the blend-register dispatcher at 100% objdiff, with register-address evidence.
+- Reconstruct seven matching command and record lookup functions in NitroSDK sdk_0204f7d4; document the remaining literal-pool mismatch.
+- Matched all six libs/unknown/lib_020296b8 texture-matrix and constant-result functions at 100% objdiff, with typed layouts and per-function evidence.
+- Added matching C for script command wrappers 84 and 85 in lib_020b9c3c.
+- M1-T991: match all eight ScanVisor scale, flag, counter, list and resource helpers at 100% objdiff; document instruction evidence and borrowed-storage contracts.
+- M2-T023: match the CRI four-record pool reset, allocation, and request-2 helpers at 100% objdiff; all eleven functions in the TU now match.
+- M1-T990: match all eight ScanVisor list and record helpers at 100% objdiff; add the signed-coordinate record query and document instruction evidence.
+- M1-T982: match ID-bank validation and paired-panel drawing at 100% objdiff; document two remaining grid-rendering hard cases.
+- M1-T989: verify eight ScanVisor state, slot lookup and provider helpers at 100% objdiff; document typed contracts and original instruction evidence.
+- Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
+- M1-T981: match five grid, cursor and drawing helpers; document three input/drawing instruction-generation hard cases.
 - M1-T996: match all eight remaining `game/unit_0206ae94` constructors, scale, bounce, angle and transform helpers at 100% objdiff; document typed contracts and the ARM-to-Thumb call resolved by linked objdiff.
 - Matched all three M2-T009 heap-state and animation-bank functions in `libs/NitroSDK/sdk_02020744.c`, with typed contracts and public-source evidence.
 - Matched M2-T008 rotation/reciprocal-scale wrapper in C using the public SDK sine/cosine table declaration; documented the table symbol required before linking from C.
@@ -408,6 +422,18 @@
 - Matched all three M1-T301 functions in `game/unit_02122a78`, with typed callback state and documented resource/handle initialization.
 - Matched seven M1-T1116 unit_0202f2a8 functions (direction tables, counter targets, game-state start-up, fixed-point helpers) at 100% objdiff; func_0202fc50 is on the hard list.
 - Matched all seven M1-T300 functions in `game/unit_02115fbc` at 100% objdiff, with typed resource/state/record views and per-function contracts.
+
+- Reconstruct all four NitroSystem G3D animation unlink and texture-size routines in libs/unknown/lib_02021920.
+
+- Add matching C for all three sdk_02027dac NitroSystem visibility and basic joint-transform routines.
+
+- Match all eight requested CRI `cri_0207c82c` record helpers with typed fields and instruction-based contracts.
+
+- Matched all eight M2-T022 CRI record helpers with typed fields and documented instruction evidence.
+
+- Added C for eight lib_020b9c3c script command wrappers with operand and result contracts.
+
+- Add matching C for the eight M2-T032 script request handlers in `libs/unknown/lib_020b9a38.c`.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.

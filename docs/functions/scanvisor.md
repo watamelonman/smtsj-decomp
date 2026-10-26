@@ -247,32 +247,121 @@ No hard functions or omissions for M1-T988.
 Earlier planning entries outside this card: `ScanVisor_Unk_0a284c`,
 `ScanVisor_Unk_0a28b0`, `ScanVisor_Unk_0a2660`, `ScanVisor_Unk_0a273c`.
 
-## Not done in M1-T989
-- `ScanVisor_FindSlotByKey`
-- `ScanVisor_Unk_0a4950`
-- `ScanVisor_AllSlotsF28Is80`
-- `ScanVisor_Unk_0a3760`
+## M1-T989: eight verified state and slot helpers
 
-## Not done in M1-T990
-- `ScanVisor_Unk_0a4910`
-- `ScanVisor_SetById`
-- `func_020a3ac0`
-- `ScanVisor_AnySlotField14`
-- `ScanVisor_ResetBits`
-- `ScanVisor_Unk_0a4578`
-- `ScanVisor_Unk_0a4864`
-- `ScanVisor_Unk_0a48b4`
+All eight implementations already existed and matched when this card began.
+Names retain configured symbols; evidence is from the delinked ScanVisor object.
+Pointers are borrowed, and opaque field values have no established units.
 
-## Not done in M1-T991
-- `func_020a4df0`
-- `ScanVisor_LoadSearchParts`
-- `ScanVisor_Unk_0a3274`
-- `func_020a30b4`
-- `func_020a466c`
-- `func_020a2c90`
-- `func_020a4370`
-- `ScanVisor_Unk_0a42f0`
-- `ScanVisor_Unk_0a2e5c`: decompiler-derived
+- `ScanVisor_Unk_0a284c` (0x020a284c, 56 bytes): null work returns;
+  nonzero `on` clears work+0x14, while zero writes -54 there and clears +0x1c.
+- `ScanVisor_Unk_0a28b0` (0x020a28b0, 56 bytes): null work returns;
+  nonzero `on` clears work+0x210, while zero writes 50 there and clears +0x214.
+- `ScanVisor_FindSlotByKey` (0x020a45c0, 56 bytes): scans seven 52-byte
+  slots at list+0x20, returning the first with nonzero +0x00 and matching
+  +0x04 key, or null. These loads support the configured descriptive name.
+- `ScanVisor_Unk_0a4950` (0x020a4950, 56 bytes): writes the caller value
+  at list+0x190. Nonzero `on` writes 1 at +0x198 and the GetConst6 result
+  at +0x194; zero writes 2 and 4096 respectively. Requires a valid list.
+- `ScanVisor_AllSlotsF28Is80` (0x020a4994, 56 bytes): scans seven 52-byte
+  slots at list+0x20; returns zero if any occupied slot's +0x1c word differs
+  from 80, otherwise one. The configured F28 denotes decimal offset 28.
+- `ScanVisor_Unk_0a2660` (0x020a2660, 60 bytes): null work returns;
+  calls SetField34, 0a27e0, SetRangeA and SetField214 with zero, in that
+  order, then 0a4864 on the saved work+0x24c list.
+- `ScanVisor_Unk_0a3760` (0x020a3760, 60 bytes): passes work+0x78 and
+  three caller values to func_020c9db4, then submits its result to
+  func_020616ec with the reloaded work pointer. Requires valid work;
+  the original reload permits the first provider to change the global.
+- `ScanVisor_Unk_0a273c` (0x020a273c, 64 bytes): null work returns;
+  forwards its value to 0a27a8, 0a2800, 0a284c, 0a28b0 and 0a2950,
+  preserving this original call order.
+
+Validation: all eight report 100% objdiff. The full match, anticheat,
+unittest and original-image checksum gates were run locally.
+No new tests are required by the card; objdiff checks compiled behavior.
+No hard functions or omissions for M1-T989.
+
+## M1-T990: eight verified list and record helpers
+
+Seven C bodies were already present and matched when this card began;
+`func_020a3ac0` was added from the delinked original. Configured symbols are
+retained; unknown semantics are not inferred from the fixed values below.
+All pointers borrow provider storage; list operations require seven 52-byte
+slots starting at +0x20.
+
+- `ScanVisor_Unk_0a4910` (0x020a4910, 64 bytes): for every occupied slot,
+  calls SetRange with (0, 0); leaves list+0x1bc unchanged.
+- `ScanVisor_SetById` (0x020a49d8, 64 bytes): FindSlotByKey locates the ID;
+  missing slots and slots with nonzero +0x14 return immediately. Otherwise
+  nonzero `on` calls Unk0a0ce4_Unk_0a0da4(28), then 0a4644 applies `on`.
+  The lookup and accessor calls support the configured descriptive name.
+- `func_020a3ac0` (0x020a3ac0, 68 bytes): passes work+0x5508 and signed
+  bytes at +0x7482/+0x7483 to Unk0a6174_Unk_0a6a88. If the returned
+  record's signed leading byte is not 1, returns zero; otherwise calls
+  func_02034dd0, then Unk118b04_Unk_118e50(6, 1), and returns one.
+  Work and the provider result must be valid; neither has a null guard.
+- `ScanVisor_AnySlotField14` (0x020a4600, 68 bytes): returns one for the
+  first occupied slot whose +0x14 accessor returns nonzero, otherwise zero.
+  The occupancy load and accessor call establish the query name.
+- `ScanVisor_ResetBits` (0x020a2bb8, 72 bytes): clears the leading word and
+  bits 0..4 and 6..7 of byte +4, preserving bit 5. The original byte
+  read/modify/write sequence supports the name and the C bitfield layout.
+- `ScanVisor_Unk_0a4578` (0x020a4578, 72 bytes): for each occupied slot,
+  calls func_02057eb8(2), reloads the leading list word, then passes the
+  slot and that word to func_020a43f4. Call order and reload are preserved.
+- `ScanVisor_Unk_0a4864` (0x020a4864, 80 bytes): calls
+  SetUnkFields24_28(slot, 8, 0) for every occupied slot, then clears
+  list+0x1bc. Field units remain unknown.
+- `ScanVisor_Unk_0a48b4` (0x020a48b4, 80 bytes): calls
+  SetRange(slot, 80, 0) for every occupied slot, then clears list+0x1bc.
+  Range units remain unknown.
+
+Validation: all eight report 100% objdiff; all 73 C definitions in the
+changed TU pass the match gate. Anticheat, unittest and original-image
+checksum gates were also run locally. No new tests are required by this
+card; objdiff verifies the compiled instruction behavior.
+No hard functions or omissions for M1-T990.
+
+## M1-T991 — scale, flags, counter and list helpers
+
+All eight functions report 100% objdiff. Existing matching definitions of the
+resource loader, signed ratio query and slot allocator were retained and given
+instruction-based contract comments; five missing definitions were added.
+
+- `func_020a4df0` (0x020a4df0, 80 bytes): computes an unsigned-byte scale
+  `((50 * value / GetConst6() + 50) * 31) / 100`, replacing zero with one.
+  Equality with GetConst6 returns 31 directly. Signed arithmetic requires
+  inputs that do not overflow; the scale's use remains unknown.
+- `ScanVisor_LoadSearchParts` (0x020a370c, 84 bytes): loads the three paths
+  at data_0214cddc/cdf0/ce08 (Visor/e_appearance and search_parts01/02),
+  stores handles at work+8/+24/+24c, and initializes work+78. The strings
+  support the configured descriptive name; work is borrowed writable storage.
+- `ScanVisor_Unk_0a3274` (0x020a3274, 88 bytes): returns zero without game
+  state or for nonpositive signed work+af4; otherwise divides the signed-16
+  truncation of work+af2 times 100 by work+af4, caps at 99, and returns a
+  signed byte. Does not assume the work fields are unsigned percentages.
+- `func_020a30b4` (0x020a30b4, 96 bytes): calls 020a3008 with (0,-54,0,0),
+  increments signed word +4, increments again when 020a3274 is at least 75,
+  and resets the counter at 65535. Counter units remain unknown.
+- `func_020a466c` (0x020a466c, 100 bytes): initializes list state, clears
+  seven words at +19c, and fills seven handles at +1c0 by calling 02098860
+  with indices 0..6. A private typed prefix records the observed offsets.
+- `func_020a2c90` (0x020a2c90, 108 bytes): tests byte +4 bits 4,1,5,0 in
+  order and invokes SetField214, SetField34, 0a27e0 and SetRangeA with 1.
+  Each flag is read after the previous call, preserving provider side effects.
+- `func_020a4370` (0x020a4370, 108 bytes): decrements positive signed +10,
+  adds signed +24 to +1c, and stops at 80 or zero when the corresponding
+  bound is reached. The second signed-delta test reloads the field after
+  the positive path. Existing callers ignore the return register.
+- `ScanVisor_Unk_0a42f0` (0x020a42f0, 128 bytes): returns null when the
+  seven-slot list is full; otherwise marks the free slot occupied, copies
+  the list byte and key metadata, and initializes the two range pairs.
+  The metadata key must exist, as the original dereferences without a guard.
+
+Validation: the match gate passes for all checked C definitions, including all
+eight targets. No new tests are required by this card; instruction comparison
+checks compiled behavior. No hard functions or omissions for M1-T991.
 
 ## Not done in M1-T992
 - `func_020a2c00`
@@ -282,13 +371,8 @@ Earlier planning entries outside this card: `ScanVisor_Unk_0a284c`,
 - `func_020a3630`
 - `ScanVisor_Draw`
 - `func_020a2d0c`
-- `ScanVisor_LoadSearchParts`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
-- `ScanVisor_Unk_0a4950`: decompiler-derived (plain cleanup)
-- `ScanVisor_Unk_0a4864`: decompiler-derived (plain cleanup)
-- `ScanVisor_Unk_0a4910`: decompiler-derived (plain+fix cleanup)
-- `ScanVisor_Unk_0a48b4`: decompiler-derived (plain+fix cleanup)
-- `ScanVisor_Unk_0a42f0`: decompiler-derived (plain+fix cleanup)
+- `ScanVisor_Unk_0a4950`: verified in M1-T989
 - `ScanVisor_Draw`: hand-matched
 - `ScanVisor_SetById`: hand-matched
 - `ScanVisor_Unk_0a4a18`: hand-matched
@@ -308,4 +392,51 @@ Earlier planning entries outside this card: `ScanVisor_Unk_0a284c`,
 - `ScanVisor_FindSlotByKey`: hand-matched
 - `ScanVisor_AnySlotField14`: hand-matched
 - `ScanVisor_AllSlotsF28Is80`: hand-matched
-- `ScanVisor_Unk_0a3274`: hand-matched
+
+## M1-T992: mode dispatch, lifecycle and coordinate updates
+
+Names retain the configured symbols. Evidence is the delinked ARM instructions
+at each function's address; no additional gameplay meaning is inferred.
+The existing TU and its prior matched functions are preserved.
+
+- `func_020a269c` (160 bytes): null-guard the global work getter and dispatch
+  the caller flag by mode. Modes 0/2 call five setters, mode 1 calls four,
+  mode 3 calls three; other modes do nothing.
+- `func_020a2c00` (144 bytes): snapshot the global work mode into destination
+  word +0, then write query results to byte +4 bits 4, 1, 5 and 0 in order.
+  Other bits survive; null global work leaves the destination untouched.
+  Query returns are truncated to eight bits before bitfield assignment,
+  reproducing the original `and #255` instructions.
+- `func_020a3008` (172 bytes): add signed velocities +0x10/+0x14 to the
+  coordinates +8/+0xc, clamp against four caller bounds and clear a velocity
+  when its bound is reached. Negative directions precede positive directions.
+  The caller owns writable storage and must avoid signed arithmetic overflow.
+- `func_020a2f3c` (204 bytes): increment signed work counter +4 and wrap at
+  65535. Modes 0/2 update sub-objects +0x24, +8, +0x78, +0x24c and +0x428;
+  modes 1/3 update +0x24 and +0x78. Other modes only advance the counter.
+- `func_020a3630` (220 bytes): acquire ten resources using data_0214cda8,
+  copy the four-word data_0213c3b8 descriptor to the stack, and allocate four
+  handles at +0xd0 with 0x60 stride. The first uses ID 192 unless mode is 3;
+  the other path uses data_0214cdd0 and value 0x664. Finally initialize provider
+  2 and store ID 194's handle at global provider work +0x1244.
+- `ScanVisor_Unk_0a2e5c` (224 bytes): release nonzero handles at +8/+0x24/
+  +0x40/+0x24c, clear those fields and +0x5c, tear down the sub-objects and
+  resource providers, and clear data_02176b04. The pre-existing body omitted
+  the handle arguments to 0205ddb4; these now follow the original loads.
+- `ScanVisor_Draw` (320 bytes): existing draw body verified unchanged at
+  instruction level. Modes 1/3 submit layer 2 and modes 0/2 layer 1 through
+  02057e58, run their drawing callbacks, then restore 020580ec(1).
+  These rendering calls support the retained descriptive symbol.
+- `func_020a2d0c` (336 bytes): allocate 0x970-byte task work with update,
+  draw and release callbacks, publish it globally, and initialize the mode's
+  providers and fields. Returns null on allocation failure. Mode 1 falls
+  through into mode 3's list setup; mode 2 disables the selected setters.
+  The task provider owns the allocation.
+
+Validation: all eight functions are 100% in objdiff; the match gate checks all
+88 C definitions in this TU at 100%. Anticheat, all nine unittest tests, build
+and original-image checksum pass. No new tests are required by this card;
+objdiff checks the complete compiled instruction behavior. The TU continues to
+link from the delink pending the human-owned completion flag.
+
+No hard functions for M1-T992.
