@@ -25,13 +25,17 @@ typedef struct Unk0a7d54Entry {
 } Unk0a7d54Entry;
 
 /* Borrowed work-area view: 020a7d54/020a84a4/020a8534 walk 32 entries from +0x48.
- * Header words are those read or written by 020a8ad0/020a8b70/020a8bac; the
- * unused gaps have no inferred meaning and stay padded. */
+ * The matched routines only need the header words state +0x08, counter +0x1c,
+ * predicate +0x20 and +0x44; 020a8bac's +0x14/+0x18 pointers stay raw in its
+ * decompiler-derived body. The bytes at +0x24..+0x43 hold the eight-word slot
+ * array modeled separately by Unk0a7d54Slots; this view deliberately pads over
+ * them rather than overlapping the two views. Other gaps also stay padded. */
 typedef struct Unk0a7d54Work {
     u32 unk_00;
     u32 unk_04;
     u32 unk_08;
-    u8 pad_0c[0x14];
+    u8 pad_0c[0x10];
+    s32 unk_1c;
     u32 unk_20;
     u8 pad_24[0x20];
     u32 unk_44;
@@ -216,14 +220,14 @@ void Unk0a7d54_Unk_0a8500(Unk0a7d54Work *work)
 int func_0205c368();
 int func_0205ddb4();
 void Unk0a7d54_Unk_0a8534(Unk0a7d54Work *work);
-void Unk0a7d54_Unk_0a93b8(Unk0a7d54Entry *entry);
+void Unk0a7d54_Unk_0a93b8(Unk0a7d54Work *work);
 /* decompiler-derived */
 void Unk0a7d54_Unk_0a8bac(int arg0)
 {
   if (arg0 == 0) {
     return;
   }
-  Unk0a7d54_Unk_0a93b8((Unk0a7d54Entry *)arg0);
+  Unk0a7d54_Unk_0a93b8((Unk0a7d54Work *)arg0);
   Unk0a7d54_Unk_0a8534((Unk0a7d54Work *)arg0);
   *(u32 *)(arg0 + 8) = 0;
   *(u32 *)(arg0 + 4) = 0;
@@ -429,27 +433,27 @@ void Unk0a7d54_AddSlot(Unk0a7d54Slots *p, u32 x)
     }
 }
 
-/* Count down entry word +0x1c while it is positive, releasing one unit through
- * 0205bb68 per step. 020a9390 loads +0x1c, compares with zero, then calls and
- * decrements; non-positive counters are left alone. */
-void Unk0a7d54_Unk_0a9390(Unk0a7d54Entry *entry)
+/* Count down the work header word +0x1c while it is positive, releasing one unit
+ * through 0205bb68 per step. 020a9390 loads +0x1c, compares with zero, then calls
+ * and decrements; non-positive counters are left alone. */
+void Unk0a7d54_Unk_0a9390(Unk0a7d54Work *work)
 {
-    if (entry->unk_1c <= 0) {
+    if (work->unk_1c <= 0) {
         return;
     }
-    func_0205bb68(entry->unk_1c);
-    entry->unk_1c -= 1;
+    func_0205bb68(work->unk_1c);
+    work->unk_1c -= 1;
 }
 
-/* Run the countdown on entry word +0x1c exactly the number of times it holds,
- * forwarding each step to 020a9390. 020a93b8 loads the signed count into r4
- * once, returns when it is non-positive (`cmp #0`/`pople`) and iterates with
+/* Run the countdown on work header word +0x1c exactly the number of times it
+ * holds, forwarding each step to 020a9390. 020a93b8 loads the signed count into
+ * r4 once, returns when it is non-positive (`cmp #0`/`pople`) and iterates with
  * `cmp r5,r4`/`blt`; this is why the count is cached before the loop. */
-void Unk0a7d54_Unk_0a93b8(Unk0a7d54Entry *entry)
+void Unk0a7d54_Unk_0a93b8(Unk0a7d54Work *work)
 {
-    s32 n = entry->unk_1c;
+    s32 n = work->unk_1c;
     int j;
     for (j = 0; j < n; j++) {
-        Unk0a7d54_Unk_0a9390(entry);
+        Unk0a7d54_Unk_0a9390(work);
     }
 }
