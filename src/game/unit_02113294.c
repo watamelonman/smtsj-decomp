@@ -123,7 +123,7 @@ int Unk113294_Unk_115124(const Unk113294Work *work)
 }
 
 
-int func_021144e4();
+void func_021144e4(u8 *work);
 void func_02114588(u8 *work);
 void func_02114604(u8 *work);
 int func_021146a4();
@@ -139,7 +139,7 @@ void Unk113294_Unk_114488(char *arg0)
   if (*(int *)(arg0 + -4) != 6) {
     Unk_LoadPalette_020de678(((Unk113294Work *)arg0)->unk_0028);
   }
-  func_021144e4(arg0);
+  func_021144e4((u8 *)arg0);
   func_02114588((u8 *)arg0);
   func_02114604((u8 *)arg0);
   func_021146a4(arg0);
@@ -493,3 +493,167 @@ void func_02115500(u8 *work)
 }
 
 #pragma opt_strength_reduction reset
+int func_0205caa0(u32 handle);
+void func_021136f8(u8 *work);
+void func_021138a4(u8 *work);
+void func_02113ae8(u8 *work);
+void func_02113bc4(u8 *work, int start, int count);
+int func_02053e44(int x, int y, int width, int height, int a, int b);
+/* At 0x021144e4, submits handles +48/+52 at unit scale and draws the
+ * +136 provider when +48 has positive status. Work borrows these handles. */
+void func_021144e4(u8 *work)
+{
+    func_0205c748(2, FIELD(u32, work, 48), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    func_0205c748(2, FIELD(u32, work, 52), 0, 0, 1.0f, 1.0f, 0, 1.0f, 0);
+    if (func_0205caa0(FIELD(u32, work, 48)) > 0)
+        func_02060b60(1, FIELD(u32, work, 136), 2,
+            FIELD(int, (u8 *)FIELD(u32, work, 48), 24) - 2, 0, 6);
+}
+/* At 0x021158e4, polls two rectangles and returns one for a hit.
+ * A differing mode also writes +208 and byte state three; work is writable. */
+int func_021158e4(u8 *work)
+{
+    u16 a, b;
+    int i, x;
+    if (!func_02053d8c(&a, &b)) return 0;
+    for (i = 0, x = 5; i < 2; i++, x += 60) {
+        if (func_02053e44(x, 18, 60, 18, 1, 0)) {
+            if (i != Unk113294_Unk_115734((Unk113294Work *)work)) {
+                FIELD(int, work, 208) = i;
+                work[0] = 3;
+                Unk0a0ce4_Unk_0a0da4(11);
+            }
+            return 1;
+        }
+    }
+    return 0;
+}
+/* At 0x021138a4, moves the cursor backward, crossing from high slots
+ * to the first empty low slot at cursor eight. Requires writable ID work. */
+void func_021138a4(u8 *work)
+{
+    switch (FIELD(int, work, 4)) {
+    case 0:
+        if (work[9] == 0) {
+            if (FIELD(int, work, 12) > 0) {
+                Unk0a0ce4_Unk_0a0da4(1);
+                FIELD(int, work, 12)--;
+            } else Unk0a0ce4_Unk_0a0da4(4);
+        } else if (work[9] == 1) {
+            if (FIELD(int, work, 12) != 8) FIELD(int, work, 12)--;
+            else {
+                work[9] = 0;
+                FIELD(int, work, 12) = Unk113294_FindEmpty((Unk113294Ids *)work);
+                Unk113294_Unk_11508c(FIELD(u32, work, 140), 111);
+            }
+            Unk0a0ce4_Unk_0a0da4(1);
+        }
+        break;
+    case 1:
+        if (FIELD(int, work, 12) > 0) {
+            Unk0a0ce4_Unk_0a0da4(1);
+            FIELD(int, work, 12)--;
+        } else Unk0a0ce4_Unk_0a0da4(4);
+        break;
+    }
+}
+/* At 0x02113ae8, selects deletion ranges from mode and byte +9,
+ * with a transition to low slots for an empty high slot eight. */
+void func_02113ae8(u8 *work)
+{
+    switch (FIELD(int, work, 4)) {
+    case 0:
+        if (work[9] == 0) {
+            func_02113bc4(work, 0, 8);
+            func_021153a4(work);
+        } else if (work[9] == 1) {
+            if (FIELD(int, work, 12) == 8) {
+                if (((Unk113294Ids *)work)->ids[FIELD(int, work, 12)] == 0) {
+                    work[9] = 0;
+                    Unk113294_Unk_11508c(FIELD(u32, work, 140), 111);
+                    FIELD(int, work, 12) = Unk113294_FindEmpty((Unk113294Ids *)work);
+                    Unk0a0ce4_Unk_0a0da4(1);
+                } else {
+                    /* Duplicated tail keeps the original's separate call at 0x2113b7c. */
+                    func_02113bc4(work, 8, 8);
+                    func_021153a4(work);
+                }
+            } else {
+                /* Duplicated tail keeps the original's separate call at 0x2113b94. */
+                func_02113bc4(work, 8, 8);
+                func_021153a4(work);
+            }
+        }
+        break;
+    case 1: func_02113bc4(work, 0, 32); func_02115500(work); break;
+    }
+}
+#pragma opt_propagation off
+/* At 0x02113bc4, removes a slot by shifting subsequent halfwords.
+ * The caller supplies a valid writable range and cursor within that range. */
+void func_02113bc4(u8 *work, int start, int count)
+{
+    int end;
+    int limit;
+    int cursor = FIELD(int, work, 12);
+    if (cursor == start) {
+        if (((Unk113294Ids *)work)->ids[cursor] == 0) {
+            Unk0a0ce4_Unk_0a0da4(2); return;
+        }
+        limit = start + count;
+        for (; start < limit - 1; start++)
+            ((Unk113294Ids *)work)->ids[start] = ((Unk113294Ids *)work)->ids[start + 1];
+        /* Original store is work+214+2*limit, i.e. slot limit-1; the -2 view
+         * reproduces that addressing. See DEC-026. */
+        ((Unk113294Ids *)(work - 2))->ids[limit] = 0;
+        Unk0a0ce4_Unk_0a0da4(2); return;
+    }
+    end = start + count;
+    if (cursor == end - 1 && ((Unk113294Ids *)work)->ids[cursor] != 0) {
+        ((Unk113294Ids *)work)->ids[cursor] = 0;
+        Unk0a0ce4_Unk_0a0da4(2); return;
+    }
+    for (; cursor < end; cursor++)
+        ((Unk113294Ids *)work)->ids[cursor - 1] = ((Unk113294Ids *)work)->ids[cursor];
+    /* Original store is work+214+2*end, i.e. slot end-1. See DEC-026. */
+    ((Unk113294Ids *)(work - 2))->ids[end] = 0;
+    FIELD(int, work, 12)--;
+    Unk0a0ce4_Unk_0a0da4(2);
+}
+#pragma opt_propagation reset
+#pragma opt_propagation off
+/* At 0x021153a4, submits two zero-terminated eight-ID lists to
+ * handles +188/+184. The provider borrows each stack list during its call. */
+void func_021153a4(u8 *work)
+{
+    u16 hi[9] = {0,0,0,0,0,0,0,0,0};
+    u16 lo[9] = {0,0,0,0,0,0,0,0,0};
+    Unk113294IdBlock *dest = (Unk113294IdBlock *)hi;
+    const Unk113294IdBlock *src = (const Unk113294IdBlock *)(work + 232);
+    *dest = *src;
+    dest = (Unk113294IdBlock *)lo;
+    src = (const Unk113294IdBlock *)(work + 216);
+    *dest = *src;
+    func_02061f10(FIELD(u32, work, 188), -1, 8, 0, hi);
+    func_02061f10(FIELD(u32, work, 184), -1, 8, 0, lo);
+}
+
+#pragma opt_propagation reset
+
+/* At 0x02113620, dispatches six special IDs; remaining IDs use the
+ * current resource lookup. The downstream callbacks borrow work. */
+void func_02113620(u8 *work)
+{
+    switch (FIELD(int, work, 16)) {
+    case 10: func_021136f8(work); break;
+    case 21: func_021138a4(work); break;
+    case 32: func_021139f0(work, Unk113294_Unk_115110()); break;
+    case 43: func_02113974(work); break;
+    case 53:
+        if (work[8] != 2) func_02113ae8(work);
+        else func_021139f0(work, Unk113294_Unk_115124((Unk113294Work *)work));
+        break;
+    case 54: func_02113ae8(work); break;
+    default: func_021139f0(work, Unk113294_Unk_115124((Unk113294Work *)work)); break;
+    }
+}
