@@ -47,6 +47,17 @@ s32 func_020b9ae0(void)
     return 1;
 }
 
+/* ARM evidence at 020b9b18: submit code 75 with operands 0/1/2,
+ * publish the result through 0203acf4, and return completion status 1. */
+s32 func_020b9b18(void)
+{
+    s32 first = func_0203ac00(0);
+    s32 second = func_0203ac00(1);
+    s32 third = func_0203ac00(2);
+    Unk03aae8_Unk_03acf4(func_020b8b38(75, first, second, third));
+    return 1;
+}
+
 /* ARM evidence at 020b9b5c: submit code 76 with operands 0/1 and zero,
  * publish the result through 0203acf4, and return completion status 1. */
 s32 func_020b9b5c(void)

@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M2-T033: match the three-operand `func_020b9b18` request handler, completing all nine C definitions in `libs/unknown/lib_020b9a38` at 100% objdiff.
 - M1-T992: match all eight ScanVisor lifecycle, mode dispatch, coordinate and drawing functions at 100% objdiff; document instruction evidence and ownership contracts.
 
 - Match eight NitroSDK sdk_020555bc scroll, blend, dispatch and transfer wrapper functions in readable C.
