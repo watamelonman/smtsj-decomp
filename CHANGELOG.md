@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match eight more functions in game/unit_021071e4: record updates, descriptor setup, color selection, and handle cleanup.
 - Added typed, documented C for all eight M1-T857 category, record, and handle helpers in `game/unit_021071e4`.
 - Verified the four M1-T794 game/unit_020a7d54 entry state machine, top-level script driver and two work-setup state machines at 100% objdiff; added signed entry/work fields and the motion-object view with instruction evidence.
 - Matched and documented the eight M1-T801 unit_02116598 BSS-cell clear/read routines, byte fifth-argument forwarders, three-call wrapper and null-guard (`func_021177b8`); added typed contracts and instruction evidence for all eight at 100% objdiff.
