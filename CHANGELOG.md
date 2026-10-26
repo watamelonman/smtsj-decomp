@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T1054: match the MSL bounded output callback, vsnprintf/vsscanf engines, strncpy, strncat, strchr, strrchr and strstr in `libs/MSL/msl_02012aa4.c`.
 - M2-T1053: match the MSL formatted-output/input wrappers and strlen, strcat and strncmp in `libs/MSL/msl_02012aa4.c`; document the unreachable qsort epilogue at `func_02013dc4` as a hard case.
 
 - M2-T103: reconstruct the eight lazy resource-cache and arena setters in `libs/unknown/lib_020907a0.c`.
