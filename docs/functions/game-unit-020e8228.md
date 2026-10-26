@@ -228,15 +228,48 @@ matches when packing explicitly updates the base word before returning it.
 The exact instruction/relocation comparison is the acceptance oracle; the card
 requires no new behavioral tests.
 
-## Not done in M1-T907
-- `func_020e9884`
-- `func_020e9c00`
-- `func_020ea058`
-- `func_020e9778`
-- `func_020ea160`
-- `func_020e82c8`
-- `func_020e8a30`
-- `func_020e92a8`
+## M1-T907 verified functions
+
+Five of the eight requested functions match at 100% objdiff. The other three
+were left on the hard list below after real matching attempts; they remain
+delinked so the image keeps the originals. Evidence is the original ARM
+instructions and relocations in the delinked object unless noted.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `func_020e9884` (124 B) | Selects the +0x30 bank, or +0x40 when work +4 equals two. Scans downward from index-1 for the first nonzero key whose resolved entry is accepted by `0e8ce8`, then resolves the entry at the supplied index and calls `0204a7b4(entry, 4)`. Returns -1 when no lower key qualifies; work and keys are borrowed. |
+| `func_020e9c00` (148 B) | Stores the word in one of the sixteen selection words at work +396 and sets the matching bit in the two-byte flag block at +392. Signed indices outside 0..15 or a null flag block return without writing. The original computes the byte and bit with signed `/ 8` and `% 8`, so the C uses the same division instead of shifts. |
+| `func_020e9778` (156 B) | Advances work +8 with `0e9814` for selector zero or `0e9884` for selector one. Selector zero then either flags the selection at +0x14 and refreshes the visor view, or resets through `0e82c8` when the index is at least ten. Selector one always flags the selection and refreshes the view. Other selectors return. |
+| `func_020e82c8` (172 B) | Stores state three, sends request `(slot, 0, 3)` to every nonempty slot in the nine-word `data_02150c0c` table, tears down through one of three provider paths, and notifies `020fda58(1)`. The two `Unk0d1c98_Unk_0d1d94` calls forward the preceding call's handle and -1. |
+| `func_020e92a8` (300 B) | Configures three display ranges, then dispatches on object state. State one waits for provider +0x1cc and records submenu one or submits kind 27. State three releases one of two teardown paths, counts down a positive +0x20 word, and advances to state four after `020e9b10`. States zero, two and four return. |
+
+The earlier empty `func_020e9c00` declaration is now typed; the function still
+uses the signed-division form because shifts produce different instructions.
+`func_020e9778` must stay after the other definitions in this file: objdiff
+mismatches its local branch targets when it is the first emitted function.
+
+### Hard list (M1-T907)
+
+- `func_020ea058` (148 B, best 97.57%): all instructions and the function size
+  match, but the allocator keeps `data_02150c80` in `sl` instead of the
+  original's `r6`, shifting `provider`/`resource`/`i`/`selector` one register
+  down (`r6`..`r9` vs `r7`..`sl`). Tried direct global, local pointer, integer
+  and const table variables, declaration reordering, `while`, block-scoped
+  selector and a helper; the data web always lands last. Left out rather than
+  freezing a fake match.
+- `func_020ea160` (168 B, best 97.59%): every instruction matches, but the
+  original literal pool contains two identical `R_ARM_ABS32 data_02150c80`
+  words while mwcc emits one, leaving this version four bytes short. Tried
+  struct vs `u32` array accesses, casts, local pointers and a volatile final
+  read; the compiler always deduplicates the literal. Left out.
+- `func_020e8a30` (292 B, best 94.25%): the best attempt matches size, stack
+  layout, both clear loops and all control flow. The two leading request words
+  only survive as volatile stores, and that scheduling keeps the first flag
+  byte in `r3` (target `r2`) and delays `mov r0, #35` past the ORR. Tried
+  nonvolatile frames, an explicit `Sel*`, helper-inlined clear loops, temporary
+  flag variables and union views; none reproduce the target schedule. Left out.
+
+No matching attempt used asm, byte blobs, or hardcoded test-specific output.
 
 ## Not done in M1-T908
 - `func_020e9de4`

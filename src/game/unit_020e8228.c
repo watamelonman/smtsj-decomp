@@ -20,7 +20,7 @@ int Unk0e8228_Unk_0e8374(u32 x);
 int Unk0e8228_GetArr88Field20(int i);
 void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1);
 void Unk0e8228_Unk_0e8e8c(u32 arg0);
-int func_020e9c00();
+void func_020e9c00(u32 work,int index,u32 value);
 int Unk0ea208_GetArr58();
 int Unk0ea208_Get_data_02176ddc();
 int Unk02e000_Unk_02e8f0(void);
@@ -428,7 +428,7 @@ void Unk0e8228_Unk_0e940c(void)
 
 int func_020e8628(void);
 void func_020ea0ec(void);
-int func_020ea160(void);
+void func_020ea160(void);
 /* Original 020e9728 calls 0ea0ec when 0e8628 returns exactly one; otherwise
  * calls 0ea160. Callee meanings are unestablished, so the name stays neutral. */
 void Unk0e8228_Unk_0e9728(void)
@@ -540,7 +540,7 @@ void Unk0e8228_Unk_0e9fa4(u32 arg0)
 
 int Unk044904_Unk_0459fc(void);
 int func_02053800(u32 selector, u32 mask);
-int func_020e82c8(void);
+void func_020e82c8(void);
 int Unk0e8228_IsField4One(void);
 int Unk0fd9f0_Unk_0fda58(u32 value);
 int Unk100208_Unk_100208(u32 value);
@@ -854,7 +854,7 @@ void func_020e93d8(u32 object, const u32 *state)
 extern u32 data_02150c0c[];
 int Unk0bc1a8_IsSlotEmptyOrFlag8(int i);
 int ScanVisor_Unk_0a2980(void);
-int func_020ea058(void);
+void func_020ea058(void);
 
 /* Original 020e942c stores the selector at work +0x0c, then dispatches:
  * selector 0 calls 020ea058; selector 1 calls 020e8628 and invokes 020ea0ec
@@ -1149,4 +1149,175 @@ void func_020ea0ec(void)
                       ((u32 (*)[2])data_02150ca0)[i][1]);
     }
     FIELD(u8, provider, 0x1c0) = 0;
+}
+
+void func_02057e58(int a, int b, int c);
+void func_020f7e48(u32 kind, u32 first, u32 second);
+void func_020bcacc(u32 kind, const Unk0e8228Sel *request);
+int Unk0bc1a8_IsSlotEmpty(u32 slot);
+void Unk0bc1a8_Unk_0bc9b4(u32 slot, u32 value);
+u32 func_020ea630(u32 value);
+u32 Unk0ea208_Unk_0eac24(void);
+void Unk0d1c98_Unk_0d1d94(u32 value, s32 mode);
+void func_020d1e94(u32 value);
+int func_020e9814(u32 work, int index);
+int Unk0e8228_IsField4One(void);
+void Unk0e8228_Unk_0e8cbc(void);
+void Unk0e8228_Unk_0e8cd8(void);
+void Unk0e8228_Unk_0e9020(u32 arg0);
+int Unk0e8228_Unk_0e8ce8(u32 x);
+
+/* Original 020e9884 selects the +0x30 or +0x40 entry bank from work +4,
+ * scans downward from index-1 for the first entry accepted by 0e8ce8, and
+ * reports it after applying selector four to the entry at the supplied index.
+ * Returns -1 when no lower entry qualifies. Work and bank entries are borrowed. */
+int func_020e9884(u32 work, int index)
+{
+    int found = -1;
+    u32 *bank = (u32 *)(work + 0x30);
+    int i;
+    if (FIELD(u32, work, 4) == 2) bank = (u32 *)(work + 0x40);
+    for (i = index - 1; i >= 0; i--) {
+        if (bank[i] != 0 && Unk0e8228_Unk_0e8ce8(func_02044ec4(bank[i])) != 0) {
+            found = i;
+            break;
+        }
+    }
+    if (found == -1) return found;
+    {
+        u32 entry = func_02044ec4(bank[index]);
+        if (entry != 0) func_0204a7b4(entry, 4);
+    }
+    return found;
+}
+
+/* Original 020e9c00 stores value in one of the sixteen words after the
+ * two-byte flag block at work +392 and sets the matching flag bit. Signed
+ * indices outside 0..15 and a null flag block leave storage untouched. */
+void func_020e9c00(u32 work, int index, u32 value)
+{
+    Unk0e8228SelHost *host = (Unk0e8228SelHost *)work;
+    /* The original spills its third argument for the guarded store below. */
+    volatile u32 saved = value;
+    int nonneg;
+    int below16;
+    if (&host->sel == 0) return;
+    nonneg = index >= 0;
+    if (nonneg == 0) return;
+    below16 = index < 16;
+    if (below16 == 0) return;
+    {
+        u32 stored = saved;
+        if (&host->sel != 0 && nonneg != 0 && below16 != 0) {
+            u32 flags;
+            int byte = index / 8;
+            int bit = index % 8;
+            host->sel.b[index] = stored;
+            flags = host->sel.a[byte];
+            host->sel.a[byte] = flags | (1 << bit);
+        }
+    }
+}
+
+
+/* Original 020e82c8 stores state three, applies request (slot, zero, three) to
+ * every nonempty slot in the nine-word data_02150c0c table, then tears down
+ * through one of three mutually exclusive provider paths before notifying
+ * 020fda58 with one. Missing shared work does nothing. */
+void func_020e82c8(void)
+{
+    u32 work = Unk0e8228_Get_data_02176ce0();
+    u32 i;
+    if (work == 0) return;
+    FIELD(u32, work, 0) = 3;
+    for (i = 0; i < 9; i++) {
+        u32 slot = data_02150c0c[i];
+        if (Unk0bc1a8_IsSlotEmpty(slot) == 0)
+            func_020f7e48(slot, 0, 3);
+    }
+    if (FIELD(u32, work, 0x1c) != 0) {
+        Unk0d1c98_Unk_0d1d94(func_020ea630(9), -1);
+    }
+    else if (FIELD(u32, work, 0x2c) != 0) {
+        Unk0d1c98_Unk_0d1d94(Unk0ea208_Unk_0eac24(), -1);
+    }
+    else {
+        func_020d1e94(1);
+    }
+    Unk0fd9f0_Unk_0fda58(1);
+}
+
+/* Original 020e92a8 configures three display ranges, then dispatches on the
+ * object state. State one waits for the provider word at +0x1cc and either
+ * records submenu one or submits kind 27. State three releases one of two
+ * teardown paths, counts down a positive +0x20 word, and advances to state
+ * four when 020e9b10 reports ready. States zero, two and four return. */
+void func_020e92a8(u32 object)
+{
+    func_02057e58(2, 48, 10);
+    switch (FIELD(u32, object, 0)) {
+    case 1:
+        if (Unk0e8228_Unk_0ea040() == 0) return;
+        FIELD(u32, object, 0) = 2;
+        if (Unk0e8228_IsField4One() == 0) {
+            FIELD(u32, object, 0x0c) = 1;
+            return;
+        }
+        func_020bcacc(27, 0);
+        func_020ea058();
+        return;
+    case 3:
+        if (FIELD(u32, object, 0x2c) != 0) {
+            if (func_02053800(0, 0xc03) == 0) return;
+            Unk100208_Unk_100208(0);
+            Unk044904_Unk_045bd0(0);
+            func_020d1e94(0);
+        }
+        if (FIELD(u32, object, 0x1c) != 0 && FIELD(s32, object, 0x20) > 0) {
+            if (func_02053800(0, 0xc03) != 0) FIELD(u32, object, 0x20) = 0;
+            FIELD(s32, object, 0x20) = FIELD(s32, object, 0x20) - 1;
+            if (FIELD(s32, object, 0x20) > 0) return;
+            Unk100208_Unk_100208(0);
+            func_020d1e94(0);
+        }
+        if (func_020e9b10() == 0) return;
+        Unk0bc1a8_Unk_0bc9b4(26, 0);
+        FIELD(u32, object, 0) = 4;
+        return;
+    case 0:
+    case 2:
+    case 4:
+        return;
+    }
+}
+
+/* Original 020e9778 advances the signed work index either forward through the
+ * next accepted bank slot (selector zero) or backward through the previous one
+ * (selector one). Both paths flag the selection at +0x14 and refresh the visor
+ * view for state-one work; selector zero also handles an exhausted scan by
+ * resetting state and running 020e82c8. Other selectors do nothing. */
+void func_020e9778(u32 work, u32 selector)
+{
+    int index;
+    switch (selector) {
+    case 0:
+        index = func_020e9814(work, FIELD(s32, work, 8));
+        FIELD(s32, work, 8) = index;
+        if (index >= 10) {
+            if (Unk0e8228_IsField4One()) Unk0e8228_Unk_0e8cd8();
+            func_020e82c8();
+            return;
+        }
+        Unk0e8228_Unk_0e9020(1);
+        FIELD(u32, work, 0x14) = 1;
+        if (Unk0e8228_IsField4One()) Unk0e8228_Unk_0e8cbc();
+        return;
+    case 1:
+        index = func_020e9884(work, FIELD(s32, work, 8));
+        FIELD(s32, work, 8) = index;
+        Unk0e8228_Unk_0e9020(1);
+        FIELD(u32, work, 0x14) = 1;
+        if (Unk0e8228_IsField4One()) Unk0e8228_Unk_0e8cbc();
+        return;
+    }
 }
