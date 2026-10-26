@@ -480,3 +480,11 @@ separate subtraction. The inline comments at each store record that intent so a
 future change to the `Unk113294Ids` layout cannot silently move the writes.
 Scope `opt_propagation off` separately to `func_02113bc4` and
 `func_021153a4` and restore it after each; the split scopes still match.
+
+## DEC-027 — Preserve indexed provider selection in 0211527c
+
+Scope `opt_strength_reduction off` to `func_0211527c` and restore it immediately
+afterward. With the default setting, mwccarm keeps a separate provider byte offset
+on the stack and increments it each group; the original instead computes
+`work + group*4` and loads at +160. Explicit row pointer and base-index locals
+preserve the eleven-entry row stride without changing the grid contents.

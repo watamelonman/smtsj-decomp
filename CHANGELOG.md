@@ -2,6 +2,11 @@
 
 ## Unreleased
 - M1-T989: verify eight ScanVisor state, slot lookup and provider helpers at 100% objdiff; document typed contracts and original instruction evidence.
+- Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
+- M1-T981: match five grid, cursor and drawing helpers; document three input/drawing instruction-generation hard cases.
+- M1-T996: match all eight remaining `game/unit_0206ae94` constructors, scale, bounce, angle and transform helpers at 100% objdiff; document typed contracts and the ARM-to-Thumb call resolved by linked objdiff.
+- Matched all three M2-T009 heap-state and animation-bank functions in `libs/NitroSDK/sdk_02020744.c`, with typed contracts and public-source evidence.
+- Matched M2-T008 rotation/reciprocal-scale wrapper in C using the public SDK sine/cosine table declaration; documented the table symbol required before linking from C.
 - M1-T988: verify eight ScanVisor forwarding, list traversal and work-state helpers at 100% objdiff; document typed contracts and original instruction evidence.
 - Matched the NitroSDK no-op and typed 100-byte startup build record in `sdk_02000b9c` at 100% objdiff.
 - M1-T975: add the missing `func_020ec704` C definition and individually verify all three CaveArea render/state callbacks (`func_020ecc24`, `func_020ec704`, `func_020ebb14`) at 100% objdiff, with documented work-field offsets and instruction evidence.
