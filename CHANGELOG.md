@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Match all eight M1-T931 callback, record-dispatch and bounded-update functions in `game/unit_020c855c` at 100% objdiff, with typed contracts and instruction evidence.
 - Verified seven M1-T930 record/table helpers at 100% objdiff; documented the remaining handle helper and compiler scheduling attempts on its hard list.
 - Verified all eight M1-T898 `game/unit_020e8228` accessors, table reset and forwarding helpers at 100% objdiff; added per-function behaviour comments and cited caller evidence in the function doc.
 - M1-T896: verify six SaveLoadTask functions at 100% objdiff, adding dispatch, setup and resource lifecycle C; document the two remaining hard functions.
