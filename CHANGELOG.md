@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T977 table, resource and state helpers at 100% objdiff; documented their instruction-based contracts.
 - Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
 
 - M1-T973: match all eight requested CaveArea cleanup, selection, draw and provider helpers at 100% objdiff; document typed contracts and the scoped lifetime pragma that restores `func_020ecf20`'s original register allocation.
