@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T997: match six `game/unit_0206ae94` updater, ring-walk, angle and random-ratio helpers at 100% objdiff; document the four-instruction vector-copy blocker for `func_0206ba4c` and `func_0206d268`.
+- M2-T033: match the three-operand `func_020b9b18` request handler, completing all nine C definitions in `libs/unknown/lib_020b9a38` at 100% objdiff.
 - M1-T992: match all eight ScanVisor lifecycle, mode dispatch, coordinate and drawing functions at 100% objdiff; document instruction evidence and ownership contracts.
 
 - Match eight NitroSDK sdk_020555bc scroll, blend, dispatch and transfer wrapper functions in readable C.
@@ -434,6 +435,8 @@
 - Added C for eight lib_020b9c3c script command wrappers with operand and result contracts.
 
 - Add matching C for the eight M2-T032 script request handlers in `libs/unknown/lib_020b9a38.c`.
+
+- Add matching C for the eight M2-T034 script request wrappers in `libs/unknown/lib_020ba474.c`.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
