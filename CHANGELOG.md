@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verify all eight M1-T923 ImageObj helpers at 100% objdiff, document instruction contracts, and explicitly forward the indexed handle to its provider.
 - Verified all eight M1-T922 ImageObj helpers at 100% objdiff, documented instruction evidence, and typed the release wrapper's forwarded work pointer.
 - M1-T875: match both `game/unit_020a6174` second-bank map-rebuild and provider-bank respawn functions at 100% objdiff; document the table-selection and two-bank record contracts.
 - Verified all eight M1-T897 wrappers in `game/unit_020e8228` at 100% objdiff, with typed forwarding contracts and instruction evidence.

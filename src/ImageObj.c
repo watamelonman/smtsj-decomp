@@ -97,7 +97,8 @@ void ImageObj_Unk_0772f8(ImageObjWork *work)
 
 
 
-/* decompiler-derived */
+/* Tests singleton word +0x14 against 4 (LDR/CMP at 02079030..02079034).
+ * Requires a live singleton; the state meaning is not established. */
 int ImageObj_Unk_079028(void)
 {
   int value;
@@ -106,7 +107,8 @@ int ImageObj_Unk_079028(void)
 }
 
 
-/* decompiler-derived */
+/* If the singleton exists, sets words +0xc0 and +0xc4 to one.
+ * Evidence: conditional stores at 020773cc..020773d0; flag meanings are unknown. */
 void ImageObj_Unk_0773bc(void)
 {
   int value;
@@ -118,43 +120,49 @@ void ImageObj_Unk_0773bc(void)
 }
 
 void ImageObj_Unk_0791a8(u32 arg0,int arg1,u32 arg2,u32 arg3);
-/* decompiler-derived */
+/* Forwards the two supplied words to 0791a8 with slot and final flag zero.
+ * Evidence: register moves at 02077830..02077840. */
 void ImageObj_Unk_07782c(u32 arg0,u32 arg1)
 {
   ImageObj_Unk_0791a8(0,arg0,arg1,0);
 }
 
 
-/* decompiler-derived */
+/* Forwards to slot one with the second value incremented and final flag zero.
+ * Evidence: ADD/MOV operands at 0207786c..02077874. */
 void ImageObj_Unk_077860(u32 arg0,int arg1)
 {
   ImageObj_Unk_0791a8(1,arg0,arg1 + 1,0);
 }
 
 
-/* decompiler-derived */
+/* Forwards to slot two with the second value plus three and final flag zero.
+ * Evidence: ADD/MOV operands at 020778a0..020778a8. */
 void ImageObj_Unk_077894(u32 arg0,int arg1)
 {
   ImageObj_Unk_0791a8(2,arg0,arg1 + 3,0);
 }
 
 
-/* decompiler-derived */
+/* Forwards to slot two with the second value plus three and final flag one.
+ * Evidence: ADD/MOV operands at 020778c0..020778c8. */
 void ImageObj_Unk_0778b4(u32 arg0,int arg1)
 {
   ImageObj_Unk_0791a8(2,arg0,arg1 + 3,1);
 }
 
-int func_02061424();
-/* decompiler-derived */
+int func_02061424(u32 handle);
+/* Passes a nonzero indexed singleton word to func_02061424.
+ * Evidence: LDR into r0 at 02079194 and BL at 020791a0.
+ * Requires a live singleton and valid index; the original checks only the word. */
 void ImageObj_Unk_079184(int arg0)
 {
-  int value;
-  value = ImageObj_Get_data_0217231c();
-  if (*(int *)(value + arg0 * 4 + 4) == 0) {
+  u32 *table = (u32 *)ImageObj_Get_data_0217231c();
+  u32 handle = *(table + arg0 + 1);
+  if (handle == 0) {
     return;
   }
-  func_02061424();
+  func_02061424(handle);
 }
 
 
@@ -295,7 +303,8 @@ void ImageObj_Unk_0779a0(u32 *arg0,u32 arg1)
   arg0[0x15] = 0xffffffff;
 }
 
-/* decompiler-derived */
+/* Visits slots zero through two in order via 077554.
+ * Evidence: loop at 02077628..02077638; no singleton check is made here. */
 void ImageObj_Unk_077620(void)
 {
   int tmp1;
