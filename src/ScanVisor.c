@@ -449,7 +449,7 @@ void ScanVisor_Unk_0a2b7c(void)
   return;
 }
 
-int func_020a4370(ScanVisorSlot *entry);
+void func_020a4370(ScanVisorSlot *entry);
 /* Visit occupied entries in the borrowed seven-slot list. Original
  * 0x020a4544 starts at +0x20, advances 52 bytes and calls func_020a4370
  * only for a nonzero leading word; the caller must supply the full list. */
@@ -718,6 +718,9 @@ int ScanVisor_Unk_0a2b58(void)
     return Unk0a7d54_Unk_0a8c04(v + 40 + 1024);
 }
 
+/* Clear the leading word and flag bits 0..4 and 6..7, preserving bit 5.
+ * Original 0x020a2bb8 uses byte read/modify/write operations at +4; callers
+ * supply writable flag storage, and the bit meanings remain unknown. */
 void ScanVisor_ResetBits(ScanVisorBits *p)
 {
     p->word = 0;
@@ -729,32 +732,34 @@ void ScanVisor_ResetBits(ScanVisorBits *p)
     p->b67 = 0;
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a2e5c(int arg0)
+/* Release the four nonzero provider handles, tear down sub-objects, then
+ * clear the global work word. Evidence: original 020a2e5c handle loads
+ * before 0205ddb4 calls and final store to data_02176b04. Storage is borrowed. */
+void ScanVisor_Unk_0a2e5c(ScanVisor *sv)
 {
   int tmp1;
-  if (((ScanVisor *)arg0)->unk_0008 != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_0008 = 0;
+  if (sv->unk_0008 != 0) {
+    func_0205ddb4(sv->unk_0008);
+    sv->unk_0008 = 0;
   }
-  if (((ScanVisor *)arg0)->unk_0024 != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_0024 = 0;
+  if (sv->unk_0024 != 0) {
+    func_0205ddb4(sv->unk_0024);
+    sv->unk_0024 = 0;
   }
-  if (((ScanVisor *)arg0)->unk_0040 != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_0040 = 0;
+  if (sv->unk_0040 != 0) {
+    func_0205ddb4(sv->unk_0040);
+    sv->unk_0040 = 0;
   }
-  ((ScanVisor *)arg0)->unk_005c = 0;
-  if (((ScanVisor *)arg0)->unk_024c != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_024c = 0;
+  sv->unk_005c = 0;
+  if (sv->unk_024c != 0) {
+    func_0205ddb4(sv->unk_024c);
+    sv->unk_024c = 0;
   }
-  Unk0a7d54_Unk_0a8bac(arg0 + 0x428);
+  Unk0a7d54_Unk_0a8bac((u8 *)sv + 0x428);
   Unk0fc584_Unk_0fc6a0();
   Unk0fd268_Unk_0fd3ac();
   Unk0fd9f0_Unk_0fda14();
-  func_020c8f08(arg0 + 0x78);
+  func_020c8f08((u8 *)sv + 0x78);
   tmp1 = 0;
   do {
     func_0205bb68();
@@ -777,7 +782,10 @@ extern u8 data_0214cdf0[];
 extern u8 data_0214ce08[];
 int func_0205dcd4();
 int func_020c8ce0();
-/* Loads Visor/e_appearance + search_parts01/02 (medium). */
+/* Load Visor/e_appearance and search_parts01/02: the three path strings at
+ * data_0214cddc/cdf0/ce08 support the configured name. Original 020a370c
+ * stores provider handles at +8/+24/+24c, then initializes borrowed +78.
+ * arg0 must be writable work storage; arg1 is the opaque provider option. */
 void ScanVisor_LoadSearchParts(int arg0,u32 arg1)
 {
   u32 tmp1;
@@ -826,58 +834,68 @@ void ScanVisor_Unk_0a4950(int list,u32 value,int on)
   *(u32 *)(list + 0x194) = 0x1000;
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a4864(int arg0)
+/* Apply (8, 0) to occupied slots through SetUnkFields24_28, then clear
+ * list+0x1bc. Original 0x020a4864 scans seven 52-byte slots at +0x20.
+ * Requires a writable list; the field values have no established units. */
+void ScanVisor_Unk_0a4864(int list)
 {
-  int tmp1;
-  int *v2;
-  tmp1 = 0;
-  v2 = (int *)(arg0 + 0x20);
+  int index;
+  int *slot;
+  index = 0;
+  slot = (int *)(list + 0x20);
   do {
-    if (*v2 != 0) {
-      ScanVisor_SetUnkFields24_28((ScanVisor *)v2,8,0);
+    if (*slot != 0) {
+      ScanVisor_SetUnkFields24_28((ScanVisor *)slot,8,0);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
-  ((ScanVisor *)arg0)->unk_01bc = 0;
+    index = index + 1;
+    slot = slot + 0xd;
+  } while (index < 7);
+  ((ScanVisor *)list)->unk_01bc = 0;
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a4910(int arg0)
+/* Apply (0, 0) through SetRange to each occupied slot. Original
+ * 0x020a4910 scans seven 52-byte slots at list+0x20; it does not change
+ * list+0x1bc. Requires a valid writable list; range units are unknown. */
+void ScanVisor_Unk_0a4910(int list)
 {
-  int tmp1;
-  int *v2;
-  tmp1 = 0;
-  v2 = (int *)(arg0 + 0x20);
+  int index;
+  int *slot;
+  index = 0;
+  slot = (int *)(list + 0x20);
   do {
-    if (*v2 != 0) {
-      ScanVisor_SetRange((ScanVisor *)v2, (u32)0, (u32)0);
+    if (*slot != 0) {
+      ScanVisor_SetRange((ScanVisor *)slot, (u32)0, (u32)0);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
+    index = index + 1;
+    slot = slot + 0xd;
+  } while (index < 7);
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a48b4(int arg0)
+/* Apply (80, 0) through SetRange to occupied slots, then clear
+ * list+0x1bc. Original 0x020a48b4 scans seven 52-byte slots at +0x20.
+ * Requires a writable list; range units are unknown. */
+void ScanVisor_Unk_0a48b4(int list)
 {
-  int tmp1;
-  int *v2;
-  tmp1 = 0;
-  v2 = (int *)(arg0 + 0x20);
+  int index;
+  int *slot;
+  index = 0;
+  slot = (int *)(list + 0x20);
   do {
-    if (*v2 != 0) {
-      ScanVisor_SetRange((ScanVisor *)v2, (u32)0x50, (u32)0);
+    if (*slot != 0) {
+      ScanVisor_SetRange((ScanVisor *)slot, (u32)0x50, (u32)0);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
-  *(u32 *)(arg0 + 0x1bc) = 0;
+    index = index + 1;
+    slot = slot + 0xd;
+  } while (index < 7);
+  *(u32 *)(list + 0x1bc) = 0;
 }
 
 int ScanVisor_FindEnt20(u32 id);
-/* decompiler-derived */
+/* Allocate a free slot, mark it occupied and copy key metadata from FindEnt20.
+ * Original 020a42f0 copies list byte +1c to slot +18 and table words
+ * +c/+10/+4/+8 to +8/+c/+2c/+30, then sets (80,0) and (0,0).
+ * Returns borrowed slot storage or null when full; the key must exist in
+ * the metadata table, since the original does not check that lookup. */
 u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
 {
   u32 *v1;
@@ -910,7 +928,9 @@ void func_020a34ac(ScanVisor *sv);
 void Unk0a7d54_Unk_0a8ad0(void *p);
 void func_020572d8(void);
 
-/* Draws the visor layers; modes 1/3 use layer 2, modes 0/2 layer 1. */
+/* Draw the visor layers for borrowed work. Evidence: original 020a3114
+ * submits layers 2 for modes 1/3 and 1 for 0/2 to 02057e58, then
+ * invokes the matching draw callbacks before restoring 020580ec(1). */
 void ScanVisor_Draw(ScanVisor *sv)
 {
     func_020580ec(0);
@@ -969,9 +989,13 @@ void ScanVisor_Unk_0a3254(ScanVisor *p)
     Unk0c855c_Unk_0c9890((u8 *)p + 120, 12);
 }
 
-int GameState_Exists();
-void *Unk02e000_GetWorkArea();
+int GameState_Exists(void);
+void *Unk02e000_GetWorkArea(void);
 
+/* Query signed work fields +af2/+af4: original 020a3274 multiplies the
+ * first by 100 with signed-16 truncation, divides by the positive second,
+ * caps at 99 and returns a signed byte. Missing game state or a nonpositive
+ * denominator returns zero; the borrowed provider work must otherwise exist. */
 s8 ScanVisor_Unk_0a3274(void)
 {
     u8 *w;
@@ -1025,6 +1049,9 @@ int ScanVisor_FindEnt20(u32 id)
     return 0;
 }
 
+/* For each occupied slot, call func_02057eb8(2), then func_020a43f4
+ * with the current leading list word. Original 0x020a4578 reloads that
+ * word after the first call; the seven borrowed slots start at +0x20. */
 void ScanVisor_Unk_0a4578(u32 *p)
 {
     int j;
@@ -1052,6 +1079,9 @@ ScanVisor *ScanVisor_FindSlotByKey(u32 p, u32 k)
     return 0;
 }
 
+/* Return whether any occupied slot has nonzero +0x14. Original
+ * 0x020a4600 calls the +0x14 accessor on seven 52-byte slots at +0x20;
+ * these observed loads support the configured query name. */
 int ScanVisor_AnySlotField14(u8 *p)
 {
     int j;
@@ -1079,7 +1109,10 @@ int ScanVisor_AllSlotsF28Is80(u8 *p)
     return 1;
 }
 
-/* Looks up the visor entry; if idle, (optionally with SE 28) applies `on`. */
+/* Find the caller ID and activate its slot only when +0x14 is zero.
+ * Original 0x020a49d8 calls FindSlotByKey and the +0x14 accessor, then
+ * calls Unk0a0ce4_Unk_0a0da4(28) for nonzero on before applying on.
+ * A missing or already active slot is unchanged; the list is borrowed. */
 void ScanVisor_SetById(u32 list, u32 id, int on)
 {
     ScanVisor *sv = ScanVisor_FindSlotByKey(list, id);
@@ -1107,4 +1140,342 @@ void ScanVisor_Unk_0a4a18(u32 list, u32 id)
         return;
     }
     ScanVisor_Unk_0a465c(sv);
+}
+
+
+s8 *Unk0a6174_Unk_0a6a88(void *records, int x, int y);
+void func_02034dd0(void);
+void Unk118b04_Unk_118e50(int id, int on);
+/* Query the record at signed coordinates work+0x7482/+0x7483. Original
+ * 0x020a3ac0 passes work+0x5508 to the provider and tests its signed first
+ * byte against 1; on equality it calls 02034dd0, then 118e50(6, 1).
+ * Requires valid borrowed work and provider record; returns a 0/1 result. */
+int func_020a3ac0(u8 *work)
+{
+    s8 *record = Unk0a6174_Unk_0a6a88(work + 0x5508,
+        *(s8 *)(work + 0x7482), *(s8 *)(work + 0x7483));
+    if (*record != 1) {
+        return 0;
+    }
+    func_02034dd0();
+    Unk118b04_Unk_118e50(6, 1);
+    return 1;
+}
+
+/* Borrowed prefix: the caller owns the counter updated at +4. */
+typedef struct ScanVisorCounter {
+    u32 unk_00;
+    s32 counter;
+} ScanVisorCounter;
+
+/* List initialization view; array extents follow the seven-iteration loops. */
+typedef struct ScanVisorListInit {
+    u8 pad_00[0x1c];
+    u8 field1c;
+    u8 pad_1d[0x16f];
+    u32 field18c;
+    u32 field190;
+    u32 field194;
+    u32 field198;
+    u32 values[7];
+    u32 field1b8;
+    u32 field1bc;
+    u32 handles[7];
+} ScanVisorListInit;
+
+void func_020a3008(ScanVisorCounter *p, int a, int b, int c, int d);
+u32 func_02098860(int index);
+
+/* Return an 8-bit scale derived from GetConst6: original 020a4df0
+ * computes ((50 * value / count + 50) * 31) / 100, with minimum 1.
+ * Equal value/count returns 31 directly; caller must avoid signed overflow. */
+u32 func_020a4df0(s32 value)
+{
+    s32 count = ScanVisor_GetConst6();
+    u8 result;
+    if (value == count) {
+        return 31;
+    }
+    result = ((50 * value / count + 50) * 31) / 100;
+    if (result == 0) {
+        result = 1;
+    }
+    return result;
+}
+
+/* Submit (0,-54,0,0), then advance the borrowed +4 counter by one or
+ * two according to the 020a3274 query's >=75 threshold. Original 020a30b4
+ * wraps at 65535; neither the counter units nor provider semantics are known. */
+void func_020a30b4(ScanVisorCounter *p)
+{
+    func_020a3008(p, 0, -54, 0, 0);
+    p->counter++;
+    if (ScanVisor_Unk_0a3274() >= 75) {
+        p->counter++;
+    }
+    if (p->counter >= 65535) {
+        p->counter = 0;
+    }
+}
+
+/* Initialize borrowed list state and obtain seven indexed handles. Original
+ * 020a466c stores +18c/+190/+198/+194/+1c/+1b8/+1bc in that order,
+ * then clears seven words at +19c before calling the provider for +1c0. */
+void func_020a466c(ScanVisorListInit *p)
+{
+    int i;
+    p->field18c = 0;
+    p->field190 = 0;
+    p->field198 = 0;
+    p->field194 = 0;
+    p->field1c = 0;
+    p->field1b8 = 0;
+    p->field1bc = 1;
+    for (i = 0; i < 7; i++) {
+        p->values[i] = 0;
+    }
+    for (i = 0; i < 7; i++) {
+        p->handles[i] = func_02098860(i);
+    }
+}
+
+/* Apply enabled flags in byte +4 in the original 020a2c90 order: bits
+ * 4,1,5,0 request the four existing work setters. Storage is borrowed;
+ * reload each flag after the preceding call, which may change that storage. */
+void func_020a2c90(ScanVisorBits *p)
+{
+    if (p->b4) ScanVisor_SetField214(1);
+    if (p->b1) ScanVisor_SetField34(1);
+    if (p->b5) ScanVisor_Unk_0a27e0(1);
+    if (p->b0) ScanVisor_SetRangeA(1);
+}
+
+/* Tick a borrowed slot: original 020a4370 decrements positive +10, then
+ * adds signed +24 to +1c, clamping to [0,80] and stopping at either end.
+ * The existing caller ignores the return register. */
+void func_020a4370(ScanVisorSlot *entry)
+{
+    ScanVisor *p = (ScanVisor *)entry;
+    if ((s32)p->unk_0010 > 0) p->unk_0010--;
+    if ((s32)p->unk_0024 > 0) {
+        p->rangeA += p->unk_0024;
+        if ((s32)p->rangeA >= 80) {
+            p->rangeA = 80;
+            p->unk_0024 = 0;
+        }
+    }
+    if ((s32)p->unk_0024 < 0) {
+        p->rangeA += p->unk_0024;
+        if ((s32)p->rangeA <= 0) {
+            p->rangeA = 0;
+            p->unk_0024 = 0;
+        }
+    }
+}
+
+/* Apply the caller flag to mode-selected setters. Original 020a269c reads
+ * the global work mode; missing work and modes outside 0..3 do nothing. */
+void func_020a269c(int on)
+{
+    ScanVisor *sv = (ScanVisor *)ScanVisor_Get_data_02176b04();
+    if (sv == 0) return;
+    switch (sv->mode) {
+    case 0:
+    case 2:
+        ScanVisor_SetField34(on);
+        ScanVisor_Unk_0a27e0(on);
+        ScanVisor_SetRangeA(on);
+        ScanVisor_SetField214(on);
+        ScanVisor_Unk_0a2920(on);
+        break;
+    case 1:
+        ScanVisor_SetField34(on);
+        ScanVisor_Unk_0a27e0(on);
+        ScanVisor_SetField214(on);
+        ScanVisor_Unk_0a28f4(on);
+        break;
+    case 3:
+        ScanVisor_SetField34(on);
+        ScanVisor_Unk_0a27e0(on);
+        ScanVisor_SetField214(on);
+        break;
+    }
+}
+
+int Unk0a23f4_IsField210Zero(void);
+int Unk0a23f4_IsField2cZero(void);
+int Unk0a23f4_Thunk_020fd428(void);
+int Unk0a23f4_IsField14Zero(void);
+/* Snapshot the mode and four query bits into caller-owned flags, preserving
+ * other bits. Original 020a2c00 stores mode at +0 then bits 4,1,5,0 at +4;
+ * absent global work leaves the entire destination unchanged. */
+void func_020a2c00(ScanVisorBits *p)
+{
+    ScanVisor *sv = (ScanVisor *)ScanVisor_Get_data_02176b04();
+    if (sv == 0) return;
+    p->word = sv->mode;
+    p->b4 = (u8)Unk0a23f4_IsField210Zero();
+    p->b1 = (u8)Unk0a23f4_IsField2cZero();
+    p->b5 = (u8)Unk0a23f4_Thunk_020fd428();
+    p->b0 = (u8)Unk0a23f4_IsField14Zero();
+}
+
+/* Advance the signed coordinates at +8/+c by velocities +10/+14, clamp
+ * to the caller bounds and stop each completed direction. Original
+ * 020a3008 separately processes negative then positive velocities;
+ * caller owns writable storage and must avoid signed overflow. */
+void func_020a3008(ScanVisorCounter *p, int a, int b, int c, int d)
+{
+    if (FIELD(s32,p,16) < 0) {
+        FIELD(s32,p,8) += FIELD(s32,p,16);
+        if (FIELD(s32,p,8) <= a) {
+            FIELD(s32,p,8) = a;
+            FIELD(s32,p,16) = 0;
+        }
+    }
+    if (FIELD(s32,p,20) < 0) {
+        FIELD(s32,p,12) += FIELD(s32,p,20);
+        if (FIELD(s32,p,12) <= b) {
+            FIELD(s32,p,12) = b;
+            FIELD(s32,p,20) = 0;
+        }
+    }
+    if (FIELD(s32,p,16) > 0) {
+        FIELD(s32,p,8) += FIELD(s32,p,16);
+        if (FIELD(s32,p,8) >= c) {
+            FIELD(s32,p,8) = c;
+            FIELD(s32,p,16) = 0;
+        }
+    }
+    if (FIELD(s32,p,20) > 0) {
+        FIELD(s32,p,12) += FIELD(s32,p,20);
+        if (FIELD(s32,p,12) >= d) {
+            FIELD(s32,p,12) = d;
+            FIELD(s32,p,20) = 0;
+        }
+    }
+}
+
+void func_020c9234(u8 *p, int a, int b);
+void func_020a46d0(u8 *p);
+void func_020a8658(u8 *p, u8 *list);
+/* Tick borrowed work's +4 counter, wrapping at 65535, and dispatch the
+ * mode-specific sub-object updates. Evidence: original 020a2f3c switch
+ * uses +24/+8/+78/+24c/+428; unsupported modes only tick the counter. */
+void func_020a2f3c(ScanVisorCounter *p)
+{
+    p->counter++;
+    if (p->counter >= 65535) p->counter = 0;
+    switch (p->unk_00) {
+    case 0:
+    case 2:
+        func_020a3008((ScanVisorCounter *)((u8 *)p + 36),0,0,81,0);
+        func_020a30b4((ScanVisorCounter *)((u8 *)p + 8));
+        func_020c9234((u8 *)p + 120,0,50);
+        func_020a46d0((u8 *)p + 588);
+        func_020a8658((u8 *)p + 40 + 1024,(u8 *)p + 588);
+        break;
+    case 1:
+    case 3:
+        func_020a3008((ScanVisorCounter *)((u8 *)p + 36),0,0,81,0);
+        func_020c9234((u8 *)p + 120,0,50);
+        break;
+    }
+}
+
+/* Four-word provider descriptor copied to the stack by original 020a3664;
+ * no meaning or ownership of its words is established. */
+typedef struct ScanVisorDescriptor {
+    u32 words[4];
+} ScanVisorDescriptor;
+extern u32 data_0214cda8[];
+extern ScanVisorDescriptor data_0213c3b8;
+extern u8 data_0214cdd0[];
+u32 Unk05b82c_Unk_05b82c(u32 id);
+u32 func_0205ba28(ScanVisorDescriptor *descriptor, u8 *name, int value);
+void func_020ca5a4(int value);
+void Unk05ae50_Unk_05ae50(int id);
+u8 *Unk02e000_GetAddr_data_02140ac8(void);
+u32 func_0205b97c(int id);
+
+/* Acquire ten indexed resources and four handles at +d0 with 0x60 stride,
+ * using ID 192 for the first handle except in mode 3. Evidence: original
+ * 020a3630 table loop and descriptor-copy calls. Caller owns writable work;
+ * provider-owned global storage receives ID 194's handle at +1244. */
+void func_020a3630(ScanVisor *sv)
+{
+    u32 *ids;
+    ScanVisorDescriptor descriptor;
+    int i;
+    int j;
+    u8 *cursor;
+    u8 *global;
+    Unk02e000_Unk_02e0cc();
+    ids = data_0214cda8;
+    for (i = 0; i < 10; i++) Unk05b82c_Unk_05b82c(ids[i]);
+    descriptor = data_0213c3b8;
+    cursor = (u8 *)sv;
+    for (j = 0; j < 4; j++) {
+        if (j == 0 && sv->mode != 3) {
+            FIELD(u32,cursor,208) = Unk05b82c_Unk_05b82c(192);
+        } else {
+            FIELD(u32,cursor,208) = func_0205ba28(&descriptor,data_0214cdd0,0x664);
+        }
+        cursor += 96;
+    }
+    func_020ca5a4(2);
+    Unk02e000_Unk_02e0cc();
+    Unk05ae50_Unk_05ae50(194);
+    global = Unk02e000_GetAddr_data_02140ac8();
+    FIELD(u32,global,0x1244) = func_0205b97c(194);
+}
+
+ScanVisor *func_020611dc(void (*update)(ScanVisorCounter *),
+                       void (*draw)(ScanVisor *), int zero,
+                       void (*release)(ScanVisor *), int size, int kind,
+                       int option, int enabled);
+void func_020a85ac(u8 *p);
+void Unk0fd268_Unk_0fd380(int mode);
+void Unk0fd9f0_Unk_0fd9f0(void);
+void Unk0fc584_Unk_0fc674(int value);
+
+/* Allocate 0x970 bytes with update/draw/release callbacks and initialize the
+ * mode-dependent sub-objects. Evidence: original 020a2d0c callback literals,
+ * work-size stack argument and stores. Returns null on allocation failure;
+ * the task provider owns the allocation published in data_02176b04. */
+ScanVisor *func_020a2d0c(u32 mode)
+{
+    ScanVisor *sv = func_020611dc(func_020a2f3c,ScanVisor_Draw,0,
+                               ScanVisor_Unk_0a2e5c,0x970,3,0,1);
+    if (sv == 0) return 0;
+    *data_02176b04 = (u32)sv;
+    sv->mode = mode;
+    func_020a85ac((u8 *)sv + 40 + 1024);
+    if (sv->mode == 0 || sv->mode == 2) Unk0fd268_Unk_0fd380(0);
+    else Unk0fd268_Unk_0fd380(1);
+    func_020a3630(sv);
+    ScanVisor_LoadSearchParts((int)sv,1);
+    func_020a466c((ScanVisorListInit *)((u8 *)sv + 588));
+    switch (sv->mode) {
+    case 0:
+    case 2:
+        sv->field14 = -54;
+        ScanVisor_SetRangeA(1);
+        break;
+    case 1:
+        Unk0fd9f0_Unk_0fd9f0();
+    case 3:
+        ScanVisor_Unk_0a48b4((int)sv + 588);
+        sv->field14 = -10;
+        FIELD(s32,sv,12) = 100;
+        break;
+    }
+    Unk0fc584_Unk_0fc674(0);
+    FIELD(s32,sv,44) = 81;
+    FIELD(s32,sv,52) = -3;
+    FIELD(s32,sv,528) = 50;
+    FIELD(s32,sv,532) = -3;
+    ScanVisor_Unk_0a27e0(1);
+    if (sv->mode == 2) func_020a269c(0);
+    return sv;
 }

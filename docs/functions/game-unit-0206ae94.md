@@ -77,24 +77,89 @@ None. All eight bodies match at 100% objdiff. `func_0206d3b4` needs the
 linked objdiff report (not standalone instruction comparison) because its call
 to Thumb `func_02000edc` is an ARM-to-Thumb `blx` in the ROM.
 
-## Not done in M1-T997
-- `func_0206ba4c`
-- `func_0206b0f0`
-- `func_0206d54c`
-- `func_0206d268`
-- `func_0206d7f4`
-- `func_0206d68c`
-- `func_0206ced4`
-- `func_0206cd30`
-- `Unk06ae94_Unk_06aed4`: hand-matched
-- `Unk06ae94_Unk_06aeec`: hand-matched
-- `Unk06ae94_SetPair`: hand-matched
-- `Unk06ae94_Call_06af04`: hand-matched
-- `Unk06ae94_Unk_06c0b0`: hand-matched
-- `Unk06ae94_CompareU32`: hand-matched
-- `Unk06ae94_Call_06c130`: hand-matched
-- `Unk06ae94_Unk_06c8f8`: hand-matched
-- `Unk06ae94_Call_06c938`: hand-matched
-- `Unk06ae94_Unk_06b8e4`: hand-matched
-- `Unk06ae94_Unk_06c854`: hand-matched
-- `Unk06ae94_Unk_06d4e8`: hand-matched
+## M1-T997: verified matching functions
+
+Six functions match the original ARM instructions at 100% in the linked objdiff
+report. Contracts follow the original loads, stores and calls; provider
+semantics remain unknown where noted.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `func_0206b0f0` | 0x0206b0f0 / 320 B | Per-frame updater. The countdown at `+0x2b8` matching the word at `+0` clears itself, decrements the signed halfword at `+0x3b6`, and either releases through `Unk06ae94_Unk_06c0b0` or calls `func_0206fc24` when the countdown reaches zero. Otherwise it advances the animation through `Unk06fb70_Unk_06feb4`, calls `func_0206b958` when `+0x35c` is nonzero, clamps the byte at `+0x3b4` to 31, packs the shifted words at `+0x1e4/+0x1e8/+0x1ec` into the four spots at `+0x374/+0x388/+0x39c/+0x3b0`, emits a rectangle from the halfwords at `src+40/+42` through `func_020599c4`, and increments `+0x2b8`. |
+| `func_0206cd30` | 0x0206cd30 / 420 B | Advances the three animation channel groups at `+0x198` through `func_020703b4`, `Unk06fb70_Unk_070500` and `Unk06fb70_Unk_07057c`, then walks the child ring from the signed cursor at `+0x258` to the end marker at `+0x25c`, wrapping with `% 50`. A nonnull child at `+0x260[i]` whose `+0x358` matches `+0x24c` receives `+0x340/+0x344` from the shifted words at `+0x4/+0x8`, an angle from `func_0200219c(+0x1ac << 12, 409600)`, a three-angle rotation through `func_0206d3b4`, and the deltas at `+0x54/+0x58/+0x5c`. |
+| `func_0206ced4` | 0x0206ced4 / 364 B | Derives an angle either from the rotating global counter `data_0216b9bc * -45` (wrapping after eight steps) or from `func_02050088(1, 0, 8) * -45`, stores it at `+0x16e`, normalises `angle - +0x344` into `[0,360)`, and rotates `(offset + +0x348, 0, 0)` through `func_02000edc`/`func_02000f10`, storing the result at `+0x120..+0x128`. |
+| `func_0206d54c` | 0x0206d54c / 320 B | Computes the unsigned ratio `value / scale` (mode 1 negates it, mode 2 takes the sign from `(s8)func_02050088(1,0,1)`) and converts the float to the original 20.12-style integer with the `+0.5/-0.5` away-from-zero bias. |
+| `func_0206d68c` | 0x0206d68c / 360 B | Same signed conversion as `func_0206d54c`, but the numerator is `func_02050088(1, 0, value)` (a random value in `[0, value]`); modes 1 and 2 negate. Callers pass `(2, value, 100)` and add the result to 20.12 positions. |
+| `func_0206d7f4` | 0x0206d7f4 / 348 B | Same signed conversion, with the numerator `func_02050088(1, low, high)` (a random value in `[low, high]`); modes 1 and 2 negate. |
+
+### M1-T997 hard list
+
+Both functions were left as the delinked original ARM; defining them in C moved
+the rest of this TU's objdiff unit even when the bodies were otherwise exact.
+
+- `func_0206ba4c` (0x0206ba4c / 312 B): takes the vector pointer plus a by-value
+  three-angle record (`r1..r3`) and applies the X/Y/Z rotation helpers
+  `func_02000ec0`/`edc`/`ef8`. The rotation pipeline, table indexing, matrix and
+  result stores all match; only the initial vector copy differs. The ROM copies
+  the three words with one `ldm rX,{r3,r4,ip}` plus three `str` instructions
+  (four instructions, 312 B). C array or struct copies compile to either three
+  `ldr` plus three `str` (six instructions, 320 B) or `ldm` plus `stm` (two
+  instructions, 304 B). Array/struct/union/volatile/packed destinations,
+  aggregate initialisers, pointer and temporary copies, all assignment and
+  declaration orders, helper inlining, `restrict`, and the available
+  optimisation levels did not produce the four-instruction form.
+- `func_0206d268` (0x0206d268 / 332 B): identical three-rotation body taking the
+  vector pointer and three angle fields, returning a pointer to the local
+  result buffer. It has the same initial-copy blocker as `func_0206ba4c`: the
+  ROM uses four instructions, while C copies give six or two. All later code
+  matches once the copy length is accounted for. The existing `func_0206d3b4`
+  caller continues to use the delinked original.
+
+A human can open a decomp.me scratch with `tools/decompme.py` for the copy
+codegen (`ldm` plus individual stores) if a different source idiom is desired.
+
+## M1-T998: render constructor and axis angles
+
+Two functions match the original ARM instructions at 100% in the linked objdiff
+report. The remaining five stay as the delinked original ARM so the unit still
+matches; they are listed in the hard list with the blockers observed.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `func_0206af04` | 0x0206af04 / 424 B | Allocates a 0x3bc-byte render object through `func_020611dc` with `func_0206b0f0` as updater and `func_0206b230` in the callback slot selected by the final countdown argument. Clears it, copies the 0x134-byte source block, copies either 0xb0 bytes from the alternate block or four bytes from its +0xa6 tail, seeds the colour/scale halfwords and words at +0x268..+0x2b4, stores owner/callback/link fields, and mirrors the signed countdown halfword from +0x3b8 to +0x3b6. Returns null only when allocation fails. |
+| `func_0206b6e0` | 0x0206b6e0 / 516 B | For each nonzero axis angle, normalises it into `[0,360)`, converts it to the `data_0212629c` sine-pair index, and forwards the pair to `func_02004588` (Y), `func_0200454c` (X) or `func_020045c4` (Z). The inline normaliser reproduces the original signed remainder-by-360 sequence. |
+
+### M1-T998 hard list
+
+The following bodies were left undefined in C, so their delinked ARM remains in
+the image. They are candidates for a human decomp.me scratch (`tools/decompme.py`)
+or a later card.
+
+- `func_0206b230` (0x0206b230 / 1200 B): hardware-register renderer
+  (`0x04000444`, `0x04000448`, `0x0400046c`, `0x04000470`), provider dispatch
+  through `0x0206e334`, angle rotation through `func_0206bb84`, `0x0206b6e0`
+  and several `0x020045xx` helpers. No C form was committed because matching the
+  long predicated/constant-pool sequence would require a source form that also
+  preserves the original register allocation.
+- `func_0206bca8` (0x0206bca8 / 1032 B): three-way motion state machine on
+  `+0x35c`. A direct reconstruction compiled to 992 B at 80.4% direct objdiff:
+  the state tests were laid out as `bne` chains instead of the original `beq`
+  blocks, and the three angles at `+0x160..+0x168` loaded as three `ldr` rather
+  than one `ldm`. Passing them as a by-value three-angle record is the next
+  experiment.
+- `func_0206c204` (0x0206c204 / 1236 B): per-frame spawner with four 16-slot
+  handle tables at `+0x50/+0x90/+0xd0/+0x110` and a four-way jump table. It
+  depends on the constructor wrapper and leaves a 0x274-byte stack frame; the
+  original callback/stack layout was not reproduced.
+- `func_0206cad0` (0x0206cad0 / 608 B): per-frame child spawner. It calls
+  `func_0206ca64`, allocates through `Unk06ae94_Call_06af04`, seeds the child
+  velocity/angle fields and calls `func_0206cd30`. A direct reconstruction
+  compiled to 616 B at 92.3% direct objdiff; the control flow, spawn arguments
+  and Q12 child updates matched, but the compiler assigned the loop count,
+  cursor and child pointer to different registers than the original.
+- `func_0206d040` (0x0206d040 / 552 B): orbit-angle updater plus child-ring
+  walk. A direct reconstruction compiled to 536-540 B at 92.1-92.6% direct
+  objdiff: the compiler ordered the local `vec0/vec1/vec2/matrix` arrays
+  differently from the original stack slots, and cached the child pointer where
+  the original reloads `work[+0x260 + i*4]` after each store. The rotation and
+  modulo-50 walk themselves matched instruction-for-instruction.

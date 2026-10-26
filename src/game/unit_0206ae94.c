@@ -106,11 +106,15 @@ typedef struct Unk06ae94Obj Unk06ae94Obj;
 void Unk06ae94_Unk_06d4e8(Unk06ae94Obj *o);
 int Unk06fb70_Unk_071844();
 int func_02071d6c();
-void func_0206af04(int a, int b, int c, int d, int e, int f, int zero, u8 g, int h, int i);
+typedef struct Unk06ae94RenderWork Unk06ae94RenderWork;
+Unk06ae94RenderWork *func_0206af04(u32 owner, const void *src, const void *alt,
+                                   u32 modeFlag, u32 *flags, u32 link,
+                                   u32 unused, u8 byte, s32 count, s32 limit);
 /* ARM at 0x0206b0ac inserts a zero seventh argument; g is loaded as a byte. */
 void Unk06ae94_Call_06af04(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
 {
-    func_0206af04(a, b, c, d, e, f, 0, g, h, i);
+    func_0206af04((u32)a, (const void *)b, (const void *)c, (u32)d,
+                  (u32 *)e, (u32)f, 0, g, h, i);
 }
 
 void func_02061424();
@@ -118,8 +122,8 @@ int func_0206e0dc(int i);
 void func_02093f70(s32 index);
 void func_02008848(void *dst, s32 value, u32 size);
 void func_0206c204(void);
-void *func_020611dc(void (*a)(void), void (*b)(void), s32 zero, void (*c)(void),
-                    u32 size, s32 d, s32 e, s32 f);
+void *func_020611dc(void (*a)(void), void (*b)(void), void (*zero)(void),
+                    void (*c)(void), u32 size, s32 d, s32 e, s32 f);
 struct Unk06ae94C130Work;
 void *func_0206c130(u32 a, u32 b, u32 c, u32 d, u32 e, u32 *flag,
                     void *callback, u32 g, u32 h);
@@ -639,4 +643,476 @@ void Unk06ae94_Unk_06d4e8(Unk06ae94Obj *o)
         *o->unk_250 = 0;
     }
     func_02061424(o);
+}
+
+/* ===== M1-T997: matching bodies ===== */
+
+extern s32 data_0216b9bc;
+int func_02050088(int mode, int low, int high);
+void func_02000ec0(s32 *matrix, s32 a, s32 b);
+void func_02000ef8(s32 *matrix, s32 a, s32 b);
+s32 func_0200219c(s32 numerator, s32 denominator);
+void func_020599c4(int flags, void *out, void *rect);
+void func_0206d040(void *work);
+void func_0206fc24(void *a, void *b);
+void Unk06fb70_Unk_06feb4(void *a, void *b);
+void func_020703b4(void *anim, s32 *tick, s32 *state, s32 *limit, s32 *pos,
+                   s32 *vel, s32 *max, s32 *extra);
+void Unk06fb70_Unk_070500(void *o, s32 *tick, s8 *state, s32 *limit, s32 *pos,
+                          s32 *vel, s32 *max);
+void Unk06fb70_Unk_07057c(void *o, s32 *tick, s8 *state, s32 *limit, s32 *pos,
+                          s32 *vel, s32 *max);
+
+/* Object driven by the per-frame updater at 0x0206b0f0; only the fields read
+ * by that updater are named. */
+typedef struct Unk06ae94B0f0Work {
+    u32 unk_0000;             /* +0x000 */
+    u8 pad_0004[0x128];
+    u8 *unk_012c;             /* +0x12c */
+    u8 pad_0130[0xb4];
+    s32 unk_01e4;             /* +0x1e4 */
+    s32 unk_01e8;             /* +0x1e8 */
+    s32 unk_01ec;             /* +0x1ec */
+    s32 unk_01f0;             /* +0x1f0 */
+    u8 pad_01f4[0x74];
+    u8 unk_0268[0x50];        /* +0x268 */
+    u16 unk_02b8;             /* +0x2b8 */
+    u8 pad_02ba[0x86];
+    s16 unk_0340;             /* +0x340 */
+    u8 pad_0342[0x1a];
+    u32 unk_035c;             /* +0x35c */
+    u8 pad_0360[4];
+    u8 unk_0364[0x50];        /* +0x364: four packed colour words live here */
+    u8 unk_03b4;              /* +0x3b4 */
+    u8 pad_03b5;
+    s16 unk_03b6;             /* +0x3b6 */
+} Unk06ae94B0f0Work;
+
+/* Child object referenced through the pointer array at +0x260. */
+typedef struct Unk06ae94Child {
+    u8 pad_0000[0x120];
+    s32 pos[3];               /* +0x120 */
+    u8 pad_012c[0x214];
+    s16 unk_0340;             /* +0x340 */
+    u8 pad_0342[2];
+    s32 unk_0344;             /* +0x344 */
+    u8 pad_0348[0x10];
+    u32 unk_0358;             /* +0x358 */
+} Unk06ae94Child;
+
+/* Manager advanced by 0x0206cd30; the three animation channel groups and the
+ * ring of child pointers are addressed by the original offsets. */
+typedef struct Unk06ae94Cd30Work {
+    s32 unk_0000;             /* +0x000 */
+    s32 unk_0004;             /* +0x004 */
+    s32 unk_0008;             /* +0x008 */
+    s32 unk_000c;             /* +0x00c */
+    s32 unk_0010;             /* +0x010 */
+    s32 unk_0014;             /* +0x014 */
+    s32 unk_0018;             /* +0x018 */
+    s32 unk_001c;             /* +0x01c */
+    s32 unk_0020;             /* +0x020 */
+    s32 unk_0024;             /* +0x024 */
+    s32 unk_0028;             /* +0x028 */
+    s32 unk_002c;             /* +0x02c */
+    s32 unk_0030;             /* +0x030 */
+    s32 unk_0034;             /* +0x034 */
+    s32 unk_0038;             /* +0x038 */
+    s32 unk_003c;             /* +0x03c */
+    s32 unk_0040;             /* +0x040 */
+    s8 unk_0044;              /* +0x044 */
+    s8 unk_0045;              /* +0x045 */
+    u8 pad_0046[2];
+    s32 unk_0048;             /* +0x048 */
+    s32 unk_004c;             /* +0x04c */
+    s32 unk_0050;             /* +0x050 */
+    s32 unk_0054;             /* +0x054 */
+    s32 unk_0058;             /* +0x058 */
+    s32 unk_005c;             /* +0x05c */
+    s32 unk_0060;             /* +0x060 */
+    u8 pad_0064[0x134];
+    u8 unk_0198[0x14];        /* +0x198: animation state */
+    u32 unk_01ac;             /* +0x1ac */
+    u8 pad_01b0[0x14];
+    Unk06ae94Angles unk_01c4; /* +0x1c4: three angles */
+    u8 pad_01d0[0x7c];
+    u32 unk_024c;             /* +0x24c */
+    u8 pad_0250[8];
+    s32 unk_0258;             /* +0x258 */
+    s32 unk_025c;             /* +0x25c */
+    Unk06ae94Child *unk_0260[50]; /* +0x260 */
+} Unk06ae94Cd30Work;
+
+/* ARM 0x0206b0f0 advances the object's animation and render state. It either
+ * finishes the current mode (calling 0x0206c0b0 when the countdown expires) or
+ * refreshes the animation, packs three shifted coordinates into the four
+ * colour words and emits them through 0x020599c4. */
+void func_0206b0f0(Unk06ae94B0f0Work *work)
+{
+    u8 *src;
+    u32 packed;
+    u32 rect[4];
+
+    src = work->unk_012c;
+    src = (u8 *)((u32 *)src)[5];
+    if (work->unk_02b8 == work->unk_0000) {
+        work->unk_02b8 = 0;
+        work->unk_03b6--;
+        if (work->unk_03b6 <= 0) {
+            Unk06ae94_Unk_06c0b0((u32)work);
+            return;
+        }
+        func_0206fc24(work, work);
+        return;
+    }
+    Unk06fb70_Unk_06feb4(work, work);
+    if (work->unk_035c != 0) {
+        func_0206b958((Unk06ae94BounceWork *)work);
+    }
+    if (work->unk_035c == 1) {
+        work->unk_03b4 = work->unk_0340;
+    } else {
+        work->unk_03b4 = work->unk_01f0 >> 12;
+    }
+    if (work->unk_03b4 > 31) {
+        work->unk_03b4 = 31;
+    }
+    if (work->unk_03b4 != 0) {
+        func_020086bc(work->unk_0268, work->unk_0364, 80);
+        packed = ((work->unk_01e4 >> 12) << 24) |
+                 ((work->unk_01e8 >> 12) << 16) |
+                 ((work->unk_01ec >> 12) << 8);
+        FIELD(u32, work, 0x374) = packed;
+        FIELD(u32, work, 0x388) = packed;
+        FIELD(u32, work, 0x39c) = packed;
+        FIELD(u32, work, 0x3b0) = packed;
+        rect[2] = 0;
+        rect[3] = *(u16 *)(src + 40);
+        rect[0] = 0;
+        rect[1] = *(u16 *)(src + 42);
+        func_020599c4(0, work->unk_0364, rect);
+    }
+    work->unk_02b8++;
+}
+
+/* ARM 0x0206cd30 advances the manager's three animation channel groups, then
+ * walks the ring of children from +0x258 to the end marker +0x25c, updating
+ * each child whose owner id matches. */
+void func_0206cd30(Unk06ae94Cd30Work *work)
+{
+    Unk06ae94Angles angles;
+    s32 angle;
+    s32 i;
+
+    func_0206d040(work);
+    func_020703b4(work->unk_0198, &work->unk_002c, &work->unk_0028,
+                  &work->unk_0030, &work->unk_0000, &work->unk_000c,
+                  &work->unk_0018, &work->unk_0060);
+    Unk06fb70_Unk_070500(work->unk_0198, &work->unk_0034, &work->unk_0044,
+                         &work->unk_003c, &work->unk_0004, &work->unk_0010,
+                         &work->unk_001c);
+    Unk06fb70_Unk_07057c(work->unk_0198, &work->unk_0038, &work->unk_0045,
+                         &work->unk_0040, &work->unk_0008, &work->unk_0014,
+                         &work->unk_0020);
+
+    i = work->unk_0258;
+    if (i < 0) {
+        return;
+    }
+    for (;;) {
+        if (work->unk_0260[i] != 0 &&
+            work->unk_024c == work->unk_0260[i]->unk_0358) {
+            work->unk_0260[i]->unk_0340 = work->unk_0004 >> 12;
+            work->unk_0260[i]->unk_0344 = work->unk_0008 >> 12;
+            angle = func_0200219c(work->unk_01ac << 12, 409600);
+            angles = work->unk_01c4;
+            func_0206d3b4((Unk06ae94D3b4Work *)work->unk_0260[i], angle,
+                          angles);
+            work->unk_0260[i]->pos[0] += work->unk_0054;
+            work->unk_0260[i]->pos[1] += work->unk_0058;
+            work->unk_0260[i]->pos[2] += work->unk_005c;
+        }
+        if (work->unk_025c == i) {
+            return;
+        }
+        i = (i + 1) % 50;
+    }
+}
+
+/* ARM 0x0206ced4 derives an angle from a rotating 8-step counter or from
+ * 0x02050088, normalises it against +0x344 into [0,360), rotates the
+ * (offset + +0x348, 0, 0) vector and stores the result at +0x120..+0x128. */
+void func_0206ced4(Unk06ae94D3b4Work *work, s32 offset)
+{
+    s32 matrix[9];
+    s32 in[3];
+    s32 out[3];
+    s32 v;
+    s32 t;
+
+    if (FIELD(u8, work, 0x174) == 0) {
+        v = data_0216b9bc * -45;
+        if (++data_0216b9bc * -45 < -359) {
+            data_0216b9bc = 0;
+        }
+    } else {
+        v = func_02050088(1, 0, 8) * -45;
+    }
+    FIELD(s16, work, 0x16e) = v;
+    v = v - work->unk_0344;
+    if (v >= 360) {
+        v %= 360;
+    }
+    if (v < 0) {
+        if (v <= -360) {
+            v %= 360;
+        }
+        v += 360;
+    }
+    t = ((360 - v) * 182) >> 4;
+    in[0] = offset + work->unk_0348;
+    in[1] = 0;
+    in[2] = 0;
+    func_02000edc(matrix, data_0212629c[(t * 2) + 1], data_0212629c[t * 2]);
+    func_02000f10(in, matrix, out);
+    work->unk_0120 = out[0];
+    work->unk_0124 = out[1];
+    work->unk_0128 = out[2];
+}
+
+/* ARM 0x0206d54c divides the two unsigned inputs (mode 1 negates the result,
+ * mode 2 picks the sign from 0x02050088) and converts the signed ratio to a
+ * 20.12-style integer with the original +-1 rounding bias. */
+int func_0206d54c(int mode, u32 value, u32 scale)
+{
+    float result = 0.0f;
+
+    switch (mode) {
+    case 0:
+        result = (float)value / (float)scale;
+        break;
+    case 1:
+        result = -1.0f * ((float)value / (float)scale);
+        break;
+    case 2:
+        if ((s8)func_02050088(1, 0, 1) != 0) {
+            result = (float)value / (float)scale;
+        } else {
+            result = -1.0f * ((float)value / (float)scale);
+        }
+        break;
+    }
+    return (int)(result > 0.0f ? 4096.0f * result + 0.5f
+                               : 4096.0f * result - 0.5f);
+}
+
+/* ARM 0x0206d68c takes a random value in [0, value], divides it by scale
+ * (modes 1 and 2 negate) and applies the same 20.12 conversion. */
+int func_0206d68c(int mode, u32 value, u32 scale)
+{
+    float result = 0.0f;
+
+    switch (mode) {
+    case 0:
+        result = (float)(u32)func_02050088(1, 0, value) / (float)scale;
+        break;
+    case 1:
+        result = -1.0f * ((float)(u32)func_02050088(1, 0, value) /
+                          (float)scale);
+        break;
+    case 2:
+        if ((s8)func_02050088(1, 0, 1) != 0) {
+            result = (float)(u32)func_02050088(1, 0, value) / (float)scale;
+        } else {
+            result = -1.0f * ((float)(u32)func_02050088(1, 0, value) /
+                              (float)scale);
+        }
+        break;
+    }
+    return (int)(result > 0.0f ? 4096.0f * result + 0.5f
+                               : 4096.0f * result - 0.5f);
+}
+
+/* ARM 0x0206d7f4 takes a random value in [low, high], divides it by scale
+ * (modes 1 and 2 negate) and applies the same 20.12 conversion. */
+int func_0206d7f4(int mode, u32 low, u32 high, u32 scale)
+{
+    float result = 0.0f;
+
+    switch (mode) {
+    case 0:
+        result = (float)(u32)func_02050088(1, low, high) / (float)scale;
+        break;
+    case 1:
+        result = -1.0f * ((float)(u32)func_02050088(1, low, high) /
+                          (float)scale);
+        break;
+    case 2:
+        if ((s8)func_02050088(1, 0, 1) != 0) {
+            result = (float)(u32)func_02050088(1, low, high) / (float)scale;
+        } else {
+            result = -1.0f * ((float)(u32)func_02050088(1, low, high) /
+                              (float)scale);
+        }
+        break;
+    }
+    return (int)(result > 0.0f ? 4096.0f * result + 0.5f
+                               : 4096.0f * result - 0.5f);
+}
+
+/* ===== M1-T998: matching bodies ===== */
+
+extern const s16 data_0212629c[];
+void func_02004588(s32 a, s32 b);
+void func_0200454c(s32 a, s32 b);
+void func_020045c4(s32 a, s32 b);
+
+/* Normalises a signed angle into [0, 360) using the original signed
+ * remainder-by-360 sequence. */
+static inline s32 Unk06ae94_WrapAngle(s32 angle)
+{
+    if (angle >= 360) {
+        angle %= 360;
+    }
+    if (angle < 0) {
+        if (angle <= -360) {
+            angle %= 360;
+        }
+        angle += 360;
+    }
+    return angle;
+}
+
+/* Converts a signed angle to the sin-table index used by the rotation helpers. */
+static inline s32 Unk06ae94_SinIndex(s32 angle)
+{
+    return ((360 - Unk06ae94_WrapAngle(angle)) * 182) >> 4;
+}
+
+/* ARM 0x0206b6e0 sets the X/Y/Z rotation components for each nonzero input
+ * angle; each component feeds one of the three angle helpers. */
+void func_0206b6e0(s32 x, s32 y, s32 z)
+{
+    s32 a;
+
+    if (y != 0) {
+        a = Unk06ae94_SinIndex(y);
+        func_02004588(data_0212629c[a * 2], data_0212629c[(a * 2) + 1]);
+    }
+    if (x != 0) {
+        a = Unk06ae94_SinIndex(x);
+        func_0200454c(data_0212629c[a * 2], data_0212629c[(a * 2) + 1]);
+    }
+    if (z != 0) {
+        a = Unk06ae94_SinIndex(z);
+        func_020045c4(data_0212629c[a * 2], data_0212629c[(a * 2) + 1]);
+    }
+}
+
+void func_0206b230(Unk06ae94RenderWork *work);
+
+/* Constructor result; only the fields written by the original are named. */
+struct Unk06ae94RenderWork {
+    u8 unk_0000[0x134];
+    u8 unk_0134[0xa6];
+    u8 unk_01da;
+    u8 unk_01db;
+    u8 unk_01dc;
+    u8 unk_01dd;
+    u8 pad_01de[0x8a];
+    s16 unk_0268;
+    s16 unk_026a;
+    s16 unk_026c;
+    u8 pad_026e[0xa];
+    u32 unk_0278;
+    s16 unk_027c;
+    s16 unk_027e;
+    s16 unk_0280;
+    u8 pad_0282[0xa];
+    u32 unk_028c;
+    s16 unk_0290;
+    s16 unk_0292;
+    s16 unk_0294;
+    u8 pad_0296[0xa];
+    u32 unk_02a0;
+    s16 unk_02a4;
+    s16 unk_02a6;
+    s16 unk_02a8;
+    u8 pad_02aa[0xa];
+    u32 unk_02b4;
+    u8 pad_02b8[0x78];
+    u32 *unk_0330;
+    u8 pad_0334[0x24];
+    u32 unk_0358;
+    u32 unk_035c;
+    u32 unk_0360;
+    u8 pad_0364[0x51];
+    u8 unk_03b5;
+    s16 unk_03b6;
+    s16 unk_03b8;
+};
+
+/* ARM 0x0206af04 allocates and initialises the render object driven by
+ * 0x0206b0f0: it copies the source block, seeds the colour/scale constants,
+ * stores the owner and callbacks, and mirrors the countdown halfword. A null
+ * allocation returns null; the caller owns the returned object. */
+Unk06ae94RenderWork *func_0206af04(u32 owner, const void *src, const void *alt,
+                                   u32 modeFlag, u32 *flags, u32 link,
+                                   u32 unused, u8 byte, s32 count, s32 limit)
+{
+    Unk06ae94RenderWork *work;
+    u32 mode;
+
+    mode = 3;
+    if (*flags & 2) {
+        mode = 4;
+    }
+    if (count == 0) {
+        work = (Unk06ae94RenderWork *)func_020611dc(
+            (void (*)(void))func_0206b0f0,
+            (void (*)(void))func_0206b230, (void (*)(void))0,
+            (void (*)(void))unused, 0x3bc, mode, 0, 0);
+    } else {
+        work = (Unk06ae94RenderWork *)func_020611dc(
+            (void (*)(void))func_0206b0f0, (void (*)(void))0,
+            (void (*)(void))func_0206b230, (void (*)(void))unused, 0x3bc,
+            mode, 0, 0);
+    }
+    if (work != 0) {
+        func_02008848(work, 0, 0x3bc);
+        work->unk_0268 = -0x800;
+        work->unk_026a = 0x800;
+        work->unk_026c = 0;
+        work->unk_0278 = 0xff0000ff;
+        work->unk_027c = -0x800;
+        work->unk_027e = -0x800;
+        work->unk_0280 = 0;
+        work->unk_028c = 0x00ff00ff;
+        work->unk_0290 = 0x800;
+        work->unk_0292 = -0x800;
+        work->unk_0294 = 0;
+        work->unk_02a0 = (u32)-0x800 >> 16;
+        work->unk_02a4 = 0x800;
+        work->unk_02a6 = 0x800;
+        work->unk_02a8 = 0;
+        work->unk_02b4 = 0x00ff00ff - 0x1000000;
+        work->unk_035c = modeFlag;
+        func_02008904(src, work, 0x134);
+        if (work->unk_035c != 0) {
+            func_02008904(alt, work->unk_0134, 0xb0);
+        } else {
+            work->unk_01da = ((const u8 *)alt)[0xa6];
+            work->unk_01db = ((const u8 *)alt)[0xa7];
+            work->unk_01dc = ((const u8 *)alt)[0xa8];
+            work->unk_01dd = ((const u8 *)alt)[0xa9];
+        }
+        work->unk_0330 = flags;
+        work->unk_0358 = owner;
+        func_0206fc24(work, work);
+        work->unk_0360 = link;
+        work->unk_03b5 = byte;
+        work->unk_03b8 = limit;
+        work->unk_03b6 = work->unk_03b8;
+    }
+    return work;
 }

@@ -2,6 +2,21 @@
 
 ## Unreleased
 - M2-T021: match the CRI four-record allocation helper `func_0207c868` at 100% objdiff with typed source and callback contracts.
+- M1-T998: match `game/unit_0206ae94` render constructor `func_0206af04` and axis-angle setter `func_0206b6e0` at 100% objdiff; document the five remaining render/state bodies as hard cases.
+- M2-T035: match the five remaining operand-supplied request wrappers (`func_020ba4e8`, `func_020ba55c`, `func_020ba588`, `func_020ba620`, `func_020ba64c`) in `libs/unknown/lib_020ba474` at 100% objdiff; all thirteen C definitions in the TU now match.
+- M1-T997: match six `game/unit_0206ae94` updater, ring-walk, angle and random-ratio helpers at 100% objdiff; document the four-instruction vector-copy blocker for `func_0206ba4c` and `func_0206d268`.
+- M2-T033: match the three-operand `func_020b9b18` request handler, completing all nine C definitions in `libs/unknown/lib_020b9a38` at 100% objdiff.
+- M1-T992: match all eight ScanVisor lifecycle, mode dispatch, coordinate and drawing functions at 100% objdiff; document instruction evidence and ownership contracts.
+
+- Match eight NitroSDK sdk_020555bc scroll, blend, dispatch and transfer wrapper functions in readable C.
+- M2-T031: match the seven remaining NitroSDK sdk_020555bc main/sub BG scroll setters and the blend-register dispatcher at 100% objdiff, with register-address evidence.
+- Reconstruct seven matching command and record lookup functions in NitroSDK sdk_0204f7d4; document the remaining literal-pool mismatch.
+- Matched all six libs/unknown/lib_020296b8 texture-matrix and constant-result functions at 100% objdiff, with typed layouts and per-function evidence.
+- Added matching C for script command wrappers 84 and 85 in lib_020b9c3c.
+- M1-T991: match all eight ScanVisor scale, flag, counter, list and resource helpers at 100% objdiff; document instruction evidence and borrowed-storage contracts.
+- M2-T023: match the CRI four-record pool reset, allocation, and request-2 helpers at 100% objdiff; all eleven functions in the TU now match.
+- M1-T990: match all eight ScanVisor list and record helpers at 100% objdiff; add the signed-coordinate record query and document instruction evidence.
+- M1-T982: match ID-bank validation and paired-panel drawing at 100% objdiff; document two remaining grid-rendering hard cases.
 - M1-T989: verify eight ScanVisor state, slot lookup and provider helpers at 100% objdiff; document typed contracts and original instruction evidence.
 - Matched all three `libs/unknown/lib_02065dd8` singleton helpers with typed fields and documented instruction evidence.
 - M1-T981: match five grid, cursor and drawing helpers; document three input/drawing instruction-generation hard cases.
@@ -417,6 +432,18 @@
 - Add matching C for all three sdk_02027dac NitroSystem visibility and basic joint-transform routines.
 
 - Match all eight requested CRI `cri_0207c82c` record helpers with typed fields and instruction-based contracts.
+
+- Matched all eight M2-T022 CRI record helpers with typed fields and documented instruction evidence.
+
+- Added C for eight lib_020b9c3c script command wrappers with operand and result contracts.
+
+- Add matching C for the eight M2-T032 script request handlers in `libs/unknown/lib_020b9a38.c`.
+
+- Add matching C for the eight M2-T034 script request wrappers in `libs/unknown/lib_020ba474.c`.
+
+- Add matching C for eight fixed-selector wrappers in `libs/unknown/lib_020ba05c`, with instruction-based contracts.
+
+- Match all six NitroSDK sdk_02004760 OBJ palette, OAM and character transfer functions at 100% objdiff.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
