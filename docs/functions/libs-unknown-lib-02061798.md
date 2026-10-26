@@ -1,10 +1,10 @@
 # libs/unknown/lib_02061798
 
-Fifteen functions of this TU are reconstructed from the original ARM
-instructions and match at 100%: seven from M2-T1057 and the eight covered by
-M2-T1058. `func_02062264` is the exception: it is a four-byte copy of the
-preceding function's unreachable epilogue and cannot be expressed as a
-standalone C function (see Hard list).
+Twenty-three functions of this TU are reconstructed from the original ARM
+instructions and match at 100%: seven from M2-T1057, eight from M2-T1058 and
+the eight covered by M2-T1059. `func_02062264` is the exception: it is a
+four-byte copy of the preceding function's unreachable epilogue and cannot be
+expressed as a standalone C function (see Hard list).
 
 All names remain neutral linker symbols: the surrounding records and the
 public SDK sources found below do not establish an application-level API name.
@@ -29,7 +29,10 @@ the header uses two distinct opaque types, `Unk061798ResultA` and
 `Unk061798ResultB`. The pointer at font-record `+0x28` is typed as an opaque
 `Unk061798FontData *` because callers dereference it (call site `0x020601f4`).
 `func_02063584` takes `s8` because `func_0206358c` forwards the signed byte at
-`+0x81` and the original emits `ldrsb`.
+`+0x81` and the original emits `ldrsb`. M2-T1059 added the object words at
+`+0x4`, `+0x8`, `+0xc`, `+0x10`, the signed byte at `+0x68`, and the word at
+`+0x1c` of `Unk061798ResultB`; the padding around them keeps every earlier
+offset unchanged.
 
 ## func_0206190c — 16 bytes
 
@@ -70,11 +73,24 @@ Objdiff: 100%.
 Tail wrapper for `func_02061970`, with the font id passed in r0 (call site
 `0x02061b9c`). Objdiff: 100%.
 
+## func_02061eb4 — 20 bytes
+
+Tests whether any bit of the mask in r1 is set in the object's `+0x4` word and
+returns 0/1; call sites `0x020605a8`, `0x020625a8` and `0x020632e4` branch on
+the result. The original emits `tst; movne #1; moveq #0`. Objdiff: 100%.
+
 ## func_02062a2c — 16 bytes
 
 Reads the font id at `+0x28` of a render object and tail-calls
 `func_0206190c` with it, returning the selected record's `+0x28` pointer. Call
 sites `0x02060614`, `0x02060a38` and `0x020620a8` dereference the result.
+Objdiff: 100%.
+
+## func_02062a74 — 20 bytes
+
+Returns 1 when the object's `+0x10` word is zero, else 0 (`ldr; cmp #0;
+moveq #1; movne #0`). Call site `0x02060b94` returns from its caller when the
+result is non-zero; the other call sites are `0x02063c10` and `0x02064128`.
 Objdiff: 100%.
 
 ## func_02063490 — 16 bytes
@@ -107,6 +123,14 @@ Takes a render-object pointer and a 32-bit value; stores the value at +0x48.
 Call site `0x02063e88` uses it to clear the field on the object's first pointer
 (also `0x02063ec4`). Objdiff: 100%.
 
+## func_02063a30 — 20 bytes
+
+Tail wrapper for `func_02063954`: forwards the text pointer in r0 and the
+constant append code `0x8001` in r1, returning the result object. Call site
+`0x0206733c` keeps that pointer across a loop. The pool holds
+`func_02063954` followed by `0x00008001`, matching the original literal order.
+Objdiff: 100%.
+
 ## func_02063a44 — 12 bytes
 
 Tail wrapper for `func_02063954`. Forwards the text pointer in r0 and the
@@ -125,6 +149,37 @@ No-argument tail wrapper for `func_02063a50`, which returns the singleton from
 `data_0216b9a8` +4. Callers test the result for null and read fields through it
 (call sites `0x020641c8`, `0x0206545c`). Objdiff: 100%.
 
+## func_020642a8 — 20 bytes
+
+Loads the signed byte at `+0x68` of the object with `ldrsb` and returns 1 when
+it is positive, else 0. Call site `0x02064294` selects between a reset and a
+field update, and `0x020642e8` is the other caller. Objdiff: 100%.
+
+## func_0206435c — 20 bytes
+
+Stores 2 at `+0x8` and 5 at `+0xc` of the object, in that order. Call site
+`0x02065488` does this before writing bytes at `+0x54`/`+0x55`; further call
+sites are `0x02065c04`, `0x02065db0` and `0x02065dc8`. Objdiff: 100%.
+
+## func_02065604 — 16 bytes
+
+Stores the value in r0 at `+0` of the bss object `data_0216b9a8`, the object
+behind the shared singleton. Call sites `0x020f7b4c`/`0x020f7b58` pass 0/1;
+`0x020fa838` and `0x021156f8` also call it. Objdiff: 100%.
+
+## func_02065614 — 20 bytes
+
+Stores the value in r0 at `+0x1c` of the singleton returned by
+`func_02063a60`. It keeps the argument in r4 across the call, matching the
+original `push {r4, lr}`; call sites `0x020dfe1c`/`0x020dfe28` pass 1/0.
+Objdiff: 100%.
+
+## func_0206569c — 16 bytes
+
+Tail wrapper for `func_020656ac`: passes the object in r0 through and sets the
+second argument to `-1` (`mvn r1, #0`). Call sites include `0x0203c690`,
+`0x020d20dc` and `0x020dfe5c`; the result is ignored. Objdiff: 100%.
+
 ## Hard list
 
 - `func_02062264` (4 bytes): the original instruction is only
@@ -140,7 +195,7 @@ No-argument tail wrapper for `func_02063a50`, which returns the singleton from
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for each of the fifteen reconstructed
+`tools/hand/cmp.py` reports OK for each of the twenty-three reconstructed
 functions. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.

@@ -5,6 +5,9 @@ extern Unk061798Font *func_020618cc(u32 id);
 /* Appends a character code; returns the result object that func_02063a44
  * forwards (distinct from func_02063a50's singleton). */
 extern Unk061798ResultA *func_02063954(const void *text, u32 code);
+/* Large routine behind the func_0206569c wrapper; `mode` is the second
+ * argument the wrapper fixes to -1. */
+extern s32 func_020656ac(void *object, s32 mode);
 
 /* The +4 word of this bss object is the shared result singleton. */
 typedef struct Unk061798Bss {
@@ -55,11 +58,25 @@ u8 func_020619f8(u32 id)
     return func_02061970(id);
 }
 
+/* Tests whether any bit of `mask` is set in the object's +0x4 word; callers
+ * branch on the result (call sites 0x020605a8/0x020625a8/0x020632e4). */
+s32 func_02061eb4(Unk061798Object *object, u32 mask)
+{
+    return (object->unk_0004 & mask) != 0;
+}
+
 /* Reads the font id at +0x28 of a render object and returns the +0x28 pointer
  * of the selected font record (call sites 0x02060614/0x02060a38/0x020620a8). */
 Unk061798FontData *func_02062a2c(Unk061798Object *object)
 {
     return func_0206190c(object->unk_0028);
+}
+
+/* True when the object's +0x10 word is zero; callers return early when the
+ * result is non-zero (call site 0x02060b94). */
+s32 func_02062a74(Unk061798Object *object)
+{
+    return object->unk_0010 == 0;
 }
 
 /* Clears the two halfwords at +0x4c and +0x4e of a render object; call site
@@ -98,6 +115,13 @@ void func_0206359c(Unk061798Object *object, u32 value)
     object->unk_0048 = value;
 }
 
+/* Tail wrapper that appends code 0x8001 to a text object and returns the
+ * resulting record; call site 0x0206733c keeps it across a loop. */
+Unk061798ResultA *func_02063a30(const void *text)
+{
+    return func_02063954(text, 0x8001);
+}
+
 /* Forwards a character append to func_02063954; callers keep the returned
  * pointer (call sites 0x0211c464/0x0211d8f8/0x0211d93c). */
 Unk061798ResultA *func_02063a44(const void *text, u32 code)
@@ -117,4 +141,40 @@ Unk061798ResultB *func_02063a50(void)
 Unk061798ResultB *func_02063a60(void)
 {
     return func_02063a50();
+}
+
+/* True when the object's signed +0x68 byte is positive; call site 0x02064294
+ * uses it to pick between two field updates. */
+s32 func_020642a8(Unk061798Object *object)
+{
+    return object->unk_0068 > 0;
+}
+
+/* Stores 2 at +0x8 and 5 at +0xc of the object; call site 0x02065488 resets
+ * these before writing two bytes at +0x54/+0x55. */
+void func_0206435c(Unk061798Object *object)
+{
+    object->unk_0008 = 2;
+    object->unk_000c = 5;
+}
+
+/* Stores value at +0 of data_0216b9a8, the bss object behind the shared
+ * singleton; call sites 0x020f7b4c/0x020f7b58 store a boolean. */
+void func_02065604(u32 value)
+{
+    data_0216b9a8.unk_0000 = value;
+}
+
+/* Stores value at +0x1c of the func_02063a60 singleton; call sites
+ * 0x020dfe1c/0x020dfe28 store a boolean. */
+void func_02065614(u32 value)
+{
+    func_02063a60()->unk_001c = value;
+}
+
+/* Tail wrapper for func_020656ac that fixes the second argument to -1; call
+ * sites 0x0203c690/0x020d20dc/0x020dfe5c ignore the result. */
+s32 func_0206569c(void *object)
+{
+    return func_020656ac(object, -1);
 }
