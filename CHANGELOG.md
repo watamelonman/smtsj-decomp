@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T869: match seven game/unit_020cb32c dispatch, descriptor, paired drawing and teardown functions; document the remaining setup function for scratch follow-up.
 - M1-T868: match eight game/unit_020cb32c selector, descriptor, handle and state helpers; document typed contracts and instruction evidence.
 - Match eight more unit_02116598 allocation, teardown, and state functions (M1-T806).
 - M1-T867: verify eight more `game/unit_020cb32c` functions at 100% objdiff; add typed call contracts, explicit work forwarding and per-function instruction evidence.
