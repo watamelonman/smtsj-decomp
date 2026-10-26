@@ -103,15 +103,57 @@ pads over it. The entry stride remains 0x28 and the table starts at work+0x48.
   true or continues through 020a8bac. The `str` to +0x44, the call to
   `Unk0a7d54_Unk_0a9204` and the `movne #11` / `strne` support it.
 
+## M1-T793 — verified at 100% objdiff
+
+The work view now names the header words and the eight slot words used by the
+state machine; the entry stride remains 0x28 and the table starts at work+0x48.
+
+- `func_020a7d80` (020a7d80, 228 B): finds a free entry, indexes the 32-byte
+  descriptor table `data_0214cea4` by the caller's selector, and only builds a
+  game object when descriptor word +0 is non-negative. The object is created
+  from work +0x14/+0x18, configured through the 02065e88/0205c408 helpers, then
+  the descriptor's position and presentation words are copied into the entry.
+  Evidence: `ldr r0,[r1,r7,lsl #5]`, `cmp #0` / `blt`, and the ordered stores
+  starting at 020a7e14.
+- `func_020a82f0` (020a82f0, 436 B): dispatches one live entry by its byte +12
+  state. Cases 6..10 resolve a handle id through `Unk0a7d54_Unk_0a916c` and
+  submit a clipped band through 020a98fc/020a996c, gated by signed byte +13.
+  Cases 3, 15, 16, 17 and 24/25 forward the work link and position/phase words
+  to the 020a95.. helpers; cases 24/25 use the phase modulo 15. Evidence: the
+  `addls pc` table at 020a8318, its targets, and the `smull` remainder sequence
+  at 020a8474.
+- `func_020a85ac` (020a85ac, 92 B): resets a work area. It writes state word
+  +0 to one, clears +4/+8/+12/+0x14/+0x18, calls the release-all walk
+  `Unk0a7d54_Unk_0a84a4`, clears +0x1c/+0x20, zeroes the eight slot words and
+  finally +0x44. Word +0x10 is deliberately left untouched. Evidence: the
+  store order and the BL at 020a85d8.
+- `func_020a9218` (020a9218, 376 B): state machine on work +0x20. State 0
+  succeeds, state 1 initializes every occupied slot object's +0x14 link and
+  retries failed objects, state 2 creates each missing named entry and runs the
+  post-create hook, and state 3 checks the first occupied slot before releasing
+  all occupied slots and returning one. Evidence: the `addls pc` table at
+  020a9228, the `cmp #8` loops, and the four return paths.
+- `Unk0a7d54_Unk_0a8b00` (020a8b00, 68 B): starts a work area in state 1, or
+  raises the +0x44 flag when it is already in state 11. Null and non-initial
+  states are ignored; +4 and +0x10 are cleared, word +0 receives the caller
+  value, and byte +12 becomes selector+1. Evidence: the compare/branch chain and
+  the `stm`/`str` sequence at 020a8b00.
+- `Unk0a7d54_Unk_0a8bac` (020a8bac, 88 B): tears a work area down by draining
+  the +0x1c count, releasing all entries, clearing +8/+4, and releasing the
+  +0x14/+0x18 resources when present. Evidence: the calls to 020a93b8/020a8534,
+  the conditional 0205ddb4/0205c368 calls and the zero stores.
+- `Unk0a7d54_Unk_0a8c04` (020a8c04, 60 B): returns false when the work's +0x20
+  predicate is set or its +8 state is 9, 10 or 11, otherwise true. Evidence: the
+  call to `Unk0a7d54_Unk_0a9204` and the `cmp #9`/`cmpne #10`/`cmpne #11` chain.
+- `Unk0a7d54_Unk_0a916c` (020a916c, 104 B): maps selector 6..10 to handle ids
+  0x1a, 0x1b, 0x1c, 0x1e and 0x1f; selectors 0..5 and values above 10 return
+  zero. Evidence: the `addls pc` table and the five `mov` immediates.
+
 ## Hard list
-None for M1-T792. All eight functions above are at 100% objdiff with the same
+None for M1-T793. All functions above are at 100% objdiff with the same
 instruction bytes as the delinked original.
 
 ## Later tasks
-M1-T793 owns all remaining functions in this unit: `func_020a7d80`,
-`func_020a7ee8`, `func_020a82f0`, `func_020a85ac`, `func_020a8658`,
-`func_020a8c6c`, `func_020a8e5c`, `func_020a9218`, plus the
-decompiler-derived `Unk0a7d54_Unk_0a8b00`, `Unk0a7d54_Unk_0a8bac`,
-`Unk0a7d54_Unk_0a8c04` and `Unk0a7d54_Unk_0a916c`. Those bodies stay as
-decompiler-derived or delinked original code until that card matches them and
-are not claimed here.
+M1-T794 owns the remaining four functions in this unit: `func_020a7ee8`,
+`func_020a8658`, `func_020a8c6c` and `func_020a8e5c`. They stay linked from the
+delink until that card matches them.
