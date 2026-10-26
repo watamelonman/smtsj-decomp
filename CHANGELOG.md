@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- M1-T777: match the `game/unit_0210fe28` twelve-state entry sequence and the two interaction states in readable C at 100% objdiff; extend the typed work/message views and document the three remaining hard functions for scratch follow-up.
+- M1-T777: match `game/unit_0210fe28`'s event handler and draw/advance dispatcher in readable C at 100% objdiff; extend the typed work/message/event views, and document the remaining grid-drawing function (`func_02110a24`, measured 92.65%) for scratch follow-up rather than claiming a match.
 - Verified all eight M1-T790 game/unit_020a7d54 field helpers and lookup wrappers at 100% objdiff; added typed field views, explicit argument forwarding, and per-function contracts.
 - M1-T784: added the three missing game/unit_0204bb9c context accessors and documented all eight requested context/kind routines, verified at 100% objdiff with the original image checksum preserved.
 - Verified all eight M1-T772 game/unit_020ea208 guarded table getters, teardown, object setters and record/table lookups at 100% objdiff; added typed work/slot parameters and instruction evidence.
