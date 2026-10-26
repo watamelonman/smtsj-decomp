@@ -23,6 +23,14 @@ void Unk0e8228_Unk_0e8e8c(u32 arg0);
 int func_020e9c00();
 int Unk0ea208_GetArr58();
 int Unk0ea208_Get_data_02176ddc();
+int Unk02e000_Unk_02e8f0(void);
+void func_020e942c(u32 work, u32 value);
+void func_020e9778(u32 work, u32 value);
+void Unk0feba0_Unk_0febc8(void);
+u32 func_02044ec4(u32 key);
+int func_0204a244(u32 entry);
+int Unk0e8228_GetCurEntry(u8 *work);
+int Unk0e8228_Unk_0e8c80(void);
 
 void Unk0e8228_Nop_0e93d4(void);
 void Unk0e8228_Thunk_02057534(void);
@@ -357,65 +365,59 @@ int Unk0e8228_IsSet_data_02176cdc(void)
 
 
 
-/* decompiler-derived */
+/* At 020e82ac, calls Unk02e000_Unk_02e8f0 (allocation word + 0x90), reads the
+ * unsigned byte at +3 and returns 1 when it is zero, else 0. Callers use the
+ * result as a state flag (unit_020ee904.c), so the name stays neutral. */
 int Unk0e8228_Unk_0e82ac(void)
 {
-  int value;
-  value = Unk02e000_Unk_02e8f0();
-  return *(char *)(value + 3) == '\0';
+  u8 *work = (u8 *)Unk02e000_Unk_02e8f0();
+  return work[3] == 0;
 }
 
-int func_020e942c();
-/* decompiler-derived */
+/* At 020e8684, forwards the shared work object and its word at +0x10 to
+ * func_020e942c, which stores the second argument at work + 0x0c. Does nothing
+ * when no work object exists. */
 void Unk0e8228_Unk_0e8684(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value == 0) {
+  u32 work = Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
     return;
   }
-  func_020e942c(value,*(u32 *)(value + 0x10));
+  func_020e942c(work,FIELD(u32, work, 0x10));
 }
 
-
-/* decompiler-derived */
+/* At 020e8cbc, tail-forwards the shared work object's word at +8 to
+ * ScanVisor_Unk_0a29a0. Does nothing when no work object exists. */
 void Unk0e8228_Unk_0e8cbc(void)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value == 0) {
+  u32 work = Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
     return;
   }
-  ScanVisor_Unk_0a29a0(*(u32 *)(value + 8));
+  ScanVisor_Unk_0a29a0(FIELD(u32, work, 8));
 }
 
-int func_02044ec4();
-int func_0204a244();
-int Unk0e8228_Unk_0e8c80();
-/* decompiler-derived */
+/* At 020e8c9c, resolves the current entry id (0e8c80) through
+ * func_02044ec4, then reports whether func_0204a244 returns state 6. */
 int Unk0e8228_Unk_0e8c9c(void)
 {
-  int value;
-  Unk0e8228_Unk_0e8c80();
-  func_02044ec4();
-  value = func_0204a244();
-  return value == 6;
+  return func_0204a244(func_02044ec4(Unk0e8228_Unk_0e8c80())) == 6;
 }
 
-int func_020e9778();
-/* decompiler-derived */
+/* At 020e8d18, forwards the caller's selector to func_020e9778 together with
+ * the shared work object. Does nothing when no work object exists. Callers
+ * pass 0 or 1 (unit_020ee904.c, unit_020efdf4.c). */
 void Unk0e8228_Unk_0e8d18(u32 arg0)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value == 0) {
+  u32 work = Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
     return;
   }
-  func_020e9778(value,arg0);
+  func_020e9778(work,arg0);
 }
 
-int Unk0feba0_Unk_0febc8();
-/* decompiler-derived */
+/* At 020e940c, releases the provider (0ea028), resets the 0x020feba0 state,
+ * then clears the shared work pointer data_02176ce0. */
 void Unk0e8228_Unk_0e940c(void)
 {
   Unk0e8228_Unk_0ea028();
@@ -469,8 +471,7 @@ int Unk0e8228_Unk_0e8ce8();
 int Unk0e8228_Unk_0e8bc4(void)
 {
   int value;
-  Unk0e8228_GetArr30(0);
-  func_02044ec4();
+  func_02044ec4(Unk0e8228_GetArr30(0));
   value = Unk0e8228_Unk_0e8ce8();
   return value != 0;
 }
@@ -571,9 +572,6 @@ void Unk0e8228_Unk_0e9f18(u32 *arg0);
 void Unk0e8228_Unk_0e9f38(u32 *arg0, u32 arg1);
 int func_020e9ca8();
 int func_020e9b54();
-int Unk0e8228_GetCurEntry();
-int func_02044ec4();
-int func_0204a244();
 u8 *func_020982c0();
 void Unk0e8228_Unk_0e8260(u32 i)
 {
@@ -680,13 +678,16 @@ int Unk0e8228_Unk_0e8be8(void)
     return func_020e9b54(p);
 }
 
+/* At 020e8c80, returns the current entry id from the shared work object, or 0
+ * when no work object exists. Callers pass the result to func_02044ec4 as an
+ * entry key (unit_020ea208.c, unit_020efdf4.c). */
 int Unk0e8228_Unk_0e8c80(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
     if (p == 0) {
         return 0;
     }
-    return Unk0e8228_GetCurEntry(p);
+    return Unk0e8228_GetCurEntry((u8 *)p);
 }
 
 int Unk0e8228_Unk_0e8ce8(u32 x)
@@ -702,14 +703,16 @@ int Unk0e8228_Unk_0e8ce8(u32 x)
     return (s8)v[2];
 }
 
-/* decompiler-derived */
+/* At 020e8e8c, clears the shared work object's word at +0x17c and stores the
+ * caller's selector at +0x180. Both stores happen only when work exists; the
+ * pair is read back by 0e8f20/0e8f38. Names stay neutral because callers only
+ * pass 0 or 1. */
 void Unk0e8228_Unk_0e8e8c(u32 arg0)
 {
-  int tmp1;
-  tmp1 = Unk0e8228_Get_data_02176ce0();
-  if (tmp1 != 0) {
-    *(u32 *)(tmp1 + 0x17c) = 0;
-    *(u32 *)(tmp1 + 0x180) = arg0;
+  u32 work = Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    FIELD(u32, work, 0x17c) = 0;
+    FIELD(u32, work, 0x180) = arg0;
   }
 }
 

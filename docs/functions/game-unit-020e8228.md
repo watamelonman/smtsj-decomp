@@ -97,16 +97,32 @@ are required by this card; objdiff verifies the emitted instructions directly.
 No M1-T900 functions remain on the hard list.
 
 ## Hard list
-- `Unk0e8228_Unk_0e82ac`: decompiler-derived
-- `Unk0e8228_Unk_0e8684`: decompiler-derived
-- `Unk0e8228_Unk_0e8cbc`: decompiler-derived
-- `Unk0e8228_Unk_0e8c9c`: decompiler-derived
-- `Unk0e8228_Unk_0e8d18`: decompiler-derived
-- `Unk0e8228_Unk_0e940c`: decompiler-derived
+- (none)
 
-## Not done in M1-T901
-- `Unk0e8228_Unk_0e8c80`
-- `Unk0e8228_Unk_0e8e8c`
+## M1-T901 verified functions
+
+All eight functions match at 100% objdiff. Evidence is the original ARM
+instructions and relocations in the delinked object. Unknown argument meanings
+retain neutral names; no domain semantics are inferred.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e82ac` (28 B, 020e82ac) | Calls `Unk02e000_Unk_02e8f0` (the allocation word + 0x90, see `src/game/unit_0202e000.c`), then `ldrb r0,[r0,#3]`; `moveq r0,#1` / `movne r0,#0` returns exactly 1 when that byte is zero. `src/game/unit_020ee904.c` consumes the result as a state flag, so the name stays neutral. |
+| `Unk0e8228_Unk_0e8684` (28 B, 020e8684) | Calls the work getter; `popeq` returns without work, otherwise forwards the work pointer and its word at +0x10 to `func_020e942c`, which stores the second argument at work + 0x0c. |
+| `Unk0e8228_Unk_0e8c80` (28 B, 020e8c80) | Calls the work getter; returns 0 when absent, otherwise forwards the work pointer to `Unk0e8228_GetCurEntry`. Callers pass the result to `func_02044ec4` as an entry key (`unit_020ea208.c`, `unit_020efdf4.c`). |
+| `Unk0e8228_Unk_0e8cbc` (28 B, 020e8cbc) | Calls the work getter; `popeq` returns without work, otherwise forwards the word at +8 to `ScanVisor_Unk_0a29a0`. |
+| `Unk0e8228_Unk_0e8c9c` (32 B, 020e8c9c) | Calls `0e8c80`, passes its result to `func_02044ec4`, then passes that record to `func_0204a244`; `cmp r0,#6` returns exactly 1 when the state is 6. |
+| `Unk0e8228_Unk_0e8d18` (32 B, 020e8d18) | Preserves the selector in r4 across the work getter; `popeq` returns without work, otherwise forwards the work pointer and selector to `func_020e9778`. Callers pass 0 or 1 (`unit_020ee904.c`, `unit_020efdf4.c`). |
+| `Unk0e8228_Unk_0e8e8c` (32 B, 020e8e8c) | Calls the work getter; when work exists, `strne r1,[r0,#0x17c]` with `movne r1,#0` clears that word and `strne r4,[r0,#0x180]` stores the caller's selector. The pair is read back by 0e8f20/0e8f38; callers only pass 0 or 1. |
+| `Unk0e8228_Unk_0e940c` (32 B, 020e940c) | Calls `Unk0e8228_Unk_0ea028` (provider release), then `Unk0feba0_Unk_0febc8`, then stores zero to the global word `data_02176ce0`. |
+
+Typing `func_02044ec4` as `u32 func_02044ec4(u32 key)` made the existing
+implicit-argument call in `Unk0e8228_Unk_0e8bc4` explicit
+(`func_02044ec4(Unk0e8228_GetArr30(0))`); that function still matches at 100%.
+
+No M1-T901 functions remain on the hard list.
+
+## Other decompiler-derived functions in this TU
 - `Unk0e8228_Unk_0e9728`: decompiler-derived
 - `Unk0e8228_Unk_0e9f18`: decompiler-derived
 - `Unk0e8228_Unk_0e9f38`: decompiler-derived

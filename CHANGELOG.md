@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T901: verify eight `game/unit_020e8228` flag, forwarding and lifecycle helpers at 100% objdiff; replace decompiler-derived bodies with typed C and document instruction-based contracts.
 - M1-T900: verify eight `game/unit_020e8228` access, comparison and forwarding helpers at 100% objdiff, with typed borrowed views and instruction-based contracts.
 - M1-T885: match all eight command/result helpers in `game/unit_02044904` at 100% objdiff, including the corrected `func_020449c4` accumulator.
 - M1-T924: verify all eight ImageObj release, predicate and slot-visit helpers at 100% objdiff; add typed node parameters and per-function instruction evidence.
