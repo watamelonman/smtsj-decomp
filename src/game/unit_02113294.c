@@ -574,10 +574,12 @@ void func_02113ae8(u8 *work)
                     FIELD(int, work, 12) = Unk113294_FindEmpty((Unk113294Ids *)work);
                     Unk0a0ce4_Unk_0a0da4(1);
                 } else {
+                    /* Duplicated tail keeps the original's separate call at 0x2113b7c. */
                     func_02113bc4(work, 8, 8);
                     func_021153a4(work);
                 }
             } else {
+                /* Duplicated tail keeps the original's separate call at 0x2113b94. */
                 func_02113bc4(work, 8, 8);
                 func_021153a4(work);
             }
@@ -592,14 +594,17 @@ void func_02113ae8(u8 *work)
 void func_02113bc4(u8 *work, int start, int count)
 {
     int end;
+    int limit;
     int cursor = FIELD(int, work, 12);
     if (cursor == start) {
         if (((Unk113294Ids *)work)->ids[cursor] == 0) {
             Unk0a0ce4_Unk_0a0da4(2); return;
         }
-        int limit = start + count;
+        limit = start + count;
         for (; start < limit - 1; start++)
             ((Unk113294Ids *)work)->ids[start] = ((Unk113294Ids *)work)->ids[start + 1];
+        /* Original store is work+214+2*limit, i.e. slot limit-1; the -2 view
+         * reproduces that addressing. See DEC-026. */
         ((Unk113294Ids *)(work - 2))->ids[limit] = 0;
         Unk0a0ce4_Unk_0a0da4(2); return;
     }
@@ -610,10 +615,12 @@ void func_02113bc4(u8 *work, int start, int count)
     }
     for (; cursor < end; cursor++)
         ((Unk113294Ids *)work)->ids[cursor - 1] = ((Unk113294Ids *)work)->ids[cursor];
+    /* Original store is work+214+2*end, i.e. slot end-1. See DEC-026. */
     ((Unk113294Ids *)(work - 2))->ids[end] = 0;
     FIELD(int, work, 12)--;
     Unk0a0ce4_Unk_0a0da4(2);
 }
+#pragma opt_propagation reset
 #pragma opt_propagation off
 /* At 0x021153a4, submits two zero-terminated eight-ID lists to
  * handles +188/+184. The provider borrows each stack list during its call. */

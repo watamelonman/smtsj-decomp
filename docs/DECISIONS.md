@@ -437,3 +437,14 @@ The matching implementation retains this original defect as `ids[50]` in a
 instruction matching. This is a reconstruction of observed behavior, not a safe
 buffer contract for new callers. The TU continues linking from the delinked
 original until a human marks it complete.
+
+## DEC-026 — Keep the 02113bc4 zero stores at their original biased addresses
+
+The original of `func_02113bc4` zeroes `work+214+2*limit` and
+`work+214+2*end`, which are the ID slots at index `limit-1` and `end-1`, not
+`ids[limit]`/`ids[end]` in the plain `work+216` view. Casting `work-2` before
+indexing emits the original `strh ..., [r1, #214]` addressing without a
+separate subtraction. The inline comments at each store record that intent so a
+future change to the `Unk113294Ids` layout cannot silently move the writes.
+Scope `opt_propagation off` separately to `func_02113bc4` and
+`func_021153a4` and restore it after each; the split scopes still match.
