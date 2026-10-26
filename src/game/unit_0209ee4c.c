@@ -270,3 +270,163 @@ void func_0209ee80(u32 index)
     ScanVisor_Unk_0a2ae8(index, 2);
     FIELD(u32, gs + 28672, 1000) = 19;
 }
+
+u8 *Unk044904_Unk_045080(void);
+int func_020f8098(void *work, u32 kind, u32 id);
+u8 *Unk044904_Get_data_0215ee98(void);
+void *Unk044904_Unk_04502c(void);
+void func_020449c4(void *work, u32 id);
+void func_0204f3a4(int base, u32 id, u32 first, u32 second);
+/* Target tests provider flags 19/12 before submitting category-2 records.
+ * Evidence: provider +64 shifts, ID byte comparison, and helper calls.
+ * Providers retain ownership of the borrowed work and flag storage. */
+void func_020a02c0(u32 id, int base, u32 extra, u32 force)
+{
+    int blocked = 0;
+    if (func_020f8098(Unk044904_Unk_045080(), 3, id) != 0)
+        blocked = 1;
+    else if (force != 0)
+        blocked = 1;
+    if (!blocked) {
+        int submitted = 0;
+        if ((FIELD(u32, Unk044904_Get_data_0215ee98(), 64) << 12) >> 31) {
+            int result = Unk09ee4c_Unk_09f5d8(base, id);
+            if (result >= 0) {
+                base += result;
+                submitted = 1;
+            }
+        }
+        if (!submitted && extra != 0) {
+            if (!((FIELD(u32, Unk044904_Get_data_0215ee98(), 64) << 19) >> 31) &&
+                ((id >> 16) & 255) == 2) {
+                int result = func_0209f550(base, id, 1, 1);
+                if (result >= 0) base += result;
+            }
+        }
+        {
+            int flag = !submitted;
+            func_0204f3a4(base, id, submitted ? 0 : 1, flag);
+        }
+    } else {
+        func_020449c4(Unk044904_Unk_04502c(), id);
+    }
+}
+
+/* Borrowed eight-byte entry; widths follow the target's shift extractions. */
+typedef struct Unk09ee4cEntry {
+    u32 value;
+    u32 bit0 : 1;
+    u32 bit1 : 1;
+    u32 bit2 : 1;
+    u32 bits34 : 2;
+    u32 bit5 : 1;
+    u32 bit6 : 1;
+    u32 rest : 25;
+} Unk09ee4cEntry;
+/* Only the low category byte is interpreted by these dispatchers. */
+typedef struct Unk09ee4cCategory {
+    u32 category : 8;
+    u32 remaining : 24;
+} Unk09ee4cCategory;
+void func_0204f59c(int base, u32 id, u32 value);
+void func_0204f5e0(int base, u32 id, u32 value);
+void func_0204f618(int base, u32 id, u32 value);
+/* Increments resource byte +478 and submits the indexed eight-byte entry.
+ * Evidence: byte increment, descriptor +132 category and entry flag shifts.
+ * Caller supplies a valid descriptor and an in-range entry index. */
+int func_0209f2e0(int base, u32 first, u32 second, u8 *descriptor, int index)
+{
+    Unk09ee4cEntry *entry = (Unk09ee4cEntry *)(descriptor + 12) + index;
+    u8 *resource = func_02044ec4(second);
+    int slot = resource[478]++;
+    if (entry->bit2) {
+        func_0204f24c(base, second, 0, 4, slot, 0);
+        return 0;
+    }
+    switch (FIELD(Unk09ee4cCategory, descriptor, 132).category) {
+    case 3:
+        if (!entry->bits34) {
+            func_0204f59c(base, second, entry->value);
+            func_0204f24c(base, second, entry->value, 0, slot, entry->bit6 ? 1 : 0);
+            goto flags;
+        }
+    case 8:
+            func_0204f5e0(base, second, entry->value);
+            func_0204f24c(base, second, entry->value, 2, slot, entry->bit6 ? 1 : 0);
+        goto flags;
+    case 9:
+        func_0204f618(base, first, entry->value);
+    default:
+    flags:
+        if (entry->bit1)
+            func_0204f24c(base, second, 0, 7, slot, 0);
+        else if (entry->bit0)
+            func_0204f24c(base, second, 0, 5, slot, 0);
+        break;
+    }
+    return 1;
+}
+
+void func_0204f6d8(int base, u32 id, void *record);
+u32 func_0204aa18(void *resource);
+void func_0204f158(int base, u32 first, u32 second, u32 value);
+
+/* One 8-byte descriptor entry: an unsigned value followed by its flag word. */
+typedef struct Unk09ee4cRecord {
+    u32 value;
+    u32 bits;
+} Unk09ee4cRecord;
+
+/* Bit view of Unk09ee4cRecord.bits; only the observed low bits are named. */
+typedef struct Unk09ee4cBits {
+    u32 bit0 : 1;
+    u32 bit1 : 1;
+    u32 bit2 : 1;
+    u32 bits34 : 2;
+    u32 bit5 : 1;
+    u32 bit6 : 1;
+    u32 rest : 25;
+} Unk09ee4cBits;
+
+/* Descriptor header: +8 is the signed entry count and +12 starts the entries. */
+typedef struct Unk09ee4cDescriptor {
+    u8 pad00[8];
+    int count;
+    Unk09ee4cRecord entries[64];
+} Unk09ee4cDescriptor;
+
+/* Dispatches each descriptor entry, advancing base by 20 per entry, then
+ * optionally submits the +100 object. Evidence: category/flag shifts and calls.
+ * Descriptor +8 is the signed entry count; storage must cover that count. */
+void func_0209f0d8(int base, u32 id, Unk09ee4cDescriptor *descriptor, u32 suppress)
+{
+    int i;
+    for (i = 0; i < descriptor->count; base += 20, i++) {
+        Unk09ee4cBits *flags = (Unk09ee4cBits *)&descriptor->entries[i].bits;
+        u32 kind = FIELD(Unk09ee4cCategory, descriptor, 132).category;
+        if (flags->bit5) kind = 7;
+        if (flags->bits34) kind = 8;
+        if (kind == 5) {
+            if ((FIELD(u32, descriptor, 132) << 9) >> 31) kind = 6;
+        }
+        switch (kind) {
+        case 6:
+            func_0204f650(base, id, descriptor->entries[i].value, 21);
+            func_0204f24c(base, id, descriptor->entries[i].value, 1, i, 1);
+            break;
+        case 7:
+            func_0204f650(base, id, descriptor->entries[i].value, 22);
+            func_0204f24c(base, id, descriptor->entries[i].value, 3, i, 1);
+            break;
+        case 8:
+            func_0204f5e0(base, id, descriptor->entries[i].value);
+            func_0204f24c(base, id, descriptor->entries[i].value, 2, i, 1);
+            break;
+        }
+    }
+    if (suppress != 0) return;
+    if (FIELD(u32, descriptor, 100) == 0) return;
+    func_0204f6d8(base, id, (u8 *)descriptor + 100);
+    if (FIELD(u32, descriptor, 100) == 1)
+        func_0204f158(base, 60, 12, func_0204aa18(func_02044ec4(id)));
+}

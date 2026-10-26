@@ -47,3 +47,33 @@ ordering preserves local-call relocations for existing callers.
 ### Hard list
 
 None for M1-T767. Validation: match gate, anticheat, nine tool tests and checksum.
+
+## M1-T768
+
+Three of the five card functions are now compiled from C and match at 100% objdiff.
+Names stay neutral except where the argument/field flow is fully established by the
+target instructions. Offsets refer to borrowed storage owned by the caller.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_0209f0d8` | Walks descriptor +8 entries (8-byte stride, value at +12, flag word at +16). Flags bit 5 selects kind 7 and bits 4..5 select kind 8; descriptor +132 low byte is the default kind, with bit 22 changing kind 5 to 6. Kinds 6/7/8 submit through f650 and f24c with kinds 21/22/8 and slot = entry index; base advances 20 per entry. After the loop, +100 is submitted through f6d8 and, when equal to 1, f158 is called with 60/12 and `func_0204aa18(func_02044ec4(id))`. |
+| `func_0209f2e0` | Increments the resource byte at +478 and dispatches the indexed 8-byte entry from descriptor +12. Entry bit 2 submits kind 4; otherwise descriptor +132 kind 3/8/9 selects the f59c/f5e0/f618 path and entry bits 0/1 submit kinds 5/7. Returns 1 except for the bit-2 early return. |
+| `func_020a02c0` | Checks `func_020f8098(work, 3, id)` and the force flag first. When unblocked, global +64 bit 19 selects f5d8; otherwise global +64 bit 12 plus an ID whose bits 16..23 are 2 selects f550. The final f3a4 call uses the submitted result, and the blocked path calls func_020449c4. |
+
+Evidence for the matched functions is the target instruction sequence at each
+symbol: f0d8 begins at 0x0209f0d8, f2e0 at 0x0209f2e0, a02c0 at 0x020a02c0.
+
+### Hard list
+
+- `func_0209fd64` (0x0209fd64, 1372 bytes): reconstructing the record-block, node-list,
+  and pair-table paths in C reaches 87.73% objdiff. The remaining mismatches are
+  compiler register allocation (records/id/node-id/base against r4..r9) and the
+  address form of the +0x160 entry byte loop; the control flow and called helpers
+  agree. A human should open a decomp.me scratch with the target.
+- `func_0209f624` (0x0209f624, 1776 bytes): the Ghidra decompilation of this function
+  stops at the jump-table switch around 0x0209f8c0, so the switch bodies could not be
+  reconstructed reliably. No C definition was added; the target stays linked from the
+  delink object.
+
+Both hard functions still link from the delink object, so the full build and checksum
+are unaffected.

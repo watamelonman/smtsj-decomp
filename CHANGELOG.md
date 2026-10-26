@@ -10,6 +10,7 @@
 
 - Match all eight M1-T765 game/unit_0210a034 slot, state-machine, paging, and initialization functions at 100% objdiff; document their typed borrowed-work contracts.
 
+- Match `func_0209f0d8` descriptor dispatch in game/unit_0209ee4c and record the two remaining large functions as hard.
 - Match six additional functions in game/unit_020f90dc; document the remaining drawing function for scratch follow-up.
 - Matched eight more game/unit_0209ee4c record and state helpers in readable C.
 - Match all eight M1-T764 entry-selection, descriptor-state, and work-allocation helpers at 100% objdiff.
