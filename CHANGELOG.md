@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match eight more functions in game/unit_021071e4: record sorting, selected-value calculations, drawing and message/input handling.
+
 - Match eight more functions in game/unit_021071e4: record updates, descriptor setup, color selection, and handle cleanup.
 - M1-T802: match and document eight unit_02116598 mapping, work-field setter and call-sequence routines at 100% objdiff, with typed arguments and instruction evidence.
 - Added typed, documented C for all eight M1-T857 category, record, and handle helpers in `game/unit_021071e4`.
