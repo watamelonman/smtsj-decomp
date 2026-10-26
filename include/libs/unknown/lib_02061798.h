@@ -3,16 +3,6 @@
 
 #include "types.h"
 
-/* Partial view of the 56-byte record selected by func_020618cc: sixteen u16
- * entries at +0 used as a glyph table, an id at +0x20 and two header bytes. */
-typedef struct Unk061798Font {
-    u16 unk_0000[16];
-    u32 unk_0020;
-    u8 unk_0024;
-    u8 unk_0025;
-    u8 pad_0026[0x12];
-} Unk061798Font;
-
 /* Opaque object returned through func_02063a44; it is a different global
  * from the one behind Unk061798ResultB. */
 typedef struct Unk061798ResultA Unk061798ResultA;
@@ -21,29 +11,70 @@ typedef struct Unk061798ResultA Unk061798ResultA;
  * Unk061798ResultA and is backed by data_0216b9a8 + 4. */
 typedef struct Unk061798ResultB Unk061798ResultB;
 
-/* Partial view of the larger render object whose fields the setters update. */
+/* Opaque record behind the pointer at +0x28 of a font record; callers read
+ * fields +0x10 and +0x0c through it (call site 0x020601f4). */
+typedef struct Unk061798FontData Unk061798FontData;
+
+/* Partial view of the 56-byte record selected by func_020618cc: sixteen u16
+ * entries at +0 used as a glyph table, an id at +0x20, two header bytes and a
+ * pointer at +0x28 that callers dereference. */
+typedef struct Unk061798Font {
+    u16 unk_0000[16];
+    u32 unk_0020;
+    u8 unk_0024;
+    u8 unk_0025;
+    u8 pad_0026[2];
+    Unk061798FontData *unk_0028;
+    u8 pad_002c[0x0c];
+} Unk061798Font;
+
+/* Partial view of the larger render object whose fields these functions
+ * update. Only bytes touched by this unit are named; the rest is padding. */
 typedef struct Unk061798Object {
-    u8 pad_0000[0x30];
+    u8 pad_0000[0x28];
+    u32 unk_0028;
+    u8 pad_002c[4];
     u32 unk_0030;
     u8 unk_0034;
     u8 pad_0035[0x13];
     u32 unk_0048;
+    u16 unk_004c;
+    u16 unk_004e;
+    u8 pad_0050[0x31];
+    s8 unk_0081;
 } Unk061798Object;
 
+/* Returns the +0x28 pointer of the font record selected by id. */
+Unk061798FontData *func_0206190c(u32 id);
+/* Returns a pointer to the first header byte (+0x24) of the font record. */
+u8 *func_02061950(u32 id);
+/* Returns the first header byte (+0x24) of the font record selected by id. */
+u8 func_02061960(u32 id);
+/* Returns the second header byte (+0x25) of the font record selected by id. */
+u8 func_02061970(u32 id);
 /* Tail wrapper: selects a font record by id; its glyph table starts at +0. */
 Unk061798Font *func_0206191c(u32 id);
 /* Tail wrapper: returns the second header byte of the font record for id,
  * which callers pass in r0. */
 u8 func_020619f8(u32 id);
-/* Tail wrapper: appends a character code and returns Unk061798ResultA. */
-Unk061798ResultA *func_02063a44(const void *text, u32 code);
-/* Tail wrapper: returns the shared Unk061798ResultB singleton, or null. */
-Unk061798ResultB *func_02063a60(void);
+/* Returns the +0x28 font pointer selected by the object's font id. */
+Unk061798FontData *func_02062a2c(Unk061798Object *object);
+/* Clears the two halfwords at +0x4c and +0x4e. */
+void func_02063490(Unk061798Object *object);
 /* Stores a 32-bit value at +0x30. */
 void func_0206357c(Unk061798Object *object, u32 value);
-/* Stores a byte at +0x34. */
-void func_02063584(Unk061798Object *object, u8 value);
+/* Stores the signed byte at +0x34; func_0206358c passes the signed byte at
+ * +0x81 through it, so the parameter stays signed. */
+void func_02063584(Unk061798Object *object, s8 value);
+/* Copies the signed byte at +0x81 into the byte at +0x34. */
+void func_0206358c(Unk061798Object *object);
 /* Stores a 32-bit value at +0x48. */
 void func_0206359c(Unk061798Object *object, u32 value);
+/* Tail wrapper: appends a character code and returns Unk061798ResultA. */
+Unk061798ResultA *func_02063a44(const void *text, u32 code);
+/* Returns the singleton object stored at data_0216b9a8 + 4, or null. */
+Unk061798ResultB *func_02063a50(void);
+/* Tail wrapper: returns the shared Unk061798ResultB singleton, or null. */
+Unk061798ResultB *func_02063a60(void);
 
 #endif
