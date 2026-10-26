@@ -46,6 +46,9 @@ typedef struct Unk044904Entry {
     u8 pad_0002[10];
 } Unk044904Entry;
 
+/* 02044904: scans the caller's 12-byte entry table for a matching leading
+ * halfword, using the u32 count at +0x60 (ldr/ldrh/cmp plus a *12 mla). Returns
+ * the borrowed entry address, or null when no entry matches; never writes. */
 Unk044904Entry *Unk044904_FindById(Unk044904Entry *tbl, u16 key)
 {
     u32 i;
@@ -124,6 +127,9 @@ typedef struct Unk044904Mgr {
 void func_0204a780();
 void func_0204a694();
 void Unk0bc1a8_Unk_0bc928();
+/* 02044fa0: returns the borrowed pointer from manager slot i (word array at
+ * +0x64), or null when unregistered, i is negative, or i is 4 or greater
+ * (cmp #0 / cmp #4 with signed branches in the original). */
 Unk044904Obj *Unk044904_GetSlot(int i)
 {
     Unk044904Mgr *m = UNK044904_MGR();
@@ -163,6 +169,9 @@ void Unk044904_ClearSlotsUnk1de(void)
     }
 }
 
+/* 02045430: calls func_0204a694 for each non-null manager slot. Walks all ten
+ * +0x64 words unconditionally (counter < 10 with a null-check branch), so the
+ * callback sees every live slot in index order. */
 void Unk044904_ForEachSlot_04a694(void)
 {
     int i;
@@ -174,6 +183,9 @@ void Unk044904_ForEachSlot_04a694(void)
     }
 }
 
+/* 020457a8: returns the first non-null manager slot whose state byte (bits
+ * 16-23 of its +0 word) is zero, otherwise null after the ten-slot walk.
+ * The returned pointer stays owned by the manager. */
 Unk044904Obj *Unk044904_FindInactiveSlot(void)
 {
     int i;
@@ -186,6 +198,9 @@ Unk044904Obj *Unk044904_FindInactiveSlot(void)
     return 0;
 }
 
+/* 020459fc: one-shot start request. Returns without writing when manager bit
+ * 10 (word +0x40, lsl #21/lsr #31) is already set; otherwise stores 1 to the
+ * +0x50 word and 0 to +0x54. */
 void Unk044904_Unk_0459fc(void)
 {
     if (UNK044904_MGR()->flag_0040_10) {
@@ -433,6 +448,9 @@ int Unk0aa118_SortRemaining();
 void Unk044904_Unk_045bd0();
 void func_020456d8();
 void func_020455cc();
+/* 02046468: advances the manager's +0x38 halfword counter, clears bit 16 of
+ * the +0x40 flags, writes state 2 through the caller's s16 pointer, and
+ * returns 1. The pointer is only written; the manager retains ownership. */
 int Unk044904_Unk_046468(s16 *st)
 {
     Unk044904Mgr *m = UNK044904_MGR();
@@ -454,6 +472,9 @@ int Unk044904_Unk_04661c(s16 *st)
     return 2;
 }
 
+/* 02046644: when manager bit 16 (word +0x40, lsl #15/lsr #31) is set and
+ * Unk044904_Unk_045460(1) reports a match, returns 2 without side effects.
+ * Otherwise runs func_020456d8(0) then func_020455cc(2) and returns 1. */
 int Unk044904_Unk_046644(void)
 {
     if (UNK044904_MGR()->flag_0040_16 && Unk044904_Unk_045460(1) != 0) {
@@ -564,20 +585,21 @@ int func_02045138();
 void Unk044904_Unk_04527c();
 int Unk0aa118_Clear814();
 int func_020f8098();
-/* decompiler-derived */
-u32 Unk044904_Unk_046108(u16 *arg0)
+/* 02046108: runs the teardown/refresh sequence (Unk_044fd8, Unk0aa118_Clear814,
+ * func_02045138, Unk_04527c, func_020450b8), then probes the +0x78e4 view via
+ * func_020f8098(view, 0, 0). If the probe reports work, writes state 2 through
+ * the caller's u16 pointer. Always returns 2. */
+u32 Unk044904_Unk_046108(u16 *state)
 {
-  u32 value1;
-  int value2;
+  int active;
   Unk044904_Unk_044fd8();
   Unk0aa118_Clear814();
   func_02045138();
   Unk044904_Unk_04527c();
   func_020450b8();
-  value1 = Unk044904_Unk_045080();
-  value2 = func_020f8098(value1,0,0);
-  if (value2 != 0) {
-    *arg0 = 2;
+  active = func_020f8098(Unk044904_Unk_045080(), 0, 0);
+  if (active != 0) {
+    *state = 2;
   }
   return 2;
 }
