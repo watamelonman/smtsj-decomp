@@ -10,6 +10,8 @@ typedef struct Unk1071e4Work {
     u8 state;
     u8 pad_002a[18];
     s8 records[1];
+    u8 pad_003d[11];
+    float opacity[4];
 } Unk1071e4Work;
 
 void func_020bc9f4(int id, int value);
@@ -492,4 +494,206 @@ void func_02108694(Unk1071e4Work *work, u32 *message)
         break;
     case 4: break;
     }
+}
+
+int func_02053824(int device, int button);
+void func_02051b18(s32 *value, int delta, int minimum, int count, int mode);
+
+/* Target button masks move selection through the three-column record list. */
+int func_02107a9c(Unk1071e4Work *work)
+{
+    int old = FIELD(s32, work, 32);
+    if (work->count <= 1) return 0;
+    if (func_02053824(0, 64)) {
+        if (FIELD(s32, work, 32) == 0) FIELD(s32, work, 32) = work->count - 1;
+        else if (FIELD(s32, work, 32) <= 3) FIELD(s32, work, 32) = 0;
+        else FIELD(s32, work, 32) -= 3;
+    } else if (func_02053824(0, 128)) {
+        int selected = FIELD(s32, work, 32);
+        if (selected == 0) FIELD(s32, work, 32) = 1;
+        else if (selected == work->count - 1) FIELD(s32, work, 32) = 0;
+        else if (selected + 3 >= work->count) {
+            switch ((work->count - 1) % 3) {
+            case 0: FIELD(s32, work, 32) = 0; break;
+            case 1: FIELD(s32, work, 32) = work->count - 1; break;
+            case 2:
+                if (selected == work->count - 2) FIELD(s32, work, 32) = 0;
+                else FIELD(s32, work, 32) = work->count - 1;
+                break;
+            }
+        } else FIELD(s32, work, 32) = selected + 3;
+    } else if (func_02053824(0, 32)) {
+        func_02051b18(&FIELD(s32, work, 32), -1, 0, work->count, 2);
+    } else if (func_02053824(0, 16)) {
+        func_02051b18(&FIELD(s32, work, 32), 1, 0, work->count, 2);
+    }
+    return old != FIELD(s32, work, 32);
+}
+
+int Unk124c5c_IsKind0(void);
+int Unk124c5c_IsKind31(void);
+void Unk0bc1a8_Unk_0bc9b4(int id, int value);
+int Unk0cb32c_Unk_0cb58c(u32 handle);
+void Unk0fc584_Unk_0fc86c(void);
+int Unk0fc584_Unk_0fc7f4(void);
+void func_0205c704(u32 handle);
+
+/* Target state dispatch advances animations, deducts the computed value, and refreshes eligibility. */
+void func_021076f0(Unk1071e4Work *work)
+{
+    int i;
+    switch (work->state) {
+    case 1:
+        if (Unk124c5c_IsKind0()) {
+            Unk1071e4_Unk_108b08(work, 3);
+            work->state = 3;
+        }
+        break;
+    case 2:
+        if (Unk124c5c_IsKind31()) Unk0bc1a8_Unk_0bc9b4(19, 0);
+        break;
+    case 3:
+        if (FIELD(s32, work, 88) < 8) {
+            if (FIELD(s32, work, 88) == 0) work->opacity[0] += 0.5f;
+            else work->opacity[FIELD(s32, work, 88) / 2] += 0.5f;
+            FIELD(s32, work, 88)++;
+        }
+        if (Unk0cb32c_Unk_0cb58c(work->handles[3])) {
+            Unk1071e4_Unk_108b08(work, 2);
+            Unk1071e4_Unk_108b08(work, 4);
+            for (i = 0; i < 4; i++) work->opacity[i] = 1.0f;
+            func_020bc9f4(19, 0);
+            work->state = 4;
+        }
+        break;
+    case 6:
+        if ((work->handles[5] == 0 && Unk0cb32c_Unk_0cb58c(work->handles[1])) ||
+            (work->handles[5] != 0 && Unk0cb32c_Unk_0cb58c(work->handles[0]))) {
+            u8 *area = Unk02e000_GetWorkArea();
+            FIELD(s32, area, 836) -= FIELD(s32, work, 96);
+            FIELD(s32, work, 96) = 0;
+            Unk0fc584_Unk_0fc86c();
+            work->state = 7;
+        }
+        break;
+    case 7:
+        if (!Unk0fc584_Unk_0fc7f4()) {
+            switch (work->handles[5]) {
+            case 0:
+                func_02108a50(work);
+                Unk1071e4_Unk_107c34(work);
+                break;
+            case 1:
+                func_0210882c(work);
+                if (func_021072c0()) work->state = 5;
+                else Unk1071e4_Unk_107c34(work);
+                break;
+            case 2:
+                func_02108960(work);
+                if (func_02107374()) work->state = 5;
+                else Unk1071e4_Unk_107c34(work);
+                break;
+            }
+        }
+        break;
+    }
+    if (work->state == 0) return;
+    for (i = 0; i < 5; i++) func_0205c704(work->handles[i]);
+}
+
+int Unk0ddeb0_Unk_0ddfd8(u16 category);
+u32 Unk0ca69c_Unk_0ca6a4(int id);
+void func_02058e9c(int mode, u32 value, int x, int y, float alpha, int zero, int flags);
+void func_020a9fd8(int mode, int x, int y, int kind, int zero, int flags, const void *format, int value);
+u8 *func_0205e318(u32 handle, int index);
+void func_0205e048(int mode, u32 handle, u8 *entry, int x, int y, float a, float b, int zero, float alpha, int flags, int enabled);
+extern u8 data_0215127c[], data_02151280[];
+
+/* Target draws category text and bars from the low halfwords of stack arguments.
+ * Keep full-width caller arguments: the original caller stores untruncated getter results. */
+void func_02108290(Unk1071e4Work *work, int x, int y, float alpha, int category, int a, int b, int c, int d, int enabled)
+{
+    int threshold;
+    int current;
+    u8 *bar;
+    func_02108534(work, x, y, alpha, FIELD(u16, &category, 0), enabled);
+    if (alpha < 1.0f) return;
+    func_0205de40(2, FIELD(u32, work, 0), 5, x, y, 1.0f, 1.0f, 0, alpha, 5);
+    func_02058e9c(1, Unk0ca69c_Unk_0ca6a4(Unk0ddeb0_Unk_0ddfd8(FIELD(u16, &category, 0))), x + 174, y + 10, alpha, 0, 5);
+    threshold = FIELD(s16, &c, 0) / 5;
+    current = FIELD(s16, &a, 0);
+    if (current < threshold) func_02057ddc(0xef1821ff);
+    func_020a9fd8(2, x + 245, y + 23, 2, 0, 6, data_0215127c, current);
+    func_02057df8();
+    func_020a9fd8(2, x + 245, y + 30, 2, 0, 6, data_02151280, FIELD(s16, &b, 0));
+    if (current < threshold) bar = func_0205e318(FIELD(u32, work, 0), 12);
+    else bar = func_0205e318(FIELD(u32, work, 0), 51);
+    if (FIELD(s16, &a, 0) > 0) {
+        FIELD(s16, bar, 12) = (int)(30.0f * ((float)FIELD(s16, &a, 0) / (float)FIELD(s16, &c, 0)));
+        if (FIELD(s16, bar, 12) == 0) FIELD(s16, bar, 12) = 1;
+        func_0205e048(2, FIELD(u32, work, 0), bar, x, y, 1.0f, 1.0f, 0, alpha, 5, 1);
+    }
+    bar = func_0205e318(FIELD(u32, work, 0), 13);
+    if (FIELD(s16, &b, 0) > 0) {
+        FIELD(s16, bar, 12) = (int)(30.0f * ((float)FIELD(s16, &b, 0) / (float)FIELD(s16, &d, 0)));
+        if (FIELD(s16, bar, 12) == 0) FIELD(s16, bar, 12) = 1;
+        func_0205e048(2, FIELD(u32, work, 0), bar, x, y, 1.0f, 1.0f, 0, alpha, 5, 1);
+    }
+}
+
+void func_02057524(int mode);
+void func_02057e58(int index, int a, int b);
+void func_02057eb8(int mode);
+void func_02057e18(int value);
+int func_0205caa0(u32 handle);
+void func_02060b60(int mode, u32 handle, int x, int y, int zero, int flags);
+void func_0205c848(int mode, u32 handle, int x, int y, float a, float b, int zero, float alpha, int flags);
+void func_02057fd8(void);
+void func_020572d8(void);
+
+/* Target draws the main record and three-column area grid, with selection and state overlays. */
+void func_02107c60(Unk1071e4Work *work)
+{
+    int i;
+    if (work->state == 0) return;
+    func_02057524(4);
+    func_02057e58(0, 5, 15);
+    func_02057e58(1, 20, 15);
+    func_02057e58(2, 35, 15);
+    func_02057eb8(0);
+    func_0205c748(2, work->handles[3], 0, 0, 1.0f, 1.0f, 0, 1.0f, 5);
+    func_0205c748(2, work->handles[2], 0, 0, 1.0f, 1.0f, 0, 1.0f, 6);
+    func_02057e18(31);
+    if (func_0205caa0(work->handles[3]) > 1) {
+        func_02057ddc(255);
+        func_02060b60(1, FIELD(u32, work, 52), 22, FIELD(s32, (u8 *)work->handles[3], 24) - 1, 0, 6);
+        func_02057df8();
+        func_02060b60(1, FIELD(u32, work, 52), 22, FIELD(s32, (u8 *)work->handles[3], 24) - 2, 0, 8);
+    }
+    func_02057eb8(0);
+    func_0205de40(2, FIELD(u32, work, 0), 10, 0, 0, 1.0f, 1.0f, 0, 1.0f, 3);
+    func_0205de40(2, FIELD(u32, work, 0), 11, 0, 0, 1.0f, 1.0f, 0, 1.0f, 4);
+    func_02107ff4(work);
+    if (FIELD(s32, work, 100) && (work->selected == 0 || work->handles[5] == 0))
+        func_0205c748(2, work->handles[4], 0, 0, 1.0f, 1.0f, 0, 1.0f, 6);
+    for (i = 0; i < FIELD(u8, Unk02e000_GetWorkArea(), 855); i++) {
+        int x, y;
+        func_02057eb8(0);
+        x = (i % 3) * 81;
+        y = (i / 3) * 33;
+        func_0205de40(2, FIELD(u32, work, 0), 9, x, y, 1.0f, 1.0f, 0, 1.0f, 3);
+        if (i < work->count - 1) {
+            if (FIELD(s32, work, 100) && (i + 1 == work->selected || work->handles[5] == 0))
+                func_0205c848(2, work->handles[4], x - 162, y + 47, 1.0f, 1.0f, 0, 1.0f, 6);
+            func_02108128(work, x - 162, y + 47, work->opacity[(i + 4) / 4 - 1], (u8)i);
+        }
+    }
+    if (work->state == 6 && work->handles[5] == 0) {
+        func_02057eb8(1);
+        func_0205c748(2, work->handles[1], 0, 0, 1.0f, 1.0f, 0, 1.0f, 15);
+    }
+    func_02057df8();
+    func_02057eb8(-1);
+    func_02057fd8();
+    func_020572d8();
 }

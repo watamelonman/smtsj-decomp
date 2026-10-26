@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T860: match record-list navigation, animation-state handling, and layered record/grid drawing; document the remaining initializer in game/unit_021071e4.
 - M1-T803: verify eight unit_02116598 work setters, call sequences, mappings and guards at 100% objdiff; add typed work accesses and per-function instruction contracts.
 - M1-T836: match six additional game/unit_0211fc20 initialization, allocation and coordinate-forwarding functions; document two remaining hard functions for scratch follow-up.
 
