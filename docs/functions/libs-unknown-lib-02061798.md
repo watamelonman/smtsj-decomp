@@ -1,10 +1,11 @@
 # libs/unknown/lib_02061798
 
-Thirty-one functions of this TU are reconstructed from the original ARM
+Forty-seven functions of this TU are reconstructed from the original ARM
 instructions and match at 100%: seven from M2-T1057, eight from M2-T1058,
-eight from M2-T1059 and the eight covered by M2-T1060. `func_02062264` is the
-exception: it is a four-byte copy of the preceding function's unreachable
-epilogue and cannot be expressed as a standalone C function (see Hard list).
+eight from M2-T1059, the eight covered by M2-T1060, the eight covered by
+M2-T1061 and the eight covered by M2-T1062. `func_02062264` is the exception:
+it is a four-byte copy of the preceding function's unreachable epilogue and
+cannot be expressed as a standalone C function (see Hard list).
 
 All names remain neutral linker symbols: the surrounding records and the
 public SDK sources found below do not establish an application-level API name.
@@ -20,8 +21,11 @@ text-canvas code around `g2d_Font.c`, `g2d_TextCanvas.c` and
 registry, its `+0x28` / `+0x30` / `+0x34` / `+0x48` / `+0x81` render-object
 fields, or the `data_0216b5a0` / `data_0216b9a8` text globals was found. The
 same source area covers the eight M2-T1060 helpers (singleton state
-predicates, allocation wrappers and bit-word updates); no public
-implementation was identified for them either. The code is therefore
+predicates, allocation wrappers and bit-word updates), the eight M2-T1061
+helpers (state predicates, a glyph-advance multiply and singleton/state
+setters), and the eight M2-T1062 helpers (a font-table index, a render-object
+countdown, message/singleton state setters and release/state helpers); no
+public implementation was identified for them either. The code is therefore
 reconstructed from the instructions and keeps the neutral symbols.
 
 The C declares only the fields observed in the instructions. Unrelated bytes
@@ -34,7 +38,13 @@ the header uses two distinct opaque types, `Unk061798ResultA` and
 `+0x81` and the original emits `ldrsb`. M2-T1059 added the object words at
 `+0x4`, `+0x8`, `+0xc`, `+0x10`, the signed byte at `+0x68`, and the word at
 `+0x1c` of `Unk061798ResultB`; the padding around them keeps every earlier
-offset unchanged.
+offset unchanged. M2-T1061 added the signed byte at `+0x35` and the words at
+`+0x38` and `+0x44` of `Unk061798Object`, appended the `+0x58`/`+0x60`/`+0x64`
+words to `Unk061798ResultB`, and typed its `+0` word as the render-object
+pointer that `func_0206557c` forwards to `func_02062a3c`. M2-T1062 typed the
+`+4` word of `Unk061798ResultB` as a second render-object pointer and added
+its `+0x50` word, gave `Unk061798Font` the `+0x2c` table pointer and the signed
+`+0x34` count, and added byte `+0x90` to `Unk061798Object`.
 
 ## func_0206190c — 16 bytes
 
@@ -49,6 +59,15 @@ Tail wrapper for `func_020618cc`. Takes the font id passed by callers in r0
 (call sites `0x02060210`, `0x020608a0`, `0x02062118`) and returns the selected
 56-byte font record; its glyph table starts at +0 and callers read it with
 `ldrh` at +0 and at `+2*index`. Objdiff: 100%.
+
+## func_02061928 — 40 bytes
+
+Calls `func_020618cc(id)` and returns a pointer to entry `index-1` of the
+4-byte table at `+0x2c` of the selected font record. The signed count at
+`+0x34` clamps an index at or above it to entry 0; the original emits
+`sub r4, r4, #1; cmp r4, r1; movge r4, #0` and keeps the index in r4 across
+the call, which the pre-declared local reproduces. The only caller
+`0x02061b3c` reads bytes `+2`/`+3` of the returned entry. Objdiff: 100%.
 
 ## func_02061950 — 16 bytes
 
@@ -89,6 +108,14 @@ Tests whether any bit of the mask in r1 is set in the object's `+0x4` word and
 returns 0/1; call sites `0x020605a8`, `0x020625a8` and `0x020632e4` branch on
 the result. The original emits `tst; movne #1; moveq #0`. Objdiff: 100%.
 
+## func_0206232c — 36 bytes
+
+Reads the font id at `+0x28`, calls `func_02061960` for that record's first
+header byte, adds the signed byte at `+0x35` (`ldrsb`), and multiplies the sum
+by the 32-bit second argument. The original saves the multiplier in r4 across
+the `func_02061960` call. Call sites `0x020603b8` and `0x02065240`. Objdiff:
+100%.
+
 ## func_020629ac — 24 bytes
 
 Wrapper around `func_02060a48`. Callers set all four argument registers before
@@ -105,6 +132,14 @@ Reads the font id at `+0x28` of a render object and tail-calls
 `func_0206190c` with it, returning the selected record's `+0x28` pointer. Call
 sites `0x02060614`, `0x02060a38` and `0x020620a8` dereference the result.
 Objdiff: 100%.
+
+## func_02062a3c — 32 bytes
+
+Returns 0 when the object's `+0x10` word is 0 or 1, and 1 otherwise. The
+original tests both values with `cmp #0; cmpne #1` and branches to separate
+0/1 return blocks, so the C uses a switch with the two accepted values.
+Call sites `0x02063c48`, `0x02063d10`, `0x020651bc` and `0x02065594` (the last
+is `func_0206557c`). Objdiff: 100%.
 
 ## func_02062a5c — 24 bytes
 
@@ -177,11 +212,31 @@ No-argument tail wrapper for `func_02063a50`, which returns the singleton from
 `data_0216b9a8` +4. Callers test the result for null and read fields through it
 (call sites `0x020641c8`, `0x0206545c`). Objdiff: 100%.
 
+## func_020641f0 — 40 bytes
+
+Returns immediately when `func_0206557c` returns zero; otherwise loads the
+signed byte at `+0x68` of the object with `ldrsb` and decrements it only when
+it is positive (`subgt`/`strbgt`). Its only caller `0x02063b90` invokes it after
+`func_020641c4`. Objdiff: 100%.
+
 ## func_020642a8 — 20 bytes
 
 Loads the signed byte at `+0x68` of the object with `ldrsb` and returns 1 when
 it is positive, else 0. Call site `0x02064294` selects between a reset and a
 field update, and `0x020642e8` is the other caller. Objdiff: 100%.
+
+## func_0206431c — 32 bytes
+
+Returns 0 when the object's `+0x38` word is 1 or 3, and 1 otherwise. The
+original tests both values with `cmp #1; cmpne #3` and branches to separate
+0/1 return blocks (call site `0x02065518`); the switch keeps that shape.
+Objdiff: 100%.
+
+## func_0206433c — 32 bytes
+
+Returns 0 when the object's `+0x44` word is 1 or 3, and 1 otherwise; same
+compare and separate-return shape as `func_0206431c`, on the `+0x44` word.
+Call sites `0x020653c8` and `0x02065504`. Objdiff: 100%.
 
 ## func_0206435c — 20 bytes
 
@@ -197,11 +252,28 @@ across `cmp #0; cmpne #2; popne`, so the early return is written with the
 negated conjunction. The function address is loaded at `0x02065f20` for use as
 a callback. Objdiff: 100%.
 
+## func_02065438 — 28 bytes
+
+Calls `func_02065374(object)` when the object's `+0x6c` word is 1 or 2, and
+returns otherwise. The original keeps the word in r1 across `cmp #1; cmpne
+#2; popne`, so the early return is written with the negated conjunction. The
+function address is loaded at `0x02065f24` for use as a callback. Objdiff:
+100%.
+
 ## func_0206552c — 24 bytes
 
 Returns 1 when `func_02063a50` (the shared result singleton from
 `data_0216b9a8` +4) is non-null, else 0. Call sites include `0x0203bda4` and
 `0x020964b4`; the original emits `cmp; movne #1; moveq #0`. Objdiff: 100%.
+
+## func_0206557c — 32 bytes
+
+Returns 0 when the `func_02063a50` singleton is absent; otherwise loads the
+render-object pointer at `+0` of the singleton (`ldr r0, [r0]`) and returns
+`func_02062a3c`'s answer for it. The original emits `cmp; moveq r0, #0; popeq`
+before the call. Call sites `0x0204b190`, `0x020641f8`, `0x020642d4`,
+`0x020f7994`, `0x020f79c4`, `0x020fac78`, `0x020facc4`, `0x02113050` and
+`0x02113080`. Objdiff: 100%.
 
 ## func_0206559c — 24 bytes
 
@@ -229,6 +301,13 @@ keeps the argument in r4 across the call (`push {r4, lr}`), which the local
 store reproduces; callers at `0x020dfdfc` and `0x0211c4ac` pass 1. Objdiff:
 100%.
 
+## func_0206567c — 32 bytes
+
+Clears the `+0x60` and `+0x64` words of the `func_02063a60` singleton and then
+calls `func_0206563c(0)`. The original materialises the zero once in r1, reuses
+it for both stores and emits `mov r0, r1` before the call, which the shared
+local reproduces. Call sites `0x020f3324` and `0x020f339c`. Objdiff: 100%.
+
 ## func_0206569c — 16 bytes
 
 Tail wrapper for `func_020656ac`: passes the object in r0 through and sets the
@@ -240,6 +319,60 @@ second argument to `-1` (`mvn r1, #0`). Call sites include `0x0203c690`,
 Tail wrapper for `func_020658b4`: loads its address, sets r1 and r2 both to 1
 (`mov r1, #1; mov r2, r1`) and branches. Call site `0x021107fc` passes the
 object held in r4. Objdiff: 100%.
+
+## func_020658b4 — 40 bytes
+
+Forwards the object (`r0`) and mode (`r1`) to `func_02065864`, then returns
+when mode is -1; otherwise forwards the third argument (`r2`) to
+`func_020bac00`. The original loads -1 into r0 with `mvn r0, #0` for the
+compare, keeping the mode in r5 across the first call. Call site
+`0x020658e4` forwards its own first three arguments, and `func_020658a0`
+loads this address at `0x020658b0` for its 1/1 tail call. Objdiff: 100%.
+
+## func_0206597c — 40 bytes
+
+Calls `func_02063a60` with its result unused, then looks up the message object
+for `message` with `Unk095560_Unk_095778`. When the lookup returns null
+it returns; otherwise it passes the object to `func_020656ac` with mode -1.
+Call sites pass small message ids: `0x02065a7c`/`0x02065a88`/`0x02065a94`
+pass 13/12/90 and `0x020a07dc` passes 4. Objdiff: 100%.
+
+## func_02065b74 — 40 bytes
+
+Returns when `func_02063a50` (the shared singleton) is null; otherwise calls
+`func_02062a00` on both render-object pointers at `+0` and `+4` of the
+singleton, releasing the slots they reference. Call sites `0x0204809c` and
+`0x0204813c` also call it, and the two state setters below tail-call it.
+Objdiff: 100%.
+
+## func_02065b98 — 40 bytes
+
+Gets the `func_02063a60` singleton, stores 2 at `+0x50` and 0 at `+0x5c`, then
+loads byte `+0x90` of its render object (`ldrb`) and forwards it to
+`func_020babec`. Its only caller `0x02065884` is inside `func_02065864`, after
+`func_020656ac` has run. Objdiff: 100%.
+
+## func_02065c10 — 32 bytes
+
+Calls `func_02065bc0` and then sets the `+0x8`, `+0xc` and `+0x58` words of the
+`func_02063a50` singleton to 1. The original does not null-check the singleton.
+Call sites include `0x0203bc60`, `0x0203cd74`/`0x0203cd7c`,
+`0x0203d9cc`/`0x0203da54`, `0x020dfdf4`, `0x020e2e3c`, `0x020fac08` and
+`0x0210a26c`/`0x0210a308`. Objdiff: 100%.
+
+## func_02065c30 — 40 bytes
+
+Returns when `func_02063a50` is null; otherwise stores 3 at `+0x8` and 5 at
+`+0xc` of the singleton, then calls `func_02065b74` to release its render
+objects. Call site `0x020a3ec4` runs it when `func_02065cd0` reports state 1;
+other call sites include `0x0203c72c`, `0x020d1fbc` and `0x0211c74c`. Objdiff:
+100%.
+
+## func_02065c58 — 40 bytes
+
+Same null-check and release tail as `func_02065c30`, but stores 4 at `+0x8`
+and 5 at `+0xc`. Call site `0x020a0804` follows a `func_0206597c(4)` message
+reset. Objdiff: 100%.
 
 ## Hard list
 
@@ -256,7 +389,7 @@ object held in r4. Objdiff: 100%.
 
 ## Validation
 
-`tools/hand/cmp.py` reports OK for each of the thirty-one reconstructed
+`tools/hand/cmp.py` reports OK for each of the forty-seven reconstructed
 functions. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.
