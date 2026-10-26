@@ -9,9 +9,13 @@ the private work view describes only the offsets used by these functions.
 ## `Unk10fe28_Unk_10fe28` (32 bytes)
 
 Resolves group 1 from the handle at work +0x18 using `func_0204fe68`, then
-passes that group and the index at +0x08 to `func_0204fed8`. Evidence: the two
-calls and their literal/field arguments at 0x0210fe28. Requires a valid work
-pointer and resource handle; neither lookup result is retained here.
+returns the entry at the index stored at +0x08 from `func_0204fed8`. Evidence:
+the two calls and their literal/field arguments at 0x0210fe28. Requires a valid
+work pointer and resource handle. `func_021100c0` stores the returned value and
+passes it as the entry argument of `func_02061f10` on the +0x54 handle
+(`bl; str r0,[sp]; ldr r0,[r4,#0x54]; bl func_02061f10` at 0x364/0x368 and
+0x394/0x398); `func_02110658` does the same at 0x8b4/0x8b8, mirroring
+`func_0210fe48`'s use of the same lookup.
 
 ## `Unk10fe28_Unk_1113e0` (32 bytes)
 

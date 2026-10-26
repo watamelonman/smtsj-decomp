@@ -19,11 +19,13 @@ typedef struct Unk10fe28Work {
 
 u32 func_0204fe68(u32 handle, int index);
 u32 func_0204fed8(u32 handle, u32 index);
-/* Resolve resource group 1 at +0x18, then select the entry indexed by +0x08. */
-void Unk10fe28_Unk_10fe28(Unk10fe28Work *w)
+/* Resolve resource group 1 at +0x18 and return the entry indexed by +0x08;
+ * func_021100c0/func_02110658 pass that entry as the +0x54 argument of
+ * func_02061f10. */
+u32 Unk10fe28_Unk_10fe28(Unk10fe28Work *w)
 {
     u32 group = func_0204fe68(w->unk_0018, 1);
-    func_0204fed8(group, w->unk_0008);
+    return func_0204fed8(group, w->unk_0008);
 }
 
 void func_02053000(u32 handle);
@@ -42,17 +44,17 @@ extern u8 data_02151540[];
 extern u8 data_02151548[];
 extern u8 data_02151550[];
 void Unk02e000_Unk_02e0cc(void);
-void func_0205ad2c(u32 a);
-void Unk05b82c_CreateEntry(void *a);
-u32 func_0205c2c4(void *a);
+void func_0205ad2c(u32 handle);
+void Unk05b82c_CreateEntry(void *entry);
+u32 func_0205c2c4(void *resource);
 u32 func_0205c3c0(void);
-void func_0205c3fc(u32 a, u32 b, u32 c);
-u32 func_0205dcd4(void *a, int b);
-void func_02061e98(u32 a, int b, int c);
-void func_02061f10(u32 a, int b, int c, int d, u32 e);
+void func_0205c3fc(u32 handle, u32 a, u32 b);
+u32 func_0205dcd4(void *resource, int flag);
+void func_02061e98(u32 handle, int value, int flag);
+void func_02061f10(u32 handle, int a, int b, int c, u32 entry);
 u32 func_020629ac(int a, int b, int c, int d);
 void Unk065e88_Unk_065e88(void);
-void Unk05b82c_Unk_05b82c(int a);
+void Unk05b82c_Unk_05b82c(int resource);
 
 /* Initialize six descriptors and ten owned entries; +0x18 must already be valid. */
 void func_0210fe48(Unk10fe28Work *w)
@@ -93,7 +95,6 @@ void func_0210fe48(Unk10fe28Work *w)
     w->unk_0024 = func_0205dcd4(data_02151550, 1);
 }
 
-void Unk10fe28_Unk_110048(Unk10fe28Work *w, int i, u32 v);
 void func_0205c408(u32 handle, u32 value);
 void func_0205c6e0(u32 handle);
 void func_0205c704(u32 handle);
