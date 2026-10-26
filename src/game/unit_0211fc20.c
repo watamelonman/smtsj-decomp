@@ -407,96 +407,134 @@ void func_021206a8(Unk11fc20Work *work)
 
 extern void func_0211ff14(Unk11fc20Work *work);
 extern s32 func_021208dc(const Unk11fc20Slot *a, const Unk11fc20Slot *b);
-/** Advances the five-state work controller and resolves pool/player and pool/pool overlaps (0212034c). */
-void func_0212034c(Unk11fc20Work *work)
+/** Submits paired slot requests at the eight work ticks compared in 0211ff14; requires full work. */
+void func_0211ff14(Unk11fc20Work *work)
 {
-    Unk11fc20All *w = (Unk11fc20All *)work;
-    s32 i;
-    Unk11fc20Slot *slot;
-    switch (w->state) {
-    case 0:
-        w->transition = w->transition * 90 / 100;
-        if (w->transition < 1) { w->state = 1; w->ticks = 0; }
-        return;
+    switch ((s32)work->unknown14) {
+    case 30:
+        func_02120b30(3, 1, 32, 8, 8, 270, 3, 0, 0);
+        func_02120b30(3, 1, 96, 8, 8, 270, 3, 0, 0);
+        break;
+    case 200:
+        Unk11fc20_Unk_120b88(3, 3, 32, 8, 8, 270, 4096, 0, 64);
+        Unk11fc20_Unk_120b88(3, 3, 96, 8, 8, 270, 4096, 0, 64);
+        break;
+    case 360:
+        Unk11fc20_Unk_120b88(3, 1, 32, 8, 10, 270, 8192, 256, 0);
+        Unk11fc20_Unk_120b88(3, 1, 96, 8, 10, 270, 8192, -256, 0);
+        break;
+    case 480:
+        Unk11fc20_Unk_120b88(3, 4, 32, 8, 8, 270, 8192, 256, 0);
+        Unk11fc20_Unk_120b88(3, 4, 96, 8, 8, 270, 8192, -256, 0);
+        break;
+    case 600:
+        Unk11fc20_Unk_120b88(3, 6, 32, 8, 8, 270, 20480, 0, 0);
+        Unk11fc20_Unk_120b88(3, 6, 96, 8, 8, 270, 20480, 0, 0);
+        break;
+    case 720:
+        Unk11fc20_Unk_120b88(3, 7, 8, 8, 8, 270, 4096, 0, 0);
+        Unk11fc20_Unk_120b88(3, 7, 120, 8, 8, 270, 4096, 0, 0);
+        break;
+    case 840:
+        func_02120b30(3, 1, 32, 8, 6, 270, 2, 0, 0);
+        func_02120b30(3, 1, 96, 8, 6, 270, 2, 0, 0);
+        break;
+    case 880:
+        Unk11fc20_Unk_120b88(3, 8, 16, 8, 6, 270, 4096, 64, 0);
+        Unk11fc20_Unk_120b88(3, 8, 112, 8, 6, 270, 4096, -64, 0);
+        break;
+    }
+}
+
+extern void func_02121478(Unk11fc20Slot *slot, s32 angle, s32 speed);
+extern s32 func_02050074(s32 lower, s32 upper);
+/** Dispatches subtype-specific timed requests and velocity decay, evidenced by 02120d7c's switch.
+ * Requires a live 44-byte slot; positions and velocities use 20.12 units. */
+void func_02120d7c(Unk11fc20Slot *slot)
+{
+    s32 x = slot->x >> 12;
+    s32 y = slot->y >> 12;
+    s32 ticks = slot->ticks;
+    switch (slot->unknown08) {
     case 1:
-        w->ticks++;
-        func_0211ff14(work);
-        if (w->ticks >= 880 && Unk11fc20_Unk_120944((Unk11fc20Entries *)work) == 0) {
-            w->state = 2;
-            w->transition = 30;
-            return;
+        if (ticks == 3) {
+            func_02120b30(3, 2, x, y, 6, 225, 5, 0, 0);
+            func_02120b30(3, 2, x, y, 6, 315, 5, 0, 0);
+        }
+        if (slot->ticks == 10) {
+            func_02120b30(3, 2, x, y, 4, 240, 7, 0, 0);
+            func_02120b30(3, 2, x, y, 4, 300, 7, 0, 0);
+        }
+        if (slot->ticks == 15) {
+            func_02120b30(3, 2, x, y, 4, 255, 8, 0, 0);
+            func_02120b30(3, 2, x, y, 4, 285, 8, 0, 0);
         }
         break;
     case 2:
-        w->transition--;
-        if (w->transition < 1) { w->state = 3; w->transition = 100; }
+        if (ticks < 300) {
+            slot->dx = slot->dx * 90 / 100;
+            slot->dy = slot->dy * 90 / 100;
+            if (ticks % 60 == 0) {
+                s32 i;
+                for (i = 0; i < 3; i++) func_02121478(slot, (1 - i) * -3, 8192);
+            }
+        }
+        if (slot->ticks == 300) slot->ay = -6144;
         break;
     case 3:
-        w->transition = w->transition * 90 / 100;
-        if (w->transition < 1) w->state = 4;
-        return;
-    case 4: return;
-    }
-    if (w->countdown > 0) w->countdown--;
-    func_0211fd7c(&w->player);
-    {
-        s32 index;
-        Unk11fc20Slot *entry = w->pool1;
-        for (index = 0; index < 8; index++, entry++)
-            if (entry->active) func_02120cb4(entry);
-    }
-    {
-        s32 index;
-        Unk11fc20Slot *entry = w->pool2;
-        for (index = 0; index < 16; index++, entry++)
-            if (entry->active) func_02120cb4(entry);
-    }
-    {
-        s32 index;
-        Unk11fc20Slot *entry = w->pool3;
-        for (index = 0; index < 32; index++, entry++)
-            if (entry->active) func_02120cb4(entry);
-    }
-    {
-        s32 index;
-        Unk11fc20Slot *entry = w->pool4;
-        for (index = 0; index < 128; index++, entry++)
-            if (entry->active) func_02120cb4(entry);
-    }
-    if (w->state != 1) return;
-    slot = w->pool4;
-    for (i = 0; i < 128; i++, slot++) {
-        if (slot->active && w->countdown == 0 && func_021208dc(slot, &w->player)) {
-            slot->active = 0;
-            if (Unk11fc20_Unk_12066c(work)) {
-                w->state = 2;
-                w->transition = 30;
-                Unk0a0ce4_Unk_0a0da4(6);
-                return;
-            }
-            if (w->count > 0) w->count--;
-            break;
-        }
-    }
-    {
-        s32 outerIndex;
-        s32 j;
-        Unk11fc20Slot *target;
-        Unk11fc20Slot *other;
-        target = w->pool3;
-        for (outerIndex = 0; outerIndex < 32; outerIndex++, target++) {
-            if (!target->active) continue;
-            other = w->pool1;
-            for (j = 0; j < 8; j++, other++) {
-                if (other->active && func_021208dc(target, other)) {
-                    other->active = 0;
-                    if (Unk11fc20_Unk_120650((Unk11fc20Work *)target)) {
-                        target->active = 0;
-                        w->count++;
-                        break;
-                    }
-                }
+        if (ticks % 40 == 0) {
+            s32 i;
+            s32 speed = 4096;
+            for (i = 0; i < 8; i++, speed += 512) {
+                func_02121478(slot, -30, speed);
+                func_02121478(slot, 0, speed);
+                func_02121478(slot, 30, speed);
             }
         }
+        break;
+    case 4:
+        if (ticks == 15 || ticks == 30) {
+            s32 i = 0;
+            s32 angle = 0;
+            for (; i < 12; i++, angle += 30)
+                func_02120b30(3, 5, x, y, 4, angle, 3, 0, 0);
+        }
+        break;
+    case 5:
+        if (ticks < 240) {
+            slot->dx = slot->dx * 90 / 100;
+            slot->dy = slot->dy * 90 / 100;
+            if (ticks % 60 == 0) func_02121478(slot, 0, 12288);
+        }
+        if (slot->ticks == 240) {
+            if (func_02050074(1, 2) == 0) slot->ax = 1536;
+            else slot->ax = -1536;
+            slot->ay = -6144;
+        }
+        break;
+    case 6:
+        slot->dx = slot->dx * 90 / 100;
+        slot->dy = slot->dy * 90 / 100;
+        if (slot->ticks < 60) break;
+        if (slot->ticks < 240) {
+            if (ticks % 2 == 0) {
+                s32 angle = ticks << 14;
+                s32 index = (u16)(((s64)angle * 0xb60b60b60bLL + 0x80000000000LL) >> 44) >> 4;
+                Unk11fc20_Unk_12143c((Unk11fc20Work *)slot,
+                    ((data_0212629c[index * 2] * 25) >> 12) + 270, 12288);
+            }
+        } else if (slot->ticks == 240) slot->ay = -6144;
+        break;
+    case 7:
+        if (ticks % 8 == 0) {
+            s32 angle = 0;
+            s32 acceleration = 64;
+            if (x > 64) { angle = 180; acceleration = -64; }
+            Unk11fc20_Unk_120b88(4, 0, x, y, 3, angle, 8192, acceleration, 0);
+        }
+        break;
+    case 8:
+        Unk11fc20_Unk_12143c((Unk11fc20Work *)slot, ticks << 3, 8192);
+        break;
     }
 }

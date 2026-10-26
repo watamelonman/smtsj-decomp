@@ -1,6 +1,9 @@
 # Changelog
 
 ## Unreleased
+- Matched all eight M1-T876 callback, handle cleanup, row-processing and state helpers in `game/unit_020f1128` at 100% objdiff, with typed layouts and instruction-based contracts.
+- Keep the unmatched 0212034c controller in the delink while retaining the matching 0211ff14 and 02120d7c C implementations.
+- M1-T838: match both remaining requested game/unit_0211fc20 timed request dispatchers at 100% objdiff; document the existing caller relocation comparison issue.
 
 - Match all eight M1-T808 unit_02116598 cell, coordinate, transition and callback routines.
 
