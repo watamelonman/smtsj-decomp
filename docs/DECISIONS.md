@@ -373,3 +373,14 @@ uses the opposite split and conditional-move schedule. Disabling strength
 reduction for this function preserves the original r6/r7 assignment and the
 `movge`/`movlt` order while leaving the C semantics ordinary. No assembly,
 volatile accesses or byte blobs are involved.
+
+
+## DEC-022 — Keep the 020cbce4 index reset in the provider argument
+
+The state-3 path clears work +0xd4 and submits a halfword-aligned 114-byte list
+by value to 020deaa0. Express the clear as the final index argument assignment.
+With a separate preceding statement, mwcc schedules the work store before the
+outgoing stack-address calculation; the original calculates that address first.
+The argument assignment preserves both the reset-before-call contract and the
+original instruction order. The list copy reads +0x20..+0x91, disjoint from the
+reset word, so argument evaluation order does not change the submitted data.

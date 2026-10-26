@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T871: match the 1336-byte game/unit_020cb32c state callback at 100% objdiff, with typed work and by-value list contracts.
 - M1-T870: match seven game/unit_020cb32c refresh, state, descriptor and input functions at 100% objdiff; document the remaining refresh loop for scratch follow-up.
 - Verify all eight M1-T895 SaveLoadTask helpers at 100% objdiff and document their instruction-based contracts.
 - M1-T883: match the remaining four `game/unit_02044904` talk-tone lookup, state-reset and script-advance functions in C and document all eight requested functions at 100% objdiff, with typed manager/tone-state views and instruction-based contracts.

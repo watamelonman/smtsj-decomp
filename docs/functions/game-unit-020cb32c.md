@@ -158,9 +158,6 @@ Validation: original instructions are the acceptance oracle; this card does
 not require behavioral tests. Objdiff covers all seven new definitions and
 all earlier definitions in this TU; checksum covers the linked original image.
 
-## Not done in M1-T871
-- `func_020cbce4`
-
 ## M1-T870
 
 Seven of the eight requested functions match at 100% objdiff. Names remain
@@ -216,3 +213,27 @@ ownership and the allocation stays live for the callback's duration.
 Validation: the original instructions are the acceptance oracle; objdiff
 covers all seven new definitions and every earlier definition in this TU, and
 the checksum covers the linked original image.
+
+## M1-T871
+
+- `func_020cbce4` (1336 B): matches at 100% objdiff. Takes a borrowed,
+  word-aligned writable work allocation covering 0x130 bytes. Dispatches states
+  0..14, waits for the corresponding providers, restores saved states, changes
+  list-handle visibility, and updates the live display selectors at +0xa8/+0xc4.
+  State 4 and out-of-range states perform only the final guarded display update.
+  Evidence: original jump table at 020cbd00, ordered provider calls, field loads
+  and stores, and the display guard at 020cc1f8. The neutral symbol is retained
+  because these instructions do not establish the subsystem's meaning.
+  States 3 and 11 pass a 114-byte halfword-aligned list by value to 020deaa0,
+  followed by the selected index. The state-3 index argument also resets work
+  +0xd4; keeping the assignment in the argument reproduces instruction scheduling
+  (See DEC-022). The descriptor stores the callback through the same opaque
+  function-pointer representation as its other typed callbacks.
+
+Validation: match gate reports all 214 checked C functions at 100%, including
+this callback and the earlier definitions. The original instructions are the
+acceptance oracle; this card requires no new behavioral tests.
+
+### M1-T871 hard list
+
+None.
