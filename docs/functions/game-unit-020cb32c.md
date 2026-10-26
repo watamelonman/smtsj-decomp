@@ -1,15 +1,29 @@
 # src/game/unit_020cb32c.c
 
-- `Unk0cb32c_Nop_0cba74` (4 B): empty callback
-- `Unk0cb32c_Nop_0cccc0` (4 B): empty callback
-- `Unk0cb32c_Unk_0cb35c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0cb32c_Unk_0cb57c` (16 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0cb32c_Unk_0cb32c` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0cb32c_Unk_0cb344` (24 B): decompiler-derived (Ghidra output, cleaned)
-- `Unk0cb32c_Unk_0cb54c` (24 B): decompiler-derived (Ghidra output, cleaned)
+M1-T866: all eight functions below match the delinked ARM instructions at 100%.
+Neutral names are retained because instruction evidence establishes operations,
+but does not establish the surrounding subsystem's purpose.
+
+- `Unk0cb32c_Nop_0cba74` (4 B): no parameters, no effects; original is `bx lr`.
+- `Unk0cb32c_Nop_0cccc0` (4 B): no parameters, no effects; original is `bx lr`.
+- `func_020cccb4` (12 B): takes a borrowed, non-null work pointer covering
+  offset `0x124`; reads that word and returns on either outcome. An early return
+  conditional reproduces the original `ldr r0, [r0, #0x124]; cmp r0, #0; bx lr`.
+  An empty conditional was optimized away; the early return preserves the comparison.
+- `Unk0cb32c_Unk_0cb35c` (16 B): forwards its 32-bit argument and constant 30
+  to `func_0205e484`, using the original literal-load indirect tail call.
+- `Unk0cb32c_Unk_0cb57c` (16 B): forwards its 32-bit argument and zero to
+  `Unk0cb32c_Unk_0cb564`. The second parameter is unused by that callee, but the
+  original wrapper explicitly sets r1 to zero, so its declaration preserves it.
+- `Unk0cb32c_Unk_0cb32c` (24 B): calls `122a78`, `124338`, then `1241ec`
+  with no parameters and returns 1; this order is directly evidenced by its BLs.
+- `Unk0cb32c_Unk_0cb344` (24 B): calls `124214`, `124258`, then `122aa0`
+  with no parameters and returns 1; this order is directly evidenced by its BLs.
+- `Unk0cb32c_Unk_0cb54c` (24 B): obtains the low byte of `func_020cb3dc()`
+  (original AND with 255), passes it and index zero to `Unk0cb32c_Unk_0cb4e4`.
+  Its callers consume the forwarded r0 result; the C declaration now returns it.
 
 ## Hard list
-- `func_020cccb4`: no candidate matched locally
 - `Unk0cb32c_Unk_0ccaa8`: decompiler-derived
 - `Unk0cb32c_Unk_0cba78`: decompiler-derived
 
