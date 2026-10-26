@@ -56,3 +56,9 @@ lifetime guarantees and depend only on base types and existing providers.
 The text-library borrowed views also expose singleton mode bytes +0x54/+0x55,
 its enable word +0x70 and reset byte +0x74, and a four-word metric buffer
 whose +8 origin is caller supplied. Provider ownership remains unchanged.
+
+`include/libs/NitroSDK/sdk_0205c1c8.h` defines borrowed resource-prefix,
+12-byte entry and 40-byte record views for the resource wrapper helpers. The
+wrapper's flag distinguishes a borrowed resource from one released at teardown;
+the independent 320-byte buffer is caller-owned. These helpers depend only on
+base types and existing copy, fill, allocation, and resource-release providers.
