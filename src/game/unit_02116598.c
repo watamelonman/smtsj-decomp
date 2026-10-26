@@ -1109,3 +1109,83 @@ int func_02116e5c(void)
     }
     return result;
 }
+
+void func_021126b4(int value, int id);
+int Unk112714_Unk_112714(void);
+/* ARM 021169c8 dispatches primary callback states 0..4: updates animation,
+   waits for providers and slot 24, and brackets the alternate display with
+   shared-work enable/disable. Work is borrowed and must remain valid. */
+void func_021169c8(Unk116598Work *work)
+{
+    switch (work->unk_0000) {
+    case 0:
+        if (!func_020961a0(work)) work->unk_000c = 1;
+        func_02117834();
+        if (work->unk_000c) work->unk_0000 = 4;
+        break;
+    case 1:
+        if (!Unk095560_Unk_096484()) return;
+        if (Unk0a23f4_IsSet_data_02176b04()) return;
+        if (!Unk0bc1a8_IsSlotEmpty(24)) return;
+        func_02111494();
+        Unk02cad4_SetupDisplayMode(2,1,0);
+        Unk116598_Unk_11689c();
+        work->unk_0000 = 0;
+        func_02117400(1,1,0,0,31);
+        break;
+    case 2:
+        if (!Unk095560_Unk_096484()) return;
+        if (Unk0a23f4_IsSet_data_02176b04()) return;
+        if (!Unk0bc1a8_IsSlotEmpty(24)) return;
+        Unk02cad4_SetupDisplayMode(0,1,0);
+        func_021126b4(0,65535);
+        work->unk_0000 = 3;
+        Unk116598_Unk_1174a0();
+        break;
+    case 3:
+        if (!Unk112714_Unk_112714()) return;
+        Unk02cad4_SetupDisplayMode(2,1,0);
+        Unk116598_Unk_11689c();
+        work->unk_0000 = 0;
+        Unk116598_Unk_1174b8();
+        break;
+    case 4: func_02061424(); break;
+    }
+}
+
+/* ARM 02116c20 tests four map/coordinate pairs and their event predicates.
+   Mode 1 adjusts each candidate through 02116b70; returns one only when a
+   matching pair's predicate equals one. Provider map IDs are compared as words. */
+int func_02116c20(u16 id, u32 x, u32 y, int mode)
+{
+    int result = 0;
+    if (id == Unk02f2a8_Unk_035b08(6,8)) {
+        int a = 22, b = 26;
+        if (mode == 1) func_02116b70(&a,&b,8);
+        if (a == x && b == y) {
+            if (Unk0e651c_Unk_0e666c(237) == 1) result = 1;
+        }
+    }
+    if (id == Unk02f2a8_Unk_035b08(6,3)) {
+        int a = 14, b = 8;
+        if (mode == 1) func_02116b70(&a,&b,9);
+        if (a == x && b == y) {
+            if (Unk0e651c_Unk_0e666c(238) == 1) result = 1;
+        }
+    }
+    if (id == Unk02f2a8_Unk_035b08(6,3)) {
+        int a = 29, b = 7;
+        if (mode == 1) func_02116b70(&a,&b,10);
+        if (a == x && b == y) {
+            if (Unk0e651c_Unk_0e666c(239) == 1) result = 1;
+        }
+    }
+    if (id == Unk02f2a8_Unk_035b08(1,3)) {
+        int a = 26, b = 26;
+        if (mode == 1) func_02116b70(&a,&b,11);
+        if (a == x && b == y) {
+            if (Unk0e651c_Unk_0e666c(1568) == 1) result = 1;
+        }
+    }
+    return result;
+}

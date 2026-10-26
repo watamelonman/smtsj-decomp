@@ -364,3 +364,12 @@ constraints; the fields remain ordinary borrowed memory.
 of the cleanest scalar form.
 **What would make us revisit.** Compiler or original-type evidence that
 reproduces the same accesses with ordinary scalar locals.
+## DEC-021 — Preserve the 020a65c4 radius-scan register split
+
+Scope `opt_strength_reduction off` to `func_020a65c4` and restore the setting
+immediately afterward. With the default setting, mwccarm 2.0/sp1p5 gives the
+outer row counter r7 and the `y - row` absolute-value temporary r6; the original
+uses the opposite split and conditional-move schedule. Disabling strength
+reduction for this function preserves the original r6/r7 assignment and the
+`movge`/`movlt` order while leaving the C semantics ordinary. No assembly,
+volatile accesses or byte blobs are involved.
