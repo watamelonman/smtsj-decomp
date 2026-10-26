@@ -1,17 +1,23 @@
 # libs/MSL/msl_02017850.c
 
-Twelve functions in this delink unit are reconstructed as readable C and match
-the delinked original at 100% with mwccarm 2.0/sp1p5. Four further routines in
-this card (one decimal helper and the three `_d*` conversion/intrinsic routines)
-remain as delinked assembly and are listed at the end; they are hand-written
-runtime assembly that the pinned C compiler does not reproduce.
+Sixteen functions in this delink unit are reconstructed as readable C and match
+the delinked original at 100% with mwccarm 2.0/sp1p5. Eight further routines in
+this unit (the decimal carry helper, three conversion/intrinsic routines and
+four comparison routines, all listed at the end) remain as delinked assembly;
+they are hand-written runtime assembly that the pinned C compiler does not
+reproduce.
 
 The unit is part of the MSL double-precision math library. No public NitroSDK
-MSL source matches this ROM build, so the bodies and call sites in
+MSL source matches this ROM build byte for byte, so the bodies and call sites in
 `libs/CRI/cri_0208aba0.c` and `libs/NitroSDK/sdk_020116a8.s` were used as
-evidence. The four wrappers only load a target address and branch with the
-argument registers untouched, which is the MSL tail-call shape; every caller in
-CRI passes the result of `_f2d`, so the argument and result are `double`.
+evidence, together with the public MSL reconstructions in pret/pokeheartgold
+(`lib/MSL_C/src/msl_fp_runtime.c`, `msl_fp_ansi_str2dec.c`) and pokebw2
+(`lib/msl/src/fp/fp_fastI.s`). Those sources confirm which routines were C
+(`__str2dec`, the decimal rounding helpers) and which were already hand-written
+assembly in MSL (the comparison primitives and the double-to-u64 conversion).
+The four wrappers only load a target address and branch with the argument
+registers untouched, which is the MSL tail-call shape; every caller in CRI
+passes the result of `_f2d`, so the argument and result are `double`.
 
 The module adds no dependency and does not change an architectural boundary.
 The unit stays linked from its delinked original until a human marks it complete.
@@ -99,6 +105,46 @@ usable, and only then calls `func_0201bae4`. The store must happen before the
 negative-result test, which is why the helper result is held in a local. Matches
 100%.
 
+## func_0201ba78 — 108 bytes
+
+Round-up decision for the decimal mantissa. Returns 1 when the digit at `digits`
+is greater than 5; returns -1 when it is less than 5; for an exact 5 it scans the
+remaining digits to the mantissa length and rounds up if any is nonzero,
+otherwise it rounds to even by testing the previous digit's low bit. This is the
+`__must_round` contract used by `func_0201bb34` (which increments only for a
+non-negative result) and by `__str2dec` in the public MSL source. Matches 100%.
+
+## func_0201bdc4 — 156 bytes
+
+Parses the integer digit run at `text` into the decimal value: stores the binary
+exponent, clears the sign byte, copies at most 32 characters minus `'0'` into
+`digits[+5]`, stores the count at +4, then applies the same round-half-to-even
+decision to the first discarded character (skipping following zeros) and calls
+`func_0201bae4` when it must increment. This is the MSL `__str2dec` routine; the
+body and the public reconstructed source (`msl_fp_ansi_str2dec.c`) agree,
+including the signed-byte loads, which require the source pointer to be
+`const s8 *`. Matches 100%.
+
+## func_0201ce94 — 148 bytes
+
+Returns the population count of a 64-bit word (0..64) with the standard SWAR
+sequence and the masks `0x55555555`, `0x33333333` and `0x0f0f0f0f`, finishing
+with a low-byte mask. The dtoa caller `func_0201c648` subtracts the count from
+53; applied to the mask below a normalised mantissa's lowest set bit, that gives
+the significant-bit run used to choose the decimal exponent. Passing the value
+as `u64` reproduces the r0/r1 argument pair and the exact instruction selection.
+Matches 100%.
+
+## func_0201cf3c — 112 bytes
+
+Classifies a double from its IEEE-754 bits, returning 1 for NaN, 2 for
+infinity, 3 for zero, 4 for a normal value and 5 for a denormal. The exponent
+field is isolated with `0x7ff00000`; when it is zero or all ones the mantissa and
+low word decide between zero/denormal or infinity/NaN. Callers such as
+`func_0201c648` compare the result with 1 and 2, confirming the encoding. The
+argument is inspected through its address, which reproduces the original
+`push {r0-r3}` home-area save. Matches 100%.
+
 ## func_0201d40c (`_dfix`) — 76 bytes
 
 Double to signed 32-bit conversion with saturation. **Not matched.** The body is
@@ -136,6 +182,48 @@ has no fourth return: the spare `bx lr` at `0x0201bb30` is the separately named
 no-op `func_0201bb30`, and no relocation or branch targets it, so the symbol
 split treats it as a different function. Left as delinked assembly.
 
+## func_0201d458 (`_ll_ufrom_d` / `_d_dtoull`) — 140 bytes
+
+Double to unsigned 64-bit conversion, truncating; finite negative values give 0,
+a negative NaN gives all ones, and values at or above 2^64 give all ones.
+**Not matched.** The routine is hand-written MSL runtime assembly (identical to
+`_ll_ufrom_d` in pokebw2's `fp_fastI.s` and `d_dtoull` in pokeheartgold's
+`msl_fp_runtime.c`). A readable C version is 168 bytes: it reproduces the
+positive path and the shared zero/all-ones returns, but mwcc materialises the
+negative-range constant `0xFFF00000` in a register and uses a branchless
+select, whereas the ROM uses `cmn r1, #0x100000; cmpeq r0, #0; bhi` and a shared
+tail block. No C spelling tried (`u64` and two-`u32` signatures, comparison with
+`0xFFF0000000000000`, subtraction and carry tests) produced the `cmn` form.
+Left as delinked assembly.
+
+## _dgeq (`func_0201e050`) — 152 bytes
+
+Double comparison `a >= b`, returning 1/0 and also leaving the result in the
+CPSR carry flag for callers that branch immediately after the call.
+**Not matched.** The routine is hand-written MSL runtime assembly (the same body
+appears as `_dgeq` in pokebw2's `fp_fastI.s` and pokeheartgold's
+`msl_fp_runtime.c`). It tests both operands for infinity/NaN with
+`cmn r12, r1, lsl #1`, orders finite values by sign, and writes CPSR with
+`mrs`/`msr`. C cannot both return the boolean and set the caller-visible CPSR
+flag, and emitting the `mrs`/`msr` sequence would require inline assembly, which
+the project forbids. Left as delinked assembly.
+
+## _dgr (`func_0201e0e8`) — 152 bytes
+
+Double comparison `a > b`, with the same return-plus-CPSR-carry contract as
+`_dgeq`. **Not matched.** Same hand-written runtime body and same reason: the
+condition-code side effect is not expressible in portable C without inline
+assembly. Left as delinked assembly.
+
+## _deq (`func_0201e2c0`) — 140 bytes
+
+Double comparison `a == b`, returning 1/0 and leaving equality in the CPSR Z
+flag. **Not matched.** Hand-written MSL runtime assembly (it explicitly
+sets/clears `0x40000000` for the unordered case). The CPSR side effect is not
+expressible in portable C without inline assembly, which the project forbids.
+Left as delinked assembly. (The neighbouring `_dleq`, `_dls` and `_dneq` belong
+to other cards and have the same shape.)
+
 ## Validation
 
 `python3 tools/match_gate.py` reports 100% for all C definitions in this unit,
@@ -151,7 +239,11 @@ delinked object.
 - `func_0201d524` (`_dfltu`): `clz` not reachable from C in this compiler.
 - `func_0201bae4`: C always emits a trailing `bx lr`; the ROM epilogue is
   symbolised separately as `func_0201bb30`.
+- `func_0201d458` (`_ll_ufrom_d` / `_d_dtoull`): hand-written assembly; the
+  `cmn`/`cmpeq` range test and shared return blocks do not come from C.
+- `_dgeq`, `_dgr`, `_deq`: hand-written comparisons that return a boolean and
+  leave the answer in CPSR for the caller; inline assembly would be required.
 
-These four are good candidates for a decomp.me scratch
+These eight are good candidates for a decomp.me scratch
 (`FORGE_DECOMPME_OK=1 python3 tools/decompme.py`) or a human-written assembly
 file if the project later allows per-function asm.

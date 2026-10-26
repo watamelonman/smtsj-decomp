@@ -18,11 +18,14 @@ typedef union MslDoubleBits {
     u32 words[2];
 } MslDoubleBits;
 
-/** Decimal value used by the MSL dtoa helpers: a two-byte prefix, a signed
- * binary exponent at +2, a digit count at +4 and the decimal digits at +5.
- * The count is one byte, so the digit buffer never exceeds 255 entries. */
+/** Decimal value used by the MSL dtoa helpers: a sign byte and pad byte, a
+ * signed binary exponent at +2, a digit count at +4 and the decimal digits at
+ * +5. The sign is stored as the first byte only (the MSL text parser clears it
+ * with a byte store); the count is one byte, so the digit buffer never exceeds
+ * 255 entries. */
 typedef struct MslDecimal {
-    u16 unk0;
+    u8 sign;
+    u8 pad;
     s16 exponent;
     u8 length;
     u8 digits[256];
@@ -39,6 +42,23 @@ double func_0201ba60(double value);
 
 /** Forward a double argument to func_020188ac. */
 double func_0201ba6c(double value);
+
+/** Decide whether the decimal value must round up at digit `digits`: the digit
+ * itself, the trailing digits, and the previous digit's parity (round-half to
+ * even). Returns 1 to round up and -1 to leave the value unchanged. */
+int func_0201ba78(MslDecimal *value, int digits);
+
+/** Parse integer digits into `value`, store the binary exponent, and set the
+ * round-up flag for the first discarded character (MSL `__str2dec`). */
+void func_0201bdc4(MslDecimal *value, const s8 *text, s16 exponent);
+
+/** Population count of a 64-bit word (0..64), used to measure how many
+ * significant bits a normalised double mantissa has. */
+int func_0201ce94(u64 value);
+
+/** Classify a double by its IEEE bit pattern: 1 NaN, 2 infinity, 3 zero,
+ * 4 normal, 5 denormal (MSL `__dclass` semantics). */
+int func_0201cf3c(double value);
 
 /** No-op helper; its whole body is a return. */
 void func_0201bb30(void);
