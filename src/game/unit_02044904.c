@@ -137,7 +137,9 @@ typedef struct Unk044904Mgr {
     u32 pad_0040_5 : 4;
     u32 flag_0040_9 : 1;
     u32 flag_0040_10 : 1;
-    u32 pad_0040_11 : 4;
+    u32 pad_0040_11 : 2;
+    u32 flag_0040_13 : 1;
+    u32 pad_0040_14 : 1;
     u32 flag_0040_15 : 1;
     u32 flag_0040_16 : 1;
     u32 flag_0040_17 : 1;
@@ -1648,4 +1650,97 @@ void func_02044c48(Unk044904Loot *out, Unk044904Results *results)
         out->entries[finalIndex] = drops[finalIndex];
         if (out->entries[finalIndex].count) out->any = 1;
     }
+}
+
+/* Borrowed provider prefixes: category/tier bytes and eligibility bits are
+ * established by the loads at 02046258 and 02046270. */
+typedef struct Unk044904Category {
+    u8 pad_0000[4];
+    u8 category;
+    u8 tier;
+} Unk044904Category;
+typedef struct Unk044904Eligibility {
+    u8 pad_0000[0x16];
+    u16 pad_0016_0 : 3;
+    u16 flag_0016_3 : 1;
+    u16 flag_0016_4 : 1;
+    u16 pad_0016_5 : 11;
+} Unk044904Eligibility;
+int func_020bc1a8(void);
+int func_020bc200(u32 id);
+int Unk02ee5c_GetTierFromField70(void);
+Unk044904Category *func_020a1428(u32 id);
+int Unk0afc28_CountById(int id);
+int func_02049ce8(Unk044904Obj *o, int selector);
+
+/* 02046148: selects a type-2 slot owner and tone mode 1 or 2, writing script
+ * state 3 on selection (otherwise 2). Evidence: ten +0x64 slots, provider
+ * category/tier tests and random thresholds. Requires a registered manager;
+ * state is a writable halfword. Provider storage remains borrowed. */
+int func_02046148(u16 *state)
+{
+    Unk044904Mgr *m = UNK044904_MGR();
+    Unk044904Tone *tone = (Unk044904Tone *)Unk044904_Unk_045048();
+
+    *state = 2;
+    if (m->flag_0040_16) {
+        if (m->flag_0040_13) {
+            for (int i = 0; i < 10; i++) {
+                Unk044904Obj *o = m->slots[i];
+                if (o && (o->unk_0000 >> 16 & 255) == 2) {
+                    tone->owner_0040 = o->unk_0000;
+                    break;
+                }
+            }
+            tone->unk_0044_5 = 1;
+            *state = 3;
+            return 1;
+        }
+        if (func_020bc1a8()) {
+            int tier = Unk02ee5c_GetTierFromField70();
+            for (int i = 0; i < 10; i++) {
+                Unk044904Obj *o = m->slots[i];
+                if (!o || (o->unk_0000 >> 16 & 255) != 2 || !o->unk_01d8 || !func_020bc200(o->unk_0000)) continue;
+                Unk044904Category *category = func_020a1428(o->unk_01d8);
+                if (category->tier == tier) continue;
+                if (((Unk044904Eligibility *)func_020a1740(o->unk_01d8))->flag_0016_3) continue;
+                u32 chance;
+                if (category->category == 3) {
+                    chance = 3;
+                    if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(197))) chance += 3;
+                } else {
+                    chance = 5;
+                    if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(197))) chance += 5;
+                }
+                if ((u32)func_02050074(0, 99) < chance) {
+                    tone->owner_0040 = o->unk_0000;
+                    tone->unk_0044_5 = 1;
+                    *state = 3;
+                    break;
+                }
+            }
+        }
+    } else if (func_020bc1a8() && Unk0afc28_CountById(2) == 1) {
+        for (int i = 0; i < 10; i++) {
+            Unk044904Obj *o = m->slots[i];
+            if (!o || (o->unk_0000 >> 16 & 255) != 2 || !o->unk_01d8 || !func_020bc200(o->unk_0000)) continue;
+            if (func_02049ce8(o, 0) >= 512) continue;
+            if (((Unk044904Eligibility *)func_020a1740(o->unk_01d8))->flag_0016_4) continue;
+            u32 chance;
+            if (func_020a1428(o->unk_01d8)->category == 3) {
+                chance = 3;
+                if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(198))) chance += 10;
+            } else {
+                chance = 5;
+                if (Unk0986ac_Thunk_02098714(Unk0986ac_Unk_098978(198))) chance += 20;
+            }
+            if ((u32)func_02050074(0, 99) < chance) {
+                tone->owner_0040 = o->unk_0000;
+                tone->unk_0044_5 = 2;
+                *state = 3;
+                break;
+            }
+        }
+    }
+    return 1;
 }
