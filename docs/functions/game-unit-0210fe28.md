@@ -75,3 +75,60 @@ Requires a valid preexisting +0x18 handle and caller-owned work storage.
 
 None. No requested function was omitted. The TU remains linked from the delink
 until a human changes its completion status, as required by the task card.
+
+## M1-T777 additions
+
+The two functions below are defined in `src/game/unit_0210fe28.c` and match the
+delinked ARM code at **100% objdiff**. The work view now also exposes the
+selection value at +0x10, the changed flag at +0x14, and the eight saved
+selection bytes at +0x58; the message view is the two flag bytes plus sixteen
+payload words used by the message providers.
+
+## `func_0211030c` (844 bytes)
+
+Runs the twelve-state entry sequence selected by the state word at +0x00.
+States 0..3 advance the opening animation and drive the handle updates through
+`Unk10fe28_Unk_110048`; states 4/5 and 7 apply `Unk10fe28_Unk_1102d4`; state 6
+waits on the three gate calls and then either advances to state 8 or branches to
+state 7; states 8..10 wait on the entry-selection gates; state 11 posts the
+cleared message through `Unk0bc1a8_Unk_0bc9b4` using the header word. Evidence:
+the state dispatch table at 0x02110330, the ordered calls and the literals at
+0x021103b0..0x02110654. The case bodies are emitted in the original order
+(4/5, 7, 6, 8, 10, 9, 11) because that ordering reproduces the original block
+layout. The per-state `func_02065c30` call is shared by all paths after the
+state-6 gate, as shown by the two branches to 0x02110558.
+
+## `func_02110658` (972 bytes)
+
+Handles interaction states 4 and 5. State 4 advances the entry field through
+`func_0205e84c`, optionally skips the special index 4 with the +0x0c mode, and
+then either consumes a request (`func_02053800(0,1)`) by selecting one of the
+four saved bytes at +0x58, or handles the second request gate by saving the
+selected byte and refreshing the +0x54 object. State 5 writes the chosen value
+back into the four selection bytes and runs the changed-flag path through
+`func_0205e84c(&work->unk_0010, ...)`. Evidence: the two-case dispatch at
+0x02110670, the `func_0205e84c` argument setup at 0x02110688 and 0x021109f0,
+and the saved-byte copies at 0x02110878. The index-4 skip is a `do/while` over
+the +0x08 field; the shared `func_02065c30` call after the state-4 gate is
+visible as the two branches to 0x02110558.
+
+## Hard list (M1-T777)
+
+- `func_021100c0` (532 bytes) — the state-0 prologue materialises a short-circuit
+  boolean over `&work->unk_000c`, the request pointer and request byte 0 bit 3,
+  then conditionally stores the +0x10 word from the request or zero. Tried
+  nested `if`, `&&` chains, pointer variables, ternaries and a `switch` wrapper;
+  mwcc 2.0/sp1p5 if-converts the first two tests into `cmpne` and drops the
+  original's stack-spilled value and duplicate boolean test, so the function is
+  left undefined (its asm stays in the delink). A decomp.me scratch is the next
+  step.
+- `func_02110a24` (1252 bytes) — grid drawing with four float alphas, the two
+  selection passes and the signed halfword tables at 0x0213ca6c/78/80/94. The
+  float clamp loop and call structure were recovered, but the remaining
+  differences are register-allocation only (the +0x08 loop counter and the
+  `sel` pointer land in the opposite callee-saved registers / stack slots from
+  the original). Left undefined for a scratch.
+- `func_02110fc8` (1048 bytes) — the twelve-state drawing/teardown dispatcher.
+  Its state layout and calls are documented here for a follow-up, but it was not
+  attempted within this card's budget. Left undefined.
+
