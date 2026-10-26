@@ -1,36 +1,78 @@
-# src/game/unit_020fd9f0.c
+# game/unit_020fd9f0 — M1-T508
 
-- `Unk0fd9f0_Unk_0fdc0c`: decompiler-derived
-- `Unk0fd9f0_Get_data_02176e20`: decompiler-derived
-- `Unk0fd9f0_Unk_0fe2b0`: decompiler-derived
-- `Unk0fd9f0_Unk_0fda14`: decompiler-derived
-- `Unk0fd9f0_Unk_0fd9f0`: decompiler-derived
-- `Unk0fd9f0_Unk_0fe33c`: decompiler-derived
+All eight card functions match the delinked ARM object at 100%. Evidence below
+refers to `build/delinks/src/game/unit_020fd9f0.o`; addresses are ARM9 addresses.
+The pre-existing C bodies already matched; this task makes their argument flow
+explicit and documents the observed contracts. Unknown semantic roles retain
+neutral names. Work pointers are borrowed and must be valid.
 
-## Not done in M1-T508
-- `Unk0fd9f0_SetDir`
-- `Unk0fd9f0_GetColor`
-- `Unk0fd9f0_Unk_0fdb80`: decompiler-derived
-- `Unk0fd9f0_Unk_0fe278`: decompiler-derived
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk0fd9f0_Unk_0fdc0c` | 020fdc0c stores all-one bits at work +0x14. No other fields change. |
+| `Unk0fd9f0_Get_data_02176e20` | 020fdb04 loads the word at data_02176e20. Returns the singleton address as a 32-bit value, or zero when absent. |
+| `Unk0fd9f0_Unk_0fe2b0` | 020fe2b0 calls 02057eb8 with -1, then 020572d8. The subsystem meaning is unconfirmed. |
+| `Unk0fd9f0_Unk_0fda14` | 020fda14 reads the singleton and forwards its nonzero address to 02061424. The null case does nothing. |
+| `Unk0fd9f0_Unk_0fd9f0` | 020fd9f0 checks the singleton; only when absent, calls 020fdb14 and stores its result at data_02176e20. |
+| `Unk0fd9f0_Unk_0fe33c` | 020fe33c loads work +0x24, forwards the nonzero handle to 02061424, then clears the field. Repeated calls with a cleared field do nothing. |
+| `Unk0fd9f0_SetDir` | Existing symbol; 020fda28 writes +1 to singleton +0x14 for a nonzero flag, otherwise -1. An absent singleton is ignored. |
+| `Unk0fd9f0_GetColor` | Existing symbol; 020fe1c8 selects 0x00ff0000 for 1, 0xff000000 for 2, otherwise 0x299ce700. At 020fe300 the result is passed to Unk065e88_SetUnkField28, supporting the color interpretation. |
 
-## Not done in M1-T509
-- `Unk0fd9f0_Update`
-- `Unk0fd9f0_Unk_0fda58`
-- `Unk0fd9f0_LoadBattleHelpTalk`
-- `func_020fdaa8`
-- `func_020fdb14`
-- `Unk0fd9f0_Unk_0fdc18`
+No new runtime tests are required by this card. Exact object comparison checks
+instruction selection and relocations; checksum verifies the image still linked
+from the delinked TU. No module boundary changes are introduced.
 
-## Not done in M1-T510
-- `func_020fe2c4`
-- `func_020fdd90`
-- `func_020fe1f8`
-- `func_020fdc88`
-- `func_020fde4c`
-- `func_020fe004`
-- `Unk0fd9f0_LoadBattleHelpTalk`: decompiler-derived (plain cleanup)
-- `Unk0fd9f0_Unk_0fdc18`: decompiler-derived (plain+fix cleanup)
-- `Unk0fd9f0_SetDir`: hand-matched
-- `Unk0fd9f0_Update`: hand-matched
-- `Unk0fd9f0_GetColor`: hand-matched
-- `Unk0fd9f0_Unk_0fda58`: hand-matched; end-of-file placement
+## Hard list
+
+None for M1-T508.
+
+## M1-T509
+
+Seven card functions match at 100%; the remaining function stays in the delink.
+All pointers below borrow valid work storage.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `Unk0fd9f0_Unk_0fdb80` | 020fdb80 initializes +0x0c to -27, +0x14/+0x28/+0x2c to 1 and +0x24/+0x30 through +0x40 to zero. |
+| `Unk0fd9f0_Unk_0fe278` | 020fe278 calls five subsystem setters with 31, -1, (2,48,10), 2 and 4 in that order. |
+| `Unk0fd9f0_Update` | 020fde0c dispatches +0x2c: state 1 calls 020fde4c then 020fe004; state 2 calls 020fe1f8; others do nothing. |
+| `Unk0fd9f0_Unk_0fda58` | 020fda58 ignores an absent singleton. State 1 stores the argument at +0x28; state 2 sets +0x34/+0x38 to 1, resets direction and releases +0x24. |
+| `Unk0fd9f0_LoadBattleHelpTalk` | 020fdbb8 acquires IDs 0xd5/0xd6 and loads resource paths data_021510b8/cc/e0 into +0/+0x1c/+0x20. Battle/battle_help and battle_talk strings support the existing name. |
+| `func_020fdb14` | Allocates 0x44 bytes through 020611dc with callbacks 020fdd90, Update and 020fdc18, group 3 and flags 0/1; returns zero on failure, otherwise initializes fields and resources. |
+| `Unk0fd9f0_Unk_0fdc18` | Releases +0x24, then nonzero handles +0x20/+0/+0x1c, clearing each; calls 0205bb68 twice and clears the singleton. |
+| `func_020fdaa8` | Unmatched: stores the second argument at +0x40; state 1 writes 1 at +0x28/+0x34, 2 at +0x38, the first argument at +0x30, then resets direction; state 2 writes only +0x30. |
+
+### Hard list for M1-T509
+
+- `func_020fdaa8`: readable switch implementations using struct fields and offset views,
+  signed/unsigned state, case ordering, explicit defaults, and break/return forms
+  produce an 84-byte function rather than the original 92 bytes. The compiler
+  predicates the state-2 store instead of branching to a separate store/return block.
+  No nonmatching definition retained; a human can investigate in decomp.me.
+
+## M1-T510
+
+All six functions match at 100%, including both rendering functions completed
+in attempt 2. The TU still links through the delinked object pending human completion. Parameters are typed borrowed work
+views; offsets refer to the original ARM instructions.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_020fe2c4` | 020fe2c4 releases +0x24, creates an object from resources +0x1c/+0x20 with arguments 1/0, configures its underlying handle and color selected by +0x30, sets fields +0x24/+0x30/+0x3c to 14/4/2, then stores it at work +0x24. |
+| `func_020fdd90` | 020fdd90 increments signed +0x3c, wrapping at 65535, then clamps movement to x=0 and y=-11..0. In state 2, a positive +0x40 countdown decrements and clears +0x30 on expiration. |
+| `func_020fe1f8` | 020fe1f8 draws resource +0x1c, index 0, at signed coordinates +8/+12 with unit scales/opacity and order 12. It selects the rendering color using +0x30, updates the optional +0x24 object with all-one color bits, and brackets drawing with the existing setting helpers. |
+| `func_020fdc88` | 020fdc88 advances signed coordinates +8/+12 by signed velocities +0x10/+0x14, clamping each moving axis to its supplied limits and clearing the corresponding velocity. Reaching the upper y bound in state 2 creates the secondary object. Any hit with nonzero +0x34 sets y velocity to 1, installs state +0x38, and clears +0x34. |
+| `func_020fde4c` | Draws resource +0 indices 0/2, choosing color 0x299ce700 for modes 0/2 and 0x4a4a4a00 otherwise. Mode 2 also draws index 4 with a pulsing opacity from the frame counter and the interleaved signed fixed-point table at 0212629c. Orders are 12/13/14. |
+| `func_020fe004` | Analogous draw sequence for indices 1/3 and mode-3 index 5; it also calls 02057e18(31) after the first draw. |
+
+No new runtime tests are required by this card. Exact instruction and relocation
+comparison verifies all six definitions at 100%; full-image checksum checks
+the existing delink-based link. No module boundaries change.
+
+### Hard list for M1-T510
+
+None. Both rendering functions now reproduce the original 440/452-byte bodies.
+The pulse uses signed `frame * 180 / 60 % 180`, converted to a 16-bit angle
+with the original rounded fixed-point multiplication. A direct signed-short
+interleaved table expression preserves the table register and the 30-factor
+register allocation, including the original signed halfword multiplication.
+The resulting unsigned intensity converts to float and divides by 100.
