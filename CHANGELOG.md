@@ -449,6 +449,7 @@
 - Match all five NitroSDK screen-base pointer helpers in sdk_020039a4 with typed C and register contracts.
 
 - Match eight NitroSDK VRAM reset/disable wrappers in `libs/NitroSDK/sdk_02003568.c`, with typed bank helpers and known-source evidence.
+- Added matching C for eight `libs/unknown/lib_020ba264` script wrappers, with typed declarations and instruction-based contracts.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
