@@ -449,7 +449,7 @@ void ScanVisor_Unk_0a2b7c(void)
   return;
 }
 
-int func_020a4370(ScanVisorSlot *entry);
+void func_020a4370(ScanVisorSlot *entry);
 /* Visit occupied entries in the borrowed seven-slot list. Original
  * 0x020a4544 starts at +0x20, advances 52 bytes and calls func_020a4370
  * only for a nonzero leading word; the caller must supply the full list. */
@@ -780,7 +780,10 @@ extern u8 data_0214cdf0[];
 extern u8 data_0214ce08[];
 int func_0205dcd4();
 int func_020c8ce0();
-/* Loads Visor/e_appearance + search_parts01/02 (medium). */
+/* Load Visor/e_appearance and search_parts01/02: the three path strings at
+ * data_0214cddc/cdf0/ce08 support the configured name. Original 020a370c
+ * stores provider handles at +8/+24/+24c, then initializes borrowed +78.
+ * arg0 must be writable work storage; arg1 is the opaque provider option. */
 void ScanVisor_LoadSearchParts(int arg0,u32 arg1)
 {
   u32 tmp1;
@@ -886,7 +889,11 @@ void ScanVisor_Unk_0a48b4(int list)
 }
 
 int ScanVisor_FindEnt20(u32 id);
-/* decompiler-derived */
+/* Allocate a free slot, mark it occupied and copy key metadata from FindEnt20.
+ * Original 020a42f0 copies list byte +1c to slot +18 and table words
+ * +c/+10/+4/+8 to +8/+c/+2c/+30, then sets (80,0) and (0,0).
+ * Returns borrowed slot storage or null when full; the key must exist in
+ * the metadata table, since the original does not check that lookup. */
 u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
 {
   u32 *v1;
@@ -978,9 +985,13 @@ void ScanVisor_Unk_0a3254(ScanVisor *p)
     Unk0c855c_Unk_0c9890((u8 *)p + 120, 12);
 }
 
-int GameState_Exists();
-void *Unk02e000_GetWorkArea();
+int GameState_Exists(void);
+void *Unk02e000_GetWorkArea(void);
 
+/* Query signed work fields +af2/+af4: original 020a3274 multiplies the
+ * first by 100 with signed-16 truncation, divides by the positive second,
+ * caps at 99 and returns a signed byte. Missing game state or a nonpositive
+ * denominator returns zero; the borrowed provider work must otherwise exist. */
 s8 ScanVisor_Unk_0a3274(void)
 {
     u8 *w;
@@ -1145,4 +1156,115 @@ int func_020a3ac0(u8 *work)
     func_02034dd0();
     Unk118b04_Unk_118e50(6, 1);
     return 1;
+}
+
+/* Borrowed prefix: the caller owns the counter updated at +4. */
+typedef struct ScanVisorCounter {
+    u32 unk_00;
+    s32 counter;
+} ScanVisorCounter;
+
+/* List initialization view; array extents follow the seven-iteration loops. */
+typedef struct ScanVisorListInit {
+    u8 pad_00[0x1c];
+    u8 field1c;
+    u8 pad_1d[0x16f];
+    u32 field18c;
+    u32 field190;
+    u32 field194;
+    u32 field198;
+    u32 values[7];
+    u32 field1b8;
+    u32 field1bc;
+    u32 handles[7];
+} ScanVisorListInit;
+
+void func_020a3008(ScanVisorCounter *p, int a, int b, int c, int d);
+u32 func_02098860(int index);
+
+/* Return an 8-bit scale derived from GetConst6: original 020a4df0
+ * computes ((50 * value / count + 50) * 31) / 100, with minimum 1.
+ * Equal value/count returns 31 directly; caller must avoid signed overflow. */
+u32 func_020a4df0(s32 value)
+{
+    s32 count = ScanVisor_GetConst6();
+    u8 result;
+    if (value == count) {
+        return 31;
+    }
+    result = ((50 * value / count + 50) * 31) / 100;
+    if (result == 0) {
+        result = 1;
+    }
+    return result;
+}
+
+/* Submit (0,-54,0,0), then advance the borrowed +4 counter by one or
+ * two according to the 020a3274 query's >=75 threshold. Original 020a30b4
+ * wraps at 65535; neither the counter units nor provider semantics are known. */
+void func_020a30b4(ScanVisorCounter *p)
+{
+    func_020a3008(p, 0, -54, 0, 0);
+    p->counter++;
+    if (ScanVisor_Unk_0a3274() >= 75) {
+        p->counter++;
+    }
+    if (p->counter >= 65535) {
+        p->counter = 0;
+    }
+}
+
+/* Initialize borrowed list state and obtain seven indexed handles. Original
+ * 020a466c stores +18c/+190/+198/+194/+1c/+1b8/+1bc in that order,
+ * then clears seven words at +19c before calling the provider for +1c0. */
+void func_020a466c(ScanVisorListInit *p)
+{
+    int i;
+    p->field18c = 0;
+    p->field190 = 0;
+    p->field198 = 0;
+    p->field194 = 0;
+    p->field1c = 0;
+    p->field1b8 = 0;
+    p->field1bc = 1;
+    for (i = 0; i < 7; i++) {
+        p->values[i] = 0;
+    }
+    for (i = 0; i < 7; i++) {
+        p->handles[i] = func_02098860(i);
+    }
+}
+
+/* Apply enabled flags in byte +4 in the original 020a2c90 order: bits
+ * 4,1,5,0 request the four existing work setters. Storage is borrowed;
+ * reload each flag after the preceding call, which may change that storage. */
+void func_020a2c90(ScanVisorBits *p)
+{
+    if (p->b4) ScanVisor_SetField214(1);
+    if (p->b1) ScanVisor_SetField34(1);
+    if (p->b5) ScanVisor_Unk_0a27e0(1);
+    if (p->b0) ScanVisor_SetRangeA(1);
+}
+
+/* Tick a borrowed slot: original 020a4370 decrements positive +10, then
+ * adds signed +24 to +1c, clamping to [0,80] and stopping at either end.
+ * The existing caller ignores the return register. */
+void func_020a4370(ScanVisorSlot *entry)
+{
+    ScanVisor *p = (ScanVisor *)entry;
+    if ((s32)p->unk_0010 > 0) p->unk_0010--;
+    if ((s32)p->unk_0024 > 0) {
+        p->rangeA += p->unk_0024;
+        if ((s32)p->rangeA >= 80) {
+            p->rangeA = 80;
+            p->unk_0024 = 0;
+        }
+    }
+    if ((s32)p->unk_0024 < 0) {
+        p->rangeA += p->unk_0024;
+        if ((s32)p->rangeA <= 0) {
+            p->rangeA = 0;
+            p->unk_0024 = 0;
+        }
+    }
 }

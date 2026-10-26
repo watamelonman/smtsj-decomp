@@ -323,16 +323,45 @@ checksum gates were also run locally. No new tests are required by this
 card; objdiff verifies the compiled instruction behavior.
 No hard functions or omissions for M1-T990.
 
-## Not done in M1-T991
-- `func_020a4df0`
-- `ScanVisor_LoadSearchParts`
-- `ScanVisor_Unk_0a3274`
-- `func_020a30b4`
-- `func_020a466c`
-- `func_020a2c90`
-- `func_020a4370`
-- `ScanVisor_Unk_0a42f0`
-- `ScanVisor_Unk_0a2e5c`: decompiler-derived
+## M1-T991 — scale, flags, counter and list helpers
+
+All eight functions report 100% objdiff. Existing matching definitions of the
+resource loader, signed ratio query and slot allocator were retained and given
+instruction-based contract comments; five missing definitions were added.
+
+- `func_020a4df0` (0x020a4df0, 80 bytes): computes an unsigned-byte scale
+  `((50 * value / GetConst6() + 50) * 31) / 100`, replacing zero with one.
+  Equality with GetConst6 returns 31 directly. Signed arithmetic requires
+  inputs that do not overflow; the scale's use remains unknown.
+- `ScanVisor_LoadSearchParts` (0x020a370c, 84 bytes): loads the three paths
+  at data_0214cddc/cdf0/ce08 (Visor/e_appearance and search_parts01/02),
+  stores handles at work+8/+24/+24c, and initializes work+78. The strings
+  support the configured descriptive name; work is borrowed writable storage.
+- `ScanVisor_Unk_0a3274` (0x020a3274, 88 bytes): returns zero without game
+  state or for nonpositive signed work+af4; otherwise divides the signed-16
+  truncation of work+af2 times 100 by work+af4, caps at 99, and returns a
+  signed byte. Does not assume the work fields are unsigned percentages.
+- `func_020a30b4` (0x020a30b4, 96 bytes): calls 020a3008 with (0,-54,0,0),
+  increments signed word +4, increments again when 020a3274 is at least 75,
+  and resets the counter at 65535. Counter units remain unknown.
+- `func_020a466c` (0x020a466c, 100 bytes): initializes list state, clears
+  seven words at +19c, and fills seven handles at +1c0 by calling 02098860
+  with indices 0..6. A private typed prefix records the observed offsets.
+- `func_020a2c90` (0x020a2c90, 108 bytes): tests byte +4 bits 4,1,5,0 in
+  order and invokes SetField214, SetField34, 0a27e0 and SetRangeA with 1.
+  Each flag is read after the previous call, preserving provider side effects.
+- `func_020a4370` (0x020a4370, 108 bytes): decrements positive signed +10,
+  adds signed +24 to +1c, and stops at 80 or zero when the corresponding
+  bound is reached. The second signed-delta test reloads the field after
+  the positive path. Existing callers ignore the return register.
+- `ScanVisor_Unk_0a42f0` (0x020a42f0, 128 bytes): returns null when the
+  seven-slot list is full; otherwise marks the free slot occupied, copies
+  the list byte and key metadata, and initializes the two range pairs.
+  The metadata key must exist, as the original dereferences without a guard.
+
+Validation: the match gate passes for all checked C definitions, including all
+eight targets. No new tests are required by this card; instruction comparison
+checks compiled behavior. No hard functions or omissions for M1-T991.
 
 ## Not done in M1-T992
 - `func_020a2c00`
@@ -342,10 +371,8 @@ No hard functions or omissions for M1-T990.
 - `func_020a3630`
 - `ScanVisor_Draw`
 - `func_020a2d0c`
-- `ScanVisor_LoadSearchParts`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4a44`: decompiler-derived (plain cleanup)
 - `ScanVisor_Unk_0a4950`: verified in M1-T989
-- `ScanVisor_Unk_0a42f0`: decompiler-derived (plain+fix cleanup)
 - `ScanVisor_Draw`: hand-matched
 - `ScanVisor_SetById`: hand-matched
 - `ScanVisor_Unk_0a4a18`: hand-matched
@@ -365,4 +392,3 @@ No hard functions or omissions for M1-T990.
 - `ScanVisor_FindSlotByKey`: hand-matched
 - `ScanVisor_AnySlotField14`: hand-matched
 - `ScanVisor_AllSlotsF28Is80`: hand-matched
-- `ScanVisor_Unk_0a3274`: hand-matched
