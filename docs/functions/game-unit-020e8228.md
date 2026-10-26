@@ -142,17 +142,26 @@ No M1-T902 functions remain on the hard list. Existing bodies already matched;
 this card verifies them and adds typed contracts and instruction evidence.
 The no-argument `IsField4One` call no longer supplies an unused work argument.
 
-## Other decompiler-derived functions in this TU
-- `Unk0e8228_Unk_0e8dd0`: decompiler-derived
-- `Unk0e8228_Unk_0e8dfc`: decompiler-derived
-- `Unk0e8228_Unk_0e9fa4`: decompiler-derived
+## M1-T903 verified functions
 
-## Not done in M1-T903
-- `Unk0e8228_Unk_0e8d90`
-- `Unk0e8228_IsState3`
-- `Unk0e8228_Unk_0e8ce8`
-- `Unk0e8228_GetCurEntry`
-- `func_020e93d8`
+All eight functions match at 100% objdiff. Contracts below follow the original
+ARM instructions and relocations; opaque parameters remain unsigned DS words
+or addresses. Borrowed storage remains owned by the caller/provider.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `Unk0e8228_Unk_0e8d90` (40 B) | 020e8d9c obtains work; null returns immediately, otherwise 020e8db0 forwards work and both opaque words to 020e9de4. |
+| `Unk0e8228_IsState3` (40 B) | 020e8e3c loads work +0 and compares with 3, yielding a boolean; null work yields zero. This comparison supports the existing name. |
+| `Unk0e8228_Unk_0e8dd0` (44 B) | 020e8de0 guards nullable work, then calls 020e9900 with first word, work, second word; returns its result or zero without work. |
+| `Unk0e8228_Unk_0e8dfc` (44 B) | 020e8e0c guards nullable work, then calls 020e9aa0 with first word, work, second word; returns its result or zero without work. |
+| `Unk0e8228_Unk_0e9fa4` (44 B) | 020e9fb4 clears 0x1cc writable bytes; publishes the address in data_02176ce0 and calls 020e9060. Caller must supply valid storage. |
+| `Unk0e8228_Unk_0e8ce8` (48 B) | Null entry returns zero. Calls 0204a244, sign-extends its low byte for 020982c0, then returns one for a missing record or its signed byte at +2. |
+| `Unk0e8228_GetCurEntry` (48 B) | 020e9750 loads selection +8 and clamps negative indices to zero. IsField4One selects entry bank +0x30 or +0x40. The entry-key use in 0e8c80 and its callers supports the name; caller supplies valid work and index. |
+| `func_020e93d8` (52 B) | 020e93dc reads the state word; a five-slot switch calls 020bc504 with the borrowed object address and zero only for state 1. All other states return. |
+
+No M1-T903 functions remain on the hard list. No new behavioral tests were
+added: the acceptance oracle is exact instruction/relocation matching against
+the original object, followed by the existing tests and full-image checksum.
 
 ## Not done in M1-T904
 - `Unk0e8228_GetArr30`
@@ -202,7 +211,6 @@ The no-argument `IsField4One` call no longer supplies an unused work argument.
 - `func_020e94d8`
 - `func_020e8710`
 - `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
-- `Unk0e8228_Unk_0e8d90`: decompiler-derived (plain cleanup)
 - `Unk0e8228_Unk_0e8260`: hand-matched
 - `Unk0e8228_GetArr30`: hand-matched
 - `Unk0e8228_GetArr58`: hand-matched

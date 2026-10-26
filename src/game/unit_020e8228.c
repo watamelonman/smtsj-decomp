@@ -495,8 +495,9 @@ void Unk0e8228_Unk_0e8c2c(void)
 }
 
 
-int func_020e9900();
-/* decompiler-derived */
+u32 func_020e9900(u32 arg0, u32 work, u32 arg1);
+/* Original 020e8dd0 forwards both words around the borrowed work address to
+ * 020e9900, returning zero when work is absent. Argument meanings are unknown. */
 u32 Unk0e8228_Unk_0e8dd0(u32 arg0,u32 arg1)
 {
   int value1;
@@ -509,8 +510,9 @@ u32 Unk0e8228_Unk_0e8dd0(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_020e9aa0();
-/* decompiler-derived */
+u32 func_020e9aa0(u32 arg0, u32 work, u32 arg1);
+/* Original 020e8dfc forwards both words around the borrowed work address to
+ * 020e9aa0, returning zero when work is absent. Argument meanings are unknown. */
 u32 Unk0e8228_Unk_0e8dfc(u32 arg0,u32 arg1)
 {
   int value1;
@@ -524,8 +526,9 @@ u32 Unk0e8228_Unk_0e8dfc(u32 arg0,u32 arg1)
 }
 
 int func_02008848(u32 buffer, u32 value, u32 size);
-int func_020e9060();
-/* decompiler-derived */
+void func_020e9060(u32 work);
+/* Original 020e9fa4 clears 0x1cc writable bytes, publishes the caller-owned
+ * work address in data_02176ce0, then initializes it through 020e9060. */
 void Unk0e8228_Unk_0e9fa4(u32 arg0)
 {
   func_02008848(arg0,0,0x1cc);
@@ -577,7 +580,7 @@ void Unk0e8228_Unk_0e9f18(u32 *arg0);
 void Unk0e8228_Unk_0e9f38(u32 *arg0, u32 arg1);
 int func_020e9ca8(u32 work, u32 selector);
 int func_020e9b54();
-u8 *func_020982c0();
+u8 *func_020982c0(int value);
 void Unk0e8228_Unk_0e8260(u32 i)
 {
     u8 *base = data_02176ce4;
@@ -701,6 +704,9 @@ int Unk0e8228_Unk_0e8c80(void)
     return Unk0e8228_GetCurEntry((u8 *)p);
 }
 
+/* Original 020e8ce8 returns zero for a null entry, otherwise looks up its
+ * signed-byte category via 0204a244/020982c0. Missing records return one;
+ * existing records supply the signed byte at +2. */
 int Unk0e8228_Unk_0e8ce8(u32 x)
 {
     u8 *v;
@@ -727,8 +733,9 @@ void Unk0e8228_Unk_0e8e8c(u32 arg0)
   }
 }
 
-int func_020e9de4();
-/* decompiler-derived */
+void func_020e9de4(u32 work, u32 arg0, u32 arg1);
+/* Original 020e8d90 calls 020e9de4 with the borrowed work address and the
+ * two opaque words only when work exists. Ownership stays with its provider. */
 void Unk0e8228_Unk_0e8d90(u32 arg0,u32 arg1)
 {
   int tmp1;
@@ -749,6 +756,8 @@ typedef struct Unk0e8228SelHost {
     u8 pad[392];
     Unk0e8228Sel sel;
 } Unk0e8228SelHost;
+/* Evidence for IsState3: 020e8e3c loads work +0 and compares it with 3.
+ * A missing work object returns false; the borrowed object is never modified. */
 int Unk0e8228_IsState3(void)
 {
     u32 p = Unk0e8228_Get_data_02176ce0();
@@ -771,6 +780,9 @@ int Unk0e8228_Unk_0e8fe4(u32 x)
     return FIELD(u8, func_020cb1a0(h), 35) == 7;
 }
 
+/* Evidence for GetCurEntry: 020e9750 reads the signed selection at +8,
+ * clamps negative indices to zero, and selects the +0x30/+0x40 entry bank
+ * through IsField4One. Caller supplies valid work and an in-range index. */
 int Unk0e8228_GetCurEntry(u8 *p)
 {
     int i = FIELD(int, p, 8);
@@ -795,5 +807,20 @@ void Unk0e8228_ClearSel(Unk0e8228SelHost *p)
     }
     for (k = 0; k < 16; k++) {
         p->sel.b[k] = 0;
+    }
+}
+
+void Unk0bc1a8_Unk_0bc504(u32 object, u32 value);
+/* Original 020e93dc reads the caller-provided state word. The five-slot
+ * switch invokes 020bc504(object, 0) only for state 1; other states do nothing.
+ * The object address is borrowed and forwarded unchanged. */
+void func_020e93d8(u32 object, const u32 *state)
+{
+    switch (*state) {
+    case 0: break;
+    case 1: Unk0bc1a8_Unk_0bc504(object, 0); break;
+    case 2: break;
+    case 3: break;
+    case 4: break;
     }
 }
