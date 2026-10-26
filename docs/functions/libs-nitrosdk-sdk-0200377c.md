@@ -1,4 +1,4 @@
-# NitroSDK VRAM allocation getters (M2-T095)
+# NitroSDK VRAM allocation helpers (M2-T095, M2-T096)
 
 ## Evidence and contracts
 
@@ -44,3 +44,40 @@ the subsequent sequential checksum run passed.
 
 None of the eight requested functions is left out. Other functions in the
 translation unit remain outside this card's scope.
+
+## M2-T096: disable wrappers and remaining palette getters
+
+Reference: [pret/pokediamond GX_vramcnt.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/GX_vramcnt.c),
+`disableBankForX_`, the six corresponding `GX_DisableBankFor*` wrappers,
+and `GX_GetBankForSubBGExtPltt` / `GX_GetBankForSubOBJExtPltt`.
+Original ARM instructions independently establish the slot addresses and getter
+offsets below. Existing linker names are retained.
+
+All eight functions take `void` and return a `u32` bank mask (bits 0-8 are
+banks A-I). Disable wrappers tail-call `func_02003650` with a borrowed SDK
+allocation slot: that helper clears the slot, disables the selected VRAM bank
+registers, releases their SDK VRAM lock, and returns the previous mask.
+The two getters read bookkeeping only and do not modify allocation or hardware.
+The private state view is extended through offset 0x18; no public boundary changes.
+Individual external slots preserve the original wrapper address relocations.
+
+| Function | SDK role | Slot address / state offset | Size |
+| --- | --- | --- | --- |
+| `func_020037a0` | `GX_DisableBankForTex` | `0x021521ac` | 20 bytes |
+| `func_020037b4` | `GX_DisableBankForTexPltt` | `0x021521ae` | 20 bytes |
+| `func_020037c8` | `GX_DisableBankForClearImage` | `0x021521b0` | 20 bytes |
+| `func_020037dc` | `GX_DisableBankForARM7` | `0x021521aa` | 20 bytes |
+| `func_020037f0` | `GX_DisableBankForLCDC` | `0x021521a4` | 20 bytes |
+| `func_02003804` | `GX_DisableBankForSubBG` | `0x021521b6` | 20 bytes |
+| `func_020038fc` | `GX_GetBankForSubBGExtPltt` | `+0x16` | 16 bytes |
+| `func_0200390c` | `GX_GetBankForSubOBJExtPltt` | `+0x18` | 16 bytes |
+
+The card requires no new tests: exact objdiff comparison verifies these thin
+wrappers and getters against the original instructions. The unit continues to
+link from the delinked original pending human completion of the split config.
+
+Local validation for M2-T096: all eight requested functions report 100% objdiff;
+the build, anticheat, all nine unit tests, and byte-identical artifact checksum
+checks pass.
+
+Hard list for M2-T096: none.
