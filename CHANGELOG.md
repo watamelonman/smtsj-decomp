@@ -2,6 +2,9 @@
 
 ## Unreleased
 - M1-T992: match all eight ScanVisor lifecycle, mode dispatch, coordinate and drawing functions at 100% objdiff; document instruction evidence and ownership contracts.
+
+- Matched all six libs/unknown/lib_020296b8 texture-matrix and constant-result functions at 100% objdiff, with typed layouts and per-function evidence.
+- Added matching C for script command wrappers 84 and 85 in lib_020b9c3c.
 - M1-T991: match all eight ScanVisor scale, flag, counter, list and resource helpers at 100% objdiff; document instruction evidence and borrowed-storage contracts.
 - M2-T023: match the CRI four-record pool reset, allocation, and request-2 helpers at 100% objdiff; all eleven functions in the TU now match.
 - M1-T990: match all eight ScanVisor list and record helpers at 100% objdiff; add the signed-coordinate record query and document instruction evidence.
