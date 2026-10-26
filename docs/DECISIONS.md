@@ -396,3 +396,14 @@ outgoing stack-address calculation; the original calculates that address first.
 The argument assignment preserves both the reset-before-call contract and the
 original instruction order. The list copy reads +0x20..+0x91, disjoint from the
 reset word, so argument evaluation order does not change the submitted data.
+
+## DEC-023 — Keep one live range for the 020ecf20 selection index
+
+The mode dispatcher derives a selection index before its switch, and the
+original keeps that index in callee-saved `r4` as a single live range. Under
+default lifetime splitting, mwccarm 2.0/sp1p5 instead places the post-call zero
+initialization in caller-saved `ip`, shifting the parameters to `r5`/`r4` and
+changing the instruction schedule. Scope `opt_lifetimes off` to this function
+and restore the setting immediately afterward. The pragma changes no C
+semantics: the index still defaults to zero, mode 0 overwrites it on both area
+paths, and mode 1 only relies on the default when the area exceeds eight.

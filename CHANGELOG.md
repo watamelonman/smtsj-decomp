@@ -3,6 +3,7 @@
 ## Unreleased
 - Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
 
+- M1-T973: match all eight requested CaveArea cleanup, selection, draw and provider helpers at 100% objdiff; document typed contracts and the scoped lifetime pragma that restores `func_020ecf20`'s original register allocation.
 - M1-T962: match the 2040-byte `game/unit_020cf5e8` mission-scene state machine `func_020cf9a0` at 100% objdiff; record the measured switch-return layout blocker for `func_020d09b4` on the hard list.
 - Match eight more CaveArea helpers, with typed records and instruction-based contracts.
 - Verified all eight M1-T971 CaveArea helpers at 100% objdiff and documented typed parameters, field contracts, and ARM evidence.
