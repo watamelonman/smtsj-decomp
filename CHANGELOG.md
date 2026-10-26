@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T984: verified the eight ScanVisor setter, thunk, clear and work-object getter helpers at 100% objdiff; typed their parameters and documented instruction and caller evidence.
 - Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.
 - Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
 
