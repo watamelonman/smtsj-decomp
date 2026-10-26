@@ -418,3 +418,15 @@ with the destination pointer. Explicit destination/source locals with
 `opt_propagation off` reproduce the original destination-first allocation.
 Scope this setting to `func_02115498` and restore it immediately afterward.
 The C still performs ordinary aggregate copies without assembly or code blobs.
+
+
+## DEC-025 — Preserve CaveArea render callback expression boundaries
+
+Scope `opt_propagation off` and `opt_common_subs off` to `func_020ec704`,
+restoring both immediately afterward. Propagation otherwise hoists the layer
+constant across the layout branches; common-subexpression optimization folds
+the three byte-state equalities into a range check. The original uses three
+conditional compares and separate branch argument setup. Array views preserve
+base-plus-index loads, and declaring the pair index before the area index
+reproduces the original r4/r5 allocation. These settings leave the draw behavior
+unchanged; the individual 1156-byte function verifies at 100% in objdiff.

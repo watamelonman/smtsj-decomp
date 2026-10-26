@@ -172,7 +172,10 @@ No protected configuration or symbol files were changed.
 
 ## M1-T975 verified functions
 
-All three functions match the delinked ARM object at 100%. Names stay neutral:
+All three C definitions individually match the delinked ARM object at 100%
+(764, 1156 and 1892 bytes respectively). The missing `func_020ec704` definition
+was added and verified directly in the compiled object during attempt 2.
+Names stay neutral:
 callbacks are reached through the six-entry descriptor at 0x020eb824 and no
 string, data-table, or caller evidence supports a stronger description.
 
@@ -189,6 +192,11 @@ string, data-table, or caller evidence supports a stronger description.
   tail submits the +0x104-scaled overlay, provider spans/frame, the handle
   pair at +0x14/+0x18 for the current area, and handles +0x44/+0x48. The
   still-delinked row renderer `func_020ec514` is called with the area index.
+  Work storage must include the indexed width arrays and live borrowed provider
+  objects at +0x50/+0x84. See DEC-025: propagation/common-subexpression settings
+  preserve the branch setup and three conditional byte-state comparisons.
+  Initial readable C measured 91.30%; indexed array expressions and scoped
+  settings reached 99.76%, then local declaration order restored r4/r5 and 100%.
 - `func_020ebb14` (1892 bytes): 22-state callback dispatcher. State 1 seeds the
   per-area rows and selects handle +0xc/+0x10 with the table at data_0213c814;
   states 5..8 and 16/18 animate the +0x104/+0x110 floats and row offsets;

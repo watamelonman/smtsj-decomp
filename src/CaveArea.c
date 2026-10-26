@@ -795,7 +795,85 @@ void func_020bcacc(int index, CaveAreaRequest *request);
 int func_0200219c(int a, int b);
 extern u32 data_0213c814[];
 
-/* 0x020ecc24 */
+/* 0x020ec704 draws the selected area's layout, frame and handle overlays.
+ * Borrows work through +0x158, indexed width/handle arrays, and the provider
+ * objects at +0x50/+0x84; area +0xbc must index those arrays. No ownership moves.
+ * See DEC-025 for the scoped propagation/common-subexpression settings. */
+#pragma push
+#pragma opt_propagation off
+#pragma opt_common_subs off
+void func_020ec704(CaveAreaWork *p)
+{
+    int pair;
+    int area = p->unk_00bc;
+    pair = area * 2;
+    func_02057524(4);
+    func_02057e58(0, 0, 20);
+    func_02057e58(1, 20, 30);
+    func_02057eb8(1);
+    if (p->unk_00c8 == 16 || p->unk_00c8 == 17 || p->unk_00c8 == 18) {
+        int x, y;
+        func_0205c748(2, FIELD(u32,p,0x50),0,0,1.0f,1.0f,0,1.0f,7);
+        func_02057e18(31);
+        x = FIELD(CaveAreaLayout *,p,0x50)->origin_x;
+        y = FIELD(CaveAreaLayout *,p,0x50)->origin_y;
+        if (p->unk_00a8 == 0) {
+            if (area == 5)
+                func_020eda38(FIELD(CaveAreaDrawObject *,p,0x84),
+                    53-FIELD(int,p,0x158)/2+x,y+36,8,8,12,0x26fffcff);
+            else
+                func_020eda38(FIELD(CaveAreaDrawObject *,p,0x84),
+                    x+(53-((int *)((u8 *)p+0x138))[area]/2),y+36,area,8,12,0x26fffcff);
+        } else {
+            func_020eda38(FIELD(CaveAreaDrawObject *,p,0x84),
+                x+(53-((int *)((u8 *)p+0x14c))[area]/2),y+36,area+5,8,12,0x26fffcff);
+        }
+        func_02057df8();
+    }
+    func_02057eb8(1);
+    switch (p->unk_00c8) {
+    case 7: case 8: case 9: case 10: case 11: case 16: case 17: case 18:
+        if (p->unk_00a8 == 0) {
+            if (area == 5)
+                func_0205de40(2,p->unk_0004,8,0,0,1.0f,1.0f,0,FIELD(float,p,0x104),2);
+            else
+                func_0205de40(2,p->unk_0004,area,0,0,1.0f,1.0f,0,FIELD(float,p,0x104),2);
+        } else {
+            func_0205de40(2,p->unk_0004,area+5,0,0,1.0f,1.0f,0,FIELD(float,p,0x104),2);
+        }
+        break;
+    }
+    func_0205de40(2,p->unk_0000,7,0,0,1.0f,1.0f,0,FIELD(float,p,0x104),2);
+    func_020ed3fc(p);
+    func_020ed768(p);
+    func_0205c748(2,FIELD(u32,p,0x4c),0,0,1.0f,1.0f,0,FIELD(float,p,0x110),2);
+    func_02057e18(31);
+    func_02057df8();
+    func_02057eb8(0);
+    func_0205de40(2,p->unk_0000,0,0,0,1.0f,1.0f,0,FIELD(float,p,0x10c),5);
+    if (FIELD(float,p,0x10c) > 0.0f) {
+        func_02057e18((u32)(31.0f * FIELD(float,p,0x10c)));
+        func_020cb810(8,20,8);
+    }
+    func_02057e18(31);
+    func_020ec514(p,area);
+    func_02057eb8(1);
+    func_0205c748(2,p->unk_0014.first[pair],0,0,1.0f,1.0f,0,FIELD(float,p,0x108),7);
+    func_0205c748(2,p->unk_0014.shifted.second[pair],0,0,1.0f,1.0f,0,FIELD(float,p,0x108),7);
+    func_0205c748(2,FIELD(u32,p,0x44),0,0,1.0f,1.0f,0,1.0f,7);
+    func_0205c748(2,FIELD(u32,p,0x48),0,0,1.0f,1.0f,0,1.0f,7);
+    func_02057e18(31);
+    func_02057df8();
+    func_02057eb8(-1);
+    func_02057fd8();
+    func_020572d8();
+}
+
+#pragma pop
+
+/* 0x020ecc24 draws scrolling background strips and area markers except in
+ * states 0/12. Borrows work through +0x134 and live render handles; +0xa8
+ * selects the marker set and +0x128 is the vertical scroll in pixels. */
 void func_020ecc24(CaveAreaWork *p)
 {
     if (FIELD(u8, p, 0xc8) == 0 || FIELD(u8, p, 0xc8) == 12) return;
@@ -849,7 +927,9 @@ void func_020ecc24(CaveAreaWork *p)
 void func_0205c748(int mode, u32 handle, int x, int y, float sx, float sy,
                    int zero, float scale, int layer);
 void func_02057e58(int a, int b, int c);
-/* 0x020ebb14 */
+/* 0x020ebb14 advances the 22-state area transition and updates 23 handles.
+ * Borrows writable work through +0x164, including per-area offset/alpha arrays,
+ * selection and request fields; providers retain ownership of all handles. */
 void func_020ebb14(CaveAreaWork *p)
 {
     CaveAreaInitView *view = (CaveAreaInitView *)p;
