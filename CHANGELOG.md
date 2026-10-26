@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Keep the unmatched 0212034c controller in the delink while retaining the matching 0211ff14 and 02120d7c C implementations.
 - M1-T838: match both remaining requested game/unit_0211fc20 timed request dispatchers at 100% objdiff; document the existing caller relocation comparison issue.
 - Match eight more unit_02116598 allocation, teardown, and state functions (M1-T806).
 - M1-T867: verify eight more `game/unit_020cb32c` functions at 100% objdiff; add typed call contracts, explicit work forwarding and per-function instruction evidence.

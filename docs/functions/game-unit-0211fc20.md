@@ -69,7 +69,7 @@ is not established. Evidence below is the original ARM instruction stream.
 | `func_021212f4` | 021212f4: inactive slots return immediately. Converts center-minus-extent to pixel coordinates and twice the extent to dimensions; kinds 0–4 select the original five colors. Kind 4 adjusts dimensions and origin during phases 0–7 and 16–23 of its signed 32-tick remainder. Requires valid slot storage. |
 | `func_0211fd7c` | 0211fd7c: inactive slots return; extent grows by 4096 every 46 calls until at least 16384. Provider 020537b8 masks 32/16/64/128 determine movement, using 12288 per axis or diagonal scale 0x21f0. Clamps center by extent and submits kind 1 on mask 1. Requires valid slot storage. |
 | `func_021206a8` | 021206a8: state 4 returns before provider setup. States 0 and 3 submit transition rectangles using signed `(transition << 6) / 100`; other states draw the counter and four pools in selector order 1/2/3/4. Draws the slot at +28 when the signed countdown remainder modulo 4 is below 2. Requires the full 0x1fe8-byte work storage. |
-| `func_0212034c` | 0212034c: dispatches states 0–4, applies transition decay `value * 90 / 100`, invokes 0211ff14 during state 1 and starts state 2 after tick 880 when pool 3 is empty. Updates all four pools, resolves pool-4/player collisions through 0212066c, then pool-3/pool-1 collisions through 02120650, maintaining work +16. Requires full work storage. |
+| `func_0212034c` (deferred; see hard list) | 0212034c: dispatches states 0–4, applies transition decay `value * 90 / 100`, invokes 0211ff14 during state 1 and starts state 2 after tick 880 when pool 3 is empty. Updates all four pools, resolves pool-4/player collisions through 0212066c, then pool-3/pool-1 collisions through 02120650, maintaining work +16. Requires full work storage. |
 
 The private slot/full-work views expose only observed fields and pool boundaries;
 provider ownership and module boundaries are unchanged. Separate traversal scopes
@@ -93,13 +93,20 @@ broader purpose. No functions from this card remain on the hard list.
 No new tests are required by this card; the delinked instructions and objdiff
 are the acceptance oracle. No module boundary or provider ownership changes.
 
-### Existing match-gate issue
+### Hard list: `func_0212034c`
 
-The gate additionally checks existing `func_0212034c`, which reports 99.97409%
-both before and after this card (verified by compiling the HEAD source separately).
-The sole diff is its call to `Unk11fc20_Unk_120650`: both sides have the same
-`R_ARM_PC24` relocation and addend -8, and the instruction comparison succeeds.
-Objdiff assigns the target call a spurious internal branch destination at 2600
-(the next function's address 2608 minus 8), whereas the compiler emits individual
-function sections. This is an existing object-layout/objdiff issue, not an
-instruction change. Protected configuration and tooling are left unchanged.
+The existing controller implementation was removed after the match gate reported
+99.97409%. It remains linked from the delinked original, as this project's
+unmatched-function mechanism; this TU does not use `INCLUDE_ASM` stubs.
+Its observed behavior remains recorded above for a future matching attempt.
+
+The sole instruction difference reported by objdiff is the call to
+`Unk11fc20_Unk_120650`: both objects have the same `R_ARM_PC24` relocation
+and addend -8. The original's contiguous text section places the callee eight
+bytes after a destination inside the controller; objdiff assigns the call an
+internal branch destination at 2600. The compiler's separate function sections
+do not have that destination. Attempts with `constpool` and file-level IPA
+pragmas did not resolve the mismatch and were reverted. A separate experiment
+with an explicitly defined code section also retained separate function sections.
+A human can investigate the section-layout discrepancy with a decomp.me scratch
+using `tools/decompme.py`; no protected configuration or tooling was changed.
