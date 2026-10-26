@@ -2,6 +2,8 @@
 
 ## Unreleased
 - M1-T984: verified the eight ScanVisor setter, thunk, clear and work-object getter helpers at 100% objdiff; typed their parameters and documented instruction and caller evidence.
+- M1-T907: match seven `game/unit_020e8228` bank scans, selection-bit, index-advance, request-builder, state teardown and object-state functions at 100% objdiff; add typed contracts and document the remaining literal-pool alias hard case.
+- Verified all eight M1-T977 table, resource and state helpers at 100% objdiff; documented their instruction-based contracts.
 - Verified the eight M1-T983 ScanVisor helpers against original ARM instructions and documented their typed contracts and evidence.
 - Matched and documented the eight M1-T976 helpers in `game/unit_02113294`, with typed parameters and observed field layouts.
 
