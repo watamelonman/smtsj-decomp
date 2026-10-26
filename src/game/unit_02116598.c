@@ -30,111 +30,140 @@ void func_021172fc(void);
 void func_02117360(u32 a, u32 b, u32 c, u32 d, u8 e);
 void func_02117400(u32 a, u32 b, u32 c, u32 d, u8 e);
 
+/* Original 0x021166c0 reloads the byte fifth argument from the caller's stack
+   (ldrb ip, [sp, #8]; str ip, [sp]) and calls func_02117360 with four word
+   arguments plus that byte, returning whatever the callee leaves in r0. */
 void Unk116598_Call_02117360(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117360(a, b, c, d, e);
 }
 
+/* Original 0x021166d4 is the same fifth-stack-argument forwarder as 0x021166c0,
+   but calls func_02117400. */
 void Unk116598_Call_02117400(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117400(a, b, c, d, e);
 }
 
-/* Empty callbacks (no direct callers; function-table slots). */
+/* Original 0x02116b44 is only bx lr: return without changing caller state. */
 void Unk116598_Nop_116b44(void) { }
+/* Original 0x02116b68 is only bx lr: return without changing caller state. */
 void Unk116598_Nop_116b68(void) { }
+/* Original 0x02116b6c is only bx lr: return without changing caller state. */
 void Unk116598_Nop_116b6c(void) { }
+/* Original 0x02117928 pushes {r3, lr}, reloads the byte fifth argument from the
+   incoming stack slot (ldrb ip, [sp, #8]), places it as the outgoing fifth
+   argument (str ip, [sp]) and calls 0x02117360 with four words plus that byte. */
 void Unk116598_Call_02117360b(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117360(a, b, c, d, e);
 }
 
+/* Same fifth-stack-argument forwarder as Unk116598_Call_02117360b, at
+   0x0211793c, but calls 0x02117400. */
 void Unk116598_Call_02117400b(u32 a, u32 b, u32 c, u32 d, u8 e)
 {
     func_02117400(a, b, c, d, e);
 }
 
+/* Original 0x02117cd0 is only bx lr: return without changing caller state. */
 void Unk116598_Nop_117cd0(void) { }
 
-/* Forwarders: pass the caller's arguments straight through. */
+/* Original literal at 0x021166f0 targets Set; forward both words unchanged. */
 void Unk116598_Thunk_021177e0(u32 a, u32 b) { Unk116598_Set(a, b); }
+/* Original literal at 0x021166fc targets Reset; preserve its no-argument contract. */
 void Unk116598_Unk_1166f4(void) { Unk116598_Reset(); }
+/* Original literal at 0x0211680c targets func_021172fc; forward control unchanged. */
 void Unk116598_Unk_116804(void) { func_021172fc(); }
+/* Original literal at 0x02117958 targets Set; forward both words unchanged. */
 void Unk116598_Unk_117950(u32 a, u32 b) { Unk116598_Set(a, b); }
 
 
 
-/* forwards to `Unk116598_Reset` */
+/* Original 0x0211795c loads the literal 0x02117808 and branches through it, so it
+   tail-calls Unk116598_Reset with the caller's registers untouched. */
 void Unk116598_Thunk_02117808(void) { Unk116598_Reset(); }
 
-
-/* forwards to `func_021172fc` */
+/* Original 0x02117a4c loads the literal 0x021172fc and branches through it, so it
+   tail-calls func_021172fc with no arguments. */
 void Unk116598_Thunk_021172fc(void) { func_021172fc(); }
 
+/* data_02176e5c is a word-sized BSS cell (relocation at 0x02116838); the original at
+   0x0211682c loads the cell's address, then the pointer stored in it, and returns that. */
 extern u32 data_02176e5c[];
-/* decompiler-derived */
 u32 Unk116598_Get_data_02176e5c(void)
 {
-  return *data_02176e5c;
+    return *data_02176e5c;
 }
 
+/* Sibling of Unk116598_Get_data_02176e5c for the BSS cell at 0x02176e68 (the literal at
+   0x02117a64); the original at 0x02117a58 returns the pointer stored there. */
 extern u32 data_02176e68[];
-/* decompiler-derived */
 u32 Unk116598_Get_data_02176e68(void)
 {
-  return *data_02176e68;
+    return *data_02176e68;
 }
 
 int Unk065e88_Unk_065eac();
 int Unk095560_Unk_096130();
 int Unk0a23f4_Unk_0a2414();
-/* decompiler-derived */
+/* Original 0x021168b8 calls 0x02096130, 0x02065eac and 0x020a2414 in that order and
+   discards their results; no argument setup or state is visible in this routine. */
 void Unk116598_Unk_1168b8(void)
 {
-  Unk095560_Unk_096130();
-  Unk065e88_Unk_065eac();
-  Unk0a23f4_Unk_0a2414();
+    Unk095560_Unk_096130();
+    Unk065e88_Unk_065eac();
+    Unk0a23f4_Unk_0a2414();
 }
 
 void Unk116598_Unk_1172dc(void);
 void Unk116598_Unk_1177cc(u32 arg0);
-/* decompiler-derived */
+/* Original 0x02116954 overwrites r0 with 0 before calling 0x021177cc, then calls
+   0x021172dc. The caller (0x0211694c) still passes the work pointer in r0, so the
+   parameter is kept for the call site's register setup even though it is not read. */
 void Unk116598_Unk_116954(Unk116598Work *work)
 {
-  Unk116598_Unk_1177cc(0);
-  Unk116598_Unk_1172dc();
+    Unk116598_Unk_1177cc(0);
+    Unk116598_Unk_1172dc();
 }
 
 
 extern u32 data_02176e60[];
-/* decompiler-derived */
+/* Original 0x0211753c stores zero to the word-sized BSS cell data_02176e60
+   (literal at 0x0211754c) and returns no value. */
 void Unk116598_Clear_data_02176e60(void)
 {
-  *data_02176e60 = 0;
+    *data_02176e60 = 0;
 }
 
 extern u32 data_02176e64[];
-/* decompiler-derived */
+/* Original 0x02117914 stores zero to the word-sized BSS cell data_02176e64
+   (literal at 0x02117924) and returns no value. */
 void Unk116598_Clear_data_02176e64(void)
 {
-  *data_02176e64 = 0;
+    *data_02176e64 = 0;
 }
 
 
-/* decompiler-derived */
+/* Original 0x02117ae4 pushes {r3, lr}, calls 0x02096130, 0x02065eac and
+   0x020a2414 in that order, then returns through pop {r3, pc}. Results are
+   discarded; the three callees' purposes are not evidence for this wrapper. */
 void Unk116598_Unk_117ae4(void)
 {
-  Unk095560_Unk_096130();
-  Unk065e88_Unk_065eac();
-  Unk0a23f4_Unk_0a2414();
+    Unk095560_Unk_096130();
+    Unk065e88_Unk_065eac();
+    Unk0a23f4_Unk_0a2414();
 }
 
 
-/* decompiler-derived */
+/* Original 0x02117b80 pushes {r3, lr}, overwrites r0 with zero and calls
+   0x021177cc, then tail-returns after calling 0x021172dc. The work pointer is
+   kept in the parameter list because its only caller (the call at 0x02117b78,
+   inside Unk116598_Unk_117af8) passes it in r0, but this routine never reads it. */
 void Unk116598_Unk_117b80(Unk116598Work *work)
 {
-  Unk116598_Unk_1177cc(0);
-  Unk116598_Unk_1172dc();
+    Unk116598_Unk_1177cc(0);
+    Unk116598_Unk_1172dc();
 }
 
 
@@ -384,7 +413,7 @@ u32 Unk116598_Unk_117114(void)
 int Unk02f2a8_Unk_035440();
 int Unk044394_Unk_044534();
 int Unk095560_Unk_0956e8();
-int func_021177b8();
+void func_021177b8(void);
 /* decompiler-derived */
 void Unk116598_Unk_116968(int arg0)
 {
@@ -422,10 +451,11 @@ void Unk116598_Unk_117b94(int arg0)
   Unk02cad4_Unk_02cbdc(((Unk116598Work *)arg0)->unk_0004);
 }
 
-/* decompiler-derived */
+/* Original 0x021177cc stores the word argument through the pointer held by
+   BSS cell data_02176e64 (literal at 0x021177dc); no value is returned. */
 void Unk116598_Unk_1177cc(u32 arg0)
 {
-  *(u32 *)*data_02176e64 = arg0;
+    *(u32 *)*data_02176e64 = arg0;
 }
 
 int func_02117550();
@@ -574,4 +604,17 @@ void Unk116598_Unk_117af8(Unk116598Work *work)
     work->unk_0008 = 1;
     work->unk_000c = 0;
     Unk116598_Unk_117b80(work);
+}
+
+/* Original 0x021177b8 loads the pointer stored in BSS cell data_02176e64
+   (relocation at 0x021177c8), compares it with zero and returns, leaving that
+   pointer in r0 and the comparison flags set. All three call sites (0x02116994,
+   0x02117bc0, 0x02125b2c) ignore both, so the routine is only a null guard:
+   it returns immediately whether or not the cell is set. Defined last because
+   objdiff scores its caller Unk116598_Unk_117b94 lower when the definition sits
+   in that caller's address-order slot (tools/hand/README.md, wave b64). */
+void func_021177b8(void)
+{
+    if (*data_02176e64 == 0)
+        return;
 }
