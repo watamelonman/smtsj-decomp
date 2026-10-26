@@ -119,3 +119,151 @@ int func_020a61a0(u8 *base, u32 value, u16 a, u16 b,
     return 1;
 }
 
+
+int Unk02f2a8_IsInGrid45x40(u32 x, u32 y);
+int Unk094fe0_Call_020950b4(int id);
+
+/* Original grid bounds call and signed occupancy byte reject invalid/used cells. */
+int func_020a6280(u8 *grid, u32 x, u32 y, s8 kind, u8 index)
+{
+    u8 *cell;
+    if (grid == 0) return 0;
+    if (!Unk02f2a8_IsInGrid45x40(x, y)) return 0;
+    cell = grid + Unk02f2a8_GridIndex45(x, y) * 2;
+    if (*(s8 *)cell != 0) return 0;
+    cell[0] = kind;
+    cell[1] = index;
+    return 1;
+}
+
+/* Eight four-byte entries use a nonzero halfword key and byte weight at +3. */
+typedef struct Unk0a6174KeySlot {
+    u16 key;
+    u8 other;
+    u8 weight;
+} Unk0a6174KeySlot;
+
+/* Original +0/+3 loads stop at the first zero key (at most eight entries).
+ * The caller owns the entries; the cumulative byte weight wraps modulo 256. */
+Unk0a6174KeySlot *func_020a63cc(Unk0a6174KeySlot *p)
+{
+    u32 sum = 0;
+    u8 acc;
+    u32 r;
+    int i;
+    for (i = 0; i < 8; i++) {
+        if (p[i].key == 0) break;
+        sum += p[i].weight;
+    }
+    if ((s32)sum <= 0) return 0;
+    acc = 0;
+    r = (u32)func_02050074(1, 65535) % sum;
+    for (i = 0; i < 8; i++) {
+        if (p[i].key == 0) break;
+        acc += p[i].weight;
+        if (r < acc) return &p[i];
+    }
+    return 0;
+}
+
+/* Original signed IDs at +12/+16 enable boolean provider checks when nonnegative. */
+int func_020a6848(u8 *p)
+{
+    int result = 1;
+    int expected;
+    if (FIELD(s16, p, 12) > -1) {
+        expected = FIELD(u16, p, 14) != 0;
+        if (expected != Unk094fe0_Call_020950b4(FIELD(s16, p, 12))) result = 0;
+    }
+    if (FIELD(s16, p, 16) > -1) {
+        expected = FIELD(u16, p, 18) != 0;
+        if (expected != Unk094fe0_Call_020950b4(FIELD(s16, p, 16))) result = 0;
+    }
+    return result;
+}
+
+/* Original +16/+20 IDs gate checks; the stored result is normalized twice. */
+int func_020a68b4(u8 *p)
+{
+    int result = 1;
+    int expected;
+    if (FIELD(s16, p, 16) > -1) {
+        expected = FIELD(u16, p, 18) != 0;
+        if (expected != Unk094fe0_Call_020950b4(FIELD(s16, p, 16))) result = 0;
+    }
+    if (FIELD(s16, p, 20) > -1) {
+        expected = FIELD(u16, p, 22) != 0;
+        if (expected != Unk094fe0_Call_020950b4(FIELD(s16, p, 20))) result = 0;
+    }
+    {
+        u32 normalized = 0;
+        if (result) normalized = 1;
+        return normalized != 0;
+    }
+}
+
+/* Original checks require at least one enabled ID as well as both comparisons. */
+int func_020a6934(u8 *p)
+{
+    int enabled;
+    int result;
+    int expected;
+    expected = 0;
+    enabled = 0;
+    result = 1;
+    if (FIELD(s16, p, 16) > -1) {
+        enabled = 1;
+        if (FIELD(u16, p, 18) != 0) expected = 1;
+        if (expected != Unk094fe0_Call_020950b4(FIELD(s16, p, 16))) result = 0;
+    }
+    if (FIELD(s16, p, 20) > -1) {
+        enabled = 1;
+        expected = FIELD(u16, p, 22) != 0;
+        if (expected != Unk094fe0_Call_020950b4(FIELD(s16, p, 20))) result = 0;
+    }
+    {
+        u32 normalized = 0;
+        u32 present = 0;
+        if (enabled) present = 1;
+        if (present && result) normalized = 1;
+        return normalized != 0;
+    }
+}
+
+/* Original kind byte selects a 16-byte bank record to clear before clearing the cell.
+ * Coordinates and the cell's bank index must be valid; buffers are borrowed. */
+void func_020a6a08(u8 *grid, u8 *records, u32 x, u32 y)
+{
+    u8 *cell;
+    if (grid == 0) return;
+    cell = (u8 *)Unk0a6174_Unk_0a6a88((int)grid, x, y);
+    switch (*(s8 *)cell) {
+    case 1:
+        func_02008848((void *)Unk0a6174_Unk_0a6aac((int)records, cell[1]), 0, 16);
+        break;
+    case 2:
+        func_02008848((void *)Unk0a6174_Unk_0a6ab4((int)records, cell[1]), 0, 16);
+        break;
+    }
+    func_02008848(cell, 0, 2);
+}
+
+/* Original occupancy/coordinate loads rebuild the grid from two banks of 16 records.
+ * The caller provides a writable 0xe14-byte grid and a readable 0x200-byte bank. */
+void func_020a7ca4(u8 *grid, u8 *records)
+{
+    int i;
+    u8 *record;
+    func_02008848(grid, 0, 0xe14);
+    record = records;
+    for (i = 0; i < 16; i++, record += 16) {
+        if (record[12] != 0) func_020a6280(grid, record[10], record[11], 1, (u8)i);
+    }
+    {
+        int j;
+        u8 *second = records + 256;
+        for (j = 0; j < 16; j++, second += 16) {
+            if (second[13] != 0) func_020a6280(grid, second[11], second[12], 2, (u8)j);
+        }
+    }
+}
