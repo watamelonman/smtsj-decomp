@@ -34,11 +34,6 @@ typedef struct Unk044904SlotTab {
     u32 count;
 } Unk044904SlotTab;
 
-typedef struct Unk044904Objs {
-    u8 pad_0000[100];
-    u32 objs[10];
-} Unk044904Objs;
-
 Unk044904Rec *Unk044904_Unk_044948(u32 a, u32 b);
 
 typedef struct Unk044904Entry {
@@ -117,7 +112,7 @@ typedef struct Unk044904Mgr {
     u8 pad_0044[0xc];
     u32 unk_0050;
     u32 unk_0054;
-    u8 pad_0058[0x4];
+    u32 unk_0058;
     u32 unk_005c;               /* compared with 1 by Unk044904_Unk_045460 */
     u8 pad_0060[0x4];
     Unk044904Obj *slots[10];    /* +0x64 */
@@ -145,6 +140,10 @@ Unk044904Obj *Unk044904_GetSlot(int i)
     return m->slots[i];
 }
 
+/* 0204527c: asks func_0204a780(slot, 11) for each of the ten manager slots whose
+ * type byte (bits 16-23 of the slot's +0 word) is nonzero; null slots and slots
+ * with type zero are skipped. The manager must be registered, as every caller of
+ * that accessor assumes. No result is returned or stored. */
 void Unk044904_Unk_04527c(void)
 {
     int i;
@@ -278,15 +277,19 @@ void Unk044904_Unk_044ea8(void)
 
 
 
+/* 02044f4c: finds the first of the ten manager slots for which
+ * func_02049a84(slot, k) reports a hit. Returns the slot index 0..9, 0 when the
+ * manager is not registered, and -1 when no slot matches. Slots are borrowed;
+ * nothing is written. */
 int Unk044904_Unk_044f4c(u32 k)
 {
-    Unk044904Objs *t = (Unk044904Objs *)Unk044904_Get_data_0215ee98();
+    Unk044904Mgr *m = UNK044904_MGR();
     int i;
-    if (t == 0) {
+    if (m == 0) {
         return 0;
     }
     for (i = 0; i < 10; i++) {
-        u32 o = t->objs[i];
+        Unk044904Obj *o = m->slots[i];
         if (o != 0 && func_02049a84(o, k) != 0) {
             return i;
         }
@@ -423,17 +426,21 @@ int Unk044904_Unk_04509c(void)
 
 
 int Unk0bc1a8_IsSlotEmpty();
+/* 020453dc: resets every active manager slot with func_0204a8cc(slot, 1) --
+ * active means the type byte (bits 16-23 of the slot's +0 word) is nonzero --
+ * then clears the manager's +0x58 word. Null slots are skipped; the manager
+ * must be registered. No value is returned. */
 void Unk044904_Unk_0453dc(void)
 {
     int i;
     int one = 1;
     for (i = 0; i < 10; i++) {
-        u8 *o = (u8 *)((Unk044904Objs *)Unk044904_Get_data_0215ee98())->objs[i];
-        if (o != 0 && ((FIELD(u32, o, 0) >> 16) & 0xff) != 0) {
+        Unk044904Obj *o = UNK044904_MGR()->slots[i];
+        if (o != 0 && ((o->unk_0000 >> 16) & 0xff) != 0) {
             func_0204a8cc(o, one);
         }
     }
-    FIELD(u32, Unk044904_Get_data_0215ee98(), 88) = 0;
+    UNK044904_MGR()->unk_0058 = 0;
 }
 
 /* 02045c7c: reports that slot 26 (0x1a) is not empty, inverting the 0/1 result
@@ -605,53 +612,66 @@ u32 Unk044904_Unk_046108(u16 *state)
 }
 
 
-int Unk0a5680_Unk_0a5c14();
-/* decompiler-derived */
-u32 Unk044904_Unk_04599c(u32 *arg0)
+int Unk0a5680_Unk_0a5c14(u32 id, u32 arg1, u32 arg2);
+/* One entry of the six 12-byte AI-script candidates scanned by Unk_04599c. */
+typedef struct Unk044904AiCheck {
+    u32 id;
+    u32 unk_04;
+    u32 unk_08;
+} Unk044904AiCheck;
+
+/* 0204599c: scans exactly six 12-byte entries and reports 1 when any entry has
+ * a nonzero id and Unk0a5680_Unk_0a5c14(id & 0xffff, entry[1], entry[2]) accepts
+ * it; otherwise 0. The entries are borrowed and are not modified. */
+u32 Unk044904_Unk_04599c(Unk044904AiCheck *entries)
 {
-  int value1;
-  u32 value2;
-  int value3;
-  value2 = 0;
-  value3 = 0;
-  do {
-    if ((*arg0 != 0) &&
-       (value1 = Unk0a5680_Unk_0a5c14(*arg0 & 0xffff,arg0[1],arg0[2]), value1 != 0)) {
-      value2 = 1;
-    }
-    value3 = value3 + 1;
-    arg0 = arg0 + 3;
-  } while (value3 < 6);
-  return value2;
+    u32 found = 0;
+    int i = 0;
+    do {
+        if (entries->id != 0 &&
+            Unk0a5680_Unk_0a5c14(entries->id & 0xffff, entries->unk_04, entries->unk_08) != 0) {
+            found = 1;
+        }
+        i++;
+        entries++;
+    } while (i < 6);
+    return found;
 }
 
-extern u8 data_02142b4c[];
-extern u8 data_02142b64[];
-int func_02013c3c();
-int func_020513d4();
-int func_020a1740();
-/* Builds "Data/Enemy/AI/ai_%s.bf" for an enemy; falls back to ai_scr_test.bf if missing. */
-void Unk044904_BuildEnemyAiPath(u32 arg0,u32 arg1)
+extern const char data_02142b4c[];
+extern const char data_02142b64[];
+int func_02013c3c(char *dest, const char *format, ...);
+int func_020513d4(const char *path);
+u8 *func_020a1740(u32 id);
+/* 02045898: builds the enemy AI script path in `path`. Looks up `id`; on a hit
+ * it formats data_02142b4c ("Data/Enemy/AI/ai_%s.bf") with the name field at
+ * lookup+0x6c and returns once func_020513d4 accepts the path. On a miss, or a
+ * rejected path, it formats the data_02142b64 fallback (".../ai_scr_test.bf").
+ * Both format strings are ASCII in .data at those addresses; `path` belongs to
+ * the caller and must hold the formatted name. */
+void Unk044904_BuildEnemyAiPath(char *path, u32 id)
 {
-  int tmp1;
-  tmp1 = func_020a1740(arg1);
-  if (tmp1 != 0) {
-    func_02013c3c(arg0,data_02142b4c,tmp1 + 0x6c);
-    tmp1 = func_020513d4(arg0);
-    if (tmp1 != 0) {
-      return;
+    u8 *found = func_020a1740(id);
+    if (found != 0) {
+        func_02013c3c(path, data_02142b4c, found + 0x6c);
+        if (func_020513d4(path) != 0) {
+            return;
+        }
     }
-  }
-  func_02013c3c(arg0,data_02142b64);
+    func_02013c3c(path, data_02142b64);
 }
 
+/* 02045b74: releases every manager slot that func_0204a9ec accepts and whose
+ * type byte (bits 16-23 of the slot's +0 word) is 2, via func_0204a884(slot).
+ * Slots of other types and null slots are left alone; the manager must be
+ * registered. No value is returned. */
 void Unk044904_Unk_045b74(void)
 {
-    Unk044904Objs *m = (Unk044904Objs *)Unk044904_Get_data_0215ee98();
+    Unk044904Mgr *m = UNK044904_MGR();
     int i;
     for (i = 0; i < 10; i++) {
-        u8 *o = (u8 *)m->objs[i];
-        if (o != 0 && func_0204a9ec(o) != 0 && ((FIELD(u32, o, 0) >> 16) & 0xff) == 2) {
+        Unk044904Obj *o = m->slots[i];
+        if (o != 0 && func_0204a9ec(o) != 0 && ((o->unk_0000 >> 16) & 0xff) == 2) {
             func_0204a884(o);
         }
     }
@@ -674,6 +694,10 @@ void Unk044904_Unk_045bd0(int f)
     }
 }
 
+/* 02045d38: runs the fixed re-init sequence (Unk09d42c_Init_data_02176278,
+ * func_020458e8, func_020525cc(4), Unk0a4e48_Unk_0a4e9c(1),
+ * Unk05ae50_Unk_05afd8(0x4000)), then calls func_020a609c with 1 or 0 according
+ * to manager flag bit 9. Always returns 1; the manager must be registered. */
 int Unk044904_Unk_045d38(void)
 {
     Unk044904Bits *m = (Unk044904Bits *)Unk044904_Get_data_0215ee98();
@@ -690,6 +714,10 @@ int Unk044904_Unk_045d38(void)
     return 1;
 }
 
+/* 020460ac: gates on four readiness probes. Returns 0 if func_020a4f3c or
+ * func_02052728 reports busy, if Unk09d060_Unk_09d13c reports zero, or if
+ * func_0205e4f8(-1) reports busy; otherwise runs Unk044904_Unk_045480 and
+ * returns 1. Probes are evaluated in that order and short-circuit. */
 int Unk044904_Unk_0460ac(void)
 {
     if (func_020a4f3c() != 0) {
