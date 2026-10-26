@@ -58,21 +58,39 @@ fields. Unknown field/provider semantics retain neutral names.
 No M1-T958 hard functions remain. The TU still links from the delinked object;
 its completion setting remains human-owned. No module boundary changed.
 
-## Historical later-card omissions
+## M1-T959: verified matches
 
-- `Unk0cf5e8_Unk_0d1414`: decompiler-derived
-- `Unk0cf5e8_Unk_0d13b4`: decompiler-derived
-- `Unk0cf5e8_Unk_0d0960`: decompiler-derived
+All eight requested functions report 100% in `build/report.json`. Pointer
+parameters borrow valid work storage; provider ownership is unchanged.
 
-## Historical M1-T959 omissions
+- `Unk0cf5e8_Unk_0d1414` (64 B): resolves halfwords 0xa8 and 0xa6
+  indexed by word 0x288 with stride eight, submits the resolved pointer plus
+  0x16, then increments word 0x288. Evidence: ARM loads/calls at 0x020d1414.
+- `Unk0cf5e8_Enter` (68 B): calls the two entry providers, queries with zero,
+  and when zero performs the setup calls with 30 and (21, 65535, 0).
+  Evidence: ordered calls at 0x020cf5e8 support the existing entry name.
+- `func_020d185c` (68 B): publishes halfword 0x2e != 0 for handle 0x20,
+  slot 3; calls `func_020d18a0` if word 0x298 equals 1, then always calls
+  `func_020d1958`. Evidence: loads and branches at 0x020d185c.
+- `func_020d19d4` (68 B): truncates word 0x2b0 to an unsigned halfword;
+  forwards 50 when that value is 2 and query 0x73a returns zero, otherwise
+  forwards the halfword. Evidence: shifts, query and branches at 0x020d19d4.
+- `Unk0cf5e8_Unk_0d13b4` (72 B): resolves halfwords 0x19c and 0x19a
+  indexed by word 0x28c with stride eight, submits the resolved pointer plus
+  0x16, then increments word 0x28c. Evidence: ARM loads/calls at 0x020d13b4.
+- `Unk0cf5e8_InitSlots` (80 B): obtains six indexed values, then publishes
+  all six through handle 0x20; the observed six-slot loops at 0x020d1908
+  support the existing name. Slot storage starts at 0x36c.
+- `Unk0cf5e8_Unk_0d0960` (84 B): queries with the incoming value and work+8;
+  results 1 and 2 call their respective callbacks, 3 restores the state
+  from word 4, and other values return. Evidence: comparisons at 0x020d0960.
+- `func_020d16f8` (84 B): checks signed indices in [first, end); entries
+  accepted by the first provider must pass the second provider with kind 3.
+  Returns zero on failure, one otherwise, including an empty range.
+  Evidence: signed comparisons and conditional calls at 0x020d16f8.
 
-`Unk0cf5e8_Enter` and `Unk0cf5e8_InitSlots` are now matched at 100%.
-
-- `Unk0cf5e8_Enter`
-- `func_020d185c`
-- `func_020d19d4`
-- `Unk0cf5e8_InitSlots`
-- `func_020d16f8`
+No M1-T959 hard functions remain. No module boundary changed. The unit
+continues to link from the delink pending human completion approval.
 
 ## Historical M1-T960 omissions
 - `func_020cf668`

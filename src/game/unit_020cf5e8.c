@@ -54,6 +54,7 @@ typedef struct Unk0cf5e8Slots {
     u8 pad_024[0x348];
     u32 slot[6];
 } Unk0cf5e8Slots;
+/** Enter the unit through the provider sequence at 0x020cf5e8; skip setup when busy. */
 void Unk0cf5e8_Enter(void)
 {
     func_020cb3dc();
@@ -220,56 +221,54 @@ void Unk0cf5e8_Unk_0cf630(void)
 }
 
 
-int func_020f3de8();
-int func_020f3f2c();
-/* decompiler-derived */
-void Unk0cf5e8_Unk_0d1414(int arg0)
+u8 *func_020f3de8(u32 resource, u32 index);
+u32 func_020f3f2c(u32 id);
+/** Resolve the first bank's current eight-byte record, submit its payload at 0x16,
+ * then advance word 0x288. Evidence: halfword loads at 0x020d1414; work is borrowed.
+ */
+void Unk0cf5e8_Unk_0d1414(Unk0cf5e8Work *work)
 {
-  u32 tmp1;
-  int tmp2;
-  tmp1 = func_020f3f2c(*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_0288 * 8 + 0xa8));
-  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_0288 * 8 + 0xa6));
-  Unk0de678_Unk_0dec94((const void *)(tmp2 + 0x16));
-  ((Unk0cf5e8Work *)arg0)->unk_0288 = ((Unk0cf5e8Work *)arg0)->unk_0288 + 1;
-  return;
+    u32 resource = func_020f3f2c(FIELD(u16, (u8 *)work + work->unk_0288 * 8, 0xa8));
+    u8 *record = func_020f3de8(resource, FIELD(u16, (u8 *)work + work->unk_0288 * 8, 0xa6));
+    Unk0de678_Unk_0dec94(record + 0x16);
+    work->unk_0288++;
 }
 
-
-/* decompiler-derived */
-void Unk0cf5e8_Unk_0d13b4(int arg0)
+/** Resolve the second bank's current eight-byte record and advance word 0x28c.
+ * Evidence: halfword loads at 0x19a/0x19c in 0x020d13b4; work is borrowed.
+ */
+void Unk0cf5e8_Unk_0d13b4(Unk0cf5e8Work *work)
 {
-  u32 tmp1;
-  int tmp2;
-  tmp1 = func_020f3f2c(*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_028c * 8 + 0x19c));
-  tmp2 = func_020f3de8(tmp1,*(u16 *)(arg0 + ((Unk0cf5e8Work *)arg0)->unk_028c * 8 + 0x19a));
-  Unk0de678_Unk_0dec94((const void *)(tmp2 + 0x16));
-  ((Unk0cf5e8Work *)arg0)->unk_028c = ((Unk0cf5e8Work *)arg0)->unk_028c + 1;
-  return;
+    u32 resource = func_020f3f2c(FIELD(u16, (u8 *)work + work->unk_028c * 8, 0x19c));
+    u8 *record = func_020f3de8(resource, FIELD(u16, (u8 *)work + work->unk_028c * 8, 0x19a));
+    Unk0de678_Unk_0dec94(record + 0x16);
+    work->unk_028c++;
 }
 
-int func_020cb5b4();
-int func_020d0ff4();
-int func_020d10ac();
-/* decompiler-derived */
-void Unk0cf5e8_Unk_0d0960(int arg0,u32 arg1)
+int func_020cb5b4(u32 value, void *field);
+void func_020d0ff4(Unk0cf5e8Work *work);
+void func_020d10ac(Unk0cf5e8Work *work);
+/** Dispatch provider results 1/2 to callbacks and 3 to the saved state.
+ * Evidence: comparisons at 0x020d0960; work must include the field at offset 8.
+ */
+void Unk0cf5e8_Unk_0d0960(Unk0cf5e8Work *work, u32 value)
 {
-  int tmp1;
-  tmp1 = func_020cb5b4(arg1,arg0 + 8);
-  if (tmp1 == 1) {
-    func_020d0ff4(arg0);
-    return;
-  }
-  if (tmp1 == 2) {
-    func_020d10ac(arg0);
-    return;
-  }
-  if (tmp1 != 3) {
-    return;
-  }
-  func_020d1360((Unk0cf5e8Work *)arg0,((Unk0cf5e8Work *)arg0)->unk_0004);
-  return;
+    int result = func_020cb5b4(value, (u8 *)work + 8);
+    if (result == 1) {
+        func_020d0ff4(work);
+        return;
+    }
+    if (result == 2) {
+        func_020d10ac(work);
+        return;
+    }
+    if (result != 3) {
+        return;
+    }
+    func_020d1360(work, work->unk_0004);
 }
 
+/** Fill six borrowed slots and publish them to handle 0x20; loops at 0x020d1908. */
 void Unk0cf5e8_InitSlots(Unk0cf5e8Slots *p)
 {
     int j;
@@ -300,4 +299,50 @@ void func_020d1360(Unk0cf5e8Work *work, s32 state)
         break;
     }
     work->unk_0000 = state;
+}
+
+int Unk0f3db4_Unk_0f4448(s32 index);
+int func_020e49cc(s32 kind, s32 index);
+/** Check the signed half-open index range; present entries must pass provider 3.
+ * Evidence: bounds and short circuit at 0x020d16f8. Empty ranges succeed.
+ */
+int func_020d16f8(s32 first, s32 end)
+{
+    for (; first < end; first++) {
+        if (Unk0f3db4_Unk_0f4448(first) != 0) {
+            if (func_020e49cc(3, first) == 0) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+void Unk122e1c_Unk_122f88(u32 handle, s32 slot, s32 enabled);
+void func_020d1958(Unk0cf5e8Work *work);
+/** Publish whether halfword 0x2e is nonzero for slot 3, optionally refresh,
+ * then update. Evidence: calls at 0x020d185c; borrowed work spans word 0x298.
+ */
+void func_020d185c(Unk0cf5e8Work *work)
+{
+    Unk122e1c_Unk_122f88(work->unk_0020, 3, FIELD(u16, work, 0x2e) != 0);
+    if (FIELD(s32, work, 0x298) == 1) {
+        func_020d18a0(work);
+    }
+    func_020d1958(work);
+}
+
+int Unk0e651c_Unk_0e666c(u32 id);
+void Unk1241ec_Unk_124224(u32 value);
+/** Forward the low halfword of word 0x2b0, replacing 2 with 50 when query
+ * 0x73a is zero. Evidence: shifts and branches at 0x020d19d4; work is borrowed.
+ */
+void func_020d19d4(Unk0cf5e8Work *work)
+{
+    u16 value = FIELD(u32, work, 0x2b0);
+    if (value == 2 && Unk0e651c_Unk_0e666c(0x73a) == 0) {
+        Unk1241ec_Unk_124224(50);
+        return;
+    }
+    Unk1241ec_Unk_124224(value);
 }

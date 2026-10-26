@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T959: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add three missing bodies, and document typed instruction contracts.
 - M1-T958: match all eight requested `game/unit_020cf5e8` functions at 100% objdiff, add the missing state dispatcher, and document typed contracts and instruction evidence.
 - M1-T905: match eight `game/unit_020e8228` descriptor, provider, dispatch and state helpers at 100% objdiff; add five missing bodies and document typed instruction contracts.
 - Corrected M1-T957 thunk evidence to describe literal-pool tail branches and reconciled historical match documentation.
