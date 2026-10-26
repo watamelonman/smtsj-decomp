@@ -531,3 +531,62 @@ functions now match. The match gate reports all 82 compiled functions in the
 changed unit at 100%. `ninja`, `tools/match_gate.py`, `tools/checksum.py`,
 `tools/anticheat.py` and the repository unit tests are run before handing the
 change back.
+
+## M2-T1065 source search
+
+Searched public NitroSDK/NitroSystem text-rendering references and pret's
+[pokeplatinum rendering documentation](https://github.com/pret/pokeplatinum/blob/main/docs/2d_rendering.md).
+No equivalent implementation was identified; reconstruction uses the original
+instructions and existing neutral symbols. No public source was reused.
+
+## func_020619b8 — 64 bytes
+
+Returns font header byte +0x24 minus the two signed bytes of the optional
++0x30 table entry. A missing table leaves the advance unchanged. The calls
+at 0x020619c4 and 0x020619d4 establish the two font accessors. Objdiff: 100%.
+
+## func_02064268 — 64 bytes
+
+Returns zero when func_020bab80 is nonzero or object +0x5c equals one;
+otherwise returns whether func_020642a8 differs from one. The latter tests
+the signed countdown at +0x68. Objdiff: 100%.
+
+## func_0206563c — 64 bytes
+
+Zero disables singleton +0x70. Nonzero enables it only if currently zero,
+clearing byte +0x74 on this first enable. The singleton is required;
+loads/stores at 0x02065650..0x02065674 establish the layout. Objdiff: 100%.
+
+## func_02063b08 — 68 bytes
+
+Clears singleton +0x4c, releases both render objects in order through
+func_020629c4, and clears their pointers. Finally clears both words of
+data_0216b9a8. Provider calls occur at 0x02063b1c and 0x02063b2c. Objdiff: 100%.
+
+## func_02064370 — 68 bytes
+
+Clears singleton +0x58, then returns if its render object's +0x3c is zero.
+Otherwise calls func_0205a21c(child, 0), func_02059ec8(child, 0), and
+func_02062140(render object), reloading pointers between calls. The zero
+second argument is retained in r1 at the first call. Objdiff: 100%.
+
+## func_02065454 — 68 bytes
+
+Clamps unsigned mode to at least three. If it differs from singleton byte
++0x54 and +0x58 is zero, sets state words +8/+0xc through func_0206435c,
+then writes the mode to bytes +0x54/+0x55. The first byte is unsigned on
+read; the second is only stored here. Objdiff: 100%.
+
+## func_02061ec8 — 72 bytes
+
+Writes metric +0 as count times (font header byte +0x25 plus signed object
+byte +0x36), +0xc as existing metric +8 plus offset, then +4 as metric +0
+plus the header byte. Output is borrowed writable storage; operation order
+and the +8 input follow 0x02061ee8..0x02061f08. Objdiff: 100%.
+
+## func_020621c0 — 72 bytes
+
+Clears object +8 and calls func_02007e94 only when slot +0x14 is null.
+Always passes the slot address to Unk0d297c_Unk_0d32ac, then selects
+func_02062434 for a nonzero func_0204f9d8 result, else func_020623b8.
+The branch at 0x020621d8 skips only the first provider. Objdiff: 100%.

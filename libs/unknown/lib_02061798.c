@@ -1,5 +1,16 @@
 #include "libs/unknown/lib_02061798.h"
 
+/* Provider contracts follow the argument registers in the calls below. */
+extern s32 func_020bab80(void);
+extern void func_0205a21c(Unk061798Object *object, u32 value);
+extern void func_02059ec8(Unk061798Object *object, u32 value);
+extern void func_02062140(Unk061798Object *object);
+extern void func_02007e94(void);
+extern void Unk0d297c_Unk_0d32ac(void **slot);
+extern s32 func_0204f9d8(void);
+extern void func_02062434(Unk061798Object *object);
+extern void func_020623b8(Unk061798Object *object);
+
 /* Appends a character code; returns the result object that func_02063a44
  * forwards (distinct from func_02063a50's singleton). */
 extern Unk061798ResultA *func_02063954(const void *text, u32 code);
@@ -13,7 +24,9 @@ extern void *func_02060a48(u32 a, u32 b, u32 mode);
  * passes both render objects of the shared singleton). */
 extern void func_02062a00(Unk061798Object *object);
 /* Applies a mode to an object before func_020658b4 forwards its value. */
-extern void func_02065864(void *object, s32 mode);
+extern /* Applies the requested object mode; -1 suppresses the subsequent shared
+ * state and provider updates (0x0206587c..0x02065898). */
+void func_02065864(void *object, s32 mode);
 /* Stores a value in its own module-level state (call site 0x020658b4). */
 extern void func_020bac00(u32 value);
 /* Looks up the message object for `message` (call sites 0x02065a7c and
@@ -635,6 +648,39 @@ u16 *func_02061980(u32 id, s32 index)
     return &font->unk_0030[index];
 }
 
+/* Returns the font advance minus signed bearings from the optional table (+0x30). */
+s32 func_020619b8(u32 id, s32 index)
+{
+    s32 advance = func_02061960(id);
+    s8 *pair = (s8 *)func_02061980(id, index);
+    if (pair != 0) advance -= pair[0] + pair[1];
+    return advance;
+}
+
+/* Computes metric bounds from font header byte two and signed object byte +0x36. */
+void func_02061ec8(Unk061798Object *object, Unk061798Metrics *out, s32 count, s32 offset)
+{
+    s32 advance = func_02061970(object->unk_0028);
+    out->unk_0000 = count * (advance + object->unk_0036);
+    out->unk_000c = out->unk_0008 + offset;
+    out->unk_0004 = out->unk_0000 + advance;
+}
+
+/* Initializes a missing +0x14 slot and selects the setup provider by func_0204f9d8. */
+void func_020621c0(Unk061798Object *object)
+{
+    object->unk_0008 = 0;
+    if (object->unk_0014 == 0) {
+        func_02007e94();
+    }
+    Unk0d297c_Unk_0d32ac(&object->unk_0014);
+    if (func_0204f9d8() != 0) {
+        func_02062434(object);
+    } else {
+        func_020623b8(object);
+    }
+}
+
 /* Requires a singleton, its +0x4c flag, and its +8 state to be nonzero;
  * these three guards are explicit at 0x0206554c..0x02065574. */
 s32 func_02065544(void)
@@ -655,6 +701,61 @@ void func_020629c4(Unk061798Object *object)
     func_02060248(object);
     func_02062a00(object);
     func_02061424(object);
+}
+
+/* Releases the two borrowed render objects, then clears both shared references. */
+void func_02063b08(Unk061798ResultB *result)
+{
+    result->unk_004c = 0;
+    func_020629c4(result->unk_0000);
+    result->unk_0000 = 0;
+    func_020629c4(result->unk_0004);
+    result->unk_0004 = 0;
+    data_0216b9a8.unk_0004 = 0;
+    data_0216b9a8.unk_0000 = 0;
+}
+
+/* Allows progress only when provider state, +0x5c and the +0x68 countdown permit it. */
+s32 func_02064268(Unk061798Object *object)
+{
+    if (func_020bab80() != 0) return 0;
+    if (object->unk_005c == 1) return 0;
+    return func_020642a8(object) != 1;
+}
+
+/* Clears +0x58 and resets the active child in provider order shown at 0x02064394. */
+void func_02064370(Unk061798ResultB *result)
+{
+    result->unk_0058 = 0;
+    if (result->unk_0000->unk_003c == 0) return;
+    func_0205a21c(result->unk_0000->unk_0000, 0);
+    func_02059ec8(result->unk_0000->unk_0000, 0);
+    func_02062140(result->unk_0000);
+}
+
+/* Clamps mode to three and updates both mode bytes only outside a transition (+0x58). */
+void func_02065454(u32 mode)
+{
+    Unk061798ResultB *result = func_02063a60();
+    if (mode < 3) mode = 3;
+    if (result->unk_0054 == mode) return;
+    if (result->unk_0058 != 0) return;
+    func_0206435c((Unk061798Object *)result);
+    result->unk_0054 = mode;
+    result->unk_0055 = mode;
+}
+
+/* Sets +0x70 once and clears +0x74 on first enable; zero disables without resetting the byte. */
+void func_0206563c(s32 flag)
+{
+    Unk061798ResultB *result = func_02063a60();
+    if (flag != 0) {
+        if (result->unk_0070 != 0) return;
+        result->unk_0070 = 1;
+        result->unk_0074 = 0;
+        return;
+    }
+    result->unk_0070 = 0;
 }
 
 /* Applies the requested object mode; -1 suppresses the subsequent shared
