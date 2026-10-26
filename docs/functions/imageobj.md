@@ -142,14 +142,36 @@ symbols do not establish a better description.
 Hard list for M1-T925: none. `ImageObj_Unk_0779a0` is outside this card's
 function list and remains covered by its own entry.
 
-## Not done in M1-T926
-- `ImageObj_Unk_0777e0`
-- `ImageObj_Unk_077a4c`
-- `ImageObj_Unk_0779f4`
-- `ImageObj_Unk_077ea4`
-- `func_02077f30`
-- `func_02077e0c`
-- `ImageObj_Unk_077c30`
+## M1-T926 — verified ARM functions (8/8)
+
+All eight functions match at 100% against `build/delinks/src/ImageObj.o`.
+Existing neutral symbols are retained; offsets describe observed storage only.
+
+- `ImageObj_Unk_0777e0` (76 B): scans three slots, returning one for a live
+  node with zero at +0x48; absent singleton returns zero (020777fc..02077808).
+- `ImageObj_Unk_077a4c` (80 B): copies static data for kind 0, 1 or 2 through
+  02013c3c; other kinds do nothing. Relocations at 02077a90..02077a98 identify
+  the three sources. Caller 02077f30 supplies two unused pointer arguments.
+- `ImageObj_Unk_0779a0` (84 B): initializes node defaults, including (400,400),
+  mode 2, +0x48 = 1 and +0x54 = -1 (stores at 020779a0..020779f0).
+- `ImageObj_Unk_0779f4` (88 B): for a live handle, scales signed byte +0x38
+  below 31 by 255/31 into the three high bytes; otherwise uses all ones.
+  Signed load, division and shifts at 02077a0c..02077a3c establish this.
+- `ImageObj_Unk_077ea4` (88 B): requires a node; when +0x68 exists, releases
+  and clears +0x68, +0x60 and +0x64, skipping absent handles. Guarded calls
+  and stores at 02077ebc..02077ef4 establish order.
+- `func_02077f30` (92 B): zeroes a 64-byte stack descriptor, applies the
+  kind-selected data and submits it to 0205ad2c. Byte-clear loop at
+  02077f48..02077f60 and BLs at 02077f70/02077f78 establish the sequence.
+- `func_02077e0c` (104 B): checks 077d68, then updates the +0x68 pair by
+  (128 + x, 151 - node[0x30] + y). The system-state switch assigns identical
+  bases in all cases; retained assignments reproduce its register lifetime.
+  Predicate BL at 02077e1c and arithmetic at 02077e58..02077e6c are evidence.
+- `ImageObj_Unk_077c30` (112 B): dispatches the low 16 bits of +0x50 through
+  the singleton sub-object, translating the ID when +0x70 is set, refreshes
+  that sub-object and sets +0x6c. BLs at 02077c58..02077c8c establish this.
+
+Hard list for M1-T926: none. No module boundary changes.
 
 ## Not done in M1-T927
 - `func_0207726c`
