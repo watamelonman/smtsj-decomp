@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M1-T974: match seven CaveArea initialization, input, message, marker and motion functions; document the remaining list-renderer register allocation blocker.
+
 - M1-T973: match all eight requested CaveArea cleanup, selection, draw and provider helpers at 100% objdiff; document typed contracts and the scoped lifetime pragma that restores `func_020ecf20`'s original register allocation.
 - M1-T962: match the 2040-byte `game/unit_020cf5e8` mission-scene state machine `func_020cf9a0` at 100% objdiff; record the measured switch-return layout blocker for `func_020d09b4` on the hard list.
 - Match eight more CaveArea helpers, with typed records and instruction-based contracts.
