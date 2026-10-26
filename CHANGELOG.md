@@ -456,6 +456,7 @@
 - Match all six NitroSDK sdk_0200454c geometry matrix and palette transfer helpers, with typed contracts and source evidence.
 
 - Match all four `libs/NitroSDK/sdk_0205e800` routines, including bounded input adjustment and global setters.
+- Match all eight `libs/unknown/lib_02049998` packed-status and paired-record helpers with typed layouts and per-function contracts.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
