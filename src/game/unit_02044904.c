@@ -65,6 +65,9 @@ void func_02008848();
 int func_02049a84();
 void func_0204a8cc();
 
+/* 02044948: returns the borrowed slot matching key, or clears and appends a
+ * 12-byte slot when the caller-owned table has room (count at +0x60, limit 8).
+ * Returns null when full; a must address a valid table with count <= 8. */
 Unk044904Rec *Unk044904_Unk_044948(u32 a, u32 key)
 {
     Unk044904SlotTab *t = (Unk044904SlotTab *)a;
@@ -587,6 +590,10 @@ int func_02052728();
 int Unk09d060_Unk_09d13c(void);
 void Unk044904_Unk_045480(void);
 
+/* 02045480: unless manager bits 10 or 20 are set, sets bit 20 and brackets
+ * calls to func_02122188 for the twelve embedded entries whose type byte is 1
+ * with func_02121d84/func_02122200. Requires a registered manager; entries
+ * remain owned by it (instruction evidence: +0x36c base, 0x2e0 stride). */
 void Unk044904_Unk_045480(void)
 {
     Unk044904Bits *m = (Unk044904Bits *)Unk044904_Get_data_0215ee98();
@@ -709,6 +716,10 @@ void Unk044904_Unk_045b74(void)
     }
 }
 
+/* 02045bd0: selects handle 24 when f is nonzero, otherwise the manager's
+ * +0x4c word; manager bit 3 forces the latter path. Calls func_0205e484(handle,
+ * 8) only when func_0205e4f8(handle) returns zero. Requires a registered
+ * manager; handle storage remains owned by its provider. */
 void Unk044904_Unk_045bd0(int f)
 {
     Unk044904Bits *m = (Unk044904Bits *)Unk044904_Get_data_0215ee98();
@@ -776,6 +787,10 @@ void func_020ae0d8();
 int Unk044904_Unk_044fd8();
 int Unk0aa118_Clear814();
 
+/* 020465c0: passes the manager's +0x8c word and a flag to func_020ae0d8;
+ * the flag is 1 only if Unk044904_Unk_045460(1) is nonzero and +0x38 is zero.
+ * Writes state 2 through the caller's writable halfword, calls the +0x379c
+ * accessor and Unk0aa118_Clear814, then returns 1. Requires a registered manager. */
 int Unk044904_Unk_0465c0(u16 *p)
 {
     int f;
