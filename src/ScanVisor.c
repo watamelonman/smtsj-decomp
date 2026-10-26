@@ -732,32 +732,34 @@ void ScanVisor_ResetBits(ScanVisorBits *p)
     p->b67 = 0;
 }
 
-/* decompiler-derived */
-void ScanVisor_Unk_0a2e5c(int arg0)
+/* Release the four nonzero provider handles, tear down sub-objects, then
+ * clear the global work word. Evidence: original 020a2e5c handle loads
+ * before 0205ddb4 calls and final store to data_02176b04. Storage is borrowed. */
+void ScanVisor_Unk_0a2e5c(ScanVisor *sv)
 {
   int tmp1;
-  if (((ScanVisor *)arg0)->unk_0008 != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_0008 = 0;
+  if (sv->unk_0008 != 0) {
+    func_0205ddb4(sv->unk_0008);
+    sv->unk_0008 = 0;
   }
-  if (((ScanVisor *)arg0)->unk_0024 != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_0024 = 0;
+  if (sv->unk_0024 != 0) {
+    func_0205ddb4(sv->unk_0024);
+    sv->unk_0024 = 0;
   }
-  if (((ScanVisor *)arg0)->unk_0040 != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_0040 = 0;
+  if (sv->unk_0040 != 0) {
+    func_0205ddb4(sv->unk_0040);
+    sv->unk_0040 = 0;
   }
-  ((ScanVisor *)arg0)->unk_005c = 0;
-  if (((ScanVisor *)arg0)->unk_024c != 0) {
-    func_0205ddb4();
-    ((ScanVisor *)arg0)->unk_024c = 0;
+  sv->unk_005c = 0;
+  if (sv->unk_024c != 0) {
+    func_0205ddb4(sv->unk_024c);
+    sv->unk_024c = 0;
   }
-  Unk0a7d54_Unk_0a8bac(arg0 + 0x428);
+  Unk0a7d54_Unk_0a8bac((u8 *)sv + 0x428);
   Unk0fc584_Unk_0fc6a0();
   Unk0fd268_Unk_0fd3ac();
   Unk0fd9f0_Unk_0fda14();
-  func_020c8f08(arg0 + 0x78);
+  func_020c8f08((u8 *)sv + 0x78);
   tmp1 = 0;
   do {
     func_0205bb68();
@@ -926,7 +928,9 @@ void func_020a34ac(ScanVisor *sv);
 void Unk0a7d54_Unk_0a8ad0(void *p);
 void func_020572d8(void);
 
-/* Draws the visor layers; modes 1/3 use layer 2, modes 0/2 layer 1. */
+/* Draw the visor layers for borrowed work. Evidence: original 020a3114
+ * submits layers 2 for modes 1/3 and 1 for 0/2 to 02057e58, then
+ * invokes the matching draw callbacks before restoring 020580ec(1). */
 void ScanVisor_Draw(ScanVisor *sv)
 {
     func_020580ec(0);
@@ -1267,4 +1271,211 @@ void func_020a4370(ScanVisorSlot *entry)
             p->unk_0024 = 0;
         }
     }
+}
+
+/* Apply the caller flag to mode-selected setters. Original 020a269c reads
+ * the global work mode; missing work and modes outside 0..3 do nothing. */
+void func_020a269c(int on)
+{
+    ScanVisor *sv = (ScanVisor *)ScanVisor_Get_data_02176b04();
+    if (sv == 0) return;
+    switch (sv->mode) {
+    case 0:
+    case 2:
+        ScanVisor_SetField34(on);
+        ScanVisor_Unk_0a27e0(on);
+        ScanVisor_SetRangeA(on);
+        ScanVisor_SetField214(on);
+        ScanVisor_Unk_0a2920(on);
+        break;
+    case 1:
+        ScanVisor_SetField34(on);
+        ScanVisor_Unk_0a27e0(on);
+        ScanVisor_SetField214(on);
+        ScanVisor_Unk_0a28f4(on);
+        break;
+    case 3:
+        ScanVisor_SetField34(on);
+        ScanVisor_Unk_0a27e0(on);
+        ScanVisor_SetField214(on);
+        break;
+    }
+}
+
+int Unk0a23f4_IsField210Zero(void);
+int Unk0a23f4_IsField2cZero(void);
+int Unk0a23f4_Thunk_020fd428(void);
+int Unk0a23f4_IsField14Zero(void);
+/* Snapshot the mode and four query bits into caller-owned flags, preserving
+ * other bits. Original 020a2c00 stores mode at +0 then bits 4,1,5,0 at +4;
+ * absent global work leaves the entire destination unchanged. */
+void func_020a2c00(ScanVisorBits *p)
+{
+    ScanVisor *sv = (ScanVisor *)ScanVisor_Get_data_02176b04();
+    if (sv == 0) return;
+    p->word = sv->mode;
+    p->b4 = (u8)Unk0a23f4_IsField210Zero();
+    p->b1 = (u8)Unk0a23f4_IsField2cZero();
+    p->b5 = (u8)Unk0a23f4_Thunk_020fd428();
+    p->b0 = (u8)Unk0a23f4_IsField14Zero();
+}
+
+/* Advance the signed coordinates at +8/+c by velocities +10/+14, clamp
+ * to the caller bounds and stop each completed direction. Original
+ * 020a3008 separately processes negative then positive velocities;
+ * caller owns writable storage and must avoid signed overflow. */
+void func_020a3008(ScanVisorCounter *p, int a, int b, int c, int d)
+{
+    if (FIELD(s32,p,16) < 0) {
+        FIELD(s32,p,8) += FIELD(s32,p,16);
+        if (FIELD(s32,p,8) <= a) {
+            FIELD(s32,p,8) = a;
+            FIELD(s32,p,16) = 0;
+        }
+    }
+    if (FIELD(s32,p,20) < 0) {
+        FIELD(s32,p,12) += FIELD(s32,p,20);
+        if (FIELD(s32,p,12) <= b) {
+            FIELD(s32,p,12) = b;
+            FIELD(s32,p,20) = 0;
+        }
+    }
+    if (FIELD(s32,p,16) > 0) {
+        FIELD(s32,p,8) += FIELD(s32,p,16);
+        if (FIELD(s32,p,8) >= c) {
+            FIELD(s32,p,8) = c;
+            FIELD(s32,p,16) = 0;
+        }
+    }
+    if (FIELD(s32,p,20) > 0) {
+        FIELD(s32,p,12) += FIELD(s32,p,20);
+        if (FIELD(s32,p,12) >= d) {
+            FIELD(s32,p,12) = d;
+            FIELD(s32,p,20) = 0;
+        }
+    }
+}
+
+void func_020c9234(u8 *p, int a, int b);
+void func_020a46d0(u8 *p);
+void func_020a8658(u8 *p, u8 *list);
+/* Tick borrowed work's +4 counter, wrapping at 65535, and dispatch the
+ * mode-specific sub-object updates. Evidence: original 020a2f3c switch
+ * uses +24/+8/+78/+24c/+428; unsupported modes only tick the counter. */
+void func_020a2f3c(ScanVisorCounter *p)
+{
+    p->counter++;
+    if (p->counter >= 65535) p->counter = 0;
+    switch (p->unk_00) {
+    case 0:
+    case 2:
+        func_020a3008((ScanVisorCounter *)((u8 *)p + 36),0,0,81,0);
+        func_020a30b4((ScanVisorCounter *)((u8 *)p + 8));
+        func_020c9234((u8 *)p + 120,0,50);
+        func_020a46d0((u8 *)p + 588);
+        func_020a8658((u8 *)p + 40 + 1024,(u8 *)p + 588);
+        break;
+    case 1:
+    case 3:
+        func_020a3008((ScanVisorCounter *)((u8 *)p + 36),0,0,81,0);
+        func_020c9234((u8 *)p + 120,0,50);
+        break;
+    }
+}
+
+/* Four-word provider descriptor copied to the stack by original 020a3664;
+ * no meaning or ownership of its words is established. */
+typedef struct ScanVisorDescriptor {
+    u32 words[4];
+} ScanVisorDescriptor;
+extern u32 data_0214cda8[];
+extern ScanVisorDescriptor data_0213c3b8;
+extern u8 data_0214cdd0[];
+u32 Unk05b82c_Unk_05b82c(u32 id);
+u32 func_0205ba28(ScanVisorDescriptor *descriptor, u8 *name, int value);
+void func_020ca5a4(int value);
+void Unk05ae50_Unk_05ae50(int id);
+u8 *Unk02e000_GetAddr_data_02140ac8(void);
+u32 func_0205b97c(int id);
+
+/* Acquire ten indexed resources and four handles at +d0 with 0x60 stride,
+ * using ID 192 for the first handle except in mode 3. Evidence: original
+ * 020a3630 table loop and descriptor-copy calls. Caller owns writable work;
+ * provider-owned global storage receives ID 194's handle at +1244. */
+void func_020a3630(ScanVisor *sv)
+{
+    u32 *ids;
+    ScanVisorDescriptor descriptor;
+    int i;
+    int j;
+    u8 *cursor;
+    u8 *global;
+    Unk02e000_Unk_02e0cc();
+    ids = data_0214cda8;
+    for (i = 0; i < 10; i++) Unk05b82c_Unk_05b82c(ids[i]);
+    descriptor = data_0213c3b8;
+    cursor = (u8 *)sv;
+    for (j = 0; j < 4; j++) {
+        if (j == 0 && sv->mode != 3) {
+            FIELD(u32,cursor,208) = Unk05b82c_Unk_05b82c(192);
+        } else {
+            FIELD(u32,cursor,208) = func_0205ba28(&descriptor,data_0214cdd0,0x664);
+        }
+        cursor += 96;
+    }
+    func_020ca5a4(2);
+    Unk02e000_Unk_02e0cc();
+    Unk05ae50_Unk_05ae50(194);
+    global = Unk02e000_GetAddr_data_02140ac8();
+    FIELD(u32,global,0x1244) = func_0205b97c(194);
+}
+
+ScanVisor *func_020611dc(void (*update)(ScanVisorCounter *),
+                       void (*draw)(ScanVisor *), int zero,
+                       void (*release)(ScanVisor *), int size, int kind,
+                       int option, int enabled);
+void func_020a85ac(u8 *p);
+void Unk0fd268_Unk_0fd380(int mode);
+void Unk0fd9f0_Unk_0fd9f0(void);
+void Unk0fc584_Unk_0fc674(int value);
+
+/* Allocate 0x970 bytes with update/draw/release callbacks and initialize the
+ * mode-dependent sub-objects. Evidence: original 020a2d0c callback literals,
+ * work-size stack argument and stores. Returns null on allocation failure;
+ * the task provider owns the allocation published in data_02176b04. */
+ScanVisor *func_020a2d0c(u32 mode)
+{
+    ScanVisor *sv = func_020611dc(func_020a2f3c,ScanVisor_Draw,0,
+                               ScanVisor_Unk_0a2e5c,0x970,3,0,1);
+    if (sv == 0) return 0;
+    *data_02176b04 = (u32)sv;
+    sv->mode = mode;
+    func_020a85ac((u8 *)sv + 40 + 1024);
+    if (sv->mode == 0 || sv->mode == 2) Unk0fd268_Unk_0fd380(0);
+    else Unk0fd268_Unk_0fd380(1);
+    func_020a3630(sv);
+    ScanVisor_LoadSearchParts((int)sv,1);
+    func_020a466c((ScanVisorListInit *)((u8 *)sv + 588));
+    switch (sv->mode) {
+    case 0:
+    case 2:
+        sv->field14 = -54;
+        ScanVisor_SetRangeA(1);
+        break;
+    case 1:
+        Unk0fd9f0_Unk_0fd9f0();
+    case 3:
+        ScanVisor_Unk_0a48b4((int)sv + 588);
+        sv->field14 = -10;
+        FIELD(s32,sv,12) = 100;
+        break;
+    }
+    Unk0fc584_Unk_0fc674(0);
+    FIELD(s32,sv,44) = 81;
+    FIELD(s32,sv,52) = -3;
+    FIELD(s32,sv,528) = 50;
+    FIELD(s32,sv,532) = -3;
+    ScanVisor_Unk_0a27e0(1);
+    if (sv->mode == 2) func_020a269c(0);
+    return sv;
 }
