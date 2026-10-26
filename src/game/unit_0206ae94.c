@@ -106,11 +106,15 @@ typedef struct Unk06ae94Obj Unk06ae94Obj;
 void Unk06ae94_Unk_06d4e8(Unk06ae94Obj *o);
 int Unk06fb70_Unk_071844();
 int func_02071d6c();
-void func_0206af04(int a, int b, int c, int d, int e, int f, int zero, u8 g, int h, int i);
+typedef struct Unk06ae94RenderWork Unk06ae94RenderWork;
+Unk06ae94RenderWork *func_0206af04(u32 owner, const void *src, const void *alt,
+                                   u32 modeFlag, u32 *flags, u32 link,
+                                   u32 unused, u8 byte, s32 count, s32 limit);
 /* ARM at 0x0206b0ac inserts a zero seventh argument; g is loaded as a byte. */
 void Unk06ae94_Call_06af04(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
 {
-    func_0206af04(a, b, c, d, e, f, 0, g, h, i);
+    func_0206af04((u32)a, (const void *)b, (const void *)c, (u32)d,
+                  (u32 *)e, (u32)f, 0, g, h, i);
 }
 
 void func_02061424();
@@ -118,8 +122,8 @@ int func_0206e0dc(int i);
 void func_02093f70(s32 index);
 void func_02008848(void *dst, s32 value, u32 size);
 void func_0206c204(void);
-void *func_020611dc(void (*a)(void), void (*b)(void), s32 zero, void (*c)(void),
-                    u32 size, s32 d, s32 e, s32 f);
+void *func_020611dc(void (*a)(void), void (*b)(void), void (*zero)(void),
+                    void (*c)(void), u32 size, s32 d, s32 e, s32 f);
 struct Unk06ae94C130Work;
 void *func_0206c130(u32 a, u32 b, u32 c, u32 d, u32 e, u32 *flag,
                     void *callback, u32 g, u32 h);
@@ -954,4 +958,161 @@ int func_0206d7f4(int mode, u32 low, u32 high, u32 scale)
     }
     return (int)(result > 0.0f ? 4096.0f * result + 0.5f
                                : 4096.0f * result - 0.5f);
+}
+
+/* ===== M1-T998: matching bodies ===== */
+
+extern const s16 data_0212629c[];
+void func_02004588(s32 a, s32 b);
+void func_0200454c(s32 a, s32 b);
+void func_020045c4(s32 a, s32 b);
+
+/* Normalises a signed angle into [0, 360) using the original signed
+ * remainder-by-360 sequence. */
+static inline s32 Unk06ae94_WrapAngle(s32 angle)
+{
+    if (angle >= 360) {
+        angle %= 360;
+    }
+    if (angle < 0) {
+        if (angle <= -360) {
+            angle %= 360;
+        }
+        angle += 360;
+    }
+    return angle;
+}
+
+/* Converts a signed angle to the sin-table index used by the rotation helpers. */
+static inline s32 Unk06ae94_SinIndex(s32 angle)
+{
+    return ((360 - Unk06ae94_WrapAngle(angle)) * 182) >> 4;
+}
+
+/* ARM 0x0206b6e0 sets the X/Y/Z rotation components for each nonzero input
+ * angle; each component feeds one of the three angle helpers. */
+void func_0206b6e0(s32 x, s32 y, s32 z)
+{
+    s32 a;
+
+    if (y != 0) {
+        a = Unk06ae94_SinIndex(y);
+        func_02004588(data_0212629c[a * 2], data_0212629c[(a * 2) + 1]);
+    }
+    if (x != 0) {
+        a = Unk06ae94_SinIndex(x);
+        func_0200454c(data_0212629c[a * 2], data_0212629c[(a * 2) + 1]);
+    }
+    if (z != 0) {
+        a = Unk06ae94_SinIndex(z);
+        func_020045c4(data_0212629c[a * 2], data_0212629c[(a * 2) + 1]);
+    }
+}
+
+void func_0206b230(Unk06ae94RenderWork *work);
+
+/* Constructor result; only the fields written by the original are named. */
+struct Unk06ae94RenderWork {
+    u8 unk_0000[0x134];
+    u8 unk_0134[0xa6];
+    u8 unk_01da;
+    u8 unk_01db;
+    u8 unk_01dc;
+    u8 unk_01dd;
+    u8 pad_01de[0x8a];
+    s16 unk_0268;
+    s16 unk_026a;
+    s16 unk_026c;
+    u8 pad_026e[0xa];
+    u32 unk_0278;
+    s16 unk_027c;
+    s16 unk_027e;
+    s16 unk_0280;
+    u8 pad_0282[0xa];
+    u32 unk_028c;
+    s16 unk_0290;
+    s16 unk_0292;
+    s16 unk_0294;
+    u8 pad_0296[0xa];
+    u32 unk_02a0;
+    s16 unk_02a4;
+    s16 unk_02a6;
+    s16 unk_02a8;
+    u8 pad_02aa[0xa];
+    u32 unk_02b4;
+    u8 pad_02b8[0x78];
+    u32 *unk_0330;
+    u8 pad_0334[0x24];
+    u32 unk_0358;
+    u32 unk_035c;
+    u32 unk_0360;
+    u8 pad_0364[0x51];
+    u8 unk_03b5;
+    s16 unk_03b6;
+    s16 unk_03b8;
+};
+
+/* ARM 0x0206af04 allocates and initialises the render object driven by
+ * 0x0206b0f0: it copies the source block, seeds the colour/scale constants,
+ * stores the owner and callbacks, and mirrors the countdown halfword. A null
+ * allocation returns null; the caller owns the returned object. */
+Unk06ae94RenderWork *func_0206af04(u32 owner, const void *src, const void *alt,
+                                   u32 modeFlag, u32 *flags, u32 link,
+                                   u32 unused, u8 byte, s32 count, s32 limit)
+{
+    Unk06ae94RenderWork *work;
+    u32 mode;
+
+    mode = 3;
+    if (*flags & 2) {
+        mode = 4;
+    }
+    if (count == 0) {
+        work = (Unk06ae94RenderWork *)func_020611dc(
+            (void (*)(void))func_0206b0f0,
+            (void (*)(void))func_0206b230, (void (*)(void))0,
+            (void (*)(void))unused, 0x3bc, mode, 0, 0);
+    } else {
+        work = (Unk06ae94RenderWork *)func_020611dc(
+            (void (*)(void))func_0206b0f0, (void (*)(void))0,
+            (void (*)(void))func_0206b230, (void (*)(void))unused, 0x3bc,
+            mode, 0, 0);
+    }
+    if (work != 0) {
+        func_02008848(work, 0, 0x3bc);
+        work->unk_0268 = -0x800;
+        work->unk_026a = 0x800;
+        work->unk_026c = 0;
+        work->unk_0278 = 0xff0000ff;
+        work->unk_027c = -0x800;
+        work->unk_027e = -0x800;
+        work->unk_0280 = 0;
+        work->unk_028c = 0x00ff00ff;
+        work->unk_0290 = 0x800;
+        work->unk_0292 = -0x800;
+        work->unk_0294 = 0;
+        work->unk_02a0 = (u32)-0x800 >> 16;
+        work->unk_02a4 = 0x800;
+        work->unk_02a6 = 0x800;
+        work->unk_02a8 = 0;
+        work->unk_02b4 = 0x00ff00ff - 0x1000000;
+        work->unk_035c = modeFlag;
+        func_02008904(src, work, 0x134);
+        if (work->unk_035c != 0) {
+            func_02008904(alt, work->unk_0134, 0xb0);
+        } else {
+            work->unk_01da = ((const u8 *)alt)[0xa6];
+            work->unk_01db = ((const u8 *)alt)[0xa7];
+            work->unk_01dc = ((const u8 *)alt)[0xa8];
+            work->unk_01dd = ((const u8 *)alt)[0xa9];
+        }
+        work->unk_0330 = flags;
+        work->unk_0358 = owner;
+        func_0206fc24(work, work);
+        work->unk_0360 = link;
+        work->unk_03b5 = byte;
+        work->unk_03b8 = limit;
+        work->unk_03b6 = work->unk_03b8;
+    }
+    return work;
 }

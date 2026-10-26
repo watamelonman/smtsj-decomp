@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M2-T042: reconstruct eight operand-supplied selector wrappers in `libs/unknown/lib_020ba05c` with typed contracts and instruction evidence.
+- M1-T998: match `game/unit_0206ae94` render constructor `func_0206af04` and axis-angle setter `func_0206b6e0` at 100% objdiff; document the five remaining render/state bodies as hard cases.
 - M2-T035: match the five remaining operand-supplied request wrappers (`func_020ba4e8`, `func_020ba55c`, `func_020ba588`, `func_020ba620`, `func_020ba64c`) in `libs/unknown/lib_020ba474` at 100% objdiff; all thirteen C definitions in the TU now match.
 - M1-T997: match six `game/unit_0206ae94` updater, ring-walk, angle and random-ratio helpers at 100% objdiff; document the four-instruction vector-copy blocker for `func_0206ba4c` and `func_0206d268`.
 - M2-T033: match the three-operand `func_020b9b18` request handler, completing all nine C definitions in `libs/unknown/lib_020b9a38` at 100% objdiff.
@@ -441,6 +442,8 @@
 - Add matching C for the eight M2-T034 script request wrappers in `libs/unknown/lib_020ba474.c`.
 
 - Add matching C for eight fixed-selector wrappers in `libs/unknown/lib_020ba05c`, with instruction-based contracts.
+
+- Match all six NitroSDK sdk_02004760 OBJ palette, OAM and character transfer functions at 100% objdiff.
 
 - Match all four game/unit_02112714 functions, including descriptor and work record initialization.
 - Match all four remaining game/unit_0203c6a4 handlers, including the shared worker dispatcher.
