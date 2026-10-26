@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T836: match six additional game/unit_0211fc20 initialization, allocation and coordinate-forwarding functions; document two remaining hard functions for scratch follow-up.
 - Matched all eight M1-T835 global-work and countdown helpers in `game/unit_0211fc20` at 100% objdiff, with typed layouts and instruction-based contracts.
 - M1-T777: match `game/unit_0210fe28`'s event handler and draw/advance dispatcher in readable C at 100% objdiff; extend the typed work/message/event views, and document the remaining grid-drawing function (`func_02110a24`, measured 92.65%) for scratch follow-up rather than claiming a match.
 - Verified the eight M1-T800 unit_02116598 tail-call thunks, BSS work-pointer getters, stack-argument forwarders and small call wrappers at 100% objdiff; documented their instruction evidence and typed contracts.
