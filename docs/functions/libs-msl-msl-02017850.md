@@ -1,11 +1,9 @@
 # libs/MSL/msl_02017850.c
 
-Sixteen functions in this delink unit are reconstructed as readable C and match
-the delinked original at 100% with mwccarm 2.0/sp1p5. Eight further routines in
-this unit (the decimal carry helper, three conversion/intrinsic routines and
-four comparison routines, all listed at the end) remain as delinked assembly;
-they are hand-written runtime assembly that the pinned C compiler does not
-reproduce.
+Twenty functions in this delink unit are reconstructed as readable C and match
+the delinked original at 100% with mwccarm 2.0/sp1p5. Twelve further routines
+remain delinked; their individual limits are recorded below. M2-T1100 adds four
+matches and records four hard cases, as permitted by the card's fallback rule.
 
 The unit is part of the MSL double-precision math library. No public NitroSDK
 MSL source matches this ROM build byte for byte, so the bodies and call sites in
@@ -224,6 +222,102 @@ expressible in portable C without inline assembly, which the project forbids.
 Left as delinked assembly. (The neighbouring `_dleq`, `_dls` and `_dneq` belong
 to other cards and have the same shape.)
 
+## M2-T1100 source evidence
+
+Before implementation, the current pret/pokeplatinum, pret/pokeheartgold and
+zeldaret/ph trees were searched for MSL sources. Current HeartGold has removed
+its MSL tree; the archived revision
+[`763ea28d`](https://github.com/pret/pokeheartgold/tree/763ea28d0e6b5c2e1cab786c174146caabac175b/lib/MSL_C/asm)
+provides matching named assembly:
+[`MSL_DPMath_s_frexp.s`](https://github.com/pret/pokeheartgold/blob/763ea28d0e6b5c2e1cab786c174146caabac175b/lib/MSL_C/asm/MSL_DPMath_s_frexp.s)
+and [`MSL_fp_ansi.s`](https://github.com/pret/pokeheartgold/blob/763ea28d0e6b5c2e1cab786c174146caabac175b/lib/MSL_C/asm/MSL_fp_ansi.s).
+These identify `frexp`, `__ull2dec`, `__equals_dec`, `__less_dec` and `__num2dec`.
+No public C body was found in those checked trees. Implementations here use the
+observed instructions and these named routines as evidence, retaining the ROM's
+existing symbol names. No assembly was copied into production sources.
+
+## func_0201b5cc (`frexp`) — 188 bytes
+
+`double func_0201b5cc(double value, int *exponent)` splits a double into a
+signed fraction in [0.5, 1) in magnitude and a binary exponent. Zero and
+nonfinite values pass through with exponent zero; subnormals are scaled by
+2^54 before extraction. Matches 100%, including the `_dmul` relocation.
+The archived `frexp` has the same instructions. A union-based bit view initially
+produced 180 bytes (93.70%); the signed-word pointer view used by the original
+MSL algorithm preserves the stack reloads and matches the 188-byte target.
+
+## func_0201c1e4 (`__equals_dec`) — 224 bytes
+
+`int func_0201c1e4(const MslDecimal *left, const MslDecimal *right)` compares
+numeric decimal magnitudes. A leading zero denotes zero; otherwise exponents
+must agree, paired digits must match, and any remaining digits must be zero.
+Signs are ignored. Matches 100%. Source evidence: archived `__equals_dec`.
+
+## func_0201c2c4 (`__less_dec`) — 224 bytes
+
+`int func_0201c2c4(const MslDecimal *left, const MslDecimal *right)` orders
+numeric decimal magnitudes using leading-zero checks, signed exponents and
+lexicographic digit comparison. Extra zero digits do not change the magnitude.
+Signs are ignored. Matches 100%. Source evidence: archived `__less_dec`.
+For both comparison helpers, declaring the index before the shared length
+reproduces the original register allocation.
+
+## func_0201c7c8 (`__num2dec`) — 168 bytes
+
+`void func_0201c7c8(const MslDecimalFormat *format, double number,
+MslDecimal *value)` obtains the precision from request offset two, converts with
+`func_0201c648`, rounds with `func_0201bb34`, pads to the requested precision
+(capped at 32), adjusts the decimal exponent and translates digits to ASCII.
+Special values whose first digit exceeds nine pass through. Matches 100%.
+Source evidence: archived `__num2dec`, including the three-argument ABI with the
+double occupying r1/r2 and output pointer in r3. The header exposes only the
+observed request prefix, with caller-owned storage.
+
+## func_0201bb74 (`__ull2dec`) — 204 bytes
+
+Expected signature: `void func_0201bb74(MslDecimal *value, u64 integer)`.
+Converts an unsigned integer to numeric decimal digits by remainder/division
+by ten and reversal, clearing sign and setting exponent to length minus one.
+Zero produces length zero and exponent -1. **Not retained.** A readable C
+implementation emits the exact 204-byte instruction sequence after ordering
+the reversal pointer declarations to match registers, but objdiff is 99.27%:
+`integer % 10` references compiler intrinsic `_ull_mod`, whereas the target
+relocation names `.L_0201f1a0`, an internal label inside `func_0201f194`.
+The division call likewise names `_ll_udiv` instead of `func_0201f194`.
+Archived `__ull2dec` confirms both intrinsic names. Renaming/splitting those
+runtime symbols requires human changes to protected configuration; no symbol
+alias, assembly or gate exception was introduced. Original remains delinked.
+
+## _d2f (`func_0201d308`) — 260 bytes
+
+Expected signature: `float _d2f(double value)`. Converts IEEE binary64 to
+binary32 with nearest-even rounding, handling subnormal results, infinities,
+NaNs and signed zero. **Not retained.** A standalone C bit algorithm using
+64-bit significand shifts, remainder/halfway comparison and an explicit float
+bit view compiled to 412 bytes rather than 260. The original uses `ip` for the
+exponent and instruction flags (`lsls`, `andseq`, `addne`) to fold sticky-bit
+rounding into shifts. A normal C float cast would call `_d2f` itself, so it
+cannot implement this runtime intrinsic. Original remains delinked.
+
+## _dleq (`func_0201e180`) — 164 bytes
+
+Expected arguments: two doubles; returns an integer boolean plus CPSR flags.
+Implements less-than-or-equal, testing unordered operands and signed zeros.
+**Not retained.** The disassembly explicitly reads/writes CPSR using `mrs` and
+`msr CPSR_f`, including carry and zero bits for special cases. C comparisons
+would call this same runtime primitive and cannot express its caller-visible
+flag contract. As with the previously documented `_dgeq`, inline assembly
+would be needed to reproduce that sequence. Original remains delinked.
+
+## _dls (`func_0201e224`) — 156 bytes
+
+Expected arguments: two doubles; returns an integer boolean plus CPSR flags.
+Implements strict less-than, including unordered operands and signed zeros.
+**Not retained.** It explicitly sets CPSR carry using `mrs`, `orr` and
+`msr CPSR_f` for unordered/zero paths. The same C and inline-assembly limits as
+`_dleq` apply. Original remains delinked. The current symbol map already names
+these three runtime intrinsics, while the task card uses their old addresses.
+
 ## Validation
 
 `python3 tools/match_gate.py` reports 100% for all C definitions in this unit,
@@ -244,6 +338,12 @@ delinked object.
 - `_dgeq`, `_dgr`, `_deq`: hand-written comparisons that return a boolean and
   leave the answer in CPSR for the caller; inline assembly would be required.
 
-These eight are good candidates for a decomp.me scratch
+- `func_0201bb74` (`__ull2dec`): identical instructions, but the remainder and
+  division runtime symbols need human configuration correction.
+- `_d2f` (`func_0201d308`): C significand/rounding implementation is 412 bytes
+  against the hand-scheduled 260-byte runtime intrinsic.
+- `_dleq` (`func_0201e180`) and `_dls` (`func_0201e224`): CPSR-writing comparisons.
+
+These twelve are candidates for a decomp.me scratch
 (`FORGE_DECOMPME_OK=1 python3 tools/decompme.py`) or a human-written assembly
 file if the project later allows per-function asm.

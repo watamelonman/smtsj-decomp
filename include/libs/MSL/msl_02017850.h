@@ -19,7 +19,7 @@ typedef union MslDoubleBits {
 } MslDoubleBits;
 
 /** Decimal value used by the MSL dtoa helpers: a sign byte and pad byte, a
- * signed binary exponent at +2, a digit count at +4 and the decimal digits at
+ * signed decimal exponent at +2, a digit count at +4 and the decimal digits at
  * +5. The sign is stored as the first byte only (the MSL text parser clears it
  * with a byte store); the count is one byte, so the digit buffer never exceeds
  * 255 entries. */
@@ -83,5 +83,29 @@ s32 func_0201cfd8(void *block);
 
 /** Return the largest positive signed 32-bit value (0x7fffffff). */
 s32 func_0201e048(void);
+
+/** Borrowed formatting request. Only the signed precision at offset two is
+ * observed by __num2dec; callers retain ownership of the request. */
+typedef struct MslDecimalFormat {
+    u8 style;
+    u8 pad;
+    s16 digits;
+} MslDecimalFormat;
+
+/** Split a double into a fraction and binary exponent; nonfinite inputs and
+ * signed zero pass through with exponent zero. The exponent output is required. */
+double func_0201b5cc(double value, int *exponent);
+
+/** Compare numeric decimal magnitudes, ignoring signs and trailing zeros.
+ * Both inputs must contain at least a leading digit, including for zero. */
+int func_0201c1e4(const MslDecimal *left, const MslDecimal *right);
+
+/** Return whether the left numeric decimal magnitude is smaller; input signs
+ * are ignored, and both inputs must have a valid leading digit. */
+int func_0201c2c4(const MslDecimal *left, const MslDecimal *right);
+
+/** Format a double to ASCII decimal digits at at most 32 digits of precision.
+ * Request and output are borrowed; special markers pass through unchanged. */
+void func_0201c7c8(const MslDecimalFormat *format, double number, MslDecimal *value);
 
 #endif

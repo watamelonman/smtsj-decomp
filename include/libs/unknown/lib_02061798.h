@@ -50,7 +50,7 @@ typedef struct Unk061798Font {
     u8 pad_0026[2];
     Unk061798FontData *unk_0028;
     u32 *unk_002c;
-    u8 pad_0030[4];
+    u16 *unk_0030;
     s32 unk_0034;
 } Unk061798Font;
 
@@ -71,7 +71,7 @@ extern u8 data_0216b5a8[0x400];
 /* Partial view of the larger render object whose fields these functions
  * update. Only bytes touched by this unit are named; the rest is padding. */
 struct Unk061798Object {
-    u8 pad_0000[4];
+    Unk061798Object *unk_0000;
     u32 unk_0004;
     u32 unk_0008;
     u32 unk_000c;
@@ -98,10 +98,14 @@ struct Unk061798Object {
     s32 unk_006c;
     u8 pad_0070[0x11];
     s8 unk_0081;
-    u8 pad_0082[0x0e];
+    u8 pad_0082[2];
+    u32 unk_0084;
+    u8 pad_0088[8];
     u8 unk_0090;
 };
 
+/* Returns the first borrowed font record with this id, or null if absent. */
+Unk061798Font *func_020618cc(u32 id);
 /* Clears the id word of every entry in the four-entry font registry. */
 void func_02061798(void);
 /* Returns the +0x28 pointer of the font record selected by id. */
@@ -223,5 +227,20 @@ void func_02065c80(void);
 void func_02065ca8(void);
 /* True when the singleton is absent or its render object's +0x3c word is 1. */
 s32 func_02065cd0(void);
+
+/* Dispatches state 1 to the command provider; other states do nothing. */
+void func_02063b4c(void *object, const u32 *state);
+/* Sets parent and child flags when device zero reports mask 0x400. */
+void func_02063f84(Unk061798Object *object);
+/* Sends command 25 when no singleton exists, and returns one. */
+s32 func_02065498(void);
+/* Returns a borrowed optional font-table entry, with an upper-bound clamp. */
+u16 *func_02061980(u32 id, s32 index);
+/* True when the singleton and its +0x4c flag and +8 state are nonzero. */
+s32 func_02065544(void);
+/* Releases a nullable object through its providers in original order. */
+void func_020629c4(Unk061798Object *object);
+/* Applies mode; -1 suppresses shared state/provider updates afterward. */
+void func_02065864(void *object, s32 mode);
 
 #endif
