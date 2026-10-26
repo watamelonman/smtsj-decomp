@@ -1,6 +1,9 @@
 /* Maya texture matrix specializations; reference: pret/pokediamond,
- * arm9/asm/NNS_G3D_maya.s, texmtxCalc_flagRS_/T_/ST_/RT_. */
+ * arm9/asm/NNS_G3D_maya.s, texmtxCalc_flagRS_/T_/TS_/TR_.
+ * https://github.com/pret/pokediamond/blob/master/arm9/asm/NNS_G3D_maya.s */
 
+/* Partial NitroSystem material result: Q12 scale/translation and sine/cosine;
+ * width/height are texels. The first 24 bytes are not accessed here. */
 typedef struct {
     int prefix[6];
     int scaleS, scaleT;
@@ -9,7 +12,8 @@ typedef struct {
     unsigned short width, height;
 } TextureSRT;
 
-/* Only the six texture-coordinate entries of this 4x4 matrix are written. */
+/* Caller-owned 4x4 matrix; only entries 0, 1, 4, 5, 12, 13 are written.
+ * See the Maya reference above for the hardware texture-coordinate units. */
 typedef struct {
     int m[16];
 } TextureMatrix;
@@ -50,7 +54,7 @@ void func_0202839c(TextureMatrix *out, const TextureSRT *srt)
     out->m[4] = (ss * func_02002204()) >> 12;
 }
 
-/* Maya texmtxCalc_flagST_: unit scale and no translation, retaining rotation. */
+/* Maya texmtxCalc_flagTS_: unit scale and no translation, retaining rotation. */
 void func_0202847c(TextureMatrix *out, const TextureSRT *srt)
 {
     int width = srt->width << 12;
@@ -65,7 +69,7 @@ void func_0202847c(TextureMatrix *out, const TextureSRT *srt)
     out->m[4] = (srt->sinR * func_02002204()) >> 12;
 }
 
-/* Maya texmtxCalc_flagRT_: scale only, with Maya's vertical-origin correction. */
+/* Maya texmtxCalc_flagTR_: scale only, with Maya's vertical-origin correction. */
 void func_02028534(TextureMatrix *out, const TextureSRT *srt)
 {
     out->m[0] = srt->scaleS;
