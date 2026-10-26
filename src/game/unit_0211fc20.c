@@ -1,89 +1,117 @@
-/* src/game/unit_0211fc20.c: matched functions; decompiler-derived bodies are cleaned Ghidra output. */
 #include "types.h"
 
-
-
-/* Object passed as first arg in this file; layout from observed accesses. */
+/** Partial work layout inferred from the original loads and stores; gaps are opaque. */
 typedef struct Unk11fc20Work {
-    u8 pad_0000[0xc];
-    u32 unk_000c;
-    u32 unk_0010;
-    u8 pad_0014[0x194];
-    s32 unk_01a8;
+    s32 state;
+    u32 unknown04[3];
+    u32 unknown10;
+    u32 unknown14;
+    s32 unknown18;
+    s32 unknown1c;
+    u32 unknown20[2];
+    s32 unknown28;
+    u32 unknown2c[5];
+    s32 unknown40;
+    s32 unknown44;
 } Unk11fc20Work;
 
-extern u32 data_02176e7c[];
-/* decompiler-derived */
-void Unk11fc20_Clear_data_02176e7c(void)
-{
-  *data_02176e7c = 0;
-}
+/** Entries have a 44-byte stride, as evidenced by the loop at 02120944. */
+typedef struct Unk11fc20Entry {
+    s32 value;
+    u32 unknown04[10];
+} Unk11fc20Entry;
 
-int func_02061424();
-/* decompiler-derived */
-void Unk11fc20_Unk_11fc48(void)
-{
-  if (*data_02176e7c == 0) {
-    return;
-  }
-  func_02061424();
-}
+/** Only the entry array at offset 424 is known; its 32 elements follow the loop bound. */
+typedef struct Unk11fc20Entries {
+    u32 unknown00[106];
+    Unk11fc20Entry entries[32];
+} Unk11fc20Entries;
 
-int func_0211fcb0();
-/* decompiler-derived */
+extern Unk11fc20Work *data_02176e7c;
+extern Unk11fc20Work *func_0211fcb0(void);
+extern void func_02061424(Unk11fc20Work *work);
+extern void Unk0a0ce4_Unk_0a0da4(s32 value);
+
+/** Creates the global work only when absent, following the null guard at 0211fc20. */
 void Unk11fc20_Unk_11fc20(void)
 {
-  int value;
-  if (*data_02176e7c != 0) {
-    return;
-  }
-  value = func_0211fcb0();
-  *data_02176e7c = value;
+    if (data_02176e7c != 0) return;
+    data_02176e7c = func_0211fcb0();
 }
 
-
-#ifndef FIELD
-#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
-#endif
-void func_02057d54();
-int Unk11fc20_IsState4(void)
+/** Passes existing global work to 02061424; an absent work pointer requires no call. */
+void Unk11fc20_Unk_11fc48(void)
 {
-    u8 *p = (u8 *)*data_02176e7c;
-    if (p == 0) {
+    if (data_02176e7c == 0) return;
+    func_02061424(data_02176e7c);
+}
+
+/** Reports absent work or state 4, evidenced by the state comparison at 0211fc68. */
+s32 Unk11fc20_IsState4(void)
+{
+    if (data_02176e7c == 0) return 1;
+    return data_02176e7c->state == 4;
+}
+
+/** Returns the word at work offset 16, or zero when no work exists. */
+u32 Unk11fc20_Unk_11fc94(void)
+{
+    if (data_02176e7c == 0) return 0;
+    return data_02176e7c->unknown10;
+}
+
+/** Clears the global pointer without releasing its target, as the sole store at 0211fd24 shows. */
+void Unk11fc20_Clear_data_02176e7c(void)
+{
+    data_02176e7c = 0;
+}
+
+/** Requires valid work; decreases offset 40 by 4096 and reports whether it is at most 8192. */
+s32 Unk11fc20_Unk_120650(Unk11fc20Work *work)
+{
+    work->unknown28 -= 4096;
+    return work->unknown28 <= 8192;
+}
+
+/** Requires valid work; advances the offset-68 countdown and selects the next state fields. */
+s32 Unk11fc20_Unk_12066c(Unk11fc20Work *work)
+{
+    Unk0a0ce4_Unk_0a0da4(3);
+    work->unknown40 = 0;
+    work->unknown44 -= 4096;
+    if (work->unknown44 <= 4096) {
+        work->unknown1c = 0;
         return 1;
     }
-    return FIELD(int, p, 0) == 4;
+    work->unknown18 = 15;
+    return 0;
 }
 
-/* decompiler-derived */
-int Unk11fc20_Unk_120944(int arg0)
+/** Counts nonzero words across the 32 entries starting at offset 424; requires valid work. */
+s32 Unk11fc20_Unk_120944(const Unk11fc20Entries *work)
 {
-  int value1;
-  int value2;
-  value1 = 0;
-  value2 = 0;
-  do {
-    value2 = value2 + 1;
-    if (((Unk11fc20Work *)arg0)->unk_01a8 != 0) {
-      value1 = value1 + 1;
+    s32 count = 0;
+    s32 i;
+    for (i = 0; i < 32; i++) {
+        if (work->entries[i].value != 0) count++;
     }
-    arg0 = arg0 + 0x2c;
-  } while (value2 < 0x20);
-  return value1;
+    return count;
 }
 
+/* Request-provider declarations and coordinate forwarding helpers. */
+void func_02120bd4(u32, u32, s32, s32, s32, s32, u32, u32, u32);
+void func_02057d54(u32, s32, s32, u32, u32, u32);
+#define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 
-int func_02120bd4();
-/* decompiler-derived */
-void Unk11fc20_Unk_12143c(int arg0,int arg1,u32 arg2)
+/** Submits kind 4 using work coordinates at +12/+16; the second input is in pixels. */
+void Unk11fc20_Unk_12143c(Unk11fc20Work *arg0,int arg1,u32 arg2)
 {
-  func_02120bd4(4,0,((Unk11fc20Work *)arg0)->unk_000c,((Unk11fc20Work *)arg0)->unk_0010,0x3000,
+  func_02120bd4(4,0,arg0->unknown04[2],arg0->unknown10,0x3000,
                 arg1 << 0xc,arg2,0,0);
   return;
 }
 
-int Unk0a0ce4_Unk_0a0da4();
-/* decompiler-derived */
+/** Initializes the observed work header and signals provider 020a0da4 with 8. */
 void Unk11fc20_Unk_11fd38(u32 *arg0)
 {
   arg0[3] = 100;
@@ -97,8 +125,7 @@ void Unk11fc20_Unk_11fd38(u32 *arg0)
   return;
 }
 
-
-/* decompiler-derived */
+/** Converts four pixel coordinates to 20.12 before submitting the nine-word request. */
 void Unk11fc20_Unk_120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
                   int arg5,u32 arg6,u32 arg7,u32 arg8)
 {
@@ -107,15 +134,12 @@ void Unk11fc20_Unk_120b88(u32 arg0,u32 arg1,int arg2,int arg3,int arg4,
   return;
 }
 
-
-
-
-/* decompiler-derived */
+/** Finds the first free entry in the selected global pool; selector bounds follow 02120a58. */
 int * Unk11fc20_Unk_120a58(u32 arg0)
 {
   int *v1;
   int tmp2;
-  tmp2 = *data_02176e7c;
+  tmp2 = (u32)data_02176e7c;
   switch(arg0) {
   case 0:
     break;
@@ -166,43 +190,31 @@ int * Unk11fc20_Unk_120a58(u32 arg0)
   return (int *)0x0;
 }
 
-/* decompiler-derived */
-u32 Unk11fc20_Unk_11fc94(void)
-{
-  u32 tmp1;
-  if (*data_02176e7c == 0) {
-    tmp1 = 0;
-  }
-  else {
-    tmp1 = *(u32 *)(*data_02176e7c + 0x10);
-  }
-  return tmp1;
-}
-
-int Unk11fc20_Unk_120650(u8 *p)
-{
-    int v = FIELD(int, p, 40) - 4096;
-    FIELD(int, p, 40) = v;
-    return v <= 8192;
-}
-
-int Unk11fc20_Unk_12066c(u8 *p)
-{
-    int v;
-    Unk0a0ce4_Unk_0a0da4(3);
-    FIELD(u32, p, 64) = 0;
-    v = FIELD(int, p, 68) - 4096;
-    FIELD(int, p, 68) = v;
-    if (v <= 4096) {
-        FIELD(u32, p, 28) = 0;
-        return 1;
-    }
-    FIELD(u32, p, 24) = 15;
-    return 0;
-}
-
+/** Adds global offsets +4/+8 and the observed 64-pixel X bias before forwarding. */
 void Unk11fc20_Unk_120898(u32 a, int b, int c, u32 d, u32 e, u32 f)
 {
-    u8 *w = (u8 *)*data_02176e7c;
+    u8 *w = (u8 *)(u32)data_02176e7c;
     func_02057d54(a, b + (FIELD(int, w, 4) + 64), c + FIELD(int, w, 8), d, e, f);
+}
+
+/** Converts all seven coordinate inputs from pixels to 20.12 for provider 02120bd4. */
+void func_02120b30(u32 a, u32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i)
+{
+    func_02120bd4(a, b, c << 12, d << 12, e << 12, f << 12,
+                   g << 12, h << 12, i << 12);
+}
+
+extern void func_0212034c(Unk11fc20Work *);
+extern void func_021206a8(Unk11fc20Work *);
+extern Unk11fc20Work *func_020611dc(void (*)(Unk11fc20Work *),
+    void (*)(Unk11fc20Work *), u32, void (*)(void), u32, u32, u32, u32);
+/** Allocates 0x1fe8 bytes with the observed callbacks; publishes and initializes successful work. */
+Unk11fc20Work *func_0211fcb0(void)
+{
+    Unk11fc20Work *work = func_020611dc(func_0212034c, func_021206a8, 0,
+        Unk11fc20_Clear_data_02176e7c, 0x1fe8, 4, 0, 1);
+    if (work == 0) return 0;
+    data_02176e7c = work;
+    Unk11fc20_Unk_11fd38((u32 *)work);
+    return work;
 }
