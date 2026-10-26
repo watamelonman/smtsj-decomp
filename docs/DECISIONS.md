@@ -201,6 +201,15 @@ constraint, not evidence of hardware ownership or synchronization. Ordinary
 accesses let mwcc cache the count and hoist the second size load; revisit if
 original declaration evidence permits reproducing the accesses otherwise.
 
+## DEC-009 — Keep the SDK build record in the startup text section
+
+`BuildInfo` at 0x02000ba0 is data inside the original executable section, not a
+function. Define this translation unit's `rodata` section as executable `.text`
+with mwcc's `define_section` pragma so its typed constant record stays in the
+original section. The ARM `arm section` pragma does not change mwcc's output.
+This setting is local to the source file; the public header has no section
+side effects. The first four pointers retain the original relocations; the
+unrelocated static BSS end remains the literal linker boundary 0x02176ea0.
 ## DEC-009 — Preserve signed text byte access in 020a9a90
 
 The two glyph loops test signed bytes and separately reload the byte passed to
@@ -418,6 +427,29 @@ with the destination pointer. Explicit destination/source locals with
 `opt_propagation off` reproduce the original destination-first allocation.
 Scope this setting to `func_02115498` and restore it immediately afterward.
 The C still performs ordinary aggregate copies without assembly or code blobs.
+
+
+## DEC-026 — Preserve CaveArea render callback expression boundaries
+
+Scope `opt_propagation off` and `opt_common_subs off` to `func_020ec704`,
+restoring both immediately afterward. Propagation otherwise hoists the layer
+constant across the layout branches; common-subexpression optimization folds
+the three byte-state equalities into a range check. The original uses three
+conditional compares and separate branch argument setup. Array views preserve
+base-plus-index loads, and declaring the pair index before the area index
+reproduces the original r4/r5 allocation. These settings leave the draw behavior
+unchanged; the individual 1156-byte function verifies at 100% in objdiff.
+
+## DEC-027 — Keep CaveArea background paths duplicated
+
+`func_020ecc24` submits the same two background strips and three frames in
+both arms of the `FIELD(u8,p,0xa8)` test, followed by `func_020ed800` or
+`func_020ed8f4`. Hoisting the shared sequence above the test is the natural C
+form, but the compiler then emits one common path and the branch layout no
+longer matches the original; objdiff drops the function from 100% to about
+55%. The two paths therefore stay written out in full so each arm reproduces
+the original instruction sequence. The duplication is deliberate and must not
+be collapsed without rechecking objdiff.
 
 ## DEC-025 — Preserve 02113294 branch, list-loop and sentinel behavior
 

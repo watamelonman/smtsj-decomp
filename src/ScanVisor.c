@@ -397,85 +397,93 @@ ScanVisorSlot *ScanVisor_Unk_0a42c4(int base)
 }
 
 
-int Unk0a7d54_Unk_0a8b00();
-/* decompiler-derived */
+int Unk0a7d54_Unk_0a8b00(u32 object, u32 a, u32 b);
+/* Forward two opaque values to borrowed work+0x428 when work exists.
+ * Original 0x020a2ae8 preserves both arguments across the getter and calls
+ * Unk0a7d54_Unk_0a8b00; a null work pointer returns without calling. */
 void ScanVisor_Unk_0a2ae8(u32 arg0,u32 arg1)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  Unk0a7d54_Unk_0a8b00(tmp1 + 0x428,arg0,arg1);
+  Unk0a7d54_Unk_0a8b00(work + 0x428,arg0,arg1);
   return;
 }
 
-int func_020c9cbc();
-/* decompiler-derived */
+int func_020c9cbc(u32 object, u32 a, u32 b, u32 c);
+/* Forward three opaque values to borrowed work+0x78 when work exists.
+ * Original 0x020a29e8 preserves r0-r2 across the getter, then supplies them
+ * as r1-r3 to func_020c9cbc; null work is a no-op. */
 void ScanVisor_Unk_0a29e8(u32 arg0,u32 arg1,u32 arg2)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  func_020c9cbc(tmp1 + 0x78,arg0,arg1,arg2);
+  func_020c9cbc(work + 0x78,arg0,arg1,arg2);
   return;
 }
 
 int ScanVisor_Unk_0a2b58(void);
-int Unk0a7d54_Unk_0a8c40();
-/* decompiler-derived */
+int Unk0a7d54_Unk_0a8c40(u32 object);
+/* Call the +0x428 helper and clear the list field only when work exists
+ * and ScanVisor_Unk_0a2b58 returns nonzero. Original 0x020a2b7c calls
+ * Unk0a7d54_Unk_0a8c40 before ClearUnkField198 on work+0x24c. */
 void ScanVisor_Unk_0a2b7c(void)
 {
-  int tmp1;
-  int tmp2;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  int ready;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
-  tmp2 = ScanVisor_Unk_0a2b58();
-  if (tmp2 == 0) {
+  ready = ScanVisor_Unk_0a2b58();
+  if (ready == 0) {
     return;
   }
-  Unk0a7d54_Unk_0a8c40(tmp1 + 0x428);
-  ScanVisor_ClearUnkField198((ScanVisor *)(tmp1 + 0x24c));
+  Unk0a7d54_Unk_0a8c40(work + 0x428);
+  ScanVisor_ClearUnkField198((ScanVisor *)(work + 0x24c));
   return;
 }
 
-int func_020a4370();
-/* decompiler-derived */
-void ScanVisor_Unk_0a4544(int arg0)
+int func_020a4370(ScanVisorSlot *entry);
+/* Visit occupied entries in the borrowed seven-slot list. Original
+ * 0x020a4544 starts at +0x20, advances 52 bytes and calls func_020a4370
+ * only for a nonzero leading word; the caller must supply the full list. */
+void ScanVisor_Unk_0a4544(u8 *list)
 {
-  int tmp1;
-  int *v2;
-  v2 = (int *)(arg0 + 0x20);
-  tmp1 = 0;
+  int i;
+  ScanVisorSlot *entry = (ScanVisorSlot *)(list + 0x20);
+  i = 0;
   do {
-    if (*v2 != 0) {
-      func_020a4370(v2);
+    if (entry->active != 0) {
+      func_020a4370(entry);
     }
-    tmp1 = tmp1 + 1;
-    v2 = v2 + 0xd;
-  } while (tmp1 < 7);
-  return;
+    i = i + 1;
+    entry++;
+  } while (i < 7);
 }
 
 
-/* decompiler-derived */
+/* Select the work words at +0x2c/+0x34; null work is a no-op.
+ * Original 0x020a27a8 stores zero at +0x2c for a nonzero argument, otherwise
+ * stores 0x51 at +0x2c and zero at +0x34. Value units remain unknown. */
 void ScanVisor_Unk_0a27a8(int arg0)
 {
-  int tmp1;
-  tmp1 = ScanVisor_Get_data_02176b04();
-  if (tmp1 == 0) {
+  int work;
+  work = ScanVisor_Get_data_02176b04();
+  if (work == 0) {
     return;
   }
   if (arg0 == 0) {
-    *(u32 *)(tmp1 + 0x2c) = 0x51;
-    *(u32 *)(tmp1 + 0x34) = 0;
+    *(u32 *)(work + 0x2c) = 0x51;
+    *(u32 *)(work + 0x34) = 0;
     return;
   }
-  *(u32 *)(tmp1 + 0x2c) = 0;
+  *(u32 *)(work + 0x2c) = 0;
   return;
 }
 
@@ -536,7 +544,7 @@ void ScanVisor_Unk_0a2660(void)
   return;
 }
 
-void ScanVisor_Unk_0a2950();
+void ScanVisor_Unk_0a2950(int on);
 /* decompiler-derived */
 void ScanVisor_Unk_0a273c(u32 arg0)
 {
@@ -636,16 +644,19 @@ void ScanVisor_Unk_0a2920(int on)
     }
 }
 
+/* Select one of two list helpers on borrowed work+0x24c; null work is a
+ * no-op. Original 0x020a2950 calls 0x020a4910 for nonzero on and
+ * 0x020a48b4 otherwise. Their higher-level purpose is not established. */
 void ScanVisor_Unk_0a2950(int on)
 {
-    u8 *v = (u8 *)ScanVisor_Get_data_02176b04();
-    if (v == 0) {
+    u8 *work = (u8 *)ScanVisor_Get_data_02176b04();
+    if (work == 0) {
         return;
     }
     if (on) {
-        ScanVisor_Unk_0a4910((int)(v + 588));
+        ScanVisor_Unk_0a4910((int)(work + 588));
     } else {
-        ScanVisor_Unk_0a48b4((int)(v + 588));
+        ScanVisor_Unk_0a48b4((int)(work + 588));
     }
 }
 
@@ -670,8 +681,8 @@ int Unk0c855c_Unk_0c9bac();
 int Unk0a7d54_Unk_0a8c04(u8 *object);
 void Unk0c855c_Unk_0c9890(u8 *object, int value);
 int func_020c9db4();
-int func_020c9eb0();
-void func_020616ec();
+int func_020c9eb0(u8 *object, u32 a, u32 b);
+void func_020616ec(u32 object, int value);
 int func_02057eb8();
 void func_020a43f4();
 /* Query the work object's +0x78 sub-object through Unk0c855c_Unk_0c9bac and
@@ -855,7 +866,7 @@ void ScanVisor_Unk_0a48b4(int arg0)
   *(u32 *)(arg0 + 0x1bc) = 0;
 }
 
-int ScanVisor_FindEnt20();
+int ScanVisor_FindEnt20(u32 id);
 /* decompiler-derived */
 u32 * ScanVisor_Unk_0a42f0(int arg0,u32 arg1)
 {
@@ -978,11 +989,17 @@ void ScanVisor_Unk_0a3760(u32 a, u32 b, u32 c)
     func_020616ec(*data_02176b04, func_020c9db4((u8 *)*data_02176b04 + 120, a, b, c));
 }
 
+/* Submit the +0x78 provider result to func_020616ec on the current work.
+ * Original 0x020a379c reloads data_02176b04 after func_020c9eb0, so that
+ * provider may change the work pointer. Both providers require valid work. */
 void ScanVisor_Unk_0a379c(u32 a, u32 b)
 {
     func_020616ec(*data_02176b04, func_020c9eb0((u8 *)*data_02176b04 + 120, a, b));
 }
 
+/* Find the first matching ID in the six borrowed 20-byte records, or zero.
+ * Original 0x020a4284 loads data_0214ce2c and compares each leading word;
+ * the configured FindEnt20 name describes this observed table traversal. */
 int ScanVisor_FindEnt20(u32 id)
 {
     u32 j;
