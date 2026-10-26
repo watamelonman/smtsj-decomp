@@ -2,6 +2,11 @@
 
 ## Unreleased
 - M1-T877: match the event callback and state updater in `game/unit_020f1128` at 100%; keep the initializer, input callback and draw callback delinked, with measured best-attempt C (98.73%, 81.02%, 92.32%) and specific remaining blockers documented.
+- M1-T881: verify all eight `game/unit_02044904` slot lookup, slot scan and script-state functions at 100% objdiff; add typed contracts, instruction evidence, and clean the remaining decompiler-derived `Unk044904_Unk_046108` locals.
+- M1-T880: verify all eight `game/unit_02044904` slot-clearing, flag-query and script-step functions at 100% objdiff; add the typed manager `+0x5c` word and document each instruction contract.
+- Verify all eight M1-T879 nullable manager subobject accessors at 100% objdiff; document offsets and borrowed address contracts.
+- Verified all eight M1-T878 registration, record-update, and wrapper functions in `game/unit_02044904` at 100% objdiff, with instruction-based contracts.
+- Match both M1-T809 unit_02116598 primary callback and coordinate/event predicate functions.
 - M1-T869: match seven game/unit_020cb32c dispatch, descriptor, paired drawing and teardown functions; document the remaining setup function for scratch follow-up.
 - Matched all eight M1-T876 callback, handle cleanup, row-processing and state helpers in `game/unit_020f1128` at 100% objdiff, with typed layouts and instruction-based contracts.
 - Keep the unmatched 0212034c controller in the delink while retaining the matching 0211ff14 and 02120d7c C implementations.
