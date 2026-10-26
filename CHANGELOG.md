@@ -4,6 +4,7 @@
 
 - M2-T1053: match the MSL formatted-output/input wrappers and strlen, strcat and strncmp in `libs/MSL/msl_02012aa4.c`; document the unreachable qsort epilogue at `func_02013dc4` as a hard case.
 
+- M2-T103: reconstruct the eight lazy resource-cache and arena setters in `libs/unknown/lib_020907a0.c`.
 - M2-T097: match four NitroSDK VRAM disable wrappers and three BG screen-address getters.
 
 - Match the four remaining NitroSDK BG0/BG1 and BG3 extended affine control setters in `sdk_020544b0` (M2-T100).
