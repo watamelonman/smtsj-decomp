@@ -30,3 +30,7 @@ fields are exposed; active work and provider storage retain their ownership.
 and text-rectangle views for the list display callbacks. Offsets and descriptor
 strides follow the original loads and calls. External resource providers retain
 ownership; the work area owns display handles between allocation and teardown.
+
+`include/game/unit_020cb32c.h` exposes borrowed work/display prefix views and
+provider declarations for the list teardown and paired drawing helpers.
+Offsets follow original loads and stores; resource providers retain ownership.

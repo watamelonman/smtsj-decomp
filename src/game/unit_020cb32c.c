@@ -5,6 +5,7 @@
 typedef unsigned int u32; typedef signed int s32; typedef unsigned short u16; typedef signed short s16;
 typedef unsigned char u8; typedef signed char s8; typedef unsigned long long u64; typedef signed long long s64;
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
+#include "game/unit_020cb32c.h"
 
 void func_0205e484(u32 arg0, u32 group);
 u32 func_020cb3dc(void);
@@ -69,7 +70,6 @@ u32 Unk0cb32c_Unk_0cb54c(void)
   return Unk0cb32c_Unk_0cb4e4(value,0);
 }
 
-
 int Unk0cb32c_Unk_0cca80(u8 *work);
 /* Store the new state after calling 0cca80 on the same borrowed work when
  * state is 2; evidenced by the conditional BL and STR at 020ccac0. */
@@ -99,7 +99,6 @@ void Unk0cb32c_Unk_0cba78(void)
   Unk095560_Unk_0956c8();
 }
 
-
 void func_02122e1c(u32 handle);
 void ImageBg_Unk_0e5530(void);
 void Unk0fd268_Unk_0fd3ac(void);
@@ -115,7 +114,6 @@ void Unk0cb32c_Unk_0cb754(u32 *arg0)
   Unk0cb32c_Unk_0cb344();
   Unk0de678_Unk_0de870();
 }
-
 
 /* Map selectors 0..4 to 6,8,7,9,5; preserve other unsigned values.
  * Evidence: unsigned jump-table bound and MOV returns at 020cb440. */
@@ -239,12 +237,6 @@ int Unk0cb32c_Unk_0cca80(u8 *p)
     return Unk122e1c_Unk_122f88(FIELD(u32, p, 148), 0, Unk0e651c_Unk_0e666c(0x5f1));
 }
 
-/* Partial borrowed work view: original 020cccb4 reads only the word at +0x124. */
-typedef struct Unk0cb32cWork {
-    u8 reserved_000[0x124];
-    u32 field_124;
-} Unk0cb32cWork;
-
 /* Inspect +0x124 without changing work; original LDR/CMP/BX has no branch or
  * store. Both paths return without changing the work. */
 void func_020cccb4(const Unk0cb32cWork *work)
@@ -294,7 +286,7 @@ typedef struct Unk0cb32cDescriptor {
 } Unk0cb32cDescriptor;
 void func_020cbce4(void);
 void func_020cc5d8(void);
-void func_020cbc50(void);
+void func_020cbc50(Unk0cb32cFullWork *work);
 void func_020cccc4(void);
 /* Fill the descriptor size, flags and six callback addresses, leaving +8 intact;
  * evidence: STR offsets and relocated literals at 020cbaa4..020cbafc. */
@@ -306,6 +298,103 @@ void func_020cbaa4(Unk0cb32cDescriptor *descriptor)
     descriptor->callbacks[1] = func_020cc5d8;
     descriptor->callbacks[2] = (void (*)(void))func_020cccb4;
     descriptor->callbacks[3] = Unk0cb32c_Nop_0cccc0;
-    descriptor->callbacks[4] = func_020cbc50;
+    descriptor->callbacks[4] = (void (*)(void))func_020cbc50;
     descriptor->callbacks[5] = func_020cccc4;
+}
+
+/* Map provider selectors 8,7,9,5 to 1,2,3,4; the original jump table
+ * at 020cb3f0 defaults all other unsigned selectors to 1. */
+u32 func_020cb3dc(void)
+{
+    switch (Unk02cad4_GetUnk00()) {
+    case 8: return 1;
+    case 7: return 2;
+    case 9: return 3;
+    case 5: return 4;
+    default: return 1;
+    }
+}
+
+/* Release each nonzero list handle, then the display slot, and clear +0x124;
+ * list bounds are re-read each iteration as in 020ccb28. Work is borrowed. */
+void func_020ccb28(Unk0cb32cFullWork *work)
+{
+    int i;
+    Unk0bc1a8_Unk_0bc9b4(16,0);
+    Unk044394_Unk_044534(37);
+    for (i=0; i<Unk0de678_CountLeading(work->list); i++) {
+        if (work->handles[i]) {
+            func_020ffebc(work->handles[i]);
+            work->handles[i]=0;
+        }
+    }
+    Unk0cb32c_Unk_0cb754((u32 *)&work->display);
+    work->field_124=0;
+}
+
+/* Dispatch provider results 1/2/3 to teardown, paired updates, or the saved
+ * state respectively; CMP/BL evidence at 020cc21c. Work remains borrowed. */
+void func_020cc21c(Unk0cb32cFullWork *work, u32 value)
+{
+    switch(func_020cb5b4(value,&work->field_004)) {
+    case 1: func_020ccb28(work); break;
+    case 2: func_020ccba0(work); Unk0cb32c_Unk_0cca80((u8 *)work); break;
+    case 3: Unk0cb32c_Unk_0ccaa8((int *)work,work->field_008); break;
+    }
+}
+
+/* Draw paired passes from nested +0xe0, offsetting the first y by one;
+ * 020cb8f8 guards the global work pointer and brackets the first pass. */
+void func_020cb8f8(s32 x, s32 y, u32 value)
+{
+    if (!data_02176bc4) return;
+    func_02057ddc(255);
+    func_02060b60(1,data_02176bc4->display->field_0e0,x,y+1,0,value);
+    func_02057df8();
+    func_02060b60(1,data_02176bc4->display->field_0e0,x,y,0,value);
+}
+
+/* Same paired provider calls using nested +0xe4; original loads and BL order
+ * at 020cb98c establish the field and the first-pass y offset. */
+void func_020cb98c(s32 x, s32 y, u32 value)
+{
+    if (!data_02176bc4) return;
+    func_02057ddc(255);
+    func_02060b60(1,data_02176bc4->display->field_0e4,x,y+1,0,value);
+    func_02057df8();
+    func_02060b60(1,data_02176bc4->display->field_0e4,x,y,0,value);
+}
+
+/* Release list handles, providers and display, then detach global work;
+ * ownership and cleanup order follow the STRs and BLs at 020cbc50. */
+void func_020cbc50(Unk0cb32cFullWork *work)
+{
+    int i;
+    Unk044394_Unk_044534(37);
+    Unk0bc1a8_Unk_0bc9b4(10,0);
+    for (i=0; i<Unk0de678_CountLeading(work->list); i++) {
+        if (work->handles[i]) {
+            func_020ffebc(work->handles[i]);
+            work->handles[i]=0;
+        }
+    }
+    Unk0fd268_Unk_0fd3ac();
+    ImageBg_Unk_0e5530();
+    func_02122e1c((u32)work->display);
+    work->display=0;
+    Unk0de678_Unk_0dea60();
+    data_02176bc4=0;
+}
+
+/* Build the 68-byte provider descriptor: two flag bytes, sixteen words,
+ * low flag 0x80 and selector at +0x20; evidenced by 020cb36c's loops/STRs. */
+void func_020cb36c(void)
+{
+    struct { u8 flags[2]; u16 reserved; u32 words[16]; } descriptor;
+    int i;
+    for (i=0;i<2;i++) descriptor.flags[i]=0;
+    for (i=0;i<16;i++) descriptor.words[i]=0;
+    descriptor.words[7]=Unk0cb32c_Unk_0cb54c();
+    descriptor.flags[0] |= 0x80;
+    Unk0bc1a8_Unk_0bc928(36,65535,(u32)&descriptor);
 }
