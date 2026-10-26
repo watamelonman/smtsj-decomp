@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified all eight M1-T898 `game/unit_020e8228` accessors, table reset and forwarding helpers at 100% objdiff; added per-function behaviour comments and cited caller evidence in the function doc.
 - Verified all eight M1-T897 wrappers in `game/unit_020e8228` at 100% objdiff, with typed forwarding contracts and instruction evidence.
 - M1-T871: match the 1336-byte game/unit_020cb32c state callback at 100% objdiff, with typed work and by-value list contracts.
 - M1-T870: match seven game/unit_020cb32c refresh, state, descriptor and input functions at 100% objdiff; document the remaining refresh loop for scratch follow-up.

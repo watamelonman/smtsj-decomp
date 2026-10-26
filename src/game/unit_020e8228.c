@@ -14,7 +14,7 @@ void func_02057524(int value);
 void func_02057534(void);
 void func_02057eb8(int value);
 int func_02061424();
-int Unk09974c_Unk_099d14();
+void *Unk09974c_Unk_099d14();
 void ScanVisor_Unk_0a29a0(u32 value);
 int Unk0e8228_Unk_0e8374();
 int Unk0e8228_GetArr88Field20();
@@ -39,7 +39,7 @@ int Unk0e8228_Unk_0e8474(void);
 int Unk0e8228_Unk_0e8488(void);
 void Unk0e8228_Unk_0e9c94(u32 arg0,u32 arg1);
 u32 Unk0e8228_Unk_0e84e4(void);
-void Unk0e8228_Unk_0e84fc(void);
+void *Unk0e8228_Unk_0e84fc(void);
 u16 Unk0e8228_Unk_0e8514(void);
 void Unk0e8228_Unk_0e8b7c(void);
 void Unk0e8228_Unk_0e8b94(void);
@@ -95,43 +95,55 @@ void Unk0e8228_Unk_0e8eac(u32 arg0)
   Unk0e8228_Unk_0e8e8c(arg0 + 8);
 }
 
-/* decompiler-derived */
+/* At 020e9038, loads the global object pointer stored in data_02176ce0. The
+ * name comes from that data symbol; callers use the result as the shared work
+ * object (see Unk0e8228_Unk_0e84e4). */
 u32 Unk0e8228_Get_data_02176ce0(void)
 {
   return *data_02176ce0;
 }
 
-/* decompiler-derived */
+/* At 020e8398, forwards the fixed selector 7 and the unsigned sentinel -1 to
+ * Unk0e8228_Unk_0e8d90. Callers invoke it before scanning the entries counted
+ * by Unk0e8228_Unk_0e8488; the callee is opaque, so the name stays neutral. */
 void Unk0e8228_Unk_0e8398(void)
 {
   Unk0e8228_Unk_0e8d90(7,0xffffffff);
 }
 
-/* decompiler-derived */
+/* At 020e8460, returns the word at data_02150c30 + 0x2c plus one. Callers use
+ * it as an exclusive loop bound (src/game/unit_020eed24.c), so the plus one is
+ * a stored count followed by the count itself. */
 int Unk0e8228_Unk_0e8460(void)
 {
   return *(int *)(((int)data_02150c30) + 0x2c) + 1;
 }
 
-/* decompiler-derived */
+/* At 020e8474, returns the word at data_02150c30 + 0x34 plus one. Callers use
+ * it as an exclusive loop bound over 64-byte records (unit_020eed24.c). */
 int Unk0e8228_Unk_0e8474(void)
 {
   return *(int *)(((int)data_02150c30) + 0x34) + 1;
 }
 
-/* decompiler-derived */
+/* At 020e8488, returns the word at data_02150c30 + 0x3c plus one. Callers use
+ * it as an exclusive loop bound and treat a value below one as empty
+ * (unit_020f0be0.c, unit_020f4c50.c). */
 int Unk0e8228_Unk_0e8488(void)
 {
   return *(int *)(((int)data_02150c30) + 0x3c) + 1;
 }
 
-/* decompiler-derived */
+/* At 020e9c94, reorders its two arguments and tail-calls func_020e9c00 with
+ * the constant selector 2 in between: (arg0, 2, arg1). */
 void Unk0e8228_Unk_0e9c94(u32 arg0,u32 arg1)
 {
   func_020e9c00(arg0,2,arg1);
 }
 
-/* decompiler-derived */
+/* At 020e84e4, returns the word at offset 0x178 of the shared work object, or
+ * zero when Get_data_02176ce0 reports no object. Callers use the result as a
+ * record count (unit_020ef248.c). */
 u32 Unk0e8228_Unk_0e84e4(void)
 {
   int value1;
@@ -146,12 +158,14 @@ u32 Unk0e8228_Unk_0e84e4(void)
   return value2;
 }
 
-/* decompiler-derived */
-void Unk0e8228_Unk_0e84fc(void)
+/* At 020e84fc, runs the sequence select-8 (Unk_0e8374), refresh the row-88
+ * record area, then the Unk09974c step, returning that final lookup result.
+ * unit_020ef248.c consumes the returned pointer as a borrowed record. */
+void *Unk0e8228_Unk_0e84fc(void)
 {
   Unk0e8228_Unk_0e8374(8);
   Unk0e8228_GetArr88Field20();
-  Unk09974c_Unk_099d14();
+  return Unk09974c_Unk_099d14();
 }
 
 /* decompiler-derived */
