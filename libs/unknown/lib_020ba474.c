@@ -33,6 +33,15 @@ s32 func_020ba4bc(void)
     return 1;
 }
 
+/* ARM 0x020ba4e8: submits request 110, publishes its result, and returns completion 1.
+ * Operand zero supplies the first request argument; the other two are zero. */
+s32 func_020ba4e8(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(110, value, 0, 0));
+    return 1;
+}
+
 /* ARM 0x020ba514: submits request 111, publishes its result, and returns completion 1.
  * All three request arguments are zero; no explicit input is consumed. */
 s32 func_020ba514(void)
@@ -46,6 +55,24 @@ s32 func_020ba514(void)
 s32 func_020ba538(void)
 {
     Unk03aae8_Unk_03acf4(func_020b8b38(112, 0, 0, 0));
+    return 1;
+}
+
+/* ARM 0x020ba55c: submits request 113, publishes its result, and returns completion 1.
+ * Operand zero supplies the first request argument; the other two are zero. */
+s32 func_020ba55c(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(113, value, 0, 0));
+    return 1;
+}
+
+/* ARM 0x020ba588: submits request 114, publishes its result, and returns completion 1.
+ * Operand zero supplies the first request argument; the other two are zero. */
+s32 func_020ba588(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(114, value, 0, 0));
     return 1;
 }
 
@@ -70,6 +97,24 @@ s32 func_020ba5d8(void)
 s32 func_020ba5fc(void)
 {
     Unk03aae8_Unk_03acf4(func_020b8b38(117, 0, 0, 0));
+    return 1;
+}
+
+/* ARM 0x020ba620: submits request 118, publishes its result, and returns completion 1.
+ * Operand zero supplies the first request argument; the other two are zero. */
+s32 func_020ba620(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(118, value, 0, 0));
+    return 1;
+}
+
+/* ARM 0x020ba64c: submits request 119, publishes its result, and returns completion 1.
+ * Operand zero supplies the first request argument; the other two are zero. */
+s32 func_020ba64c(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(119, value, 0, 0));
     return 1;
 }
 
