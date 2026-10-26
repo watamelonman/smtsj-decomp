@@ -897,3 +897,215 @@ void func_02117834(void)
     }
     Unk116598_Reset();
 }
+
+int Unk02f2a8_Unk_035b08(int a, int b);
+int Unk0e651c_Unk_0e666c(int id);
+void func_020fc584(int mode, u32 threshold, u8 step);
+/* ARM 02116b70 selects coordinates for IDs 8..11, applies the observed
+   direction adjustment, and returns whether the direction is absent (-1). */
+int func_02116b70(int *x, int *y, u32 id)
+{
+    int a = 22, b = 26, direction = 2;
+    switch (id) {
+    case 8: a = 22; b = 26; direction = 2; break;
+    case 9: a = 14; b = 8; direction = 0; break;
+    case 10: a = 29; b = 7; direction = 1; break;
+    case 11: a = b; direction -= 3; break;
+    }
+    switch (direction) {
+    case 0: --b; break;
+    case 2: ++b; break;
+    case 3: --a; break;
+    case 1: ++a; break;
+    }
+    *x = a;
+    *y = b;
+    return direction == -1;
+}
+/* ARM 02116f84 checks four provider-coordinate combinations against event
+   predicates; any matching combination with an unset predicate rejects it. */
+int func_02116f84(int id, int x, int y)
+{
+    int result = 1;
+    if (id == Unk02f2a8_Unk_035b08(6,8) && x == 22 && y == 26)
+        if (!Unk0e651c_Unk_0e666c(237)) result = 0;
+    if (id == Unk02f2a8_Unk_035b08(6,3) && x == 14 && y == 8)
+        if (!Unk0e651c_Unk_0e666c(238)) result = 0;
+    if (id == Unk02f2a8_Unk_035b08(6,3) && x == 29 && y == 7)
+        if (!Unk0e651c_Unk_0e666c(239)) result = 0;
+    if (id == Unk02f2a8_Unk_035b08(1,3) && x == 26 && y == 26)
+        if (!Unk0e651c_Unk_0e666c(1568)) result = 0;
+    return result;
+}
+/* ARM 02117360 sets the descending byte transition and conditionally starts
+   provider mode 0/1; borrowed shared work must already be initialized. */
+void func_02117360(u32 a, u32 b, u32 c, u32 d, u8 e)
+{
+    Unk116598Work *work = (Unk116598Work *)*data_02176e60;
+    int mode;
+    if (a) {
+        work->unk_0004 = 1;
+        work->unk_0008 = c;
+        ((u8 *)work)[16] = d;
+        ((u8 *)work)[17] = e;
+        ((u8 *)work)[18] = 0;
+        ((u8 *)work)[19] = 31;
+    }
+    if (b && work->unk_0000 == 0) {
+        mode = 0;
+        switch (c) {
+        case 0: case 1: case 3: mode = 0; break;
+        case 2: case 4: mode = 1; break;
+        }
+        func_020fc584(mode, d, e);
+    }
+    func_02117744(work, a, b);
+}
+/* ARM 02117400 initializes the ascending counterpart of 02117360,
+   selecting provider modes 2/3 from IDs 0..4. Requires shared work. */
+void func_02117400(u32 a, u32 b, u32 c, u32 d, u8 e)
+{
+    Unk116598Work *work = (Unk116598Work *)*data_02176e60;
+    int mode;
+    if (a) {
+        work->unk_0004 = 2;
+        work->unk_0008 = c;
+        ((u8 *)work)[16] = d;
+        ((u8 *)work)[17] = e;
+        ((u8 *)work)[18] = 0;
+        ((u8 *)work)[19] = 0;
+    }
+    if (b && work->unk_0000 == 0) {
+        mode = 0;
+        switch (c) {
+        case 0: case 1: case 3: mode = 2; break;
+        case 2: case 4: mode = 3; break;
+        }
+        func_020fc584(mode, d, e);
+    }
+    func_02117744(work, a, b);
+}
+
+u8 *GetGameState(void);
+u8 *Unk09a268_Unk_09c484(int id);
+u8 *Unk02f2a8_GetCell38e8(int x, int y);
+void func_0209a884(void *a, void *b);
+void Unk09a268_Unk_09a80c(u8 *cell, int value);
+void Unk09a268_Unk_09a830(u8 *cell, int value);
+void Unk09a268_Unk_09a870(u8 *cell, int value);
+void Unk09a268_SetOnlyBit(u8 *cell, int value);
+int Unk09a268_Unk_09a844(u8 *cell);
+/* ARM 02116dc4 resolves ID coordinates, copies provider state into the
+   game area and initializes the borrowed cell's flags and counter. */
+void func_02116dc4(u32 id)
+{
+    u8 *provider = Unk09a268_Unk_09c484(1);
+    u8 *game = GetGameState();
+    int x = 0, y = 0;
+    u8 *cell;
+    func_02116b70(&x, &y, id);
+    cell = Unk02f2a8_GetCell38e8(x,y);
+    func_0209a884(game + 0x38e8, game + 4);
+    Unk09a268_Unk_09a80c(cell,1);
+    Unk09a268_Unk_09a830(cell,0);
+    Unk09a268_SetOnlyBit(cell,provider[25]);
+    cell[1] = 1;
+    FIELD(u16,cell,2) = 0;
+}
+int func_020961a0(Unk116598Work *work);
+int Unk095560_Unk_096484(void);
+int Unk0a23f4_IsSet_data_02176b04(void);
+void func_02111494(void);
+void Unk02cad4_SetupDisplayMode(int a, int b, int c);
+/* ARM 02117bf4 advances secondary work states 0/1/2 after provider
+   readiness checks; work storage is borrowed from the callback owner. */
+void func_02117bf4(Unk116598Work *work)
+{
+    switch (work->unk_0000) {
+    case 0:
+        if (!func_020961a0(work)) work->unk_000c = 1;
+        func_02117834();
+        if (work->unk_000c) work->unk_0000 = 2;
+        break;
+    case 1:
+        if (!Unk095560_Unk_096484()) return;
+        if (Unk0a23f4_IsSet_data_02176b04()) return;
+        if (!Unk0bc1a8_IsSlotEmpty(24)) return;
+        func_02111494();
+        Unk02cad4_SetupDisplayMode(2,1,0);
+        Unk116598_Unk_117ac8();
+        work->unk_0000 = 0;
+        func_02117400(1,1,0,0,31);
+        break;
+    case 2: func_02061424(); break;
+    }
+}
+/* ARM 02116598 updates the special (36,18) cell for provider map (8,6).
+   State 1 activates flags, state 3 clears them, and pending calls count ticks. */
+void func_02116598(void)
+{
+    u8 *cell;
+    int id;
+    if (!GetGameState()) return;
+    Unk09a268_Unk_09c484(11);
+    cell = 0;
+    id = *(u16 *)(Unk02e000_GetWorkArea() + 0x35c);
+    if (id == Unk02f2a8_Unk_035b08(8,6)) cell = Unk02f2a8_GetCell38e8(36,18);
+    if (!cell) return;
+    if (cell[1] == 1) {
+        if (Unk09a268_Unk_09a844(cell) == 1) {
+            Unk09a268_Unk_09a80c(cell,1);
+            Unk09a268_Unk_09a830(cell,1);
+            Unk09a268_Unk_09a870(cell,0);
+            Unk09a268_SetOnlyBit(cell,0);
+            cell[1] = 2;
+            FIELD(u16,cell,2) = 0;
+        } else FIELD(u16,cell,2)++;
+    } else if (cell[1] == 3) {
+        if (Unk09a268_Unk_09a844(cell) == 1) {
+            Unk09a268_Unk_09a80c(cell,0);
+            Unk09a268_Unk_09a830(cell,0);
+            Unk09a268_Unk_09a870(cell,0);
+            Unk09a268_SetOnlyBit(cell,0);
+            cell[1] = 0;
+            FIELD(u16,cell,2) = 0;
+        } else FIELD(u16,cell,2)++;
+    }
+}
+
+void *Unk02f2a8_Unk_034970(void *area, int x, int y);
+u8 *Unk038fbc_Unk_039160(void *area, int x, int y);
+u32 *Unk038fbc_GetElement(void *area, int kind, int index);
+void *Unk02f2a8_Unk_0349c4(void *area, int x, int y);
+void Unk0e651c_Set2Bits(void *area, u32 value, int flag);
+/* Borrowed element word: only its low eight bits are consumed here. */
+typedef struct Unk116598Element { u32 value:8; } Unk116598Element;
+void func_0204b6f4(void);
+/* ARM 02116e5c advances the selected cell counter, completes its flags
+   on provider readiness, and for ID 11 copies an element's low byte to bits.
+   Game, provider and cell storage must be initialized. Returns completion. */
+int func_02116e5c(void)
+{
+    int result = 0;
+    u8 *provider = Unk09a268_Unk_09c484(1);
+    u8 *game = GetGameState();
+    int x = 0, y = 0;
+    int special = func_02116b70(&x, &y, FIELD(u32,game,0x73ec));
+    u8 *cell = Unk02f2a8_GetCell38e8(x,y);
+    FIELD(u16,cell,2)++;
+    if (Unk09a268_Unk_09a844(cell) == 1) {
+        Unk09a268_Unk_09a80c(cell,1);
+        Unk09a268_Unk_09a830(cell,1);
+        Unk09a268_SetOnlyBit(cell,provider[25]);
+        cell[1] = 2;
+        FIELD(u16,cell,2) = 0;
+        if (special == 1) {
+            u8 *entry = Unk038fbc_Unk_039160(Unk02f2a8_Unk_034970(game+4,x,y),x,y);
+            u32 *element = Unk038fbc_GetElement(Unk02f2a8_Unk_034970(game+4,x,y),11,entry[1]);
+            Unk0e651c_Set2Bits(Unk02f2a8_Unk_0349c4(game+4,x,y), ((Unk116598Element *)element)->value,1);
+        }
+        func_0204b6f4();
+        result = 1;
+    }
+    return result;
+}
