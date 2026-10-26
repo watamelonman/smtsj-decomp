@@ -5,10 +5,28 @@
 
 /** MSL double-precision math entry points.
  *
- * The four thunks below forward a double argument unchanged to a routine in
- * this library; callers in libs/CRI pass the result of _f2d, so the argument
- * and result are doubles. The remaining helpers expose the MSL free path and
- * an integer bound. */
+ * The four forwarding functions below pass a double argument unchanged to a
+ * routine in this library; callers in libs/CRI pass the result of _f2d, so the
+ * argument and result are doubles. The remaining helpers expose the MSL free
+ * path, sign/exponent operations and an integer bound. */
+
+/** Bit view of a double, so sign and exponent helpers can test words without
+ * converting the value (the ARM ABI passes the low word in r0 and the high
+ * word in r1). */
+typedef union MslDoubleBits {
+    double value;
+    u32 words[2];
+} MslDoubleBits;
+
+/** Decimal value used by the MSL dtoa helpers: a two-byte prefix, a signed
+ * binary exponent at +2, a digit count at +4 and the decimal digits at +5.
+ * The count is one byte, so the digit buffer never exceeds 255 entries. */
+typedef struct MslDecimal {
+    u16 unk0;
+    s16 exponent;
+    u8 length;
+    u8 digits[256];
+} MslDecimal;
 
 /** Forward a double argument to func_02017058. */
 double func_0201ba48(double value);
@@ -24,6 +42,18 @@ double func_0201ba6c(double value);
 
 /** No-op helper; its whole body is a return. */
 void func_0201bb30(void);
+
+/** Clear the sign bit of a double and return it. */
+double func_0201b3ec(double value);
+
+/** Copy the sign of the second double onto the first. */
+double func_0201b254(double magnitude, double sign_source);
+
+/** Set a decimal digit count and propagate the rounding increment. */
+void func_0201bb34(MslDecimal *value, int digits);
+
+/** Add an integer to a double's binary exponent. */
+double func_0201cfac(double value, int exponent_adjust);
 
 /** Return the sign bit (0x80000000) of the high word of a double. */
 s32 func_0201cf28(double value);
