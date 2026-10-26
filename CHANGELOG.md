@@ -2,6 +2,7 @@
 
 ## Unreleased
 - Match eight more unit_02116598 allocation, teardown, and state functions (M1-T806).
+- M1-T867: verify eight more `game/unit_020cb32c` functions at 100% objdiff; add typed call contracts, explicit work forwarding and per-function instruction evidence.
 - Matched M1-T872 record-bank scanning, address, clearing, and insertion helpers; documented their field contracts.
 - M1-T860: match record-list navigation, animation-state handling, and layered record/grid drawing; document the remaining initializer in game/unit_021071e4.
 - M1-T805: match seven unit_02116598 predicates, state updates and guarded call sequences; document the initializer at 87.65% for human scratch follow-up.
