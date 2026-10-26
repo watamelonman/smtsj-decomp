@@ -117,3 +117,49 @@ the rest of this TU's objdiff unit even when the bodies were otherwise exact.
 
 A human can open a decomp.me scratch with `tools/decompme.py` for the copy
 codegen (`ldm` plus individual stores) if a different source idiom is desired.
+
+## M1-T998: render constructor and axis angles
+
+Two functions match the original ARM instructions at 100% in the linked objdiff
+report. The remaining five stay as the delinked original ARM so the unit still
+matches; they are listed in the hard list with the blockers observed.
+
+| Function | Address / size | Contract and evidence |
+| --- | --- | --- |
+| `func_0206af04` | 0x0206af04 / 424 B | Allocates a 0x3bc-byte render object through `func_020611dc` with `func_0206b0f0` as updater and `func_0206b230` in the callback slot selected by the final countdown argument. Clears it, copies the 0x134-byte source block, copies either 0xb0 bytes from the alternate block or four bytes from its +0xa6 tail, seeds the colour/scale halfwords and words at +0x268..+0x2b4, stores owner/callback/link fields, and mirrors the signed countdown halfword from +0x3b8 to +0x3b6. Returns null only when allocation fails. |
+| `func_0206b6e0` | 0x0206b6e0 / 516 B | For each nonzero axis angle, normalises it into `[0,360)`, converts it to the `data_0212629c` sine-pair index, and forwards the pair to `func_02004588` (Y), `func_0200454c` (X) or `func_020045c4` (Z). The inline normaliser reproduces the original signed remainder-by-360 sequence. |
+
+### M1-T998 hard list
+
+The following bodies were left undefined in C, so their delinked ARM remains in
+the image. They are candidates for a human decomp.me scratch (`tools/decompme.py`)
+or a later card.
+
+- `func_0206b230` (0x0206b230 / 1200 B): hardware-register renderer
+  (`0x04000444`, `0x04000448`, `0x0400046c`, `0x04000470`), provider dispatch
+  through `0x0206e334`, angle rotation through `func_0206bb84`, `0x0206b6e0`
+  and several `0x020045xx` helpers. No C form was committed because matching the
+  long predicated/constant-pool sequence would require a source form that also
+  preserves the original register allocation.
+- `func_0206bca8` (0x0206bca8 / 1032 B): three-way motion state machine on
+  `+0x35c`. A direct reconstruction compiled to 992 B at 80.4% direct objdiff:
+  the state tests were laid out as `bne` chains instead of the original `beq`
+  blocks, and the three angles at `+0x160..+0x168` loaded as three `ldr` rather
+  than one `ldm`. Passing them as a by-value three-angle record is the next
+  experiment.
+- `func_0206c204` (0x0206c204 / 1236 B): per-frame spawner with four 16-slot
+  handle tables at `+0x50/+0x90/+0xd0/+0x110` and a four-way jump table. It
+  depends on the constructor wrapper and leaves a 0x274-byte stack frame; the
+  original callback/stack layout was not reproduced.
+- `func_0206cad0` (0x0206cad0 / 608 B): per-frame child spawner. It calls
+  `func_0206ca64`, allocates through `Unk06ae94_Call_06af04`, seeds the child
+  velocity/angle fields and calls `func_0206cd30`. A direct reconstruction
+  compiled to 616 B at 92.3% direct objdiff; the control flow, spawn arguments
+  and Q12 child updates matched, but the compiler assigned the loop count,
+  cursor and child pointer to different registers than the original.
+- `func_0206d040` (0x0206d040 / 552 B): orbit-angle updater plus child-ring
+  walk. A direct reconstruction compiled to 536-540 B at 92.1-92.6% direct
+  objdiff: the compiler ordered the local `vec0/vec1/vec2/matrix` arrays
+  differently from the original stack slots, and cached the child pointer where
+  the original reloads `work[+0x260 + i*4]` after each store. The rotation and
+  modulo-50 walk themselves matched instruction-for-instruction.
