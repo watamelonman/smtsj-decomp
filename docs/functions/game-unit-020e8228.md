@@ -267,23 +267,26 @@ mismatches its local branch targets when it is the first emitted function.
 
 No matching attempt used asm, byte blobs, or hardcoded test-specific output.
 
-## Not done in M1-T908
-- `func_020e9de4`
-- `func_020e9ca8`
-- `func_020e9900`
-- `func_020e9060`
-- `func_020e94d8`
-- `func_020e8710`
-- `Unk0e8228_Unk_0e8e8c`: decompiler-derived (plain cleanup)
-- `Unk0e8228_Unk_0e8260`: hand-matched
-- `Unk0e8228_GetArr30`: hand-matched
-- `Unk0e8228_GetArr58`: hand-matched
-- `Unk0e8228_GetArr40`: hand-matched
-- `Unk0e8228_GetArr88Field20`: hand-matched
-- `Unk0e8228_Unk_0e8be8`: hand-matched
-- `Unk0e8228_Unk_0e8c80`: hand-matched
-- `Unk0e8228_Unk_0e8ce8`: hand-matched
-- `Unk0e8228_IsState3`: hand-matched
-- `Unk0e8228_Unk_0e8fe4`: hand-matched
-- `Unk0e8228_GetCurEntry`: hand-matched
-- `Unk0e8228_ClearSel`: hand-matched
+## M1-T908 verified functions
+
+All six requested functions match at 100% in objdiff. The original ARM loads,
+stores, branches and relocations establish these contracts; domain meanings
+remain unknown, so the original neutral symbols are retained. Work and provider
+storage are borrowed. Request consumers run synchronously.
+
+| Function | Instruction evidence and contract |
+| --- | --- |
+| `func_020e9de4` (308 B) | Writes a selected global row word. Work +8 at least ten returns immediately; selector zero writes data_02176ce4 +0, while selector five uses +4 when 0e8bac is nonzero. Index zero selects data_02176cec; other indices except -1 select 24-byte rows at data_02176d04. Unsupported selectors leave storage unchanged. Requires readable work and a valid row index. |
+| `func_020e9ca8` (316 B) | Reads the same row/override layout as 0e9de4, returning zero for unsupported selectors, index -1 or indices at least ten. Selector mappings differ between the index-zero row and subsequent rows, exactly as the two original jump tables specify. |
+| `func_020e9900` (416 B) | Nonzero token resolves the current entry and dispatches selectors two through five. Provider byte +0x23 or 0e8fe4 chooses bank +0x30 versus +0x58; missing selection (-1) or failed 0e8d38 returns zero. Success calls 0e8d18(0) and preserves the input token. Other selectors preserve a nonzero token without dispatching. |
+| `func_020e9060` (584 B) | Initializes state and selection words, gathers four initial keys plus filtered keys from ten pointer entries and twelve 736-byte records, then gathers up to sixty eligible provider records and sorts them using 0e9048. Writes global count bounds and starts the provider or no-entry teardown path. Requires writable work through the selection block and readable provider tables. The provider-kind switch preserves the original byte comparisons; typed bank arrays preserve indexed address formation. |
+| `func_020e94d8` (592 B) | Seeds a six-word writable request from the source key and packed value. Selectors zero through seven choose action, resource fields and upper flag bits; required packed selector bytes and selected keys determine validity. Valid requests go to 020aa188 and mark the resolved entry with 0204a780(entry, 4). Returns validity. Unsupported selectors retain the seeded request and follow the original valid submission path. |
+| `func_020e8710` (800 B) | Guards shared work, submits an initial kind-35 request, then submits slot fourteen/kind 35 with an action selected by selector, work +0x184 and record fields. Optional word four holds an entry index. Clears work +0x184 after constructing the final request. Selector two/three require a record; selector four permits null and uses provider byte +0x2a bit seven. |
+
+The request builder reuses the one-word records and inline clear helper from
+DEC-013. Borrowed bitfield views express record bits 5..8 and provider byte
+0x2a bit seven, reproducing the original shift pairs. The initializer passes
+work to 0e9728, whose typed unused argument records the observed call contract.
+No M1-T908 functions remain on the hard list. No new tests are required by
+this card; exact instruction and relocation matching supplies the acceptance
+oracle alongside the existing tests and full-image checksum.

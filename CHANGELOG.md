@@ -2,6 +2,9 @@
 
 ## Unreleased
 - Match all eight M1-T979 selection, ID-list submission and drawing helpers at 100% objdiff; document original stack-overrun behavior and scoped optimization settings.
+- M1-T908: match all six `game/unit_020e8228` row access, initialization, dispatch and request-builder functions at 100% objdiff; document typed contracts and borrowed layouts.
+- M1-T984: explicitly forward the ScanVisor query thunk's typed list pointer and return its boolean integer result, as required by its caller.
+- M1-T984: verified the eight ScanVisor setter, thunk, clear and work-object getter helpers at 100% objdiff; typed their parameters and documented instruction and caller evidence.
 - Match all eight M1-T978 ID scan, copy, provider and polling helpers at 100% objdiff; document observed contracts and the scoped copy propagation setting.
 - M1-T907: match seven `game/unit_020e8228` bank scans, selection-bit, index-advance, request-builder, state teardown and object-state functions at 100% objdiff; add typed contracts and document the remaining literal-pool alias hard case.
 - Verified all eight M1-T977 table, resource and state helpers at 100% objdiff; documented their instruction-based contracts.
