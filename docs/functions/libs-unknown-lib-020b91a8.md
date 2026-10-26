@@ -31,7 +31,16 @@ They require the shared interpreter and submission work state to be initialized.
 
 ## Validation
 
-The objdiff match gate compares all eight definitions with the delinked originals.
+`python3 tools/match_gate.py` builds the project and confirms 100% objdiff
+matches for all eight definitions (328 bytes total). The other five functions
+in this delinked unit are outside this card's scope.
+
+`python3 tools/anticheat.py` passes, the nine existing unit tests pass via
+`python3 -m unittest discover -s tests -t . -q`, and
+`python3 tools/checksum.py` reports all artifacts byte-identical to the original.
+The unit remains linked from the delinked object pending human completion marking.
+No new tests were required by this card; objdiff checks the generated instructions
+against the original implementation.
 
 ## Hard list
 
