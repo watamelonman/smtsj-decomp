@@ -124,22 +124,6 @@ existing `Unk0ea208Work` view; the slot view gained the handles released by
 `func_020eb034`, and `Unk0ea208_Unk_0ea984` now returns the resource that its
 existing body already left in r0 (needed by `func_020ea3cc`).
 
-## M1-T775 — verified matches
-
-All three functions are 100% in the local objdiff report. Evidence below comes
-from the original delinked ARM instructions and their literal pools. The
-functions borrow the battle entry, its id array and the +0x70 slot records; none
-allocates or transfers ownership. `Unk0ea208Work` gained the +0x1d4 frame word
-that the state machine bumps each call.
-
-| Function | Size | Behavior and evidence |
-| --- | --- | --- |
-| `func_020eaa90` | 404 B | Refresh one mode-0 battle entry's display table and scan its resulting id array: read the four `func_0204a1xx(arg, 0)` accessors, store group-14 entries 1/2/3 in table slots 1/2/3, compare the last two accessors, then either store both in slots 1/2 and submit group-14 entry 0 with selector 5 or store the second in slot 1 with selector 4. Pass the submitted resource to `func_02062208` and scan its halfwords: 0xffff sets a valid-range flag, 0xfffe clears it, and an 0x8001 outside that range stops the scan and returns the pointer one halfword past it. Evidence: the accessor immediates 0, the 0xe table relocations, slot/selector immediates 1/2/3/5/4, and the 0x8001/0xfffe/0xffff literal pool plus the `rsb`-derived 0xffff in the scan loop. |
-| `func_020eae84` | 432 B | Initialize one +0x70 slot and build its graphics: after the `GetField8`/`GetFieldC` guard, store 1 at +0x00/+0x04, the position minus 12 at +0x08/+0x0c, the caller flags at +0x10/+0x14/+0x1c, and, when the sixth input is nonzero, the mapped `(u16)` value at +0x18 through `Unk0ddeb0_Unk_0ddfd8` then `Unk0ca69c_Unk_0ca6a4`. Create the main graphic with `Unk065e88_Call_02065fc0(resource8, resourceC, 1, 0)`, animation 6, colour 0xa5ff31ff (0xff0000ff when +0x10 is set), and store it at +0x20. Unless the fifth input is nonzero, also create the companion at +0x34 with animation 5 and `func_02050074(1,4) << 2`, then four more at +0x24 with animation 0..3 and colour -1. Evidence: the -12 offsets, creation arguments (1,0), animation values 6/5/0..3, both colour literals, and the four-iteration table loop. |
-| `func_020eb488` | 580 B | Advance the work state machine: bump +0x1d4 and wrap it to zero at 0xffff, then dispatch on +0x1c4. State 1 waits for `func_020eb324`, clears +0x1c8 and moves to 2; state 2 allocates the shared `Unk0fedd4_Alloc` object and falls into state 3, which creates five +0x10 and six +0x24 text objects plus +0x3c; state 4 loads the battle_menu/condition/cursor resources; state 5 falls into 6, which rebuilds the `data_02150ca0` (five entries) and `data_02150c80` (four entries) value tables with `func_0204fed8`, uses selector 13 instead of 7 when `Unk0e651c_Unk_0e666c(0x703)` is zero, submits the +0x3c resource and moves to 7; state 7 sets ready; state 8 advances the slots through `Unk0ea208_Unk_0eb230`. Evidence: the 0xffff wrap compare, the addls jump table, the 020629ac argument sets, the four resource names at 02150cd4/02150ce8/02150d00/02150d18, the 0x703 selector test, the id-table stores, and the state immediates 1..8. |
-
-No M1-T775 functions remain on the hard list.
-
 ## M1-T774 — verified matches
 
 All eight functions are 100% in the local objdiff report. Evidence below comes
@@ -164,3 +148,20 @@ returned by `Unk065e88_Call_02065fc0`.
 No M1-T774 functions remain on the hard list. The two decompiler-derived
 bodies that were already at 100% (`0ea878`, `0ea984`) kept their generated
 code; only the comments were expanded.
+
+## M1-T775 — verified matches
+
+All three functions are 100% in the local objdiff report. Evidence below comes
+from the original delinked ARM instructions and their literal pools. The
+functions do not own the battle entry, its id array or the +0x70 slot records;
+created resources and handles are stored in the caller-owned work.
+`Unk0ea208Work` gained the +0x1d4 frame word that the state machine bumps each
+call.
+
+| Function | Size | Behavior and evidence |
+| --- | --- | --- |
+| `func_020eaa90` | 404 B | Refresh one mode-0 battle entry's display table and scan its resulting id array: read the four `func_0204a1xx(arg, 0)` accessors, store group-14 entries 1/2/3 in table slots 1/2/3, compare the last two accessors, then either store both in slots 1/2 and submit group-14 entry 0 with selector 5 or store the second in slot 1 with selector 4. Pass the submitted resource to `func_02062208` and scan its halfwords: 0xffff sets a valid-range flag, 0xfffe clears it, and an 0x8001 outside that range stops the scan and returns the pointer one halfword past it. Evidence: the accessor immediates 0, the 0xe table relocations, slot/selector immediates 1/2/3/5/4, and the 0x8001/0xfffe/0xffff literal pool plus the `rsb`-derived 0xffff in the scan loop. |
+| `func_020eae84` | 432 B | Initialize one +0x70 slot and build its graphics: after the `GetField8`/`GetFieldC` guard, store 1 at +0x00/+0x04, the position minus 12 at +0x08/+0x0c, the caller flags at +0x10/+0x14/+0x1c, and, when the sixth input is nonzero, the mapped `(u16)` value at +0x18 through `Unk0ddeb0_Unk_0ddfd8` then `Unk0ca69c_Unk_0ca6a4`. Create the main graphic with `Unk065e88_Call_02065fc0(resource8, resourceC, 1, 0)`, animation 6, colour 0xa5ff31ff (0xff0000ff when +0x10 is set), and store it at +0x20. Unless the fifth input is nonzero, also create the companion at +0x34 with animation 5 and `func_02050074(1,4) << 2`, then four more at +0x24 with animation 0..3 and colour -1. Evidence: the -12 offsets, creation arguments (1,0), animation values 6/5/0..3, both colour literals, and the four-iteration table loop. |
+| `func_020eb488` | 580 B | Advance the work state machine: bump +0x1d4 and wrap it to zero at 0xffff, then dispatch on +0x1c4. State 1 waits for `func_020eb324`, clears +0x1c8 and moves to 2; state 2 allocates the shared `Unk0fedd4_Alloc` object and falls into state 3, which creates five +0x10 and six +0x24 text objects plus +0x3c; state 4 loads the four named resources at data_02150cd4/02150ce8/02150d00/02150d18 through `func_0205dcd4` and `func_0205c2c4`; state 5 falls into 6, which rebuilds the `data_02150ca0` (five entries) and `data_02150c80` (four entries) value tables with `func_0204fed8`, uses selector 13 instead of 7 when `Unk0e651c_Unk_0e666c(0x703)` is zero, submits the +0x3c resource and moves to 7; state 7 sets ready; state 8 advances the slots through `Unk0ea208_Unk_0eb230`. Evidence: the 0xffff wrap compare, the addls jump table, the 020629ac argument sets, the four resource names at 02150cd4/02150ce8/02150d00/02150d18, the 0x703 selector test, the id-table stores, and the state immediates 1..8. |
+
+No M1-T775 functions remain on the hard list.

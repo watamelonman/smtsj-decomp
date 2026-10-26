@@ -1329,16 +1329,6 @@ int func_020eb324(Unk0ea208Work *work)
 }
 
 /*
- * Release everything owned by one work object: run the per-slot teardown, free
- * the +0x0c, +0x08, +0x04 and +0x00 resources, clear the six +0x24 handles and
- * the five +0x10 handles and the +0x3c handle, run the 0fee18 hook, call
- * func_0205bb68 four times, and finally clear the singleton pointer at
- * data_02176ddc. Evidence: the ForEachSlot/044534 calls, the four guarded
- * release pairs, the two func_020629c4 loops with bounds 6 and 5, the
- * Unk0fedd4_Unk_0fee18 call, the four-iteration func_0205bb68 loop, and the
- * `str r1,[data_02176ddc]` literal store. The work and handles are caller-owned.
- */
-/*
  * Advance the work state machine one step: bump the +0x1d4 frame counter,
  * wrapping it to zero at 0xffff, then process state +0x1c4. State 1 waits for
  * func_020eb324 and moves to 2; state 2 allocates the shared 0fedf4 object and
@@ -1424,6 +1414,16 @@ void func_020eb488(Unk0ea208Work *work)
   }
 }
 
+/*
+ * Release everything owned by one work object: run the per-slot teardown, free
+ * the +0x0c, +0x08, +0x04 and +0x00 resources, clear the six +0x24 handles and
+ * the five +0x10 handles and the +0x3c handle, run the 0fee18 hook, call
+ * func_0205bb68 four times, and finally clear the singleton pointer at
+ * data_02176ddc. Evidence: the ForEachSlot/044534 calls, the four guarded
+ * release pairs, the two func_020629c4 loops with bounds 6 and 5, the
+ * Unk0fedd4_Unk_0fee18 call, the four-iteration func_0205bb68 loop, and the
+ * `str r1,[data_02176ddc]` literal store. The work and handles are caller-owned.
+ */
 void func_020eb6e4(Unk0ea208Work *work)
 {
     int i;
