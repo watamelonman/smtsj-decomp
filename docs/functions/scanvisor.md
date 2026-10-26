@@ -154,17 +154,54 @@ No hard functions for M1-T986.
 Carried forward for later cards: `ScanVisor_Unk_0a28f4`,
 `ScanVisor_Unk_0a2a60`, and `ScanVisor_Unk_0a42c4` remain decompiler-derived.
 
-## Not done in M1-T987
-- `ScanVisor_SetField34`
-- `ScanVisor_SetRangeA`
-- `ScanVisor_SetField214`
-- `ScanVisor_Unk_0a4a44`
-- `ScanVisor_Unk_0a2920`
-- `ScanVisor_Unk_0a2ae8`: decompiler-derived
-- `ScanVisor_Unk_0a29e8`: decompiler-derived
-- `ScanVisor_Unk_0a2b7c`: decompiler-derived
-- `ScanVisor_Unk_0a4544`: decompiler-derived
-- `ScanVisor_Unk_0a27a8`: decompiler-derived
+## M1-T987: work-field selectors, slot allocation and list refresh
+
+These eight bodies were already present from the earlier hand-match commits in
+`src/ScanVisor.c`; this card re-typed them, replaced the decompiler-style locals
+and added the per-function evidence comments below. Names remain the configured
+symbols. Field stores and call shapes come from the delinked `src/ScanVisor.o`;
+they do not establish higher-level gameplay meaning beyond the cited callers.
+All setter helpers borrow the work-object word returned by
+`ScanVisor_Get_data_02176b04` and are no-ops when it is null.
+
+- `ScanVisor_SetField34` (0x020a277c, 44 bytes): stores -3 at work+0x34 when
+  `on` is non-zero and 3 otherwise. Original uses `mvnne #2` / `moveq #3`.
+  `unit_0203c474` calls both arms and names the +0x34 value.
+- `ScanVisor_SetRangeA` (0x020a2820, 44 bytes): stores 2 at work+0x1c when
+  `on` is non-zero and -2 otherwise. Original uses `movne #2` / `mvneq #1`;
+  `unit_0203c474` calls both arms and names the +0x1c range value.
+- `ScanVisor_SetField214` (0x020a2884, 44 bytes): stores -3 at work+0x214 when
+  `on` is non-zero and 3 otherwise. `unit_0203c474` calls both arms.
+- `ScanVisor_Unk_0a28f4` (0x020a28f4, 44 bytes): forwards its argument to
+  `Unk0fd9f0_SetDir` only when the work object exists and its +0x00 word is 1.
+  Both the null work pointer and a different mode word return without calling.
+- `ScanVisor_Unk_0a2920` (0x020a2920, 48 bytes): toggles the list at
+  work+0x24c. Non-zero selects `ScanVisor_Unk_0a4904`, which stores 1 at the
+  list's +0x1bc; zero selects `ScanVisor_Unk_0a4864`, which writes (8, 0) into
+  the +0x24/+0x28 fields of each occupied entry and stores 0 at +0x1bc.
+  `CampStatus` and several game units pass 0/1 as an enable flag.
+- `ScanVisor_Unk_0a2a60` (0x020a2a60, 44 bytes): forwards `id` and `on` to
+  `ScanVisor_SetById` on the list at work+0x24c. `game/unit_0202f2a8` calls it
+  with `(i, mode)`, matching the SetById contract.
+- `ScanVisor_Unk_0a42c4` (0x020a42c4, 44 bytes): scans seven 52-byte entries
+  starting at base+0x20 and returns the first whose leading word is zero, or
+  null when all seven are occupied. `ScanVisor_Unk_0a42f0` uses the returned
+  pointer to fill a new entry; the allocation meaning comes from that caller.
+- `ScanVisor_Unk_0a4a44` (0x020a4a44, 44 bytes): calls
+  `ScanVisor_Unk_0a4578` first, then, only when the list's +0x198 word is
+  non-zero, calls `func_02057eb8(1)` and `func_020a4a70` on the same list.
+  `ScanVisor_Unk_0a3620` passes the visor's list at base+0x24c.
+
+Validation: all eight report 100% in `build/report.json`; the match, anticheat,
+unittest and original-image checksum gates pass. No new tests were required by
+this card; objdiff checks the compiled instruction behavior.
+
+No hard functions for M1-T987.
+
+Carried forward from the old M1-T987 planning list; not part of this card:
+`ScanVisor_Unk_0a2ae8`, `ScanVisor_Unk_0a29e8`, `ScanVisor_Unk_0a2b7c`,
+`ScanVisor_Unk_0a4544` and `ScanVisor_Unk_0a27a8` remain decompiler-derived in
+the file and are covered by later ScanVisor cards.
 
 ## Not done in M1-T988
 - `ScanVisor_Unk_0a2950`
