@@ -1,5 +1,29 @@
 #include "types.h"
 
+/* Submit four words to the current work record and return its boolean result. */
+extern s32 func_020b8b38(s32 code, s32 first, s32 second, s32 fourth);
+
+/* Publish the result in the borrowed current script context. */
+extern void Unk03aae8_Unk_03acf4(u32 result);
+
+/* Evidence: ARM 0x020ba05c submits code 104 with three zero arguments,
+ * publishes the boolean result through 0203acf4, then returns completion 1.
+ * No incoming arguments are consumed; the runtime retains context ownership. */
+s32 func_020ba05c(void)
+{
+    Unk03aae8_Unk_03acf4(func_020b8b38(104, 0, 0, 0));
+    return 1;
+}
+
+/* Evidence: ARM 0x020ba080 submits code 105 with three zero arguments,
+ * publishes the boolean result through 0203acf4, then returns completion 1.
+ * No incoming arguments are consumed; the runtime retains context ownership. */
+s32 func_020ba080(void)
+{
+    Unk03aae8_Unk_03acf4(func_020b8b38(105, 0, 0, 0));
+    return 1;
+}
+
 /* Evidence: 020b8b18 stores selector as a halfword at shared-record +0x0c
  * and value as a word at +0x10. Selector meanings remain unidentified. */
 extern void func_020b8b18(u32 selector, u32 value);
