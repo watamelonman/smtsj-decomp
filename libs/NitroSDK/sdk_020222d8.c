@@ -1000,3 +1000,705 @@ void func_02023ec8(Unk0222d8ShpState *object, u32 option)
     }
     object->command += count;
 }
+
+/** Callback fills one joint result using a node-local animation index. */
+typedef int (*Unk0222d8JointCallback)(Unk0222d8JointResult *, Unk0222d8Node *, u32);
+extern s32 func_0200219c(s32 numerator, s32 denominator);
+extern void func_020022fc(const Unk0222d8Vector *, const Unk0222d8Vector *, Unk0222d8Vector *);
+extern void func_0200870c(u32 value, void *destination, u32 size);
+extern void func_020086bc(const void *source, void *destination, u32 size);
+/** Clear caller-owned words using the SDK fast word fill (value precedes destination). */
+static inline void ClearSdkWords(void *destination, u32 size)
+{
+    func_0200870c(0, destination, size);
+}
+/** The existing scale helper takes three consecutive fixed-point words. */
+static inline void BlendScaleVector(Unk0222d8Vector *destination, const Unk0222d8Vector *source,
+                                    s32 ratio, u32 one)
+{
+    func_02022610((s32 *)destination, (const s32 *)source, ratio, one);
+}
+/** Evidence: NitroSystem g3d/src/anm.c NNSi_G3dAnmBlendJnt. Normalises
+ *  positive animation weights and reconstructs an orthogonal rotation basis. */
+int func_02022680(Unk0222d8JointResult *pResult, Unk0222d8Node *pAnmObj, u32 nodeID)
+{
+
+    if (!pAnmObj) {
+        return 0;
+    }
+
+    if (!pAnmObj->next) {
+        u32 dataIdx;
+        if (nodeID < pAnmObj->count) {
+            dataIdx = pAnmObj->entries[nodeID];
+            if ((dataIdx & (0x100 | 0x200)) == 0x100) {
+                Unk0222d8JointCallback func = (Unk0222d8JointCallback)pAnmObj->callback;
+
+                if (func) {
+                    (*func)(pResult, pAnmObj, dataIdx & 0xff);
+                    return 1;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        Unk0222d8Node *p;
+        Unk0222d8JointResult r;
+        s32 sumOfRatio = 0;
+        Unk0222d8Node *pLastAnmObj;
+        int numBlend = 0;
+        int i1 = 0;
+        Unk0222d8Vector keepAxisX;
+        Unk0222d8Vector keepAxisZ;
+
+        p = pAnmObj;
+        do {
+            if (nodeID < p->count) {
+                u32 dataIdx = p->entries[nodeID];
+                if ((dataIdx & (0x100 | 0x200)) == 0x100) {
+
+                    if (p->unk_04 > 0x1000)
+                        sumOfRatio += 0x1000;
+                    else if (p->unk_04 > 0)
+                        sumOfRatio += p->unk_04;
+
+                    pLastAnmObj = p;
+                    ++numBlend;
+                }
+            }
+            p = p->next;
+        } while (p);
+
+        if (sumOfRatio == 0) {
+            return 0;
+        }
+
+        if (numBlend == 1) {
+            Unk0222d8JointCallback func = (Unk0222d8JointCallback)pLastAnmObj->callback;
+            u32 dataIdx = pLastAnmObj->entries[nodeID];
+
+            if (func) {
+                (*func)(pResult, pLastAnmObj, dataIdx & 0xff);
+                return 1;
+            } else {
+                return 0;
+            }
+        }
+
+        ClearSdkWords(pResult, sizeof(*pResult));
+        pResult->flag = (u32)-1;
+
+        p = pAnmObj;
+        do {
+            if (nodeID < p->count) {
+                u32 dataIdx = p->entries[nodeID];
+                if ((dataIdx & (0x100 | 0x200)) == 0x100 && (p->unk_04 > 0)) {
+                    s32 ratio;
+                    Unk0222d8JointCallback func = (Unk0222d8JointCallback)p->callback;
+
+                    if (func) {
+                        (*func)(&r, p, dataIdx & 0xff);
+
+                        if (i1 == 0) {
+                            func_020086bc(&r.rot[0], &keepAxisX, sizeof(Unk0222d8Vector));
+                            func_020086bc(&r.rot[6], &keepAxisZ, sizeof(Unk0222d8Vector));
+                        }
+
+                        if (sumOfRatio != 0x1000) {
+                            ratio = func_0200219c(p->unk_04, sumOfRatio);
+                        } else {
+                            ratio = p->unk_04;
+                        }
+
+                        BlendScaleVector(&pResult->scale, &r.scale, ratio, r.flag & 1);
+
+                        BlendScaleVector(&pResult->scaleEx0, &r.scaleEx0, ratio, r.flag & 8);
+
+                        BlendScaleVector(&pResult->scaleEx1, &r.scaleEx1, ratio, r.flag & 16);
+
+                        if (!(r.flag & 4)) {
+                            pResult->trans.x += (s32)((s64)ratio * r.trans.x >> 12);
+                            pResult->trans.y += (s32)((s64)ratio * r.trans.y >> 12);
+                            pResult->trans.z += (s32)((s64)ratio * r.trans.z >> 12);
+                        }
+
+                        if (!(r.flag & 2)) {
+                            pResult->rot[0] += ratio * r.rot[0] >> 12;
+                            pResult->rot[1] += ratio * r.rot[1] >> 12;
+                            pResult->rot[2] += ratio * r.rot[2] >> 12;
+                            pResult->rot[3] += ratio * r.rot[3] >> 12;
+                            pResult->rot[4] += ratio * r.rot[4] >> 12;
+                            pResult->rot[5] += ratio * r.rot[5] >> 12;
+                        } else {
+                            pResult->rot[0] += ratio;
+                            pResult->rot[4] += ratio;
+                        }
+
+                        pResult->flag &= r.flag;
+                    }
+                }
+            }
+
+            p = p->next;
+            ++i1;
+
+        } while (p);
+
+        func_020022fc((Unk0222d8Vector *)&pResult->rot[0], (Unk0222d8Vector *)&pResult->rot[3],
+                      (Unk0222d8Vector *)&pResult->rot[6]);
+
+        if ((pResult->rot[0] == 0) && (pResult->rot[1] == 0) && (pResult->rot[2] == 0)) {
+
+            func_020086bc(&keepAxisX, &pResult->rot[0], sizeof(Unk0222d8Vector));
+        } else {
+            func_020023e0((Unk0222d8Vector *)&pResult->rot[0], (Unk0222d8Vector *)&pResult->rot[0]);
+        }
+
+        if ((pResult->rot[6] == 0) && (pResult->rot[7] == 0) && (pResult->rot[8] == 0)) {
+
+            func_020086bc(&keepAxisZ, &pResult->rot[6], sizeof(Unk0222d8Vector));
+        } else {
+            func_020023e0((Unk0222d8Vector *)&pResult->rot[6], (Unk0222d8Vector *)&pResult->rot[6]);
+        }
+
+        func_020022fc((Unk0222d8Vector *)&pResult->rot[6], (Unk0222d8Vector *)&pResult->rot[0],
+                      (Unk0222d8Vector *)&pResult->rot[3]);
+
+        return 1;
+    }
+}
+
+extern Unk0222d8MaterialResult data_02156f90[];
+extern void func_02008a84(void *matrix);
+/** Test a resource-index bit; each bitset stores 32 entries per word. */
+static inline int CheckBit(const u32 *bits, u32 index)
+{
+    return bits[index >> 5] & (1U << (index & 31));
+}
+/** Mark an entry cached for the current draw operation. */
+static inline void SetBit(u32 *bits, u32 index) { bits[index >> 5] |= 1U << (index & 31); }
+/** Callback stage A establishes timing, then rechecks it after user code. */
+static inline int CheckCallbackA(Unk0222d8SbcState *rs, u8 cmd, u32 *timing)
+{
+    *timing = rs->cbVecFunc[cmd] ? rs->cbVecTiming[cmd] : 0;
+    if (*timing == 1) {
+        rs->flag &= ~0x40;
+        rs->cbVecFunc[cmd](rs);
+        *timing = rs->cbVecFunc[cmd] ? rs->cbVecTiming[cmd] : 0;
+        return rs->flag & 0x40;
+    }
+    return 0;
+}
+/** Callback stage B may replace both the selected result and final timing. */
+static inline int CheckCallbackB(Unk0222d8SbcState *rs, u8 cmd, u32 *timing)
+{
+    if (*timing == 2) {
+        rs->flag &= ~0x40;
+        rs->cbVecFunc[cmd](rs);
+        *timing = rs->cbVecFunc[cmd] ? rs->cbVecTiming[cmd] : 0;
+        return rs->flag & 0x40;
+    }
+    return 0;
+}
+/** Callback stage C returns the final skip bit without changing timing. */
+static inline int CheckCallbackC(Unk0222d8SbcState *rs, u8 cmd, u32 timing)
+{
+    if (timing == 3) {
+        rs->flag &= ~0x40;
+        rs->cbVecFunc[cmd](rs);
+        return rs->flag & 0x40;
+    }
+    return 0;
+}
+/** Material dictionary records borrow storage from their resource block. */
+static inline Unk0222d8MaterialData *GetSbcMaterial(const Unk0222d8ResourceMat *mat, u32 index)
+{
+    return (Unk0222d8MaterialData *)GetMaterialDataByIdx(mat, index);
+}
+/** Node entries carry byte offsets from the node dictionary base. */
+static inline Unk0222d8NodeData *GetSbcNode(const Unk0222d8ResourceDict *dict, u32 index)
+{
+    Unk0222d8ResourceEntry *entry;
+    if (dict != 0) {
+        entry = (Unk0222d8ResourceEntry *)GetResourceDataByIdx(dict, index);
+        if (entry != 0)
+            return (Unk0222d8NodeData *)((u8 *)dict + entry->offset);
+    }
+    return 0;
+}
+/** The first word is the packed GX opcode; the rest are its parameter block. */
+static inline void SendCommandBlock(const u32 *command, u32 count)
+{
+    func_020252fc(command[0], command + 1, count - 1);
+}
+/** Evidence: NitroSystem g3d/src/sbc.c NNSi_G3dFuncSbc_MAT_InternalDefault.
+ *  Original read-only color masks are at 0x0212b390; outputs may be cached. */
+void func_020230b4(Unk0222d8SbcState *rs, u32 opt, const Unk0222d8MaterialData *mat, u32 idxMat)
+{
+    static const u32 matColorMask_[8] = {0x00000000, 0x00007fff, 0x7fff0000, 0x7fff7fff,
+                                         0x00008000, 0x0000ffff, 0x7fff8000, 0x7fffffff};
+    int cbFlag;
+    u32 cbTiming;
+
+    rs->currentMat = (u8)idxMat;
+    rs->flag |= 8;
+
+    rs->pMatAnmResult = &rs->tmpMatAnmResult;
+
+    cbFlag = CheckCallbackA(rs, 4, &cbTiming);
+
+    if (!cbFlag) {
+        Unk0222d8MaterialResult *pResult;
+        if (rs->pRenderObj->recMatAnm && !(rs->flag & 0x80)) {
+            pResult = (rs->pRenderObj->recMatAnm + idxMat);
+        } else {
+            if ((opt == 0x20 || opt == 0x40) && CheckBit(&rs->isMatCached[0], idxMat)) {
+
+                if (rs->pRenderObj->recMatAnm) {
+                    pResult = (rs->pRenderObj->recMatAnm + idxMat);
+                } else {
+                    pResult = &data_02156f90[idxMat];
+                }
+            } else {
+                if (rs->pRenderObj->recMatAnm) {
+                    SetBit(&rs->isMatCached[0], idxMat);
+                    pResult = (rs->pRenderObj->recMatAnm + idxMat);
+                } else if (opt == 0x40) {
+                    SetBit(&rs->isMatCached[0], idxMat);
+                    pResult = &data_02156f90[idxMat];
+                } else {
+                    pResult = &rs->tmpMatAnmResult;
+                }
+
+                {
+                    pResult->flag = (u32)0;
+                    if (GetSbcMaterial(rs->pResMat, idxMat)->flag & 0x20) {
+                        pResult->flag |= 0x20;
+                    }
+                }
+                {
+                    u32 mask = matColorMask_[(mat->flag >> 6) & 7];
+                    pResult->prmMatColor0 =
+                        (data_02156d28.parameters[36] & ~mask) | (mat->diffAmb & mask);
+                }
+
+                {
+
+                    u32 mask = matColorMask_[(mat->flag >> 9) & 7];
+                    pResult->prmMatColor1 =
+                        (data_02156d28.parameters[37] & ~mask) | (mat->specEmi & mask);
+                }
+
+                pResult->prmPolygonAttr = (data_02156d28.parameters[38] & ~mat->polyAttrMask) |
+                                          (mat->polyAttr & mat->polyAttrMask);
+
+                pResult->prmTexImage = mat->texImageParam;
+                pResult->prmTexPltt = mat->texPlttBase;
+
+                if (mat->flag & 1) {
+                    const u8 *p = (const u8 *)mat + sizeof(Unk0222d8MaterialData);
+
+                    if (!(mat->flag & 2)) {
+                        const s32 *p_s32 = (const s32 *)p;
+
+                        pResult->scaleS = *(p_s32 + 0);
+                        pResult->scaleT = *(p_s32 + 1);
+                        p += 2 * sizeof(s32);
+                    } else {
+                        pResult->flag |= 1;
+                    }
+
+                    if (!(mat->flag & 4)) {
+                        const s16 *p_s16 = (const s16 *)p;
+
+                        pResult->sinR = *(p_s16 + 0);
+                        pResult->cosR = *(p_s16 + 1);
+                        p += 2 * sizeof(s16);
+                    } else {
+                        pResult->flag |= 2;
+                    }
+
+                    if (!(mat->flag & 8)) {
+                        const s32 *p_s32 = (const s32 *)p;
+
+                        pResult->transS = *(p_s32 + 0);
+                        pResult->transT = *(p_s32 + 1);
+                    } else {
+                        pResult->flag |= 4;
+                    }
+
+                    pResult->flag |= 8;
+                }
+
+                if (rs->pRenderObj->anmMat &&
+                    CheckBit(&rs->pRenderObj->hintMatAnmExist[0], idxMat)) {
+
+                    (void)(*rs->pRenderObj->funcBlendMat)(pResult, rs->pRenderObj->anmMat, idxMat);
+                }
+
+                if (pResult->flag & (8 | 16)) {
+                    pResult->origWidth = mat->origWidth;
+                    pResult->origHeight = mat->origHeight;
+                    pResult->magW = mat->magW;
+                    pResult->magH = mat->magH;
+                }
+            }
+        }
+        rs->pMatAnmResult = pResult;
+    }
+
+    cbFlag = CheckCallbackB(rs, 4, &cbTiming);
+
+    if (!cbFlag) {
+        Unk0222d8MaterialResult *pResult;
+
+        pResult = rs->pMatAnmResult;
+
+        if (pResult->prmPolygonAttr & 0x1f0000) {
+            if (pResult->flag & 0x20) {
+                pResult->prmPolygonAttr &= ~0x1f0000;
+            }
+
+            rs->flag &= ~2;
+
+            if (!(rs->flag & 0x100)) {
+                u32 cmd[7];
+
+                cmd[0] = 0x293130;
+                cmd[1] = pResult->prmMatColor0;
+                cmd[2] = pResult->prmMatColor1;
+                cmd[3] = pResult->prmPolygonAttr;
+                cmd[4] = 0x2b2a;
+                cmd[5] = pResult->prmTexImage;
+                cmd[6] = pResult->prmTexPltt;
+
+                SendCommandBlock(&cmd[0], 7);
+
+                if (pResult->flag & (8 | 16)) {
+
+                    (*rs->funcTexMtx)(pResult);
+                }
+            }
+        } else {
+            rs->flag |= 2;
+        }
+    }
+
+    (void)CheckCallbackC(rs, 4, cbTiming);
+}
+
+/** Evidence: NitroSystem g3d/src/sbc.c NNSi_G3dFuncSbc_NODEDESC.
+ *  Original pivot-index table is at 0x0212b3b0; cursor length follows options. */
+void func_02023760(Unk0222d8SbcState *rs, u32 opt)
+{
+    u32 cmdLen = 4;
+    static const u8 pivotUtil_[9][4] = {// forge:data-ok NitroSystem rotation pivot indices
+                                        {4, 5, 7, 8}, {3, 5, 6, 8}, {3, 4, 6, 7},
+
+                                        {1, 2, 7, 8}, {0, 2, 6, 8}, {0, 1, 6, 7},
+
+                                        {1, 2, 4, 5}, {0, 2, 3, 5}, {0, 1, 3, 4}};
+    int cbFlag;
+    u32 cbTiming;
+    u32 idxNode = *(rs->c + 1);
+    rs->currentNodeDesc = (u8)idxNode;
+    rs->flag |= 16;
+
+    if (rs->flag & 0x400) {
+        if (opt == 0x40 || opt == 0x60) {
+            ++cmdLen;
+        }
+
+        if (opt == 0x20 || opt == 0x60) {
+            ++cmdLen;
+
+            if (!(rs->flag & 0x100)) {
+                u32 idxMtxDest = *(rs->c + 4);
+
+                func_020252fc(20, &idxMtxDest, 1);
+            }
+        }
+        rs->c += cmdLen;
+        return;
+    }
+
+    {
+        if (opt == 0x40 || opt == 0x60) {
+            u32 idxMtxSrc;
+
+            ++cmdLen;
+            if (opt == 0x40) {
+                idxMtxSrc = *(rs->c + 4);
+            } else {
+                idxMtxSrc = *(rs->c + 5);
+            }
+
+            if (!(rs->flag & 0x100)) {
+                func_020252fc(20, &idxMtxSrc, 1);
+            }
+        }
+    }
+
+    rs->pJntAnmResult = &rs->tmpJntAnmResult;
+
+    cbFlag = CheckCallbackA(rs, 6, &cbTiming);
+
+    if (!cbFlag) {
+        Unk0222d8JointResult *pAnmResult;
+        int isUseRecordData;
+
+        if (rs->pRenderObj->recJntAnm) {
+
+            pAnmResult = (rs->pRenderObj->recJntAnm + idxNode);
+            if (!(rs->flag & 0x80)) {
+                isUseRecordData = 1;
+            } else {
+                isUseRecordData = 0;
+            }
+        } else {
+            isUseRecordData = 0;
+            pAnmResult = &rs->tmpJntAnmResult;
+        }
+
+        if (!isUseRecordData) {
+            pAnmResult->flag = (u32)0;
+
+            if (rs->pRenderObj->anmJnt &&
+                (*rs->pRenderObj->funcBlendJnt)(pAnmResult, rs->pRenderObj->anmJnt, idxNode)) {
+                ;
+            } else {
+                const Unk0222d8NodeData *pNd = GetSbcNode(rs->pResNodeInfo, idxNode);
+                const u8 *p = (const u8 *)pNd + sizeof(Unk0222d8NodeData);
+
+                if (pNd->flag & 1) {
+                    pAnmResult->flag |= 4;
+                } else {
+                    const s32 *p_s32 = (const s32 *)p;
+
+                    pAnmResult->trans.x = *(p_s32 + 0);
+                    pAnmResult->trans.y = *(p_s32 + 1);
+                    pAnmResult->trans.z = *(p_s32 + 2);
+                    p += 3 * sizeof(s32);
+                }
+
+                if (pNd->flag & 2) {
+                    pAnmResult->flag |= 2;
+                } else {
+                    if (pNd->flag & 8) {
+
+                        s32 A = *(s16 *)(p + 0);
+                        s32 B = *(s16 *)(p + 2);
+                        u32 idxPivot = (u32)((pNd->flag & 0xf0) >> 4);
+
+                        func_02008a84(pAnmResult->rot);
+
+                        pAnmResult->rot[idxPivot] = (pNd->flag & 0x100) ? -0x1000 : 0x1000;
+
+                        pAnmResult->rot[pivotUtil_[idxPivot][0]] = A;
+                        pAnmResult->rot[pivotUtil_[idxPivot][1]] = B;
+
+                        pAnmResult->rot[pivotUtil_[idxPivot][2]] = (pNd->flag & 0x200) ? -B : B;
+
+                        pAnmResult->rot[pivotUtil_[idxPivot][3]] = (pNd->flag & 0x400) ? -A : A;
+
+                        p += 2 * sizeof(s16);
+                    } else {
+
+                        const s16 *pp = (const s16 *)p;
+                        pAnmResult->rot[0] = pNd->_00;
+                        pAnmResult->rot[1] = *(pp + 0);
+                        pAnmResult->rot[2] = *(pp + 1);
+                        pAnmResult->rot[3] = *(pp + 2);
+                        pAnmResult->rot[4] = *(pp + 3);
+                        pAnmResult->rot[5] = *(pp + 4);
+                        pAnmResult->rot[6] = *(pp + 5);
+                        pAnmResult->rot[7] = *(pp + 6);
+                        pAnmResult->rot[8] = *(pp + 7);
+
+                        p += 8 * sizeof(s16);
+                    }
+                }
+
+                (*rs->funcJntScale)(pAnmResult, (s32 *)p, rs->c, pNd->flag);
+            }
+        }
+        rs->pJntAnmResult = pAnmResult;
+    }
+
+    cbFlag = CheckCallbackB(rs, 6, &cbTiming);
+
+    if (!cbFlag) {
+        if (!(rs->flag & 0x100)) {
+
+            (*rs->funcJntMtx)(rs->pJntAnmResult);
+        }
+    }
+
+    rs->pJntAnmResult = 0;
+
+    cbFlag = CheckCallbackC(rs, 6, cbTiming);
+
+    if (opt == 0x20 || opt == 0x60) {
+        ++cmdLen;
+
+        if (!cbFlag) {
+            if (!(rs->flag & 0x100)) {
+                u32 idxMtxDest = *(rs->c + 4);
+
+                func_020252fc(19, &idxMtxDest, 1);
+            }
+        }
+    }
+
+    rs->c += cmdLen;
+}
+
+/** Row-major fixed-point matrix views used by the hardware readback helpers. */
+typedef struct Unk0222d8Matrix43 {
+    s32 m[4][3];
+} Unk0222d8Matrix43;
+/** Clip-matrix cache entry uses the hardware's four-word row stride. */
+typedef struct Unk0222d8Matrix44 {
+    s32 m[4][4];
+} Unk0222d8Matrix44;
+/** Normal matrices have no translation row. */
+typedef struct Unk0222d8Matrix33 {
+    s32 m[3][3];
+} Unk0222d8Matrix33;
+/** Inverse envelope matrices are supplied by the model resource. */
+typedef struct Unk0222d8Envelope {
+    Unk0222d8Matrix43 invM;
+    Unk0222d8Matrix33 invN;
+} Unk0222d8Envelope;
+/** Each cached position/normal matrix pair occupies 100 bytes. */
+typedef struct Unk0222d8EnvelopeCache {
+    Unk0222d8Matrix44 M;
+    Unk0222d8Matrix33 N;
+} Unk0222d8EnvelopeCache;
+/** Normal-cache alias starts 64 bytes into the same cache array. */
+typedef struct Unk0222d8NormalCache {
+    Unk0222d8Matrix33 N;
+    u8 stride[64];
+} Unk0222d8NormalCache;
+extern Unk0222d8EnvelopeCache data_02158390[];
+extern Unk0222d8NormalCache data_021583d0[];
+extern void func_02003eb8(const Unk0222d8Matrix43 *);
+extern void func_02003ed4(const Unk0222d8Matrix33 *);
+extern void func_02003e9c(const Unk0222d8Matrix43 *);
+/** Evidence: NitroSystem g3d/src/sbc.c NNSi_G3dFuncSbc_NODEMIX.
+ *  The stream supplies three-byte stack-slot/joint/weight records; weights
+ *  are expanded to 20.12 before accumulating cached envelope matrices. */
+void func_0202422c(Unk0222d8SbcState *rs)
+{
+    s64 w = 0;
+    const Unk0222d8Envelope *evpMtx =
+        (const Unk0222d8Envelope *)((u8 *)rs->pRenderObj->resMdl +
+                                    rs->pRenderObj->resMdl->ofsEvpMtx);
+    u32 numMtx = *(rs->c + 2);
+    u8 *p = rs->c + 3;
+
+    {
+        u32 i;
+        struct {
+            Unk0222d8Matrix43 M;
+            Unk0222d8Matrix33 N;
+        } sum;
+        Unk0222d8Matrix44 *pX;
+        Unk0222d8Matrix33 *pY;
+
+        ClearSdkWords(&sum, sizeof(sum));
+        func_020251c8();
+
+        *(volatile u32 *)0x04000440 = 0;
+        *(volatile u32 *)0x0400044c = 1;
+        *(volatile u32 *)0x04000454 = 0;
+        *(volatile u32 *)0x04000440 = 2;
+
+        for (i = 0; i < numMtx; ++i) {
+            u32 idxJnt = *(p + 1);
+            int evpCached = CheckBit(&rs->isEvpCached[0], idxJnt);
+
+            pX = &data_02158390[idxJnt].M;
+            if (!evpCached) {
+                SetBit(&rs->isEvpCached[0], idxJnt);
+
+                *(volatile u32 *)0x04000450 = *p;
+                *(volatile u32 *)0x04000440 = 1;
+                func_02003eb8(&evpMtx[idxJnt].invM);
+            }
+
+            if (i != 0) {
+                sum.N.m[0][0] += (w * pY->m[0][0]) >> 12;
+                sum.N.m[0][1] += (w * pY->m[0][1]) >> 12;
+                sum.N.m[0][2] += (w * pY->m[0][2]) >> 12;
+
+                sum.N.m[1][0] += (w * pY->m[1][0]) >> 12;
+                sum.N.m[1][1] += (w * pY->m[1][1]) >> 12;
+                sum.N.m[1][2] += (w * pY->m[1][2]) >> 12;
+
+                sum.N.m[2][0] += (w * pY->m[2][0]) >> 12;
+                sum.N.m[2][1] += (w * pY->m[2][1]) >> 12;
+                sum.N.m[2][2] += (w * pY->m[2][2]) >> 12;
+            }
+
+            if (!evpCached) {
+                while (func_02004210((s32 *)pX))
+                    ;
+                *(volatile u32 *)0x04000440 = 2;
+                func_02003ed4(&evpMtx[idxJnt].invN);
+            }
+
+            w = *(p + 2) << 4;
+
+            sum.M.m[0][0] += (w * pX->m[0][0]) >> 12;
+            sum.M.m[0][1] += (w * pX->m[0][1]) >> 12;
+            sum.M.m[0][2] += (w * pX->m[0][2]) >> 12;
+
+            sum.M.m[1][0] += (w * pX->m[1][0]) >> 12;
+            sum.M.m[1][1] += (w * pX->m[1][1]) >> 12;
+            sum.M.m[1][2] += (w * pX->m[1][2]) >> 12;
+
+            sum.M.m[2][0] += (w * pX->m[2][0]) >> 12;
+            sum.M.m[2][1] += (w * pX->m[2][1]) >> 12;
+            sum.M.m[2][2] += (w * pX->m[2][2]) >> 12;
+
+            sum.M.m[3][0] += (w * pX->m[3][0]) >> 12;
+            sum.M.m[3][1] += (w * pX->m[3][1]) >> 12;
+            sum.M.m[3][2] += (w * pX->m[3][2]) >> 12;
+
+            p += 3;
+            pY = &data_021583d0[idxJnt].N;
+
+            if (!evpCached) {
+                while (func_02004240((s32 *)pY))
+                    ;
+            }
+        }
+        sum.N.m[0][0] += (w * pY->m[0][0]) >> 12;
+        sum.N.m[0][1] += (w * pY->m[0][1]) >> 12;
+        sum.N.m[0][2] += (w * pY->m[0][2]) >> 12;
+
+        sum.N.m[1][0] += (w * pY->m[1][0]) >> 12;
+        sum.N.m[1][1] += (w * pY->m[1][1]) >> 12;
+        sum.N.m[1][2] += (w * pY->m[1][2]) >> 12;
+
+        sum.N.m[2][0] += (w * pY->m[2][0]) >> 12;
+        sum.N.m[2][1] += (w * pY->m[2][1]) >> 12;
+        sum.N.m[2][2] += (w * pY->m[2][2]) >> 12;
+
+        func_02003e9c((const Unk0222d8Matrix43 *)&sum.N);
+        *(volatile u32 *)0x04000440 = 1;
+        func_02003e9c(&sum.M);
+        *(volatile u32 *)0x04000440 = 0;
+        *(volatile u32 *)0x04000450 = 1;
+        *(volatile u32 *)0x04000440 = 2;
+    }
+
+    *(volatile u32 *)0x0400044c = *(rs->c + 1);
+    rs->c += 3 + *(rs->c + 2) * 3;
+}

@@ -39,6 +39,10 @@ ownership; the work area owns display handles between allocation and teardown.
 provider declarations for the list teardown and paired drawing helpers.
 Offsets follow original loads and stores; resource providers retain ownership.
 
+`include/libs/NitroSDK/sdk_020222d8.h` adds borrowed NitroSystem material,
+joint-result, model-resource and SBC scratch views. The SBC handlers depend
+only on existing SDK providers and geometry hardware; model/animation storage
+stays with its provider, while the draw operation owns scratch and cache flags.
 `include/libs/MSL/msl_02017850.h` exposes a borrowed formatting-request prefix
 for the MSL decimal formatter: only the signed precision at offset two is read.
 The request and decimal output storage remain caller-owned; the helpers depend

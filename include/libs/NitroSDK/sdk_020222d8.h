@@ -30,7 +30,7 @@ typedef struct Unk0222d8Submission {
     u32 useFastDma;
 } Unk0222d8Submission;
 
-/** Borrowed linked-list node; only the callback, link, count and entry array are read. */
+/** Borrowed animation-chain node; unk_04 is its signed 20.12 blend ratio. */
 typedef struct Unk0222d8Node Unk0222d8Node;
 
 /** Borrowed render object seen by the draw dispatcher. The three node chains at
@@ -143,10 +143,10 @@ typedef struct Unk0222d8ResourceState {
     Unk0222d8ResourceShp *resShp;
 } Unk0222d8ResourceState;
 
-/** Borrowed linked-list node; only the callback, link, count and entry array are read. */
+/** Borrowed animation-chain node; unk_04 is its signed 20.12 blend ratio. */
 struct Unk0222d8Node {
     u32 unk_00;
-    u32 unk_04;
+    s32 unk_04;
     u32 unk_08;
     int (*callback)(void *, Unk0222d8Node *, u32);
     Unk0222d8Node *next;
@@ -415,4 +415,82 @@ void func_02023bc0(Unk0222d8MatState *object, u32 option);
 void func_02023ec8(Unk0222d8ShpState *object, u32 option);
 /** Send a GX command plus `count` parameter words; the parameter block is borrowed for the call. */
 void func_020252fc(u32 command, const u32 *parameters, u32 count);
+/** Joint animation result in signed 20.12 units, with three scale vectors,
+ *  row-major rotation, and translation. The destination owns all 88 bytes. */
+typedef struct Unk0222d8JointResult {
+    u32 flag;
+    Unk0222d8Vector scale, scaleEx0, scaleEx1;
+    s32 rot[9];
+    Unk0222d8Vector trans;
+} Unk0222d8JointResult;
+/** Blend a borrowed animation chain into the caller's joint result. */
+int func_02022680(Unk0222d8JointResult *result, Unk0222d8Node *node, u32 index);
+/** Material animation output; colors and GX parameters are register images,
+ *  while scales/translations use signed 20.12 fixed point. */
+typedef struct Unk0222d8MaterialResult {
+    u32 flag, prmMatColor0, prmMatColor1, prmPolygonAttr, prmTexImage, prmTexPltt;
+    s32 scaleS, scaleT;
+    s16 sinR, cosR;
+    s32 transS, transT;
+    u16 origWidth, origHeight;
+    s32 magW, magH;
+} Unk0222d8MaterialResult;
+/** Borrowed material resource header followed by optional texture SRT/effect data. */
+typedef struct Unk0222d8MaterialData {
+    u16 itemTag, size;
+    u32 diffAmb, specEmi, polyAttr, polyAttrMask, texImageParam, texImageParamMask;
+    u16 texPlttBase, flag, origWidth, origHeight;
+    s32 magW, magH;
+} Unk0222d8MaterialData;
+/** Borrowed node resource; flag bits select the variable-length SRT payload. */
+typedef struct Unk0222d8NodeData { u16 flag; s16 _00; } Unk0222d8NodeData;
+/** Model header offsets are byte offsets from this resource base. */
+typedef struct Unk0222d8Model {
+    u32 size, ofsSbc, ofsMat, ofsShp, ofsEvpMtx;
+} Unk0222d8Model;
+/** Borrowed render object with animation providers and optional recorded results. */
+typedef struct Unk0222d8SbcObject {
+    u32 flag;
+    Unk0222d8Model *resMdl;
+    Unk0222d8Node *anmMat;
+    int (*funcBlendMat)(Unk0222d8MaterialResult *, Unk0222d8Node *, u32);
+    Unk0222d8Node *anmJnt;
+    int (*funcBlendJnt)(Unk0222d8JointResult *, Unk0222d8Node *, u32);
+    u8 pad_18[0x1c];
+    Unk0222d8JointResult *recJntAnm;
+    Unk0222d8MaterialResult *recMatAnm;
+    u32 hintMatAnmExist[2];
+} Unk0222d8SbcObject;
+/** SBC scratch state, owned by the draw operation; callbacks may change flags,
+ *  timing, and the selected animation output pointers between stages. */
+typedef struct Unk0222d8SbcState Unk0222d8SbcState;
+struct Unk0222d8SbcState {
+    u8 *c;
+    Unk0222d8SbcObject *pRenderObj;
+    u32 flag;
+    void (*cbVecFunc[32])(Unk0222d8SbcState *);
+    u8 cbVecTiming[32];
+    u8 currentNode, currentMat, currentNodeDesc, pad_af;
+    Unk0222d8MaterialResult *pMatAnmResult;
+    Unk0222d8JointResult *pJntAnmResult;
+    void *pVisAnmResult;
+    u32 isMatCached[2], isScaleCacheOne[2], isEvpCached[2];
+    Unk0222d8ResourceDict *pResNodeInfo;
+    Unk0222d8ResourceMat *pResMat;
+    Unk0222d8ResourceShp *pResShp;
+    s32 posScale, invPosScale;
+    void (*funcJntScale)(Unk0222d8JointResult *, const s32 *, const u8 *, u32);
+    void (*funcJntMtx)(const Unk0222d8JointResult *);
+    void (*funcTexMtx)(const Unk0222d8MaterialResult *);
+    Unk0222d8MaterialResult tmpMatAnmResult;
+    Unk0222d8JointResult tmpJntAnmResult;
+    u32 tmpVisAnmResult;
+};
+/** Resolve and submit material state for a valid borrowed resource index. */
+void func_020230b4(Unk0222d8SbcState *state, u32 option,
+                   const Unk0222d8MaterialData *material, u32 index);
+/** Resolve joint SRT and optional matrix-stack operands, advancing the cursor. */
+void func_02023760(Unk0222d8SbcState *state, u32 option);
+/** Blend envelope matrices using byte weights and per-joint caches. */
+void func_0202422c(Unk0222d8SbcState *state);
 #endif

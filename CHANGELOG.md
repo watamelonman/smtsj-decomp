@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T127: match seven resource-table and buffer lifetime helpers in `sdk_0205c1c8`; document the remaining table binder.
+- Match NitroSystem joint blending, material SBC, node-description SBC, and cached envelope matrix mixing in sdk_020222d8; document the remaining projection-map mismatch.
 
 - M2-T126: match both XSI texture-matrix constructors in `lib_0202923c`.
 
