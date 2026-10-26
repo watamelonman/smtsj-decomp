@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T987: verify and clean up eight ScanVisor work-field selectors, slot allocation and list-refresh helpers at 100% objdiff, with typed parameters and instruction/caller evidence.
 - M1-T986: verify eight ScanVisor forwarding, query and threshold helpers at 100% objdiff; document typed call contracts and original instruction evidence.
 - Verified all eight M1-T994 helpers in `game/unit_0206ae94` against the original ARM code; added typed declarations and per-function evidence contracts.
 - M1-T985: verify the eight ScanVisor work-object wrappers, list-update helpers and slot activate/deactivate functions at 100% objdiff; type their parameters and document instruction and caller evidence.
