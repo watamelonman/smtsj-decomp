@@ -100,30 +100,34 @@ void Unk06ae94_Unk_06aeb4(u32 arg0)
 
 
 
-void Unk06ae94_Unk_06c0b0();
-void Unk06ae94_Unk_06d4e8();
+void Unk06ae94_Unk_06c0b0(u32 o);
+typedef struct Unk06ae94Obj Unk06ae94Obj;
+void Unk06ae94_Unk_06d4e8(Unk06ae94Obj *o);
 int Unk06fb70_Unk_071844();
 int func_02071d6c();
-void func_0206af04();
+void func_0206af04(int a, int b, int c, int d, int e, int f, int zero, u8 g, int h, int i);
+/* ARM at 0x0206b0ac inserts a zero seventh argument; g is loaded as a byte. */
 void Unk06ae94_Call_06af04(int a, int b, int c, int d, int e, int f, u8 g, int h, int i)
 {
     func_0206af04(a, b, c, d, e, f, 0, g, h, i);
 }
 
 void func_02061424();
-void func_0206c130();
-u32 Unk06e2a0_GetEntrySubUnk34();
-void func_0206c938();
+void func_0206c130(int a, int b, int c, int d, int e, int f, int zero, int g, int h);
+u32 Unk06e2a0_GetEntrySubUnk34(int x, int i);
+void func_0206c938(int a, int b, int c, int d, int e, int zero, int f, int g);
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
+/* Borrowed 20-byte record; only the three signed coordinate fields are observed. */
 typedef struct Unk06ae94Pt {
     s16 x;
     s16 y;
     s16 z;
     u8 pad_06[14];
 } Unk06ae94Pt;
-typedef struct Unk06ae94Obj {
+/* Borrowed provider object prefix; the release loop establishes 50 handle slots. */
+struct Unk06ae94Obj {
     u8 pad_00[0x24];
     u32 unk_24;
     u32 unk_28;
@@ -139,15 +143,17 @@ typedef struct Unk06ae94Obj {
     s32 unk_258;
     s32 unk_25c;
     u32 objs[50];
-} Unk06ae94Obj;
-void func_02000f10();
+};
+void func_02000f10(const s32 *in, const void *matrix, s32 *out);
 int func_0206e334();
 int Unk0939f0_Get_data_02175d8c();
 void Unk0946e0_Unk_094704();
-void Unk06ae94_Unk_06c0b0();
+void Unk06ae94_Unk_06c0b0(u32 o);
 void func_02061424();
 
-void Unk06ae94_Unk_06b8e4(Unk06ae94Pt *p, void *m)
+/* ARM at 0x0206b8e4 transforms four borrowed 20-byte records through func_02000f10;
+ * signed halfword coordinates are widened, then truncated on writeback. */
+void Unk06ae94_Unk_06b8e4(Unk06ae94Pt *p, const void *m)
 {
     int i;
     for (i = 0; i < 4; i++, p++) {
@@ -166,13 +172,21 @@ void Unk06ae94_Unk_06b8e4(Unk06ae94Pt *p, void *m)
     }
 }
 
+/* Borrowed release prefix; only the optional backlink at +0x360 is observed. */
+typedef struct Unk06ae94ReleaseView {
+    u8 pad_0000[0x360];
+    u32 *link;
+} Unk06ae94ReleaseView;
+
+/* ARM at 0x0206c0b0 clears the optional backlink at +0x360 before release.
+ * A nonzero address must reference a valid provider-owned object. */
 void Unk06ae94_Unk_06c0b0(u32 o)
 {
     u32 *p;
     if (o == 0) {
         return;
     }
-    p = FIELD(u32 *, o, 0x360);
+    p = ((Unk06ae94ReleaseView *)o)->link;
     if (p != 0) {
         *p = 0;
     }
@@ -188,6 +202,7 @@ int Unk06ae94_CompareU32(const u32 *a, const u32 *b)
     return *a > *b;
 }
 
+/* ARM at 0x0206c0f4 forwards the arguments with a zero seventh slot. */
 void Unk06ae94_Call_06c130(int a, int b, int c, int d, int e, int f, int g, int h)
 {
     func_0206c130(a, b, c, d, e, f, 0, g, h);
@@ -210,7 +225,7 @@ void Unk06ae94_Unk_06c76c(u32 *arg0)
   value = 0;
   if (0 < (int)arg0[4]) {
     do {
-      Unk06ae94_Unk_06d4e8(arg0[value + 0x24]);
+      Unk06ae94_Unk_06d4e8((Unk06ae94Obj *)arg0[value + 0x24]);
       value = value + 1;
     } while (value < (int)arg0[4]);
   }
@@ -260,6 +275,7 @@ void Unk06ae94_Unk_06c854(u8 *p)
     Unk0946e0_Unk_094704(Unk0939f0_Get_data_02175d8c(), r, r, e[20], 0);
 }
 
+/* ARM at 0x0206c8f8 tests mask 0x1fffe000 across six provider entries. */
 int Unk06ae94_Unk_06c8f8(int x)
 {
     int i;
@@ -271,11 +287,14 @@ int Unk06ae94_Unk_06c8f8(int x)
     return 0;
 }
 
+/* ARM at 0x0206ca30 forwards the arguments with a zero sixth slot. */
 void Unk06ae94_Call_06c938(int a, int b, int c, int d, int e, int f, int g)
 {
     func_0206c938(a, b, c, d, e, 0, f, g);
 }
 
+/* ARM at 0x0206d4e8 releases 50 handles at +0x260, clears observed state
+ * and the optional backlink, then releases o; null is accepted. */
 void Unk06ae94_Unk_06d4e8(Unk06ae94Obj *o)
 {
     int i;
