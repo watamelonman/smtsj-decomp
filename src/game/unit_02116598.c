@@ -236,18 +236,19 @@ void Unk116598_Unk_117968(u32 arg0)
 
 
 void Unk116598_Unk_117a28(void);
-/* decompiler-derived */
+/* ARM 0x02117984 writes 1 at secondary work +0, then calls 0x02117a28
+   and 0x02117ae4 in order. The global work pointer must be initialized. */
 void Unk116598_Unk_117984(void)
 {
-  u32 *v1;
-  v1 = (u32 *)Unk116598_Get_data_02176e68();
-  *v1 = 1;
+  Unk116598Work *work = (Unk116598Work *)Unk116598_Get_data_02176e68();
+  work->unk_0000 = 1;
   Unk116598_Unk_117a28();
   Unk116598_Unk_117ae4();
 }
 
 
-/* decompiler-derived */
+/* ARM 0x02117ac8 calls 0x020a23f4(2), 0x02065e88(), then
+   0x020773dc(1), discarding results; no broader purpose is established. */
 void Unk116598_Unk_117ac8(void)
 {
   Unk0a23f4_Unk_0a23f4(2);
@@ -256,20 +257,21 @@ void Unk116598_Unk_117ac8(void)
 }
 
 
-/* decompiler-derived */
+/* ARM 0x02116738 stores 3, the supplied word, and 1 at primary work
+   offsets +4, +8 and +0xc. The global work pointer must be initialized. */
 void Unk116598_Unk_116738(u32 arg0)
 {
-  int value;
-  value = Unk116598_Get_data_02176e5c();
-  *(u32 *)(value + 4) = 3;
-  *(u32 *)(value + 8) = arg0;
-  *(u32 *)(value + 0xc) = 1;
+  Unk116598Work *work = (Unk116598Work *)Unk116598_Get_data_02176e5c();
+  work->unk_0004 = 3;
+  work->unk_0008 = arg0;
+  work->unk_000c = 1;
 }
 
-int func_0211683c();
+u32 func_0211683c(void);
 void Unk116598_Unk_117294(void);
 void Unk116598_Unk_117790(void);
-/* decompiler-derived */
+/* ARM 0x02116b48 calls 0x02117790 and 0x02117294, then replaces the
+   primary work cell with the word returned by 0x0211683c. */
 void Unk116598_Unk_116b48(void)
 {
   u32 value;
@@ -280,16 +282,19 @@ void Unk116598_Unk_116b48(void)
 }
 
 
-/* decompiler-derived */
+int Unk02e000_Unk_02e774(void);
+/* ARM 0x021171a8 tests the unsigned byte at provider work +0x5fc2 for
+   equality to 1. The provider must return valid storage through that offset. */
 int Unk116598_Unk_1171a8(void)
 {
   int value;
   value = Unk02e000_Unk_02e774();
-  return *(char *)(value + 0x5fc2) == '\x01';
+  return *(u8 *)(value + 0x5fc2) == 1;
 }
 
 
-/* decompiler-derived */
+/* ARM 0x021171c8 maps 5 to 8 when arg0 is zero; otherwise adds 5.
+   Other values pass through in the zero case; parameters retain the signed-word interface. */
 int Unk116598_Unk_1171c8(int arg0,int arg1)
 {
   if (arg0 == 0) {
@@ -302,7 +307,8 @@ int Unk116598_Unk_1171c8(int arg0,int arg1)
 }
 
 
-/* decompiler-derived */
+/* ARM 0x021171e8 maps 8 to 5 when arg0 is zero; otherwise subtracts 5.
+   Other values pass through in the zero case; parameters retain the signed-word interface. */
 int Unk116598_Unk_1171e8(int arg0,int arg1)
 {
   if (arg0 == 0) {
@@ -311,11 +317,12 @@ int Unk116598_Unk_1171e8(int arg0,int arg1)
     }
     return arg1;
   }
-  return arg1 + -5;
+  return arg1 - 5;
 }
 
-int func_02061424();
-/* decompiler-derived */
+int func_02061424(void);
+/* ARM 0x021172bc calls 0x02061424 only while the BSS word at
+   data_02176e60 is zero; a nonzero word returns without calling it. */
 void Unk116598_Unk_1172bc(void)
 {
   if (*data_02176e60 != 0) {
@@ -325,8 +332,9 @@ void Unk116598_Unk_1172bc(void)
 }
 
 
-int func_02117a68();
-/* decompiler-derived */
+int func_02117a68(void);
+/* ARM 0x02117cd4 initializes both shared work cells, calls 0x02117a68,
+   and stores its returned word in secondary work cell data_02176e68. */
 void Unk116598_Unk_117cd4(void)
 {
   u32 value;
@@ -462,8 +470,8 @@ void Unk116598_Unk_1177cc(u32 arg0)
     *(u32 *)*data_02176e64 = arg0;
 }
 
-int func_02117550();
-/* decompiler-derived */
+int func_02117550(void);
+/* ARM 0x021172dc calls 0x02117550 only when data_02176e60 is nonzero. */
 void Unk116598_Unk_1172dc(void)
 {
   if (*data_02176e60 == 0) {
@@ -472,8 +480,10 @@ void Unk116598_Unk_1172dc(void)
   func_02117550();
 }
 
-int Unk0bc1a8_IsSlotEmpty();
-/* decompiler-derived */
+int Unk0bc1a8_IsSlotEmpty(int slot);
+void Unk0bc1a8_Unk_0bc9b4(int slot, int value);
+/* ARM 0x021167e0 calls 0x020bc9b4(24, 0) only when the slot-empty
+   predicate at 0x020bc650 returns zero. No work pointer is required. */
 void Unk116598_Unk_1167e0(void)
 {
   int tmp1;
@@ -484,7 +494,8 @@ void Unk116598_Unk_1167e0(void)
   Unk0bc1a8_Unk_0bc9b4(0x18,0);
 }
 
-/* decompiler-derived */
+/* ARM 0x02117a28 repeats the slot-24 predicate and conditional call
+   to 0x020bc9b4(24, 0); no wider purpose is established. */
 void Unk116598_Unk_117a28(void)
 {
   int tmp1;
@@ -495,8 +506,9 @@ void Unk116598_Unk_117a28(void)
   Unk0bc1a8_Unk_0bc9b4(0x18,0);
 }
 
-int func_021174d0();
-/* decompiler-derived */
+int func_021174d0(void);
+/* ARM 0x02117294 populates data_02176e60 from 0x021174d0 only if
+   the cell is zero; existing borrowed work is preserved. */
 void Unk116598_Unk_117294(void)
 {
   int tmp1;
@@ -507,8 +519,9 @@ void Unk116598_Unk_117294(void)
   *data_02176e60 = tmp1;
 }
 
-int func_021178c0();
-/* decompiler-derived */
+int func_021178c0(void);
+/* ARM 0x02117790 populates data_02176e64 from 0x021178c0 only if
+   the cell is zero; existing borrowed work is preserved. */
 void Unk116598_Unk_117790(void)
 {
   int tmp1;
@@ -568,14 +581,17 @@ void Unk116598_Unk_1168cc(Unk116598Work *work)
 #endif
 int Unk0de678_Unk_0dee2c();
 int Unk02e000_Unk_02e774();
-int Unk02f078_Unk_02f220();
-int func_02117208();
+int Unk02f078_Unk_02f220(void);
+int func_02117208(void);
 int func_02051ba4();
 void Unk095560_Unk_0958a8();
 #ifndef FIELD
 #define FIELD(T, p, off) (*(T *)((u8 *)(p) + (off)))
 #endif
 
+/* ARM 0x021177e0 stores 1, the low byte of a, b, and 0 at offsets
+   +0, +8, +4, +12 through data_02176e64. Requires initialized work.
+   The existing Set symbol is supported by these direct field writes. */
 void Unk116598_Set(u32 a, u32 b)
 {
     u8 *w = (u8 *)*data_02176e64;

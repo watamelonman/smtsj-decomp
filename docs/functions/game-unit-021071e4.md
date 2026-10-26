@@ -71,15 +71,53 @@ Tests are not required by this card; objdiff verifies the compiled instructions.
 
 None for M1-T858.
 
-## Not done in M1-T859
-- `func_021072c0`
-- `func_0210882c`
-- `func_02108534`
-- `func_021071e4`
-- `func_02107ff4`
-- `func_02108694`
-- `func_02108128`
-- `func_0210792c`
+## M1-T859
+
+All eight functions match at 100% in objdiff. Existing symbol names are retained;
+behavior and offsets below are evidenced by the original ARM instructions and
+relocation-backed calls. No broader UI purpose is inferred.
+
+- `func_021072c0`: checks eligible categories for a current value below its
+  paired limit. It checks the main record first, then area records bounded by
+  `Unk096754_CountEntries`, stopping on the first qualifying record.
+- `func_0210882c`: computes the selected record's three-column delta through
+  `Unk1071e4_Unk_1087f4`, stores it at +0x60, compares against the area limit,
+  stores eligibility at +0x5c and forwards the negated delta. The main-record
+  getters execute in the original order; the final coordinate is signed 16-bit.
+- `func_02108534`: forwards coordinates and opacity to the drawing provider,
+  choosing kind 8 for category 1, otherwise kind 6 or 7 according to the flag.
+  Both scale arguments are 1.0; the remaining provider arguments are 0 and 4.
+- `func_021071e4`: obtains resource 17 in mode zero and visits its 24-byte
+  records. For each, it insertion-sorts six unsigned halfwords at +12 into a
+  cleared temporary array, discarding zeros and duplicates, then copies the
+  twelve-byte result back. Resource storage remains owned by the provider.
+- `func_02107ff4`: draws the main record and two index-zero labels, selecting
+  the second label color from the tier and category. It draws the overlay only
+  in state 6 with nonzero mode and selection zero.
+- `func_02108128`: draws the signed-ID record indexed at work+index+0x3c.
+  The caller must supply a valid list index. It enables the record according
+  to the unsigned byte at +0x28, draws labels when opacity is at least 1.0,
+  and draws the overlay in state 6 when mode is nonzero and selection=index+1.
+- `func_0210792c`: handles state 5 input. Mode zero confirms all records;
+  modes 1/2 first update selection, then confirm the selected record. Confirmation
+  checks +0x5c, chooses the corresponding record operation and enters state 6;
+  cancellation invokes the existing state-4 helper.
+- `func_02108694`: dispatches message tags 0..4. Tag zero initializes state 1;
+  tag one clears state and calls the owner operation; tag two enters state 4;
+  tag three extracts payload bit-8 data, entering state 2 for value 1, otherwise
+  extracts bit-2 data to select a mode, recomputes its value and enters state 5.
+  Tag four is empty. The one-element initialized local preserves the original
+  output-slot storage. Payload words are borrowed from the caller.
+
+The descriptor now explicitly types its message callback with its second argument;
+its six slot offsets and all existing initializer instructions are unchanged.
+These are TU-local views, so no module boundary changes are introduced.
+Validation: instruction comparison, objdiff match gate, project unit tests,
+anticheat and full-image checksum. No new tests are required by this card.
+
+### Hard list
+
+None for M1-T859.
 
 ## Not done in M1-T860
 - `func_02107a9c`
