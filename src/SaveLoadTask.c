@@ -36,7 +36,9 @@ typedef struct SaveLoadTask {
     u32 unkF4;
     u32 palette;                /* 0xF8 */
     SaveLoadSprite *sprites[2]; /* 0xFC */
-    u8  unk104[0x24];
+    u32 handles104[2];
+    u32 handle10c;
+    u32 handles110[2][3];
     u32 cursorObj;              /* 0x128 */
     u32 arrowObj;               /* 0x12C */
 } SaveLoadTask;
@@ -62,7 +64,8 @@ int SaveLoadTask_Unk_0df7c4(void)
     return 0;
 }
 
-/* Per-frame draw/update of the save/load screen. */
+/* Original sprite, window and cursor draw calls establish the draw role.
+ * Borrowed task storage covers 0x130 bytes; sprite 0 must exist when visible. */
 void SaveLoadTask_Draw(SaveLoadTask *task) {
     if (task->visible) {
         func_020580ec(0);
@@ -258,6 +261,8 @@ void Unk02f078_Unk_02f0b0(int kind);
 void func_02119390(void);
 void Unk108bc8_Alloc(void);
 
+/* Original cases 0..7 select constructor mode/initial pairs and invoke the
+ * listed entry-specific providers; other unsigned selectors have no effect. */
 void SaveLoadTask_SelectEntry(u32 entry)
 {
     switch (entry) {
@@ -393,4 +398,228 @@ void func_020e0034(SaveLoadTaskWork *work)
     }
     ((SaveLoadTransitionView *)work)->words[i] = 6;
     work->unk_0034 = 0;
+}
+
+void *func_0204fe68(u32 handle, int index);
+void *func_0204fed8(void *provider, u32 selector);
+int func_02065544(void);
+void func_02065c10(void);
+void func_02065628(int flag);
+void func_020655b4(int flag);
+void func_0206563c(int flag);
+void func_02065614(int flag);
+void func_020658dc(void *entry, int a, int b, int flags);
+void func_0206569c(void *entry);
+void Unk0a0ce4_Unk_0a0da4(int value);
+extern s16 data_021509a8[];
+
+/* Original provider calls resolve selector from handle +0xe8 and configure its
+ * transition flags; the signed table entry optionally invokes the final provider.
+ * Work is borrowed, selector must index data_021509a8, and flags are booleans. */
+void func_020dfd9c(SaveLoadTaskWork *work, u32 selector, int flag2, int flag3, int flag4)
+{
+    void *entry;
+    int value;
+    if (flag2) {
+        Unk0bc1a8_Unk_0bc6d4(1);
+    } else {
+        Unk0bc1a8_Unk_0bc6d4(0);
+    }
+    entry = func_0204fe68(work->unk_00e8, 0);
+    if (!entry) {
+        return;
+    }
+    entry = func_0204fed8(entry, selector);
+    if (!func_02065544()) {
+        func_02065c10();
+        func_02065628(1);
+    }
+    func_020655b4(1);
+    func_0206563c(1);
+    if (flag2) {
+        func_02065614(1);
+    } else {
+        func_02065614(0);
+    }
+    if (flag3) {
+        func_020658dc(entry, 1, flag4 ? 1 : 0, 257);
+    } else {
+        func_0206569c(entry);
+    }
+    value = data_021509a8[selector];
+    if (value >= 0) {
+        Unk0a0ce4_Unk_0a0da4(value);
+    }
+}
+
+void func_02008848(void *dest, int value, u32 size);
+/* Original sentinel-6 scan accumulates record sizes into +0x48 and derives
+ * padding at +0x4c. Optional reset clears slot flags; kind +4 selects state.
+ * Borrowed work must cover +0xe5 and contain a sentinel in its six-word list. */
+void func_020e0080(SaveLoadTaskWork *work, int reset)
+{
+    int i;
+    SaveLoadTask_Unk_0dffec(work, FIELD(s32, work, 0x14));
+    i = 0;
+    FIELD(u32, work, 0x4c) = 0;
+    FIELD(u32, work, 0x48) = 0;
+    while (((SaveLoadTransitionView *)work)->words[i] != 6) {
+        FIELD(u32, work, 0x48) += SaveLoadTask_Unk_0df7f8(((SaveLoadTransitionView *)work)->words[i]);
+        i++;
+    }
+    FIELD(u32, work, 0x4c) = (FIELD(u32, work, 0x48) >> 6) * 2;
+    FIELD(u32, work, 0x48) += FIELD(u32, work, 0x4c);
+    FIELD(u32, work, 0x44) = 0;
+    if (reset) {
+        if (work->unk_0000 != 5 && work->unk_0000 != 6 && work->unk_0000 != 7) {
+            FIELD(u32, work, 0x54) = 0;
+        }
+        FIELD(u32, work, 0xd8) = 0;
+        func_02008848(&FIELD(u8, work, 0xe0), 0, 6);
+    }
+    switch (work->unk_0004) {
+    case 1: work->unk_0008 = 11; break;
+    case 2: work->unk_0008 = 14; break;
+    case 3: work->unk_0008 = 16; break;
+    }
+}
+
+void func_0205ddb4(u32 handle);
+void func_0205bb68(void);
+void func_020629c4(u32 handle);
+void func_0205c3dc(SaveLoadSprite *sprite);
+void func_02061424(u32 handle);
+void func_0205c368(u32 handle);
+/* Original conditional releases clear the palette, sprite, window and resource
+ * handles. Work owns these handles and must expose all words through +0x12f.
+ * The eight trailing calls invoke the same no-argument provider. */
+void func_020dfc64(SaveLoadTask *task)
+{
+    int i;
+    int row, col;
+    u32 n;
+    if (!task->visible) {
+        return;
+    }
+    if (task->palette) {
+        func_0205ddb4(task->palette);
+        task->palette = 0;
+    }
+    func_0205bb68();
+    func_020629c4(task->cursorObj);
+    func_020629c4(task->arrowObj);
+    for (i = 0; i < 2; i++) {
+        if (task->sprites[i]) {
+            func_0205c3dc(task->sprites[i]);
+            task->sprites[i] = 0;
+        }
+    }
+    for (i = 0; i < 2; i++) {
+        func_02061424(task->handles104[i]);
+    }
+    if (task->handle10c) {
+        func_0205bb68();
+        task->handle10c = 0;
+    }
+    for (row = 0; row < 2; row++) {
+        for (col = 0; col < 3; col++) {
+            if (task->handles110[row][col]) {
+                func_0205bb68();
+                task->handles110[row][col] = 0;
+            }
+        }
+    }
+    if (task->window) {
+        func_0205ddb4(task->window);
+        task->window = 0;
+    }
+    if (task->unkF4) {
+        func_0205c368(task->unkF4);
+        task->unkF4 = 0;
+    }
+    for (n = 0; n < 8; n++) {
+        func_0205bb68();
+    }
+}
+
+void func_02052528(int value);
+void func_0205ad2c(u32 value);
+void Unk05b82c_CreateEntry(const void *record);
+u32 func_0205dcd4(const void *name, int flag);
+u32 func_0205c2c4(const void *name);
+void Unk02e000_Unk_02e0cc(void);
+u32 Unk05b82c_Unk_05b82c(int value);
+u32 func_0205ba28(const void *rect, const void *name, int value);
+SaveLoadSprite *func_0205c3c0(void);
+void func_0205c3fc(SaveLoadSprite *sprite, u32 window, u32 resource);
+u32 func_020629ac(int a, int b, int c, int d);
+void func_02061e98(u32 handle, int value, int flag);
+void func_02061f10(u32 handle, int a, int b, int c, void *entry);
+extern u32 data_021509a4[];
+extern u8 data_02150a6c[], data_02150b2c[], data_02150b34[];
+extern u8 data_02150b3c[], data_02150b4c[];
+extern u32 data_0213c64c[4];
+
+/* Four borrowed descriptor words are copied before the provider consumes them. */
+typedef struct SaveLoadRectCopy { u32 words[4]; } SaveLoadRectCopy;
+
+/* Original allocations populate the owned display handles through +0x12c;
+ * provider entries 1/2 select cursor resources according to kind +0.
+ * Borrowed task storage must cover 0x130 bytes; visible=0 skips allocation. */
+void func_020df99c(SaveLoadTask *task)
+{
+    u32 i;
+    int row, col;
+    u32 rect[4];
+    u8 *record;
+    void *first, *second;
+    if (!task->visible) {
+        return;
+    }
+    func_02052528(255);
+    func_0205ad2c(data_021509a4[0]);
+    record = data_02150a6c;
+    for (i = 0; i < 8; i++) {
+        Unk05b82c_CreateEntry(record);
+        record += 24;
+    }
+    task->window = func_0205dcd4(data_02150b2c, 1);
+    task->unkF4 = func_0205c2c4(data_02150b34);
+    Unk02e000_Unk_02e0cc();
+    task->handle10c = Unk05b82c_Unk_05b82c(192);
+    *(SaveLoadRectCopy *)rect = *(SaveLoadRectCopy *)data_0213c64c;
+    for (row = 0; row < 2; row++) {
+        for (col = 0; col < 3; col++) {
+            u32 handle = func_0205ba28(rect, data_02150b3c, 346);
+            task->handles110[row][col] = handle;
+            FIELD(u32, handle, 0x54) = FIELD(u32, task->handle10c, 0x54);
+        }
+    }
+    for (row = 0; row < 2; row++) {
+        task->sprites[row] = func_0205c3c0();
+        func_0205c3fc(task->sprites[row], task->window, task->unkF4);
+    }
+    task->cursorObj = func_020629ac(3, 1, 0, 1);
+    func_02061e98(task->cursorObj, 16, 1);
+    task->arrowObj = func_020629ac(5, 2, 0, 1);
+    func_02061e98(task->arrowObj, 16, 1);
+    first = func_0204fe68(FIELD(u32, task, 0xe8), 1);
+    second = func_0204fe68(FIELD(u32, task, 0xe8), 2);
+    switch (task->unk00) {
+    case 2:
+        func_02061f10(task->cursorObj, -1, 0, 0, func_0204fed8(first, 1));
+        func_02061f10(task->arrowObj, -1, 0, 0, func_0204fed8(second, 1));
+        break;
+    case 3:
+        func_02061f10(task->cursorObj, -1, 0, 0, func_0204fed8(first, 1));
+        func_02061f10(task->arrowObj, -1, 0, 0, func_0204fed8(second, 2));
+        break;
+    case 5: case 6: case 7:
+        func_02061f10(task->cursorObj, -1, 0, 0, func_0204fed8(first, 0));
+        func_02061f10(task->arrowObj, -1, 0, 0, func_0204fed8(second, 0));
+        break;
+    }
+    Unk02e000_Unk_02e0cc();
+    Unk05b82c_Unk_05b82c(57);
+    task->palette = func_0205dcd4(data_02150b4c, 1);
 }

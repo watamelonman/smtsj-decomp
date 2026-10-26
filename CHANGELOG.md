@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- M1-T896: verify six SaveLoadTask functions at 100% objdiff, adding dispatch, setup and resource lifecycle C; document the two remaining hard functions.
 - Verify all eight M1-T895 SaveLoadTask helpers at 100% objdiff and document their instruction-based contracts.
 - M1-T883: match the remaining four `game/unit_02044904` talk-tone lookup, state-reset and script-advance functions in C and document all eight requested functions at 100% objdiff, with typed manager/tone-state views and instruction-based contracts.
 - M1-T874: match eight `game/unit_020a6174` provider-update, weighted-selection, grid-rebuild and placement functions at 100% objdiff; document their borrowed record contracts and the scoped 020a65c4 allocation pragma.
