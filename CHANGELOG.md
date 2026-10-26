@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Verified the eight M1-T800 unit_02116598 tail-call thunks, BSS work-pointer getters, stack-argument forwarders and small call wrappers at 100% objdiff; documented their instruction evidence and typed contracts.
 - Document and verify the eight M1-T799 empty callbacks and argument-preserving forwarders in game/unit_02116598.
 - M1-T775: matched game/unit_020ea208 `func_020eaa90`, `func_020eae84` and `func_020eb488` at 100% objdiff; added the +0x1d4 frame counter to the work view and documented the accessor, graphic-creation and state-machine evidence.
 - Verified the eight M1-T792 game/unit_020a7d54 slot insert/lookup, entry walk, state-reset and countdown helpers at 100% objdiff; typed the work header (including the +0x1c counter) and entry pointer returns, and documented the instruction evidence for each.
