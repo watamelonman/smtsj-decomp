@@ -75,3 +75,48 @@ s32 func_020b92c4(void)
     Unk03aae8_Unk_03acf4(func_020b8b38(32, value, 0, 0));
     return 1;
 }
+
+/* ARM evidence at 0x020b92f0: submit code 33 with stack value 0,
+ * publish the submission result, and return 1 to the caller. */
+s32 func_020b92f0(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(33, value, 0, 0));
+    return 1;
+}
+
+/* ARM evidence at 0x020b931c: submit code 34 with stack value 0,
+ * publish the submission result, and return 1 to the caller. */
+s32 func_020b931c(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(34, value, 0, 0));
+    return 1;
+}
+
+/* ARM evidence at 0x020b9348: submit code 35 with stack value 0,
+ * publish the submission result, and return 1 to the caller. */
+s32 func_020b9348(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(35, value, 0, 0));
+    return 1;
+}
+
+/* ARM evidence at 0x020b9374: submit code 36 with stack value 0,
+ * publish the submission result, and return 1 to the caller. */
+s32 func_020b9374(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(36, value, 0, 0));
+    return 1;
+}
+
+/* ARM evidence at 0x020b93a0: submit code 37 with stack value 0,
+ * publish the submission result, and return 1 to the caller. */
+s32 func_020b93a0(void)
+{
+    s32 value = func_0203ac00(0);
+    Unk03aae8_Unk_03acf4(func_020b8b38(37, value, 0, 0));
+    return 1;
+}
