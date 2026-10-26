@@ -1,15 +1,39 @@
 # src/game/unit_0206fb70.c
 
-- `Unk06fb70_Unk_0717c0`: decompiler-derived
-- `Unk06fb70_Unk_06fb70`: decompiler-derived
+## M1-T934 — verified against original ARM
 
-## Not done in M1-T934
-- `Unk06fb70_AddClamped`
-- `Unk06fb70_Call_07142c`
-- `Unk06fb70_Call_071898`
-- `Unk06fb70_Call_0703b4`
-- `Unk06fb70_Unk_070114`
-- `Unk06fb70_Unk_070168`
+All eight functions match at 100% in objdiff. Parameters use signed words for
+arithmetic, a typed animation view for channel updates, and object pointers for
+field forwarding. Names retain their configured neutral meanings.
+
+- `Unk06fb70_Unk_0717c0` (0x020717c0, 36 bytes): adds the result of
+  `func_0206d68c(2, value, 100)` to the signed word at object +0x120.
+- `Unk06fb70_Unk_06fb70` (0x0206fb70, 44 bytes): calls 0x02007e94 on a
+  zero time delta, then divides the value delta shifted by 12 by the time delta
+  shifted by 12 using 0x0200219c. Arithmetic follows the original ARM word operations.
+- `Unk06fb70_AddClamped` (0x020713fc, 48 bytes): adds a signed delta to a
+  writable accumulator and clamps above the limit for nonnegative deltas or
+  below it for negative deltas. The name is supported by the compare/store sequence.
+- `Unk06fb70_Call_07142c` (0x02071508, 52 bytes): forwards seven word
+  arguments to 0x0207142c, inserting zero as the sixth argument.
+- `Unk06fb70_Call_071898` (0x02071974, 52 bytes): the same argument
+  contract for target 0x02071898. Both names follow their observed BL targets.
+- `Unk06fb70_Call_0703b4` (0x02071d28, 68 bytes): forwards object views at
+  +0x16c, +0x2c, +0x28, +0x30, +0, +0xc, +0x18, +0x34 to 0x020703b4.
+  The caller supplies a live object covering those offsets.
+- `Unk06fb70_Unk_070114` (0x02070114, 84 bytes): advances channel 1 only
+  when its signed state is below four. Expired ticks reset tick and velocity
+  before calling 0x02070758; otherwise it clamps the position increment.
+- `Unk06fb70_Unk_070168` (0x02070168, 84 bytes): channel 2 counterpart,
+  selecting the next key through 0x02070834 on expiry.
+
+Evidence: original instructions at each address, including field offsets,
+signed comparisons, constants and BL targets. No higher-level effect semantics
+are inferred. Existing C bodies were already present when this card started.
+
+### Hard list for M1-T934
+
+None.
 
 ## Not done in M1-T935
 - `Unk06fb70_Unk_0701bc`
