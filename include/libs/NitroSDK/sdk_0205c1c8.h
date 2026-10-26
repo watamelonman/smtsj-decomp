@@ -54,4 +54,11 @@ void func_0205c3dc(Unk05c1c8_Buffer *buffer);
 /** Clears all 320 bytes of caller-provided writable buffer storage. */
 void func_0205c3e8(Unk05c1c8_Buffer *buffer);
 
+/** Builds a prefixed path; returns one when the .cmp probe succeeds, zero otherwise.
+ * Output must accommodate prefix, name, suffix and terminator; inputs are borrowed.
+ */
+int func_0205c1c8(char *output, const char *name, const char *suffix);
+/** Allocates a wrapper owning the loaded resource; the constructed path must fit 64 bytes. */
+Unk05c1c8_Work *func_0205c2c4(const char *name);
+
 #endif

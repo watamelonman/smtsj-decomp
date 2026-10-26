@@ -8,6 +8,8 @@ is human-owned. All contracts below come from the original ARM instructions.
 
 | Function | Evidence and contract | Result |
 | --- | --- | --- |
+| `func_0205c1c8` | Copies the prefix returned by `func_0205ad6c`, appends the name and `.cmp` (`data_02143c08`), then probes the path through `func_020519f0`. On zero it rebuilds the path with the caller suffix and returns zero; otherwise returns one. Caller owns sufficient output storage. | 100% |
+| `func_0205c2c4` | Allocates/clears a 16-byte wrapper, builds a path in 64 stack bytes with fallback `.gtan` (`data_02143c10`), loads the resource, sets ownership flag to zero and binds it. Returns the owned wrapper. | 100% |
 | `func_0205c258` | Copies four bytes from source into a local result, then four bytes from source +4 into caller output; returns the first word. Source need not be word-aligned. | 100% |
 | `func_0205c288` | Binds resource at +0, table at resource +20 at +4, and table end at +8 using resource +12 count and 12-byte stride. | Hard; omitted |
 | `func_0205c328` | Allocates/clears a 16-byte wrapper, sets +12 to one, then binds the supplied borrowed resource. | 100% |
@@ -29,5 +31,12 @@ is human-owned. All contracts below come from the original ARM instructions.
   implementation remains in use. A human can create a decomp.me scratch with
   `tools/decompme.py` for the register allocation/scheduling problem.
 
-The two larger functions outside this card remain delinked as well. No assembly
-stub is added: this repository links incomplete TUs from their original delinks.
+For M2-T128, public-source searches in pret/pokeplatinum and NitroSDK resource
+helpers found no matching implementation. The `.gtan` and `.cmp` strings and
+custom prefix/resource providers support the behavior above, but do not establish
+SDK provenance or a more specific format name. Existing configuration symbols
+remain unchanged. Both new functions passed direct instruction/relocation
+comparison and objdiff at 100%; checksum and all repository tests passed.
+
+No assembly stub is added: this repository links incomplete TUs from their
+original delinks. The table binder above remains the only omitted function.

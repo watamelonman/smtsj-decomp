@@ -67,3 +67,6 @@ base types and existing copy, fill, allocation, and resource-release providers.
 +0x7990/+0x7994/+0x7998 and a callback input flag at +0x40. The lookup helpers
 depend only on base types and existing resource/setup providers; they neither
 allocate nor transfer ownership of the singleton, tables or returned entries.
+The same resource wrapper header exposes caller-owned path output and owned
+resource loading through the existing prefix, string, path-probe and loader
+providers. Constructed loader paths must fit the original 64-byte stack buffer.
