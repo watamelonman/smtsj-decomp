@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Matched eight record access and state submission functions in `libs/NitroSDK/sdk_0205e318.c`.
+- Verified all four Maya texture matrix specializations in libs/unknown/lib_02028354 at 100% objdiff and documented their fixed-point contracts.
 - M2-T072: match the six remaining CRI callback dispatch, row wrapper and reference-counted reset functions in `cri_0208256c`.
 
 - Added matching C for eight `lib_020b9e3c` callbacks submitting IDs 95–102 and forwarding their results.
