@@ -15,7 +15,8 @@ writable storage covering the accessed fields.
   writes 16 to word 3, and preserves word 1 of a four-word record.
 - `CaveArea_Unk_0eda18` (0x020eda18, 32 bytes): obtains table (0x25, 0)
   through `func_020445f4`, passes it and the input index to `func_0204fed8`,
-  and discards the result. The table pointer agrees with the callee's C definition.
+  and returns its provider record, consumed by `func_020eb83c`. The table
+  pointer agrees with the callee's C definition.
 - `CaveArea_Unk_0ed26c` (0x020ed26c, 36 bytes): returns immediately if
   work word 0x124 is zero; otherwise calls `func_0205bb68` and clears the word.
 - `CaveArea_InitParams` (0x020ed60c, 40 bytes): initializes three float
@@ -118,12 +119,53 @@ transferred.
 No hard-list entries remain for M1-T973. Exact object comparison is the
 acceptance oracle; the task card exempts behavioral tests.
 
-## Not done in M1-T974
-- `func_020ed800`
-- `func_020ed8f4`
-- `func_020ec330`
-- `func_020ed634`
-- `func_020ecfe8`
-- `func_020ec514`
-- `func_020ed3fc`
-- `func_020eb83c`
+## M1-T974 verified functions
+
+Seven functions match at 100% in full-TU objdiff. Contracts follow the ARM
+loads, stores, calls, and literals at the function addresses; original neutral
+symbols are retained. Provider storage is borrowed during draw/selection calls.
+
+- `func_020ed800` (244 bytes): reads the signed count at +0xb0 and selection
+  at +0xbc, stopping at signed byte +0x164. Draws the selected marker from
+  eight-byte coordinate entries in `data_0213c7a4`, then invokes `func_020edb94`.
+- `func_020ed8f4` (244 bytes): identical traversal using `data_0213c760`.
+  Both marker functions require storage covering +0x164 and valid table indices.
+- `func_020ec330` (272 bytes): state 3 dispatches input selectors 0..5 to
+  selection changes, cancellation, or area loading. State 9 chooses state 8
+  when +0x12c is nonzero, otherwise submits the selected provider result and
+  enters state 11. The second `func_020ec4a8` argument is observed but unused.
+- `func_020ed634` (308 bytes): updates a caller-owned sixteen-byte motion
+  record. Position decreases by 0.5; the timer decreases by 0.48 above 8 and
+  by 1 otherwise. Position/timer thresholds derive integer extents. Signed
+  conversions truncate; literal thresholds are 80, 96, 8, and 24.
+- `func_020ecfe8` (448 bytes): consumes a kind word followed by a borrowed
+  payload. Kind 3 initializes state 0 using payload words +8/+12/+16, or
+  completes states 10, 17, and 11. Kind 1 forwards to the provider with zero.
+  In state 10, payload flag 8 enables its optional result at +16. Payloads must
+  cover the fields accessed for their active state.
+- `func_020ed3fc` (528 bytes): obtains mutable provider span/frame records
+  for frames 40, 38, and 39, writes halfword extents from float +0x98, and
+  submits four draws. The frame-39 extents become zero above 31. Retains
+  separate signed/unsigned conversions as established by the runtime calls.
+- `func_020eb83c` (548 bytes): creates three parent resources, 23 row
+  handles, and nine text entries, then initializes selection, animation and
+  state fields through +0x164. Its use of `CaveArea_Unk_0eda18` establishes
+  that helper's provider-record return contract; correcting the declaration
+  preserves its existing matching machine code.
+
+Behavioral tests are exempt on this card. Object comparison is the acceptance
+oracle; full checksum confirms the image still uses the original delinked TU.
+No protected configuration or symbol files were changed.
+
+## M1-T974 hard list
+
+- `func_020ec514` (496 bytes): left in the original delink. A readable C
+  candidate reproduced both alternate/normal row branches, fixed-point scroll,
+  selected-row overlays, sentinel-row providers, and label submissions, but
+  full-TU objdiff measured 96%. Standalone comparison showed register allocation
+  differences: the row accumulator used r6/r7 instead of r8, the y coordinate
+  used r8 instead of r7, and the hoisted white color used r5 instead of r6.
+  Tried separate loop guards and do/while layout, local scope/declaration
+  ordering, explicit color locals, register hints, and scoped lifetime options.
+  None matched, so the candidate was removed. A human can use
+  `tools/decompme.py` for a scratch; no public upload was performed.

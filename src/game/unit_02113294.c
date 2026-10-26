@@ -29,8 +29,9 @@ int Unk0a0ce4_Unk_0a0da4();
 extern u32 data_02176e54[];
 int func_02061f10();
 int Unk113294_IsOtherId();
-int Unk113294_AnyHi();
-int Unk113294_AnyLo();
+struct Unk113294Ids;
+int Unk113294_AnyHi(struct Unk113294Ids *p);
+int Unk113294_AnyLo(struct Unk113294Ids *p);
 int Unk02e000_Thunk_0202e788();
 void func_02008904();
 void Unk02ee5c_Unk_02efa4();
@@ -128,7 +129,8 @@ int func_02114604();
 int func_021146a4();
 int func_021148ec();
 int func_02114a1c();
-/* decompiler-derived */
+/* At 0x02114488, skips inactive work; otherwise updates the palette unless
+ * the preceding word is 6, then runs six callbacks. Borrows work and its prefix. */
 void Unk113294_Unk_114488(char *arg0)
 {
   if (*arg0 == '\0') {
@@ -151,6 +153,8 @@ int func_02061e98();
 int func_02061f10();
 int func_02063920();
 int func_02063a30();
+/* At 0x0211508c, sends resource (42,0), entry b to provider a.
+ * The resource lookup result is borrowed for the provider call. */
 void Unk113294_Unk_11508c(u32 a, u32 b)
 {
     func_02061f10(a, -1, 0, 0, func_0204fed8(func_020445f4(42, 0), b));
@@ -175,6 +179,8 @@ int Unk113294_Unk_1150e8(u32 a, u32 b)
     return v;
 }
 
+/* At 0x02115144, sends the current lookup ID and a zero halfword to
+ * provider +0xc4. The provider consumes the stack pair during this call. */
 void Unk113294_Unk_115144(u8 *p)
 {
     Unk113294Pair t = {0, 0};
@@ -210,6 +216,8 @@ int Unk113294_IsOtherId(u32 id)
     return id != Unk113294_Unk_115110();
 }
 
+/* The halfword scan at 0x021155e0 supports AnyLo: tests IDs 0..7
+ * with IsOtherId. Borrows all eight low slots. */
 int Unk113294_AnyLo(Unk113294Ids *p)
 {
     int i;
@@ -221,6 +229,8 @@ int Unk113294_AnyLo(Unk113294Ids *p)
     return 0;
 }
 
+/* The halfword scan at 0x02115618 supports AnyHi: tests IDs 8..15
+ * with IsOtherId. Borrows all eight high slots. */
 int Unk113294_AnyHi(Unk113294Ids *p)
 {
     int i;
@@ -232,6 +242,8 @@ int Unk113294_AnyHi(Unk113294Ids *p)
     return 0;
 }
 
+/* At 0x02115658, copies sixteen bytes each from provider +72 and +90
+ * into work +232 and +216, then calls the notification provider. */
 void Unk113294_CopyIds(u8 *p)
 {
     func_02008904(p + 232, (u8 *)Unk02e000_Thunk_0202e788() + 72, 16);
@@ -288,4 +300,56 @@ int Unk113294_Unk_11558c(Unk113294Ids *p)
 int Unk113294_Unk_115778(int record, int row, int column)
 {
     return ((float *)(data_0215159c + record * 220))[row * 11 + column] != 0.0f;
+}
+
+/* Byte-aligned ID block: the original 0x02115498 uses paired byte copies. */
+typedef struct Unk113294IdBlock {
+    u8 bytes[16];
+} Unk113294IdBlock;
+
+/* See DEC-024 for the scoped propagation setting.
+ * At 0x02115498, copies provider +72/+90 into work +232/+216 without
+ * notification. Both borrowed blocks must contain sixteen readable bytes. */
+#pragma opt_propagation off
+void func_02115498(u8 *work)
+{
+    u8 *source = (u8 *)Unk02e000_Thunk_0202e788();
+    Unk113294IdBlock *dest = (Unk113294IdBlock *)(work + 232);
+    const Unk113294IdBlock *src = (const Unk113294IdBlock *)(source + 72);
+    *dest = *src;
+    dest = (Unk113294IdBlock *)(work + 216);
+    src = (const Unk113294IdBlock *)(source + 90);
+    *dest = *src;
+}
+
+#pragma opt_propagation reset
+
+int func_02053d8c(u16 *a, u16 *b);
+int func_021157ac(u8 *work, int mode);
+void func_02113620(u8 *work);
+/* Borrowed word view through +0xd4; only slots 4 and 53 are accessed here. */
+typedef struct Unk113294SelectionWork {
+    u32 words[54];
+} Unk113294SelectionWork;
+/* At 0x02115994, polls the provider and records a nonnegative selection
+ * at +0x10, refreshing two callbacks. A successful poll returns 1 even for
+ * a negative selection; a failed poll writes -1 at +0xd4 and returns 0. */
+int func_02115994(Unk113294SelectionWork *work)
+{
+    u16 a, b;
+    int accepted = 0;
+    if (func_02053d8c(&a, &b)) {
+        int selection;
+        work->words[53] = func_021157ac((u8 *)work, 1);
+        if ((s32)(selection = work->words[53]) >= 0) {
+            work->words[4] = selection;
+            Unk113294_Unk_115144((u8 *)work);
+            func_02113620((u8 *)work);
+        }
+        accepted = 1;
+    }
+    if (!accepted) {
+        work->words[53] = -1;
+    }
+    return accepted;
 }
