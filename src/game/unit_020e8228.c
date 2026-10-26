@@ -13,7 +13,7 @@ int Unk044904_GetFlag18(void);
 void func_02057524(int value);
 void func_02057534(void);
 void func_02057eb8(int value);
-int func_02061424();
+void func_02061424(u32 handle);
 void *Unk09974c_Unk_099d14(int id);
 void ScanVisor_Unk_0a29a0(u32 value);
 int Unk0e8228_Unk_0e8374(u32 x);
@@ -51,7 +51,9 @@ u32 Unk0e8228_Unk_0e8f20(void);
 u32 Unk0e8228_Unk_0e8f38(void);
 void Unk0e8228_Unk_0e8f50(u32 arg0);
 void Unk0e8228_Unk_0e9020(u32 arg0);
-int Unk0e8228_Unk_0e9048(int *arg0,int *arg1);
+struct Unk0e8228SortRecord;
+int Unk0e8228_Unk_0e9048(const struct Unk0e8228SortRecord *const *arg0,
+                                const struct Unk0e8228SortRecord *const *arg1);
 void Unk0e8228_Unk_0ea028(void);
 u32 Unk0e8228_Unk_0ea040(void);
 int Unk0e8228_IsSet_data_02176cdc(void);
@@ -174,11 +176,15 @@ void *Unk0e8228_Unk_0e84fc(void)
 /* Borrowed field views: offsets are established by the loads/stores at
  * 020e8514, 020e8b7c, 020e8c50, 020e8db8 and 020e8f20. Providers own storage. */
 typedef struct Unk0e8228WorkFields {
-  u8 pad_0000[0x18];
+  u8 pad_0000[0x10];
+  u32 unk_0010;
+  u8 pad_0014[4];
   u32 unk_0018;
   u8 pad_001c[8];
   u32 unk_0024;
-  u8 pad_0028[0x158];
+  u32 unk_0028;
+  u8 pad_002c[0x150];
+  u32 unk_017c;
   u32 unk_0180;
   u32 unk_0184;
 } Unk0e8228WorkFields;
@@ -268,74 +274,82 @@ u32 Unk0e8228_Unk_0e8f20(void)
   return work->unk_0180;
 }
 
-/* decompiler-derived */
+/* Original 020e8f38 returns the work word at 0x17c, or zero without work. */
 u32 Unk0e8228_Unk_0e8f38(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0e8228_Get_data_02176ce0();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x17c);
-  }
-  return value2;
+  return work->unk_017c;
 }
 
-/* decompiler-derived */
+/* Original 020e8f50 stores the full argument at work offset 0x28 if present. */
 void Unk0e8228_Unk_0e8f50(u32 arg0)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x28) = arg0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0028 = arg0;
   }
 }
 
-/* decompiler-derived */
+/* Original 020e9020 stores the full argument at work offset 0x10 if present. */
 void Unk0e8228_Unk_0e9020(u32 arg0)
 {
-  int value;
-  value = Unk0e8228_Get_data_02176ce0();
-  if (value != 0) {
-    *(u32 *)(value + 0x10) = arg0;
+  Unk0e8228WorkFields *work = (Unk0e8228WorkFields *)Unk0e8228_Get_data_02176ce0();
+  if (work != 0) {
+    work->unk_0010 = arg0;
   }
 }
 
-/* decompiler-derived */
-int Unk0e8228_Unk_0e9048(int *arg0,int *arg1)
+/* Borrowed comparison records; original 020e9048 observes only byte 0x2e. */
+typedef struct Unk0e8228SortRecord {
+  u8 pad_0000[0x2e];
+  u8 unk_002e;
+} Unk0e8228SortRecord;
+
+/* Original 020e9048 subtracts unsigned bytes at 0x2e, yielding -255..255.
+ * Both arguments must point to valid record pointers; no null checks exist. */
+int Unk0e8228_Unk_0e9048(const Unk0e8228SortRecord *const *arg0,
+                                const Unk0e8228SortRecord *const *arg1)
 {
-  return (u32)*(u8 *)(*arg0 + 0x2e) - (u32)*(u8 *)(*arg1 + 0x2e);
+  return (int)(*arg0)->unk_002e - (int)(*arg1)->unk_002e;
 }
 
-/* decompiler-derived */
+/* Original 020ea028 releases the provider through func_02061424 only when it is
+ * present: the provider pointer is returned in r0 and stays there unchanged
+ * across the `cmp r0,#0; popeq` guard, so it becomes the call's first (and
+ * only) argument. The typed declaration matches src/game/unit_020ea208.c:122,
+ * and docs/functions/game-unit-020fedd4.md calls func_02061424 the task
+ * release call. */
 void Unk0e8228_Unk_0ea028(void)
 {
-  int value;
-  value = Unk0ea208_Get_data_02176ddc();
-  if (value == 0) {
+  void *provider = (void *)Unk0ea208_Get_data_02176ddc();
+  if (provider == 0) {
     return;
   }
-  func_02061424();
+  func_02061424((u32)provider);
 }
 
-/* decompiler-derived */
+/* Borrowed provider view; only the word at 0x1cc is established by 020ea040. */
+typedef struct Unk0e8228ProviderFields {
+  u8 pad_0000[0x1cc];
+  u32 unk_01cc;
+} Unk0e8228ProviderFields;
+
+/* Original 020ea040 returns the provider word at 0x1cc, or zero if absent. */
 u32 Unk0e8228_Unk_0ea040(void)
 {
-  int value1;
-  u32 value2;
-  value1 = Unk0ea208_Get_data_02176ddc();
-  if (value1 == 0) {
-    value2 = 0;
+  Unk0e8228ProviderFields *provider =
+      (Unk0e8228ProviderFields *)Unk0ea208_Get_data_02176ddc();
+  if (provider == 0) {
+    return 0;
   }
-  else {
-    value2 = *(u32 *)(value1 + 0x1cc);
-  }
-  return value2;
+  return provider->unk_01cc;
 }
 
-/* decompiler-derived */
+/* Original 020e8228 tests the word at data_02176cdc and returns exactly 0 or 1;
+ * the global relocation establishes the descriptive name. */
 int Unk0e8228_IsSet_data_02176cdc(void)
 {
   return *data_02176cdc != 0;
@@ -503,7 +517,7 @@ u32 Unk0e8228_Unk_0e8dfc(u32 arg0,u32 arg1)
   return 0;
 }
 
-int func_02008848();
+int func_02008848(u32 buffer, u32 value, u32 size);
 int func_020e9060();
 /* decompiler-derived */
 void Unk0e8228_Unk_0e9fa4(u32 arg0)
@@ -542,10 +556,11 @@ u32 Unk0e8228_Unk_0e85c8(void)
 }
 
 extern u8 data_02176ce4[];
-/* decompiler-derived */
+/* Original 020e8244 tail-calls func_02008848(data_02176ce4, 0, 0xf8).
+ * The relocation and fixed arguments establish the Call name. */
 void Unk0e8228_Call_02008848(void)
 {
-  func_02008848(data_02176ce4,0,0xf8);
+  func_02008848((u32)data_02176ce4,0,0xf8);
 }
 
 #ifndef FIELD
