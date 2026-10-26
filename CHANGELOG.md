@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match the four remaining NitroSDK BG0/BG1 and BG3 extended affine control setters in `sdk_020544b0` (M2-T100).
+
 - Match eight NitroSDK BG2/BG3 text and affine control setters in `sdk_020544b0` (M2-T099).
 
 - Match the five remaining interpreter submission wrappers (codes 33–37) in `libs/unknown/lib_020b91a8.c`.
