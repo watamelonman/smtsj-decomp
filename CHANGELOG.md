@@ -2,6 +2,7 @@
 
 ## Unreleased
 - M1-T874: match eight `game/unit_020a6174` provider-update, weighted-selection, grid-rebuild and placement functions at 100% objdiff; document their borrowed record contracts and the scoped 020a65c4 allocation pragma.
+- M1-T882: verify all eight `game/unit_02044904` slot sweep, AI-script path, re-init and readiness functions at 100% objdiff; add typed parameter/local views, name the manager `+0x58` word, and document each instruction contract.
 - M1-T881: verify all eight `game/unit_02044904` slot lookup, slot scan and script-state functions at 100% objdiff; add typed contracts, instruction evidence, and clean the remaining decompiler-derived `Unk044904_Unk_046108` locals.
 - M1-T880: verify all eight `game/unit_02044904` slot-clearing, flag-query and script-step functions at 100% objdiff; add the typed manager `+0x5c` word and document each instruction contract.
 - Verify all eight M1-T879 nullable manager subobject accessors at 100% objdiff; document offsets and borrowed address contracts.
