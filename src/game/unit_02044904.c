@@ -1504,8 +1504,8 @@ void func_020449c4(void *view, u32 id)
     flag = Unk02e000_GetRecordUnk1f(o->unk_01d8);
     if (!flag) {
         r->flag0 = 1;
-        Unk02e000_SetRecordUnk1f_2(o->unk_01d8, flag + 1);
     }
+    Unk02e000_SetRecordUnk1f_2(o->unk_01d8, flag + 1);
     value = Unk02e000_GetRecordUnk1c(o->unk_01d8) - 5;
     Unk02e000_SetRecordUnk1c(o->unk_01d8, value < 0 ? 0 : value);
 }
