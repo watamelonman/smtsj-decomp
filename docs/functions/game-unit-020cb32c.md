@@ -104,15 +104,59 @@ not required by this matching card; the original instructions are the oracle.
 
 None for M1-T866, M1-T867 or M1-T868.
 
-## Not done in M1-T869
-- `func_020cc21c`
-- `func_020cb3dc`
-- `func_020cb78c`
-- `func_020cb36c`
-- `func_020ccb28`
-- `func_020cb8f8`
-- `func_020cb98c`
-- `func_020cbc50`
+## M1-T869
+
+Seven functions match at 100% objdiff. Names remain neutral: instruction
+and call evidence establishes the operations, not the subsystem's purpose.
+Borrowed layout views and provider contracts live in
+`include/game/unit_020cb32c.h`; providers retain ownership.
+
+- `func_020cc21c` (96 B): takes borrowed work and a 32-bit selector;
+  calls `0cb5b4(selector,&work->field_004)`. Result 1 calls `0ccb28`,
+  result 2 calls `0ccba0` then `0cca80`, result 3 restores the state from
+  `+8` through `0ccaa8`. Other results do nothing. Evidence: CMP/BL
+  sequence at `020cc21c..020cc278`.
+- `func_020cb3dc` (100 B): takes no parameters; maps unsigned provider
+  selector 8/7/9/5 to 1/2/3/4, defaulting to 1. Evidence: jump table at
+  `020cb3f0`, provider BL at `020cb3e0` and immediate return blocks.
+- `func_020cb36c` (112 B): takes no parameters; builds a borrowed 68-byte
+  stack descriptor with two zero flag bytes and sixteen zero words.
+  Stores `0cb54c()` at `+0x20`, sets low flag `0x80`, and submits it to
+  `0bc928(36,65535,descriptor)`. The provider must consume the descriptor
+  synchronously. Evidence: original loops, stack allocation and STR/BLs.
+- `func_020ccb28` (120 B): takes borrowed writable work; calls
+  `0bc9b4(16,0)` then `044534(37)`. Re-reads the list count at `+0x20`
+  each iteration, releases nonzero handles from `+0x10`, clears their
+  slots, calls `0cb754` on `+0x94`, then clears `+0x124`. Evidence:
+  original indexed LDR/STRs and ordered BLs at `020ccb28..020ccb9c`.
+- `func_020cb8f8` (148 B): takes signed x/y and a 32-bit value. Returns
+  if global work is null; otherwise brackets the first drawing call with
+  `057ddc(255)` and `057df8()`. Both calls use mode 1, nested display
+  field `+0xe0`, x, zero and value; first y is y+1, second y is unchanged.
+  Evidence: global literal, pointer loads and BLs at `020cb8f8`.
+- `func_020cb98c` (148 B): identical paired call contract to `0cb8f8`,
+  using nested display field `+0xe4`. Evidence: LDR offsets at `020cb98c`.
+- `func_020cbc50` (148 B): takes borrowed writable work; calls
+  `044534(37)`, `0bc9b4(10,0)`, releases and clears nonzero list handles
+  while re-reading the count, calls `0fd3ac` then `0e5530`, releases and
+  clears the display at `+0x94`, calls `0dea60`, and clears global work.
+  Evidence: ordered BLs and STRs at `020cbc50..020cbce0`.
+
+### M1-T869 hard list
+
+- `func_020cb78c` (100 B): left undefined in C, retaining the delinked
+  original. Attempted typed C initializes providers and a borrowed handle
+  slot, then calls `0bc928(10,65535,0)`, `124c5c()`, `124ce8(1)`.
+  Achieved 91.72% objdiff: compiler emits `mov r0,#10` before the literal
+  load into r1, whereas the original loads r1 first. Local word/halfword
+  constants, equivalent constant expressions, explicit argument locals,
+  and provider return declarations did not resolve scheduling. No
+  nonmatching body is retained. A human can use `tools/decompme.py` for
+  further compiler/scheduling investigation.
+
+Validation: original instructions are the acceptance oracle; this card does
+not require behavioral tests. Objdiff covers all seven new definitions and
+all earlier definitions in this TU; checksum covers the linked original image.
 
 ## Not done in M1-T871
 - `func_020cbce4`

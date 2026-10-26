@@ -2,9 +2,12 @@
 
 ## Unreleased
 - M1-T877: match the event callback and state updater in `game/unit_020f1128`; document the three remaining delinked functions and initializer matching attempts.
+- M1-T869: match seven game/unit_020cb32c dispatch, descriptor, paired drawing and teardown functions; document the remaining setup function for scratch follow-up.
 - Matched all eight M1-T876 callback, handle cleanup, row-processing and state helpers in `game/unit_020f1128` at 100% objdiff, with typed layouts and instruction-based contracts.
 - Keep the unmatched 0212034c controller in the delink while retaining the matching 0211ff14 and 02120d7c C implementations.
 - M1-T838: match both remaining requested game/unit_0211fc20 timed request dispatchers at 100% objdiff; document the existing caller relocation comparison issue.
+
+- Match all eight M1-T808 unit_02116598 cell, coordinate, transition and callback routines.
 
 - Match the eight M1-T807 unit_02116598 provider, initialization and update routines.
 - M1-T873: match eight grid insertion, reconstruction, record clearing, weighted selection, and provider-check functions in `game/unit_020a6174`; document caller contracts and instruction evidence.
