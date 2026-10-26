@@ -497,3 +497,11 @@ afterward. With the default setting, mwccarm keeps a separate provider byte offs
 on the stack and increments it each group; the original instead computes
 `work + group*4` and loads at +160. Explicit row pointer and base-index locals
 preserve the eleven-entry row stride without changing the grid contents.
+
+## DEC-028 — Preserve the absolute CRI argument address in 0208aa8c
+
+The delinked `func_0208aa8c` loads its second argument through the literal
+`0x0212ed94` at 0208aaa8. That literal has no relocation and no configured
+symbol, unlike the neighboring state and callee literals. Retain a typed
+absolute data read rather than invent an unresolved external symbol. The
+address is data consumed by the wrapper, not encoded instructions.
