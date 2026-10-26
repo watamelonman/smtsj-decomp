@@ -1,7 +1,14 @@
 #include "types.h"
 
-/* Twelve-byte records: only the leading halfword is consumed here. */
-typedef struct { u16 id; u8 rest[10]; } Unk0f1128_Row;
+/* Twelve-byte provider row. +2 is a halfword threshold and +4 a byte cost,
+ * as stored by the initializer at 020f1128. */
+typedef struct {
+    u16 id;
+    u16 required;
+    u8 cost;
+    u8 unk5[3];
+    void *entry;
+} Unk0f1128_Row;
 /* Partial work layout established by loads/stores in 020f2bfc..020f2e78. */
 typedef struct {
     void *handle0, *handle4, *handle8, *handlec;
@@ -48,13 +55,22 @@ extern void func_02061f10(void *, int, int, int, void *);
 extern void Unk0a0ce4_Unk_0a0da4(int);
 extern void *Unk02cad4_GetUnk00(void);
 extern void func_0205257c(int);
-extern void func_020bc9f4(int, const Unk0f1128_Control *);
+extern void func_020bc9f4(int, const void *, ...);
 extern void Unk0bc1a8_Unk_0bc504(Unk0f1128_Work *, int);
 extern void *Unk0986ac_Unk_098978(u16);
 extern int Unk0986ac_Thunk_02098714(void);
 extern void Unk0986ac_Unk_09895c(void *);
 extern u8 Unk0986ac_Unk_098980(void);
 void func_020f2bfc(Unk0f1128_Work *work);
+void func_020f2c90(Unk0f1128_Work *work);
+void Unk0f1128_Unk_0f2d30(u32, int);
+void Unk0f1128_Unk_0f2d60(u32);
+extern void Unk065e88_SetFlag3a(void *, int);
+extern void func_020f7bac(u16, int, int);
+extern void Unk0bc1a8_Unk_0bc928(int, int);
+extern void Unk0bc1a8_SetFlag4Inv(void *, int);
+void func_020f2d80(Unk0f1128_Work *work);
+void func_020f2e1c(Unk0f1128_Work *work);
 
 /* The original 020f21ac is a bare return: this callback has no work. */
 void Unk0f1128_Nop_0f21ac(void) { }
@@ -105,7 +121,7 @@ void func_020f2c90(Unk0f1128_Work *work)
 }
 
 /* 020f2d30 submits one integer, biased by 200, with command pair 12/23. */
-void Unk0f1128_Unk_0f2d30(u32 arg0, int arg1, u32 arg2, u32 arg3)
+void Unk0f1128_Unk_0f2d30(u32 arg0, int arg1)
 {
     int value = arg1 + 200;
     CampStatus_Unk_0dde3c(arg0, 12, 23, &value, 1);
@@ -277,7 +293,7 @@ void func_020f14ec(void *argument, void *event_argument)
                     Unk0986ac_Unk_09895c(Unk0986ac_Unk_098978(work->rows[work->selected].id));
                     Unk0986ac_Unk_098978(138);
                     if (Unk0986ac_Thunk_02098714()) work->status++;
-                    else work->status += work->rows[work->selected].rest[2];
+                    else work->status += work->rows[work->selected].cost;
                     Unk065e88_SetFlag3a(work->handles[0], 1);
                     Unk065e88_SetFlag3a(work->handles[1], 1);
                 }

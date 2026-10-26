@@ -1,7 +1,7 @@
 # Changelog
 
 ## Unreleased
-- M1-T877: match the event callback and state updater in `game/unit_020f1128`; document the three remaining delinked functions and initializer matching attempts.
+- M1-T877: match the event callback and state updater in `game/unit_020f1128` at 100%; keep the initializer, input callback and draw callback delinked, with measured best-attempt C (98.73%, 81.02%, 92.32%) and specific remaining blockers documented.
 - M1-T869: match seven game/unit_020cb32c dispatch, descriptor, paired drawing and teardown functions; document the remaining setup function for scratch follow-up.
 - Matched all eight M1-T876 callback, handle cleanup, row-processing and state helpers in `game/unit_020f1128` at 100% objdiff, with typed layouts and instruction-based contracts.
 - Keep the unmatched 0212034c controller in the delink while retaining the matching 0211ff14 and 02120d7c C implementations.
