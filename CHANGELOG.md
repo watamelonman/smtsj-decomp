@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T103: reconstruct the eight lazy resource-cache and arena setters in `libs/unknown/lib_020907a0.c`.
+- M2-T097: match four NitroSDK VRAM disable wrappers and three BG screen-address getters.
+
 - Match the four remaining NitroSDK BG0/BG1 and BG3 extended affine control setters in `sdk_020544b0` (M2-T100).
 - M2-T102: match five CRI mode dispatch and storage forwarding functions in `cri_0208a978.c`.
 - M2-T096: match six NitroSDK VRAM bank disable wrappers and two sub-display extended palette getters.

@@ -176,3 +176,79 @@ u32 func_0200390c(void)
 {
     return data_021521a4.subObjExtPltt;
 }
+
+extern u16 data_021521b4;
+extern u16 data_021521b8;
+extern u16 data_021521ba;
+extern u16 data_021521bc;
+
+/* Disable main OBJ extended palettes before releasing their banks; return the
+ * old mask. Evidence: GX_DisableBankForOBJExtPltt in pret/pokediamond
+ * GX_vramcnt.c and the original DISPCNT bit 31 clear / slot address.
+ */
+u32 func_0200377c(void)
+{
+    *(volatile u32 *)0x04000000 &= ~0x80000000;
+    return func_02003650(&data_021521b4);
+}
+
+/* Release sub OBJ banks and return their previous mask (bits 0-8).
+ * Evidence: GX_DisableBankForSubOBJ in pret/pokediamond GX_vramcnt.c
+ * and the original allocation slot address.
+ */
+u32 func_02003818(void)
+{
+    return func_02003650(&data_021521b8);
+}
+
+/* Disable sub BG extended palettes before releasing their banks; return the
+ * old mask. Evidence: GX_DisableBankForSubBGExtPltt in pret/pokediamond
+ * GX_vramcnt.c and the original sub DISPCNT bit 30 clear / slot address.
+ */
+u32 func_0200382c(void)
+{
+    *(volatile u32 *)0x04001000 &= ~0x40000000;
+    return func_02003650(&data_021521ba);
+}
+
+/* Disable sub OBJ extended palettes before releasing their banks; return the
+ * old mask. Evidence: GX_DisableBankForSubOBJExtPltt in pret/pokediamond
+ * GX_vramcnt.c and the original sub DISPCNT bit 31 clear / slot address.
+ */
+u32 func_02003854(void)
+{
+    *(volatile u32 *)0x04001000 &= ~0x80000000;
+    return func_02003650(&data_021521bc);
+}
+
+/* Return borrowed main BG0 screen memory selected by the live registers.
+ * Evidence: G2_GetBG0ScrPtr in pret/pokediamond GX_bgcnt.c; BG0CNT selects
+ * 2 KiB blocks and DISPCNT adds the shared 64 KiB screen-base offset.
+ */
+void *func_0200391c(void)
+{
+    u32 offset = ((*(volatile u16 *)0x04000008 & 0x1f00) >> 8) << 11;
+    return (void *)(0x06000000 +
+        (((*(volatile u32 *)0x04000000 & 0x38000000) >> 27) << 16) + offset);
+}
+
+/* Return borrowed sub BG0 screen memory in 2 KiB blocks; no allocation occurs.
+ * Evidence: G2S_GetBG0ScrPtr in pret/pokediamond GX_bgcnt.c and the original
+ * sub BG0CNT register address and screen-base mask.
+ */
+void *func_02003950(void)
+{
+    return (void *)(0x06200000 +
+        (((*(volatile u16 *)0x04001008 & 0x1f00) >> 8) << 11));
+}
+
+/* Return borrowed main BG1 screen memory selected by the live registers.
+ * Evidence: G2_GetBG1ScrPtr in pret/pokediamond GX_bgcnt.c; BG1CNT selects
+ * 2 KiB blocks and DISPCNT adds the shared 64 KiB screen-base offset.
+ */
+void *func_02003970(void)
+{
+    u32 offset = ((*(volatile u16 *)0x0400000a & 0x1f00) >> 8) << 11;
+    return (void *)(0x06000000 +
+        (((*(volatile u32 *)0x04000000 & 0x38000000) >> 27) << 16) + offset);
+}
