@@ -1,6 +1,8 @@
 # Changelog
 
 ## Unreleased
+
+- Match eight more CaveArea helpers, with typed records and instruction-based contracts.
 - Verified all eight M1-T971 CaveArea helpers at 100% objdiff and documented typed parameters, field contracts, and ARM evidence.
 
 - M1-T961: match seven `game/unit_020cf5e8` scene/state functions at 100% objdiff, extend the work view with typed record, provider-block and selection sub-objects, and record `func_020d11f0`'s register-allocation blocker on the hard list.
