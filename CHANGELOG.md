@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T271: match the CRI string/format wrappers at 0208d674–0208d6fc and the zero-returning 0208d648 in `cri_0208d5ac.c`.
 - M2-T270: match and document eight more CRI no-op entry points at 0208d654–0208d670.
 - M2-T259: match the bounded halfword copier and token-to-slot resolver in `sdk_0204f9d8`.
 
