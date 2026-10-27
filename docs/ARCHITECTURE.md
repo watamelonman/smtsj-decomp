@@ -80,3 +80,9 @@ result used by the basic and Maya scale/SRT cgtool routines. The cgtool code own
 no storage: results and scale arrays are caller-owned, identity bits belong to
 the shared render state, and the 24-byte parent scale cache remains provider
 owned. The unit depends only on existing geometry submission and cache data.
+`include/libs/NitroSDK/sdk_020116a8.h` defines borrowed locale, message, work
+and global-prefix views for the message pump and single-byte conversion
+wrappers. The work slot at +0xc0 is volatile because the interrupt-disabled loop
+re-reads it after each wait call; the 36-byte message is stack-owned only while
+its handlers run. The global-prefix view spans the following BSS symbol only to
+describe the byte at +0x26 cleared by the pump.
