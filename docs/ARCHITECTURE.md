@@ -75,6 +75,11 @@ The same resource wrapper header exposes caller-owned path output and owned
 resource loading through the existing prefix, string, path-probe and loader
 providers. Constructed loader paths must fit the original 64-byte stack buffer.
 
+`include/libs/unknown/lib_02027eac.h` defines the borrowed NitroSystem G3D joint
+result used by the basic and Maya scale/SRT cgtool routines. The cgtool code owns
+no storage: results and scale arrays are caller-owned, identity bits belong to
+the shared render state, and the 24-byte parent scale cache remains provider
+owned. The unit depends only on existing geometry submission and cache data.
 `include/libs/NitroSDK/sdk_020116a8.h` defines borrowed locale, message, work
 and global-prefix views for the message pump and single-byte conversion
 wrappers. The work slot at +0xc0 is volatile because the interrupt-disabled loop
