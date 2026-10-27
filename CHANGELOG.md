@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T315: match four NitroSystem texture SRT scalar evaluation and material mapping/application functions in `sdk_020276f8.c`.
+- M2-T321: match the CRI 100-byte slot initializer and second-range allocator, completing the C implementations in `libs/CRI/cri_0207d7e0.c`.
 
 - M2-T327: match the record registration and selected-slot processing helpers in `libs/NitroSDK/sdk_0205ea18.c` (two functions).
 

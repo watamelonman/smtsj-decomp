@@ -113,6 +113,64 @@ void func_0207d95c(void)
     if (--data_0217307c[3] == 0) __builtin__clear(data_02173094, sizeof(data_02173094));
 }
 
+extern void func_0207e7b0(void);
+extern void func_0207e7bc(void);
+
+/** Initialize caller-owned 100-byte slot; provider vtable +36 supplies two counts. */
+void func_0207d9ac(void *slot, s32 a, s32 b, s32 c, void *provider)
+{
+    s32 total;
+    func_0207e7b0();
+    FIELD(u8, slot, 1) = 1;
+    FIELD(u8, slot, 2) = 0;
+    FIELD(void *, slot, 4) = provider;
+    FIELD(s32, slot, 8) = a;
+    FIELD(s32, slot, 12) = b;
+    FIELD(s32, slot, 16) = c;
+    FIELD(s32, slot, 20) = c >> 31;
+    FIELD(s32, slot, 24) = c / 2048 + (c % 2048 > 0);
+    FIELD(s32, slot, 48) = 64;
+    FIELD(s32, slot, 92) = 0;
+    FIELD(s32, slot, 96) = 0xfffff;
+    FIELD(s32, slot, 52) = FIELD(s32, slot, 24);
+    if (FIELD(void *, slot, 4) != 0) {
+        total = (*(s32 (**)(void *, s32))((u8 *)*(void **)provider + 36))(provider, 0);
+        total += (*(s32 (**)(void *, s32))((u8 *)*(void **)provider + 36))(provider, 1);
+        FIELD(s32, slot, 68) = total;
+        FIELD(s32, slot, 28) = total;
+        FIELD(s32, slot, 32) = total;
+    }
+    FIELD(u8, slot, 72) = 0;
+    FIELD(u8, slot, 0) = 1;
+    func_0207e7bc();
+}
+
+/* See DEC-038: preserve the original per-iteration slot multiplication. */
+#pragma push
+#pragma opt_strength_reduction off
+/** Borrow an unused 100-byte slot in the second configured range, marking byte +3. */
+void *func_0207da90(s32 a, s32 b, s32 c, void *provider)
+{
+    u8 *slot = 0;
+    s32 count = data_02145ed8[2];
+    s32 i = 0;
+    s32 index;
+    if (count > 0) {
+        index = data_0217307c[2];
+        do {
+            slot = (u8 *)data_02173094 + index * 100;
+            if (*(s8 *)slot == 0) break;
+            i++;
+            index++;
+        } while (i < count);
+    }
+    if (i == count) return 0;
+    func_0207d9ac(slot, a, b, c, provider);
+    slot[3] = 1;
+    return slot;
+}
+#pragma pop
+
 /* See DEC-038: preserve the original per-iteration slot multiplication. */
 #pragma push
 #pragma opt_strength_reduction off
