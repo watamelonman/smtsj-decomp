@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T462: match eight CRI table lookup, hexadecimal parsing, pool allocation and record sizing helpers in `cri_0208539c.c`.
+
 - Match eight more CRI 0208539c callback, record reset and field-access functions (M2-T461).
 - M2-T452: match eight WiFi connection request, state-transition and event-callback helpers; document the borrowed event and connection fields.
 
