@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match eight more CRI 0208539c callback, record reset and field-access functions (M2-T461).
+
 - M2-T460: reconstruct eight CRI forwarding, callback registration, parser-result and record-clear helpers in `cri_0208539c.c`.
 - M2-T451: correct the WiFi head/tail allocation wrappers and allocator declaration to return storage pointers.
 
