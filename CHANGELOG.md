@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T259: match the bounded halfword copier and token-to-slot resolver in `sdk_0204f9d8`.
+
 - M2-T258: match eight token, area-selector, slot and halfword-buffer helpers in `sdk_0204f9d8`.
 
 - M2-T248: match the touch-panel FIFO callback; document the two math context assembly routines on the hard list.
