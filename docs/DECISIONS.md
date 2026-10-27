@@ -678,3 +678,21 @@ field view reproduces those instructions. Assigning -1 to the playing field
 sets its sole bit without relying on conversion of an out-of-range positive
 value. The view retains the observed 32-bit flag allocation at stream +0x24;
 it does not change stream storage ownership or expose a new module boundary.
+## DEC-040 — Preserve the 0208e164 branch blocks and 02079b4c second argument
+
+`func_0208e164` reports one for status one or two, but the original keeps two
+separate return-one blocks: the status-two path after the second compare and
+the status-one branch target. A plain `if (status == 1) return 1; if (status
+== 2) return 1; return 0;` lets mwccarm 2.0/sp1p5 fold both returns into
+conditional moves, and a plain switch with two case returns adds a final
+branch. Writing the first case as a `goto`, the second as a `return`, and the
+default as a `goto` to the zero block reproduces the original `beq`/`bne`
+layout exactly. The source is equivalent C and changes no observable
+behaviour.
+
+`func_0208e0e8` also shows zero in `r1` at the `func_02079b4c` call, after the
+same zero was stored at record `+0x54`. Declaring the callee's second argument
+as `s32` and passing zero selects that original register allocation; the
+neighbouring `func_0208e084` call passes one in the same register. Omitting
+the argument leaves the caller's step in `r1` and drops the function from 100%.
+No assembly, volatile access or byte blob is involved.

@@ -46,4 +46,10 @@ void func_020058ec(unsigned int channel, void (*callback)(void *), void *argumen
 /** Register timer 0..3 and its borrowed argument, enabling its IRQ until dispatch. */
 void func_02005934(unsigned int timer, void (*callback)(void *), void *argument);
 
+/** Argument-free IRQ entry point; registration retains provider ownership. */
+typedef void (*SDK054d0IrqFunction)(void);
+
+/** Return the borrowed handler for the lowest selected IRQ bit 0..21, or null. */
+SDK054d0IrqFunction func_02005860(unsigned int mask);
+
 #endif
