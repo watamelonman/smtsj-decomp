@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T366: reconstruct the NitroSDK return-only interrupt handler and seven indexed callback dispatcher wrappers in matching C.
+
 - M2-T345: match four text-work allocation, device forwarding, glyph copy and rectangle helpers; document the remaining parser on the hard list.
 
 - Reconstructed the seven sdk_0205de1c indexed-object and record submission helpers in matching C.

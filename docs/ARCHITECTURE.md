@@ -171,3 +171,8 @@ state word at +4, the released child pointer at +8, the result words at
 path and halfword row-shift helpers depend only on base types and the
 neighbouring CRI release provider (0x0208095c). The caller owns the work area
 and its child object; this unit allocates and retains nothing.
+
+`include/libs/NitroSDK/sdk_020054d0.h` declares the eight argument-free IRQ
+entry points reconstructed in this partial TU. Seven forward fixed callback
+indices to the existing SDK dispatcher, while the return-only handler touches
+no state. No callback storage or ownership crosses this declaration boundary.
