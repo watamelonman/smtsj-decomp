@@ -614,3 +614,15 @@ base into two immediate additions that the original does not contain. That
 technique was verified while reconstructing `func_0208a824` and `func_0208a8d4`,
 but neither is committed because their remaining difference is register
 colouring (see `docs/functions/libs-cri-cri-0208a5ac.md`).
+## DEC-036 — Preserve the 0208d95c zero-copy and loop rotation
+
+`func_0208d95c` copies samples into a circular buffer and wraps the write index
+with an equality test. The literal `for (i = 0; i < count; i++)` form makes
+mwccarm 2.0/sp1p5 materialise the wrap constant with `mov r3, #0`, while the
+original uses `mov r3, r5` (a copy of the loop counter's initial zero), and a
+plain `for` adds a top-of-loop bound test. Declaring `i` without an initialiser,
+assigning `i = 0` after the position wrap, and writing the loop as
+`do { ... } while (i < count);` under the already-required `count <= 0` guard
+reproduces both the zero-copy and the rotated loop exactly. The generated code
+is branch-equivalent to the straightforward form; no assembly, volatile access
+or byte blob is involved.

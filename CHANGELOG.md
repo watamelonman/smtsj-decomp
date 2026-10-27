@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T305: match the CRI bit-reader refill, buffer-carve, availability, consumed-bits and end-of-stream helpers in `libs/CRI/cri_0208a5ac.c`, add `include/libs/CRI/cri_0208a5ac.h`, and document the two delinked functions (field read and sync scan) left on the hard list.
+- M2-T294: match the two CRI work-area accessor pairs, the mixer buffer clear/get, the circular sample writer and the alloc/free/notification wrappers in `libs/CRI/cri_0208d8e8.c`.
 - M2-T303: match the six remaining ACSVHL create/init/reset and fade-state entry points in `libs/CRI/cri_0208d1fc.c`, completing the translation unit.
 - M2-T298: match the two empty NitroSDK startup hooks in `libs/NitroSDK/sdk_02000800.c` and document the five CP15/stack assembly startup functions left on the hard list.
 - M2-T302: match the eight ACSVHL accessor, handle-release and state-byte helpers in `libs/CRI/cri_0208d1fc.c`, add `include/libs/CRI/cri_0208d1fc.h`, and document the remaining delinked functions of the unit.
