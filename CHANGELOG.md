@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T272: match the CRI "RIFF" marker scan at 0208d5ac and the 16-bit sample crossfade at 0208d710 in `cri_0208d5ac.c`.
 - M2-T271: match the CRI string/format wrappers at 0208d674–0208d6fc and the zero-returning 0208d648 in `cri_0208d5ac.c`.
 - M2-T276: match eight resource-record, entry-table, lookup and wrapper helpers in `libs/NitroSDK/sdk_0205dacc.c`.
 

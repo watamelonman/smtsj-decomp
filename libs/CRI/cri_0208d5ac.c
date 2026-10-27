@@ -5,12 +5,41 @@
  * is the library's vsprintf. */
 
 extern u32 data_02149544;
+extern const char data_0214953c[];
 
+extern s32 func_02011a00(const void *first, const void *second, u32 size);
+extern void func_020119a0(void *destination, const void *source, u32 size);
 extern char *func_02015134(char *destination, const char *source);
 extern char *func_020151fc(char *destination, const char *source, u32 count);
 extern char *func_0201524c(char *destination, const char *source);
 extern char *func_0201527c(char *destination, const char *source, u32 count);
 extern s32 func_02013bfc(char *buffer, const char *format, void *args);
+
+/** Scans `size` bytes of `data` for the four-byte "RIFF" marker beginning at
+ * data_0214953c, comparing at every byte offset with func_02011a00 (memcmp).
+ * Writes the matched byte offset through `offset` and returns 0; when no match
+ * exists writes 0 and returns -1. The candidate offset is saturated at
+ * 0x7fffffff, matching the original's clamp. Evidence: data_0214953c starts
+ * "RIFF", the scan stops at size - 3, and both callers pass a stack u16 as the
+ * output. */
+s32 func_0208d5ac(const u8 *data, s32 size, u16 *offset)
+{
+    s32 i;
+    s32 found = 0x7fffffff;
+
+    for (i = 0; i < size - 3; i++) {
+        if (func_02011a00(data + i, data_0214953c, 4) == 0) {
+            found = i < 0x7fffffff ? i : 0x7fffffff;
+            break;
+        }
+    }
+    if (found != 0x7fffffff) {
+        *offset = found;
+        return 0;
+    }
+    *offset = 0;
+    return -1;
+}
 
 /* These entry points intentionally do nothing: each original is BX LR.
  * No argument, result or object layout is established by these instructions. */
@@ -173,4 +202,57 @@ s32 func_0208d6d4(char *buffer, u32 size, const char *format, ...)
 s32 func_0208d6fc(char *buffer, u32 size, const char *format, void *args)
 {
     return func_02013bfc(buffer, format, args);
+}
+
+/** Resamples a 16-bit mono block from `srcLength` to `dstLength` samples by
+ * linearly blending the region that the two lengths share: an output shorter
+ * than the input crossfades the head with the tail, and an output longer than
+ * the input crossfades the overlap before copying the remainder. Equal lengths
+ * are a plain func_020119a0 (memcpy) of dstLength * 2 bytes. Each blended value
+ * is clamped to the signed 16-bit range. Evidence: all accesses are LDRSH/STRH,
+ * every blended sample is two signed _s32_div_f divisions of the form
+ * (m - i) * x / m and i * y / m, and the equal-length path passes dstLength * 2
+ * to func_020119a0 (0x0208d710..0x0208d8e4). */
+void func_0208d710(s16 *src, s32 srcLength, s16 *dst, s32 dstLength)
+{
+    s32 i;
+    s32 n;
+    s32 m;
+
+    if (srcLength < dstLength) {
+        n = dstLength - srcLength;
+        m = srcLength - n;
+        for (i = 0; i < n; i++)
+            dst[i] = src[i];
+        for (i = 0; i < m; i++) {
+            s16 first = ((m - i) * src[n + i]) / m;
+            s16 second = (i * src[i]) / m;
+            s32 value = first + second;
+            if (value > 32767)
+                value = 32767;
+            else if (value < -32768)
+                value = -32768;
+            dst[n + i] = value;
+        }
+        for (i = 0; i < n; i++)
+            dst[srcLength + i] = src[m + i];
+        return;
+    }
+    if (srcLength == dstLength) {
+        func_020119a0(dst, src, dstLength * 2);
+        return;
+    }
+    if (srcLength > dstLength) {
+        n = srcLength - dstLength;
+        for (i = 0; i < dstLength; i++) {
+            s16 first = (src[i] * (dstLength - i)) / dstLength;
+            s16 second = (i * src[n + i]) / dstLength;
+            s32 value = first + second;
+            if (value > 32767)
+                value = 32767;
+            else if (value < -32768)
+                value = -32768;
+            dst[i] = value;
+        }
+    }
 }
