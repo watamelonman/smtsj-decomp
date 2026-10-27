@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match two SDK pair-state guard/advance helpers; document the remaining GX helper.
+
 - M2-T215: match eight more SDK table, byte-fill and borrowed-state helpers in `sdk_02052b58`.
 - M2-T219: match four NitroSystem 3ds Max texture SRT helpers in `lib_02028d00`.
 

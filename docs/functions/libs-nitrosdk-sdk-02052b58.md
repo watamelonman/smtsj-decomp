@@ -1,6 +1,6 @@
 # sdk_02052b58
 
-Sixteen matched accessors, state helpers and writers for two SDK state blocks and the GX command
+Eighteen matched accessors, state helpers and writers for two SDK state blocks and the GX command
 port. The symbols are retained as `func_` because the delink has no descriptive
 names and no caller in the current C tree resolves their use beyond the shapes
 below.
@@ -157,7 +157,45 @@ contracts below, but do not establish the larger subsystem purpose.
 - Evidence: original instruction sequence at the function address, including
   its loads/stores, conditional branches and ordered calls.
 
+## M2-T216 source investigation
+
+Public-source searches for NitroSDK/NitroSystem GX helpers, including
+`G3_MtxMode`, `G3_Translate` and `WH_SYSSTATE_IDLE`, found no exact public
+reconstruction of these state wrappers. No source was copied. Names remain
+neutral because the larger subsystem purpose is not established.
+
+## func_02052cb0
+
+- Original: ARM, address `0x02052cb0`, size 100 bytes.
+- Status: **100% objdiff match**.
+- Contract: nonzero mode succeeds only when index is not -1, pairs is nonnull,
+  and flag is zero. Zero mode succeeds only when flag is nonzero.
+- Evidence: ordered loads and early returns at 0x02052cc4..0x02052d10.
+  The function reads provider-owned state and changes no storage.
+
+## func_02052da0
+
+- Original: ARM, address `0x02052da0`, size 56 bytes.
+- Status: **100% objdiff match**.
+- Contract: index -1 is unchanged. Otherwise increments index; reaching count
+  sets index to -1 and clears pairs without releasing caller-owned storage.
+- Evidence: increment/store and signed conditional stores at
+  0x02052db8..0x02052dd0.
+
+## func_02052c3c
+
+- Original: ARM, address `0x02052c3c`, size 88 bytes.
+- Status: **not implemented; original delink retained**.
+- Evidence/contract: loads the current signed-byte pair, writes 2 to GX matrix
+  mode (0x04000440), 0 to matrix push (0x04000444), then sends each coordinate
+  multiplied by 4096 and arithmetically shifted right five, followed by zero,
+  to translation port 0x04000470. Requires a valid current pair.
+- Attempt: direct byte indexing, a local pair pointer, two-byte array views,
+  coordinate type/declaration variants, and inline translation/setup helpers.
+  Best result was 98.41%; instruction count and operations matched, but the
+  initial index/address registers differed. The nonmatching body was removed.
+
 ## Hard list
 
-None; all sixteen implemented functions match. The remaining functions in the
-TU belong to sibling cards and are still supplied by the delink.
+- `func_02052c3c`: register allocation differs in the initial pair loads;
+  suitable for a human decomp.me scratch via tools/decompme.py.
