@@ -45,8 +45,9 @@ typedef struct {
     u32 field_04;
 } Unk11198_State;
 
-/** Borrowed 0x100-byte work block initialized by func_02011608; +0xc0 is a
- * word slot and +0xc4 is the 36-byte message buffer passed to func_02011694. */
+/** Borrowed 0xE8-byte worker/thread object initialized by func_02011608; +0xc0
+ * is a word slot and +0xc4 is the 36-byte message buffer passed to
+ * func_02011694. */
 typedef struct {
     u8 pad_00[0xc0];
     u32 field_c0;
@@ -108,12 +109,14 @@ void func_0201111c(Unk1111c_Value *out);
  * func_02005cac rejects the argument; each pass re-saves interrupts. */
 void func_02011198(void *arg, Unk11198_State *state);
 
-/** Polls PXI tag 13 after the first func_0200a4a0 attempt succeeds until the
- * FIFO accepts the value; yields through WaitByLoop between attempts. */
+/** Sends PXI FIFO tag 13; returns when func_0200a4a0 reports 0 (success).
+ * While it reports nonzero (FIFO busy/error), yields through WaitByLoop(1)
+ * and retries until the send succeeds. */
 void func_02011218(u32 value);
 
 /** Stores the caller's state word at data_02155724 and, unless the boot probe
- * already succeeded, programs register 0xf000 with 0x5000/0x1000. */
+ * already succeeded, read-modify-writes CP15 c5 bits 12-15 through
+ * func_0200720c (0x5000 for a null state, 0x1000 otherwise). */
 void func_02011268(u32 state);
 
 /** One-time PXI/ARM7 setup: installs tag 13 handlers, starts the message worker

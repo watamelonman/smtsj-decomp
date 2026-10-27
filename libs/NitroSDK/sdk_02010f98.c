@@ -14,7 +14,7 @@ extern s32 func_02005d6c(void);
 extern u32 func_02005d64(const void *p);
 extern s32 func_02005cac(void *p);
 extern u32 func_02007a58(void);
-extern void func_0200720c(u32 reg, u32 value);
+extern void func_0200720c(u32 mask, u32 value);
 extern void WaitByLoop(u32 count);
 extern s32 func_0200a4a0(u32 tag, u32 data, u32 error);
 extern s32 func_0200a47c(u32 tag, u32 processor);
@@ -37,6 +37,22 @@ extern Unk11608_Work data_02155820;
 extern Unk11608_Work *data_02155908;
 extern u8 data_0215590c[];
 extern u8 data_02155d30[];
+
+/* PXI FIFO service wrappers shared with libs/NitroSDK/sdk_0200d380.c: there
+ * func_0200a324 initializes the FIFO, func_0200a47c polls a tag for a
+ * processor, func_0200a430 registers a handler and func_0200a4a0 sends a tag
+ * (returning 0 on success). Tags 13 and 17 are the FIFO tags this unit
+ * registers in func_020112b0; their firmware-side meaning is not present in
+ * the checked-in sources, so they stay numeric. The ARM7 processor id is the
+ * same PXI_PROC_ARM7 value used by sdk_0200d380.c. */
+#define PXI_FIFO_TAG_13 13
+#define PXI_FIFO_TAG_17 17
+#define PXI_PROC_ARM7 1
+
+/* func_0200720c read-modify-writes CP15 c5 (the access-permission register):
+ * it clears the bits in its mask argument and ORs in its value argument. The
+ * 0xf000 mask below selects bits 12-15 of that register. */
+#define CP15_C5_PERM_MASK 0xf000
 
 /** Requests ARM7 operation 2 through func_02011218, then falls into
  * func_02007e94, which disables interrupts and invalidates the data cache
@@ -164,21 +180,23 @@ void func_02011198(void *arg, Unk11198_State *state)
     }
 }
 
-/** PXI tag-13 request: if func_0200a4a0 accepts the value once, keep yielding
- * through WaitByLoop and retrying until the FIFO reports it accepted.
+/** Sends PXI FIFO tag 13 with the caller's value. func_0200a4a0 returns 0 on
+ * success (-1 when the FIFO is busy, -2 on error); while it returns nonzero,
+ * yield through WaitByLoop(1) and retry until the send succeeds.
  */
 void func_02011218(u32 value)
 {
-    if (func_0200a4a0(13, value, 0) == 0)
+    if (func_0200a4a0(PXI_FIFO_TAG_13, value, 0) == 0)
         return;
     do {
         WaitByLoop(1);
-    } while (func_0200a4a0(13, value, 0) != 0);
+    } while (func_0200a4a0(PXI_FIFO_TAG_13, value, 0) != 0);
 }
 
-/** Stores the caller's state word at data_02155724 (the word func_02010f98
- * later clears) and, when the boot probe func_02010fd0 fails, programs
- * register 0xf000 with 0x5000 for a null state or 0x1000 otherwise.
+/** Stores the caller's state word at data_02155724 + 0 and, when the boot probe
+ * func_02010fd0 fails, read-modify-writes CP15 c5 through func_0200720c: the
+ * 0xf000 mask selects bits 12-15, written as 0x5000 for a null state or 0x1000
+ * otherwise.
  */
 void func_02011268(u32 state)
 {
@@ -186,14 +204,16 @@ void func_02011268(u32 state)
 
     data_02155724.field_00 = state;
     if (func_02010fd0() == 0)
-        func_0200720c(0xf000, state != 0 ? 0x1000 : 0x5000);
+        func_0200720c(CP15_C5_PERM_MASK, state != 0 ? 0x1000 : 0x5000);
     func_02007a6c(irq);
 }
 
-/** One-time PXI/ARM7 setup guarded by data_02155740 + 8: clears the lock id,
- * waits for tag 13 availability, installs the tag-13 handlers, starts the
- * worker through func_02011608 and finally installs the tag-17 handler. The
- * +0x18 callback slot is cleared before the worker starts.
+/** One-time PXI/ARM7 setup guarded by data_02155740 + 8: sets the guard, calls
+ * func_02010f98 to clear the tag word and record a fresh lock id, clears the
+ * +0xc accepted flag, calls func_0200a324, waits for tag 13 availability and
+ * installs the tag-13 handlers. After installing them it clears the +0x18
+ * callback slot, starts the worker through func_02011608 and finally installs
+ * the tag-17 handler.
  */
 void func_020112b0(void)
 {
@@ -203,14 +223,14 @@ void func_020112b0(void)
     func_02010f98();
     data_02155740.field_0c = 0;
     func_0200a324();
-    while (func_0200a47c(13, 1) == 0) { }
-    func_0200a430(13, (Unk10f98_PxiCallback)func_02011558);
+    while (func_0200a47c(PXI_FIFO_TAG_13, PXI_PROC_ARM7) == 0) { }
+    func_0200a430(PXI_FIFO_TAG_13, (Unk10f98_PxiCallback)func_02011558);
     func_02011364();
-    func_0200a430(13, 0);
-    func_0200a430(13, (Unk10f98_PxiCallback)func_02011584);
+    func_0200a430(PXI_FIFO_TAG_13, 0);
+    func_0200a430(PXI_FIFO_TAG_13, (Unk10f98_PxiCallback)func_02011584);
     data_02155740.callback = 0;
     func_02011608(&data_02155820);
-    func_0200a430(17, (Unk10f98_PxiCallback)func_020115f4);
+    func_0200a430(PXI_FIFO_TAG_17, (Unk10f98_PxiCallback)func_020115f4);
     func_02011268(0);
 }
 
@@ -223,7 +243,7 @@ void func_02011584(u32 unused, u32 value)
 {
     int result;
 
-    if ((value & 63) == 17) {
+    if ((value & 63) == PXI_FIFO_TAG_17) {
         if (data_02155740.field_0c != 0)
             return;
         result = 0;
