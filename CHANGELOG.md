@@ -4,6 +4,7 @@
 
 - M2-T397: match four background affine wrappers, affine callback dispatch and two mosaic setters; document the deferred display-plane helper.
 
+- M2-T369: match the NitroSDK IRQ-handler lookup, including DMA and timer callback slots.
 - M2-T396: match six background mosaic helpers and two indexed callback dispatchers in `sdk_02054fb8.c`.
 - M2-T378: match eight CRI voice-record initialisation, release, query and master-volume helpers in `libs/NitroSDK/sdk_0208dc78.c`, adding `include/libs/NitroSDK/sdk_0208dc78.h`.
 
