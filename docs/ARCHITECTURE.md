@@ -233,3 +233,10 @@ word +0x20, and two callback/context pairs in `data_02174700`. The nesting
 entry reads volatile hardware IE and uses existing SDK IRQ-mask providers;
 the mode-two path passes provider-owned thread storage to the existing SDK
 thread helper. No new ownership crosses these boundaries.
+
+`include/libs/unknown/lib_02090068.h` exposes the borrowed Mobiclip stream
+wrapper: the method-table pointer at +0x00, position +8, file pointer +0x0c
+and the open byte +0x10. The close, seek and read helpers depend only on base
+types and the existing FS primitives; the wrapper, its file and its method
+table remain provider owned. The unrolled YUV blit at 020901e0 stays in the
+delinked object.
