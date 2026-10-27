@@ -1,6 +1,6 @@
 # lib_020b78d8
 
-Partial reconstruction of the ARM effect-task unit. All sixteen reconstructed functions
+Partial reconstruction of the ARM effect-task unit. All twenty reconstructed functions
 match at 100% with the configured compiler. Original neutral symbols are kept;
 field effects alone do not establish original API names.
 
@@ -47,9 +47,8 @@ and register allocation without changing ownership or module boundaries.
 
 ## Hard list
 
-None of the sixteen reconstructed functions remains unmatched. Other entry points in
-this partial translation unit remain supplied by the delinked object and were
-outside this card. The TU must remain incomplete until those are reconstructed.
+None. All twenty functions in this translation unit now match. The TU remains
+linked from the delinked object until a human marks it complete.
 
 ## Validation
 
@@ -74,3 +73,30 @@ singleton view is private and borrowed; no new module boundary is introduced.
 Seven functions matched on the first standalone compile. The descending float
 needed an explicit negative-one intermediate and separate addition to preserve
 the original soft-float evaluation/register order. All eight then matched.
+
+### M2-T466 constructors and dispatch
+
+A public-source search for the function address and Nintendo DS sprite task
+effects found no matching SDK implementation. Existing provider interfaces and
+the original ARM instructions/relocations remain the evidence; neutral names
+are retained.
+
+| Function | Bytes | Contract and evidence |
+| --- | ---: | --- |
+| `func_020b7990` | 164 | Create a 24-byte displacement task, associate the borrowed object, select count/table through 0206aeec/0206aed4, store the signed halfword origin and apply step zero. Return null on allocation failure. Kind must select a valid provider table. |
+| `func_020b7c1c` | 172 | Resolve the object and increment the four-step intensity task; interpolate signed endpoints at +8/+12 before step four, then use the endpoint and finish the task. Pack intensity into the upper three bytes with low byte 255; null objects receive no color write. |
+| `func_020b7cc8` | 236 | Create a 16-byte intensity task from 255 to 76 for nonzero mode, or 76 to 255 for zero. Return null if the object's color already equals the requested endpoint or allocation fails. Apply the initial packed color immediately. Object must be valid. |
+| `func_020b7ee0` | 316 | Resolve an ID and its halfword origin, select rising/displacement/falling/intensity task for modes 0..7, and submit a nonnull task through 0209d170. Missing objects or unsupported modes submit nothing. |
+
+The private object prefix exposes only color +0x28. A separate 16-byte intensity
+view gives integer names to +8/+12 instead of treating those words as a table
+pointer. The coordinate pair uses two signed halfwords and the original
+four-byte by-value ABI. Providers own task allocation; all object/resource
+references remain borrowed. No module boundary changes.
+
+The first compile matched the constructor, updater and dispatcher. Reordering
+the intensity constructor's equivalent mode branches preserved the original
+conditional instruction order. All four then matched, including after replacing
+the temporary pointer-based endpoint representation with the typed intensity
+view. No behavioral tests were added because tests_required is false; objdiff
+instruction and relocation equality is the acceptance oracle.

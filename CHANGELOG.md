@@ -4,6 +4,10 @@
 
 - M2-T454: match WiFi state notifications, startup request and finalize dispatcher; reverify the heap initializer at 100%.
 
+- M2-T471: match seven NitroSDK RTC initialization, date, BCD and FIFO helpers; document the deferred assembly busy-wait.
+
+- M2-T466: match the remaining four displacement/intensity task constructors, updater and effect dispatcher in `lib_020b78d8.c`.
+- M2-T458: match the MSL printf conversion parser in `sdk_020118f8.c`; document its ASCII-table symbol prerequisite before C linking.
 - M2-T453: reconstruct seven WiFi heap and connection callback helpers; document the deferred conditional-move match in `func_02053230`.
 
 - M2-T462: match eight CRI table lookup, hexadecimal parsing, pool allocation and record sizing helpers in `cri_0208539c.c`.
