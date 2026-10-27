@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T432: match the CRI 02086b70 volume/pan setters, library refcount pair and player reset/store helpers, completing the sixteen registry and player entry points of the unit.
 - M2-T431: match the CRI 02086b70 halfword accessors, library-word getter/setter and four registry forwarding thunks.
 - Match seven file/decompression wrappers in NitroSDK sdk_02051378; document the remaining whole-file loader.
 - M2-T428: reconstruct eight CRI provider wrappers and shared-state accessors in `cri_0208325c.c`.
