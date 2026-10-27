@@ -1,28 +1,42 @@
 #include "libs/NitroSDK/sdk_02010f98.h"
 
-/* Existing SDK providers: ARM7 request/acknowledge, the non-returning wait
- * loop, the unaligned-safe fill, the interrupt restore, and the two probes. */
-extern void func_02011218(u32 value);
+/* External SDK providers: the non-returning wait loop, the unaligned-safe
+ * fill, the interrupt save/restore pair, the PXI FIFO entry points and the
+ * CpuSet/wait helpers. The Thumb WaitByLoop/CpuSet calls become blx after the
+ * linker resolves the interworking relocations. */
 extern void func_02007e94(void);
 extern void func_02008848(void *dst, int value, u32 size);
 extern void func_02005ca0(void *arg);
 extern void func_02007a6c(u32 state);
 extern int func_02011010(void);
+extern void CpuSet(const void *src, void *dest, u32 control);
+extern s32 func_02005d6c(void);
+extern u32 func_02005d64(const void *p);
+extern s32 func_02005cac(void *p);
+extern u32 func_02007a58(void);
+extern void func_0200720c(u32 reg, u32 value);
+extern void WaitByLoop(u32 count);
+extern s32 func_0200a4a0(u32 tag, u32 data, u32 error);
+extern s32 func_0200a47c(u32 tag, u32 processor);
+extern void func_0200a430(u32 tag, Unk10f98_PxiCallback callback);
+extern void func_0200a324(void);
+extern void func_02011364(void);
+extern void func_020116a8(void *work);
+extern void func_0200621c(void *thread, void (*entry)(void *), void *arg,
+                          void *stack, u32 stack_size, u32 priority);
+extern void func_020064e0(void *thread);
 
 /* BSS globals owned by the surrounding SDK initialisation code. Only the
- * observed fields are exposed; the halfword at data_02155728 is the flag that
- * func_02011558 sets on the accepted value. */
-typedef struct {
-    u8 pad_00[4];
-    u32 field_04;
-} Unk10f98_Global;
-
-typedef struct {
-    u16 field_00;
-} Unk11558_Flag;
-
-extern Unk10f98_Global data_02155740;
+ * observed fields are exposed; data_02155724 and data_02155728 overlap the
+ * halfword written by func_02010f98, and data_02155908 holds the worker
+ * pointer that func_020116a8 later polls. */
+extern Unk10f98_Boot data_02155724;
 extern Unk11558_Flag data_02155728;
+extern Unk10f98_Global data_02155740;
+extern Unk11608_Work data_02155820;
+extern Unk11608_Work *data_02155908;
+extern u8 data_0215590c[];
+extern u8 data_02155d30[];
 
 /** Requests ARM7 operation 2 through func_02011218, then falls into
  * func_02007e94, which disables interrupts and invalidates the data cache
@@ -104,4 +118,141 @@ void func_02011164(Unk11164_Value *value)
 
     *waitcnt = (value->unk_00 << 2) | (*waitcnt & ~12);
     *waitcnt = (value->unk_04 << 4) | (*waitcnt & ~16);
+}
+
+/** Clears the 32-bit flag word at data_02155728 with a one-word CpuSet fill,
+ * then stores the next lock id returned by func_02005d6c in the halfword at
+ * data_02155724 + 6. That halfword is the upper half of the cleared word.
+ */
+void func_02010f98(void)
+{
+    u32 zero = 0;
+
+    CpuSet(&zero, &data_02155728, 0x05000001);
+    data_02155724.field_06 = func_02005d6c();
+}
+
+/** Mirrors the WAITCNT fields into out, then forces bits 2-3 to 3 and clears
+ * bit 4. Each read is a separate volatile load, as in the original.
+ */
+void func_0201111c(Unk1111c_Value *out)
+{
+    volatile u16 *waitcnt = (volatile u16 *)0x04000204;
+
+    out->field_00 = (*waitcnt & 12) >> 2;
+    out->field_04 = (*waitcnt & 16) >> 4;
+    *waitcnt = (*waitcnt & ~12) | 12;
+    *waitcnt = *waitcnt & ~16;
+}
+
+/** Wait loop: after saving interrupts, stores the status word from
+ * func_02005d64(0x027fffe8) at state + 0 and the CPSR image at state + 4. A
+ * set bit 0x40 or a rejected func_02005cac probe ends the loop; otherwise the
+ * saved interrupts are restored, WaitByLoop yields and the loop retries.
+ */
+void func_02011198(void *arg, Unk11198_State *state)
+{
+    for (;;) {
+        state->field_04 = func_02007a58();
+        state->field_00 = func_02005d64((const void *)0x027fffe8) & 64;
+        if (state->field_00 != 0)
+            return;
+        if (func_02005cac(arg) == 0)
+            return;
+        func_02007a6c(state->field_04);
+        WaitByLoop(1);
+    }
+}
+
+/** PXI tag-13 request: if func_0200a4a0 accepts the value once, keep yielding
+ * through WaitByLoop and retrying until the FIFO reports it accepted.
+ */
+void func_02011218(u32 value)
+{
+    if (func_0200a4a0(13, value, 0) == 0)
+        return;
+    do {
+        WaitByLoop(1);
+    } while (func_0200a4a0(13, value, 0) != 0);
+}
+
+/** Stores the caller's state word at data_02155724 (the word func_02010f98
+ * later clears) and, when the boot probe func_02010fd0 fails, programs
+ * register 0xf000 with 0x5000 for a null state or 0x1000 otherwise.
+ */
+void func_02011268(u32 state)
+{
+    u32 irq = func_02007a58();
+
+    data_02155724.field_00 = state;
+    if (func_02010fd0() == 0)
+        func_0200720c(0xf000, state != 0 ? 0x1000 : 0x5000);
+    func_02007a6c(irq);
+}
+
+/** One-time PXI/ARM7 setup guarded by data_02155740 + 8: clears the lock id,
+ * waits for tag 13 availability, installs the tag-13 handlers, starts the
+ * worker through func_02011608 and finally installs the tag-17 handler. The
+ * +0x18 callback slot is cleared before the worker starts.
+ */
+void func_020112b0(void)
+{
+    if (data_02155740.field_08 != 0)
+        return;
+    data_02155740.field_08 = 1;
+    func_02010f98();
+    data_02155740.field_0c = 0;
+    func_0200a324();
+    while (func_0200a47c(13, 1) == 0) { }
+    func_0200a430(13, (Unk10f98_PxiCallback)func_02011558);
+    func_02011364();
+    func_0200a430(13, 0);
+    func_0200a430(13, (Unk10f98_PxiCallback)func_02011584);
+    data_02155740.callback = 0;
+    func_02011608(&data_02155820);
+    func_0200a430(17, (Unk10f98_PxiCallback)func_020115f4);
+    func_02011268(0);
+}
+
+/** Tag-17 callback: masks the value to six bits and only 17 is accepted; any
+ * other value enters the non-returning wait loop. For 17, an already-accepted
+ * +0xc flag skips the work, the optional +0x18 probe runs, and a nonzero probe
+ * result enters the non-returning ARM7 loop. Finally +0xc is set.
+ */
+void func_02011584(u32 unused, u32 value)
+{
+    int result;
+
+    if ((value & 63) == 17) {
+        if (data_02155740.field_0c != 0)
+            return;
+        result = 0;
+        if (data_02155740.callback != 0)
+            result = data_02155740.callback();
+        if (result != 0)
+            func_020115e0();
+        data_02155740.field_0c = 1;
+    } else {
+        func_02007e94();
+    }
+}
+
+/** Initializes the worker block once (data_02155908 acts as the once-only
+ * pointer): zero-fills the 36-byte buffers at work + 0xc4 and data_0215590c,
+ * clears the word at work + 0xc0, registers func_020116a8 with a 1024-byte
+ * stack at priority 20, and starts the worker before restoring interrupts.
+ */
+void func_02011608(Unk11608_Work *work)
+{
+    u32 irq = func_02007a58();
+
+    if (data_02155908 == 0) {
+        data_02155908 = work;
+        func_02011694(work->field_c4);
+        func_02011694(data_0215590c);
+        work->field_c0 = 0;
+        func_0200621c(work, func_020116a8, work, data_02155d30, 1024, 20);
+        func_020064e0(work);
+    }
+    func_02007a6c(irq);
 }
