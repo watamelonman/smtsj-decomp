@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T158: match the eight message-pump, byte-comparison, absolute-value, sorted-array search and single-byte locale conversion helpers in `sdk_020116a8`.
 - M2-T143: reconstruct six NitroSDK main/sub BG screen and character upload wrappers.
 
 - M2-T142: match all six main/sub BG0–BG2 screen loaders in `sdk_0200496c`.
