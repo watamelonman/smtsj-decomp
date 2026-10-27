@@ -116,6 +116,8 @@ Public [pret/pokediamond OS_interrupt.c](https://github.com/pret/pokediamond/blo
 provides the matching `OS_GetIrqFunction` implementation. The existing linker
 name is retained. `SDK054d0IrqFunction` describes its argument-free return type;
 the lookup borrows table entries and changes no registration or ownership.
+Callback returns use that same named function-pointer type to express the SDK's
+conversion from an argument-taking callback to an argument-free IRQ handler.
 
 | Function | Size | Contract and evidence | Result |
 | --- | ---: | --- | --- |

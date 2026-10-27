@@ -225,10 +225,10 @@ SDK054d0IrqFunction func_02005860(unsigned int mask)
         if (mask & 1) {
             if (8 <= i && i <= 11) {
                 i = i - 8;
-                return (void (*)(void))data_021521fc[i].function;
+                return (SDK054d0IrqFunction)data_021521fc[i].function;
             } else if (3 <= i && i <= 6) {
                 i++;
-                return (void (*)(void))data_021521fc[i].function;
+                return (SDK054d0IrqFunction)data_021521fc[i].function;
             }
             return *function;
         }
