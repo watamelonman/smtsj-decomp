@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T489: match five BG control updates and three state initialization wrappers in sdk_020546d8.
+
 - M2-T478: match the MSL 16-bit string-length helper; document the deferred acos runtime-symbol mismatch.
 - M2-T454: match WiFi state notifications, startup request and finalize dispatcher; reverify the heap initializer at 100%.
 
