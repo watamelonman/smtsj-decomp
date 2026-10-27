@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T247: match six NitroSystem G3D animation allocation, initialization, chain and render attachment helpers.
+
 - M2-T242: match the SI3D texture SRT sender and general 3ds Max texture matrix constructor.
 
 - M2-T240: match all five singleton setup, teardown, resource submission and object update wrappers in `lib_02048e90`.

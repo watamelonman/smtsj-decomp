@@ -135,3 +135,9 @@ object pointers at +0x64, resource slot +0x7870, nine resource pointers at
 +0x798c and initialization guard +0x7a3c. The wrappers depend only on base
 types and existing providers; providers retain ownership of objects and state,
 and resource release remains governed by the existing teardown provider.
+
+`include/libs/unknown/lib_0202162c.h` exposes the caller-owned NitroSystem
+animation/render layouts and the borrowed model count prefix for the G3D kernel.
+The helpers depend only on the existing word-fill provider, format initializer
+registry and default blend callbacks. Resource ownership stays with providers;
+list attachment borrows animation chains and performs no allocation.
