@@ -6,6 +6,26 @@ extern void func_020087dc(const void *source, volatile void *destination);
 extern void func_020087c0(const void *source, volatile void *destination);
 extern void func_020043ac(volatile void *fifo);
 
+/* Stack-level readback and the remaining G3X helpers, declared up front because
+ * the init routines below call code that is defined later in this unit. */
+extern s32 func_0200434c(u32 *level);
+extern s32 func_0200437c(u32 *level);
+extern void func_02004090(void);
+extern void func_02004128(void);
+extern void func_020042ac(void);
+/* MI_DmaFill32Async: the null callback/argument pair matches the original call
+ * shape for a blocking fill issued on a DMA channel. */
+extern void func_0200801c(u32 dma, void *destination, u32 value, u32 size,
+                          u32 callback, u32 arg);
+extern void func_02007ec0(u32 dma, void *destination, u32 value, u32 size);
+extern void func_020086a0(u32 value, void *destination, u32 size);
+/* GXi_DmaId: the channel chosen by GX_Init (see sdk_020026a0.c). */
+extern u32 data_0213ce44;
+/* Orthographic matrix provider. It writes all sixteen words of the caller's
+ * Q12 matrix, including the W scale at index 15. */
+extern void func_02001f94(s32 top, s32 bottom, s32 left, s32 right,
+                          s32 nearPlane, s32 farPlane, s32 scale, s32 *matrix);
+
 /* G2x_SetBlendAlpha_: GX_g2.c packs plane masks and the two blend coefficients. */
 void func_02003e3c(volatile u32 *control, u32 plane1, u32 plane2, s32 eva, s32 evb)
 {
@@ -52,12 +72,109 @@ void func_02003ed4(const s32 *matrix)
     func_020087dc(matrix, (volatile void *)0x04000400);
 }
 
+/* G3X_Init in pret/pokediamond GX_g3x.c: drain the FIFO, wait for the geometry
+ * engine, clear the 3D display registers and stack state, then install the
+ * default edge/fog tables and identity polygon/texture attributes. The extra
+ * halfword store at 0x04000356 is the 16-bit clear-image offset. Every address
+ * and mask below matches the delinked instruction stream. */
+void func_02003ef0(void)
+{
+    func_02004068();
+    *(volatile u32 *)0x04000504 = 0;
+    while (*(volatile u32 *)0x04000600 & 0x08000000) {
+    }
+    *(volatile u16 *)0x04000060 = 0;
+    *(volatile u32 *)0x04000600 = 0;
+    *(volatile u32 *)0x04000010 = 0;
+    *(volatile u16 *)0x04000060 |= 0x2000;
+    *(volatile u16 *)0x04000060 |= 0x1000;
+    *(volatile u16 *)0x04000060 &= ~0x3002;
+    *(volatile u16 *)0x04000060 = (u16)((*(volatile u16 *)0x04000060 & ~0x3000) | 0x10);
+    /* 0xcffb is the 16-bit form of ~0x3004: clear DISP3DCNT bits 2, 12 and 13. */
+    *(volatile u16 *)0x04000060 &= 0xcffb;
+    *(volatile u32 *)0x04000600 |= 0x8000;
+    *(volatile u32 *)0x04000600 =
+        (*(volatile u32 *)0x04000600 & ~0xc0000000) | 0x80000000;
+    func_02004090();
+    *(volatile u32 *)0x04000350 = 0;
+    *(volatile u16 *)0x04000354 = 0x7fff;
+    *(volatile u16 *)0x04000356 = 0;
+    *(volatile u32 *)0x04000358 = 0;
+    *(volatile u16 *)0x0400035c = 0;
+    *(volatile u16 *)0x04000008 &= ~3;
+    func_020042ac();
+    *(volatile u32 *)0x040004a4 = 0x1f0080;
+    *(volatile u32 *)0x040004a8 = 0;
+    *(volatile u32 *)0x040004ac = 0;
+}
+
+/* G3X_ResetMtxStack in pret/pokediamond GX_g3x.c: wait for the engine, select
+ * both matrix stacks, reset the stack contents through the shared helper and
+ * restore the default polygon/texture attributes. */
+void func_02003ffc(void)
+{
+    while (*(volatile u32 *)0x04000600 & 0x08000000) {
+    }
+    *(volatile u32 *)0x04000600 |= 0x8000;
+    *(volatile u16 *)0x04000060 |= 0x2000;
+    *(volatile u16 *)0x04000060 |= 0x1000;
+    func_02004128();
+    *(volatile u32 *)0x040004a4 = 0x1f0080;
+    *(volatile u32 *)0x040004a8 = 0;
+    *(volatile u32 *)0x040004ac = 0;
+}
+
 /* G3X_ClearFifo: GX_g3x.c sends 128 no-ops and waits for GXSTAT busy to clear. */
 void func_02004068(void)
 {
     func_020043ac((volatile void *)0x04000400);
     while (*(volatile u32 *)0x04000600 & 0x08000000) {
     }
+}
+
+/* G3X_InitMtxStack in pret/pokediamond GX_g3x.c: read both stack levels, then
+ * pop each stack back through the matrix-mode port. The loops retry while the
+ * shared readback reports the stack busy. */
+void func_02004090(void)
+{
+    u32 pvLevel, pjLevel;
+
+    *(volatile u32 *)0x04000600 |= 0x8000;
+    while (func_0200434c(&pvLevel)) {
+    }
+    while (func_0200437c(&pjLevel)) {
+    }
+    *(volatile u32 *)0x04000440 = 3;
+    *(volatile u32 *)0x04000454 = 0;
+    *(volatile u32 *)0x04000440 = 0;
+    if (pjLevel)
+        *(volatile u32 *)0x04000448 = pjLevel;
+    *(volatile u32 *)0x04000454 = 0;
+    *(volatile u32 *)0x04000440 = 2;
+    *(volatile u32 *)0x04000448 = pvLevel;
+    *(volatile u32 *)0x04000454 = 0;
+}
+
+/* G3X_ResetMtxStack_2 in pret/pokediamond GX_g3x.c: same stack unwind as the
+ * init routine, but leaves the polygon/texture attribute writes to its caller
+ * (func_02003ffc restores those). */
+void func_02004128(void)
+{
+    u32 pvLevel, pjLevel;
+
+    *(volatile u32 *)0x04000600 |= 0x8000;
+    while (func_0200434c(&pvLevel)) {
+    }
+    while (func_0200437c(&pjLevel)) {
+    }
+    *(volatile u32 *)0x04000440 = 3;
+    *(volatile u32 *)0x04000454 = 0;
+    *(volatile u32 *)0x04000440 = 0;
+    if (pjLevel)
+        *(volatile u32 *)0x04000448 = pjLevel;
+    *(volatile u32 *)0x04000440 = 2;
+    *(volatile u32 *)0x04000448 = pvLevel;
+    *(volatile u32 *)0x04000454 = 0;
 }
 
 /* G3X_SetFogTable: the destination 0x04000360 is the 32-byte hardware fog table. */
@@ -108,6 +225,25 @@ void func_02004284(u32 color, u32 alpha, u32 depth, u32 polygonId, u32 fog)
     *(volatile u16 *)0x04000354 = (u16)depth;
 }
 
+/* G3X_InitTable in pret/pokediamond GX_g3x.c: wipe the edge-color and fog
+ * tables through DMA when GX_Init selected a channel, otherwise through the CPU
+ * clear helper, then reset the thirty-two shininess entries. The shininess
+ * register is a single port, so all thirty-two stores target the same address. */
+void func_020042ac(void)
+{
+    s32 i;
+
+    if (data_0213ce44 != (u32)-1) {
+        func_0200801c(data_0213ce44, (void *)0x04000330, 0, 0x10, 0, 0);
+        func_02007ec0(data_0213ce44, (void *)0x04000360, 0, 0x60);
+    } else {
+        func_020086a0(0, (void *)0x04000330, 0x10);
+        func_020086a0(0, (void *)0x04000360, 0x60);
+    }
+    for (i = 0; i < 0x20; i++)
+        *(volatile u32 *)0x040004d0 = 0;
+}
+
 /* G3X_GetMtxStackLevelPV in GX_g3x.c: do not write the level while stack is busy. */
 s32 func_0200434c(u32 *level)
 {
@@ -140,6 +276,26 @@ void func_02004440(s32 fovSin, s32 fovCos, s32 aspect, s32 nearPlane,
     if (!matrix)
         matrix = local;
     func_02001e48(fovSin, fovCos, aspect, nearPlane, farPlane, scale, matrix);
+    if (draw) {
+        *(volatile u32 *)0x04000440 = 0;
+        func_02003e80(matrix);
+    }
+}
+
+/* Ortho wrapper: provider 02001f94 computes a Q12 orthographic matrix whose
+ * W scale sits at word 15 and whose off-diagonal zeros match G3i_OrthoW_ in
+ * pret/pokediamond GX_g3_util.c. Arguments are top, bottom, left, right, near,
+ * far and scale; the caller may pass null output to use stack storage. Nonzero
+ * draw selects projection mode zero (G3_MTX_LOAD_4x4) and uploads the matrix.
+ * Right/left, top/bottom and far/near differences must be nonzero. */
+void func_0200449c(s32 top, s32 bottom, s32 left, s32 right, s32 nearPlane,
+                   s32 farPlane, s32 scale, u32 draw, s32 *matrix)
+{
+    s32 local[16];
+
+    if (!matrix)
+        matrix = local;
+    func_02001f94(top, bottom, left, right, nearPlane, farPlane, scale, matrix);
     if (draw) {
         *(volatile u32 *)0x04000440 = 0;
         func_02003e80(matrix);
