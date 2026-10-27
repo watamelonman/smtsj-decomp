@@ -546,6 +546,18 @@ configured symbol. The same setting preserves explicit status, singleton and
 GXSTAT pointer temporaries in the geometry initializer, reproducing its register
 allocation. Both functions retain ordinary typed C data operations.
 
+## DEC-034 — Leave two OS lock helpers on the delink hard list
+
+`func_02005a34` uses a linker-defined IRQ stack size whose value the delinked
+object records as an unrelocated `0x400` literal, while `func_02005a68` has a
+function-scope static whose original `data_0215225c` relocation becomes a
+`.bss` section relocation when recompiled. The matching source forms are known
+from pret/pokediamond's OS_spinLock.c and OS_interrupt.c, but objdiff stops at
+99.92% and 99.90% respectively because the target relocations cannot be
+reproduced from C alone. The six remaining functions in the TU match at 100%,
+and both blocked functions continue to link from the delinked object. See
+`docs/functions/libs-nitrosdk-sdk-02005a08.md` for the attempted source forms.
+
 ## DEC-033 — Preserve the 02058724 cached-axis store order
 
 `func_02058724` writes three adjacent 12-byte cached axes at
