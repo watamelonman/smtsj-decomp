@@ -581,3 +581,16 @@ byte reads and reproduces the original 316-byte body; the flag words and marker
 pointer are ordinary typed data. The volatile view exists solely to reproduce
 the observed load schedule for matching; it does not assert that callers may
 mutate the string concurrently.
+
+## DEC-035 — Preserve the 0204f68c stores and 0204f788 payload schedule
+
+`func_0204f68c` compares the signed first payload word against one and writes
+command 23 in both branches. Identical unsigned assignments are merged by
+mwccarm; using the corresponding signed word view for the second store keeps
+the observed conditional stores. Both views represent 23 identically, require
+no volatile access and preserve the actual behavior. Payload word copies use
+a private twelve-byte view beginning at message +20, within the 56-byte object.
+
+`func_0204f788` reads its first two halfwords before storing either. Explicit
+temporaries and reverse source store order reproduce the compiler's original
+load/store schedule. The third halfword is then read and stored separately.

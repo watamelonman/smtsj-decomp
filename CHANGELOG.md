@@ -3,6 +3,9 @@
 ## Unreleased
 
 - M2-T235: match the NitroSystem frame texture search, initialization and reset routines plus the adjacent failure callback; document the allocator register-allocation mismatch.
+- M2-T236: match eight shared-state and provider wrappers in `sdk_0205e53c`.
+
+- M2-T230: match the three command payload wrappers at 0204f68c, 0204f6d8 and 0204f788.
 
 - M2-T231: match seven SDK upload-state and bank-region helpers in `sdk_02053fd0`; the palette transfer dispatcher remains delinked.
 - Match two SDK pair-state guard/advance helpers; document the remaining GX helper.
