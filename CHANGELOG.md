@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T439: match six NitroSDK 3D init/stack-unwind/table-fill and orthographic matrix helpers; document the assembly-only 128-word FIFO filler.
 - M2-T438: match eight NitroSDK fog, clear-color, matrix readback, stack-level and camera/projection helpers.
 
 - M2-T432: match the CRI 02086b70 volume/pan setters, library refcount pair and player reset/store helpers, completing the sixteen registry and player entry points of the unit.
