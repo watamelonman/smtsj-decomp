@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T174: match eight CRI handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T160: match the basic and Maya joint-scale/SRT routines in `lib_02027eac` (`func_02027eac`, `func_02027eec`, `func_02027fb0`).
 - M2-T158: match the eight message-pump, byte-comparison, absolute-value, sorted-array search and single-byte locale conversion helpers in `sdk_020116a8`.
 - M2-T154: match the TBB1 child-offset resolver `func_0204fd4c` in `sdk_0204fce8`.
