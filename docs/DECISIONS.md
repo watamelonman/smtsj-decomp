@@ -646,3 +646,13 @@ source declares a fourth `s32` parameter and passes 0 at both call sites.
 Removing that argument drops the function from 100% (one fewer instruction and
 shifted literal-pool offsets), so the observed ABI is kept. No assembly,
 volatile access or byte blob is involved in either function.
+
+
+## DEC-038 — Preserve CRI slot scan multiplication
+
+`func_0207db2c` multiplies the slot index by 100 on each scan iteration.
+Scope `opt_strength_reduction off` to this function so mwccarm retains that
+operation rather than carrying an incremented byte offset. This also preserves
+the original register allocation; the source still expresses the bounded scan
+and its early exit directly. The pool uses an aligned 250-word declaration
+because the original reset writes 1000 bytes with word stores.
