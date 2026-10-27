@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T460: reconstruct eight CRI forwarding, callback registration, parser-result and record-clear helpers in `cri_0208539c.c`.
+
 - M2-T442: match the NitroSDK cartridge-presence probe (`CTRDG_IsExisting`) in `sdk_02010f98.c`; document the remaining cartridge module-info initializer on the hard list.
 - M2-T433: match the CRI 02086b70 player initialiser, reset routine and compressed-header parser (`func_02086ea0`, `func_02086f98`, `func_0208706c`); document `func_02086c6c` and its unnamed tables on the hard list.
 - M2-T441: match eight NitroSDK PXI/ARM7 bootstrap, WAITCNT readback, tag-13/17 callback and worker-start helpers in `sdk_02010f98.c`.
