@@ -13,6 +13,14 @@ typedef struct BitStream05ee84 {
     u32 bitIndex;
 } BitStream05ee84;
 
+/* Drives the provider start-up state machine one step. `index` selects the
+ * provider slot and is forwarded to func_0205111c. Returns 1 when the provider
+ * is unavailable or shutting down, 0 while it is still starting. */
+u32 func_0205ee84(u32 index);
+/* Starts the provider when `enabled` is nonzero and stops it otherwise.
+ * `index` selects the provider slot handed to func_02050668. Returns 1 in
+ * every path; callers only check that the step ran. */
+u32 func_0205ef20(u32 index, u32 enabled);
 /* Allocates a zeroed stream of `bytes` payload bytes; caller owns the result. */
 BitStream05ee84 *func_0205efc8(u32 bytes);
 /* Wraps caller-owned byte storage in a fresh zeroed 16-byte stream header. */
@@ -25,6 +33,10 @@ void func_0205f038(BitStream05ee84 *stream);
 void func_0205f044(BitStream05ee84 *stream, const void *source);
 /* Copies the whole payload out of the stream buffer; destination is caller-owned. */
 void func_0205f05c(BitStream05ee84 *stream, void *destination);
+/* Writes one bit at the stream cursor, then advances it. */
+void func_0205f070(BitStream05ee84 *stream, u32 bit);
+/* Reads one bit at the stream cursor, then advances it. */
+u32 func_0205f0f8(BitStream05ee84 *stream);
 /* Writes the low `bits` bits of value, least significant bit first. */
 void func_0205f168(BitStream05ee84 *stream, u32 value, u32 bits);
 /* Reads `bits` bits least significant bit first, returning them in the low bits. */

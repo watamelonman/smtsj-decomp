@@ -1,8 +1,8 @@
 # lib_0205ee84
 
-M2-T278 reconstructs eight ARM functions of the bit-stream translation unit at
-0205ee84–0205f1d8. All eight report 100% in objdiff and the full image still
-matches its checksum.
+M2-T278 and M2-T279 reconstruct the twelve ARM functions of the bit-stream
+translation unit at 0205ee84–0205f1d8. All twelve report 100% in objdiff and
+the full image still matches its checksum.
 
 ## Source and naming evidence
 
@@ -16,11 +16,37 @@ are retained because `config/arm9/symbols.txt` is human-owned.
 
 The record layout below comes from the delinked object's loads and stores:
 +0 is the byte buffer, +4 the byte capacity, +8 the current byte and +0xc the
-current bit (0..7). The two single-bit neighbours `func_0205f070` and
-`func_0205f0f8` (a separate card) update +8/+0xc and establish those offsets.
+current bit (0..7). The single-bit neighbours `func_0205f070` and `func_0205f0f8`
+update +8/+0xc and establish those offsets.
 Game callers in `src/game/unit_02111400.c` use the stream to pack and unpack the
 24-byte records of the exchange format, which fixes the meaning of the copy
 directions and of the bit order.
+
+`func_0205ee84`/`func_0205ef20` drive the provider singleton `data_0216b428`
+(+4 run flag, +8 start-up phase, +0xc per-slot status), the same state machine
+as the adjacent `func_0205ede8` in `libs/NitroSDK/sdk_0205ea18`. Their first
+argument is a slot index, not a pointer: `func_02050668` uses it as a byte
+offset (`strb r0, [base, index]`) and `func_0205111c` multiplies it by the
+20-byte record size (`mov r0,#20; mla r0,index,r0,base`). SaveLoadTask passes
+that field from its slot table.
+
+## func_0205ee84 (156 bytes)
+
+Runs the provider start-up state machine one step for a slot. Phase 0 clears the
+status word, announces readiness through `func_0205ecd8`/`func_02050df4`, then
+sets the run flag and moves to phase 1. Phase 1 stores
+`func_0205111c(index)` as the slot status and moves to phase 2 unless that call
+already returned 2. Every other phase shuts the provider down through
+`func_02050e80` and returns 1. Returns 0 while still starting. The delinked
+`func_0205ede8` is the same routine for the neighbouring subsystem.
+
+## func_0205ef20 (136 bytes)
+
+Starts a provider slot when `enabled` is nonzero. It clears the status word,
+checks `func_0205ecd8`, registers the slot with `func_02050668(index, 0)`, then
+re-checks `func_02050df4`, sets the run flag, records `func_0205105c()`, clears
+the run flag again and calls `func_02050e80`. Returns 1 on every path; the two
+SaveLoadTask call sites (020e0754/020e0764) ignore the result.
 
 ## func_0205f038 (12 bytes)
 
@@ -59,6 +85,20 @@ a single block by `func_0205f038`.
 Allocates and clears a 16-byte header only, then stores the caller's buffer and
 capacity. Unlike `func_0205efc8` the byte storage is borrowed, so the caller keeps
 ownership of the payload while the header is still released with `func_0205f038`.
+
+## func_0205f070 (136 bytes)
+
+Writes one bit at the cursor. A null buffer drops the bit but still advances the
+cursor; a cursor at or past the capacity returns without advancing. Otherwise it
+sets or clears bit `bitIndex` of byte `byteIndex`, then increments the bit
+cursor and rolls it into the byte cursor at 8. `func_0205f168` writes fields
+through this entry point.
+
+## func_0205f0f8 (112 bytes)
+
+Reads one bit at the cursor with the same cursor rules as `func_0205f070`: a
+null buffer yields zero but advances, an out-of-range cursor yields zero without
+advancing. `func_0205f1a0` assembles fields from these single bits.
 
 ## func_0205f168 (56 bytes)
 
