@@ -1,6 +1,7 @@
 # NitroSDK RTC helpers (0200e860)
 
-Reference: [NitroSDK RTC external.c](https://github.com/ntrtwl/NitroSDK/blob/main/libraries/rtc/src/external.c)
+Reference: [NitroSDK RTC external.c](https://github.com/ntrtwl/NitroSDK/blob/main/libraries/rtc/src/external.c),
+[convert.c](https://github.com/ntrtwl/NitroSDK/blob/main/libraries/rtc/src/convert.c)
 and [internal.c](https://github.com/ntrtwl/NitroSDK/blob/main/libraries/rtc/src/internal.c).
 The public implementations identify these routines through the initialization
 sequence, RTC FIFO tag 5, command values, work-field offsets and BCD arithmetic.
@@ -15,13 +16,25 @@ caller-owned and holds four 32-bit year/month/day/weekday fields.
 | Original symbol | Known source identity and contract | Result |
 | --- | --- | --- |
 | `func_0200e860` | `RTC_Init`: initialize once, clear request/callback state, wait for ARM7 readiness and register the FIFO callback. | 100% |
-| `func_0200e940` | `RTC_GetDate`: borrow caller date output, start an asynchronous date request with the result callback, wait on success and return completion status. | 100% |
+| `func_0200e8cc` | `RTC_GetTimeAsync`: acquire the request lock with interrupts disabled, borrow time/callback/context and submit the raw-time read; return busy, success or send error. | 100% |
+| `func_0200e940` | `RTC_GetTime`: borrow caller time output, start an asynchronous time request with the result callback, wait on success and return completion status. | 100% |
+| `func_0200e978` | `RtcCommonCallback`: handle FIFO transport errors and RTC interrupts, decode date/time/alarm fields, advance two-phase alarm-status writes and release the lock before calling the retained callback. | 100% |
 | `func_0200eec8` | `RtcBCD2HEX`: validate all eight packed decimal nibbles, then accumulate a decimal integer; any nibble above nine returns zero. | 100% |
 | `func_0200ef38` | `RtcGetResultCallback`: store the completion result at work +44; callback context is unused. | 100% |
 | `func_0200ef48` | `RtcWaitBusy`: poll the volatile SDK lock at `data_02154304` while it equals one. | Deferred; original delink retained |
-| `func_0200ef60` | `RTCi_ReadRawDateAsync`: forward command 0x12 to the shared sender; return send success. | 100% |
+| `func_0200ef60` | `RTCi_ReadRawTimeAsync`: forward command 0x12 to the shared sender; return send success. | 100% |
 | `func_0200ef70` | `RTCi_WriteRawStatus2Async`: forward command 0x27 to the shared sender; return send success. | 100% |
 | `func_0200ef80` | `RtcSendPxiCommand`: mask the shifted command to bits 8–14, send on FIFO tag 5 with error flag zero, and return whether sending succeeded. | 100% |
+| `func_0200efa8` | `RTC_GetDayOfWeek`: compute Gregorian weekday (Sunday = 0) from caller-owned year (relative to 2000), month and day using the known SDK calendar formula. | 100% |
+
+The ARM7 transfer area is fixed shared system storage: raw date at
+`0x027ffde8`, raw time/alarm at `0x027ffdec`, and status2 at `0x027ffdea`.
+Packed field widths follow the known SDK types and the original word/halfword
+loads. Outputs and callback contexts stay caller-owned through completion.
+Sequence 1 and command 0x12 identify the asynchronous and synchronous
+wrappers as time requests, correcting their previous date identification.
+All three M2-T472 routines match at 100%; the prior task's busy-wait remains
+the sole hard entry.
 
 ## Hard list
 

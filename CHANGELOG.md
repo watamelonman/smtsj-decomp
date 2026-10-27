@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T472: match NitroSDK asynchronous RTC time requests, FIFO completion handling and Gregorian weekday conversion.
+
 - M2-T471: match seven NitroSDK RTC initialization, date, BCD and FIFO helpers; document the deferred assembly busy-wait.
 
 - M2-T466: match the remaining four displacement/intensity task constructors, updater and effect dispatcher in `lib_020b78d8.c`.
