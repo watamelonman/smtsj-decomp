@@ -244,3 +244,89 @@ void func_02055574(int enable)
         *control &= ~0x40;
     }
 }
+
+/* Borrowed 40-byte background record; only observed ownership slots are named. */
+typedef struct BackgroundRecord {
+    u32 active;
+    u32 unknown04[6];
+    void *resource1c;
+    u32 unknown20;
+    void *resource24;
+} BackgroundRecord;
+
+extern BackgroundRecord *func_0205410c(int index);
+extern void func_02054120(BackgroundRecord *record, u32 value);
+extern void func_02053000(void *resource);
+extern void func_02053fd0(int mode);
+extern void func_02000d60(Mtx22 *matrix);
+extern void func_0205571c(int engine);
+extern void func_020556fc(int index, int x, int y);
+extern const u8 data_0212e2d0[][4];
+
+/* Releases active records' two owned slots and clears all eight records.
+ * Evidence: original +0x24/+0x1c release calls, 40-byte record provider and
+ * final mode-eight call. Zero keepPlanes also hides both engines' planes. */
+void func_02054fb8(int keepPlanes)
+{
+    int i;
+    if (keepPlanes == 0) {
+        *(volatile u32 *)0x04000000 &= ~0x1f00;
+        *(volatile u32 *)0x04001000 &= ~0x1f00;
+    }
+    for (i = 0; i < 8; i++) {
+        BackgroundRecord *record = func_0205410c(i);
+        if (record->active) {
+            if (record->resource24) {
+                func_02053000(record->resource24);
+                record->resource24 = 0;
+            }
+            if (record->resource1c) {
+                func_02053000(record->resource1c);
+                record->resource1c = 0;
+            }
+        }
+        func_02054120(record, 0);
+    }
+    func_02053fd0(8);
+}
+
+/* Resets visible planes, windows and background transforms for both engines.
+ * Evidence: DISPCNT masks, original T/A mode table at 0x0212e2d0 and
+ * scroll/affine dispatcher calls. Main BG0 is preserved when used for 3D.
+ * The identity matrix is stack-owned and callbacks borrow it during calls. */
+void func_02055058(void)
+{
+    Mtx22 matrix;
+    union DisplayControl {
+        u32 word;
+        struct { u32 mode : 3; u32 bg0 : 1; u32 rest : 28; } bits;
+    };
+    int i;
+    int mainMode, subMode, bg0Is3D;
+    func_02000d60(&matrix);
+    union DisplayControl mainControl = *(volatile union DisplayControl *)0x04000000;
+    union DisplayControl subControl = *(volatile union DisplayControl *)0x04001000;
+    *(volatile u32 *)0x04000000 &= ~0x1f00;
+    *(volatile u32 *)0x04001000 &= ~0x1f00;
+    *(volatile u32 *)0x04000000 &= ~0xe000;
+    *(volatile u32 *)0x04001000 &= ~0xe000;
+    func_0205571c(0);
+    func_0205571c(1);
+    mainMode = mainControl.bits.mode;
+    subMode = subControl.bits.mode;
+    bg0Is3D = mainControl.bits.bg0;
+    for (i = 0; i < 8; i++) {
+        int mode = i < 4 ? mainMode : subMode;
+        switch (data_0212e2d0[mode][i % 4]) {
+        case 'T':
+            if (bg0Is3D == 1 && i == 0) break;
+            func_020555a0(i, 0);
+            func_020556fc(i, 0, 0);
+            break;
+        case 'A':
+            func_020555a0(i, 0);
+            func_02055408(i, &matrix, 0, 0, 0, 0);
+            break;
+        }
+    }
+}
