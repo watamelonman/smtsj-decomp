@@ -207,3 +207,7 @@ masks. DMA/timer registration borrows callbacks and arguments and uses the
 existing IRQ-mask provider; the timer symbols alias records 4..7 of the same
 OSIrqCallbackInfo table. The header exposes typed registration and GX cleanup
 contracts.
+
+The IRQ unit also exposes `SDK054d0IrqFunction` and its mask-based lookup: the
+lowest selected IRQ bit 0..21 returns a borrowed handler from the existing
+DTCM IRQ table or DMA/timer callback records, without changing registration.
