@@ -16,14 +16,16 @@ typedef struct Unk52e68State {
 /* Connection state block. func_0205304c changes the word at +0x14 and calls
  * the +0x40 callback, so only those offsets are named here. */
 typedef struct Unk52e68Conn {
-    u8 pad_00[0x0a];
+    u8 pad_00[6];
+    u16 unk_06;
+    u8 pad_08[2];
     u16 unk_0a;
     u8 pad_0c[8];
     s32 state;
     u8 pad_18[0x18];
     u32 unk_30;
     u8 pad_34[0x0c];
-    u32 unk_40;
+    void (*unk_40)(const void *argument);
 } Unk52e68Conn;
 
 /* Event block passed to func_020531d8: the halfword at +2 is the state value
@@ -49,6 +51,27 @@ void *func_02052f7c(u32 size, u32 flag);
 void func_0205304c(u32 state);
 /* Stores value in the connection block unless a shutdown state is active. */
 void func_020530b0(u32 value);
+
+/* Interrupt providers return/restore the previous interrupt-enable mask. */
+u32 func_02007a58(void);
+void func_02007a6c(u32 mask);
+/* Heap storage remains owned by the selected group. */
+void *func_02020470(u32 heap, u32 size, s32 alignment);
+u32 func_0201ff28(void *buffer);
+void func_020204a0(u32 heap, void *buffer);
+/* Asynchronous providers borrow callbacks; result 2 means accepted. */
+s32 func_02010a94(void (*callback)(Unk52e68Event *), u32 argument);
+s32 func_02010a14(void (*callback)(Unk52e68Event *));
+s32 func_02010bec(void *work);
+void func_02007e94(void);
+extern u8 data_0215fdc0[];
+extern const u8 data_02143a34[];
+void func_02053324(Unk52e68Event *event);
+void func_020533ac(Unk52e68Event *event);
+void func_020533e4(void);
+s32 func_020531b0(void);
+s32 func_02053288(void);
+s32 func_02053348(void);
 
 /* Builds a group of heaps for count transfer chunks. Evidence: two arena
  * spans are summed (arena 2 also recorded at +0xc), an aligned (count + 1)-word
@@ -109,6 +132,22 @@ void func_02052f68(void)
     data_0215f4d8.current = data_0215f4d8.saved;
 }
 
+/* Allocates from the indexed heap under the interrupt mask; the BL to
+ * 02020470 and +4 increment identify the live-buffer count. Nonzero flag
+ * selects head alignment 32, zero selects tail alignment -32. */
+void *func_02052f7c(u32 size, u32 flag)
+{
+    u32 mask;
+    void *buffer;
+    mask = func_02007a58();
+    buffer = func_02020470(data_0215f4d8.chunks[data_0215f4d8.current], size, flag ? 32 : -32);
+    if (buffer != 0) {
+        data_0215f4d8.unk_04++;
+    }
+    func_02007a6c(mask);
+    return buffer;
+}
+
 /* Allocates size bytes from the current heap preferring the head of the free
  * span (flag 1 becomes allocation mode 32 in func_02052f7c). Returns the
  * allocated storage, as used by func_020517f8 in sdk_02051378.c. */
@@ -122,6 +161,19 @@ void *func_02052fe0(u32 size)
 void *func_02052ff0(u32 size)
 {
     return func_02052f7c(size, 0);
+}
+
+/* Frees a non-null buffer in its containing heap with interrupts masked.
+ * Evidence: 0201ff28 supplies the heap to 020204a0, then +4 decrements.
+ * The caller relinquishes the buffer; null leaves the count unchanged. */
+void func_02053000(void *buffer)
+{
+    u32 mask = func_02007a58();
+    if (buffer != 0) {
+        func_020204a0(func_0201ff28(buffer), buffer);
+        data_0215f4d8.unk_04--;
+    }
+    func_02007a6c(mask);
 }
 
 /* Empty hook: the delinked body is a lone return, and both callers
@@ -189,6 +241,22 @@ s32 func_02053130(void)
     return 0;
 }
 
+/* Borrows event +2: errors are recorded before cleanup; successful events
+ * run 020531b0. A rejected follow-up notifies the +0x40 callback with the
+ * ROM table at 02143a34, then cleans up. Evidence: ordered BL/BLX paths. */
+void func_02053160(Unk52e68Event *event)
+{
+    if (event->unk_02 != 0) {
+        func_020530b0(event->unk_02);
+        func_020533e4();
+    } else if (!func_020531b0()) {
+        if (data_0215f500.unk_40 != 0) {
+            data_0215f500.unk_40(data_02143a34);
+        }
+        func_020533e4();
+    }
+}
+
 /* Submits callback 020531d8 to provider 02010a54. Evidence: callback literal
  * and CMP #2 at 020531b4..020531bc. Rejected results go to +0x30. */
 s32 func_020531b0(void)
@@ -244,6 +312,20 @@ void func_020532b8(Unk52e68Event *event)
     }
 }
 
+/* Requests state 3 and submits event handler 02053324 with argument zero.
+ * Evidence: ordered BLs and CMP #2. Rejections record the result and invoke
+ * cleanup; the return value is one only for an accepted request. */
+s32 func_020532ec(void)
+{
+    s32 result;
+    func_0205304c(3);
+    result = func_02010a94(func_02053324, 0);
+    if (result == 2) return 1;
+    func_020530b0(result);
+    func_020533e4();
+    return 0;
+}
+
 /* Borrows event +2; nonzero records the result, zero requests state 1.
  * Evidence: LDRH +2, CMP #0 and BL paths at 02053328..02053340. */
 void func_02053324(Unk52e68Event *event)
@@ -270,6 +352,19 @@ s32 func_02053348(void)
     return 0;
 }
 
+/* Borrows event +2: errors request state 9 before recording the event
+ * result; success requests state 1. Evidence: LDRH is repeated after the
+ * state-change BL, preserving any callback change to the borrowed event. */
+void func_02053378(Unk52e68Event *event)
+{
+    if (event->unk_02 != 0) {
+        func_0205304c(9);
+        func_020530b0(event->unk_02);
+    } else {
+        func_0205304c(1);
+    }
+}
+
 /* Borrows event +2 to select state 10 for nonzero or state 0 for zero.
  * Evidence: LDRH +2 and the two 0205304c calls at 020533b0..020533cc. */
 void func_020533ac(Unk52e68Event *event)
@@ -279,4 +374,32 @@ void func_020533ac(Unk52e68Event *event)
     } else {
         func_0205304c(0);
     }
+}
+
+/* In state 5, submits borrowed work 0215fdc0 to 02010bec and records
+ * errors. Always attempts 02053348 afterward, selecting state 10 on failure.
+ * Evidence: CMP #5 and the common BL path at 0205340c. */
+void func_020533e4(void)
+{
+    s32 result;
+    if (data_0215f500.state == 5) {
+        result = func_02010bec(data_0215fdc0);
+        if (result != 0) func_020530b0(result);
+    }
+    if (!func_02053348()) func_0205304c(10);
+}
+
+/* Runs 02007e94 unless already in state 1, then always requests state 3
+ * and submits 020533ac. Evidence: BEQ skips only the 02007e94 call.
+ * Rejection requests state 9; success clears connection halfword +6. */
+s32 func_02053570(void)
+{
+    if (data_0215f500.state != 1) func_02007e94();
+    func_0205304c(3);
+    if (func_02010a14(func_020533ac) != 2) {
+        func_0205304c(9);
+        return 0;
+    }
+    data_0215f500.unk_06 = 0;
+    return 1;
 }

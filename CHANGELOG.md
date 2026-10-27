@@ -3,6 +3,9 @@
 ## Unreleased
 
 - M2-T466: match the remaining four displacement/intensity task constructors, updater and effect dispatcher in `lib_020b78d8.c`.
+- M2-T453: reconstruct seven WiFi heap and connection callback helpers; document the deferred conditional-move match in `func_02053230`.
+
+- M2-T462: match eight CRI table lookup, hexadecimal parsing, pool allocation and record sizing helpers in `cri_0208539c.c`.
 
 - M2-T465: match eight more task-effect helpers, including float ramps, packed intensity, effect creation and object-ID filtering.
 - Match eight more CRI 0208539c callback, record reset and field-access functions (M2-T461).
