@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T176: match the CRI record creation, handle creation/release and worker-state mapping functions in `libs/CRI/cri_0208cf94.c`.
 - M2-T175: match the eight CRI record-reset, clamped-forwarding and handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T174: match eight CRI handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T161: match the three Maya texture-matrix specializations in `lib_02028100`.
