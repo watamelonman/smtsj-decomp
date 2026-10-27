@@ -29,11 +29,15 @@ unsigned int func_020059a8(unsigned int mask);
 /** Disable the requested IE bits while preserving IME; return the previous IE. */
 unsigned int func_020059d8(unsigned int mask);
 
-/** Release the optional provider handle and resource; reset the borrowed state slots. */
+/** GX_EndLoadTex: wait for the pending texture upload on GXi_DmaId, restore the
+ * saved texture bank mask and clear the LCDC bases, size and saved bank. */
 void func_020054d0(void);
-/** Copy size bytes from the borrowed base plus byte offset into caller-owned destination. */
-void func_02005550(void *destination, unsigned int offset, unsigned int size);
-/** Release the optional provider handle and bank; clear borrowed bank/base slots. */
+/** GX_LoadTexPltt: copy size bytes from caller-owned source into the borrowed
+ * palette LCDC block at state +8 plus byte offset; the configured GXi_DmaId
+ * selects the DMA copy provider. */
+void func_02005550(const void *source, unsigned int offset, unsigned int size);
+/** GX_EndLoadTexPltt: wait for the pending palette upload on GXi_DmaId, restore
+ * the saved palette bank at +12 and clear its bank/LCDC block slots. */
 void func_020055bc(void);
 /** Register handlers for mask bits 0..21; DMA/timer slots retain callbacks without ownership. */
 void func_020057d8(unsigned int mask, void (*function)(void));

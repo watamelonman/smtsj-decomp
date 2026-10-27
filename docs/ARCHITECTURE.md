@@ -180,8 +180,9 @@ and its child object; this unit allocates and retains nothing.
 
 `include/libs/NitroSDK/sdk_020054d0.h` declares nine argument-free IRQ
 entry points in this partial TU: eight dispatch fixed callback indices and one
-returns immediately. It also declares the borrowed IRQ queue initializer and
-three unsigned IRQ-mask helpers. The latter access volatile IME/IE hardware
+returns immediately. It also declares the borrowed IRQ queue initializer,
+three unsigned IRQ-mask helpers, and the GX texture/palette load and cleanup
+helpers. The IRQ mask helpers access volatile IME/IE hardware
 registers and preserve IME; they return the previous IE mask. Queue storage
 stays with the SDK, and no callback ownership crosses this boundary.
 The CRI work-area view also exposes format bytes +0xd/+0xe/+0xf, borrowed
@@ -190,13 +191,19 @@ with contexts at +0x78/+0x7c, +0x80/+0x84 and +0xe8/+0xec. Child-state
 providers control progression; callbacks borrow the work-area fields during
 calls. The result and progress words extend through +0xe4; ownership remains
 with the caller and existing providers.
-
-`libs/NitroSDK/sdk_020054d0.c` also keeps private borrowed cleanup-state and
-12-byte IRQ callback record views. The cleanup state exposes the base at +8,
-bank at +12 and resource at +20; external providers govern their release.
-DMA/timer registration borrows callbacks and arguments and uses the existing
-IRQ-mask provider. The header exposes typed registration and cleanup contracts.
 The CRI setup/result paths additionally expose signed row boundaries +0x40/+0x44
 and divisors/scales +0x50/+0x54/+0x58. They bound requests using the existing
 child submission providers and shift caller-owned rows through the existing
 halfword helpers; no new module dependency or ownership transfer is introduced.
+
+`libs/NitroSDK/sdk_020054d0.c` also keeps private borrowed GX texture-load and
+12-byte IRQ callback record views. The shared GX state at `data_021521dc`
+exposes `sTexLCDCBlk1` at +4, `sTexPlttLCDCBlk` at +8, `sTexPltt` at +12,
+`sTex` at +20, `sTexLCDCBlk2` at +24 and `sSzTexBlk1` at +28, matching the
+`TexLoadState` already documented for `sdk_02005238.c`. The load helper copies
+caller-owned source into the LCDC block plus byte offset; the cleanup helpers
+wait on `GXi_DmaId` (`data_0213ce44`) and restore the saved texture/palette bank
+masks. DMA/timer registration borrows callbacks and arguments and uses the
+existing IRQ-mask provider; the timer symbols alias records 4..7 of the same
+OSIrqCallbackInfo table. The header exposes typed registration and GX cleanup
+contracts.

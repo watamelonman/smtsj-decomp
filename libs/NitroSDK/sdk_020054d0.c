@@ -102,54 +102,64 @@ unsigned int func_020059d8(unsigned int mask)
     return previous;
 }
 
-/* Borrowed state offsets follow the cleanup loads/stores at 020054d0/020055bc. */
-typedef struct SDK054d0State {
+/* Borrowed GX texture load state at data_021521dc. Names follow pret/pokediamond
+ * GX_load3d.c; sdk_02005238.c's TexLoadState confirms the +4/+20/+24/+28 slots
+ * written by GX_BeginLoadTex, and GX_LoadTexPltt/GX_EndLoadTexPltt supply the
+ * palette LCDC block at +8 and saved palette bank at +12. */
+typedef struct SDK054d0GXState {
     unsigned int reserved0;
-    unsigned int field04;
-    unsigned char *base;
-    unsigned int bank;
+    unsigned int lcdcBlk1;
+    unsigned int texPlttLcdcBlk;
+    unsigned int texPltt;
     unsigned int reserved10;
-    void *resource;
-    unsigned int field18;
-    unsigned int field1c;
-} SDK054d0State;
-extern SDK054d0State data_021521dc;
+    unsigned int tex;
+    unsigned int lcdcBlk2;
+    unsigned int szBlk1;
+} SDK054d0GXState;
+extern SDK054d0GXState data_021521dc;
 extern int data_0213ce44;
-extern void func_02008178(int handle);
-extern void func_0200303c(void *resource);
+extern void func_02008178(unsigned int dma);
+extern void func_0200303c(unsigned int bank);
 extern void func_02003214(unsigned int bank);
-extern void func_020080e0(int handle, void *destination, const void *source,
-                         unsigned int size, unsigned int option, unsigned int callback);
-extern void func_020086bc(void *destination, const void *source, unsigned int size);
+extern void func_020080e0(unsigned int dma, const void *source, void *destination,
+                         unsigned int size, void *callback, void *argument);
+extern void func_020086bc(const void *source, void *destination, unsigned int size);
 
-/* Release the optional handle and resource, then clear state; evidenced by calls and stores. */
+/* GX_EndLoadTex in pret/pokediamond GX_load3d.c: wait for the pending texture
+ * upload on GXi_DmaId (data_0213ce44), restore the saved texture bank mask,
+ * then clear the two LCDC bases, the first-block size and the saved bank. */
 void func_020054d0(void)
 {
     if (data_0213ce44 != -1) func_02008178(data_0213ce44);
-    func_0200303c(data_021521dc.resource);
-    data_021521dc.field1c = 0;
-    data_021521dc.field18 = 0;
-    data_021521dc.field04 = 0;
-    data_021521dc.resource = 0;
+    func_0200303c(data_021521dc.tex);
+    data_021521dc.szBlk1 = 0;
+    data_021521dc.lcdcBlk2 = 0;
+    data_021521dc.lcdcBlk1 = 0;
+    data_021521dc.tex = 0;
 }
 
-/* Read from the borrowed base plus byte offset; the original selects a handle provider or copy. */
-void func_02005550(void *destination, unsigned int offset, unsigned int size)
+/* GX_LoadTexPltt in pret/pokediamond GX_load3d.c: copy size bytes from
+ * caller-owned source into the borrowed palette LCDC block at state +8 plus
+ * byte offset. A configured GXi_DmaId (data_0213ce44) selects the DMA copy
+ * provider; otherwise the synchronous copy provider is used. */
+void func_02005550(const void *source, unsigned int offset, unsigned int size)
 {
-    unsigned char *base = data_021521dc.base;
+    void *destination = (void *)(data_021521dc.texPlttLcdcBlk + offset);
     if (data_0213ce44 != -1)
-        func_020080e0(data_0213ce44, destination, base + offset, size, 0, 0);
+        func_020080e0(data_0213ce44, source, destination, size, 0, 0);
     else
-        func_020086bc(destination, base + offset, size);
+        func_020086bc(source, destination, size);
 }
 
-/* Release the optional handle and bank, clearing borrowed base/bank slots (original +8/+12). */
+/* GX_EndLoadTexPltt in pret/pokediamond GX_load3d.c: wait for the pending
+ * palette upload on GXi_DmaId (data_0213ce44), restore the saved palette bank
+ * mask at +12, then clear the saved bank and palette LCDC block. */
 void func_020055bc(void)
 {
     if (data_0213ce44 != -1) func_02008178(data_0213ce44);
-    func_02003214(data_021521dc.bank);
-    data_021521dc.bank = 0;
-    data_021521dc.base = 0;
+    func_02003214(data_021521dc.texPltt);
+    data_021521dc.texPltt = 0;
+    data_021521dc.texPlttLcdcBlk = 0;
 }
 
 /* Twelve-byte IRQ records follow public NitroSDK OSIrqCallbackInfo; storage is borrowed. */
@@ -160,6 +170,8 @@ typedef struct SDK054d0Callback {
 } SDK054d0Callback;
 
 extern SDK054d0Callback data_021521fc[8];
+/* Alias of records 4..7 of data_021521fc (OSIrqCallbackInfo layout); the timer
+ * half of the eight-record table, referenced by the original as its own symbol. */
 extern SDK054d0Callback data_0215222c[4];
 extern void (*data_027e0000[22])(void);
 
