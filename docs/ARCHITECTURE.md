@@ -129,3 +129,9 @@ the record storage; the wrappers depend only on existing library providers.
 borrowed material and caller-owned matrix layouts. The SI3D sender owns its
 stack geometry packet only during submission; both routines depend solely on
 existing SDK division and geometry providers and retain no storage.
+`include/libs/unknown/lib_02048e90.h` exposes a borrowed singleton layout for
+its setup, teardown and update wrappers: the latch words at +0x50/+0x54, ten
+object pointers at +0x64, resource slot +0x7870, nine resource pointers at
++0x798c and initialization guard +0x7a3c. The wrappers depend only on base
+types and existing providers; providers retain ownership of objects and state,
+and resource release remains governed by the existing teardown provider.
