@@ -3,6 +3,14 @@
 ## Unreleased
 
 - M2-T275: match the decimal-digit counter and clamped linear interpolation in `sdk_02050160`; document the Q12 interpolation and cubic Bezier evaluator on the hard list.
+- M2-T272: match the CRI "RIFF" marker scan at 0208d5ac and the 16-bit sample crossfade at 0208d710 in `cri_0208d5ac.c`.
+- M2-T277: match the `.cmp` path builder and resource parser in `libs/NitroSDK/sdk_0205dacc.c`.
+- M2-T271: match the CRI string/format wrappers at 0208d674–0208d6fc and the zero-returning 0208d648 in `cri_0208d5ac.c`.
+- M2-T276: match eight resource-record, entry-table, lookup and wrapper helpers in `libs/NitroSDK/sdk_0205dacc.c`.
+
+- M2-T270: match and document eight more CRI no-op entry points at 0208d654–0208d670.
+- M2-T259: match the bounded halfword copier and token-to-slot resolver in `sdk_0204f9d8`.
+
 - M2-T269: match and document eight CRI no-op entry points in `cri_0208d5ac.c`.
 - M2-T258: match eight token, area-selector, slot and halfword-buffer helpers in `sdk_0204f9d8`.
 
