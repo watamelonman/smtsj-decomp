@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T396: match six background mosaic helpers and two indexed callback dispatchers in `sdk_02054fb8.c`.
+
 - M2-T395: reconstruct eight main/sub background-priority wrappers in matching C.
 
 - M2-T365: match the FBIN stream copy pair, entry-offset walker and the four locator-based header/entry readers in `libs/unknown/lib_0205f1d8.c`, completing the translation unit.
