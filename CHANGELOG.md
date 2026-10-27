@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T286: match the six blocking/queued transfer and command-object helpers in `libs/NitroSDK/sdk_0205bbac.c`.
 - M2-T279: match the provider start-up/state pair and both single-bit cursor helpers in `libs/unknown/lib_0205ee84.c`, completing the translation unit.
 - M2-T280: match the NitroSDK GX display helpers (V-blank enable, display on/off, sub BG mode, master brightness and GX state init) in `libs/NitroSDK/sdk_020026a0.c`.
 - M2-T278: match the eight bit-stream allocation, copy, bit-write and bit-read helpers in `libs/unknown/lib_0205ee84.c`.
