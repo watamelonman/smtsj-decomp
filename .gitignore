@@ -14,3 +14,6 @@ __pycache__/
 /baserom.nds
 /arm7_bios.bin
 /wip/
+
+# decomp.me scratch claim tokens (private)
+/config/scratches.tsv
