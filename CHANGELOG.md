@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T294: match the two CRI work-area accessor pairs, the mixer buffer clear/get, the circular sample writer and the alloc/free/notification wrappers in `libs/CRI/cri_0208d8e8.c`.
 - M2-T286: match the six blocking/queued transfer and command-object helpers in `libs/NitroSDK/sdk_0205bbac.c`.
 - M2-T290: match the queue scan, cursor accessors and fixed-stride slot clears in `libs/unknown/lib_02049620.c`, add `include/libs/unknown/lib_02049620.h`, and document the two still-delinked functions of that unit.
 - M2-T288: match the eight remaining shared navigation-state helpers (init/reset, limit, saved value, last-entry tests and sound cue) in `libs/unknown/lib_020ba90c.c`, completing the translation unit.

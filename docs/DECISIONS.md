@@ -594,3 +594,16 @@ a private twelve-byte view beginning at message +20, within the 56-byte object.
 `func_0204f788` reads its first two halfwords before storing either. Explicit
 temporaries and reverse source store order reproduce the compiler's original
 load/store schedule. The third halfword is then read and stored separately.
+
+## DEC-036 — Preserve the 0208d95c zero-copy and loop rotation
+
+`func_0208d95c` copies samples into a circular buffer and wraps the write index
+with an equality test. The literal `for (i = 0; i < count; i++)` form makes
+mwccarm 2.0/sp1p5 materialise the wrap constant with `mov r3, #0`, while the
+original uses `mov r3, r5` (a copy of the loop counter's initial zero), and a
+plain `for` adds a top-of-loop bound test. Declaring `i` without an initialiser,
+assigning `i = 0` after the position wrap, and writing the loop as
+`do { ... } while (i < count);` under the already-required `count <= 0` guard
+reproduces both the zero-copy and the rotated loop exactly. The generated code
+is branch-equivalent to the straightforward form; no assembly, volatile access
+or byte blob is involved.
