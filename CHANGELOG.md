@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T175: match the eight CRI record-reset, clamped-forwarding and handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T174: match eight CRI handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T161: match the three Maya texture-matrix specializations in `lib_02028100`.
 - M2-T160: match the basic and Maya joint-scale/SRT routines in `lib_02027eac` (`func_02027eac`, `func_02027eec`, `func_02027fb0`).
