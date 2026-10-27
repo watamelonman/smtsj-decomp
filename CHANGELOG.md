@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T396: match six background mosaic helpers and two indexed callback dispatchers in `sdk_02054fb8.c`.
+- M2-T378: match eight CRI voice-record initialisation, release, query and master-volume helpers in `libs/NitroSDK/sdk_0208dc78.c`, adding `include/libs/NitroSDK/sdk_0208dc78.h`.
 
 - M2-T368: match six NitroSDK cleanup, transfer and IRQ callback registration helpers; document two deferred IRQ routines.
 - M2-T395: reconstruct eight main/sub background-priority wrappers in matching C.
