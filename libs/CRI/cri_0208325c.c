@@ -11,7 +11,7 @@ extern Unk0208325cState data_02174740;
 extern s32 func_0208a988(void);
 extern void func_020821e0(void);
 extern void func_020821f0(void);
-extern void func_02082544(void (*callback)(void *), void *context);
+extern void func_02082544(void (*callback)(void *context, void *message), void *context);
 
 /** Forward the result of the mode dispatcher, identified by the literal at
  * 020832b4; this wrapper retains no state. */
@@ -32,10 +32,11 @@ void func_020832c4(void)
     func_020821f0();
 }
 
-/** Forward a borrowed callback/context pair. The destination at 02083498
- * stores these in 02173ff4, read and called by 0208211c as callback(context).
+/** Forward a borrowed callback/context pair. The literal at 02083498 selects
+ * func_02082544, which stores these in 02173ff4. func_02082220/func_0208228c
+ * read the pair and invoke callback(context, data_021742cc).
  * The provider retains the pair; the caller must keep the context valid. */
-void func_02083490(void (*callback)(void *), void *context)
+void func_02083490(void (*callback)(void *context, void *message), void *context)
 {
     func_02082544(callback, context);
 }
