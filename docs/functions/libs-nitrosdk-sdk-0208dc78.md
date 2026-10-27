@@ -1,11 +1,10 @@
-# sdk_0208dc78 (M2-T378)
+# sdk_0208dc78 (M2-T378, M2-T379)
 
 This card reconstructs eight of the fourteen functions in the delinked
 `libs/NitroSDK/sdk_0208dc78.c` range (`0x0208dc78..0x0208e1f0`). A search of
 this repository found no existing implementation of these routines; the
 surrounding CRI units identify the data they operate on, so the bodies are
-written from the delinked ARM instructions and relocations. The remaining six
-functions in the range belong to M2-T379 and stay on the delink. The
+written from the delinked ARM instructions and relocations. M2-T379 adds five further matching functions; the teardown remains on the delink. The
 translation unit is still linked from `config/arm9/delinks.txt` until a human
 marks it `complete`.
 
@@ -31,6 +30,21 @@ only the fields touched by these functions are named in
 call in `func_0208e0e8` keeps zero in `r1` across the call; the neighbouring
 `func_0208e084` path passes one in the same register. See DEC-040.
 
+## M2-T379 functions
+
+A public-source search for this unit and CRI voice wrappers in pret sources
+found no corresponding implementation. The existing CRI singleton declarations
+and original instructions provide the evidence; names remain neutral.
+
+| Function | Contract and instruction evidence |
+| --- | --- |
+| `func_0208dea4` | For an unassigned indexed record, calls `func_0207963c` with callback storage `data_02175cdc`, mode 2 for nonzero argument or 1 otherwise, and the third argument unchanged. Stores the handle, zero start, end 16, assigned byte one, playing byte zero and zero fade counters. Evidence: 0208dea4..0208df0c, record offsets +0, +4, +8, +0xc, +0xd, +0x50, +0x54. |
+| `func_0208df48` | Requires an assigned record and a successful path probe. Stores unsigned `(time * 1000) / 60` at +4, clears fade counters, submits timing/master volume/path and copies 64 readable bytes into +0x10; stores the flag at +0xe. A playing voice then receives `func_0208e0e8(index, 0)`. Evidence: 0208df48..0208e008, reciprocal 0x88888889 and provider calls. |
+| `func_0208e008` | For an assigned record, stores the same unsigned timing conversion at +8, clears fade counters, submits timing and calls `func_02079af0`; a playing voice receives `func_0208e0e8(index, 0)`. Evidence: 0208e008..0208e084. |
+| `func_0208e084` | For an assigned stopped record, sets duration +0x50, clears elapsed +0x54 and direction +0xf; zero duration immediately calls `func_02079b4c(handle, 1)` and sets playing +0xd. Evidence: 0208e084..0208e0e8. |
+| `func_0208dd68` | When notification +4 is nonzero, advances each nonzero signed duration's elapsed count. At equality, starts direction-zero voices or restores master volume for the other direction, then clears both counters. Intermediate volumes are master times elapsed/duration for nonzero direction, or master times (duration-elapsed)/duration otherwise. Finally calls `func_0207960c`, including when count is zero. Evidence: 0208dd68..0208dea4 and signed `_fflt` calls. See DEC-041. |
+| `func_0208dcb0` | Deferred teardown: when initialized, loops over records with end timing zero then release, acquires provider lock with argument one, shuts down, frees the table, clears initialization and fills 28 singleton bytes, then restores the lock. Evidence: 0208dcb0..0208dd44. See hard list. |
+
 ## Validation
 
 All eight functions report 100% in objdiff against
@@ -41,5 +55,17 @@ escape or byte blob was used.
 
 ## Hard list
 
-None. All eight functions assigned to this card match at 100%; the six other
-functions in the range are intentionally left to M2-T379.
+- `func_0208dcb0` (148 bytes): reconstructed the counted teardown, lock/save,
+  provider shutdown, table release, singleton clear and unlock sequence. C
+  compiled to 140 bytes (94.24% objdiff): mwcc shares the final singleton
+  address load between its initialized-word store and the fill call, while
+  the target loads r3 and r0 separately and keeps two identical relocatable
+  literals. Tried member/whole-object addresses, pointer parameter types,
+  array views and local address expressions; none reproduced the pool layout.
+  The nonmatching definition was removed; the original delink implementation
+  remains active. A human can create a scratch with `tools/decompme.py`.
+
+M2-T379 validation: all five retained additions report 100% in objdiff; the
+match gate, anticheat, nine repository unit tests and full checksum gate pass.
+No new tests are required by the card; object comparison verifies instruction
+and relocation equality. The original eight M2-T378 definitions still match.

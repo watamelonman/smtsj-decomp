@@ -3,7 +3,13 @@
 ## Unreleased
 
 - M2-T398: match background-record cleanup and dual-engine display/transform reset in `sdk_02054fb8.c`.
+- M2-T411: match all eight NitroSDK touch-panel initialization, sampling and calibration functions.
+
+- M2-T400: match six NitroSystem stream initialization, setup, volume, stop and wake helpers; document the deferred buffer callback.
+- M2-T379: match five CRI voice assignment, path/timing, start and fade-update helpers; document the deferred teardown helper.
+
 - M2-T409: match three input-mask queries and five state accessors in `sdk_020535cc.c`.
+- M2-T410: match the input-record initializer, key updater with auto-repeat, another mask query, the one-hot key mapper and the `data_02160794` state machine in `sdk_020535cc.c`, completing the TU.
 
 - M2-T397: match four background affine wrappers, affine callback dispatch and two mosaic setters; document the deferred display-plane helper.
 

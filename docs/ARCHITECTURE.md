@@ -211,3 +211,8 @@ contracts.
 The IRQ unit also exposes `SDK054d0IrqFunction` and its mask-based lookup: the
 lowest selected IRQ bit 0..21 returns a borrowed handler from the existing
 DTCM IRQ table or DMA/timer callback records, without changing registration.
+
+`include/libs/NitroSDK/sdk_0200d380.h` exposes caller-owned eight-byte raw
+touch samples and Q2-origin/Q8-scale calibration parameters. The unit depends
+only on existing FIFO and interrupt providers, firmware user information and
+divider hardware. Shared touch state and its calibration alias remain SDK-owned.
