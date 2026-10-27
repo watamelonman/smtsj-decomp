@@ -3,10 +3,13 @@
 
 #include "types.h"
 
-/** Loaded resource; only the pointer-table count at +0x10 is established here. */
+/** Loaded resource; the entry count is at +0x10, +0x14 signals a following group,
+ *  and the variable-length entry records start at +0x18. */
 typedef struct {
     u32 unk_00[4];
     u32 count;
+    u32 groupCount;
+    u8 entries[1];
 } Unk05dacc_Resource;
 
 /** Named entry inside a resource; the name is matched and +0x30 receives the bound output. */
@@ -65,7 +68,7 @@ void func_0205dde4(Unk05dacc_Handle *handle);
 /* Implemented in the remainder of this translation unit. */
 /** Builds a prefixed path with a .cmp probe and caller suffix fallback. */
 int func_0205dacc(char *output, const char *name, const char *suffix);
-/** Parses the resource tables into the wrapper. */
-void func_0205dc28(Unk05dacc_Handle *handle, Unk05dacc_Resource *resource, u32 mode);
+/** Parses the resource tables into the wrapper; records points at the resource header. */
+void func_0205dc28(Unk05dacc_Handle *handle, u8 *records, u32 mode);
 
 #endif
