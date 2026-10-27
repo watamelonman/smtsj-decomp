@@ -79,6 +79,12 @@ wrapper's flag distinguishes a borrowed resource from one released at teardown;
 the independent 320-byte buffer is caller-owned. These helpers depend only on
 base types and existing copy, fill, allocation, and resource-release providers.
 
+`include/libs/unknown/lib_0205f1d8.h` defines borrowed FBIN resource header,
+size-table and 12-byte file-locator views for the resource container helpers.
+The payload offset and entry sizes are read from the file header; the helpers
+never allocate or own the resource, and the 0x48-byte NitroSDK file context is
+stack-owned only while one open/read/close sequence runs.
+
 `include/libs/NitroSDK/sdk_02005a08.h` exposes the borrowed volatile `OSLockWord`
 view (`lockFlag`, `ownerID`, `extension`) used by the NitroSDK spin-lock
 helpers; callers retain the lock storage and the OS boot state owns it.
@@ -176,3 +182,9 @@ and its child object; this unit allocates and retains nothing.
 entry points reconstructed in this partial TU. Seven forward fixed callback
 indices to the existing SDK dispatcher, while the return-only handler touches
 no state. No callback storage or ownership crosses this declaration boundary.
+The CRI work-area view also exposes format bytes +0xd/+0xe/+0xf, borrowed
+input/output pointers +0x48/+0x5c, row bookkeeping +0x64..+0x74 and callbacks
+with contexts at +0x78/+0x7c, +0x80/+0x84 and +0xe8/+0xec. Child-state
+providers control progression; callbacks borrow the work-area fields during
+calls. The result and progress words extend through +0xe4; ownership remains
+with the caller and existing providers.
