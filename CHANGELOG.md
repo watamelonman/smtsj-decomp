@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T161: match the three Maya texture-matrix specializations in `lib_02028100`.
 - M2-T152: match the four XSI texture-matrix specializations in `lib_02029470`.
 - M2-T133: match all seven graphics-bank, texture-capacity, geometry initialization and resource-lifetime wrappers.
 - M2-T153: match eight TBB1/TBL1/MTBL resource lookup and index helpers in `sdk_0204fce8`.
