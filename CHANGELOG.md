@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T399: match seven NitroSystem stream channel, playback, alarm and sleep helpers; document the deferred volume setter.
+
 - M2-T368: match six NitroSDK cleanup, transfer and IRQ callback registration helpers; document two deferred IRQ routines.
 - M2-T395: reconstruct eight main/sub background-priority wrappers in matching C.
 
