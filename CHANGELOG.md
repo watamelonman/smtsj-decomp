@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T465: match eight more task-effect helpers, including float ramps, packed intensity, effect creation and object-ID filtering.
+
 - M2-T464: match eight task-effect callbacks in `lib_020b78d8.c`, including signed displacement updates and fifteen-step float completion.
 - M2-T457: match eight locale wide-character conversion and byte-memory routines in `sdk_020118f8.c`.
 
