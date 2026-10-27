@@ -154,3 +154,10 @@ The sample shift, three touch-state queries, the rectangle hit test and the
 integer-distance check depend only on base types and the existing touch-panel,
 integer-distance and GX providers. The table and calibration storage remain
 provider-owned; this unit allocates and releases nothing.
+
+`libs/CRI/cri_0207a8d0.c` keeps its partial CRI work-area view private: the
+state word at +4, the released child pointer at +8, the result words at
++0x90/+0x94 and the boolean flag at +0xac. The accessors, state setter, release
+path and halfword row-shift helpers depend only on base types and the
+neighbouring CRI release provider (0x0208095c). The caller owns the work area
+and its child object; this unit allocates and retains nothing.
