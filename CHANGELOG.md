@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T368: match six NitroSDK cleanup, transfer and IRQ callback registration helpers; document two deferred IRQ routines.
+
 - M2-T367: match the eighth NitroSDK IRQ callback wrapper, IRQ queue initializer and three interrupt-mask helpers; document three deferred routines.
 
 - M2-T366: reconstruct the NitroSDK return-only interrupt handler and seven indexed callback dispatcher wrappers in matching C.

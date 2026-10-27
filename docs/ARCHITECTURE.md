@@ -190,3 +190,9 @@ with contexts at +0x78/+0x7c, +0x80/+0x84 and +0xe8/+0xec. Child-state
 providers control progression; callbacks borrow the work-area fields during
 calls. The result and progress words extend through +0xe4; ownership remains
 with the caller and existing providers.
+
+`libs/NitroSDK/sdk_020054d0.c` also keeps private borrowed cleanup-state and
+12-byte IRQ callback record views. The cleanup state exposes the base at +8,
+bank at +12 and resource at +20; external providers govern their release.
+DMA/timer registration borrows callbacks and arguments and uses the existing
+IRQ-mask provider. The header exposes typed registration and cleanup contracts.

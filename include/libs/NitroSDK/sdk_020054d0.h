@@ -29,4 +29,17 @@ unsigned int func_020059a8(unsigned int mask);
 /** Disable the requested IE bits while preserving IME; return the previous IE. */
 unsigned int func_020059d8(unsigned int mask);
 
+/** Release the optional provider handle and resource; reset the borrowed state slots. */
+void func_020054d0(void);
+/** Copy size bytes from the borrowed base plus byte offset into caller-owned destination. */
+void func_02005550(void *destination, unsigned int offset, unsigned int size);
+/** Release the optional provider handle and bank; clear borrowed bank/base slots. */
+void func_020055bc(void);
+/** Register handlers for mask bits 0..21; DMA/timer slots retain callbacks without ownership. */
+void func_020057d8(unsigned int mask, void (*function)(void));
+/** Register DMA channel 0..3 and its borrowed argument, preserving the previous IRQ enable bit. */
+void func_020058ec(unsigned int channel, void (*callback)(void *), void *argument);
+/** Register timer 0..3 and its borrowed argument, enabling its IRQ until dispatch. */
+void func_02005934(unsigned int timer, void (*callback)(void *), void *argument);
+
 #endif
