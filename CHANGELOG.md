@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T211: match the Maya texture-matrix identity constructor, the texture-SRT submission wrapper and the joint-SRT sender in `libs/unknown/lib_02028578.c` (`func_02028578`, `func_0202859c`, `func_020286e4`).
+- M2-T207: match the five script request wrappers (requests 120-124) and the shared-record ID/command builders `func_020ba73c`, `func_020ba78c` and `func_020ba838` in `lib_020ba678`.
 - M2-T206: match the four 3ds Max texture-matrix constructors and submission wrapper in `lib_02028fa8` (`func_02028fa8`, `func_02029080`, `func_020290d0`, `func_020290f4`).
 - M2-T204: match the NitroSystem texture/palette animation object init, texture/palette parameter writers and frame sampler in `libs/NitroSDK/sdk_02027b1c.c`.
 - M2-T186: match six NitroSDK OS spin-lock/IRQ helpers in `sdk_02005a08`; OS_SetIrqStackChecker and OS_InitLock remain delinked and are documented on the hard list.
