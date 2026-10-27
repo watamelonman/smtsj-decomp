@@ -25,10 +25,18 @@ behavior must not be added to these functions. No module boundary changes.
 | `func_0208d640` | `bx lr` at `0x0208d640`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
 | `func_0208d644` | `bx lr` at `0x0208d644`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
 | `func_0208d650` | `bx lr` at `0x0208d650`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d654` | `bx lr` at `0x0208d654`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d658` | `bx lr` at `0x0208d658`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d65c` | `bx lr` at `0x0208d65c`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d660` | `bx lr` at `0x0208d660`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d664` | `bx lr` at `0x0208d664`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d668` | `bx lr` at `0x0208d668`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d66c` | `bx lr` at `0x0208d66c`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
+| `func_0208d670` | `bx lr` at `0x0208d670`: returns immediately, consumes no arguments, changes no memory, and defines no result. |
 
 ## Validation
 
-The build and objdiff match gate passed: all eight requested functions report
+The build and objdiff match gate passed: all sixteen reconstructed functions report
 100%. The checksum gate reports all artifacts byte-identical to the original.
 Anticheat passed, and all nine existing unit tests passed. No new behavioral
 tests are required by this card: exact instruction matching verifies the
@@ -36,5 +44,5 @@ specified no-op behavior.
 
 ## Hard list
 
-None for the eight requested functions. Other functions in the TU remain
+None for the sixteen reconstructed functions. Other functions in the TU remain
 provided by the delinked original, as required by the card.

@@ -48,3 +48,51 @@ void func_0208d650(void)
 {
     return;
 }
+
+/** Returns without side effects; original ARM instruction at 0x0208d654 is BX LR. */
+void func_0208d654(void)
+{
+    return;
+}
+
+/** Returns without side effects; original ARM instruction at 0x0208d658 is BX LR. */
+void func_0208d658(void)
+{
+    return;
+}
+
+/** Returns without side effects; original ARM instruction at 0x0208d65c is BX LR. */
+void func_0208d65c(void)
+{
+    return;
+}
+
+/** Returns without side effects; original ARM instruction at 0x0208d660 is BX LR. */
+void func_0208d660(void)
+{
+    return;
+}
+
+/** Returns without side effects; original ARM instruction at 0x0208d664 is BX LR. */
+void func_0208d664(void)
+{
+    return;
+}
+
+/** Returns without side effects; original ARM instruction at 0x0208d668 is BX LR. */
+void func_0208d668(void)
+{
+    return;
+}
+
+/** Returns without side effects; original ARM instruction at 0x0208d66c is BX LR. */
+void func_0208d66c(void)
+{
+    return;
+}
+
+/** Returns without side effects; original ARM instruction at 0x0208d670 is BX LR. */
+void func_0208d670(void)
+{
+    return;
+}

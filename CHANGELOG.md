@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T270: match and document eight more CRI no-op entry points at 0208d654–0208d670.
+
 - M2-T269: match and document eight CRI no-op entry points in `cri_0208d5ac.c`.
 - M2-T258: match eight token, area-selector, slot and halfword-buffer helpers in `sdk_0204f9d8`.
 
