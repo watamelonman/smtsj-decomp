@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match seven file/decompression wrappers in NitroSDK sdk_02051378; document the remaining whole-file loader.
+
 - M2-T416: reconstruct eight NitroSDK file-context open/close/seek/read wrappers, the word-read and free thunks, the work byte-span accessor and the lazy read-buffer allocator in `libs/NitroSDK/sdk_02051378.c`.
 - M2-T412: match eight transfer-queue, display-control and initialization helpers in `sdk_02056cac.c`.
 - M2-T398: match background-record cleanup and dual-engine display/transform reset in `sdk_02054fb8.c`.
