@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T197: match the eight MTBL/TBL1 record lookup, battle-record forwarding, list reset/append and 56-byte record comparator helpers in `lib_02049398`.
+- M2-T196: match the NitroSDK `G2x_SetBGyAffine_` background affine-register writer in `sdk_02003bb4`, completing the TU.
+- M2-T195: match the eight NitroSDK main/sub BG0-BG3 character-base pointer helpers in `sdk_02003bb4`.
 - M2-T193: match the NNS resource-name `Plt:` flag parser and the four palette-state helpers in `libs/NitroSDK/sdk_020580ec.c`.
 - M2-T185: match the five NitroSystem sound capture state helpers in `lib_0202aeb0`.
 - M2-T176: match the CRI record creation, handle creation/release and worker-state mapping functions in `libs/CRI/cri_0208cf94.c`.
