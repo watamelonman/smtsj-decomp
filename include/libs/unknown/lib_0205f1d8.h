@@ -45,4 +45,15 @@ typedef struct {
     u32 offset;
 } Unk05f1d8Locator;
 
+/* Caller-owned byte stream used by the two block copy helpers in this unit:
+ * +0 is the storage, +4 its byte capacity, +8 the cursor and +0xc a status word
+ * that the next copy clears. Evidence: func_0205f1d8 and func_0205f25c guard the
+ * copy with those four words, and no other function in the unit touches them. */
+typedef struct {
+    u8 *buffer;
+    u32 capacity;
+    u32 offset;
+    u32 unk_0c;
+} Unk05f1d8Stream;
+
 #endif

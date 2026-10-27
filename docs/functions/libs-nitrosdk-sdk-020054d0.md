@@ -63,6 +63,49 @@ create scratches with `tools/decompme.py`; no assembly or code blobs were added.
 ## Validation
 
 Objdiff is the acceptance test; runtime tests are not required by this card.
-All thirteen retained C definitions in this TU match at 100%. The build,
+All thirteen C definitions added in M2-T366 and M2-T367 match at 100%. The build,
 anticheat, repository unit tests and checksum gates pass. The partial TU remains
 linked from the delink pending human completion.
+
+## M2-T368 additions
+
+Existing linker names are retained. Public-source comparisons:
+[OS_interrupt.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/OS_interrupt.c)
+provides `OS_SetIrqFunction`, `OSi_EnterDmaCallback` and
+`OSi_EnterTimerCallback`; [OS_irqTable.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/OS_irqTable.c)
+provides the dispatcher. [GX_load3d.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/GX_load3d.c)
+provides the texture/palette load lifecycle: `GX_LoadTexPltt`,
+`GX_EndLoadTex` and `GX_EndLoadTexPltt`. The shared state at
+`data_021521dc` is the `TexLoadState` already identified in
+`libs/NitroSDK/sdk_02005238.c` from the same public source: +4 is
+`sTexLCDCBlk1`, +8 `sTexPlttLCDCBlk`, +12 `sTexPltt`, +20 `sTex`,
++24 `sTexLCDCBlk2` and +28 `sSzTexBlk1`. `data_0213ce44` is `GXi_DmaId`;
+it is waited on, not released.
+
+| Function | Size | Contract and evidence | Result |
+| --- | ---: | --- | --- |
+| `func_020054d0` | 76 | `GX_EndLoadTex`: no arguments. If `GXi_DmaId` (`data_0213ce44`) is not -1, wait on it; pass the saved texture bank mask at state +20 to the bank-restore provider (`func_0200303c`, which manipulates the LCDC bank-enable register), then clear state +28, +24, +4 and +20 in that order. | 100% |
+| `func_02005550` | 108 | `GX_LoadTexPltt`: caller-owned source, unsigned byte offset and size. Copy into the borrowed palette LCDC block at state +8 plus offset; a configured `GXi_DmaId` selects the six-argument DMA provider with zero callback/argument, otherwise the three-argument synchronous copy provider. | 100% |
+| `func_020055bc` | 68 | `GX_EndLoadTexPltt`: no arguments. Wait on `GXi_DmaId` unless -1, pass the saved palette bank at state +12 to the bank-restore provider (`func_02003214`), then clear state +12 and +8. | 100% |
+| `func_02005640` | 116 | Boolean clear request and unsigned IRQ mask. Save CPU IRQ mode, optionally clear matching check bits, restore mode and sleep on the IRQ queue until a requested check bit is set. | Deferred |
+| `func_020056b8` | 136 | Unsigned callback slot 0..7. Clear callback before calling it with its borrowed argument, set the indexed check flag and disable its IRQ when the saved enable flag is zero. Public `OSi_IrqCallback` confirms the behavior. | Deferred |
+| `func_020057d8` | 136 | Unsigned IRQ mask and argument-free handler. Scan 22 bits; DMA bits 8..11 use callback records 0..3 and timer bits 3..6 use 4..7. Other bits write the DTCM IRQ table. Matching public `OS_SetIrqFunction`. | 100% |
+| `func_020058ec` | 72 | DMA channel 0..3, callback and borrowed argument. Store callback/argument, enable bit channel+8 and preserve its previous enabled state in the record. Matching public `OSi_EnterDmaCallback`. | 100% |
+| `func_02005934` | 72 | Timer 0..3, callback and borrowed argument. Store callback/argument, enable bit timer+3 and set record enable to one. Matching public `OSi_EnterTimerCallback`. | 100% |
+
+### Additional hard list
+
+- `func_02005640`: tried direct fixed addresses, a DTCM layout view, linker-base
+  address arithmetic, inline flag accessors, volatile reads, explicit early
+  return and do/while forms. Best objdiff was 85.48%. The compiler hoisted the
+  loop check-word address construction ahead of the initial test and used
+  different registers. No C definition is retained.
+- `func_020056b8`: public dispatcher source plus explicit flag/enable temporaries
+  reached 98.82%. Remaining differences swap r1/r2 around the check-word update
+  and enable test. Tried declaration order, callback aliases, plain records,
+  inline accessors, volatile access and size optimization. No C definition is
+  retained; existing wrappers still call the delinked provider.
+
+Both can be opened as human-managed scratches with `tools/decompme.py`.
+No inline assembly or code blobs were added. The six additions and all thirteen
+existing definitions pass objdiff at 100% (19 definitions total).
