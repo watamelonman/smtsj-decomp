@@ -227,3 +227,9 @@ the ten-slot singleton view and callback contracts for ID selection. The three
 implemented wrappers depend on existing request, lookup, candidate-collection and
 selection providers; requests, objects and entries remain provider-owned. The
 six-ID candidate array is local to the selector and no pointers are retained.
+
+The CRI `cri_0208325c.c` private views also expose nesting count +8, dispatch
+word +0x20, and two callback/context pairs in `data_02174700`. The nesting
+entry reads volatile hardware IE and uses existing SDK IRQ-mask providers;
+the mode-two path passes provider-owned thread storage to the existing SDK
+thread helper. No new ownership crosses these boundaries.
