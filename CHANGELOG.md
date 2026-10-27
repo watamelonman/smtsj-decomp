@@ -4,6 +4,7 @@
 
 - M2-T230: match the three command payload wrappers at 0204f68c, 0204f6d8 and 0204f788.
 
+- M2-T231: match seven SDK upload-state and bank-region helpers in `sdk_02053fd0`; the palette transfer dispatcher remains delinked.
 - Match two SDK pair-state guard/advance helpers; document the remaining GX helper.
 - M2-T229: reconstruct eight message submission wrappers in `libs/NitroSDK/sdk_0204f520.c`.
 
