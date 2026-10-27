@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T327: match the record registration and selected-slot processing helpers in `libs/NitroSDK/sdk_0205ea18.c` (two functions).
+
 - M2-T326: match five interpolation/state helpers in `libs/NitroSDK/sdk_0205ea18.c`; document three hard functions retained in the delink.
 - M2-T320: match eight more CRI provider queries, pool reference/reset and slot-selection functions.
 
