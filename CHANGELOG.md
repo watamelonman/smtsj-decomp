@@ -4,6 +4,7 @@
 
 - M2-T258: match eight token, area-selector, slot and halfword-buffer helpers in `sdk_0204f9d8`.
 
+- M2-T248: match the touch-panel FIFO callback; document the two math context assembly routines on the hard list.
 - M2-T247: match six NitroSystem G3D animation allocation, initialization, chain and render attachment helpers.
 
 - Reconstruct all seven CRI callback/state helpers in `cri_02087ef8.c`.
