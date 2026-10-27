@@ -91,6 +91,12 @@ The same resource wrapper header exposes caller-owned path output and owned
 resource loading through the existing prefix, string, path-probe and loader
 providers. Constructed loader paths must fit the original 64-byte stack buffer.
 
+`include/libs/unknown/lib_02049398.h` exposes the borrowed singleton slots
++0x7994/+0x79a4/+0x79a8 used by the adjacent record-lookup unit, plus a
+caller-owned 256-entry array of 56-byte records with trailing bookkeeping words.
+The helpers depend only on base types and existing TBB1/TBL1/MTBL, fill and battle
+record providers; the singleton, tables and returned entries remain provider owned.
+
 `include/libs/unknown/lib_02027eac.h` defines the borrowed NitroSystem G3D joint
 result used by the basic and Maya scale/SRT cgtool routines. The cgtool code owns
 no storage: results and scale arrays are caller-owned, identity bits belong to
