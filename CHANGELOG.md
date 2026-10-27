@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T321: match the CRI 100-byte slot initializer and second-range allocator, completing the C implementations in `libs/CRI/cri_0207d7e0.c`.
+
 - M2-T320: match eight more CRI provider queries, pool reference/reset and slot-selection functions.
 
 - M2-T319: match eight CRI provider wrappers and storage accessors in `libs/CRI/cri_0207d7e0.c`.

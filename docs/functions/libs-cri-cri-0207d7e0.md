@@ -24,8 +24,7 @@ size indicated below. No allocation or lifetime extension occurs.
 | `func_0207d8fc` | 8 | Return the word at +0xb0; require aligned storage of at least 0xb4 bytes. |
 
 All eight targets match at 100% objdiff. No new tests are required by the card;
-instruction matching verifies the generated code. The remaining three unit
-functions are outside these cards and stay delinked. There are no hard-list
+instruction matching verifies the generated code. The remaining unit functions are covered by the later cards below. There are no hard-list
 functions among these eight targets. The unit remains delinked until human
 completion marking.
 
@@ -54,3 +53,24 @@ The pool remains provider-owned. The scoped strength-reduction setting preserves
 the scan's original multiply and register allocation (See DEC-038). The aligned
 word declaration allows the compiler clear intrinsic to reproduce its word-store
 loop without any assembly or hand-coded instruction data.
+
+
+## M2-T321
+
+The public-source search found no matching CRI implementation; the
+[cri-audio-toolkit source](https://github.com/darkruss48/cri-audio-toolkit)
+concerns audio formats rather than this slot-management unit. Both functions
+were reconstructed from their original ARM instructions, retaining neutral
+symbols because the underlying provider and field semantics remain uncertain.
+
+| Function | Bytes | Instruction evidence and contract |
+| --- | ---: | --- |
+| `func_0207d9ac` | 228 | Under `0207e7b0`/`0207e7bc`, initialize a caller-owned aligned 100-byte slot. Store arguments at +8/+12/+16, the sign word at +20, and signed ceiling of the third argument divided by 2048 at +24/+52. Set +48 to 64, +92 to zero and +96 to 0xfffff. For a non-null provider, call its vtable +36 with indices zero and one and store their sum at +68/+28/+32. Clear bytes +2/+72 and set +1/+0 to one; other fields retain their prior values. Provider must supply a valid vtable, and returned counts must have a representable signed sum. |
+| `func_0207da90` | 156 | Scan count `02145ed8` +8 starting at `0217307c` +8, using 100-byte strides in `02173094`. Initialize the first slot whose signed byte +0 is zero, set byte +3 to one, and return its borrowed address; return null on exhaustion. Configuration must describe a valid pool range. |
+
+Both targets match at 100% objdiff. No additional tests are required by this
+card; instruction comparison validates the reconstruction. The allocator reuses
+the scoped strength-reduction choice from DEC-038. No new module boundary or
+ownership transfer is introduced, and neither target remains on the hard list.
+All eighteen functions in this unit now have C implementations; the unit stays
+delinked pending human completion marking.
