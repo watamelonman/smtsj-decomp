@@ -79,6 +79,12 @@ wrapper's flag distinguishes a borrowed resource from one released at teardown;
 the independent 320-byte buffer is caller-owned. These helpers depend only on
 base types and existing copy, fill, allocation, and resource-release providers.
 
+`include/libs/unknown/lib_0205f1d8.h` defines borrowed FBIN resource header,
+size-table and 12-byte file-locator views for the resource container helpers.
+The payload offset and entry sizes are read from the file header; the helpers
+never allocate or own the resource, and the 0x48-byte NitroSDK file context is
+stack-owned only while one open/read/close sequence runs.
+
 `include/libs/NitroSDK/sdk_02005a08.h` exposes the borrowed volatile `OSLockWord`
 view (`lockFlag`, `ownerID`, `extension`) used by the NitroSDK spin-lock
 helpers; callers retain the lock storage and the OS boot state owns it.

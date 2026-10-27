@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T364: match the FBIN resource count/offset/table/payload accessors and the header/locator file helpers in `libs/unknown/lib_0205f1d8.c`, adding `include/libs/unknown/lib_0205f1d8.h`.
 - Reconstructed the seven sdk_0205de1c indexed-object and record submission helpers in matching C.
 
 - M2-T350: match eight CRI work-area accessors, state/release helpers and halfword row-shift copiers in `libs/CRI/cri_0207a8d0.c`.
