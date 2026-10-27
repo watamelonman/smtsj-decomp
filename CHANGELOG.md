@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T276: match eight resource-record, entry-table, lookup and wrapper helpers in `libs/NitroSDK/sdk_0205dacc.c`.
+
 - M2-T259: match the bounded halfword copier and token-to-slot resolver in `sdk_0204f9d8`.
 
 - M2-T269: match and document eight CRI no-op entry points in `cri_0208d5ac.c`.
