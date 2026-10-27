@@ -3,6 +3,9 @@
 ## Unreleased
 
 - M2-T368: match six NitroSDK cleanup, transfer and IRQ callback registration helpers; document two deferred IRQ routines.
+- M2-T395: reconstruct eight main/sub background-priority wrappers in matching C.
+
+- M2-T365: match the FBIN stream copy pair, entry-offset walker and the four locator-based header/entry readers in `libs/unknown/lib_0205f1d8.c`, completing the translation unit.
 - M2-T352: match both CRI 0207a8d0 request-bounding and result/row-shift helpers.
 
 - M2-T367: match the eighth NitroSDK IRQ callback wrapper, IRQ queue initializer and three interrupt-mask helpers; document three deferred routines.
