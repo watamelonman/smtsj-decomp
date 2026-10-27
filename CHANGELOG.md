@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T495: match eight NitroSDK shared-state, protected-read and forwarding helpers in `sdk_02010680.c`.
+
 - M2-T472: match NitroSDK asynchronous RTC time requests, FIFO completion handling and Gregorian weekday conversion.
 - M2-T484: match eight background transfer wrappers, flag/update helpers and selector mappings in `sdk_020557c0.c`.
 
