@@ -155,6 +155,11 @@ integer-distance check depend only on base types and the existing touch-panel,
 integer-distance and GX providers. The table and calibration storage remain
 provider-owned; this unit allocates and releases nothing.
 
+`include/libs/unknown/lib_0205fb4c.h` exposes borrowed 204-byte text-work and
+caller-owned rectangle views. The four helpers depend only on existing
+allocation, slot initialization, fill, font metric, glyph sampling and surface
+providers. The provider owns allocated work; rectangle and pixel storage remain
+caller-owned, and synchronous pixel copying retains no pointers.
 `include/libs/NitroSDK/sdk_0205de1c.h` exposes borrowed object/provider and
 range-table prefixes, caller-owned 24-byte records, and the 56-byte submission
 packet. The wrappers depend only on existing drawing and provider-state helpers
