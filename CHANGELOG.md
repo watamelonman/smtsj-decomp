@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T240: match all five singleton setup, teardown, resource submission and object update wrappers in `lib_02048e90`.
+- M2-T237: match the remaining eight provider, slot-allocation and level wrappers in `sdk_0205e53c`.
 
 - M2-T235: match the NitroSystem frame texture search, initialization and reset routines plus the adjacent failure callback; document the allocator register-allocation mismatch.
 - M2-T236: match eight shared-state and provider wrappers in `sdk_0205e53c`.
