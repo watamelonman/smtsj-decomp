@@ -147,3 +147,10 @@ SRT resource/dictionary and model prefixes plus caller-owned animation objects
 with trailing material mappings. It reuses the existing material result layout;
 the evaluators depend only on dictionary-name lookup, halfword fill and the
 animation kernel callback registry. No resource ownership is transferred.
+`include/libs/NitroSDK/sdk_02053c08.h` exposes the borrowed five-entry
+touch-sample table: each 14-byte record holds the current and previous touch
+flag and calibrated x/y coordinates, plus one never-read alignment halfword.
+The sample shift, three touch-state queries, the rectangle hit test and the
+integer-distance check depend only on base types and the existing touch-panel,
+integer-distance and GX providers. The table and calibration storage remain
+provider-owned; this unit allocates and releases nothing.

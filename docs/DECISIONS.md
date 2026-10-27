@@ -595,6 +595,25 @@ a private twelve-byte view beginning at message +20, within the 56-byte object.
 temporaries and reverse source store order reproduce the compiler's original
 load/store schedule. The third halfword is then read and stored separately.
 
+## DEC-036 — Keep the CRI bit-reader expression shapes
+
+`func_0208a7b0` writes the empty tail as `rest->size == 0 ? 0 : ...`; the
+inverted test is what makes mwccarm 2.0/sp1p5 predicate the pointer add instead
+of branching over it, and both forms return the same address. `func_0208a7f4`
+ends in `if (bits > stream->count) return 0; return 1;` so the two conditional
+moves appear in the original order (`movgt` before `movle`); the boolean form
+`bits <= count` compiles the comparison the other way round. Neither change
+touches behaviour or adds a volatile access, assembly or byte blob.
+
+The same unit's two still-delinked readers use the 32-entry mask table at
+0x0212ed10. The delinked object embeds that address as a plain literal-pool word
+with no relocation and the symbol map has no symbol for it (as in DEC-028 and
+DEC-022), so a future match must read it through the observed address with a
+local pointer and `opt_propagation off`; without the pragma mwccarm folds the
+base into two immediate additions that the original does not contain. That
+technique was verified while reconstructing `func_0208a824` and `func_0208a8d4`,
+but neither is committed because their remaining difference is register
+colouring (see `docs/functions/libs-cri-cri-0208a5ac.md`).
 ## DEC-036 — Preserve the 0208d95c zero-copy and loop rotation
 
 `func_0208d95c` copies samples into a circular buffer and wraps the write index
@@ -607,3 +626,33 @@ assigning `i = 0` after the position wrap, and writing the loop as
 reproduces both the zero-copy and the rotated loop exactly. The generated code
 is branch-equivalent to the straightforward form; no assembly, volatile access
 or byte blob is involved.
+
+## DEC-037 — Preserve the 0208d9bc/0208dad8 register allocation and ABI
+
+`func_0208d9bc` carries four values across its sample loop (two destination
+pointers, the circular position and the index). With ordinary settings
+mwccarm 2.0/sp1p5 colours them lr/r4/r5/r6; the original uses r4/r5/r6/lr.
+Declaring the locals as `i`, `dest0`, `dest1`, `position`, `sample` and
+scoping `opt_common_subs off` to the function reproduces the original
+allocation and all 228 bytes.
+
+`func_0208dad8` keeps the byte-copy index and the record-clear index in
+separate variables. One reused counter lets the compiler swap the record index
+with its strength-reduced 0x58 offset (r2/r1 instead of r1/r2). The original
+also writes 0 to r3 on the common path before the `func_02079374`/
+`func_02079360` choice. Because r3 is an outgoing argument word for both calls
+(they ignore it, but the wrapper prototypes still accept it), the matching
+source declares a fourth `s32` parameter and passes 0 at both call sites.
+Removing that argument drops the function from 100% (one fewer instruction and
+shifted literal-pool offsets), so the observed ABI is kept. No assembly,
+volatile access or byte blob is involved in either function.
+
+
+## DEC-038 — Preserve CRI slot scan multiplication
+
+`func_0207db2c` multiplies the slot index by 100 on each scan iteration.
+Scope `opt_strength_reduction off` to this function so mwccarm retains that
+operation rather than carrying an incremented byte offset. This also preserves
+the original register allocation; the source still expresses the bounded scan
+and its early exit directly. The pool uses an aligned 250-word declaration
+because the original reset writes 1000 bytes with word stores.
