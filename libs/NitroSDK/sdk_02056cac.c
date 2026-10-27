@@ -110,13 +110,13 @@ void func_02056cc0(int engine, u32 slot, void *source)
     func_02056cd0(engine, slot, source, 1);
 }
 
-/* Copies `count` 512-byte blocks between a caller buffer and the GBA cartridge
- * window selected by `engine`: zero uses the 0x05000000 backup window
- * (func_020050c4/0200510c/02005178), nonzero the 0x0A000000 ROM window
- * (func_02005278/02005290/020052f4). The provider status chooses the queued
- * copy (setup/commit around the transfer) or the direct PIO copy. Evidence:
- * the <<9 block count, the 512-byte offsets added by 0x02004760..0x020052f4,
- * and the two window bases. `slot` and `count` are sector counts/indices. */
+/* Uploads the caller-owned buffer to main (engine zero) or sub OBJ palette
+ * memory. A nonzero allocated extended-palette bank mask from func_020038ac
+ * or func_0200390c selects the extended upload with begin/end calls;
+ * otherwise func_02004760/020047b8 target standard OBJ palettes at
+ * 0x05000200/0x05000600. Evidence: those destination addresses and the
+ * extended-palette loaders func_0200510c/02005290. `slot` is the destination
+ * offset and `count` the upload length, both in 512-byte units. */
 void func_02056cd0(int engine, u32 slot, void *source, u32 count)
 {
     u32 ready = 1;

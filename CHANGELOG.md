@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- M2-T413: match the `sdk_02056cac.c` 512-byte cartridge transfer and slot-0 geometry reset; document the deferred eight-record initializer.
+- M2-T413: match the `sdk_02056cac.c` main/sub OBJ palette upload (512-byte offset/count units; allocated bank mask selects extended or standard palettes) and slot-0 geometry reset; document the deferred eight-record initializer.
 - M2-T432: match the CRI 02086b70 volume/pan setters, library refcount pair and player reset/store helpers, completing the sixteen registry and player entry points of the unit.
 - M2-T437: match eight NitroSDK blend, geometry matrix, FIFO drain and fog-table helpers.
 - M2-T429: reconstruct eight CRI counter, callback and interrupt-related dispatch helpers in `cri_0208325c.c`.
