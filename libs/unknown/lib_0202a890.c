@@ -11,7 +11,7 @@ typedef struct StreamSleepCallback {
 } StreamSleepCallback;
 
 /** Borrowed stream prefix; offsets and flag widths follow the original accesses.
- * Signed status fields preserve arithmetic extraction. See DEC-040. */
+ * Signed status fields preserve arithmetic extraction. See DEC-041. */
 typedef struct SoundStream {
     u8 link[8];
     StreamSleepCallback preSleep;
@@ -82,7 +82,9 @@ void func_0202ab84(SoundStream *stream)
     if (stream->isActive) func_0202ac90(stream);
 }
 
-/** Set channel pan; the channel-mask call to SND_SetChannelPan establishes its purpose. */
+/** Set channel pan; the channel-mask call to SND_SetChannelPan establishes its
+ * purpose. `channel` must be >= 0, since a negative index reads chNo[-1]; an
+ * index above numChannels - 1 is ignored. */
 void func_0202ac60(SoundStream *stream, int channel, int pan)
 {
     if (channel > stream->numChannels - 1) return;

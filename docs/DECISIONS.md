@@ -670,7 +670,7 @@ An inline quotient expression instead changes the product destination and delays
 the scale reload. These choices preserve the original arithmetic and yield exact
 instruction matches without changing compiler settings or adding storage access.
 
-## DEC-040 — Preserve signed stream status bitfields
+## DEC-041 — Preserve signed stream status bitfields
 
 The NitroSystem stream helpers extract the active and playing bits with a
 left shift followed by an arithmetic right shift. A private signed one-bit
@@ -678,6 +678,7 @@ field view reproduces those instructions. Assigning -1 to the playing field
 sets its sole bit without relying on conversion of an out-of-range positive
 value. The view retains the observed 32-bit flag allocation at stream +0x24;
 it does not change stream storage ownership or expose a new module boundary.
+
 ## DEC-040 — Preserve the 0208e164 branch blocks and 02079b4c second argument
 
 `func_0208e164` reports one for status one or two, but the original keeps two
