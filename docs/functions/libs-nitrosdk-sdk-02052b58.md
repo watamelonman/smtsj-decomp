@@ -1,6 +1,6 @@
 # sdk_02052b58
 
-Eight small accessors and writers for two SDK state blocks and the GX command
+Sixteen matched accessors, state helpers and writers for two SDK state blocks and the GX command
 port. The symbols are retained as `func_` because the delink has no descriptive
 names and no caller in the current C tree resolves their use beyond the shapes
 below.
@@ -86,7 +86,78 @@ below.
   NitroSDK GX helpers in this repository; no exact public reconstruction of
   this specific two-store wrapper was identified.
 
+## M2-T215 source investigation
+
+Public-source searches for NitroSDK/NitroSystem implementations and the nearby
+`WH_SYSSTATE_IDLE` string did not identify an exact reconstruction. No public
+source was copied. Names remain neutral: the ARM instructions establish the
+contracts below, but do not establish the larger subsystem purpose.
+
+## func_02052b58
+
+- Original: ARM, address `0x02052b58`, size 36 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: Returns data_021437e0[index], calling func_02007e94 first when the unsigned index is >=6. The provider call is not assumed to return or terminate; the lookup follows it exactly as in the original.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
+## func_02052bac
+
+- Original: ARM, address `0x02052bac`, size 40 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: Clears all 24 bytes at data_0215f4a0 +8. The signed loop counter and byte stores follow the original loop.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
+## func_02052bd4
+
+- Original: ARM, address `0x02052bd4`, size 36 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: Fills all 24 bytes at data_0215f4a0 +0x20 with the caller-supplied byte.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
+## func_02052d14
+
+- Original: ARM, address `0x02052d14`, size 32 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: Logically negates the state word at +8; zero becomes one, any nonzero value becomes zero.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
+## func_02052d34
+
+- Original: ARM, address `0x02052d34`, size 36 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: Tests func_02052cb0(1); if true, calls func_020574d4, toggles the flag, then calls func_02052c3c, in that order.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
+## func_02052d58
+
+- Original: ARM, address `0x02052d58`, size 36 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: Tests func_02052cb0(0); if true, calls func_020574d4, toggles the flag, then calls func_02052c94, in that order.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
+## func_02052d7c
+
+- Original: ARM, address `0x02052d7c`, size 36 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: For a nonnull borrowed signed-byte pair array, resets index to zero and stores count and pointer at +4/+12. Null leaves state unchanged. Caller retains array ownership and must keep it alive.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
+## func_02052dd8
+
+- Original: ARM, address `0x02052dd8`, size 36 bytes.
+- Status: **100% objdiff match**.
+- Contract/evidence: Returns null for state index -1; otherwise returns the borrowed pointer at +12 plus twice the index. The provider/caller is responsible for valid bounds and backing storage.
+- Evidence: original instruction sequence at the function address, including
+  its loads/stores, conditional branches and ordered calls.
+
 ## Hard list
 
-None; all eight functions' instructions match. The remaining functions in the
+None; all sixteen implemented functions match. The remaining functions in the
 TU belong to sibling cards and are still supplied by the delink.
