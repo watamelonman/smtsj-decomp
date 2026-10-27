@@ -4,6 +4,9 @@
 
 - M2-T321: match the CRI 100-byte slot initializer and second-range allocator, completing the C implementations in `libs/CRI/cri_0207d7e0.c`.
 
+- M2-T327: match the record registration and selected-slot processing helpers in `libs/NitroSDK/sdk_0205ea18.c` (two functions).
+
+- M2-T326: match five interpolation/state helpers in `libs/NitroSDK/sdk_0205ea18.c`; document three hard functions retained in the delink.
 - M2-T320: match eight more CRI provider queries, pool reference/reset and slot-selection functions.
 
 - M2-T319: match eight CRI provider wrappers and storage accessors in `libs/CRI/cri_0207d7e0.c`.
