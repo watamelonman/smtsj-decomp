@@ -24,7 +24,33 @@ size indicated below. No allocation or lifetime extension occurs.
 | `func_0207d8fc` | 8 | Return the word at +0xb0; require aligned storage of at least 0xb4 bytes. |
 
 All eight targets match at 100% objdiff. No new tests are required by the card;
-instruction matching verifies the generated code. The remaining eleven unit
-functions are outside this card and stay delinked. There are no hard-list
+instruction matching verifies the generated code. The remaining three unit
+functions are outside these cards and stay delinked. There are no hard-list
 functions among these eight targets. The unit remains delinked until human
 completion marking.
+
+
+## M2-T320
+
+A fresh public-source search for CRI ADX Nintendo DS code found no matching
+implementation. The [CRI SDK portal](https://sdk.criware.com/adx2) and
+[public API manual](https://game.criware.jp/manual/native/adx2_en/latest/criapi_refman.html)
+did not supply a source counterpart. These neutral symbols follow the original
+instructions. All eight additions match at 100%; no hard-list entries remain
+for this card. No tests are required; objdiff checks the instruction sequences.
+
+| Function | Bytes | Instruction evidence and contract |
+| --- | ---: | --- |
+| `func_0207d800` | 28 | Null returns zero; otherwise call `0207a750` with borrowed provider at +4. |
+| `func_0207d83c` | 72 | Positive `0207a770` and byte +1 in {2,3} permit `0207a778`; otherwise zero. |
+| `func_0207d884` | 80 | Same guard, forwarding signed index to `0207a780`; otherwise -128. |
+| `func_0207d904` | 88 | Increment global +0xc; transition to one clears all 1000 aligned pool bytes; return one. |
+| `func_0207d95c` | 80 | Decrement global +0xc; transition to zero clears the pool. References must be balanced. |
+| `func_0207db2c` | 148 | Scan configured count/start at `02145ed8` +0/+4 with 100-byte stride for zero signed byte +0; initialize via `0207d9ac`, clear byte +3, return borrowed slot or null on exhaustion. Configuration must describe a valid pool range. |
+| `func_0207dbc0` | 44 | Pair `0207e7d4`/`0207e7e0` around `0207dbec`, preserving its returned slot. |
+| `func_0207dbec` | 48 | Signed selector below 0x100 calls `0207da90`; otherwise `0207db2c`; forward provider as fourth argument with three zero words. |
+
+The pool remains provider-owned. The scoped strength-reduction setting preserves
+the scan's original multiply and register allocation (See DEC-038). The aligned
+word declaration allows the compiler clear intrinsic to reproduce its word-store
+loop without any assembly or hand-coded instruction data.

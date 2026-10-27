@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T320: match eight more CRI provider queries, pool reference/reset and slot-selection functions.
+
 - M2-T319: match eight CRI provider wrappers and storage accessors in `libs/CRI/cri_0207d7e0.c`.
 
 - M2-T305: match the CRI bit-reader refill, buffer-carve, availability, consumed-bits and end-of-stream helpers in `libs/CRI/cri_0208a5ac.c`, add `include/libs/CRI/cri_0208a5ac.h`, and document the two delinked functions (field read and sync scan) left on the hard list.
