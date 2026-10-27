@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T490: match four BG control setters, a state initializer and two state comparators; document the deferred size-table helper.
+
 - M2-T489: match five BG control updates and three state initialization wrappers in sdk_020546d8.
 - M2-T482: match eight NitroSystem texture/palette key, upload and model-binding release helpers.
 - M2-T472: match NitroSDK asynchronous RTC time requests, FIFO completion handling and Gregorian weekday conversion.
