@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T428: reconstruct eight CRI provider wrappers and shared-state accessors in `cri_0208325c.c`.
+
 - M2-T398: match background-record cleanup and dual-engine display/transform reset in `sdk_02054fb8.c`.
 - M2-T411: match all eight NitroSDK touch-panel initialization, sampling and calibration functions.
 
