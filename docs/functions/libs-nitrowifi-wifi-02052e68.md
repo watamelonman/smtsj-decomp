@@ -1,8 +1,8 @@
 # libs/NitroWiFi/wifi_02052e68
 
 Reconstruction of the NitroWiFi (SDK 4.2) buffer-group and connection-state
-helpers in the partial TU at `0x02052e68`. All functions below match
-the delinked ARM instructions at 100%. The TU is still linked from the delink;
+helpers in the partial TU at `0x02052e68`. All retained C definitions match
+the delinked ARM instructions at 100%; deferred functions are listed separately. The TU is still linked from the delink;
 the split configuration stays human-owned.
 
 A public-source search (pret/pokeplatinum `lib/` and `src/`, which rebuild
@@ -62,8 +62,31 @@ The ROM passes 32-byte-aligned spans and 32-byte-rounded sizes, but the C keeps
 the constants explicit so the arithmetic stays visible. Values stored through
 the halfword fields truncate as the original stores do.
 
+## M2-T453 functions
+
+| Function | Behavior and instruction evidence | Match |
+| --- | --- | --- |
+| `func_02052f7c` | Masks interrupts, allocates from the current heap with alignment +32 for nonzero flag or -32 for zero, increments +4 only on success, restores the mask and returns storage. BLs to 02007a58/02020470/02007a6c identify the sequence. | 100% |
+| `func_02053000` | Masks interrupts, finds the containing heap with 0201ff28, frees a non-null buffer with 020204a0, decrements +4 and restores the mask. Null leaves bookkeeping unchanged. | 100% |
+| `func_02053160` | Records event +2 errors then invokes 020533e4; success calls 020531b0. A rejected follow-up invokes the optional +0x40 callback with borrowed table 02143a34 before cleanup. LDRH, BL and BLX paths establish the contract. | 100% |
+| `func_020532ec` | Requests state 3 and submits 02053324 with argument zero to 02010a94. Result 2 returns success; other results are recorded before 020533e4 and return zero. | 100% |
+| `func_02053378` | Nonzero event +2 requests state 9 then reloads and records the result; zero requests state 1. The reload preserves callback changes to the borrowed event. | 100% |
+| `func_020533e4` | In state 5, calls 02010bec with borrowed work 0215fdc0 and records nonzero results. Always attempts 02053348; rejection selects state 10. CMP #5 and common BL at 0205340c establish the paths. | 100% |
+| `func_02053570` | Skips only 02007e94 when state is 1; always requests state 3 and submits 020533ac to 02010a14. Result 2 clears halfword +6 and returns one; rejection requests state 9 and returns zero. | 100% |
+| `func_02053230` | State 6 alone requests state 3, calls 02010c34 with work 0215f5a0, records errors and otherwise returns normalized acceptance from 02053288. Kept in delink; see hard list. | Deferred |
+
+The borrowed connection view additionally exposes halfword +6 and types the
++0x40 callback as accepting a borrowed table pointer. No storage is retained.
+A fresh public-source web search for NitroSDK wireless connection-manager source
+found provider API documentation but no matching implementation of these wrappers.
+
 ## Hard list
 
-None for M2-T452. All eight card functions and the nine previously reconstructed
-functions match without inline assembly or retained non-matching code. Remaining
-functions in this partial TU continue to come from the original delinked object.
+- `func_02053230` (M2-T453): the reconstructed C matched every instruction
+  except the order of the final conditional moves: the original emits
+  `moveq r0, #0; movne r0, #1`, while mwcc emits the reverse order.
+  Tried conditional expressions, explicit return branches, normalized boolean
+  temporaries, switch, and nested state/error branches. Other variants changed
+  function size or branch layout. The closest objdiff result was 99.45%.
+  The candidate was removed and the original delink remains authoritative;
+  a human can open a decomp.me scratch for this 88-byte function.

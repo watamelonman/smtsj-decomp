@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T453: reconstruct seven WiFi heap and connection callback helpers; document the deferred conditional-move match in `func_02053230`.
+
 - M2-T452: match eight WiFi connection request, state-transition and event-callback helpers; document the borrowed event and connection fields.
 
 - M2-T464: match eight task-effect callbacks in `lib_020b78d8.c`, including signed displacement updates and fifteen-step float completion.
