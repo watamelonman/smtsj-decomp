@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T430: match six CRI worker initialization, polling and shutdown functions; document the deferred mode/setup dispatcher.
+
 - M2-T429: reconstruct eight CRI counter, callback and interrupt-related dispatch helpers in `cri_0208325c.c`.
 
 - M2-T431: match the CRI 02086b70 halfword accessors, library-word getter/setter and four registry forwarding thunks.

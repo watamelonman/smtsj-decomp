@@ -2,11 +2,20 @@
 
 /** Borrowed provider prefix; counters and dispatch word follow observed loads. */
 typedef struct Unk0208325cState {
-    u32 unk_000[2];
+    u32 unk_000;
+    u32 unk_004;
     u32 unk_008;
     u32 unk_00c;
-    u32 unk_010[4];
+    u32 unk_010;
+    u32 unk_014;
+    u32 unk_018;
+    u32 unk_01c;
     u32 unk_020;
+    u8 padding_024[0x240];
+    void *unk_264;
+    u32 unk_268;
+    u32 unk_26c;
+    u32 unk_270;
 } Unk0208325cState;
 
 extern Unk0208325cState data_021746e4;
@@ -34,6 +43,8 @@ extern u32 func_020059d8(u32 mask);
 extern u32 func_020059a8(u32 mask);
 extern void func_0208390c(void);
 extern u32 func_02083820(void);
+extern u32 func_02083708(void), func_02083860(void);
+extern void func_02083848(void), func_02083870(void), func_02083930(void);
 
 /** Dispatch on the provider's +0x20 word. Mode two calls its callback,
  * clears 02174700 +0x10 and passes 021748e4 to the thread provider. */
@@ -158,3 +169,168 @@ void func_02083884(void)
 {
     data_02174740.unk_00c = 0;
 }
+
+extern u8 data_02174824[], data_02174764[];
+extern void func_02006428(u32 ticks);
+extern void func_0200654c(void *thread, u32 value);
+extern void func_02082618(void), func_02082628(void), func_02082648(void);
+extern s32 func_02082668(void);
+extern void func_02082718(void), func_02082748(void);
+extern void func_0208a978(u32 mode), func_0208a9e0(void);
+
+/** Run the +8 worker while enabled, yielding after each provider update.
+ * Thread choice and completion word follow loads at 02083360..020833a8. */
+void func_02083344(void)
+{
+    while (data_02174740.unk_008 == 1) {
+        if (data_02174740.unk_014 == 1)
+            func_020064e0(data_02174740.unk_264);
+        else
+            func_020064e0(data_02174824);
+        func_02082618();
+        func_02082628();
+        data_02174740.unk_268++;
+        func_02006428(0);
+    }
+    func_02083870();
+}
+
+/** Run the +0x10 worker and mark +0x14 complete after its enable word changes. */
+void func_020833b8(void)
+{
+    while (data_02174740.unk_010 == 1) {
+        func_020064e0(data_02174740.unk_264);
+        func_02082648();
+        data_02174740.unk_26c++;
+        func_02006428(0);
+    }
+    data_02174740.unk_014 = 1;
+}
+
+/** Poll the provider while +0 is enabled; latch and dispatch the second
+ * callback under the paired entry/exit helpers when polling returns zero. */
+void func_02083410(void)
+{
+    while (data_02174740.unk_000 == 1) {
+        if (func_02082668() == 0) {
+            func_020821e0();
+            if (data_02174700.unk_010 == 0) {
+                data_02174700.unk_010 = 1;
+                func_02083930();
+            }
+            func_020821f0();
+            func_02006428(0);
+        }
+        data_02174740.unk_270++;
+    }
+    data_02174740.unk_004 = 1;
+}
+
+/** Stop workers only on the final balanced reference release. Each completion
+ * word is rechecked after the SDK thread wait, preserving provider ownership. */
+u32 func_02083720(void)
+{
+    if (!func_02083708()) return 0;
+    func_02083848();
+    if (func_02083820() == 0) {
+        data_02174740.unk_000 = 0;
+        func_0200654c(data_021748e4, 0);
+        while (data_02174740.unk_004 == 0) func_020064e0(data_021748e4);
+        data_02174740.unk_010 = 0;
+        func_0200654c(data_02174824, 0);
+        while (data_02174740.unk_014 == 0) func_020064e0(data_02174824);
+        data_02174740.unk_008 = 0;
+        func_0200654c(data_02174764, 0);
+        while (func_02083860() == 0) func_020064e0(data_02174764);
+        func_02082748();
+        data_02174740.unk_020 = 1;
+        func_0208a978(1);
+    }
+    return 1;
+}
+
+/** For an active mode above one, dispatch the latched callback and wait for
+ * the primary thread; the original returns zero on every path. */
+u32 func_02083898(void)
+{
+    if (func_02083820() == 0) return 0;
+    if (data_02174740.unk_020 <= 1) return 0;
+    if (func_02083860() != 0) return 0;
+    if (data_02174700.unk_010 == 0) {
+        data_02174700.unk_010 = 1;
+        func_02083930();
+    }
+    func_0208a9e0();
+    func_020064e0(data_02174764);
+    return 0;
+}
+
+/** Caller-owned nine-word thread configuration, copied before thread creation.
+ * Stack pointers/sizes and priorities follow 020835e4..020836a8. */
+typedef struct Unk0208325cConfig {
+    u32 priority[3];
+    u8 *stack[3];
+    u32 size[3];
+} Unk0208325cConfig;
+extern Unk0208325cConfig data_0217471c;
+extern u32 data_02152284[];
+extern u32 data_02147068;
+extern char data_0214709c[], data_021470dc[];
+extern void func_02082220(const char *message);
+extern void func_0208256c(void (*callback)(void), void *context);
+extern void func_0208257c(void (*callback)(void), void *context);
+extern s32 func_02085410(const char *name, u32 *value);
+extern void func_0200621c(void *thread, void (*entry)(void), void *arg,
+                          void *stackTop, u32 stackSize, u32 priority);
+
+/** Initialize provider workers on the first reference. Null configuration reports
+ * the original diagnostic; storage and stacks remain provider/caller owned. */
+void func_0208350c(const Unk0208325cConfig *config)
+{
+    /* The original performs this otherwise unused literal-pool read. */
+    u32 ignored = *(volatile const u32 *)0x0212ec78;
+    u32 priority;
+    u8 *stackTop;
+    u32 stackSize;
+    if (config == 0) {
+        func_02082220(data_0214709c);
+        return;
+    }
+    func_02083830();
+    if (func_02083820() != 1) return;
+    data_02174740.unk_264 = (void *)data_02152284[1];
+    if (data_02174740.unk_020 != 2) data_02174740.unk_020 = 2;
+    func_02082718();
+    func_0208256c(func_020832d0, 0);
+    func_0208257c(func_0208331c, 0);
+    if (func_02085410(data_021470dc, &priority) == 0)
+        data_02147068 = priority;
+    else
+        data_02147068 = 15;
+    data_0217471c = *config;
+    data_02174740.unk_018 = 0;
+    data_02174740.unk_01c = 0;
+    data_02174740.unk_008 = 1;
+    func_02083884();
+    stackSize = config->size[0];
+    stackTop = config->stack[0];
+    stackTop = (u8 *)(((u32)stackTop + 3) & ~3);
+    func_0200621c(data_02174764, func_02083344, 0,
+        (void *)((u32)stackTop + stackSize), stackSize, data_0217471c.priority[0]);
+    data_02174740.unk_010 = 1;
+    data_02174740.unk_014 = 0;
+    func_0200621c(data_02174824, func_020833b8, 0,
+        (u8 *)((((u32)config->stack[1] + 3) & ~3) + config->size[1]),
+        config->size[1], data_0217471c.priority[1]);
+    if (data_02174740.unk_020 == 2) {
+        data_02174740.unk_000 = 1;
+        data_02174740.unk_004 = 0;
+        func_0200621c(data_021748e4, func_02083410, 0,
+            (u8 *)((((u32)config->stack[2] + 3) & ~3) + config->size[2]),
+            config->size[2], data_0217471c.priority[2]);
+    } else {
+        data_02174740.unk_000 = 0;
+        data_02174740.unk_004 = 1;
+    }
+}
+
