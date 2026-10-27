@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T152: match the four XSI texture-matrix specializations in `lib_02029470`.
+
 - M2-T142: match all six main/sub BG0–BG2 screen loaders in `sdk_0200496c`.
 - M2-T140: match all seven setup and resource-table helpers in `lib_0204915c`.
 
