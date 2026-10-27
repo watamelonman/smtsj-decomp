@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T291: match the queue normalizer `func_02049620` and the 3-axis/packed-flag updater `func_0204980c` in `libs/unknown/lib_02049620.c`, completing the translation unit.
 - M2-T290: match the queue scan, cursor accessors and fixed-stride slot clears in `libs/unknown/lib_02049620.c`, add `include/libs/unknown/lib_02049620.h`, and document the two still-delinked functions of that unit.
 - M2-T288: match the eight remaining shared navigation-state helpers (init/reset, limit, saved value, last-entry tests and sound cue) in `libs/unknown/lib_020ba90c.c`, completing the translation unit.
 - M2-T287: match the eight shared navigation-state accessors (state reset, flags, current value and provider) in `libs/unknown/lib_020ba90c.c`.
