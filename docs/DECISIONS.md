@@ -697,3 +697,13 @@ as `s32` and passing zero selects that original register allocation; the
 neighbouring `func_0208e084` call passes one in the same register. Omitting
 the argument leaves the caller's step in `r1` and drops the function from 100%.
 No assembly, volatile access or byte blob is involved.
+
+## DEC-041 — Preserve CRI fade-loop induction and signed counters
+
+The 0208dd68 loop keeps both a record index and a byte offset, initialising
+the latter only after the positive-count check. An explicit guarded do/while
+retains that instruction order and the original register allocation; array
+indexing alone exchanges the offset and interpolation temporary registers.
+The duration and elapsed words are signed: the original calls `_fflt`,
+not the unsigned conversion provider. These are borrowed record fields; no
+ownership or provider boundary changes.
