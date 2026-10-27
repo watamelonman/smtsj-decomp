@@ -4,6 +4,8 @@
 
 - M2-T450: match six Mobiclip stream wrapper helpers (seek, read, block read, close, vtable dispatch, empty); document the deferred unrolled YUV blit.
 
+- M2-T433: match the CRI 02086b70 player initialiser, reset routine and compressed-header parser (`func_02086ea0`, `func_02086f98`, `func_0208706c`); document `func_02086c6c` and its unnamed tables on the hard list.
+- M2-T441: match eight NitroSDK PXI/ARM7 bootstrap, WAITCNT readback, tag-13/17 callback and worker-start helpers in `sdk_02010f98.c`.
 - M2-T430: match six CRI worker initialization, polling and shutdown functions; document the deferred mode/setup dispatcher.
 
 - M2-T439: match six NitroSDK 3D init/stack-unwind/table-fill and orthographic matrix helpers; document the assembly-only 128-word FIFO filler.
