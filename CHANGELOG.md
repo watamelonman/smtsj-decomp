@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T478: match the MSL 16-bit string-length helper; document the deferred acos runtime-symbol mismatch.
+
 - M2-T466: match the remaining four displacement/intensity task constructors, updater and effect dispatcher in `lib_020b78d8.c`.
 - M2-T458: match the MSL printf conversion parser in `sdk_020118f8.c`; document its ASCII-table symbol prerequisite before C linking.
 - M2-T453: reconstruct seven WiFi heap and connection callback helpers; document the deferred conditional-move match in `func_02053230`.
