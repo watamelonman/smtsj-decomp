@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T451: correct the WiFi head/tail allocation wrappers and allocator declaration to return storage pointers.
+
 - M2-T451: match the NitroWiFi `wifi_02052e68.c` buffer-group builder, heap-index save/restore pair, head/tail allocation wrappers, connection-state setter, event handler and state getter (nine functions at 100%).
 - M2-T433: match the CRI 02086b70 player initialiser, reset routine and compressed-header parser (`func_02086ea0`, `func_02086f98`, `func_0208706c`); document `func_02086c6c` and its unnamed tables on the hard list.
 - M2-T441: match eight NitroSDK PXI/ARM7 bootstrap, WAITCNT readback, tag-13/17 callback and worker-start helpers in `sdk_02010f98.c`.

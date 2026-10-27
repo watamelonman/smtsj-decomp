@@ -41,8 +41,8 @@ u32 func_02006ec4(u32 arena);
 /* Builds a heap descriptor at base for size bytes (mode selects the heap
  * variant) and returns its address; 0 when the aligned span is under 0x4c. */
 u32 func_02020438(u32 base, u32 size, u32 mode);
-/* Allocates one buffer from the selected heap; flag chooses head vs tail. */
-u32 func_02052f7c(u32 size, u32 flag);
+/* Returns allocated storage from the selected heap; flag chooses head vs tail. */
+void *func_02052f7c(u32 size, u32 flag);
 /* Switches the connection state and dispatches its enter/leave callbacks. */
 void func_0205304c(u32 state);
 /* Stores value in the connection block unless a shutdown state is active. */
@@ -108,16 +108,18 @@ void func_02052f68(void)
 }
 
 /* Allocates size bytes from the current heap preferring the head of the free
- * span (flag 1 becomes allocation mode 32 in func_02052f7c). */
-void func_02052fe0(u32 size)
+ * span (flag 1 becomes allocation mode 32 in func_02052f7c). Returns the
+ * allocated storage, as used by func_020517f8 in sdk_02051378.c. */
+void *func_02052fe0(u32 size)
 {
-    func_02052f7c(size, 1);
+    return func_02052f7c(size, 1);
 }
 
-/* Same allocation with flag 0; func_02052f7c turns that into mode -32 (tail). */
-void func_02052ff0(u32 size)
+/* Returns allocated storage with flag 0 (mode -32, tail). Evidence:
+ * func_0208daa0 in cri_0208d8e8.c forwards the pointer to its caller. */
+void *func_02052ff0(u32 size)
 {
-    func_02052f7c(size, 0);
+    return func_02052f7c(size, 0);
 }
 
 /* Empty hook: the delinked body is a lone return, and both callers
