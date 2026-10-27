@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T442: match the NitroSDK cartridge-presence probe (`CTRDG_IsExisting`) in `sdk_02010f98.c`; document the remaining cartridge module-info initializer on the hard list.
 - M2-T441: match eight NitroSDK PXI/ARM7 bootstrap, WAITCNT readback, tag-13/17 callback and worker-start helpers in `sdk_02010f98.c`.
 - M2-T430: match six CRI worker initialization, polling and shutdown functions; document the deferred mode/setup dispatcher.
 
