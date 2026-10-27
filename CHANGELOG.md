@@ -3,6 +3,9 @@
 ## Unreleased
 
 - M2-T433: match the CRI 02086b70 player initialiser, reset routine and compressed-header parser (`func_02086ea0`, `func_02086f98`, `func_0208706c`); document `func_02086c6c` and its unnamed tables on the hard list.
+- M2-T441: match eight NitroSDK PXI/ARM7 bootstrap, WAITCNT readback, tag-13/17 callback and worker-start helpers in `sdk_02010f98.c`.
+- M2-T430: match six CRI worker initialization, polling and shutdown functions; document the deferred mode/setup dispatcher.
+
 - M2-T439: match six NitroSDK 3D init/stack-unwind/table-fill and orthographic matrix helpers; document the assembly-only 128-word FIFO filler.
 - M2-T440: match eight NitroSDK boot-status probes, interrupt-state restore, BSS flag stores and WAITCNT update helpers in `sdk_02010f98.c`.
 - M2-T413: match the `sdk_02056cac.c` main/sub OBJ palette upload (512-byte offset/count units; allocated bank mask selects extended or standard palettes) and slot-0 geometry reset; document the deferred eight-record initializer.
