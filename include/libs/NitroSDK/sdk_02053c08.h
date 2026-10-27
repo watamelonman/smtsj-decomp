@@ -3,10 +3,11 @@
 
 #include "types.h"
 
-/* Borrowed view of one 14-byte touch record in data_021607c4. The field roles
- * follow the public NitroSDK TPData layout (touch/x/y at +0/+2/+4) and the
- * stores at 0x02053cdc..0x02053d30: the sample is shifted into the previous
- * half of the record before the current fields are replaced. pad_0c is
+/* Borrowed view of one 14-byte touch record in data_021607c4. The layout is
+ * touch at +0, previousTouch at +2, x/y at +4/+6, then the previous x/y at
+ * +8/+10, as confirmed by the stores at 0x02053cdc..0x02053d30 and the loads
+ * in func_02053d38/func_02053d8c/func_02053de8: the sample is shifted into the
+ * previous half of the record before the current fields are replaced. pad_0c is
  * alignment and is never accessed. */
 typedef struct Unk02053c08Entry {
     u16 touch;
@@ -45,13 +46,19 @@ int func_02053d8c(u16 *x, u16 *y);
 int func_02053de8(u16 *x, u16 *y);
 
 /* Hit-tests the selected touch edge against the half-open rectangle
- * x/y/width/height. `kind` selects 0 = current touch, 1 = touch-down edge,
- * 2 = touch-up edge. When `draw` is one and the renderer is ready, the
- * rectangle is also submitted through the GX helpers. */
+ * x/y/width/height. `kind` must be 0 (current touch), 1 (touch-down edge) or
+ * 2 (touch-up edge); no other value is supported, and for such a value the
+ * original reads an uninitialized caller-saved register, so the result is
+ * undefined. For the supported kinds it returns 1 only when a point was
+ * obtained and lies in the rectangle, and 0 otherwise. When `draw` is one and
+ * the renderer is ready, the rectangle is also submitted through the GX
+ * helpers. */
 int func_02053e44(s32 x, s32 y, s32 width, s32 height, int kind, int draw);
 
-/* Returns 1 when the current touch point is at least `distanceSquared` from
- * (x, y). The provider returns dx*dx + dy*dy, so the threshold is squared. */
-int func_02053f68(s32 x, s32 y, s32 distanceSquared);
+/* Returns 1 when a current touch point exists and its integer distance from
+ * (x, y) is at least `distance`. func_020500bc returns the integer square root
+ * of dx*dx + dy*dy, so `distance` is in the same pixel units as the
+ * coordinates, not squared. */
+int func_02053f68(s32 x, s32 y, s32 distance);
 
 #endif

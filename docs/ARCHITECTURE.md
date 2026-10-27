@@ -146,6 +146,6 @@ list attachment borrows animation chains and performs no allocation.
 touch-sample table: each 14-byte record holds the current and previous touch
 flag and calibrated x/y coordinates, plus one never-read alignment halfword.
 The sample shift, three touch-state queries, the rectangle hit test and the
-squared-distance check depend only on base types and the existing touch-panel,
-squared-distance and GX providers. The table and calibration storage remain
+integer-distance check depend only on base types and the existing touch-panel,
+integer-distance and GX providers. The table and calibration storage remain
 provider-owned; this unit allocates and releases nothing.

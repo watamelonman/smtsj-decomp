@@ -18,7 +18,8 @@ extern void func_0200d5b4(void);
 extern int func_0200d648(u16 *raw);
 extern void func_0200d884(u16 *point, u16 *raw);
 
-/* Squared-distance helper used by func_02053f68. */
+/* Integer-distance helper used by func_02053f68: writes dx*dx + dy*dy to the
+ * SQRT unit and returns its integer square root. */
 extern int func_020500bc(const void *a, const void *b);
 
 /* Renderer readiness and the ordered GX rectangle submission used when
@@ -184,18 +185,31 @@ int func_02053de8(u16 *x, u16 *y)
 }
 
 /* Draws the rectangle when requested and the renderer is ready, then hit-tests
- * the selected touch edge against x/y/width/height. `kind` picks the point
- * source: 0 = func_02053d38, 1 = func_02053d8c, 2 = func_02053de8. The bounds
- * comparisons are half-open, so the right and bottom edges are exclusive.
+ * the selected touch edge against x/y/width/height. `kind` must be 0, 1 or 2
+ * (0 = func_02053d38, 1 = func_02053d8c, 2 = func_02053de8); other values are
+ * outside the contract and leave the original's hit flag in caller-saved r4.
+ * The bounds comparisons are half-open, so the right and bottom edges are
+ * exclusive. Returns 1 only on a supported `kind` whose point exists and lies
+ * inside the rectangle, 0 otherwise.
  * Evidence: the renderer guard at 0x02053e60..0x02053e70, the ordered GX calls
  * at 0x02053e74..0x02053ec4 and the comparison chain at 0x02053f24..0x02053f64. */
 int func_02053e44(s32 x, s32 y, s32 width, s32 height, int kind, int draw)
 {
     u16 pointX;
     u16 pointY;
+    /* Deliberately uninitialized. `kind` is contractually 0-2; for any other
+     * value the original branches straight to the hit test with caller-saved
+     * r4 holding whatever the callers left there, and this indeterminate
+     * local reproduces that. Initializing it would change the emitted code. */
     int hit;
 
     if (draw == 1 && func_020523a8() == 1) {
+        /* Only the call order and argument values are evidenced at
+         * 0x02053e6c..0x02053ebc; their meanings are not established by a
+         * public source. The first call gets 0xff000000 in all four argument
+         * registers, func_02057e18 gets 16 before and 31 after the rectangle,
+         * func_02057e30 gets 10 and 0, and func_02057b50 gets the rectangle
+         * plus 21 as its mode argument. Reproduce them verbatim. */
         func_02057dcc(0xff000000, 0xff000000, 0xff000000, 0xff000000);
         func_02057e18(16);
         func_02057e30(10);
@@ -218,12 +232,13 @@ int func_02053e44(s32 x, s32 y, s32 width, s32 height, int kind, int draw)
     return 0;
 }
 
-/* Returns 1 when the current touch point is at least `distanceSquared` from
- * (x, y). The two coordinate pairs are widened to 32-bit words and passed to
- * the squared-distance provider, so the threshold is dx*dx + dy*dy. Evidence:
- * the local pair stores at 0x02053f90..0x02053fac, func_020500bc at
- * 0x02053fb0 and the `cmp r0, r4` return at 0x02053fb4..0x02053fc0. */
-int func_02053f68(s32 x, s32 y, s32 distanceSquared)
+/* Returns 1 when a current touch point exists and its integer distance from
+ * (x, y) is at least `distance`; otherwise returns 0. func_020500bc returns the
+ * integer square root of dx*dx + dy*dy, so the threshold is a distance in pixel
+ * units, not a squared value. Evidence: the local pair stores at
+ * 0x02053f90..0x02053fac, func_020500bc at 0x02053fb0 and the `cmp r0, r4`
+ * return at 0x02053fb4..0x02053fc0. */
+int func_02053f68(s32 x, s32 y, s32 distance)
 {
     u16 pointX;
     u16 pointY;
@@ -235,7 +250,7 @@ int func_02053f68(s32 x, s32 y, s32 distanceSquared)
         point[1] = pointY;
         target[0] = x;
         target[1] = y;
-        if (func_020500bc(point, target) >= distanceSquared) {
+        if (func_020500bc(point, target) >= distance) {
             return 1;
         }
     }

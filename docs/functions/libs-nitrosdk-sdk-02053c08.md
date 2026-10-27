@@ -2,7 +2,7 @@
 
 Eight matched functions at `0x02053c08-0x02053fd0`: a five-entry touch-sample
 record table, the sample shift helper, three touch-state accessors, a rectangle
-hit test and a squared-distance check. The delink has no descriptive symbol
+hit test and an integer-distance check. The delink has no descriptive symbol
 names for this wrapper, so the `func_` symbols are retained for linkage; field
 roles are documented below because the touch provider's public `TPData` layout
 establishes them.
@@ -95,18 +95,25 @@ this unit allocates or releases storage.
   `x/y/width/height` through the ordered GX calls. It then selects a touch
   source with `kind` (0 = current touch, 1 = touch-down edge, 2 = touch-up
   edge) and returns 1 only when that point lies in the half-open rectangle;
-  otherwise it returns 0.
+  otherwise it returns 0. `kind` is contractually 0-2: for any other value the
+  original branches to the hit test with caller-saved `r4` untouched and reads
+  it as the hit flag, so the result is undefined rather than 0. The C local is
+  intentionally left uninitialized to keep that behaviour and the match.
 - Evidence: the `draw`/readiness guards at `0x02053e60..0x02053e70`, the GX call
   sequence at `0x02053e74..0x02053ec4`, the `kind` chain at
   `0x02053ec8..0x02053f18` and the bounds tests at `0x02053f24..0x02053f64`.
+  Only the call order and argument values of the GX sequence are evidenced; the
+  meanings of `0xff000000`, 16, 10, 21 and 31 are not established, so the code
+  reproduces them verbatim with a comment listing each call.
 
 ## func_02053f68
 
 - Original: ARM, address `0x02053f68`, size 104 bytes.
 - Status: **100% objdiff match**, with typed parameters and readable C.
-- Contract: returns 1 when a current touch point exists and its squared
-  distance from `(x, y)` is at least `distanceSquared`; otherwise returns 0.
-  The threshold is squared because the provider returns `dx*dx + dy*dy`.
+- Contract: returns 1 when a current touch point exists and its integer
+  distance from `(x, y)` is at least `distance`; otherwise returns 0.
+  `func_020500bc` writes `dx*dx + dy*dy` to the SQRT operand register and
+  returns the integer square root, so `distance` is not squared.
 - Evidence: the local coordinate pair stores at `0x02053f90..0x02053fac`, the
   `func_020500bc` call at `0x02053fb0` and the `cmp r0, r4` early return at
   `0x02053fb4..0x02053fc0`.

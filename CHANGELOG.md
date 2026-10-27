@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- M2-T304: match the eight touch-sample record, touch-edge query, rectangle hit-test and squared-distance helpers in `libs/NitroSDK/sdk_02053c08.c`, and add `include/libs/NitroSDK/sdk_02053c08.h`.
+- M2-T304: match the eight touch-sample record, touch-edge query, rectangle hit-test and integer-distance helpers in `libs/NitroSDK/sdk_02053c08.c`, and add `include/libs/NitroSDK/sdk_02053c08.h`.
 - M2-T294: match the two CRI work-area accessor pairs, the mixer buffer clear/get, the circular sample writer and the alloc/free/notification wrappers in `libs/CRI/cri_0208d8e8.c`.
 - M2-T303: match the six remaining ACSVHL create/init/reset and fade-state entry points in `libs/CRI/cri_0208d1fc.c`, completing the translation unit.
 - M2-T298: match the two empty NitroSDK startup hooks in `libs/NitroSDK/sdk_02000800.c` and document the five CP15/stack assembly startup functions left on the hard list.
