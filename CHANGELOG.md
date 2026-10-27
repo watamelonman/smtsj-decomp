@@ -4,6 +4,7 @@
 
 - M2-T230: match the three command payload wrappers at 0204f68c, 0204f6d8 and 0204f788.
 
+- Match two SDK pair-state guard/advance helpers; document the remaining GX helper.
 - M2-T229: reconstruct eight message submission wrappers in `libs/NitroSDK/sdk_0204f520.c`.
 
 - M2-T221: match all eight resource-stack transfer, creation and release wrappers in `libs/NitroSDK/sdk_0205b900.c`.
