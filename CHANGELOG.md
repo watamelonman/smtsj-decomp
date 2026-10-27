@@ -3,6 +3,7 @@
 ## Unreleased
 
 - Reconstruct all seven CRI callback/state helpers in `cri_02087ef8.c`.
+- M2-T242: match the SI3D texture SRT sender and general 3ds Max texture matrix constructor.
 
 - M2-T240: match all five singleton setup, teardown, resource submission and object update wrappers in `lib_02048e90`.
 - M2-T237: match the remaining eight provider, slot-allocation and level wrappers in `sdk_0205e53c`.
