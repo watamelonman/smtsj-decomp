@@ -1,6 +1,6 @@
 # libs/unknown/lib_02049620
 
-All eight card functions match at 100% with the configured mwccarm 2.0/sp1p5.
+All ten functions in this unit match at 100% with the configured mwccarm 2.0/sp1p5.
 The unit is game-side code, not NitroSDK/MSL: its queue scan calls the
 name-registration routine `func_0209d44c` (see `docs/functions/game-unit-0209d42c.md`),
 which formats 32-byte name slots. There is therefore no public NitroSDK/MSL
@@ -17,9 +17,25 @@ the fields this unit touches are named in the header: the +0 kind/tag word, the
 +4 key word, the +0x10 byte and the name at +0x14. The record array is
 caller-owned and never allocated here.
 
-`func_02049620` (176 bytes) and `func_0204980c` (396 bytes) belong to the same
-delinked translation unit but are not part of this card. They are left out
-rather than stubbed; the TU still links them from the delink object.
+`func_02049620` (176 bytes) and `func_0204980c` (396 bytes) complete the unit.
+`func_0204980c` works on a different object than the queue: a 3-axis state whose
+packed halfword at +4 holds fields of width 2,2,2,2,2,3,3 (bits 0..15). The
+caller `func_0204a720` passes `object + 0x17c` as that state. The source update
+is borrowed and has the same layout, which is why one `Unk04980cState` type is
+used for both arguments.
+
+## func_02049620 — 176 bytes
+
+Takes the caller-owned queue and returns when the count at +0x3808 is zero.
+Otherwise it walks `count` records from the start. A record whose +0x10 byte is
+zero has its +4 word made relative to the first such record (the baseline is
+stored the first time and reused); every other record retires itself when its
+kind is 2, 3, 4, 13 or 17, resets the baseline when the kind is (still) 1, and
+clears +4. Evidence: the `for (i = 0; i < count; i++)` entry guard
+`cmp #0`/`popls`, the `ldrb r2, [r0, #16]`, the signed switch tree
+`cmp #13`/`#17`/`#4`/`#3`/`#2`, the `ldreq` baseline, the `sub`/`str` of +4,
+`str lr` for the kind clear and `moveq r4, ip` for the baseline reset. The
+queue is borrowed. Objdiff: 100%.
 
 ## func_020496d0 — 84 bytes
 
@@ -80,11 +96,23 @@ bottom-test decrements; the slot stride is the `add r5, r5, #6` step. Objdiff:
 Takes one 6-byte slot and clears it by tail-calling `func_020497d0` with a count
 of one. Evidence: the `func_020497d0` literal and `mov r1, #1`. Objdiff: 100%.
 
+## func_0204980c — 396 bytes
+
+Takes a destination state and a source update with the same layout and first
+applies the three signed axis bytes. An update byte of -5 stops positive
+motion (a positive destination axis is cleared) and -6 stops negative motion
+(a negative axis is cleared); any other nonzero byte is added to the axis and
+the result is clamped to [-4, 4]. It then merges the packed halfword at +4 field
+by field (widths 2,2,2,2,2,3,3), copying only fields whose source value is
+nonzero. Evidence: the `ldrsb` axis loads, the -4/-5/-6 constants built from
+`mvn #3`, the clamps against 4 and -4, and the seven `ldrh [r1, #4]`
+extract/insert sequences. Both objects are borrowed. Objdiff: 100%.
+
 ## Validation
 
 The card sets `tests_required = false`. The hand comparator checked every
 function's instructions and relocations against the ROM. `python3
-tools/match_gate.py` reported all eight C functions at 100%, `python3
+tools/match_gate.py` reported all ten C functions at 100%, `python3
 tools/checksum.py` reported the linked image byte-identical to the original,
 and the anticheat gate and unittest suite passed. The TU remains linked from the
 delink until a human marks it `complete` in `config/arm9/delinks.txt`.

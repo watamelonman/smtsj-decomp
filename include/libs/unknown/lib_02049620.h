@@ -3,11 +3,12 @@
 #include "types.h"
 
 /* A 0x38-byte event-queue record. The +0 word is the kind that the queue scan
- * dispatches on, +4 is an unsigned scheduling value read by the consumer in
- * unit_020469d8, and +0x14 holds the NUL-terminated name handed to func_0209d44c
- * (which formats 32-byte name slots). Only the observed fields are named. */
+ * dispatches on (signed in the original switch), +4 is an unsigned scheduling
+ * value read by the consumer in unit_020469d8, and +0x14 holds the
+ * NUL-terminated name handed to func_0209d44c (which formats 32-byte name
+ * slots). Only the observed fields are named. */
 typedef struct Unk049620Record {
-    u32 kind;
+    s32 kind;
     u32 unk_04;
     u8 pad_08[8];
     u8 unk_10;
@@ -38,6 +39,24 @@ typedef struct Unk049620Slot6 {
     u8 bytes[6];
 } Unk049620Slot6;
 
+/* A 3-axis state updated by func_0204980c. The axes are signed and the packed
+ * halfword at +4 holds the independently updated fields b0..b6; their widths
+ * (2,2,2,2,2,3,3) are what the original's lsl/lsr masks encode. Bitfields are
+ * laid out LSB first on ARM, so b0 is bits 0..1 and b6 is bits 13..15. */
+typedef struct Unk04980cState {
+    s8 axis[3];
+    u8 pad_03;
+    u16 b0 : 2;
+    u16 b1 : 2;
+    u16 b2 : 2;
+    u16 b3 : 2;
+    u16 b4 : 2;
+    u16 b5 : 3;
+    u16 b6 : 3;
+} Unk04980cState;
+
+/* Normalizes the queued records before the consumer runs. */
+void func_02049620(Unk049620List *list);
 /* Scans from the cursor; stops at a word-1 record and registers word-2 names. */
 void func_020496d0(Unk049620List *list);
 /* Returns the record at the cursor, or null when the cursor is at the end. */
@@ -54,5 +73,7 @@ void func_020497bc(Unk049620Slot6 *base);
 void func_020497d0(Unk049620Slot6 *base, s32 count);
 /* Zeroes one 6-byte slot. */
 void func_020497fc(Unk049620Slot6 *base);
+/* Applies a 3-axis update and merges the nonzero packed flags into the state. */
+void func_0204980c(Unk04980cState *state, Unk04980cState *update);
 
 #endif
