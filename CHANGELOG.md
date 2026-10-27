@@ -3,6 +3,10 @@
 ## Unreleased
 
 - M2-T478: match the MSL 16-bit string-length helper; document the deferred acos runtime-symbol mismatch.
+- M2-T454: match WiFi state notifications, startup request and finalize dispatcher; reverify the heap initializer at 100%.
+
+- Match CRI 0208539c position-update and selector-query helpers; document the deferred read helper.
+- M2-T471: match seven NitroSDK RTC initialization, date, BCD and FIFO helpers; document the deferred assembly busy-wait.
 
 - M2-T466: match the remaining four displacement/intensity task constructors, updater and effect dispatcher in `lib_020b78d8.c`.
 - M2-T458: match the MSL printf conversion parser in `sdk_020118f8.c`; document its ASCII-table symbol prerequisite before C linking.
