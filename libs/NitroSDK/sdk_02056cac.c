@@ -43,14 +43,56 @@ typedef struct {
     s8 previous;
 } Unk056cacState;
 
+/* Private 184-byte geometry record; only the words written by the reset
+ * helper are named. The untouched hole at +0x24..+0x83 stays a pad. */
+typedef struct {
+    s32 unk_0000;
+    s32 unk_0004;
+    s32 unk_0008;
+    s32 unk_000c;
+    s32 unk_0010;
+    s32 unk_0014;
+    s32 unk_0018;
+    s32 unk_001c;
+    s32 unk_0020;
+    s32 pad_0024[24];
+    s32 unk_0084;
+    s32 unk_0088;
+    s32 unk_008c;
+    s32 unk_0090;
+    s32 unk_0094;
+    s32 unk_0098;
+    s32 unk_009c;
+    s32 unk_00a0;
+    s32 unk_00a4;
+    s32 unk_00a8;
+    s32 unk_00ac;
+    s32 unk_00b0;
+    u16 unk_00b4;
+    u16 unk_00b6;
+} Unk056cacSlot;
+
 extern Unk056cacWork *func_02056110(int index);
 extern void func_0205bfd0(Unk056cacEntry *entries);
-extern void func_02056cd0(int engine, u32 slot, const void *source, u32 count);
+extern void func_02056cd0(int engine, u32 slot, void *source, u32 count);
+extern u32 func_020038ac(void);
+extern u32 func_0200390c(void);
+extern void func_02006c94(void *source, u32 bytes);
+extern void func_020050c4(void);
+extern void func_0200510c(void *source, u32 offset, u32 bytes);
+extern void func_02005178(void);
+extern void func_02004760(void *source, u32 offset, u32 bytes);
+extern void func_02005278(void);
+extern void func_02005290(void *source, u32 offset, u32 bytes);
+extern void func_020052f4(void);
+extern void func_020047b8(void *source, u32 offset, u32 bytes);
 extern void func_0205bf18(Unk056cacEntry *entries, const Unk056cacPacket *packet);
 extern void func_0205c0ec(Unk056cacEntry *entries);
-extern void func_02056ecc(void);
+/* The 872-byte eight-record initializer remains delinked; see the TU's
+ * docs/functions page for the attempted source forms and hard-list entry. */
 extern void func_02056f58(void);
 extern Unk056cacParameters data_021683c8;
+extern Unk056cacSlot data_0216846c;
 extern Unk056cacState data_0215f05c;
 void func_020572d8(void);
 
@@ -63,9 +105,47 @@ void func_02056cac(int index)
 
 /* Submits exactly one 512-byte transfer via the neighbouring provider;
  * evidence: 0x02056cd0 shifts its fourth argument left by nine. */
-void func_02056cc0(int engine, u32 slot, const void *source)
+void func_02056cc0(int engine, u32 slot, void *source)
 {
     func_02056cd0(engine, slot, source, 1);
+}
+
+/* Copies `count` 512-byte blocks between a caller buffer and the GBA cartridge
+ * window selected by `engine`: zero uses the 0x05000000 backup window
+ * (func_020050c4/0200510c/02005178), nonzero the 0x0A000000 ROM window
+ * (func_02005278/02005290/020052f4). The provider status chooses the queued
+ * copy (setup/commit around the transfer) or the direct PIO copy. Evidence:
+ * the <<9 block count, the 512-byte offsets added by 0x02004760..0x020052f4,
+ * and the two window bases. `slot` and `count` are sector counts/indices. */
+void func_02056cd0(int engine, u32 slot, void *source, u32 count)
+{
+    u32 ready = 1;
+    u32 status;
+
+    if (engine == 0)
+        status = func_020038ac();
+    else
+        status = func_0200390c();
+    if (status == 0)
+        ready = 0;
+    func_02006c94(source, count << 9);
+    if (engine == 0) {
+        if (ready != 0) {
+            func_020050c4();
+            func_0200510c(source, slot << 9, count << 9);
+            func_02005178();
+        } else {
+            func_02004760(source, slot << 9, count << 9);
+        }
+    } else {
+        if (ready != 0) {
+            func_02005278();
+            func_02005290(source, slot << 9, count << 9);
+            func_020052f4();
+        } else {
+            func_020047b8(source, slot << 9, count << 9);
+        }
+    }
 }
 
 /* Builds a borrowed-entry queue packet; the callback arguments are bits
@@ -127,6 +207,38 @@ void func_02056e68(void)
     data_021683c8.vectors[6] = 0;
     data_021683c8.vectors[7] = 4096;
     data_021683c8.vectors[8] = 0;
+}
+
+/* Resets the first 184-byte geometry record to its identity/default ranges:
+ * a signed extent pair at +0x08/+0x14, a 0x1000 step at +0x1c, and the
+ * scale/bounds block at +0x84..+0xb6. The remaining records (+0xb8 each)
+ * are handled by func_02056f58. Evidence: the stores to data_0216846c at
+ * 0x02056ecc..0x02056f50 and the 0xb8 stride used by the 020572f8 unit. */
+void func_02056ecc(void)
+{
+    data_0216846c.unk_0000 = 0;
+    data_0216846c.unk_0004 = 0;
+    data_0216846c.unk_0008 = 0x400000;
+    data_0216846c.unk_000c = 0;
+    data_0216846c.unk_0010 = 0;
+    data_0216846c.unk_0014 = -0x400000;
+    data_0216846c.unk_0018 = 0;
+    data_0216846c.unk_001c = 0x1000;
+    data_0216846c.unk_0020 = 0;
+    data_0216846c.unk_0084 = 0;
+    data_0216846c.unk_0088 = 0xc0000;
+    data_0216846c.unk_008c = 0;
+    data_0216846c.unk_0090 = 0x100000;
+    data_0216846c.unk_0094 = 0;
+    data_0216846c.unk_0098 = 0x800000;
+    data_0216846c.unk_00a4 = 0;
+    data_0216846c.unk_00a8 = 0;
+    data_0216846c.unk_00ac = 0;
+    data_0216846c.unk_00b0 = 0;
+    data_0216846c.unk_00b4 = 0;
+    data_0216846c.unk_00b6 = 0;
+    data_0216846c.unk_009c = -500;
+    data_0216846c.unk_00a0 = 10;
 }
 
 /* Runs the four initialization stages in their original order; evidence:

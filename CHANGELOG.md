@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T413: match the `sdk_02056cac.c` 512-byte cartridge transfer and slot-0 geometry reset; document the deferred eight-record initializer.
 - M2-T412: match eight transfer-queue, display-control and initialization helpers in `sdk_02056cac.c`.
 - M2-T398: match background-record cleanup and dual-engine display/transform reset in `sdk_02054fb8.c`.
 - M2-T411: match all eight NitroSDK touch-panel initialization, sampling and calibration functions.
