@@ -108,3 +108,9 @@ wrappers. The work slot at +0xc0 is volatile because the interrupt-disabled loop
 re-reads it after each wait call; the 36-byte message is stack-owned only while
 its handlers run. The global-prefix view spans the following BSS symbol only to
 describe the byte at +0x26 cleared by the pump.
+`include/libs/unknown/lib_02028578.h` declares the borrowed NitroSystem G3D joint
+result used by the Maya joint-SRT sender and reuses the shared material/matrix
+views of the neighbouring cgtool units. The texture-matrix constructor table at
+0x0213d584 and the geometry submission routine belong to their existing
+providers; the packet matrix, the joint result and the material result are all
+caller- or provider-owned, and this unit allocates and retains nothing.
