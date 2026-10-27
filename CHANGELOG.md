@@ -4,6 +4,7 @@
 
 - Reconstructed the seven sdk_0205de1c indexed-object and record submission helpers in matching C.
 
+- M2-T350: match eight CRI work-area accessors, state/release helpers and halfword row-shift copiers in `libs/CRI/cri_0207a8d0.c`.
 - M2-T315: match four NitroSystem texture SRT scalar evaluation and material mapping/application functions in `sdk_020276f8.c`.
 - M2-T321: match the CRI 100-byte slot initializer and second-range allocator, completing the C implementations in `libs/CRI/cri_0207d7e0.c`.
 
