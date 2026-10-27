@@ -9,10 +9,11 @@ typedef struct Cri0207a8d0Work {
     void *unk_008;  /* object handed to the release helper at 0207a96c */
     u8 unk_00c;
     s8 unk_00d, unk_00e, unk_00f;
-    u8 pad_010[0x38];
+    u8 pad_010[0x30];
+    s32 unk_040, unk_044;
     void *unk_048;
     s32 unk_04c;
-    u8 pad_050[0xc];
+    s32 unk_050, unk_054, unk_058;
     s16 *unk_05c;
     s32 unk_060, unk_064, unk_068, unk_06c, unk_070;
     s32 unk_074;
@@ -121,6 +122,8 @@ extern void func_02080908(void *child, void *input, s32 count, s16 *left, s16 *r
 extern void func_0208093c(void *child);
 extern s32 func_020808cc(void *child);
 extern void func_020809b8(void *child);
+extern s32 func_0208099c(void *child);
+extern void func_0207a9c4(Cri0207a8d0Work *self, s32 count);
 extern void func_0207aa4c(Cri0207a8d0Work *self);
 extern void func_0207abbc(Cri0207a8d0Work *self);
 extern void func_02079f0c(Cri0207a8d0Work *self);
@@ -194,4 +197,90 @@ void func_0207ad7c(Cri0207a8d0Work *self)
     if (delta < 0) delta = (0x7fffffff - previous) + current;
     self->unk_0e8(self->unk_0ec, delta, self->unk_00e * (count * 2));
     self->unk_0e0 = self->unk_094;
+}
+
+/** Bounds the child request by available input and row capacity. Evidence:
+ * 0207aa4c divides +0x4c by +0x50 and limits it against three row bounds;
+ * +0x50 selects the existing single-row or paired-row provider. Divisors
+ * must be nonzero and the caller retains all work and buffer storage. */
+void func_0207aa4c(Cri0207a8d0Work *self)
+{
+    /* Declaration order preserves the original allocation. See DEC-039. */
+    s32 requested;
+    s32 capacity;
+    s32 blocks;
+    s32 padding;
+    s32 available;
+    s32 remaining;
+    s32 offset;
+    s32 channels;
+    s32 count;
+    s32 rounded;
+    s32 width;
+    channels = self->unk_050;
+    count = self->unk_04c / channels;
+    requested = self->unk_070;
+    width = self->unk_058;
+    rounded = requested + width - 1;
+    offset = self->unk_068;
+    available = self->unk_06c;
+    blocks = rounded / width;
+    padding = width - 1 - rounded % width;
+    capacity = self->unk_060;
+    remaining = (width + (capacity - offset) - 1) / width;
+    s32 span = remaining * width;
+    if (blocks < remaining) {
+        if (offset + span - padding < capacity) remaining++;
+    }
+    if (requested < available) available += padding;
+    available /= width;
+    if (count > available) count = available;
+    if (count > blocks) count = blocks;
+    if (count > remaining) count = remaining;
+    if (channels == 2) func_0207aa04(self, count);
+    else func_0207a9c4(self, count);
+}
+
+/** Accounts for child output and shifts rows that cross the +0x40 boundary.
+ * Evidence: 0207abbc obtains the child count from 0208099c, stores scaled
+ * results at +0x90/+0x94, and calls the existing row shifters on overflow.
+ * Buffers remain caller-owned; +0x50 and +0x58 must be nonzero. */
+void func_0207abbc(Cri0207a8d0Work *self)
+{
+    s32 scale;
+    s32 channels;
+    s32 rounded;
+    s32 count;
+    s32 offset;
+    s16 *output;
+    s32 boundary;
+    s32 stride;
+    s32 completed;
+    s32 width;
+    s32 padding;
+    width = self->unk_058;
+    rounded = self->unk_070 + width - 1;
+    scale = self->unk_054;
+    offset = self->unk_068;
+    output = self->unk_05c;
+    boundary = self->unk_040;
+    stride = self->unk_044;
+    padding = width - 1 - rounded % width;
+    completed = func_0208099c(self->unk_008);
+    channels = self->unk_050;
+    count = completed * width / channels;
+    /* Reuse the rounded count for its quotient. See DEC-039. */
+    rounded /= width;
+    if (rounded * channels <= completed) count -= padding;
+    self->unk_090 = count;
+    self->unk_094 = completed * scale;
+    {
+        s32 end = offset + count;
+        if (end < boundary) return;
+        s32 overflow = end - boundary;
+        if (self->unk_050 == 2)
+            func_0207ab70(output, boundary, stride, overflow);
+        else
+            func_0207aba8(output, boundary, stride, overflow);
+    }
 }

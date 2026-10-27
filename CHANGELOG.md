@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T352: match both CRI 0207a8d0 request-bounding and result/row-shift helpers.
+
 - Reconstructed six more CRI 0207a8d0 row-copy, child-state and callback helpers; documented two remaining instruction-order mismatches.
 - M2-T345: match four text-work allocation, device forwarding, glyph copy and rectangle helpers; document the remaining parser on the hard list.
 
