@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T179: match `NNS_GfdAllocFrmPlttVram` (`func_02029c4c`) in `lib_02029b78`, completing the nine-function frame texture/palette VRAM manager TU.
 - M2-T178: match the eight NitroSystem frame texture/palette VRAM manager functions in `lib_02029b78`.
 - M2-T175: match the eight CRI record-reset, clamped-forwarding and handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T174: match eight CRI handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
