@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T458: match the MSL printf conversion parser in `sdk_020118f8.c`; document its ASCII-table symbol prerequisite before C linking.
+- M2-T453: reconstruct seven WiFi heap and connection callback helpers; document the deferred conditional-move match in `func_02053230`.
 
 - M2-T462: match eight CRI table lookup, hexadecimal parsing, pool allocation and record sizing helpers in `cri_0208539c.c`.
 
