@@ -1,9 +1,8 @@
 # lib_0205f1d8
 
-M2-T364 reconstructs eight of the fifteen ARM functions in the FBIN resource
-translation unit (`0x0205f1d8`–`0x0205f70c`). The remaining seven functions are
-covered by the dependent card M2-T365. All eight functions of this card report
-100% in objdiff and the full image still matches its checksum.
+M2-T364 and M2-T365 reconstruct all fifteen ARM functions in the FBIN resource
+translation unit (`0x0205f1d8`–`0x0205f70c`). All fifteen report 100% in objdiff
+and the full image still matches its checksum.
 
 ## Source and naming evidence
 
@@ -35,6 +34,37 @@ are descriptive where the callers establish the meaning:
   returning `func_0205f41c`'s pointer.
 - `src/game/unit_02044394.c` caches the header block using
   `func_0205f460`'s length and `func_0205f4b0`'s read.
+- `src/game/unit_02095560.c` (the delinked caller `func_02095a60`) uses the
+  locator with `func_0205f534`/`func_0205f590`/`func_0205f5f0`/
+  `func_0205f668`. No direct caller of `func_0205f1d8`/`func_0205f25c` survives
+  in the ARM9 image or the overlays (no branch or literal reference), and their
+  one-byte cursor reservation is only visible in their own disassembly, so those
+  two names and the `Unk05f1d8Stream` field names stay neutral.
+
+## func_0205f1d8 (132 bytes)
+
+Appends `size` bytes from `source` into a caller-owned stream. The stream layout
+is proven by this function and by `func_0205f25c`: +0 is the storage pointer,
++4 its byte capacity, +8 the cursor and +0xc a status word. When +0xc is set,
+the function clears it and advances the cursor by one reserved byte before the
+copy. A null source returns 0. A null storage pointer skips the copy but still
+advances the cursor by `size` and returns 1; a block past the capacity returns 0
+without copying.
+
+## func_0205f25c (136 bytes)
+
+Reads `size` bytes from the same stream into `destination`, with the same
+status-word, cursor and capacity rules as `func_0205f1d8`. A null destination
+returns 0, a null storage pointer skips the copy and still advances the cursor,
+and a block past the capacity returns 0.
+
+## func_0205f3b0 (108 bytes)
+
+Returns the byte offset of entry `index` inside the payload of a fully loaded
+resource: the header's data offset plus the sizes of all preceding entries.
+Returns 0 for an invalid resource or an out-of-range index. `func_0205f41c`
+adds the result to the resource base, while `func_0205f5f0` and
+`func_0205f668` use it to seek on disk.
 
 ## func_0205f2e4 (52 bytes)
 
@@ -51,14 +81,14 @@ which `unit_02044394` then uses as the header-block length to cache.
 ## func_0205f340 (52 bytes)
 
 Returns the address of the per-entry size table at header +0xc, or null for a
-null/non-FBIN resource. `func_0205f3b0` (M2-T365) walks this table to compute
-an entry offset.
+null/non-FBIN resource. `func_0205f3b0` walks this table to compute an entry
+offset.
 
 ## func_0205f374 (60 bytes)
 
 Returns `sizes[index]` for an in-range index, or 0 when the resource is invalid
-or the unsigned index is not below the entry count. `func_0205f668` (M2-T365)
-uses the size to allocate and read one payload.
+or the unsigned index is not below the entry count. `func_0205f668` uses the
+size to allocate and read one payload.
 
 ## func_0205f41c (68 bytes)
 
@@ -88,9 +118,38 @@ returning that call's success flag (0 for a null locator or source). Evidence:
 `func_02095a60` passes the locator to `func_0205f534`/`func_0205f590`/
 `func_0205f668`, which use +0/+4 to open the context and +8 as the read offset.
 
+## func_0205f534 (92 bytes)
+
+Opens the file named by `locator`, reads only the 12-byte FBIN header from the
+locator's offset and returns its data offset (the header plus size-table
+length), or 0 when the file cannot be opened. `func_02095a60` passes the result
+to `func_0205f590` as the size of the block to load.
+
+## func_0205f590 (96 bytes)
+
+Reads `size` bytes from the locator's offset into `buffer` and returns 1; a
+failed open returns 0. `func_02095a60` loads the header block that
+`func_0205f534` sized.
+
+## func_0205f5f0 (120 bytes)
+
+Reads the first four bytes of entry `index` at the locator's offset plus
+`func_0205f3b0`'s entry offset and returns the word shifted right by 8, or 0
+when the file cannot be opened. The caller in `unit_02095a60` discards the
+result, so the shifted field has no independently proven meaning and the
+function keeps a neutral name.
+
+## func_0205f668 (164 bytes)
+
+Loads entry `index` into a buffer allocated with `func_0205f374`'s entry size,
+passes it to `func_0205148c` together with `argument` (the caller's output
+allocation, which `func_0205148c` dispatches on the block's format byte), frees
+the temporary buffer and returns 1; a failed open returns 0. `func_02095a60`
+uses it to materialise the selected entry.
+
 ## Validation
 
-`python3 tools/match_gate.py` reports 100% for all eight functions,
+`python3 tools/match_gate.py` reports 100% for all fifteen functions,
 `python3 tools/checksum.py` reports every module byte-identical to the original,
 the unit suite passes, and `tools/anticheat.py` reports no inline asm or byte
 blobs. No behavioural tests are required by this card.

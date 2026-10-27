@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T365: match the FBIN stream copy pair, entry-offset walker and the four locator-based header/entry readers in `libs/unknown/lib_0205f1d8.c`, completing the translation unit.
 - M2-T364: match the FBIN resource count/offset/table/payload accessors and the header/locator file helpers in `libs/unknown/lib_0205f1d8.c`, adding `include/libs/unknown/lib_0205f1d8.h`.
 - Reconstructed six more CRI 0207a8d0 row-copy, child-state and callback helpers; documented two remaining instruction-order mismatches.
 - M2-T345: match four text-work allocation, device forwarding, glyph copy and rectangle helpers; document the remaining parser on the hard list.
