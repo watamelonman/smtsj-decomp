@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T482: match eight NitroSystem texture/palette key, upload and model-binding release helpers.
+- M2-T472: match NitroSDK asynchronous RTC time requests, FIFO completion handling and Gregorian weekday conversion.
 - M2-T484: match eight background transfer wrappers, flag/update helpers and selector mappings in `sdk_020557c0.c`.
 
 - M2-T478: match the MSL 16-bit string-length helper; document the deferred acos runtime-symbol mismatch.
