@@ -14,8 +14,8 @@ typedef struct Sdk0208dc78Voice {
     u8 unk_0e;
     u8 unk_0f;
     u8 pad_10[0x40];
-    u32 unk_50;
-    u32 unk_54;
+    s32 unk_50;
+    s32 unk_54;
 } Sdk0208dc78Voice;
 
 /** CRI sound singleton at data_02175ccc. The record table and count are
@@ -49,4 +49,14 @@ void func_0208e1ac(float volume);
 /** Returns the stored master volume. */
 float func_0208e1e0(void);
 
+/** Advances signed frame counters on pending notifications. */
+void func_0208dd68(void);
+/** Assigns a voice; argument selects mode and mode is forwarded to the provider. */
+void func_0208dea4(s32 index, s32 argument, s32 mode);
+/** Loads caller-owned 64-byte path storage with timing in 60 Hz units. */
+void func_0208df48(s32 index, s32 flag, u32 time, const char *path);
+/** Sets end timing in 60 Hz units for an assigned voice. */
+void func_0208e008(s32 index, u32 time);
+/** Starts an assigned stopped voice with a signed frame duration. */
+void func_0208e084(s32 index, s32 step);
 #endif

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- M2-T400: match six NitroSystem stream initialization, setup, volume, stop and wake helpers; document the deferred buffer callback.
+- M2-T379: match five CRI voice assignment, path/timing, start and fade-update helpers; document the deferred teardown helper.
+
 - M2-T409: match three input-mask queries and five state accessors in `sdk_020535cc.c`.
 - M2-T410: match the input-record initializer, key updater with auto-repeat, another mask query, the one-hot key mapper and the `data_02160794` state machine in `sdk_020535cc.c`, completing the TU.
 
