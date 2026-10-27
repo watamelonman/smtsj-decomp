@@ -63,4 +63,31 @@ No module boundary or ownership changes occur.
 
 ## Hard list
 
-None of the requested functions is deferred.
+`func_020857f8` (380 bytes), deferred in M2-T463; see the reconstruction notes below.
+
+## M2-T463 additions
+
+The public-source search for CRI/ADX Nintendo DS runtime C found no matching
+implementation. CRI's public product pages (https://game.criware.jp/products/)
+describe current SDKs rather than this runtime. The two additions follow the
+original ARM instructions and retain the original neutral symbols. No new public
+layout or module boundary is introduced. Both additions match 100% in objdiff.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_02085740` | Null reports data_021474f8 and returns zero. Under entry/exit providers, origin 0 assigns offset to +16, origin 2 assigns count +12 plus offset, origin 1 adds offset to +16; other origins preserve position before clamping. Signed position is clamped first to count, then to zero. Returns final position. Caller owns the record; signed additions must fit. |
+| `func_02085a88` | Null returns zero. Selectors 300/302 read word +8; 201 calls 02085a60; 203/205 parse the input pointer itself through 020855d0. Selectors 200/202/204/299/301/400 return zero, 600 returns one, all others return -1. Text selectors require terminated text; record selectors require the borrowed record layout. |
+| `func_020857f8` | Deferred. Validates record, signed count and destination, rejects state two, bounds units by count minus position, computes byte offset/length, parses text +28, copies available source bytes through 020119a0, zero-pads through 020119c0, then updates result bytes, position and state under entry/exit providers. The source is the first parsed word; second parsed word bounds available bytes. Destination must hold the bounded unit count times unit size. |
+
+### Deferred reconstruction details
+
+A readable reconstruction of 020857f8 reached the original 380-byte size with
+matching control flow and provider relocations. After adjusting the signed minimum
+comparison and reusing count for the parsed address, only four instruction words
+differed: the position load, two multiplication instructions, and the store of the
+computed position. The compiler scheduled the count multiplication before the
+position multiplication and allocated the position to r2 instead of r1. Tried
+separate unit locals, reordered declarations and expressions, signed/unsigned
+locals, operand order, and local aggregate storage without reaching an exact
+match. The nonmatching definition was removed; the delinked original remains in
+use. A human can create a scratch with tools/decompme.py for this hard-list entry.

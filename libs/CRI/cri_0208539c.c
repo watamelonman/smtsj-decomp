@@ -323,3 +323,47 @@ void func_020859f8(Unk0208539cRecord *record, s32 unit)
     record->unk_010 = position / record->unk_004;
     record->unk_014 = record->unk_018 * unit;
 }
+
+extern const char data_021474f8[];
+
+/** Update position +0x10 under entry/exit providers; 02085770..57bc clamp it to [0, count]. */
+s32 func_02085740(Unk0208539cRecord *record, s32 offset, s32 origin)
+{
+    if (record == 0) {
+        func_0208547c(0, (u32)data_021474f8);
+        return 0;
+    }
+    func_0208544c();
+    if (origin == 0) {
+        record->unk_010 = offset;
+    } else if (origin == 2) {
+        record->unk_010 = record->unk_00c + offset;
+    } else if (origin == 1) {
+        record->unk_010 += offset;
+    }
+    record->unk_010 = record->unk_010 < record->unk_00c ? record->unk_010 : record->unk_00c;
+    record->unk_010 = record->unk_010 > 0 ? record->unk_010 : 0;
+    func_02085458();
+    return record->unk_010;
+}
+
+/** Query borrowed record/text by selectors at 02085a98; text selectors need terminated input. */
+s32 func_02085a88(Unk0208539cRecord *record, s32 selector)
+{
+    if (record == 0) return 0;
+    switch (selector) {
+    case 300: return record->unk_008;
+    case 301: return 0;
+    case 302: return record->unk_008;
+    case 200: return 0;
+    case 201: return func_02085a60(record);
+    case 202: return 0;
+    case 203: return func_020855d0((const char *)record);
+    case 204: return 0;
+    case 205: return func_020855d0((const char *)record);
+    case 299: return 0;
+    case 600: return 1;
+    case 400: return 0;
+    default: return -1;
+    }
+}

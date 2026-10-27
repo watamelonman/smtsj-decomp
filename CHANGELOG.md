@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Match CRI 0208539c position-update and selector-query helpers; document the deferred read helper.
+
 - M2-T462: match eight CRI table lookup, hexadecimal parsing, pool allocation and record sizing helpers in `cri_0208539c.c`.
 
 - M2-T465: match eight more task-effect helpers, including float ramps, packed intensity, effect creation and object-ID filtering.
