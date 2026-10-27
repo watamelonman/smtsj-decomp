@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T154: match the TBB1 child-offset resolver `func_0204fd4c` in `sdk_0204fce8`.
+- M2-T133: match all seven graphics-bank, texture-capacity, geometry initialization and resource-lifetime wrappers.
 - M2-T153: match eight TBB1/TBL1/MTBL resource lookup and index helpers in `sdk_0204fce8`.
 - M2-T143: reconstruct six NitroSDK main/sub BG screen and character upload wrappers.
 
