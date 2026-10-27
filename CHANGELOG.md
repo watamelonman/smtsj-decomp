@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T242: match the SI3D texture SRT sender and general 3ds Max texture matrix constructor.
+
 - M2-T237: match the remaining eight provider, slot-allocation and level wrappers in `sdk_0205e53c`.
 
 - M2-T235: match the NitroSystem frame texture search, initialization and reset routines plus the adjacent failure callback; document the allocator register-allocation mismatch.

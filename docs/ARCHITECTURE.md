@@ -124,3 +124,8 @@ caller- or provider-owned, and this unit allocates and retains nothing.
 prefix used by the SDK helpers: index/count/flag words and a pointer to
 caller-owned two-byte records. The provider owns the state and callers retain
 the record storage; the wrappers depend only on existing library providers.
+
+`include/libs/unknown/lib_02028a2c.h` reuses the neighbouring 3ds Max unit's
+borrowed material and caller-owned matrix layouts. The SI3D sender owns its
+stack geometry packet only during submission; both routines depend solely on
+existing SDK division and geometry providers and retain no storage.
