@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T163: match the NitroSDK resource dictionary binder and two G3X projection/basis wrappers in `sdk_020585a8`.
 - M2-T154: match the TBB1 child-offset resolver `func_0204fd4c` in `sdk_0204fce8`.
 - M2-T152: match the four XSI texture-matrix specializations in `lib_02029470`.
 - M2-T133: match all seven graphics-bank, texture-capacity, geometry initialization and resource-lifetime wrappers.
