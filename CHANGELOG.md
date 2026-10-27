@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T248: match the touch-panel FIFO callback; document the two math context assembly routines on the hard list.
+
 - Reconstruct all seven CRI callback/state helpers in `cri_02087ef8.c`.
 - M2-T242: match the SI3D texture SRT sender and general 3ds Max texture matrix constructor.
 
