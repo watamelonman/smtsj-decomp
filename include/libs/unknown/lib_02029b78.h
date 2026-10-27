@@ -37,6 +37,10 @@ void func_02029bc0(const u32 *state);
 /** NNS_GfdInitFrmPlttVramManager: set the palette byte limit, reset state and
  * optionally install the default allocator/free pair. */
 void func_02029c00(u32 szByte, int useAsDefault);
+/** NNS_GfdAllocFrmPlttVram: reserve szByte from the palette range, from the low
+ * end when bAllocFromLo is 1 and from the high end otherwise. Returns the
+ * packed size/address key, or zero when the request fails. */
+u32 func_02029c4c(u32 szByte, int b4Pltt, u32 bAllocFromLo);
 /** NNS_GfdFreeFrmPlttVram: palette keys are not recycled, so this returns zero. */
 s32 func_02029d88(u32 key);
 /** NNS_GfdGetFrmPlttVramState: save the palette allocator's low/high bounds. */
