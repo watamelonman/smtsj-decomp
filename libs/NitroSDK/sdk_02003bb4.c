@@ -111,3 +111,29 @@ void *func_02003d44(void)
             (((control & 0x3c) >> 2) << 14));
     return (void *)0;
 }
+
+/* Write the four BGx affine registers at `ptr` (BGxPA, BGxPB, BGxPC, BGxPD in
+ * that order). The 2x2 signed 20.12 matrix supplies the rotation/scale; the
+ * reference point is first made relative to the rotation centre, then rotated
+ * and scaled to produce the two displacement registers. Matrix elements are
+ * truncated to signed 4.12 before being packed as PA/PB and PC/PD. `ptr` is a hardware
+ * register address; `centerX`/`centerY` and `x1`/`y1` use signed 20.12 units.
+ * Evidence: this is G2x_SetBGyAffine_ from pret/pokediamond
+ * arm9/lib/NitroSDK/src/GX_g2.c, whose 176-byte instruction stream matches.
+ */
+void func_02003d8c(u32 ptr, const struct Mtx22 *mtx, fx32 centerX,
+                   fx32 centerY, fx32 x1, fx32 y1)
+{
+    fx32 dx, dy, temp2, temp3;
+
+    *(volatile u32 *)(ptr + 0) = (u32)((u16)(fx16)(mtx->_[0] >> 4) |
+        (u32)((u16)(fx16)(mtx->_[1] >> 4) << 16));
+    *(volatile u32 *)(ptr + 4) = (u32)((u16)(fx16)(mtx->_[2] >> 4) |
+        (u32)((u16)(fx16)(mtx->_[3] >> 4) << 16));
+    dx = x1 - centerX;
+    dy = y1 - centerY;
+    temp2 = mtx->_[0] * dx + mtx->_[1] * dy + (centerX << 12);
+    temp3 = mtx->_[2] * dx + mtx->_[3] * dy + (centerY << 12);
+    *(volatile u32 *)(ptr + 8) = (u32)(temp2 >> 4);
+    *(volatile u32 *)(ptr + 12) = (u32)(temp3 >> 4);
+}

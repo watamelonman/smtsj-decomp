@@ -1,11 +1,12 @@
-# NitroSDK BG character-base pointers (M2-T195)
+# NitroSDK BG pointers and affine helper (M2-T195, M2-T196)
 
-Eight functions in `libs/NitroSDK/sdk_02003bb4.c`. All match at 100% in
+Nine functions in `libs/NitroSDK/sdk_02003bb4.c`. All match at 100% in
 objdiff. Symbols retain their original `func_` names so the human-owned
-split/symbol configuration needs no changes. Each takes no arguments and
-returns a borrowed VRAM address; no memory is allocated. Hardware register
-reads are volatile. Callers must arrange valid VRAM bank mapping. The eight
-`void *` prototypes are declared in
+split/symbol configuration needs no changes. Eight take no arguments and
+return a borrowed VRAM address; the ninth writes the four affine registers at
+a caller-supplied hardware address. No memory is allocated. Hardware register
+access is volatile. Callers must arrange valid VRAM bank mapping. The
+prototypes and the `fx32`/`fx16`/`Mtx22` types are declared in
 `include/libs/NitroSDK/sdk_02003bb4.h`.
 
 ## Evidence and reference lookup
@@ -22,6 +23,15 @@ background unusable in bitmap mode, matching the reference branch trees. The
 public
 [999 symbol list](https://github.com/Ed-1T/999-Code-Reference/blob/master/symbols9.x)
 also lists the consecutive G2/G2S character-pointer entries.
+
+`func_02003d8c` is the immediately following `G2x_SetBGyAffine_` in
+[GX_g2.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/GX_g2.c).
+That reference function is also 176 bytes, and its statement sequence produces
+the target's exact instruction stream, including the two packed `PA/PB` and
+`PC/PD` stores and the two displacement multiplies. The 999 symbol list records
+`G2x_SetBGyAffine_` directly after `G2S_GetBG3CharPtr`, and its span there
+(`0x0207C044` to `0x0207C08C`, then `0x0207C08C` to `0x0207C13C`) matches this
+unit's 72- and 176-byte symbols.
 
 The reference snapshots BGxCNT in a `u32` (`u32 temp = reg_G2_BGxCNT`). This
 target differs by path: BG0/BG1 shift the directly-read `u16` control value,
@@ -54,16 +64,22 @@ preference. The mode comparison is signed (`blt`/`bge`), so `mode` is an
   bitmap mode (3-5) when bit 7 is set.
 - `func_02003d44` (72 bytes): sub BG3 character base. Reads sub DISPCNT and
   sub BG3CNT at `0x0400100e` with the same mode/bit-7 availability rules.
+- `func_02003d8c` (176 bytes): `G2x_SetBGyAffine_` shape. Writes BGxPA..BGxPD
+  at the caller's register address. The 2x2 signed 20.12 matrix is truncated
+  to signed 4.12 for PA/PB and PC/PD; the reference point `(x1, y1)` is offset from the
+  rotation centre `(centerX, centerY)`, transformed by the matrix, and added to
+  the centre displacement before the final 4-bit shift. The `ptr` argument is
+  the hardware register address (callers pass `&reg_G2_BG2PA` and relatives),
+  so the stores use `volatile u32` and no VRAM is reserved or freed.
 
 ## Validation
 
 `tools/match_gate.py` reports every function in the file at 100%, and the
 full build/checksum gates verify the linked image. No runtime tests were
-added: the card exempts tests, and these functions directly read DS hardware
+added: the cards exempt tests, and these functions directly access DS hardware
 registers. The original delink remains the linked implementation until a
 human marks the unit complete.
 
 ## Hard list
 
-None. `func_02003d8c` (the remaining function in this split) belongs to the
-follow-up card M2-T196 and is not part of this change.
+None. All nine functions match from readable C.
