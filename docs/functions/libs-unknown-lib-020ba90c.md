@@ -32,6 +32,12 @@ functions are accessors and mutators over that shared object:
 - No evidence identifies the object beyond navigation state (a current value,
   a limit, a state word and flags), so the neutral `func_` and `unk_` names are
   kept and agree with the protected symbol map.
+- The six update helpers added by M2-T289 branch on the state word with the
+  `cmp #0 / cmpne #1 / beq` chain that mwccarm emits for a `switch` whose
+  `case 0` and `case 1` share a block, so they are written as switches rather
+  than `if` chains; the mode-2 paths decrement/increment the current value by
+  two and wrap it with the parity rules visible in the `tst`/`subne`/`subeq`
+  instruction pairs.
 
 ## Functions
 
@@ -40,7 +46,12 @@ functions are accessors and mutators over that shared object:
 | `func_020ba90c` | 12 | Returns the address of the shared state `data_02176b8c`. |
 | `func_020ba918` | 44 | Resets the state word to -1 and clears `+0x04`, `+0x08`, `+0x0c`, `+0x14`, `+0x18`. |
 | `func_020ba944` | 32 | Returns nonzero when the state word at `+0x00` is not -1. |
+| `func_020ba964` | 44 | Stores the mode argument at `+0x00` and clears `+0x04`, `+0x08`, `+0x10`, `+0x14`, `+0x18`. |
 | `func_020ba990` | 20 | Sets the state word at `+0x00` to -1 (uninitialised). |
+| `func_020ba9a4` | 68 | In mode 2 only: plays sound effect 0, decrements `+0x08`, wraps a negative result to `+0x04 - 1`. |
+| `func_020ba9e8` | 132 | Plays sound effect 0, then decrements `+0x08` by 1 (modes 0/1) or by 2 (mode 2) with the mode-2 wrap rules. |
+| `func_020baa6c` | 72 | In mode 2 only: plays sound effect 0, increments `+0x08`, wraps at the limit to 0. |
+| `func_020baab4` | 140 | Plays sound effect 0, then increments `+0x08` by 1 (modes 0/1) or by 2 (mode 2) with the mode-2 wrap rules. |
 | `func_020bab40` | 36 | Plays sound effect 0 and sets the current value to `+0x04 - 1`. |
 | `func_020bab64` | 28 | Copies the saved value `+0x14` into `+0x08` and sets the flag `+0x18`. |
 | `func_020bab80` | 16 | Returns the flag at `+0x18`. |
@@ -50,14 +61,15 @@ functions are accessors and mutators over that shared object:
 | `func_020babc8` | 20 | Clears the flag at `+0x0c` to 0. |
 | `func_020babdc` | 16 | Returns the current value at `+0x08`. |
 | `func_020babec` | 20 | Stores a new upper limit at `+0x04`. |
+| `func_020bac00` | 52 | Sets `+0x08`, clamping a negative value to 0 and a value at or past the limit to `+0x04 - 1`. |
 | `func_020bac34` | 20 | Stores a value to restore later at `+0x14`. |
 | `func_020bac48` | 24 | Saves `+0x04 - 1` through `func_020bac34`. |
 | `func_020bac60` | 32 | Returns nonzero when the current value `+0x08` equals `+0x04 - 1`. |
 
-All sixteen are 100% in objdiff and the full-image checksum still matches. The
-remaining functions in the 0x020ba90c translation unit are not part of this
-card and stay linked from the delink.
+All twenty-two are 100% in objdiff and the full-image checksum still matches.
+The translation unit now defines every function in its 0x020ba90c-0x020bac80
+range, so nothing in it still links from the delink.
 
 ## Hard list
 
-None. All sixteen C functions in this file are matched.
+None. All twenty-two C functions in this file are matched.

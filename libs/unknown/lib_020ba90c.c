@@ -65,6 +65,136 @@ void func_020ba990(void)
     func_020ba90c()->unk_00 = -1;
 }
 
+/* ARM 0x020ba964: selects the runtime mode (the update helpers below compare
+ * it with 0, 1 and 2) and clears the limit, current value, saved value and
+ * both flags, leaving the state word as the only initialised field. */
+void func_020ba964(s32 state)
+{
+    Unk020ba90cState *shared = func_020ba90c();
+
+    shared->unk_00 = state;
+    shared->unk_08 = 0;
+    shared->unk_04 = 0;
+    shared->unk_10 = 0;
+    shared->unk_14 = 0;
+    shared->unk_18 = 0;
+}
+
+/* ARM 0x020ba9a4: for mode 2 only, plays sound effect 0 and decrements the
+ * current value, wrapping from below zero back to the last entry. Modes 0, 1
+ * and unknown modes return without touching the value. */
+void func_020ba9a4(void)
+{
+    Unk020ba90cState *shared = func_020ba90c();
+    s32 mode = shared->unk_00;
+    s32 limit = shared->unk_04;
+
+    switch (mode) {
+    case 0:
+    case 1:
+        return;
+    case 2:
+        Unk0a0ce4_Unk_0a0da4(0);
+        shared->unk_08 = shared->unk_08 - 1;
+        if (shared->unk_08 < 0)
+            shared->unk_08 = limit - 1;
+        break;
+    }
+}
+
+/* ARM 0x020ba9e8: plays sound effect 0 and moves the current value down by
+ * one in modes 0/1 or by two in mode 2, wrapping below zero. The mode 2 wrap
+ * keeps the value inside the limit: -1 becomes the last entry, other negative
+ * results become limit - 1 or limit - 2 depending on the parity of the
+ * limit. Unknown modes only play the sound. */
+void func_020ba9e8(void)
+{
+    Unk020ba90cState *shared = func_020ba90c();
+    s32 mode;
+    s32 limit;
+
+    Unk0a0ce4_Unk_0a0da4(0);
+    mode = shared->unk_00;
+    limit = shared->unk_04;
+    switch (mode) {
+    case 0:
+    case 1:
+        shared->unk_08 = shared->unk_08 - 1;
+        if (shared->unk_08 < 0)
+            shared->unk_08 = limit - 1;
+        break;
+    case 2:
+        shared->unk_08 = shared->unk_08 - 2;
+        if (shared->unk_08 < 0) {
+            if (shared->unk_08 == -1)
+                shared->unk_08 = limit - 1;
+            else if (limit & 1)
+                shared->unk_08 = limit - 1;
+            else
+                shared->unk_08 = limit - 2;
+        }
+        break;
+    }
+}
+
+/* ARM 0x020baa6c: for mode 2 only, plays sound effect 0 and increments the
+ * current value, wrapping back to zero at the limit. Modes 0, 1 and unknown
+ * modes return without touching the value. */
+void func_020baa6c(void)
+{
+    Unk020ba90cState *shared = func_020ba90c();
+    s32 mode = shared->unk_00;
+    s32 limit = shared->unk_04;
+
+    switch (mode) {
+    case 0:
+    case 1:
+        return;
+    case 2:
+        Unk0a0ce4_Unk_0a0da4(0);
+        shared->unk_08 = shared->unk_08 + 1;
+        if (shared->unk_08 >= limit)
+            shared->unk_08 = 0;
+        break;
+    }
+}
+
+/* ARM 0x020baab4: plays sound effect 0 and advances the current value by one
+ * in modes 0/1 or by two in mode 2, wrapping at the limit. The mode 2 wrap
+ * picks 0 for an even result, the last entry or 1 for an odd result depending
+ * on the parity of the limit. Unknown modes only play the sound. */
+void func_020baab4(void)
+{
+    Unk020ba90cState *shared = func_020ba90c();
+    s32 mode;
+    s32 limit;
+
+    Unk0a0ce4_Unk_0a0da4(0);
+    mode = shared->unk_00;
+    limit = shared->unk_04;
+    switch (mode) {
+    case 0:
+    case 1:
+        shared->unk_08 = shared->unk_08 + 1;
+        if (shared->unk_08 >= limit)
+            shared->unk_08 = 0;
+        break;
+    case 2:
+        shared->unk_08 = shared->unk_08 + 2;
+        if (shared->unk_08 >= limit) {
+            if (shared->unk_08 & 1) {
+                if (limit & 1)
+                    shared->unk_08 = limit - 1;
+                else
+                    shared->unk_08 = 1;
+            } else {
+                shared->unk_08 = 0;
+            }
+        }
+        break;
+    }
+}
+
 /* ARM 0x020bab40: plays sound effect 0 and moves the current value to the
  * last entry (limit - 1). */
 void func_020bab40(void)
@@ -128,6 +258,21 @@ s32 func_020babdc(void)
 void func_020babec(s32 limit)
 {
     func_020ba90c()->unk_04 = limit;
+}
+
+/* ARM 0x020bac00: sets the current value, clamping it into [0, limit - 1].
+ * The argument is stored in the signed current-value field, so a negative
+ * value becomes 0 and a value at or past the limit becomes the last entry.
+ * Callers (the 0x020658b4 wrapper) pass it as u32. */
+void func_020bac00(u32 value)
+{
+    Unk020ba90cState *shared = func_020ba90c();
+
+    shared->unk_08 = value;
+    if (shared->unk_08 < 0)
+        shared->unk_08 = 0;
+    if (shared->unk_08 >= shared->unk_04)
+        shared->unk_08 = shared->unk_04 - 1;
 }
 
 /* ARM 0x020bac34: stores a value to restore later into +0x14. */
