@@ -4,6 +4,13 @@
 
 - M2-T457: match eight locale wide-character conversion and byte-memory routines in `sdk_020118f8.c`.
 
+- M2-T460: reconstruct eight CRI forwarding, callback registration, parser-result and record-clear helpers in `cri_0208539c.c`.
+- M2-T451: correct the WiFi head/tail allocation wrappers and allocator declaration to return storage pointers.
+
+- M2-T451: match the NitroWiFi `wifi_02052e68.c` buffer-group builder, heap-index save/restore pair, head/tail allocation wrappers, connection-state setter, event handler and state getter (nine functions at 100%).
+- M2-T450: match six Mobiclip stream wrapper helpers (seek, read, block read, close, vtable dispatch, empty); document the deferred unrolled YUV blit.
+
+- M2-T442: match the NitroSDK cartridge-presence probe (`CTRDG_IsExisting`) in `sdk_02010f98.c`; document the remaining cartridge module-info initializer on the hard list.
 - M2-T433: match the CRI 02086b70 player initialiser, reset routine and compressed-header parser (`func_02086ea0`, `func_02086f98`, `func_0208706c`); document `func_02086c6c` and its unnamed tables on the hard list.
 - M2-T441: match eight NitroSDK PXI/ARM7 bootstrap, WAITCNT readback, tag-13/17 callback and worker-start helpers in `sdk_02010f98.c`.
 - M2-T430: match six CRI worker initialization, polling and shutdown functions; document the deferred mode/setup dispatcher.

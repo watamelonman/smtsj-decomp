@@ -1,0 +1,523 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="988" viewBox="0 0 960 988" font-family="-apple-system,Segoe UI,Helvetica,Arial,sans-serif">
+<rect width="960" height="988" rx="8" fill="#0d1117"/>
+<text x="24" y="44" font-size="26" font-weight="700" fill="#e6edf3">Shin Megami Tensei: Strange Journey is 53.02% decompiled</text>
+<text x="24" y="70" font-size="15" fill="#8b949e">ARM9 code: 633 / 1,195 KiB matched byte for byte · functions: 5,072 / 7,600 (66.74%) · objdiff report, 2026-10-27</text>
+<text x="24" y="131" font-size="14" fill="#e6edf3">Game code (src/)</text>
+<rect x="194" y="118" width="582" height="16" rx="3" fill="#30363d"/>
+<rect x="194" y="118" width="402.4" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="131" font-size="13" fill="#8b949e"> 69.1%  (543 / 786 KiB)</text>
+<text x="24" y="157" font-size="14" fill="#e6edf3">NitroSDK</text>
+<rect x="194" y="144" width="582" height="16" rx="3" fill="#30363d"/>
+<rect x="194" y="144" width="163.5" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="157" font-size="13" fill="#8b949e"> 28.1%  (49 / 173 KiB)</text>
+<text x="24" y="183" font-size="14" fill="#e6edf3">CRI middleware</text>
+<rect x="194" y="170" width="582" height="16" rx="3" fill="#30363d"/>
+<rect x="194" y="170" width="83.5" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="183" font-size="13" fill="#8b949e"> 14.4%  (12 / 83 KiB)</text>
+<text x="24" y="209" font-size="14" fill="#e6edf3">MSL C runtime</text>
+<rect x="194" y="196" width="582" height="16" rx="3" fill="#30363d"/>
+<rect x="194" y="196" width="31.2" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="209" font-size="13" fill="#8b949e">  5.4%  (2 / 46 KiB)</text>
+<text x="24" y="235" font-size="14" fill="#e6edf3">NitroWiFi</text>
+<rect x="194" y="222" width="582" height="16" rx="3" fill="#30363d"/>
+<rect x="194" y="222" width="0.0" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="235" font-size="13" fill="#8b949e">  0.0%  (0 / 2 KiB)</text>
+<text x="24" y="261" font-size="14" fill="#e6edf3">Other libraries</text>
+<rect x="194" y="248" width="582" height="16" rx="3" fill="#30363d"/>
+<rect x="194" y="248" width="179.5" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="261" font-size="13" fill="#8b949e"> 30.8%  (27 / 88 KiB)</text>
+<text x="24" y="287" font-size="14" fill="#e6edf3">Not split yet</text>
+<rect x="194" y="274" width="582" height="16" rx="3" fill="#30363d"/>
+<rect x="194" y="274" width="0.0" height="16" rx="3" fill="#2ea043"/>
+<text x="786" y="287" font-size="13" fill="#8b949e">  0.0%  (0 / 17 KiB)</text>
+<text x="24" y="318" font-size="15" font-weight="600" fill="#e6edf3">Units by code size (colour = share matched)</text>
+<rect x="24.0" y="328.0" width="90.3" height="122.3" fill="#30503e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bd5f0: 15.8% of 44,908 bytes</title></rect>
+<text x="28.0" y="341.0" font-size="10" fill="#e6edf3" opacity="0.85">unit_020bd5f0</text>
+<rect x="24.0" y="450.3" width="90.3" height="118.4" fill="#2f7240" stroke="#0d1117" stroke-width="1"><title>src/CampStatus: 69.5% of 43,468 bytes</title></rect>
+<text x="28.0" y="463.3" font-size="10" fill="#e6edf3" opacity="0.85">CampStatus</text>
+<rect x="24.0" y="568.7" width="90.3" height="89.3" fill="#2f6f40" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0202f2a8: 65.2% of 32,772 bytes</title></rect>
+<text x="28.0" y="581.7" font-size="10" fill="#e6edf3" opacity="0.85">unit_0202f2a8</text>
+<rect x="114.3" y="328.0" width="76.2" height="88.4" fill="#304a3e" stroke="#0d1117" stroke-width="1"><title>libs/MSL/msl_02017850: 5.9% of 27,364 bytes</title></rect>
+<rect x="114.3" y="416.4" width="76.2" height="87.5" fill="#2f543f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02100810: 21.6% of 27,092 bytes</title></rect>
+<rect x="114.3" y="503.9" width="76.2" height="78.8" fill="#2f543f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203e43c: 21.8% of 24,408 bytes</title></rect>
+<rect x="114.3" y="582.7" width="76.2" height="75.3" fill="#304e3e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020aa118: 12.3% of 23,312 bytes</title></rect>
+<rect x="190.5" y="328.0" width="66.9" height="75.2" fill="#2f563f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02072238: 25.1% of 20,448 bytes</title></rect>
+<rect x="190.5" y="403.2" width="66.9" height="66.1" fill="#304f3e" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02061798: 13.7% of 17,984 bytes</title></rect>
+<rect x="190.5" y="469.3" width="66.9" height="65.5" fill="#30493e" stroke="#0d1117" stroke-width="1"><title>libs/MSL/msl_02012aa4: 5.2% of 17,816 bytes</title></rect>
+<rect x="190.5" y="534.8" width="66.9" height="64.6" fill="#2f6440" stroke="#0d1117" stroke-width="1"><title>src/UniteEvent: 47.2% of 17,564 bytes</title></rect>
+<rect x="190.5" y="599.4" width="66.9" height="58.6" fill="#2f8041" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e1648: 91.3% of 15,932 bytes</title></rect>
+<rect x="257.4" y="328.0" width="58.6" height="65.1" fill="#2f8041" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b28e4: 91.4% of 15,500 bytes</title></rect>
+<rect x="257.4" y="393.1" width="58.6" height="63.2" fill="#2f6f40" stroke="#0d1117" stroke-width="1"><title>src/BattleShowingTask: 65.0% of 15,048 bytes</title></rect>
+<rect x="257.4" y="456.3" width="58.6" height="53.3" fill="#2f8041" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020222d8: 92.1% of 12,692 bytes</title></rect>
+<rect x="257.4" y="509.6" width="58.6" height="52.2" fill="#2f7741" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02065e88: 77.3% of 12,432 bytes</title></rect>
+<rect x="257.4" y="561.8" width="58.6" height="49.4" fill="#2f8141" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209a268: 93.6% of 11,768 bytes</title></rect>
+<rect x="257.4" y="611.2" width="58.6" height="46.8" fill="#2f603f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02090e60: 41.1% of 11,152 bytes</title></rect>
+<rect x="316.0" y="328.0" width="52.3" height="52.1" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200a528: 0.0% of 11,080 bytes</title></rect>
+<rect x="316.0" y="380.1" width="52.3" height="51.4" fill="#2f6640" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206ae94: 50.8% of 10,940 bytes</title></rect>
+<rect x="316.0" y="431.5" width="52.3" height="48.0" fill="#2f6540" stroke="#0d1117" stroke-width="1"><title>src/ScanVisor: 49.6% of 10,216 bytes</title></rect>
+<rect x="316.0" y="479.5" width="52.3" height="47.4" fill="#2f7040" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02113294: 65.6% of 10,084 bytes</title></rect>
+<rect x="316.0" y="526.9" width="52.3" height="44.0" fill="#2f8241" stroke="#0d1117" stroke-width="1"><title>src/CaveArea: 94.7% of 9,368 bytes</title></rect>
+<rect x="316.0" y="570.9" width="52.3" height="43.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02058a1c: 0.0% of 9,268 bytes</title></rect>
+<rect x="316.0" y="614.5" width="52.3" height="43.5" fill="#2f7941" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020cf5e8: 79.8% of 9,264 bytes</title></rect>
+<rect x="368.3" y="328.0" width="44.7" height="50.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208aba0: 0.0% of 9,204 bytes</title></rect>
+<rect x="368.3" y="378.6" width="44.7" height="48.7" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0202546c: 0.0% of 8,844 bytes</title></rect>
+<rect x="368.3" y="427.3" width="44.7" height="48.3" fill="#2f7040" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206fb70: 66.0% of 8,784 bytes</title></rect>
+<rect x="368.3" y="475.7" width="44.7" height="46.8" fill="#304e3e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020c855c: 12.5% of 8,512 bytes</title></rect>
+<rect x="368.3" y="522.5" width="44.7" height="45.3" fill="#2f603f" stroke="#0d1117" stroke-width="1"><title>src/ImageObj: 40.8% of 8,224 bytes</title></rect>
+<rect x="368.3" y="567.8" width="44.7" height="45.3" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>_dsd_gap@ov001_0: 0.0% of 8,224 bytes</title></rect>
+<rect x="368.3" y="613.0" width="44.7" height="45.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02049bac: 0.0% of 8,176 bytes</title></rect>
+<rect x="413.0" y="328.0" width="45.2" height="44.4" fill="#2f8441" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e8228: 97.9% of 8,160 bytes</title></rect>
+<rect x="413.0" y="372.4" width="45.2" height="42.5" fill="#2f613f" stroke="#0d1117" stroke-width="1"><title>src/SaveLoadTask: 42.4% of 7,812 bytes</title></rect>
+<rect x="413.0" y="415.0" width="45.2" height="42.5" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0208e1f0: 0.0% of 7,800 bytes</title></rect>
+<rect x="413.0" y="457.4" width="45.2" height="41.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>_dsd_gap@ov000_3: 0.0% of 7,692 bytes</title></rect>
+<rect x="413.0" y="499.3" width="45.2" height="41.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02044904: 100.0% of 7,584 bytes</title></rect>
+<rect x="413.0" y="540.6" width="45.2" height="40.9" fill="#2f553f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f1128: 23.9% of 7,504 bytes</title></rect>
+<rect x="413.0" y="581.5" width="45.2" height="38.9" fill="#2f8541" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a6174: 98.7% of 7,136 bytes</title></rect>
+<rect x="413.0" y="620.3" width="45.2" height="37.7" fill="#2f8341" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020cb32c: 95.7% of 6,924 bytes</title></rect>
+<rect x="458.2" y="328.0" width="38.0" height="43.8" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0207adc4: 0.0% of 6,760 bytes</title></rect>
+<rect x="458.2" y="371.8" width="38.0" height="42.9" fill="#2f8041" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021071e4: 92.1% of 6,628 bytes</title></rect>
+<rect x="458.2" y="414.7" width="38.0" height="42.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0202b124: 0.0% of 6,576 bytes</title></rect>
+<rect x="458.2" y="457.3" width="38.0" height="41.3" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0207dc1c: 0.0% of 6,376 bytes</title></rect>
+<rect x="458.2" y="498.6" width="38.0" height="41.0" fill="#2f7c41" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211fc20: 84.5% of 6,336 bytes</title></rect>
+<rect x="458.2" y="539.6" width="38.0" height="40.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0204d1bc: 0.0% of 6,172 bytes</title></rect>
+<rect x="458.2" y="579.6" width="38.0" height="39.4" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02005c80: 0.0% of 6,084 bytes</title></rect>
+<rect x="458.2" y="619.0" width="38.0" height="39.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_020881d0: 0.0% of 6,028 bytes</title></rect>
+<rect x="496.2" y="328.0" width="38.7" height="38.3" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02060014: 0.0% of 6,020 bytes</title></rect>
+<rect x="496.2" y="366.3" width="38.7" height="38.0" fill="#2f8441" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02116598: 98.1% of 5,980 bytes</title></rect>
+<rect x="496.2" y="404.3" width="38.7" height="37.1" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205c3fc: 0.0% of 5,840 bytes</title></rect>
+<rect x="496.2" y="441.5" width="38.7" height="36.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a7d54: 100.0% of 5,780 bytes</title></rect>
+<rect x="496.2" y="478.2" width="38.7" height="36.7" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200101c: 0.0% of 5,764 bytes</title></rect>
+<rect x="496.2" y="514.9" width="38.7" height="36.0" fill="#2f543f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0204bb9c: 22.7% of 5,664 bytes</title></rect>
+<rect x="496.2" y="550.9" width="38.7" height="36.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200f064: 0.0% of 5,660 bytes</title></rect>
+<rect x="496.2" y="586.9" width="38.7" height="35.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ea208: 100.0% of 5,592 bytes</title></rect>
+<rect x="496.2" y="622.4" width="38.7" height="35.6" fill="#2f7741" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0210fe28: 77.6% of 5,592 bytes</title></rect>
+<rect x="534.9" y="328.0" width="33.8" height="40.0" fill="#2f613f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209ee4c: 42.8% of 5,504 bytes</title></rect>
+<rect x="534.9" y="368.0" width="33.8" height="38.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0210a034: 100.0% of 5,276 bytes</title></rect>
+<rect x="534.9" y="406.3" width="33.8" height="37.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020090c4: 0.0% of 5,220 bytes</title></rect>
+<rect x="534.9" y="444.3" width="33.8" height="37.7" fill="#2f7340" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f90dc: 71.3% of 5,188 bytes</title></rect>
+<rect x="534.9" y="482.0" width="33.8" height="36.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02122e1c: 100.0% of 5,072 bytes</title></rect>
+<rect x="534.9" y="518.9" width="33.8" height="35.6" fill="#2f5d3f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b6570: 36.9% of 4,904 bytes</title></rect>
+<rect x="534.9" y="554.5" width="33.8" height="35.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02068f18: 100.0% of 4,876 bytes</title></rect>
+<rect x="534.9" y="589.9" width="33.8" height="34.2" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02007444: 0.0% of 4,700 bytes</title></rect>
+<rect x="534.9" y="624.1" width="33.8" height="33.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0207f504: 0.0% of 4,664 bytes</title></rect>
+<rect x="568.8" y="328.0" width="31.0" height="35.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211d520: 100.0% of 4,504 bytes</title></rect>
+<rect x="568.8" y="363.7" width="31.0" height="35.4" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020519e8: 0.0% of 4,464 bytes</title></rect>
+<rect x="568.8" y="399.2" width="31.0" height="33.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f51dc: 100.0% of 4,212 bytes</title></rect>
+<rect x="568.8" y="432.6" width="31.0" height="33.4" fill="#2f8541" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ce578: 99.4% of 4,208 bytes</title></rect>
+<rect x="568.8" y="466.0" width="31.0" height="32.7" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02084384: 0.0% of 4,120 bytes</title></rect>
+<rect x="568.8" y="498.7" width="31.0" height="32.4" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02085b80: 0.0% of 4,080 bytes</title></rect>
+<rect x="568.8" y="531.0" width="31.0" height="32.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209d42c: 100.0% of 4,076 bytes</title></rect>
+<rect x="568.8" y="563.4" width="31.0" height="32.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_020815b0: 0.0% of 4,028 bytes</title></rect>
+<rect x="568.8" y="595.3" width="31.0" height="31.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02095560: 100.0% of 3,992 bytes</title></rect>
+<rect x="568.8" y="627.0" width="31.0" height="31.0" fill="#2f8341" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020de678: 96.5% of 3,904 bytes</title></rect>
+<rect x="599.8" y="328.0" width="30.9" height="31.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f2e78: 100.0% of 3,900 bytes</title></rect>
+<rect x="599.8" y="359.1" width="30.9" height="31.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02039bb4: 100.0% of 3,892 bytes</title></rect>
+<rect x="599.8" y="390.1" width="30.9" height="31.0" fill="#2f7541" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020afc28: 74.5% of 3,892 bytes</title></rect>
+<rect x="599.8" y="421.1" width="30.9" height="30.3" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020504a4: 0.0% of 3,796 bytes</title></rect>
+<rect x="599.8" y="451.4" width="30.9" height="30.1" fill="#2f7040" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02111400: 66.5% of 3,772 bytes</title></rect>
+<rect x="599.8" y="481.4" width="30.9" height="29.8" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200d9c0: 0.0% of 3,744 bytes</title></rect>
+<rect x="599.8" y="511.3" width="30.9" height="29.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203aae8: 100.0% of 3,744 bytes</title></rect>
+<rect x="599.8" y="541.1" width="30.9" height="29.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020cd6ec: 100.0% of 3,724 bytes</title></rect>
+<rect x="599.8" y="570.8" width="30.9" height="29.3" fill="#2f8441" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0202e000: 98.3% of 3,676 bytes</title></rect>
+<rect x="599.8" y="600.1" width="30.9" height="29.2" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020207dc: 0.0% of 3,664 bytes</title></rect>
+<rect x="599.8" y="629.3" width="30.9" height="28.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/StaffRoll: 100.0% of 3,600 bytes</title></rect>
+<rect x="630.6" y="328.0" width="29.3" height="30.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020572f8: 0.0% of 3,572 bytes</title></rect>
+<rect x="659.9" y="328.0" width="29.2" height="30.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020986ac: 100.0% of 3,560 bytes</title></rect>
+<rect x="689.1" y="328.0" width="28.8" height="30.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a163c: 100.0% of 3,512 bytes</title></rect>
+<rect x="717.9" y="328.0" width="28.8" height="30.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0207ca2c: 0.0% of 3,508 bytes</title></rect>
+<rect x="746.7" y="328.0" width="27.7" height="30.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f7188: 100.0% of 3,372 bytes</title></rect>
+<rect x="774.3" y="328.0" width="27.2" height="30.0" fill="#2f8141" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f6250: 92.2% of 3,320 bytes</title></rect>
+<rect x="801.5" y="328.0" width="27.2" height="30.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020939f0: 100.0% of 3,312 bytes</title></rect>
+<rect x="828.7" y="328.0" width="27.1" height="30.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021218d0: 100.0% of 3,308 bytes</title></rect>
+<rect x="855.8" y="328.0" width="27.1" height="30.0" fill="#2f8041" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ff030: 90.8% of 3,300 bytes</title></rect>
+<rect x="882.9" y="328.0" width="26.7" height="30.0" fill="#2f7f41" stroke="#0d1117" stroke-width="1"><title>src/BattleTask: 89.9% of 3,260 bytes</title></rect>
+<rect x="909.6" y="328.0" width="26.4" height="30.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02087268: 0.0% of 3,216 bytes</title></rect>
+<rect x="630.6" y="358.0" width="27.7" height="28.3" fill="#2f7941" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206ea70: 80.7% of 3,188 bytes</title></rect>
+<rect x="630.6" y="386.3" width="27.7" height="28.3" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208093c: 0.0% of 3,188 bytes</title></rect>
+<rect x="630.6" y="414.6" width="27.7" height="28.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206a224: 100.0% of 3,184 bytes</title></rect>
+<rect x="630.6" y="442.8" width="27.7" height="28.2" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02079238: 0.0% of 3,176 bytes</title></rect>
+<rect x="630.6" y="471.0" width="27.7" height="28.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208995c: 0.0% of 3,152 bytes</title></rect>
+<rect x="630.6" y="499.0" width="27.7" height="27.5" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0201fb28: 0.0% of 3,100 bytes</title></rect>
+<rect x="630.6" y="526.5" width="27.7" height="27.5" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02056090: 0.0% of 3,100 bytes</title></rect>
+<rect x="630.6" y="554.0" width="27.7" height="26.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0202d15c: 100.0% of 2,976 bytes</title></rect>
+<rect x="630.6" y="580.4" width="27.7" height="26.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020029f8: 0.0% of 2,928 bytes</title></rect>
+<rect x="630.6" y="606.4" width="27.7" height="25.9" fill="#2f7a41" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020d297c: 81.4% of 2,920 bytes</title></rect>
+<rect x="630.6" y="632.3" width="27.7" height="25.7" fill="#2f523f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02118b04: 19.2% of 2,900 bytes</title></rect>
+<rect x="658.4" y="358.0" width="26.1" height="26.9" fill="#30473e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020372ac: 1.4% of 2,856 bytes</title></rect>
+<rect x="684.5" y="358.0" width="26.1" height="26.9" fill="#2f8041" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02096754: 91.5% of 2,856 bytes</title></rect>
+<rect x="710.6" y="358.0" width="26.0" height="26.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209974c: 100.0% of 2,844 bytes</title></rect>
+<rect x="736.6" y="358.0" width="25.6" height="26.9" fill="#2f7140" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a5680: 67.2% of 2,804 bytes</title></rect>
+<rect x="762.2" y="358.0" width="25.3" height="26.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02082788: 0.0% of 2,772 bytes</title></rect>
+<rect x="787.5" y="358.0" width="25.3" height="26.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bc1a8: 100.0% of 2,772 bytes</title></rect>
+<rect x="812.9" y="358.0" width="25.3" height="26.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/ImageBgDual3D: 100.0% of 2,768 bytes</title></rect>
+<rect x="838.2" y="358.0" width="25.0" height="26.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02029de4: 0.0% of 2,732 bytes</title></rect>
+<rect x="863.1" y="358.0" width="24.8" height="26.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020d1ee8: 100.0% of 2,708 bytes</title></rect>
+<rect x="887.9" y="358.0" width="24.3" height="26.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fc584: 100.0% of 2,656 bytes</title></rect>
+<rect x="912.2" y="358.0" width="23.8" height="26.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02079ea0: 0.0% of 2,608 bytes</title></rect>
+<rect x="658.4" y="384.9" width="24.0" height="26.7" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02083954: 0.0% of 2,608 bytes</title></rect>
+<rect x="658.4" y="411.6" width="24.0" height="26.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02012080: 0.0% of 2,596 bytes</title></rect>
+<rect x="658.4" y="438.2" width="24.0" height="26.2" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b80c8: 0.0% of 2,560 bytes</title></rect>
+<rect x="658.4" y="464.4" width="24.0" height="24.7" fill="#2f8341" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fd9f0: 96.2% of 2,416 bytes</title></rect>
+<rect x="658.4" y="489.1" width="24.0" height="24.6" fill="#304e3e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020469d8: 12.8% of 2,400 bytes</title></rect>
+<rect x="658.4" y="513.7" width="24.0" height="24.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f3db4: 100.0% of 2,392 bytes</title></rect>
+<rect x="658.4" y="538.1" width="24.0" height="24.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0210947c: 100.0% of 2,384 bytes</title></rect>
+<rect x="658.4" y="562.5" width="24.0" height="24.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fa7e8: 100.0% of 2,368 bytes</title></rect>
+<rect x="658.4" y="586.8" width="24.0" height="23.8" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02010680: 0.0% of 2,328 bytes</title></rect>
+<rect x="658.4" y="610.6" width="24.0" height="23.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a03cc: 100.0% of 2,328 bytes</title></rect>
+<rect x="658.4" y="634.4" width="24.0" height="23.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020946e0: 100.0% of 2,304 bytes</title></rect>
+<rect x="682.4" y="384.9" width="24.4" height="22.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020546d8: 0.0% of 2,272 bytes</title></rect>
+<rect x="706.8" y="384.9" width="24.3" height="22.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0212fa68: 0.0% of 2,264 bytes</title></rect>
+<rect x="731.1" y="384.9" width="24.2" height="22.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020557c0: 0.0% of 2,256 bytes</title></rect>
+<rect x="755.3" y="384.9" width="24.1" height="22.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02021a10: 0.0% of 2,248 bytes</title></rect>
+<rect x="779.5" y="384.9" width="23.4" height="22.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e6a0c: 100.0% of 2,180 bytes</title></rect>
+<rect x="802.9" y="384.9" width="22.7" height="22.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fe360: 100.0% of 2,112 bytes</title></rect>
+<rect x="825.6" y="384.9" width="22.2" height="22.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/MSL/msl_0201703c: 0.0% of 2,068 bytes</title></rect>
+<rect x="847.8" y="384.9" width="22.1" height="22.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ca69c: 100.0% of 2,060 bytes</title></rect>
+<rect x="869.9" y="384.9" width="22.0" height="22.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200e860: 0.0% of 2,052 bytes</title></rect>
+<rect x="892.0" y="384.9" width="22.0" height="22.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020979d8: 100.0% of 2,052 bytes</title></rect>
+<rect x="914.0" y="384.9" width="22.0" height="22.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020387bc: 100.0% of 2,048 bytes</title></rect>
+<rect x="682.4" y="407.8" width="22.5" height="22.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02112aa0: 100.0% of 2,036 bytes</title></rect>
+<rect x="682.4" y="430.0" width="22.5" height="22.2" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b78d8: 0.0% of 2,032 bytes</title></rect>
+<rect x="682.4" y="452.2" width="22.5" height="22.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208539c: 0.0% of 2,020 bytes</title></rect>
+<rect x="682.4" y="474.3" width="22.5" height="21.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0212449c: 100.0% of 1,984 bytes</title></rect>
+<rect x="682.4" y="495.9" width="22.5" height="21.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020118f8: 0.0% of 1,928 bytes</title></rect>
+<rect x="682.4" y="517.0" width="22.5" height="20.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroWiFi/wifi_02052e68: 0.0% of 1,892 bytes</title></rect>
+<rect x="682.4" y="537.6" width="22.5" height="20.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e7ac4: 100.0% of 1,892 bytes</title></rect>
+<rect x="682.4" y="558.3" width="22.5" height="20.2" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02090068: 0.0% of 1,848 bytes</title></rect>
+<rect x="682.4" y="578.4" width="22.5" height="20.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a0ce4: 100.0% of 1,844 bytes</title></rect>
+<rect x="682.4" y="598.5" width="22.5" height="20.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0201f3e8: 0.0% of 1,832 bytes</title></rect>
+<rect x="682.4" y="618.5" width="22.5" height="19.7" fill="#2f8041" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02003e3c: 91.8% of 1,808 bytes</title></rect>
+<rect x="682.4" y="638.3" width="22.5" height="19.7" fill="#2f6a40" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02010f98: 57.5% of 1,808 bytes</title></rect>
+<rect x="704.9" y="407.8" width="22.0" height="20.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ef248: 100.0% of 1,808 bytes</title></rect>
+<rect x="726.9" y="407.8" width="21.7" height="20.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bcef4: 100.0% of 1,788 bytes</title></rect>
+<rect x="748.6" y="407.8" width="21.7" height="20.3" fill="#2f8241" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208325c: 93.7% of 1,784 bytes</title></rect>
+<rect x="770.3" y="407.8" width="21.7" height="20.3" fill="#2f7941" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02086b70: 80.7% of 1,784 bytes</title></rect>
+<rect x="791.9" y="407.8" width="21.6" height="20.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0205ae50: 100.0% of 1,776 bytes</title></rect>
+<rect x="813.5" y="407.8" width="20.8" height="20.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fbed4: 100.0% of 1,712 bytes</title></rect>
+<rect x="834.3" y="407.8" width="20.7" height="20.3" fill="#2f7641" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a93e8: 76.3% of 1,704 bytes</title></rect>
+<rect x="855.0" y="407.8" width="20.4" height="20.3" fill="#2f7441" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0204e9d8: 72.3% of 1,676 bytes</title></rect>
+<rect x="875.4" y="407.8" width="20.3" height="20.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0202cad4: 100.0% of 1,672 bytes</title></rect>
+<rect x="895.7" y="407.8" width="20.3" height="20.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a9a90: 100.0% of 1,672 bytes</title></rect>
+<rect x="916.0" y="407.8" width="20.0" height="20.3" fill="#2f7e41" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02051378: 88.3% of 1,648 bytes</title></rect>
+<rect x="704.9" y="428.1" width="20.0" height="20.1" fill="#2f7e41" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02108bc8: 88.5% of 1,640 bytes</title></rect>
+<rect x="704.9" y="448.2" width="20.0" height="19.8" fill="#2f6340" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02056cac: 45.9% of 1,612 bytes</title></rect>
+<rect x="704.9" y="468.0" width="20.0" height="19.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200d380: 100.0% of 1,600 bytes</title></rect>
+<rect x="704.9" y="487.7" width="20.0" height="19.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020535cc: 100.0% of 1,596 bytes</title></rect>
+<rect x="704.9" y="507.3" width="20.0" height="19.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020cce38: 100.0% of 1,592 bytes</title></rect>
+<rect x="704.9" y="526.8" width="20.0" height="19.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bac80: 100.0% of 1,584 bytes</title></rect>
+<rect x="704.9" y="546.3" width="20.0" height="19.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e7290: 100.0% of 1,576 bytes</title></rect>
+<rect x="704.9" y="565.6" width="20.0" height="19.3" fill="#2f7b41" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0202a890: 83.4% of 1,568 bytes</title></rect>
+<rect x="704.9" y="584.9" width="20.0" height="18.9" fill="#2f8141" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02054fb8: 92.2% of 1,540 bytes</title></rect>
+<rect x="704.9" y="603.8" width="20.0" height="18.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211e6b8: 100.0% of 1,476 bytes</title></rect>
+<rect x="704.9" y="621.9" width="20.0" height="18.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211f2d0: 100.0% of 1,476 bytes</title></rect>
+<rect x="704.9" y="640.0" width="20.0" height="18.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>_dsd_gap@itcm_0: 0.0% of 1,464 bytes</title></rect>
+<rect x="725.0" y="428.1" width="19.9" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a50d4: 100.0% of 1,452 bytes</title></rect>
+<rect x="744.9" y="428.1" width="19.8" height="18.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0201e434: 0.0% of 1,448 bytes</title></rect>
+<rect x="764.7" y="428.1" width="19.8" height="18.0" fill="#2f6440" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e5710: 48.1% of 1,448 bytes</title></rect>
+<rect x="784.5" y="428.1" width="19.6" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206e4d8: 100.0% of 1,432 bytes</title></rect>
+<rect x="804.2" y="428.1" width="19.5" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f4c50: 100.0% of 1,420 bytes</title></rect>
+<rect x="823.6" y="428.1" width="19.3" height="18.0" fill="#2f7f41" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02094fe0: 89.5% of 1,408 bytes</title></rect>
+<rect x="842.9" y="428.1" width="19.2" height="18.0" fill="#2f7f41" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0208dc78: 89.4% of 1,400 bytes</title></rect>
+<rect x="862.1" y="428.1" width="18.9" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e5fb8: 100.0% of 1,380 bytes</title></rect>
+<rect x="881.0" y="428.1" width="18.5" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f470c: 100.0% of 1,348 bytes</title></rect>
+<rect x="899.4" y="428.1" width="18.3" height="18.0" fill="#2f7441" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020054d0: 72.5% of 1,336 bytes</title></rect>
+<rect x="917.8" y="428.1" width="18.2" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0205f1d8: 100.0% of 1,332 bytes</title></rect>
+<rect x="725.0" y="446.0" width="18.2" height="17.9" fill="#2f5b3f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b12c8: 33.8% of 1,324 bytes</title></rect>
+<rect x="743.2" y="446.0" width="18.1" height="17.9" fill="#304a3e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b23bc: 6.4% of 1,320 bytes</title></rect>
+<rect x="761.3" y="446.0" width="18.0" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020efff4: 100.0% of 1,308 bytes</title></rect>
+<rect x="779.3" y="446.0" width="17.9" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f8bc8: 100.0% of 1,300 bytes</title></rect>
+<rect x="797.2" y="446.0" width="17.8" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fb128: 100.0% of 1,292 bytes</title></rect>
+<rect x="814.9" y="446.0" width="17.7" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02047788: 100.0% of 1,284 bytes</title></rect>
+<rect x="832.6" y="446.0" width="17.5" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205de1c: 100.0% of 1,276 bytes</title></rect>
+<rect x="850.1" y="446.0" width="17.4" height="17.9" fill="#2f7d41" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0207a8d0: 86.4% of 1,268 bytes</title></rect>
+<rect x="867.6" y="446.0" width="17.4" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/CaveNpc: 100.0% of 1,268 bytes</title></rect>
+<rect x="885.0" y="446.0" width="17.3" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b1ab8: 100.0% of 1,256 bytes</title></rect>
+<rect x="902.3" y="446.0" width="16.9" height="17.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ddeb0: 100.0% of 1,228 bytes</title></rect>
+<rect x="919.2" y="446.0" width="16.8" height="17.9" fill="#2f5d3f" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0205fb4c: 36.9% of 1,224 bytes</title></rect>
+<rect x="725.0" y="463.9" width="16.6" height="18.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206dddc: 100.0% of 1,220 bytes</title></rect>
+<rect x="725.0" y="482.0" width="16.6" height="18.1" fill="#2f8241" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02097514: 94.1% of 1,220 bytes</title></rect>
+<rect x="725.0" y="500.1" width="16.6" height="18.1" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b8ac8: 0.0% of 1,220 bytes</title></rect>
+<rect x="725.0" y="518.2" width="16.6" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b0e08: 100.0% of 1,216 bytes</title></rect>
+<rect x="725.0" y="536.3" width="16.6" height="18.0" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0204f064: 0.0% of 1,212 bytes</title></rect>
+<rect x="725.0" y="554.3" width="16.6" height="18.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0210b4d0: 100.0% of 1,212 bytes</title></rect>
+<rect x="725.0" y="572.2" width="16.6" height="17.4" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020909c8: 0.0% of 1,176 bytes</title></rect>
+<rect x="725.0" y="589.7" width="16.6" height="17.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206d950: 100.0% of 1,164 bytes</title></rect>
+<rect x="725.0" y="607.0" width="16.6" height="17.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206f6e4: 100.0% of 1,164 bytes</title></rect>
+<rect x="725.0" y="624.2" width="16.6" height="17.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02071dc0: 100.0% of 1,144 bytes</title></rect>
+<rect x="725.0" y="641.2" width="16.6" height="16.8" fill="#2f7240" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205ea18: 70.0% of 1,132 bytes</title></rect>
+<rect x="741.5" y="463.9" width="16.1" height="16.8" fill="#2f6a40" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fd5a4: 56.7% of 1,100 bytes</title></rect>
+<rect x="741.5" y="480.7" width="16.1" height="16.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02039774: 100.0% of 1,088 bytes</title></rect>
+<rect x="741.5" y="497.3" width="16.1" height="16.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0205f70c: 0.0% of 1,088 bytes</title></rect>
+<rect x="741.5" y="513.9" width="16.1" height="16.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0207d7e0: 100.0% of 1,084 bytes</title></rect>
+<rect x="741.5" y="530.4" width="16.1" height="16.5" fill="#2f603f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ee01c: 40.7% of 1,080 bytes</title></rect>
+<rect x="741.5" y="546.9" width="16.1" height="16.2" fill="#2f7541" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020276f8: 74.7% of 1,060 bytes</title></rect>
+<rect x="741.5" y="563.1" width="16.1" height="16.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211ec7c: 100.0% of 1,060 bytes</title></rect>
+<rect x="741.5" y="579.3" width="16.1" height="16.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b1fa0: 100.0% of 1,052 bytes</title></rect>
+<rect x="741.5" y="595.3" width="16.1" height="16.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fb858: 100.0% of 1,052 bytes</title></rect>
+<rect x="741.5" y="611.4" width="16.1" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211d120: 100.0% of 1,024 bytes</title></rect>
+<rect x="741.5" y="627.0" width="16.1" height="15.6" fill="#30483e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02100414: 3.1% of 1,020 bytes</title></rect>
+<rect x="741.5" y="642.6" width="16.1" height="15.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02125d84: 100.0% of 1,012 bytes</title></rect>
+<rect x="757.7" y="463.9" width="15.9" height="15.6" fill="#2f613f" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021214e0: 42.5% of 1,008 bytes</title></rect>
+<rect x="773.6" y="463.9" width="15.3" height="15.6" fill="#2f7440" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208a5ac: 72.0% of 972 bytes</title></rect>
+<rect x="788.9" y="463.9" width="15.3" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209d060: 100.0% of 972 bytes</title></rect>
+<rect x="804.2" y="463.9" width="15.2" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02053c08: 100.0% of 968 bytes</title></rect>
+<rect x="819.4" y="463.9" width="14.9" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208d1fc: 100.0% of 944 bytes</title></rect>
+<rect x="834.3" y="463.9" width="14.7" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020edc78: 100.0% of 932 bytes</title></rect>
+<rect x="849.0" y="463.9" width="14.7" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02115fbc: 100.0% of 932 bytes</title></rect>
+<rect x="863.7" y="463.9" width="14.7" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02122a78: 100.0% of 932 bytes</title></rect>
+<rect x="878.3" y="463.9" width="14.6" height="15.6" fill="#30463e" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02000800: 0.9% of 924 bytes</title></rect>
+<rect x="892.9" y="463.9" width="14.4" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203c6a4: 100.0% of 916 bytes</title></rect>
+<rect x="907.3" y="463.9" width="14.4" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208d8e8: 100.0% of 912 bytes</title></rect>
+<rect x="921.7" y="463.9" width="14.3" height="15.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02112714: 100.0% of 908 bytes</title></rect>
+<rect x="757.7" y="479.5" width="15.6" height="14.4" fill="#2f7140" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211f894: 67.4% of 908 bytes</title></rect>
+<rect x="773.2" y="479.5" width="15.2" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02049620: 100.0% of 888 bytes</title></rect>
+<rect x="788.4" y="479.5" width="15.1" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020ba90c: 100.0% of 884 bytes</title></rect>
+<rect x="803.6" y="479.5" width="15.0" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205bbac: 100.0% of 876 bytes</title></rect>
+<rect x="818.6" y="479.5" width="14.9" height="14.4" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0201e9e8: 0.0% of 872 bytes</title></rect>
+<rect x="833.5" y="479.5" width="14.9" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0204459c: 100.0% of 872 bytes</title></rect>
+<rect x="848.4" y="479.5" width="14.8" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203845c: 100.0% of 864 bytes</title></rect>
+<rect x="863.2" y="479.5" width="14.7" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020026a0: 100.0% of 856 bytes</title></rect>
+<rect x="877.9" y="479.5" width="14.7" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02037dd4: 100.0% of 856 bytes</title></rect>
+<rect x="892.6" y="479.5" width="14.6" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0205ee84: 100.0% of 852 bytes</title></rect>
+<rect x="907.2" y="479.5" width="14.5" height="14.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205dacc: 100.0% of 848 bytes</title></rect>
+<rect x="921.7" y="479.5" width="14.3" height="14.4" fill="#2f553f" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02050160: 23.4% of 836 bytes</title></rect>
+<rect x="757.7" y="493.9" width="14.6" height="14.0" fill="#2f6d40" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02038fbc: 61.4% of 828 bytes</title></rect>
+<rect x="757.7" y="507.9" width="14.6" height="14.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208d5ac: 100.0% of 828 bytes</title></rect>
+<rect x="757.7" y="521.9" width="14.6" height="14.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fd268: 100.0% of 828 bytes</title></rect>
+<rect x="757.7" y="535.9" width="14.6" height="13.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020466a4: 100.0% of 820 bytes</title></rect>
+<rect x="757.7" y="549.8" width="14.6" height="13.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203812c: 100.0% of 816 bytes</title></rect>
+<rect x="757.7" y="563.5" width="14.6" height="13.7" fill="#304a3e" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203d168: 6.4% of 812 bytes</title></rect>
+<rect x="757.7" y="577.3" width="14.6" height="13.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02047c8c: 100.0% of 808 bytes</title></rect>
+<rect x="757.7" y="590.9" width="14.6" height="13.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0213b32c: 0.0% of 804 bytes</title></rect>
+<rect x="757.7" y="604.5" width="14.6" height="13.5" fill="#2f6240" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020eef2c: 44.7% of 796 bytes</title></rect>
+<rect x="757.7" y="618.0" width="14.6" height="13.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02115ca0: 100.0% of 796 bytes</title></rect>
+<rect x="757.7" y="631.4" width="14.6" height="13.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209e418: 100.0% of 788 bytes</title></rect>
+<rect x="757.7" y="644.7" width="14.6" height="13.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0204f9d8: 100.0% of 784 bytes</title></rect>
+<rect x="772.2" y="493.9" width="14.1" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f868c: 100.0% of 780 bytes</title></rect>
+<rect x="786.3" y="493.9" width="13.9" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0202dcfc: 100.0% of 772 bytes</title></rect>
+<rect x="800.2" y="493.9" width="13.9" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203ce68: 100.0% of 768 bytes</title></rect>
+<rect x="814.1" y="493.9" width="13.9" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e5cb8: 100.0% of 768 bytes</title></rect>
+<rect x="827.9" y="493.9" width="13.8" height="13.6" fill="#2f7b41" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200d084: 83.8% of 764 bytes</title></rect>
+<rect x="841.7" y="493.9" width="13.8" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020de37c: 100.0% of 764 bytes</title></rect>
+<rect x="855.5" y="493.9" width="13.6" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0202162c: 100.0% of 756 bytes</title></rect>
+<rect x="869.2" y="493.9" width="13.6" height="13.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02008dd4: 0.0% of 752 bytes</title></rect>
+<rect x="882.7" y="493.9" width="13.6" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f7eb4: 100.0% of 752 bytes</title></rect>
+<rect x="896.3" y="493.9" width="13.5" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0205b540: 100.0% of 748 bytes</title></rect>
+<rect x="909.8" y="493.9" width="13.1" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_02087ef8: 100.0% of 728 bytes</title></rect>
+<rect x="922.9" y="493.9" width="13.1" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02028a2c: 100.0% of 724 bytes</title></rect>
+<rect x="772.2" y="507.5" width="12.6" height="13.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02048e90: 100.0% of 716 bytes</title></rect>
+<rect x="772.2" y="521.5" width="12.6" height="13.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f0be0: 100.0% of 716 bytes</title></rect>
+<rect x="772.2" y="535.4" width="12.6" height="13.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fa520: 100.0% of 712 bytes</title></rect>
+<rect x="772.2" y="549.3" width="12.6" height="13.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205e53c: 100.0% of 708 bytes</title></rect>
+<rect x="772.2" y="563.1" width="12.6" height="13.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b17f4: 100.0% of 708 bytes</title></rect>
+<rect x="772.2" y="576.9" width="12.6" height="13.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02000d60: 0.0% of 700 bytes</title></rect>
+<rect x="772.2" y="590.5" width="12.6" height="13.6" fill="#2f6440" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020298bc: 47.4% of 700 bytes</title></rect>
+<rect x="772.2" y="604.1" width="12.6" height="13.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02099494: 100.0% of 696 bytes</title></rect>
+<rect x="772.2" y="617.7" width="12.6" height="13.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0204f520: 100.0% of 692 bytes</title></rect>
+<rect x="772.2" y="631.1" width="12.6" height="13.5" fill="#2f7d41" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02053fd0: 86.7% of 692 bytes</title></rect>
+<rect x="772.2" y="644.6" width="12.6" height="13.4" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205bf18: 0.0% of 688 bytes</title></rect>
+<rect x="784.9" y="507.5" width="13.3" height="12.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e675c: 100.0% of 688 bytes</title></rect>
+<rect x="784.9" y="520.3" width="13.3" height="12.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021241ec: 100.0% of 688 bytes</title></rect>
+<rect x="784.9" y="533.1" width="13.3" height="12.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205b900: 100.0% of 684 bytes</title></rect>
+<rect x="784.9" y="545.7" width="13.3" height="12.7" fill="#2f7a41" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b0b5c: 82.5% of 684 bytes</title></rect>
+<rect x="784.9" y="558.4" width="13.3" height="12.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02028d00: 100.0% of 680 bytes</title></rect>
+<rect x="784.9" y="571.0" width="13.3" height="12.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021159f8: 100.0% of 680 bytes</title></rect>
+<rect x="784.9" y="583.7" width="13.3" height="12.5" fill="#2f7d41" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02052b58: 87.0% of 676 bytes</title></rect>
+<rect x="784.9" y="596.2" width="13.3" height="12.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f81a4: 100.0% of 676 bytes</title></rect>
+<rect x="784.9" y="608.7" width="13.3" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02005238: 100.0% of 664 bytes</title></rect>
+<rect x="784.9" y="621.1" width="13.3" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02028578: 100.0% of 664 bytes</title></rect>
+<rect x="784.9" y="633.4" width="13.3" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203d494: 100.0% of 664 bytes</title></rect>
+<rect x="784.9" y="645.7" width="13.3" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209727c: 100.0% of 664 bytes</title></rect>
+<rect x="798.1" y="507.5" width="12.7" height="12.9" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02008904: 0.0% of 662 bytes</title></rect>
+<rect x="810.8" y="507.5" width="12.6" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02028fa8: 100.0% of 660 bytes</title></rect>
+<rect x="823.4" y="507.5" width="12.6" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020ba678: 100.0% of 660 bytes</title></rect>
+<rect x="836.0" y="507.5" width="12.6" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021225bc: 100.0% of 660 bytes</title></rect>
+<rect x="848.7" y="507.5" width="12.6" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02027b1c: 100.0% of 656 bytes</title></rect>
+<rect x="861.2" y="507.5" width="12.6" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020981dc: 100.0% of 656 bytes</title></rect>
+<rect x="873.8" y="507.5" width="12.5" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203d930: 100.0% of 652 bytes</title></rect>
+<rect x="886.3" y="507.5" width="12.5" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a4e48: 100.0% of 652 bytes</title></rect>
+<rect x="898.7" y="507.5" width="12.5" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/ImageBg: 100.0% of 652 bytes</title></rect>
+<rect x="911.2" y="507.5" width="12.4" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02003bb4: 100.0% of 648 bytes</title></rect>
+<rect x="923.6" y="507.5" width="12.4" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02049398: 100.0% of 648 bytes</title></rect>
+<rect x="798.1" y="520.4" width="12.5" height="12.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ee454: 100.0% of 648 bytes</title></rect>
+<rect x="798.1" y="533.1" width="12.5" height="12.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020580ec: 100.0% of 644 bytes</title></rect>
+<rect x="798.1" y="545.8" width="12.5" height="12.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fcfe4: 100.0% of 644 bytes</title></rect>
+<rect x="798.1" y="558.4" width="12.5" height="12.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020d1a18: 100.0% of 640 bytes</title></rect>
+<rect x="798.1" y="571.0" width="12.5" height="12.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209ebd0: 100.0% of 636 bytes</title></rect>
+<rect x="798.1" y="583.5" width="12.5" height="12.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020cd470: 100.0% of 636 bytes</title></rect>
+<rect x="798.1" y="596.0" width="12.5" height="12.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f0eac: 100.0% of 636 bytes</title></rect>
+<rect x="798.1" y="608.4" width="12.5" height="12.4" fill="#2f6c40" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02005a08: 59.5% of 632 bytes</title></rect>
+<rect x="798.1" y="620.9" width="12.5" height="12.4" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0201ed5c: 0.0% of 632 bytes</title></rect>
+<rect x="798.1" y="633.3" width="12.5" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bcc7c: 100.0% of 632 bytes</title></rect>
+<rect x="798.1" y="645.7" width="12.5" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0202aeb0: 100.0% of 628 bytes</title></rect>
+<rect x="810.7" y="520.4" width="12.6" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02029b78: 100.0% of 620 bytes</title></rect>
+<rect x="823.3" y="520.4" width="12.6" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203bba4: 100.0% of 620 bytes</title></rect>
+<rect x="835.9" y="520.4" width="12.6" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a23f4: 100.0% of 620 bytes</title></rect>
+<rect x="848.5" y="520.4" width="12.6" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f0510: 100.0% of 620 bytes</title></rect>
+<rect x="861.2" y="520.4" width="12.5" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208cf94: 100.0% of 616 bytes</title></rect>
+<rect x="873.7" y="520.4" width="12.5" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02109dcc: 100.0% of 616 bytes</title></rect>
+<rect x="886.2" y="520.4" width="12.5" height="12.1" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020086a0: 0.0% of 612 bytes</title></rect>
+<rect x="898.7" y="520.4" width="12.5" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209e96c: 100.0% of 612 bytes</title></rect>
+<rect x="911.2" y="520.4" width="12.5" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020efb90: 100.0% of 612 bytes</title></rect>
+<rect x="923.6" y="520.4" width="12.4" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fbc74: 100.0% of 608 bytes</title></rect>
+<rect x="810.7" y="532.5" width="12.7" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020964f8: 100.0% of 604 bytes</title></rect>
+<rect x="823.3" y="532.5" width="12.7" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020cb0d0: 100.0% of 604 bytes</title></rect>
+<rect x="836.0" y="532.5" width="12.7" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fedd4: 100.0% of 604 bytes</title></rect>
+<rect x="848.7" y="532.5" width="12.5" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02027eac: 100.0% of 596 bytes</title></rect>
+<rect x="861.2" y="532.5" width="12.5" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02028100: 100.0% of 596 bytes</title></rect>
+<rect x="873.7" y="532.5" width="12.5" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02039520: 100.0% of 596 bytes</title></rect>
+<rect x="886.3" y="532.5" width="12.5" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020585a8: 100.0% of 596 bytes</title></rect>
+<rect x="898.8" y="532.5" width="12.4" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020116a8: 100.0% of 592 bytes</title></rect>
+<rect x="911.2" y="532.5" width="12.4" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020d1c98: 100.0% of 592 bytes</title></rect>
+<rect x="923.7" y="532.5" width="12.3" height="11.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203be10: 100.0% of 588 bytes</title></rect>
+<rect x="810.7" y="544.2" width="12.5" height="11.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203dbbc: 100.0% of 588 bytes</title></rect>
+<rect x="810.7" y="555.7" width="12.5" height="11.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02109230: 100.0% of 588 bytes</title></rect>
+<rect x="810.7" y="567.3" width="12.5" height="11.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02029470: 100.0% of 584 bytes</title></rect>
+<rect x="810.7" y="578.7" width="12.5" height="11.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0204fce8: 100.0% of 584 bytes</title></rect>
+<rect x="810.7" y="590.2" width="12.5" height="11.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f8448: 100.0% of 580 bytes</title></rect>
+<rect x="810.7" y="601.5" width="12.5" height="11.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200496c: 100.0% of 576 bytes</title></rect>
+<rect x="810.7" y="612.8" width="12.5" height="11.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02004bac: 100.0% of 576 bytes</title></rect>
+<rect x="810.7" y="624.1" width="12.5" height="11.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209846c: 100.0% of 576 bytes</title></rect>
+<rect x="810.7" y="635.4" width="12.5" height="11.3" fill="#2f7440" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0209e72c: 72.2% of 576 bytes</title></rect>
+<rect x="810.7" y="646.7" width="12.5" height="11.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e651c: 100.0% of 576 bytes</title></rect>
+<rect x="823.2" y="544.2" width="11.4" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f6f48: 100.0% of 576 bytes</title></rect>
+<rect x="834.6" y="544.2" width="11.4" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02124e68: 100.0% of 576 bytes</title></rect>
+<rect x="846.0" y="544.2" width="11.3" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0204915c: 100.0% of 572 bytes</title></rect>
+<rect x="857.3" y="544.2" width="11.3" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bb908: 100.0% of 572 bytes</title></rect>
+<rect x="868.6" y="544.2" width="11.2" height="12.4" fill="#2f533f" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02008b9c: 20.4% of 568 bytes</title></rect>
+<rect x="879.8" y="544.2" width="11.2" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02058370: 100.0% of 568 bytes</title></rect>
+<rect x="891.1" y="544.2" width="11.2" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0206e2a0: 100.0% of 568 bytes</title></rect>
+<rect x="902.3" y="544.2" width="11.2" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bbd6c: 100.0% of 568 bytes</title></rect>
+<rect x="913.5" y="544.2" width="11.2" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ef958: 100.0% of 568 bytes</title></rect>
+<rect x="924.8" y="544.2" width="11.2" height="12.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f077c: 100.0% of 568 bytes</title></rect>
+<rect x="823.2" y="556.6" width="12.3" height="11.4" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02116360: 100.0% of 568 bytes</title></rect>
+<rect x="823.2" y="568.0" width="12.3" height="11.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_0202923c: 100.0% of 564 bytes</title></rect>
+<rect x="823.2" y="579.3" width="12.3" height="11.3" fill="#2f7f41" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205c1c8: 89.4% of 564 bytes</title></rect>
+<rect x="823.2" y="590.6" width="12.3" height="11.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020feba0: 100.0% of 564 bytes</title></rect>
+<rect x="823.2" y="601.9" width="12.3" height="11.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021122bc: 100.0% of 564 bytes</title></rect>
+<rect x="823.2" y="613.2" width="12.3" height="11.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0202f078: 100.0% of 560 bytes</title></rect>
+<rect x="823.2" y="624.4" width="12.3" height="11.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203c474: 100.0% of 560 bytes</title></rect>
+<rect x="823.2" y="635.6" width="12.3" height="11.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02047338: 100.0% of 560 bytes</title></rect>
+<rect x="823.2" y="646.8" width="12.3" height="11.2" fill="#2f7741" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0204ff30: 77.9% of 560 bytes</title></rect>
+<rect x="835.5" y="556.6" width="11.2" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b95f0: 100.0% of 560 bytes</title></rect>
+<rect x="846.7" y="556.6" width="11.2" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f8998: 100.0% of 560 bytes</title></rect>
+<rect x="858.0" y="556.6" width="11.2" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0211f0a0: 100.0% of 560 bytes</title></rect>
+<rect x="869.2" y="556.6" width="11.2" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200500c: 100.0% of 556 bytes</title></rect>
+<rect x="880.4" y="556.6" width="11.2" height="12.2" fill="#2f583f" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02054284: 28.1% of 556 bytes</title></rect>
+<rect x="891.6" y="556.6" width="11.2" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020f09b4: 100.0% of 556 bytes</title></rect>
+<rect x="902.7" y="556.6" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200377c: 100.0% of 552 bytes</title></rect>
+<rect x="913.8" y="556.6" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020392f8: 100.0% of 552 bytes</title></rect>
+<rect x="924.9" y="556.6" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020544b0: 100.0% of 552 bytes</title></rect>
+<rect x="835.5" y="568.9" width="12.2" height="11.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208a978: 100.0% of 552 bytes</title></rect>
+<rect x="835.5" y="580.0" width="12.2" height="11.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020907a0: 100.0% of 552 bytes</title></rect>
+<rect x="835.5" y="591.2" width="12.2" height="11.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bb4c0: 100.0% of 552 bytes</title></rect>
+<rect x="835.5" y="602.3" width="12.2" height="11.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bbb44: 100.0% of 552 bytes</title></rect>
+<rect x="835.5" y="613.5" width="12.2" height="11.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020caea8: 100.0% of 552 bytes</title></rect>
+<rect x="835.5" y="624.6" width="12.2" height="11.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ee6dc: 100.0% of 552 bytes</title></rect>
+<rect x="835.5" y="635.8" width="12.2" height="11.1" fill="#2f6e40" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02122850: 63.8% of 552 bytes</title></rect>
+<rect x="835.5" y="646.9" width="12.2" height="11.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02028354: 100.0% of 548 bytes</title></rect>
+<rect x="847.7" y="568.9" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203de08: 100.0% of 548 bytes</title></rect>
+<rect x="858.7" y="568.9" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205e318: 100.0% of 548 bytes</title></rect>
+<rect x="869.8" y="568.9" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020a1418: 100.0% of 548 bytes</title></rect>
+<rect x="880.8" y="568.9" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b91a8: 100.0% of 548 bytes</title></rect>
+<rect x="891.9" y="568.9" width="11.1" height="12.2" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b93cc: 0.0% of 548 bytes</title></rect>
+<rect x="902.9" y="568.9" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020fb634: 100.0% of 548 bytes</title></rect>
+<rect x="914.0" y="568.9" width="11.1" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021124f0: 100.0% of 548 bytes</title></rect>
+<rect x="925.0" y="568.9" width="11.0" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02004dec: 100.0% of 544 bytes</title></rect>
+<rect x="847.7" y="581.1" width="12.2" height="11.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203ca38: 100.0% of 544 bytes</title></rect>
+<rect x="847.7" y="592.1" width="12.2" height="11.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02047568: 100.0% of 544 bytes</title></rect>
+<rect x="847.7" y="603.1" width="12.2" height="11.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02047fb4: 100.0% of 544 bytes</title></rect>
+<rect x="847.7" y="614.1" width="12.2" height="11.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020587fc: 100.0% of 544 bytes</title></rect>
+<rect x="847.7" y="625.1" width="12.2" height="11.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b9e3c: 100.0% of 544 bytes</title></rect>
+<rect x="847.7" y="636.1" width="12.2" height="11.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bb6e8: 100.0% of 544 bytes</title></rect>
+<rect x="847.7" y="647.1" width="12.2" height="10.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02028810: 100.0% of 540 bytes</title></rect>
+<rect x="859.8" y="581.1" width="10.9" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0202ee5c: 100.0% of 540 bytes</title></rect>
+<rect x="870.7" y="581.1" width="10.9" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203b988: 100.0% of 540 bytes</title></rect>
+<rect x="881.6" y="581.1" width="10.9" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208256c: 100.0% of 540 bytes</title></rect>
+<rect x="892.5" y="581.1" width="10.9" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b8f8c: 100.0% of 540 bytes</title></rect>
+<rect x="903.5" y="581.1" width="10.9" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020ee904: 100.0% of 540 bytes</title></rect>
+<rect x="914.4" y="581.1" width="10.8" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203c05c: 100.0% of 536 bytes</title></rect>
+<rect x="925.2" y="581.1" width="10.8" height="12.2" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0205e800: 100.0% of 536 bytes</title></rect>
+<rect x="859.8" y="593.3" width="12.1" height="10.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b9820: 100.0% of 536 bytes</title></rect>
+<rect x="859.8" y="604.2" width="12.1" height="10.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02003568: 100.0% of 532 bytes</title></rect>
+<rect x="859.8" y="615.0" width="12.1" height="10.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0200454c: 100.0% of 532 bytes</title></rect>
+<rect x="859.8" y="625.8" width="12.1" height="10.8" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02049998: 100.0% of 532 bytes</title></rect>
+<rect x="859.8" y="636.6" width="12.1" height="10.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020039a4: 100.0% of 528 bytes</title></rect>
+<rect x="859.8" y="647.3" width="12.1" height="10.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203cc58: 100.0% of 528 bytes</title></rect>
+<rect x="872.0" y="593.3" width="10.7" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203e02c: 100.0% of 528 bytes</title></rect>
+<rect x="882.7" y="593.3" width="10.7" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020ba264: 100.0% of 528 bytes</title></rect>
+<rect x="893.4" y="593.3" width="10.7" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bb2b0: 100.0% of 528 bytes</title></rect>
+<rect x="904.1" y="593.3" width="10.6" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02004760: 100.0% of 524 bytes</title></rect>
+<rect x="914.7" y="593.3" width="10.6" height="12.1" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0201f1dc: 0.0% of 524 bytes</title></rect>
+<rect x="925.4" y="593.3" width="10.6" height="12.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020df5b8: 100.0% of 524 bytes</title></rect>
+<rect x="872.0" y="605.4" width="12.2" height="10.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020e78b8: 100.0% of 524 bytes</title></rect>
+<rect x="872.0" y="615.9" width="12.2" height="10.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02100208: 100.0% of 524 bytes</title></rect>
+<rect x="872.0" y="626.5" width="12.2" height="10.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02124c5c: 100.0% of 524 bytes</title></rect>
+<rect x="872.0" y="637.0" width="12.2" height="10.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_021250a8: 100.0% of 524 bytes</title></rect>
+<rect x="872.0" y="647.5" width="12.2" height="10.5" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0201efd4: 0.0% of 520 bytes</title></rect>
+<rect x="884.2" y="605.4" width="10.4" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02044394: 100.0% of 520 bytes</title></rect>
+<rect x="894.6" y="605.4" width="10.4" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020ba05c: 100.0% of 520 bytes</title></rect>
+<rect x="905.0" y="605.4" width="10.4" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020eed24: 100.0% of 520 bytes</title></rect>
+<rect x="915.4" y="605.4" width="10.3" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020296b8: 100.0% of 516 bytes</title></rect>
+<rect x="925.7" y="605.4" width="10.3" height="12.3" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203d72c: 100.0% of 516 bytes</title></rect>
+<rect x="884.2" y="617.7" width="12.6" height="10.1" fill="#2f6d40" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_0204f7d4: 62.0% of 516 bytes</title></rect>
+<rect x="884.2" y="627.8" width="12.6" height="10.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020555bc: 100.0% of 516 bytes</title></rect>
+<rect x="884.2" y="637.8" width="12.6" height="10.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b9a38: 100.0% of 516 bytes</title></rect>
+<rect x="884.2" y="647.9" width="12.6" height="10.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020ba474: 100.0% of 516 bytes</title></rect>
+<rect x="896.8" y="617.7" width="9.8" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020bbfa4: 100.0% of 516 bytes</title></rect>
+<rect x="906.6" y="617.7" width="9.8" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020eeb20: 100.0% of 516 bytes</title></rect>
+<rect x="916.5" y="617.7" width="9.8" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203c274: 100.0% of 512 bytes</title></rect>
+<rect x="926.2" y="617.7" width="9.8" height="12.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0203e23c: 100.0% of 512 bytes</title></rect>
+<rect x="896.8" y="630.6" width="9.2" height="13.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0207c82c: 100.0% of 512 bytes</title></rect>
+<rect x="896.8" y="644.3" width="9.2" height="13.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/CRI/cri_0208073c: 100.0% of 512 bytes</title></rect>
+<rect x="906.0" y="630.6" width="9.2" height="13.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_020b9c3c: 100.0% of 512 bytes</title></rect>
+<rect x="906.0" y="644.3" width="9.2" height="13.7" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020efdf4: 100.0% of 512 bytes</title></rect>
+<rect x="915.2" y="630.6" width="11.3" height="7.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02000c04: 100.0% of 348 bytes</title></rect>
+<rect x="926.5" y="630.6" width="9.5" height="7.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_02126178: 100.0% of 292 bytes</title></rect>
+<rect x="915.2" y="638.2" width="9.0" height="7.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02027dac: 100.0% of 256 bytes</title></rect>
+<rect x="915.2" y="645.1" width="9.0" height="6.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02021920: 100.0% of 240 bytes</title></rect>
+<rect x="915.2" y="651.7" width="9.0" height="6.3" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/MSL/msl_0201e34c: 0.0% of 232 bytes</title></rect>
+<rect x="924.2" y="638.2" width="6.4" height="8.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0205b82c: 100.0% of 212 bytes</title></rect>
+<rect x="930.6" y="638.2" width="5.4" height="8.1" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/unknown/lib_02065dd8: 100.0% of 176 bytes</title></rect>
+<rect x="924.2" y="646.2" width="5.4" height="6.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02020744: 100.0% of 152 bytes</title></rect>
+<rect x="924.2" y="653.1" width="5.4" height="4.9" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02052dfc: 100.0% of 108 bytes</title></rect>
+<rect x="929.6" y="646.2" width="6.4" height="4.0" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02000b9c: 100.0% of 104 bytes</title></rect>
+<rect x="929.6" y="650.3" width="3.4" height="4.6" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_020b7898: 100.0% of 64 bytes</title></rect>
+<rect x="933.0" y="650.3" width="3.0" height="4.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0212ee24: 0.0% of 56 bytes</title></rect>
+<rect x="929.6" y="654.9" width="2.9" height="3.1" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_02000068: 0.0% of 36 bytes</title></rect>
+<rect x="932.5" y="654.9" width="1.6" height="3.1" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020003d0: 0.0% of 20 bytes</title></rect>
+<rect x="934.1" y="654.9" width="1.9" height="2.6" fill="#30363d" stroke="#0d1117" stroke-width="1"><title>libs/NitroSDK/sdk_020005f0: 0.0% of 20 bytes</title></rect>
+<rect x="934.1" y="657.5" width="1.9" height="0.5" fill="#2ea043" stroke="#0d1117" stroke-width="1"><title>src/game/unit_0212f7e4: 100.0% of 4 bytes</title></rect>
+<rect x="24" y="666" width="12" height="12" fill="#2ea043"/><text x="42" y="676" font-size="12" fill="#8b949e">100% matched</text>
+<rect x="174" y="666" width="12" height="12" fill="#2f6640"/><text x="192" y="676" font-size="12" fill="#8b949e">partly matched</text>
+<rect x="324" y="666" width="12" height="12" fill="#30363d"/><text x="342" y="676" font-size="12" fill="#8b949e">not started</text>
+<text x="24" y="710" font-size="15" font-weight="600" fill="#e6edf3">Matched functions over time</text>
+<line x1="74" x2="936" y1="924.0" y2="924.0" stroke="#30363d" stroke-width="1"/>
+<text x="68" y="928.0" font-size="11" fill="#8b949e" text-anchor="end">0</text>
+<line x1="74" x2="936" y1="874.0" y2="874.0" stroke="#30363d" stroke-width="1"/>
+<text x="68" y="878.0" font-size="11" fill="#8b949e" text-anchor="end">1,900</text>
+<line x1="74" x2="936" y1="824.0" y2="824.0" stroke="#30363d" stroke-width="1"/>
+<text x="68" y="828.0" font-size="11" fill="#8b949e" text-anchor="end">3,800</text>
+<line x1="74" x2="936" y1="774.0" y2="774.0" stroke="#30363d" stroke-width="1"/>
+<text x="68" y="778.0" font-size="11" fill="#8b949e" text-anchor="end">5,700</text>
+<line x1="74" x2="936" y1="724.0" y2="724.0" stroke="#30363d" stroke-width="1"/>
+<text x="68" y="728.0" font-size="11" fill="#8b949e" text-anchor="end">7,600</text>
+<polygon points="74.0,924.0 74.0,924.0 75.6,924.0 75.6,924.0 101.1,924.0 101.1,924.0 101.5,924.0 101.5,923.8 101.6,923.8 101.6,923.1 101.7,923.1 101.7,922.7 124.1,922.7 124.1,922.7 124.1,922.7 124.1,921.9 124.2,921.9 124.2,921.0 124.2,921.0 124.2,920.2 124.2,920.2 124.2,919.3 124.2,919.3 124.2,918.6 124.3,918.6 124.3,917.7 124.3,917.7 124.3,916.9 124.3,916.9 124.3,916.2 124.3,916.2 124.3,915.6 124.4,915.6 124.4,914.8 124.7,914.8 124.7,914.7 124.8,914.7 124.8,914.3 124.9,914.3 124.9,913.7 125.1,913.7 125.1,913.4 125.1,913.4 125.1,912.4 125.1,912.4 125.1,911.6 125.2,911.6 125.2,911.2 125.2,911.2 125.2,910.6 125.2,910.6 125.2,910.1 125.2,910.1 125.2,909.6 125.6,909.6 125.6,909.0 125.6,909.0 125.6,908.5 125.6,908.5 125.6,908.0 125.7,908.0 125.7,907.4 125.7,907.4 125.7,906.8 125.7,906.8 125.7,906.3 125.7,906.3 125.7,906.0 126.5,906.0 126.5,905.8 126.5,905.8 126.5,905.3 126.6,905.3 126.6,904.7 126.6,904.7 126.6,904.1 126.6,904.1 126.6,903.8 126.6,903.8 126.6,903.4 126.7,903.4 126.7,903.2 126.7,903.2 126.7,903.1 126.7,903.1 126.7,902.8 126.8,902.8 126.8,902.5 126.8,902.5 126.8,902.0 126.8,902.0 126.8,901.6 126.8,901.6 126.8,901.1 126.9,901.1 126.9,900.7 126.9,900.7 126.9,900.5 126.9,900.5 126.9,900.4 126.9,900.4 126.9,900.2 127.0,900.2 127.0,899.8 127.0,899.8 127.0,899.6 127.0,899.6 127.0,899.2 127.1,899.2 127.1,899.0 127.1,899.0 127.1,898.7 127.1,898.7 127.1,898.3 127.1,898.3 127.1,898.0 127.2,898.0 127.2,897.8 127.2,897.8 127.2,897.6 127.2,897.6 127.2,897.1 127.3,897.1 127.3,896.9 127.3,896.9 127.3,896.7 127.4,896.7 127.4,896.5 127.4,896.5 127.4,896.3 127.4,896.3 127.4,895.9 127.4,895.9 127.4,895.7 127.5,895.7 127.5,895.5 127.5,895.5 127.5,895.3 127.5,895.3 127.5,895.2 127.7,895.2 127.7,895.1 127.7,895.1 127.7,894.9 127.7,894.9 127.7,894.8 127.7,894.8 127.7,894.7 127.7,894.7 127.7,894.3 127.8,894.3 127.8,894.2 127.8,894.2 127.8,894.2 127.8,894.2 127.8,893.9 127.9,893.9 127.9,893.9 127.9,893.9 127.9,893.7 127.9,893.7 127.9,893.7 128.0,893.7 128.0,893.4 128.1,893.4 128.1,893.3 128.1,893.3 128.1,893.2 128.2,893.2 128.2,893.1 128.2,893.1 128.2,893.0 128.2,893.0 128.2,892.9 128.3,892.9 128.3,892.9 128.3,892.9 128.3,892.7 128.3,892.7 128.3,892.7 128.3,892.7 128.3,892.6 128.4,892.6 128.4,892.5 128.4,892.5 128.4,892.3 128.4,892.3 128.4,892.2 128.7,892.2 128.7,892.2 128.7,892.2 128.7,892.1 128.8,892.1 128.8,892.0 128.8,892.0 128.8,892.0 128.8,892.0 128.8,891.9 128.9,891.9 128.9,891.9 128.9,891.9 128.9,891.9 128.9,891.9 128.9,891.8 128.9,891.8 128.9,891.8 129.0,891.8 129.0,891.8 129.0,891.8 129.0,891.7 129.1,891.7 129.1,891.7 129.2,891.7 129.2,891.6 129.2,891.6 129.2,891.5 129.2,891.5 129.2,891.5 129.2,891.5 129.2,891.5 129.3,891.5 129.3,891.5 171.7,891.5 171.7,891.5 172.4,891.5 172.4,891.4 172.4,891.4 172.4,891.2 173.3,891.2 173.3,891.1 173.3,891.1 173.3,890.6 173.3,890.6 173.3,890.4 173.4,890.4 173.4,890.3 173.4,890.3 173.4,890.1 173.5,890.1 173.5,889.8 173.5,889.8 173.5,889.7 173.5,889.7 173.5,889.3 173.6,889.3 173.6,889.2 173.7,889.2 173.7,888.9 173.7,888.9 173.7,888.7 173.8,888.7 173.8,888.4 174.0,888.4 174.0,888.2 174.1,888.2 174.1,887.9 174.1,887.9 174.1,887.7 174.2,887.7 174.2,887.6 174.2,887.6 174.2,887.5 174.4,887.5 174.4,887.4 174.4,887.4 174.4,887.2 175.1,887.2 175.1,887.1 175.3,887.1 175.3,886.9 175.3,886.9 175.3,886.8 175.4,886.8 175.4,886.7 175.5,886.7 175.5,886.6 175.6,886.6 175.6,886.4 175.9,886.4 175.9,885.4 176.0,885.4 176.0,885.1 176.1,885.1 176.1,884.9 176.1,884.9 176.1,884.7 176.2,884.7 176.2,884.4 176.2,884.4 176.2,884.3 176.3,884.3 176.3,884.1 176.3,884.1 176.3,884.0 176.4,884.0 176.4,883.8 176.4,883.8 176.4,883.7 176.5,883.7 176.5,883.6 176.8,883.6 176.8,883.5 176.9,883.5 176.9,883.4 177.1,883.4 177.1,883.2 177.1,883.2 177.1,882.8 177.3,882.8 177.3,882.6 177.4,882.6 177.4,882.2 177.5,882.2 177.5,881.8 177.6,881.8 177.6,881.6 177.7,881.6 177.7,881.5 177.8,881.5 177.8,881.4 177.8,881.4 177.8,881.2 177.9,881.2 177.9,880.9 178.0,880.9 178.0,880.5 178.0,880.5 178.0,880.4 178.2,880.4 178.2,880.3 178.2,880.3 178.2,880.0 178.3,880.0 178.3,879.8 178.4,879.8 178.4,879.6 178.5,879.6 178.5,879.2 178.5,879.2 178.5,879.1 178.6,879.1 178.6,878.8 178.8,878.8 178.8,878.6 178.9,878.6 178.9,878.6 179.0,878.6 179.0,878.2 179.1,878.2 179.1,877.9 179.2,877.9 179.2,877.8 179.3,877.8 179.3,877.5 179.4,877.5 179.4,877.2 179.5,877.2 179.5,876.8 179.5,876.8 179.5,876.6 179.6,876.6 179.6,876.3 179.7,876.3 179.7,875.9 179.8,875.9 179.8,875.6 179.9,875.6 179.9,875.1 180.0,875.1 180.0,874.6 180.1,874.6 180.1,874.4 180.2,874.4 180.2,874.2 180.2,874.2 180.2,873.9 180.3,873.9 180.3,873.5 180.4,873.5 180.4,873.4 180.5,873.4 180.5,873.1 180.5,873.1 180.5,872.8 180.6,872.8 180.6,872.8 180.7,872.8 180.7,872.6 180.7,872.6 180.7,872.4 180.8,872.4 180.8,872.2 180.9,872.2 180.9,872.0 181.0,872.0 181.0,871.6 181.1,871.6 181.1,871.2 181.1,871.2 181.1,870.8 181.2,870.8 181.2,870.7 181.3,870.7 181.3,870.5 181.3,870.5 181.3,870.3 181.4,870.3 181.4,870.2 181.4,870.2 181.4,870.1 181.5,870.1 181.5,869.7 181.6,869.7 181.6,869.7 181.6,869.7 181.6,869.5 181.7,869.5 181.7,869.2 181.8,869.2 181.8,869.0 181.8,869.0 181.8,868.7 181.9,868.7 181.9,868.6 182.0,868.6 182.0,868.5 182.1,868.5 182.1,868.3 182.1,868.3 182.1,868.2 182.2,868.2 182.2,868.0 182.3,868.0 182.3,867.8 182.3,867.8 182.3,867.6 182.4,867.6 182.4,867.4 182.5,867.4 182.5,867.3 182.5,867.3 182.5,867.3 182.6,867.3 182.6,867.2 182.7,867.2 182.7,867.1 182.8,867.1 182.8,866.8 182.9,866.8 182.9,866.7 182.9,866.7 182.9,866.6 183.1,866.6 183.1,866.3 183.1,866.3 183.1,866.3 183.2,866.3 183.2,866.2 183.3,866.2 183.3,866.0 183.4,866.0 183.4,865.8 183.4,865.8 183.4,865.7 183.5,865.7 183.5,865.6 183.6,865.6 183.6,865.5 183.7,865.5 183.7,865.3 183.8,865.3 183.8,865.1 183.9,865.1 183.9,865.1 184.0,865.1 184.0,864.8 184.1,864.8 184.1,864.8 184.1,864.8 184.1,864.6 184.4,864.6 184.4,864.5 184.4,864.5 184.4,864.4 184.5,864.4 184.5,864.3 184.7,864.3 184.7,864.0 184.8,864.0 184.8,864.0 184.9,864.0 184.9,863.9 185.0,863.9 185.0,863.8 185.1,863.8 185.1,863.7 185.2,863.7 185.2,863.6 185.3,863.6 185.3,863.4 185.4,863.4 185.4,863.3 185.5,863.3 185.5,863.2 185.6,863.2 185.6,863.1 185.7,863.1 185.7,862.9 185.9,862.9 185.9,862.8 548.1,862.8 548.1,862.8 557.9,862.8 557.9,862.8 564.7,862.8 564.7,862.8 565.3,862.8 565.3,862.7 567.0,862.7 567.0,862.6 567.3,862.6 567.3,862.6 569.0,862.6 569.0,862.5 580.4,862.5 580.4,862.4 580.8,862.4 580.8,861.9 581.3,861.9 581.3,861.7 584.6,861.7 584.6,861.7 586.6,861.7 586.6,861.7 591.4,861.7 591.4,861.7 626.5,861.7 626.5,856.0 636.5,856.0 636.5,854.1 636.6,854.1 636.6,854.1 648.0,854.1 648.0,852.4 651.1,852.4 651.1,852.0 653.1,852.0 653.1,851.9 713.5,851.9 713.5,848.1 713.5,848.1 713.5,847.9 721.4,847.9 721.4,847.9 728.5,847.9 728.5,847.7 877.2,847.7 877.2,847.7 877.4,847.7 877.4,814.7 877.7,814.7 877.7,813.6 879.7,813.6 879.7,813.1 880.5,813.1 880.5,812.0 880.8,812.0 880.8,811.8 884.5,811.8 884.5,811.0 884.7,811.0 884.7,810.9 891.6,810.9 891.6,810.2 891.7,810.2 891.7,810.0 892.0,810.0 892.0,809.1 892.3,809.1 892.3,808.7 893.5,808.7 893.5,807.9 894.9,807.9 894.9,807.1 897.7,807.1 897.7,806.6 898.3,806.6 898.3,806.2 899.4,806.2 899.4,805.7 905.9,805.7 905.9,805.0 906.1,805.0 906.1,803.9 906.4,803.9 906.4,803.2 906.6,803.2 906.6,802.4 908.1,802.4 908.1,801.7 908.9,801.7 908.9,800.9 912.4,800.9 912.4,800.9 913.5,800.9 913.5,799.4 920.4,799.4 920.4,799.2 931.9,799.2 931.9,797.9 932.6,797.9 932.6,796.9 933.7,796.9 933.7,795.2 934.1,795.2 934.1,794.1 935.7,794.1 935.7,792.8 936.0,792.8 936.0,791.9 936.0,924.0" fill="#2ea043" opacity="0.25"/>
+<polyline points="74.0,924.0 75.6,924.0 75.6,924.0 101.1,924.0 101.1,924.0 101.5,924.0 101.5,923.8 101.6,923.8 101.6,923.1 101.7,923.1 101.7,922.7 124.1,922.7 124.1,922.7 124.1,922.7 124.1,921.9 124.2,921.9 124.2,921.0 124.2,921.0 124.2,920.2 124.2,920.2 124.2,919.3 124.2,919.3 124.2,918.6 124.3,918.6 124.3,917.7 124.3,917.7 124.3,916.9 124.3,916.9 124.3,916.2 124.3,916.2 124.3,915.6 124.4,915.6 124.4,914.8 124.7,914.8 124.7,914.7 124.8,914.7 124.8,914.3 124.9,914.3 124.9,913.7 125.1,913.7 125.1,913.4 125.1,913.4 125.1,912.4 125.1,912.4 125.1,911.6 125.2,911.6 125.2,911.2 125.2,911.2 125.2,910.6 125.2,910.6 125.2,910.1 125.2,910.1 125.2,909.6 125.6,909.6 125.6,909.0 125.6,909.0 125.6,908.5 125.6,908.5 125.6,908.0 125.7,908.0 125.7,907.4 125.7,907.4 125.7,906.8 125.7,906.8 125.7,906.3 125.7,906.3 125.7,906.0 126.5,906.0 126.5,905.8 126.5,905.8 126.5,905.3 126.6,905.3 126.6,904.7 126.6,904.7 126.6,904.1 126.6,904.1 126.6,903.8 126.6,903.8 126.6,903.4 126.7,903.4 126.7,903.2 126.7,903.2 126.7,903.1 126.7,903.1 126.7,902.8 126.8,902.8 126.8,902.5 126.8,902.5 126.8,902.0 126.8,902.0 126.8,901.6 126.8,901.6 126.8,901.1 126.9,901.1 126.9,900.7 126.9,900.7 126.9,900.5 126.9,900.5 126.9,900.4 126.9,900.4 126.9,900.2 127.0,900.2 127.0,899.8 127.0,899.8 127.0,899.6 127.0,899.6 127.0,899.2 127.1,899.2 127.1,899.0 127.1,899.0 127.1,898.7 127.1,898.7 127.1,898.3 127.1,898.3 127.1,898.0 127.2,898.0 127.2,897.8 127.2,897.8 127.2,897.6 127.2,897.6 127.2,897.1 127.3,897.1 127.3,896.9 127.3,896.9 127.3,896.7 127.4,896.7 127.4,896.5 127.4,896.5 127.4,896.3 127.4,896.3 127.4,895.9 127.4,895.9 127.4,895.7 127.5,895.7 127.5,895.5 127.5,895.5 127.5,895.3 127.5,895.3 127.5,895.2 127.7,895.2 127.7,895.1 127.7,895.1 127.7,894.9 127.7,894.9 127.7,894.8 127.7,894.8 127.7,894.7 127.7,894.7 127.7,894.3 127.8,894.3 127.8,894.2 127.8,894.2 127.8,894.2 127.8,894.2 127.8,893.9 127.9,893.9 127.9,893.9 127.9,893.9 127.9,893.7 127.9,893.7 127.9,893.7 128.0,893.7 128.0,893.4 128.1,893.4 128.1,893.3 128.1,893.3 128.1,893.2 128.2,893.2 128.2,893.1 128.2,893.1 128.2,893.0 128.2,893.0 128.2,892.9 128.3,892.9 128.3,892.9 128.3,892.9 128.3,892.7 128.3,892.7 128.3,892.7 128.3,892.7 128.3,892.6 128.4,892.6 128.4,892.5 128.4,892.5 128.4,892.3 128.4,892.3 128.4,892.2 128.7,892.2 128.7,892.2 128.7,892.2 128.7,892.1 128.8,892.1 128.8,892.0 128.8,892.0 128.8,892.0 128.8,892.0 128.8,891.9 128.9,891.9 128.9,891.9 128.9,891.9 128.9,891.9 128.9,891.9 128.9,891.8 128.9,891.8 128.9,891.8 129.0,891.8 129.0,891.8 129.0,891.8 129.0,891.7 129.1,891.7 129.1,891.7 129.2,891.7 129.2,891.6 129.2,891.6 129.2,891.5 129.2,891.5 129.2,891.5 129.2,891.5 129.2,891.5 129.3,891.5 129.3,891.5 171.7,891.5 171.7,891.5 172.4,891.5 172.4,891.4 172.4,891.4 172.4,891.2 173.3,891.2 173.3,891.1 173.3,891.1 173.3,890.6 173.3,890.6 173.3,890.4 173.4,890.4 173.4,890.3 173.4,890.3 173.4,890.1 173.5,890.1 173.5,889.8 173.5,889.8 173.5,889.7 173.5,889.7 173.5,889.3 173.6,889.3 173.6,889.2 173.7,889.2 173.7,888.9 173.7,888.9 173.7,888.7 173.8,888.7 173.8,888.4 174.0,888.4 174.0,888.2 174.1,888.2 174.1,887.9 174.1,887.9 174.1,887.7 174.2,887.7 174.2,887.6 174.2,887.6 174.2,887.5 174.4,887.5 174.4,887.4 174.4,887.4 174.4,887.2 175.1,887.2 175.1,887.1 175.3,887.1 175.3,886.9 175.3,886.9 175.3,886.8 175.4,886.8 175.4,886.7 175.5,886.7 175.5,886.6 175.6,886.6 175.6,886.4 175.9,886.4 175.9,885.4 176.0,885.4 176.0,885.1 176.1,885.1 176.1,884.9 176.1,884.9 176.1,884.7 176.2,884.7 176.2,884.4 176.2,884.4 176.2,884.3 176.3,884.3 176.3,884.1 176.3,884.1 176.3,884.0 176.4,884.0 176.4,883.8 176.4,883.8 176.4,883.7 176.5,883.7 176.5,883.6 176.8,883.6 176.8,883.5 176.9,883.5 176.9,883.4 177.1,883.4 177.1,883.2 177.1,883.2 177.1,882.8 177.3,882.8 177.3,882.6 177.4,882.6 177.4,882.2 177.5,882.2 177.5,881.8 177.6,881.8 177.6,881.6 177.7,881.6 177.7,881.5 177.8,881.5 177.8,881.4 177.8,881.4 177.8,881.2 177.9,881.2 177.9,880.9 178.0,880.9 178.0,880.5 178.0,880.5 178.0,880.4 178.2,880.4 178.2,880.3 178.2,880.3 178.2,880.0 178.3,880.0 178.3,879.8 178.4,879.8 178.4,879.6 178.5,879.6 178.5,879.2 178.5,879.2 178.5,879.1 178.6,879.1 178.6,878.8 178.8,878.8 178.8,878.6 178.9,878.6 178.9,878.6 179.0,878.6 179.0,878.2 179.1,878.2 179.1,877.9 179.2,877.9 179.2,877.8 179.3,877.8 179.3,877.5 179.4,877.5 179.4,877.2 179.5,877.2 179.5,876.8 179.5,876.8 179.5,876.6 179.6,876.6 179.6,876.3 179.7,876.3 179.7,875.9 179.8,875.9 179.8,875.6 179.9,875.6 179.9,875.1 180.0,875.1 180.0,874.6 180.1,874.6 180.1,874.4 180.2,874.4 180.2,874.2 180.2,874.2 180.2,873.9 180.3,873.9 180.3,873.5 180.4,873.5 180.4,873.4 180.5,873.4 180.5,873.1 180.5,873.1 180.5,872.8 180.6,872.8 180.6,872.8 180.7,872.8 180.7,872.6 180.7,872.6 180.7,872.4 180.8,872.4 180.8,872.2 180.9,872.2 180.9,872.0 181.0,872.0 181.0,871.6 181.1,871.6 181.1,871.2 181.1,871.2 181.1,870.8 181.2,870.8 181.2,870.7 181.3,870.7 181.3,870.5 181.3,870.5 181.3,870.3 181.4,870.3 181.4,870.2 181.4,870.2 181.4,870.1 181.5,870.1 181.5,869.7 181.6,869.7 181.6,869.7 181.6,869.7 181.6,869.5 181.7,869.5 181.7,869.2 181.8,869.2 181.8,869.0 181.8,869.0 181.8,868.7 181.9,868.7 181.9,868.6 182.0,868.6 182.0,868.5 182.1,868.5 182.1,868.3 182.1,868.3 182.1,868.2 182.2,868.2 182.2,868.0 182.3,868.0 182.3,867.8 182.3,867.8 182.3,867.6 182.4,867.6 182.4,867.4 182.5,867.4 182.5,867.3 182.5,867.3 182.5,867.3 182.6,867.3 182.6,867.2 182.7,867.2 182.7,867.1 182.8,867.1 182.8,866.8 182.9,866.8 182.9,866.7 182.9,866.7 182.9,866.6 183.1,866.6 183.1,866.3 183.1,866.3 183.1,866.3 183.2,866.3 183.2,866.2 183.3,866.2 183.3,866.0 183.4,866.0 183.4,865.8 183.4,865.8 183.4,865.7 183.5,865.7 183.5,865.6 183.6,865.6 183.6,865.5 183.7,865.5 183.7,865.3 183.8,865.3 183.8,865.1 183.9,865.1 183.9,865.1 184.0,865.1 184.0,864.8 184.1,864.8 184.1,864.8 184.1,864.8 184.1,864.6 184.4,864.6 184.4,864.5 184.4,864.5 184.4,864.4 184.5,864.4 184.5,864.3 184.7,864.3 184.7,864.0 184.8,864.0 184.8,864.0 184.9,864.0 184.9,863.9 185.0,863.9 185.0,863.8 185.1,863.8 185.1,863.7 185.2,863.7 185.2,863.6 185.3,863.6 185.3,863.4 185.4,863.4 185.4,863.3 185.5,863.3 185.5,863.2 185.6,863.2 185.6,863.1 185.7,863.1 185.7,862.9 185.9,862.9 185.9,862.8 548.1,862.8 548.1,862.8 557.9,862.8 557.9,862.8 564.7,862.8 564.7,862.8 565.3,862.8 565.3,862.7 567.0,862.7 567.0,862.6 567.3,862.6 567.3,862.6 569.0,862.6 569.0,862.5 580.4,862.5 580.4,862.4 580.8,862.4 580.8,861.9 581.3,861.9 581.3,861.7 584.6,861.7 584.6,861.7 586.6,861.7 586.6,861.7 591.4,861.7 591.4,861.7 626.5,861.7 626.5,856.0 636.5,856.0 636.5,854.1 636.6,854.1 636.6,854.1 648.0,854.1 648.0,852.4 651.1,852.4 651.1,852.0 653.1,852.0 653.1,851.9 713.5,851.9 713.5,848.1 713.5,848.1 713.5,847.9 721.4,847.9 721.4,847.9 728.5,847.9 728.5,847.7 877.2,847.7 877.2,847.7 877.4,847.7 877.4,814.7 877.7,814.7 877.7,813.6 879.7,813.6 879.7,813.1 880.5,813.1 880.5,812.0 880.8,812.0 880.8,811.8 884.5,811.8 884.5,811.0 884.7,811.0 884.7,810.9 891.6,810.9 891.6,810.2 891.7,810.2 891.7,810.0 892.0,810.0 892.0,809.1 892.3,809.1 892.3,808.7 893.5,808.7 893.5,807.9 894.9,807.9 894.9,807.1 897.7,807.1 897.7,806.6 898.3,806.6 898.3,806.2 899.4,806.2 899.4,805.7 905.9,805.7 905.9,805.0 906.1,805.0 906.1,803.9 906.4,803.9 906.4,803.2 906.6,803.2 906.6,802.4 908.1,802.4 908.1,801.7 908.9,801.7 908.9,800.9 912.4,800.9 912.4,800.9 913.5,800.9 913.5,799.4 920.4,799.4 920.4,799.2 931.9,799.2 931.9,797.9 932.6,797.9 932.6,796.9 933.7,796.9 933.7,795.2 934.1,795.2 934.1,794.1 935.7,794.1 935.7,792.8 936.0,792.8 936.0,791.9" fill="none" stroke="#2ea043" stroke-width="2"/>
+<text x="74.6" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 14</text>
+<text x="138.4" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 15</text>
+<text x="202.2" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 16</text>
+<text x="266.0" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 17</text>
+<text x="329.8" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 18</text>
+<text x="393.6" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 19</text>
+<text x="457.4" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 20</text>
+<text x="521.2" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 21</text>
+<text x="584.9" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 22</text>
+<text x="648.7" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 23</text>
+<text x="712.5" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 24</text>
+<text x="776.3" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 25</text>
+<text x="840.1" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 26</text>
+<text x="903.9" y="940" font-size="11" fill="#8b949e" text-anchor="middle">Oct 27</text>
+<text x="936" y="783.9" font-size="12" fill="#e6edf3" text-anchor="end">5,021 defined in C · 5,072 matched (report)</text>
+<text x="24" y="964" font-size="11" fill="#8b949e">History: functions written in C on 310 sampled commits (2026-10-13 to 2026-10-27); the merge gate only accepts 100% matches. Regenerate with tools/progress_svg.py.</text>
+</svg>
