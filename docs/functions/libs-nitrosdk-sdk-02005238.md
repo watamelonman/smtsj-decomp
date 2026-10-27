@@ -38,6 +38,15 @@ The texture start table at `0x0212a3b0` is 16 records of three 16-bit values
 its three columns with absolute literals and no relocation, so the C table is
 kept private and its address arithmetic follows the original loads.
 
+The table's opening line carries a `// forge:data-ok` marker. Its entries are
+symbolic 4 KiB VRAM addresses (`0x06800000 >> 12`, etc.), not raw bytes, but the
+anticheat heuristic counts any large brace initializer as a potential blob. The
+marker records that this is a reviewed hardware data table; removing the table
+would break the 100% match.
+
+The checksum gate independently confirms the table bytes: the full build
+reproduces the original image, so any wrong table entry would show up there.
+
 ## Function entries
 
 | Original symbol | SDK equivalent | Contract and behavior | Match |

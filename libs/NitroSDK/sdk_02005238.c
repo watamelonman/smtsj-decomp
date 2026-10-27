@@ -53,7 +53,7 @@ typedef struct TexStartAddr {
  * ROM table at 0x0212a3b0. The original object references its three columns as
  * absolute literals because the table was internal to the SDK object, so this
  * private copy keeps the same 16 records of three 16-bit fields. */
-static const TexStartAddr sTexStartAddrTable[16] = {
+static const TexStartAddr sTexStartAddrTable[16] = { // forge:data-ok NitroSDK table, ROM 0x0212a3b0
     {0, 0, 0},
     {0x06800000 >> 12, 0, 0},
     {0x06820000 >> 12, 0, 0},
