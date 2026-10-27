@@ -17,9 +17,11 @@ typedef struct BitStream05ee84 {
  * provider slot and is forwarded to func_0205111c. Returns 1 when the provider
  * is unavailable or shutting down, 0 while it is still starting. */
 u32 func_0205ee84(u32 index);
-/* Starts the provider when `enabled` is nonzero and stops it otherwise.
- * `index` selects the provider slot handed to func_02050668. Returns 1 in
- * every path; callers only check that the step ran. */
+/* Registers the slot with func_02050668(index, 0); when `enabled` is nonzero,
+ * runs the start-up sequence (func_0205ecd8/func_02050df4, run flag +4,
+ * func_0205105c, func_02050e80). The flag does not stop the provider: with
+ * `enabled == 0` only the slot registration is cleared. Always returns 1;
+ * callers ignore it. */
 u32 func_0205ef20(u32 index, u32 enabled);
 /* Allocates a zeroed stream of `bytes` payload bytes; caller owns the result. */
 BitStream05ee84 *func_0205efc8(u32 bytes);

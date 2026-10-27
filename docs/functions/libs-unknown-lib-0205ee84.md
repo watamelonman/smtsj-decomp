@@ -24,11 +24,15 @@ directions and of the bit order.
 
 `func_0205ee84`/`func_0205ef20` drive the provider singleton `data_0216b428`
 (+4 run flag, +8 start-up phase, +0xc per-slot status), the same state machine
-as the adjacent `func_0205ede8` in `libs/NitroSDK/sdk_0205ea18`. Their first
-argument is a slot index, not a pointer: `func_02050668` uses it as a byte
-offset (`strb r0, [base, index]`) and `func_0205111c` multiplies it by the
-20-byte record size (`mov r0,#20; mla r0,index,r0,base`). SaveLoadTask passes
-that field from its slot table.
+as `func_0205ede8` in the delinked `sdk_0205ea18.o`
+(`build/delinks/libs/NitroSDK/sdk_0205ea18.o`; the TU is still delinked, see
+`config/arm9/delinks.txt`). Their first argument is a slot index, not a pointer:
+the delinked `func_02050668` in `sdk_020504a4.o` uses it as a byte offset. It
+computes `add r1, r0, #8` on the base and then stores via
+`movne r0, #1` / `strbne r0, [r1, r4]` or `moveq r0, #0` / `strbeq r0, [r1, r4]`,
+and `func_0205111c` multiplies it by the 20-byte record size
+(`mov r0,#20; mla r0,index,r0,base`). SaveLoadTask passes that field from its
+slot table.
 
 ## func_0205ee84 (156 bytes)
 

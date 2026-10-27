@@ -58,10 +58,11 @@ u32 func_0205ee84(u32 index)
     return 0;
 }
 
-/* Starts the provider for a slot through func_02050668 and its allocator
- * setup when `enabled` is nonzero, otherwise only tears down the run flag.
- * The SaveLoadTask callers pass a slot field plus a 0/1 flag and ignore the
- * result, which is 1 on every path. */
+/* Registers the slot with func_02050668(index, 0); when `enabled` is nonzero,
+ * runs the start-up sequence (func_0205ecd8/func_02050df4, run flag +4,
+ * func_0205105c, func_02050e80). The flag does not stop the provider: with
+ * `enabled == 0` only the slot registration is cleared. Always returns 1;
+ * callers ignore it. */
 u32 func_0205ef20(u32 index, u32 enabled)
 {
     data_0216b428.unk_0c = 0;
