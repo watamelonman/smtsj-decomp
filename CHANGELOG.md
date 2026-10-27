@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T485: match eight background stride, transfer, dirty-buffer, page-selection and bounded pixel-write helpers in `sdk_020557c0.c`.
+
 - M2-T484: match eight background transfer wrappers, flag/update helpers and selector mappings in `sdk_020557c0.c`.
 
 - M2-T478: match the MSL 16-bit string-length helper; document the deferred acos runtime-symbol mismatch.
