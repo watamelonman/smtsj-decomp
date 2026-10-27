@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T416: reconstruct eight NitroSDK file-context open/close/seek/read wrappers, the word-read and free thunks, the work byte-span accessor and the lazy read-buffer allocator in `libs/NitroSDK/sdk_02051378.c`.
 - M2-T400: match six NitroSystem stream initialization, setup, volume, stop and wake helpers; document the deferred buffer callback.
 - M2-T379: match five CRI voice assignment, path/timing, start and fade-update helpers; document the deferred teardown helper.
 
