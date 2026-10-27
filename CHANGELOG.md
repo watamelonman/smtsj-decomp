@@ -4,6 +4,7 @@
 
 - M2-T484: match eight background transfer wrappers, flag/update helpers and selector mappings in `sdk_020557c0.c`.
 
+- M2-T478: match the MSL 16-bit string-length helper; document the deferred acos runtime-symbol mismatch.
 - M2-T454: match WiFi state notifications, startup request and finalize dispatcher; reverify the heap initializer at 100%.
 
 - Match CRI 0208539c position-update and selector-query helpers; document the deferred read helper.
