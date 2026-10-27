@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T219: match four NitroSystem 3ds Max texture SRT helpers in `lib_02028d00`.
+
 - M2-T210: match the NitroSDK sub-engine extended palette end/begin loaders and `GX_BeginLoadTex`/`GX_LoadTex` in `libs/NitroSDK/sdk_02005238.c` (`func_02005238`, `func_02005278`, `func_02005290`, `func_020052f4`, `func_02005334`, `func_02005390`).
 - M2-T207: match the five script request wrappers (requests 120-124) and the shared-record ID/command builders `func_020ba73c`, `func_020ba78c` and `func_020ba838` in `lib_020ba678`.
 - M2-T206: match the four 3ds Max texture-matrix constructors and submission wrapper in `lib_02028fa8` (`func_02028fa8`, `func_02029080`, `func_020290d0`, `func_020290f4`).

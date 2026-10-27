@@ -108,3 +108,8 @@ wrappers. The work slot at +0xc0 is volatile because the interrupt-disabled loop
 re-reads it after each wait call; the 36-byte message is stack-owned only while
 its handlers run. The global-prefix view spans the following BSS symbol only to
 describe the byte at +0x26 cleared by the pump.
+
+`include/libs/unknown/lib_02028d00.h` exposes caller-owned 4x4 Q12 matrix
+storage and a borrowed NitroSystem material-animation layout. The four 3ds Max
+texture helpers write only entries 00, 01, 10, 11, 30 and 31 and depend on the
+existing asynchronous SDK division providers. No ownership is transferred.
