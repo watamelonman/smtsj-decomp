@@ -4,6 +4,10 @@
 
 - M2-T472: match NitroSDK asynchronous RTC time requests, FIFO completion handling and Gregorian weekday conversion.
 
+- M2-T478: match the MSL 16-bit string-length helper; document the deferred acos runtime-symbol mismatch.
+- M2-T454: match WiFi state notifications, startup request and finalize dispatcher; reverify the heap initializer at 100%.
+
+- Match CRI 0208539c position-update and selector-query helpers; document the deferred read helper.
 - M2-T471: match seven NitroSDK RTC initialization, date, BCD and FIFO helpers; document the deferred assembly busy-wait.
 
 - M2-T466: match the remaining four displacement/intensity task constructors, updater and effect dispatcher in `lib_020b78d8.c`.

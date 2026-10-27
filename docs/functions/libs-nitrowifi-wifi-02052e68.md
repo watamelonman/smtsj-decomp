@@ -40,7 +40,7 @@ descriptor through `func_0201fff0`; `func_02020470` then allocates from it.
 
 | Function | Behavior and instruction evidence | Match |
 | --- | --- | --- |
-| `func_02052e68` | Builds the buffer group for `count` transfer chunks. Sums the arena-0 and arena-2 spans (the arena-2 span is stored at +0xc), reserves an aligned `(count + 1)`-word heap array at the arena-0 base via `func_02020438(..., 2)`, then creates one heap per requested size rounded up to 32 bytes and gives the final slot the remaining span. Records `count` at +0 and +2; returns 1. `sizes == 0` skips the loop, so only the trailing heap is created. | 100% |
+| `func_02052e68` | Builds the buffer group for `count` transfer chunks. Sums the arena-0 and arena-2 spans (the arena-2 span is stored at +0xc), reserves an aligned `(count + 1)`-word heap array at the arena-0 base, then creates one heap per requested size rounded up to 32 bytes and gives the final slot the remaining span. Records `count` at +0 and +2; returns 1. `sizes == 0` skips the loop, so only the trailing heap is created. | 100% |
 | `func_02052f58` | Stores the low halfword of its argument in the group's current-index field. `func_020caea8` calls it with 0 before a record load. | 100% |
 | `func_02052f68` | Copies the saved index (+2) back to the current index (+0); the matching restore in `func_020caea8`. | 100% |
 | `func_02052fe0` | Returns allocated storage from the current heap (used by `sdk_02051378.c`) with flag 1, which `func_02052f7c` maps to allocation mode 32 (head of the free span). | 100% |
@@ -90,3 +90,17 @@ found provider API documentation but no matching implementation of these wrapper
   function size or branch layout. The closest objdiff result was 99.45%.
   The candidate was removed and the original delink remains authoritative;
   a human can open a decomp.me scratch for this 88-byte function.
+
+## M2-T454 functions
+
+| Function | Behavior and instruction evidence | Match |
+| --- | --- | --- |
+| `func_02052e68` | Existing buffer-group initializer reverified against the delink; no implementation change needed. | 100% |
+| `func_0205304c` | Calls the optional printf-style callback with `%s -> ` and the old state's table entry, stores the new state at +0x14, then reports `%s\n` with its table entry. Strings at 02143a08/02143a10 and table indexing at 02053070/02053094 establish the argument contract. State indices must fit the provider table. | 100% |
+| `func_020530cc` | Submits borrowed work 0215f5a0 to 02010c34, records nonzero errors and returns zero; otherwise attempts 02053130. A rejected follow-up notifies with table 02143a14 before cleanup and returns zero; success returns one. Ordered BL/BLX paths at 020530d4..02053120. | 100% |
+| `func_0205342c` | State 1 reports the already-idle string and returns. Other states report `WH_Finalize, state = %d` with the current state, then reload it. State 2 attempts 020531fc; states outside 4/5/6 request state 3 and cleanup. Otherwise requests state 3 and dispatches mode +0x38: 3 attempts 02053230; 5 cleans work before falling through to mode 1's 02053288; 2 attempts 020530cc; 4 cleans work before falling through to mode 0's 02053130. Failed requests invoke 020533e4; unknown modes return. Evidence: format string 02143a6c and six-way jump table 020534c8. | 100% |
+
+The callback is variadic because the original strings require zero or one
+format argument. Its tables and the mode word +0x38 remain provider-owned.
+A fresh public-source search for NitroSDK WH state-manager code found no
+matching implementation; the ROM strings and instructions supply the evidence.
