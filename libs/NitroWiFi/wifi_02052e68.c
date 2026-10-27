@@ -24,8 +24,10 @@ typedef struct Unk52e68Conn {
     s32 state;
     u8 pad_18[0x18];
     u32 unk_30;
-    u8 pad_34[0x0c];
-    void (*unk_40)(const void *argument);
+    u32 unk_34;
+    u32 unk_38;
+    u32 unk_3c;
+    void (*unk_40)(const void *argument, ...);
 } Unk52e68Conn;
 
 /* Event block passed to func_020531d8: the halfword at +2 is the state value
@@ -66,12 +68,38 @@ s32 func_02010bec(void *work);
 void func_02007e94(void);
 extern u8 data_0215fdc0[];
 extern const u8 data_02143a34[];
+void func_020531d8(Unk52e68Event *event);
 void func_02053324(Unk52e68Event *event);
 void func_020533ac(Unk52e68Event *event);
 void func_020533e4(void);
 s32 func_020531b0(void);
 s32 func_02053288(void);
 s32 func_02053348(void);
+
+/* Borrowed notification tables and work remain owned by their providers. */
+extern const u32 data_021439e0[];
+extern const u8 data_02143a08[], data_02143a10[], data_02143a14[];
+extern const u8 data_02143a50[], data_02143a6c[];
+extern u8 data_0215f5a0[];
+s32 func_02010c34(void *work);
+s32 func_02053130(void);
+s32 func_020531fc(void);
+s32 func_02053230(void);
+
+/* Callback contracts borrow the event only for the provider invocation. */
+typedef void (*Unk52e68Callback)(Unk52e68Event *event);
+
+/* Existing asynchronous providers return 2 when the request is accepted. */
+s32 func_02010b7c(Unk52e68Callback callback);
+s32 func_02010a54(Unk52e68Callback callback);
+s32 func_020109dc(Unk52e68Callback callback);
+/* Existing event callbacks retain ownership of no event storage. */
+void func_02053160(Unk52e68Event *event);
+void func_02053378(Unk52e68Event *event);
+void func_020532b8(Unk52e68Event *event);
+/* Existing follow-up and cleanup providers use the shared connection state. */
+s32 func_020532ec(void);
+void func_0205342c(void);
 
 /* Builds a group of heaps for count transfer chunks. Evidence: two arena
  * spans are summed (arena 2 also recorded at +0xc), an aligned (count + 1)-word
@@ -182,6 +210,20 @@ void func_02053048(void)
 {
 }
 
+/* Notifies the borrowed callback before and after changing state +0x14.
+ * Evidence: BLX uses tables 02143a08/02143a10 and the state-indexed word
+ * from 021439e0. State must index that provider-owned table. */
+void func_0205304c(u32 state)
+{
+    if (data_0215f500.unk_40 != 0) {
+        data_0215f500.unk_40(data_02143a08, data_021439e0[data_0215f500.state]);
+    }
+    data_0215f500.state = state;
+    if (data_0215f500.unk_40 != 0) {
+        data_0215f500.unk_40(data_02143a10, data_021439e0[state]);
+    }
+}
+
 /* Records a pending state value unless the connection is in state 9 or 10.
  * Evidence: the ROM subtracts 9 and uses an unsigned "> 1" test, i.e. the
  * store is skipped only for exactly 9 and 10. The value lands at +0x30 of the
@@ -193,38 +235,25 @@ void func_020530b0(u32 value)
     }
 }
 
-/* Handles one event: a nonzero event value (already loaded from +2) is passed
- * to func_020530b0, while zero asks func_0205304c for state 1. The state
- * machine wrapper func_020531b0 is the only caller. */
-void func_020531d8(Unk52e68Event *event)
+/* Submits borrowed work 0215f5a0, then requests 02053130. Evidence:
+ * ordered BLs at 020530d4..020530ec. Rejection notifies with 02143a14
+ * and cleans up; returns one only when both requests succeed. */
+s32 func_020530cc(void)
 {
-    if (event->unk_02 != 0) {
-        func_020530b0(event->unk_02);
-    } else {
-        func_0205304c(1);
+    s32 result = func_02010c34(data_0215f5a0);
+    if (result != 0) {
+        func_020530b0(result);
+        return 0;
     }
+    if (!func_02053130()) {
+        if (data_0215f500.unk_40 != 0) {
+            data_0215f500.unk_40(data_02143a14);
+        }
+        func_020533e4();
+        return 0;
+    }
+    return 1;
 }
-
-/* Reads the connection state word at +0x14; func_0205304c is the writer. */
-s32 func_020533d4(void)
-{
-    return data_0215f500.state;
-}
-
-/* Callback contracts borrow the event only for the provider invocation. */
-typedef void (*Unk52e68Callback)(Unk52e68Event *event);
-
-/* Existing asynchronous providers return 2 when the request is accepted. */
-s32 func_02010b7c(Unk52e68Callback callback);
-s32 func_02010a54(Unk52e68Callback callback);
-s32 func_020109dc(Unk52e68Callback callback);
-/* Existing event callbacks retain ownership of no event storage. */
-void func_02053160(Unk52e68Event *event);
-void func_02053378(Unk52e68Event *event);
-void func_020532b8(Unk52e68Event *event);
-/* Existing follow-up and cleanup providers use the shared connection state. */
-s32 func_020532ec(void);
-void func_0205342c(void);
 
 /* Requests state 3 before submitting callback 02053160 to provider 02010b7c.
  * Evidence: ordered BLs at 02053134..02053140; result 2 means accepted.
@@ -267,6 +296,18 @@ s32 func_020531b0(void)
     }
     func_020530b0(result);
     return 0;
+}
+
+/* Handles one event: a nonzero event value (already loaded from +2) is passed
+ * to func_020530b0, while zero asks func_0205304c for state 1. The state
+ * machine wrapper func_020531b0 is the only caller. */
+void func_020531d8(Unk52e68Event *event)
+{
+    if (event->unk_02 != 0) {
+        func_020530b0(event->unk_02);
+    } else {
+        func_0205304c(1);
+    }
 }
 
 /* Clears connection halfword +0xa and requests state 3 only from state 2.
@@ -376,6 +417,12 @@ void func_020533ac(Unk52e68Event *event)
     }
 }
 
+/* Reads the connection state word at +0x14; func_0205304c is the writer. */
+s32 func_020533d4(void)
+{
+    return data_0215f500.state;
+}
+
 /* In state 5, submits borrowed work 0215fdc0 to 02010bec and records
  * errors. Always attempts 02053348 afterward, selecting state 10 on failure.
  * Evidence: CMP #5 and the common BL path at 0205340c. */
@@ -387,6 +434,60 @@ void func_020533e4(void)
         if (result != 0) func_020530b0(result);
     }
     if (!func_02053348()) func_0205304c(10);
+}
+
+/* Dispatches cleanup using state +0x14 and mode +0x38. Evidence: the
+ * state comparisons and six-way jump table at 02053470..020534dc.
+ * Table 02143a6c says "WH_Finalize, state = %d\n"; the callback receives
+ * that state argument. Notifications can change state, requiring a reload. */
+void func_0205342c(void)
+{
+    if (data_0215f500.state == 1) {
+        if (data_0215f500.unk_40 != 0) {
+            data_0215f500.unk_40(data_02143a50);
+        }
+        return;
+    }
+    if (data_0215f500.unk_40 != 0) {
+        data_0215f500.unk_40(data_02143a6c, data_0215f500.state);
+    }
+    if (data_0215f500.state == 2) {
+        if (!func_020531fc()) func_020533e4();
+        return;
+    }
+    if (data_0215f500.state != 6 && data_0215f500.state != 5 &&
+        data_0215f500.state != 4) {
+        func_0205304c(3);
+        func_020533e4();
+        return;
+    }
+    func_0205304c(3);
+    switch (data_0215f500.unk_38) {
+    case 3:
+        if (!func_02053230()) func_020533e4();
+        break;
+    case 5:
+        if (func_02010bec(data_0215fdc0) != 0) {
+            func_020533e4();
+            break;
+        }
+    /* Fall through after successful provider cleanup. */
+    case 1:
+        if (!func_02053288()) func_020533e4();
+        break;
+    case 2:
+        if (!func_020530cc()) func_020533e4();
+        break;
+    case 4:
+        if (func_02010bec(data_0215fdc0) != 0) {
+            func_020533e4();
+            break;
+        }
+    /* Fall through after successful provider cleanup. */
+    case 0:
+        if (!func_02053130()) func_020533e4();
+        break;
+    }
 }
 
 /* Runs 02007e94 unless already in state 1, then always requests state 3
