@@ -570,3 +570,14 @@ resulting literal addends as the three configured symbols, so both spellings
 resolve to the same addresses and the linked image is unchanged. The source
 records the adjacent cached-axis contract explicitly; no assembly, volatile
 accesses or byte blobs are involved.
+
+## DEC-034 — Preserve the 0205811c per-iteration character reads
+
+`func_0205811c` checks the first character for zero, then reloads the character
+at the loop head and at the loop tail. mwccarm 2.0/sp1p5 otherwise reuses the
+first load for the first switch dispatch and drops the loop-head reload. Walking
+the name through a `const volatile s8 *` view keeps the three observed signed
+byte reads and reproduces the original 316-byte body; the flag words and marker
+pointer are ordinary typed data. The volatile view exists solely to reproduce
+the observed load schedule for matching; it does not assert that callers may
+mutate the string concurrently.

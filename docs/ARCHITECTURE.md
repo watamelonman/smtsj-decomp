@@ -61,6 +61,14 @@ whose +8 origin is caller supplied. Provider ownership remains unchanged.
 view: the handle is at +0x2058 and associated state blocks begin at +0x205c and
 +0x2084. The wrapper depends only on SDK bank, geometry and resource providers;
 callers retain the work storage and provider calls govern resource lifetime.
+`include/libs/unknown/lib_0202aeb0.h` exposes borrowed sound-capture work,
+state and message-queue views. The work area's state field begins at +0x48 and
+the state's channel, capture, alarm, fader and volume fields follow the
+instruction-established offsets; the aliases at `data_0215cabc` and
+`data_0215ca7c` keep the original per-symbol relocations. The sound subsystem
+retains ownership of the work area, buffers and fader, and the helpers depend
+only on existing NitroSDK sound, cache, fill and message providers.
+
 `include/libs/unknown/lib_02029b78.h` exposes the five borrowed 24-byte frame
 texture regions and the three-word frame palette manager used by those state
 blocks. The save/restore helpers copy only `head`/`tail` and `lo`/`hi`; the

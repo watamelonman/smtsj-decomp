@@ -9,9 +9,28 @@
 typedef struct Cri0208cf94Object {
     const void *vtable;
     void *handle;
-    u32 unk_08;
+    void *unk_08;
 } Cri0208cf94Object;
 
+/* Borrowed creation descriptor read by func_0208cff0 (0208cff4..0208d03c):
+ * field_00 is forwarded to func_0207e7ec and copied into the record's offset 8;
+ * a non-zero field_08 selects func_0207eb44 instead. Only these two fields are
+ * observed, so unk_04 stays opaque and the provider keeps ownership. */
+typedef struct Cri0208cf94Source {
+    void *field_00;
+    u32 unk_04;
+    s32 field_08;
+} Cri0208cf94Source;
+
+extern const char data_021493c4[];
+extern const char data_021493f8[];
+extern const char data_02149430[];
+
+extern void func_0208b494(const char *message);
+extern void func_0207ebb0(void *handle);
+extern void *func_0207eb44(void *argument, u32 size);
+extern void *func_0207e7ec(void *source, void *argument, u32 size);
+extern s32 func_0207f020(void *handle);
 extern s32 func_0207f7e8(void *handle, s32 argument);
 extern s32 func_0207f740(void *handle, s32 first, s32 second, s32 third);
 extern s32 func_0207f628(void *handle, s32 first, s32 second);
@@ -28,6 +47,56 @@ extern s32 func_0207f288(void *handle);
  * file (address order); func_0208cfdc and func_0208cf94 use it to reset a
  * record before filling it in. */
 void func_0208d1e0(Cri0208cf94Object *self);
+
+/* Creates an ACSSBADX record in caller-owned work memory. The two rejection
+ * paths log the literals at 0208cfd4/0208cfd8, which read "ACSSBADX_Create :
+ * Work pointor is NULL." and "... Work size is too small." (0208cfa0..0208cfc4);
+ * a non-null pointer with at least the 12-byte record size is reset by
+ * func_0208d1e0 and returned. The caller in func_0208b4fc passes 12 for size. */
+Cri0208cf94Object *func_0208cf94(Cri0208cf94Object *work, u32 size)
+{
+    if (work == 0) {
+        func_0208b494(data_021493c4);
+        return 0;
+    }
+    if (size < sizeof(*work)) {
+        func_0208b494(data_021493f8);
+        return 0;
+    }
+    func_0208d1e0(work);
+    return work;
+}
+
+/* Creates the worker handle described by the borrowed source descriptor and
+ * stores it at offset 4 (0208cff0..0208d050). A non-zero source->field_08 takes
+ * the func_0207eb44 path; otherwise source->field_00 becomes the first argument
+ * of func_0207e7ec. Both receive the caller's data and size minus 12. Success
+ * copies source->field_00 to offset 8 and returns 1; failure logs the literal at
+ * 0208d054, "ACSSBADX_CreateHndl : Failed to create handle.", and returns 0. */
+s32 func_0208cff0(Cri0208cf94Object *self, Cri0208cf94Source *source, void *argument, u32 size)
+{
+    if (source->field_08 != 0) {
+        self->handle = func_0207eb44(argument, size - 12);
+    } else {
+        self->handle = func_0207e7ec(source->field_00, argument, size - 12);
+    }
+    if (self->handle == 0) {
+        func_0208b494(data_02149430);
+        return 0;
+    }
+    self->unk_08 = source->field_00;
+    return 1;
+}
+
+/* Releases the worker handle and marks the record unowned by clearing offset 4
+ * (0208d058..0208d078). A null handle skips the release entirely (popeq). */
+void func_0208d058(Cri0208cf94Object *self)
+{
+    if (self->handle != 0) {
+        func_0207ebb0(self->handle);
+        self->handle = 0;
+    }
+}
 
 /* Resets the record when a caller passes one, otherwise does nothing
  * (0208cfdc..0208cfef). func_0208cf94 calls this before filling the record
@@ -88,6 +157,29 @@ s32 func_0208d0dc(Cri0208cf94Object *self, s32 argument)
 s32 func_0208d0ec(Cri0208cf94Object *self)
 {
     return func_0207f538(self->handle);
+}
+
+/* Maps the worker state returned by func_0207f020 (0208d100..0208d10c) onto the
+ * wrapper's five-state result. The jump table at 0208d114 groups states 1/2,
+ * 3/4 and 6 with the out-of-range default into 1, 2 and 4 respectively; state 0
+ * and 5 map to 0 and 3. */
+s32 func_0208d0fc(Cri0208cf94Object *self)
+{
+    switch (func_0207f020(self->handle)) {
+    case 0:
+        return 0;
+    case 1:
+    case 2:
+        return 1;
+    case 3:
+    case 4:
+        return 2;
+    case 5:
+        return 3;
+    case 6:
+        return 4;
+    }
+    return 4;
 }
 
 /* Clamps the caller's value to -960 before tail-forwarding it with the handle
