@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T275: match the decimal-digit counter and clamped linear interpolation in `sdk_02050160`; document the Q12 interpolation and cubic Bezier evaluator on the hard list.
 - M2-T269: match and document eight CRI no-op entry points in `cri_0208d5ac.c`.
 - M2-T258: match eight token, area-selector, slot and halfword-buffer helpers in `sdk_0204f9d8`.
 
