@@ -23,7 +23,7 @@ extern void func_02029dac(void *state);
 extern void func_020256a4(void *resource);
 extern void func_020516d0(void *resource);
 
-/** Evidence: thirteen calls to the neighboring SDK bank-release helpers. */
+/** Releases all thirteen VRAM bank assignments by calling the neighboring SDK helpers in order. */
 void func_02058370(void)
 {
     func_02003730();
@@ -41,7 +41,7 @@ void func_02058370(void)
     func_020037f0();
 }
 
-/** Evidence: LCDC VRAM, main/sub OAM and palette addresses in the original. */
+/** Releases the LCDC banks, clears 0xa4000 bytes of VRAM, fills main/sub OAM with 192 and clears their palettes. */
 void func_020583ac(void)
 {
     func_02058370();
@@ -67,7 +67,7 @@ extern void func_02029c00(u32 paletteBytes, int enabled);
 /* See DEC-032: retain the original address and temporary allocation. */
 #pragma push
 #pragma opt_propagation off
-/** Evidence: nine mask/capacity records at 0212e350; sum the selected capacities. */
+/** Sums the capacities of the nine eight-byte bank records at 0x0212e350 selected by mask. */
 u32 func_02058420(u32 mask)
 {
     const Unk058370Bank *banks;
@@ -87,7 +87,7 @@ u32 func_02058420(u32 mask)
 /* See DEC-032: retain the original address and temporary allocation. */
 #pragma push
 #pragma opt_propagation off
-/** Evidence: GXSTAT FIFO mode bits, singleton +20, and geometry allocator calls. */
+/** Sets the GXSTAT FIFO mode bits to 2, marks the singleton initialized, and forwards the texture count and palette bytes to the geometry allocators. */
 int func_020584d4(u32 count, u32 paletteBytes)
 {
     u32 status;
@@ -106,7 +106,7 @@ int func_020584d4(u32 count, u32 paletteBytes)
 
 #pragma pop
 
-/** Evidence: SDK texture-bank masks; A-D count individually, E/F/G add 64/16/16 KiB. */
+/** Counts assigned texture banks A-D, adds the E/F/G palette capacities, and initializes geometry with the totals. */
 int func_02058458(void)
 {
     u16 count = 0;
@@ -124,14 +124,14 @@ int func_02058458(void)
     return func_020584d4(count, palette << 10);
 }
 
-/** Evidence: provider result stored at work +2058; work retains the handle until release. */
+/** Creates a resource from source and stores the provider's handle at work +0x2058. */
 int func_02058528(Unk058370Work *work, const void *source)
 {
     work->resource = func_02051610(source);
     return 1;
 }
 
-/** Evidence: state blocks +205c/+2084 are finalized before the +2058 handle is released. */
+/** Releases the work's state blocks and resource; returns zero when no resource is present. */
 int func_02058548(Unk058370Work *work)
 {
     if (!work->resource) return 0;
