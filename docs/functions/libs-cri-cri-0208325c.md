@@ -1,6 +1,6 @@
 # CRI unit 0208325c
 
-This partial translation unit implements the eight functions in M2-T428 and eight more in M2-T429, plus six functions in M2-T430.
+This partial translation unit implements the eight functions in M2-T428 and eight more in M2-T429, plus six of the seven functions in M2-T430.
 Original `func_` symbols are retained because public CRI API names are not
 established. A public-source search for CRI/ADX Nintendo DS middleware found
 format tooling (including https://github.com/Youjose/CriCodecs), but no matching
@@ -46,11 +46,42 @@ acceptance check for these forwarding and shared-word operations.
 mode at `02174740 +0x20`, clears the five words at `02174700`, selects
 `0208a978(1)` for modes zero/one or `0208a978(2)` for mode two, and invokes
 `0208350c(config)` for modes above one. The return value is always one.
-Direct field stores, pointer stores, counted clearing loops, aggregate zero
-assignment, and memset were tried. None reproduced the original no-op and
-register scheduling before the five stores. Best tested variant reached
-87.07%; the unmatched definition was removed. A human can use
-`tools/decompme.py` for a scratch; no assembly replacement was added.
+
+The remaining blocker is one `mov r0,r0` no-op at ROM `020834b0`, between the
+mode store plus zero materialization and the saved config register. It is not a
+branch-target, literal-pool or jump-table alignment pad: it sits mid-function,
+the target has no jump table or table relocation, and no C expression tried with
+mwccarm 2.0/sp1p5 emits it. `func_02086448` in `cri_02085b80.o` contains the only
+other such no-op in the CRI objects, so it is an uncommon scheduler result.
+
+The second blocker is register assignment. With the wide provider view used by
+`func_02083344`, `func_020833b8` and `func_0208350c`, the closest straight-line
+variant keeps the correct instruction set and stores but schedules the mode
+store after the zero materialization and assigns the provider base to `r12`,
+the callback base to `r2` and the zero word to `r3`, reaching 87.96%.
+Declaring the provider view small (`struct { u32 x[9]; }`, at most 0x40 bytes)
+reproduces the original `r2`/`r3`/`r2` split and store order exactly; its best
+variant reaches 95.64% but reaches the provider through an absolute `0x02174740`
+literal, which loses the original ABS32 relocation, so the only remaining
+differences are that literal and the `020834b0` no-op. Shrinking the shared
+provider declaration also regresses `func_020833b8` (r4/r5 swap, 98.18%) and
+`func_0208350c` (evaluation order, 96.81%), and neither wide-pointer call sites
+nor scoped optimization pragmas restore those two.
+
+Also tried without reaching 100%: five direct field stores, `u32*` and typed
+struct pointers, volatile views and volatile stores, chained assignments,
+descending store order, counted `for`/`while` loops (mwcc keeps the loop instead
+of unrolling), inlined `memset` (emitted as a call), aggregate/compound-literal
+and `static const` zero copies (stack temporaries), all 63 combinations of
+`opt_{lifetimes,propagation,deadcode,deadstore,cse,strength}` scoped to the
+function, `-O0..-O4` plus speed/space variants, and the 1.2 and 2.0 compiler
+series. Every variant was measured with objdiff against the delinked object and
+the unmatched definition was removed, so the gate still sees 22 matching
+definitions and this TU stays linked from the delink.
+
+A human can use `tools/decompme.py` for a scratch. The source to start from is
+the absolute-address variant above plus whatever construct produces the
+`020834b0` no-op; no assembly replacement or byte blob was added.
 
 M2-T429 source search found [vgmstream ADX format parsing](https://github.com/vgmstream/vgmstream/blob/master/src/meta/adx.c), but no matching runtime implementation. Reconstruction therefore uses the original ARM loads, branches and provider calls.
 
@@ -73,7 +104,13 @@ symbols are retained; contracts below follow ARM instructions directly.
 | `func_0208350c` | Rejects null configuration through diagnostic 0214709c. Increments the reference count and initializes only its first reference. Copies nine configuration words, saves `02152284 +4` at +0x264, registers nesting callbacks, queries 021470dc (default 15), then creates two or three SDK threads with four-byte-aligned stack bases. The otherwise unused read through literal-pool address 0212ec78 is present in the original at 0208351c and is preserved. Caller retains all configuration stack storage. |
 | `func_02083720` | Returns zero without an active reference. Releases a reference; the final release clears each worker enable, calls 0200654c(thread, 0), and waits for completion in third/second/first order. Calls 02082748, resets mode to one and calls 0208a978(1). Returns one after a release. |
 | `func_02083898` | Returns zero for inactive references, modes zero/one or completed primary work. Otherwise latches/distributes the second callback, calls 0208a9e0 and waits on 02174764; returns zero. |
-| `func_0208349c` | Deferred mode/setup dispatcher; see hard list for behavior and attempted reconstructions. |
+| `func_0208349c` | Deferred mode/setup dispatcher; see hard list for behavior, the `020834b0` scheduler no-op and the 95.64% best reconstruction. |
+
+M2-T430 local validation: the six implemented functions report 100% in objdiff;
+`func_0208349c` is deliberately absent from the C TU and stays linked from the
+delinked original, as recorded above and in the hard list. anticheat passes, all
+repository unit tests pass, and the checksum gate reports the built image
+byte-identical to the original.
 
 M2-T430 adds only private borrowed layouts: three stack pointers, byte sizes and
 priorities in the nine-word configuration, and worker flags/counters through
