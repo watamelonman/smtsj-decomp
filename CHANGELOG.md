@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T185: match the five NitroSystem sound capture state helpers in `lib_0202aeb0`.
 - M2-T163: match the NitroSDK resource dictionary binder and two G3X projection/basis wrappers in `sdk_020585a8`.
 - M2-T178: match the eight NitroSystem frame texture/palette VRAM manager functions in `lib_02029b78`.
 - M2-T175: match the eight CRI record-reset, clamped-forwarding and handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
