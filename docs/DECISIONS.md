@@ -594,3 +594,23 @@ a private twelve-byte view beginning at message +20, within the 56-byte object.
 `func_0204f788` reads its first two halfwords before storing either. Explicit
 temporaries and reverse source store order reproduce the compiler's original
 load/store schedule. The third halfword is then read and stored separately.
+
+## DEC-036 — Keep the CRI bit-reader expression shapes
+
+`func_0208a7b0` writes the empty tail as `rest->size == 0 ? 0 : ...`; the
+inverted test is what makes mwccarm 2.0/sp1p5 predicate the pointer add instead
+of branching over it, and both forms return the same address. `func_0208a7f4`
+ends in `if (bits > stream->count) return 0; return 1;` so the two conditional
+moves appear in the original order (`movgt` before `movle`); the boolean form
+`bits <= count` compiles the comparison the other way round. Neither change
+touches behaviour or adds a volatile access, assembly or byte blob.
+
+The same unit's two still-delinked readers use the 32-entry mask table at
+0x0212ed10. The delinked object embeds that address as a plain literal-pool word
+with no relocation and the symbol map has no symbol for it (as in DEC-028 and
+DEC-022), so a future match must read it through the observed address with a
+local pointer and `opt_propagation off`; without the pragma mwccarm folds the
+base into two immediate additions that the original does not contain. That
+technique was verified while reconstructing `func_0208a824` and `func_0208a8d4`,
+but neither is committed because their remaining difference is register
+colouring (see `docs/functions/libs-cri-cri-0208a5ac.md`).
