@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T193: match the NNS resource-name `Plt:` flag parser and the four palette-state helpers in `libs/NitroSDK/sdk_020580ec.c`.
 - M2-T176: match the CRI record creation, handle creation/release and worker-state mapping functions in `libs/CRI/cri_0208cf94.c`.
 - M2-T179: match `NNS_GfdAllocFrmPlttVram` (`func_02029c4c`) in `lib_02029b78`, completing the nine-function frame texture/palette VRAM manager TU.
 - M2-T163: match the NitroSDK resource dictionary binder and two G3X projection/basis wrappers in `sdk_020585a8`.
