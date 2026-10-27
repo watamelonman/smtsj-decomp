@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T258: match eight token, area-selector, slot and halfword-buffer helpers in `sdk_0204f9d8`.
+
 - M2-T247: match six NitroSystem G3D animation allocation, initialization, chain and render attachment helpers.
 
 - Reconstruct all seven CRI callback/state helpers in `cri_02087ef8.c`.
