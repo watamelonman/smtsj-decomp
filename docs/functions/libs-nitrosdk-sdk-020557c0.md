@@ -1,6 +1,6 @@
-# sdk_020557c0 — M2-T484
+# sdk_020557c0 — M2-T484 / M2-T485
 
-The eight requested ARM functions are implemented in readable C and each reports
+The sixteen requested ARM functions are implemented in readable C and each reports
 100% in `build/report.json`. Remaining functions stay in the delinked object;
 this change does not mark the translation unit complete.
 
@@ -32,3 +32,35 @@ selection, as required until a human marks this unit complete.
 ## Hard list
 
 None of the eight requested functions is deferred.
+
+## M2-T485
+
+Public-source reconnaissance checked the related [pret/pokeplatinum background
+APIs](https://github.com/pret/pokeplatinum/blob/main/docs/2d_rendering.md).
+No identical implementation was identified; these routines were reconstructed
+from target instructions. Private record views describe only observed offsets;
+records and buffers remain provider-owned. Original neutral symbols are retained.
+
+| Function | Contract and evidence | Match |
+| --- | --- | --- |
+| `func_020558dc` | Reads stride from 0212e2ec indexed by kind; doubles it for kinds 2/8 when format +0xc equals one. Caller supplies a valid kind/table index. | 100% |
+| `func_02055cb0` | If pixels +0x24 exist, fills size +0x20 bytes with zero using 02008848, then sets dirty mask two through 02055ab0. | 100% |
+| `func_02055d4c` | Maps unsigned x/y boundaries strictly greater than 32 to pages 0..3; the y-only case returns two for layout three, otherwise one. | 100% |
+| `func_02055ac0` | If kind and map +0x1c are nonzero, uploads the map through 02055874 and clears dirty mask one. | 100% |
+| `func_02055fcc` | Uses layout +4 to index width/height halfword tables 0212e310/0212e328; stores the low value byte at pixels[y*width+x] only inside bounds. Caller supplies a valid layout and allocated pixels. | 100% |
+| `func_0205589c` | Performs record lookup, cache flush 02006c94 and indexed 02143b70 transfer with offset zero. Source remains borrowed; index must be valid for both providers. | 100% |
+| `func_02055afc` | If kind and pixels +0x24 are nonzero, uploads size +0x20 at slot zero through 0205590c and clears dirty mask two. | 100% |
+| `func_020559a0` | Converts slot/count to bytes with unsigned shifts by five, flushes source, then calls main 020046b4 for engine zero or sub 02004708 otherwise. | 100% |
+
+All eight report 100% in the objdiff match gate; no functions are added to the
+hard list. Tests are not required by this card: matching instructions provide
+the acceptance check. The full build, checksum, anticheat and repository tests
+are run with the TU still linked from the delink.
+
+### Symbol integration prerequisite
+
+The protected symbol configuration does not currently declare data_0212e2ec,
+data_0212e310 or data_0212e328 (nor relocations at 02055908, 02056000 and
+02056004). The C declarations name those observed table addresses. A human must
+establish those symbols/relocations before marking the whole TU complete; the
+current match gate accepts their relocations and checksum uses the delink.
