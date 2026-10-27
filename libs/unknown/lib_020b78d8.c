@@ -1,14 +1,24 @@
 /* Partial task-effect helpers; layouts and contracts follow the original ARM loads. */
 #include "types.h"
 
-/* Borrowed provider object: its representation is not accessed by this unit. */
-typedef struct Lib020b78d8Object Lib020b78d8Object;
+/* Borrowed object prefix: the packed color at +0x28 gates ramp creation. */
+typedef struct Lib020b78d8Object {
+    u8 padding[0x28];
+    u32 color;
+} Lib020b78d8Object;
+
+/* Halfword coordinates are passed by value, with the original four-byte ABI. */
+typedef struct Lib020b78d8Pair { s16 x, y; } Lib020b78d8Pair;
+extern s32 Unk06ae94_Unk_06aeec(s32 kind);
+
 
 /* Signed displacement record; components retain the original byte units. */
 typedef struct Lib020b78d8Offset {
     s8 x;
     s8 y;
 } Lib020b78d8Offset;
+
+extern const Lib020b78d8Offset *Unk06ae94_Unk_06aed4(s32 kind);
 
 /* Caller/provider-owned task prefix. Offsets are established by 020b78dc
  * and 020b7920; each displacement record is two signed bytes. */
@@ -248,4 +258,111 @@ void func_020b8078(void)
             if (((id >> 16) & 255) == 2) func_020b7ee0(id, 7);
         }
     }
+}
+
+/* Create a 24-byte displacement task using the provider's selected table.
+ * Evidence: table/count queries and signed halfword origin stores at 020b7990. */
+Lib020b78d8Task *func_020b7990(Lib020b78d8Object *object, s32 kind, Lib020b78d8Pair origin)
+{
+    Lib020b78d8Task *task = func_020611dc(func_020b7920, 0, 0, func_020b796c, 24, 4, 0, 0);
+    if (task != 0) {
+        func_020615ec(task, object);
+        task->index = 0;
+        task->count = Unk06ae94_Unk_06aeec(kind);
+        task->offsets = Unk06ae94_Unk_06aed4(kind);
+        task->origin_x = origin.x;
+        task->origin_y = origin.y;
+        func_020b78dc(task);
+    }
+    return task;
+}
+
+/* The 16-byte intensity task reuses the provider prefix but owns integer
+ * endpoints at +8/+12, rather than the displacement task's table pointer. */
+typedef struct Lib020b78d8Intensity {
+    u32 unknown_00;
+    s32 index;
+    s32 start;
+    s32 end;
+} Lib020b78d8Intensity;
+
+/* Advance a four-step intensity ramp; +8/+12 hold signed start/end values,
+ * not displacement data. Evidence: interpolation and packed-color setter calls. */
+void func_020b7c1c(Lib020b78d8Task *task)
+{
+    Lib020b78d8Object *object = func_020616c0(task);
+    Lib020b78d8Intensity *ramp = (Lib020b78d8Intensity *)task;
+    u32 packed;
+    if (++ramp->index >= 4) {
+        u32 value = ramp->end;
+        packed = ((value << 8) & 0xff00) +
+            (((value << 24) & 0xff000000) + ((value << 16) & 0xff0000));
+        if (object != 0) Unk065e88_SetUnkField28(object, packed + 255);
+        func_02061424(task);
+    } else {
+        u32 value = func_0205eae0(ramp->start, ramp->end, 4, ramp->index);
+        packed = ((value << 8) & 0xff00) +
+            (((value << 24) & 0xff000000) + ((value << 16) & 0xff0000));
+        if (object != 0) Unk065e88_SetUnkField28(object, packed + 255);
+    }
+}
+
+/* Create a four-step intensity task unless field +0x28 already equals the
+ * requested endpoint (4c4c4cff or ffffffff); object storage remains borrowed. */
+Lib020b78d8Task *func_020b7cc8(Lib020b78d8Object *object, s32 darken)
+{
+    Lib020b78d8Task *task;
+    Lib020b78d8Intensity *ramp;
+    u32 value, packed;
+    if (darken != 0) {
+        if (object->color == 0x4c4c4cff) return 0;
+    } else {
+        if (object->color == 0xffffffff) return 0;
+    }
+    task = func_020611dc(func_020b7c1c, 0, 0, 0, 16, 4, 0, 0);
+    if (task != 0) {
+        func_020615ec(task, object);
+        ramp = (Lib020b78d8Intensity *)task;
+        ramp->index = 0;
+        if (darken != 0) {
+            ramp->start = 255;
+            ramp->end = 76;
+        } else {
+            ramp->start = 76;
+            ramp->end = 255;
+        }
+        value = ramp->start;
+        packed = ((value << 8) & 0xff00) +
+            (((value << 24) & 0xff000000) + ((value << 16) & 0xff0000));
+        Unk065e88_SetUnkField28(object, packed + 255);
+    }
+    return task;
+}
+
+extern Lib020b78d8Object *Unk0a5680_Unk_0a5e28(u32 identifier);
+extern void *func_02044ec4(u32 identifier);
+extern void func_02049c28(void *entry, Lib020b78d8Pair *origin);
+extern void Unk09d060_Unk_09d170(Lib020b78d8Task *task);
+
+/* Resolve an ID, obtain its origin and submit the selected effect task.
+ * Evidence: original eight-way switch and provider calls at 020b7ee0. */
+void func_020b7ee0(u32 identifier, s32 mode)
+{
+    Lib020b78d8Object *object = Unk0a5680_Unk_0a5e28(identifier);
+    Lib020b78d8Pair origin;
+    Lib020b78d8Task *task;
+    if (object == 0) return;
+    func_02049c28(func_02044ec4(identifier), &origin);
+    task = 0;
+    switch (mode) {
+    case 0: task = func_020b7e74(object); break;
+    case 1: task = func_020b7990(object, 0, origin); break;
+    case 2: task = func_020b7990(object, 2, origin); break;
+    case 3: task = func_020b7990(object, 1, origin); break;
+    case 4:
+    case 5: task = func_020b7ba8(object); break;
+    case 6: task = func_020b7cc8(object, 1); break;
+    case 7: task = func_020b7cc8(object, 0); break;
+    }
+    if (task != 0) Unk09d060_Unk_09d170(task);
 }
