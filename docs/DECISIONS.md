@@ -656,3 +656,16 @@ operation rather than carrying an incremented byte offset. This also preserves
 the original register allocation; the source still expresses the bounded scan
 and its early exit directly. The pool uses an aligned 250-word declaration
 because the original reset writes 1000 bytes with word stores.
+
+
+## DEC-039 — Preserve CRI request/result temporary lifetimes
+
+The two large helpers in `libs/CRI/cri_0207a8d0.c` keep declarations separate
+from assignments so mwccarm 2.0/sp1p5 can reproduce the original saved-register
+allocation and three stack slots. The setup helper computes the row span before
+its bounds comparison, preserving the original multiply followed by an optional
+addition rather than a multiply-add inside the branch. The result helper reuses
+its rounded-count temporary for the quotient before comparing the scaled bound.
+An inline quotient expression instead changes the product destination and delays
+the scale reload. These choices preserve the original arithmetic and yield exact
+instruction matches without changing compiler settings or adding storage access.

@@ -81,3 +81,28 @@ Validation for M2-T351: match passed for all 14 retained C definitions
 (the preceding eight plus six additions). The build, anticheat, all nine
 unit tests and byte-identical artifact checksum passed. The eight-function
 card target remains incomplete because of the two hard-list entries.
+
+
+## M2-T352
+
+The public-source search for CRI middleware implementations found format tools
+such as [CriCodecs](https://github.com/Youjose/CriCodecs), but no matching child
+request/result implementation. Both functions are reconstructed from the original
+ARM instructions, retaining neutral linker names because no API-name evidence
+was found.
+
+| Function | Original evidence and behavior | Match |
+| --- | --- | --- |
+| `func_0207aa4c` (260 bytes) | Divides input count +0x4c by +0x50, rounds requested rows +0x70 using width +0x58, calculates padding and capacity bounds from +0x60/+0x68/+0x6c, then submits the minimum bound through 0207aa04 when +0x50 is two or 0207a9c4 otherwise. | 100% |
+| `func_0207abbc` (224 bytes) | Gets completed count through 0208099c, converts it using width +0x58 and divisor +0x50, subtracts padding when the requested bound is reached, stores results at +0x90/+0x94, and shifts one or two rows when offset plus output reaches +0x40. | 100% |
+
+The new private fields at +0x40/+0x44 and +0x50/+0x54/+0x58 are signed words,
+matching the original signed divisions and comparisons. Divisors must be nonzero;
+all arithmetic, buffer ranges and callback/provider lifetimes retain the original
+caller contracts. Declaration order and quotient reuse preserve the compiler's
+allocation and scheduling; see DEC-039. This card adds no hard-list entries and
+leaves the two earlier M2-T351 omissions unchanged.
+
+Validation: both new functions and all retained C definitions pass the match gate.
+The full build, anticheat, all nine unit tests and original-image checksum pass.
+No new tests are required by this card; exact object matching verifies the new C.

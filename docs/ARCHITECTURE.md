@@ -196,3 +196,7 @@ with the caller and existing providers.
 bank at +12 and resource at +20; external providers govern their release.
 DMA/timer registration borrows callbacks and arguments and uses the existing
 IRQ-mask provider. The header exposes typed registration and cleanup contracts.
+The CRI setup/result paths additionally expose signed row boundaries +0x40/+0x44
+and divisors/scales +0x50/+0x54/+0x58. They bound requests using the existing
+child submission providers and shift caller-owned rows through the existing
+halfword helpers; no new module dependency or ownership transfer is introduced.
