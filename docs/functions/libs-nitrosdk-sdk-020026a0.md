@@ -7,12 +7,22 @@ ROM. The project has no `gx.h` yet, so the register addresses and masks are
 spelled as literals and the state view lives in
 `include/libs/NitroSDK/sdk_020026a0.h`.
 
-All eight targets are at 100% in objdiff and the full-image checksum still
+All ten targets are at 100% in objdiff and the full-image checksum still
 matches. Evidence for each entry is the original ARM instruction stream plus the
 corresponding pokediamond function.
 
 - `func_020026a0` (`0x020026a0`, 4 B): empty entry (`bx lr`). No evidence ties it
   to a named SDK function, so the neutral name stays.
+- `func_020026a4` (`0x020026a4`, 332 B): `GX_Init`. Sets POWCNT1's DSEL, the
+  `E2DGB|E2DG|RE|GE` init mask and LCD bits, calls `GX_InitGXState`
+  (`func_02002998`), acquires a VRAM lock through `OS_GetLockID`
+  (`func_02005d6c`), terminating with `OS_Terminate` (`func_02007e94`) on the
+  `-3` error code, clears DISPSTAT/DISPCNT, fills the 0x60-byte 2D block and
+  the 0x70-byte sub-engine block with `MI_DmaFill32` (`func_02007ec0`) or, when
+  GXi_DmaId is `-1`, `MIi_CpuClear32` (`func_020086a0`), then writes 0x100 to
+  the four BG2/BG3 affine entries of both engines. The gGXState data layout,
+  `GXi_VRamLockId` at `data_021521a0+2` and `GXi_DmaId` at
+  `data_0213ce40+4` come from the delinked relocation targets.
 - `func_020027f0` (`0x020027f0`, 52 B): `GX_VBlankIntr`. Sets or clears DISPSTAT
   bit 3 (V-blank IRQ enable) at `0x04000004` and returns the bit's value sampled
   before the update.
@@ -22,6 +32,10 @@ corresponding pokediamond function.
 - `func_02002860` (`0x02002860`, 72 B): `GX_DispOn`. Sets `sIsDispOn`, then
   restores the saved BG mode or, when the saved mode is zero, enables graphics
   mode 1 (DISPCNT bit 16).
+- `func_020028a8` (`0x020028a8`, 104 B): `GX_SetGraphicsMode`. Saves the display
+  mode, suppresses it while the display is off, rebuilds DISPCNT from the BG
+  mode, the saved mode and the BG0 2D/3D bit (`control & 0xfff0fff0`), and turns
+  `sIsDispOn` off again when the saved mode is zero.
 - `func_02002910` (`0x02002910`, 28 B): `GXS_SetGraphicsMode`. Replaces the low
   three BG-mode bits of DISPCNT_SUB at `0x04001000`.
 - `func_0200292c` (`0x0200292c`, 40 B): `GXx_SetMasterBrightness_`. Encodes a
@@ -35,16 +49,8 @@ corresponding pokediamond function.
   halfword fields of `gGXState` (`data_021521a4`) and the VRAM bank control
   registers at `0x04000240` (VRAMCNT A-D, E, F, G and VRAM_HI_CNT at +8).
 
+All ten targets in the translation unit are at 100% in objdiff.
+
 ## Hard list
 
-The translation unit also contains two functions outside this card. They stay
-linked from the delinked object, so no partial C bodies are present:
-
-- `func_020026a4` (`0x020026a4`, 332 B): `GX_Init`. It sets POWCNT1, calls
-  `GX_InitGXState`, acquires a VRAM lock ID through `OS_GetLockID`, clears
-  DISPSTAT/DISPCNT, fills the 2D register block (0x60 bytes) and the sub-engine
-  block (0x70 bytes) either by DMA or by CPU, then sets the BG2/BG3 affine
-  entries to identity.
-- `func_020028a8` (`0x020028a8`, 104 B): `GX_SetGraphicsMode`. It saves the
-  display mode, handles the display-off case, and rebuilds DISPCNT from the BG
-  mode, 2D/3D selection and the saved mode bits.
+None; every function in this unit now has a matching C body.
