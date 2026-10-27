@@ -1,7 +1,7 @@
 #include "types.h"
 
 /* Borrowed resource prefixes; signatures and offsets are evidenced by the loads
- * in 0204fd18, 0204fde0 and 0204fed8. No storage ownership is transferred. */
+ * in 0204fd18, 0204fd4c, 0204fde0 and 0204fed8. No storage ownership is transferred. */
 typedef struct ResourceHeader {
     u32 signature;
     u32 offset;
@@ -12,7 +12,6 @@ typedef struct ResourceHeader {
 } ResourceHeader;
 
 extern u8 data_0215eedc[];
-extern ResourceHeader *func_0204fd4c(const ResourceHeader *resource, u32 index);
 extern u32 func_0201f3e8(u32 numerator, u32 denominator);
 
 /* Preserve the original explicit boolean signature test before accessing data. */
@@ -35,6 +34,20 @@ u32 func_0204fd18(const ResourceHeader *resource)
     if (resource == 0) return 0;
     if (valid_signature(resource, 0x31424254) == 0) return 0;
     return resource->value;
+}
+
+/* Resolve the index'th child of a TBB1 header. Evidence: the signature literal
+ * at 0204fda8, the +8 bound and the +4 word-table origin in the original. The
+ * table words are header-relative offsets; the returned child is borrowed. */
+ResourceHeader *func_0204fd4c(const ResourceHeader *resource, u32 index)
+{
+    u32 offset;
+
+    if (resource == 0) return 0;
+    if (valid_signature(resource, 0x31424254) == 0) return 0;
+    if ((_Bool)(index < resource->value) == 0) return 0;
+    offset = ((const u32 *)((const u8 *)resource + resource->offset))[index];
+    return (ResourceHeader *)((u8 *)resource + offset);
 }
 
 /* Select a borrowed TBL1 child; signature evidence is the original TBL1 literal. */
