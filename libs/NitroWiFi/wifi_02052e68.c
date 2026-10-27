@@ -16,7 +16,9 @@ typedef struct Unk52e68State {
 /* Connection state block. func_0205304c changes the word at +0x14 and calls
  * the +0x40 callback, so only those offsets are named here. */
 typedef struct Unk52e68Conn {
-    u8 pad_00[0x14];
+    u8 pad_00[0x0a];
+    u16 unk_0a;
+    u8 pad_0c[8];
     s32 state;
     u8 pad_18[0x18];
     u32 unk_30;
@@ -155,4 +157,126 @@ void func_020531d8(Unk52e68Event *event)
 s32 func_020533d4(void)
 {
     return data_0215f500.state;
+}
+
+/* Callback contracts borrow the event only for the provider invocation. */
+typedef void (*Unk52e68Callback)(Unk52e68Event *event);
+
+/* Existing asynchronous providers return 2 when the request is accepted. */
+s32 func_02010b7c(Unk52e68Callback callback);
+s32 func_02010a54(Unk52e68Callback callback);
+s32 func_020109dc(Unk52e68Callback callback);
+/* Existing event callbacks retain ownership of no event storage. */
+void func_02053160(Unk52e68Event *event);
+void func_02053378(Unk52e68Event *event);
+void func_020532b8(Unk52e68Event *event);
+/* Existing follow-up and cleanup providers use the shared connection state. */
+s32 func_020532ec(void);
+void func_0205342c(void);
+
+/* Requests state 3 before submitting callback 02053160 to provider 02010b7c.
+ * Evidence: ordered BLs at 02053134..02053140; result 2 means accepted.
+ * Other results are recorded at connection +0x30; returns acceptance as 0/1. */
+s32 func_02053130(void)
+{
+    s32 result;
+    func_0205304c(3);
+    result = func_02010b7c(func_02053160);
+    if (result == 2) {
+        return 1;
+    }
+    func_020530b0(result);
+    return 0;
+}
+
+/* Submits callback 020531d8 to provider 02010a54. Evidence: callback literal
+ * and CMP #2 at 020531b4..020531bc. Rejected results go to +0x30. */
+s32 func_020531b0(void)
+{
+    s32 result = func_02010a54(func_020531d8);
+    if (result == 2) {
+        return 1;
+    }
+    func_020530b0(result);
+    return 0;
+}
+
+/* Clears connection halfword +0xa and requests state 3 only from state 2.
+ * Evidence: LDR +0x14, CMP #2 and STRH +0xa at 02053204..0205321c.
+ * Returns whether the transition was requested; shared storage stays owned. */
+s32 func_020531fc(void)
+{
+    if (data_0215f500.state != 2) {
+        return 0;
+    }
+    data_0215f500.unk_0a = 0;
+    func_0205304c(3);
+    return 1;
+}
+
+/* Requests state 3 and submits callback 020532b8 to provider 02010b7c.
+ * Evidence: ordered BLs and callback literal at 0205328c..020532b4.
+ * Returns 1 for provider result 2, otherwise records the result and returns 0. */
+s32 func_02053288(void)
+{
+    s32 result;
+    func_0205304c(3);
+    result = func_02010b7c(func_020532b8);
+    if (result == 2) {
+        return 1;
+    }
+    func_020530b0(result);
+    return 0;
+}
+
+/* Borrows event +2: nonzero records the result then invokes 0205342c;
+ * zero calls 020532ec and requests state 9 if it returns zero. Evidence:
+ * LDRH +2 and the ordered BL paths at 020532bc..020532e4. */
+void func_020532b8(Unk52e68Event *event)
+{
+    if (event->unk_02 != 0) {
+        func_020530b0(event->unk_02);
+        func_0205342c();
+    } else {
+        if (!func_020532ec()) {
+            func_0205304c(9);
+        }
+    }
+}
+
+/* Borrows event +2; nonzero records the result, zero requests state 1.
+ * Evidence: LDRH +2, CMP #0 and BL paths at 02053328..02053340. */
+void func_02053324(Unk52e68Event *event)
+{
+    if (event->unk_02 != 0) {
+        func_020530b0(event->unk_02);
+    } else {
+        func_0205304c(1);
+    }
+}
+
+/* Requests state 3 before submitting callback 02053378 to provider 020109dc.
+ * Evidence: ordered BLs and callback literal at 0205334c..02053374.
+ * Returns 1 for result 2; otherwise records the provider result and returns 0. */
+s32 func_02053348(void)
+{
+    s32 result;
+    func_0205304c(3);
+    result = func_020109dc(func_02053378);
+    if (result == 2) {
+        return 1;
+    }
+    func_020530b0(result);
+    return 0;
+}
+
+/* Borrows event +2 to select state 10 for nonzero or state 0 for zero.
+ * Evidence: LDRH +2 and the two 0205304c calls at 020533b0..020533cc. */
+void func_020533ac(Unk52e68Event *event)
+{
+    if (event->unk_02 != 0) {
+        func_0205304c(10);
+    } else {
+        func_0205304c(0);
+    }
 }

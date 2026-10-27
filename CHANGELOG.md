@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T452: match eight WiFi connection request, state-transition and event-callback helpers; document the borrowed event and connection fields.
+
 - M2-T451: correct the WiFi head/tail allocation wrappers and allocator declaration to return storage pointers.
 
 - M2-T451: match the NitroWiFi `wifi_02052e68.c` buffer-group builder, heap-index save/restore pair, head/tail allocation wrappers, connection-state setter, event handler and state getter (nine functions at 100%).
