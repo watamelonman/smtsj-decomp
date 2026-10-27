@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T210: match the NitroSDK sub-engine extended palette end/begin loaders and `GX_BeginLoadTex`/`GX_LoadTex` in `libs/NitroSDK/sdk_02005238.c` (`func_02005238`, `func_02005278`, `func_02005290`, `func_020052f4`, `func_02005334`, `func_02005390`).
 - M2-T204: match the NitroSystem texture/palette animation object init, texture/palette parameter writers and frame sampler in `libs/NitroSDK/sdk_02027b1c.c`.
 - M2-T186: match six NitroSDK OS spin-lock/IRQ helpers in `sdk_02005a08`; OS_SetIrqStackChecker and OS_InitLock remain delinked and are documented on the hard list.
 - M2-T198: match the 140-byte run-sorting helper `func_02049594` in `lib_02049398`, completing the TU.
