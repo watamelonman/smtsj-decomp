@@ -113,3 +113,9 @@ describe the byte at +0x26 cleared by the pump.
 storage and a borrowed NitroSystem material-animation layout. The four 3ds Max
 texture helpers write only entries 00, 01, 10, 11, 30 and 31 and depend on the
 existing asynchronous SDK division providers. No ownership is transferred.
+`include/libs/unknown/lib_02028578.h` declares the borrowed NitroSystem G3D joint
+result used by the Maya joint-SRT sender and reuses the shared material/matrix
+views of the neighbouring cgtool units. The texture-matrix constructor table at
+0x0213d584 and the geometry submission routine belong to their existing
+providers; the packet matrix, the joint result and the material result are all
+caller- or provider-owned, and this unit allocates and retains nothing.
