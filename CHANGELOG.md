@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T287: match the eight shared navigation-state accessors (state reset, flags, current value and provider) in `libs/unknown/lib_020ba90c.c`.
 - M2-T281: complete the NitroSDK GX unit by matching `GX_Init` and `GX_SetGraphicsMode` in `libs/NitroSDK/sdk_020026a0.c`.
 - M2-T279: match the provider start-up/state pair and both single-bit cursor helpers in `libs/unknown/lib_0205ee84.c`, completing the translation unit.
 - M2-T280: match the NitroSDK GX display helpers (V-blank enable, display on/off, sub BG mode, master brightness and GX state init) in `libs/NitroSDK/sdk_020026a0.c`.
