@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T152: match the four XSI texture-matrix specializations in `lib_02029470`.
+- M2-T153: match eight TBB1/TBL1/MTBL resource lookup and index helpers in `sdk_0204fce8`.
+- M2-T143: reconstruct six NitroSDK main/sub BG screen and character upload wrappers.
 
 - M2-T142: match all six main/sub BG0–BG2 screen loaders in `sdk_0200496c`.
 - M2-T140: match all seven setup and resource-table helpers in `lib_0204915c`.
