@@ -8,7 +8,6 @@ extern void func_02007e94(void);
 extern void func_02008848(void *dst, int value, u32 size);
 extern void func_02005ca0(void *arg);
 extern void func_02007a6c(u32 state);
-extern int func_02011010(void);
 extern void CpuSet(const void *src, void *dest, u32 control);
 extern s32 func_02005d6c(void);
 extern u32 func_02005d64(const void *p);
@@ -54,49 +53,28 @@ extern u8 data_02155d30[];
  * 0xf000 mask below selects bits 12-15 of that register. */
 #define CP15_C5_PERM_MASK 0xf000
 
-/** Requests ARM7 operation 2 through func_02011218, then falls into
- * func_02007e94, which disables interrupts and invalidates the data cache
- * forever. The original never returns.
+/* Cartridge (CTRDG) addresses and fields, taken from the public NitroSDK
+ * headers (include/nitro/hw/common/mmap_shared.h, ctrdg_common.h,
+ * ioreg_MI.h and ioreg_OS.h). The CTRDG code in this unit is the same code as
+ * NitroSDK libraries/ctrdg/src/ctrdg.c (CTRDG_IsExisting) and ctrdg_proc.c
+ * (CTRDGi_InitModuleInfo), so these names document the hardware they touch
+ * even though the link-time symbols stay neutral. */
+#define HW_CTRDG_ROM 0x08000000u
+#define HW_CTRDG_MODULE_INFO_BUF 0x027ffc30u
+#define HW_CTRDG_MODULE_ID_IMAGE (HW_CTRDG_ROM + 0x1fffeu)
+#define CTRDG_IS_ROM_CODE 0x96u
+
+
+/** Clears the 32-bit flag word at data_02155728 with a one-word CpuSet fill,
+ * then stores the next lock id returned by func_02005d6c in the halfword at
+ * data_02155724 + 6. That halfword is the upper half of the cleared word.
  */
-void func_020115e0(void)
+void func_02010f98(void)
 {
-    func_02011218(2);
-    func_02007e94();
-}
+    u32 zero = 0;
 
-/** Clears the word at data_02155740 + 4; no other state is touched. */
-void func_020115f4(void)
-{
-    data_02155740.field_04 = 0;
-}
-
-/** Zero-fills 36 bytes at dst using func_02008848, whose unaligned-safe fill is
- * also used for the SDK message buffer; dst ownership stays with the caller.
- */
-void func_02011694(void *dst)
-{
-    func_02008848(dst, 0, 36);
-}
-
-/** Reads the boot-status block at 0x027ffc30: the original materialises the
- * block base as a literal, loads byte +5 and isolates bit 0 with a shift pair.
- */
-int func_02010ff8(void)
-{
-    const u8 *boot = (const u8 *)0x027ffc30;
-
-    return (u32)(boot[5] << 31) >> 31;
-}
-
-/** If the word at state + 0 is zero, forwards the caller's argument to
- * func_02005ca0; then restores the interrupt state saved at state + 4. The
- * original keeps the forwarded argument in r0 across the test.
- */
-void func_020111f4(void *arg, Unk111f4_State *state)
-{
-    if (state->unk_00 == 0)
-        func_02005ca0(arg);
-    func_02007a6c(state->irq_state);
+    CpuSet(&zero, &data_02155728, 0x05000001);
+    data_02155724.field_06 = func_02005d6c();
 }
 
 /** Two-stage probe: func_02011010 must succeed and func_02010ff8 must report
@@ -111,44 +89,54 @@ int func_02010fd0(void)
     return 0;
 }
 
-/** Masks the second argument to six bits. Only value & 63 == 1 is accepted,
- * setting data_02155728 to 1; any other value takes the non-returning wait
- * loop. The first argument is not read.
+/** Reads the boot-status block at 0x027ffc30: the original materialises the
+ * block base as a literal, loads byte +5 and isolates bit 0 with a shift pair.
  */
-void func_02011558(u32 unused, u32 value)
+int func_02010ff8(void)
 {
-    if ((value & 63) == 1) {
-        data_02155728.field_00 = 1;
-        return;
+    const u8 *boot = (const u8 *)0x027ffc30;
+
+    return (u32)(boot[5] << 31) >> 31;
+}
+
+/** Cartridge-presence probe. This is the public CTRDG_IsExisting body from
+ * NitroSDK libraries/ctrdg/src/ctrdg.c: the module info at 0x027ffc30 is
+ * compared with the cartridge header at 0x08000000 (module id at +0xbe for
+ * ROM code, the 0x0801fffe module-id image otherwise, plus the game code for
+ * AGB cartridges). A mismatch latches detectPullOut (byte +5 bit 1) and makes
+ * the probe return 0. The lock id used here is the halfword at data_02155724
+ * + 6, which is the same CTRDGi_Work.lockID read by func_02011364.
+ */
+int func_02011010(void)
+{
+    int retval = 1;
+    Unk11198_State lockInfo;
+    Unk1111c_Value rc;
+    Unk10f98_ModuleInfo *cip = (Unk10f98_ModuleInfo *)HW_CTRDG_MODULE_INFO_BUF;
+    Unk10f98_CtrdgHeader *chp = (Unk10f98_CtrdgHeader *)HW_CTRDG_ROM;
+
+    if (cip->moduleID == 0xffff)
+        return 0;
+    if (cip->detectPullOut == 1)
+        return 0;
+
+    func_02011198((void *)(u32)data_02155724.field_06, &lockInfo);
+    func_0201111c(&rc);
+
+    if ((chp->isRomCode == CTRDG_IS_ROM_CODE && cip->moduleID != chp->moduleID) ||
+        (chp->isRomCode != CTRDG_IS_ROM_CODE &&
+         cip->moduleID != *(u16 *)HW_CTRDG_MODULE_ID_IMAGE) ||
+        (cip->gameCode != chp->gameCode && cip->isAgbCartridge)) {
+        cip->detectPullOut = 1;
+        retval = 0;
     }
-    func_02007e94();
+
+    func_02011164((Unk11164_Value *)&rc);
+    func_020111f4((void *)(u32)data_02155724.field_06, (Unk111f4_State *)&lockInfo);
+    return retval;
 }
 
-/** Updates WAITCNT (0x04000204): clears bits 2-3 and copies value + 0 into
- * them, then clears bit 4 and copies value + 4 into it. The register is
- * volatile because the original performs two read-modify-write passes.
- */
-void func_02011164(Unk11164_Value *value)
-{
-    volatile u16 *waitcnt = (volatile u16 *)0x04000204;
-
-    *waitcnt = (value->unk_00 << 2) | (*waitcnt & ~12);
-    *waitcnt = (value->unk_04 << 4) | (*waitcnt & ~16);
-}
-
-/** Clears the 32-bit flag word at data_02155728 with a one-word CpuSet fill,
- * then stores the next lock id returned by func_02005d6c in the halfword at
- * data_02155724 + 6. That halfword is the upper half of the cleared word.
- */
-void func_02010f98(void)
-{
-    u32 zero = 0;
-
-    CpuSet(&zero, &data_02155728, 0x05000001);
-    data_02155724.field_06 = func_02005d6c();
-}
-
-/** Mirrors the WAITCNT fields into out, then forces bits 2-3 to 3 and clears
+/** Mirrors the EXMEMCNT fields into out, then forces bits 2-3 to 3 and clears
  * bit 4. Each read is a separate volatile load, as in the original.
  */
 void func_0201111c(Unk1111c_Value *out)
@@ -159,6 +147,18 @@ void func_0201111c(Unk1111c_Value *out)
     out->field_04 = (*waitcnt & 16) >> 4;
     *waitcnt = (*waitcnt & ~12) | 12;
     *waitcnt = *waitcnt & ~16;
+}
+
+/** Updates EXMEMCNT (0x04000204): clears bits 2-3 and copies value + 0 into
+ * them, then clears bit 4 and copies value + 4 into it. The register is
+ * volatile because the original performs two read-modify-write passes.
+ */
+void func_02011164(Unk11164_Value *value)
+{
+    volatile u16 *waitcnt = (volatile u16 *)0x04000204;
+
+    *waitcnt = (value->unk_00 << 2) | (*waitcnt & ~12);
+    *waitcnt = (value->unk_04 << 4) | (*waitcnt & ~16);
 }
 
 /** Wait loop: after saving interrupts, stores the status word from
@@ -178,6 +178,17 @@ void func_02011198(void *arg, Unk11198_State *state)
         func_02007a6c(state->field_04);
         WaitByLoop(1);
     }
+}
+
+/** If the word at state + 0 is zero, forwards the caller's argument to
+ * func_02005ca0; then restores the interrupt state saved at state + 4. The
+ * original keeps the forwarded argument in r0 across the test.
+ */
+void func_020111f4(void *arg, Unk111f4_State *state)
+{
+    if (state->unk_00 == 0)
+        func_02005ca0(arg);
+    func_02007a6c(state->irq_state);
 }
 
 /** Sends PXI FIFO tag 13 with the caller's value. func_0200a4a0 returns 0 on
@@ -234,6 +245,19 @@ void func_020112b0(void)
     func_02011268(0);
 }
 
+/** Masks the second argument to six bits. Only value & 63 == 1 is accepted,
+ * setting data_02155728 to 1; any other value takes the non-returning wait
+ * loop. The first argument is not read.
+ */
+void func_02011558(u32 unused, u32 value)
+{
+    if ((value & 63) == 1) {
+        data_02155728.field_00 = 1;
+        return;
+    }
+    func_02007e94();
+}
+
 /** Tag-17 callback: masks the value to six bits and only 17 is accepted; any
  * other value enters the non-returning wait loop. For 17, an already-accepted
  * +0xc flag skips the work, the optional +0x18 probe runs, and a nonzero probe
@@ -257,6 +281,22 @@ void func_02011584(u32 unused, u32 value)
     }
 }
 
+/** Requests ARM7 operation 2 through func_02011218, then falls into
+ * func_02007e94, which disables interrupts and invalidates the data cache
+ * forever. The original never returns.
+ */
+void func_020115e0(void)
+{
+    func_02011218(2);
+    func_02007e94();
+}
+
+/** Clears the word at data_02155740 + 4; no other state is touched. */
+void func_020115f4(void)
+{
+    data_02155740.field_04 = 0;
+}
+
 /** Initializes the worker block once (data_02155908 acts as the once-only
  * pointer): zero-fills the 36-byte buffers at work + 0xc4 and data_0215590c,
  * clears the word at work + 0xc0, registers func_020116a8 with a 1024-byte
@@ -275,4 +315,12 @@ void func_02011608(Unk11608_Work *work)
         func_020064e0(work);
     }
     func_02007a6c(irq);
+}
+
+/** Zero-fills 36 bytes at dst using func_02008848, whose unaligned-safe fill is
+ * also used for the SDK message buffer; dst ownership stays with the caller.
+ */
+void func_02011694(void *dst)
+{
+    func_02008848(dst, 0, 36);
 }
