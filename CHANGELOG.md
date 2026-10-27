@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T367: match the eighth NitroSDK IRQ callback wrapper, IRQ queue initializer and three interrupt-mask helpers; document three deferred routines.
+
 - M2-T366: reconstruct the NitroSDK return-only interrupt handler and seven indexed callback dispatcher wrappers in matching C.
 
 - M2-T364: match the FBIN resource count/offset/table/payload accessors and the header/locator file helpers in `libs/unknown/lib_0205f1d8.c`, adding `include/libs/unknown/lib_0205f1d8.h`.

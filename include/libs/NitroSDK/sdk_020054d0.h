@@ -18,4 +18,15 @@ void func_02005790(void);
 /** Forwards callback-table index 6; evidenced by mov r0, #6 before the tail call. */
 void func_020057a0(void);
 
+/** Dispatch timer callback slot 7; the original passes this index to the dispatcher. */
+void func_020057b0(void);
+/** Clear both borrowed IRQ thread-queue links, as in NitroSDK OS_InitIrqTable. */
+void func_020057c0(void);
+/** Replace IE while IME is disabled; return the previous interrupt-enable mask. */
+unsigned int func_0200597c(unsigned int mask);
+/** Enable the requested IE bits while preserving IME; return the previous IE. */
+unsigned int func_020059a8(unsigned int mask);
+/** Disable the requested IE bits while preserving IME; return the previous IE. */
+unsigned int func_020059d8(unsigned int mask);
+
 #endif

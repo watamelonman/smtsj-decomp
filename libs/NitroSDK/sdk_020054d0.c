@@ -50,3 +50,54 @@ void func_020057a0(void)
     func_020056b8(6);
 }
 
+
+/* Timer callback slot 7 follows slots 0..6 in the original dispatcher table. */
+void func_020057b0(void)
+{
+    func_020056b8(7);
+}
+
+extern unsigned int data_027e0060[2];
+
+/* OS_InitIrqTable in pret/pokediamond: clear both IRQ thread-queue links. */
+void func_020057c0(void)
+{
+    data_027e0060[1] = 0;
+    data_027e0060[0] = 0;
+}
+
+/* OS_SetIrqMask in pret/pokediamond: return old IE, replacing it under IME=0. */
+unsigned int func_0200597c(unsigned int mask)
+{
+    unsigned short ime = *(volatile unsigned short *)0x04000208;
+    *(volatile unsigned short *)0x04000208 = 0;
+    unsigned int previous = *(volatile unsigned int *)0x04000210;
+    *(volatile unsigned int *)0x04000210 = mask;
+    (void)*(volatile unsigned short *)0x04000208;
+    *(volatile unsigned short *)0x04000208 = ime;
+    return previous;
+}
+
+/* OS_EnableIrqMask in pret/pokediamond: add IE bits with IME temporarily zero. */
+unsigned int func_020059a8(unsigned int mask)
+{
+    unsigned short ime = *(volatile unsigned short *)0x04000208;
+    *(volatile unsigned short *)0x04000208 = 0;
+    unsigned int previous = *(volatile unsigned int *)0x04000210;
+    *(volatile unsigned int *)0x04000210 = previous | mask;
+    (void)*(volatile unsigned short *)0x04000208;
+    *(volatile unsigned short *)0x04000208 = ime;
+    return previous;
+}
+
+/* OS_DisableIrqMask in pret/pokediamond: remove IE bits while preserving IME. */
+unsigned int func_020059d8(unsigned int mask)
+{
+    unsigned short ime = *(volatile unsigned short *)0x04000208;
+    *(volatile unsigned short *)0x04000208 = 0;
+    unsigned int previous = *(volatile unsigned int *)0x04000210;
+    *(volatile unsigned int *)0x04000210 = previous & ~mask;
+    (void)*(volatile unsigned short *)0x04000208;
+    *(volatile unsigned short *)0x04000208 = ime;
+    return previous;
+}
