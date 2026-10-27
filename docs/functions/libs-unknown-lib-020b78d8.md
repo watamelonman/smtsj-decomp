@@ -1,6 +1,6 @@
 # lib_020b78d8
 
-Partial reconstruction of the ARM effect-task unit. All eight card functions
+Partial reconstruction of the ARM effect-task unit. All sixteen reconstructed functions
 match at 100% with the configured compiler. Original neutral symbols are kept;
 field effects alone do not establish original API names.
 
@@ -27,6 +27,15 @@ The delinked instructions and relocations are the implementation evidence.
 | `func_020b7e14` | 68 | Increment +4; at step 15 resolve object, set value 1.0 if present, then finish task; earlier steps call existing interpolation helper 020b7db4. |
 | `func_020b7e58` | 28 | Resolve object and restore value 1.0 when present, via 020b7a34. |
 
+| `func_020b7a78` | 108 | Resolve the borrowed object and apply a float descending from 1 to 0 over fifteen steps. Step zero is 1; signed steps at least 15 are 0; other steps use `(-1 * (float)step) / 15 + 1`. Operations follow the soft-float calls and 15.0 literal. |
+| `func_020b7ae4` | 96 | Interpolate 255 to 0 through 0205eae0 with duration 15; clamp below 76 and pack three intensity bytes plus low byte 255 into object field +0x28. |
+| `func_020b7b44` | 76 | Increment step; at 15 restore object value 0 and finish the task, otherwise update both descending float and packed intensity. |
+| `func_020b7ba8` | 116 | Create provider-owned eight-byte state with update 020b7b44 and finish 020b7b90, associate the borrowed object, initialize step zero and apply both effects. Return null on allocation failure. |
+| `func_020b7db4` | 96 | Apply rising float: zero at step zero, one at signed steps at least 15, otherwise `(1 * (float)step) / 15`. Lookup and setter evidence mirrors the descending helper. |
+| `func_020b7e74` | 108 | Create eight-byte state with update 020b7e14 and finish 020b7e58, associate the object and apply rising step zero. Return null on allocation failure. |
+| `func_020b801c` | 92 | Scan ten singleton object pointers at +0x64; pass mode 6 to 020b7ee0 for IDs whose bits 16..23 equal 2, excluding the supplied ID. |
+| `func_020b8078` | 80 | Scan the same ten slots and submit mode 7 for every type-two ID; null slots are ignored. |
+
 ## Layout and ownership
 
 The C unit keeps its borrowed task prefix and opaque associated object private.
@@ -38,7 +47,7 @@ and register allocation without changing ownership or module boundaries.
 
 ## Hard list
 
-None of the eight requested functions remains unmatched. Other entry points in
+None of the sixteen reconstructed functions remains unmatched. Other entry points in
 this partial translation unit remain supplied by the delinked object and were
 outside this card. The TU must remain incomplete until those are reconstructed.
 
@@ -49,3 +58,19 @@ difference in 020b78dc. Selecting the two-byte record explicitly and retaining
 origin-first additions produced an exact match for the eighth function.
 No behavioral test was added: this card disables test requirements and the
 acceptance oracle is instruction/relocation equality against the original.
+
+### M2-T465 source search and matching
+
+A further public-source search inspected pret/pokeplatinum task/sprite effects
+(`src/battle_anim/script_funcs_1.c` on GitHub); its SysTask and sprite interfaces
+do not match these providers. No matching known source was found, so this card
+uses the delinked ARM instructions and relocations as evidence.
+
+The two constructors request only eight bytes: they use the shared task view's
+first two words, never its displacement-only suffix. Category 4 and zero priority
+and flags are forwarded unchanged to the existing provider. The ten-slot
+singleton view is private and borrowed; no new module boundary is introduced.
+
+Seven functions matched on the first standalone compile. The descending float
+needed an explicit negative-one intermediate and separate addition to preserve
+the original soft-float evaluation/register order. All eight then matched.
