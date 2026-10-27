@@ -2,15 +2,80 @@
 
 /* File-scope GX state that the original GX.c keeps next to this code.
  * Evidence: pret/pokediamond arm9/lib/NitroSDK/src/GX.c declares
- * `static u16 sDispMode` and `static u16 sIsDispOn`, and GX_state.c defines
- * `struct GX_State gGXState`; the delinked addresses below hold those objects. */
-extern u16 data_021521a0;      /* sDispMode */
-extern u16 data_0213ce40;      /* sIsDispOn */
-extern GXState data_021521a4;  /* gGXState */
+ * `static u16 sDispMode`, `vu16 GXi_VRamLockId` and `u32 GXi_DmaId`, and
+ * GX_state.c defines `struct GX_State gGXState`; the delinked addresses below
+ * hold those objects. data_021521a0 covers sDispMode followed by the lock ID;
+ * GXi_DmaId is the word at data_0213ce40 + 4. */
+extern GXDispState data_021521a0;  /* sDispMode, GXi_VRamLockId */
+extern u16 data_0213ce40;          /* sIsDispOn */
+extern GXState data_021521a4;      /* gGXState */
+
+/* NitroSDK routines called by GX_Init. Their delinked names stay neutral
+ * because this unit only sees the call sites. Evidence: the argument/return
+ * shapes match OS_GetLockID, OS_Terminate, MI_DmaFill32 and MIi_CpuClear32 in
+ * pret/pokediamond's OS_spinLock.c, OS_terminate_proc.c, MI_dma.c and
+ * MI_memory.c. */
+extern s32 func_02005d6c(void);                         /* OS_GetLockID */
+extern void func_02007e94(void);                        /* OS_Terminate */
+extern void func_02007ec0(u32 dma, void *dst, u32 value, u32 size);
+extern void func_020086a0(u32 value, void *dst, u32 size);
 
 /* No-op entry: the original body at 0x020026a0 is only bx lr. */
 void func_020026a0(void)
 {
+}
+
+/* Prepare the main engine for use: force the 2D engine and LCD on, clear the
+ * GX state, block until a VRAM lock ID is free (terminating on the error code),
+ * reset the display registers, wipe the 2D and sub-engine register blocks
+ * through DMA or the CPU, and load identity affine matrices.
+ * Evidence: GX_Init in pret/pokediamond GX.c; every register and mask below
+ * matches that source and the delinked instruction stream. */
+void func_020026a4(void)
+{
+    s32 temp;
+
+    *(volatile u16 *)0x04000304 |= 0x8000;
+    *(volatile u16 *)0x04000304 =
+        (u16)((*(volatile u16 *)0x04000304 & 0xfffffdf1) | 0x020e);
+    *(volatile u16 *)0x04000304 |= 1;
+
+    func_02002998();
+
+    while (data_021521a0.vramLockId == 0) {
+        temp = func_02005d6c();
+        if (temp == -3)  /* OS_LOCK_ID_ERROR in this SDK */
+            func_02007e94();
+        data_021521a0.vramLockId = (u16)temp;
+    }
+
+    *(volatile u16 *)0x04000004 = 0;
+    *(volatile u32 *)0x04000000 = 0;
+    {
+        /* GXi_DmaId lives just past sIsDispOn in the original data layout. */
+        u32 dmaId = *(volatile u32 *)((u8 *)&data_0213ce40 + 4);
+
+        if (dmaId != (u32)-1) {
+            func_02007ec0(dmaId, (void *)0x04000008, 0, 0x60);
+            *(volatile u16 *)0x0400006c = 0;
+            func_02007ec0(*(volatile u32 *)((u8 *)&data_0213ce40 + 4),
+                          (void *)0x04001000, 0, 0x70);
+        } else {
+            func_020086a0(0, (void *)0x04000008, 0x60);
+            *(volatile u16 *)0x0400006c = 0;
+            func_020086a0(0, (void *)0x04001000, 0x70);
+        }
+    }
+
+    /* BG2PA/BG2PD/BG3PA/BG3PD, then the same four sub-engine registers. */
+    *(volatile u16 *)0x04000020 = 0x100;
+    *(volatile u16 *)0x04000026 = 0x100;
+    *(volatile u16 *)0x04000030 = 0x100;
+    *(volatile u16 *)0x04000036 = 0x100;
+    *(volatile u16 *)0x04001020 = 0x100;
+    *(volatile u16 *)0x04001026 = 0x100;
+    *(volatile u16 *)0x04001030 = 0x100;
+    *(volatile u16 *)0x04001036 = 0x100;
 }
 
 /* Set or clear the main-engine V-blank IRQ enable (DISPSTAT bit 3) and return
@@ -36,7 +101,7 @@ void func_02002824(void)
     u32 control = *(volatile u32 *)0x04000000;
 
     data_0213ce40 = 0;
-    data_021521a0 = (u16)((control & 0x30000) >> 16);
+    data_021521a0.dispMode = (u16)((control & 0x30000) >> 16);
     *(volatile u32 *)0x04000000 = control & ~0x30000;
 }
 
@@ -48,12 +113,31 @@ void func_02002860(void)
     u16 mode;
 
     data_0213ce40 = 1;
-    mode = data_021521a0;
+    mode = data_021521a0.dispMode;
     if (mode)
         *(volatile u32 *)0x04000000 = (*(volatile u32 *)0x04000000 & ~0x30000) |
                                       ((u32)mode << 16);
     else
         *(volatile u32 *)0x04000000 = *(volatile u32 *)0x04000000 | 0x10000;
+}
+
+/* Rebuild the main DISPCNT from a requested display mode, BG mode and BG0
+ * 2D/3D selection. The display mode is remembered even while the display is
+ * off, but a cleared mode leaves the display marked off; a zero saved mode
+ * forces sIsDispOn off afterwards.
+ * Evidence: GX_SetGraphicsMode in pret/pokediamond GX.c and the delinked
+ * register mask 0xfff0fff0 (BG mode, display mode, BG0 2D/3D and VRAM bits). */
+void func_020028a8(u32 dispMode, u32 bgMode, u32 bg0_2d3d)
+{
+    u32 control = *(volatile u32 *)0x04000000;
+
+    data_021521a0.dispMode = (u16)dispMode;
+    if (!data_0213ce40)
+        dispMode = 0;
+    *(volatile u32 *)0x04000000 =
+        bgMode | ((control & 0xfff0fff0) | (dispMode << 16)) | (bg0_2d3d << 3);
+    if (!data_021521a0.dispMode)
+        data_0213ce40 = 0;
 }
 
 /* Replace the sub-engine BG mode in the low three bits of DISPCNT_SUB.

@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T275: match the decimal-digit counter, clamped linear interpolation and Q12 interpolator in `sdk_02050160.c`, add `include/libs/NitroSDK/sdk_02050160.h`, and document the still-delinked cubic Bezier evaluator with instruction-level evidence on the hard list.
+- M2-T281: complete the NitroSDK GX unit by matching `GX_Init` and `GX_SetGraphicsMode` in `libs/NitroSDK/sdk_020026a0.c`.
+- M2-T279: match the provider start-up/state pair and both single-bit cursor helpers in `libs/unknown/lib_0205ee84.c`, completing the translation unit.
 - M2-T280: match the NitroSDK GX display helpers (V-blank enable, display on/off, sub BG mode, master brightness and GX state init) in `libs/NitroSDK/sdk_020026a0.c`.
 - M2-T278: match the eight bit-stream allocation, copy, bit-write and bit-read helpers in `libs/unknown/lib_0205ee84.c`.
 - M2-T272: match the CRI "RIFF" marker scan at 0208d5ac and the 16-bit sample crossfade at 0208d710 in `cri_0208d5ac.c`.
