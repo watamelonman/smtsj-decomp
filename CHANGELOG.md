@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T412: match eight transfer-queue, display-control and initialization helpers in `sdk_02056cac.c`.
+
 - M2-T400: match six NitroSystem stream initialization, setup, volume, stop and wake helpers; document the deferred buffer callback.
 - M2-T379: match five CRI voice assignment, path/timing, start and fade-update helpers; document the deferred teardown helper.
 
