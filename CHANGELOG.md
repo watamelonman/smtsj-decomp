@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T458: match the MSL printf conversion parser in `sdk_020118f8.c`; document its ASCII-table symbol prerequisite before C linking.
+
 - M2-T457: match eight locale wide-character conversion and byte-memory routines in `sdk_020118f8.c`.
 
 - M2-T460: reconstruct eight CRI forwarding, callback registration, parser-result and record-clear helpers in `cri_0208539c.c`.

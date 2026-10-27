@@ -1,12 +1,12 @@
 # sdk_020118f8
 
 This partial library TU contains MSL-style locale and memory helpers despite
-its NitroSDK path. Existing symbol names are retained for callers. All eight
-card functions match the original ARM instructions (100% objdiff).
+its NitroSDK path. Existing symbol names are retained for callers. All nine
+implemented functions match the original ARM instructions (100% objdiff).
 
 Public-source lookup first searched NitroSDK memory helpers and pret's
-pokeplatinum/pokediamond MSL sources. No usable matching C was recovered;
-implementations below were reconstructed from the original instructions.
+pokeplatinum/pokediamond MSL sources. No usable matching C for those eight helpers was recovered;
+their implementations were reconstructed from the original instructions.
 The locale prefix remains private and adds no module boundary. Its second
 callback has the wctomb signature established by its callers; the neighbouring
 TU's generic table view does not express that signature.
@@ -22,12 +22,34 @@ TU's generic table view does not express that signature.
 | `func_02011a00` | memcmp-shaped unsigned comparison with normalized -1/+1 results. The signature scanner in `libs/CRI/cri_0208d5ac.c` compares four-byte identifiers through this entry. Zero-length inputs are not dereferenced. |
 | `func_02011a40` | Fill provider: low-byte replication, alignment prefix, eight-word blocks, trailing words and bytes. Counts are bytes; buffers remain caller-owned. The preceding memset wrapper establishes its contract. |
 
+| `func_02011af0` | Parses one printf conversion into a caller-owned 16-byte descriptor and advances a caller-owned integer argument cursor for `*` width/precision. Flags, decimal digit accumulation, `hh`/`ll` and C99 length modifiers, integer/floating defaults, pointer normalization and invalid conversion marker `0xff` establish its purpose. Returns the byte after the conversion. Signed input bytes and the SDK classification table preserve the original ASCII range checks. |
+
+## Parser source and linking prerequisite
+
+The parser was adapted from the public [MSL `parse_format` implementation in
+doldecomp/melee](https://github.com/doldecomp/melee/blob/master/src/MSL/printf.c).
+The target additionally supports `j`, `t`, `z`, `F`, `a` and `A`; its length codes
+and hexadecimal floating precision (13) follow the original instructions.
+Direct instruction comparison matches all 354 instruction words and the width
+limit literal; objdiff reports 100% including the classification-table reference.
+
+The original literal points to the SDK ASCII classification table at `0x0212b01c`.
+The original object has no relocation for it and the protected symbol config does
+not export it. The C declaration uses `data_0212b01c`; a human must export that
+data symbol before marking the TU complete. The delinked original remains linked
+as required by this card. No protected configuration was changed.
+
 ## Validation
 
 Direct compiler/ROM comparisons match every requested function. No new tests
 are required by this card; objdiff checks the original instruction sequences.
-The remainder of this delink TU remains supplied by the original object.
+The TU remains linked from the original object until a human marks it complete.
+`python3 tools/match_gate.py` passes at 100% for all nine functions;
+`python3 tools/checksum.py` reports every artifact byte-identical.
+Anticheat passes, and unittest discovery passes all nine tool tests.
 
 ## Hard list
 
-None of the eight requested functions is deferred.
+None of the nine implemented functions is deferred. The parser matches at 100%;
+the data-symbol export above is a human configuration prerequisite, not a hard
+function requiring a decomp.me scratch.
