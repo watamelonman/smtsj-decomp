@@ -114,3 +114,8 @@ views of the neighbouring cgtool units. The texture-matrix constructor table at
 0x0213d584 and the geometry submission routine belong to their existing
 providers; the packet matrix, the joint result and the material result are all
 caller- or provider-owned, and this unit allocates and retains nothing.
+
+`include/libs/NitroSDK/sdk_02052b58.h` exposes the borrowed 16-byte state
+prefix used by the SDK helpers: index/count/flag words and a pointer to
+caller-owned two-byte records. The provider owns the state and callers retain
+the record storage; the wrappers depend only on existing library providers.

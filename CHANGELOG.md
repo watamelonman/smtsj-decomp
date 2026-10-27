@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T215: match eight more SDK table, byte-fill and borrowed-state helpers in `sdk_02052b58`.
+
 - M2-T214: match eight small NitroSDK state-block accessors and GX-port writers in `libs/NitroSDK/sdk_02052b58.c`.
 - M2-T211: match the Maya texture-matrix identity constructor, the texture-SRT submission wrapper and the joint-SRT sender in `libs/unknown/lib_02028578.c` (`func_02028578`, `func_0202859c`, `func_020286e4`).
 - M2-T210: match the NitroSDK sub-engine extended palette end/begin loaders and `GX_BeginLoadTex`/`GX_LoadTex` in `libs/NitroSDK/sdk_02005238.c` (`func_02005238`, `func_02005278`, `func_02005290`, `func_020052f4`, `func_02005334`, `func_02005390`).
