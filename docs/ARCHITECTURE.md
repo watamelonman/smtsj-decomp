@@ -124,3 +124,10 @@ caller- or provider-owned, and this unit allocates and retains nothing.
 prefix used by the SDK helpers: index/count/flag words and a pointer to
 caller-owned two-byte records. The provider owns the state and callers retain
 the record storage; the wrappers depend only on existing library providers.
+
+`include/libs/unknown/lib_02048e90.h` exposes a borrowed singleton layout for
+its setup, teardown and update wrappers: the latch words at +0x50/+0x54, ten
+object pointers at +0x64, resource slot +0x7870, nine resource pointers at
++0x798c and initialization guard +0x7a3c. The wrappers depend only on base
+types and existing providers; providers retain ownership of objects and state,
+and resource release remains governed by the existing teardown provider.
