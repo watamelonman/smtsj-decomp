@@ -566,5 +566,6 @@ at the loop head and at the loop tail. mwccarm 2.0/sp1p5 otherwise reuses the
 first load for the first switch dispatch and drops the loop-head reload. Walking
 the name through a `const volatile s8 *` view keeps the three observed signed
 byte reads and reproduces the original 316-byte body; the flag words and marker
-pointer are ordinary typed data. The string is caller-owned input, so the
-volatile view only documents that the original does not cache the bytes.
+pointer are ordinary typed data. The volatile view exists solely to reproduce
+the observed load schedule for matching; it does not assert that callers may
+mutate the string concurrently.

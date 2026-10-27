@@ -126,7 +126,7 @@ void func_02058290(int mode, const char *name)
         if (!hasMarker) {
             return;
         }
-        func_020033c4(paletteFlags);
+        func_02003434(paletteFlags);
     }
 }
 
@@ -146,7 +146,7 @@ void func_02058300(int mode, const char *name)
         }
         func_02002f90(paletteFlags);
     } else {
-        func_02003434(flags);
+        func_020033c4(flags);
         if (!hasMarker) {
             return;
         }
