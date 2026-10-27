@@ -246,3 +246,9 @@ model, material, dictionary and binding prefixes for key assignment, palette
 upload and binding release. Resources stay provider-owned; key output words
 remain caller-owned. The helpers depend only on existing GX upload and G3D
 texture-binding release providers.
+
+The `sdk_02021a10.h` resource views also expose borrowed texture/palette entries,
+material dimensions and Q12 magnifications, and an embedded model-set dictionary.
+Binding uses the existing SDK dictionary-name lookup and Q12 division providers;
+texture upload uses the existing GX providers. Model-set traversal borrows all
+models and binding indices, and neither binding nor release allocates storage.
