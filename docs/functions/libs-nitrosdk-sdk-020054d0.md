@@ -109,3 +109,18 @@ it is waited on, not released.
 Both can be opened as human-managed scratches with `tools/decompme.py`.
 No inline assembly or code blobs were added. The six additions and all thirteen
 existing definitions pass objdiff at 100% (19 definitions total).
+
+## M2-T369 addition
+
+Public [pret/pokediamond OS_interrupt.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/OS_interrupt.c)
+provides the matching `OS_GetIrqFunction` implementation. The existing linker
+name is retained. `SDK054d0IrqFunction` describes its argument-free return type;
+the lookup borrows table entries and changes no registration or ownership.
+
+| Function | Size | Contract and evidence | Result |
+| --- | ---: | --- | --- |
+| `func_02005860` | 140 | Unsigned IRQ mask; return the handler for the lowest selected bit in 0..21, or null if none. Original comparisons select callback records 0..3 for DMA bits 8..11 and records 4..7 for timer bits 3..6; other bits dereference the advancing DTCM IRQ table pointer. Matches public `OS_GetIrqFunction`. | 100% |
+
+Objdiff validates the new function and existing definitions at 100%. No runtime
+tests are required by this card; the build, anticheat, repository unit tests and
+checksum gates pass. The TU remains linked from the delink for human completion.

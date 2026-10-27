@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T369: match the NitroSDK IRQ-handler lookup, including DMA and timer callback slots.
+
 - M2-T368: match six NitroSDK cleanup, transfer and IRQ callback registration helpers; document two deferred IRQ routines.
 - M2-T395: reconstruct eight main/sub background-priority wrappers in matching C.
 

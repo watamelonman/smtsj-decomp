@@ -214,3 +214,27 @@ void func_02005934(unsigned int timer, void (*callback)(void *), void *argument)
     (void)func_020059a8(mask);
     data_0215222c[timer].enabled = 1;
 }
+
+/* OS_GetIrqFunction in pret/pokediamond OS_interrupt.c: return the handler
+ * for the lowest selected IRQ among bits 0..21, including DMA/timer callbacks. */
+SDK054d0IrqFunction func_02005860(unsigned int mask)
+{
+    int i = 0;
+    void (**function)(void) = &data_027e0000[0];
+    do {
+        if (mask & 1) {
+            if (8 <= i && i <= 11) {
+                i = i - 8;
+                return (void (*)(void))data_021521fc[i].function;
+            } else if (3 <= i && i <= 6) {
+                i++;
+                return (void (*)(void))data_021521fc[i].function;
+            }
+            return *function;
+        }
+        mask >>= 1;
+        function++;
+        i++;
+    } while (i < 22);
+    return 0;
+}
