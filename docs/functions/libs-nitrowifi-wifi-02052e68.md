@@ -1,13 +1,15 @@
 # libs/NitroWiFi/wifi_02052e68
 
 Reconstruction of the NitroWiFi (SDK 4.2) buffer-group and connection-state
-helpers at `0x02052e68..0x020531fc` and `0x020533d4`. All functions below match
+helpers in the partial TU at `0x02052e68`. All functions below match
 the delinked ARM instructions at 100%. The TU is still linked from the delink;
 the split configuration stays human-owned.
 
 A public-source search (pret/pokeplatinum `lib/` and `src/`, which rebuild
 NitroSDK/NitroSystem code for the DS) found no NitroWiFi unit, and no other
-public NitroWiFi source is available. The reconstruction therefore follows the
+matching public NitroWiFi source was located. A follow-up web search for
+NitroSDK/NitroWiFi and `WH_SYSSTATE_IDLE`/`WH_SYSSTATE_BUSY` also found no
+matching source for these wrappers. The reconstruction therefore follows the
 original instruction stream and keeps the neutral `func_XXXXXXXX` symbols.
 
 ## Data layout (evidence from instruction offsets)
@@ -22,9 +24,11 @@ original instruction stream and keeps the neutral `func_XXXXXXXX` symbols.
 | +0x08 | u32 * | heap descriptor array, `count + 1` entries |
 | +0x0c | u32 | bytes arena 2 contributes to the group |
 
-`data_0215f500` is the connection block; only `+0x14` (state, written by
-`func_0205304c`), `+0x30` (pending value) and `+0x40` (callback) are touched by
-this unit. `data_021439e0`, `data_02143a08` and `data_02143a10` are the callback
+`data_0215f500` is the provider-owned connection block. Its private borrowed
+view exposes `+0x0a` (halfword cleared by `func_020531fc`), `+0x14` (state,
+written by `func_0205304c`), `+0x30` (pending value) and `+0x40` (callback).
+The four-byte event prefix is borrowed only during callbacks; +2 supplies the
+unsigned halfword result. No new public layout or ownership boundary is added. `data_021439e0`, `data_02143a08` and `data_02143a10` are the callback
 argument tables read by `func_0205304c`.
 
 The heap primitives were identified from their bodies: `func_02006ed8` /
@@ -44,6 +48,14 @@ descriptor through `func_0201fff0`; `func_02020470` then allocates from it.
 | `func_02053048` | Empty hook: a lone `bx lr`. Its two call sites (`0x020481f4`, `0x020a0e38`) ignore the return value, so no side effect is observable. | 100% |
 | `func_020530b0` | Stores a pending value at connection +0x30 unless the state is exactly 9 or 10. Evidence: the ROM computes `state - 9` and stores only when the unsigned result is greater than 1. | 100% |
 | `func_020531d8` | Event handler: a nonzero halfword at event +2 is forwarded to `func_020530b0`; zero requests state 1 through `func_0205304c`. Only caller is `func_020531b0`. | 100% |
+| `func_02053130` | Requests state 3, submits callback `func_02053160` to `func_02010b7c`, returns 1 for result 2, otherwise records the result through `func_020530b0` and returns 0. Ordered BLs, callback literal and CMP #2 at 0x02053134..0x0205315c. | 100% |
+| `func_020531b0` | Submits `func_020531d8` to `func_02010a54`; result 2 returns 1, otherwise records the result and returns 0. Callback literal and CMP #2 at 0x020531b4..0x020531bc. | 100% |
+| `func_020531fc` | Returns 0 unless connection state +0x14 equals 2; then clears halfword +0xa, requests state 3 and returns 1. LDR/CMP/STRH evidence at 0x02053204..0x0205321c. | 100% |
+| `func_02053288` | Requests state 3 and submits `func_020532b8` to `func_02010b7c`; result 2 returns 1, otherwise records the result and returns 0. Ordered BLs and callback literal at 0x0205328c..0x020532b4. | 100% |
+| `func_020532b8` | Nonzero event +2 records the result then calls `func_0205342c`. Zero calls `func_020532ec`; a zero follow-up result requests state 9. LDRH and ordered BL paths at 0x020532bc..0x020532e4. | 100% |
+| `func_02053324` | Nonzero event +2 records the result; zero requests state 1. LDRH/CMP and BL paths at 0x02053328..0x02053340. | 100% |
+| `func_02053348` | Requests state 3 and submits `func_02053378` to `func_020109dc`; result 2 returns 1, otherwise records the result and returns 0. Ordered BLs and literal at 0x0205334c..0x02053374. | 100% |
+| `func_020533ac` | Nonzero event +2 requests state 10; zero requests state 0. LDRH and two state-provider BL paths at 0x020533b0..0x020533cc. | 100% |
 | `func_020533d4` | Returns the connection state word at +0x14; `func_0205304c` is its writer. | 100% |
 
 The ROM passes 32-byte-aligned spans and 32-byte-rounded sizes, but the C keeps
@@ -52,5 +64,6 @@ the halfword fields truncate as the original stores do.
 
 ## Hard list
 
-None. All nine functions (the eight card entries plus the enclosing
-`func_02052e68`) match without inline assembly or retained non-matching code.
+None for M2-T452. All eight card functions and the nine previously reconstructed
+functions match without inline assembly or retained non-matching code. Remaining
+functions in this partial TU continue to come from the original delinked object.
