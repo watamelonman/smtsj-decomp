@@ -2,7 +2,7 @@
  * SDK evidence: https://github.com/ntrtwl/NitroSDK/blob/master/include/nitro/gx/gx_bgcnt.h
  * G2/G2S_SetBG0Priority through SetBG3Priority use this same register update.
  */
-#include "types.h"
+#include "libs/NitroSDK/sdk_02003bb4.h"
 
 /* Sets sub engine BG3 priority, preserving the other control bits.
  * Evidence: G2S_SetBG3Priority in the SDK header cited above and
@@ -179,4 +179,68 @@ void func_0205551c(int enable)
 void func_020555a0(int index, int value)
 {
     data_02143af0[index](value);
+}
+
+extern void (*data_02143ab0[])(const struct Mtx22 *, s32, s32, s32, s32);
+
+/* G2S_SetBG3Affine: NitroSDK g2.h and MMIO 0x04001030 identify this wrapper.
+ * Matrix storage is borrowed Q12; center and position are integer pixels. */
+void func_02055308(const struct Mtx22 *matrix, s32 centerX, s32 centerY, s32 x, s32 y)
+{
+    func_02003d8c(0x04001030, matrix, centerX, centerY, x, y);
+}
+
+/* G2S_SetBG2Affine: NitroSDK g2.h and MMIO 0x04001020 identify this wrapper.
+ * Matrix storage is borrowed Q12; center and position are integer pixels. */
+void func_02055348(const struct Mtx22 *matrix, s32 centerX, s32 centerY, s32 x, s32 y)
+{
+    func_02003d8c(0x04001020, matrix, centerX, centerY, x, y);
+}
+
+/* G2_SetBG3Affine: NitroSDK g2.h and MMIO 0x04000030 identify this wrapper.
+ * Matrix storage is borrowed Q12; center and position are integer pixels. */
+void func_02055388(const struct Mtx22 *matrix, s32 centerX, s32 centerY, s32 x, s32 y)
+{
+    func_02003d8c(0x04000030, matrix, centerX, centerY, x, y);
+}
+
+/* G2_SetBG2Affine: NitroSDK g2.h and MMIO 0x04000020 identify this wrapper.
+ * Matrix storage is borrowed Q12; center and position are integer pixels. */
+void func_020553c8(const struct Mtx22 *matrix, s32 centerX, s32 centerY, s32 x, s32 y)
+{
+    func_02003d8c(0x04000020, matrix, centerX, centerY, x, y);
+}
+
+/* Dispatches a borrowed affine matrix and pixel coordinates through the
+ * provider-owned table at 0x02143ab0, if the caller's valid slot is nonnull.
+ * Evidence: original indexed load, null test and five-argument indirect call. */
+void func_02055408(int index, const struct Mtx22 *matrix, s32 centerX,
+                   s32 centerY, s32 x, s32 y)
+{
+    if (data_02143ab0[index])
+        data_02143ab0[index](matrix, centerX, centerY, x, y);
+}
+
+/* G2_BG1Mosaic: gx_bgcnt.h and MMIO 0x0400000a identify the enable bit.
+ * Any nonzero enable sets mosaic; all other control bits are preserved. */
+void func_02055548(int enable)
+{
+    volatile u16 *control = (volatile u16 *)0x0400000a;
+    if (enable) {
+        *control |= 0x40;
+    } else {
+        *control &= ~0x40;
+    }
+}
+
+/* G2_BG0Mosaic: gx_bgcnt.h and MMIO 0x04000008 identify the enable bit.
+ * Any nonzero enable sets mosaic; all other control bits are preserved. */
+void func_02055574(int enable)
+{
+    volatile u16 *control = (volatile u16 *)0x04000008;
+    if (enable) {
+        *control |= 0x40;
+    } else {
+        *control &= ~0x40;
+    }
 }
