@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T231: match seven SDK upload-state and bank-region helpers in `sdk_02053fd0`; the palette transfer dispatcher remains delinked.
+- Match two SDK pair-state guard/advance helpers; document the remaining GX helper.
+- M2-T229: reconstruct eight message submission wrappers in `libs/NitroSDK/sdk_0204f520.c`.
 
 - M2-T221: match all eight resource-stack transfer, creation and release wrappers in `libs/NitroSDK/sdk_0205b900.c`.
 

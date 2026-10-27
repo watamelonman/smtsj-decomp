@@ -176,3 +176,42 @@ s8 *func_02052dd8(void)
     }
     return state->pairs + state->index * 2;
 }
+
+/* Permits entry only with a current record, backing pairs and a clear flag;
+ * permits exit only with a set flag. Evidence: the ordered state checks at
+ * 0x02052cc4..0x02052d08. Any nonzero mode selects entry. */
+int func_02052cb0(int mode)
+{
+    Unk02052b58State *state = func_02052c30();
+    if (mode) {
+        if (state->index == -1) {
+            return 0;
+        }
+        if (!state->pairs) {
+            return 0;
+        }
+        if (state->flag) {
+            return 0;
+        }
+    } else {
+        if (!state->flag) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+/* Advances an active record index; reaching count sets sentinel -1 and clears
+ * the borrowed pointer. Evidence: conditional stores at 0x02052dc8..0x02052dd0.
+ * An already exhausted state is unchanged; no storage is released. */
+void func_02052da0(void)
+{
+    Unk02052b58State *state = func_02052c30();
+    if (state->index == -1) {
+        return;
+    }
+    if (++state->index >= state->count) {
+        state->index = -1;
+        state->pairs = 0;
+    }
+}
