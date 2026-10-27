@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T298: match the two empty NitroSDK startup hooks in `libs/NitroSDK/sdk_02000800.c` and document the five CP15/stack assembly startup functions left on the hard list.
+- M2-T302: match the eight ACSVHL accessor, handle-release and state-byte helpers in `libs/CRI/cri_0208d1fc.c`, add `include/libs/CRI/cri_0208d1fc.h`, and document the remaining delinked functions of the unit.
 - M2-T291: match the queue normalizer `func_02049620` and the 3-axis/packed-flag updater `func_0204980c` in `libs/unknown/lib_02049620.c`, completing the translation unit.
 - M2-T289: match the six mode-driven navigation-state update helpers (mode initialiser, value clamp, single/step-2 increment and decrement with wrap) in `libs/unknown/lib_020ba90c.c`.
 - M2-T286: match the six blocking/queued transfer and command-object helpers in `libs/NitroSDK/sdk_0205bbac.c`.
