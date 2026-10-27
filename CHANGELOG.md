@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T450: match six Mobiclip stream wrapper helpers (seek, read, block read, close, vtable dispatch, empty); document the deferred unrolled YUV blit.
+
 - M2-T430: match six CRI worker initialization, polling and shutdown functions; document the deferred mode/setup dispatcher.
 
 - M2-T439: match six NitroSDK 3D init/stack-unwind/table-fill and orthographic matrix helpers; document the assembly-only 128-word FIFO filler.
