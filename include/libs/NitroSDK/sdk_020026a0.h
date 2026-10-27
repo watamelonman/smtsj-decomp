@@ -3,6 +3,15 @@
 
 #include "types.h"
 
+/* The two display globals that sit immediately before gGXState. The lock ID is
+ * volatile because the hardware-lock loop polls it after every assignment.
+ * Evidence: `sDispMode` and `GXi_VRamLockId` in pret/pokediamond GX.c; the
+ * delinked load at 0x020027d4 is data_021521a0 and reads +2 as a halfword. */
+typedef struct GXDispState {
+    u16 dispMode;
+    volatile u16 vramLockId;
+} GXDispState;
+
 /* Borrowed view of the NitroSDK GX state record (gGXState). Only the thirteen
  * halfword fields cleared by GX_InitGXState are named; the original struct has
  * more state after them. Evidence: pret/pokediamond GX_state.c. */
@@ -25,6 +34,9 @@ typedef struct GXState {
 /* Empty entry kept for address-table parity; the original body is bx lr. */
 void func_020026a0(void);
 
+/* Initialize the main 2D engine and acquire the GX VRAM lock (GX_Init). */
+void func_020026a4(void);
+
 /* Set or clear the main-engine V-blank IRQ enable and return its old value. */
 u32 func_020027f0(u32 enable);
 
@@ -33,6 +45,10 @@ void func_02002824(void);
 
 /* Restore the mode saved by func_02002824 and turn the display on (GX_DispOn). */
 void func_02002860(void);
+
+/* Rebuild DISPCNT from a display mode, BG mode and BG0 2D/3D selection
+ * (GX_SetGraphicsMode). */
+void func_020028a8(u32 dispMode, u32 bgMode, u32 bg0_2d3d);
 
 /* Replace the sub-engine BG mode in DISPCNT_SUB (GXS_SetGraphicsMode). */
 void func_02002910(u32 value);

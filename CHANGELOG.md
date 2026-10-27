@@ -3,6 +3,11 @@
 ## Unreleased
 
 - M2-T286: match the six blocking/queued transfer and command-object helpers in `libs/NitroSDK/sdk_0205bbac.c`.
+- M2-T290: match the queue scan, cursor accessors and fixed-stride slot clears in `libs/unknown/lib_02049620.c`, add `include/libs/unknown/lib_02049620.h`, and document the two still-delinked functions of that unit.
+- M2-T288: match the eight remaining shared navigation-state helpers (init/reset, limit, saved value, last-entry tests and sound cue) in `libs/unknown/lib_020ba90c.c`, completing the translation unit.
+- M2-T287: match the eight shared navigation-state accessors (state reset, flags, current value and provider) in `libs/unknown/lib_020ba90c.c`.
+- M2-T275: match the decimal-digit counter, clamped linear interpolation and Q12 interpolator in `sdk_02050160.c`, add `include/libs/NitroSDK/sdk_02050160.h`, and document the still-delinked cubic Bezier evaluator with instruction-level evidence on the hard list.
+- M2-T281: complete the NitroSDK GX unit by matching `GX_Init` and `GX_SetGraphicsMode` in `libs/NitroSDK/sdk_020026a0.c`.
 - M2-T279: match the provider start-up/state pair and both single-bit cursor helpers in `libs/unknown/lib_0205ee84.c`, completing the translation unit.
 - M2-T280: match the NitroSDK GX display helpers (V-blank enable, display on/off, sub BG mode, master brightness and GX state init) in `libs/NitroSDK/sdk_020026a0.c`.
 - M2-T278: match the eight bit-stream allocation, copy, bit-write and bit-read helpers in `libs/unknown/lib_0205ee84.c`.
