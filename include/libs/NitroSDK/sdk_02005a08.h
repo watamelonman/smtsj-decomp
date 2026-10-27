@@ -18,7 +18,8 @@ void func_02005a34(void);
 void func_02005a68(void);
 /** OSi_DoLockByWord equivalent: retries a lock until it succeeds or returns <= 0. */
 s32 func_02005b34(u16 lockId, OSLockWord *lockp, void (*ctrlFuncp)(void), s32 disableFiq);
-/** OS_TryLockByWord equivalent: tries the shared lock with IRQ-only masking. */
+/** OS_TryLockByWord equivalent: forwards to OSi_DoLockByWord with disableFiq = 0,
+ *  so it retries and yields while another owner holds the lock. */
 s32 func_02005b80(u16 lockId, OSLockWord *lockp, void (*ctrlFuncp)(void));
 /** OSi_DoUnlockByWord equivalent: clears a lock owned by lockId. */
 s32 func_02005b90(u16 lockId, OSLockWord *lockp, void (*ctrlFuncp)(void), s32 disableFiq);

@@ -32,7 +32,7 @@ their original main-RAM locations and are owned by the OS boot state.
 | `func_02005a34` | `OS_SetIrqStackChecker` | Writes `0xfddb597d` below the SVC stack top and `0x7bf9dd5b` at the top of the carved IRQ stack. | hard list |
 | `func_02005a68` | `OS_InitLock` | One-time initialization: clears the boot lock word, tries lock id `0x7e`, waits until the extension halfword clears, resets the lock-ID words, zeroes the shared lock buffer, gives the card/cartridge buses to ARM7, then unlocks and tries lock id `0x7f`. | hard list |
 | `func_02005b34` | `OSi_DoLockByWord` | Repeats `func_02005c14` while it returns a positive value, yielding with `WaitByLoop(0x400)` between attempts; returns the final zero or negative status. | 100% (76 bytes) |
-| `func_02005b80` | `OS_TryLockByWord` | Forwards to `OSi_DoLockByWord` with `disableFiq = 0`; never waits for an owner. | 100% (16 bytes) |
+| `func_02005b80` | `OS_TryLockByWord` | Forwards to `OSi_DoLockByWord` with `disableFiq = 0`; despite the name it retries and yields while another owner holds the lock, so it can block. | 100% (16 bytes) |
 | `func_02005b90` | `OSi_DoUnlockByWord` | Returns `-2` when `lockId` is not the stored owner. Otherwise saves the requested interrupt state, clears `ownerID`, runs the optional bus callback, clears `lockFlag`, restores interrupts and returns 0. | 100% (116 bytes) |
 | `func_02005c04` | `OS_UnlockByWord` | Forwards to `OSi_DoUnlockByWord` with `disableFiq = 0`, leaving FIQ enabled. | 100% (16 bytes) |
 | `func_02005c14` | `OSi_DoTryLockByWord` | Saves the requested interrupt state, swaps `lockId` into `lockFlag`, and if the old flag was zero runs the optional bus callback and records `lockId` as owner. Restores interrupts and returns the previous flag. | 100% (108 bytes) |

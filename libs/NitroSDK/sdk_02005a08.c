@@ -32,6 +32,8 @@ u32 func_02005a08(u32 mask)
     REG_OS_IME = 0;
     regIf = REG_OS_IF;
     REG_OS_IF = mask;
+    /* Volatile reload of IME after the IF write reproduces the target's
+     * instruction sequence before IME is restored. */
     (void)REG_OS_IME;
     REG_OS_IME = regIme;
     return regIf;
@@ -49,8 +51,10 @@ s32 func_02005b34(u16 lockId, OSLockWord *lockp, void (*ctrlFuncp)(void), s32 di
     return lastLockFlag;
 }
 
-/* OS_TryLockByWord in pret/pokediamond's OS_spinLock.c: locks without ever
- * waiting for a competing owner. */
+/* OS_TryLockByWord in pret/pokediamond's OS_spinLock.c: despite the "try"
+ * name, the target forwards to OSi_DoLockByWord (func_02005b34) with
+ * disableFiq = 0, so it retries and yields while a competing owner holds the
+ * lock instead of returning immediately. */
 s32 func_02005b80(u16 lockId, OSLockWord *lockp, void (*ctrlFuncp)(void))
 {
     return func_02005b34(lockId, lockp, ctrlFuncp, 0);
