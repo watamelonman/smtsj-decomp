@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T437: match eight NitroSDK blend, geometry matrix, FIFO drain and fog-table helpers.
+- M2-T429: reconstruct eight CRI counter, callback and interrupt-related dispatch helpers in `cri_0208325c.c`.
 
 - M2-T431: match the CRI 02086b70 halfword accessors, library-word getter/setter and four registry forwarding thunks.
 - Match seven file/decompression wrappers in NitroSDK sdk_02051378; document the remaining whole-file loader.
