@@ -1,6 +1,6 @@
 # CRI unit 0208539c
 
-M2-T460 implements eight ARM functions. Original neutral `func_` symbols are
+M2-T460 and M2-T461 each implement eight ARM functions. Original neutral `func_` symbols are
 retained because the public CRI API names are not established. A public-source
 search for CRI/ADX Nintendo DS middleware found format tooling such as
 https://github.com/vgmstream/vgmstream/blob/master/src/meta/adx.c but no matching
@@ -21,6 +21,25 @@ Other functions in this partial unit remain linked from the delinked original.
 No module boundary changes: callback storage and its layout remain private to this
 library implementation. No allocation or ownership transfer is introduced.
 
+## M2-T461 additions
+
+The public-source search found no matching CRI Nintendo DS runtime implementation;
+these functions follow the delinked ARM instructions. All eight additions match
+100% in objdiff. The private record view has a signed tag at +0, signed state
+at +1 and words at +4, +0x10 and +0x14; its 56-byte stride follows 020855b0.
+Callers retain records and the shared table; no module boundary changes occur.
+
+| Function | Evidence and contract |
+| --- | --- |
+| `func_0208547c` | Loads callback from data_02175348 +4; when present passes context at +0, second input, first input. Registration must keep the borrowed context alive. |
+| `func_02085584` | Walks ten records at data_02175350 with stride 56; calls 02085580 for each nonzero signed tag at +0. |
+| `func_02085710` | Null is ignored. Calls 02085974, then clears tag +0 and all 56 bytes via 02085624 only if the tag equals one. |
+| `func_020857d0` | Returns word +0x10; null dispatches zero and diagnostic data_02147514, then returns zero. |
+| `func_02085974` | Null dispatches zero and data_02147590. Otherwise calls entry provider 0208544c, clears byte +1, then calls exit provider 02085458. |
+| `func_020859a8` | Returns sign-extended byte +1; null dispatches zero and data_021475a8, then returns zero. |
+| `func_020859d0` | Returns word +4; null dispatches zero and data_021475c0, then returns zero. |
+| `func_02085a60` | Returns word +0x14; null dispatches zero and data_021475f0, then returns zero. |
+
 ## Hard list
 
-None of the eight requested functions is deferred.
+None of the requested functions is deferred.
