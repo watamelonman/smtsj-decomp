@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T379: match five CRI voice assignment, path/timing, start and fade-update helpers; document the deferred teardown helper.
+
 - M2-T378: match eight CRI voice-record initialisation, release, query and master-volume helpers in `libs/NitroSDK/sdk_0208dc78.c`, adding `include/libs/NitroSDK/sdk_0208dc78.h`.
 
 - M2-T368: match six NitroSDK cleanup, transfer and IRQ callback registration helpers; document two deferred IRQ routines.
