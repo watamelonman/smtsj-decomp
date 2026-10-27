@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T471: match seven NitroSDK RTC initialization, date, BCD and FIFO helpers; document the deferred assembly busy-wait.
+
 - M2-T458: match the MSL printf conversion parser in `sdk_020118f8.c`; document its ASCII-table symbol prerequisite before C linking.
 - M2-T453: reconstruct seven WiFi heap and connection callback helpers; document the deferred conditional-move match in `func_02053230`.
 
