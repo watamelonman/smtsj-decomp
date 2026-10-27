@@ -155,6 +155,11 @@ integer-distance check depend only on base types and the existing touch-panel,
 integer-distance and GX providers. The table and calibration storage remain
 provider-owned; this unit allocates and releases nothing.
 
+`include/libs/NitroSDK/sdk_0205de1c.h` exposes borrowed object/provider and
+range-table prefixes, caller-owned 24-byte records, and the 56-byte submission
+packet. The wrappers depend only on existing drawing and provider-state helpers
+and geometry stack registers. Providers retain all table and resource storage;
+auxiliary state is temporarily rebound and restored around submission.
 `libs/CRI/cri_0207a8d0.c` keeps its partial CRI work-area view private: the
 state word at +4, the released child pointer at +8, the result words at
 +0x90/+0x94 and the boolean flag at +0xac. The accessors, state setter, release
