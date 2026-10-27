@@ -4,6 +4,7 @@
 
 - M2-T438: match eight NitroSDK fog, clear-color, matrix readback, stack-level and camera/projection helpers.
 
+- M2-T432: match the CRI 02086b70 volume/pan setters, library refcount pair and player reset/store helpers, completing the sixteen registry and player entry points of the unit.
 - M2-T437: match eight NitroSDK blend, geometry matrix, FIFO drain and fog-table helpers.
 - M2-T429: reconstruct eight CRI counter, callback and interrupt-related dispatch helpers in `cri_0208325c.c`.
 
