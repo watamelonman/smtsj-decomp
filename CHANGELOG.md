@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T429: reconstruct eight CRI counter, callback and interrupt-related dispatch helpers in `cri_0208325c.c`.
+
 - M2-T428: reconstruct eight CRI provider wrappers and shared-state accessors in `cri_0208325c.c`.
 - M2-T422: match the request forwarder, group resolver and mode-based ID selector in `lib_0204e9d8`; document two deferred slot collectors.
 
