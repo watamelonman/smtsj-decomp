@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T206: match the four 3ds Max texture-matrix constructors and submission wrapper in `lib_02028fa8` (`func_02028fa8`, `func_02029080`, `func_020290d0`, `func_020290f4`).
+- M2-T204: match the NitroSystem texture/palette animation object init, texture/palette parameter writers and frame sampler in `libs/NitroSDK/sdk_02027b1c.c`.
+- M2-T186: match six NitroSDK OS spin-lock/IRQ helpers in `sdk_02005a08`; OS_SetIrqStackChecker and OS_InitLock remain delinked and are documented on the hard list.
 - M2-T198: match the 140-byte run-sorting helper `func_02049594` in `lib_02049398`, completing the TU.
 - M2-T197: match the eight MTBL/TBL1 record lookup, battle-record forwarding, list reset/append and 56-byte record comparator helpers in `lib_02049398`.
 - M2-T196: match the NitroSDK `G2x_SetBGyAffine_` background affine-register writer in `sdk_02003bb4`, completing the TU.
