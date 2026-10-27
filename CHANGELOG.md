@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T290: match the queue scan, cursor accessors and fixed-stride slot clears in `libs/unknown/lib_02049620.c`, add `include/libs/unknown/lib_02049620.h`, and document the two still-delinked functions of that unit.
 - M2-T275: match the decimal-digit counter, clamped linear interpolation and Q12 interpolator in `sdk_02050160.c`, add `include/libs/NitroSDK/sdk_02050160.h`, and document the still-delinked cubic Bezier evaluator with instruction-level evidence on the hard list.
 - M2-T281: complete the NitroSDK GX unit by matching `GX_Init` and `GX_SetGraphicsMode` in `libs/NitroSDK/sdk_020026a0.c`.
 - M2-T279: match the provider start-up/state pair and both single-bit cursor helpers in `libs/unknown/lib_0205ee84.c`, completing the translation unit.
