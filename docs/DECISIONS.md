@@ -545,3 +545,16 @@ The original instead loads 0x0212e350 once; this literal has no relocation or
 configured symbol. The same setting preserves explicit status, singleton and
 GXSTAT pointer temporaries in the geometry initializer, reproducing its register
 allocation. Both functions retain ordinary typed C data operations.
+
+## DEC-033 — Preserve the 02058724 cached-axis store order
+
+`func_02058724` writes three adjacent 12-byte cached axes at
+`data_02156f68`, `data_02156f74` and `data_02156f80`. Writing those as three
+independent struct assignments makes mwccarm 2.0/sp1p5 hoist the second and
+third destination literal loads above the preceding `stmia`, changing the
+instruction schedule. Advancing one typed destination pointer between the
+stores keeps the original load/store order. The delinked target symbolizes the
+resulting literal addends as the three configured symbols, so both spellings
+resolve to the same addresses and the linked image is unchanged. The source
+records the adjacent cached-axis contract explicitly; no assembly, volatile
+accesses or byte blobs are involved.
