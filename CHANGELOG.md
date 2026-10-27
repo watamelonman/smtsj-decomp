@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T186: match six NitroSDK OS spin-lock/IRQ helpers in `sdk_02005a08`; two stack-init functions remain delinked and are documented on the hard list.
 - M2-T179: match `NNS_GfdAllocFrmPlttVram` (`func_02029c4c`) in `lib_02029b78`, completing the nine-function frame texture/palette VRAM manager TU.
 - M2-T163: match the NitroSDK resource dictionary binder and two G3X projection/basis wrappers in `sdk_020585a8`.
 - M2-T178: match the eight NitroSystem frame texture/palette VRAM manager functions in `lib_02029b78`.

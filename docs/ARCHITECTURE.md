@@ -71,6 +71,10 @@ wrapper's flag distinguishes a borrowed resource from one released at teardown;
 the independent 320-byte buffer is caller-owned. These helpers depend only on
 base types and existing copy, fill, allocation, and resource-release providers.
 
+`include/libs/NitroSDK/sdk_02005a08.h` exposes the borrowed volatile `OSLockWord`
+view (`lockFlag`, `ownerID`, `extension`) used by the NitroSDK spin-lock
+helpers; callers retain the lock storage and the OS boot state owns it.
+
 `include/libs/unknown/lib_0204915c.h` exposes borrowed singleton resource slots
 +0x7990/+0x7994/+0x7998 and a callback input flag at +0x40. The lookup helpers
 depend only on base types and existing resource/setup providers; they neither
