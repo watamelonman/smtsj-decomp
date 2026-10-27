@@ -141,3 +141,11 @@ animation/render layouts and the borrowed model count prefix for the G3D kernel.
 The helpers depend only on the existing word-fill provider, format initializer
 registry and default blend callbacks. Resource ownership stays with providers;
 list attachment borrows animation chains and performs no allocation.
+
+`include/libs/NitroSDK/sdk_02053c08.h` exposes the borrowed five-entry
+touch-sample table: each 14-byte record holds the current and previous touch
+flag and calibrated x/y coordinates, plus one never-read alignment halfword.
+The sample shift, three touch-state queries, the rectangle hit test and the
+squared-distance check depend only on base types and the existing touch-panel,
+squared-distance and GX providers. The table and calibration storage remain
+provider-owned; this unit allocates and releases nothing.
