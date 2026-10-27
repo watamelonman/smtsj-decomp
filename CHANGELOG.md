@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T431: match the CRI 02086b70 halfword accessors, library-word getter/setter and four registry forwarding thunks.
+- Match seven file/decompression wrappers in NitroSDK sdk_02051378; document the remaining whole-file loader.
+- M2-T428: reconstruct eight CRI provider wrappers and shared-state accessors in `cri_0208325c.c`.
 - M2-T422: match the request forwarder, group resolver and mode-based ID selector in `lib_0204e9d8`; document two deferred slot collectors.
 
 - M2-T416: reconstruct eight NitroSDK file-context open/close/seek/read wrappers, the word-read and free thunks, the work byte-span accessor and the lazy read-buffer allocator in `libs/NitroSDK/sdk_02051378.c`.
