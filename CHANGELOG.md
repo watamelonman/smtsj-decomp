@@ -4,6 +4,13 @@
 
 - M2-T458: match the MSL printf conversion parser in `sdk_020118f8.c`; document its ASCII-table symbol prerequisite before C linking.
 
+- M2-T462: match eight CRI table lookup, hexadecimal parsing, pool allocation and record sizing helpers in `cri_0208539c.c`.
+
+- M2-T465: match eight more task-effect helpers, including float ramps, packed intensity, effect creation and object-ID filtering.
+- Match eight more CRI 0208539c callback, record reset and field-access functions (M2-T461).
+- M2-T452: match eight WiFi connection request, state-transition and event-callback helpers; document the borrowed event and connection fields.
+
+- M2-T464: match eight task-effect callbacks in `lib_020b78d8.c`, including signed displacement updates and fifteen-step float completion.
 - M2-T457: match eight locale wide-character conversion and byte-memory routines in `sdk_020118f8.c`.
 
 - M2-T460: reconstruct eight CRI forwarding, callback registration, parser-result and record-clear helpers in `cri_0208539c.c`.
