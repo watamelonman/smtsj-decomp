@@ -1,6 +1,6 @@
 # libs/unknown/lib_02049398
 
-All eight functions keep the original `func_` symbol names because the human-owned
+All nine functions keep the original `func_` symbol names because the human-owned
 symbol/delink configuration requires them. The group/slot offsets and the 38- and
 56-byte record strides below come from the original ARM loads, multiplies and calls.
 
@@ -65,11 +65,23 @@ when those words are equal. `func_02049594` passes this function to the sort hel
 `func_02013c68` with a 56-byte element size, which establishes it as the record
 comparator. Objdiff: 100%.
 
+## func_02049594 — 140 bytes
+
+Takes the caller-owned list. Scans the records in order; a record whose +0 word equals 1
+ends the current run. For each such marker it sorts the run from `j` up to but excluding
+the marker with 56-byte records through `func_02013c68` and comparator `func_02049574`,
+then sets `j` to the marker index, so the marker is the first record of the next run.
+When the scan ends it sorts the trailing run `[j, count)`, unless `j` already equals the
+count. An empty list is untouched. Evidence: the `cmp #1` test, the two 56-stride `mla`
+address computations, both `func_02013c68` calls and the `func_02049574` literal at
+02049594..0204961c. The list is borrowed and its count is reloaded after each sort call
+in case the helper changes it. Objdiff: 100%.
+
 ## Validation
 
-The card sets `tests_required = false`. The hand comparator checked all eight functions
-against the ROM instructions and relocations. `python3 tools/match_gate.py` reported all
-13 C functions in changed files at 100%; `python3 tools/checksum.py` reported the linked
+The card sets `tests_required = false`. The hand comparator checked all nine functions
+against the ROM instructions and relocations. `python3 tools/match_gate.py` reported every
+C function in the changed file at 100%; `python3 tools/checksum.py` reported the linked
 image byte-identical to the original; `python3 tools/anticheat.py` and the unittest suite
 passed. The TU remains linked from the delink until a human marks it complete.
 

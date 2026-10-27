@@ -84,3 +84,27 @@ s32 func_02049574(const Unk049398Record *a, const Unk049398Record *b)
     if (delta == 0) delta = a->unk_00 - b->unk_00;
     return delta;
 }
+
+/* Shared MSL sort helper: sorts count records of the given stride in place. */
+extern void func_02013c68(void *base, s32 count, u32 size,
+                          s32 (*compare)(const Unk049398Record *, const Unk049398Record *));
+
+/* ARM 02049594: sorts each 56-byte run that ends at (and excludes) a record
+ * whose +0 word is 1, then sorts the trailing run. The first run starts at
+ * record zero; each marker record becomes the start of the next run, so marker
+ * runs are sorted together with the records that follow them. Evidence: the
+ * +0/+1 test, the two 56-stride mla calls and the comparator literal. */
+void func_02049594(Unk049398List *list)
+{
+    s32 j = 0;
+    s32 i = 0;
+    while (i < list->count) {
+        if (list->records[i].unk_00 == 1) {
+            func_02013c68(&list->records[j], i - j, 56, func_02049574);
+            j = i;
+        }
+        i++;
+    }
+    if (j != list->count)
+        func_02013c68(&list->records[j], list->count - j, 56, func_02049574);
+}

@@ -45,5 +45,7 @@ void func_020494f0(Unk049398List *list);
 s32 func_0204951c(Unk049398List *list, const Unk049398Record *record);
 /* Orders records by +4, then by +0 when the first comparison ties. */
 s32 func_02049574(const Unk049398Record *a, const Unk049398Record *b);
+/* Sorts the runs delimited by +0-word-1 records, then sorts the final run. */
+void func_02049594(Unk049398List *list);
 
 #endif
