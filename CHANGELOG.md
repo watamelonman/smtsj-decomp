@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T345: match four text-work allocation, device forwarding, glyph copy and rectangle helpers; document the remaining parser on the hard list.
+
 - M2-T315: match four NitroSystem texture SRT scalar evaluation and material mapping/application functions in `sdk_020276f8.c`.
 - M2-T321: match the CRI 100-byte slot initializer and second-range allocator, completing the C implementations in `libs/CRI/cri_0207d7e0.c`.
 
