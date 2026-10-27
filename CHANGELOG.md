@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T433: match the CRI 02086b70 player initialiser, reset routine and compressed-header parser (`func_02086ea0`, `func_02086f98`, `func_0208706c`); document `func_02086c6c` and its unnamed tables on the hard list.
 - M2-T432: match the CRI 02086b70 volume/pan setters, library refcount pair and player reset/store helpers, completing the sixteen registry and player entry points of the unit.
 - M2-T437: match eight NitroSDK blend, geometry matrix, FIFO drain and fog-table helpers.
 - M2-T429: reconstruct eight CRI counter, callback and interrupt-related dispatch helpers in `cri_0208325c.c`.
