@@ -4,6 +4,7 @@
 
 - M2-T411: match all eight NitroSDK touch-panel initialization, sampling and calibration functions.
 
+- M2-T400: match six NitroSystem stream initialization, setup, volume, stop and wake helpers; document the deferred buffer callback.
 - M2-T379: match five CRI voice assignment, path/timing, start and fade-update helpers; document the deferred teardown helper.
 
 - M2-T409: match three input-mask queries and five state accessors in `sdk_020535cc.c`.
