@@ -53,3 +53,34 @@ objdiff rather than exercised on the host.
 
 None of the requested functions is deferred. The remaining TU is
 provided by the delink until a human marks the unit complete.
+
+
+## M2-T397 affine and remaining mosaic wrappers
+
+Source comparison: [NitroSDK g2.h](https://github.com/ntrtwl/NitroSDK/blob/master/include/nitro/gx/g2.h)
+provides the four affine wrappers; `gx_bgcnt.h` above provides the mosaic setters.
+The matrix is borrowed and contains four signed Q12 entries. Coordinates are
+integer pixels, as in the SDK signatures and provider's center shift by 12.
+The existing `sdk_02003bb4.h` matrix/provider declarations are reused.
+
+| Function | Evidence and behavior | Match |
+| --- | --- | --- |
+| `func_02055308` | `G2S_SetBG3Affine`, forwards matrix and four coordinates to `func_02003d8c` at `0x04001030` | 100% |
+| `func_02055348` | `G2S_SetBG2Affine`, same provider at `0x04001020` | 100% |
+| `func_02055388` | `G2_SetBG3Affine`, same provider at `0x04000030` | 100% |
+| `func_020553c8` | `G2_SetBG2Affine`, same provider at `0x04000020` | 100% |
+| `func_02055408` | Original indexed load from `data_02143ab0`, null check, and indirect five-argument call establish affine callback dispatch; valid index required, table and matrix borrowed | 100% |
+| `func_02055548` | `G2_BG1Mosaic`, sets/clears bit 6 at `0x0400000a` for nonzero/zero enable, preserving other bits | 100% |
+| `func_02055574` | `G2_BG0Mosaic`, same operation at `0x04000008` | 100% |
+| `func_02055194` | Original MMIO selects main/sub DISPCNT for indices 0..3/4..7, reads plane mask `0x1f00`, toggles the indexed bit, then preserves remaining DISPCNT bits | deferred |
+
+### Hard list
+
+- `func_02055194` (120 bytes): left in the original delink. Tried direct
+  read/mask/shift and per-engine conditional expressions, signed/unsigned plane
+  locals, explicit and conditional bit-index selection, precomputed bit masks,
+  both branch orders, and inline toggle helpers. The closest forms retain the
+  correct size and behavior but allocate the plane value to r2 and index to r3;
+  the target uses r3 and ip and schedules the shift between index-selection
+  instructions. No nonmatching implementation is retained. A human can open a
+  scratch with `tools/decompme.py` for this function.
