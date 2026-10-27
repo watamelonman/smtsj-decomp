@@ -626,3 +626,23 @@ assigning `i = 0` after the position wrap, and writing the loop as
 reproduces both the zero-copy and the rotated loop exactly. The generated code
 is branch-equivalent to the straightforward form; no assembly, volatile access
 or byte blob is involved.
+
+## DEC-037 — Preserve the 0208d9bc/0208dad8 register allocation and ABI
+
+`func_0208d9bc` carries four values across its sample loop (two destination
+pointers, the circular position and the index). With ordinary settings
+mwccarm 2.0/sp1p5 colours them lr/r4/r5/r6; the original uses r4/r5/r6/lr.
+Declaring the locals as `i`, `dest0`, `dest1`, `position`, `sample` and
+scoping `opt_common_subs off` to the function reproduces the original
+allocation and all 228 bytes.
+
+`func_0208dad8` keeps the byte-copy index and the record-clear index in
+separate variables. One reused counter lets the compiler swap the record index
+with its strength-reduced 0x58 offset (r2/r1 instead of r1/r2). The original
+also writes 0 to r3 on the common path before the `func_02079374`/
+`func_02079360` choice. Because r3 is an outgoing argument word for both calls
+(they ignore it, but the wrapper prototypes still accept it), the matching
+source declares a fourth `s32` parameter and passes 0 at both call sites.
+Removing that argument drops the function from 100% (one fewer instruction and
+shifted literal-pool offsets), so the observed ABI is kept. No assembly,
+volatile access or byte blob is involved in either function.
