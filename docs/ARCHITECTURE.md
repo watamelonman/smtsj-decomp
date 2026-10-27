@@ -141,3 +141,9 @@ animation/render layouts and the borrowed model count prefix for the G3D kernel.
 The helpers depend only on the existing word-fill provider, format initializer
 registry and default blend callbacks. Resource ownership stays with providers;
 list attachment borrows animation chains and performs no allocation.
+
+`include/libs/NitroSDK/sdk_020276f8.h` exposes borrowed NitroSystem texture
+SRT resource/dictionary and model prefixes plus caller-owned animation objects
+with trailing material mappings. It reuses the existing material result layout;
+the evaluators depend only on dictionary-name lookup, halfword fill and the
+animation kernel callback registry. No resource ownership is transferred.
