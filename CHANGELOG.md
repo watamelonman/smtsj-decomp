@@ -3,6 +3,16 @@
 ## Unreleased
 
 - M2-T413: match the `sdk_02056cac.c` 512-byte cartridge transfer and slot-0 geometry reset; document the deferred eight-record initializer.
+- M2-T432: match the CRI 02086b70 volume/pan setters, library refcount pair and player reset/store helpers, completing the sixteen registry and player entry points of the unit.
+- M2-T437: match eight NitroSDK blend, geometry matrix, FIFO drain and fog-table helpers.
+- M2-T429: reconstruct eight CRI counter, callback and interrupt-related dispatch helpers in `cri_0208325c.c`.
+
+- M2-T431: match the CRI 02086b70 halfword accessors, library-word getter/setter and four registry forwarding thunks.
+- Match seven file/decompression wrappers in NitroSDK sdk_02051378; document the remaining whole-file loader.
+- M2-T428: reconstruct eight CRI provider wrappers and shared-state accessors in `cri_0208325c.c`.
+- M2-T422: match the request forwarder, group resolver and mode-based ID selector in `lib_0204e9d8`; document two deferred slot collectors.
+
+- M2-T416: reconstruct eight NitroSDK file-context open/close/seek/read wrappers, the word-read and free thunks, the work byte-span accessor and the lazy read-buffer allocator in `libs/NitroSDK/sdk_02051378.c`.
 - M2-T412: match eight transfer-queue, display-control and initialization helpers in `sdk_02056cac.c`.
 - M2-T398: match background-record cleanup and dual-engine display/transform reset in `sdk_02054fb8.c`.
 - M2-T411: match all eight NitroSDK touch-panel initialization, sampling and calibration functions.
