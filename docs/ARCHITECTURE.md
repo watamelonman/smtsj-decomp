@@ -161,3 +161,10 @@ state word at +4, the released child pointer at +8, the result words at
 path and halfword row-shift helpers depend only on base types and the
 neighbouring CRI release provider (0x0208095c). The caller owns the work area
 and its child object; this unit allocates and retains nothing.
+
+The CRI work-area view also exposes format bytes +0xd/+0xe/+0xf, borrowed
+input/output pointers +0x48/+0x5c, row bookkeeping +0x64..+0x74 and callbacks
+with contexts at +0x78/+0x7c, +0x80/+0x84 and +0xe8/+0xec. Child-state
+providers control progression; callbacks borrow the work-area fields during
+calls. The result and progress words extend through +0xe4; ownership remains
+with the caller and existing providers.
