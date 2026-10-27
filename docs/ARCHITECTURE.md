@@ -216,3 +216,9 @@ DTCM IRQ table or DMA/timer callback records, without changing registration.
 touch samples and Q2-origin/Q8-scale calibration parameters. The unit depends
 only on existing FIFO and interrupt providers, firmware user information and
 divider hardware. Shared touch state and its calibration alias remain SDK-owned.
+
+`include/libs/unknown/lib_0204e9d8.h` exposes borrowed request/object prefixes,
+the ten-slot singleton view and callback contracts for ID selection. The three
+implemented wrappers depend on existing request, lookup, candidate-collection and
+selection providers; requests, objects and entries remain provider-owned. The
+six-ID candidate array is local to the selector and no pointers are retained.

@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T422: match the request forwarder, group resolver and mode-based ID selector in `lib_0204e9d8`; document two deferred slot collectors.
+
 - M2-T411: match all eight NitroSDK touch-panel initialization, sampling and calibration functions.
 
 - M2-T400: match six NitroSystem stream initialization, setup, volume, stop and wake helpers; document the deferred buffer callback.
