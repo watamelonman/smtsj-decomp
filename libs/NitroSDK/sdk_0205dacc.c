@@ -9,8 +9,32 @@ extern Unk05dacc_Resource *func_02051610(const char *path);
 extern int func_020152cc(const char *left, const char *right);
 extern u32 func_0205aa68(void);
 extern void *func_0205a99c(u32 index);
+extern const char *func_0205ad6c(void);
+extern char *func_02015134(char *destination, const char *source);
+extern char *func_0201524c(char *destination, const char *source);
+extern int func_020519f0(u32 *result, const char *path);
 
+extern const char data_02143c18[];
 extern const char data_02143c20[];
+
+/** Original .cmp string and existence probe select a compressed or fallback path.
+ * Caller provides enough output storage for the prefix, name and either suffix.
+ */
+int func_0205dacc(char *output, const char *name, const char *suffix)
+{
+    u32 result[2];
+    int compressed = 1;
+    func_02015134(output, func_0205ad6c());
+    func_0201524c(output, name);
+    func_0201524c(output, data_02143c18);
+    if (func_020519f0(result, output) == 0) {
+        func_02015134(output, func_0205ad6c());
+        func_0201524c(output, name);
+        func_0201524c(output, suffix);
+        compressed = 0;
+    }
+    return compressed;
+}
 
 /** Reads the record id and copies the following word into caller storage. */
 u32 func_0205db5c(const void *record, u32 *offset)
@@ -37,6 +61,31 @@ void func_0205dc0c(Unk05dacc_Handle *handle, Unk05dacc_Group *group)
     count = group->count;
     handle->groupBegin = group->entries;
     handle->groupEnd = group->entries + count * 8;
+}
+
+/** Parses the variable-length entry records and the optional group table, then
+ *  resolves the installed entries when mode is nonzero. Record strides come from
+ *  the second word of each record through func_0205db5c.
+ */
+void func_0205dc28(Unk05dacc_Handle *handle, u8 *records, u32 mode)
+{
+    u32 offset;
+    int i;
+
+    records += 0x18;
+    if ((int)handle->resource->count != 0) {
+        for (i = 0; i < (int)handle->resource->count; i++) {
+            func_0205db5c(records, &offset);
+            func_0205dbf0(handle, (Unk05dacc_Item *)records);
+            records += offset;
+        }
+    }
+    if (handle->resource->groupCount != 0) {
+        func_0205db5c(records, &offset);
+        func_0205dc0c(handle, (Unk05dacc_Group *)records);
+    }
+    if (mode != 0)
+        func_0205dde4(handle);
 }
 
 /** Scans the loaded registry and installs the first ready entry with a matching name. */
@@ -68,7 +117,7 @@ Unk05dacc_Handle *func_0205dcd4(const char *name, u32 mode)
     handle->resource = resource;
     handle->borrowed = 0;
     handle->items = func_02052fe0(handle->resource->count * 4);
-    func_0205dc28(handle, resource, mode);
+    func_0205dc28(handle, (u8 *)resource, mode);
     return handle;
 }
 
@@ -80,7 +129,7 @@ Unk05dacc_Handle *func_0205dd58(Unk05dacc_Resource *resource, u32 mode)
     handle->resource = resource;
     handle->borrowed = 1;
     handle->items = func_02052fe0(handle->resource->count * 4);
-    func_0205dc28(handle, resource, mode);
+    func_0205dc28(handle, (u8 *)resource, mode);
     return handle;
 }
 
