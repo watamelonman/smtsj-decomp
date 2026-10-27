@@ -3,6 +3,8 @@
 ## Unreleased
 
 - M2-T163: match the NitroSDK resource dictionary binder and two G3X projection/basis wrappers in `sdk_020585a8`.
+- M2-T178: match the eight NitroSystem frame texture/palette VRAM manager functions in `lib_02029b78`.
+- M2-T175: match the eight CRI record-reset, clamped-forwarding and handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T174: match eight CRI handle-forwarding wrappers in `libs/CRI/cri_0208cf94.c`.
 - M2-T161: match the three Maya texture-matrix specializations in `lib_02028100`.
 - M2-T160: match the basic and Maya joint-scale/SRT routines in `lib_02027eac` (`func_02027eac`, `func_02027eec`, `func_02027fb0`).

@@ -61,6 +61,10 @@ whose +8 origin is caller supplied. Provider ownership remains unchanged.
 view: the handle is at +0x2058 and associated state blocks begin at +0x205c and
 +0x2084. The wrapper depends only on SDK bank, geometry and resource providers;
 callers retain the work storage and provider calls govern resource lifetime.
+`include/libs/unknown/lib_02029b78.h` exposes the five borrowed 24-byte frame
+texture regions and the three-word frame palette manager used by those state
+blocks. The save/restore helpers copy only `head`/`tail` and `lo`/`hi`; the
+regions and manager remain owned by the GFD VRAM manager.
 `include/libs/NitroSDK/sdk_0205c1c8.h` defines borrowed resource-prefix,
 12-byte entry and 40-byte record views for the resource wrapper helpers. The
 wrapper's flag distinguishes a borrowed resource from one released at teardown;
