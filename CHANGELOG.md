@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T207: match the five script request wrappers (requests 120-124) and the shared-record ID/command builders `func_020ba73c`, `func_020ba78c` and `func_020ba838` in `lib_020ba678`.
 - M2-T186: match six NitroSDK OS spin-lock/IRQ helpers in `sdk_02005a08`; OS_SetIrqStackChecker and OS_InitLock remain delinked and are documented on the hard list.
 - M2-T198: match the 140-byte run-sorting helper `func_02049594` in `lib_02049398`, completing the TU.
 - M2-T197: match the eight MTBL/TBL1 record lookup, battle-record forwarding, list reset/append and 56-byte record comparator helpers in `lib_02049398`.
