@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T289: match the six mode-driven navigation-state update helpers (mode initialiser, value clamp, single/step-2 increment and decrement with wrap) in `libs/unknown/lib_020ba90c.c`.
+- M2-T290: match the queue scan, cursor accessors and fixed-stride slot clears in `libs/unknown/lib_02049620.c`, add `include/libs/unknown/lib_02049620.h`, and document the two still-delinked functions of that unit.
 - M2-T288: match the eight remaining shared navigation-state helpers (init/reset, limit, saved value, last-entry tests and sound cue) in `libs/unknown/lib_020ba90c.c`, completing the translation unit.
 - M2-T287: match the eight shared navigation-state accessors (state reset, flags, current value and provider) in `libs/unknown/lib_020ba90c.c`.
 - M2-T275: match the decimal-digit counter, clamped linear interpolation and Q12 interpolator in `sdk_02050160.c`, add `include/libs/NitroSDK/sdk_02050160.h`, and document the still-delinked cubic Bezier evaluator with instruction-level evidence on the hard list.
