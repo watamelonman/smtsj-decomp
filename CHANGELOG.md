@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T454: match WiFi state notifications, startup request and finalize dispatcher; reverify the heap initializer at 100%.
+
 - M2-T453: reconstruct seven WiFi heap and connection callback helpers; document the deferred conditional-move match in `func_02053230`.
 
 - M2-T462: match eight CRI table lookup, hexadecimal parsing, pool allocation and record sizing helpers in `cri_0208539c.c`.
