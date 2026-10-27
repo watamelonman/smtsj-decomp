@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T437: match eight NitroSDK blend, geometry matrix, FIFO drain and fog-table helpers.
+
 - Match seven file/decompression wrappers in NitroSDK sdk_02051378; document the remaining whole-file loader.
 - M2-T428: reconstruct eight CRI provider wrappers and shared-state accessors in `cri_0208325c.c`.
 - M2-T422: match the request forwarder, group resolver and mode-based ID selector in `lib_0204e9d8`; document two deferred slot collectors.
