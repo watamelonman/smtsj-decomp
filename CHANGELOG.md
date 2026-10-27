@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- M2-T198: match the 140-byte run-sorting helper `func_02049594` in `lib_02049398`, completing the TU.
 - M2-T197: match the eight MTBL/TBL1 record lookup, battle-record forwarding, list reset/append and 56-byte record comparator helpers in `lib_02049398`.
 - M2-T196: match the NitroSDK `G2x_SetBGyAffine_` background affine-register writer in `sdk_02003bb4`, completing the TU.
 - M2-T195: match the eight NitroSDK main/sub BG0-BG3 character-base pointer helpers in `sdk_02003bb4`.
