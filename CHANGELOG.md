@@ -4,6 +4,8 @@
 
 - M2-T428: reconstruct eight CRI provider wrappers and shared-state accessors in `cri_0208325c.c`.
 
+- M2-T416: reconstruct eight NitroSDK file-context open/close/seek/read wrappers, the word-read and free thunks, the work byte-span accessor and the lazy read-buffer allocator in `libs/NitroSDK/sdk_02051378.c`.
+- M2-T412: match eight transfer-queue, display-control and initialization helpers in `sdk_02056cac.c`.
 - M2-T398: match background-record cleanup and dual-engine display/transform reset in `sdk_02054fb8.c`.
 - M2-T411: match all eight NitroSDK touch-panel initialization, sampling and calibration functions.
 
