@@ -3,6 +3,7 @@
 ## Unreleased
 
 - M2-T277: match the `.cmp` path builder and resource parser in `libs/NitroSDK/sdk_0205dacc.c`.
+- M2-T271: match the CRI string/format wrappers at 0208d674–0208d6fc and the zero-returning 0208d648 in `cri_0208d5ac.c`.
 - M2-T276: match eight resource-record, entry-table, lookup and wrapper helpers in `libs/NitroSDK/sdk_0205dacc.c`.
 
 - M2-T270: match and document eight more CRI no-op entry points at 0208d654–0208d670.
