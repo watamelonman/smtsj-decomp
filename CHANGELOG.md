@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T378: match eight CRI voice-record initialisation, release, query and master-volume helpers in `libs/NitroSDK/sdk_0208dc78.c`, adding `include/libs/NitroSDK/sdk_0208dc78.h`.
+
 - M2-T352: match both CRI 0207a8d0 request-bounding and result/row-shift helpers.
 
 - M2-T367: match the eighth NitroSDK IRQ callback wrapper, IRQ queue initializer and three interrupt-mask helpers; document three deferred routines.
