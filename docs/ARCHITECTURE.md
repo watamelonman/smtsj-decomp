@@ -222,3 +222,8 @@ word at +0x0c in `data_021746e4` and `data_02174740`. Its accessors and
 wrappers depend only on base types and existing CRI providers. Callback
 registration borrows a callback/context pair; providers retain the pair and
 callers keep its context alive. No allocation or ownership transfer occurs.
+`include/libs/unknown/lib_0204e9d8.h` exposes borrowed request/object prefixes,
+the ten-slot singleton view and callback contracts for ID selection. The three
+implemented wrappers depend on existing request, lookup, candidate-collection and
+selection providers; requests, objects and entries remain provider-owned. The
+six-ID candidate array is local to the selector and no pointers are retained.
