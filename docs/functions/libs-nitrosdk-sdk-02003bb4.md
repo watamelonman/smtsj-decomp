@@ -4,31 +4,37 @@ Eight functions in `libs/NitroSDK/sdk_02003bb4.c`. All match at 100% in
 objdiff. Symbols retain their original `func_` names so the human-owned
 split/symbol configuration needs no changes. Each takes no arguments and
 returns a borrowed VRAM address; no memory is allocated. Hardware register
-reads are volatile. Callers must arrange valid VRAM bank mapping.
+reads are volatile. Callers must arrange valid VRAM bank mapping. The eight
+`void *` prototypes are declared in
+`include/libs/NitroSDK/sdk_02003bb4.h`.
 
 ## Evidence and reference lookup
 
 The known NitroSDK implementation is the `G2_GetBGxCharPtr` /
 `G2S_GetBGxCharPtr` family in
 [GX_bgcnt.c](https://github.com/pret/pokediamond/blob/master/arm9/lib/NitroSDK/src/GX_bgcnt.c).
-The instruction shapes below corroborate those names: DISPCNT bits 27-29 add
-the 64 KiB screen base to a 16 KiB character block selected by bits 2-5 of the
-matching BGxCNT register. The BG2/BG3 variants return null when the display
-mode makes that background unusable in bitmap mode, matching the reference
-branch trees. The public
+The instruction shapes below corroborate those names: DISPCNT bits 24-26 add
+the 64 KiB character-base offset to a 16 KiB character block selected by bits
+2-5 of the matching BGxCNT register. (The sibling screen-base getters in the
+reference use DISPCNT bits 27-29 instead; this unit is the character-base
+family.) The BG2/BG3 variants return null when the display mode makes that
+background unusable in bitmap mode, matching the reference branch trees. The
+public
 [999 symbol list](https://github.com/Ed-1T/999-Code-Reference/blob/master/symbols9.x)
 also lists the consecutive G2/G2S character-pointer entries.
 
-The reference source uses `u16 control`; this original instead shifts the
-masked BGxCNT value unsigned (`lsr`), so the code keeps it in a `u32` to
-reproduce the instruction. The mode comparison is signed (`blt`/`bge`), so
-`mode` is an `int`. Those typing choices are evidence from the target object,
-not style preferences.
+The reference snapshots BGxCNT in a `u32` (`u32 temp = reg_G2_BGxCNT`). This
+target differs by path: BG0/BG1 shift the directly-read `u16` control value,
+which integer promotion makes signed and compiles to `asr`; BG2/BG3 widen the
+register read into a `u32` local and compile to `lsr`. Each local type is
+therefore chosen to reproduce the target's shift instruction, not as a style
+preference. The mode comparison is signed (`blt`/`bge`), so `mode` is an
+`int`. Those typing choices are evidence from the target object.
 
 ## Functions
 
 - `func_02003bb4` (52 bytes): main BG0 character base. Reads BG0CNT at
-  `0x04000008` bits 2-5, scales by 16 KiB, and adds DISPCNT bits 27-29
+  `0x04000008` bits 2-5, scales by 16 KiB, and adds DISPCNT bits 24-26
   scaled by 64 KiB plus `0x06000000`.
 - `func_02003be8` (32 bytes): sub BG0 character base. Reads sub BG0CNT at
   `0x04001008`, scales bits 2-5 by 16 KiB, and adds `0x06200000`.
@@ -37,9 +43,12 @@ not style preferences.
 - `func_02003c3c` (32 bytes): sub BG1 character base. Reads sub BG1CNT at
   `0x0400100a` and adds `0x06200000`.
 - `func_02003c5c` (80 bytes): main BG2 character base. Reads DISPCNT mode and
-  BG2CNT at `0x0400000c`; returns null for modes 5-7 with BG2CNT bit 7 set.
+  BG2CNT at `0x0400000c`; returns null only for modes 5-7 with BG2CNT bit 7
+  set. Modes 6-7 with bit 7 clear still return the base: the target has a
+  two-branch tree, unlike the newer reference's mode-6 special case.
 - `func_02003cac` (64 bytes): sub BG2 character base. Reads sub DISPCNT and
-  sub BG2CNT at `0x0400100c`; returns null for modes 5-7 with bit 7 set.
+  sub BG2CNT at `0x0400100c`; same null rule as main BG2, so modes 6-7 with
+  bit 7 clear still return the base.
 - `func_02003cec` (88 bytes): main BG3 character base. Reads DISPCNT mode and
   BG3CNT at `0x0400000e`; BG3 is unavailable in modes 6-7 and in extended
   bitmap mode (3-5) when bit 7 is set.
