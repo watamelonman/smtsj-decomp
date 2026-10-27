@@ -84,3 +84,36 @@ The existing `sdk_02003bb4.h` matrix/provider declarations are reused.
   the target uses r3 and ip and schedules the shift between index-selection
   instructions. No nonmatching implementation is retained. A human can open a
   scratch with `tools/decompme.py` for this function.
+
+
+## M2-T398: record cleanup and display reset
+
+Public-source lookup: [NitroSDK gx.h](https://github.com/ntrtwl/NitroSDK/blob/main/include/nitro/gx/gx.h)
+provides `GX_SetVisiblePlane`, `GXS_SetVisiblePlane`, and the window-mask
+setters. Their DISPCNT masks establish the plane/window portions of these
+helpers. No exact public implementation of the surrounding record lifecycle
+or mode-table dispatch was found; neutral function symbols are retained.
+
+| Function | Evidence and contract | Match |
+| --- | --- | --- |
+| `func_02054fb8(int keepPlanes)` | Zero hides planes in both engines. For indices 0..7, the original record provider returns 40-byte storage; an active first word permits releasing nonnull pointers at +0x24 then +0x1c and clearing those slots. Every record is then cleared through its provider, followed by mode eight. | 100% (160 bytes) |
+| `func_02055058(void)` | Snapshots both DISPCNT words, clears planes (`0x1f00`) and windows (`0xe000`), and calls the engine reset provider for zero then one. The table at `0x0212e2d0` selects T/A behavior by original mode and background index. T resets scroll unless main BG0 is 3D; A submits a Q12 identity matrix and zero coordinates. | 100% (316 bytes) |
+
+The private record view exposes only instruction-established fields. Resource
+slots are released only when the record is active; record storage and the mode
+table remain provider-owned. The identity provider at `0x02000d60` writes
+`4096, 0, 0, 4096`, confirming the four-word matrix layout. DISPCNT snapshots
+use a borrowed volatile union with three mode bits and one BG0 3D bit; this
+preserves the original aggregate loads and bitfield extraction. These private
+views introduce no public module boundary.
+
+Integration requirement: the original mode-table literal has no relocation or
+symbol in `config/arm9/symbols.txt`. The C declaration `data_0212e2d0` names that
+existing borrowed table; a human must add a data symbol at `0x0212e2d0` before
+marking this TU complete. The configuration is protected, so it is unchanged.
+Objdiff matches both functions at 100%; the current delink-linked image remains
+byte-identical. Neither requested function is deferred to the hard list.
+
+Validation: `python3 tools/anticheat.py`, the nine discovered unit tests,
+`python3 tools/match_gate.py` (all 31 implemented functions in this TU at 100%),
+and `python3 tools/checksum.py` all passed; the match gate also ran the build.

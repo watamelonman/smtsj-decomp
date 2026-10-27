@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T398: match background-record cleanup and dual-engine display/transform reset in `sdk_02054fb8.c`.
+
 - M2-T397: match four background affine wrappers, affine callback dispatch and two mosaic setters; document the deferred display-plane helper.
 
 - M2-T399: match seven NitroSystem stream channel, playback, alarm and sleep helpers; document the deferred volume setter.
