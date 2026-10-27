@@ -240,3 +240,9 @@ and the open byte +0x10. The close, seek and read helpers depend only on base
 types and the existing FS primitives; the wrapper, its file and its method
 table remain provider owned. The unrolled YUV blit at 020901e0 stays in the
 delinked object.
+
+`include/libs/NitroSDK/sdk_02021a10.h` exposes borrowed NitroSystem texture,
+model, material, dictionary and binding prefixes for key assignment, palette
+upload and binding release. Resources stay provider-owned; key output words
+remain caller-owned. The helpers depend only on existing GX upload and G3D
+texture-binding release providers.

@@ -707,3 +707,11 @@ indexing alone exchanges the offset and interpolation temporary registers.
 The duration and elapsed words are signed: the original calls `_fflt`,
 not the unsigned conversion provider. These are borrowed record fields; no
 ownership or provider boundary changes.
+
+## DEC-042 — Preserve G3D dictionary count reads
+
+The 02021e9c and 02022110 originals reload the dictionary entry count inside
+the checked accessor after testing the dictionary pointer. The borrowed layout
+marks that byte volatile to preserve these observed reads: ordinary access
+allows mwccarm to reuse the loop-bound read and removes one instruction from
+each function. This imposes no allocation or ownership change.

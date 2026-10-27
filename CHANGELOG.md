@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- M2-T482: match eight NitroSystem texture/palette key, upload and model-binding release helpers.
+
 - Match CRI 0208539c position-update and selector-query helpers; document the deferred read helper.
 - M2-T471: match seven NitroSDK RTC initialization, date, BCD and FIFO helpers; document the deferred assembly busy-wait.
 
